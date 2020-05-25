@@ -1,0 +1,148 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "application"
+    id "net.ltgt.apt-eclipse" version "0.21"
+
+    id "nu.studer.jooq" version "4.2"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+}
+
+sourceCompatibility = 1.12
+targetCompatibility = 1.12
+
+version "0.1"
+group "gatekeeper"
+
+//repositories {
+//    mavenCentral()
+//    maven { url "https://jcenter.bintray.com" }
+//}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
+}
+
+task makePretty(type: Delete) {
+    delete 'out'
+}
+
+task buildDockerImage(type: Exec) {
+    workingDir "$buildDir"
+    commandLine "docker build -t ${project.name}:latest"
+
+
+}
+
+dependencies {
+    compile project(":common")
+//    implementation fileTree(dir: 'models')
+//    compile project(':models')
+//    implementation project(':com.wobserver.backend.models')
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.configuration:micronaut-kafka"
+    implementation "io.micronaut:micronaut-http-server-netty"
+    implementation "javax.annotation:javax.annotation-api"
+    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    compile group: 'io.micronaut.data', name: 'micronaut-data-model', version: '1.0.2'
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    implementation "io.micronaut:micronaut-security-jwt"
+    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
+
+    implementation 'org.jooq:jooq:3.13.1'
+    jooqRuntime 'mysql:mysql-connector-java:8.0.19'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
+    runtime 'mysql:mysql-connector-java:8.0.19'
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
+//    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
+//    implementation "io.micronaut.data:micronaut-data-jdbc:1.0.2"
+//    implementation "io.micronaut.configuration:micronaut-jdbc-hikari"
+//    testRuntimeOnly 'com.h2database:h2'
+//    runtimeOnly "com.h2database:h2"
+//    runtime("io.micronaut.configuration:micronaut-jdbc-hikari")
+//    runtimeOnly "io.micronaut.configuration:micronaut-jdbc-tomcat"
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.4'
+
+//    implementation "io.micronaut.configuration:micronaut-jooq"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "com.observertc.gatekeeper.Application"
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+run.classpath += configurations.developmentOnly
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add('-parameters')
+}
+
+def generatedDir = 'src/main/java/'
+sourceSets {
+    main {
+        java {
+            srcDirs += [generatedDir]
+        }
+    }
+}
+
+
+// Database setup
+//project.ext {
+//    name = "wobserver"
+//    ciCommitSha = ""
+//    dbUrl = "jdbc:mysql://mysqldb:3039/wobserver"
+//    username = "user"
+//    password = "password"
+//}
+
+jooq {
+    MySql(sourceSets.main) {
+        jdbc {
+            url = 'jdbc:mysql://localhost:3306/ObserveRTC'
+            driver = 'com.mysql.cj.jdbc.Driver'
+            user = 'root'
+            password = 'password'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = 'ObserveRTC'
+                includes = '.*'
+            }
+            target {
+                packageName = 'com.observertc.gatekeeper.jooq'
+                directory = generatedDir
+            }
+        }
+    }
+}

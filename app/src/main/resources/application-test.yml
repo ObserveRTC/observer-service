@@ -1,0 +1,9 @@
+---
+#datasources:
+#  default:
+#    url: ${JDBC_URL:`jdbc:h2:~/wobserver;MODE=MYSQL`}
+#    username: ${JDBC_USER:user}
+#    password: ${JDBC_PASSWORD:password}
+#    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+#    dialect: H2
+    

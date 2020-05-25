@@ -1,0 +1,4 @@
+rootProject.name = "gatekeeper"
+include 'common'
+include 'app'
+
