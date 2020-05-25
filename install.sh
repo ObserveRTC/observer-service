@@ -1,13 +1,14 @@
 #!/bin/bash
 
+docker-compose up -d mysql
 if [[ "$1" != "--skipsql" ]]; then
-  docker-compose up -d mysql
   sleep 30
   cd app
   cd src/sql
   python3 run.py 1.0.0
   cd ../../..
-  docker-compose down
+else
+  sleep 10
 fi
 
 if [[ "$1" != "--skipgradle" ]]; then
@@ -18,3 +19,5 @@ fi
 cd app
 docker build . --no-cache -t gatekeeper:latest
 cd ..
+
+docker-compose stop mysql
