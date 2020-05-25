@@ -2,7 +2,7 @@
 
 if [[ "$1" != "--skipsql" ]]; then
   docker-compose up -d mysql
-  sleep 5
+  sleep 30
   cd app
   cd src/sql
   python3 run.py 1.0.0
