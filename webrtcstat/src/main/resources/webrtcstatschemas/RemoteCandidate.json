@@ -1,0 +1,77 @@
+{
+  "$ref": "#/definitions/RemoteCandidate",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "RemoteCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidateType": {
+          "enum": [
+            "host",
+            "srflx",
+            "prflx",
+            "relay"
+          ],
+          "type": "string"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "isRemote": {
+          "enum": [
+            true
+          ],
+          "type": "boolean"
+        },
+        "port": {
+          "type": "number"
+        },
+        "priority": {
+          "type": "number"
+        },
+        "protocol": {
+          "enum": [
+            "udp",
+            "tcp"
+          ],
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "number"
+        },
+        "transportId": {
+          "enum": [
+            "string"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "remote-candidate"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidateType",
+        "deleted",
+        "id",
+        "ip",
+        "isRemote",
+        "port",
+        "priority",
+        "protocol",
+        "timestamp",
+        "transportId",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

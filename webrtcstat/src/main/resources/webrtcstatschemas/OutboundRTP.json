@@ -1,0 +1,147 @@
+{
+  "$ref": "#/definitions/OutboundRTP",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "OutboundRTP": {
+      "additionalProperties": false,
+      "properties": {
+        "bytesSent": {
+          "type": "number"
+        },
+        "codecId": {
+          "type": "string"
+        },
+        "encoderImplementation": {
+          "type": "string"
+        },
+        "firCount": {
+          "type": "number"
+        },
+        "framesEncoded": {
+          "type": "number"
+        },
+        "headerBytesSent": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "isRemote": {
+          "type": "boolean"
+        },
+        "keyFramesEncoded": {
+          "type": "number"
+        },
+        "kind": {
+          "enum": [
+            "audio",
+            "video"
+          ],
+          "type": "string"
+        },
+        "mediaSourceId": {
+          "type": "string"
+        },
+        "mediaType": {
+          "enum": [
+            "audio",
+            "video"
+          ],
+          "type": "string"
+        },
+        "nackCount": {
+          "type": "number"
+        },
+        "packetsSent": {
+          "type": "number"
+        },
+        "pliCount": {
+          "type": "number"
+        },
+        "qpSum": {
+          "type": "number"
+        },
+        "qualityLimitationReason": {
+          "enum": [
+            "none",
+            "cpu",
+            "bandwidth",
+            "other"
+          ],
+          "type": "string"
+        },
+        "qualityLimitationResolutionChanges": {
+          "type": "number"
+        },
+        "remoteId": {
+          "type": "string"
+        },
+        "retransmittedBytesSent": {
+          "type": "number"
+        },
+        "retransmittedPacketsSent": {
+          "type": "number"
+        },
+        "ssrc": {
+          "type": "number"
+        },
+        "timestamp": {
+          "type": "number"
+        },
+        "totalEncodeTime": {
+          "type": "number"
+        },
+        "totalEncodedBytesTarget": {
+          "type": "number"
+        },
+        "totalPacketSendDelay": {
+          "type": "number"
+        },
+        "trackId": {
+          "type": "number"
+        },
+        "transportId": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "outbound-rtp"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "bytesSent",
+        "codecId",
+        "headerBytesSent",
+        "id",
+        "isRemote",
+        "kind",
+        "mediaSourceId",
+        "mediaType",
+        "packetsSent",
+        "remoteId",
+        "retransmittedBytesSent",
+        "retransmittedPacketsSent",
+        "ssrc",
+        "timestamp",
+        "trackId",
+        "transportId",
+        "encoderImplementation",
+        "firCount",
+        "framesEncoded",
+        "keyFramesEncoded",
+        "nackCount",
+        "pliCount",
+        "qpSum",
+        "qualityLimitationReason",
+        "qualityLimitationResolutionChanges",
+        "totalEncodeTime",
+        "totalEncodedBytesTarget",
+        "totalPacketSendDelay",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}
