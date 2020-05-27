@@ -1,0 +1,65 @@
+{
+  "$ref": "#/definitions/MediaSource",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "MediaSource": {
+      "additionalProperties": false,
+      "properties": {
+        "audioLevel": {
+          "type": "number"
+        },
+        "framesPerSecond": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "audio",
+            "video"
+          ],
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "number"
+        },
+        "totalAudioEnergy": {
+          "type": "number"
+        },
+        "totalSamplesDuration": {
+          "type": "number"
+        },
+        "trackIdentifier": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "media-source"
+          ],
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "audioLevel",
+        "id",
+        "kind",
+        "framesPerSecond",
+        "height",
+        "width",
+        "timestamp",
+        "totalAudioEnergy",
+        "totalSamplesDuration",
+        "trackIdentifier",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

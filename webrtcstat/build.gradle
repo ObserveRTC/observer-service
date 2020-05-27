@@ -1,0 +1,324 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "application"
+    id "net.ltgt.apt-eclipse" version "0.21"
+
+    id "com.github.eirnym.js2p" version "1.0"
+    id "nu.studer.jooq" version "4.2"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+
+}
+
+sourceCompatibility = 1.12
+targetCompatibility = 1.12
+
+version "0.1"
+group "gatekeeper"
+
+//repositories {
+//    mavenCentral()
+//    maven { url "https://jcenter.bintray.com" }
+//}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
+}
+
+task makePretty(type: Delete) {
+    delete 'out'
+}
+
+task buildDockerImage(type: Exec) {
+    workingDir "$buildDir"
+    commandLine "docker build -t ${project.name}:latest"
+
+
+}
+
+dependencies {
+    compile project(":common")
+//    implementation fileTree(dir: 'models')
+//    compile project(':models')
+//    implementation project(':com.wobserver.backend.models')
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.configuration:micronaut-kafka"
+    implementation "io.micronaut:micronaut-http-server-netty"
+    implementation "javax.annotation:javax.annotation-api"
+    runtimeOnly "ch.qos.logback:logback-classic:$logbackVersion"
+    compile group: 'io.micronaut.data', name: 'micronaut-data-model', version: "${micronautDataModelVersion}"
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    implementation "io.micronaut:micronaut-security-jwt"
+    compile "io.micronaut:micronaut-management"
+
+    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
+
+
+//    compile 'io.micrometer:micrometer-registry-elastic:latest.release'
+
+//    compile 'org.apache.commons:commons-jexl3:3.1'
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // ------------ Micrometer integration ---------
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    compile "io.micronaut.configuration:micronaut-micrometer-core"
+    compile "io.micronaut.configuration:micronaut-micrometer-registry-elastic"
+    compile 'io.micrometer:micrometer-core:latest.integration'
+
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // ------------ DataSource integration ---------
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    implementation "org.jooq:jooq:${jooqVersion}"
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
+//    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
+//    implementation "io.micronaut.data:micronaut-data-jdbc:1.0.2"
+//    implementation "io.micronaut.configuration:micronaut-jdbc-hikari"
+//    testRuntimeOnly 'com.h2database:h2'
+//    runtimeOnly "com.h2database:h2"
+//    runtime("io.micronaut.configuration:micronaut-jdbc-hikari")
+//    runtimeOnly "io.micronaut.configuration:micronaut-jdbc-tomcat"
+    compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
+    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
+    runtime "mysql:mysql-connector-java:${mysqlVersion}"
+
+//    implementation "io.micronaut.configuration:micronaut-jooq"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "com.observertc.gatekeeper.Application"
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+run.classpath += configurations.developmentOnly
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add('-parameters')
+}
+
+def generatedDir = 'src/main/java/'
+sourceSets {
+    main {
+        java {
+            srcDirs += [generatedDir]
+        }
+    }
+}
+
+
+// Database setup
+//project.ext {
+//    name = "wobserver"
+//    ciCommitSha = ""
+//    dbUrl = "jdbc:mysql://mysqldb:3039/wobserver"
+//    username = "user"
+//    password = "password"
+//}
+
+jooq {
+    MySql(sourceSets.main) {
+        jdbc {
+            url = 'jdbc:mysql://localhost:3306/ObserveRTC'
+            driver = 'com.mysql.cj.jdbc.Driver'
+            user = 'root'
+            password = 'password'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = 'ObserveRTC'
+                includes = '.*'
+            }
+            target {
+                packageName = 'com.observertc.gatekeeper.jooq'
+                directory = generatedDir
+            }
+        }
+    }
+}
+
+
+// Each configuration is set to the default value
+jsonSchema2Pojo {
+
+    // Whether to allow 'additional' properties to be supported in classes by adding a map to
+    // hold these. This is true by default, meaning that the schema rule 'additionalProperties'
+    // controls whether the map is added. Set this to false to globabally disable additional properties.
+    includeAdditionalProperties = false
+
+    // Whether to generate builder-style methods of the form withXxx(value) (that return this),
+    // alongside the standard, void-return setters.
+    generateBuilders = true
+
+    // Whether to use primitives (long, double, boolean) instead of wrapper types where possible
+    // when generating bean properties (has the side-effect of making those properties non-null).
+    usePrimitives = false
+
+    // Location of the JSON Schema file(s). This may refer to a single file or a directory of files.
+    source = files("${sourceSets.main.output.resourcesDir}/webrtcstatschemas")
+
+    // Target directory for generated Java source files. The plugin will add this directory to the
+    // java source set so the compiler will find and compile the newly generated source files.
+    targetDirectory = file("${project.buildDir}/generated-sources/js2p")
+
+    // Package name used for generated Java classes (for types where a fully qualified name has not
+    // been supplied in the schema using the 'javaType' property).
+    targetPackage = 'com.observertc.gatekeeper.webrtc.models'
+
+    // The characters that should be considered as word delimiters when creating Java Bean property
+    // names from JSON property names. If blank or not set, JSON properties will be considered to
+    // contain a single word when creating Java Bean property names.
+    propertyWordDelimiters = [] as char[]
+
+    // Whether to use the java type long (or Long) instead of int (or Integer) when representing the
+    // JSON Schema type 'integer'.
+    useLongIntegers = false
+
+    // Whether to use the java type BigInteger when representing the JSON Schema type 'integer'. Note
+    // that this configuration overrides useLongIntegers
+    useBigIntegers = false
+
+    // Whether to use the java type double (or Double) instead of float (or Float) when representing
+    // the JSON Schema type 'number'.
+    useDoubleNumbers = true
+
+    // Whether to use the java type BigDecimal when representing the JSON Schema type 'number'. Note
+    // that this configuration overrides useDoubleNumbers
+    useBigDecimals = false
+
+    // Whether to include hashCode and equals methods in generated Java types.
+    includeHashcodeAndEquals = true
+
+    // Whether to include a toString method in generated Java types.
+    includeToString = true
+
+    // The style of annotations to use in the generated Java types. Supported values:
+    //  - jackson (alias of jackson2)
+    //  - jackson2 (apply annotations from the Jackson 2.x library)
+    //  - jackson1 (apply annotations from the Jackson 1.x library)
+    //  - gson (apply annotations from the Gson library)
+    //  - moshi1 (apply annotations from the Moshi 1.x library)
+    //  - none (apply no annotations at all)
+    annotationStyle = 'jackson'
+
+    // A fully qualified class name, referring to a custom annotator class that implements
+    // org.jsonschema2pojo.Annotator and will be used in addition to the one chosen
+    // by annotationStyle. If you want to use the custom annotator alone, set annotationStyle to none.
+    customAnnotator = 'org.jsonschema2pojo.NoopAnnotator'
+
+    // Whether to include JSR-303/349 annotations (for schema rules like minimum, maximum, etc) in
+    // generated Java types. Schema rules and the annotation they produce:
+    //  - maximum = @DecimalMax
+    //  - minimum = @DecimalMin
+    //  - minItems,maxItems = @Size
+    //  - minLength,maxLength = @Size
+    //  - pattern = @Pattern
+    //  - required = @NotNull
+    // Any Java fields which are an object or array of objects will be annotated with @Valid to
+    // support validation of an entire document tree.
+    includeJsr303Annotations = false
+
+    // The type of input documents that will be read. Supported values:
+    //  - jsonschema (schema documents, containing formal rules that describe the structure of JSON data)
+    //  - json (documents that represent an example of the kind of JSON data that the generated Java types
+    //          will be mapped to)
+    //  - yamlschema (JSON schema documents, represented as YAML)
+    //  - yaml (documents that represent an example of the kind of YAML (or JSON) data that the generated Java types
+    //          will be mapped to)
+    sourceType = 'jsonschema'
+
+    // Whether to empty the target directory before generation occurs, to clear out all source files
+    // that have been generated previously. <strong>Be warned</strong>, when activated this option
+    // will cause jsonschema2pojo to <strong>indiscriminately delete the entire contents of the target
+    // directory (all files and folders)</strong> before it begins generating sources.
+    removeOldOutput = false
+
+    // The character encoding that should be used when writing the generated Java source files
+    outputEncoding = 'UTF-8'
+
+    // Whether to use {@link org.joda.time.DateTime} instead of {@link java.util.Date} when adding
+    // date type fields to generated Java types.
+    useJodaDates = false
+
+    // Whether to add JsonFormat annotations when using Jackson 2 that cause format "date", "time", and "date-time"
+    // fields to be formatted as yyyy-MM-dd, HH:mm:ss.SSS and yyyy-MM-dd'T'HH:mm:ss.SSSZ respectively. To customize these
+    // patterns, use customDatePattern, customTimePattern, and customDateTimePattern config options or add these inside a 
+    // schema to affect an individual field
+    formatDateTimes = true
+    formatDates = true
+    formatTimes = true
+
+    // Whether to initialize Set and List fields as empty collections, or leave them as null.
+    initializeCollections = true
+
+    // Whether to add a prefix to generated classes.
+    classNamePrefix = ""
+
+    // Whether to add a suffix to generated classes.
+    classNameSuffix = ""
+
+    // An array of strings that should be considered as file extensions and therefore not included in class names.
+    fileExtensions = [] as String[]
+
+    // Whether to generate constructors or not.
+    includeConstructors = false
+
+    // **EXPERIMENTAL** Whether to make the generated types Parcelable for Android
+    parcelable = false
+
+    // Whether to make the generated types Serializable
+    serializable = false
+
+    // Whether to include getters or to omit these accessor methods and create public fields instead.
+    includeGetters = false
+
+    // Whether to include setters or to omit these accessor methods and create public fields instead.
+    includeSetters = false
+
+    // Whether to include dynamic getters, setters, and builders or to omit these methods.
+    includeDynamicAccessors = false
+
+    // Whether to include dynamic getters or to omit these methods.
+    includeDynamicGetters = false
+
+    // Whether to include dynamic setters or to omit these methods.
+    includeDynamicSetters = false
+
+    // Whether to include dynamic builders or to omit these methods.
+    includeDynamicBuilders = false
+
+    // What type to use instead of string when adding string properties of format "date" to Java types
+    dateType = "java.time.LocalDate"
+
+    // What type to use instead of string when adding string properties of format "date-time" to Java types
+    dateTimeType = "java.time.LocalDateTime"
+}
