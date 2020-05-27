@@ -1,0 +1,28 @@
+services:
+  webrtcstat_gatekeeper:
+    links:
+      - mysql
+    environment:
+      - HIKARI_USERNAME=root
+      - HIKARI_PASSWORD=password
+      - HIKARI_JDBC=jdbc:mysql://mysqldb:3306/ObserveRTC
+      - JOOQ_DIALECT=MySQL
+  mysql:
+    container_name: mysqldb
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'observertc'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:
+    driver: local
