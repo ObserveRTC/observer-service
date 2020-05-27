@@ -1,0 +1,45 @@
+---
+micronaut:
+  # templatize!
+  metrics:
+    enabled: true
+    export:
+      elastic:
+        enabled: true
+        step: PT1M
+        host: "http://localhost:9200"
+        # userName: username
+        # password: password
+  server:
+    port: "${APPLICATION_SERVER_PORT:8088}"
+  application:
+    name: webrtcstats_gatekeeper
+    authentication:
+      hashAlgorithm: "${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}"
+      stretching: "${AUTHENTICATION_STRETCHING:2}"
+      saltSize: "${AUTHENTICATION_SALT_SIZE:32}"
+#  security:
+#    enabled: true
+#    endpoints:
+#      login:
+#        enabled: true
+#      oauth:
+#        enabled: true
+#    token:
+#      jwt:
+#        enabled: true
+#        signatures:
+#          secret:
+#            generator:
+#              secret: jwtsecretforgatekeeperrandomchars1234543465434565
+---
+kafka:
+  bootstrap:
+    servers: "${KAFKA_HOSTS:`localhost:9092`}"
+---
+isc:
+  streams:
+    demo:
+      samples: "${ISC_STREAMS_DEMO_SAMPLES_TOPIC:demoSamples}"
+
+  

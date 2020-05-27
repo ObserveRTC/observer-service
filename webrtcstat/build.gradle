@@ -19,6 +19,30 @@ targetCompatibility = 1.12
 version "0.1"
 group "gatekeeper"
 
+
+Properties usedProfiles = new Properties()
+File userProfilesFile = new File(rootProject.projectDir.toString() + "/used-profiles.properties")
+if (userProfilesFile.exists() == false) {
+    throw new GradleScriptException("No profile is defined for building. Have you run the install script?", null)
+}
+InputStream ins = new FileInputStream(userProfilesFile)
+usedProfiles.load(ins)
+ins.close()
+String datasourceProfile = usedProfiles.datasource
+println 'Used Datasource profile: ' + datasourceProfile
+switch (datasourceProfile.toLowerCase()) {
+    case "mysql":
+        apply from: rootProject.file('webrtcstat/buildprofiles/datasource_mysql.gradle');
+        break
+    default:
+        println "Datasource profile is not recognized, so the default will be used"
+        apply from: rootProject.file('webrtcstat/buildprofiles/datasource_mysql.gradle');
+        break
+}
+
+String subscriberProfile = usedProfiles.subscriberProfile
+
+
 //repositories {
 //    mavenCentral()
 //    maven { url "https://jcenter.bintray.com" }
@@ -41,10 +65,10 @@ task buildDockerImage(type: Exec) {
 }
 
 dependencies {
+    // ------------ Project integration ---------
     compile project(":common")
-//    implementation fileTree(dir: 'models')
-//    compile project(':models')
-//    implementation project(':com.wobserver.backend.models')
+
+    // ------------ Micronaut framework ------------
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
@@ -67,26 +91,20 @@ dependencies {
     implementation "io.micronaut:micronaut-security-jwt"
     compile "io.micronaut:micronaut-management"
 
-    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
+    // ------------ Necessary utilities ------------
+    compile group: 'org.javatuples', name: 'javatuples', version: "${javaTuplesVersion}"
 
-
-//    compile 'io.micrometer:micrometer-registry-elastic:latest.release'
-
-//    compile 'org.apache.commons:commons-jexl3:3.1'
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // ------------ Micrometer integration ---------
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     compile "io.micronaut.configuration:micronaut-micrometer-core"
-    compile "io.micronaut.configuration:micronaut-micrometer-registry-elastic"
-    compile 'io.micrometer:micrometer-core:latest.integration'
 
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // ------------ DataSource integration ---------
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"
-    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
+    compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
+    
+//    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
+//    runtime "mysql:mysql-connector-java:${mysqlVersion}"
+
+
 //    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
 //    implementation "io.micronaut.data:micronaut-data-jdbc:1.0.2"
 //    implementation "io.micronaut.configuration:micronaut-jdbc-hikari"
@@ -94,17 +112,11 @@ dependencies {
 //    runtimeOnly "com.h2database:h2"
 //    runtime("io.micronaut.configuration:micronaut-jdbc-hikari")
 //    runtimeOnly "io.micronaut.configuration:micronaut-jdbc-tomcat"
-    compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
-    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
-    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
-    runtime "mysql:mysql-connector-java:${mysqlVersion}"
-
-//    implementation "io.micronaut.configuration:micronaut-jooq"
 }
 
 test.classpath += configurations.developmentOnly
 
-mainClassName = "com.observertc.gatekeeper.Application"
+mainClassName = "com.observertc.gatekeeper.webrtcstat.Application"
 // use JUnit 5 platform
 test {
     useJUnitPlatform()
@@ -126,42 +138,6 @@ sourceSets {
     main {
         java {
             srcDirs += [generatedDir]
-        }
-    }
-}
-
-
-// Database setup
-//project.ext {
-//    name = "wobserver"
-//    ciCommitSha = ""
-//    dbUrl = "jdbc:mysql://mysqldb:3039/wobserver"
-//    username = "user"
-//    password = "password"
-//}
-
-jooq {
-    MySql(sourceSets.main) {
-        jdbc {
-            url = 'jdbc:mysql://localhost:3306/ObserveRTC'
-            driver = 'com.mysql.cj.jdbc.Driver'
-            user = 'root'
-            password = 'password'
-        }
-        generator {
-            name = 'org.jooq.codegen.DefaultGenerator'
-            strategy {
-                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
-            }
-            database {
-                name = 'org.jooq.meta.mysql.MySQLDatabase'
-                inputSchema = 'ObserveRTC'
-                includes = '.*'
-            }
-            target {
-                packageName = 'com.observertc.gatekeeper.jooq'
-                directory = generatedDir
-            }
         }
     }
 }

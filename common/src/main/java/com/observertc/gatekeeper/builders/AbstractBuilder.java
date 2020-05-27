@@ -18,7 +18,6 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import org.apache.kafka.common.errors.InvalidConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -253,7 +252,7 @@ public abstract class AbstractBuilder {
 	 * @param className the name of the class
 	 * @param <T>       the type of the class
 	 * @return the class type
-	 * @throws InvalidConfigurationException if the type of the klass does not exists
+	 * @throws RuntimeException if the type of the klass does not exists
 	 */
 	protected <T> Class<T> getClassFor(String className) {
 		Class<T> result = null;

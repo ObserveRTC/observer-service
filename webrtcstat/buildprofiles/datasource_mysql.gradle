@@ -1,0 +1,35 @@
+dependencies {
+    // #########################################
+    // ---- Datasource-MySQL Integration
+    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
+    runtime "mysql:mysql-connector-java:${mysqlVersion}"
+    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+}
+def generatedDir = 'src/main/java/'
+
+jooq {
+    MySql(sourceSets.main) {
+        jdbc {
+            url = 'jdbc:mysql://localhost:3306/ObserveRTC'
+            driver = 'com.mysql.cj.jdbc.Driver'
+            user = 'root'
+            password = 'password'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = 'ObserveRTC'
+                includes = '.*'
+            }
+            target {
+                packageName = 'com.observertc.gatekeeper.webrtcstat.jooq'
+                directory = generatedDir
+            }
+        }
+    }
+}

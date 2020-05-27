@@ -4,7 +4,7 @@ var hash = document.location.hash.split("/");
 // if (hash.length !== 3) {
 //     alert("Specify URI with a topic and username. Example http://localhost:8080#/stuff/bob")
 // }
-var webSocket = new WebSocket("ws://localhost:8080/ws/demo/86ed98c6-b001-48bb-b31e-da638b979c72")
+var webSocket = new WebSocket("ws://localhost:8088/ws/86ed98c6-b001-48bb-b31e-da638b979c72")
 // var webSocket = new WebSocket("ws://localhost:8080/ws/chat/mTopic/myName");
 webSocket.onmessage = function (msg) {
     updateChat(msg);
