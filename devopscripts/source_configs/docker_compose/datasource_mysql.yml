@@ -1,0 +1,19 @@
+services:
+  mysql:
+    container_name: mysqldb
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_DATABASE: ObserveRTC
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306
+    expose:
+      - '3306'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  my-db:
+    driver: local

@@ -1,5 +1,0 @@
-dependencies {
-    // #########################################
-    // ---- Datasource-H2 Integration
-    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
-}

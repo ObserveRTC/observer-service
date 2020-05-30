@@ -11,4 +11,4 @@ out/
 .project
 .settings
 .classpath
-src/main/resources/applicatino.yaml
+src/main/resources/application.yaml
