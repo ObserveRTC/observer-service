@@ -1,0 +1,10 @@
+{
+  "name": "wobserver-test",
+  "version": "0.0.2",
+  "dependencies": {
+    "@observertc/webextrapp-lib": "0.0.5"
+  },
+  "scripts": {
+    "run-demo": "pushd __test__/pc1 &&  python2 -m SimpleHTTPServer 9090 && popd"
+  }
+}
