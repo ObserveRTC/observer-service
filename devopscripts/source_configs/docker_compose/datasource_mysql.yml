@@ -1,4 +1,12 @@
 services:
+  webrtcstat_gatekeeper:
+    links:
+      - mysql
+    environment:
+      - HIKARI_USERNAME=root
+      - HIKARI_PASSWORD=password
+      - HIKARI_JDBC=jdbc:mysql://mysqldb:3306/ObserveRTC
+      - JOOQ_DIALECT=MySQL
   mysql:
     container_name: mysqldb
     image: mysql:8.0.19
