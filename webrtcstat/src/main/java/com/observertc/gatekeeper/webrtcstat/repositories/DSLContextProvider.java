@@ -26,10 +26,6 @@ public class DSLContextProvider implements IDSLContextProvider {
 		jdbcConfig.setUsername(hikariConfiguration.username);
 		jdbcConfig.setPassword(hikariConfiguration.password);
 		jdbcConfig.setDriverClassName(hikariConfiguration.jdbcDriver);
-//		jdbcConfig.addDataSourceProperty("cachePrepStmts", false);
-//		jdbcConfig.addDataSourceProperty("prepStmtCacheSize", conf.getInt("prepStmtCacheSize"));
-//		jdbcConfig.addDataSourceProperty("prepStmtCacheSqlLimit", conf.getInt("prepStmtCacheSqlLimit"));
-//		jdbcConfig.addDataSourceProperty("useServerPrepStmts", conf.getBoolean("useServerPrepStmts"));
 		// Add HealthCheck
 //		jdbcConfig.setHealthCheckRegistry(healthCheckRegistry);
 		// Add Metrics

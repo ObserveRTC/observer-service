@@ -40,8 +40,8 @@ switch (datasourceProfile.toLowerCase()) {
         break
 }
 
-String subscriberProfile = usedProfiles.subscriberProfile
-
+String subscriberProfile = usedProfiles.subscriber
+println "subscriberProfile: " + subscriberProfile
 
 //repositories {
 //    mavenCentral()
@@ -58,8 +58,9 @@ task makePretty(type: Delete) {
 }
 
 task buildDockerImage(type: Exec) {
-    workingDir "$buildDir"
-    commandLine "docker build -t ${project.name}:latest"
+//    workingDir "$buildDir"
+    workingDir "$projectDir"
+    commandLine "docker build . -t ${project.name}:latest"
 
 
 }
@@ -100,18 +101,7 @@ dependencies {
     // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"
     compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
-    
-//    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
-//    runtime "mysql:mysql-connector-java:${mysqlVersion}"
 
-
-//    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
-//    implementation "io.micronaut.data:micronaut-data-jdbc:1.0.2"
-//    implementation "io.micronaut.configuration:micronaut-jdbc-hikari"
-//    testRuntimeOnly 'com.h2database:h2'
-//    runtimeOnly "com.h2database:h2"
-//    runtime("io.micronaut.configuration:micronaut-jdbc-hikari")
-//    runtimeOnly "io.micronaut.configuration:micronaut-jdbc-tomcat"
 }
 
 test.classpath += configurations.developmentOnly

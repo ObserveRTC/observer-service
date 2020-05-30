@@ -1,50 +1,74 @@
 #!/bin/bash
-if hash python3 2>/dev/null; then
-  echo "Python3 has been found"
+
+#! /bin/sh -
+set -x
+# default value for service
+SERVICE="webrtcstat"
+DATASOURCE="mysql"
+SUBSCRIBER=""
+while test $# -gt 0; do
+  case "$1" in
+  --service)
+    SERVICE="$2"
+    SERVICE=$(echo "$SERVICE" | awk '{print tolower($0)}')
+    if [[ "$SERVICE" =~ ^(webrtcstat)$ ]]; then
+      echo "selected service is $SERVICE"
+    else
+      echo "unrecognized service $SERVICE"
+      exit
+    fi
+    shift
+    ;;
+  --datasource)
+    DATASOURCE="$2"
+    DATASOURCE=$(echo "$DATASOURCE" | awk '{print tolower($0)}')
+    if [[ "$DATASOURCE" =~ ^(mysql)$ ]]; then
+      echo "selected datasource is $DATASOURCE"
+    else
+      echo "unrecognized datasource $DATASOURCE"
+      exit
+    fi
+    shift
+    ;;
+  --subscriber)
+    SUBSCRIBER="$2"
+    SUBSCRIBER=$(echo "$SUBSCRIBER" | awk '{print tolower($0)}')
+    if [[ "$SUBSCRIBER" =~ ^(elasticsearch)$ ]]; then
+      echo "selected subscriber is $SUBSCRIBER"
+    else
+      echo "unrecognized subscriber $SUBSCRIBER"
+      exit
+    fi
+    shift
+    ;;
+  *)
+    echo "argument $1"
+    ;;
+  esac
+  shift
+done
+
+CONFIGURATION_KEY=""
+if [[ "$SERVICE" != "" && "$DATASOURCE" != "" && "$SUBSCRIBER" != "" ]]; then
+  CONFIGURATION_KEY="${SERVICE}_${DATASOURCE}_${SUBSCRIBER}"
+elif [[ "$SERVICE" != "" && "$DATASOURCE" != "" ]]; then
+  CONFIGURATION_KEY="${SERVICE}_${DATASOURCE}"
 else
-  echo "Python3 package does not exist"
-  exit
+  echo "mandatory keys: --datasource and --service"
 fi
 
-if hash pip3 2>/dev/null; then
-  echo "pip3 has been found"
-else
-  echo "pip3 package does not exist"
-  exit
-fi
+# now copy!
+DEVOPS_BUILD="devopscripts/build"
+cp $DEVOPS_BUILD/docker_compose/${CONFIGURATION_KEY}.yml docker-compose.yml
+cp $DEVOPS_BUILD/used_profiles/${CONFIGURATION_KEY}.properties used-profiles.properties
+cp $DEVOPS_BUILD/micronaut_application_yaml/${CONFIGURATION_KEY}.yaml $SERVICE/src/main/resources/application.yaml
+cp $DEVOPS_BUILD/db_scripts/${SERVICE}/${DATASOURCE}.sql init.sql
 
-# If someone wants to install only in locally, then virtualenv should be used.
-# pip3 install -r devopscripts/python_requirements/requirements.txt -t devopscripts/libs
-pip3 install -r devopscripts/requirements.txt
-
-cd devopscripts
-python3 install.py $@
-
-cp build/application.yaml ../webrtcstat/src/main/resources/application.yaml
-cp build/docker-compose.yaml ../docker-compose.yaml
-cp build/used-profiles.properties ../used-profiles.properties
-source build/postscript.sh
+./gradlew clean
+./gradlew build
+cd $SERVICE
+docker build . -t ${SERVICE}:latest
+#./gradlew buildDockerImage
 cd ..
 
-#
-#docker-compose up -d mysql
-#if [[ "$1" != "--skipsql" ]]; then
-#  sleep 30
-#  cd app
-#  cd src/sql
-#  python3 run.py 1.0.0
-#  cd ../../..
-#else
-#  sleep 10
-#fi
-#
-#if [[ "$1" != "--skipgradle" ]]; then
-#  ./gradlew clean
-#  ./gradlew build
-#fi
-#
-#cd app
-#docker build . --no-cache -t gatekeeper:latest
-#cd ..
-#
-#docker-compose stop mysql
+exit 0

@@ -8,3 +8,6 @@ Thumbs.db
 .project
 .settings
 .classpath
+docker-compose.yml
+used-profiles.properties
+init.sql

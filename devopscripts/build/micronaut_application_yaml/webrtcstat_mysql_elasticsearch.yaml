@@ -1,0 +1,33 @@
+micronaut:
+  server:
+    port: ${APPLICATION_SERVER_PORT:8088}
+  application:
+    name: webrtcstats_gatekeeper
+    authentication:
+      hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
+      stretching: ${AUTHENTICATION_STRETCHING:2}
+      saltSize: ${AUTHENTICATION_SALT_SIZE:32}
+  metrics:
+    enabled: true
+    export:
+      elastic:
+        enabled: true
+        step: PT1M
+        host: http://localhost:9200
+kafka:
+  bootstrap:
+    servers: ${KAFKA_HOSTS:`localhost:9092`}
+isc:
+  streams:
+    demo:
+      samples: ${ISC_STREAMS_DEMO_SAMPLES_TOPIC:demoSamples}
+hikari:
+  username: ${HIKARI_USERNAME:root}
+  password: ${HIKARI_PASSWORD:password}
+  minIdleInMs: ${HIKARI_MIN_IDLE_IN_MS:100}
+  timeout: ${HIKARI_TIMEOUT_IN_MS:1000}
+  jdbcURL: ${HIKARI_JDBC:`jdbc:mysql://localhost:3306/ObserveRTC`}
+  jdbcDriver: ${JDBC_DRIVER:`com.mysql.cj.jdbc.Driver`}
+  maxPoolSize: ${HIKARI_MAX_POOL_SIZE:100}
+  dialect: ${JOOQ_DIALECT:MySQL}
+  poolname: ${HIKARI_POOL_NAME:gatekeeper}

@@ -1,4 +1,7 @@
-INSERT INTO `ObserveRTC`.`Users`
+
+USE `ObserveRTC`;
+ 
+INSERT INTO `Users`
 (`id`,
  `uuid`,
  `username`,
@@ -12,7 +15,7 @@ VALUES (1,
         UNHEX('e12'),
         'administrator');
 
-INSERT INTO `ObserveRTC`.`Observers`
+INSERT INTO `Observers`
 (`id`,
  `uuid`,
  `name`,
@@ -23,7 +26,7 @@ VALUES (1,
         'demo description');
 
 
-INSERT INTO `ObserveRTC`.`Organisations`
+INSERT INTO `Organisations`
 (`id`,
  `uuid`,
  `name`,
@@ -33,7 +36,7 @@ VALUES (1,
         'MyOrganisation',
         'Calculates the median for the DemoSamples');
 
-INSERT INTO `ObserveRTC`.`ObserverOrganisations`
+INSERT INTO `ObserverOrganisations`
 (`observer_id`,
  `organisation_id`)
 VALUES (1,
