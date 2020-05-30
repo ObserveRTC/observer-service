@@ -64,7 +64,7 @@ cp $DEVOPS_BUILD/used_profiles/${CONFIGURATION_KEY}.properties used-profiles.pro
 cp $DEVOPS_BUILD/micronaut_application_yaml/${CONFIGURATION_KEY}.yaml $SERVICE/src/main/resources/application.yaml
 cp $DEVOPS_BUILD/db_scripts/${SERVICE}/${DATASOURCE}.sql init.sql
 
-docker-compose up mysql -d
+docker-compose up $DATASOURCE -d
 sleep 10
 
 ./gradlew clean
@@ -74,6 +74,6 @@ docker build . -t ${SERVICE}:latest
 #./gradlew buildDockerImage
 cd ..
 
-docker-compose stop mysql
+docker-compose stop $DATASOURCE
 
 exit 0
