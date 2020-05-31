@@ -5,6 +5,6 @@
     "@observertc/webextrapp-lib": "0.0.5"
   },
   "scripts": {
-    "run-demo": "python2 -m SimpleHTTPServer 9090"
+    "run-demo": "python3 -m http.server 9090"
   }
 }
