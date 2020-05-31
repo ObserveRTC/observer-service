@@ -1,6 +1,6 @@
 package com.observertc.gatekeeper.webrtcstat;
 
-import com.observertc.gatekeeper.dto.WebRTCStatDTO;
+import com.observertc.gatekeeper.webrtc.models.StatsPayload;
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
 import io.micronaut.configuration.kafka.annotation.Topic;
 
@@ -8,6 +8,6 @@ import io.micronaut.configuration.kafka.annotation.Topic;
 public interface DemoSampleSink {
 
 	@Topic("${isc.streams.demo.samples}")
-	void send(WebRTCStatDTO sample);
+	void send(StatsPayload sample);
 }
 

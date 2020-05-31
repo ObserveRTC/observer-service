@@ -1,7 +1,7 @@
 package com.observertc.gatekeeper.webrtcstat;
 
 import com.observertc.gatekeeper.dto.ObserverDTO;
-import com.observertc.gatekeeper.dto.WebRTCStatDTO;
+import com.observertc.gatekeeper.webrtc.models.StatsPayload;
 import com.observertc.gatekeeper.webrtcstat.micrometer.WebRTCStatsEvaluators;
 import com.observertc.gatekeeper.webrtcstat.repositories.ObserverRepository;
 import io.micronaut.websocket.WebSocketSession;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public class WebRTCStatsWebsocketServer {
 
 	private final ObserverRepository observerRepository;
-	private final Consumer<WebRTCStatDTO> webRTCStatDTOSink;
+	private final Consumer<StatsPayload> webRTCStatDTOSink;
 	private final WebRTCStatsEvaluators evaluators;
 //	private final IDSLContextProvider contextProvider;
 
@@ -50,7 +50,7 @@ public class WebRTCStatsWebsocketServer {
 	@OnMessage
 	public void onMessage(
 			UUID observerUUID,
-			WebRTCStatDTO measurement,
+			StatsPayload measurement,
 			WebSocketSession session) {
 
 //		DemoWebRTCStat stat = new DemoWebRTCStat();
@@ -58,7 +58,7 @@ public class WebRTCStatsWebsocketServer {
 //		stat.setBaz(stat.getBar() % 2 == 0);
 //		stat.setFoo(strings[this.random.nextInt(strings.length)]);
 		this.webRTCStatDTOSink.accept(measurement);
-		this.evaluators.accept(measurement);
+//		this.evaluators.accept(measurement);
 	}
 
 	@OnClose
@@ -68,15 +68,15 @@ public class WebRTCStatsWebsocketServer {
 	}
 
 
-	private Consumer<WebRTCStatDTO> makeSink(DemoSampleSink kafkaSink) {
+	private Consumer<StatsPayload> makeSink(DemoSampleSink kafkaSink) {
 		boolean enabled = true;
-		Consumer<WebRTCStatDTO> result;
+		Consumer<StatsPayload> result;
 		if (enabled) {
-			result = new Consumer<WebRTCStatDTO>() {
+			result = new Consumer<StatsPayload>() {
 				private DemoSampleSink sink = kafkaSink;
 
 				@Override
-				public void accept(WebRTCStatDTO webRTCStatDTO) {
+				public void accept(StatsPayload webRTCStatDTO) {
 					this.sink.send(webRTCStatDTO);
 				}
 			};
