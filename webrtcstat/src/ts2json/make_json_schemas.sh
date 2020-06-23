@@ -16,13 +16,16 @@ for type in MediaSource \
   CandidatePair \
   RemoteCandidate \
   LocalCandidate \
+  ICECandidate \
   Track \
   OutboundRTP \
   InboundRTP \
   RemoteInboundRTP \
-  StatsPayload; do
+  ObserveRTCCIceStats \
+  ObserveRTCStats \
+  PeerConnectionSample; do
   # source /node_modules/.bin/typescript-to-json-schema \
-
+  echo $type
   ./node_modules/.bin/ts-json-schema-generator \
     --path "$temp_directory/sender_payloads.ts" \
     --type="$type" \

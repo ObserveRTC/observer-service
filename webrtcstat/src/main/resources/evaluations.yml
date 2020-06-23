@@ -1,0 +1,17 @@
+evaluators:
+  default:
+    forParticipants: profileName
+    forConnections: profileName
+    forCalls: profileName
+
+participants:
+  profileName:
+    enabled: true
+    sinkRawStatsTo: topicName
+    sinkMetricsTo: topicName
+    metrics:
+      - builder: myBuilder
+      - builder: myBuilder2
+
+#connections:
+#calls:

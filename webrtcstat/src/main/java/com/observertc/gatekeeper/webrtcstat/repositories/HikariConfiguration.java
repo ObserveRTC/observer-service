@@ -5,19 +5,18 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 @ConfigurationProperties("hikari")
 public class HikariConfiguration {
 
-	String poolName;
+	public String poolName;
 
-	int maxPoolSize;
+	public int maxPoolSize;
 
-	int minIdle;
+	public int minIdle;
 
-	String username;
+	public String username;
 
-	String password;
+	public String password;
 
-	String jdbcURL;
+	public String jdbcURL;
 
-	String jdbcDriver;
+	public String jdbcDriver;
 
-	String dialect;
 }

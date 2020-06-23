@@ -5,10 +5,12 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
     runtime "mysql:mysql-connector-java:${mysqlVersion}"
     jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+    implementation 'org.jooq:jooq'
 }
 def generatedDir = 'src/main/java/'
 
 jooq {
+    generateSchemaSourceOnCompilation = true
     MySql(sourceSets.main) {
         jdbc {
             url = 'jdbc:mysql://localhost:3306/ObserveRTC'

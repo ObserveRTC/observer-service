@@ -1,7 +1,8 @@
 package com.observertc.gatekeeper.webrtcstat.repositories;
 
-import com.observertc.gatekeeper.dto.EvaluatorDTO;
-import com.observertc.gatekeeper.dto.ObserverDTO;
+import com.observertc.gatekeeper.webrtcstat.UUIDAdapter;
+import com.observertc.gatekeeper.webrtcstat.dto.EvaluatorDTO;
+import com.observertc.gatekeeper.webrtcstat.dto.ObserverDTO;
 import com.observertc.gatekeeper.webrtcstat.jooq.Tables;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.repository.CrudRepository;
@@ -18,17 +19,17 @@ import javax.validation.constraints.NotNull;
 @Singleton
 public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	/**
-	 * Due to the fact that batch operations increase the size of the query,
+	 * Due to the fact that bulk operations increase the size of the query,
 	 * this limit enforces to send the query when it reaches a certain
 	 * number of entry.
 	 */
-	private static int DEFAULT_BACH_SIZE = 5000;
+	private static int DEFAULT_BULK_SIZE = 5000;
 	private final JooqBulkWrapper jooqExecuteWrapper;
 	private final IDSLContextProvider contextProvider;
 
 	public ObserverRepository(IDSLContextProvider contextProvider) {
 		this.contextProvider = contextProvider;
-		this.jooqExecuteWrapper = new JooqBulkWrapper(contextProvider, DEFAULT_BACH_SIZE);
+		this.jooqExecuteWrapper = new JooqBulkWrapper(contextProvider, DEFAULT_BULK_SIZE);
 	}
 
 	@NonNull
@@ -111,7 +112,7 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	@Override
 	public Iterable<ObserverDTO> findAll() {
 		Long tableSize = this.count();
-		int bulkSize = DEFAULT_BACH_SIZE;
+		int bulkSize = DEFAULT_BULK_SIZE;
 		return () -> this.jooqExecuteWrapper.retrieve((context, offset) -> {
 			var result = context
 					.select(Tables.OBSERVERS.UUID, Tables.OBSERVERS.NAME, Tables.OBSERVERS.DESCRIPTION)
