@@ -3,14 +3,11 @@ micrometerEvaluators:
     builder: MetricName
     configuration:
 
----
 sinks:
   myKafkaSinkProfile:
-    filter: # default None
     builder: KafkaSinkBuilder
     configuration:
   myMicrometerSinkProfile:
-    filter: *
     builder: MicrometerSinkBuilder
     configuration:
       evaluators:

@@ -17,7 +17,7 @@ import org.jooq.impl.DefaultConfiguration;
 @Singleton
 public class DSLContextProvider implements IDSLContextProvider {
 
-	public static HikariDataSource makeDataSource(HikariConfiguration hikariConfiguration) {
+	private static HikariDataSource makeDataSource(HikariConfiguration hikariConfiguration) {
 		HikariConfig jdbcConfig = new HikariConfig();
 		jdbcConfig.setPoolName(hikariConfiguration.poolName);
 		jdbcConfig.setMaximumPoolSize(hikariConfiguration.maxPoolSize);
@@ -33,19 +33,32 @@ public class DSLContextProvider implements IDSLContextProvider {
 		return new HikariDataSource(jdbcConfig);
 	}
 
+	private static Configuration getJooqConfiguration(DataSource dataSource, JooqConfiguration jooqConfiguration,
+													  RecordMapperProvider recordMapperProvider) {
+		DefaultConfiguration result = new DefaultConfiguration();
+		switch (jooqConfiguration.dialect.toLowerCase()) {
+			case "mysql":
+				result.setSQLDialect(SQLDialect.MYSQL);
+			default:
+				new RuntimeException("Unsupported dialect: " + jooqConfiguration.dialect);
+		}
+
+		result.setDataSource(dataSource);
+		result.set(recordMapperProvider);
+		return result;
+	}
+
 	private final Configuration configuration;
 
-	public DSLContextProvider(HikariConfiguration hikariConfiguration, RecordMapperProvider recordMapperProvider) {
+	public DSLContextProvider(HikariConfiguration hikariConfiguration, JooqConfiguration jooqConfiguration,
+							  RecordMapperProvider recordMapperProvider) {
 		DataSource dataSource = makeDataSource(hikariConfiguration);
-		DefaultConfiguration configuration = new DefaultConfiguration();
-		configuration.setSQLDialect(SQLDialect.MYSQL);
-		configuration.setDataSource(dataSource);
-		configuration.set(recordMapperProvider);
-		this.configuration = configuration;
+		this.configuration = getJooqConfiguration(dataSource, jooqConfiguration, recordMapperProvider);
 	}
 
 	@Override
 	public DSLContext get() {
 		return DSL.using(this.configuration);
 	}
+
 }

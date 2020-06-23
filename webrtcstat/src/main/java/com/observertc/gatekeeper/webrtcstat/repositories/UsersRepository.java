@@ -1,6 +1,6 @@
 //package com.observertc.gatekeeper.repositories;
 //
-//import com.observertc.gatekeeper.dto.UserDTO;
+//import com.observertc.gatekeeper.webrtcstat.dto.UserDTO;
 //import edu.umd.cs.findbugs.annotations.NonNull;
 //import io.micronaut.data.repository.CrudRepository;
 //import java.util.Optional;

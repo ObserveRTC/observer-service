@@ -1,7 +1,7 @@
 package com.observertc.gatekeeper.webrtcstat.repositories.mappers;
 
-import com.observertc.gatekeeper.dto.ObserverDTO;
-import com.observertc.gatekeeper.webrtcstat.repositories.UUIDAdapter;
+import com.observertc.gatekeeper.webrtcstat.dto.ObserverDTO;
+import com.observertc.gatekeeper.webrtcstat.UUIDAdapter;
 import com.observertc.gatekeeper.webrtcstat.jooq.Tables;
 import org.jooq.Record;
 import org.jooq.RecordMapper;

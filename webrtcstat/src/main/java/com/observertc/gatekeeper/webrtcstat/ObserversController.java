@@ -1,7 +1,7 @@
 package com.observertc.gatekeeper.webrtcstat;
 
-import com.observertc.gatekeeper.dto.EvaluatorDTO;
-import com.observertc.gatekeeper.dto.ObserverDTO;
+import com.observertc.gatekeeper.webrtcstat.dto.EvaluatorDTO;
+import com.observertc.gatekeeper.webrtcstat.dto.ObserverDTO;
 import com.observertc.gatekeeper.webrtcstat.repositories.ObserverRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;

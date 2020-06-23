@@ -76,4 +76,9 @@ cd ..
 
 docker-compose stop mysql
 
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ObserveRTCCIceStatsSample
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ObserveRTCMediaStreamStatsSamples
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic SSRCEntrySamples
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic SSRCMapEntries
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic callsUUIDs
 exit 0

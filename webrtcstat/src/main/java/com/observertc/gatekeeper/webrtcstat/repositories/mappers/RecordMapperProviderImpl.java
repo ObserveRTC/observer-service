@@ -1,6 +1,8 @@
 package com.observertc.gatekeeper.webrtcstat.repositories.mappers;
 
-import com.observertc.gatekeeper.dto.ObserverDTO;
+import com.observertc.gatekeeper.webrtcstat.dto.ObserverDTO;
+import com.observertc.gatekeeper.webrtcstat.model.CallMapEntry;
+import com.observertc.gatekeeper.webrtcstat.model.SSRCMapEntry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -18,6 +20,8 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
 
 	public RecordMapperProviderImpl() {
 		this.mappers.put(ObserverDTO.class, new ObserversRecordMapper());
+		this.mappers.put(SSRCMapEntry.class, new SSRCMapEntryRecordMapper());
+		this.mappers.put(CallMapEntry.class, new CallMapEntryRecordMapper());
 	}
 
 	@Override

@@ -10,7 +10,7 @@ class JsonSchemaBuilder:
     def __init__(self):
         self._datasource = None
         self._target_build_dir = "build/java_pojos"
-        self._source_ts_dir = "source_ts"
+        self._source_ts_dir = "source_dtos"
         pass
 
     def getSourceTsDir(self):
