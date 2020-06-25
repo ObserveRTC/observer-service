@@ -104,6 +104,6 @@ public class JooqBulkWrapper {
 		}
 		return false;
 	}
-	
-	
+
+
 }

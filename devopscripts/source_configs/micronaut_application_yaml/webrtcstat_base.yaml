@@ -3,7 +3,7 @@ micronaut:
     port: ${APPLICATION_SERVER_PORT:8088}
   application:
     name: webrtcstats_gatekeeper
-    kafkaSinkTopic: myKafkaTopic
+    metricsConfiguration: "evaluations.yml"
     authentication:
       hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
       stretching: ${AUTHENTICATION_STRETCHING:2}
@@ -13,12 +13,8 @@ kafka:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 
 kafkaTopics:
-  ObserveRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:ObserveRTCCIceStatsSample}
-  ObserveRTCMediaStreamStatsSample: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS:ObserveRTCMediaStreamStatsSample}
-  OutboundRTPSample: ${KAFKA_TOPICS_OUTBOUND_RTP_SAMPLES:OutboundRTPSample}
+  observeRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:observeRTCCIceStatsSample}
+  observeRTCMediaStreamStatsSamples: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS_SAMPLES:observeRTCMediaStreamStatsSamples}
+  observerSSRCPeerConnectionSamples: ${KAFKA_TOPICS_OBSERVER_SSRC_PEER_CONNECTION_SAMPLES:observerSSRCPeerConnectionSamples}
 
-metrics:
-  profileName:
-    builder:
-    configuration:
   

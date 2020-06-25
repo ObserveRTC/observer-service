@@ -2,8 +2,8 @@ package com.observertc.gatekeeper.webrtcstat.processors;
 
 import com.observertc.gatekeeper.webrtcstat.KafkaTopicsConfiguration;
 import com.observertc.gatekeeper.webrtcstat.micrometer.WebRTCStatsReporter;
-import com.observertc.gatekeeper.webrtcstat.model.SSRCMapEntry;
-import com.observertc.gatekeeper.webrtcstat.processors.mappers.SSRCMapEntryMapper;
+import com.observertc.gatekeeper.webrtcstat.processors.mappers.JsonToPOJOMapper;
+import com.observertc.gatekeeper.webrtcstat.samples.ObserverSSRCPeerConnectionSample;
 import io.micronaut.configuration.kafka.streams.ConfiguredStreamBuilder;
 import io.micronaut.configuration.kafka.streams.InteractiveQueryService;
 import io.micronaut.context.annotation.Factory;
@@ -25,21 +25,21 @@ public class PeerConnectionSamplesProcessorFactory {
 	private final KafkaTopicsConfiguration topics;
 	private final WebRTCStatsReporter webRTCStatsReporter;
 	private final InteractiveQueryService interactiveQueryService;
-	private final SSRCMapEntriesProcessor ssrcMapSampleProcessor;
+	private final ObserverSSRCPeerConnectionSampleProcessor observerSSRCPeerConnectionSampleProcessor;
 
 	public PeerConnectionSamplesProcessorFactory(InteractiveQueryService interactiveQueryService,
 												 KafkaTopicsConfiguration sinksConfiguration,
 												 WebRTCStatsReporter webRTCStatsReporter,
-												 SSRCMapEntriesProcessor ssrcMapSampleProcessor) {
+												 ObserverSSRCPeerConnectionSampleProcessor observerSSRCPeerConnectionSampleProcessor) {
 		this.interactiveQueryService = interactiveQueryService;
 		this.topics = sinksConfiguration;
 		this.webRTCStatsReporter = webRTCStatsReporter;
-		this.ssrcMapSampleProcessor = ssrcMapSampleProcessor;
+		this.observerSSRCPeerConnectionSampleProcessor = observerSSRCPeerConnectionSampleProcessor;
 	}
 
 	@Singleton
 	@Named(NAME_IT_1_SAMPLES_AGGREGATOR)
-	public KStream<UUID, SSRCMapEntry> makeSSRCMapEntries(ConfiguredStreamBuilder builder) {
+	public KStream<UUID, ObserverSSRCPeerConnectionSample> makeObserverSSRCPeerConnectionSampleProcessor(ConfiguredStreamBuilder builder) {
 		// TODO: make the entire feature enabling configurable
 		boolean enabled = true;
 		if (!enabled) {
@@ -50,10 +50,11 @@ public class PeerConnectionSamplesProcessorFactory {
 		props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);
 		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
 
-		KStream<UUID, SSRCMapEntry> source = builder
-				.stream(topics.SSRCMapEntries, Consumed.with(Serdes.UUID(), new SSRCMapEntryMapper()));
+		KStream<UUID, ObserverSSRCPeerConnectionSample> source = builder
+				.stream(topics.observerSSRCPeerConnectionSamples, Consumed.with(Serdes.UUID(),
+						new JsonToPOJOMapper<ObserverSSRCPeerConnectionSample>(ObserverSSRCPeerConnectionSample.class)));
 
-		source.process(() -> this.ssrcMapSampleProcessor);
+		source.process(() -> this.observerSSRCPeerConnectionSampleProcessor);
 
 		return source;
 	}

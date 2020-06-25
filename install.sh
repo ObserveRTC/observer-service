@@ -64,7 +64,7 @@ cp $DEVOPS_BUILD/used_profiles/${CONFIGURATION_KEY}.properties used-profiles.pro
 cp $DEVOPS_BUILD/micronaut_application_yaml/${CONFIGURATION_KEY}.yaml $SERVICE/src/main/resources/application.yaml
 cp $DEVOPS_BUILD/db_scripts/${SERVICE}/${DATASOURCE}.sql init.sql
 
-docker-compose up -d $DATASOURCE 
+docker-compose up -d $DATASOURCE
 sleep 10
 
 ./gradlew clean
@@ -75,10 +75,12 @@ docker build . -t ${SERVICE}:latest
 cd ..
 
 docker-compose stop $DATASOURCE
+docker-compose up -d kafka
+sleep 10
 
 docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ObserveRTCCIceStatsSample
 docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ObserveRTCMediaStreamStatsSamples
-docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic SSRCEntrySamples
-docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic SSRCMapEntries
-docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic callsUUIDs
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic observerSSRCPeerConnectionSamples
+
+docker-compose stop kafka
 exit 0

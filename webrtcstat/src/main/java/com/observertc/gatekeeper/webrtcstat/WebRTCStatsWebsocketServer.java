@@ -6,7 +6,7 @@ import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.ObserveRTCCIceStats;
 import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.PeerConnectionSample;
 import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.RTCStats;
 import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.RTCStatsType;
-import com.observertc.gatekeeper.webrtcstat.model.SSRCMapEntry;
+import com.observertc.gatekeeper.webrtcstat.samples.ObserverSSRCPeerConnectionSample;
 import com.observertc.gatekeeper.webrtcstat.repositories.ObserverRepository;
 import com.observertc.gatekeeper.webrtcstat.samples.ObserveRTCCIceStatsSample;
 import com.observertc.gatekeeper.webrtcstat.samples.ObserveRTCMediaStreamStatsSample;
@@ -16,6 +16,7 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -104,12 +105,13 @@ public class WebRTCStatsWebsocketServer {
 			switch (type) {
 				case INBOUND_RTP:
 				case OUTBOUND_RTP:
-					SSRCMapEntry ssrcMapEntry = new SSRCMapEntry();
+					var observerSSRCPeerConnectionSample = new ObserverSSRCPeerConnectionSample();
 					Long SSRC = rtcStats.getSsrc().longValue();
-					ssrcMapEntry.SSRC = SSRC;
-					ssrcMapEntry.observerUUID = observerUUID;
-					ssrcMapEntry.peerConnectionUUID = peerConnectionUUID;
-					kafkaSinks.sendSSRCMapEntries(peerConnectionUUID, ssrcMapEntry);
+					observerSSRCPeerConnectionSample.SSRC = SSRC;
+					observerSSRCPeerConnectionSample.observerUUID = observerUUID;
+					observerSSRCPeerConnectionSample.peerConnectionUUID = peerConnectionUUID;
+					observerSSRCPeerConnectionSample.timestamp = LocalDateTime.now();
+					kafkaSinks.sendObserverSSRCPeerConnectionSamples(peerConnectionUUID, observerSSRCPeerConnectionSample);
 					break;
 			}
 			this.kafkaSinks.sendObserveRTCMediaStreamStatsSamples(peerConnectionUUID, sample);

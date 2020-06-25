@@ -42,7 +42,15 @@ switch (datasourceProfile.toLowerCase()) {
 
 String subscriberProfile = usedProfiles.subscriber
 println "subscriberProfile: " + subscriberProfile
-
+switch (subscriberProfile.toLowerCase()) {
+    case "elasticsearch":
+        apply from: rootProject.file('webrtcstat/buildprofiles/subscriber_elasticsearch.gradle');
+        break
+    default:
+        println "Subscriber profile is not recognized, so the default will be used"
+        apply from: rootProject.file('webrtcstat/buildprofiles/subscriber_elasticsearch.gradle');
+        break
+}
 //repositories {
 //    mavenCentral()
 //    maven { url "https://jcenter.bintray.com" }
@@ -92,17 +100,10 @@ dependencies {
     implementation "io.micronaut:micronaut-security-jwt"
     compile "io.micronaut:micronaut-management"
 
-    // ------------ Necessary utilities ------------
-    compile group: 'org.javatuples', name: 'javatuples', version: "${javaTuplesVersion}"
-
     // ------------ Micrometer integration ---------
     compile "io.micronaut.configuration:micronaut-micrometer-core"
-
-    // ------------ Report subscriber integration ---------
     compile "io.micronaut.configuration:micronaut-micrometer-core"
     compile "io.micronaut:micronaut-management"
-    // Here is a subscriber
-    compile group: 'io.micronaut.configuration', name: 'micronaut-micrometer-registry-elastic', version: '1.3.1'
 
     // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"
@@ -113,6 +114,9 @@ dependencies {
     implementation 'io.micronaut.configuration:micronaut-kafka-streams'
     implementation "io.confluent:kafka-avro-serializer:5.4.0"
     implementation "io.confluent:kafka-streams-avro-serde:5.4.0"
+
+    // ------------ Necessary utilities ------------
+    compile group: 'org.javatuples', name: 'javatuples', version: "${javaTuplesVersion}"
 
 }
 

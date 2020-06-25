@@ -14,7 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.inject.Singleton;
 import javax.validation.Valid;
@@ -109,6 +111,62 @@ public class CallMapRepository implements CrudRepository<CallMapEntry, UUID> {
 				.fetchOptionalInto(CallMapEntry.class);
 	}
 
+	public void fetchByIds(@NonNull @NotNull Iterable<UUID> peerConnections, Consumer<CallMapEntry> callMapEntryConsumer) {
+		Stream<byte[]> peerConnectionUUIDs = StreamSupport.stream(peerConnections.spliterator(), false).map(UUIDAdapter::toBytes);
+		this.contextProvider.get()
+				.select(Tables.CALLMAP.PEERCONNECTION, Tables.CALLMAP.CALLID)
+				.from(Tables.CALLMAP)
+				.where(Tables.CALLMAP.PEERCONNECTION.in(peerConnectionUUIDs.collect(Collectors.toList())))
+				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
+					@Override
+					public void next(Record2<byte[], byte[]> record) {
+						CallMapEntry callMapEntry = new CallMapEntry();
+						callMapEntry.peerConnectionUUID = UUIDAdapter.toUUID(record.value1());
+						callMapEntry.callUUID = UUIDAdapter.toUUID(record.value2());
+						callMapEntryConsumer.accept(callMapEntry);
+					}
+				});
+	}
+
+	public void getCallMapsForCallUUIDs(@NonNull @NotNull Iterable<UUID> callUUIDs, Consumer<CallMapEntry> callMapEntryConsumer) {
+		Stream<byte[]> callUUIDsStream = StreamSupport.stream(callUUIDs.spliterator(), false).map(UUIDAdapter::toBytes);
+		var list = callUUIDsStream.collect(Collectors.toList());
+		this.contextProvider.get()
+				.select(Tables.CALLMAP.PEERCONNECTION, Tables.CALLMAP.CALLID)
+				.from(Tables.CALLMAP)
+				.where(Tables.CALLMAP.CALLID.in(list))
+//				.where(Tables.CALLMAP.CALLID.in(callUUIDsStream.collect(Collectors.toList())))
+				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
+					@Override
+					public void next(Record2<byte[], byte[]> record) {
+						CallMapEntry callMapEntry = new CallMapEntry();
+						callMapEntry.peerConnectionUUID = UUIDAdapter.toUUID(record.value1());
+						callMapEntry.callUUID = UUIDAdapter.toUUID(record.value2());
+						callMapEntryConsumer.accept(callMapEntry);
+					}
+				});
+
+	}
+
+	public void getCallMapsForPeerConnectionUUIDs(@NonNull @NotNull Iterable<UUID> peerConnectionUUIDs,
+												  Consumer<CallMapEntry> callMapEntryConsumer) {
+		Stream<byte[]> peerConnectionUUIDsStream = StreamSupport.stream(peerConnectionUUIDs.spliterator(), false).map(UUIDAdapter::toBytes);
+		this.contextProvider.get()
+				.select(Tables.CALLMAP.PEERCONNECTION, Tables.CALLMAP.CALLID)
+				.from(Tables.CALLMAP)
+				.where(Tables.CALLMAP.PEERCONNECTION.in(peerConnectionUUIDsStream.collect(Collectors.toList())))
+				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
+					@Override
+					public void next(Record2<byte[], byte[]> record) {
+						CallMapEntry callMapEntry = new CallMapEntry();
+						callMapEntry.peerConnectionUUID = UUIDAdapter.toUUID(record.value1());
+						callMapEntry.callUUID = UUIDAdapter.toUUID(record.value2());
+						callMapEntryConsumer.accept(callMapEntry);
+					}
+				});
+
+	}
+
 	@Override
 	public boolean existsById(@NonNull @NotNull UUID peerConnection) {
 		return this.contextProvider.get().fetchExists(
@@ -192,7 +250,8 @@ public class CallMapRepository implements CrudRepository<CallMapEntry, UUID> {
 
 		this.contextProvider.get().deleteFrom(Tables.CALLMAP)
 				.where(Tables.CALLMAP.PEERCONNECTION
-						.in(peerConnectionsInBytes));
+						.in(peerConnectionsInBytes))
+				.execute();
 	}
 
 	public Map<UUID, Integer> retrieveParticipantsPerCalls(Set<UUID> peerConnections) {
