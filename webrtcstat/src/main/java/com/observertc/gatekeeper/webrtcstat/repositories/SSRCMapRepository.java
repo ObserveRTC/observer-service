@@ -110,6 +110,51 @@ public class SSRCMapRepository implements CrudRepository<SSRCMapEntry, Triplet<L
 		return result;
 	}
 
+	/**
+	 * Returns with an iterable collection of tuple of SSRC, Observer, PeerConnection, Call
+	 *
+	 * @param ssrcObserverTuples
+	 * @return
+	 */
+	public Iterable<Quartet<Long, UUID, UUID, UUID>> getCallsForSSRCs(
+			@NotNull Iterable<Pair<Long, UUID>> ssrcObserverTuples) {
+
+		var whereConditions = StreamSupport.stream(ssrcObserverTuples.spliterator(), false).map(
+				ssrcObserverTuple -> {
+//					return Pair.with(ssrcObserverTuple.getValue0(), UUIDAdapter.toBytes(ssrcObserverTuple.getValue1()))
+					return row(ssrcObserverTuple.getValue0(), UUIDAdapter.toBytes(ssrcObserverTuple.getValue1()));
+				}).collect(Collectors.toList());
+
+		Iterator<Record4<Long, byte[], byte[], byte[]>> resultIterator = this.contextProvider.get().select(Tables.SSRCMAP.SSRC,
+				Tables.SSRCMAP.OBSERVER,
+				Tables.SSRCMAP.PEERCONNECTION,
+				Tables.CALLMAP.CALLID)
+				.from(Tables.SSRCMAP)
+				.leftJoin(Tables.CALLMAP).on(Tables.SSRCMAP.PEERCONNECTION.eq(Tables.CALLMAP.PEERCONNECTION))
+				.where(row(Tables.SSRCMAP.SSRC, Tables.SSRCMAP.OBSERVER).in(whereConditions))
+				.orderBy(Tables.SSRCMAP.SSRC, Tables.SSRCMAP.OBSERVER, Tables.SSRCMAP.PEERCONNECTION).iterator();
+
+		return () -> new Iterator<Quartet<Long, UUID, UUID, UUID>>() {
+			@Override
+			public boolean hasNext() {
+				return resultIterator.hasNext();
+			}
+
+			@Override
+			public Quartet<Long, UUID, UUID, UUID> next() {
+				Record4<Long, byte[], byte[], byte[]> record = resultIterator.next();
+				Long SSRC = record.value1();
+				UUID observer = UUIDAdapter.toUUID(record.value2());
+				UUID peerConnectionUUID = UUIDAdapter.toUUID(record.value3());
+				UUID callUUID = null;
+				if (record.value4() != null) {
+					callUUID = UUIDAdapter.toUUID(record.value4());
+				}
+				return Quartet.with(SSRC, observer, peerConnectionUUID, callUUID);
+			}
+		};
+	}
+
 	public Iterable<Triplet<Long, UUID, Set<CallMapEntry>>> getPeerConnections(
 			@NotNull Iterable<Pair<Long, UUID>> ssrcObserverTuples) {
 		Set<Row2<Long, byte[]>> whereCondition = new HashSet<>();
@@ -164,26 +209,23 @@ public class SSRCMapRepository implements CrudRepository<SSRCMapEntry, Triplet<L
 	@NonNull
 	@Override
 	public <S extends SSRCMapEntry> Iterable<S> saveAll(@NonNull @Valid @NotNull Iterable<S> entities) {
-		this.jooqExecuteWrapper.execute((context, items) -> {
-			var sql =
-					context.insertInto(Tables.SSRCMAP,
-							Tables.SSRCMAP.SSRC,
-							Tables.SSRCMAP.PEERCONNECTION,
-							Tables.SSRCMAP.OBSERVER,
-							Tables.SSRCMAP.UPDATED);
-			for (Iterator<S> it = items.iterator(); it.hasNext(); ) {
-				SSRCMapEntry ssrcMapEntry = it.next();
-				byte[] peerConnection = UUIDAdapter.toBytes(ssrcMapEntry.peerConnectionUUID);
-				byte[] observer = UUIDAdapter.toBytes(ssrcMapEntry.observerUUID);
-				sql.values(ssrcMapEntry.SSRC, peerConnection, observer, LocalDateTime.now());
-			}
-			sql.onDuplicateKeyUpdate()
-					.set(Tables.SSRCMAP.SSRC, values(Tables.SSRCMAP.SSRC))
-					.set(Tables.SSRCMAP.PEERCONNECTION, values(Tables.SSRCMAP.PEERCONNECTION))
-					.set(Tables.SSRCMAP.OBSERVER, values(Tables.SSRCMAP.OBSERVER))
-					.set(Tables.SSRCMAP.UPDATED, values(Tables.SSRCMAP.UPDATED))
-					.execute();
-		}, entities);
+		var sql = this.contextProvider.get().insertInto(Tables.SSRCMAP,
+				Tables.SSRCMAP.SSRC,
+				Tables.SSRCMAP.PEERCONNECTION,
+				Tables.SSRCMAP.OBSERVER,
+				Tables.SSRCMAP.UPDATED);
+		for (Iterator<S> it = entities.iterator(); it.hasNext(); ) {
+			SSRCMapEntry ssrcMapEntry = it.next();
+			byte[] peerConnection = UUIDAdapter.toBytes(ssrcMapEntry.peerConnectionUUID);
+			byte[] observer = UUIDAdapter.toBytes(ssrcMapEntry.observerUUID);
+			sql.values(ssrcMapEntry.SSRC, peerConnection, observer, LocalDateTime.now());
+		}
+		sql.onDuplicateKeyUpdate()
+				.set(Tables.SSRCMAP.SSRC, values(Tables.SSRCMAP.SSRC))
+				.set(Tables.SSRCMAP.PEERCONNECTION, values(Tables.SSRCMAP.PEERCONNECTION))
+				.set(Tables.SSRCMAP.OBSERVER, values(Tables.SSRCMAP.OBSERVER))
+				.set(Tables.SSRCMAP.UPDATED, values(Tables.SSRCMAP.UPDATED))
+				.execute();
 		return entities;
 	}
 
@@ -336,6 +378,24 @@ public class SSRCMapRepository implements CrudRepository<SSRCMapEntry, Triplet<L
 				});
 	}
 
+	public void getSSRCMapEntriesOlderThan(LocalDateTime borderTime, Consumer<SSRCMapEntry> ssrcMapEntryConsumer) {
+		this.contextProvider.get()
+				.select(Tables.SSRCMAP.SSRC, Tables.SSRCMAP.OBSERVER, Tables.SSRCMAP.PEERCONNECTION, Tables.SSRCMAP.UPDATED)
+				.from(Tables.SSRCMAP)
+				.where(Tables.SSRCMAP.UPDATED.lt(borderTime))
+				.fetchInto(new RecordHandler<Record4<Long, byte[], byte[], LocalDateTime>>() {
+					@Override
+					public void next(Record4<Long, byte[], byte[], LocalDateTime> record) {
+						SSRCMapEntry ssrcMapEntry = new SSRCMapEntry();
+						ssrcMapEntry.SSRC = record.value1();
+						ssrcMapEntry.observerUUID = UUIDAdapter.toUUID(record.value2());
+						ssrcMapEntry.peerConnectionUUID = UUIDAdapter.toUUID(record.value3());
+						ssrcMapEntry.updated = record.value4();
+						ssrcMapEntryConsumer.accept(ssrcMapEntry);
+					}
+				});
+	}
+
 	public void removePeerConnections(Collection<UUID> peerConnectionUUIDs) {
 		this.contextProvider.get()
 				.deleteFrom(Tables.SSRCMAP)
@@ -343,4 +403,5 @@ public class SSRCMapRepository implements CrudRepository<SSRCMapEntry, Triplet<L
 						peerConnectionUUIDs.stream().map(UUIDAdapter::toBytes).collect(Collectors.toList())
 				)).execute();
 	}
+
 }

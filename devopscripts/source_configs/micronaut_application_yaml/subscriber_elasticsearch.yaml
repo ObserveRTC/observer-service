@@ -5,4 +5,3 @@ micronaut:
       elastic:
         enabled: true
         step: PT1M
-        host: http://localhost:9200

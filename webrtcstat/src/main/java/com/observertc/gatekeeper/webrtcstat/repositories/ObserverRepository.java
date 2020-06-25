@@ -15,6 +15,8 @@ import java.util.stream.StreamSupport;
 import javax.inject.Singleton;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.jooq.Record3;
+import org.jooq.RecordHandler;
 
 @Singleton
 public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
@@ -111,6 +113,15 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	@NonNull
 	@Override
 	public Iterable<ObserverDTO> findAll() {
+		this.contextProvider.get().select(Tables.OBSERVERS.UUID, Tables.OBSERVERS.NAME, Tables.OBSERVERS.DESCRIPTION)
+				.from(Tables.OBSERVERS)
+				.orderBy(Tables.OBSERVERS.ID)
+				.fetch().into(new RecordHandler<Record3<byte[], String, String>>() {
+			@Override
+			public void next(Record3<byte[], String, String> record) {
+
+			}
+		});
 		Long tableSize = this.count();
 		int bulkSize = DEFAULT_BULK_SIZE;
 		return () -> this.jooqExecuteWrapper.retrieve((context, offset) -> {
