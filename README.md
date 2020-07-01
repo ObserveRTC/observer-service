@@ -102,6 +102,7 @@ Keep in mind, that the project should be build with java 12, so If the gradle co
 
 3. Change the value of GOOGLE_APPLICATION_CREDENTIALS at docker-compose.yml to the path you have the file
 
+4. Run docker in docker
         
         docker-compose up
 
