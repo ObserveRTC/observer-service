@@ -132,11 +132,11 @@ dependencies {
 
 run {
     //environment 'GOOGLE_APPLICATION_CREDENTIALS', file('/Users/balazskreith.finago/github/observertc/gatekeeper/webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json').absolutePath
-    println System.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-    if (System.getenv('GOOGLE_APPLICATION_CREDENTIALS') == null) {
-        throw new MissingResourceException("GOOGLE_APPLICATION_CREDENTIALS environment value must be set. ")
+//    println System.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+//    if (System.getenv('GOOGLE_APPLICATION_CREDENTIALS') == null) {
+//        throw new MissingResourceException("GOOGLE_APPLICATION_CREDENTIALS environment value must be set. ")
 //         environment 'GOOGLE_APPLICATION_CREDENTIALS', file('/Users/balazskreith.finago/github/observertc/gatekeeper/webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json').absolutePath
-    }
+//    }
 }
 
 test.classpath += configurations.developmentOnly
