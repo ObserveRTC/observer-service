@@ -102,7 +102,10 @@ Keep in mind, that the project should be build with java 12, so If the gradle co
 
 3. Change the value of GOOGLE_APPLICATION_CREDENTIALS at docker-compose.yml to the path you have the file
 
-Run.
+        
+        docker-compose up
+
+
 
 #### Development notes, will be deleted from here
 If the jooq not generates, change the inputSchema to public, run and then change it back
