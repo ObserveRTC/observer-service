@@ -3,7 +3,7 @@ plugins {
     id "application"
     id "net.ltgt.apt-eclipse" version "0.21"
 
-    id "com.github.eirnym.js2p" version "1.0"
+    // id "com.github.eirnym.js2p" version "1.0"
     id "nu.studer.jooq" version "4.2"
 }
 
@@ -11,6 +11,8 @@ repositories {
     mavenCentral()
     maven { url "https://jcenter.bintray.com" }
     maven { url 'https://packages.confluent.io/maven/' }
+
+
 }
 
 sourceCompatibility = 1.12
@@ -42,15 +44,17 @@ switch (datasourceProfile.toLowerCase()) {
 
 String subscriberProfile = usedProfiles.subscriber
 println "subscriberProfile: " + subscriberProfile
-switch (subscriberProfile.toLowerCase()) {
-    case "elasticsearch":
-        apply from: rootProject.file('webrtcstat/buildprofiles/subscriber_elasticsearch.gradle');
-        break
-    default:
-        println "Subscriber profile is not recognized, so the default will be used"
-        apply from: rootProject.file('webrtcstat/buildprofiles/subscriber_elasticsearch.gradle');
-        break
+if (subscriberProfile != null) {
+    switch (subscriberProfile.toLowerCase()) {
+        case "elasticsearch":
+            apply from: rootProject.file('webrtcstat/buildprofiles/subscriber_elasticsearch.gradle');
+            break
+        default:
+            println "Subscriber profile is not recognized or not set"
+            break
+    }
 }
+
 //repositories {
 //    mavenCentral()
 //    maven { url "https://jcenter.bintray.com" }
@@ -102,7 +106,6 @@ dependencies {
 
     // ------------ Micrometer integration ---------
     compile "io.micronaut.configuration:micronaut-micrometer-core"
-    compile "io.micronaut.configuration:micronaut-micrometer-core"
     compile "io.micronaut:micronaut-management"
 
     // ------------ Datasource integration ---------
@@ -118,6 +121,22 @@ dependencies {
     // ------------ Necessary utilities ------------
     compile group: 'org.javatuples', name: 'javatuples', version: "${javaTuplesVersion}"
 
+    // ------------ Datawarehouse utilities ------------
+    compile 'com.google.cloud:google-cloud-bigquery:1.116.3'
+    // the main library
+
+}
+
+//googleApplicationCredentials = ClassLoader.getSystemClassLoader().getResource("ObserveRTC-5d4c3683dd2c.json");
+
+
+run {
+    //environment 'GOOGLE_APPLICATION_CREDENTIALS', file('/Users/balazskreith.finago/github/observertc/gatekeeper/webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json').absolutePath
+//    println System.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+//    if (System.getenv('GOOGLE_APPLICATION_CREDENTIALS') == null) {
+//        throw new MissingResourceException("GOOGLE_APPLICATION_CREDENTIALS environment value must be set. ")
+//         environment 'GOOGLE_APPLICATION_CREDENTIALS', file('/Users/balazskreith.finago/github/observertc/gatekeeper/webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json').absolutePath
+//    }
 }
 
 test.classpath += configurations.developmentOnly

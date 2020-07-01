@@ -1,6 +1,7 @@
 package com.observertc.gatekeeper.webrtcstat.processors.mappers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.util.Map;
 import org.apache.kafka.common.errors.SerializationException;
@@ -11,8 +12,11 @@ import org.apache.kafka.common.serialization.Serializer;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class JsonToPOJOMapper<T> implements Serializer<T>, Deserializer<T>, Serde<T> {
+	static {
+		OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+	}
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER;
 	private final Class<T> klass;
 
 	public JsonToPOJOMapper(Class<T> klass) {
