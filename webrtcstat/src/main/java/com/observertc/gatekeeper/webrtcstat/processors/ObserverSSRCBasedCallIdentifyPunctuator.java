@@ -1,5 +1,6 @@
 package com.observertc.gatekeeper.webrtcstat.processors;
 
+import com.observertc.gatekeeper.webrtcstat.micrometer.ObserverSSRCPeerConnectionSampleProcessReporter;
 import com.observertc.gatekeeper.webrtcstat.micrometer.WebRTCStatsReporter;
 import com.observertc.gatekeeper.webrtcstat.model.CallMapEntry;
 import com.observertc.gatekeeper.webrtcstat.model.SSRCMapEntry;
@@ -7,6 +8,8 @@ import com.observertc.gatekeeper.webrtcstat.repositories.CallMapRepository;
 import com.observertc.gatekeeper.webrtcstat.repositories.SSRCMapRepository;
 import com.observertc.gatekeeper.webrtcstat.samples.ObserverSSRCPeerConnectionSample;
 import io.micronaut.context.annotation.Prototype;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,15 +38,17 @@ public class ObserverSSRCBasedCallIdentifyPunctuator implements Punctuator {
 	private final Map<UUID, Pair<LocalDateTime, LocalDateTime>> pcUpdated;
 	private final Map<UUID, Set<Pair<UUID, Long>>> pcToObserverSSRCs;
 	private final Map<Pair<UUID, Long>, Set<UUID>> observerSSRCToPCs;
-
+	private final ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter;
 //	private final Map<SSRCMapEntry, LocalDateTime> ssrcMapEntries;
 
 	public ObserverSSRCBasedCallIdentifyPunctuator(SSRCMapRepository ssrcMapRepository,
 												   CallMapRepository callMapRepository,
+												   ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter,
 												   WebRTCStatsReporter webRTCStatsReporter) {
 		this.ssrcMapRepository = ssrcMapRepository;
 		this.callMapRepository = callMapRepository;
 		this.webRTCStatsReporter = webRTCStatsReporter;
+		this.observerSSRCPeerConnectionSampleProcessReporter = observerSSRCPeerConnectionSampleProcessReporter;
 		this.pcUpdated = new HashMap<>();
 		this.pcToObserverSSRCs = new HashMap<>();
 		this.observerSSRCToPCs = new HashMap<>();
@@ -74,7 +79,6 @@ public class ObserverSSRCBasedCallIdentifyPunctuator implements Punctuator {
 		this.pcUpdated.put(peerConnectionUUID, createdUpdated);
 	}
 
-
 	/**
 	 * This is the trigger method initiate the process of cleaning the calls
 	 *
@@ -82,6 +86,19 @@ public class ObserverSSRCBasedCallIdentifyPunctuator implements Punctuator {
 	 */
 	@Override
 	public void punctuate(long timestamp) {
+		this.observerSSRCPeerConnectionSampleProcessReporter.setBufferSize(this.observerSSRCToPCs.size());
+		Instant started = Instant.now();
+		try {
+			this.punctuateProcess(timestamp);
+		} catch (Exception ex) {
+			logger.error("An exception occured during execution", ex);
+		} finally {
+			Duration duration = Duration.between(Instant.now(), started);
+			this.observerSSRCPeerConnectionSampleProcessReporter.setCallIdentificationExecutionTime(duration);
+		}
+	}
+
+	public void punctuateProcess(long timestamp) {
 		if (this.observerSSRCToPCs.size() < 1) {
 			return;
 		}

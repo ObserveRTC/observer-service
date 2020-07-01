@@ -6,10 +6,10 @@ import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.ObserveRTCCIceStats;
 import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.PeerConnectionSample;
 import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.RTCStats;
 import com.observertc.gatekeeper.webrtcstat.dto.webextrapp.RTCStatsType;
-import com.observertc.gatekeeper.webrtcstat.samples.ObserverSSRCPeerConnectionSample;
 import com.observertc.gatekeeper.webrtcstat.repositories.ObserverRepository;
 import com.observertc.gatekeeper.webrtcstat.samples.ObserveRTCCIceStatsSample;
 import com.observertc.gatekeeper.webrtcstat.samples.ObserveRTCMediaStreamStatsSample;
+import com.observertc.gatekeeper.webrtcstat.samples.ObserverSSRCPeerConnectionSample;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
@@ -101,6 +101,7 @@ public class WebRTCStatsWebsocketServer {
 				continue;
 			}
 			sample.rtcStats = rtcStats;
+			sample.sampled = LocalDateTime.now();
 			RTCStatsType type = rtcStats.getType();
 			switch (type) {
 				case INBOUND_RTP:

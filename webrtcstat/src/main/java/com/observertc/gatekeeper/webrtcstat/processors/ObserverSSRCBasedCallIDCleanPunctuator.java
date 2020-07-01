@@ -1,8 +1,11 @@
 package com.observertc.gatekeeper.webrtcstat.processors;
 
+import com.observertc.gatekeeper.webrtcstat.micrometer.ObserverSSRCPeerConnectionSampleProcessReporter;
 import com.observertc.gatekeeper.webrtcstat.micrometer.WebRTCStatsReporter;
 import com.observertc.gatekeeper.webrtcstat.repositories.CallMapRepository;
 import com.observertc.gatekeeper.webrtcstat.repositories.SSRCMapRepository;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -25,12 +28,14 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 	private final SSRCMapRepository ssrcMapRepository;
 	private final CallMapRepository callMapRepository;
 	private final WebRTCStatsReporter webRTCStatsReporter;
+	private final ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter;
 	private final int expirationTimeInS;
 
 	public ObserverSSRCBasedCallIDCleanPunctuator(
 			SSRCMapRepository ssrcMapRepository,
 			CallMapRepository callMapRepository,
-			WebRTCStatsReporter webRTCStatsReporter) {
+			WebRTCStatsReporter webRTCStatsReporter, ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter) {
+		this.observerSSRCPeerConnectionSampleProcessReporter = observerSSRCPeerConnectionSampleProcessReporter;
 		this.expirationTimeInS = 30;
 		this.ssrcMapRepository = ssrcMapRepository;
 		this.callMapRepository = callMapRepository;
@@ -41,8 +46,25 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 
 	}
 
+	/**
+	 * This is the trigger method initiate the process of cleaning the calls
+	 *
+	 * @param timestamp
+	 */
 	@Override
 	public void punctuate(long timestamp) {
+		Instant started = Instant.now();
+		try {
+			this.punctuateProcess(timestamp);
+		} catch (Exception ex) {
+			logger.error("An exception occured during execution", ex);
+		} finally {
+			Duration duration = Duration.between(Instant.now(), started);
+			this.observerSSRCPeerConnectionSampleProcessReporter.setCallCleaningExecutionTime(duration);
+		}
+	}
+
+	public void punctuateProcess(long timestamp) {
 		LocalDateTime expiration = LocalDateTime.now().minus(this.expirationTimeInS, ChronoUnit.SECONDS);
 		Set<UUID> expiredPeerConnections = new HashSet<>();
 		Set<UUID> callUUIDs = new HashSet<>();
