@@ -7,7 +7,7 @@ services:
     - kafka
     - mysql
     ports:
-    - 8080:7080
+    - 8088:7080
     environment:
     - APPLICATION_SERVER_PORT=7080
     - KAFKA_HOSTS=docker_kafka:29092
