@@ -2,14 +2,6 @@
 
 ## Install Guideline
 
-### Install and Compile the service
-
-    ./install.sh --service webrtcstat --datasource mysql
-
-Keep in mind, that the project should be build with java 12, so If the gradle complain about building, try to point to a JAVA 12 Home directory:
-
-    JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home/ ./gradlew build
-    
 ### Add BigQuery
 
 1. Create your own Dataset under BigQuery and add the following tables:
@@ -100,13 +92,19 @@ Keep in mind, that the project should be build with java 12, so If the gradle co
 
 2. Generate your Credentials in json format from your GCP. (Following steps: https://cloud.google.com/docs/authentication/production)
 
-3. Change the value of GOOGLE_APPLICATION_CREDENTIALS at docker-compose.yml to the path you have the file
+3. Copy the generated credential file at webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json overwriting the existing ones
 
-4. Run docker in docker
+### Install and Compile the service
+
+    ./install.sh --service webrtcstat --datasource mysql
+
+Keep in mind, that the project should be build with java 12, so If the gradle complain about building, try to point to a JAVA 12 Home directory:
+
+    JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home/ ./gradlew build
+    
+ Run docker in docker
         
         docker-compose up
-
-
 
 #### Development notes, will be deleted from here
 If the jooq not generates, change the inputSchema to public, run and then change it back
