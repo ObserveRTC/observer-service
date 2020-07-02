@@ -10,7 +10,7 @@ services:
     environment:
       - APPLICATION_SERVER_PORT=7080
       - KAFKA_HOSTS=docker_kafka:29092
-      - GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/credentials
+      - GOOGLE_APPLICATION_CREDENTIALS=bg_credential.json
   zookeeper:
     container_name: docker_zookeeper
     image: confluentinc/cp-zookeeper:latest
