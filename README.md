@@ -92,7 +92,7 @@
 
 2. Generate your Credentials in json format from your GCP. (Following steps: https://cloud.google.com/docs/authentication/production)
 
-3. Copy the generated credential file at webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json overwriting the existing ones
+3. Copy the generated credential file at webrtcstat/ObserveRTC-5d4c3683dd2c.json overwriting the existing ones
 
 ### Install and Compile the service
 
