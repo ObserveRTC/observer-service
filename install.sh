@@ -78,9 +78,9 @@ docker-compose stop $DATASOURCE
 docker-compose up -d kafka
 sleep 10
 
-docker-compose exec docker_kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ObserveRTCCIceStatsSample
-docker-compose exec docker_kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic observeRTCMediaStreamStatsSamples
-docker-compose exec docker_kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic observerSSRCPeerConnectionSamples
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ObserveRTCCIceStatsSample
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic observeRTCMediaStreamStatsSamples
+docker-compose exec kafka kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic observerSSRCPeerConnectionSamples
 
 docker-compose stop kafka
 exit 0
