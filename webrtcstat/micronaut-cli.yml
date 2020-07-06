@@ -1,5 +1,0 @@
-profile: service
-defaultPackage: com.observertc.gatekeeper
----
-testFramework: junit
-sourceLanguage: java

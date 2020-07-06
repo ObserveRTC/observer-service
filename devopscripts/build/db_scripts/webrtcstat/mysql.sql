@@ -94,18 +94,19 @@ VALUES (1,
 
 USE `ObserveRTC`;
  
-CREATE TABLE `SSRCMap`
+CREATE TABLE `PeerconnectionSSRCs`
 (
+    `observer`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
     `SSRC`            BIGINT NOT NULL COMMENT 'The SSRC identifier',
     `peerConnection`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
-    `observer`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
     `updated`         TIMESTAMP,
-    PRIMARY KEY (`SSRC`,`observer`,`peerConnection`),
-    INDEX `SSRCMap_updated_index` (`updated`)
+    PRIMARY KEY (`observer`,`SSRC`),
+    INDEX `SSRCMap_updated_index` (`updated`),
+    INDEX `SSRCMap_updated_index` (`peerConnection`)    
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='SSRCMap';
   
-CREATE TABLE `CallMap`
+CREATE TABLE `CallPeerconnections`
 (
     `peerConnection` BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
     `callID`         BINARY(16) NOT NULL COMMENT 'The UUID of the call the peer connection belongs to',
