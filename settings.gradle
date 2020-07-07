@@ -1,4 +1,4 @@
-rootProject.name = "gatekeeper"
+rootProject.name = "WebRTC-Observer"
 include 'common'
 include 'service'
 include 'reportsink-bigquery'
