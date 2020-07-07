@@ -6,10 +6,15 @@ import javax.inject.Singleton;
 
 @Singleton
 public class BigQueryService {
+	private final String projectName;
+	private final String datasetName;
 	private BigQuery bigQuery;
 
 	public BigQueryService(String projectName, String datasetName) {
 		this.bigQuery = BigQueryOptions.getDefaultInstance().getService();
+		this.projectName = projectName;
+		this.datasetName = datasetName;
+
 	}
 
 	public BigQuery getBigQuery() {
@@ -17,11 +22,11 @@ public class BigQueryService {
 	}
 
 	public String getProjectName() {
-		return "observertc";
+		return this.projectName;
 	}
 
 	public String getDatasetName() {
-		return "WebRTC";
+		return this.datasetName;
 	}
 
 }
