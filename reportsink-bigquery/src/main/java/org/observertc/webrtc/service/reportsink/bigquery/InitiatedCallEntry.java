@@ -13,7 +13,7 @@ public class InitiatedCallEntry implements BigQueryEntry {
 		return new InitiatedCallEntry()
 				.setObserverUUID(initiatedCall.getObserverUUID())
 				.setCallUUID(initiatedCall.getCallUUID())
-				.setFinishedTimestamp(initiatedCall.getTimestamp());
+				.setInitiatedTimestamp(initiatedCall.getTimestamp());
 	}
 
 	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
@@ -36,7 +36,7 @@ public class InitiatedCallEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public InitiatedCallEntry setFinishedTimestamp(LocalDateTime value) {
+	public InitiatedCallEntry setInitiatedTimestamp(LocalDateTime value) {
 		ZoneId zoneId = ZoneId.systemDefault();
 		Long epoch = value.atZone(zoneId).toEpochSecond();
 		this.values.put(INITIATED_TIMESTAMP_FIELD_NAME, epoch);

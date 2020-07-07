@@ -59,7 +59,7 @@ public class FinishedCallEntry implements BigQueryEntry {
 		return UUID.fromString(value);
 	}
 
-	public LocalDateTime getInitiatedTimestamp() {
+	public LocalDateTime getFinishedTimestamp() {
 		Long value = (Long) this.values.get(FINISHED_TIMESTAMP_FIELD_NAME);
 		if (value == null) {
 			return null;
