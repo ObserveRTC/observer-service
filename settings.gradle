@@ -1,4 +1,5 @@
 rootProject.name = "gatekeeper"
 include 'common'
-include 'webrtcstat'
+include 'service'
+include 'reportsink-bigquery'
 

@@ -1,4 +1,0 @@
-dependencies {
-    // Here is a subscriber
-    compile group: 'io.micronaut.configuration', name: 'micronaut-micrometer-registry-elastic', version: '1.3.1'
-}

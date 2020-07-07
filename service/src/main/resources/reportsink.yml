@@ -1,0 +1,6 @@
+reportsinks:
+  BigQueryProfile:
+    builder: org.observertc.webrtc.service.reportsink.bigquery.BigQueryReportServiceBuilder
+    configuration:
+      projectName: observertc
+      datasetName: WebRTC
