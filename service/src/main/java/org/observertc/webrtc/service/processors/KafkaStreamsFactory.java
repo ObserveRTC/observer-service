@@ -86,7 +86,8 @@ public class KafkaStreamsFactory {
 							return false;
 						}
 						return rtcStats.getType().equals(RTCStatsType.INBOUND_RTP) ||
-								rtcStats.getType().equals(RTCStatsType.OUTBOUND_RTP);
+								rtcStats.getType().equals(RTCStatsType.OUTBOUND_RTP) ||
+								rtcStats.getType().equals(RTCStatsType.REMOTE_INBOUND_RTP);
 					}
 				});
 		source.process(() -> inAndOutboundStreamStatsSamplesProcessor);
