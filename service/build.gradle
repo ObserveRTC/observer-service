@@ -11,8 +11,6 @@ repositories {
     mavenCentral()
     maven { url "https://jcenter.bintray.com" }
     maven { url 'https://packages.confluent.io/maven/' }
-
-
 }
 
 sourceCompatibility = 1.8
@@ -46,7 +44,9 @@ task buildDockerImage(type: Exec) {
 
 dependencies {
     // ------------ Project integration ---------
-    compile project(":common")
+    implementation project(":common")
+
+    implementation project(':reportsink-bigquery')
 
     // ------------ Micronaut framework ------------
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
@@ -112,7 +112,7 @@ run {
 
 test.classpath += configurations.developmentOnly
 
-mainClassName = "org.observertc.webrtc.observer.service"
+mainClassName = "org.observertc.webrtc.service.Application"
 // use JUnit 5 platform
 test {
     useJUnitPlatform()
@@ -158,7 +158,7 @@ jooq {
                 includes = '.*'
             }
             target {
-                packageName = 'org.observertc.webrtc.observer.service.jooq'
+                packageName = 'org.observertc.webrtc.service.jooq'
                 directory = generatedDir
             }
         }

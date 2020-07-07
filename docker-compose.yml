@@ -1,20 +1,24 @@
 version: '3.3'
 services:
-  webrtcstat_gatekeeper:
-    container_name: docker_webrtcstat_gatekeeper
-    image: webrtcstat:latest
+  webrtc_observer:
+    container_name: docker_webrtc_observer
+    image: webrtc_observer:latest
     links:
       - kafka
       - mysql
     ports:
-      - 8080:7080
+      - 8088:7080
     environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=bg_credential.json
       - APPLICATION_SERVER_PORT=7080
       - KAFKA_HOSTS=docker_kafka:29092
       - HIKARI_USERNAME=root
       - HIKARI_PASSWORD=password
       - HIKARI_JDBC=jdbc:mysql://mysqldb:3306/ObserveRTC
       - JOOQ_DIALECT=MySQL
+    depends_on:
+      - kafka
+      - mysql
   zookeeper:
     container_name: docker_zookeeper
     image: confluentinc/cp-zookeeper:latest

@@ -1,5 +1,5 @@
 rootProject.name = "gatekeeper"
 include 'common'
 include 'service'
-include 'reportsink-bigqueery'
+include 'reportsink-bigquery'
 
