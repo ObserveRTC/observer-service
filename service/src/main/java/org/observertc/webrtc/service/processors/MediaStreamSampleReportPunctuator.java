@@ -65,6 +65,8 @@ public class MediaStreamSampleReportPunctuator implements Punctuator {
 //			this.webRTCStatsReporter.reportMediaStreamSample(mediaStreamKey, mediaStreamSampleImpl);
 			this.cleanMediaStream(mediaStreamAggregate);
 		}
+
+		this.reported = LocalDateTime.now();
 	}
 
 	private void cleanMediaStream(MediaStreamAggregate mediaStreamAggregate) {

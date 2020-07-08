@@ -127,6 +127,9 @@ public class ObserverSSRCBasedCallIdentifyPunctuator implements Punctuator {
 						return peerConnectionSSRCsEntry;
 					});
 				}).collect(Collectors.toList());
+		logger.info("Update is received from the following tuples: (Observer, PC, )peer connections, SSRCs: {}",
+				String.join("\n ", peerConnectionSSRCsEntryList.stream().map(tuple -> String.format("<%s, %s, %s>", tuple.observerUUID,
+						tuple.peerConnectionUUID, tuple.SSRC)).collect(Collectors.toList())));
 		Map<UUID, UUID> pcToCall = new HashMap<>();
 		Set<UUID> addedPCs = new HashSet<>();
 		Set<UUID> callUUIDs = new HashSet<>();

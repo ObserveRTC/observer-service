@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.inject.Singleton;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
@@ -92,6 +93,8 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 					}
 					pcLastUpdated.put(ssrcMapEntry.peerConnectionUUID, lastUpdated);
 				});
+		logger.info("The following peer connections have not received any update in the last {} seconds. {}", this.expirationTimeInS,
+				String.join(", ", expiredPeerConnections.stream().map(Object::toString).collect(Collectors.toList())));
 		this.callPeerConnectionsRepository.getCallMapsForPeerConnectionUUIDs(() -> expiredPeerConnections.iterator(), callMapEntry -> {
 			callUUIDs.add(callMapEntry.callUUID);
 			Set<UUID> callExpiredPeerConnections = callToExpiredPeerConnections.getOrDefault(callMapEntry.callUUID, new HashSet<>());

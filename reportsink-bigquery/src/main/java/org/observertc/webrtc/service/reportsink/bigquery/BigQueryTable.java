@@ -41,7 +41,7 @@ public class BigQueryTable<T extends BigQueryEntry> {
 			if (value == null) {
 				resultBuffer.append(String.format("%s%s: null\n", prefix, key));
 			} else if (value instanceof Map) {
-				resultBuffer.append(String.format("%s%s: %s", prefix, key,
+				resultBuffer.append(String.format("%s%s: %s\n", prefix, key,
 						this.mapString((Map<String, Object>) value, prefix + "\t")));
 			} else {
 				resultBuffer.append(String.format("%s%s: %s\n", prefix, entry.getKey(), value.toString()));
