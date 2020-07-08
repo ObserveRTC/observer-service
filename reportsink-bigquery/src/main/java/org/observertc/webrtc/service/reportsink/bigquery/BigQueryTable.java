@@ -36,11 +36,13 @@ public class BigQueryTable<T extends BigQueryEntry> {
 		Iterator<Map.Entry<String, Object>> mapIt = map.entrySet().iterator();
 		for (; mapIt.hasNext(); ) {
 			Map.Entry<String, Object> entry = mapIt.next();
+			String key = entry.getKey();
 			Object value = entry.getValue();
 			if (value == null) {
-				resultBuffer.append(String.format("%s%s: null\n", prefix, entry.getKey()));
+				resultBuffer.append(String.format("%s%s: null\n", prefix, key));
 			} else if (value instanceof Map) {
-				resultBuffer.append(this.mapString((Map<String, Object>) value, prefix + "\t"));
+				resultBuffer.append(String.format("%s%s: %s", prefix, key,
+						this.mapString((Map<String, Object>) value, prefix + "\t")));
 			} else {
 				resultBuffer.append(String.format("%s%s: %s\n", prefix, entry.getKey(), value.toString()));
 			}
