@@ -4,6 +4,7 @@ import com.google.cloud.bigquery.BigQueryError;
 import com.google.cloud.bigquery.InsertAllRequest;
 import com.google.cloud.bigquery.InsertAllResponse;
 import com.google.cloud.bigquery.TableId;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,7 +24,30 @@ public class BigQueryTable<T extends BigQueryEntry> {
 		this.bigQueryService = bigQueryService;
 	}
 
+	private void logEntry(T entry) {
+		String rowValue = this.mapString(entry.toMap(), "\t");
+		logger.info("A row has been scheduled to add to table {}. The row: \n {}",
+				this.tableName, rowValue);
+	}
+
+	private String mapString(Map<String, Object> map, String prefix) {
+
+		StringBuffer resultBuffer = new StringBuffer();
+		Iterator<Map.Entry<String, Object>> mapIt = map.entrySet().iterator();
+		for (; mapIt.hasNext(); ) {
+			Map.Entry<String, Object> entry = mapIt.next();
+			Object value = entry.getValue();
+			if (value instanceof Map) {
+				resultBuffer.append(this.mapString((Map<String, Object>) value, prefix + "\t"));
+			} else {
+				resultBuffer.append(String.format("%s%s: %s\n", prefix, entry.getKey(), value.toString()));
+			}
+		}
+		return resultBuffer.toString();
+	}
+
 	public void insert(T entry) {
+		this.logEntry(entry);
 		TableId tableId = this.getTableId();
 
 		InsertAllResponse response =
