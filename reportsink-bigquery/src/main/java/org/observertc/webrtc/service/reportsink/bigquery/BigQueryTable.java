@@ -26,8 +26,8 @@ public class BigQueryTable<T extends BigQueryEntry> {
 
 	private void logEntry(T entry) {
 		String rowValue = this.mapString(entry.toMap(), "\t");
-		logger.info("A row has been scheduled to add to table {}. The row: \n {}",
-				this.tableName, rowValue);
+		logger.info("project: {}, dataset: {}, table {}. The row: \n {}",
+				this.bigQueryService.getProjectName(), this.bigQueryService.getDatasetName(), this.tableName, rowValue);
 	}
 
 	private String mapString(Map<String, Object> map, String prefix) {
@@ -37,7 +37,9 @@ public class BigQueryTable<T extends BigQueryEntry> {
 		for (; mapIt.hasNext(); ) {
 			Map.Entry<String, Object> entry = mapIt.next();
 			Object value = entry.getValue();
-			if (value instanceof Map) {
+			if (value == null) {
+				resultBuffer.append(String.format("%s%s: null\n", prefix, entry.getKey()));
+			} else if (value instanceof Map) {
 				resultBuffer.append(this.mapString((Map<String, Object>) value, prefix + "\t"));
 			} else {
 				resultBuffer.append(String.format("%s%s: %s\n", prefix, entry.getKey(), value.toString()));
