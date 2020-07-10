@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.processors;
+package org.observertc.webrtc.service.mediastreams;
 
 import org.apache.kafka.streams.kstream.Aggregator;
 import org.observertc.webrtc.service.samples.MediaStreamAggregate;
@@ -6,7 +6,7 @@ import org.observertc.webrtc.service.samples.MediaStreamAggregateRecord;
 import org.observertc.webrtc.service.samples.MediaStreamKey;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 
-public class OutboundStreamMeasurementAggregator implements Aggregator<MediaStreamKey, OutboundStreamMeasurement, MediaStreamAggregate> {
+public class OutboundStreamAggregator implements Aggregator<MediaStreamKey, OutboundStreamMeasurement, MediaStreamAggregate> {
 
 	@Override
 	public MediaStreamAggregate apply(MediaStreamKey key, OutboundStreamMeasurement measurement, MediaStreamAggregate result) {

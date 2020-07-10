@@ -6,14 +6,15 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.FinishedCall;
+import org.observertc.webrtc.common.reports.FinishedCallReport;
 
 public class FinishedCallEntry implements BigQueryEntry {
-	public static FinishedCallEntry from(FinishedCall finishedCall) {
+
+	public static FinishedCallEntry from(FinishedCallReport finishedCallReport) {
 		return new FinishedCallEntry()
-				.setObserverUUID(finishedCall.getObserverUUID())
-				.setCallUUID(finishedCall.getCallUUID())
-				.setFinishedTimestamp(finishedCall.getTimestamp());
+				.withObserverUUID(finishedCallReport.observerUUID)
+				.setCallUUID(finishedCallReport.callUUID)
+				.setFinishedTimestamp(finishedCallReport.finished);
 	}
 
 	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
@@ -26,7 +27,7 @@ public class FinishedCallEntry implements BigQueryEntry {
 		this.values = new HashMap<>();
 	}
 
-	public FinishedCallEntry setObserverUUID(UUID value) {
+	public FinishedCallEntry withObserverUUID(UUID value) {
 		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
 		return this;
 	}

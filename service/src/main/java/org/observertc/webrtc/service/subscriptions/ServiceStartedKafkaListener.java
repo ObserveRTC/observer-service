@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.initializers;
+package org.observertc.webrtc.service.subscriptions;
 
 import io.micronaut.configuration.kafka.config.KafkaDefaultConfiguration;
 import io.micronaut.context.annotation.Requires;
@@ -24,14 +24,14 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 @Requires(notEnv = Environment.TEST) // Don't load data in tests.
-public class KafkaInitializer implements ApplicationEventListener<ServiceStartedEvent> {
-	private static final Logger logger = LoggerFactory.getLogger(KafkaInitializer.class);
+public class ServiceStartedKafkaListener implements ApplicationEventListener<ServiceStartedEvent> {
+	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedKafkaListener.class);
 	private final KafkaDefaultConfiguration kafkaConfiguration;
 	private final Stage<AdminClient> pipeline;
 	private final KafkaTopicsConfiguration kafkaTopicsConfiguration;
 	private volatile boolean run = false;
 
-	public KafkaInitializer(KafkaDefaultConfiguration configuration, KafkaTopicsConfiguration kafkaTopicsConfiguration) {
+	public ServiceStartedKafkaListener(KafkaDefaultConfiguration configuration, KafkaTopicsConfiguration kafkaTopicsConfiguration) {
 		this.kafkaConfiguration = configuration;
 		this.kafkaTopicsConfiguration = kafkaTopicsConfiguration;
 		this.pipeline = new StagePipelineBuilder<AdminClient>()
@@ -43,7 +43,8 @@ public class KafkaInitializer implements ApplicationEventListener<ServiceStarted
 		List<String> topicsToCheck = Arrays.asList(
 				this.kafkaTopicsConfiguration.observerSSRCPeerConnectionSamples,
 				this.kafkaTopicsConfiguration.observeRTCCIceStatsSample,
-				this.kafkaTopicsConfiguration.observeRTCMediaStreamStatsSamples
+				this.kafkaTopicsConfiguration.observeRTCMediaStreamStatsSamples,
+				this.kafkaTopicsConfiguration.observertcReports
 		);
 		return new Stage<AdminClient>() {
 			@Override

@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.PunctuationType;
+import org.observertc.webrtc.service.mediastreams.ObserverSSRCBasedCallIDCleanPunctuator;
+import org.observertc.webrtc.service.mediastreams.ObserverSSRCBasedCallIdentifyPunctuator;
 import org.observertc.webrtc.service.samples.ObserverSSRCPeerConnectionSample;
 
 @Singleton

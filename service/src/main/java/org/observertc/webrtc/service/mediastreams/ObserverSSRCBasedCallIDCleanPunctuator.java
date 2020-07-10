@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.processors;
+package org.observertc.webrtc.service.mediastreams;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -14,13 +14,8 @@ import java.util.stream.Collectors;
 import javax.inject.Singleton;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
-import org.observertc.webrtc.common.reports.DetachedPeerConnection;
-import org.observertc.webrtc.common.reports.FinishedCall;
-import org.observertc.webrtc.common.reportsink.CallReports;
-import org.observertc.webrtc.common.reportsink.ReportService;
-import org.observertc.webrtc.service.micrometer.ObserverSSRCPeerConnectionSampleProcessReporter;
-import org.observertc.webrtc.service.micrometer.WebRTCStatsReporter;
-import org.observertc.webrtc.service.reportsink.ReportServiceProvider;
+import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
+import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.service.repositories.CallPeerConnectionsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
 import org.slf4j.Logger;
@@ -33,27 +28,19 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
-	private final WebRTCStatsReporter webRTCStatsReporter;
-	private final ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter;
 	private final int expirationTimeInS;
-	private final ReportService reportService;
+	private ProcessorContext context;
 
 	public ObserverSSRCBasedCallIDCleanPunctuator(
 			PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
-			CallPeerConnectionsRepository callPeerConnectionsRepository,
-			WebRTCStatsReporter webRTCStatsReporter,
-			ReportServiceProvider reportServiceProvider,
-			ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter) {
-		this.observerSSRCPeerConnectionSampleProcessReporter = observerSSRCPeerConnectionSampleProcessReporter;
+			CallPeerConnectionsRepository callPeerConnectionsRepository) {
 		this.expirationTimeInS = 30;
-		this.reportService = reportServiceProvider.getReportService();
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callPeerConnectionsRepository = callPeerConnectionsRepository;
-		this.webRTCStatsReporter = webRTCStatsReporter;
 	}
 
 	public void init(ProcessorContext context) {
-
+		this.context = context;
 	}
 
 	/**
@@ -70,12 +57,10 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 			logger.error("An exception occured during execution", ex);
 		} finally {
 			Duration duration = Duration.between(Instant.now(), started);
-			this.observerSSRCPeerConnectionSampleProcessReporter.setCallCleaningExecutionTime(duration);
 		}
 	}
 
 	public void punctuateProcess(long timestamp) {
-		CallReports callReports = this.reportService.getCallReports();
 		LocalDateTime expiration = LocalDateTime.now().minus(this.expirationTimeInS, ChronoUnit.SECONDS);
 		Set<UUID> expiredPeerConnections = new HashSet<>();
 		Set<UUID> callUUIDs = new HashSet<>();
@@ -141,9 +126,9 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 					}
 					observerUUID = observerUUIDCandidate;
 				}
-				DetachedPeerConnection detachedPeerConnection = this.makeDetachedPeerConnection(observerUUID, callUUID,
+				DetachedPeerConnectionReport detachedPeerConnectionReport = DetachedPeerConnectionReport.of(observerUUID, callUUID,
 						expiredPeerConnection, lastUpdate);
-				callReports.detachedPeerConnection(detachedPeerConnection);
+				this.context.forward(observerUUID, detachedPeerConnectionReport);
 			}
 			Set<UUID> allPeerConnectionsForTheCall = callToPeerConnections.get(callUUID);
 			int callPeerConnectionsTotal = 0;
@@ -162,54 +147,11 @@ public class ObserverSSRCBasedCallIDCleanPunctuator implements Punctuator {
 				if (lastUpdateOfCall == null) {
 					lastUpdateOfCall = LocalDateTime.now();
 				}
-				FinishedCall finishedCall = this.makeFinishedCall(observerUUID, callUUID, lastUpdateOfCall);
-				callReports.finishedCall(finishedCall);
+				FinishedCallReport finishedCallReport = FinishedCallReport.of(observerUUID, callUUID, lastUpdateOfCall);
+				this.context.forward(observerUUID, finishedCallReport);
 			}
 		}
 		this.callPeerConnectionsRepository.deleteByIds(() -> expiredPeerConnections.iterator());
 		this.peerConnectionSSRCsRepository.removePeerConnections(expiredPeerConnections);
-	}
-
-	private DetachedPeerConnection makeDetachedPeerConnection(UUID observerUUID, UUID callUUID, UUID peerConnectionUUID, LocalDateTime detached) {
-		return new DetachedPeerConnection() {
-			@Override
-			public UUID getObserverUUID() {
-				return observerUUID;
-			}
-
-			@Override
-			public UUID getPeerConnectionUUID() {
-				return peerConnectionUUID;
-			}
-
-			@Override
-			public LocalDateTime getTimestamp() {
-				return detached;
-			}
-
-			@Override
-			public UUID getCallUUID() {
-				return callUUID;
-			}
-		};
-	}
-
-	private FinishedCall makeFinishedCall(UUID observerUUID, UUID callUUID, LocalDateTime finished) {
-		return new FinishedCall() {
-			@Override
-			public UUID getObserverUUID() {
-				return observerUUID;
-			}
-
-			@Override
-			public UUID getCallUUID() {
-				return callUUID;
-			}
-
-			@Override
-			public LocalDateTime getTimestamp() {
-				return finished;
-			}
-		};
 	}
 }

@@ -3,11 +3,9 @@ package org.observertc.webrtc.service.reportsink.bigquery;
 import com.google.cloud.bigquery.Dataset;
 import com.google.cloud.bigquery.DatasetId;
 import com.google.cloud.bigquery.DatasetInfo;
-import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Singleton
 public class BigQueryDataset {
 	private static final Logger logger = LoggerFactory.getLogger(BigQueryDataset.class);
 

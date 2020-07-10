@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.initializers;
+package org.observertc.webrtc.service.subscriptions;
 
 import java.util.function.Consumer;
 

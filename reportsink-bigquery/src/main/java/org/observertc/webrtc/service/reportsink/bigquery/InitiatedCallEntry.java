@@ -6,14 +6,15 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.InitiatedCall;
+import org.observertc.webrtc.common.reports.InitiatedCallReport;
 
 public class InitiatedCallEntry implements BigQueryEntry {
-	public static InitiatedCallEntry from(InitiatedCall initiatedCall) {
+
+	public static InitiatedCallEntry from(InitiatedCallReport initiatedCallReport) {
 		return new InitiatedCallEntry()
-				.setObserverUUID(initiatedCall.getObserverUUID())
-				.setCallUUID(initiatedCall.getCallUUID())
-				.setInitiatedTimestamp(initiatedCall.getTimestamp());
+				.withObserverUUID(initiatedCallReport.observerUUID)
+				.withCallUUID(initiatedCallReport.callUUID)
+				.withInitiatedTimestamp(initiatedCallReport.initiated);
 	}
 
 	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
@@ -26,17 +27,17 @@ public class InitiatedCallEntry implements BigQueryEntry {
 		this.values = new HashMap<>();
 	}
 
-	public InitiatedCallEntry setObserverUUID(UUID value) {
+	public InitiatedCallEntry withObserverUUID(UUID value) {
 		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 
-	public InitiatedCallEntry setCallUUID(UUID value) {
+	public InitiatedCallEntry withCallUUID(UUID value) {
 		this.values.put(CALL_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 
-	public InitiatedCallEntry setInitiatedTimestamp(LocalDateTime value) {
+	public InitiatedCallEntry withInitiatedTimestamp(LocalDateTime value) {
 		ZoneId zoneId = ZoneId.systemDefault();
 		Long epoch = value.atZone(zoneId).toEpochSecond();
 		this.values.put(INITIATED_TIMESTAMP_FIELD_NAME, epoch);

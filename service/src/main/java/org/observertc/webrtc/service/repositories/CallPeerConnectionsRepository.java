@@ -1,6 +1,7 @@
 package org.observertc.webrtc.service.repositories;
 
 import static org.jooq.impl.DSL.row;
+import static org.jooq.impl.DSL.select;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.repository.CrudRepository;
 import java.util.HashMap;
@@ -148,6 +149,27 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 					}
 				});
 
+	}
+
+	public void findPeers(@NonNull @NotNull UUID peerConnectionUUID,
+						  Consumer<CallPeerConnectionsEntry> callPeerConnectionsEntryConsumer) {
+		this.contextProvider.get()
+				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.from(Tables.CALLPEERCONNECTIONS)
+				.where(Tables.CALLPEERCONNECTIONS.CALLID.in(select(Tables.CALLPEERCONNECTIONS.CALLID).from(Tables.CALLPEERCONNECTIONS)
+						.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnectionUUID)))))
+				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
+					@Override
+					public void next(Record2<byte[], byte[]> record) {
+						if (record.value1() == null) {
+							return;
+						}
+						CallPeerConnectionsEntry entry = new CallPeerConnectionsEntry();
+						entry.peerConnectionUUID = UUIDAdapter.toUUID(record.value1());
+						entry.callUUID = UUIDAdapter.toUUID(record.value2());
+						callPeerConnectionsEntryConsumer.accept(entry);
+					}
+				});
 	}
 
 	public void getCallMapsForPeerConnectionUUIDs(@NonNull @NotNull Iterable<UUID> peerConnectionUUIDs,

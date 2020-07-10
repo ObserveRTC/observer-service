@@ -97,10 +97,11 @@ USE `ObserveRTC`;
  
 CREATE TABLE `WebRTCObserver`.`PeerconnectionSSRCs`
 (
-    `observer`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
+    `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
     `SSRC`            BIGINT NOT NULL COMMENT 'The SSRC identifier',
-    `peerConnection`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
+    `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
     `updated`         TIMESTAMP,
+    `timeZone`        VARCHAR (64),
     PRIMARY KEY (`observer`,`SSRC`),
     INDEX `PeerconnectionSSRCs_updated_index` (`updated`),
     INDEX `PeerconnectionSSRCs_peerConnection_index` (`peerConnection`)    

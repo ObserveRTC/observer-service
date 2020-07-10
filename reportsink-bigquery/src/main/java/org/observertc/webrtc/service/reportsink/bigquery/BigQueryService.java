@@ -2,9 +2,7 @@ package org.observertc.webrtc.service.reportsink.bigquery;
 
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
-import javax.inject.Singleton;
 
-@Singleton
 public class BigQueryService {
 	private final String projectName;
 	private final String datasetName;

@@ -1,18 +1,16 @@
-package org.observertc.webrtc.service.processors;
+package org.observertc.webrtc.service.mediastreams;
 
+import io.micronaut.context.annotation.Prototype;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
-import javax.inject.Singleton;
 import org.apache.kafka.streams.kstream.Aggregator;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.observertc.webrtc.common.reports.MediaStreamSampleRecordReport;
 import org.observertc.webrtc.common.reports.MediaStreamSampleReport;
-import org.observertc.webrtc.service.mediastreams.InboundStreamAggregator;
-import org.observertc.webrtc.service.mediastreams.OutboundStreamAggregator;
 import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
 import org.observertc.webrtc.service.samples.MediaStreamAggregate;
 import org.observertc.webrtc.service.samples.MediaStreamAggregateRecord;
@@ -21,10 +19,9 @@ import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Singleton
-public class MediaStreamSampleReportPunctuator implements Punctuator {
-
-	private static final Logger logger = LoggerFactory.getLogger(MediaStreamSampleReportPunctuator.class);
+@Prototype
+public class MediaStreamsReporter implements Punctuator {
+	private static final Logger logger = LoggerFactory.getLogger(MediaStreamsReporter.class);
 
 	private LocalDateTime reported = null;
 	private Map<MediaStreamKey, MediaStreamAggregate> mediaStreamSamples;
@@ -32,10 +29,14 @@ public class MediaStreamSampleReportPunctuator implements Punctuator {
 	private final Aggregator<MediaStreamKey, OutboundStreamMeasurement, MediaStreamAggregate> outboundStreamMeasurementAggregator;
 	private ProcessorContext context;
 
-	public MediaStreamSampleReportPunctuator() {
+	public MediaStreamsReporter() {
 		this.mediaStreamSamples = new HashMap<>();
 		this.inboundStreamMeasurementAggregator = new InboundStreamAggregator();
 		this.outboundStreamMeasurementAggregator = new OutboundStreamAggregator();
+	}
+
+	public void init(ProcessorContext context, MediaStreamEvaluatorConfiguration configuration) {
+		this.context = context;
 	}
 
 	@Override
@@ -49,8 +50,8 @@ public class MediaStreamSampleReportPunctuator implements Punctuator {
 				it.remove();
 				continue;
 			}
-			MediaStreamSampleReport mediaStreamSample = this.makeMediaStreamSampleReport(mediaStreamKey, mediaStreamAggregate);
-			this.context.forward(mediaStreamKey.observerUUID, mediaStreamSample);
+			MediaStreamSampleReport report = this.makeMediaStreamSampleReport(mediaStreamKey, mediaStreamAggregate);
+			this.context.forward(mediaStreamKey.observerUUID, report);
 			this.cleanMediaStream(mediaStreamAggregate);
 		}
 
@@ -73,10 +74,6 @@ public class MediaStreamSampleReportPunctuator implements Punctuator {
 		mediaStreamAggregateRecord.max = null;
 		mediaStreamAggregateRecord.presented = 0;
 		mediaStreamAggregateRecord.empty = 0;
-	}
-
-	public void init(ProcessorContext context) {
-		this.context = context;
 	}
 
 	public void addInboundStreamMeasurement(MediaStreamKey key, InboundStreamMeasurement measurement) {
@@ -153,5 +150,4 @@ public class MediaStreamSampleReportPunctuator implements Punctuator {
 		final Long empty = Long.valueOf(record.empty);
 		return MediaStreamSampleRecordReport.of(minimum, maximum, presented, empty, sum);
 	}
-
 }

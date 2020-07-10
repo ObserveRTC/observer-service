@@ -6,15 +6,16 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.DetachedPeerConnection;
+import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 
 public class DetachedPeerConnectionEntry implements BigQueryEntry {
-	public static DetachedPeerConnectionEntry from(DetachedPeerConnection detachedPeerConnection) {
+
+	public static DetachedPeerConnectionEntry from(DetachedPeerConnectionReport detachedPeerConnectionReport) {
 		return new DetachedPeerConnectionEntry()
-				.withObserverUUID(detachedPeerConnection.getObserverUUID())
-				.withPeerConnectionUUID(detachedPeerConnection.getPeerConnectionUUID())
-				.withCallUUID(detachedPeerConnection.getCallUUID())
-				.withDetachedTimestamp(detachedPeerConnection.getTimestamp());
+				.withObserverUUID(detachedPeerConnectionReport.observerUUID)
+				.withPeerConnectionUUID(detachedPeerConnectionReport.peerConnectionUUID)
+				.withCallUUID(detachedPeerConnectionReport.callUUID)
+				.withDetachedTimestamp(detachedPeerConnectionReport.detached);
 	}
 
 	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";

@@ -27,16 +27,21 @@ kafkaTopics:
   createIfNotExists: True
   replicationFactorOnCreating: 1
   partitionNumberOnCreating: 1
+  observertcReports: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
   observeRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:observeRTCCIceStatsSample}
   observeRTCMediaStreamStatsSamples: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS_SAMPLES:observeRTCMediaStreamStatsSamples}
   observerSSRCPeerConnectionSamples: ${KAFKA_TOPICS_OBSERVER_SSRC_PEER_CONNECTION_SAMPLES:observerSSRCPeerConnectionSamples}
 ---
-evaluations:
-  mediaStreamSamples:
-    reportPeriodInS: 30
-  callIdentifier:
-    process: ObserverSSRCBasedProcessor
-    maxIdleInS: 30
+webrtcStatsReceiver:
+  useServerTimestamp: True
+---
+mediaStreamEvaluator:
+  reportPeriodInS: 30
+  callReports:
+    enabled: True
+    peerConnectionMaxIdleTimeInS: 30
+    runPeriodInS: 10
+
 ---
 reportsink:
   configFile: ${REPORTSINK_CONFIG_FILE_NAME:`/reportsink.yml`}

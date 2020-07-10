@@ -5,32 +5,33 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.MediaStreamSample;
+import org.observertc.webrtc.common.reports.MediaStreamSampleReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class MediaStreamSampleEntry implements BigQueryEntry {
 
-	public static MediaStreamSampleEntry from(MediaStreamSample mediaStreamSample) {
-		MediaStreamSampleEntryRecord bytesReceivedRecord = MediaStreamSampleEntryRecord.from(mediaStreamSample.getBytesReceivedRecord());
-		MediaStreamSampleEntryRecord bytesSentRecord = MediaStreamSampleEntryRecord.from(mediaStreamSample.getBytesSentRecord());
-		MediaStreamSampleEntryRecord packetsSent = MediaStreamSampleEntryRecord.from(mediaStreamSample.getPacketsSentRecord());
-		MediaStreamSampleEntryRecord packetsReceived = MediaStreamSampleEntryRecord.from(mediaStreamSample.getPacketsReceivedRecord());
-		MediaStreamSampleEntryRecord packetsLost = MediaStreamSampleEntryRecord.from(mediaStreamSample.getPacketsLostRecord());
-		MediaStreamSampleEntryRecord RTT = MediaStreamSampleEntryRecord.from(mediaStreamSample.getRTTRecord());
+
+	public static MediaStreamSampleEntry from(MediaStreamSampleReport report) {
+		MediaStreamSampleEntryRecord bytesReceivedRecord = MediaStreamSampleEntryRecord.from(report.bytesReceivedRecord);
+		MediaStreamSampleEntryRecord bytesSentRecord = MediaStreamSampleEntryRecord.from(report.bytesSentRecord);
+		MediaStreamSampleEntryRecord packetsSent = MediaStreamSampleEntryRecord.from(report.packetsSentRecord);
+		MediaStreamSampleEntryRecord packetsReceived = MediaStreamSampleEntryRecord.from(report.packetsReceivedRecord);
+		MediaStreamSampleEntryRecord packetsLost = MediaStreamSampleEntryRecord.from(report.packetsLostRecord);
+		MediaStreamSampleEntryRecord RTT = MediaStreamSampleEntryRecord.from(report.RTTRecord);
 		return new MediaStreamSampleEntry()
-				.withObserverUUID(mediaStreamSample.getObserverUUID())
-				.withPeerConnectionUUID(mediaStreamSample.getPeerConnectionUUID())
-				.withSSRC(mediaStreamSample.getSSRC())
+				.withObserverUUID(report.observerUUID)
+				.withPeerConnectionUUID(report.peerConnectionUUID)
+				.withSSRC(report.SSRC)
 				.withBytesReceivedRecord(bytesReceivedRecord)
 				.withBytesSentRecord(bytesSentRecord)
 				.withPacketsLostRecord(packetsLost)
 				.withPacketsReceivedRecord(packetsReceived)
 				.withPacketsSentRecord(packetsSent)
 				.withRTTRecord(RTT)
-				.withFirstSampledTimestamp(mediaStreamSample.getFirstSampleTimestamp())
-				.withLastSampledTimestamp(mediaStreamSample.getLastSampleTimestamp());
+				.withFirstSampledTimestamp(report.firstSample)
+				.withLastSampledTimestamp(report.lastSample);
 	}
 
 	private static Logger logger = LoggerFactory.getLogger(MediaStreamSampleEntry.class);
@@ -47,7 +48,6 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 	private static final String LAST_SAMPLE_TIMESTAMP_FIELD_NAME = "lastSample";
 
 	private final Map<String, Object> values = new HashMap<>();
-
 
 	public MediaStreamSampleEntry withObserverUUID(UUID value) {
 		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
