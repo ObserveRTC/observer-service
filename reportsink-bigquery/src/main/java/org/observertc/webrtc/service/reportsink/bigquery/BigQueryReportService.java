@@ -3,7 +3,6 @@ package org.observertc.webrtc.service.reportsink.bigquery;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
@@ -12,10 +11,11 @@ import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.MediaStreamSampleReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.common.reports.ReportType;
+import org.observertc.webrtc.common.reportsink.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BigQueryReportService implements Processor<UUID, Report> {
+public class BigQueryReportService implements ReportService {
 
 	private static final Logger logger = LoggerFactory.getLogger(BigQueryReportService.class);
 

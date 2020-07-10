@@ -2,19 +2,10 @@ package org.observertc.webrtc.service.reportsink.bigquery;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.observertc.webrtc.common.reports.MediaStreamSampleRecord;
 import org.observertc.webrtc.common.reports.MediaStreamSampleRecordReport;
 
 
 public class MediaStreamSampleEntryRecord {
-	public static MediaStreamSampleEntryRecord from(MediaStreamSampleRecord source) {
-		return new MediaStreamSampleEntryRecord()
-				.withPresented(source.getPresented())
-				.withEmpty(source.getEmpty())
-				.withMaximum(source.getMaximum())
-				.withMinimum(source.getMinimum())
-				.withSum(source.getSum());
-	}
 
 	public static MediaStreamSampleEntryRecord from(MediaStreamSampleRecordReport record) {
 		return new MediaStreamSampleEntryRecord()

@@ -6,18 +6,9 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.JoinedPeerConnection;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 
 public class JoinedPeerConnectionEntry implements BigQueryEntry {
-
-	public static JoinedPeerConnectionEntry from(JoinedPeerConnection joinedPeerConnection) {
-		return new JoinedPeerConnectionEntry()
-				.withObserverUUID(joinedPeerConnection.getObserverUUID())
-				.withPeerConnectionUUID(joinedPeerConnection.getPeerConnectionUUID())
-				.withCallUUID(joinedPeerConnection.getCallUUID())
-				.withJoinedTimestamp(joinedPeerConnection.getTimestamp());
-	}
 
 
 	public static JoinedPeerConnectionEntry from(JoinedPeerConnectionReport joinedPeerConnection) {

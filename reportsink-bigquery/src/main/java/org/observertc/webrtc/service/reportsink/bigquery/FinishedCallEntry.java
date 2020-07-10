@@ -6,16 +6,9 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.FinishedCall;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 
 public class FinishedCallEntry implements BigQueryEntry {
-	public static FinishedCallEntry from(FinishedCall finishedCall) {
-		return new FinishedCallEntry()
-				.withObserverUUID(finishedCall.getObserverUUID())
-				.setCallUUID(finishedCall.getCallUUID())
-				.setFinishedTimestamp(finishedCall.getTimestamp());
-	}
 
 	public static FinishedCallEntry from(FinishedCallReport finishedCallReport) {
 		return new FinishedCallEntry()

@@ -5,7 +5,6 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.observertc.webrtc.common.reports.MediaStreamSample;
 import org.observertc.webrtc.common.reports.MediaStreamSampleReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,26 +12,6 @@ import org.slf4j.LoggerFactory;
 
 public class MediaStreamSampleEntry implements BigQueryEntry {
 
-	public static MediaStreamSampleEntry from(MediaStreamSample mediaStreamSample) {
-		MediaStreamSampleEntryRecord bytesReceivedRecord = MediaStreamSampleEntryRecord.from(mediaStreamSample.getBytesReceivedRecord());
-		MediaStreamSampleEntryRecord bytesSentRecord = MediaStreamSampleEntryRecord.from(mediaStreamSample.getBytesSentRecord());
-		MediaStreamSampleEntryRecord packetsSent = MediaStreamSampleEntryRecord.from(mediaStreamSample.getPacketsSentRecord());
-		MediaStreamSampleEntryRecord packetsReceived = MediaStreamSampleEntryRecord.from(mediaStreamSample.getPacketsReceivedRecord());
-		MediaStreamSampleEntryRecord packetsLost = MediaStreamSampleEntryRecord.from(mediaStreamSample.getPacketsLostRecord());
-		MediaStreamSampleEntryRecord RTT = MediaStreamSampleEntryRecord.from(mediaStreamSample.getRTTRecord());
-		return new MediaStreamSampleEntry()
-				.withObserverUUID(mediaStreamSample.getObserverUUID())
-				.withPeerConnectionUUID(mediaStreamSample.getPeerConnectionUUID())
-				.withSSRC(mediaStreamSample.getSSRC())
-				.withBytesReceivedRecord(bytesReceivedRecord)
-				.withBytesSentRecord(bytesSentRecord)
-				.withPacketsLostRecord(packetsLost)
-				.withPacketsReceivedRecord(packetsReceived)
-				.withPacketsSentRecord(packetsSent)
-				.withRTTRecord(RTT)
-				.withFirstSampledTimestamp(mediaStreamSample.getFirstSampleTimestamp())
-				.withLastSampledTimestamp(mediaStreamSample.getLastSampleTimestamp());
-	}
 
 	public static MediaStreamSampleEntry from(MediaStreamSampleReport report) {
 		MediaStreamSampleEntryRecord bytesReceivedRecord = MediaStreamSampleEntryRecord.from(report.bytesReceivedRecord);

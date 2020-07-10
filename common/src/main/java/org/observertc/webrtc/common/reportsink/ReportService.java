@@ -1,9 +1,9 @@
 package org.observertc.webrtc.common.reportsink;
 
-public interface ReportService {
+import java.util.UUID;
+import org.apache.kafka.streams.processor.Processor;
+import org.observertc.webrtc.common.reports.Report;
 
-	CallReports getCallReports();
-
-	MediaStreamReports getMediaStreamReports();
+public interface ReportService extends Processor<UUID, Report> {
 
 }
