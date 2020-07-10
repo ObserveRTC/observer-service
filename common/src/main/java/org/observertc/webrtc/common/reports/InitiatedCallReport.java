@@ -1,5 +1,6 @@
 package org.observertc.webrtc.common.reports;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -16,6 +17,11 @@ public class InitiatedCallReport extends Report {
 		return result;
 	}
 
+	@JsonCreator
+	public InitiatedCallReport() {
+		super(ReportType.INITIATED_CALL);
+	}
+	
 	public UUID observerUUID;
 	public UUID callUUID;
 	

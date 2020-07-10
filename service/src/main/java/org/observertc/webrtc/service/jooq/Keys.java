@@ -71,13 +71,13 @@ public class Keys {
     }
 
     private static class UniqueKeys0 {
-        public static final UniqueKey<CallpeerconnectionsRecord> KEY_CALLPEERCONNECTIONS_PRIMARY = Internal.createUniqueKey(Callpeerconnections.CALLPEERCONNECTIONS, "KEY_CallPeerconnections_PRIMARY", new TableField[] { Callpeerconnections.CALLPEERCONNECTIONS.PEERCONNECTION }, true);
+        public static final UniqueKey<CallpeerconnectionsRecord> KEY_CALLPEERCONNECTIONS_PRIMARY = Internal.createUniqueKey(Callpeerconnections.CALLPEERCONNECTIONS, "KEY_CallPeerconnections_PRIMARY", new TableField[] { Callpeerconnections.CALLPEERCONNECTIONS.PEERCONNECTIONUUID }, true);
         public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_PRIMARY = Internal.createUniqueKey(Observers.OBSERVERS, "KEY_Observers_PRIMARY", new TableField[] { Observers.OBSERVERS.ID }, true);
         public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_UUID = Internal.createUniqueKey(Observers.OBSERVERS, "KEY_Observers_uuid", new TableField[] { Observers.OBSERVERS.UUID }, true);
         public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_PRIMARY = Internal.createUniqueKey(Organisations.ORGANISATIONS, "KEY_Organisations_PRIMARY", new TableField[] { Organisations.ORGANISATIONS.ID }, true);
         public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_UUID = Internal.createUniqueKey(Organisations.ORGANISATIONS, "KEY_Organisations_uuid", new TableField[] { Organisations.ORGANISATIONS.UUID }, true);
         public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_NAME = Internal.createUniqueKey(Organisations.ORGANISATIONS, "KEY_Organisations_name", new TableField[] { Organisations.ORGANISATIONS.NAME }, true);
-        public static final UniqueKey<PeerconnectionssrcsRecord> KEY_PEERCONNECTIONSSRCS_PRIMARY = Internal.createUniqueKey(Peerconnectionssrcs.PEERCONNECTIONSSRCS, "KEY_PeerconnectionSSRCs_PRIMARY", new TableField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.OBSERVER, Peerconnectionssrcs.PEERCONNECTIONSSRCS.SSRC }, true);
+        public static final UniqueKey<PeerconnectionssrcsRecord> KEY_PEERCONNECTIONSSRCS_PRIMARY = Internal.createUniqueKey(Peerconnectionssrcs.PEERCONNECTIONSSRCS, "KEY_PeerConnectionSSRCs_PRIMARY", new TableField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Peerconnectionssrcs.PEERCONNECTIONSSRCS.SSRC }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = Internal.createUniqueKey(Users.USERS, "KEY_Users_PRIMARY", new TableField[] { Users.USERS.ID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_UUID = Internal.createUniqueKey(Users.USERS, "KEY_Users_uuid", new TableField[] { Users.USERS.UUID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_USERNAME = Internal.createUniqueKey(Users.USERS, "KEY_Users_username", new TableField[] { Users.USERS.USERNAME }, true);

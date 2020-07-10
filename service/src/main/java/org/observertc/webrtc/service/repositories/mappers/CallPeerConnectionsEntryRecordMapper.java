@@ -10,8 +10,8 @@ public class CallPeerConnectionsEntryRecordMapper<R extends Record> implements R
 	@Override
 	public CallPeerConnectionsEntry map(R record) {
 		CallPeerConnectionsEntry result = new CallPeerConnectionsEntry();
-		byte[] peerConnectionUUID = record.getValue(Tables.CALLPEERCONNECTIONS.PEERCONNECTION);
-		byte[] callUUID = record.getValue(Tables.CALLPEERCONNECTIONS.CALLID);
+		byte[] peerConnectionUUID = record.getValue(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID);
+		byte[] callUUID = record.getValue(Tables.CALLPEERCONNECTIONS.CALLUUID);
 		result.callUUID = UUIDAdapter.toUUID(callUUID);
 		result.peerConnectionUUID = UUIDAdapter.toUUID(peerConnectionUUID);
 		return result;

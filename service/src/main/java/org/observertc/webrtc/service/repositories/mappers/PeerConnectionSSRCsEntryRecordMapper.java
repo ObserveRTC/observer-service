@@ -10,11 +10,12 @@ public class PeerConnectionSSRCsEntryRecordMapper<R extends Record> implements R
 	@Override
 	public PeerConnectionSSRCsEntry map(R record) {
 		PeerConnectionSSRCsEntry result = new PeerConnectionSSRCsEntry();
-		byte[] peerConnectionUUID = record.getValue(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION);
-		byte[] observerUUID = record.getValue(Tables.PEERCONNECTIONSSRCS.OBSERVER);
+		byte[] peerConnectionUUID = record.getValue(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID);
+		byte[] observerUUID = record.getValue(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID);
 		result.SSRC = record.getValue(Tables.PEERCONNECTIONSSRCS.SSRC);
 		result.peerConnectionUUID = UUIDAdapter.toUUID(peerConnectionUUID);
 		result.observerUUID = UUIDAdapter.toUUID(observerUUID);
+		result.updated = record.getValue(Tables.PEERCONNECTIONSSRCS.UPDATED);
 		return result;
 	}
 }

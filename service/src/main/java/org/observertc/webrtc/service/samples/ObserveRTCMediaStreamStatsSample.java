@@ -16,4 +16,11 @@ public class ObserveRTCMediaStreamStatsSample {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime sampled;
+
+	@Override
+	public String toString() {
+		StringBuffer result = new StringBuffer();
+		result.append(String.format("observerUUID: %s, sampled: %s, RTCStats: %s", this.observerUUID, this.sampled, this.rtcStats));
+		return result.toString();
+	}
 }

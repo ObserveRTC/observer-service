@@ -13,7 +13,6 @@ import org.observertc.webrtc.service.dto.webextrapp.RTCStatsType;
 import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
 import org.observertc.webrtc.service.samples.MediaStreamKey;
 import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
-import org.observertc.webrtc.service.samples.ObserverSSRCPeerConnectionSample;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,21 +25,14 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 	private final CallsReporter callsReporter;
 	private final MediaStreamsReporter mediaStreamsReporter;
 	private final MediaStreamEvaluatorConfiguration configuration;
-	private final ObserverSSRCBasedCallIDCleanPunctuator callIDCleanPunctuator;
-	private final ObserverSSRCBasedCallIdentifyPunctuator callIdentifyPunctuator;
 
 	public MediaStreamEvaluator(
-			ObserverSSRCBasedCallIDCleanPunctuator callIDCleanPunctuator,
-			ObserverSSRCBasedCallIdentifyPunctuator callIdentifyPunctuator,
-
 			MediaStreamEvaluatorConfiguration configuration,
 			CallsReporter callsReporter,
 			MediaStreamsReporter mediaStreamsReporter) {
 		this.callsReporter = callsReporter;
 		this.mediaStreamsReporter = mediaStreamsReporter;
 		this.configuration = configuration;
-		this.callIDCleanPunctuator = callIDCleanPunctuator;
-		this.callIdentifyPunctuator = callIdentifyPunctuator;
 	}
 
 	@Override
@@ -50,11 +42,7 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 
 		if (this.configuration.callReports.enabled) {
 			int updatePeriodInS = this.configuration.callReports.runPeriodInS;
-//			context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callsReporter);
-			this.callIdentifyPunctuator.init(context);
-			this.callIDCleanPunctuator.init(context);
-			context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callIdentifyPunctuator);
-			context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callIDCleanPunctuator);
+			context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callsReporter);
 		}
 		int updatePeriodInS = this.configuration.reportPeriodInS;
 		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.mediaStreamsReporter);
@@ -70,14 +58,7 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 				}
 			}
 		}
-		// TODO: debug it!
-//		this.callsReporter.add(peerConnectionUUID, sample);
-		ObserverSSRCPeerConnectionSample connectionSample = new ObserverSSRCPeerConnectionSample();
-		connectionSample.observerUUID = sample.observerUUID;
-		connectionSample.peerConnectionUUID = peerConnectionUUID;
-		connectionSample.SSRC = SSRC;
-		connectionSample.timestamp = sample.sampled;
-		this.callIdentifyPunctuator.add(connectionSample);
+		this.callsReporter.add(peerConnectionUUID, sample);
 		MediaStreamKey key = MediaStreamKey.of(sample.observerUUID, peerConnectionUUID, SSRC);
 		RTCStats rtcStats = sample.rtcStats;
 		if (rtcStats == null) {

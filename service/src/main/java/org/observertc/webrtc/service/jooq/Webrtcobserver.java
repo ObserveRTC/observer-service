@@ -24,7 +24,7 @@ import org.observertc.webrtc.service.jooq.tables.Users;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Webrtcobserver extends SchemaImpl {
 
-    private static final long serialVersionUID = -34836686;
+    private static final long serialVersionUID = -1750568603;
 
     /**
      * The reference instance of <code>WebRTCObserver</code>
@@ -52,7 +52,7 @@ public class Webrtcobserver extends SchemaImpl {
     public final Organisations ORGANISATIONS = Organisations.ORGANISATIONS;
 
     /**
-     * SSRCMap
+     * A table to map peer connections to SSRCs
      */
     public final Peerconnectionssrcs PEERCONNECTIONSSRCS = Peerconnectionssrcs.PEERCONNECTIONSSRCS;
 

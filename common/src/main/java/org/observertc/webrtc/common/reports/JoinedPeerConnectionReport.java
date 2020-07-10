@@ -1,5 +1,6 @@
 package org.observertc.webrtc.common.reports;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -15,6 +16,11 @@ public class JoinedPeerConnectionReport extends Report {
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.joined = joined;
 		return result;
+	}
+	
+	@JsonCreator
+	public JoinedPeerConnectionReport() {
+		super(ReportType.JOINED_PEER_CONNECTION);
 	}
 
 	public UUID observerUUID;

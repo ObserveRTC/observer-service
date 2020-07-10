@@ -39,7 +39,7 @@ public class Tables {
     public static final Organisations ORGANISATIONS = Organisations.ORGANISATIONS;
 
     /**
-     * SSRCMap
+     * A table to map peer connections to SSRCs
      */
     public static final Peerconnectionssrcs PEERCONNECTIONSSRCS = Peerconnectionssrcs.PEERCONNECTIONSSRCS;
 
