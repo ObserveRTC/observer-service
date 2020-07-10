@@ -93,26 +93,25 @@ INSERT INTO `ObserverOrganisations`
 VALUES (1,
         1);
 
-USE `ObserveRTC`;
- 
-CREATE TABLE `WebRTCObserver`.`PeerconnectionSSRCs`
+CREATE TABLE `WebRTCObserver`.`PeerConnectionSSRCs`
 (
     `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
-    `SSRC`            BIGINT NOT NULL COMMENT 'The SSRC identifier',
+    `SSRC`                BIGINT NOT NULL COMMENT 'The SSRC identifier',
     `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
-    `updated`         TIMESTAMP,
-    `timeZone`        VARCHAR (64),
-    PRIMARY KEY (`observer`,`SSRC`),
+    `updated`             TIMESTAMP,
+    `timeZone`            VARCHAR (64),
+    PRIMARY KEY (`peerConnectionUUID`,`SSRC`),
     INDEX `PeerconnectionSSRCs_updated_index` (`updated`),
-    INDEX `PeerconnectionSSRCs_peerConnection_index` (`peerConnection`)    
+    INDEX `PeerconnectionSSRCs_peerConnection_index` (`peerConnectionUUID`),
+    INDEX `PeerconnectionSSRCs_observer_ssrc_index` (`observerUUID`, `SSRC`)  
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='SSRCMap';
+  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to map peer connections to SSRCs';
   
 CREATE TABLE `WebRTCObserver`.`CallPeerconnections`
 (
-    `peerConnection` BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
-    `callID`         BINARY(16) NOT NULL COMMENT 'The UUID of the call the peer connection belongs to',
-    PRIMARY KEY (`peerConnection`)
+    `peerConnectionUUID` BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
+    `callUUID`         BINARY(16) NOT NULL COMMENT 'The UUID of the call the peer connection belongs to',
+    PRIMARY KEY (`peerConnectionUUID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='CallIDs';
   

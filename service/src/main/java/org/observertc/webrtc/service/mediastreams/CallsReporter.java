@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -67,7 +68,15 @@ public class CallsReporter implements Punctuator {
 	public void add(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
 		RTCStats rtcStats = sample.rtcStats;
 		if (rtcStats.getSsrc() == null) {
-			logger.warn("Null SSRC appeared");
+			logger.warn("SSRC cannot be null. {}", rtcStats.toString());
+			return;
+		}
+		if (sample.observerUUID == null) {
+			logger.warn("ObserverUUID for sample cannot be null {}", sample.toString());
+			return;
+		}
+		if (sample.sampled == null) {
+			logger.warn("timestamp for sample cannot be null {}", sample.toString());
 			return;
 		}
 		Long SSRC = sample.rtcStats.getSsrc().longValue();
@@ -86,15 +95,125 @@ public class CallsReporter implements Punctuator {
 	 */
 	@Override
 	public void punctuate(long timestamp) {
-		this.identifyCalls();
-//		this.cleanCalls();
+		try {
+			this.doPunctuate(timestamp);
+		} catch (Exception ex) {
+			logger.error("Call Report process is failed", ex);
+		}
+	}
 
+	/**
+	 * The actual process we execute
+	 *
+	 * @param timestamp
+	 */
+	private void doPunctuate(long timestamp) {
+		this.identifyCalls();
+		this.cleanCalls();
+		this.updates.clear();
 	}
 
 
+	/**
+	 * Updates the table for SSRC to peer connections and
+	 * returns with peerConnectionUUID, ObserverUUID entries for which
+	 * peerConnectoin a callUUID is missing
+	 *
+	 * @return
+	 */
+	private void identifyCalls() {
+		if (this.updates.size() < 1) {
+			return;
+		}
+		Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections = new HashMap<>();
+
+		Iterable<PeerConnectionSSRCsEntry> entities = () ->
+				this.updates.entrySet().stream()
+						.map(entry -> {
+							PeerConnectionSSRCsEntry mappedEntry = new PeerConnectionSSRCsEntry();
+							MediaStreamKey mediaStreamKey = entry.getKey();
+							Pair<LocalDateTime, LocalDateTime> sampled = entry.getValue();
+							LocalDateTime firstUpdate = sampled.getValue0();
+							LocalDateTime lastUpdate = sampled.getValue1();
+							mappedEntry.observerUUID = mediaStreamKey.observerUUID;
+							mappedEntry.peerConnectionUUID = mediaStreamKey.peerConnectionUUID;
+							mappedEntry.SSRC = mediaStreamKey.SSRC;
+							mappedEntry.updated = lastUpdate;
+							updatedPeerConnections.put(mappedEntry.peerConnectionUUID, Pair.with(mappedEntry.observerUUID, firstUpdate));
+							return mappedEntry;
+						}).iterator();
+		this.peerConnectionSSRCsRepository.saveAll(entities);
+		Set<UUID> reportedPeerConnections = new HashSet<>();
+		this.peerConnectionSSRCsRepository.findCallUUIDs(updatedPeerConnections.keySet(),
+				callPeerConnectionsEntry -> {
+					if (callPeerConnectionsEntry.callUUID != null) {
+						return;
+					}
+					UUID peerConnectionUUID = callPeerConnectionsEntry.peerConnectionUUID;
+					if (reportedPeerConnections.contains(peerConnectionUUID)) {
+						return;
+					}
+					Pair<UUID, LocalDateTime> pair = updatedPeerConnections.get(peerConnectionUUID);
+					UUID observerUUID = pair.getValue0();
+					LocalDateTime firstSampled = pair.getValue1();
+					reportNewPeerConnection(peerConnectionUUID, observerUUID, firstSampled);
+					reportedPeerConnections.add(peerConnectionUUID);
+				});
+	}
+
+	private void reportNewPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime firstSampled) {
+		AtomicReference<UUID> callUUIDHolder = new AtomicReference<>(null);
+		Set<UUID> peers = new HashSet<>();
+		this.peerConnectionSSRCsRepository.findPeers(peerConnectionUUID, peerUUID -> {
+			peers.add(peerUUID);
+		});
+		AtomicReference<LocalDateTime> firstSampleHolder = new AtomicReference<>(firstSampled);
+		if (0 < peers.size()) {
+			// There are no peers for this! Do we have a one participant conference?
+			// Is it somebody who joined before?
+			// TODO: check if it is a new or a lonely peer connection who expired earlier
+		}
+		peers.add(peerConnectionUUID);
+		this.peerConnectionSSRCsRepository.findCallUUIDs(peers, callPeerConnectionsEntry -> {
+			if (callPeerConnectionsEntry.updated != null) {
+				if (callPeerConnectionsEntry.updated.compareTo(firstSampleHolder.get()) < 0) {
+					firstSampleHolder.set(callPeerConnectionsEntry.updated);
+				}
+			}
+
+			if (callPeerConnectionsEntry.callUUID == null) {
+				return;
+			}
+			UUID callUUIDCandidate = callPeerConnectionsEntry.callUUID;
+			if (callUUIDHolder.get() == null) {
+				callUUIDHolder.set(callUUIDCandidate);
+				return;
+			}
+			UUID selectedCallUUID = callUUIDHolder.get();
+			if (!selectedCallUUID.equals(callUUIDCandidate)) {
+				logger.warn("Different CallUUID is found ({}, {}) for peers belongs to the same Observer, SSRC", callUUIDCandidate,
+						selectedCallUUID);
+			}
+		});
+		UUID callUUID = callUUIDHolder.get();
+		if (callUUID == null) {
+			callUUID = UUID.randomUUID();
+			InitiatedCallReport initiatedCallReport = InitiatedCallReport.of(observerUUID, callUUID, firstSampleHolder.get());
+			this.context.forward(observerUUID, initiatedCallReport);
+		}
+		CallPeerConnectionsEntry callPeerConnectionsEntry = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUID, firstSampled);
+		JoinedPeerConnectionReport joinedPeerConnectionReport = JoinedPeerConnectionReport.of(observerUUID, callUUID, peerConnectionUUID, firstSampled);
+		this.context.forward(observerUUID, joinedPeerConnectionReport);
+		this.callPeerConnectionsRepository.save(callPeerConnectionsEntry);
+	}
+
 	private void cleanCalls() {
 		LocalDateTime threshold = LocalDateTime.now(ZoneOffset.UTC).minus(this.peerConnectionMaxIdleTimeInS, ChronoUnit.SECONDS);
-		Iterable<PeerConnectionSSRCsEntry> expiredPeerConnectionSSRCsEntries = this.peerConnectionSSRCsRepository.findExpiredPeerConnections(threshold);
+		List<PeerConnectionSSRCsEntry> expiredPeerConnectionSSRCsEntries =
+				this.peerConnectionSSRCsRepository.findExpiredPeerConnections(threshold);
+		if (expiredPeerConnectionSSRCsEntries.size() < 1) {
+			return;
+		}
 		Iterator<PeerConnectionSSRCsEntry> it = expiredPeerConnectionSSRCsEntries.iterator();
 		Set<UUID> checkedPeerConnections = new HashSet<>();
 		for (; it.hasNext(); ) {
@@ -142,88 +261,5 @@ public class CallsReporter implements Punctuator {
 		this.callPeerConnectionsRepository.delete(deleteCandidate);
 	}
 
-	/**
-	 * Updates the table for SSRC to peer connections and
-	 * returns with peerConnectionUUID, ObserverUUID entries for which
-	 * peerConnectoin a callUUID is missing
-	 *
-	 * @return
-	 */
-	private void identifyCalls() {
-		if (this.updates.size() < 1) {
-			return;
-		}
-		Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections = new HashMap<>();
-		Iterable<PeerConnectionSSRCsEntry> entities = () ->
-				this.updates.entrySet().stream().map(entry -> {
-					PeerConnectionSSRCsEntry mappedEntry = new PeerConnectionSSRCsEntry();
-					MediaStreamKey mediaStreamKey = entry.getKey();
-					Pair<LocalDateTime, LocalDateTime> sampled = entry.getValue();
-					LocalDateTime firstUpdate = sampled.getValue0();
-					LocalDateTime lastUpdate = sampled.getValue1();
-					mappedEntry.observerUUID = mediaStreamKey.observerUUID;
-					mappedEntry.peerConnectionUUID = mediaStreamKey.peerConnectionUUID;
-					mappedEntry.SSRC = mediaStreamKey.SSRC;
-					mappedEntry.updated = lastUpdate;
-					updatedPeerConnections.put(mappedEntry.peerConnectionUUID, Pair.with(mappedEntry.observerUUID, firstUpdate));
-					return mappedEntry;
-				}).iterator();
-		this.peerConnectionSSRCsRepository.saveAll(entities);
 
-		this.peerConnectionSSRCsRepository.findCallUUIDs(updatedPeerConnections.keySet(),
-				callPeerConnectionsEntry -> {
-					if (callPeerConnectionsEntry.callUUID != null) {
-						updatedPeerConnections.remove(callPeerConnectionsEntry.peerConnectionUUID);
-						return;
-					}
-					UUID peerConnectionUUID = callPeerConnectionsEntry.peerConnectionUUID;
-					Pair<UUID, LocalDateTime> pair = updatedPeerConnections.get(peerConnectionUUID);
-					UUID observerUUID = pair.getValue0();
-					LocalDateTime firstSampled = pair.getValue1();
-					reportNewPeerConnection(peerConnectionUUID, observerUUID, firstSampled);
-				});
-	}
-
-	private void reportNewPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime firstSampled) {
-		AtomicReference<UUID> callUUIDHolder = new AtomicReference<>(null);
-		Set<UUID> peers = new HashSet<>();
-		this.peerConnectionSSRCsRepository.findPeers(peerConnectionUUID, peerUUID -> {
-			peers.add(peerUUID);
-		});
-		AtomicReference<LocalDateTime> firstSampleHolder = new AtomicReference<>(null);
-		this.peerConnectionSSRCsRepository.findCallUUIDs(peers, callPeerConnectionsEntry -> {
-			if (callPeerConnectionsEntry.updated != null) {
-				if (firstSampleHolder.get() == null) {
-					firstSampleHolder.set(callPeerConnectionsEntry.updated);
-				} else if (callPeerConnectionsEntry.updated.compareTo(firstSampleHolder.get()) < 0) {
-					firstSampleHolder.set(callPeerConnectionsEntry.updated);
-				}
-			}
-
-			if (callPeerConnectionsEntry.callUUID == null) {
-				return;
-			}
-			UUID callUUIDCandidate = callPeerConnectionsEntry.callUUID;
-			if (callUUIDHolder.get() == null) {
-				callUUIDHolder.set(callUUIDCandidate);
-				return;
-			}
-			UUID selectedCallUUID = callUUIDHolder.get();
-			if (!selectedCallUUID.equals(callUUIDCandidate)) {
-				logger.warn("Different CallUUID is found ({}, {}) for peers belongs to the same Observer, SSRC", callUUIDCandidate,
-						selectedCallUUID);
-			}
-		});
-		UUID callUUID = callUUIDHolder.get();
-		if (callUUID == null) {
-			callUUID = UUID.randomUUID();
-			CallPeerConnectionsEntry callPeerConnectionsEntry = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUID,
-					firstSampleHolder.get());
-			InitiatedCallReport initiatedCallReport = InitiatedCallReport.of(observerUUID, callUUID, firstSampleHolder.get());
-			this.callPeerConnectionsRepository.save(callPeerConnectionsEntry);
-			this.context.forward(observerUUID, initiatedCallReport);
-		}
-		JoinedPeerConnectionReport joinedPeerConnectionReport = JoinedPeerConnectionReport.of(observerUUID, callUUID, peerConnectionUUID, firstSampled);
-		this.context.forward(observerUUID, joinedPeerConnectionReport);
-	}
 }

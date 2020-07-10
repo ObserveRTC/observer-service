@@ -82,7 +82,7 @@ public class KafkaStreamsFactory {
 	@Named(REPORT_SERVICE_PROCESS)
 	public KStream<UUID, Report> makeReportServiceProcessor(ConfiguredStreamBuilder builder) {
 		// TODO: make the entire feature enabling configurable
-		boolean enabled = true;
+		boolean enabled = false;
 		if (!enabled) {
 			return null;
 		}

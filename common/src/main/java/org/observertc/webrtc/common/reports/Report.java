@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@JsonSubTypes.Type(value = MediaStreamSampleReport.class, name = "MEDIA_STREAM_SAMPLE"),
 })
 public class Report {
+
 	/**
 	 * Holds information for polymorphic deserialization
 	 */
@@ -25,6 +26,10 @@ public class Report {
 
 	@JsonCreator
 	public Report() {
+	}
+
+	protected Report(ReportType type) {
+		this.type = type;
 	}
 
 	public ReportType getType() {

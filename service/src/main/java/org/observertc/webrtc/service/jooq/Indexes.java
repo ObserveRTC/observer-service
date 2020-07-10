@@ -25,6 +25,7 @@ public class Indexes {
 
     public static final Index OBSERVERORGANISATIONS_OBSERVER_ID = Indexes0.OBSERVERORGANISATIONS_OBSERVER_ID;
     public static final Index OBSERVERORGANISATIONS_ORGANISATION_ID = Indexes0.OBSERVERORGANISATIONS_ORGANISATION_ID;
+    public static final Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX = Indexes0.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX;
     public static final Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX = Indexes0.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX;
     public static final Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX = Indexes0.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX;
     public static final Index USERS_USERS_USERNAME_KEY = Indexes0.USERS_USERS_USERNAME_KEY;
@@ -36,7 +37,8 @@ public class Indexes {
     private static class Indexes0 {
         public static Index OBSERVERORGANISATIONS_OBSERVER_ID = Internal.createIndex("observer_id", Observerorganisations.OBSERVERORGANISATIONS, new OrderField[] { Observerorganisations.OBSERVERORGANISATIONS.OBSERVER_ID }, false);
         public static Index OBSERVERORGANISATIONS_ORGANISATION_ID = Internal.createIndex("organisation_id", Observerorganisations.OBSERVERORGANISATIONS, new OrderField[] { Observerorganisations.OBSERVERORGANISATIONS.ORGANISATION_ID }, false);
-        public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX = Internal.createIndex("PeerconnectionSSRCs_peerConnection_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTION }, false);
+        public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX = Internal.createIndex("PeerconnectionSSRCs_observer_ssrc_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.OBSERVERUUID, Peerconnectionssrcs.PEERCONNECTIONSSRCS.SSRC }, false);
+        public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX = Internal.createIndex("PeerconnectionSSRCs_peerConnection_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID }, false);
         public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX = Internal.createIndex("PeerconnectionSSRCs_updated_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.UPDATED }, false);
         public static Index USERS_USERS_USERNAME_KEY = Internal.createIndex("users_username_key", Users.USERS, new OrderField[] { Users.USERS.USERNAME }, false);
     }

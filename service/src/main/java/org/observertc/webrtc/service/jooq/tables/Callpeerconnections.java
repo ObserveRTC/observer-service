@@ -30,7 +30,7 @@ import org.observertc.webrtc.service.jooq.tables.records.CallpeerconnectionsReco
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Callpeerconnections extends TableImpl<CallpeerconnectionsRecord> {
 
-    private static final long serialVersionUID = -103692243;
+    private static final long serialVersionUID = 253750184;
 
     /**
      * The reference instance of <code>WebRTCObserver.CallPeerconnections</code>
@@ -46,14 +46,14 @@ public class Callpeerconnections extends TableImpl<CallpeerconnectionsRecord> {
     }
 
     /**
-     * The column <code>WebRTCObserver.CallPeerconnections.peerConnection</code>. The UUID of the peer connection the SSRC belongs to
+     * The column <code>WebRTCObserver.CallPeerconnections.peerConnectionUUID</code>. The UUID of the peer connection the SSRC belongs to
      */
-    public final TableField<CallpeerconnectionsRecord, byte[]> PEERCONNECTION = createField(DSL.name("peerConnection"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the peer connection the SSRC belongs to");
+    public final TableField<CallpeerconnectionsRecord, byte[]> PEERCONNECTIONUUID = createField(DSL.name("peerConnectionUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the peer connection the SSRC belongs to");
 
     /**
-     * The column <code>WebRTCObserver.CallPeerconnections.callID</code>. The UUID of the call the peer connection belongs to
+     * The column <code>WebRTCObserver.CallPeerconnections.callUUID</code>. The UUID of the call the peer connection belongs to
      */
-    public final TableField<CallpeerconnectionsRecord, byte[]> CALLID = createField(DSL.name("callID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the call the peer connection belongs to");
+    public final TableField<CallpeerconnectionsRecord, byte[]> CALLUUID = createField(DSL.name("callUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the call the peer connection belongs to");
 
     /**
      * Create a <code>WebRTCObserver.CallPeerconnections</code> table reference

@@ -34,7 +34,6 @@ import org.jooq.Record3;
 import org.jooq.Record4;
 import org.jooq.RecordHandler;
 import org.jooq.Row2;
-import org.jooq.Row3;
 import org.jooq.impl.DSL;
 import org.observertc.webrtc.service.UUIDAdapter;
 import org.observertc.webrtc.service.jooq.Tables;
@@ -78,7 +77,7 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	public <S extends PeerConnectionSSRCsEntry> S save(@NonNull @Valid @NotNull S entity) {
 		this.contextProvider.get()
 				.insertInto(Tables.PEERCONNECTIONSSRCS)
-				.columns(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.UPDATED)
+				.columns(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.values(entity.SSRC, UUIDAdapter.toBytes(entity.peerConnectionUUID), UUIDAdapter.toBytes(entity.observerUUID), LocalDateTime.now())
 				.execute();
 		return entity;
@@ -89,11 +88,11 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	public <S extends PeerConnectionSSRCsEntry> S update(@NonNull @Valid @NotNull S entity) {
 		this.contextProvider.get()
 				.insertInto(Tables.PEERCONNECTIONSSRCS)
-				.columns(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.UPDATED)
+				.columns(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.values(entity.SSRC, UUIDAdapter.toBytes(entity.observerUUID), UUIDAdapter.toBytes(entity.peerConnectionUUID), LocalDateTime.now())
 				.onDuplicateKeyUpdate()
-				.set(Tables.PEERCONNECTIONSSRCS.OBSERVER, UUIDAdapter.toBytes(entity.observerUUID))
-				.set(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, UUIDAdapter.toBytes(entity.peerConnectionUUID))
+				.set(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, UUIDAdapter.toBytes(entity.observerUUID))
+				.set(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, UUIDAdapter.toBytes(entity.peerConnectionUUID))
 				.set(Tables.PEERCONNECTIONSSRCS.SSRC, entity.SSRC)
 				.set(Tables.PEERCONNECTIONSSRCS.UPDATED, LocalDateTime.now())
 				.execute();
@@ -103,10 +102,10 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	public Iterable<UUID> getPeerConnections(Long SSRC, UUID observerUUID) {
 		List<UUID> result = new ArrayList<>();
 		DSLContext context = this.contextProvider.get();
-		context.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION)
+		context.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID)
 				.from(Tables.PEERCONNECTIONSSRCS)
 				.where(Tables.PEERCONNECTIONSSRCS.SSRC.eq(SSRC)
-						.and(Tables.PEERCONNECTIONSSRCS.OBSERVER.eq(UUIDAdapter.toBytes(observerUUID))))
+						.and(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID.eq(UUIDAdapter.toBytes(observerUUID))))
 				.fetchInto(new RecordHandler<Record1<byte[]>>() {
 					@Override
 					public void next(Record1<byte[]> record) {
@@ -132,13 +131,13 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 				}).collect(Collectors.toList());
 
 		Iterator<Record4<Long, byte[], byte[], byte[]>> resultIterator = this.contextProvider.get().select(Tables.PEERCONNECTIONSSRCS.SSRC,
-				Tables.PEERCONNECTIONSSRCS.OBSERVER,
-				Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
-				Tables.CALLPEERCONNECTIONS.CALLID)
+				Tables.PEERCONNECTIONSSRCS.OBSERVERUUID,
+				Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+				Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.leftJoin(Tables.PEERCONNECTIONSSRCS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(Tables.CALLPEERCONNECTIONS.PEERCONNECTION))
-				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER).in(whereConditions))
-				.orderBy(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION).iterator();
+				.leftJoin(Tables.PEERCONNECTIONSSRCS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.eq(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID))
+				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID).in(whereConditions))
+				.orderBy(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID).iterator();
 
 		return () -> new Iterator<Quartet<Long, UUID, UUID, UUID>>() {
 			@Override
@@ -172,12 +171,13 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 			whereCondition.add(row(ssrc, observerUUID));
 		}
 		Map<Pair<Long, UUID>, Set<CallPeerConnectionsEntry>> collectedResult = new HashMap<>();
-		this.contextProvider.get().select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
-				Tables.CALLPEERCONNECTIONS.CALLID)
+		this.contextProvider.get().select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+				Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.leftJoin(Tables.CALLPEERCONNECTIONS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION))
-				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER).in(whereCondition))
-				.orderBy(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION)
+				.leftJoin(Tables.CALLPEERCONNECTIONS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.eq(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID))
+				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID).in(whereCondition))
+				.orderBy(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID,
+						Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID)
 				.fetchInto(new RecordHandler<Record4<Long, byte[], byte[], byte[]>>() {
 					@Override
 					public void next(Record4<Long, byte[], byte[], byte[]> record) {
@@ -220,15 +220,15 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 		Supplier<InsertValuesStep4<PeerconnectionssrcsRecord, Long, byte[], byte[], LocalDateTime>> sqlSupplier = () -> {
 			return this.contextProvider.get().insertInto(Tables.PEERCONNECTIONSSRCS,
 					Tables.PEERCONNECTIONSSRCS.SSRC,
-					Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
-					Tables.PEERCONNECTIONSSRCS.OBSERVER,
+					Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+					Tables.PEERCONNECTIONSSRCS.OBSERVERUUID,
 					Tables.PEERCONNECTIONSSRCS.UPDATED);
 		};
 		Consumer<InsertValuesStep4<PeerconnectionssrcsRecord, Long, byte[], byte[], LocalDateTime>> executor = (sql) -> {
 			sql.onDuplicateKeyUpdate()
 					.set(Tables.PEERCONNECTIONSSRCS.SSRC, values(Tables.PEERCONNECTIONSSRCS.SSRC))
-					.set(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, values(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION))
-					.set(Tables.PEERCONNECTIONSSRCS.OBSERVER, values(Tables.PEERCONNECTIONSSRCS.OBSERVER))
+					.set(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, values(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID))
+					.set(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, values(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID))
 					.set(Tables.PEERCONNECTIONSSRCS.UPDATED, values(Tables.PEERCONNECTIONSSRCS.UPDATED))
 					.execute();
 		};
@@ -238,7 +238,7 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 			PeerConnectionSSRCsEntry peerConnectionSSRCsEntry = it.next();
 			byte[] peerConnection = UUIDAdapter.toBytes(peerConnectionSSRCsEntry.peerConnectionUUID);
 			byte[] observer = UUIDAdapter.toBytes(peerConnectionSSRCsEntry.observerUUID);
-			sql.values(peerConnectionSSRCsEntry.SSRC, peerConnection, observer, LocalDateTime.now());
+			sql.values(peerConnectionSSRCsEntry.SSRC, peerConnection, observer, peerConnectionSSRCsEntry.updated);
 			if (BULK_QUERY_MAX_ITEMS < count) {
 				executor.accept(sql);
 				sql = sqlSupplier.get();
@@ -256,9 +256,11 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	@Override
 	public Optional<PeerConnectionSSRCsEntry> findById(@NonNull @NotNull Triplet<Long, UUID, UUID> ssrcPCObserver) {
 		return this.contextProvider.get()
-				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER)
+				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+						Tables.PEERCONNECTIONSSRCS.OBSERVERUUID)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER)
+				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+						Tables.PEERCONNECTIONSSRCS.OBSERVERUUID)
 						.eq(ssrcPCObserver.getValue0(),
 								UUIDAdapter.toBytes(ssrcPCObserver.getValue1()),
 								UUIDAdapter.toBytes(ssrcPCObserver.getValue2())))
@@ -270,10 +272,11 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 							  Consumer<CallPeerConnectionsEntry> callMapEntryConsumer) {
 		Stream<byte[]> peerConnectionUUIDsStream = StreamSupport.stream(peerConnectionUUIDs.spliterator(), false).map(UUIDAdapter::toBytes);
 		this.contextProvider.get()
-				.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID, Tables.PEERCONNECTIONSSRCS.UPDATED)
+				.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID,
+						Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.leftJoin(Tables.CALLPEERCONNECTIONS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(Tables.CALLPEERCONNECTIONS.PEERCONNECTION))
-				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.in(peerConnectionUUIDsStream.collect(Collectors.toList())))
+				.leftJoin(Tables.CALLPEERCONNECTIONS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.eq(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID))
+				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.in(peerConnectionUUIDsStream.collect(Collectors.toList())))
 				.fetchInto(new RecordHandler<Record3<byte[], byte[], LocalDateTime>>() {
 					@Override
 					public void next(Record3<byte[], byte[], LocalDateTime> record) {
@@ -291,14 +294,21 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 
 	}
 
+	/**
+	 * Find peers for the provided peer connection based on observe ssrc a peer connection has.
+	 * NOTE: The peer connection the search is based on will not appear in the result list
+	 *
+	 * @param peerConnectionUUID
+	 * @param peerConnectionUUIDConsumer
+	 */
 	public void findPeers(@NonNull @NotNull UUID peerConnectionUUID,
 						  Consumer<UUID> peerConnectionUUIDConsumer) {
 		this.contextProvider.get()
-				.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION)
+				.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.where(row(Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.SSRC)
-						.in(select(Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.SSRC).from(Tables.PEERCONNECTIONSSRCS)
-								.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnectionUUID)))))
+				.where(row(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.SSRC)
+						.in(select(Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.SSRC).from(Tables.PEERCONNECTIONSSRCS)
+								.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytes(peerConnectionUUID)))))
 				.fetchInto(new RecordHandler<Record1<byte[]>>() {
 					@Override
 					public void next(Record1<byte[]> record) {
@@ -321,7 +331,8 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 				this.contextProvider.get()
 						.selectOne()
 						.from(Tables.PEERCONNECTIONSSRCS)
-						.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER)
+						.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+								Tables.PEERCONNECTIONSSRCS.OBSERVERUUID)
 								.eq(ssrcPCObserver.getValue0(),
 										UUIDAdapter.toBytes(ssrcPCObserver.getValue1()),
 										UUIDAdapter.toBytes(ssrcPCObserver.getValue2())))
@@ -335,7 +346,7 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 		int bulkSize = DEFAULT_BULK_SIZE;
 		return () -> this.jooqExecuteWrapper.retrieve((context, offset) -> {
 			List<PeerConnectionSSRCsEntry> result = context
-					.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.UPDATED)
+					.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.UPDATED)
 					.from(Tables.PEERCONNECTIONSSRCS)
 					.orderBy(Tables.PEERCONNECTIONSSRCS.UPDATED.desc())
 					.offset(offset)
@@ -357,7 +368,8 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	@Override
 	public void deleteById(@NonNull @NotNull Triplet<Long, UUID, UUID> ssrcPCObserver) {
 		this.contextProvider.get().deleteFrom(Tables.PEERCONNECTIONSSRCS)
-				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER)
+				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+						Tables.PEERCONNECTIONSSRCS.OBSERVERUUID)
 						.eq(ssrcPCObserver.getValue0(),
 								UUIDAdapter.toBytes(ssrcPCObserver.getValue1()),
 								UUIDAdapter.toBytes(ssrcPCObserver.getValue2())))
@@ -368,7 +380,8 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	@Override
 	public void delete(@NonNull @NotNull PeerConnectionSSRCsEntry entity) {
 		this.contextProvider.get().deleteFrom(Tables.PEERCONNECTIONSSRCS)
-				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.OBSERVER)
+				.where(row(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+						Tables.PEERCONNECTIONSSRCS.OBSERVERUUID)
 						.eq(entity.SSRC,
 								UUIDAdapter.toBytes(entity.peerConnectionUUID),
 								UUIDAdapter.toBytes(entity.observerUUID)))
@@ -380,18 +393,17 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 		Iterator<? extends PeerConnectionSSRCsEntry> iterator = entities.iterator();
 		this.jooqExecuteWrapper.execute((context, items) -> {
 
-			List<Row3<Long, byte[], byte[]>> keys = StreamSupport.stream(entities
+			List<Row2<byte[], Long>> keys = StreamSupport.stream(entities
 					.spliterator(), false)
-					.map(entity -> row(entity.SSRC,
+					.map(entity -> row(
 							UUIDAdapter.toBytes(entity.peerConnectionUUID),
-							UUIDAdapter.toBytes(entity.observerUUID))
-					).collect(Collectors.toList());
+							entity.SSRC
+					)).collect(Collectors.toList());
 
 			context
 					.deleteFrom(Tables.PEERCONNECTIONSSRCS)
-					.where(row(Tables.PEERCONNECTIONSSRCS.SSRC,
-							Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
-							Tables.PEERCONNECTIONSSRCS.OBSERVER).in(keys))
+					.where(row(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+							Tables.PEERCONNECTIONSSRCS.SSRC).in(keys))
 					.execute();
 		}, entities);
 	}
@@ -401,9 +413,9 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 		this.contextProvider.get().deleteFrom(Tables.PEERCONNECTIONSSRCS);
 	}
 
-	public Iterable<PeerConnectionSSRCsEntry> findExpiredPeerConnections(LocalDateTime threshold) {
+	public List<PeerConnectionSSRCsEntry> findExpiredPeerConnections(LocalDateTime threshold) {
 		return this.contextProvider.get()
-				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
+				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
 						Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.from(Tables.PEERCONNECTIONSSRCS)
 				.where(Tables.PEERCONNECTIONSSRCS.UPDATED.lt(threshold))
@@ -413,16 +425,16 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 
 	public Iterable<PeerConnectionSSRCsEntry> findEntries(UUID peerConnectionUUID) {
 		return this.contextProvider.get()
-				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
+				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
 						Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnectionUUID)))
+				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytes(peerConnectionUUID)))
 				.fetchInto(PeerConnectionSSRCsEntry.class);
 	}
 
 	public void getSSRCMapEntriesOlderThan(LocalDateTime borderTime, Consumer<PeerConnectionSSRCsEntry> ssrcMapEntryConsumer) {
 		this.contextProvider.get()
-				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.PEERCONNECTIONSSRCS.UPDATED)
+				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVERUUID, Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.from(Tables.PEERCONNECTIONSSRCS)
 				.where(Tables.PEERCONNECTIONSSRCS.UPDATED.lt(borderTime))
 				.fetchInto(new RecordHandler<Record4<Long, byte[], byte[], LocalDateTime>>() {
@@ -441,7 +453,7 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 	public void removePeerConnections(Collection<UUID> peerConnectionUUIDs) {
 		this.contextProvider.get()
 				.deleteFrom(Tables.PEERCONNECTIONSSRCS)
-				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.in(
+				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID.in(
 						peerConnectionUUIDs.stream().map(UUIDAdapter::toBytes).collect(Collectors.toList())
 				)).execute();
 	}

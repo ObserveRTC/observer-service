@@ -19,15 +19,16 @@ public class MediaStreamKey {
 
 	@Override
 	public int hashCode() {
-		int result = 31;
+		final int prime = 31;
+		int result = 1;
 		if (this.observerUUID != null) {
-			result += this.observerUUID.hashCode();
+			result += prime * this.observerUUID.hashCode();
 		}
 		if (this.peerConnectionUUID != null) {
-			result += this.peerConnectionUUID.hashCode();
+			result += prime * this.peerConnectionUUID.hashCode();
 		}
 		if (this.SSRC != null) {
-			result += this.SSRC.hashCode();
+			result += prime * this.SSRC.hashCode();
 		}
 		return result;
 //		return this.observerUUID.hashCode() + this.peerConnectionUUID.hashCode() + this.SSRC.hashCode();

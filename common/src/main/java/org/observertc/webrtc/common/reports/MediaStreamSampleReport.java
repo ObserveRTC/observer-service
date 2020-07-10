@@ -1,5 +1,6 @@
 package org.observertc.webrtc.common.reports;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -35,6 +36,11 @@ public class MediaStreamSampleReport extends Report {
 		result.packetsReceivedRecord = packetsReceivedRecord;
 		result.packetsSentRecord = packetsSentRecord;
 		return result;
+	}
+
+	@JsonCreator
+	public MediaStreamSampleReport() {
+		super(ReportType.MEDIA_STREAM_SAMPLE);
 	}
 
 	public UUID peerConnectionUUID;

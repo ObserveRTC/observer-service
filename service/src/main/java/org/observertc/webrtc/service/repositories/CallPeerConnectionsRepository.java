@@ -62,7 +62,7 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	public <S extends CallPeerConnectionsEntry> S save(@NonNull @Valid @NotNull S entity) {
 		this.contextProvider.get()
 				.insertInto(Tables.CALLPEERCONNECTIONS)
-				.columns(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.columns(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.values(UUIDAdapter.toBytes(entity.peerConnectionUUID), UUIDAdapter.toBytes(entity.callUUID))
 				.execute();
 		return entity;
@@ -73,11 +73,11 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	public <S extends CallPeerConnectionsEntry> S update(@NonNull @Valid @NotNull S entity) {
 		this.contextProvider.get()
 				.insertInto(Tables.CALLPEERCONNECTIONS)
-				.columns(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.columns(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.values(UUIDAdapter.toBytes(entity.peerConnectionUUID), UUIDAdapter.toBytes(entity.callUUID))
 				.onDuplicateKeyUpdate()
-				.set(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, UUIDAdapter.toBytes(entity.peerConnectionUUID))
-				.set(Tables.CALLPEERCONNECTIONS.CALLID, UUIDAdapter.toBytes(entity.callUUID))
+				.set(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, UUIDAdapter.toBytes(entity.peerConnectionUUID))
+				.set(Tables.CALLPEERCONNECTIONS.CALLUUID, UUIDAdapter.toBytes(entity.callUUID))
 				.execute();
 		return entity;
 	}
@@ -88,8 +88,8 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 		this.jooqExecuteWrapper.execute((context, items) -> {
 			InsertValuesStep2<CallpeerconnectionsRecord, byte[], byte[]> sql =
 					context.insertInto(Tables.CALLPEERCONNECTIONS,
-							Tables.CALLPEERCONNECTIONS.PEERCONNECTION,
-							Tables.CALLPEERCONNECTIONS.CALLID);
+							Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID,
+							Tables.CALLPEERCONNECTIONS.CALLUUID);
 			for (Iterator<S> it = items.iterator(); it.hasNext(); ) {
 				CallPeerConnectionsEntry callPeerConnectionsEntry = it.next();
 				byte[] peerConnection = UUIDAdapter.toBytes(callPeerConnectionsEntry.peerConnectionUUID);
@@ -97,8 +97,8 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 				sql.values(peerConnection, callUUID);
 			}
 			sql.onDuplicateKeyUpdate()
-					.set(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, values(Tables.CALLPEERCONNECTIONS.PEERCONNECTION))
-					.set(Tables.CALLPEERCONNECTIONS.CALLID, values(Tables.CALLPEERCONNECTIONS.CALLID))
+					.set(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, values(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID))
+					.set(Tables.CALLPEERCONNECTIONS.CALLUUID, values(Tables.CALLPEERCONNECTIONS.CALLUUID))
 					.execute();
 		}, entities);
 		return entities;
@@ -108,18 +108,18 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	@Override
 	public Optional<CallPeerConnectionsEntry> findById(@NonNull @NotNull UUID peerConnection) {
 		return this.contextProvider.get()
-				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnection)))
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytes(peerConnection)))
 				.fetchOptionalInto(CallPeerConnectionsEntry.class);
 	}
 
 	public void fetchByIds(@NonNull @NotNull Iterable<UUID> peerConnections, Consumer<CallPeerConnectionsEntry> callMapEntryConsumer) {
 		Stream<byte[]> peerConnectionUUIDs = StreamSupport.stream(peerConnections.spliterator(), false).map(UUIDAdapter::toBytes);
 		this.contextProvider.get()
-				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.in(peerConnectionUUIDs.collect(Collectors.toList())))
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.in(peerConnectionUUIDs.collect(Collectors.toList())))
 				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
 					@Override
 					public void next(Record2<byte[], byte[]> record) {
@@ -135,10 +135,10 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 		Stream<byte[]> callUUIDsStream = StreamSupport.stream(callUUIDs.spliterator(), false).map(UUIDAdapter::toBytes);
 		List<byte[]> list = callUUIDsStream.collect(Collectors.toList());
 		this.contextProvider.get()
-				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.CALLID.in(list))
-//				.where(Tables.CALLMAP.CALLID.in(callUUIDsStream.collect(Collectors.toList())))
+				.where(Tables.CALLPEERCONNECTIONS.CALLUUID.in(list))
+//				.where(Tables.CALLMAP.CALLUUID.in(callUUIDsStream.collect(Collectors.toList())))
 				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
 					@Override
 					public void next(Record2<byte[], byte[]> record) {
@@ -154,10 +154,10 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	public void findPeers(@NonNull @NotNull UUID peerConnectionUUID,
 						  Consumer<CallPeerConnectionsEntry> callPeerConnectionsEntryConsumer) {
 		this.contextProvider.get()
-				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.CALLID.in(select(Tables.CALLPEERCONNECTIONS.CALLID).from(Tables.CALLPEERCONNECTIONS)
-						.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnectionUUID)))))
+				.where(Tables.CALLPEERCONNECTIONS.CALLUUID.in(select(Tables.CALLPEERCONNECTIONS.CALLUUID).from(Tables.CALLPEERCONNECTIONS)
+						.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytes(peerConnectionUUID)))))
 				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
 					@Override
 					public void next(Record2<byte[], byte[]> record) {
@@ -176,9 +176,9 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 												  Consumer<CallPeerConnectionsEntry> callMapEntryConsumer) {
 		Stream<byte[]> peerConnectionUUIDsStream = StreamSupport.stream(peerConnectionUUIDs.spliterator(), false).map(UUIDAdapter::toBytes);
 		this.contextProvider.get()
-				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+				.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 				.from(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.in(peerConnectionUUIDsStream.collect(Collectors.toList())))
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.in(peerConnectionUUIDsStream.collect(Collectors.toList())))
 				.fetchInto(new RecordHandler<Record2<byte[], byte[]>>() {
 					@Override
 					public void next(Record2<byte[], byte[]> record) {
@@ -197,7 +197,7 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 				this.contextProvider.get()
 						.selectOne()
 						.from(Tables.PEERCONNECTIONSSRCS)
-						.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnection)))
+						.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytes(peerConnection)))
 		);
 	}
 
@@ -208,7 +208,7 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 		int bulkSize = DEFAULT_BULK_SIZE;
 		return () -> this.jooqExecuteWrapper.retrieve((context, offset) -> {
 			List<CallPeerConnectionsEntry> result = context
-					.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID)
+					.select(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID)
 					.from(Tables.CALLPEERCONNECTIONS)
 					.offset(offset)
 					.limit(bulkSize)
@@ -229,15 +229,15 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	@Override
 	public void deleteById(@NonNull @NotNull UUID peerConnection) {
 		this.contextProvider.get().deleteFrom(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnection)))
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytes(peerConnection)))
 				.execute();
 
 	}
 
 	@Override
 	public void delete(@NonNull @NotNull CallPeerConnectionsEntry entity) {
-		this.contextProvider.get().deleteFrom(Tables.PEERCONNECTIONSSRCS)
-				.where(row(Tables.CALLPEERCONNECTIONS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID).eq(UUIDAdapter.toBytes(entity.peerConnectionUUID), UUIDAdapter.toBytes(entity.callUUID)))
+		this.contextProvider.get().deleteFrom(Tables.CALLPEERCONNECTIONS)
+				.where(row(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID).eq(UUIDAdapter.toBytes(entity.peerConnectionUUID), UUIDAdapter.toBytes(entity.callUUID)))
 				.execute();
 	}
 
@@ -255,8 +255,8 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 
 			context
 					.deleteFrom(Tables.CALLPEERCONNECTIONS)
-					.where(row(Tables.CALLPEERCONNECTIONS.PEERCONNECTION,
-							Tables.CALLPEERCONNECTIONS.CALLID).in(keys))
+					.where(row(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID,
+							Tables.CALLPEERCONNECTIONS.CALLUUID).in(keys))
 					.execute();
 		}, entities);
 	}
@@ -273,7 +273,7 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 		}
 
 		this.contextProvider.get().deleteFrom(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID
 						.in(peerConnectionsInBytes))
 				.execute();
 	}
@@ -281,11 +281,11 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	public Map<UUID, Integer> retrieveParticipantsPerCalls(Set<UUID> peerConnections) {
 		Map<UUID, Integer> result = new HashMap<>();
 		this.contextProvider.get()
-				.select(Tables.CALLPEERCONNECTIONS.CALLID, DSL.count(Tables.CALLPEERCONNECTIONS.PEERCONNECTION))
+				.select(Tables.CALLPEERCONNECTIONS.CALLUUID, DSL.count(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID))
 				.from(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.in(
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.in(
 						peerConnections.stream().map(UUIDAdapter::toBytes).collect(Collectors.toList())
-				)).groupBy(Tables.CALLPEERCONNECTIONS.CALLID).fetchInto(new RecordHandler<Record2<byte[], Integer>>() {
+				)).groupBy(Tables.CALLPEERCONNECTIONS.CALLUUID).fetchInto(new RecordHandler<Record2<byte[], Integer>>() {
 			@Override
 			public void next(Record2<byte[], Integer> record) {
 				result.put(UUIDAdapter.toUUID(record.value1()), record.value2());
@@ -297,7 +297,7 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 	public void removePeerConnections(Set<UUID> peerConnections) {
 		this.contextProvider.get()
 				.deleteFrom(Tables.CALLPEERCONNECTIONS)
-				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTION.in(
+				.where(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID.in(
 						peerConnections.stream().map(UUIDAdapter::toBytes).collect(Collectors.toList())
 				)).execute();
 	}

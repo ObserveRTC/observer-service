@@ -8,74 +8,88 @@ import java.time.LocalDateTime;
 
 import org.jooq.Field;
 import org.jooq.Record2;
-import org.jooq.Record4;
-import org.jooq.Row4;
+import org.jooq.Record5;
+import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
 
 
 /**
- * SSRCMap
+ * A table to map peer connections to SSRCs
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<PeerconnectionssrcsRecord> implements Record4<byte[], Long, byte[], LocalDateTime> {
+public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<PeerconnectionssrcsRecord> implements Record5<byte[], Long, byte[], LocalDateTime, String> {
 
-    private static final long serialVersionUID = -354476892;
+    private static final long serialVersionUID = -299152464;
 
     /**
-     * Setter for <code>WebRTCObserver.PeerconnectionSSRCs.observer</code>. The UUID of the observer the SSRC belongs to
+     * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.observerUUID</code>. The UUID of the observer the SSRC belongs to
      */
-    public void setObserver(byte[] value) {
+    public void setObserveruuid(byte[] value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>WebRTCObserver.PeerconnectionSSRCs.observer</code>. The UUID of the observer the SSRC belongs to
+     * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.observerUUID</code>. The UUID of the observer the SSRC belongs to
      */
-    public byte[] getObserver() {
+    public byte[] getObserveruuid() {
         return (byte[]) get(0);
     }
 
     /**
-     * Setter for <code>WebRTCObserver.PeerconnectionSSRCs.SSRC</code>. The SSRC identifier
+     * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.SSRC</code>. The SSRC identifier
      */
     public void setSsrc(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>WebRTCObserver.PeerconnectionSSRCs.SSRC</code>. The SSRC identifier
+     * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.SSRC</code>. The SSRC identifier
      */
     public Long getSsrc() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>WebRTCObserver.PeerconnectionSSRCs.peerConnection</code>. The UUID of the peer connection the SSRC belongs to
+     * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.peerConnectionUUID</code>. The UUID of the peer connection the SSRC belongs to
      */
-    public void setPeerconnection(byte[] value) {
+    public void setPeerconnectionuuid(byte[] value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>WebRTCObserver.PeerconnectionSSRCs.peerConnection</code>. The UUID of the peer connection the SSRC belongs to
+     * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.peerConnectionUUID</code>. The UUID of the peer connection the SSRC belongs to
      */
-    public byte[] getPeerconnection() {
+    public byte[] getPeerconnectionuuid() {
         return (byte[]) get(2);
     }
 
     /**
-     * Setter for <code>WebRTCObserver.PeerconnectionSSRCs.updated</code>.
+     * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.updated</code>.
      */
     public void setUpdated(LocalDateTime value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>WebRTCObserver.PeerconnectionSSRCs.updated</code>.
+     * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.updated</code>.
      */
     public LocalDateTime getUpdated() {
         return (LocalDateTime) get(3);
+    }
+
+    /**
+     * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.timeZone</code>.
+     */
+    public void setTimezone(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.timeZone</code>.
+     */
+    public String getTimezone() {
+        return (String) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -88,22 +102,22 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Record5 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<byte[], Long, byte[], LocalDateTime> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row5<byte[], Long, byte[], LocalDateTime, String> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     @Override
-    public Row4<byte[], Long, byte[], LocalDateTime> valuesRow() {
-        return (Row4) super.valuesRow();
+    public Row5<byte[], Long, byte[], LocalDateTime, String> valuesRow() {
+        return (Row5) super.valuesRow();
     }
 
     @Override
     public Field<byte[]> field1() {
-        return Peerconnectionssrcs.PEERCONNECTIONSSRCS.OBSERVER;
+        return Peerconnectionssrcs.PEERCONNECTIONSSRCS.OBSERVERUUID;
     }
 
     @Override
@@ -113,7 +127,7 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public Field<byte[]> field3() {
-        return Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTION;
+        return Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID;
     }
 
     @Override
@@ -122,8 +136,13 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     @Override
+    public Field<String> field5() {
+        return Peerconnectionssrcs.PEERCONNECTIONSSRCS.TIMEZONE;
+    }
+
+    @Override
     public byte[] component1() {
-        return getObserver();
+        return getObserveruuid();
     }
 
     @Override
@@ -133,7 +152,7 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public byte[] component3() {
-        return getPeerconnection();
+        return getPeerconnectionuuid();
     }
 
     @Override
@@ -142,8 +161,13 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     @Override
+    public String component5() {
+        return getTimezone();
+    }
+
+    @Override
     public byte[] value1() {
-        return getObserver();
+        return getObserveruuid();
     }
 
     @Override
@@ -153,7 +177,7 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public byte[] value3() {
-        return getPeerconnection();
+        return getPeerconnectionuuid();
     }
 
     @Override
@@ -162,8 +186,13 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     @Override
+    public String value5() {
+        return getTimezone();
+    }
+
+    @Override
     public PeerconnectionssrcsRecord value1(byte[] value) {
-        setObserver(value);
+        setObserveruuid(value);
         return this;
     }
 
@@ -175,7 +204,7 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public PeerconnectionssrcsRecord value3(byte[] value) {
-        setPeerconnection(value);
+        setPeerconnectionuuid(value);
         return this;
     }
 
@@ -186,11 +215,18 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     @Override
-    public PeerconnectionssrcsRecord values(byte[] value1, Long value2, byte[] value3, LocalDateTime value4) {
+    public PeerconnectionssrcsRecord value5(String value) {
+        setTimezone(value);
+        return this;
+    }
+
+    @Override
+    public PeerconnectionssrcsRecord values(byte[] value1, Long value2, byte[] value3, LocalDateTime value4, String value5) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
+        value5(value5);
         return this;
     }
 
@@ -208,12 +244,13 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     /**
      * Create a detached, initialised PeerconnectionssrcsRecord
      */
-    public PeerconnectionssrcsRecord(byte[] observer, Long ssrc, byte[] peerconnection, LocalDateTime updated) {
+    public PeerconnectionssrcsRecord(byte[] observeruuid, Long ssrc, byte[] peerconnectionuuid, LocalDateTime updated, String timezone) {
         super(Peerconnectionssrcs.PEERCONNECTIONSSRCS);
 
-        set(0, observer);
+        set(0, observeruuid);
         set(1, ssrc);
-        set(2, peerconnection);
+        set(2, peerconnectionuuid);
         set(3, updated);
+        set(4, timezone);
     }
 }

@@ -13,7 +13,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row4;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -28,15 +28,15 @@ import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionssrcsReco
 
 
 /**
- * SSRCMap
+ * A table to map peer connections to SSRCs
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
 
-    private static final long serialVersionUID = 841057791;
+    private static final long serialVersionUID = -307008057;
 
     /**
-     * The reference instance of <code>WebRTCObserver.PeerconnectionSSRCs</code>
+     * The reference instance of <code>WebRTCObserver.PeerConnectionSSRCs</code>
      */
     public static final Peerconnectionssrcs PEERCONNECTIONSSRCS = new Peerconnectionssrcs();
 
@@ -49,41 +49,46 @@ public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
     }
 
     /**
-     * The column <code>WebRTCObserver.PeerconnectionSSRCs.observer</code>. The UUID of the observer the SSRC belongs to
+     * The column <code>WebRTCObserver.PeerConnectionSSRCs.observerUUID</code>. The UUID of the observer the SSRC belongs to
      */
-    public final TableField<PeerconnectionssrcsRecord, byte[]> OBSERVER = createField(DSL.name("observer"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the observer the SSRC belongs to");
+    public final TableField<PeerconnectionssrcsRecord, byte[]> OBSERVERUUID = createField(DSL.name("observerUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the observer the SSRC belongs to");
 
     /**
-     * The column <code>WebRTCObserver.PeerconnectionSSRCs.SSRC</code>. The SSRC identifier
+     * The column <code>WebRTCObserver.PeerConnectionSSRCs.SSRC</code>. The SSRC identifier
      */
     public final TableField<PeerconnectionssrcsRecord, Long> SSRC = createField(DSL.name("SSRC"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "The SSRC identifier");
 
     /**
-     * The column <code>WebRTCObserver.PeerconnectionSSRCs.peerConnection</code>. The UUID of the peer connection the SSRC belongs to
+     * The column <code>WebRTCObserver.PeerConnectionSSRCs.peerConnectionUUID</code>. The UUID of the peer connection the SSRC belongs to
      */
-    public final TableField<PeerconnectionssrcsRecord, byte[]> PEERCONNECTION = createField(DSL.name("peerConnection"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the peer connection the SSRC belongs to");
+    public final TableField<PeerconnectionssrcsRecord, byte[]> PEERCONNECTIONUUID = createField(DSL.name("peerConnectionUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the peer connection the SSRC belongs to");
 
     /**
-     * The column <code>WebRTCObserver.PeerconnectionSSRCs.updated</code>.
+     * The column <code>WebRTCObserver.PeerConnectionSSRCs.updated</code>.
      */
     public final TableField<PeerconnectionssrcsRecord, LocalDateTime> UPDATED = createField(DSL.name("updated"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
-     * Create a <code>WebRTCObserver.PeerconnectionSSRCs</code> table reference
+     * The column <code>WebRTCObserver.PeerConnectionSSRCs.timeZone</code>.
+     */
+    public final TableField<PeerconnectionssrcsRecord, String> TIMEZONE = createField(DSL.name("timeZone"), org.jooq.impl.SQLDataType.VARCHAR(64), this, "");
+
+    /**
+     * Create a <code>WebRTCObserver.PeerConnectionSSRCs</code> table reference
      */
     public Peerconnectionssrcs() {
-        this(DSL.name("PeerconnectionSSRCs"), null);
+        this(DSL.name("PeerConnectionSSRCs"), null);
     }
 
     /**
-     * Create an aliased <code>WebRTCObserver.PeerconnectionSSRCs</code> table reference
+     * Create an aliased <code>WebRTCObserver.PeerConnectionSSRCs</code> table reference
      */
     public Peerconnectionssrcs(String alias) {
         this(DSL.name(alias), PEERCONNECTIONSSRCS);
     }
 
     /**
-     * Create an aliased <code>WebRTCObserver.PeerconnectionSSRCs</code> table reference
+     * Create an aliased <code>WebRTCObserver.PeerConnectionSSRCs</code> table reference
      */
     public Peerconnectionssrcs(Name alias) {
         this(alias, PEERCONNECTIONSSRCS);
@@ -94,7 +99,7 @@ public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
     }
 
     private Peerconnectionssrcs(Name alias, Table<PeerconnectionssrcsRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment("SSRCMap"), TableOptions.table());
+        super(alias, null, aliased, parameters, DSL.comment("A table to map peer connections to SSRCs"), TableOptions.table());
     }
 
     public <O extends Record> Peerconnectionssrcs(Table<O> child, ForeignKey<O, PeerconnectionssrcsRecord> key) {
@@ -108,7 +113,7 @@ public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX, Indexes.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX);
+        return Arrays.<Index>asList(Indexes.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX, Indexes.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX, Indexes.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX);
     }
 
     @Override
@@ -148,11 +153,11 @@ public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row4 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<byte[], Long, byte[], LocalDateTime> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row5<byte[], Long, byte[], LocalDateTime, String> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

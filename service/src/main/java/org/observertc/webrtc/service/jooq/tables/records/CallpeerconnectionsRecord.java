@@ -18,33 +18,33 @@ import org.observertc.webrtc.service.jooq.tables.Callpeerconnections;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CallpeerconnectionsRecord extends UpdatableRecordImpl<CallpeerconnectionsRecord> implements Record2<byte[], byte[]> {
 
-    private static final long serialVersionUID = -1814703349;
+    private static final long serialVersionUID = -1665071213;
 
     /**
-     * Setter for <code>WebRTCObserver.CallPeerconnections.peerConnection</code>. The UUID of the peer connection the SSRC belongs to
+     * Setter for <code>WebRTCObserver.CallPeerconnections.peerConnectionUUID</code>. The UUID of the peer connection the SSRC belongs to
      */
-    public void setPeerconnection(byte[] value) {
+    public void setPeerconnectionuuid(byte[] value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>WebRTCObserver.CallPeerconnections.peerConnection</code>. The UUID of the peer connection the SSRC belongs to
+     * Getter for <code>WebRTCObserver.CallPeerconnections.peerConnectionUUID</code>. The UUID of the peer connection the SSRC belongs to
      */
-    public byte[] getPeerconnection() {
+    public byte[] getPeerconnectionuuid() {
         return (byte[]) get(0);
     }
 
     /**
-     * Setter for <code>WebRTCObserver.CallPeerconnections.callID</code>. The UUID of the call the peer connection belongs to
+     * Setter for <code>WebRTCObserver.CallPeerconnections.callUUID</code>. The UUID of the call the peer connection belongs to
      */
-    public void setCallid(byte[] value) {
+    public void setCalluuid(byte[] value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>WebRTCObserver.CallPeerconnections.callID</code>. The UUID of the call the peer connection belongs to
+     * Getter for <code>WebRTCObserver.CallPeerconnections.callUUID</code>. The UUID of the call the peer connection belongs to
      */
-    public byte[] getCallid() {
+    public byte[] getCalluuid() {
         return (byte[]) get(1);
     }
 
@@ -73,43 +73,43 @@ public class CallpeerconnectionsRecord extends UpdatableRecordImpl<Callpeerconne
 
     @Override
     public Field<byte[]> field1() {
-        return Callpeerconnections.CALLPEERCONNECTIONS.PEERCONNECTION;
+        return Callpeerconnections.CALLPEERCONNECTIONS.PEERCONNECTIONUUID;
     }
 
     @Override
     public Field<byte[]> field2() {
-        return Callpeerconnections.CALLPEERCONNECTIONS.CALLID;
+        return Callpeerconnections.CALLPEERCONNECTIONS.CALLUUID;
     }
 
     @Override
     public byte[] component1() {
-        return getPeerconnection();
+        return getPeerconnectionuuid();
     }
 
     @Override
     public byte[] component2() {
-        return getCallid();
+        return getCalluuid();
     }
 
     @Override
     public byte[] value1() {
-        return getPeerconnection();
+        return getPeerconnectionuuid();
     }
 
     @Override
     public byte[] value2() {
-        return getCallid();
+        return getCalluuid();
     }
 
     @Override
     public CallpeerconnectionsRecord value1(byte[] value) {
-        setPeerconnection(value);
+        setPeerconnectionuuid(value);
         return this;
     }
 
     @Override
     public CallpeerconnectionsRecord value2(byte[] value) {
-        setCallid(value);
+        setCalluuid(value);
         return this;
     }
 
@@ -134,10 +134,10 @@ public class CallpeerconnectionsRecord extends UpdatableRecordImpl<Callpeerconne
     /**
      * Create a detached, initialised CallpeerconnectionsRecord
      */
-    public CallpeerconnectionsRecord(byte[] peerconnection, byte[] callid) {
+    public CallpeerconnectionsRecord(byte[] peerconnectionuuid, byte[] calluuid) {
         super(Callpeerconnections.CALLPEERCONNECTIONS);
 
-        set(0, peerconnection);
-        set(1, callid);
+        set(0, peerconnectionuuid);
+        set(1, calluuid);
     }
 }
