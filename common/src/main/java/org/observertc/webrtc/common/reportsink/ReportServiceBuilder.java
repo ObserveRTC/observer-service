@@ -1,8 +1,11 @@
 package org.observertc.webrtc.common.reportsink;
 
 import java.util.Map;
+import java.util.UUID;
+import org.apache.kafka.streams.processor.Processor;
 import org.observertc.webrtc.common.builders.AbstractBuilder;
 import org.observertc.webrtc.common.builders.IReportServiceBuilder;
+import org.observertc.webrtc.common.reports.Report;
 
 public class ReportServiceBuilder extends ReportServiceAbstractBuilder {
 
@@ -11,7 +14,7 @@ public class ReportServiceBuilder extends ReportServiceAbstractBuilder {
 	}
 
 	@Override
-	public ReportService build() {
+	public Processor<UUID, Report> build() {
 		Map<String, Object> configuration = this.buildConfigurations();
 		Config config = this.convertAndValidate(Config.class, configuration);
 		IReportServiceBuilder builder = this.getBuilder(config.builder);

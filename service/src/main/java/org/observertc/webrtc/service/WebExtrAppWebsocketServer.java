@@ -1,5 +1,6 @@
 package org.observertc.webrtc.service;
 
+import io.micronaut.context.annotation.Value;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
@@ -7,6 +8,7 @@ import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -19,7 +21,6 @@ import org.observertc.webrtc.service.dto.webextrapp.RTCStatsType;
 import org.observertc.webrtc.service.repositories.ObserverRepository;
 import org.observertc.webrtc.service.samples.ObserveRTCCIceStatsSample;
 import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
-import org.observertc.webrtc.service.samples.ObserverSSRCPeerConnectionSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ public class WebExtrAppWebsocketServer {
 //	}
 
 	public WebExtrAppWebsocketServer(
+			@Value("${webrtcStatsReceiver.useServerTimestamp}") boolean useServerTimestamp,
 			ObserverRepository observerRepository,
 			WebRTCKafkaSinks kafkaSinks) {
 		this.observerRepository = observerRepository;
@@ -93,7 +95,6 @@ public class WebExtrAppWebsocketServer {
 	private void sendObserveRTCMediaStreamStats(UUID observerUUID, UUID peerConnectionUUID, RTCStats[] mediaStreamStats) {
 		for (int i = 0; i < mediaStreamStats.length; ++i) {
 			RTCStats rtcStats = mediaStreamStats[i];
-			// TODO: ObjectPool?
 			ObserveRTCMediaStreamStatsSample sample = new ObserveRTCMediaStreamStatsSample();
 			sample.observerUUID = observerUUID;
 			if (rtcStats == null) {
@@ -101,21 +102,16 @@ public class WebExtrAppWebsocketServer {
 				continue;
 			}
 			sample.rtcStats = rtcStats;
-			sample.sampled = LocalDateTime.now();
+			// TODO: here consider the timestamp extraction from server or not 
+			sample.sampled = LocalDateTime.now(ZoneOffset.UTC);
 			RTCStatsType type = rtcStats.getType();
 			switch (type) {
 				case INBOUND_RTP:
 				case OUTBOUND_RTP:
-					ObserverSSRCPeerConnectionSample observerSSRCPeerConnectionSample = new ObserverSSRCPeerConnectionSample();
-					Long SSRC = rtcStats.getSsrc().longValue();
-					observerSSRCPeerConnectionSample.SSRC = SSRC;
-					observerSSRCPeerConnectionSample.observerUUID = observerUUID;
-					observerSSRCPeerConnectionSample.peerConnectionUUID = peerConnectionUUID;
-					observerSSRCPeerConnectionSample.timestamp = LocalDateTime.now();
-					kafkaSinks.sendObserverSSRCPeerConnectionSamples(peerConnectionUUID, observerSSRCPeerConnectionSample);
+				case REMOTE_INBOUND_RTP:
+					this.kafkaSinks.sendObserveRTCMediaStreamStatsSamples(peerConnectionUUID, sample);
 					break;
 			}
-			this.kafkaSinks.sendObserveRTCMediaStreamStatsSamples(peerConnectionUUID, sample);
 		}
 	}
 

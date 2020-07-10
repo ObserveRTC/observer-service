@@ -1,9 +1,12 @@
 package org.observertc.webrtc.common.reportsink;
 
 import java.util.Map;
+import java.util.UUID;
+import org.apache.kafka.streams.processor.Processor;
 import org.observertc.webrtc.common.builders.AbstractBuilder;
 import org.observertc.webrtc.common.builders.IConfigurationProfiles;
 import org.observertc.webrtc.common.builders.IReportServiceBuilder;
+import org.observertc.webrtc.common.reports.Report;
 
 public abstract class ReportServiceAbstractBuilder extends AbstractBuilder implements IReportServiceBuilder {
 
@@ -26,7 +29,7 @@ public abstract class ReportServiceAbstractBuilder extends AbstractBuilder imple
 		return this;
 	}
 
-	public abstract ReportService build();
+	public abstract Processor<UUID, Report> build();
 
 	public static class Config extends AbstractBuilder.Config {
 

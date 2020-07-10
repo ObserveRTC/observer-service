@@ -87,7 +87,7 @@ dependencies {
 
     // ------------ Kafka streams ---------
     compile "org.apache.avro:avro:1.9.2"
-    implementation 'io.micronaut.configuration:micronaut-kafka-streams'
+    implementation "io.micronaut.configuration:micronaut-kafka-streams:$micronautVersion"
     implementation "io.confluent:kafka-avro-serializer:5.4.0"
     implementation "io.confluent:kafka-streams-avro-serde:5.4.0"
 

@@ -21,5 +21,30 @@ dependencies {
 
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jakartaVersion}"
     implementation "org.glassfish.jaxb:jaxb-runtime:${glassfishVersion}"
+    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
+//    compile group: 'org.apache.kafka', name: 'kafka-streams', version: '2.5.0'
 
+    // ------------ Micronaut framework ------------
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.configuration:micronaut-kafka"
+    implementation "io.micronaut:micronaut-http-server-netty"
+    implementation "javax.annotation:javax.annotation-api"
+    runtimeOnly "ch.qos.logback:logback-classic:$logbackVersion"
+    compile group: 'io.micronaut.data', name: 'micronaut-data-model', version: "${micronautDataModelVersion}"
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    implementation "io.micronaut:micronaut-security-jwt"
+    compile "io.micronaut:micronaut-management"
+    implementation "io.micronaut.configuration:micronaut-kafka-streams:$micronautVersion"
 }

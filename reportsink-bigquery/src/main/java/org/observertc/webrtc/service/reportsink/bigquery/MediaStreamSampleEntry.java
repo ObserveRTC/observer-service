@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.observertc.webrtc.common.reports.MediaStreamSample;
+import org.observertc.webrtc.common.reports.MediaStreamSampleReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,27 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 				.withLastSampledTimestamp(mediaStreamSample.getLastSampleTimestamp());
 	}
 
+	public static MediaStreamSampleEntry from(MediaStreamSampleReport report) {
+		MediaStreamSampleEntryRecord bytesReceivedRecord = MediaStreamSampleEntryRecord.from(report.bytesReceivedRecord);
+		MediaStreamSampleEntryRecord bytesSentRecord = MediaStreamSampleEntryRecord.from(report.bytesSentRecord);
+		MediaStreamSampleEntryRecord packetsSent = MediaStreamSampleEntryRecord.from(report.packetsSentRecord);
+		MediaStreamSampleEntryRecord packetsReceived = MediaStreamSampleEntryRecord.from(report.packetsReceivedRecord);
+		MediaStreamSampleEntryRecord packetsLost = MediaStreamSampleEntryRecord.from(report.packetsLostRecord);
+		MediaStreamSampleEntryRecord RTT = MediaStreamSampleEntryRecord.from(report.RTTRecord);
+		return new MediaStreamSampleEntry()
+				.withObserverUUID(report.observerUUID)
+				.withPeerConnectionUUID(report.peerConnectionUUID)
+				.withSSRC(report.SSRC)
+				.withBytesReceivedRecord(bytesReceivedRecord)
+				.withBytesSentRecord(bytesSentRecord)
+				.withPacketsLostRecord(packetsLost)
+				.withPacketsReceivedRecord(packetsReceived)
+				.withPacketsSentRecord(packetsSent)
+				.withRTTRecord(RTT)
+				.withFirstSampledTimestamp(report.firstSample)
+				.withLastSampledTimestamp(report.lastSample);
+	}
+
 	private static Logger logger = LoggerFactory.getLogger(MediaStreamSampleEntry.class);
 	private static final String OBSERVER_UUID_FIELD_NAME = "peerConnectionUUID";
 	private static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
@@ -47,7 +69,6 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 	private static final String LAST_SAMPLE_TIMESTAMP_FIELD_NAME = "lastSample";
 
 	private final Map<String, Object> values = new HashMap<>();
-
 
 	public MediaStreamSampleEntry withObserverUUID(UUID value) {
 		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());

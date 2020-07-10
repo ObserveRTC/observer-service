@@ -1,6 +1,7 @@
 package org.observertc.webrtc.service.repositories;
 
 import static org.jooq.impl.DSL.row;
+import static org.jooq.impl.DSL.select;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.repository.CrudRepository;
 import java.time.LocalDateTime;
@@ -15,7 +16,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.inject.Singleton;
 import javax.validation.Valid;
@@ -27,6 +30,7 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.InsertValuesStep4;
 import org.jooq.Record1;
+import org.jooq.Record3;
 import org.jooq.Record4;
 import org.jooq.RecordHandler;
 import org.jooq.Row2;
@@ -208,27 +212,43 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 		};
 	}
 
+	private static final int BULK_QUERY_MAX_ITEMS = 5000;
+
 	@NonNull
 	@Override
 	public <S extends PeerConnectionSSRCsEntry> Iterable<S> saveAll(@NonNull @Valid @NotNull Iterable<S> entities) {
-		InsertValuesStep4<PeerconnectionssrcsRecord, Long, byte[], byte[], LocalDateTime> sql =
-				this.contextProvider.get().insertInto(Tables.PEERCONNECTIONSSRCS,
-						Tables.PEERCONNECTIONSSRCS.SSRC,
-						Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
-						Tables.PEERCONNECTIONSSRCS.OBSERVER,
-						Tables.PEERCONNECTIONSSRCS.UPDATED);
-		for (Iterator<S> it = entities.iterator(); it.hasNext(); ) {
+		Supplier<InsertValuesStep4<PeerconnectionssrcsRecord, Long, byte[], byte[], LocalDateTime>> sqlSupplier = () -> {
+			return this.contextProvider.get().insertInto(Tables.PEERCONNECTIONSSRCS,
+					Tables.PEERCONNECTIONSSRCS.SSRC,
+					Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
+					Tables.PEERCONNECTIONSSRCS.OBSERVER,
+					Tables.PEERCONNECTIONSSRCS.UPDATED);
+		};
+		Consumer<InsertValuesStep4<PeerconnectionssrcsRecord, Long, byte[], byte[], LocalDateTime>> executor = (sql) -> {
+			sql.onDuplicateKeyUpdate()
+					.set(Tables.PEERCONNECTIONSSRCS.SSRC, values(Tables.PEERCONNECTIONSSRCS.SSRC))
+					.set(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, values(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION))
+					.set(Tables.PEERCONNECTIONSSRCS.OBSERVER, values(Tables.PEERCONNECTIONSSRCS.OBSERVER))
+					.set(Tables.PEERCONNECTIONSSRCS.UPDATED, values(Tables.PEERCONNECTIONSSRCS.UPDATED))
+					.execute();
+		};
+		InsertValuesStep4<PeerconnectionssrcsRecord, Long, byte[], byte[], LocalDateTime> sql = sqlSupplier.get();
+		int count = 0;
+		for (Iterator<S> it = entities.iterator(); it.hasNext(); ++count) {
 			PeerConnectionSSRCsEntry peerConnectionSSRCsEntry = it.next();
 			byte[] peerConnection = UUIDAdapter.toBytes(peerConnectionSSRCsEntry.peerConnectionUUID);
 			byte[] observer = UUIDAdapter.toBytes(peerConnectionSSRCsEntry.observerUUID);
 			sql.values(peerConnectionSSRCsEntry.SSRC, peerConnection, observer, LocalDateTime.now());
+			if (BULK_QUERY_MAX_ITEMS < count) {
+				executor.accept(sql);
+				sql = sqlSupplier.get();
+				count = 0;
+			}
 		}
-		sql.onDuplicateKeyUpdate()
-				.set(Tables.PEERCONNECTIONSSRCS.SSRC, values(Tables.PEERCONNECTIONSSRCS.SSRC))
-				.set(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, values(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION))
-				.set(Tables.PEERCONNECTIONSSRCS.OBSERVER, values(Tables.PEERCONNECTIONSSRCS.OBSERVER))
-				.set(Tables.PEERCONNECTIONSSRCS.UPDATED, values(Tables.PEERCONNECTIONSSRCS.UPDATED))
-				.execute();
+
+		if (0 < count) {
+			executor.accept(sql);
+		}
 		return entities;
 	}
 
@@ -244,6 +264,56 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 								UUIDAdapter.toBytes(ssrcPCObserver.getValue2())))
 				.fetchOptionalInto(PeerConnectionSSRCsEntry.class);
 	}
+
+
+	public void findCallUUIDs(@NonNull @NotNull Iterable<UUID> peerConnectionUUIDs,
+							  Consumer<CallPeerConnectionsEntry> callMapEntryConsumer) {
+		Stream<byte[]> peerConnectionUUIDsStream = StreamSupport.stream(peerConnectionUUIDs.spliterator(), false).map(UUIDAdapter::toBytes);
+		this.contextProvider.get()
+				.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION, Tables.CALLPEERCONNECTIONS.CALLID, Tables.PEERCONNECTIONSSRCS.UPDATED)
+				.from(Tables.PEERCONNECTIONSSRCS)
+				.leftJoin(Tables.CALLPEERCONNECTIONS).on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(Tables.CALLPEERCONNECTIONS.PEERCONNECTION))
+				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.in(peerConnectionUUIDsStream.collect(Collectors.toList())))
+				.fetchInto(new RecordHandler<Record3<byte[], byte[], LocalDateTime>>() {
+					@Override
+					public void next(Record3<byte[], byte[], LocalDateTime> record) {
+						CallPeerConnectionsEntry callPeerConnectionsEntry = new CallPeerConnectionsEntry();
+						callPeerConnectionsEntry.peerConnectionUUID = UUIDAdapter.toUUID(record.value1());
+						if (record.value2() != null) {
+							callPeerConnectionsEntry.callUUID = UUIDAdapter.toUUID(record.value2());
+						} else {
+							callPeerConnectionsEntry.callUUID = null;
+						}
+						callPeerConnectionsEntry.updated = record.value3();
+						callMapEntryConsumer.accept(callPeerConnectionsEntry);
+					}
+				});
+
+	}
+
+	public void findPeers(@NonNull @NotNull UUID peerConnectionUUID,
+						  Consumer<UUID> peerConnectionUUIDConsumer) {
+		this.contextProvider.get()
+				.select(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION)
+				.from(Tables.PEERCONNECTIONSSRCS)
+				.where(row(Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.SSRC)
+						.in(select(Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.SSRC).from(Tables.PEERCONNECTIONSSRCS)
+								.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnectionUUID)))))
+				.fetchInto(new RecordHandler<Record1<byte[]>>() {
+					@Override
+					public void next(Record1<byte[]> record) {
+						if (record.value1() == null) {
+							return;
+						}
+						UUID peer = UUIDAdapter.toUUID(record.value1());
+						if (peer.equals(peerConnectionUUID)) {
+							return;
+						}
+						peerConnectionUUIDConsumer.accept(peer);
+					}
+				});
+	}
+
 
 	@Override
 	public boolean existsById(@NonNull @NotNull Triplet<Long, UUID, UUID> ssrcPCObserver) {
@@ -331,55 +401,23 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 		this.contextProvider.get().deleteFrom(Tables.PEERCONNECTIONSSRCS);
 	}
 
-	public void retrieveSSRCObserverPeerConnectionCallIDsOlderThan(LocalDateTime borderTime,
-																   Consumer<Quartet<Long, UUID, UUID, UUID>> recordHandler) {
-		this.contextProvider.get()
+	public Iterable<PeerConnectionSSRCsEntry> findExpiredPeerConnections(LocalDateTime threshold) {
+		return this.contextProvider.get()
 				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
-						Tables.CALLPEERCONNECTIONS.CALLID)
+						Tables.PEERCONNECTIONSSRCS.UPDATED)
 				.from(Tables.PEERCONNECTIONSSRCS)
-				.leftJoin(Tables.CALLPEERCONNECTIONS)
-				.on(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(Tables.CALLPEERCONNECTIONS.PEERCONNECTION))
-				.where(Tables.PEERCONNECTIONSSRCS.UPDATED.lt(borderTime))
-				.fetchInto(new RecordHandler<Record4<Long, byte[], byte[], byte[]>>() {
-					@Override
-					public void next(Record4<Long, byte[], byte[], byte[]> record) {
-						Long SSRC = record.value1();
-						boolean error = false;
-						UUID observer = null;
-						if (record.value2() != null) {
-							observer = UUIDAdapter.toUUID(record.value2());
-						} else {
-							error = true;
-						}
+				.where(Tables.PEERCONNECTIONSSRCS.UPDATED.lt(threshold))
+				.orderBy(Tables.PEERCONNECTIONSSRCS.UPDATED.asc())
+				.fetchInto(PeerConnectionSSRCsEntry.class);
+	}
 
-						UUID peerConnectionUUID = null;
-						if (record.value3() != null) {
-							peerConnectionUUID = UUIDAdapter.toUUID(record.value3());
-						} else {
-							error = true;
-						}
-
-						UUID callUUID = null;
-						if (record.value4() != null) {
-							callUUID = UUIDAdapter.toUUID(record.value4());
-						} else {
-							error = true;
-						}
-
-						if (error) {
-							logger.error("A value for < SSRC: {}, observer: {}, peerConnection: {}, call: {} >tuple is null", SSRC,
-									observer,
-									peerConnectionUUID, callUUID);
-						}
-
-						recordHandler.accept(Quartet.with(
-								SSRC,
-								observer,
-								peerConnectionUUID,
-								callUUID
-						));
-					}
-				});
+	public Iterable<PeerConnectionSSRCsEntry> findEntries(UUID peerConnectionUUID) {
+		return this.contextProvider.get()
+				.select(Tables.PEERCONNECTIONSSRCS.SSRC, Tables.PEERCONNECTIONSSRCS.OBSERVER, Tables.PEERCONNECTIONSSRCS.PEERCONNECTION,
+						Tables.PEERCONNECTIONSSRCS.UPDATED)
+				.from(Tables.PEERCONNECTIONSSRCS)
+				.where(Tables.PEERCONNECTIONSSRCS.PEERCONNECTION.eq(UUIDAdapter.toBytes(peerConnectionUUID)))
+				.fetchInto(PeerConnectionSSRCsEntry.class);
 	}
 
 	public void getSSRCMapEntriesOlderThan(LocalDateTime borderTime, Consumer<PeerConnectionSSRCsEntry> ssrcMapEntryConsumer) {

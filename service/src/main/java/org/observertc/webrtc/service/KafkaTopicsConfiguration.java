@@ -10,5 +10,6 @@ public class KafkaTopicsConfiguration {
 	public String observeRTCCIceStatsSample;
 	public String observeRTCMediaStreamStatsSamples;
 	public String observerSSRCPeerConnectionSamples;
+	public String observertcReports;
 }
 
