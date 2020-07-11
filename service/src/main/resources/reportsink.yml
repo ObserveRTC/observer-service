@@ -4,9 +4,3 @@ reportsinks:
     configuration:
       projectName: observertc
       datasetName: WebRTC
----
-mediaStreamEvaluators:
-  developmentProfile:
-    builder: org.observertc.webrtc.service.mediastreams.MediaStreamEvaluatorBuilder
-    configuration:
-      

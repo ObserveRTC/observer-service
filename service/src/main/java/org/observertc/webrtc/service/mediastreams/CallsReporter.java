@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.javatuples.Pair;
@@ -32,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class CallsReporter implements Punctuator {
+public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, LocalDateTime>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallsReporter.class);
 
@@ -40,7 +41,7 @@ public class CallsReporter implements Punctuator {
 
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
-	private final Map<MediaStreamKey, Pair<LocalDateTime, LocalDateTime>> updates;
+	private final Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections;
 	private int peerConnectionMaxIdleTimeInS = 30; // default value
 
 	//	private final Map<SSRCMapEntry, LocalDateTime> ssrcMapEntries;
@@ -49,7 +50,7 @@ public class CallsReporter implements Punctuator {
 						 ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter) {
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callPeerConnectionsRepository = callPeerConnectionsRepository;
-		this.updates = new HashMap<>();
+		this.updatedPeerConnections = new HashMap<>();
 	}
 
 
@@ -59,34 +60,6 @@ public class CallsReporter implements Punctuator {
 
 	}
 
-	/**
-	 * Assumption: RTCStats cannot be null!
-	 *
-	 * @param peerConnectionUUID
-	 * @param sample
-	 */
-	public void add(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
-		RTCStats rtcStats = sample.rtcStats;
-		if (rtcStats.getSsrc() == null) {
-			logger.warn("SSRC cannot be null. {}", rtcStats.toString());
-			return;
-		}
-		if (sample.observerUUID == null) {
-			logger.warn("ObserverUUID for sample cannot be null {}", sample.toString());
-			return;
-		}
-		if (sample.sampled == null) {
-			logger.warn("timestamp for sample cannot be null {}", sample.toString());
-			return;
-		}
-		Long SSRC = sample.rtcStats.getSsrc().longValue();
-		UUID observerUUID = sample.observerUUID;
-		MediaStreamKey mediaStreamKey = MediaStreamKey.of(observerUUID, peerConnectionUUID, SSRC);
-
-		Pair<LocalDateTime, LocalDateTime> sampled = this.updates.getOrDefault(mediaStreamKey, Pair.with(sample.sampled, sample.sampled));
-		sampled.setAt1(sample.sampled);
-		this.updates.put(mediaStreamKey, sampled);
-	}
 
 	/**
 	 * This is the trigger method initiate the process of cleaning the calls
@@ -110,7 +83,11 @@ public class CallsReporter implements Punctuator {
 	private void doPunctuate(long timestamp) {
 		this.identifyCalls();
 		this.cleanCalls();
-		this.updates.clear();
+	}
+
+	@Override
+	public void accept(UUID peerConnectionUUID, Pair<UUID, LocalDateTime> observerUUIDFirstUpdateTuple) {
+		this.updatedPeerConnections.put(peerConnectionUUID, observerUUIDFirstUpdateTuple);
 	}
 
 
@@ -122,27 +99,10 @@ public class CallsReporter implements Punctuator {
 	 * @return
 	 */
 	private void identifyCalls() {
-		if (this.updates.size() < 1) {
+		if (this.updatedPeerConnections.size() < 1) {
 			return;
 		}
-		Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections = new HashMap<>();
 
-		Iterable<PeerConnectionSSRCsEntry> entities = () ->
-				this.updates.entrySet().stream()
-						.map(entry -> {
-							PeerConnectionSSRCsEntry mappedEntry = new PeerConnectionSSRCsEntry();
-							MediaStreamKey mediaStreamKey = entry.getKey();
-							Pair<LocalDateTime, LocalDateTime> sampled = entry.getValue();
-							LocalDateTime firstUpdate = sampled.getValue0();
-							LocalDateTime lastUpdate = sampled.getValue1();
-							mappedEntry.observerUUID = mediaStreamKey.observerUUID;
-							mappedEntry.peerConnectionUUID = mediaStreamKey.peerConnectionUUID;
-							mappedEntry.SSRC = mediaStreamKey.SSRC;
-							mappedEntry.updated = lastUpdate;
-							updatedPeerConnections.put(mappedEntry.peerConnectionUUID, Pair.with(mappedEntry.observerUUID, firstUpdate));
-							return mappedEntry;
-						}).iterator();
-		this.peerConnectionSSRCsRepository.saveAll(entities);
 		Set<UUID> reportedPeerConnections = new HashSet<>();
 		this.peerConnectionSSRCsRepository.findCallUUIDs(updatedPeerConnections.keySet(),
 				callPeerConnectionsEntry -> {
@@ -159,6 +119,7 @@ public class CallsReporter implements Punctuator {
 					reportNewPeerConnection(peerConnectionUUID, observerUUID, firstSampled);
 					reportedPeerConnections.add(peerConnectionUUID);
 				});
+		this.updatedPeerConnections.clear();
 	}
 
 	private void reportNewPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime firstSampled) {
