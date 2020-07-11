@@ -25,14 +25,18 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 	private final CallsReporter callsReporter;
 	private final MediaStreamsReporter mediaStreamsReporter;
 	private final MediaStreamEvaluatorConfiguration configuration;
+	private final PeerConnectionSSRCsUpdater peerConnectionSSRCsUpdater;
 
 	public MediaStreamEvaluator(
 			MediaStreamEvaluatorConfiguration configuration,
+			PeerConnectionSSRCsUpdater peerConnectionSSRCsUpdater,
 			CallsReporter callsReporter,
 			MediaStreamsReporter mediaStreamsReporter) {
+		this.peerConnectionSSRCsUpdater = peerConnectionSSRCsUpdater;
 		this.callsReporter = callsReporter;
 		this.mediaStreamsReporter = mediaStreamsReporter;
 		this.configuration = configuration;
+		this.peerConnectionSSRCsUpdater.setPeerConnectionSSRCConsumer(callsReporter);
 	}
 
 	@Override
@@ -41,11 +45,15 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 		this.mediaStreamsReporter.init(context, this.configuration);
 
 		if (this.configuration.callReports.enabled) {
-			int updatePeriodInS = this.configuration.callReports.runPeriodInS;
-			context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callsReporter);
+			int updatePeriodInS = this.configuration.callReports.updatePeriodInS;
+			context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.peerConnectionSSRCsUpdater);
+
+			int reportPeriodInS = this.configuration.callReports.reportPeriodInS;
+			context.schedule(Duration.ofSeconds(reportPeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callsReporter);
 		}
 		int updatePeriodInS = this.configuration.reportPeriodInS;
 		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.mediaStreamsReporter);
+		logger.info("MediaStreamEvaluator is configured by  {}", this.configuration.toString());
 	}
 
 	@Override
@@ -58,7 +66,8 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 				}
 			}
 		}
-		this.callsReporter.add(peerConnectionUUID, sample);
+		this.peerConnectionSSRCsUpdater.add(peerConnectionUUID, sample);
+//		this.callsReporter.add(peerConnectionUUID, sample);
 		MediaStreamKey key = MediaStreamKey.of(sample.observerUUID, peerConnectionUUID, SSRC);
 		RTCStats rtcStats = sample.rtcStats;
 		if (rtcStats == null) {

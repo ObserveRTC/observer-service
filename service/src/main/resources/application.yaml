@@ -40,7 +40,8 @@ mediaStreamEvaluator:
   callReports:
     enabled: True
     peerConnectionMaxIdleTimeInS: 30
-    runPeriodInS: 10
+    reportPeriodInS: 10
+    updatePeriodInS: 3
 
 ---
 reportsink:
