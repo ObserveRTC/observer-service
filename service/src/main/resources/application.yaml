@@ -27,6 +27,8 @@ kafkaTopics:
   createIfNotExists: True
   replicationFactorOnCreating: 1
   partitionNumberOnCreating: 1
+  inboundStreamMeasurements: ${KAFKA_TOPICS_INBOUNDSTREAM_MEASUREMENTS:inboundStreamMeasurements}
+  outboundStreamMeasurements: ${KAFKA_TOPICS_OUTBOUNDSTREAM_MEASUREMENTS:outboundStreamMeasurements}
   observertcReports: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
   observeRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:observeRTCCIceStatsSample}
   observeRTCMediaStreamStatsSamples: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS_SAMPLES:observeRTCMediaStreamStatsSamples}

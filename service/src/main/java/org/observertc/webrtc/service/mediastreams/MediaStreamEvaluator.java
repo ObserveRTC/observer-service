@@ -23,26 +23,26 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 	private static final Logger logger = LoggerFactory.getLogger(MediaStreamEvaluator.class);
 
 	private final CallsReporter callsReporter;
-	private final MediaStreamsReporter mediaStreamsReporter;
 	private final MediaStreamEvaluatorConfiguration configuration;
 	private final PeerConnectionSSRCsUpdater peerConnectionSSRCsUpdater;
+	private final InboundStreamAccumulator inboundStreamAccumulator;
 
 	public MediaStreamEvaluator(
 			MediaStreamEvaluatorConfiguration configuration,
 			PeerConnectionSSRCsUpdater peerConnectionSSRCsUpdater,
 			CallsReporter callsReporter,
-			MediaStreamsReporter mediaStreamsReporter) {
+			InboundStreamAccumulator inboundStreamAccumulator) {
 		this.peerConnectionSSRCsUpdater = peerConnectionSSRCsUpdater;
 		this.callsReporter = callsReporter;
-		this.mediaStreamsReporter = mediaStreamsReporter;
 		this.configuration = configuration;
 		this.peerConnectionSSRCsUpdater.setPeerConnectionSSRCConsumer(callsReporter);
+		this.inboundStreamAccumulator = inboundStreamAccumulator;
 	}
 
 	@Override
 	public void init(ProcessorContext context) {
 		this.callsReporter.init(context, this.configuration.callReports);
-		this.mediaStreamsReporter.init(context, this.configuration);
+		this.inboundStreamAccumulator.init(context, this.configuration);
 
 		if (this.configuration.callReports.enabled) {
 			int updatePeriodInS = this.configuration.callReports.updatePeriodInS;
@@ -52,7 +52,7 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 			context.schedule(Duration.ofSeconds(reportPeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callsReporter);
 		}
 		int updatePeriodInS = this.configuration.reportPeriodInS;
-		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.mediaStreamsReporter);
+//		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this.inboundStreamAccumulator);
 		logger.info("MediaStreamEvaluator is configured by  {}", this.configuration.toString());
 	}
 
@@ -76,8 +76,10 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 		}
 
 		switch (rtcStats.getType()) {
-			case INBOUND_RTP:
 			case REMOTE_INBOUND_RTP:
+				break;
+			case INBOUND_RTP:
+
 				InboundStreamMeasurement inboundStreamMeasurement = new InboundStreamMeasurement();
 				if (rtcStats.getType().equals(RTCStatsType.REMOTE_INBOUND_RTP)) {
 					inboundStreamMeasurement.RTTInMs = this.extractRTTInMs(rtcStats);
@@ -86,7 +88,7 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 				inboundStreamMeasurement.packetsReceived = this.extractPacketsReceived(rtcStats);
 				inboundStreamMeasurement.packetsLost = this.extractPacketsLost(rtcStats);
 				inboundStreamMeasurement.sampled = sample.sampled;
-				this.mediaStreamsReporter.addInboundStreamMeasurement(key, inboundStreamMeasurement);
+//				this.inboundStreamAccumulator.add(key, inboundStreamMeasurement);
 				break;
 			case OUTBOUND_RTP:
 				OutboundStreamMeasurement outboundStreamMeasurement = new OutboundStreamMeasurement();
@@ -94,7 +96,6 @@ public class MediaStreamEvaluator implements Transformer<UUID, ObserveRTCMediaSt
 				outboundStreamMeasurement.bytesSent = this.extractBytesSent(rtcStats);
 				outboundStreamMeasurement.packetsSent = this.extractPacketsSent(rtcStats);
 				outboundStreamMeasurement.sampled = sample.sampled;
-				this.mediaStreamsReporter.addOutboundStreamMeasurement(key, outboundStreamMeasurement);
 				break;
 		}
 		return null;

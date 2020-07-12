@@ -9,8 +9,7 @@ public class MediaStreamSampleEntryRecord {
 
 	public static MediaStreamSampleEntryRecord from(MediaStreamSampleRecordReport record) {
 		return new MediaStreamSampleEntryRecord()
-				.withPresented(record.presented)
-				.withEmpty(record.empty)
+				.withCount(record.count)
 				.withMaximum(record.maximum)
 				.withMinimum(record.minimum)
 				.withSum(record.sum);
@@ -18,8 +17,7 @@ public class MediaStreamSampleEntryRecord {
 
 	private static final String MINIMUM_FIELD_NAME = "minimum";
 	private static final String MAXIMUM_FIELD_NAME = "maximum";
-	private static final String PRESENTED_FIELD_NAME = "presented";
-	private static final String EMPTY_FIELD_NAME = "empty";
+	private static final String COUNT_FIELD_NAME = "count";
 	private static final String SUM_FIELD_NAME = "sum";
 
 	private final Map<String, Object> summaryValues = new HashMap<>();
@@ -40,13 +38,8 @@ public class MediaStreamSampleEntryRecord {
 		return this;
 	}
 
-	public MediaStreamSampleEntryRecord withPresented(Long value) {
-		this.summaryValues.put(PRESENTED_FIELD_NAME, value);
-		return this;
-	}
-
-	public MediaStreamSampleEntryRecord withEmpty(Long value) {
-		this.summaryValues.put(EMPTY_FIELD_NAME, value);
+	public MediaStreamSampleEntryRecord withCount(Long value) {
+		this.summaryValues.put(COUNT_FIELD_NAME, value);
 		return this;
 	}
 

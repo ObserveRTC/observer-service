@@ -4,7 +4,7 @@ import io.micronaut.core.annotation.Introspected;
 
 @Introspected
 public class MediaStreamAggregateRecord {
-	public int empty;
+	public int count;
 	public int presented;
 	public long sum;
 	public Integer last = null;
@@ -16,7 +16,7 @@ public class MediaStreamAggregateRecord {
 	}
 
 	public MediaStreamAggregateRecord(MediaStreamAggregateRecord source) {
-		this.empty = source.empty;
+		this.count = source.count;
 		this.presented = source.presented;
 		this.sum = source.sum;
 		this.last = source.last;

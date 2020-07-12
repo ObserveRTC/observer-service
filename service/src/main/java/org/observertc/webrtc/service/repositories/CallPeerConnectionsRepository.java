@@ -236,8 +236,17 @@ public class CallPeerConnectionsRepository implements CrudRepository<CallPeerCon
 
 	@Override
 	public void delete(@NonNull @NotNull CallPeerConnectionsEntry entity) {
+		byte[] peerConnectionUUIDByteArray;
+		byte[] callUUIDByteArray;
+		if (entity.callUUID != null && entity.peerConnectionUUID != null) {
+			peerConnectionUUIDByteArray = UUIDAdapter.toBytes(entity.peerConnectionUUID);
+			callUUIDByteArray = UUIDAdapter.toBytes(entity.callUUID);
+		} else {
+			return;
+		}
+
 		this.contextProvider.get().deleteFrom(Tables.CALLPEERCONNECTIONS)
-				.where(row(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID).eq(UUIDAdapter.toBytes(entity.peerConnectionUUID), UUIDAdapter.toBytes(entity.callUUID)))
+				.where(row(Tables.CALLPEERCONNECTIONS.PEERCONNECTIONUUID, Tables.CALLPEERCONNECTIONS.CALLUUID).eq(peerConnectionUUIDByteArray, callUUIDByteArray))
 				.execute();
 	}
 

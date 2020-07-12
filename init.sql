@@ -115,3 +115,100 @@ CREATE TABLE `WebRTCObserver`.`CallPeerconnections`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='CallIDs';
   
+
+CREATE TABLE `WebRTCObserver`.`InboundStreamMeasurements`
+(
+    `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
+    `SSRC`                BIGINT NOT NULL COMMENT 'The SSRC identifier',
+    `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peerconnection of the inbound stream',
+    `firstSample`         TIMESTAMP,
+    `lastSample`          TIMESTAMP,
+    `reported`            TIMESTAMP,
+    `samples_count`       INT,
+    
+    `bytesReceived_count`     INT,
+    `bytesReceived_sum`       BIGINT,
+    `bytesReceived_min`       INT,
+    `bytesReceived_max`       INT,
+    `bytesReceived_last`      INT,
+    
+    `packetsReceived_count`     INT,
+    `packetsReceived_sum`       INT,
+    `packetsReceived_min`       INT,
+    `packetsReceived_max`       INT,
+    `packetsReceived_last`      INT,
+    
+    `packetsLost_count`     INT,
+    `packetsLost_sum`       INT,
+    `packetsLost_min`       INT,
+    `packetsLost_max`       INT,
+    `packetsLost_last`      INT,
+    
+    `decoded_frames_count`  INT,
+    `qpsum_count`           INT,
+    `qpsum_sum`             INT,
+    `qpsum_min`             INT,
+    `qpsum_max`             INT,
+    `qpsum_last`            INT,
+    PRIMARY KEY (`observerUUID`, `peerConnectionUUID`,`SSRC`),
+    INDEX `InboundStreamMeasurements_observer_ssrc_index` (`observerUUID`, `SSRC`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to map peer connections to SSRCs';
+  
+  
+CREATE TABLE `WebRTCObserver`.`OutboundStreamMeasurements`
+(
+    `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
+    `SSRC`                BIGINT NOT NULL COMMENT 'The SSRC identifier',
+    `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peerconnection of the outbound stream',
+    `firstSample`         TIMESTAMP,
+    `lastSample`          TIMESTAMP,
+    `reported`            TIMESTAMP,
+    `samples_count`       INT,
+    
+    `bytesSent_count`     INT,
+    `bytesSent_sum`       BIGINT,
+    `bytesSent_min`       INT,
+    `bytesSent_max`       INT,
+    `bytesSent_last`      INT,
+    
+    `packetsSent_count`     INT,
+    `packetsSent_sum`       INT,
+    `packetsSent_min`       INT,
+    `packetsSent_max`       INT,
+    `packetsSent_last`      INT,
+    
+    `encoded_frames_count`  INT,
+    `qpsum_count`           INT,
+    `qpsum_sum`             INT,
+    `qpsum_min`             INT,
+    `qpsum_max`             INT,
+    `qpsum_last`            INT,
+    
+    PRIMARY KEY (`observerUUID`, `peerConnectionUUID`,`SSRC`),
+    INDEX `OutboundStreamMeasurements_observer_ssrc_index` (`observerUUID`, `SSRC`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to map peer connections to SSRCs';
+  
+  
+  
+CREATE TABLE `WebRTCObserver`.`RemoteInboundStreamMeasurements`
+(
+    `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
+    `SSRC`                BIGINT NOT NULL COMMENT 'The SSRC identifier',
+    `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peerconnection of the outbound stream',
+    `firstSample`         TIMESTAMP,
+    `lastSample`          TIMESTAMP,
+    `reported`            TIMESTAMP,
+    `samples_count`       INT,
+    
+    `rttInMs_count`     INT,
+    `rttInMs_sum`       BIGINT,
+    `rttInMs_min`       INT,
+    `rttInMs_max`       INT,
+    
+    PRIMARY KEY (`observerUUID`, `peerConnectionUUID`,`SSRC`),
+    INDEX `RemoteInboundStreamMeasurements_observer_ssrc_index` (`observerUUID`, `SSRC`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to map peer connections to SSRCs';
+  

@@ -1,69 +1,106 @@
 package org.observertc.webrtc.service.mediastreams;
 
+import io.micronaut.context.annotation.Prototype;
+import java.util.HashMap;
+import java.util.List;
 import org.apache.kafka.streams.kstream.Aggregator;
-import org.observertc.webrtc.service.samples.MediaStreamAggregate;
-import org.observertc.webrtc.service.samples.MediaStreamAggregateRecord;
+import org.apache.kafka.streams.processor.ProcessorContext;
+import org.observertc.webrtc.service.dto.OutboundStreamMeasurementDTO;
+import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 import org.observertc.webrtc.service.samples.MediaStreamKey;
+import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 
-public class OutboundStreamAggregator implements Aggregator<MediaStreamKey, OutboundStreamMeasurement, MediaStreamAggregate> {
+@Prototype
+public class OutboundStreamAggregator implements Aggregator<MediaStreamKey, ObserveRTCMediaStreamStatsSample,
+		OutboundStreamMeasurementDTO> {
+
+	private final HashMap<MediaStreamKey, List<OutboundStreamMeasurementDTO>> measurements;
+
+	public OutboundStreamAggregator() {
+		this.measurements = new HashMap<>();
+	}
+
+	public void init(ProcessorContext context, MediaStreamEvaluatorConfiguration configuration) {
+
+	}
 
 	@Override
-	public MediaStreamAggregate apply(MediaStreamKey key, OutboundStreamMeasurement measurement, MediaStreamAggregate result) {
-		this.updateBytesSent(measurement.bytesSent, result.bytesSent);
-		this.updatePacketsSent(measurement.packetsSent, result.packetsSent);
-		this.updateRTT(measurement.RTTInMs, result.RTTInMs);
-		if (result.first == null) {
-			result.first = measurement.sampled;
+	public OutboundStreamMeasurementDTO apply(MediaStreamKey key, ObserveRTCMediaStreamStatsSample value, OutboundStreamMeasurementDTO aggregate) {
+		OutboundStreamMeasurement measurement = this.makeMeasurement(value);
+		if (aggregate.firstSample == null) {
+			// TODO: query from a global storage for the last value
+			aggregate.firstSample = measurement.sampled;
 		}
-		result.last = measurement.sampled;
-		return result;
+		aggregate.lastSample = measurement.sampled;
+		++aggregate.samples_count;
+		this.updatePacketsSent(aggregate, measurement.packetsSent);
+		this.updateBytesSent(aggregate, measurement.bytesSent);
+		return aggregate;
 	}
 
-	private void updateRTT(Integer RTTInMs, MediaStreamAggregateRecord mediaStreamAggregateRecord) {
-		if (RTTInMs == null) {
-			mediaStreamAggregateRecord.empty += 1;
-			return;
-		}
-		this.updateSampleDescription(RTTInMs, mediaStreamAggregateRecord);
+	private OutboundStreamMeasurement makeMeasurement(ObserveRTCMediaStreamStatsSample sample) {
+		RTCStats rtcStats = sample.rtcStats;
+		OutboundStreamMeasurement outboundStreamMeasurement = new OutboundStreamMeasurement();
+		outboundStreamMeasurement.bytesSent = this.extractBytesSent(rtcStats);
+		outboundStreamMeasurement.packetsSent = this.extractPacketsSent(rtcStats);
+		outboundStreamMeasurement.sampled = sample.sampled;
+		return outboundStreamMeasurement;
 	}
 
-	private void updatePacketsSent(Integer packetsSent, MediaStreamAggregateRecord mediaStreamAggregateRecord) {
+
+	private void updatePacketsSent(OutboundStreamMeasurementDTO result, Integer packetsSent) {
 		if (packetsSent == null) {
-			mediaStreamAggregateRecord.empty += 1;
 			return;
 		}
-		if (mediaStreamAggregateRecord.last == null) {
-			mediaStreamAggregateRecord.last = packetsSent;
+		++result.packetsSent_count;
+		if (result.packetsSent_last == null) {
+			result.packetsSent_last = packetsSent;
 			return;
 		}
-		Integer dPacketsSent = packetsSent - mediaStreamAggregateRecord.last;
-		this.updateSampleDescription(dPacketsSent, mediaStreamAggregateRecord);
+		Integer dPacketsSent = packetsSent - result.packetsSent_last;
+		result.packetsSent_sum += dPacketsSent;
+		if (result.packetsSent_min == null || dPacketsSent < result.packetsSent_min) {
+			result.packetsSent_min = dPacketsSent;
+		}
+		if (result.packetsSent_max == null || result.packetsSent_max < dPacketsSent) {
+			result.packetsSent_max = dPacketsSent;
+		}
 	}
 
-	private void updateBytesSent(Integer bytesSent, MediaStreamAggregateRecord mediaStreamAggregateRecord) {
+	private void updateBytesSent(OutboundStreamMeasurementDTO result, Integer bytesSent) {
 		if (bytesSent == null) {
-			mediaStreamAggregateRecord.empty += 1;
 			return;
 		}
-		if (mediaStreamAggregateRecord.last == null) {
-			mediaStreamAggregateRecord.last = bytesSent;
+		++result.bytesSent_count;
+		if (result.bytesSent_last == null) {
+			result.bytesSent_last = bytesSent;
 			return;
 		}
-		Integer dPacketsSent = bytesSent - mediaStreamAggregateRecord.last;
-		this.updateSampleDescription(dPacketsSent, mediaStreamAggregateRecord);
+		Integer dBytesSent = bytesSent - result.bytesSent_last;
+		result.bytesSent_sum += dBytesSent;
+		if (result.bytesSent_min == null || dBytesSent < result.bytesSent_min) {
+			result.bytesSent_min = dBytesSent;
+		}
+		if (result.bytesSent_max == null || result.bytesSent_max < dBytesSent) {
+			result.bytesSent_max = dBytesSent;
+		}
 	}
 
-	private void updateSampleDescription(Integer value, MediaStreamAggregateRecord mediaStreamAggregateRecord) {
-		mediaStreamAggregateRecord.presented += 1;
-		if (mediaStreamAggregateRecord.min == null || value < mediaStreamAggregateRecord.min) {
-			mediaStreamAggregateRecord.min = value;
+	private Integer extractBytesSent(RTCStats sample) {
+		Double bytesSent = sample.getBytesSent();
+		if (bytesSent == null) {
+			return null;
 		}
-
-		if (mediaStreamAggregateRecord.max == null || mediaStreamAggregateRecord.max < value) {
-			mediaStreamAggregateRecord.max = value;
-		}
-		mediaStreamAggregateRecord.sum += value;
-		mediaStreamAggregateRecord.last = value;
+		return bytesSent.intValue();
 	}
+
+	private Integer extractPacketsSent(RTCStats sample) {
+		Double packetsSent = sample.getPacketsSent();
+		if (packetsSent == null) {
+			return null;
+		}
+		return packetsSent.intValue();
+	}
+
 }

@@ -5,10 +5,13 @@ package org.observertc.webrtc.service.jooq;
 
 
 import org.observertc.webrtc.service.jooq.tables.Callpeerconnections;
+import org.observertc.webrtc.service.jooq.tables.Inboundstreammeasurements;
 import org.observertc.webrtc.service.jooq.tables.Observerorganisations;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Organisations;
+import org.observertc.webrtc.service.jooq.tables.Outboundstreammeasurements;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
+import org.observertc.webrtc.service.jooq.tables.Remoteinboundstreammeasurements;
 import org.observertc.webrtc.service.jooq.tables.Users;
 
 
@@ -22,6 +25,11 @@ public class Tables {
      * CallIDs
      */
     public static final Callpeerconnections CALLPEERCONNECTIONS = Callpeerconnections.CALLPEERCONNECTIONS;
+
+    /**
+     * A table to map peer connections to SSRCs
+     */
+    public static final Inboundstreammeasurements INBOUNDSTREAMMEASUREMENTS = Inboundstreammeasurements.INBOUNDSTREAMMEASUREMENTS;
 
     /**
      * An associative table to map Observers to Evaluators
@@ -41,7 +49,17 @@ public class Tables {
     /**
      * A table to map peer connections to SSRCs
      */
+    public static final Outboundstreammeasurements OUTBOUNDSTREAMMEASUREMENTS = Outboundstreammeasurements.OUTBOUNDSTREAMMEASUREMENTS;
+
+    /**
+     * A table to map peer connections to SSRCs
+     */
     public static final Peerconnectionssrcs PEERCONNECTIONSSRCS = Peerconnectionssrcs.PEERCONNECTIONSSRCS;
+
+    /**
+     * A table to map peer connections to SSRCs
+     */
+    public static final Remoteinboundstreammeasurements REMOTEINBOUNDSTREAMMEASUREMENTS = Remoteinboundstreammeasurements.REMOTEINBOUNDSTREAMMEASUREMENTS;
 
     /**
      * Users

@@ -44,7 +44,9 @@ public class ServiceStartedKafkaListener implements ApplicationEventListener<Ser
 				this.kafkaTopicsConfiguration.observerSSRCPeerConnectionSamples,
 				this.kafkaTopicsConfiguration.observeRTCCIceStatsSample,
 				this.kafkaTopicsConfiguration.observeRTCMediaStreamStatsSamples,
-				this.kafkaTopicsConfiguration.observertcReports
+				this.kafkaTopicsConfiguration.observertcReports,
+				this.kafkaTopicsConfiguration.outboundStreamMeasurements,
+				this.kafkaTopicsConfiguration.inboundStreamMeasurements
 		);
 		return new Stage<AdminClient>() {
 			@Override

@@ -22,7 +22,8 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 		MediaStreamSampleEntryRecord RTT = MediaStreamSampleEntryRecord.from(report.RTTRecord);
 		return new MediaStreamSampleEntry()
 				.withObserverUUID(report.observerUUID)
-				.withPeerConnectionUUID(report.peerConnectionUUID)
+				.withOutboundPeerConnectionUUID(report.outboundPeerConnectionUUID)
+				.withInboundPeerConnectionUUID(report.inboundPeerConnectionUUID)
 				.withSSRC(report.SSRC)
 				.withBytesReceivedRecord(bytesReceivedRecord)
 				.withBytesSentRecord(bytesSentRecord)
@@ -36,7 +37,6 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 
 	private static Logger logger = LoggerFactory.getLogger(MediaStreamSampleEntry.class);
 	private static final String OBSERVER_UUID_FIELD_NAME = "peerConnectionUUID";
-	private static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
 	private static final String BYTES_RECEIVED_FIELD_NAME = "bytesReceived";
 	private static final String BYTES_SENT_FIELD_NAME = "bytesSent";
 	private static final String PACKETS_RECEIVED_FIELD_NAME = "packetsReceived";
@@ -46,6 +46,8 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 	private static final String RTT_FIELD_NAME = "RTT";
 	private static final String FIRST_SAMPLE_TIMESTAMP_FIELD_NAME = "firstSample";
 	private static final String LAST_SAMPLE_TIMESTAMP_FIELD_NAME = "lastSample";
+	private static final String OUTBOUND_PEER_CONNECTION_UUID_FIELD_NAME = "outboundPeerConnectionUUID";
+	private static final String INBOUND_PEER_CONNECTION_UUID_FIELD_NAME = "inboundPeerConnectionUUID";
 
 	private final Map<String, Object> values = new HashMap<>();
 
@@ -55,8 +57,13 @@ public class MediaStreamSampleEntry implements BigQueryEntry {
 	}
 
 
-	public MediaStreamSampleEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+	public MediaStreamSampleEntry withOutboundPeerConnectionUUID(UUID value) {
+		this.values.put(OUTBOUND_PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+		return this;
+	}
+
+	public MediaStreamSampleEntry withInboundPeerConnectionUUID(UUID value) {
+		this.values.put(INBOUND_PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 

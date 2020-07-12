@@ -12,7 +12,8 @@ import java.util.UUID;
 public class MediaStreamSampleReport extends Report {
 	public static MediaStreamSampleReport of(
 			UUID observerUUID,
-			UUID peerConnectionUUID,
+			UUID outboundPeerConnectionUUID,
+			UUID inboundPeerConnectionUUID,
 			Long SSRC,
 			LocalDateTime firstSample,
 			LocalDateTime lastSample,
@@ -25,7 +26,8 @@ public class MediaStreamSampleReport extends Report {
 	) {
 		MediaStreamSampleReport result = new MediaStreamSampleReport();
 		result.observerUUID = observerUUID;
-		result.peerConnectionUUID = peerConnectionUUID;
+		result.outboundPeerConnectionUUID = outboundPeerConnectionUUID;
+		result.outboundPeerConnectionUUID = inboundPeerConnectionUUID;
 		result.SSRC = SSRC;
 		result.firstSample = firstSample;
 		result.lastSample = lastSample;
@@ -43,7 +45,9 @@ public class MediaStreamSampleReport extends Report {
 		super(ReportType.MEDIA_STREAM_SAMPLE);
 	}
 
-	public UUID peerConnectionUUID;
+	public UUID outboundPeerConnectionUUID;
+
+	public UUID inboundPeerConnectionUUID;
 
 	public UUID observerUUID;
 
