@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.processors;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
+package org.observertc.webrtc.service.mediastreams;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
 import java.util.UUID;
 import org.apache.kafka.streams.kstream.KStream;
@@ -20,12 +20,41 @@ public class MediaStreamDemuxer {
 	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> inboundStream;
 	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> defaultStream;
 	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> outboundStream;
+	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> remoteInboundStream;
 
+	private boolean logSampleIsDroppedMessage(String field, UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+		logger.warn("Sample is dropped due to missing field: {}. Key: {}, Value: {}",
+				field, peerConnectionUUID, sample);
+		return false;
+	}
 
 	public MediaStreamDemuxer(KStream<UUID, ObserveRTCMediaStreamStatsSample> source) {
-		this.source = source;
+		this.source = source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+			@Override
+			public boolean test(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+				if (peerConnectionUUID == null) {
+					return logSampleIsDroppedMessage("peerConnectionUUID key", peerConnectionUUID, sample);
+				}
+				if (sample == null) {
+					return logSampleIsDroppedMessage("Sample value", peerConnectionUUID, sample);
+				}
+				if (sample.observerUUID == null) {
+					return logSampleIsDroppedMessage("sample.observerUUID", peerConnectionUUID, sample);
+				}
+				if (sample.sampled == null) {
+					return logSampleIsDroppedMessage("sample.sampled timestamp", peerConnectionUUID, sample);
+				}
+				if (sample.rtcStats == null) {
+					return logSampleIsDroppedMessage("sample.rtcStats", peerConnectionUUID, sample);
+				}
+				if (sample.rtcStats.getSsrc() == null) {
+					return logSampleIsDroppedMessage("sample.rtcStats.SSRC", peerConnectionUUID, sample);
+				}
+				return true;
+			}
+		});
 //		Predicate<UUID, ObserveRTCMediaStreamStatsSample>[] predicates = this.getPredicates();
-		this.inboundStream = source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+		this.inboundStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
 			@Override
 			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
 				if (value == null || value.rtcStats == null || value.rtcStats.getType() == null) {
@@ -35,7 +64,7 @@ public class MediaStreamDemuxer {
 			}
 		});
 
-		this.outboundStream = source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+		this.outboundStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
 			@Override
 			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
 				if (value == null || value.rtcStats == null || value.rtcStats.getType() == null) {
@@ -44,29 +73,40 @@ public class MediaStreamDemuxer {
 				return value.rtcStats.getType().equals(RTCStatsType.OUTBOUND_RTP);
 			}
 		});
-		this.defaultStream = source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+
+		this.remoteInboundStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+			@Override
+			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
+				if (value == null || value.rtcStats == null || value.rtcStats.getType() == null) {
+					return false;
+				}
+				return value.rtcStats.getType().equals(RTCStatsType.REMOTE_INBOUND_RTP);
+			}
+		});
+
+		this.defaultStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
 			@Override
 			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
 				return true;
 			}
 		});
-//		this.branches = this.source.branch(predicates);
 	}
 
 	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getDefaultOutputBranch() {
-//		return this.branches[DEFAULT_OUTPUT_INDEX];
 		return this.defaultStream;
 	}
 
 
 	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getOutboundStreamBranch() {
-//		return this.branches[OUTBOUND_STREAM_OUTPUT_INDEX];
 		return this.outboundStream;
 	}
 
 	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getInboundStreamBranch() {
-//		return this.branches[INBOUND_STREAM_OUTPUT_INDEX];
 		return this.inboundStream;
+	}
+
+	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getRemoteInboundStreamBranch() {
+		return this.remoteInboundStream;
 	}
 
 

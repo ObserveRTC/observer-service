@@ -1,0 +1,59 @@
+package org.observertc.webrtc.service.mediastreams;
+
+import io.micronaut.context.annotation.Prototype;
+import java.util.UUID;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.kstream.KeyValueMapper;
+import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
+import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
+import org.observertc.webrtc.service.samples.MediaStreamKey;
+import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
+
+@Prototype
+public class InboundStreamSampleMapper implements KeyValueMapper
+		<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<UUID, InboundStreamMeasurement>> {
+
+	public InboundStreamSampleMapper() {
+
+	}
+
+	@Override
+	public KeyValue<UUID, InboundStreamMeasurement> apply(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+		RTCStats rtcStats = sample.rtcStats;
+		InboundStreamMeasurement value = new InboundStreamMeasurement();
+		value.SSRC = sample.rtcStats.getSsrc().longValue();
+		value.peerConnectionUUID = peerConnectionUUID;
+		value.bytesReceived = this.extractBytesReceived(rtcStats);
+		value.packetsReceived = this.extractPacketsReceived(rtcStats);
+		value.packetsLost = this.extractPacketsLost(rtcStats);
+		value.sampled = sample.sampled;
+		MediaStreamKey key = MediaStreamKey.of(sample.observerUUID, sample.rtcStats.getSsrc().longValue());
+		return new KeyValue<>(key.observerUUID, value);
+	}
+
+	private Integer extractBytesReceived(RTCStats sample) {
+		Double bytesReceived = sample.getBytesReceived();
+		if (bytesReceived == null) {
+			return null;
+		}
+		return bytesReceived.intValue();
+	}
+
+	private Integer extractPacketsReceived(RTCStats sample) {
+		Double packetsReceived = sample.getPacketsReceived();
+		if (packetsReceived == null) {
+			return null;
+		}
+		return packetsReceived.intValue();
+	}
+
+	private Integer extractPacketsLost(RTCStats sample) {
+		Double packetsLost = sample.getPacketsLost();
+		if (packetsLost == null) {
+			return null;
+		}
+		return packetsLost.intValue();
+	}
+
+
+}

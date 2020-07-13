@@ -8,12 +8,15 @@ import java.time.LocalDateTime;
 @Introspected
 public class MediaStreamAggregate {
 
-	@JsonUnwrapped
-	public MediaStreamAggregateRecord RTTInMs = new MediaStreamAggregateRecord();
-	@JsonUnwrapped
-	public MediaStreamAggregateRecord bytesSent = new MediaStreamAggregateRecord();
-	@JsonUnwrapped
-	public MediaStreamAggregateRecord packetsSent = new MediaStreamAggregateRecord();
+
+	@JsonUnwrapped(prefix = "RTTInMs_")
+	public MediaStreamSampleRecord RTTInMs = new MediaStreamSampleRecord();
+
+	@JsonUnwrapped(prefix = "bytesSent_")
+	public MediaStreamSampleRecord bytesSent = new MediaStreamSampleRecord();
+
+	@JsonUnwrapped(prefix = "packetsSent_")
+	public MediaStreamSampleRecord packetsSent = new MediaStreamSampleRecord();
 
 	@JsonIgnore
 	public LocalDateTime first;
@@ -21,16 +24,5 @@ public class MediaStreamAggregate {
 	@JsonIgnore
 	public LocalDateTime last;
 
-	public MediaStreamAggregate(MediaStreamAggregate src) {
-		this.RTTInMs = new MediaStreamAggregateRecord(src.RTTInMs);
-		this.bytesSent = new MediaStreamAggregateRecord(src.bytesSent);
-		this.packetsSent = new MediaStreamAggregateRecord(src.packetsSent);
-		this.first = src.first;
-		this.last = src.last;
-	}
-
-	public MediaStreamAggregate() {
-
-	}
 
 }

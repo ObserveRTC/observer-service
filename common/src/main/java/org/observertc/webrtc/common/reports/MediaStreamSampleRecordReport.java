@@ -19,7 +19,7 @@ public class MediaStreamSampleRecordReport {
 
 	public Long maximum;
 
-	public Long count;
+	public Long count = 0L;
 
-	public Long sum;
+	public Long sum = 0L;
 }

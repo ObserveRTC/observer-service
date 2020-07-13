@@ -2,7 +2,7 @@ micronaut:
   server:
     port: ${APPLICATION_SERVER_PORT:8088}
   application:
-    name: webrtcstats_gatekeeper
+    name: webrtc_observer
     authentication:
       hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
       stretching: ${AUTHENTICATION_STRETCHING:2}
@@ -38,7 +38,12 @@ webrtcStatsReceiver:
   useServerTimestamp: True
 ---
 mediaStreamEvaluator:
+  updatePeriodInS: 10
   reportPeriodInS: 30
+  inboundStreamEvaluator:
+    enabled: True
+  outboundStreamEvaluator:
+    lingerPeriodInMs: 3000
   callReports:
     enabled: True
     peerConnectionMaxIdleTimeInS: 30

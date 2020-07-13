@@ -73,6 +73,10 @@ public class WebExtrAppWebsocketServer {
 			logger.error("The provided message cannot be parsed for " + observerUUID, e);
 			return;
 		}
+		if (sample.getPeerConnectionID() == null) {
+			logger.warn("Sample is dropped due to null peerconnectionid");
+			return;
+		}
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.getPeerConnectionID());
 		if (!peerConnectionUUIDHolder.isPresent()) {
 			logger.error("The provided peer connection id {} from {} cannot be parsed as UUID", sample.getPeerConnectionID(), observerUUID);
@@ -93,6 +97,8 @@ public class WebExtrAppWebsocketServer {
 	}
 
 	private void sendObserveRTCMediaStreamStats(UUID observerUUID, UUID peerConnectionUUID, RTCStats[] mediaStreamStats) {
+		// TODO: here consider the timestamp extraction from server or not
+		LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 		for (int i = 0; i < mediaStreamStats.length; ++i) {
 			RTCStats rtcStats = mediaStreamStats[i];
 			ObserveRTCMediaStreamStatsSample sample = new ObserveRTCMediaStreamStatsSample();
@@ -102,8 +108,7 @@ public class WebExtrAppWebsocketServer {
 				continue;
 			}
 			sample.rtcStats = rtcStats;
-			// TODO: here consider the timestamp extraction from server or not 
-			sample.sampled = LocalDateTime.now(ZoneOffset.UTC);
+			sample.sampled = timestamp;
 			RTCStatsType type = rtcStats.getType();
 			switch (type) {
 				case INBOUND_RTP:

@@ -21,14 +21,10 @@ import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
-import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.micrometer.ObserverSSRCPeerConnectionSampleProcessReporter;
 import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
 import org.observertc.webrtc.service.repositories.CallPeerConnectionsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
-import org.observertc.webrtc.service.samples.MediaStreamKey;
-import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +42,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 
 	//	private final Map<SSRCMapEntry, LocalDateTime> ssrcMapEntries;
 	public CallsReporter(PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
-						 CallPeerConnectionsRepository callPeerConnectionsRepository,
-						 ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter) {
+						 CallPeerConnectionsRepository callPeerConnectionsRepository) {
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callPeerConnectionsRepository = callPeerConnectionsRepository;
 		this.updatedPeerConnections = new HashMap<>();
