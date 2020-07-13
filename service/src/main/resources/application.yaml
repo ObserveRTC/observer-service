@@ -46,7 +46,8 @@ mediaStreamEvaluator:
 ---
 reportsink:
   configFile: ${REPORTSINK_CONFIG_FILE_NAME:`/reportsink.yml`}
-  profile: BigQueryProfile
+  #  profile: BigQueryProfile
+  profile: DebugProfile
 ---
 hikari:
   username: ${HIKARI_USERNAME:root}
