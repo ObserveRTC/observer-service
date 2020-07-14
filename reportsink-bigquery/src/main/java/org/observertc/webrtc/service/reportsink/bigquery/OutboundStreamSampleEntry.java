@@ -1,6 +1,5 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.observertc.webrtc.common.reports.OutboundStreamSampleReport;
 import org.slf4j.Logger;
@@ -26,8 +25,6 @@ public class OutboundStreamSampleEntry extends MediaStreamSampleEntry<OutboundSt
 	private static Logger logger = LoggerFactory.getLogger(OutboundStreamSampleEntry.class);
 	private static final String BYTES_SENT_FIELD_NAME = "bytesSent";
 	private static final String PACKETS_SENT_FIELD_NAME = "packetsSent";
-
-	private final Map<String, Object> values = new HashMap<>();
 
 	public OutboundStreamSampleEntry withBytesSentRecord(MediaStreamSampleEntryRecord record) {
 		this.values.put(BYTES_SENT_FIELD_NAME, record.toMap());

@@ -1,6 +1,5 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.observertc.webrtc.common.reports.RemoteInboundStreamSampleReport;
 import org.slf4j.Logger;
@@ -23,8 +22,6 @@ public class RemoteInboundStreamSampleEntry extends MediaStreamSampleEntry<Remot
 
 	private static Logger logger = LoggerFactory.getLogger(RemoteInboundStreamSampleEntry.class);
 	private static final String RTT_IN_MS_FIELD_NAME = "RTTInMs";
-
-	private final Map<String, Object> values = new HashMap<>();
 
 	public RemoteInboundStreamSampleEntry withRttInMsRecord(MediaStreamSampleEntryRecord record) {
 		this.values.put(RTT_IN_MS_FIELD_NAME, record.toMap());
