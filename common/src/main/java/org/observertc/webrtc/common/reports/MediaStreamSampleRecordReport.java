@@ -5,14 +5,12 @@ public class MediaStreamSampleRecordReport {
 	public static MediaStreamSampleRecordReport of(
 			Long minimum,
 			Long maximum,
-			Long presented,
-			Long empty,
+			Long count,
 			Long sum) {
 		MediaStreamSampleRecordReport result = new MediaStreamSampleRecordReport();
 		result.minimum = minimum;
 		result.maximum = maximum;
-		result.presented = presented;
-		result.empty = empty;
+		result.count = count;
 		result.sum = sum;
 		return result;
 	}
@@ -21,9 +19,7 @@ public class MediaStreamSampleRecordReport {
 
 	public Long maximum;
 
-	public Long presented;
+	public Long count = 0L;
 
-	public Long empty;
-
-	public Long sum;
+	public Long sum = 0L;
 }

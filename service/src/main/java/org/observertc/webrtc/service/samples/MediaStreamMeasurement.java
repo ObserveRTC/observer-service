@@ -1,31 +1,21 @@
-package org.observertc.webrtc.common.reports;
+package org.observertc.webrtc.service.samples;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import io.micronaut.core.annotation.Introspected;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class MediaStreamSampleReport extends Report {
-	protected MediaStreamSampleReport(ReportType type) {
-		super(type);
-	}
-
-	public UUID peerConnectionUUID;
-
-	public UUID observerUUID;
+@Introspected
+public abstract class MediaStreamMeasurement {
 
 	public Long SSRC;
-
-	public Long count = 0L;
-
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	public LocalDateTime firstSample;
+	public UUID peerConnectionUUID;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	public LocalDateTime lastSample;
+	public LocalDateTime sampled;
 
 }

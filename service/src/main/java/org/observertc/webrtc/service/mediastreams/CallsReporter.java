@@ -2,7 +2,6 @@ package org.observertc.webrtc.service.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import javax.inject.Inject;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.javatuples.Pair;
@@ -21,14 +21,12 @@ import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
-import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.micrometer.ObserverSSRCPeerConnectionSampleProcessReporter;
+import org.observertc.webrtc.service.ApplicationTimeZoneId;
+import org.observertc.webrtc.service.ReportsConfig;
 import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
 import org.observertc.webrtc.service.repositories.CallPeerConnectionsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
-import org.observertc.webrtc.service.samples.MediaStreamKey;
-import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +34,9 @@ import org.slf4j.LoggerFactory;
 public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, LocalDateTime>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallsReporter.class);
+
+	@Inject
+	ApplicationTimeZoneId applicationTimeZoneId;
 
 	private ProcessorContext context;
 
@@ -46,16 +47,15 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 
 	//	private final Map<SSRCMapEntry, LocalDateTime> ssrcMapEntries;
 	public CallsReporter(PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
-						 CallPeerConnectionsRepository callPeerConnectionsRepository,
-						 ObserverSSRCPeerConnectionSampleProcessReporter observerSSRCPeerConnectionSampleProcessReporter) {
+						 CallPeerConnectionsRepository callPeerConnectionsRepository) {
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callPeerConnectionsRepository = callPeerConnectionsRepository;
 		this.updatedPeerConnections = new HashMap<>();
 	}
 
 
-	public void init(ProcessorContext context, MediaStreamEvaluatorConfiguration.CallReportsConfiguration configuration) {
-		this.peerConnectionMaxIdleTimeInS = configuration.peerConnectionMaxIdleTimeInS;
+	public void init(ProcessorContext context, ReportsConfig.CallReportsConfig callReportsConfig) {
+		this.peerConnectionMaxIdleTimeInS = callReportsConfig.peerConnectionMaxIdleTimeInS;
 		this.context = context;
 
 	}
@@ -169,7 +169,9 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 	}
 
 	private void cleanCalls() {
-		LocalDateTime threshold = LocalDateTime.now(ZoneOffset.UTC).minus(this.peerConnectionMaxIdleTimeInS, ChronoUnit.SECONDS);
+//		LocalDateTime threshold = LocalDateTime.now(ZoneOffset.UTC).minus(this.peerConnectionMaxIdleTimeInS, ChronoUnit.SECONDS);
+		LocalDateTime threshold = LocalDateTime.now(applicationTimeZoneId.getZoneId()).minus(this.peerConnectionMaxIdleTimeInS,
+				ChronoUnit.SECONDS);
 		List<PeerConnectionSSRCsEntry> expiredPeerConnectionSSRCsEntries =
 				this.peerConnectionSSRCsRepository.findExpiredPeerConnections(threshold);
 		if (expiredPeerConnectionSSRCsEntries.size() < 1) {

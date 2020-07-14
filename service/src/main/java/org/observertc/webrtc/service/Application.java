@@ -12,5 +12,6 @@ public class Application {
 //		IConfigurationLoader configurationLoader = new ConfigurationLoader();
 		context = Micronaut.
 				run(Application.class);
+
 	}
 }

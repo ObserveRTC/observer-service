@@ -1,16 +1,11 @@
 package org.observertc.webrtc.service.samples;
 
-import java.time.LocalDateTime;
+import io.micronaut.core.annotation.Introspected;
 
-public class OutboundStreamMeasurement {
+@Introspected
+public class OutboundStreamMeasurement extends MediaStreamMeasurement {
 
-	public Integer RTTInMs;
 	public Integer bytesSent;
 	public Integer packetsSent;
 
-	public LocalDateTime sampled;
-
-	public OutboundStreamMeasurement() {
-
-	}
 }

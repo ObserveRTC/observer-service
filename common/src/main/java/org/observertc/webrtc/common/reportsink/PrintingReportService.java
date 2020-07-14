@@ -3,6 +3,7 @@ package org.observertc.webrtc.common.reportsink;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
+import java.util.function.Consumer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.observertc.webrtc.common.reports.Report;
 import org.slf4j.Logger;
@@ -13,9 +14,14 @@ public class PrintingReportService implements ReportService {
 	private static final Logger logger = LoggerFactory.getLogger(PrintingReportService.class);
 
 	private ObjectMapper mapper = new ObjectMapper();
+	private final Consumer<String> printer;
 
-	public PrintingReportService() {
-
+	public PrintingReportService(boolean useLogger) {
+		if (useLogger) {
+			this.printer = logger::info;
+		} else {
+			this.printer = System.out::println;
+		}
 	}
 
 	@Override
@@ -36,7 +42,7 @@ public class PrintingReportService implements ReportService {
 			e.printStackTrace();
 			json = "Not parsable report";
 		}
-		System.out.println(json);
+		this.printer.accept(json);
 	}
 
 	@Override

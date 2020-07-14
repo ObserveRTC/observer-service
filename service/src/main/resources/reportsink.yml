@@ -6,3 +6,5 @@ reportsinks:
       datasetName: WebRTC
   DebugProfile:
     builder: org.observertc.webrtc.common.reportsink.PrintingReportServiceBuilder
+    configuration:
+      useLogger: True

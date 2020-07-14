@@ -13,8 +13,8 @@ public class FinishedCallEntry implements BigQueryEntry {
 	public static FinishedCallEntry from(FinishedCallReport finishedCallReport) {
 		return new FinishedCallEntry()
 				.withObserverUUID(finishedCallReport.observerUUID)
-				.setCallUUID(finishedCallReport.callUUID)
-				.setFinishedTimestamp(finishedCallReport.finished);
+				.withCallUUID(finishedCallReport.callUUID)
+				.withFinishedTimestamp(finishedCallReport.finished);
 	}
 
 	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
@@ -32,12 +32,12 @@ public class FinishedCallEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public FinishedCallEntry setCallUUID(UUID value) {
+	public FinishedCallEntry withCallUUID(UUID value) {
 		this.values.put(CALL_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 
-	public FinishedCallEntry setFinishedTimestamp(LocalDateTime value) {
+	public FinishedCallEntry withFinishedTimestamp(LocalDateTime value) {
 		ZoneId zoneId = ZoneId.systemDefault();
 		Long epoch = value.atZone(zoneId).toEpochSecond();
 		this.values.put(FINISHED_TIMESTAMP_FIELD_NAME, epoch);

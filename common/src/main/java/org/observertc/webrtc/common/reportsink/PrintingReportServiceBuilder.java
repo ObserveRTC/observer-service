@@ -6,11 +6,11 @@ public class PrintingReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 	public ReportService build() {
 		Config config = this.convertAndValidate(Config.class);
-		PrintingReportService result = new PrintingReportService();
+		PrintingReportService result = new PrintingReportService(config.useLogger);
 		return result;
 	}
 
 	public static class Config extends AbstractBuilder.Config {
-
+		public boolean useLogger = false;
 	}
 }

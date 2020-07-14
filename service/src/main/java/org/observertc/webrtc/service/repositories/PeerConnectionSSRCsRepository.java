@@ -390,22 +390,18 @@ public class PeerConnectionSSRCsRepository implements CrudRepository<PeerConnect
 
 	@Override
 	public void deleteAll(@NonNull @NotNull Iterable<? extends PeerConnectionSSRCsEntry> entities) {
-		Iterator<? extends PeerConnectionSSRCsEntry> iterator = entities.iterator();
-		this.jooqExecuteWrapper.execute((context, items) -> {
+		List<Row2<byte[], Long>> keys = StreamSupport.stream(entities
+				.spliterator(), false)
+				.map(entity -> row(
+						UUIDAdapter.toBytes(entity.peerConnectionUUID),
+						entity.SSRC
+				)).collect(Collectors.toList());
 
-			List<Row2<byte[], Long>> keys = StreamSupport.stream(entities
-					.spliterator(), false)
-					.map(entity -> row(
-							UUIDAdapter.toBytes(entity.peerConnectionUUID),
-							entity.SSRC
-					)).collect(Collectors.toList());
-
-			context
-					.deleteFrom(Tables.PEERCONNECTIONSSRCS)
-					.where(row(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
-							Tables.PEERCONNECTIONSSRCS.SSRC).in(keys))
-					.execute();
-		}, entities);
+		this.contextProvider.get()
+				.deleteFrom(Tables.PEERCONNECTIONSSRCS)
+				.where(row(Tables.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID,
+						Tables.PEERCONNECTIONSSRCS.SSRC).in(keys))
+				.execute();
 	}
 
 	@Override

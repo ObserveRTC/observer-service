@@ -11,5 +11,7 @@ public class KafkaTopicsConfiguration {
 	public String observeRTCMediaStreamStatsSamples;
 	public String observerSSRCPeerConnectionSamples;
 	public String observertcReports;
+	public String inboundStreamMeasurements;
+	public String outboundStreamMeasurements;
 }
 
