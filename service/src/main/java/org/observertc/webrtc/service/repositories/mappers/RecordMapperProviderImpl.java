@@ -23,7 +23,6 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
 		this.mappers.put(ObserverDTO.class, new ObserversRecordMapper());
 		this.mappers.put(PeerConnectionSSRCsEntry.class, new PeerConnectionSSRCsEntryRecordMapper());
 		this.mappers.put(CallPeerConnectionsEntry.class, new CallPeerConnectionsEntryRecordMapper());
-		this.mappers.put(InboundStreamMeasurementDTO.class, new InboundstreammeasurementsRecordMapper());
 	}
 
 	@Override
