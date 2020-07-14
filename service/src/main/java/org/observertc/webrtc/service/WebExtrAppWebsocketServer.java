@@ -6,12 +6,11 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import javax.inject.Inject;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.dto.webextrapp.Converter;
 import org.observertc.webrtc.service.dto.webextrapp.ObserveRTCCIceStats;
@@ -29,6 +28,9 @@ public class WebExtrAppWebsocketServer {
 	private static final Logger logger = LoggerFactory.getLogger(WebExtrAppWebsocketServer.class);
 	private final ObserverRepository observerRepository;
 	private final WebRTCKafkaSinks kafkaSinks;
+
+	@Inject
+	ApplicationTimeZoneId applicationTimeZoneId;
 //	private final IDSLContextProvider contextProvider;
 
 //	public DemoWebsocketServer(ObserverRepository observerRepository, DemoSink sink) {
@@ -68,7 +70,7 @@ public class WebExtrAppWebsocketServer {
 		PeerConnectionSample sample;
 		try {
 			sample = Converter.PeerConnectionSampleFromJsonString(message);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("The provided message cannot be parsed for " + observerUUID, e);
 			return;
@@ -98,7 +100,8 @@ public class WebExtrAppWebsocketServer {
 
 	private void sendObserveRTCMediaStreamStats(UUID observerUUID, UUID peerConnectionUUID, RTCStats[] mediaStreamStats) {
 		// TODO: here consider the timestamp extraction from server or not
-		LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+//		LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+		LocalDateTime timestamp = LocalDateTime.now(applicationTimeZoneId.getZoneId());
 		for (int i = 0; i < mediaStreamStats.length; ++i) {
 			RTCStats rtcStats = mediaStreamStats[i];
 			ObserveRTCMediaStreamStatsSample sample = new ObserveRTCMediaStreamStatsSample();

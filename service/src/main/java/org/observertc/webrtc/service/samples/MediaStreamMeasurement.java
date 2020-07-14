@@ -9,19 +9,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Introspected
-public class MediaStreamMeasurement {
-	public UUID peerConnectionUUID;
+public abstract class MediaStreamMeasurement {
 
-	
-	public Integer RTTInMs;
-	public Integer bytesSent;
-	public Integer packetsSent;
+	public Long SSRC;
+	public UUID peerConnectionUUID;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime sampled;
 
-	public MediaStreamMeasurement() {
-
-	}
 }

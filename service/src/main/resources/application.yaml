@@ -2,6 +2,7 @@ micronaut:
   server:
     port: ${APPLICATION_SERVER_PORT:8088}
   application:
+    timeZoneId: EET
     name: webrtc_observer
     authentication:
       hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
@@ -37,31 +38,29 @@ kafkaTopics:
 webrtcStatsReceiver:
   useServerTimestamp: True
 ---
-mediaStreamEvaluator:
-  updatePeriodInS: 10
-  reportPeriodInS: 30
-  inboundStreamEvaluator:
-    enabled: True
-  outboundStreamEvaluator:
-    lingerPeriodInMs: 3000
+reports:
   callReports:
     enabled: True
-    peerConnectionMaxIdleTimeInS: 30
-    reportPeriodInS: 10
-    updatePeriodInS: 3
-
+    updatePeriodInS: 10
+    reportPeriodInS: 30
+    peerConnectionMaxIdleTimeInS: 60
+    archiveRetentionTimeInDays: 100
+  streamReports:
+    enabled: True
+    peerConnectionMaxIdleTimeInS: 10
+    aggregationTimeInS: 60
 ---
 reportsink:
-  configFile: ${REPORTSINK_CONFIG_FILE_NAME:`/reportsink.yml`}
-  #  profile: BigQueryProfile
-  profile: DebugProfile
+  configFile: ${REPORTSINK_CONFIG_FILE_PATH:`/reportsink.yml`}
+  profile: BigQueryProfile
+#  profile: DebugProfile
 ---
 hikari:
   username: ${HIKARI_USERNAME:root}
   password: ${HIKARI_PASSWORD:password}
   minIdleInMs: ${HIKARI_MIN_IDLE_IN_MS:100}
   timeout: ${HIKARI_TIMEOUT_IN_MS:1000}
-  jdbcURL: ${HIKARI_JDBC:`jdbc:mysql://localhost:3306/ObserveRTC`}
+  jdbcURL: ${HIKARI_JDBC:`jdbc:mysql://localhost:3306/ObserveRTC?serverTimezone=EET`}
   jdbcDriver: ${JDBC_DRIVER:`com.mysql.cj.jdbc.Driver`}
   maxPoolSize: ${HIKARI_MAX_POOL_SIZE:100}
   poolname: ${HIKARI_POOL_NAME:gatekeeper}

@@ -3,33 +3,28 @@ package org.observertc.webrtc.service.mediastreams;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 @ConfigurationProperties("mediaStreamEvaluator")
-public class MediaStreamEvaluatorConfiguration {
+public class ReportsConfiguration {
 
-	public CallReportsConfiguration callReports;
+	public CallReportsConfig callReports;
 	public int reportPeriodInS;
 	public int updatePeriodInS;
 
-	public OutboundStreamEvaluatorConfiguration outboundStreamEvaluator;
-	public InboundStreamEvaluatorConfiguration inboundStreamEvaluator;
+	public StreamReportsConfig streamReports;
 
 	@ConfigurationProperties("callReports")
-	public static class CallReportsConfiguration {
+	public static class CallReportsConfig {
 		public boolean enabled;
 		public int peerConnectionMaxIdleTimeInS;
 		public int reportPeriodInS;
 		public int updatePeriodInS;
 	}
 
-	@ConfigurationProperties("inboundStreamEvaluator")
-	public static class InboundStreamEvaluatorConfiguration {
+	@ConfigurationProperties("streamReports")
+	public static class StreamReportsConfig {
 		public boolean enabled;
 	}
 
-	@ConfigurationProperties("outboundStreamEvaluator")
-	public static class OutboundStreamEvaluatorConfiguration {
-		public int lingerPeriodInMs;
-	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("\n%s:\n" +

@@ -14,6 +14,7 @@ import org.apache.kafka.streams.processor.Punctuator;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.observertc.webrtc.common.reports.Report;
+import org.observertc.webrtc.service.ReportsConfig;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
 import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
@@ -21,35 +22,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class CallsEvaluator implements Transformer<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<UUID, Report>>, Punctuator {
+public class MediaStreamTransformer implements Transformer<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<UUID, Report>>, Punctuator {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallsEvaluator.class);
+	private static final Logger logger = LoggerFactory.getLogger(MediaStreamTransformer.class);
 
 	private final CallsReporter callsReporter;
-	private final MediaStreamEvaluatorConfiguration configuration;
+	private final ReportsConfig reportsConfig;
 	private final Map<Triplet<UUID, UUID, Long>, Pair<LocalDateTime, LocalDateTime>> updates;
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 
-	public CallsEvaluator(
+	public MediaStreamTransformer(
 			PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
-			MediaStreamEvaluatorConfiguration configuration,
+			ReportsConfig reportsConfig,
 			CallsReporter callsReporter) {
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callsReporter = callsReporter;
-		this.configuration = configuration;
+		this.reportsConfig = reportsConfig;
 		updates = new HashMap<>();
 	}
 
 	@Override
 	public void init(ProcessorContext context) {
-		this.callsReporter.init(context, this.configuration.callReports);
-		if (this.configuration.callReports.enabled) {
-			int reportPeriodInS = this.configuration.callReports.reportPeriodInS;
+		this.callsReporter.init(context, this.reportsConfig.callReports);
+		if (this.reportsConfig.callReports.enabled) {
+			int reportPeriodInS = this.reportsConfig.callReports.reportPeriodInS;
 			context.schedule(Duration.ofSeconds(reportPeriodInS), PunctuationType.WALL_CLOCK_TIME, this.callsReporter);
 		}
-		int updatePeriodInS = this.configuration.updatePeriodInS;
+		int updatePeriodInS = this.reportsConfig.callReports.updatePeriodInS;
 		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this);
-		logger.info("MediaStreamEvaluator is configured by  {}", this.configuration.toString());
+		logger.info("MediaStreamEvaluator is configured by  {}", this.reportsConfig.toString());
 
 	}
 
@@ -59,7 +60,7 @@ public class CallsEvaluator implements Transformer<UUID, ObserveRTCMediaStreamSt
 		Triplet<UUID, UUID, Long> updateKey = Triplet.with(sample.observerUUID, peerConnectionUUID, SSRC);
 		LocalDateTime timestamp = sample.sampled;
 		Pair<LocalDateTime, LocalDateTime> createdUpdated = this.updates.getOrDefault(updateKey, Pair.with(timestamp, timestamp));
-		createdUpdated.setAt1(timestamp);
+		createdUpdated = createdUpdated.setAt1(timestamp);
 		this.updates.put(updateKey, createdUpdated);
 		return null;
 	}

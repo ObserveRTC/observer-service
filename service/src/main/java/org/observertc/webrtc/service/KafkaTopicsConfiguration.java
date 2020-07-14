@@ -13,6 +13,5 @@ public class KafkaTopicsConfiguration {
 	public String observertcReports;
 	public String inboundStreamMeasurements;
 	public String outboundStreamMeasurements;
-	public String temp = "temp";
 }
 

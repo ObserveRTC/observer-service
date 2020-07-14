@@ -29,52 +29,64 @@ detached TIMESTAMP
 );
 
 
-CREATE TABLE WebRTC.StreamSamples
+CREATE TABLE WebRTC.InboundStreamSamples
 (
     observerUUID STRING,
     peerConnectionUUID STRING,
     SSRC INT64,
-    RTT STRUCT<
-        minimum INT64,
-        maximum INT64,
-        sum INT64,
-        presented INT64,
-        empty INT64
-    >,
-    packetsSent STRUCT<
-        minimum INT64,
-        maximum INT64,
-        sum INT64,
-        presented INT64,
-        empty INT64
-    >,
     packetsReceived STRUCT<
         minimum INT64,
         maximum INT64,
         sum INT64,
-        presented INT64,
-        empty INT64
-    >,
-    bytesSent STRUCT<
-        minimum INT64,
-        maximum INT64,
-        sum INT64,
-        presented INT64,
-        empty INT64
+        count INT64
     >,
     bytesReceived STRUCT<
         minimum INT64,
         maximum INT64,
         sum INT64,
-        presented INT64,
-        empty INT64
+        count INT64
     >,
     packetsLost STRUCT<
         minimum INT64,
         maximum INT64,
         sum INT64,
-        presented INT64,
-        empty INT64
+        count INT64
+    >,
+    firstSample TIMESTAMP,
+    lastSample TIMESTAMP
+);
+
+CREATE TABLE WebRTC.RemoteInboundStreamSamples
+(
+    observerUUID STRING,
+    peerConnectionUUID STRING,
+    SSRC INT64,
+    RTTInMs STRUCT<
+        minimum INT64,
+        maximum INT64,
+        sum INT64,
+        count INT64
+    >,
+    firstSample TIMESTAMP,
+    lastSample TIMESTAMP
+);
+
+CREATE TABLE WebRTC.OutboundStreamSamples
+(
+    observerUUID STRING,
+    peerConnectionUUID STRING,
+    SSRC INT64,
+    packetsSent STRUCT<
+        minimum INT64,
+        maximum INT64,
+        sum INT64,
+        count INT64
+    >,
+    bytesSent STRUCT<
+        minimum INT64,
+        maximum INT64,
+        sum INT64,
+        count INT64
     >,
     firstSample TIMESTAMP,
     lastSample TIMESTAMP

@@ -6,19 +6,18 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.KeyValueMapper;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
-import org.observertc.webrtc.service.samples.MediaStreamKey;
 import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
 
 @Prototype
 public class InboundStreamSampleMapper implements KeyValueMapper
-		<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<UUID, InboundStreamMeasurement>> {
+		<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<MediaStreamKey, InboundStreamMeasurement>> {
 
 	public InboundStreamSampleMapper() {
 
 	}
 
 	@Override
-	public KeyValue<UUID, InboundStreamMeasurement> apply(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+	public KeyValue<MediaStreamKey, InboundStreamMeasurement> apply(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
 		RTCStats rtcStats = sample.rtcStats;
 		InboundStreamMeasurement value = new InboundStreamMeasurement();
 		value.SSRC = sample.rtcStats.getSsrc().longValue();
@@ -27,8 +26,8 @@ public class InboundStreamSampleMapper implements KeyValueMapper
 		value.packetsReceived = this.extractPacketsReceived(rtcStats);
 		value.packetsLost = this.extractPacketsLost(rtcStats);
 		value.sampled = sample.sampled;
-		MediaStreamKey key = MediaStreamKey.of(sample.observerUUID, sample.rtcStats.getSsrc().longValue());
-		return new KeyValue<>(key.observerUUID, value);
+		MediaStreamKey mediaStreamKey = MediaStreamKey.of(sample.observerUUID, value.SSRC);
+		return new KeyValue<>(mediaStreamKey, value);
 	}
 
 	private Integer extractBytesReceived(RTCStats sample) {

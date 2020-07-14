@@ -27,11 +27,12 @@ import org.observertc.webrtc.common.reports.OutboundStreamSampleReport;
 import org.observertc.webrtc.common.reports.RemoteInboundStreamSampleReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.KafkaTopicsConfiguration;
-import org.observertc.webrtc.service.mediastreams.CallsEvaluator;
+import org.observertc.webrtc.service.ReportsConfig;
 import org.observertc.webrtc.service.mediastreams.InboundStreamReportAggregator;
 import org.observertc.webrtc.service.mediastreams.InboundStreamSampleMapper;
 import org.observertc.webrtc.service.mediastreams.MediaStreamDemuxer;
-import org.observertc.webrtc.service.mediastreams.MediaStreamEvaluator;
+import org.observertc.webrtc.service.mediastreams.MediaStreamKey;
+import org.observertc.webrtc.service.mediastreams.MediaStreamTransformer;
 import org.observertc.webrtc.service.mediastreams.OutboundStreamReportAggregator;
 import org.observertc.webrtc.service.mediastreams.OutboundStreamSampleMapper;
 import org.observertc.webrtc.service.mediastreams.RemoteInboundStreamReportAggregator;
@@ -50,25 +51,25 @@ public class KafkaStreamsFactory {
 	private static final String REPORT_SERVICE_PROCESS = "ReportServiceProcess";
 
 	private final KafkaTopicsConfiguration kafkaTopicsConfiguration;
-	private final CallsEvaluator callsEvaluator;
+	private final MediaStreamTransformer mediaStreamTransformer;
 	private final ReportServiceProvider reportServiceProvider;
-	private final MediaStreamEvaluator mediaStreamEvaluator;
+	private final ReportsConfig reportsConfig;
 
 	public KafkaStreamsFactory(KafkaTopicsConfiguration kafkaTopicsConfiguration,
-							   MediaStreamEvaluator mediaStreamEvaluator,
-							   CallsEvaluator callsEvaluator,
+							   ReportsConfig reportsConfig,
+							   MediaStreamTransformer mediaStreamTransformer,
 							   ReportServiceProvider reportServiceProvider) {
 		this.kafkaTopicsConfiguration = kafkaTopicsConfiguration;
-		this.callsEvaluator = callsEvaluator;
+		this.mediaStreamTransformer = mediaStreamTransformer;
 		this.reportServiceProvider = reportServiceProvider;
-		this.mediaStreamEvaluator = mediaStreamEvaluator;
+		this.reportsConfig = reportsConfig;
 	}
 
 	@Singleton
 	@Named(MEDIA_STREAM_EVALUATOR_PROCESS)
 	public KStream<UUID, ObserveRTCMediaStreamStatsSample> makeMediaStreamEvaluator(ConfiguredStreamBuilder builder) {
-		boolean enabled = true;
-		if (!enabled) {
+		ReportsConfig.StreamReportsConfig streamReportsConfig = this.reportsConfig.streamReports;
+		if (!streamReportsConfig.enabled) {
 			return null;
 		}
 
@@ -81,14 +82,14 @@ public class KafkaStreamsFactory {
 						new JsonToPOJOMapper<>(ObserveRTCMediaStreamStatsSample.class)));
 
 		MediaStreamDemuxer demuxer = new MediaStreamDemuxer(source);
-		long windowSizeMs = TimeUnit.SECONDS.toMillis(30);
+		long windowSizeMs = TimeUnit.SECONDS.toMillis(streamReportsConfig.aggregationTimeInS);
 
 		TimeWindows aggregateTimeWindow =
 				TimeWindows.of(Duration.ofMillis(windowSizeMs)).grace(Duration.ofMillis(windowSizeMs));
 
 		demuxer.getInboundStreamBranch()
 				.map(new InboundStreamSampleMapper())
-				.groupByKey(Grouped.with(Serdes.UUID(),
+				.groupByKey(Grouped.with(new JsonToPOJOMapper<>(MediaStreamKey.class),
 						new JsonToPOJOMapper<>(InboundStreamMeasurement.class)))
 				.windowedBy(aggregateTimeWindow)
 				.aggregate(
@@ -96,21 +97,21 @@ public class KafkaStreamsFactory {
 							return new InboundStreamSampleReport();
 						},
 						new InboundStreamReportAggregator(),
-						Materialized.as("myStore3").with(Serdes.UUID(),
+						Materialized.as("myStore3").with(new JsonToPOJOMapper<>(MediaStreamKey.class),
 								new JsonToPOJOMapper<>(InboundStreamSampleReport.class)))
 				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
-				.map(new KeyValueMapper<Windowed<UUID>, InboundStreamSampleReport, KeyValue<UUID, Report>>() {
+				.map(new KeyValueMapper<Windowed<MediaStreamKey>, InboundStreamSampleReport, KeyValue<UUID, Report>>() {
 					@Override
-					public KeyValue<UUID, Report> apply(Windowed<UUID> key, InboundStreamSampleReport value) {
-						return KeyValue.pair(key.key(), value);
+					public KeyValue<UUID, Report> apply(Windowed<MediaStreamKey> key, InboundStreamSampleReport value) {
+						return KeyValue.pair(value.observerUUID, value);
 					}
 				})
 				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(), new JsonToPOJOMapper<>(Report.class)));
 
 		demuxer.getOutboundStreamBranch()
 				.map(new OutboundStreamSampleMapper())
-				.groupByKey(Grouped.with(Serdes.UUID(),
+				.groupByKey(Grouped.with(new JsonToPOJOMapper<>(MediaStreamKey.class),
 						new JsonToPOJOMapper<>(OutboundStreamMeasurement.class)))
 				.windowedBy(aggregateTimeWindow)
 				.aggregate(
@@ -118,14 +119,14 @@ public class KafkaStreamsFactory {
 							return new OutboundStreamSampleReport();
 						},
 						new OutboundStreamReportAggregator(),
-						Materialized.as("myStore4").with(Serdes.UUID(),
+						Materialized.as("myStore4").with(new JsonToPOJOMapper<>(MediaStreamKey.class),
 								new JsonToPOJOMapper<>(OutboundStreamSampleReport.class)))
 				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
-				.map(new KeyValueMapper<Windowed<UUID>, OutboundStreamSampleReport, KeyValue<UUID, Report>>() {
+				.map(new KeyValueMapper<Windowed<MediaStreamKey>, OutboundStreamSampleReport, KeyValue<UUID, Report>>() {
 					@Override
-					public KeyValue<UUID, Report> apply(Windowed<UUID> key, OutboundStreamSampleReport value) {
-						return KeyValue.pair(key.key(), value);
+					public KeyValue<UUID, Report> apply(Windowed<MediaStreamKey> key, OutboundStreamSampleReport value) {
+						return KeyValue.pair(value.observerUUID, value);
 					}
 				})
 				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(), new JsonToPOJOMapper<>(Report.class)));
@@ -133,7 +134,7 @@ public class KafkaStreamsFactory {
 
 		demuxer.getRemoteInboundStreamBranch()
 				.map(new RemoteInboundStreamSampleMapper())
-				.groupByKey(Grouped.with(Serdes.UUID(),
+				.groupByKey(Grouped.with(new JsonToPOJOMapper<>(MediaStreamKey.class),
 						new JsonToPOJOMapper<>(RemoteInboundStreamMeasurement.class)))
 				.windowedBy(aggregateTimeWindow)
 				.aggregate(
@@ -141,21 +142,21 @@ public class KafkaStreamsFactory {
 							return new RemoteInboundStreamSampleReport();
 						},
 						new RemoteInboundStreamReportAggregator(),
-						Materialized.as("myStore5").with(Serdes.UUID(),
+						Materialized.as("myStore5").with(new JsonToPOJOMapper<>(MediaStreamKey.class),
 								new JsonToPOJOMapper<>(RemoteInboundStreamSampleReport.class)))
 				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
-				.map(new KeyValueMapper<Windowed<UUID>, RemoteInboundStreamSampleReport, KeyValue<UUID, Report>>() {
+				.map(new KeyValueMapper<Windowed<MediaStreamKey>, RemoteInboundStreamSampleReport, KeyValue<UUID, Report>>() {
 					@Override
-					public KeyValue<UUID, Report> apply(Windowed<UUID> key, RemoteInboundStreamSampleReport value) {
-						return KeyValue.pair(key.key(), value);
+					public KeyValue<UUID, Report> apply(Windowed<MediaStreamKey> key, RemoteInboundStreamSampleReport value) {
+						return KeyValue.pair(value.observerUUID, value);
 					}
 				})
 				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(), new JsonToPOJOMapper<>(Report.class)));
 
 
 		demuxer.getDefaultOutputBranch()
-				.transform(() -> this.callsEvaluator)
+				.transform(() -> this.mediaStreamTransformer)
 				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(),
 						new JsonToPOJOMapper<>(Report.class)));
 
