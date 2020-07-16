@@ -64,11 +64,8 @@ public class BigQueryReportService implements ReportService {
 
 	@Override
 	public void init(ProcessorContext context) {
-		if (this.config.schemaCheckerEnabled) {
-			BigQueryServiceSchemaCheckerJob schemaChecker = new BigQueryServiceSchemaCheckerJob(this.config);
-			schemaChecker.perform();
-		}
-		// TODO: add the service initializer here
+		BigQueryServiceSchemaCheckerJob schemaChecker = new BigQueryServiceSchemaCheckerJob(this.config);
+		schemaChecker.perform();
 	}
 
 	@Override

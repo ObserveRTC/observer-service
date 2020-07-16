@@ -65,6 +65,9 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		return new AbstractTask(CREATE_DATASET_TASK_NAME) {
 			@Override
 			protected void onExecution(Map<String, Map<String, Object>> results) {
+				if (!config.createDatasetIfNotExists) {
+					return;
+				}
 				logger.info("Checking dataset {} existance in project {}", config.datasetName, config.projectName);
 				DatasetId datasetId = DatasetId.of(config.projectName, config.datasetName);
 				Dataset dataset = bigQuery.getDataset(datasetId);
@@ -255,6 +258,9 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		logger.info("Checking table {} existance in dataset: {}, project: {}", tableId.getTable(), tableId.getDataset(), tableId.getProject());
 		Table table = bigQuery.getTable(tableId);
 		if (table != null && table.exists()) {
+			return;
+		}
+		if (!this.config.createDatasetIfNotExists) {
 			return;
 		}
 		try {
