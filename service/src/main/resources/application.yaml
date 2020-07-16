@@ -34,9 +34,7 @@ kafkaTopics:
   observeRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:observeRTCCIceStatsSample}
   observeRTCMediaStreamStatsSamples: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS_SAMPLES:observeRTCMediaStreamStatsSamples}
   observerSSRCPeerConnectionSamples: ${KAFKA_TOPICS_OBSERVER_SSRC_PEER_CONNECTION_SAMPLES:observerSSRCPeerConnectionSamples}
----
-webrtcStatsReceiver:
-  useServerTimestamp: True
+
 ---
 reports:
   callReports:

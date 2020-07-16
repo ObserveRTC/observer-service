@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 
 public class RemoteInboundStreamSampleEntry extends MediaStreamSampleEntry<RemoteInboundStreamSampleEntry> {
 
+	public static final String RTT_IN_MS_FIELD_NAME = "RTTInMs";
+
+	private static Logger logger = LoggerFactory.getLogger(RemoteInboundStreamSampleEntry.class);
 
 	public static RemoteInboundStreamSampleEntry from(RemoteInboundStreamSampleReport report) {
 		MediaStreamSampleEntryRecord RTTInMsRecord = MediaStreamSampleEntryRecord.from(report.RTTInMsRecord);
@@ -20,8 +23,6 @@ public class RemoteInboundStreamSampleEntry extends MediaStreamSampleEntry<Remot
 				.withRttInMsRecord(RTTInMsRecord);
 	}
 
-	private static Logger logger = LoggerFactory.getLogger(RemoteInboundStreamSampleEntry.class);
-	private static final String RTT_IN_MS_FIELD_NAME = "RTTInMs";
 
 	public RemoteInboundStreamSampleEntry withRttInMsRecord(MediaStreamSampleEntryRecord record) {
 		this.values.put(RTT_IN_MS_FIELD_NAME, record.toMap());

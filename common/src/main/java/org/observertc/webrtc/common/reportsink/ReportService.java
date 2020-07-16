@@ -5,5 +5,5 @@ import org.apache.kafka.streams.processor.Processor;
 import org.observertc.webrtc.common.reports.Report;
 
 public interface ReportService extends Processor<UUID, Report> {
-
+	
 }

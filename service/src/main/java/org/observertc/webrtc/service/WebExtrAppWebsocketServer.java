@@ -1,6 +1,5 @@
 package org.observertc.webrtc.service;
 
-import io.micronaut.context.annotation.Value;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
@@ -39,7 +38,6 @@ public class WebExtrAppWebsocketServer {
 //	}
 
 	public WebExtrAppWebsocketServer(
-			@Value("${webrtcStatsReceiver.useServerTimestamp}") boolean useServerTimestamp,
 			ObserverRepository observerRepository,
 			WebRTCKafkaSinks kafkaSinks) {
 		this.observerRepository = observerRepository;

@@ -2,8 +2,9 @@ reportsinks:
   BigQueryProfile:
     builder: org.observertc.webrtc.service.reportsink.bigquery.BigQueryReportServiceBuilder
     configuration:
-      projectName: observertc
-      datasetName: WebRTC
+      projectName: ${REPORTSINK_BIGQUERY_PROJECT_NAME:observertc}
+      datasetName: ${REPORTSINK_BIGQUERY_DATASET_NAME:WebRTC}
+      createDatasetIfNotExists: ${REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS:True}
   DebugProfile:
     builder: org.observertc.webrtc.common.reportsink.PrintingReportServiceBuilder
     configuration:
