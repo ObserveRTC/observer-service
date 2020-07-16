@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 
 public class OutboundStreamSampleEntry extends MediaStreamSampleEntry<OutboundStreamSampleEntry> {
 
+	private static Logger logger = LoggerFactory.getLogger(OutboundStreamSampleEntry.class);
+	public static final String BYTES_SENT_FIELD_NAME = "bytesSent";
+	public static final String PACKETS_SENT_FIELD_NAME = "packetsSent";
 
 	public static OutboundStreamSampleEntry from(OutboundStreamSampleReport report) {
 		MediaStreamSampleEntryRecord bytesSentRecord = MediaStreamSampleEntryRecord.from(report.bytesSentRecord);
@@ -22,9 +25,6 @@ public class OutboundStreamSampleEntry extends MediaStreamSampleEntry<OutboundSt
 				.withLastSampledTimestamp(report.lastSample);
 	}
 
-	private static Logger logger = LoggerFactory.getLogger(OutboundStreamSampleEntry.class);
-	private static final String BYTES_SENT_FIELD_NAME = "bytesSent";
-	private static final String PACKETS_SENT_FIELD_NAME = "packetsSent";
 
 	public OutboundStreamSampleEntry withBytesSentRecord(MediaStreamSampleEntryRecord record) {
 		this.values.put(BYTES_SENT_FIELD_NAME, record.toMap());

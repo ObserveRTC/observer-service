@@ -8,8 +8,7 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 	public ReportService build() {
 		Config config = this.convertAndValidate(Config.class);
-		BigQueryService bigQueryService = new BigQueryService(config.projectName, config.datasetName);
-		BigQueryReportService result = new BigQueryReportService(bigQueryService);
+		BigQueryReportService result = new BigQueryReportService(config);
 		return result;
 	}
 
@@ -18,5 +17,24 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 		public String projectName;
 
 		public String datasetName;
+
+		public String initiatedCallsTable = "InitiatedCalls";
+
+		public String finishedCallsTable = "FinishedCalls";
+
+		public String joinedPeerConnectionsTable = "JoinedPeerConnections";
+
+		public String detachedPeerConnectionsTable = "DetachedPeerConnections";
+
+		public String inboundStreamSamplesTable = "InboundStreamSamples";
+
+		public String remoteInboundStreamSamplesTable = "RemoteInboundStreamSamples";
+
+		public String outboundStreamSamplesTable = "OutboundStreamSamples";
+
+		public boolean schemaCheckerEnabled = true;
+
+		public boolean createDatasetIfNotExists = true;
+
 	}
 }

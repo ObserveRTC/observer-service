@@ -10,6 +10,11 @@ import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 
 public class DetachedPeerConnectionEntry implements BigQueryEntry {
 
+	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
+	public static final String CALL_UUID_FIELD_NAME = "callUUID";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String DETACHED_TIMESTAMP_FIELD_NAME = "detached";
+
 	public static DetachedPeerConnectionEntry from(DetachedPeerConnectionReport detachedPeerConnectionReport) {
 		return new DetachedPeerConnectionEntry()
 				.withObserverUUID(detachedPeerConnectionReport.observerUUID)
@@ -17,11 +22,6 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 				.withCallUUID(detachedPeerConnectionReport.callUUID)
 				.withDetachedTimestamp(detachedPeerConnectionReport.detached);
 	}
-
-	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-	private static final String DETACHED_TIMESTAMP_FIELD_NAME = "detached";
 
 	private final Map<String, Object> values;
 

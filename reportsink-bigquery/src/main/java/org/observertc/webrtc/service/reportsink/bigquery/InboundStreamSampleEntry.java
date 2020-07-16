@@ -1,6 +1,5 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.observertc.webrtc.common.reports.InboundStreamSampleReport;
 import org.slf4j.Logger;
@@ -9,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 public class InboundStreamSampleEntry extends MediaStreamSampleEntry<InboundStreamSampleEntry> {
 
+	private static Logger logger = LoggerFactory.getLogger(InboundStreamSampleEntry.class);
+	public static final String BYTES_RECEIVED_FIELD_NAME = "bytesReceived";
+	public static final String PACKETS_LOST_FIELD_NAME = "packetsLost";
+	public static final String PACKETS_RECEIVED_FIELD_NAME = "packetsReceived";
 
 	public static InboundStreamSampleEntry from(InboundStreamSampleReport report) {
 		MediaStreamSampleEntryRecord bytesReceivedRecord = MediaStreamSampleEntryRecord.from(report.bytesReceivedRecord);
@@ -25,10 +28,6 @@ public class InboundStreamSampleEntry extends MediaStreamSampleEntry<InboundStre
 				.withPacketsLostRecord(packetsLostRecord);
 	}
 
-	private static Logger logger = LoggerFactory.getLogger(InboundStreamSampleEntry.class);
-	private static final String BYTES_RECEIVED_FIELD_NAME = "bytesReceived";
-	private static final String PACKETS_LOST_FIELD_NAME = "packetsLost";
-	private static final String PACKETS_RECEIVED_FIELD_NAME = "packetsReceived";
 
 	public InboundStreamSampleEntry withBytesReceivedRecord(MediaStreamSampleEntryRecord record) {
 		this.values.put(BYTES_RECEIVED_FIELD_NAME, record.toMap());

@@ -17,9 +17,9 @@ public class FinishedCallEntry implements BigQueryEntry {
 				.withFinishedTimestamp(finishedCallReport.finished);
 	}
 
-	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String FINISHED_TIMESTAMP_FIELD_NAME = "finished";
+	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
+	public static final String CALL_UUID_FIELD_NAME = "callUUID";
+	public static final String FINISHED_TIMESTAMP_FIELD_NAME = "finished";
 
 	private final Map<String, Object> values;
 

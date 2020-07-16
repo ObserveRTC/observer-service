@@ -24,32 +24,6 @@ public class BigQueryTable<T extends BigQueryEntry> {
 		this.bigQueryService = bigQueryService;
 	}
 
-	private void logEntry(T entry) {
-		String rowValue = this.mapString(entry.toMap(), "\t");
-		logger.info("project: {}, dataset: {}, table {}. The row: \n {}",
-				this.bigQueryService.getProjectName(), this.bigQueryService.getDatasetName(), this.tableName, rowValue);
-	}
-
-	private String mapString(Map<String, Object> map, String prefix) {
-
-		StringBuffer resultBuffer = new StringBuffer();
-		Iterator<Map.Entry<String, Object>> mapIt = map.entrySet().iterator();
-		for (; mapIt.hasNext(); ) {
-			Map.Entry<String, Object> entry = mapIt.next();
-			String key = entry.getKey();
-			Object value = entry.getValue();
-			if (value == null) {
-				resultBuffer.append(String.format("%s%s: null\n", prefix, key));
-			} else if (value instanceof Map) {
-				resultBuffer.append(String.format("%s%s: %s\n", prefix, key,
-						this.mapString((Map<String, Object>) value, prefix + "\t")));
-			} else {
-				resultBuffer.append(String.format("%s%s: %s\n", prefix, entry.getKey(), value.toString()));
-			}
-		}
-		return resultBuffer.toString();
-	}
-
 	public void insert(T entry) {
 		this.logEntry(entry);
 		TableId tableId = this.getTableId();
@@ -73,6 +47,34 @@ public class BigQueryTable<T extends BigQueryEntry> {
 		String projectName = this.bigQueryService.getProjectName();
 		String datasetName = this.bigQueryService.getDatasetName();
 		return TableId.of(projectName, datasetName, this.tableName);
+	}
+
+	private void logEntry(T entry) {
+		logger.info("project: {}, dataset: {}, table {}. The row: \n {}",
+				this.bigQueryService.getProjectName(),
+				this.bigQueryService.getDatasetName(),
+				this.tableName,
+				this.mapString(entry.toMap(), "\t"));
+	}
+
+	private String mapString(Map<String, Object> map, String prefix) {
+
+		StringBuffer resultBuffer = new StringBuffer();
+		Iterator<Map.Entry<String, Object>> mapIt = map.entrySet().iterator();
+		for (; mapIt.hasNext(); ) {
+			Map.Entry<String, Object> entry = mapIt.next();
+			String key = entry.getKey();
+			Object value = entry.getValue();
+			if (value == null) {
+				resultBuffer.append(String.format("%s%s: null\n", prefix, key));
+			} else if (value instanceof Map) {
+				resultBuffer.append(String.format("%s%s: %s\n", prefix, key,
+						this.mapString((Map<String, Object>) value, prefix + "\t")));
+			} else {
+				resultBuffer.append(String.format("%s%s: %s\n", prefix, entry.getKey(), value.toString()));
+			}
+		}
+		return resultBuffer.toString();
 	}
 
 }

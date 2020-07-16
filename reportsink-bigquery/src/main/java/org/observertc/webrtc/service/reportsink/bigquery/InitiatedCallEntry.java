@@ -17,9 +17,9 @@ public class InitiatedCallEntry implements BigQueryEntry {
 				.withInitiatedTimestamp(initiatedCallReport.initiated);
 	}
 
-	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String INITIATED_TIMESTAMP_FIELD_NAME = "initiated";
+	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
+	public static final String CALL_UUID_FIELD_NAME = "callUUID";
+	public static final String INITIATED_TIMESTAMP_FIELD_NAME = "initiated";
 
 	private final Map<String, Object> values;
 

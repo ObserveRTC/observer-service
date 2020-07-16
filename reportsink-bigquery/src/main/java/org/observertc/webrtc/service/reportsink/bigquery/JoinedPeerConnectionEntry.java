@@ -10,6 +10,10 @@ import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 
 public class JoinedPeerConnectionEntry implements BigQueryEntry {
 
+	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String CALL_UUID_FIELD_NAME = "callUUID";
+	public static final String JOINED_TIMESTAMP_FIELD_NAME = "joined";
 
 	public static JoinedPeerConnectionEntry from(JoinedPeerConnectionReport joinedPeerConnection) {
 		return new JoinedPeerConnectionEntry()
@@ -19,10 +23,6 @@ public class JoinedPeerConnectionEntry implements BigQueryEntry {
 				.withJoinedTimestamp(joinedPeerConnection.joined);
 	}
 
-	private static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	private static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String JOINED_TIMESTAMP_FIELD_NAME = "joined";
 
 	private final Map<String, Object> values;
 

@@ -6,6 +6,10 @@ import org.observertc.webrtc.common.reports.MediaStreamSampleRecordReport;
 
 
 public class MediaStreamSampleEntryRecord {
+	public static final String MINIMUM_FIELD_NAME = "minimum";
+	public static final String MAXIMUM_FIELD_NAME = "maximum";
+	public static final String COUNT_FIELD_NAME = "count";
+	public static final String SUM_FIELD_NAME = "sum";
 
 	public static MediaStreamSampleEntryRecord from(MediaStreamSampleRecordReport record) {
 		return new MediaStreamSampleEntryRecord()
@@ -15,10 +19,6 @@ public class MediaStreamSampleEntryRecord {
 				.withSum(record.sum);
 	}
 
-	private static final String MINIMUM_FIELD_NAME = "minimum";
-	private static final String MAXIMUM_FIELD_NAME = "maximum";
-	private static final String COUNT_FIELD_NAME = "count";
-	private static final String SUM_FIELD_NAME = "sum";
 
 	private final Map<String, Object> summaryValues = new HashMap<>();
 

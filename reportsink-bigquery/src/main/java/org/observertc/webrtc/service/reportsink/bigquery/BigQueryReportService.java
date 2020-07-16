@@ -21,15 +21,15 @@ public class BigQueryReportService implements ReportService {
 
 	private static final Logger logger = LoggerFactory.getLogger(BigQueryReportService.class);
 
-	private BigQueryService bigQueryService;
-	private static final String INITIATED_CALLS_TABLE_NAME = "InitiatedCalls";
-	private static final String FINISHED_CALLS_TABLE_NAME = "FinishedCalls";
-	private static final String JOINED_PEER_CONNECTIONS_TABLE_NAME = "JoinedPeerConnections";
-	private static final String DETACHED_PEER_CONNECTIONS_TABLE_NAME = "DetachedPeerConnections";
-	private static final String INBOUND_STREAM_SAMPLES_TABLE_NAME = "InboundStreamSamples";
-	private static final String OUTBOUND_STREAM_SAMPLES_TABLE_NAME = "OutboundStreamSamples";
-	private static final String REMOTE_INBOUND_STREAM_SAMPLES_TABLE_NAME = "RemoteInboundStreamSamples";
+//	public static final String INITIATED_CALLS_TABLE_NAME = "InitiatedCalls";
+//	public static final String FINISHED_CALLS_TABLE_NAME = "FinishedCalls";
+//	public static final String JOINED_PEER_CONNECTIONS_TABLE_NAME = "JoinedPeerConnections";
+//	public static final String DETACHED_PEER_CONNECTIONS_TABLE_NAME = "DetachedPeerConnections";
+//	public static final String INBOUND_STREAM_SAMPLES_TABLE_NAME = "InboundStreamSamples";
+//	public static final String OUTBOUND_STREAM_SAMPLES_TABLE_NAME = "OutboundStreamSamples";
+//	public static final String REMOTE_INBOUND_STREAM_SAMPLES_TABLE_NAME = "RemoteInboundStreamSamples";
 
+	private final BigQueryService bigQueryService;
 	private final BigQueryTable<InitiatedCallEntry> initiatedCalls;
 	private final BigQueryTable<FinishedCallEntry> finishedCalls;
 	private final BigQueryTable<JoinedPeerConnectionEntry> joinedPeerConnections;
@@ -38,17 +38,19 @@ public class BigQueryReportService implements ReportService {
 	private final BigQueryTable<OutboundStreamSampleEntry> outboundStreamSamples;
 	private final BigQueryTable<RemoteInboundStreamSampleEntry> remoteInboundStreamSamples;
 	private final Map<String, ReportType> typeMapper;
+	private final BigQueryReportServiceBuilder.Config config;
 
-	public BigQueryReportService(BigQueryService bigQueryService) {
 
-		this.bigQueryService = bigQueryService;
-		this.initiatedCalls = new BigQueryTable(bigQueryService, INITIATED_CALLS_TABLE_NAME);
-		this.finishedCalls = new BigQueryTable(bigQueryService, FINISHED_CALLS_TABLE_NAME);
-		this.joinedPeerConnections = new BigQueryTable(bigQueryService, JOINED_PEER_CONNECTIONS_TABLE_NAME);
-		this.detachedPeerConnections = new BigQueryTable(bigQueryService, DETACHED_PEER_CONNECTIONS_TABLE_NAME);
-		this.inboundStreamSamples = new BigQueryTable(bigQueryService, INBOUND_STREAM_SAMPLES_TABLE_NAME);
-		this.outboundStreamSamples = new BigQueryTable(bigQueryService, OUTBOUND_STREAM_SAMPLES_TABLE_NAME);
-		this.remoteInboundStreamSamples = new BigQueryTable(bigQueryService, REMOTE_INBOUND_STREAM_SAMPLES_TABLE_NAME);
+	public BigQueryReportService(BigQueryReportServiceBuilder.Config config) {
+		this.config = config;
+		this.bigQueryService = new BigQueryService(config.projectName, config.datasetName);
+		this.initiatedCalls = new BigQueryTable(bigQueryService, config.initiatedCallsTable);
+		this.finishedCalls = new BigQueryTable(bigQueryService, config.finishedCallsTable);
+		this.joinedPeerConnections = new BigQueryTable(bigQueryService, config.joinedPeerConnectionsTable);
+		this.detachedPeerConnections = new BigQueryTable(bigQueryService, config.detachedPeerConnectionsTable);
+		this.inboundStreamSamples = new BigQueryTable(bigQueryService, config.inboundStreamSamplesTable);
+		this.outboundStreamSamples = new BigQueryTable(bigQueryService, config.outboundStreamSamplesTable);
+		this.remoteInboundStreamSamples = new BigQueryTable(bigQueryService, config.remoteInboundStreamSamplesTable);
 
 		this.typeMapper = new HashMap<>();
 		this.typeMapper.put(JoinedPeerConnectionReport.class.getName(), ReportType.JOINED_PEER_CONNECTION);
@@ -62,7 +64,11 @@ public class BigQueryReportService implements ReportService {
 
 	@Override
 	public void init(ProcessorContext context) {
-
+		if (this.config.schemaCheckerEnabled) {
+			BigQueryServiceSchemaCheckerJob schemaChecker = new BigQueryServiceSchemaCheckerJob(this.config);
+			schemaChecker.perform();
+		}
+		// TODO: add the service initializer here
 	}
 
 	@Override
@@ -120,6 +126,6 @@ public class BigQueryReportService implements ReportService {
 
 	@Override
 	public void close() {
-
+		// TODO: add the service shutdown here
 	}
 }
