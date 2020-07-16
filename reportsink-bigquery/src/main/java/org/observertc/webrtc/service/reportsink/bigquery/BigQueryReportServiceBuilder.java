@@ -32,8 +32,6 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 		public String outboundStreamSamplesTable = "OutboundStreamSamples";
 
-		public boolean schemaCheckerEnabled = true;
-
 		public boolean createDatasetIfNotExists = true;
 
 	}
