@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,12 +22,14 @@ import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
+import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.ApplicationTimeZoneId;
 import org.observertc.webrtc.service.ReportsConfig;
 import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
 import org.observertc.webrtc.service.repositories.CallPeerConnectionsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
+import org.observertc.webrtc.service.repositories.SentReportsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,15 +45,20 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
+	private final SentReportsRepository sentReportsRepository;
 	private final Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections;
+	private final Map<UUID, List<Report>> createdReports;
 	private int peerConnectionMaxIdleTimeInS = 30; // default value
 
 	//	private final Map<SSRCMapEntry, LocalDateTime> ssrcMapEntries;
 	public CallsReporter(PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
-						 CallPeerConnectionsRepository callPeerConnectionsRepository) {
+						 CallPeerConnectionsRepository callPeerConnectionsRepository,
+						 SentReportsRepository sentReportsRepository) {
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callPeerConnectionsRepository = callPeerConnectionsRepository;
+		this.sentReportsRepository = sentReportsRepository;
 		this.updatedPeerConnections = new HashMap<>();
+		this.createdReports = new HashMap<>();
 	}
 
 
@@ -129,7 +137,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 			peers.add(peerUUID);
 		});
 		AtomicReference<LocalDateTime> firstSampleHolder = new AtomicReference<>(firstSampled);
-		if (0 < peers.size()) {
+		if (peers.size() < 1) {
 			// There are no peers for this! Do we have a one participant conference?
 			// Is it somebody who joined before?
 			// TODO: check if it is a new or a lonely peer connection who expired earlier
@@ -224,5 +232,9 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 		this.callPeerConnectionsRepository.delete(deleteCandidate);
 	}
 
-
+	private void addReport(UUID callUUID, Report report) {
+		List<Report> reports = this.createdReports.getOrDefault(callUUID, new LinkedList<>());
+		reports.add(report);
+		this.createdReports.put(callUUID, reports);
+	}
 }

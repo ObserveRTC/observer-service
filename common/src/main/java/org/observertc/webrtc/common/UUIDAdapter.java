@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service;
+package org.observertc.webrtc.common;
 
 import java.nio.ByteBuffer;
 import java.util.Optional;

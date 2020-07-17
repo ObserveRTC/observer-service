@@ -115,3 +115,15 @@ CREATE TABLE `WebRTCObserver`.`CallPeerconnections`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='CallIDs';
   
+
+  
+CREATE TABLE `WebRTCObserver`.`SentReports`
+(
+    `signature` BINARY(64) NOT NULL COMMENT 'The signature of the reports uniquely identifying it',
+    `type`      ENUM ('INITIATED_CALLS','FINISHED_CALLS','JOINED_PEER_CONNECTIONS', 'DETACHED_PEER_CONNECTIONS'),
+    `signed`    TIMESTAMP,
+    PRIMARY KEY (`signature`),
+    KEY `sent_reports_type_index` (`type`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='SentReports';
+  

@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import javax.inject.Inject;
+import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.dto.webextrapp.Converter;
 import org.observertc.webrtc.service.dto.webextrapp.ObserveRTCCIceStats;
