@@ -1,5 +1,6 @@
 #!/bin/bash
 
+docker-compose down
 docker-compose stop mysql
 docker-compose up -d mysql &&
   sleep 10 &&
