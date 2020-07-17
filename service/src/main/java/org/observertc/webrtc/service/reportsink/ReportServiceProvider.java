@@ -18,7 +18,8 @@ import org.observertc.webrtc.service.Application;
 @Singleton
 public class ReportServiceProvider {
 	private static final String REPORTSINK_CONFIGURATION_SOURCE_KEY = "reportsinks";
-	private final Processor<UUID, Report> reportService;
+	private Processor<UUID, Report> reportService = null;
+	private IReportServiceBuilder reportServiceBuilder;
 
 	public ReportServiceProvider(@Value("${reportsink.configFile}") String yamlConfigFile,
 								 @Value("${reportsink.profile}") String profileKey) throws JsonProcessingException {
@@ -27,12 +28,14 @@ public class ReportServiceProvider {
 		IConfigurationLoader configurationLoader = new ConfigurationLoader().withYaml(configFileStream);
 		IConfigurationProfiles configurationProfiles = configurationLoader.getConfigurationSourceFor(REPORTSINK_CONFIGURATION_SOURCE_KEY);
 		Map<String, Object> configurations = configurationProfiles.getConfigurationFor(profileKey);
-		IReportServiceBuilder reportServiceBuilder =
+		this.reportServiceBuilder =
 				new ReportServiceBuilder().withProfiles(configurationProfiles).withConfiguration(configurations);
-		this.reportService = reportServiceBuilder.build();
 	}
 
 	public Processor<UUID, Report> getReportService() {
+		if (this.reportService == null) {
+			this.reportService = this.reportServiceBuilder.build();
+		}
 		return this.reportService;
 	}
 

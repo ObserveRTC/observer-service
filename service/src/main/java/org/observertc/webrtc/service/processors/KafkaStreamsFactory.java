@@ -43,10 +43,13 @@ import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
 import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 import org.observertc.webrtc.service.samples.RemoteInboundStreamMeasurement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Factory
 public class KafkaStreamsFactory {
 
+	private static Logger logger = LoggerFactory.getLogger(KafkaStreamsFactory.class);
 	private static final String MEDIA_STREAM_EVALUATOR_PROCESS = "MediaStreamEvaluatorProcess";
 	private static final String REPORT_SERVICE_PROCESS = "ReportServiceProcess";
 
@@ -166,12 +169,14 @@ public class KafkaStreamsFactory {
 	@Singleton
 	@Named(REPORT_SERVICE_PROCESS)
 	public KStream<UUID, Report> makeReportServiceProcessor(ConfiguredStreamBuilder builder) {
-		// TODO: make the entire feature enabling configurable
-		boolean enabled = true;
-		if (!enabled) {
+		Processor<UUID, Report> reportProcessor;
+		try {
+			reportProcessor = this.reportServiceProvider.getReportService();
+		} catch (Exception ex) {
+			logger.error("Error happened during the instantiation of the report service. The servic is not startd", ex);
 			return null;
 		}
-		Processor<UUID, Report> reportProcessor = this.reportServiceProvider.getReportService();
+
 
 		Properties props = builder.getConfiguration();
 		props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);
