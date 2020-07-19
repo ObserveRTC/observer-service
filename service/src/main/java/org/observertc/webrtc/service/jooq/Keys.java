@@ -14,14 +14,16 @@ import org.observertc.webrtc.service.jooq.tables.Observerorganisations;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Organisations;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
-import org.observertc.webrtc.service.jooq.tables.Sentreports;
+import org.observertc.webrtc.service.jooq.tables.Reportedcalls;
+import org.observertc.webrtc.service.jooq.tables.Reportedpeerconnections;
 import org.observertc.webrtc.service.jooq.tables.Users;
 import org.observertc.webrtc.service.jooq.tables.records.CallpeerconnectionsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.ObserverorganisationsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.ObserversRecord;
 import org.observertc.webrtc.service.jooq.tables.records.OrganisationsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionssrcsRecord;
-import org.observertc.webrtc.service.jooq.tables.records.SentreportsRecord;
+import org.observertc.webrtc.service.jooq.tables.records.ReportedcallsRecord;
+import org.observertc.webrtc.service.jooq.tables.records.ReportedpeerconnectionsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.UsersRecord;
 
 
@@ -51,7 +53,8 @@ public class Keys {
     public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_UUID = UniqueKeys0.KEY_ORGANISATIONS_UUID;
     public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_NAME = UniqueKeys0.KEY_ORGANISATIONS_NAME;
     public static final UniqueKey<PeerconnectionssrcsRecord> KEY_PEERCONNECTIONSSRCS_PRIMARY = UniqueKeys0.KEY_PEERCONNECTIONSSRCS_PRIMARY;
-    public static final UniqueKey<SentreportsRecord> KEY_SENTREPORTS_PRIMARY = UniqueKeys0.KEY_SENTREPORTS_PRIMARY;
+    public static final UniqueKey<ReportedcallsRecord> KEY_REPORTEDCALLS_PRIMARY = UniqueKeys0.KEY_REPORTEDCALLS_PRIMARY;
+    public static final UniqueKey<ReportedpeerconnectionsRecord> KEY_REPORTEDPEERCONNECTIONS_PRIMARY = UniqueKeys0.KEY_REPORTEDPEERCONNECTIONS_PRIMARY;
     public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = UniqueKeys0.KEY_USERS_PRIMARY;
     public static final UniqueKey<UsersRecord> KEY_USERS_UUID = UniqueKeys0.KEY_USERS_UUID;
     public static final UniqueKey<UsersRecord> KEY_USERS_USERNAME = UniqueKeys0.KEY_USERS_USERNAME;
@@ -81,7 +84,8 @@ public class Keys {
         public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_UUID = Internal.createUniqueKey(Organisations.ORGANISATIONS, "KEY_Organisations_uuid", new TableField[] { Organisations.ORGANISATIONS.UUID }, true);
         public static final UniqueKey<OrganisationsRecord> KEY_ORGANISATIONS_NAME = Internal.createUniqueKey(Organisations.ORGANISATIONS, "KEY_Organisations_name", new TableField[] { Organisations.ORGANISATIONS.NAME }, true);
         public static final UniqueKey<PeerconnectionssrcsRecord> KEY_PEERCONNECTIONSSRCS_PRIMARY = Internal.createUniqueKey(Peerconnectionssrcs.PEERCONNECTIONSSRCS, "KEY_PeerConnectionSSRCs_PRIMARY", new TableField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID, Peerconnectionssrcs.PEERCONNECTIONSSRCS.SSRC }, true);
-        public static final UniqueKey<SentreportsRecord> KEY_SENTREPORTS_PRIMARY = Internal.createUniqueKey(Sentreports.SENTREPORTS, "KEY_SentReports_PRIMARY", new TableField[] { Sentreports.SENTREPORTS.SIGNATURE }, true);
+        public static final UniqueKey<ReportedcallsRecord> KEY_REPORTEDCALLS_PRIMARY = Internal.createUniqueKey(Reportedcalls.REPORTEDCALLS, "KEY_ReportedCalls_PRIMARY", new TableField[] { Reportedcalls.REPORTEDCALLS.CALLUUID }, true);
+        public static final UniqueKey<ReportedpeerconnectionsRecord> KEY_REPORTEDPEERCONNECTIONS_PRIMARY = Internal.createUniqueKey(Reportedpeerconnections.REPORTEDPEERCONNECTIONS, "KEY_ReportedPeerConnections_PRIMARY", new TableField[] { Reportedpeerconnections.REPORTEDPEERCONNECTIONS.PEERCONNECTIONUUID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = Internal.createUniqueKey(Users.USERS, "KEY_Users_PRIMARY", new TableField[] { Users.USERS.ID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_UUID = Internal.createUniqueKey(Users.USERS, "KEY_Users_uuid", new TableField[] { Users.USERS.UUID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_USERNAME = Internal.createUniqueKey(Users.USERS, "KEY_Users_username", new TableField[] { Users.USERS.USERNAME }, true);

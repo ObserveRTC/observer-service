@@ -15,7 +15,8 @@ import org.observertc.webrtc.service.jooq.tables.Observerorganisations;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Organisations;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
-import org.observertc.webrtc.service.jooq.tables.Sentreports;
+import org.observertc.webrtc.service.jooq.tables.Reportedcalls;
+import org.observertc.webrtc.service.jooq.tables.Reportedpeerconnections;
 import org.observertc.webrtc.service.jooq.tables.Users;
 
 
@@ -25,7 +26,7 @@ import org.observertc.webrtc.service.jooq.tables.Users;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Webrtcobserver extends SchemaImpl {
 
-    private static final long serialVersionUID = -754160247;
+    private static final long serialVersionUID = -282434767;
 
     /**
      * The reference instance of <code>WebRTCObserver</code>
@@ -58,9 +59,14 @@ public class Webrtcobserver extends SchemaImpl {
     public final Peerconnectionssrcs PEERCONNECTIONSSRCS = Peerconnectionssrcs.PEERCONNECTIONSSRCS;
 
     /**
-     * SentReports
+     * ReportedCalls
      */
-    public final Sentreports SENTREPORTS = Sentreports.SENTREPORTS;
+    public final Reportedcalls REPORTEDCALLS = Reportedcalls.REPORTEDCALLS;
+
+    /**
+     * ReportedPeerConnections
+     */
+    public final Reportedpeerconnections REPORTEDPEERCONNECTIONS = Reportedpeerconnections.REPORTEDPEERCONNECTIONS;
 
     /**
      * Users
@@ -88,7 +94,8 @@ public class Webrtcobserver extends SchemaImpl {
             Observers.OBSERVERS,
             Organisations.ORGANISATIONS,
             Peerconnectionssrcs.PEERCONNECTIONSSRCS,
-            Sentreports.SENTREPORTS,
+            Reportedcalls.REPORTEDCALLS,
+            Reportedpeerconnections.REPORTEDPEERCONNECTIONS,
             Users.USERS);
     }
 }

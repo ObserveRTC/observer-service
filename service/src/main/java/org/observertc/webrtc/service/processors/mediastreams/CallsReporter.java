@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.mediastreams;
+package org.observertc.webrtc.service.processors.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
 import java.time.LocalDateTime;
@@ -14,10 +14,12 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import javax.inject.Inject;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.javatuples.Pair;
+import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
@@ -29,7 +31,6 @@ import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
 import org.observertc.webrtc.service.repositories.CallPeerConnectionsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
-import org.observertc.webrtc.service.repositories.SentReportsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,10 +43,10 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 	ApplicationTimeZoneId applicationTimeZoneId;
 
 	private ProcessorContext context;
-
+	private BiConsumer<UUID, Report> reportSink;
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
-	private final SentReportsRepository sentReportsRepository;
+	private final CallReportsGuaranteer callReportsGuaranteer;
 	private final Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections;
 	private final Map<UUID, List<Report>> createdReports;
 	private int peerConnectionMaxIdleTimeInS = 30; // default value
@@ -53,18 +54,25 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 	//	private final Map<SSRCMapEntry, LocalDateTime> ssrcMapEntries;
 	public CallsReporter(PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
 						 CallPeerConnectionsRepository callPeerConnectionsRepository,
-						 SentReportsRepository sentReportsRepository) {
+						 CallReportsGuaranteer callReportsGuaranteer) {
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callPeerConnectionsRepository = callPeerConnectionsRepository;
-		this.sentReportsRepository = sentReportsRepository;
+		this.callReportsGuaranteer = callReportsGuaranteer;
 		this.updatedPeerConnections = new HashMap<>();
 		this.createdReports = new HashMap<>();
+
 	}
 
 
 	public void init(ProcessorContext context, ReportsConfig.CallReportsConfig callReportsConfig) {
 		this.peerConnectionMaxIdleTimeInS = callReportsConfig.peerConnectionMaxIdleTimeInS;
 		this.context = context;
+		this.callReportsGuaranteer.init(context);
+		if (callReportsConfig.callGuarantee.enabled) {
+			this.reportSink = this.callReportsGuaranteer::add;
+		} else {
+			this.reportSink = context::forward;
+		}
 
 	}
 
@@ -91,6 +99,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 	private void doPunctuate(long timestamp) {
 		this.identifyCalls();
 		this.cleanCalls();
+		this.callReportsGuaranteer.checkAndSend();
 	}
 
 	@Override
@@ -168,11 +177,11 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 		if (callUUID == null) {
 			callUUID = UUID.randomUUID();
 			InitiatedCallReport initiatedCallReport = InitiatedCallReport.of(observerUUID, callUUID, firstSampleHolder.get());
-			this.context.forward(observerUUID, initiatedCallReport);
+			this.reportSink.accept(observerUUID, initiatedCallReport);
 		}
 		CallPeerConnectionsEntry callPeerConnectionsEntry = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUID, firstSampled);
 		JoinedPeerConnectionReport joinedPeerConnectionReport = JoinedPeerConnectionReport.of(observerUUID, callUUID, peerConnectionUUID, firstSampled);
-		this.context.forward(observerUUID, joinedPeerConnectionReport);
+		this.reportSink.accept(observerUUID, joinedPeerConnectionReport);
 		this.callPeerConnectionsRepository.save(callPeerConnectionsEntry);
 	}
 
@@ -223,11 +232,11 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 		});
 		if (callHasOtherPeers.get() == false) {
 			FinishedCallReport finishedCallReport = FinishedCallReport.of(observerUUID, callUUIDHolder.get(), lastSampled);
-			this.context.forward(observerUUID, finishedCallReport);
+			this.reportSink.accept(observerUUID, finishedCallReport);
 		}
 		DetachedPeerConnectionReport detachedPeerConnectionReport = DetachedPeerConnectionReport.of(observerUUID, callUUIDHolder.get(),
 				peerConnectionUUID, lastSampled);
-		this.context.forward(observerUUID, detachedPeerConnectionReport);
+		this.reportSink.accept(observerUUID, detachedPeerConnectionReport);
 		CallPeerConnectionsEntry deleteCandidate = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUIDHolder.get(), null);
 		this.callPeerConnectionsRepository.delete(deleteCandidate);
 	}
@@ -237,4 +246,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 		reports.add(report);
 		this.createdReports.put(callUUID, reports);
 	}
+
+	Function<JoinedPeerConnectionReport, byte[]> getSignatureForJoinedPeerConnectionReport =
+			report -> UUIDAdapter.toBytes(report.peerConnectionUUID);
 }

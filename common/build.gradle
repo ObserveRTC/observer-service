@@ -26,7 +26,8 @@ dependencies {
 
     // ------------ Necessary utilities ------------
     compile group: 'org.javatuples', name: 'javatuples', version: "${javaTuplesVersion}"
-
+    compile group: 'org.jooq', name: 'jool', version: '0.9.14'
+    
     // ------------ Micronaut framework ------------
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"

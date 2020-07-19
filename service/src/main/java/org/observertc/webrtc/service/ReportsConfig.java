@@ -16,7 +16,16 @@ public class ReportsConfig {
 		public int reportPeriodInS;
 		public int updatePeriodInS;
 		public int archiveRetentionTimeInDays;
+		public CallGuaranteeConfig callGuarantee;
+		
+		@ConfigurationProperties("callGuarantee")
+		public static class CallGuaranteeConfig {
+			public boolean enabled;
+			public int runPeriodInS;
+			public int retentionTimeInDays;
+		}
 	}
+
 
 	@ConfigurationProperties("streamReports")
 	public static class StreamReportsConfig {

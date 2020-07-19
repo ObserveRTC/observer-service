@@ -38,6 +38,10 @@ kafkaTopics:
 ---
 reports:
   callReports:
+    callGuarantee:
+      enabled: True
+      retentionTimeInDays: 180
+      runPeriodInS: 5000
     enabled: True
     updatePeriodInS: 10
     reportPeriodInS: 30

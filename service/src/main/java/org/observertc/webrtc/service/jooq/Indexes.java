@@ -9,7 +9,8 @@ import org.jooq.OrderField;
 import org.jooq.impl.Internal;
 import org.observertc.webrtc.service.jooq.tables.Observerorganisations;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
-import org.observertc.webrtc.service.jooq.tables.Sentreports;
+import org.observertc.webrtc.service.jooq.tables.Reportedcalls;
+import org.observertc.webrtc.service.jooq.tables.Reportedpeerconnections;
 import org.observertc.webrtc.service.jooq.tables.Users;
 
 
@@ -29,7 +30,8 @@ public class Indexes {
     public static final Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX = Indexes0.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX;
     public static final Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX = Indexes0.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX;
     public static final Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX = Indexes0.PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX;
-    public static final Index SENTREPORTS_SENT_REPORTS_TYPE_INDEX = Indexes0.SENTREPORTS_SENT_REPORTS_TYPE_INDEX;
+    public static final Index REPORTEDCALLS_REPORTED_CALLS_UPDATED_INDEX = Indexes0.REPORTEDCALLS_REPORTED_CALLS_UPDATED_INDEX;
+    public static final Index REPORTEDPEERCONNECTIONS_REPORTED_PEER_CONNECTIONS__UPDATED_INDEX = Indexes0.REPORTEDPEERCONNECTIONS_REPORTED_PEER_CONNECTIONS__UPDATED_INDEX;
     public static final Index USERS_USERS_USERNAME_KEY = Indexes0.USERS_USERS_USERNAME_KEY;
 
     // -------------------------------------------------------------------------
@@ -42,7 +44,8 @@ public class Indexes {
         public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_OBSERVER_SSRC_INDEX = Internal.createIndex("PeerconnectionSSRCs_observer_ssrc_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.OBSERVERUUID, Peerconnectionssrcs.PEERCONNECTIONSSRCS.SSRC }, false);
         public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_PEERCONNECTION_INDEX = Internal.createIndex("PeerconnectionSSRCs_peerConnection_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.PEERCONNECTIONUUID }, false);
         public static Index PEERCONNECTIONSSRCS_PEERCONNECTIONSSRCS_UPDATED_INDEX = Internal.createIndex("PeerconnectionSSRCs_updated_index", Peerconnectionssrcs.PEERCONNECTIONSSRCS, new OrderField[] { Peerconnectionssrcs.PEERCONNECTIONSSRCS.UPDATED }, false);
-        public static Index SENTREPORTS_SENT_REPORTS_TYPE_INDEX = Internal.createIndex("sent_reports_type_index", Sentreports.SENTREPORTS, new OrderField[] { Sentreports.SENTREPORTS.TYPE }, false);
+        public static Index REPORTEDCALLS_REPORTED_CALLS_UPDATED_INDEX = Internal.createIndex("reported_calls_updated_index", Reportedcalls.REPORTEDCALLS, new OrderField[] { Reportedcalls.REPORTEDCALLS.UPDATED }, false);
+        public static Index REPORTEDPEERCONNECTIONS_REPORTED_PEER_CONNECTIONS__UPDATED_INDEX = Internal.createIndex("reported_peer_connections__updated_index", Reportedpeerconnections.REPORTEDPEERCONNECTIONS, new OrderField[] { Reportedpeerconnections.REPORTEDPEERCONNECTIONS.UPDATED }, false);
         public static Index USERS_USERS_USERNAME_KEY = Internal.createIndex("users_username_key", Users.USERS, new OrderField[] { Users.USERS.USERNAME }, false);
     }
 }

@@ -9,7 +9,8 @@ import org.observertc.webrtc.service.jooq.tables.Observerorganisations;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Organisations;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
-import org.observertc.webrtc.service.jooq.tables.Sentreports;
+import org.observertc.webrtc.service.jooq.tables.Reportedcalls;
+import org.observertc.webrtc.service.jooq.tables.Reportedpeerconnections;
 import org.observertc.webrtc.service.jooq.tables.Users;
 
 
@@ -45,9 +46,14 @@ public class Tables {
     public static final Peerconnectionssrcs PEERCONNECTIONSSRCS = Peerconnectionssrcs.PEERCONNECTIONSSRCS;
 
     /**
-     * SentReports
+     * ReportedCalls
      */
-    public static final Sentreports SENTREPORTS = Sentreports.SENTREPORTS;
+    public static final Reportedcalls REPORTEDCALLS = Reportedcalls.REPORTEDCALLS;
+
+    /**
+     * ReportedPeerConnections
+     */
+    public static final Reportedpeerconnections REPORTEDPEERCONNECTIONS = Reportedpeerconnections.REPORTEDPEERCONNECTIONS;
 
     /**
      * Users
