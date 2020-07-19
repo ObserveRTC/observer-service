@@ -91,3 +91,4 @@ CREATE TABLE WebRTC.OutboundStreamSamples
     firstSample TIMESTAMP,
     lastSample TIMESTAMP
 );
+

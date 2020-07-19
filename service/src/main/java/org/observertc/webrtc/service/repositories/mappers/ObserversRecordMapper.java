@@ -2,7 +2,7 @@ package org.observertc.webrtc.service.repositories.mappers;
 
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.observertc.webrtc.service.UUIDAdapter;
+import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.jooq.Tables;
 

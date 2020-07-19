@@ -35,7 +35,7 @@ import org.jooq.Record4;
 import org.jooq.RecordHandler;
 import org.jooq.Row2;
 import org.jooq.impl.DSL;
-import org.observertc.webrtc.service.UUIDAdapter;
+import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.service.jooq.Tables;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionssrcsRecord;
 import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;

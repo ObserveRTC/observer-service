@@ -115,3 +115,28 @@ CREATE TABLE `WebRTCObserver`.`CallPeerconnections`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='CallIDs';
   
+
+
+CREATE TABLE `WebRTCObserver`.`ReportedPeerConnections`
+(
+    `peerConnectionUUID` BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the report is originated from',
+    `callUUID` BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the report is originated from',
+    `observerUUID` BINARY(16) NOT NULL COMMENT 'The UUID of the observer the report is originated from',
+    `status`      ENUM ('JOINED','DETACHED'),
+    `updated`    TIMESTAMP,
+    PRIMARY KEY (`peerConnectionUUID`),
+    KEY `reported_peer_connections__updated_index` (`updated`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='ReportedPeerConnections';
+  
+  
+CREATE TABLE `WebRTCObserver`.`ReportedCalls`
+(
+    `callUUID` BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the report is originated from',
+    `observerUUID` BINARY(16) NOT NULL COMMENT 'The UUID of the observer the report is originated from',
+    `status`      ENUM ('INITIATED','FINISHED'),
+    `updated`    TIMESTAMP,
+    PRIMARY KEY (`callUUID`),
+    KEY `reported_calls_updated_index` (`updated`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='ReportedCalls';

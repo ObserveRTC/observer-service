@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.mediastreams;
+package org.observertc.webrtc.service.processors.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.common.reports.OutboundStreamSampleReport;

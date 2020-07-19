@@ -11,13 +11,12 @@ import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 import org.observertc.webrtc.service.jooq.tables.Callpeerconnections;
-import org.observertc.webrtc.service.jooq.tables.Inboundstreammeasurements;
 import org.observertc.webrtc.service.jooq.tables.Observerorganisations;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Organisations;
-import org.observertc.webrtc.service.jooq.tables.Outboundstreammeasurements;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
-import org.observertc.webrtc.service.jooq.tables.Remoteinboundstreammeasurements;
+import org.observertc.webrtc.service.jooq.tables.Reportedcalls;
+import org.observertc.webrtc.service.jooq.tables.Reportedpeerconnections;
 import org.observertc.webrtc.service.jooq.tables.Users;
 
 
@@ -27,7 +26,7 @@ import org.observertc.webrtc.service.jooq.tables.Users;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Webrtcobserver extends SchemaImpl {
 
-    private static final long serialVersionUID = 338062432;
+    private static final long serialVersionUID = -282434767;
 
     /**
      * The reference instance of <code>WebRTCObserver</code>
@@ -38,11 +37,6 @@ public class Webrtcobserver extends SchemaImpl {
      * CallIDs
      */
     public final Callpeerconnections CALLPEERCONNECTIONS = Callpeerconnections.CALLPEERCONNECTIONS;
-
-    /**
-     * A table to map peer connections to SSRCs
-     */
-    public final Inboundstreammeasurements INBOUNDSTREAMMEASUREMENTS = Inboundstreammeasurements.INBOUNDSTREAMMEASUREMENTS;
 
     /**
      * An associative table to map Observers to Evaluators
@@ -62,17 +56,17 @@ public class Webrtcobserver extends SchemaImpl {
     /**
      * A table to map peer connections to SSRCs
      */
-    public final Outboundstreammeasurements OUTBOUNDSTREAMMEASUREMENTS = Outboundstreammeasurements.OUTBOUNDSTREAMMEASUREMENTS;
-
-    /**
-     * A table to map peer connections to SSRCs
-     */
     public final Peerconnectionssrcs PEERCONNECTIONSSRCS = Peerconnectionssrcs.PEERCONNECTIONSSRCS;
 
     /**
-     * A table to map peer connections to SSRCs
+     * ReportedCalls
      */
-    public final Remoteinboundstreammeasurements REMOTEINBOUNDSTREAMMEASUREMENTS = Remoteinboundstreammeasurements.REMOTEINBOUNDSTREAMMEASUREMENTS;
+    public final Reportedcalls REPORTEDCALLS = Reportedcalls.REPORTEDCALLS;
+
+    /**
+     * ReportedPeerConnections
+     */
+    public final Reportedpeerconnections REPORTEDPEERCONNECTIONS = Reportedpeerconnections.REPORTEDPEERCONNECTIONS;
 
     /**
      * Users
@@ -96,13 +90,12 @@ public class Webrtcobserver extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
             Callpeerconnections.CALLPEERCONNECTIONS,
-            Inboundstreammeasurements.INBOUNDSTREAMMEASUREMENTS,
             Observerorganisations.OBSERVERORGANISATIONS,
             Observers.OBSERVERS,
             Organisations.ORGANISATIONS,
-            Outboundstreammeasurements.OUTBOUNDSTREAMMEASUREMENTS,
             Peerconnectionssrcs.PEERCONNECTIONSSRCS,
-            Remoteinboundstreammeasurements.REMOTEINBOUNDSTREAMMEASUREMENTS,
+            Reportedcalls.REPORTEDCALLS,
+            Reportedpeerconnections.REPORTEDPEERCONNECTIONS,
             Users.USERS);
     }
 }

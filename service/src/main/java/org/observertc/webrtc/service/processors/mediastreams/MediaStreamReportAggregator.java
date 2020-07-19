@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.mediastreams;
+package org.observertc.webrtc.service.processors.mediastreams;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.mediastreams;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
+package org.observertc.webrtc.service.processors.mediastreams;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
 import java.util.function.BiConsumer;
 import javax.inject.Singleton;

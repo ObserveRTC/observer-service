@@ -9,6 +9,7 @@ public class JobTest {
 
 	@Test
 	public void shouldRunInOrder() {
+
 		Task task1 = this.makeTask("Task 1", map -> System.out.println("executed"));
 		Task task2 = this.makeTask("Task 2", map -> System.out.println("executed"));
 		Task task3 = this.makeTask("Task 3", map -> System.out.println("executed"));

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import org.jooq.InsertValuesStep3;
 import org.jooq.Record3;
 import org.jooq.RecordHandler;
-import org.observertc.webrtc.service.UUIDAdapter;
+import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.dto.EvaluatorDTO;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.jooq.Tables;

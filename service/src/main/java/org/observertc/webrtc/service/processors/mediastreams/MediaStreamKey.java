@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.mediastreams;
+package org.observertc.webrtc.service.processors.mediastreams;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

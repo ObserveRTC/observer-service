@@ -85,6 +85,9 @@ public abstract class AbstractTask implements Task {
 		this.onExceptionAtFailedRetries(exception);
 	}
 
+	protected void reset() {
+		this.run = false;
+	}
 
 	protected abstract void onExecution(Map<String, Map<String, Object>> results);
 
@@ -95,4 +98,5 @@ public abstract class AbstractTask implements Task {
 	protected void onExceptionAtFailedRetries(Exception exception) {
 		throw new RuntimeException(exception);
 	}
+
 }
