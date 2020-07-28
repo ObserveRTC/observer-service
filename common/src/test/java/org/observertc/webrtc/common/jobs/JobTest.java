@@ -1,11 +1,49 @@
 package org.observertc.webrtc.common.jobs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.Test;
 
 public class JobTest {
+	public class C {
+		public int a;
+		public int b;
+	}
 
+	class A {
+		void init (A source) {
+			
+		}
+		private ObjectMapper objectMapper = new ObjectMapper();
+		private C config;
+		private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException {
+//			String jsonString = aInputStream.readUTF();
+			InputStream iStream = aInputStream;
+			this.config = this.objectMapper.readValue(iStream, C.class);
+			
+
+			// ensure that object state has not been corrupted or tampered with malicious code
+			//validateUserInfo();
+		}
+
+		/**
+		 * This is the default implementation of writeObject. Customize as necessary.
+		 */
+		private void writeObject(ObjectOutputStream aOutputStream) throws IOException {
+
+			//ensure that object is in desired state. Possibly run any business rules if applicable.
+			//checkUserInfo();
+
+			// perform the default serialization for all non-transient, non-static fields
+			aOutputStream.defaultWriteObject();
+		}
+	}
 
 	@Test
 	public void shouldRunInOrder() {

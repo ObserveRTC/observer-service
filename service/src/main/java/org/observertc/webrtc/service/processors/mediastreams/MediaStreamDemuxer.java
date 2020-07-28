@@ -4,7 +4,7 @@ import java.util.UUID;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Predicate;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStatsType;
-import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
+import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,22 +16,22 @@ public class MediaStreamDemuxer {
 	private static final Logger logger = LoggerFactory.getLogger(MediaStreamDemuxer.class);
 
 
-	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> source;
-	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> inboundStream;
-	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> defaultStream;
-	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> outboundStream;
-	private final KStream<UUID, ObserveRTCMediaStreamStatsSample> remoteInboundStream;
+	private final KStream<UUID, MediaStreamSample> source;
+	private final KStream<UUID, MediaStreamSample> inboundStream;
+	private final KStream<UUID, MediaStreamSample> defaultStream;
+	private final KStream<UUID, MediaStreamSample> outboundStream;
+	private final KStream<UUID, MediaStreamSample> remoteInboundStream;
 
-	private boolean logSampleIsDroppedMessage(String field, UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+	private boolean logSampleIsDroppedMessage(String field, UUID peerConnectionUUID, MediaStreamSample sample) {
 		logger.warn("Sample is dropped due to missing field: {}. Key: {}, Value: {}",
 				field, peerConnectionUUID, sample);
 		return false;
 	}
 
-	public MediaStreamDemuxer(KStream<UUID, ObserveRTCMediaStreamStatsSample> source) {
-		this.source = source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+	public MediaStreamDemuxer(KStream<UUID, MediaStreamSample> source) {
+		this.source = source.filter(new Predicate<UUID, MediaStreamSample>() {
 			@Override
-			public boolean test(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+			public boolean test(UUID peerConnectionUUID, MediaStreamSample sample) {
 				if (peerConnectionUUID == null) {
 					return logSampleIsDroppedMessage("peerConnectionUUID key", peerConnectionUUID, sample);
 				}
@@ -54,9 +54,9 @@ public class MediaStreamDemuxer {
 			}
 		});
 //		Predicate<UUID, ObserveRTCMediaStreamStatsSample>[] predicates = this.getPredicates();
-		this.inboundStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+		this.inboundStream = this.source.filter(new Predicate<UUID, MediaStreamSample>() {
 			@Override
-			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
+			public boolean test(UUID key, MediaStreamSample value) {
 				if (value == null || value.rtcStats == null || value.rtcStats.getType() == null) {
 					return false;
 				}
@@ -64,9 +64,9 @@ public class MediaStreamDemuxer {
 			}
 		});
 
-		this.outboundStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+		this.outboundStream = this.source.filter(new Predicate<UUID, MediaStreamSample>() {
 			@Override
-			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
+			public boolean test(UUID key, MediaStreamSample value) {
 				if (value == null || value.rtcStats == null || value.rtcStats.getType() == null) {
 					return false;
 				}
@@ -74,9 +74,9 @@ public class MediaStreamDemuxer {
 			}
 		});
 
-		this.remoteInboundStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+		this.remoteInboundStream = this.source.filter(new Predicate<UUID, MediaStreamSample>() {
 			@Override
-			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
+			public boolean test(UUID key, MediaStreamSample value) {
 				if (value == null || value.rtcStats == null || value.rtcStats.getType() == null) {
 					return false;
 				}
@@ -84,28 +84,28 @@ public class MediaStreamDemuxer {
 			}
 		});
 
-		this.defaultStream = this.source.filter(new Predicate<UUID, ObserveRTCMediaStreamStatsSample>() {
+		this.defaultStream = this.source.filter(new Predicate<UUID, MediaStreamSample>() {
 			@Override
-			public boolean test(UUID key, ObserveRTCMediaStreamStatsSample value) {
+			public boolean test(UUID key, MediaStreamSample value) {
 				return true;
 			}
 		});
 	}
 
-	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getDefaultOutputBranch() {
+	public KStream<UUID, MediaStreamSample> getDefaultOutputBranch() {
 		return this.defaultStream;
 	}
 
 
-	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getOutboundStreamBranch() {
+	public KStream<UUID, MediaStreamSample> getOutboundStreamBranch() {
 		return this.outboundStream;
 	}
 
-	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getInboundStreamBranch() {
+	public KStream<UUID, MediaStreamSample> getInboundStreamBranch() {
 		return this.inboundStream;
 	}
 
-	public KStream<UUID, ObserveRTCMediaStreamStatsSample> getRemoteInboundStreamBranch() {
+	public KStream<UUID, MediaStreamSample> getRemoteInboundStreamBranch() {
 		return this.remoteInboundStream;
 	}
 

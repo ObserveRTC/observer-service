@@ -17,7 +17,7 @@ public class ReportsConfig {
 		public int updatePeriodInS;
 		public int archiveRetentionTimeInDays;
 		public CallGuaranteeConfig callGuarantee;
-		
+
 		@ConfigurationProperties("callGuarantee")
 		public static class CallGuaranteeConfig {
 			public boolean enabled;
@@ -33,5 +33,7 @@ public class ReportsConfig {
 		public int peerConnectionMaxIdleTimeInS;
 		public int aggregationTimeInS;
 	}
+
+	public boolean reportMediaSamples;
 }
 

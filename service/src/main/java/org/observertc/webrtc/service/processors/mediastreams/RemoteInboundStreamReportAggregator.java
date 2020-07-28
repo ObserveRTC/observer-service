@@ -1,14 +1,14 @@
 package org.observertc.webrtc.service.processors.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.common.reports.RemoteInboundStreamSampleReport;
+import org.observertc.webrtc.common.reports.RemoteInboundStreamReport;
 import org.observertc.webrtc.service.samples.RemoteInboundStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
 public class RemoteInboundStreamReportAggregator extends MediaStreamReportAggregator<RemoteInboundStreamMeasurement,
-		RemoteInboundStreamSampleReport> {
+		RemoteInboundStreamReport> {
 	private static final Logger logger = LoggerFactory.getLogger(RemoteInboundStreamReportAggregator.class);
 
 	public RemoteInboundStreamReportAggregator() {
@@ -16,7 +16,7 @@ public class RemoteInboundStreamReportAggregator extends MediaStreamReportAggreg
 	}
 
 	@Override
-	protected RemoteInboundStreamSampleReport doApply(RemoteInboundStreamMeasurement measurement, RemoteInboundStreamMeasurement lastMeasurement, RemoteInboundStreamSampleReport report) {
+	protected RemoteInboundStreamReport doApply(RemoteInboundStreamMeasurement measurement, RemoteInboundStreamMeasurement lastMeasurement, RemoteInboundStreamReport report) {
 		this.updateValue(report.RTTInMsRecord, measurement.RTTInMs);
 		return report;
 	}

@@ -1,13 +1,13 @@
 package org.observertc.webrtc.common.reports;
 
-public class MediaStreamSampleRecordReport {
+public class MediaStreamRecordReport {
 
-	public static MediaStreamSampleRecordReport of(
+	public static MediaStreamRecordReport of(
 			Long minimum,
 			Long maximum,
 			Long count,
 			Long sum) {
-		MediaStreamSampleRecordReport result = new MediaStreamSampleRecordReport();
+		MediaStreamRecordReport result = new MediaStreamRecordReport();
 		result.minimum = minimum;
 		result.maximum = maximum;
 		result.count = count;

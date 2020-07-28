@@ -60,7 +60,7 @@ public class BigQueryTable<T extends BigQueryEntry> {
 	private String mapString(Map<String, Object> map, String prefix) {
 
 		StringBuffer resultBuffer = new StringBuffer();
-		Iterator<Map.Entry<String, Object>> mapIt = map.entrySet().iterator();
+			Iterator<Map.Entry<String, Object>> mapIt = map.entrySet().iterator();
 		for (; mapIt.hasNext(); ) {
 			Map.Entry<String, Object> entry = mapIt.next();
 			String key = entry.getKey();

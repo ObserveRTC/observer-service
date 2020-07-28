@@ -9,7 +9,6 @@ import org.jooq.RecordMapper;
 import org.jooq.RecordMapperProvider;
 import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
-import org.observertc.webrtc.service.dto.InboundStreamMeasurementDTO;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;

@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public abstract class MediaStreamSampleEntry<T extends MediaStreamSampleEntry> implements BigQueryEntry {
+public abstract class MediaStreamReportEntry<T extends MediaStreamReportEntry> implements BigQueryEntry {
 
-	private static Logger logger = LoggerFactory.getLogger(MediaStreamSampleEntry.class);
+	private static Logger logger = LoggerFactory.getLogger(MediaStreamReportEntry.class);
 	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
 	public static final String SSRC_FIELD_NAME = "SSRC";
 	public static final String FIRST_SAMPLE_TIMESTAMP_FIELD_NAME = "firstSample";

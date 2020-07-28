@@ -30,10 +30,12 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 	private static final String CREATE_FINISHED_CALL_TABLE_TASK_NAME = "CreateFinishedCallsTableTask";
 	private static final String CREATE_JOINED_PEER_CONNECTIONS_TABLE_TASK_NAME = "CreateJoinedPeerConnectionsTableTask";
 	private static final String CREATE_DETACHED_PEER_CONNECTIONS_TABLE_TASK_NAME = "CreateDetachedPeerConnectionsTableTask";
-	private static final String CREATE_OUTBOUND_STREAM_SAMPLES_TABLE_TASK_NAME = "CreateOutboundStreamSamplesTableTask";
-	private static final String CREATE_INBOUND_STREAM_SAMPLES_TABLE_TASK_NAME = "CreateInboundStreamSamplesTableTask";
-	private static final String CREATE_REMOTE_INBOUND_STREAM_SAMPLES_TABLE_TASK_NAME = "CreateRemoteInboundStreamSamplesTableTask";
-
+	private static final String CREATE_OUTBOUND_REPORTS_TABLE_TASK_NAME = "CreateOutboundReportsTableTask";
+	private static final String CREATE_INBOUND_REPORTS_TABLE_TASK_NAME = "CreateInboundReportsTableTask";
+	private static final String CREATE_REMOTE_INBOUND_REPORTS_TABLE_TASK_NAME = "CreateRemoteInboundReportsTableTask";
+	private static final String CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateRemoteInboundRTPSamplesTableTask";
+	private static final String CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateOutboundRTPSamplesTableTask";
+	private static final String CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateInboundRTPSamplesTableTask";
 
 	private final BigQuery bigQuery;
 	private final BigQueryReportServiceBuilder.Config config;
@@ -46,9 +48,12 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		Task createFinishedCallsTable = this.makeCreateFinishedCallsTableTask();
 		Task createJoinedPeerConnectionsTable = this.makeJoinedPeerConnectionsTableTask();
 		Task createDetachedPeerConnectionsTable = this.makeDetachedPeerConnectionsTableTask();
-		Task createOutboundStreamSamplesTable = this.makeOutboundStreamSamplesTableTask();
-		Task createInboundStreamSamplesTable = this.makeInboundStreamSamplesTableTask();
-		Task createRemoteInboundStreamSamplesTable = this.makeRemoteInboundStreamSamplesTableTask();
+		Task createOutboundStreamSamplesTable = this.makeOutboundReportsTableTask();
+		Task createInboundStreamSamplesTable = this.makeInboundReportsTableTask();
+		Task createRemoteInboundStreamSamplesTable = this.makeRemoteInboundReportsTableTask();
+		Task createRemoteInboundRTPSamplesTable = this.makeRemoteInboundRTPSamplesTableTask();
+		Task createOutboundRTPSamplesTable = this.makeOutboundRTPSamplesTableTask();
+		Task createInboundRTPSamplesTable = this.makeInboundRTPSamplesTableTask();
 		this.withTask(createDataset)
 				.withTask(createInitiatedCallsTable, createDataset)
 				.withTask(createFinishedCallsTable, createDataset)
@@ -57,7 +62,9 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 				.withTask(createOutboundStreamSamplesTable, createDataset)
 				.withTask(createInboundStreamSamplesTable, createDataset)
 				.withTask(createRemoteInboundStreamSamplesTable, createDataset)
-
+				.withTask(createRemoteInboundRTPSamplesTable, createDataset)
+				.withTask(createOutboundRTPSamplesTable, createDataset)
+				.withTask(createInboundRTPSamplesTable, createDataset)
 		;
 	}
 
@@ -157,38 +164,38 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 
 	private FieldList makeMediaStreamSampleRecordFieldList() {
 		return FieldList.of(
-				Field.newBuilder(MediaStreamSampleEntryRecord.COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+				Field.newBuilder(MediaStreamReportEntryRecord.COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 				,
-				Field.newBuilder(MediaStreamSampleEntryRecord.MINIMUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+				Field.newBuilder(MediaStreamReportEntryRecord.MINIMUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 				,
-				Field.newBuilder(MediaStreamSampleEntryRecord.MAXIMUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+				Field.newBuilder(MediaStreamReportEntryRecord.MAXIMUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 				,
-				Field.newBuilder(MediaStreamSampleEntryRecord.SUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+				Field.newBuilder(MediaStreamReportEntryRecord.SUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 		);
 	}
 
-	private Task makeOutboundStreamSamplesTableTask() {
+	private Task makeOutboundReportsTableTask() {
 
-		return new AbstractTask(CREATE_OUTBOUND_STREAM_SAMPLES_TABLE_TASK_NAME) {
+		return new AbstractTask(CREATE_OUTBOUND_REPORTS_TABLE_TASK_NAME) {
 
 			@Override
 			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.outboundStreamSamplesTable);
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.outboundStreamReportsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(OutboundStreamSampleEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(OutboundStreamReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(OutboundStreamSampleEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(OutboundStreamReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(OutboundStreamSampleEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(OutboundStreamReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(OutboundStreamSampleEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(OutboundStreamReportEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(OutboundStreamSampleEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(OutboundStreamReportEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(OutboundStreamSampleEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
+						Field.newBuilder(OutboundStreamReportEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(OutboundStreamSampleEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
+						Field.newBuilder(OutboundStreamReportEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 				);
 				createTableIfNotExists(tableId, schema);
@@ -196,31 +203,31 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		};
 	}
 
-	private Task makeInboundStreamSamplesTableTask() {
+	private Task makeInboundReportsTableTask() {
 
-		return new AbstractTask(CREATE_INBOUND_STREAM_SAMPLES_TABLE_TASK_NAME) {
+		return new AbstractTask(CREATE_INBOUND_REPORTS_TABLE_TASK_NAME) {
 
 			@Override
 			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.inboundStreamSamplesTable);
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.inboundStreamReportsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(InboundStreamSampleEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InboundStreamReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InboundStreamReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InboundStreamReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InboundStreamReportEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InboundStreamReportEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.RECORD,
+						Field.newBuilder(InboundStreamReportEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.RECORD,
+						Field.newBuilder(InboundStreamReportEntry.PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InboundStreamSampleEntry.PACKETS_LOST_FIELD_NAME, LegacySQLTypeName.RECORD,
+						Field.newBuilder(InboundStreamReportEntry.PACKETS_LOST_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 				);
 				createTableIfNotExists(tableId, schema);
@@ -228,31 +235,184 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		};
 	}
 
-	private Task makeRemoteInboundStreamSamplesTableTask() {
+	private Task makeRemoteInboundReportsTableTask() {
 
-		return new AbstractTask(CREATE_REMOTE_INBOUND_STREAM_SAMPLES_TABLE_TASK_NAME) {
+		return new AbstractTask(CREATE_REMOTE_INBOUND_REPORTS_TABLE_TASK_NAME) {
 
 			@Override
 			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.remoteInboundStreamSamplesTable);
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.remoteInboundStreamReportsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(RemoteInboundStreamSampleEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(RemoteInboundStreamReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(RemoteInboundStreamSampleEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(RemoteInboundStreamReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(RemoteInboundStreamSampleEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(RemoteInboundStreamReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(RemoteInboundStreamSampleEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(RemoteInboundStreamReportEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(RemoteInboundStreamSampleEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(RemoteInboundStreamReportEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(RemoteInboundStreamSampleEntry.RTT_IN_MS_FIELD_NAME, LegacySQLTypeName.RECORD,
+						Field.newBuilder(RemoteInboundStreamReportEntry.RTT_IN_MS_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
 		};
 	}
+
+	private Task makeRemoteInboundRTPSamplesTableTask() {
+
+		return new AbstractTask(CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.remoteInboundRTPSamplesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(RemoteInboundRTPReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.PACKETSLOST_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.RTT_IN_MS_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.JITTER_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.CODEC_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeOutboundRTPSamplesTableTask() {
+
+		return new AbstractTask(CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.outboundRTPSamplesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(OutboundRTPReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.ENCODER_IMPLEMENTATION_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.FIR_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.FRAMES_ENCODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.NACK_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.HEADER_BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.KEYFRAMES_ENCODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.PLI_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.QP_SUM_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.QUALITY_LIMITATION_REASON_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.QUALITY_LIMITATION_RESOLUTION_CHANGES_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.RETRANSMITTED_BYTES_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.RETRANSMITTED_PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TOTAL_ENCODED_TIME_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TOTAL_PACKET_SEND_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TOTAL_ENCODED_BYTES_TARGET_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeInboundRTPSamplesTableTask() {
+
+		return new AbstractTask(CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.inboundRTPSamplesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(InboundRTPReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.DECODER_IMPLEMENTATION_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FIR_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.NACK_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.HEADER_BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.KEYFRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PLI_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.QP_SUM_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.JITTER_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TOTAL_DECODE_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TOTAL_INTERFRAME_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TOTAL_SQUARED_INITER_FREAME_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PACKETS_LOST_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.ESTIMATED_PLAYOUT_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FEC_PACKETS_DISCARDED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.LAST_PACKET_RECEIVED_TIMESTAMP, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FEC_PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
 
 	private void createTableIfNotExists(TableId tableId, Schema schema) {
 		logger.info("Checking table {} existance in dataset: {}, project: {}", tableId.getTable(), tableId.getDataset(), tableId.getProject());

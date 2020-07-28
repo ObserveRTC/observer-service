@@ -2,17 +2,17 @@ package org.observertc.webrtc.service.processors.mediastreams;//package com.obse
 
 import java.util.function.BiConsumer;
 import javax.inject.Singleton;
-import org.observertc.webrtc.common.reports.MediaStreamSampleRecordReport;
+import org.observertc.webrtc.common.reports.MediaStreamRecordReport;
 
 @Singleton
-public class MediaStreamSampleRecordReportUpdater implements BiConsumer<MediaStreamSampleRecordReport, Long> {
+public class MediaStreamSampleRecordReportUpdater implements BiConsumer<MediaStreamRecordReport, Long> {
 
-	public void update(MediaStreamSampleRecordReport record, Integer value) {
+	public void update(MediaStreamRecordReport record, Integer value) {
 		this.accept(record, value.longValue());
 	}
 
 	@Override
-	public void accept(MediaStreamSampleRecordReport record, Long value) {
+	public void accept(MediaStreamRecordReport record, Long value) {
 		++record.count;
 		record.sum += value;
 		if (record.minimum == null || value < record.minimum) {

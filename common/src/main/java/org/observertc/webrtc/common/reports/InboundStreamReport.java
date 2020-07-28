@@ -6,41 +6,44 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@JsonTypeName("OUTBOUND_STREAM_SAMPLE")
-public class OutboundStreamSampleReport extends MediaStreamSampleReport {
-	public static OutboundStreamSampleReport of(
+@JsonTypeName("INBOUND_STREAM_REPORT")
+public class InboundStreamReport extends MediaStreamReport {
+	public static InboundStreamReport of(
 			UUID observerUUID,
 			UUID peerConnectionUUID,
 			Long SSRC,
 			LocalDateTime firstSample,
 			LocalDateTime lastSample,
-			MediaStreamSampleRecordReport bytesSentRecord,
-			MediaStreamSampleRecordReport packetsSentRecord
+			MediaStreamRecordReport bytesReceivedRecord,
+			MediaStreamRecordReport packetsReceivedRecord,
+			MediaStreamRecordReport packetsLostRecord
 	) {
-		OutboundStreamSampleReport result = new OutboundStreamSampleReport();
+		InboundStreamReport result = new InboundStreamReport();
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.SSRC = SSRC;
 		result.firstSample = firstSample;
 		result.lastSample = lastSample;
-		result.bytesSentRecord = bytesSentRecord;
-		result.packetsSentRecord = packetsSentRecord;
+		result.bytesReceivedRecord = bytesReceivedRecord;
+		result.packetsLostRecord = packetsLostRecord;
+		result.packetsReceivedRecord = packetsReceivedRecord;
 		return result;
 	}
 
 	@JsonCreator
-	public OutboundStreamSampleReport() {
-		super(ReportType.OUTBOUND_STREAM_SAMPLE);
+	public InboundStreamReport() {
+		super(ReportType.INBOUND_STREAM_REPORT);
 	}
+
 
 //	public UUID observerUUID;
 //
 //	public UUID peerConnectionUUID;
 //
 //	public Long SSRC;
-
+//
 //	public Long count = 0L;
-
+//
 //	@JsonSerialize(using = LocalDateTimeSerializer.class)
 //	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 //	public LocalDateTime firstSample;
@@ -49,10 +52,12 @@ public class OutboundStreamSampleReport extends MediaStreamSampleReport {
 //	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 //	public LocalDateTime lastSample;
 
-	@JsonUnwrapped(prefix = "bytesSentRecord_")
-	public MediaStreamSampleRecordReport bytesSentRecord = new MediaStreamSampleRecordReport();
+	@JsonUnwrapped(prefix = "bytesReceivedRecord_")
+	public MediaStreamRecordReport bytesReceivedRecord = new MediaStreamRecordReport();
 
-	@JsonUnwrapped(prefix = "packetsSentRecord_")
-	public MediaStreamSampleRecordReport packetsSentRecord = new MediaStreamSampleRecordReport();
+	@JsonUnwrapped(prefix = "packetsReceivedRecord_")
+	public MediaStreamRecordReport packetsReceivedRecord = new MediaStreamRecordReport();
 
+	@JsonUnwrapped(prefix = "packetsLostRecord_")
+	public MediaStreamRecordReport packetsLostRecord = new MediaStreamRecordReport();
 }

@@ -3,13 +3,13 @@ package org.observertc.webrtc.service.processors.mediastreams;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.streams.kstream.Aggregator;
-import org.observertc.webrtc.common.reports.MediaStreamSampleRecordReport;
-import org.observertc.webrtc.common.reports.MediaStreamSampleReport;
+import org.observertc.webrtc.common.reports.MediaStreamRecordReport;
+import org.observertc.webrtc.common.reports.MediaStreamReport;
 import org.observertc.webrtc.service.samples.MediaStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class MediaStreamReportAggregator<TMeasurement extends MediaStreamMeasurement, TReport extends MediaStreamSampleReport> implements Aggregator<MediaStreamKey,
+public abstract class MediaStreamReportAggregator<TMeasurement extends MediaStreamMeasurement, TReport extends MediaStreamReport> implements Aggregator<MediaStreamKey,
 		TMeasurement,
 		TReport> {
 	private static final Logger logger = LoggerFactory.getLogger(MediaStreamReportAggregator.class);
@@ -53,7 +53,7 @@ public abstract class MediaStreamReportAggregator<TMeasurement extends MediaStre
 
 	protected abstract TReport doApply(TMeasurement measurement, TMeasurement lastMeasurement, TReport report);
 
-	protected void updateDerivativeValue(MediaStreamSampleRecordReport record, Integer actualValue, Integer lastValue) {
+	protected void updateDerivativeValue(MediaStreamRecordReport record, Integer actualValue, Integer lastValue) {
 		if (actualValue == null || lastValue == null) {
 			return;
 		}
@@ -64,7 +64,7 @@ public abstract class MediaStreamReportAggregator<TMeasurement extends MediaStre
 		this.recordReportUpdater.update(record, dValue);
 	}
 
-	protected void updateValue(MediaStreamSampleRecordReport record, Integer value) {
+	protected void updateValue(MediaStreamRecordReport record, Integer value) {
 		if (value == null) {
 			return;
 		}

@@ -6,29 +6,31 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@JsonTypeName("REMOTE_INBOUND_STREAM_SAMPLE")
-public class RemoteInboundStreamSampleReport extends MediaStreamSampleReport {
-	public static RemoteInboundStreamSampleReport of(
+@JsonTypeName("OUTBOUND_STREAM_REPORT")
+public class OutboundStreamReport extends MediaStreamReport {
+	public static OutboundStreamReport of(
 			UUID observerUUID,
 			UUID peerConnectionUUID,
 			Long SSRC,
 			LocalDateTime firstSample,
 			LocalDateTime lastSample,
-			MediaStreamSampleRecordReport RTTInMsRecord
+			MediaStreamRecordReport bytesSentRecord,
+			MediaStreamRecordReport packetsSentRecord
 	) {
-		RemoteInboundStreamSampleReport result = new RemoteInboundStreamSampleReport();
+		OutboundStreamReport result = new OutboundStreamReport();
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.SSRC = SSRC;
 		result.firstSample = firstSample;
 		result.lastSample = lastSample;
-		result.RTTInMsRecord = RTTInMsRecord;
+		result.bytesSentRecord = bytesSentRecord;
+		result.packetsSentRecord = packetsSentRecord;
 		return result;
 	}
 
 	@JsonCreator
-	public RemoteInboundStreamSampleReport() {
-		super(ReportType.REMOTE_INBOUND_STREAM_SAMPLE);
+	public OutboundStreamReport() {
+		super(ReportType.OUTBOUND_STREAM_REPORT);
 	}
 
 //	public UUID observerUUID;
@@ -36,9 +38,9 @@ public class RemoteInboundStreamSampleReport extends MediaStreamSampleReport {
 //	public UUID peerConnectionUUID;
 //
 //	public Long SSRC;
-//
+
 //	public Long count = 0L;
-//
+
 //	@JsonSerialize(using = LocalDateTimeSerializer.class)
 //	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 //	public LocalDateTime firstSample;
@@ -47,8 +49,10 @@ public class RemoteInboundStreamSampleReport extends MediaStreamSampleReport {
 //	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 //	public LocalDateTime lastSample;
 
-	@JsonUnwrapped(prefix = "RTTInMsRecord_")
-	public MediaStreamSampleRecordReport RTTInMsRecord = new MediaStreamSampleRecordReport();
+	@JsonUnwrapped(prefix = "bytesSentRecord_")
+	public MediaStreamRecordReport bytesSentRecord = new MediaStreamRecordReport();
 
+	@JsonUnwrapped(prefix = "packetsSentRecord_")
+	public MediaStreamRecordReport packetsSentRecord = new MediaStreamRecordReport();
 
 }
