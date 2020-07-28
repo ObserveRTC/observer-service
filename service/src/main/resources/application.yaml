@@ -34,9 +34,9 @@ kafkaTopics:
   observeRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:observeRTCCIceStatsSample}
   observeRTCMediaStreamStatsSamples: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS_SAMPLES:observeRTCMediaStreamStatsSamples}
   observerSSRCPeerConnectionSamples: ${KAFKA_TOPICS_OBSERVER_SSRC_PEER_CONNECTION_SAMPLES:observerSSRCPeerConnectionSamples}
-
 ---
 reports:
+  reportMediaSamples: True
   callReports:
     callGuarantee:
       enabled: True
@@ -48,9 +48,9 @@ reports:
     peerConnectionMaxIdleTimeInS: 60
     archiveRetentionTimeInDays: 100
   streamReports:
-    enabled: True
+    enabled: False
     peerConnectionMaxIdleTimeInS: 10
-    aggregationTimeInS: 60
+    aggregationTimeInS: ${REPORTS_AGGREGATION_TIME_IN_S:1}
 ---
 reportsink:
   configFile: ${REPORTSINK_CONFIG_FILE_PATH:`/reportsink.yml`}

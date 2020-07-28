@@ -11,15 +11,15 @@ import java.util.Random;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.observertc.webrtc.common.UUIDAdapter;
+import org.observertc.webrtc.service.dto.MediaStreamSampleTransformer;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.dto.webextrapp.Converter;
 import org.observertc.webrtc.service.dto.webextrapp.ObserveRTCCIceStats;
 import org.observertc.webrtc.service.dto.webextrapp.PeerConnectionSample;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.dto.webextrapp.RTCStatsType;
 import org.observertc.webrtc.service.repositories.ObserverRepository;
+import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.observertc.webrtc.service.samples.ObserveRTCCIceStatsSample;
-import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +28,7 @@ public class WebExtrAppWebsocketServer {
 	private static final Logger logger = LoggerFactory.getLogger(WebExtrAppWebsocketServer.class);
 	private final ObserverRepository observerRepository;
 	private final WebRTCKafkaSinks kafkaSinks;
+	private final MediaStreamSampleTransformer<Void> mediaStreamSampleSender;
 
 	@Inject
 	ApplicationTimeZoneId applicationTimeZoneId;
@@ -43,6 +44,7 @@ public class WebExtrAppWebsocketServer {
 			WebRTCKafkaSinks kafkaSinks) {
 		this.observerRepository = observerRepository;
 		this.kafkaSinks = kafkaSinks;
+		this.mediaStreamSampleSender = this.makeMediaSampleSender();
 	}
 
 	@OnOpen
@@ -85,11 +87,11 @@ public class WebExtrAppWebsocketServer {
 		}
 		UUID peerConnectionUUID = peerConnectionUUIDHolder.get();
 		if (sample.getReceiverStats() != null) {
-			this.sendObserveRTCMediaStreamStats(observerUUID, peerConnectionUUID, sample.getReceiverStats());
+			this.sendRTCStats(observerUUID, peerConnectionUUID, sample.getReceiverStats());
 		}
 
 		if (sample.getSenderStats() != null) {
-			this.sendObserveRTCMediaStreamStats(observerUUID, peerConnectionUUID, sample.getSenderStats());
+			this.sendRTCStats(observerUUID, peerConnectionUUID, sample.getSenderStats());
 		}
 
 		if (sample.getIceStats() != null) {
@@ -97,28 +99,14 @@ public class WebExtrAppWebsocketServer {
 		}
 	}
 
-	private void sendObserveRTCMediaStreamStats(UUID observerUUID, UUID peerConnectionUUID, RTCStats[] mediaStreamStats) {
+	private void sendRTCStats(UUID observerUUID, UUID peerConnectionUUID, RTCStats[] mediaStreamStats) {
 		// TODO: here consider the timestamp extraction from server or not
 //		LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 		LocalDateTime timestamp = LocalDateTime.now(applicationTimeZoneId.getZoneId());
 		for (int i = 0; i < mediaStreamStats.length; ++i) {
 			RTCStats rtcStats = mediaStreamStats[i];
-			ObserveRTCMediaStreamStatsSample sample = new ObserveRTCMediaStreamStatsSample();
-			sample.observerUUID = observerUUID;
-			if (rtcStats == null) {
-				logger.warn("Null RTCStats is provided for {}, pcUUID: {}", observerUUID, peerConnectionUUID);
-				continue;
-			}
-			sample.rtcStats = rtcStats;
-			sample.sampled = timestamp;
-			RTCStatsType type = rtcStats.getType();
-			switch (type) {
-				case INBOUND_RTP:
-				case OUTBOUND_RTP:
-				case REMOTE_INBOUND_RTP:
-					this.kafkaSinks.sendObserveRTCMediaStreamStatsSamples(peerConnectionUUID, sample);
-					break;
-			}
+			MediaStreamSample sample = MediaStreamSample.of(observerUUID, peerConnectionUUID, rtcStats, timestamp);
+			this.mediaStreamSampleSender.transform(sample);
 		}
 	}
 
@@ -135,5 +123,50 @@ public class WebExtrAppWebsocketServer {
 			WebSocketSession session) {
 	}
 
+	private MediaStreamSampleTransformer<Void> makeMediaSampleSender() {
+		return new MediaStreamSampleTransformer() {
+			@Override
+			public Void processInboundRTP(MediaStreamSample sample) {
+				kafkaSinks.sendObserveRTCMediaStreamStatsSamples(sample.peerConnectionUUID, sample);
+				return null;
+			}
+
+			@Override
+			public Void processOutboundRTP(MediaStreamSample sample) {
+				kafkaSinks.sendObserveRTCMediaStreamStatsSamples(sample.peerConnectionUUID, sample);
+				return null;
+			}
+
+			@Override
+			public Void processRemoteInboundRTP(MediaStreamSample sample) {
+				kafkaSinks.sendObserveRTCMediaStreamStatsSamples(sample.peerConnectionUUID, sample);
+				return null;
+			}
+
+			@Override
+			public Object processTrack(MediaStreamSample sample) {
+				return null;
+			}
+
+			@Override
+			public Object processMediaSource(MediaStreamSample sample) {
+				return null;
+			}
+
+			@Override
+			public Object processCandidatePair(MediaStreamSample sample) {
+				return null;
+			}
+
+			@Override
+			public Void unprocessable(MediaStreamSample sample) {
+				UUID observerUUID = sample != null ? sample.observerUUID : null;
+				UUID peerConnectionUUID = sample != null ? sample.peerConnectionUUID : null;
+				logger.warn("Cannot Process MediaStreamSample for observerUUID{}, pcUUID: {}", observerUUID,
+						peerConnectionUUID);
+				return null;
+			}
+		};
+	}
 
 }

@@ -50,7 +50,7 @@ public class CallReportsGuaranteer {
 	private final ReportProcessor reportSaver;
 	private List<ReportedcallsRecord> sentCallReports = new LinkedList<>();
 	private List<ReportedpeerconnectionsRecord> sentPCReports = new LinkedList<>();
-	private final ReportProcessor reportAdder;
+	private final ReportProcessor<Void> reportAdder;
 
 	public CallReportsGuaranteer(ReportedCallsRepository reportedCallsRepository,
 								 ReportedPeerConnectionsRepository reportedPeerConnectionsRepository,
@@ -78,7 +78,7 @@ public class CallReportsGuaranteer {
 	}
 
 	public void add(UUID observerUUID, Report report) {
-		this.reportAdder.accept(report);
+		this.reportAdder.process(report);
 	}
 
 
@@ -110,7 +110,7 @@ public class CallReportsGuaranteer {
 				try {
 					callReports.stream().forEach(report -> {
 						context.forward(observerUUID, report);
-						reportSaver.accept(report);
+						reportSaver.process(report);
 					});
 				} finally {
 
@@ -128,10 +128,10 @@ public class CallReportsGuaranteer {
 		this.sentPCReports.clear();
 	}
 
-	private ReportProcessor makeReportSaver() {
-		return new AbstractReportProcessor() {
+	private ReportProcessor<Void> makeReportSaver() {
+		return new AbstractReportProcessor<Void>() {
 			@Override
-			public void process(JoinedPeerConnectionReport report) {
+			public Void process(JoinedPeerConnectionReport report) {
 				ReportedpeerconnectionsRecord reportedPeerConnectionsRecord = new ReportedpeerconnectionsRecord(
 						UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
@@ -140,10 +140,11 @@ public class CallReportsGuaranteer {
 						report.joined
 				);
 				sentPCReports.add(reportedPeerConnectionsRecord);
+				return null;
 			}
 
 			@Override
-			public void process(DetachedPeerConnectionReport report) {
+			public Void process(DetachedPeerConnectionReport report) {
 				ReportedpeerconnectionsRecord reportedPeerConnectionsRecord = new ReportedpeerconnectionsRecord(
 						UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
@@ -152,10 +153,11 @@ public class CallReportsGuaranteer {
 						report.detached
 				);
 				sentPCReports.add(reportedPeerConnectionsRecord);
+				return null;
 			}
 
 			@Override
-			public void process(InitiatedCallReport report) {
+			public Void process(InitiatedCallReport report) {
 				ReportedcallsRecord reportedcallsRecord = new ReportedcallsRecord(
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.observerUUID, null),
@@ -163,10 +165,11 @@ public class CallReportsGuaranteer {
 						report.initiated
 				);
 				sentCallReports.add(reportedcallsRecord);
+				return null;
 			}
 
 			@Override
-			public void process(FinishedCallReport report) {
+			public Void process(FinishedCallReport report) {
 				ReportedcallsRecord reportedcallsRecord = new ReportedcallsRecord(
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.observerUUID, null),
@@ -174,38 +177,43 @@ public class CallReportsGuaranteer {
 						report.finished
 				);
 				sentCallReports.add(reportedcallsRecord);
+				return null;
 			}
 		};
 	}
 
-	private ReportProcessor makeReportAdder() {
-		return new AbstractReportProcessor() {
+	private ReportProcessor<Void> makeReportAdder() {
+		return new AbstractReportProcessor<Void>() {
 			@Override
-			public void process(JoinedPeerConnectionReport report) {
+			public Void process(JoinedPeerConnectionReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.joinedPeerConnections.put(report.peerConnectionUUID, new CheckHolder<>(report));
 				});
+				return null;
 			}
 
 			@Override
-			public void process(DetachedPeerConnectionReport report) {
+			public Void process(DetachedPeerConnectionReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.detachedPeerConnections.put(report.peerConnectionUUID, new CheckHolder<>(report));
 				});
+				return null;
 			}
 
 			@Override
-			public void process(InitiatedCallReport report) {
+			public Void process(InitiatedCallReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.initiatedCallReport = new CheckHolder<>(report);
 				});
+				return null;
 			}
 
 			@Override
-			public void process(FinishedCallReport report) {
+			public Void process(FinishedCallReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.finishedCallReport = new CheckHolder<>(report);
 				});
+				return null;
 			}
 		};
 	}

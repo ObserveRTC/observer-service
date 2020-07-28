@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
@@ -13,16 +14,23 @@ import org.apache.kafka.streams.processor.PunctuationType;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
+import org.observertc.webrtc.common.reports.InboundRTPReport;
+import org.observertc.webrtc.common.reports.OutboundRTPReport;
+import org.observertc.webrtc.common.reports.RemoteInboundRTPReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.ReportsConfig;
+import org.observertc.webrtc.service.dto.MediaStreamSampleTransformer;
 import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
+import org.observertc.webrtc.service.processors.mediastreams.valueadapters.InboundRTPConverter;
+import org.observertc.webrtc.service.processors.mediastreams.valueadapters.OutboundRTPConverter;
+import org.observertc.webrtc.service.processors.mediastreams.valueadapters.RemoteInboundRTPConverter;
 import org.observertc.webrtc.service.repositories.PeerConnectionSSRCsRepository;
-import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
+import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class MediaStreamTransformer implements Transformer<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<UUID, Report>>, Punctuator {
+public class MediaStreamTransformer implements Transformer<UUID, MediaStreamSample, KeyValue<UUID, Report>>, Punctuator {
 
 	private static final Logger logger = LoggerFactory.getLogger(MediaStreamTransformer.class);
 
@@ -30,6 +38,7 @@ public class MediaStreamTransformer implements Transformer<UUID, ObserveRTCMedia
 	private final ReportsConfig reportsConfig;
 	private final Map<Triplet<UUID, UUID, Long>, Pair<LocalDateTime, LocalDateTime>> updates;
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
+	private final Function<MediaStreamSample, Report> sampleProcessor;
 
 	public MediaStreamTransformer(
 			PeerConnectionSSRCsRepository peerConnectionSSRCsRepository,
@@ -38,6 +47,12 @@ public class MediaStreamTransformer implements Transformer<UUID, ObserveRTCMedia
 		this.peerConnectionSSRCsRepository = peerConnectionSSRCsRepository;
 		this.callsReporter = callsReporter;
 		this.reportsConfig = reportsConfig;
+		if (this.reportsConfig.reportMediaSamples) {
+			this.sampleProcessor = this.makeMediaStreamProcessor();
+		} else {
+			this.sampleProcessor = report -> null;
+		}
+
 		updates = new HashMap<>();
 	}
 
@@ -55,14 +70,18 @@ public class MediaStreamTransformer implements Transformer<UUID, ObserveRTCMedia
 	}
 
 	@Override
-	public KeyValue<UUID, Report> transform(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+	public KeyValue<UUID, Report> transform(UUID peerConnectionUUID, MediaStreamSample sample) {
 		Long SSRC = sample.rtcStats.getSsrc().longValue();
 		Triplet<UUID, UUID, Long> updateKey = Triplet.with(sample.observerUUID, peerConnectionUUID, SSRC);
 		LocalDateTime timestamp = sample.sampled;
 		Pair<LocalDateTime, LocalDateTime> createdUpdated = this.updates.getOrDefault(updateKey, Pair.with(timestamp, timestamp));
 		createdUpdated = createdUpdated.setAt1(timestamp);
 		this.updates.put(updateKey, createdUpdated);
-		return null;
+		Report report = this.sampleProcessor.apply(sample);
+		if (report == null) {
+			return null;
+		}
+		return new KeyValue<>(sample.observerUUID, report);
 	}
 
 	@Override
@@ -110,6 +129,58 @@ public class MediaStreamTransformer implements Transformer<UUID, ObserveRTCMedia
 						}).iterator();
 		this.peerConnectionSSRCsRepository.saveAll(entities);
 		this.updates.clear();
+	}
+
+	private Function<MediaStreamSample, Report> makeMediaStreamProcessor() {
+		RemoteInboundRTPConverter remoteInboundRTPConverter = new RemoteInboundRTPConverter();
+		InboundRTPConverter inboundRTPConverter = new InboundRTPConverter();
+		OutboundRTPConverter outboundRTPConverter = new OutboundRTPConverter();
+		MediaStreamSampleTransformer<Report> transformer = new MediaStreamSampleTransformer<Report>() {
+			@Override
+			public Report processInboundRTP(MediaStreamSample sample) {
+				InboundRTPReport result = inboundRTPConverter.apply(sample);
+				return result;
+			}
+
+			@Override
+			public Report processOutboundRTP(MediaStreamSample sample) {
+				OutboundRTPReport result = outboundRTPConverter.apply(sample);
+				return result;
+			}
+
+			@Override
+			public Report processRemoteInboundRTP(MediaStreamSample sample) {
+				RemoteInboundRTPReport result = remoteInboundRTPConverter.apply(sample);
+				return result;
+			}
+
+			@Override
+			public Report processTrack(MediaStreamSample sample) {
+				return null;
+			}
+
+			@Override
+			public Report processMediaSource(MediaStreamSample sample) {
+				return null;
+			}
+
+			@Override
+			public Report processCandidatePair(MediaStreamSample sample) {
+				return null;
+			}
+		};
+		return new Function<MediaStreamSample, Report>() {
+			@Override
+			public Report apply(MediaStreamSample sample) {
+				if (sample.rtcStats == null) {
+					return transformer.unprocessable(sample);
+				}
+				if (sample.rtcStats.getSsrc() == null) {
+					return transformer.unprocessable(sample);
+				}
+				return transformer.transform(sample);
+			}
+		};
 	}
 
 }

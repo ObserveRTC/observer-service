@@ -1,21 +1,21 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
 import java.util.Map;
-import org.observertc.webrtc.common.reports.OutboundStreamSampleReport;
+import org.observertc.webrtc.common.reports.OutboundStreamReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class OutboundStreamSampleEntry extends MediaStreamSampleEntry<OutboundStreamSampleEntry> {
+public class OutboundStreamReportEntry extends MediaStreamReportEntry<OutboundStreamReportEntry> {
 
-	private static Logger logger = LoggerFactory.getLogger(OutboundStreamSampleEntry.class);
+	private static Logger logger = LoggerFactory.getLogger(OutboundStreamReportEntry.class);
 	public static final String BYTES_SENT_FIELD_NAME = "bytesSent";
 	public static final String PACKETS_SENT_FIELD_NAME = "packetsSent";
 
-	public static OutboundStreamSampleEntry from(OutboundStreamSampleReport report) {
-		MediaStreamSampleEntryRecord bytesSentRecord = MediaStreamSampleEntryRecord.from(report.bytesSentRecord);
-		MediaStreamSampleEntryRecord packetsSent = MediaStreamSampleEntryRecord.from(report.packetsSentRecord);
-		return new OutboundStreamSampleEntry()
+	public static OutboundStreamReportEntry from(OutboundStreamReport report) {
+		MediaStreamReportEntryRecord bytesSentRecord = MediaStreamReportEntryRecord.from(report.bytesSentRecord);
+		MediaStreamReportEntryRecord packetsSent = MediaStreamReportEntryRecord.from(report.packetsSentRecord);
+		return new OutboundStreamReportEntry()
 				.withObserverUUID(report.observerUUID)
 				.withPeerConnectionUUID(report.peerConnectionUUID)
 				.withSSRC(report.SSRC)
@@ -26,12 +26,12 @@ public class OutboundStreamSampleEntry extends MediaStreamSampleEntry<OutboundSt
 	}
 
 
-	public OutboundStreamSampleEntry withBytesSentRecord(MediaStreamSampleEntryRecord record) {
+	public OutboundStreamReportEntry withBytesSentRecord(MediaStreamReportEntryRecord record) {
 		this.values.put(BYTES_SENT_FIELD_NAME, record.toMap());
 		return this;
 	}
 
-	public OutboundStreamSampleEntry withPacketsSentRecord(MediaStreamSampleEntryRecord record) {
+	public OutboundStreamReportEntry withPacketsSentRecord(MediaStreamReportEntryRecord record) {
 		this.values.put(PACKETS_SENT_FIELD_NAME, record.toMap());
 		return this;
 	}

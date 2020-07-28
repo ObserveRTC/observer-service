@@ -5,19 +5,19 @@ import java.util.UUID;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.KeyValueMapper;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.samples.ObserveRTCMediaStreamStatsSample;
+import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 
 @Prototype
 public class OutboundStreamSampleMapper implements KeyValueMapper
-		<UUID, ObserveRTCMediaStreamStatsSample, KeyValue<MediaStreamKey, OutboundStreamMeasurement>> {
+		<UUID, MediaStreamSample, KeyValue<MediaStreamKey, OutboundStreamMeasurement>> {
 
 	public OutboundStreamSampleMapper() {
 
 	}
 
 	@Override
-	public KeyValue<MediaStreamKey, OutboundStreamMeasurement> apply(UUID peerConnectionUUID, ObserveRTCMediaStreamStatsSample sample) {
+	public KeyValue<MediaStreamKey, OutboundStreamMeasurement> apply(UUID peerConnectionUUID, MediaStreamSample sample) {
 		RTCStats rtcStats = sample.rtcStats;
 		OutboundStreamMeasurement value = new OutboundStreamMeasurement();
 		value.SSRC = rtcStats.getSsrc().longValue();

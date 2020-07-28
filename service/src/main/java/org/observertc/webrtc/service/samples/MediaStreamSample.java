@@ -8,14 +8,28 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 
-public class ObserveRTCMediaStreamStatsSample {
+public class MediaStreamSample {
+
+	public static MediaStreamSample of(UUID observerUUID,
+									   UUID peerConnectionUUID,
+									   RTCStats rtcStats,
+									   LocalDateTime sampled) {
+		MediaStreamSample result = new MediaStreamSample();
+		result.observerUUID = observerUUID;
+		result.peerConnectionUUID = peerConnectionUUID;
+		result.rtcStats = rtcStats;
+		result.sampled = sampled;
+		return result;
+	}
 
 	public UUID observerUUID;
+	public UUID peerConnectionUUID;
 	public RTCStats rtcStats;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime sampled;
+
 
 	@Override
 	public String toString() {

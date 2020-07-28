@@ -14,6 +14,8 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 	public static class Config extends AbstractBuilder.Config {
 
+		public String timeZoneId = "EET";
+
 		public String projectName;
 
 		public String datasetName;
@@ -26,13 +28,18 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 		public String detachedPeerConnectionsTable = "DetachedPeerConnections";
 
-		public String inboundStreamSamplesTable = "InboundStreamSamples";
+		public String inboundStreamReportsTable = "InboundStreamReports";
 
-		public String remoteInboundStreamSamplesTable = "RemoteInboundStreamSamples";
+		public String remoteInboundStreamReportsTable = "RemoteInboundStreamReports";
 
-		public String outboundStreamSamplesTable = "OutboundStreamSamples";
+		public String outboundStreamReportsTable = "OutboundStreamReports";
+
+		public String remoteInboundRTPSamplesTable = "RemoteInboundRTPSamples";
+
+		public String outboundRTPSamplesTable = "OutboundRTPSamples";
 
 		public boolean createDatasetIfNotExists = true;
 
+		public String inboundRTPSamplesTable = "InboundRTPSamples";
 	}
 }

@@ -1,13 +1,13 @@
 package org.observertc.webrtc.service.processors.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.common.reports.OutboundStreamSampleReport;
+import org.observertc.webrtc.common.reports.OutboundStreamReport;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class OutboundStreamReportAggregator extends MediaStreamReportAggregator<OutboundStreamMeasurement, OutboundStreamSampleReport> {
+public class OutboundStreamReportAggregator extends MediaStreamReportAggregator<OutboundStreamMeasurement, OutboundStreamReport> {
 	private static final Logger logger = LoggerFactory.getLogger(OutboundStreamReportAggregator.class);
 
 	public OutboundStreamReportAggregator() {
@@ -15,7 +15,7 @@ public class OutboundStreamReportAggregator extends MediaStreamReportAggregator<
 	}
 
 	@Override
-	protected OutboundStreamSampleReport doApply(OutboundStreamMeasurement measurement, OutboundStreamMeasurement lastMeasurement, OutboundStreamSampleReport report) {
+	protected OutboundStreamReport doApply(OutboundStreamMeasurement measurement, OutboundStreamMeasurement lastMeasurement, OutboundStreamReport report) {
 		if (lastMeasurement == null) {
 			// update all metrics does not requires a derivative calculations
 			return report;
