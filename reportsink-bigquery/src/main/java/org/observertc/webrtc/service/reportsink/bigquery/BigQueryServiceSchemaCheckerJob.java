@@ -420,7 +420,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		if (table != null && table.exists()) {
 			return;
 		}
-		if (!this.config.createDatasetIfNotExists) {
+		if (!this.config.createTableIfNotExists) {
 			return;
 		}
 		try {
