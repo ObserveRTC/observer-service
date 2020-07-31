@@ -40,6 +40,8 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 		public boolean createDatasetIfNotExists = true;
 
+		public boolean createTableIfNotExists = true;
+
 		public String inboundRTPSamplesTable = "InboundRTPSamples";
 	}
 }
