@@ -429,7 +429,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			bigQuery.create(tableInfo);
 			logger.info("Table {} is succcessfully created", tableId.getTable());
 		} catch (BigQueryException e) {
-			logger.error("Error during table creation. Table: {}", tableId.getTable());
+			logger.error("Error during table creation. Table: " + tableId.getTable(), e);
 		}
 	}
 }
