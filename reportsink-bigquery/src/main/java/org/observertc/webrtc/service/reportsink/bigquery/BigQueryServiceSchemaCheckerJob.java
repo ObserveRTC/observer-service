@@ -196,7 +196,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICECandidatePairEntry.CONSENT_REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.CURRENT_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.CURRENT_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICECandidatePairEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
