@@ -86,12 +86,14 @@ public class WebExtrAppWebsocketServer {
 			return;
 		}
 		UUID peerConnectionUUID = peerConnectionUUIDHolder.get();
+		String timeZoneId = "timeZone";
 		if (sample.getReceiverStats() != null) {
-			this.sendRTCStats(observerUUID, peerConnectionUUID, sample.getReceiverStats());
+			this.sendRTCStats(observerUUID, peerConnectionUUID, sample.getBrowserId(), timeZoneId,
+					sample.getReceiverStats());
 		}
 
 		if (sample.getSenderStats() != null) {
-			this.sendRTCStats(observerUUID, peerConnectionUUID, sample.getSenderStats());
+			this.sendRTCStats(observerUUID, peerConnectionUUID, sample.getBrowserId(), timeZoneId, sample.getSenderStats());
 		}
 
 		if (sample.getIceStats() != null) {
@@ -99,13 +101,14 @@ public class WebExtrAppWebsocketServer {
 		}
 	}
 
-	private void sendRTCStats(UUID observerUUID, UUID peerConnectionUUID, RTCStats[] mediaStreamStats) {
+	private void sendRTCStats(UUID observerUUID, UUID peerConnectionUUID, String browserId, String timeZoneId,
+							  RTCStats[] mediaStreamStats) {
 		// TODO: here consider the timestamp extraction from server or not
 //		LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 		LocalDateTime timestamp = LocalDateTime.now(applicationTimeZoneId.getZoneId());
 		for (int i = 0; i < mediaStreamStats.length; ++i) {
 			RTCStats rtcStats = mediaStreamStats[i];
-			MediaStreamSample sample = MediaStreamSample.of(observerUUID, peerConnectionUUID, rtcStats, timestamp);
+			MediaStreamSample sample = MediaStreamSample.of(observerUUID, peerConnectionUUID, browserId, timeZoneId, rtcStats, timestamp);
 			this.mediaStreamSampleSender.transform(sample);
 		}
 	}

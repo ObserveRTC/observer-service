@@ -16,6 +16,8 @@ public class PeerConnectionSSRCsEntryRecordMapper<R extends Record> implements R
 		result.peerConnectionUUID = UUIDAdapter.toUUID(peerConnectionUUID);
 		result.observerUUID = UUIDAdapter.toUUID(observerUUID);
 		result.updated = record.getValue(Tables.PEERCONNECTIONSSRCS.UPDATED);
+		result.browserID = record.getValue(Tables.PEERCONNECTIONSSRCS.BROWSERID);
+		result.timeZoneId = record.getValue(Tables.PEERCONNECTIONSSRCS.TIMEZONE);
 		return result;
 	}
 }

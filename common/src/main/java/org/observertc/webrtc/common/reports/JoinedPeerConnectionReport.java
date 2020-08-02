@@ -11,24 +11,28 @@ import java.util.UUID;
 
 @JsonTypeName("JOINED_PEER_CONNECTION")
 public class JoinedPeerConnectionReport extends Report {
-	public static JoinedPeerConnectionReport of(UUID observerUUID, UUID callUUID, UUID peerConnectionUUID, LocalDateTime joined) {
+	public static JoinedPeerConnectionReport of(UUID observerUUID, UUID callUUID, UUID peerConnectionUUID,
+												String browserID, LocalDateTime joined, String zoneId) {
 		JoinedPeerConnectionReport result = new JoinedPeerConnectionReport();
 		result.callUUID = callUUID;
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
+		result.browserID = browserID;
 		result.joined = joined;
+		result.timeZoneID = zoneId;
 		return result;
 	}
 
 	@JsonCreator
 	public JoinedPeerConnectionReport() {
 		super(ReportType.JOINED_PEER_CONNECTION);
-//		super(ReportType.JOINED_PEER_CONNECTION.name());
 	}
 
 	public UUID observerUUID;
 	public UUID callUUID;
 	public UUID peerConnectionUUID;
+	public String browserID;
+	public String timeZoneID;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)

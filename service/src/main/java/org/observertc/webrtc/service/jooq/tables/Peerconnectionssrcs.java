@@ -13,7 +13,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,7 +33,7 @@ import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionssrcsReco
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
 
-    private static final long serialVersionUID = -307008057;
+    private static final long serialVersionUID = 173326778;
 
     /**
      * The reference instance of <code>WebRTCObserver.PeerConnectionSSRCs</code>
@@ -67,6 +67,11 @@ public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
      * The column <code>WebRTCObserver.PeerConnectionSSRCs.updated</code>.
      */
     public final TableField<PeerconnectionssrcsRecord, LocalDateTime> UPDATED = createField(DSL.name("updated"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+
+    /**
+     * The column <code>WebRTCObserver.PeerConnectionSSRCs.browserID</code>.
+     */
+    public final TableField<PeerconnectionssrcsRecord, String> BROWSERID = createField(DSL.name("browserID"), org.jooq.impl.SQLDataType.VARCHAR(64), this, "");
 
     /**
      * The column <code>WebRTCObserver.PeerConnectionSSRCs.timeZone</code>.
@@ -153,11 +158,11 @@ public class Peerconnectionssrcs extends TableImpl<PeerconnectionssrcsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<byte[], Long, byte[], LocalDateTime, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<byte[], Long, byte[], LocalDateTime, String, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }

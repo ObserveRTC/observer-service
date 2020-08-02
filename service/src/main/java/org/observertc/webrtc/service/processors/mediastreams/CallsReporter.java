@@ -2,6 +2,7 @@ package org.observertc.webrtc.service.processors.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
@@ -35,7 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, LocalDateTime>> {
+public class CallsReporter implements Punctuator, BiConsumer<UUID, Quartet<UUID, LocalDateTime, String, String>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallsReporter.class);
 
@@ -47,7 +49,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final CallReportsGuaranteer callReportsGuaranteer;
-	private final Map<UUID, Pair<UUID, LocalDateTime>> updatedPeerConnections;
+	private final Map<UUID, Quartet<UUID, LocalDateTime, String, String>> updatedPeerConnections;
 	private final Map<UUID, List<Report>> createdReports;
 	private int peerConnectionMaxIdleTimeInS = 30; // default value
 
@@ -103,8 +105,8 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 	}
 
 	@Override
-	public void accept(UUID peerConnectionUUID, Pair<UUID, LocalDateTime> observerUUIDFirstUpdateTuple) {
-		this.updatedPeerConnections.put(peerConnectionUUID, observerUUIDFirstUpdateTuple);
+	public void accept(UUID peerConnectionUUID, Quartet<UUID, LocalDateTime, String, String> tuple) {
+		this.updatedPeerConnections.put(peerConnectionUUID, tuple);
 	}
 
 
@@ -130,16 +132,19 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 					if (reportedPeerConnections.contains(peerConnectionUUID)) {
 						return;
 					}
-					Pair<UUID, LocalDateTime> pair = updatedPeerConnections.get(peerConnectionUUID);
-					UUID observerUUID = pair.getValue0();
-					LocalDateTime firstSampled = pair.getValue1();
-					reportNewPeerConnection(peerConnectionUUID, observerUUID, firstSampled);
+					Quartet<UUID, LocalDateTime, String, String> tuple = updatedPeerConnections.get(peerConnectionUUID);
+					UUID observerUUID = tuple.getValue0();
+					LocalDateTime firstSampled = tuple.getValue1();
+					String browserId = tuple.getValue2();
+					String timeZoneId = tuple.getValue3();
+					reportNewPeerConnection(peerConnectionUUID, observerUUID, firstSampled, browserId, null);
 					reportedPeerConnections.add(peerConnectionUUID);
 				});
 		this.updatedPeerConnections.clear();
 	}
 
-	private void reportNewPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime firstSampled) {
+	private void reportNewPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime firstSampled, String browserID,
+										 ZoneId zoneId) {
 		AtomicReference<UUID> callUUIDHolder = new AtomicReference<>(null);
 		Set<UUID> peers = new HashSet<>();
 		this.peerConnectionSSRCsRepository.findPeers(peerConnectionUUID, peerUUID -> {
@@ -180,7 +185,8 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Pair<UUID, Lo
 			this.reportSink.accept(observerUUID, initiatedCallReport);
 		}
 		CallPeerConnectionsEntry callPeerConnectionsEntry = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUID, firstSampled);
-		JoinedPeerConnectionReport joinedPeerConnectionReport = JoinedPeerConnectionReport.of(observerUUID, callUUID, peerConnectionUUID, firstSampled);
+		JoinedPeerConnectionReport joinedPeerConnectionReport = JoinedPeerConnectionReport.of(observerUUID, callUUID, peerConnectionUUID,
+				browserID, firstSampled, zoneId.getId());
 		this.reportSink.accept(observerUUID, joinedPeerConnectionReport);
 		this.callPeerConnectionsRepository.save(callPeerConnectionsEntry);
 	}

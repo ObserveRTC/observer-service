@@ -99,6 +99,7 @@ CREATE TABLE `WebRTCObserver`.`PeerConnectionSSRCs`
     `SSRC`                BIGINT NOT NULL COMMENT 'The SSRC identifier',
     `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection the SSRC belongs to',
     `updated`             TIMESTAMP,
+    `browserID`           VARCHAR (64),
     `timeZone`            VARCHAR (64),
     PRIMARY KEY (`peerConnectionUUID`,`SSRC`),
     INDEX `PeerconnectionSSRCs_updated_index` (`updated`),

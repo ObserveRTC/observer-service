@@ -18,6 +18,10 @@ public class PeerConnectionSSRCsEntry {
 	@NotNull
 	public UUID observerUUID;
 
+	public String browserID;
+
+	public String timeZoneId;
+
 	@NotNull
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)

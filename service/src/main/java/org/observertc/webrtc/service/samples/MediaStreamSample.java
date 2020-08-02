@@ -12,11 +12,15 @@ public class MediaStreamSample {
 
 	public static MediaStreamSample of(UUID observerUUID,
 									   UUID peerConnectionUUID,
+									   String browserID,
+									   String timeZoneID,
 									   RTCStats rtcStats,
 									   LocalDateTime sampled) {
 		MediaStreamSample result = new MediaStreamSample();
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
+		result.browserID = browserID;
+		result.timeZoneID = timeZoneID;
 		result.rtcStats = rtcStats;
 		result.sampled = sampled;
 		return result;
@@ -25,6 +29,8 @@ public class MediaStreamSample {
 	public UUID observerUUID;
 	public UUID peerConnectionUUID;
 	public RTCStats rtcStats;
+	public String browserID;
+	public String timeZoneID;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)

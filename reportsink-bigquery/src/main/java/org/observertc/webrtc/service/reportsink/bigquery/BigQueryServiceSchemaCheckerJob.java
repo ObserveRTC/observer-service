@@ -136,6 +136,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(JoinedPeerConnectionEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(JoinedPeerConnectionEntry.BROWSERID_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(JoinedPeerConnectionEntry.JOINED_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 				);
 				createTableIfNotExists(tableId, schema);

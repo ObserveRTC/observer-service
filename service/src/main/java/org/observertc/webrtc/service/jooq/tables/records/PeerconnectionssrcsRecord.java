@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 import org.jooq.Field;
 import org.jooq.Record2;
-import org.jooq.Record5;
-import org.jooq.Row5;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
 
@@ -18,9 +18,9 @@ import org.observertc.webrtc.service.jooq.tables.Peerconnectionssrcs;
  * A table to map peer connections to SSRCs
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<PeerconnectionssrcsRecord> implements Record5<byte[], Long, byte[], LocalDateTime, String> {
+public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<PeerconnectionssrcsRecord> implements Record6<byte[], Long, byte[], LocalDateTime, String, String> {
 
-    private static final long serialVersionUID = -299152464;
+    private static final long serialVersionUID = -1827275391;
 
     /**
      * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.observerUUID</code>. The UUID of the observer the SSRC belongs to
@@ -79,17 +79,31 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     /**
+     * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.browserID</code>.
+     */
+    public void setBrowserid(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.browserID</code>.
+     */
+    public String getBrowserid() {
+        return (String) get(4);
+    }
+
+    /**
      * Setter for <code>WebRTCObserver.PeerConnectionSSRCs.timeZone</code>.
      */
     public void setTimezone(String value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>WebRTCObserver.PeerConnectionSSRCs.timeZone</code>.
      */
     public String getTimezone() {
-        return (String) get(4);
+        return (String) get(5);
     }
 
     // -------------------------------------------------------------------------
@@ -102,17 +116,17 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     }
 
     // -------------------------------------------------------------------------
-    // Record5 type implementation
+    // Record6 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<byte[], Long, byte[], LocalDateTime, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<byte[], Long, byte[], LocalDateTime, String, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     @Override
-    public Row5<byte[], Long, byte[], LocalDateTime, String> valuesRow() {
-        return (Row5) super.valuesRow();
+    public Row6<byte[], Long, byte[], LocalDateTime, String, String> valuesRow() {
+        return (Row6) super.valuesRow();
     }
 
     @Override
@@ -137,6 +151,11 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public Field<String> field5() {
+        return Peerconnectionssrcs.PEERCONNECTIONSSRCS.BROWSERID;
+    }
+
+    @Override
+    public Field<String> field6() {
         return Peerconnectionssrcs.PEERCONNECTIONSSRCS.TIMEZONE;
     }
 
@@ -162,6 +181,11 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public String component5() {
+        return getBrowserid();
+    }
+
+    @Override
+    public String component6() {
         return getTimezone();
     }
 
@@ -187,6 +211,11 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public String value5() {
+        return getBrowserid();
+    }
+
+    @Override
+    public String value6() {
         return getTimezone();
     }
 
@@ -216,17 +245,24 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
 
     @Override
     public PeerconnectionssrcsRecord value5(String value) {
+        setBrowserid(value);
+        return this;
+    }
+
+    @Override
+    public PeerconnectionssrcsRecord value6(String value) {
         setTimezone(value);
         return this;
     }
 
     @Override
-    public PeerconnectionssrcsRecord values(byte[] value1, Long value2, byte[] value3, LocalDateTime value4, String value5) {
+    public PeerconnectionssrcsRecord values(byte[] value1, Long value2, byte[] value3, LocalDateTime value4, String value5, String value6) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
         value5(value5);
+        value6(value6);
         return this;
     }
 
@@ -244,13 +280,14 @@ public class PeerconnectionssrcsRecord extends UpdatableRecordImpl<Peerconnectio
     /**
      * Create a detached, initialised PeerconnectionssrcsRecord
      */
-    public PeerconnectionssrcsRecord(byte[] observeruuid, Long ssrc, byte[] peerconnectionuuid, LocalDateTime updated, String timezone) {
+    public PeerconnectionssrcsRecord(byte[] observeruuid, Long ssrc, byte[] peerconnectionuuid, LocalDateTime updated, String browserid, String timezone) {
         super(Peerconnectionssrcs.PEERCONNECTIONSSRCS);
 
         set(0, observeruuid);
         set(1, ssrc);
         set(2, peerconnectionuuid);
         set(3, updated);
-        set(4, timezone);
+        set(4, browserid);
+        set(5, timezone);
     }
 }

@@ -12,7 +12,7 @@ import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.PunctuationType;
 import org.apache.kafka.streams.processor.Punctuator;
-import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.observertc.webrtc.common.reports.InboundRTPReport;
 import org.observertc.webrtc.common.reports.OutboundRTPReport;
@@ -36,7 +36,7 @@ public class MediaStreamTransformer implements Transformer<UUID, MediaStreamSamp
 
 	private final CallsReporter callsReporter;
 	private final ReportsConfig reportsConfig;
-	private final Map<Triplet<UUID, UUID, Long>, Pair<LocalDateTime, LocalDateTime>> updates;
+	private final Map<Triplet<UUID, UUID, Long>, Quartet<LocalDateTime, LocalDateTime, String, String>> updates;
 	private final PeerConnectionSSRCsRepository peerConnectionSSRCsRepository;
 	private final Function<MediaStreamSample, Report> sampleProcessor;
 
@@ -74,7 +74,8 @@ public class MediaStreamTransformer implements Transformer<UUID, MediaStreamSamp
 		Long SSRC = sample.rtcStats.getSsrc().longValue();
 		Triplet<UUID, UUID, Long> updateKey = Triplet.with(sample.observerUUID, peerConnectionUUID, SSRC);
 		LocalDateTime timestamp = sample.sampled;
-		Pair<LocalDateTime, LocalDateTime> createdUpdated = this.updates.getOrDefault(updateKey, Pair.with(timestamp, timestamp));
+		Quartet<LocalDateTime, LocalDateTime, String, String> createdUpdated = this.updates.getOrDefault(updateKey, Quartet.with(timestamp,
+				timestamp, sample.browserID, sample.timeZoneID));
 		createdUpdated = createdUpdated.setAt1(timestamp);
 		this.updates.put(updateKey, createdUpdated);
 		Report report = this.sampleProcessor.apply(sample);
@@ -117,14 +118,15 @@ public class MediaStreamTransformer implements Transformer<UUID, MediaStreamSamp
 						.map(entry -> {
 							PeerConnectionSSRCsEntry mappedEntry = new PeerConnectionSSRCsEntry();
 							Triplet<UUID, UUID, Long> observerPeerConnectionSSRC = entry.getKey();
-							Pair<LocalDateTime, LocalDateTime> sampled = entry.getValue();
+							Quartet<LocalDateTime, LocalDateTime, String, String> sampled = entry.getValue();
 							LocalDateTime firstUpdate = sampled.getValue0();
 							LocalDateTime lastUpdate = sampled.getValue1();
 							mappedEntry.observerUUID = observerPeerConnectionSSRC.getValue0();
 							mappedEntry.peerConnectionUUID = observerPeerConnectionSSRC.getValue1();
 							mappedEntry.SSRC = observerPeerConnectionSSRC.getValue2();
 							mappedEntry.updated = lastUpdate;
-							this.callsReporter.accept(mappedEntry.peerConnectionUUID, Pair.with(mappedEntry.observerUUID, firstUpdate));
+							this.callsReporter.accept(mappedEntry.peerConnectionUUID, Quartet.with(mappedEntry.observerUUID, firstUpdate,
+									sampled.getValue2(), sampled.getValue3()));
 							return mappedEntry;
 						}).iterator();
 		this.peerConnectionSSRCsRepository.saveAll(entities);
