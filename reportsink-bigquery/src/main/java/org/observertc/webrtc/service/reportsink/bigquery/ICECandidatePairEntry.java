@@ -1,13 +1,18 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.observertc.webrtc.common.reports.CandidatePairState;
 import org.observertc.webrtc.common.reports.ICECandidatePairReport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ICECandidatePairEntry implements BigQueryEntry {
+
+	private static Logger logger = LoggerFactory.getLogger(ICECandidatePairEntry.class);
 
 	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
 	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
@@ -127,8 +132,15 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 		return this;
 	}
 
-	private ICECandidatePairEntry withTimestamp(LocalDateTime value) {
-		this.values.put(TIMESTAMP_FIELD_NAME, value);
+	public ICECandidatePairEntry withTimestamp(LocalDateTime value) {
+		if (value == null) {
+			logger.warn("No valid sample timestamp");
+			return this;
+		}
+		// TODO: change this into a proper format!
+		ZoneId zoneId = ZoneId.systemDefault();
+		Long epoch = value.atZone(zoneId).toEpochSecond();
+		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}
 
