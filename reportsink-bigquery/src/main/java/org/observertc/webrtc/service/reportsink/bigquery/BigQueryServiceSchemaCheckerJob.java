@@ -36,7 +36,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 	private static final String CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateRemoteInboundRTPSamplesTableTask";
 	private static final String CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateOutboundRTPSamplesTableTask";
 	private static final String CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateInboundRTPSamplesTableTask";
-
+	private static final String ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME = "CreateICECandidatePairsTableTask";
 	private final BigQuery bigQuery;
 	private final BigQueryReportServiceBuilder.Config config;
 
@@ -54,6 +54,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		Task createRemoteInboundRTPSamplesTable = this.makeRemoteInboundRTPSamplesTableTask();
 		Task createOutboundRTPSamplesTable = this.makeOutboundRTPSamplesTableTask();
 		Task createInboundRTPSamplesTable = this.makeInboundRTPSamplesTableTask();
+		Task createICECandidatePairsTable = this.makeICECandidatePairsTableTask();
 		this.withTask(createDataset)
 				.withTask(createInitiatedCallsTable, createDataset)
 				.withTask(createFinishedCallsTable, createDataset)
@@ -65,6 +66,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 				.withTask(createRemoteInboundRTPSamplesTable, createDataset)
 				.withTask(createOutboundRTPSamplesTable, createDataset)
 				.withTask(createInboundRTPSamplesTable, createDataset)
+				.withTask(createICECandidatePairsTable, createDataset)
 		;
 	}
 
@@ -157,7 +159,54 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(DetachedPeerConnectionEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(DetachedPeerConnectionEntry.BROWSERID_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(DetachedPeerConnectionEntry.DETACHED_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeICECandidatePairsTableTask() {
+		return new AbstractTask(ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME) {
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceCandidatePairsTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(ICECandidatePairEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.WRITABLE_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.TOTAL_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.STATE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.NOMINATED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.AVAILABLE_OUTGOING_BITRATE_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.CONSENT_REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.CURRENT_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.REQUESTS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.RESPONSES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.RESPONSES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}

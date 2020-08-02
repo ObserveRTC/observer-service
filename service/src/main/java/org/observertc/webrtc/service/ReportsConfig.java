@@ -9,6 +9,8 @@ public class ReportsConfig {
 
 	public StreamReportsConfig streamReports;
 
+	public ICEReportsConfig ICEReports;
+
 	@ConfigurationProperties("callReports")
 	public static class CallReportsConfig {
 		public boolean enabled;
@@ -32,6 +34,11 @@ public class ReportsConfig {
 		public boolean enabled;
 		public int peerConnectionMaxIdleTimeInS;
 		public int aggregationTimeInS;
+	}
+
+	@ConfigurationProperties("ICEReports")
+	public static class ICEReportsConfig {
+		public boolean enabled;
 	}
 
 	public boolean reportMediaSamples;

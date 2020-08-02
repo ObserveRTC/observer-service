@@ -6,58 +6,63 @@ public interface ReportProcessor<T> {
 		switch (report.type) {
 			case FINISHED_CALL:
 				FinishedCallReport finishedCallReport = (FinishedCallReport) report;
-				return this.process(finishedCallReport);
+				return this.processFinishedCallReport(finishedCallReport);
 			case JOINED_PEER_CONNECTION:
 				JoinedPeerConnectionReport joinedPeerConnectionReport = (JoinedPeerConnectionReport) report;
-				return this.process(joinedPeerConnectionReport);
+				return this.processJoinedPeerConnectionReport(joinedPeerConnectionReport);
 			case INITIATED_CALL:
 				InitiatedCallReport initiatedCallReport = (InitiatedCallReport) report;
-				return this.process(initiatedCallReport);
+				return this.processInitiatedCallReport(initiatedCallReport);
 			case DETACHED_PEER_CONNECTION:
 				DetachedPeerConnectionReport detachedPeerConnectionReport = (DetachedPeerConnectionReport) report;
-				return this.process(detachedPeerConnectionReport);
+				return this.processDetachedPeerConnectionReport(detachedPeerConnectionReport);
 			case INBOUND_STREAM_REPORT:
 				InboundStreamReport inboundStreamSampleReport = (InboundStreamReport) report;
-				return this.process(inboundStreamSampleReport);
+				return this.processInboundStreamReport(inboundStreamSampleReport);
 			case OUTBOUND_STREAM_REPORT:
 				OutboundStreamReport outboundStreamReport = (OutboundStreamReport) report;
-				return this.process(outboundStreamReport);
+				return this.processOutboundStreamReport(outboundStreamReport);
 			case REMOTE_INBOUND_STREAM_REPORT:
 				RemoteInboundStreamReport remoteInboundStreamSampleReport = (RemoteInboundStreamReport) report;
-				return this.process(remoteInboundStreamSampleReport);
+				return this.processRemoteInboundStreamReport(remoteInboundStreamSampleReport);
 			case REMOTE_INBOUND_RTP_REPORT:
 				RemoteInboundRTPReport remoteInboundRTPReport = (RemoteInboundRTPReport) report;
-				return this.process(remoteInboundRTPReport);
+				return this.processRemoteInboundRTPReport(remoteInboundRTPReport);
 			case INBOUND_RTP_REPORT:
 				InboundRTPReport inboundRTPReport = (InboundRTPReport) report;
-				return this.process(inboundRTPReport);
+				return this.processInboundRTPReport(inboundRTPReport);
 			case OUTBOUND_RTP_REPORT:
 				OutboundRTPReport outboundRTPReport = (OutboundRTPReport) report;
-				return this.process(outboundRTPReport);
+				return this.processOutboundRTPReport(outboundRTPReport);
+			case ICE_CANDIDATE_PAIR_REPORT:
+				ICECandidatePairReport iceCandidatePairReport = (ICECandidatePairReport) report;
+				return this.processICECandidatePairReport(iceCandidatePairReport);
 			default:
 				return this.unprocessable(report);
 		}
 	}
 
-	T process(JoinedPeerConnectionReport report);
+	T processJoinedPeerConnectionReport(JoinedPeerConnectionReport report);
 
-	T process(DetachedPeerConnectionReport report);
+	T processDetachedPeerConnectionReport(DetachedPeerConnectionReport report);
 
-	T process(InitiatedCallReport report);
+	T processInitiatedCallReport(InitiatedCallReport report);
 
-	T process(FinishedCallReport report);
+	T processFinishedCallReport(FinishedCallReport report);
 
-	T process(OutboundStreamReport report);
+	T processOutboundStreamReport(OutboundStreamReport report);
 
-	T process(InboundStreamReport report);
+	T processInboundStreamReport(InboundStreamReport report);
 
-	T process(RemoteInboundStreamReport report);
+	T processRemoteInboundStreamReport(RemoteInboundStreamReport report);
 
-	T process(RemoteInboundRTPReport report);
+	T processRemoteInboundRTPReport(RemoteInboundRTPReport report);
 
-	T process(InboundRTPReport report);
+	T processInboundRTPReport(InboundRTPReport report);
 
-	T process(OutboundRTPReport report);
+	T processOutboundRTPReport(OutboundRTPReport report);
+
+	T processICECandidatePairReport(ICECandidatePairReport report);
 
 
 	default T unprocessable(Report report) {

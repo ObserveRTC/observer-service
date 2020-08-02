@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@JsonSubTypes.Type(value = RemoteInboundRTPReport.class, name = "REMOTE_INBOUND_RTP_REPORT"),
 		@JsonSubTypes.Type(value = InboundRTPReport.class, name = "INBOUND_RTP_REPORT"),
 		@JsonSubTypes.Type(value = OutboundRTPReport.class, name = "OUTBOUND_RTP_REPORT"),
+		@JsonSubTypes.Type(value = ICECandidatePairReport.class, name = "ICE_CANDIDATE_PAIR_REPORT"),
 })
 public abstract class Report {
 

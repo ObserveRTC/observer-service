@@ -39,6 +39,7 @@ import org.observertc.webrtc.service.processors.mediastreams.OutboundStreamSampl
 import org.observertc.webrtc.service.processors.mediastreams.RemoteInboundStreamReportAggregator;
 import org.observertc.webrtc.service.processors.mediastreams.RemoteInboundStreamSampleMapper;
 import org.observertc.webrtc.service.reportsink.ReportServiceProvider;
+import org.observertc.webrtc.service.samples.ICEStatsSample;
 import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
 import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.observertc.webrtc.service.samples.OutboundStreamMeasurement;
@@ -51,6 +52,7 @@ public class KafkaStreamsFactory {
 
 	private static Logger logger = LoggerFactory.getLogger(KafkaStreamsFactory.class);
 	private static final String MEDIA_STREAM_EVALUATOR_PROCESS = "MediaStreamEvaluatorProcess";
+	private static final String ICE_STATS_EVALUATOR_PROCESS = "ICEStatsEvaluatorProcess";
 	private static final String REPORT_SERVICE_PROCESS = "ReportServiceProcess";
 
 	private final KafkaTopicsConfiguration kafkaTopicsConfiguration;
@@ -82,6 +84,30 @@ public class KafkaStreamsFactory {
 		} else {
 			return this.makeStreamProcessorWithMediaStreamReporter(streamReportsConfig, builder);
 		}
+	}
+
+	@Singleton
+	@Named(ICE_STATS_EVALUATOR_PROCESS)
+	public KStream<UUID, ICEStatsSample> makeICEStatsEvaluator(ConfiguredStreamBuilder builder) {
+		ReportsConfig.ICEReportsConfig ICEReportsConfig = this.reportsConfig.ICEReports;
+
+		Properties props = builder.getConfiguration();
+		props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+
+		if (!ICEReportsConfig.enabled) {
+			return null;
+		}
+
+		KStream<UUID, ICEStatsSample> source = builder
+				.stream(this.kafkaTopicsConfiguration.observeRTCCIceStatsSample, Consumed.with(Serdes.UUID(),
+						new JsonToPOJOMapper<>(ICEStatsSample.class)));
+
+		source
+				.transform(() -> new ICEStatsTransformer())
+				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(),
+						new JsonToPOJOMapper<>(Report.class)));
+		return source;
 	}
 
 	@Singleton

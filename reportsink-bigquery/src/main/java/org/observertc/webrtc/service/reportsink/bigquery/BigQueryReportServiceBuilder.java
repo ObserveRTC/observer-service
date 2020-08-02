@@ -43,5 +43,7 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 		public boolean createTableIfNotExists = true;
 
 		public String inboundRTPSamplesTable = "InboundRTPSamples";
+
+		public String iceCandidatePairsTable = "ICECandidatePairs";
 	}
 }

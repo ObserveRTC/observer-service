@@ -6,6 +6,7 @@ import org.apache.kafka.streams.processor.ProcessorContext;
 import org.observertc.webrtc.common.reports.AbstractReportProcessor;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
+import org.observertc.webrtc.common.reports.ICECandidatePairReport;
 import org.observertc.webrtc.common.reports.InboundRTPReport;
 import org.observertc.webrtc.common.reports.InboundStreamReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
@@ -35,6 +36,7 @@ public class BigQueryReportService implements ReportService {
 	private final BigQueryTable<RemoteInboundRTPReportEntry> remoteInboundRTPSamples;
 	private final BigQueryTable<InboundRTPReportEntry> inboundRTPSamples;
 	private final BigQueryTable<OutboundRTPReportEntry> outboundRTPSamples;
+	private final BigQueryTable<ICECandidatePairEntry> iceCandidatePairs;
 	private final BigQueryReportServiceBuilder.Config config;
 	private final AbstractReportProcessor processor;
 
@@ -54,6 +56,7 @@ public class BigQueryReportService implements ReportService {
 		this.remoteInboundRTPSamples = new BigQueryTable<>(bigQueryService, config.remoteInboundRTPSamplesTable);
 		this.inboundRTPSamples = new BigQueryTable<>(bigQueryService, config.inboundRTPSamplesTable);
 		this.outboundRTPSamples = new BigQueryTable<>(bigQueryService, config.outboundRTPSamplesTable);
+		this.iceCandidatePairs = new BigQueryTable<>(bigQueryService, config.iceCandidatePairsTable);
 		this.processor = this.makeReportProcessor();
 	}
 
@@ -75,49 +78,49 @@ public class BigQueryReportService implements ReportService {
 	private AbstractReportProcessor<Void> makeReportProcessor() {
 		return new AbstractReportProcessor<Void>() {
 			@Override
-			public Void process(JoinedPeerConnectionReport report) {
+			public Void processJoinedPeerConnectionReport(JoinedPeerConnectionReport report) {
 				JoinedPeerConnectionEntry joinedPeerConnection = JoinedPeerConnectionEntry.from((JoinedPeerConnectionReport) report);
 				joinedPeerConnections.insert(joinedPeerConnection);
 				return null;
 			}
 
 			@Override
-			public Void process(DetachedPeerConnectionReport report) {
+			public Void processDetachedPeerConnectionReport(DetachedPeerConnectionReport report) {
 				DetachedPeerConnectionEntry detachedPeerConnectionEntry = DetachedPeerConnectionEntry.from((DetachedPeerConnectionReport) report);
 				detachedPeerConnections.insert(detachedPeerConnectionEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(InitiatedCallReport report) {
+			public Void processInitiatedCallReport(InitiatedCallReport report) {
 				InitiatedCallEntry initiatedCallEntry = InitiatedCallEntry.from((InitiatedCallReport) report);
 				initiatedCalls.insert(initiatedCallEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(FinishedCallReport report) {
+			public Void processFinishedCallReport(FinishedCallReport report) {
 				FinishedCallEntry finishedCallEntry = FinishedCallEntry.from((FinishedCallReport) report);
 				finishedCalls.insert(finishedCallEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(OutboundStreamReport report) {
+			public Void processOutboundStreamReport(OutboundStreamReport report) {
 				OutboundStreamReportEntry outboundStreamSampleEntry = OutboundStreamReportEntry.from((OutboundStreamReport) report);
 				outboundStreamReports.insert(outboundStreamSampleEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(InboundStreamReport report) {
+			public Void processInboundStreamReport(InboundStreamReport report) {
 				InboundStreamReportEntry inboundStreamSampleEntry = InboundStreamReportEntry.from((InboundStreamReport) report);
 				inboundStreamReports.insert(inboundStreamSampleEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(RemoteInboundStreamReport report) {
+			public Void processRemoteInboundStreamReport(RemoteInboundStreamReport report) {
 				RemoteInboundStreamReportEntry remoteInboundStreamSampleEntry =
 						RemoteInboundStreamReportEntry.from((RemoteInboundStreamReport) report);
 				remoteInboundStreamReports.insert(remoteInboundStreamSampleEntry);
@@ -125,23 +128,30 @@ public class BigQueryReportService implements ReportService {
 			}
 
 			@Override
-			public Void process(RemoteInboundRTPReport report) {
+			public Void processRemoteInboundRTPReport(RemoteInboundRTPReport report) {
 				RemoteInboundRTPReportEntry remoteInboundRTPReportEntry = RemoteInboundRTPReportEntry.from(report);
 				remoteInboundRTPSamples.insert(remoteInboundRTPReportEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(InboundRTPReport report) {
+			public Void processInboundRTPReport(InboundRTPReport report) {
 				InboundRTPReportEntry inboundRTPReportEntry = InboundRTPReportEntry.from(report);
 				inboundRTPSamples.insert(inboundRTPReportEntry);
 				return null;
 			}
 
 			@Override
-			public Void process(OutboundRTPReport report) {
+			public Void processOutboundRTPReport(OutboundRTPReport report) {
 				OutboundRTPReportEntry outboundRTPReportEntry = OutboundRTPReportEntry.from(report);
 				outboundRTPSamples.insert(outboundRTPReportEntry);
+				return null;
+			}
+
+			@Override
+			public Void processICECandidatePairReport(ICECandidatePairReport report) {
+				ICECandidatePairEntry iceCandidatePairEntry = ICECandidatePairEntry.from(report);
+				iceCandidatePairs.insert(iceCandidatePairEntry);
 				return null;
 			}
 		};

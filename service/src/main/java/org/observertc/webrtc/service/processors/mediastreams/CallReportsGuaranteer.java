@@ -131,7 +131,7 @@ public class CallReportsGuaranteer {
 	private ReportProcessor<Void> makeReportSaver() {
 		return new AbstractReportProcessor<Void>() {
 			@Override
-			public Void process(JoinedPeerConnectionReport report) {
+			public Void processJoinedPeerConnectionReport(JoinedPeerConnectionReport report) {
 				ReportedpeerconnectionsRecord reportedPeerConnectionsRecord = new ReportedpeerconnectionsRecord(
 						UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
@@ -144,7 +144,7 @@ public class CallReportsGuaranteer {
 			}
 
 			@Override
-			public Void process(DetachedPeerConnectionReport report) {
+			public Void processDetachedPeerConnectionReport(DetachedPeerConnectionReport report) {
 				ReportedpeerconnectionsRecord reportedPeerConnectionsRecord = new ReportedpeerconnectionsRecord(
 						UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
@@ -157,7 +157,7 @@ public class CallReportsGuaranteer {
 			}
 
 			@Override
-			public Void process(InitiatedCallReport report) {
+			public Void processInitiatedCallReport(InitiatedCallReport report) {
 				ReportedcallsRecord reportedcallsRecord = new ReportedcallsRecord(
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.observerUUID, null),
@@ -169,7 +169,7 @@ public class CallReportsGuaranteer {
 			}
 
 			@Override
-			public Void process(FinishedCallReport report) {
+			public Void processFinishedCallReport(FinishedCallReport report) {
 				ReportedcallsRecord reportedcallsRecord = new ReportedcallsRecord(
 						UUIDAdapter.toBytesOrDefault(report.callUUID, null),
 						UUIDAdapter.toBytesOrDefault(report.observerUUID, null),
@@ -185,7 +185,7 @@ public class CallReportsGuaranteer {
 	private ReportProcessor<Void> makeReportAdder() {
 		return new AbstractReportProcessor<Void>() {
 			@Override
-			public Void process(JoinedPeerConnectionReport report) {
+			public Void processJoinedPeerConnectionReport(JoinedPeerConnectionReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.joinedPeerConnections.put(report.peerConnectionUUID, new CheckHolder<>(report));
 				});
@@ -193,7 +193,7 @@ public class CallReportsGuaranteer {
 			}
 
 			@Override
-			public Void process(DetachedPeerConnectionReport report) {
+			public Void processDetachedPeerConnectionReport(DetachedPeerConnectionReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.detachedPeerConnections.put(report.peerConnectionUUID, new CheckHolder<>(report));
 				});
@@ -201,7 +201,7 @@ public class CallReportsGuaranteer {
 			}
 
 			@Override
-			public Void process(InitiatedCallReport report) {
+			public Void processInitiatedCallReport(InitiatedCallReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.initiatedCallReport = new CheckHolder<>(report);
 				});
@@ -209,7 +209,7 @@ public class CallReportsGuaranteer {
 			}
 
 			@Override
-			public Void process(FinishedCallReport report) {
+			public Void processFinishedCallReport(FinishedCallReport report) {
 				add(report.observerUUID, report.callUUID, callReports -> {
 					callReports.finishedCallReport = new CheckHolder<>(report);
 				});

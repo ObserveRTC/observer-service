@@ -13,6 +13,7 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
 	public static final String CALL_UUID_FIELD_NAME = "callUUID";
 	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_TIMESTAMP_FIELD_NAME = "browserID";
 	public static final String DETACHED_TIMESTAMP_FIELD_NAME = "detached";
 
 	public static DetachedPeerConnectionEntry from(DetachedPeerConnectionReport detachedPeerConnectionReport) {
@@ -20,6 +21,7 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 				.withObserverUUID(detachedPeerConnectionReport.observerUUID)
 				.withPeerConnectionUUID(detachedPeerConnectionReport.peerConnectionUUID)
 				.withCallUUID(detachedPeerConnectionReport.callUUID)
+				.withBrowserID(detachedPeerConnectionReport.browserID)
 				.withDetachedTimestamp(detachedPeerConnectionReport.detached);
 	}
 
@@ -36,6 +38,11 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 
 	public DetachedPeerConnectionEntry withCallUUID(UUID value) {
 		this.values.put(CALL_UUID_FIELD_NAME, value.toString());
+		return this;
+	}
+
+	public DetachedPeerConnectionEntry withBrowserID(String browserId) {
+		this.values.put(BROWSERID_TIMESTAMP_FIELD_NAME, browserId);
 		return this;
 	}
 

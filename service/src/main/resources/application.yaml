@@ -47,6 +47,8 @@ reports:
     reportPeriodInS: 30
     peerConnectionMaxIdleTimeInS: 60
     archiveRetentionTimeInDays: 100
+  ICEReports:
+    enabled: True
   streamReports:
     enabled: False
     peerConnectionMaxIdleTimeInS: 10

@@ -11,11 +11,13 @@ import java.util.UUID;
 
 @JsonTypeName("DETACHED_PEER_CONNECTION")
 public class DetachedPeerConnectionReport extends Report {
-	public static DetachedPeerConnectionReport of(UUID observerUUID, UUID callUUID, UUID peerConnectionUUID, LocalDateTime detached) {
+	public static DetachedPeerConnectionReport of(UUID observerUUID, UUID callUUID, UUID peerConnectionUUID,
+												  String browserID, LocalDateTime detached) {
 		DetachedPeerConnectionReport result = new DetachedPeerConnectionReport();
 		result.callUUID = callUUID;
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
+		result.browserID = browserID;
 		result.detached = detached;
 		return result;
 	}
@@ -29,6 +31,8 @@ public class DetachedPeerConnectionReport extends Report {
 	public UUID observerUUID;
 	public UUID callUUID;
 	public UUID peerConnectionUUID;
+
+	public String browserID;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)

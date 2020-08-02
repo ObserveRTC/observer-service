@@ -44,45 +44,58 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 		return this.process(report);
 	}
 
-	public T process(RemoteInboundRTPReport report) {
+	@Override
+	public T processRemoteInboundRTPReport(RemoteInboundRTPReport report) {
 		return null;
 	}
 
 	@Override
-	public T process(InboundRTPReport report) {
+	public T processInboundRTPReport(InboundRTPReport report) {
 		return null;
 	}
 
 	@Override
-	public T process(OutboundRTPReport report) {
+	public T processOutboundRTPReport(OutboundRTPReport report) {
 		return null;
 	}
 
-	public T process(JoinedPeerConnectionReport report) {
+	@Override
+	public T processJoinedPeerConnectionReport(JoinedPeerConnectionReport report) {
 		return null;
 	}
 
-	public T process(DetachedPeerConnectionReport report) {
+	@Override
+	public T processDetachedPeerConnectionReport(DetachedPeerConnectionReport report) {
 		return null;
 	}
 
-	public T process(InitiatedCallReport report) {
+	@Override
+	public T processInitiatedCallReport(InitiatedCallReport report) {
 		return null;
 	}
 
-	public T process(FinishedCallReport report) {
+	@Override
+	public T processFinishedCallReport(FinishedCallReport report) {
 		return null;
 	}
 
-	public T process(OutboundStreamReport report) {
+	@Override
+	public T processOutboundStreamReport(OutboundStreamReport report) {
 		return null;
 	}
 
-	public T process(InboundStreamReport report) {
+	@Override
+	public T processInboundStreamReport(InboundStreamReport report) {
 		return null;
 	}
 
-	public T process(RemoteInboundStreamReport report) {
+	@Override
+	public T processRemoteInboundStreamReport(RemoteInboundStreamReport report) {
+		return null;
+	}
+
+	@Override
+	public T processICECandidatePairReport(ICECandidatePairReport report) {
 		return null;
 	}
 

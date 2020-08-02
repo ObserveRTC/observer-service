@@ -194,6 +194,9 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Quartet<UUID,
 		this.callPeerConnectionsRepository.save(callPeerConnectionsEntry);
 	}
 
+	/**
+	 * ( ( CAST(DATE_DIFF(finished,initiated) AS NUMBER ) * 86400 ) ) + ( ( ( CAST(REGEXP_EXTRACT(finished, "(\\d{2})\\d{2}$") AS NUMBER ) * 3600 ) + ( CAST(REGEXP_EXTRACT(finished, "(\\d{2})$") AS NUMBER ) * 60 ) ) - ( ( CAST(REGEXP_EXTRACT(initiated, "(\\d{2})\\d{2}$") AS NUMBER ) * 3600 ) + ( CAST(REGEXP_EXTRACT(initiated, "(\\d{2})$") AS NUMBER ) * 60 ) ) )
+	 */
 	private void cleanCalls() {
 //		LocalDateTime threshold = LocalDateTime.now(ZoneOffset.UTC).minus(this.peerConnectionMaxIdleTimeInS, ChronoUnit.SECONDS);
 		LocalDateTime threshold = LocalDateTime.now(applicationTimeZoneId.getZoneId()).minus(this.peerConnectionMaxIdleTimeInS,
@@ -223,14 +226,14 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Quartet<UUID,
 				}
 			}
 			if (!activeStream) {
-				this.reportExpiredPeerConnection(peerConnectionUUID, entry.observerUUID, entry.updated);
+				this.reportExpiredPeerConnection(peerConnectionUUID, entry.observerUUID, entry.browserID, entry.updated);
 			}
 		}
 		this.peerConnectionSSRCsRepository.deleteAll(expiredPeerConnectionSSRCsEntries);
 	}
 
 
-	private void reportExpiredPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime lastSampled) {
+	private void reportExpiredPeerConnection(UUID peerConnectionUUID, UUID observerUUID, String browserID, LocalDateTime lastSampled) {
 		AtomicBoolean callHasOtherPeers = new AtomicBoolean(false);
 		AtomicReference<UUID> callUUIDHolder = new AtomicReference<>(null);
 		this.callPeerConnectionsRepository.findPeers(peerConnectionUUID, callPeerConnectionsEntry -> {
@@ -244,7 +247,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Quartet<UUID,
 			this.reportSink.accept(observerUUID, finishedCallReport);
 		}
 		DetachedPeerConnectionReport detachedPeerConnectionReport = DetachedPeerConnectionReport.of(observerUUID, callUUIDHolder.get(),
-				peerConnectionUUID, lastSampled);
+				peerConnectionUUID, browserID, lastSampled);
 		this.reportSink.accept(observerUUID, detachedPeerConnectionReport);
 		CallPeerConnectionsEntry deleteCandidate = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUIDHolder.get(), null);
 		this.callPeerConnectionsRepository.delete(deleteCandidate);
