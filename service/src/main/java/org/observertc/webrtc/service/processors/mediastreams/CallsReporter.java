@@ -19,7 +19,6 @@ import java.util.function.Function;
 import javax.inject.Inject;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.Punctuator;
-import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
@@ -144,7 +143,7 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Quartet<UUID,
 	}
 
 	private void reportNewPeerConnection(UUID peerConnectionUUID, UUID observerUUID, LocalDateTime firstSampled, String browserID,
-										 ZoneId zoneId) {
+										 ZoneId zoneIdStr) {
 		AtomicReference<UUID> callUUIDHolder = new AtomicReference<>(null);
 		Set<UUID> peers = new HashSet<>();
 		this.peerConnectionSSRCsRepository.findPeers(peerConnectionUUID, peerUUID -> {
@@ -185,8 +184,12 @@ public class CallsReporter implements Punctuator, BiConsumer<UUID, Quartet<UUID,
 			this.reportSink.accept(observerUUID, initiatedCallReport);
 		}
 		CallPeerConnectionsEntry callPeerConnectionsEntry = CallPeerConnectionsEntry.of(peerConnectionUUID, callUUID, firstSampled);
+		ZoneId zoneId = null;
+		if (zoneIdStr != null) {
+			zoneId = null; // TODO: implement this!
+		}
 		JoinedPeerConnectionReport joinedPeerConnectionReport = JoinedPeerConnectionReport.of(observerUUID, callUUID, peerConnectionUUID,
-				browserID, firstSampled, zoneId.getId());
+				browserID, firstSampled, null);
 		this.reportSink.accept(observerUUID, joinedPeerConnectionReport);
 		this.callPeerConnectionsRepository.save(callPeerConnectionsEntry);
 	}
