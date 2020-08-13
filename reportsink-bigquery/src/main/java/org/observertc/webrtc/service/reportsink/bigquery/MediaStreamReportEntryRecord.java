@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.observertc.webrtc.common.reports.MediaStreamRecordReport;
 
-
+@Deprecated
 public class MediaStreamReportEntryRecord {
 	public static final String MINIMUM_FIELD_NAME = "minimum";
 	public static final String MAXIMUM_FIELD_NAME = "maximum";

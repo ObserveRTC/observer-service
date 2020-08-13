@@ -25,7 +25,7 @@ public class BigQueryTable<T extends BigQueryEntry> {
 	}
 
 	public void insert(T entry) {
-//		this.logEntry(entry);
+		this.logEntry(entry);
 		TableId tableId = this.getTableId();
 
 		InsertAllResponse response =

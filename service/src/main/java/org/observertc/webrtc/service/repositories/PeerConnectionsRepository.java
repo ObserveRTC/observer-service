@@ -106,13 +106,16 @@ public class PeerConnectionsRepository {
 	}
 
 	private <S extends PeerconnectionsRecord> void consumeBatches(Iterable<S> entities, Consumer<Iterable<S>> consumer) {
-		StreamSupport.stream(entities.spliterator(), false).collect(BatchCollector.makeCollector(DEFAULT_BULK_SIZE, batchedEntities -> {
-			if (batchedEntities.size() < 1) {
-				return;
-			}
-			consumer.accept(batchedEntities);
-		}));
+//		StreamSupport.stream(entities.spliterator(), false).collect(BatchCollector.makeCollector(DEFAULT_BULK_SIZE, batchedEntities -> {
+//			if (batchedEntities.size() < 1) {
+//				return;
+//			}
+//			consumer.accept(batchedEntities);
+//		}));
+		// TODO: fix it, because itw not working
+		consumer.accept(entities);
 	}
+
 
 	@NonNull
 	public Stream<PeerconnectionsRecord> findByCallUUID(@NonNull @NotNull UUID callUUID) {

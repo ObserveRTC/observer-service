@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.evaluators.purgatory;
+package org.observertc.webrtc.service.purgatory;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -17,7 +17,6 @@ import org.observertc.webrtc.service.evaluators.WebExtrAppSampleIteratorProvider
 import org.observertc.webrtc.service.evaluators.valueadapters.InboundRTPConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.OutboundRTPConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.RemoteInboundRTPConverter;
-import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.observertc.webrtc.service.samples.WebExtrAppSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

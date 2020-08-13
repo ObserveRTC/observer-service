@@ -74,9 +74,9 @@ public class ActiveStreamsRepository {
 			Iterator<S> it = batchedEntities.iterator();
 			for (; it.hasNext(); ) {
 				ActivestreamsRecord record = it.next();
-				sql.values(record.getCalluuid(),
+				sql.values(record.getObserveruuid(),
 						record.getSsrc(),
-						record.getObserveruuid());
+						record.getCalluuid());
 			}
 			sql
 					.onDuplicateKeyUpdate()
@@ -96,6 +96,7 @@ public class ActiveStreamsRepository {
 			consumer.accept(batchedEntities);
 		}));
 	}
+
 
 	@NonNull
 	public Optional<ActivestreamsRecord> findById(@NonNull @NotNull ActiveStreamKey activeStreamKey) {

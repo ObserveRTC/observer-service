@@ -36,7 +36,14 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 	private static final String CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateRemoteInboundRTPSamplesTableTask";
 	private static final String CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateOutboundRTPSamplesTableTask";
 	private static final String CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateInboundRTPSamplesTableTask";
-	private static final String ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME = "CreateICECandidatePairsTableTask";
+	private static final String CREATE_ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME = "CreateICECandidatePairsTableTask";
+	private static final String CREATE_ICE_LOCAL_CANDIDATE_TABLE_TASK_NAME = "CreateICELocalCandidatesTableTask";
+	private static final String CREATE_ICE_REMOTE_CANDIDATE_TABLE_TASK_NAME = "CreateICERemoteCandidatesTableTask";
+	private static final String CREATE_MEDIA_SOURCES_TABLE_TASK_NAME = "CreateMediaSourcesTableTask";
+	private static final String CREATE_TRACK_REPORTS_TABLE_TASK_NAME = "CreateTrackReportsTableTask";
+
+	private static volatile boolean run = false;
+
 	private final BigQuery bigQuery;
 	private final BigQueryReportServiceBuilder.Config config;
 
@@ -55,6 +62,10 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		Task createOutboundRTPSamplesTable = this.makeOutboundRTPSamplesTableTask();
 		Task createInboundRTPSamplesTable = this.makeInboundRTPSamplesTableTask();
 		Task createICECandidatePairsTable = this.makeICECandidatePairsTableTask();
+		Task createICELocalCandidates = this.makeICELocalCandidateTableTask();
+		Task createICERemoteCandidates = this.makeICERemoteCandidateTableTask();
+		Task createMediaSources = this.makeMediaSourcesTableTask();
+		Task createTrackReports = this.makeTrackReportsTableTask();
 		this.withTask(createDataset)
 				.withTask(createInitiatedCallsTable, createDataset)
 				.withTask(createFinishedCallsTable, createDataset)
@@ -67,7 +78,20 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 				.withTask(createOutboundRTPSamplesTable, createDataset)
 				.withTask(createInboundRTPSamplesTable, createDataset)
 				.withTask(createICECandidatePairsTable, createDataset)
+				.withTask(createICELocalCandidates, createDataset)
+				.withTask(createICERemoteCandidates, createDataset)
+				.withTask(createMediaSources, createDataset)
+				.withTask(createTrackReports, createDataset)
 		;
+	}
+
+	@Override
+	public void perform() {
+		if (run) {
+			return;
+		}
+		run = true;
+		super.perform();
 	}
 
 	private Task makeCreateDatasetTask() {
@@ -169,7 +193,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 	}
 
 	private Task makeICECandidatePairsTableTask() {
-		return new AbstractTask(ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME) {
+		return new AbstractTask(CREATE_ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME) {
 			@Override
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceCandidatePairsTable);
@@ -213,6 +237,64 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		};
 	}
 
+	private Task makeICELocalCandidateTableTask() {
+		return new AbstractTask(CREATE_ICE_LOCAL_CANDIDATE_TABLE_TASK_NAME) {
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceLocalCandidatesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(ICELocalCandidateEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.PORT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.NETWORK_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.PROTOCOL_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+
+	private Task makeICERemoteCandidateTableTask() {
+		return new AbstractTask(CREATE_ICE_REMOTE_CANDIDATE_TABLE_TASK_NAME) {
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceRemoteCandidatesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(ICERemoteCandidateEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.PORT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.PROTOCOL_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+
 	private FieldList makeMediaStreamSampleRecordFieldList() {
 		return FieldList.of(
 				Field.newBuilder(MediaStreamReportEntryRecord.COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
@@ -248,6 +330,108 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(OutboundStreamReportEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
 								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeMediaSourcesTableTask() {
+
+		return new AbstractTask(CREATE_MEDIA_SOURCES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.mediaSourcesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(MediaSourceEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(MediaSourceEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(MediaSourceEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(MediaSourceEntry.MEDIA_SOURCE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.FRAMES_PER_SECOND_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.HEIGHT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.WIDTH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.AUDIO_LEVEL_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.TOTAL_AUDIO_ENERGY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.TOTAL_SAMPLES_DURATION_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeTrackReportsTableTask() {
+
+		return new AbstractTask(CREATE_TRACK_REPORTS_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.trackReportsTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(TrackReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(TrackReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(TrackReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(TrackReportEntry.TRACK_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.CONCEALED_SAMPLES_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.TOTAL_SAMPLES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.SILENT_CONCEALED_SAMPLES_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.REMOVED_SAMPLES_FOR_ACCELERATION_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.AUDIO_LEVEL_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.TOTAL_AUDIO_ENERGY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.TOTAL_SAMPLES_DURATION_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.REMOTE_SOURCE_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.JITTER_BUFFER_EMITTED_COUNT_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.JITTER_BUFFER_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.INSERTED_SAMPLES_FOR_DECELERATION_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.HUGE_FRAMES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.FRAMES_WIDTH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.FRAMES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.FRAMES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.FRAMES_DROPPED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.FRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.FRAMES_HEIGHT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.ENDED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.DETACHED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.CONCEALMENT_EVENTS_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.MEDIA_SOURCE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}

@@ -1,12 +1,12 @@
-package org.observertc.webrtc.service.evaluators.purgatory.aggregator;
+package org.observertc.webrtc.service.purgatory.aggregator;
 
 import io.micronaut.context.annotation.Prototype;
 import java.util.UUID;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.KeyValueMapper;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.samples.InboundStreamMeasurement;
-import org.observertc.webrtc.service.samples.MediaStreamSample;
+import org.observertc.webrtc.service.purgatory.InboundStreamMeasurement;
+import org.observertc.webrtc.service.purgatory.MediaStreamSample;
 
 @Prototype
 public class InboundStreamSampleMapper implements KeyValueMapper

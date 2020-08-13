@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Deprecated
 public class MediaStreamReport extends Report {
 	protected MediaStreamReport(ReportType type) {
 		super(type);

@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@JsonSubTypes.Type(value = InboundRTPReport.class, name = "INBOUND_RTP_REPORT"),
 		@JsonSubTypes.Type(value = OutboundRTPReport.class, name = "OUTBOUND_RTP_REPORT"),
 		@JsonSubTypes.Type(value = ICECandidatePairReport.class, name = "ICE_CANDIDATE_PAIR_REPORT"),
+		@JsonSubTypes.Type(value = ICELocalCandidateReport.class, name = "ICE_LOCAL_CANDIDATE_REPORT"),
+		@JsonSubTypes.Type(value = ICERemoteCandidateReport.class, name = "ICE_REMOTE_CANDIDATE_REPORT"),
+		@JsonSubTypes.Type(value = MediaSourceReport.class, name = "MEDIA_SOURCE_REPORT"),
+		@JsonSubTypes.Type(value = TrackReport.class, name = "TRACK_REPORT"),
 })
 public abstract class Report {
 

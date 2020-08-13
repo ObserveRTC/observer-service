@@ -37,10 +37,26 @@ public interface ReportProcessor<T> {
 			case ICE_CANDIDATE_PAIR_REPORT:
 				ICECandidatePairReport iceCandidatePairReport = (ICECandidatePairReport) report;
 				return this.processICECandidatePairReport(iceCandidatePairReport);
+			case ICE_LOCAL_CANDIDATE_REPORT:
+				ICELocalCandidateReport iceLocalCandidateReport = (ICELocalCandidateReport) report;
+				return this.processICELocalCandidateReport(iceLocalCandidateReport);
+			case ICE_REMOTE_CANDIDATE_REPORT:
+				ICERemoteCandidateReport iceRemoteCandidateReport = (ICERemoteCandidateReport) report;
+				return this.processICERemoteCandidateReport(iceRemoteCandidateReport);
+			case TRACK_REPORT:
+				TrackReport trackReport = (TrackReport) report;
+				return this.processTrackReport(trackReport);
+			case MEDIA_SOURCE_REPORT:
+				MediaSourceReport mediaSourceReport = (MediaSourceReport) report;
+				return this.processMediaSourceReport(mediaSourceReport);
 			default:
 				return this.unprocessable(report);
 		}
 	}
+
+	T processMediaSourceReport(MediaSourceReport mediaSourceReport);
+
+	T processTrackReport(TrackReport trackReport);
 
 	T processJoinedPeerConnectionReport(JoinedPeerConnectionReport report);
 
@@ -63,6 +79,10 @@ public interface ReportProcessor<T> {
 	T processOutboundRTPReport(OutboundRTPReport report);
 
 	T processICECandidatePairReport(ICECandidatePairReport report);
+
+	T processICELocalCandidateReport(ICELocalCandidateReport report);
+
+	T processICERemoteCandidateReport(ICERemoteCandidateReport report);
 
 
 	default T unprocessable(Report report) {

@@ -1,11 +1,11 @@
-package org.observertc.webrtc.service.evaluators.purgatory.aggregator;
+package org.observertc.webrtc.service.purgatory.aggregator;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.streams.kstream.Aggregator;
 import org.observertc.webrtc.common.reports.MediaStreamRecordReport;
 import org.observertc.webrtc.common.reports.MediaStreamReport;
-import org.observertc.webrtc.service.samples.MediaStreamMeasurement;
+import org.observertc.webrtc.service.purgatory.MediaStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

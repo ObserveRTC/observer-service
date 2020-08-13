@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Deprecated
 @JsonTypeName("OUTBOUND_STREAM_REPORT")
 public class OutboundStreamReport extends MediaStreamReport {
 	public static OutboundStreamReport of(

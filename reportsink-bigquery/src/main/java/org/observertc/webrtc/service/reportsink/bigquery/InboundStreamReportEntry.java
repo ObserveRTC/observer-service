@@ -5,7 +5,7 @@ import org.observertc.webrtc.common.reports.InboundStreamReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+@Deprecated
 public class InboundStreamReportEntry extends MediaStreamReportEntry<InboundStreamReportEntry> {
 
 	private static Logger logger = LoggerFactory.getLogger(InboundStreamReportEntry.class);

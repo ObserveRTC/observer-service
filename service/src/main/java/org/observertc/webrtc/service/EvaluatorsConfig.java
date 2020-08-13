@@ -27,6 +27,8 @@ public class EvaluatorsConfig {
 		public boolean reportOutboundRTP;
 		public boolean reportInboundRTP;
 		public boolean reportRemoteInboundRTP;
+		public boolean reportTracks;
+		public boolean reportMediaSource;
 	}
 
 	@ConfigurationProperties("iceStats")

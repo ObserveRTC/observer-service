@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.evaluators.purgatory.aggregator;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
+package org.observertc.webrtc.service.purgatory.aggregator;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
 import java.util.function.BiConsumer;
 import javax.inject.Singleton;

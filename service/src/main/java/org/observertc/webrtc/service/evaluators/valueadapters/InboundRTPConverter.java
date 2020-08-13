@@ -3,7 +3,7 @@ package org.observertc.webrtc.service.evaluators.valueadapters;
 import java.util.function.Function;
 import org.observertc.webrtc.common.reports.InboundRTPReport;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.samples.MediaStreamSample;
+import org.observertc.webrtc.service.purgatory.MediaStreamSample;
 
 public class InboundRTPConverter implements Function<MediaStreamSample, InboundRTPReport> {
 

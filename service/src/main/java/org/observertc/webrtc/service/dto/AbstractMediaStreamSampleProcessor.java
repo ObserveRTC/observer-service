@@ -2,7 +2,7 @@
 //
 //import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 //import org.observertc.webrtc.service.dto.webextrapp.RTCStatsType;
-//import org.observertc.webrtc.service.samples.MediaStreamSample;
+//import org.observertc.webrtc.service.purgatory.MediaStreamSample;
 //
 //public class AbstractMediaStreamSampleProcessor implements MediaStreamSampleProcessor {
 //

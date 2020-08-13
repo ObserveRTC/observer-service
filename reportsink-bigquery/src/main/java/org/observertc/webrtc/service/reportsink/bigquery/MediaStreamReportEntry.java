@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+@Deprecated
 public abstract class MediaStreamReportEntry<T extends MediaStreamReportEntry> implements BigQueryEntry {
 
 	private static Logger logger = LoggerFactory.getLogger(MediaStreamReportEntry.class);

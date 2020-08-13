@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.evaluators.purgatory.aggregator;
+package org.observertc.webrtc.service.purgatory.aggregator;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

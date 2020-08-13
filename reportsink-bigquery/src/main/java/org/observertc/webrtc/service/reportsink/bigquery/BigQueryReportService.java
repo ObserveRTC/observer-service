@@ -7,15 +7,19 @@ import org.observertc.webrtc.common.reports.AbstractReportProcessor;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.ICECandidatePairReport;
+import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
+import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
 import org.observertc.webrtc.common.reports.InboundRTPReport;
 import org.observertc.webrtc.common.reports.InboundStreamReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
+import org.observertc.webrtc.common.reports.MediaSourceReport;
 import org.observertc.webrtc.common.reports.OutboundRTPReport;
 import org.observertc.webrtc.common.reports.OutboundStreamReport;
 import org.observertc.webrtc.common.reports.RemoteInboundRTPReport;
 import org.observertc.webrtc.common.reports.RemoteInboundStreamReport;
 import org.observertc.webrtc.common.reports.Report;
+import org.observertc.webrtc.common.reports.TrackReport;
 import org.observertc.webrtc.common.reportsink.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +41,10 @@ public class BigQueryReportService implements ReportService {
 	private final BigQueryTable<InboundRTPReportEntry> inboundRTPSamples;
 	private final BigQueryTable<OutboundRTPReportEntry> outboundRTPSamples;
 	private final BigQueryTable<ICECandidatePairEntry> iceCandidatePairs;
+	private final BigQueryTable<ICELocalCandidateEntry> iceLocalCandidates;
+	private final BigQueryTable<ICERemoteCandidateEntry> iceRemoteCandidates;
+	private final BigQueryTable<MediaSourceEntry> mediaSources;
+	private final BigQueryTable<TrackReportEntry> trackReports;
 	private final BigQueryReportServiceBuilder.Config config;
 	private final AbstractReportProcessor processor;
 
@@ -57,6 +65,10 @@ public class BigQueryReportService implements ReportService {
 		this.inboundRTPSamples = new BigQueryTable<>(bigQueryService, config.inboundRTPSamplesTable);
 		this.outboundRTPSamples = new BigQueryTable<>(bigQueryService, config.outboundRTPSamplesTable);
 		this.iceCandidatePairs = new BigQueryTable<>(bigQueryService, config.iceCandidatePairsTable);
+		this.iceLocalCandidates = new BigQueryTable<>(bigQueryService, config.iceLocalCandidatesTable);
+		this.iceRemoteCandidates = new BigQueryTable<>(bigQueryService, config.iceRemoteCandidatesTable);
+		this.trackReports = new BigQueryTable<>(bigQueryService, config.trackReportsTable);
+		this.mediaSources = new BigQueryTable<>(bigQueryService, config.mediaSourcesTable);
 		this.processor = this.makeReportProcessor();
 	}
 
@@ -154,11 +166,38 @@ public class BigQueryReportService implements ReportService {
 				iceCandidatePairs.insert(iceCandidatePairEntry);
 				return null;
 			}
+
+			@Override
+			public Void processICELocalCandidateReport(ICELocalCandidateReport report) {
+				ICELocalCandidateEntry iceCandidatePairEntry = ICELocalCandidateEntry.from(report);
+				iceLocalCandidates.insert(iceCandidatePairEntry);
+				return null;
+			}
+
+			@Override
+			public Void processICERemoteCandidateReport(ICERemoteCandidateReport report) {
+				ICERemoteCandidateEntry iceRemoteCandidateEntry = ICERemoteCandidateEntry.from(report);
+				iceRemoteCandidates.insert(iceRemoteCandidateEntry);
+				return null;
+			}
+
+			@Override
+			public Void processTrackReport(TrackReport report) {
+				TrackReportEntry reportEntry = TrackReportEntry.from(report);
+				trackReports.insert(reportEntry);
+				return null;
+			}
+
+			@Override
+			public Void processMediaSourceReport(MediaSourceReport report) {
+				MediaSourceEntry reportEntry = MediaSourceEntry.from(report);
+				mediaSources.insert(reportEntry);
+				return null;
+			}
 		};
 	}
 
 	@Override
 	public void close() {
-		// TODO: add the service shutdown here
 	}
 }

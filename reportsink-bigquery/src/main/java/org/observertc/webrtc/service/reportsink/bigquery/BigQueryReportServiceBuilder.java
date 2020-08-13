@@ -45,5 +45,13 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 		public String inboundRTPSamplesTable = "InboundRTPSamples";
 
 		public String iceCandidatePairsTable = "ICECandidatePairs";
+
+		public String iceLocalCandidatesTable = "ICELocalCandidates";
+
+		public String iceRemoteCandidatesTable = "ICERemoteCandidates";
+
+		public String mediaSourcesTable = "MediaSources";
+
+		public String trackReportsTable = "TrackReports";
 	}
 }

@@ -14,7 +14,6 @@ import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.EvaluatorsConfig;
-import org.observertc.webrtc.service.dto.ActiveStreamDTO;
 import org.observertc.webrtc.service.dto.PeerConnectionDTO;
 import org.observertc.webrtc.service.jooq.enums.PeerconnectionsState;
 import org.observertc.webrtc.service.jooq.tables.records.ActivestreamsRecord;
@@ -88,15 +87,15 @@ public class MediaStreamUpdateProcessor implements Consumer<Deque<MediaStreamUpd
 			// INITIATED
 			UUID callUUID = UUID.randomUUID();
 			byte[] callUUIDBytes = UUIDAdapter.toBytes(callUUID);
-			List<ActiveStreamDTO> newActiveStreams = activeStreamKeys.stream()
-					.map(activeStreamKey -> new ActiveStreamDTO(
+			List<ActivestreamsRecord> newActiveStreams = activeStreamKeys.stream()
+					.map(activeStreamKey -> new ActivestreamsRecord(
 							activeStreamKey.getObserverUUIDBytes(),
 							activeStreamKey.getSSRC(),
 							callUUIDBytes)
 					)
 					.collect(Collectors.toList());
 			try {
-				this.activeStreamsRepository.saveAll(newActiveStreams);
+				this.activeStreamsRepository.updateAll(newActiveStreams);
 			} catch (Exception ex) {
 				logger.error("An exception caught during saving data", ex);
 				continue;

@@ -34,7 +34,7 @@ kafka:
     default:
       num:
         stream:
-          threads: 1
+          threads: 2
 
 ---
 kafkaTopics:
@@ -56,6 +56,8 @@ evaluators:
     reportOutboundRTP: True
     reportInboundRTP: True
     reportRemoteInboundRTP: True
+    reportTracks: True
+    reportMediaSource: True
   iceStats:
     useClientTimestamp: False
     candidatePairs: True
@@ -63,8 +65,8 @@ evaluators:
 ---
 reportsink:
   configFile: ${REPORTSINK_CONFIG_FILE_PATH:`/reportsink.yml`}
-  #  profile: BigQueryProfile
-  profile: DebugProfile
+  profile: BigQueryProfile
+#  profile: DebugProfile
 ---
 hikari:
   username: ${HIKARI_USERNAME:root}

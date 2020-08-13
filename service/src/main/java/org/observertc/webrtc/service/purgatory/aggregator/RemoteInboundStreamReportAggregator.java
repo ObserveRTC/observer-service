@@ -1,8 +1,8 @@
-package org.observertc.webrtc.service.evaluators.purgatory.aggregator;
+package org.observertc.webrtc.service.purgatory.aggregator;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.common.reports.RemoteInboundStreamReport;
-import org.observertc.webrtc.service.samples.RemoteInboundStreamMeasurement;
+import org.observertc.webrtc.service.purgatory.RemoteInboundStreamMeasurement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

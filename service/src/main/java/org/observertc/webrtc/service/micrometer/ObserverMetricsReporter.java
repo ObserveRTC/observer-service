@@ -11,7 +11,7 @@ import javax.inject.Singleton;
  * or we can find some useful name.
  */
 @Singleton
-public class ObserverSSRCPeerConnectionSampleProcessReporter {
+public class ObserverMetricsReporter {
 	private static final String METRIC_PREFIX = "ObserveRTC_samplesrocessor";
 
 	private final MeterRegistry meterRegistry;
@@ -22,7 +22,7 @@ public class ObserverSSRCPeerConnectionSampleProcessReporter {
 		CALL_CLEANER_EXECUTION_TIME_IN_MS,
 	}
 
-	public ObserverSSRCPeerConnectionSampleProcessReporter(MeterRegistry meterRegistry) {
+	public ObserverMetricsReporter(MeterRegistry meterRegistry) {
 		this.meterRegistry = meterRegistry;
 	}
 

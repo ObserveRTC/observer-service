@@ -8,6 +8,8 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.observertc.webrtc.common.reports.ICECandidatePairReport;
+import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
+import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.EvaluatorsConfig;
 import org.observertc.webrtc.service.dto.ICEStatsBiConsumer;
@@ -19,10 +21,14 @@ import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 import org.observertc.webrtc.service.dto.webextrapp.RemoteCandidate;
 import org.observertc.webrtc.service.evaluators.valueadapters.CandidatePairStateConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.InboundRTPConverter;
+import org.observertc.webrtc.service.evaluators.valueadapters.MediaSourceConverter;
+import org.observertc.webrtc.service.evaluators.valueadapters.NetworkTypeConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.NumberConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.OutboundRTPConverter;
+import org.observertc.webrtc.service.evaluators.valueadapters.ProtocolTypeConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.RemoteInboundRTPConverter;
-import org.observertc.webrtc.service.samples.MediaStreamSample;
+import org.observertc.webrtc.service.evaluators.valueadapters.TrackConverter;
+import org.observertc.webrtc.service.purgatory.MediaStreamSample;
 import org.observertc.webrtc.service.samples.WebExtrAppSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +77,8 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 		final BiFunction<WebExtrAppSample, RTCStats, Report> inboundRTPReportTransformer = this.makeInboundRTPReportTransformer();
 		final BiFunction<WebExtrAppSample, RTCStats, Report> outboundRTPReportTransformer = this.makeOutboundRTPReportTransformer();
 		final BiFunction<WebExtrAppSample, RTCStats, Report> remoteInboundRTPReportTransformer = this.makeRemoteInboundRTPReportTransformer();
-
+		final BiFunction<WebExtrAppSample, RTCStats, Report> mediaSourceReportTransformer = this.makeMediaSourceReportTransformer();
+		final BiFunction<WebExtrAppSample, RTCStats, Report> trackReportTransformer = this.makeTrackReportTransformer();
 		return new RTCStatsBiTransformer<WebExtrAppSample, Report>() {
 			@Override
 			public Report processInboundRTP(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
@@ -90,12 +97,12 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 
 			@Override
 			public Report processTrack(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				return null;
+				return trackReportTransformer.apply(webExtrAppSample, rtcStats);
 			}
 
 			@Override
 			public Report processMediaSource(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				return null;
+				return mediaSourceReportTransformer.apply(webExtrAppSample, rtcStats);
 			}
 
 			@Override
@@ -108,13 +115,32 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 	private ICEStatsBiConsumer<WebExtrAppSample> makeICEStatsEvaluator() {
 		return new ICEStatsBiConsumer<WebExtrAppSample>() {
 			@Override
-			public void processRemoteCandidate(WebExtrAppSample meta, RemoteCandidate remoteCandidate) {
-
+			public void processRemoteCandidate(WebExtrAppSample sample, RemoteCandidate remoteCandidate) {
+				Report iceRemoteCandidateReport = ICERemoteCandidateReport.of(sample.observerUUID,
+						sample.peerConnectionUUID,
+						sample.timestamp,
+						remoteCandidate.getDeleted(),
+						null, // Add IP LSH later!
+						NumberConverter.toInt(remoteCandidate.getPort()),
+						NumberConverter.toLong(remoteCandidate.getPriority()),
+						ProtocolTypeConverter.fromDTOProtocolType(remoteCandidate.getProtocol())
+				);
+				context.forward(sample.observerUUID, iceRemoteCandidateReport);
 			}
 
 			@Override
-			public void processLocalCandidate(WebExtrAppSample meta, LocalCandidate localCandidate) {
-
+			public void processLocalCandidate(WebExtrAppSample sample, LocalCandidate localCandidate) {
+				Report iceLocalCandidateReport = ICELocalCandidateReport.of(sample.observerUUID,
+						sample.peerConnectionUUID,
+						sample.timestamp,
+						localCandidate.getDeleted(),
+						null, // Add IP LSH later!
+						NetworkTypeConverter.fromDTONetworkType(localCandidate.getNetworkType()),
+						NumberConverter.toInt(localCandidate.getPort()),
+						NumberConverter.toLong(localCandidate.getPriority()),
+						ProtocolTypeConverter.fromDTOProtocolType(localCandidate.getProtocol())
+				);
+				context.forward(sample.observerUUID, iceLocalCandidateReport);
 			}
 
 			@Override
@@ -177,6 +203,34 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 		}
 		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();
 		RemoteInboundRTPConverter reportConverter = new RemoteInboundRTPConverter();
+		result = (webExtrAppSample, rtcStats) -> {
+			MediaStreamSample mediaStreamSample = mediaStreamSampleConverter.apply(webExtrAppSample, rtcStats);
+			return reportConverter.apply(mediaStreamSample);
+		};
+		return result;
+	}
+
+	private BiFunction<WebExtrAppSample, RTCStats, Report> makeMediaSourceReportTransformer() {
+		BiFunction<WebExtrAppSample, RTCStats, Report> result = (webExtrAppSample, rtcStats) -> null;
+		if (!this.config.reportMediaSource) {
+			return result;
+		}
+		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();
+		MediaSourceConverter reportConverter = new MediaSourceConverter();
+		result = (webExtrAppSample, rtcStats) -> {
+			MediaStreamSample mediaStreamSample = mediaStreamSampleConverter.apply(webExtrAppSample, rtcStats);
+			return reportConverter.apply(mediaStreamSample);
+		};
+		return result;
+	}
+
+	private BiFunction<WebExtrAppSample, RTCStats, Report> makeTrackReportTransformer() {
+		BiFunction<WebExtrAppSample, RTCStats, Report> result = (webExtrAppSample, rtcStats) -> null;
+		if (!this.config.reportTracks) {
+			return result;
+		}
+		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();
+		TrackConverter reportConverter = new TrackConverter();
 		result = (webExtrAppSample, rtcStats) -> {
 			MediaStreamSample mediaStreamSample = mediaStreamSampleConverter.apply(webExtrAppSample, rtcStats);
 			return reportConverter.apply(mediaStreamSample);

@@ -9,6 +9,13 @@ public class NumberConverter {
 		return value.intValue();
 	}
 
+	public static <T extends Number> Short toShort(T value) {
+		if (value == null) {
+			return null;
+		}
+		return value.shortValue();
+	}
+
 	public static <T extends Number> Double toDouble(T value) {
 		if (value == null) {
 			return null;

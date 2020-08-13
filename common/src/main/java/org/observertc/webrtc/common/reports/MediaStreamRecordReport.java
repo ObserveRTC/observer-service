@@ -1,5 +1,6 @@
 package org.observertc.webrtc.common.reports;
 
+@Deprecated
 public class MediaStreamRecordReport {
 
 	public static MediaStreamRecordReport of(

@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.evaluators.purgatory;
+package org.observertc.webrtc.service.purgatory;
 
 import java.util.UUID;
 import org.apache.kafka.streams.KeyValue;

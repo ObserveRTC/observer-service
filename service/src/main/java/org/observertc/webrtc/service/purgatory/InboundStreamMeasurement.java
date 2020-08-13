@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.samples;
+package org.observertc.webrtc.service.purgatory;
 
 import io.micronaut.core.annotation.Introspected;
 
