@@ -39,12 +39,8 @@ public class KafkaTopicCreatorTask extends AbstractTask {
 	protected void onExecution(Map<String, Map<String, Object>> results) {
 
 		List<String> topicsToCheck = Arrays.asList(
-				this.kafkaTopicsConfiguration.observerSSRCPeerConnectionSamples,
-				this.kafkaTopicsConfiguration.observeRTCCIceStatsSample,
-				this.kafkaTopicsConfiguration.observeRTCMediaStreamStatsSamples,
 				this.kafkaTopicsConfiguration.observertcReports,
-				this.kafkaTopicsConfiguration.outboundStreamMeasurements,
-				this.kafkaTopicsConfiguration.inboundStreamMeasurements
+				this.kafkaTopicsConfiguration.webExtrAppSamples
 		);
 		AdminClient adminClient = AdminClient.create(this.kafkaConfiguration.getConfig());
 		Set<String> topics;

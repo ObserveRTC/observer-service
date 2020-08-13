@@ -11,9 +11,9 @@ public enum UserRole {
 
 	public static UserRole mapFromDB(UsersRole role) throws IllegalStateException {
 		switch (role) {
-			case administrator:
+			case admin:
 				return UserRole.ADMIN;
-			case customer:
+			case client:
 				return UserRole.CUSTOMER;
 		}
 		throw new IllegalStateException("A user role given as parameter is not defined");
@@ -22,9 +22,9 @@ public enum UserRole {
 	public static UsersRole mapToDB(UserRole role) throws IllegalStateException {
 		switch (role) {
 			case ADMIN:
-				return UsersRole.administrator;
+				return UsersRole.admin;
 			case CUSTOMER:
-				return UsersRole.customer;
+				return UsersRole.client;
 		}
 		throw new IllegalStateException("A user role given as parameter is not defined");
 	}

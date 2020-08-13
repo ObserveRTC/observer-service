@@ -9,4 +9,5 @@ reportsinks:
   DebugProfile:
     builder: org.observertc.webrtc.common.reportsink.PrintingReportServiceBuilder
     configuration:
-      useLogger: True
+      useLogger: False
+      

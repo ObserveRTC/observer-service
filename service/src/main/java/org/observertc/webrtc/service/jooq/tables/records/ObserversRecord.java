@@ -4,6 +4,8 @@
 package org.observertc.webrtc.service.jooq.tables.records;
 
 
+import javax.validation.constraints.Size;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -18,13 +20,14 @@ import org.observertc.webrtc.service.jooq.tables.Observers;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ObserversRecord extends UpdatableRecordImpl<ObserversRecord> implements Record4<Integer, byte[], String, String> {
 
-    private static final long serialVersionUID = -2118475534;
+    private static final long serialVersionUID = -2127749982;
 
     /**
      * Setter for <code>WebRTCObserver.Observers.id</code>. The identifier of the observer for inside relations, never outside
      */
-    public void setId(Integer value) {
+    public ObserversRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,13 +40,15 @@ public class ObserversRecord extends UpdatableRecordImpl<ObserversRecord> implem
     /**
      * Setter for <code>WebRTCObserver.Observers.uuid</code>. The UUID of the observer published outside 
      */
-    public void setUuid(byte[] value) {
+    public ObserversRecord setUuid(byte[] value) {
         set(1, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Observers.uuid</code>. The UUID of the observer published outside 
      */
+    @Size(max = 16)
     public byte[] getUuid() {
         return (byte[]) get(1);
     }
@@ -51,13 +56,15 @@ public class ObserversRecord extends UpdatableRecordImpl<ObserversRecord> implem
     /**
      * Setter for <code>WebRTCObserver.Observers.name</code>. The name of the obersver
      */
-    public void setName(String value) {
+    public ObserversRecord setName(String value) {
         set(2, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Observers.name</code>. The name of the obersver
      */
+    @Size(max = 255)
     public String getName() {
         return (String) get(2);
     }
@@ -65,13 +72,15 @@ public class ObserversRecord extends UpdatableRecordImpl<ObserversRecord> implem
     /**
      * Setter for <code>WebRTCObserver.Observers.description</code>. The description for the observer
      */
-    public void setDescription(String value) {
+    public ObserversRecord setDescription(String value) {
         set(3, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Observers.description</code>. The description for the observer
      */
+    @Size(max = 255)
     public String getDescription() {
         return (String) get(3);
     }

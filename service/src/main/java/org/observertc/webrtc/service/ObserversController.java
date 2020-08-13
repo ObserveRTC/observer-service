@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 import javax.validation.Valid;
-import org.observertc.webrtc.common.dto.EvaluatorDTO;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.repositories.ObserverRepository;
 
@@ -59,24 +58,10 @@ public class ObserversController {
 	}
 
 	@Get("/{observerUUID}")
-	public ObserverDTO readObserver(@Body UUID observerUUID) {
+	public ObserverDTO read(@Body UUID observerUUID) {
 		Optional<ObserverDTO> result = this.observerRepository.findById(observerUUID);
 		return result.orElse(null);
 	}
-
-	@Post("/{observerUUID}/evaluators/")
-	public HttpResponse<UUID> addEvaluator(
-			@Body UUID observerUUID,
-			@Body UUID evaluatorUUID) {
-		return null;
-	}
-
-	@Get("/{observerUUID}/evaluators")
-	public Iterable<EvaluatorDTO> readObserverEvaluators(@Body UUID observerUUID) {
-		Iterable<EvaluatorDTO> result = this.observerRepository.findEvaluators(observerUUID);
-		return result;
-	}
-
 
 	private <T> HttpResponse<T> respond(Supplier<HttpResponse<T>> action) {
 		try {

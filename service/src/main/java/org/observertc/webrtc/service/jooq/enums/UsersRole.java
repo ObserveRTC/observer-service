@@ -15,9 +15,9 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum UsersRole implements EnumType {
 
-    customer("customer"),
+    admin("admin"),
 
-    administrator("administrator");
+    client("client");
 
     private final String literal;
 

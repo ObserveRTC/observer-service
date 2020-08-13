@@ -3,7 +3,7 @@ package org.observertc.webrtc.service.subscriptions;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.discovery.event.ServiceStartedEvent;
+import io.micronaut.discovery.event.ServiceReadyEvent;
 import javax.inject.Singleton;
 import org.observertc.webrtc.common.jobs.Job;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 @Requires(notEnv = Environment.TEST) // Don't load data in tests.
-public class ServiceStartedListener implements ApplicationEventListener<ServiceStartedEvent> {
+public class ServiceStartedListener implements ApplicationEventListener<ServiceReadyEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
 
 	private final Job job;
@@ -26,12 +26,12 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceS
 	}
 
 
-	@Override
-	public void onApplicationEvent(ServiceStartedEvent event) {
-		this.job.perform();
-	}
-
 	private void init() {
 
+	}
+
+	@Override
+	public void onApplicationEvent(ServiceReadyEvent event) {
+		this.job.perform();
 	}
 }

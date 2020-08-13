@@ -12,12 +12,10 @@ import javax.inject.Singleton;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.jooq.InsertValuesStep3;
-import org.jooq.Record3;
-import org.jooq.RecordHandler;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.common.dto.EvaluatorDTO;
 import org.observertc.webrtc.service.dto.ObserverDTO;
 import org.observertc.webrtc.service.jooq.Tables;
+import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.records.ObserversRecord;
 
 @Singleton
@@ -28,12 +26,13 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	 * number of entry.
 	 */
 	private static int DEFAULT_BULK_SIZE = 5000;
-	private final JooqBulkWrapper jooqExecuteWrapper;
+	private static final Observers TABLE = Tables.OBSERVERS;
+
+	//	private final JooqBulkWrapper jooqExecuteWrapper;
 	private final IDSLContextProvider contextProvider;
 
 	public ObserverRepository(IDSLContextProvider contextProvider) {
 		this.contextProvider = contextProvider;
-		this.jooqExecuteWrapper = new JooqBulkWrapper(contextProvider, DEFAULT_BULK_SIZE);
 	}
 
 	@NonNull
@@ -41,13 +40,13 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	public <S extends ObserverDTO> S save(@NonNull @Valid @NotNull S entity) {
 		// TODO: eiher throw exception, or return with something else
 		this.contextProvider.get()
-				.insertInto(Tables.OBSERVERS)
-				.columns(Tables.OBSERVERS.UUID, Tables.OBSERVERS.NAME, Tables.OBSERVERS.DESCRIPTION)
+				.insertInto(TABLE)
+				.columns(TABLE.UUID, TABLE.NAME, TABLE.DESCRIPTION)
 				.values(UUIDAdapter.toBytes(entity.uuid), entity.name, entity.description)
 				.onDuplicateKeyUpdate()
-				.set(Tables.OBSERVERS.UUID, UUIDAdapter.toBytes(entity.uuid))
-				.set(Tables.OBSERVERS.NAME, entity.name)
-				.set(Tables.OBSERVERS.DESCRIPTION, entity.description)
+				.set(TABLE.UUID, UUIDAdapter.toBytes(entity.uuid))
+				.set(TABLE.NAME, entity.name)
+				.set(TABLE.DESCRIPTION, entity.description)
 				.execute();
 		return entity;
 	}
@@ -66,19 +65,17 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	@NonNull
 	@Override
 	public <S extends ObserverDTO> Iterable<S> saveAll(@NonNull @Valid @NotNull Iterable<S> entities) {
-		this.jooqExecuteWrapper.execute((context, items) -> {
-			InsertValuesStep3<ObserversRecord, byte[], String, String> sql =
-					context.insertInto(Tables.OBSERVERS,
-							Tables.OBSERVERS.UUID,
-							Tables.OBSERVERS.NAME,
-							Tables.OBSERVERS.DESCRIPTION);
-			for (Iterator<S> it = items.iterator(); it.hasNext(); ) {
-				ObserverDTO DTO = it.next();
-				byte[] uuid = UUIDAdapter.toBytes(DTO.uuid);
-				sql.values(uuid, DTO.name, DTO.description);
-			}
-			sql.execute();
-		}, entities);
+		InsertValuesStep3<ObserversRecord, byte[], String, String> sql =
+				this.contextProvider.get().insertInto(Tables.OBSERVERS,
+						Tables.OBSERVERS.UUID,
+						Tables.OBSERVERS.NAME,
+						Tables.OBSERVERS.DESCRIPTION);
+		for (Iterator<S> it = entities.iterator(); it.hasNext(); ) {
+			ObserverDTO DTO = it.next();
+			byte[] uuid = UUIDAdapter.toBytes(DTO.uuid);
+			sql.values(uuid, DTO.name, DTO.description);
+		}
+		sql.execute();
 		return entities;
 	}
 
@@ -90,16 +87,6 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 				.from(Tables.OBSERVERS)
 				.where(Tables.OBSERVERS.UUID.eq(UUIDAdapter.toBytes(uuid)))
 				.fetchOptionalInto(ObserverDTO.class);
-	}
-
-	public Iterable<EvaluatorDTO> findEvaluators(@NonNull @NotNull UUID uuid) {
-		return this.contextProvider.get()
-				.select(Tables.ORGANISATIONS.UUID, Tables.ORGANISATIONS.NAME, Tables.ORGANISATIONS.DESCRIPTION)
-				.from(Tables.ORGANISATIONS
-						.join(Tables.OBSERVERORGANISATIONS).on(Tables.OBSERVERORGANISATIONS.ORGANISATION_ID.eq(Tables.ORGANISATIONS.ID))
-						.join(Tables.OBSERVERS).on(Tables.OBSERVERORGANISATIONS.OBSERVER_ID.eq(Tables.OBSERVERS.ID))
-						.where(Tables.OBSERVERS.UUID.eq(UUIDAdapter.toBytes(uuid))))
-				.fetch().into(EvaluatorDTO.class);
 	}
 
 	@Override
@@ -115,27 +102,7 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 	@NonNull
 	@Override
 	public Iterable<ObserverDTO> findAll() {
-		this.contextProvider.get().select(Tables.OBSERVERS.UUID, Tables.OBSERVERS.NAME, Tables.OBSERVERS.DESCRIPTION)
-				.from(Tables.OBSERVERS)
-				.orderBy(Tables.OBSERVERS.ID)
-				.fetch().into(new RecordHandler<Record3<byte[], String, String>>() {
-			@Override
-			public void next(Record3<byte[], String, String> record) {
-
-			}
-		});
-		Long tableSize = this.count();
-		int bulkSize = DEFAULT_BULK_SIZE;
-		return () -> this.jooqExecuteWrapper.retrieve((context, offset) -> {
-			List<ObserverDTO> result = context
-					.select(Tables.OBSERVERS.UUID, Tables.OBSERVERS.NAME, Tables.OBSERVERS.DESCRIPTION)
-					.from(Tables.OBSERVERS)
-					.orderBy(Tables.OBSERVERS.ID)
-					.offset(offset)
-					.limit(bulkSize)
-					.fetch().into(ObserverDTO.class);
-			return result.iterator();
-		}, tableSize.intValue());
+		return () -> this.contextProvider.get().selectFrom(Tables.OBSERVERS).fetchInto(ObserverDTO.class).iterator();
 	}
 
 	@Override
@@ -165,17 +132,12 @@ public class ObserverRepository implements CrudRepository<ObserverDTO, UUID> {
 
 	@Override
 	public void deleteAll(@NonNull @NotNull Iterable<? extends ObserverDTO> entities) {
-		Iterator<? extends ObserverDTO> iterator = entities.iterator();
-		this.jooqExecuteWrapper.execute((context, items) -> {
+		List<byte[]> keys = StreamSupport.stream(entities
+				.spliterator(), false).map(e -> UUIDAdapter.toBytes(e.uuid)).collect(Collectors.toList());
 
-			List<byte[]> keys = StreamSupport.stream(entities
-					.spliterator(), false).map(e -> UUIDAdapter.toBytes(e.uuid)).collect(Collectors.toList());
-
-			context
-					.deleteFrom(Tables.OBSERVERS)
-					.where(Tables.OBSERVERS.UUID.in(keys))
-					.execute();
-		}, entities);
+		this.contextProvider.get().deleteFrom(Tables.OBSERVERS).where(
+				Tables.OBSERVERS.UUID.in(keys)
+		).execute();
 	}
 
 	@Override

@@ -7,11 +7,7 @@ public class KafkaTopicsConfiguration {
 	public boolean createIfNotExists;
 	public int replicationFactorOnCreating;
 	public int partitionNumberOnCreating;
-	public String observeRTCCIceStatsSample;
-	public String observeRTCMediaStreamStatsSamples;
-	public String observerSSRCPeerConnectionSamples;
+	public String webExtrAppSamples;
 	public String observertcReports;
-	public String inboundStreamMeasurements;
-	public String outboundStreamMeasurements;
 }
 

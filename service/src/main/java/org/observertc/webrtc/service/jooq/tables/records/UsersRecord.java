@@ -4,6 +4,9 @@
 package org.observertc.webrtc.service.jooq.tables.records;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record6;
@@ -19,13 +22,14 @@ import org.observertc.webrtc.service.jooq.tables.Users;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Record6<Integer, byte[], String, byte[], byte[], UsersRole> {
 
-    private static final long serialVersionUID = 1272867361;
+    private static final long serialVersionUID = 382824200;
 
     /**
      * Setter for <code>WebRTCObserver.Users.id</code>. The identifier of the user for inside relations, never outside
      */
-    public void setId(Integer value) {
+    public UsersRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,13 +42,15 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Setter for <code>WebRTCObserver.Users.uuid</code>. The UUID of the user published outside 
      */
-    public void setUuid(byte[] value) {
+    public UsersRecord setUuid(byte[] value) {
         set(1, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Users.uuid</code>. The UUID of the user published outside 
      */
+    @Size(max = 16)
     public byte[] getUuid() {
         return (byte[]) get(1);
     }
@@ -52,13 +58,15 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Setter for <code>WebRTCObserver.Users.username</code>. The username of the user
      */
-    public void setUsername(String value) {
+    public UsersRecord setUsername(String value) {
         set(2, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Users.username</code>. The username of the user
      */
+    @Size(max = 255)
     public String getUsername() {
         return (String) get(2);
     }
@@ -66,13 +74,15 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Setter for <code>WebRTCObserver.Users.password_digest</code>. The hash of the password using the salt
      */
-    public void setPasswordDigest(byte[] value) {
+    public UsersRecord setPasswordDigest(byte[] value) {
         set(3, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Users.password_digest</code>. The hash of the password using the salt
      */
+    @Size(max = 64)
     public byte[] getPasswordDigest() {
         return (byte[]) get(3);
     }
@@ -80,13 +90,15 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Setter for <code>WebRTCObserver.Users.password_salt</code>. The salt for the password
      */
-    public void setPasswordSalt(byte[] value) {
+    public UsersRecord setPasswordSalt(byte[] value) {
         set(4, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Users.password_salt</code>. The salt for the password
      */
+    @Size(max = 32)
     public byte[] getPasswordSalt() {
         return (byte[]) get(4);
     }
@@ -94,13 +106,15 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Setter for <code>WebRTCObserver.Users.role</code>. The role of the user determines of which endpoint it can access to
      */
-    public void setRole(UsersRole value) {
+    public UsersRecord setRole(UsersRole value) {
         set(5, value);
+        return this;
     }
 
     /**
      * Getter for <code>WebRTCObserver.Users.role</code>. The role of the user determines of which endpoint it can access to
      */
+    @NotNull
     public UsersRole getRole() {
         return (UsersRole) get(5);
     }

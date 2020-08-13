@@ -34,7 +34,7 @@ import org.observertc.webrtc.service.jooq.tables.records.UsersRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = 129088653;
+    private static final long serialVersionUID = 1350373591;
 
     /**
      * The reference instance of <code>WebRTCObserver.Users</code>
@@ -77,7 +77,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>WebRTCObserver.Users.role</code>. The role of the user determines of which endpoint it can access to
      */
-    public final TableField<UsersRecord, UsersRole> ROLE = createField(DSL.name("role"), org.jooq.impl.SQLDataType.VARCHAR(13).nullable(false).asEnumDataType(org.observertc.webrtc.service.jooq.enums.UsersRole.class), this, "The role of the user determines of which endpoint it can access to");
+    public final TableField<UsersRecord, UsersRole> ROLE = createField(DSL.name("role"), org.jooq.impl.SQLDataType.VARCHAR(6).nullable(false).asEnumDataType(org.observertc.webrtc.service.jooq.enums.UsersRole.class), this, "The role of the user determines of which endpoint it can access to");
 
     /**
      * Create a <code>WebRTCObserver.Users</code> table reference

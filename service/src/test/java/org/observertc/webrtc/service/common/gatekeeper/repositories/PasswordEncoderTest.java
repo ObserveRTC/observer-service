@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
+import org.observertc.webrtc.service.ObserverConfig;
 import org.observertc.webrtc.service.repositories.PasswordEncoder;
 
 class PasswordEncoderTest {
@@ -23,7 +24,8 @@ class PasswordEncoderTest {
 	public void shouldMatchSaltSize() throws NoSuchAlgorithmException {
 		// Given
 		int saltSize = new Random().nextInt(32);
-		PasswordEncoder passwordEncoder = new PasswordEncoder("SHA-512", 1, saltSize);
+		ObserverConfig.AuthenticationConfig config = this.makeConfig("SHA-512", 1, saltSize);
+		PasswordEncoder passwordEncoder = new PasswordEncoder(config);
 
 		// When
 		byte[] salt = passwordEncoder.generateSalt();
@@ -45,8 +47,10 @@ class PasswordEncoderTest {
 		// Given
 		String password = "password";
 		String salt = "salt";
-		PasswordEncoder passwordEncoder1 = new PasswordEncoder("SHA-512", 1, 32);
-		PasswordEncoder passwordEncoder2 = new PasswordEncoder("SHA-512", 2, 32);
+		ObserverConfig.AuthenticationConfig config1 = this.makeConfig("SHA-512", 1, 32);
+		ObserverConfig.AuthenticationConfig config2 = this.makeConfig("SHA-512", 2, 32);
+		PasswordEncoder passwordEncoder1 = new PasswordEncoder(config1);
+		PasswordEncoder passwordEncoder2 = new PasswordEncoder(config2);
 
 		// When
 		byte[] digest1 = passwordEncoder1.digest(password.getBytes(), salt.getBytes());
@@ -69,8 +73,9 @@ class PasswordEncoderTest {
 		// Given
 		String password = "password";
 		String salt = "salt";
-		PasswordEncoder passwordEncoder1 = new PasswordEncoder("SHA-512", 15, 32);
-		PasswordEncoder passwordEncoder2 = new PasswordEncoder("SHA-512", 15, 32);
+		ObserverConfig.AuthenticationConfig config = this.makeConfig("SHA-512", 15, 32);
+		PasswordEncoder passwordEncoder1 = new PasswordEncoder(config);
+		PasswordEncoder passwordEncoder2 = new PasswordEncoder(config);
 
 		// When
 		byte[] digest1 = passwordEncoder1.digest(password.getBytes(), salt.getBytes());
@@ -90,7 +95,8 @@ class PasswordEncoderTest {
 	@Test
 	public void shouldThrowNoSuchAlgorithmException() {
 		String hashAlgorithm = "NoSuchHashAlgorithm";
-		assertThrows(NoSuchAlgorithmException.class, () -> new PasswordEncoder(hashAlgorithm, 1, 32));
+		ObserverConfig.AuthenticationConfig config = this.makeConfig(hashAlgorithm, 1, 32);
+		assertThrows(NoSuchAlgorithmException.class, () -> new PasswordEncoder(config));
 	}
 
 	/**
@@ -103,7 +109,15 @@ class PasswordEncoderTest {
 	@Test()
 	public void shouldThrowIllegalArgumentException() {
 		final int stretching = 0;
-		assertThrows(IllegalArgumentException.class, () -> new PasswordEncoder("SHA-256", stretching, 32));
+		ObserverConfig.AuthenticationConfig config = this.makeConfig("SHA-256", stretching, 32);
+		assertThrows(IllegalArgumentException.class, () -> new PasswordEncoder(config));
 	}
 
+	private ObserverConfig.AuthenticationConfig makeConfig(String hashAlgorithm, int stretching, int saltSize) {
+		ObserverConfig.AuthenticationConfig config = new ObserverConfig.AuthenticationConfig();
+		config.hashAlgorithm = hashAlgorithm;
+		config.stretching = stretching;
+		config.saltSize = saltSize;
+		return config;
+	}
 }

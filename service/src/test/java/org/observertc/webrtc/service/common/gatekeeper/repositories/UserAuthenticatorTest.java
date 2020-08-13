@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.observertc.webrtc.service.ObserverConfig;
 import org.observertc.webrtc.service.common.gatekeeper.MockedDSLContextProvider;
 import org.observertc.webrtc.service.model.UserRole;
 import org.observertc.webrtc.service.repositories.PasswordEncoder;
@@ -100,14 +101,23 @@ class UserAuthenticatorTest {
 	 * @throws NoSuchAlgorithmException
 	 */
 	private UserAuthenticator makeUserAuthenticator(byte[] digestedPassword) throws NoSuchAlgorithmException {
+		ObserverConfig.AuthenticationConfig config = this.makeAuthConfig("SHA-512", 2, 32);
 		return new UserAuthenticator(
 				new MockedDSLContextProvider(USER_AUTHENTICATOR_QUERIES_FILENAME),
-				new PasswordEncoder("SHA-512", 2, 32) {
+				new PasswordEncoder(config) {
 					@Override
 					public byte[] digest(byte[] secret, byte[] salt) {
 						return digestedPassword;
 					}
 				}
 		);
+	}
+
+	private ObserverConfig.AuthenticationConfig makeAuthConfig(String hashAlgorithm, int stretching, int saltSize) {
+		ObserverConfig.AuthenticationConfig config = new ObserverConfig.AuthenticationConfig();
+		config.hashAlgorithm = hashAlgorithm;
+		config.stretching = stretching;
+		config.saltSize = saltSize;
+		return config;
 	}
 }

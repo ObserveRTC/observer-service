@@ -20,44 +20,51 @@ administration:
     username: ${OBSERVER_ADMIN_USERNAME:root}
     secret: ${OBSERVER_ADMIN_PASSWORD:password}
 ---
+observer:
+  timeZoneID: EET
+  authentication:
+    hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
+    stretching: ${AUTHENTICATION_STRETCHING:2}
+    saltSize: ${AUTHENTICATION_SALT_SIZE:32}
+---
 kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
+  streams:
+    default:
+      num:
+        stream:
+          threads: 1
+
 ---
 kafkaTopics:
   createIfNotExists: True
   replicationFactorOnCreating: 1
-  partitionNumberOnCreating: 1
-  inboundStreamMeasurements: ${KAFKA_TOPICS_INBOUNDSTREAM_MEASUREMENTS:inboundStreamMeasurements}
-  outboundStreamMeasurements: ${KAFKA_TOPICS_OUTBOUNDSTREAM_MEASUREMENTS:outboundStreamMeasurements}
+  partitionNumberOnCreating: 12
+  webExtrAppSamples: ${KAFKA_TOPICS_WEBEXTRAPP_SAMPLES:webExtrAppSamples}
   observertcReports: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
-  observeRTCCIceStatsSample: ${KAFKA_TOPICS_OBSERVERTC_ICE_STATS_SAMPLES:observeRTCCIceStatsSample}
-  observeRTCMediaStreamStatsSamples: ${KAFKA_TOPICS_OBSERVERTC_MEDIA_STREAM_STATS_SAMPLES:observeRTCMediaStreamStatsSamples}
-  observerSSRCPeerConnectionSamples: ${KAFKA_TOPICS_OBSERVER_SSRC_PEER_CONNECTION_SAMPLES:observerSSRCPeerConnectionSamples}
 ---
-reports:
-  reportMediaSamples: True
-  callReports:
-    callGuarantee:
-      enabled: True
-      retentionTimeInDays: 180
-      runPeriodInS: 5000
-    enabled: True
+evaluators:
+  activeStreams:
     updatePeriodInS: 10
-    reportPeriodInS: 30
-    peerConnectionMaxIdleTimeInS: 60
-    archiveRetentionTimeInDays: 100
-  ICEReports:
-    enabled: True
-  streamReports:
-    enabled: False
-    peerConnectionMaxIdleTimeInS: 10
-    aggregationTimeInS: ${REPORTS_AGGREGATION_TIME_IN_S:1}
+    maxIdleTimeInS: 30
+    waitingPeriods: 10
+    retentionTimeInDays: 60
+    maxAllowedUpdateGapInS: 3600
+  rtcStats:
+    useClientTimestamp: False
+    reportOutboundRTP: True
+    reportInboundRTP: True
+    reportRemoteInboundRTP: True
+  iceStats:
+    useClientTimestamp: False
+    candidatePairs: True
+
 ---
 reportsink:
   configFile: ${REPORTSINK_CONFIG_FILE_PATH:`/reportsink.yml`}
-  profile: BigQueryProfile
-#  profile: DebugProfile
+  #  profile: BigQueryProfile
+  profile: DebugProfile
 ---
 hikari:
   username: ${HIKARI_USERNAME:root}

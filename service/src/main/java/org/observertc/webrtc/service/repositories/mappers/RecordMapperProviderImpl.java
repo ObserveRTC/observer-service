@@ -10,8 +10,6 @@ import org.jooq.RecordMapperProvider;
 import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
 import org.observertc.webrtc.service.dto.ObserverDTO;
-import org.observertc.webrtc.service.model.CallPeerConnectionsEntry;
-import org.observertc.webrtc.service.model.PeerConnectionSSRCsEntry;
 
 @Singleton
 public class RecordMapperProviderImpl implements RecordMapperProvider {
@@ -20,8 +18,6 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
 
 	public RecordMapperProviderImpl() {
 		this.mappers.put(ObserverDTO.class, new ObserversRecordMapper());
-		this.mappers.put(PeerConnectionSSRCsEntry.class, new PeerConnectionSSRCsEntryRecordMapper());
-		this.mappers.put(CallPeerConnectionsEntry.class, new CallPeerConnectionsEntryRecordMapper());
 	}
 
 	@Override
