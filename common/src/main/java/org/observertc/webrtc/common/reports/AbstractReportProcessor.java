@@ -18,9 +18,6 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 		typeMap.put(FinishedCallReport.class.getName(), ReportType.FINISHED_CALL);
 		typeMap.put(JoinedPeerConnectionReport.class.getName(), ReportType.JOINED_PEER_CONNECTION);
 		typeMap.put(DetachedPeerConnectionReport.class.getName(), ReportType.DETACHED_PEER_CONNECTION);
-		typeMap.put(OutboundStreamReport.class.getName(), ReportType.OUTBOUND_STREAM_REPORT);
-		typeMap.put(InboundStreamReport.class.getName(), ReportType.INBOUND_STREAM_REPORT);
-		typeMap.put(RemoteInboundStreamReport.class.getName(), ReportType.REMOTE_INBOUND_STREAM_REPORT);
 		typeMap.put(RemoteInboundRTPReport.class.getName(), ReportType.REMOTE_INBOUND_RTP_REPORT);
 		typeMap.put(InboundRTPReport.class.getName(), ReportType.INBOUND_RTP_REPORT);
 		typeMap.put(OutboundRTPReport.class.getName(), ReportType.OUTBOUND_RTP_REPORT);
@@ -94,21 +91,6 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 	}
 
 	@Override
-	public T processOutboundStreamReport(OutboundStreamReport report) {
-		return null;
-	}
-
-	@Override
-	public T processInboundStreamReport(InboundStreamReport report) {
-		return null;
-	}
-
-	@Override
-	public T processRemoteInboundStreamReport(RemoteInboundStreamReport report) {
-		return null;
-	}
-
-	@Override
 	public T processICECandidatePairReport(ICECandidatePairReport report) {
 		return null;
 	}
@@ -122,5 +104,6 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 	public T processICERemoteCandidateReport(ICERemoteCandidateReport report) {
 		return null;
 	}
-
+	
+	
 }

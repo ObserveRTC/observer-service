@@ -16,15 +16,6 @@ public interface ReportProcessor<T> {
 			case DETACHED_PEER_CONNECTION:
 				DetachedPeerConnectionReport detachedPeerConnectionReport = (DetachedPeerConnectionReport) report;
 				return this.processDetachedPeerConnectionReport(detachedPeerConnectionReport);
-			case INBOUND_STREAM_REPORT:
-				InboundStreamReport inboundStreamSampleReport = (InboundStreamReport) report;
-				return this.processInboundStreamReport(inboundStreamSampleReport);
-			case OUTBOUND_STREAM_REPORT:
-				OutboundStreamReport outboundStreamReport = (OutboundStreamReport) report;
-				return this.processOutboundStreamReport(outboundStreamReport);
-			case REMOTE_INBOUND_STREAM_REPORT:
-				RemoteInboundStreamReport remoteInboundStreamSampleReport = (RemoteInboundStreamReport) report;
-				return this.processRemoteInboundStreamReport(remoteInboundStreamSampleReport);
 			case REMOTE_INBOUND_RTP_REPORT:
 				RemoteInboundRTPReport remoteInboundRTPReport = (RemoteInboundRTPReport) report;
 				return this.processRemoteInboundRTPReport(remoteInboundRTPReport);
@@ -65,12 +56,6 @@ public interface ReportProcessor<T> {
 	T processInitiatedCallReport(InitiatedCallReport report);
 
 	T processFinishedCallReport(FinishedCallReport report);
-
-	T processOutboundStreamReport(OutboundStreamReport report);
-
-	T processInboundStreamReport(InboundStreamReport report);
-
-	T processRemoteInboundStreamReport(RemoteInboundStreamReport report);
 
 	T processRemoteInboundRTPReport(RemoteInboundRTPReport report);
 

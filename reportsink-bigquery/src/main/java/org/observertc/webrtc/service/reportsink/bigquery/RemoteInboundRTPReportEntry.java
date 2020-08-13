@@ -9,7 +9,6 @@ import org.observertc.webrtc.common.reports.RemoteInboundRTPReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Deprecated
 public class RemoteInboundRTPReportEntry implements BigQueryEntry {
 	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
 	public static final String SSRC_FIELD_NAME = "SSRC";
