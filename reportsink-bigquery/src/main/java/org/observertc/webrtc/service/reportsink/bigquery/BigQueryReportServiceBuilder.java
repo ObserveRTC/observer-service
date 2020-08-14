@@ -28,12 +28,6 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 		public String detachedPeerConnectionsTable = "DetachedPeerConnections";
 
-		public String inboundStreamReportsTable = "InboundStreamReports";
-
-		public String remoteInboundStreamReportsTable = "RemoteInboundStreamReports";
-
-		public String outboundStreamReportsTable = "OutboundStreamReports";
-
 		public String remoteInboundRTPSamplesTable = "RemoteInboundRTPSamples";
 
 		public String outboundRTPSamplesTable = "OutboundRTPSamples";

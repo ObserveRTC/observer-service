@@ -1,4 +1,4 @@
-package org.observertc.webrtc.service.purgatory;
+package org.observertc.webrtc.service.samples;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -9,7 +9,6 @@ import java.util.UUID;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 
 public class MediaStreamSample {
-
 	public static MediaStreamSample of(UUID observerUUID,
 									   UUID peerConnectionUUID,
 									   String browserID,

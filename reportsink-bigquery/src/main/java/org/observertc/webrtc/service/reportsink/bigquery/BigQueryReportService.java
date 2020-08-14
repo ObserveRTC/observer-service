@@ -10,14 +10,11 @@ import org.observertc.webrtc.common.reports.ICECandidatePairReport;
 import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
 import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
 import org.observertc.webrtc.common.reports.InboundRTPReport;
-import org.observertc.webrtc.common.reports.InboundStreamReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.MediaSourceReport;
 import org.observertc.webrtc.common.reports.OutboundRTPReport;
-import org.observertc.webrtc.common.reports.OutboundStreamReport;
 import org.observertc.webrtc.common.reports.RemoteInboundRTPReport;
-import org.observertc.webrtc.common.reports.RemoteInboundStreamReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.common.reports.TrackReport;
 import org.observertc.webrtc.common.reportsink.ReportService;
@@ -34,9 +31,6 @@ public class BigQueryReportService implements ReportService {
 	private final BigQueryTable<FinishedCallEntry> finishedCalls;
 	private final BigQueryTable<JoinedPeerConnectionEntry> joinedPeerConnections;
 	private final BigQueryTable<DetachedPeerConnectionEntry> detachedPeerConnections;
-	private final BigQueryTable<InboundStreamReportEntry> inboundStreamReports;
-	private final BigQueryTable<OutboundStreamReportEntry> outboundStreamReports;
-	private final BigQueryTable<RemoteInboundStreamReportEntry> remoteInboundStreamReports;
 	private final BigQueryTable<RemoteInboundRTPReportEntry> remoteInboundRTPSamples;
 	private final BigQueryTable<InboundRTPReportEntry> inboundRTPSamples;
 	private final BigQueryTable<OutboundRTPReportEntry> outboundRTPSamples;
@@ -58,9 +52,6 @@ public class BigQueryReportService implements ReportService {
 		this.finishedCalls = new BigQueryTable(bigQueryService, config.finishedCallsTable);
 		this.joinedPeerConnections = new BigQueryTable(bigQueryService, config.joinedPeerConnectionsTable);
 		this.detachedPeerConnections = new BigQueryTable(bigQueryService, config.detachedPeerConnectionsTable);
-		this.inboundStreamReports = new BigQueryTable(bigQueryService, config.inboundStreamReportsTable);
-		this.outboundStreamReports = new BigQueryTable(bigQueryService, config.outboundStreamReportsTable);
-		this.remoteInboundStreamReports = new BigQueryTable(bigQueryService, config.remoteInboundStreamReportsTable);
 		this.remoteInboundRTPSamples = new BigQueryTable<>(bigQueryService, config.remoteInboundRTPSamplesTable);
 		this.inboundRTPSamples = new BigQueryTable<>(bigQueryService, config.inboundRTPSamplesTable);
 		this.outboundRTPSamples = new BigQueryTable<>(bigQueryService, config.outboundRTPSamplesTable);
@@ -114,28 +105,6 @@ public class BigQueryReportService implements ReportService {
 			public Void processFinishedCallReport(FinishedCallReport report) {
 				FinishedCallEntry finishedCallEntry = FinishedCallEntry.from((FinishedCallReport) report);
 				finishedCalls.insert(finishedCallEntry);
-				return null;
-			}
-
-			@Override
-			public Void processOutboundStreamReport(OutboundStreamReport report) {
-				OutboundStreamReportEntry outboundStreamSampleEntry = OutboundStreamReportEntry.from((OutboundStreamReport) report);
-				outboundStreamReports.insert(outboundStreamSampleEntry);
-				return null;
-			}
-
-			@Override
-			public Void processInboundStreamReport(InboundStreamReport report) {
-				InboundStreamReportEntry inboundStreamSampleEntry = InboundStreamReportEntry.from((InboundStreamReport) report);
-				inboundStreamReports.insert(inboundStreamSampleEntry);
-				return null;
-			}
-
-			@Override
-			public Void processRemoteInboundStreamReport(RemoteInboundStreamReport report) {
-				RemoteInboundStreamReportEntry remoteInboundStreamSampleEntry =
-						RemoteInboundStreamReportEntry.from((RemoteInboundStreamReport) report);
-				remoteInboundStreamReports.insert(remoteInboundStreamSampleEntry);
 				return null;
 			}
 

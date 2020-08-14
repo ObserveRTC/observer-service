@@ -30,9 +30,6 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 	private static final String CREATE_FINISHED_CALL_TABLE_TASK_NAME = "CreateFinishedCallsTableTask";
 	private static final String CREATE_JOINED_PEER_CONNECTIONS_TABLE_TASK_NAME = "CreateJoinedPeerConnectionsTableTask";
 	private static final String CREATE_DETACHED_PEER_CONNECTIONS_TABLE_TASK_NAME = "CreateDetachedPeerConnectionsTableTask";
-	private static final String CREATE_OUTBOUND_REPORTS_TABLE_TASK_NAME = "CreateOutboundReportsTableTask";
-	private static final String CREATE_INBOUND_REPORTS_TABLE_TASK_NAME = "CreateInboundReportsTableTask";
-	private static final String CREATE_REMOTE_INBOUND_REPORTS_TABLE_TASK_NAME = "CreateRemoteInboundReportsTableTask";
 	private static final String CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateRemoteInboundRTPSamplesTableTask";
 	private static final String CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateOutboundRTPSamplesTableTask";
 	private static final String CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME = "CreateInboundRTPSamplesTableTask";
@@ -55,9 +52,6 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 		Task createFinishedCallsTable = this.makeCreateFinishedCallsTableTask();
 		Task createJoinedPeerConnectionsTable = this.makeJoinedPeerConnectionsTableTask();
 		Task createDetachedPeerConnectionsTable = this.makeDetachedPeerConnectionsTableTask();
-		Task createOutboundStreamSamplesTable = this.makeOutboundReportsTableTask();
-		Task createInboundStreamSamplesTable = this.makeInboundReportsTableTask();
-		Task createRemoteInboundStreamSamplesTable = this.makeRemoteInboundReportsTableTask();
 		Task createRemoteInboundRTPSamplesTable = this.makeRemoteInboundRTPSamplesTableTask();
 		Task createOutboundRTPSamplesTable = this.makeOutboundRTPSamplesTableTask();
 		Task createInboundRTPSamplesTable = this.makeInboundRTPSamplesTableTask();
@@ -71,9 +65,6 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 				.withTask(createFinishedCallsTable, createDataset)
 				.withTask(createJoinedPeerConnectionsTable, createDataset)
 				.withTask(createDetachedPeerConnectionsTable, createDataset)
-				.withTask(createOutboundStreamSamplesTable, createDataset)
-				.withTask(createInboundStreamSamplesTable, createDataset)
-				.withTask(createRemoteInboundStreamSamplesTable, createDataset)
 				.withTask(createRemoteInboundRTPSamplesTable, createDataset)
 				.withTask(createOutboundRTPSamplesTable, createDataset)
 				.withTask(createInboundRTPSamplesTable, createDataset)
@@ -295,47 +286,6 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 	}
 
 
-	private FieldList makeMediaStreamSampleRecordFieldList() {
-		return FieldList.of(
-				Field.newBuilder(MediaStreamReportEntryRecord.COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-				,
-				Field.newBuilder(MediaStreamReportEntryRecord.MINIMUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-				,
-				Field.newBuilder(MediaStreamReportEntryRecord.MAXIMUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-				,
-				Field.newBuilder(MediaStreamReportEntryRecord.SUM_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-		);
-	}
-
-	private Task makeOutboundReportsTableTask() {
-
-		return new AbstractTask(CREATE_OUTBOUND_REPORTS_TABLE_TASK_NAME) {
-
-			@Override
-			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.outboundStreamReportsTable);
-				Schema schema = Schema.of(
-						Field.newBuilder(OutboundStreamReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundStreamReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundStreamReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundStreamReportEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundStreamReportEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundStreamReportEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
-								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundStreamReportEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.RECORD,
-								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
-				);
-				createTableIfNotExists(tableId, schema);
-			}
-		};
-	}
-
 	private Task makeMediaSourcesTableTask() {
 
 		return new AbstractTask(CREATE_MEDIA_SOURCES_TABLE_TASK_NAME) {
@@ -432,64 +382,6 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						Field.newBuilder(TrackReportEntry.CONCEALMENT_EVENTS_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(TrackReportEntry.MEDIA_SOURCE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-				);
-				createTableIfNotExists(tableId, schema);
-			}
-		};
-	}
-
-	private Task makeInboundReportsTableTask() {
-
-		return new AbstractTask(CREATE_INBOUND_REPORTS_TABLE_TASK_NAME) {
-
-			@Override
-			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.inboundStreamReportsTable);
-				Schema schema = Schema.of(
-						Field.newBuilder(InboundStreamReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.RECORD,
-								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.RECORD,
-								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundStreamReportEntry.PACKETS_LOST_FIELD_NAME, LegacySQLTypeName.RECORD,
-								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
-				);
-				createTableIfNotExists(tableId, schema);
-			}
-		};
-	}
-
-	private Task makeRemoteInboundReportsTableTask() {
-
-		return new AbstractTask(CREATE_REMOTE_INBOUND_REPORTS_TABLE_TASK_NAME) {
-
-			@Override
-			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.remoteInboundStreamReportsTable);
-				Schema schema = Schema.of(
-						Field.newBuilder(RemoteInboundStreamReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundStreamReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundStreamReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundStreamReportEntry.FIRST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundStreamReportEntry.LAST_SAMPLE_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundStreamReportEntry.RTT_IN_MS_FIELD_NAME, LegacySQLTypeName.RECORD,
-								makeMediaStreamSampleRecordFieldList()).setMode(Field.Mode.REQUIRED).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}

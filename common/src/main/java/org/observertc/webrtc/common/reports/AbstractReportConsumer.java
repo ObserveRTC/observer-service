@@ -3,12 +3,12 @@ package org.observertc.webrtc.common.reports;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractReportProcessor<T> implements Function<Report, T>, ReportProcessor<T> {
-	private static Logger logger = LoggerFactory.getLogger(AbstractReportProcessor.class);
+public abstract class AbstractReportConsumer<T, R> implements BiFunction<T, Report, R>, ReportConsumer<T, R> {
+	private static Logger logger = LoggerFactory.getLogger(AbstractReportConsumer.class);
 
 	private static final Map<String, ReportType> typeMapper;
 
@@ -29,7 +29,7 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 	}
 
 	@Override
-	public T apply(Report report) {
+	public R apply(T meta, Report report) {
 		ReportType type = report.type;
 		if (type == null) {
 			type = this.typeMapper.get(report.getClass().getName());
@@ -38,72 +38,72 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 				report.type = type;
 			} else {
 				logger.warn("A report type field is null, and cannot getinfo based on the classname", report.getClass().getName());
-				return this.unprocessable(report);
+				return this.unprocessable(meta, report);
 			}
 		}
 
-		return this.process(report);
+		return this.process(meta, report);
 	}
 
 	@Override
-	public T processRemoteInboundRTPReport(RemoteInboundRTPReport report) {
+	public R processRemoteInboundRTPReport(T meta, RemoteInboundRTPReport report) {
 		return null;
 	}
 
 	@Override
-	public T processInboundRTPReport(InboundRTPReport report) {
+	public R processInboundRTPReport(T meta, InboundRTPReport report) {
 		return null;
 	}
 
 	@Override
-	public T processOutboundRTPReport(OutboundRTPReport report) {
+	public R processOutboundRTPReport(T meta, OutboundRTPReport report) {
 		return null;
 	}
 
 	@Override
-	public T processMediaSourceReport(MediaSourceReport mediaSourceReport) {
+	public R processMediaSourceReport(T meta, MediaSourceReport mediaSourceReport) {
 		return null;
 	}
 
 	@Override
-	public T processTrackReport(TrackReport trackReport) {
+	public R processTrackReport(T meta, TrackReport trackReport) {
 		return null;
 	}
 
 	@Override
-	public T processJoinedPeerConnectionReport(JoinedPeerConnectionReport report) {
+	public R processJoinedPeerConnectionReport(T meta, JoinedPeerConnectionReport report) {
 		return null;
 	}
 
 	@Override
-	public T processDetachedPeerConnectionReport(DetachedPeerConnectionReport report) {
+	public R processDetachedPeerConnectionReport(T meta, DetachedPeerConnectionReport report) {
 		return null;
 	}
 
 	@Override
-	public T processInitiatedCallReport(InitiatedCallReport report) {
+	public R processInitiatedCallReport(T meta, InitiatedCallReport report) {
 		return null;
 	}
 
 	@Override
-	public T processFinishedCallReport(FinishedCallReport report) {
+	public R processFinishedCallReport(T meta, FinishedCallReport report) {
 		return null;
 	}
 
 	@Override
-	public T processICECandidatePairReport(ICECandidatePairReport report) {
+	public R processICECandidatePairReport(T meta, ICECandidatePairReport report) {
 		return null;
 	}
 
 	@Override
-	public T processICELocalCandidateReport(ICELocalCandidateReport report) {
+	public R processICELocalCandidateReport(T meta, ICELocalCandidateReport report) {
 		return null;
 	}
 
 	@Override
-	public T processICERemoteCandidateReport(ICERemoteCandidateReport report) {
+	public R processICERemoteCandidateReport(T meta, ICERemoteCandidateReport report) {
 		return null;
 	}
-	
-	
+
+
 }

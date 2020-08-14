@@ -28,7 +28,7 @@ import org.observertc.webrtc.service.evaluators.valueadapters.OutboundRTPConvert
 import org.observertc.webrtc.service.evaluators.valueadapters.ProtocolTypeConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.RemoteInboundRTPConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.TrackConverter;
-import org.observertc.webrtc.service.purgatory.MediaStreamSample;
+import org.observertc.webrtc.service.samples.MediaStreamSample;
 import org.observertc.webrtc.service.samples.WebExtrAppSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +79,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 		final BiFunction<WebExtrAppSample, RTCStats, Report> remoteInboundRTPReportTransformer = this.makeRemoteInboundRTPReportTransformer();
 		final BiFunction<WebExtrAppSample, RTCStats, Report> mediaSourceReportTransformer = this.makeMediaSourceReportTransformer();
 		final BiFunction<WebExtrAppSample, RTCStats, Report> trackReportTransformer = this.makeTrackReportTransformer();
+
 		return new RTCStatsBiTransformer<WebExtrAppSample, Report>() {
 			@Override
 			public Report processInboundRTP(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
