@@ -3,7 +3,7 @@ package org.observertc.webrtc.service.evaluators.valueadapters;
 import java.util.function.Function;
 import org.observertc.webrtc.common.reports.TrackReport;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.service.purgatory.MediaStreamSample;
+import org.observertc.webrtc.service.samples.MediaStreamSample;
 
 public class TrackConverter implements Function<MediaStreamSample, TrackReport> {
 
