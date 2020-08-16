@@ -12,20 +12,24 @@ public class ICELocalCandidateReport extends Report {
 
 	public static ICELocalCandidateReport of(UUID observerUUID,
 											 UUID peerConnectionUUID,
+											 String candidateID,
 											 LocalDateTime timestamp,
 											 Boolean deleted,
 											 String ipLSH,
-											 NetworkType networkType,
+											 String ipFlag,
+											 CandidateNetworkType candidateNetworkType,
 											 Integer port,
 											 Long priority,
 											 ProtocolType protocol) {
 		ICELocalCandidateReport result = new ICELocalCandidateReport();
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
+		result.candidateID = candidateID;
 		result.timestamp = timestamp;
 		result.deleted = deleted;
 		result.ipLSH = ipLSH;
-		result.networkType = networkType;
+		result.ipFlag = ipFlag;
+		result.networkType = candidateNetworkType;
 		result.port = port;
 		result.priority = priority;
 		result.protocol = protocol;
@@ -36,6 +40,10 @@ public class ICELocalCandidateReport extends Report {
 
 	public UUID peerConnectionUUID;
 
+	public String candidateID;
+
+	public String ipFlag;
+
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime timestamp;
@@ -44,7 +52,7 @@ public class ICELocalCandidateReport extends Report {
 
 	public String ipLSH;
 
-	public NetworkType networkType;
+	public CandidateNetworkType networkType;
 
 	public Integer port;
 

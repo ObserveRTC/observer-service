@@ -2,7 +2,6 @@ package org.observertc.webrtc.service.evaluators.mediastreams;
 
 import io.micronaut.context.annotation.Prototype;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,9 +34,7 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 	private final Map<UUID, MediaStreamUpdate> updates;
 	private ProcessorContext context;
 	private final RTCStatsBiTransformer<WebExtrAppSample, Void> updater;
-	private LocalDateTime lastUpdate;
 
-	private final CallCleaner callCleaner;
 	private final ReportsBuffer reportsBuffer;
 
 	private final MediaStreamUpdateProcessor mediaStreamUpdateProcessor;
@@ -45,10 +42,8 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 	public ActiveStreamsEvaluator(
 			EvaluatorsConfig.ActiveStreamsConfig config,
 			MediaStreamUpdateProcessor mediaStreamUpdateProcessor,
-			CallCleaner callCleaner,
 			ReportsBuffer reportsBuffer) {
 		this.config = config;
-		this.callCleaner = callCleaner;
 		this.reportsBuffer = reportsBuffer;
 		this.mediaStreamUpdateProcessor = mediaStreamUpdateProcessor;
 		this.updater = this.makeRTCStatsProcessor();
@@ -60,7 +55,6 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 		this.context = context;
 		this.reportsBuffer.init(this.context);
 		this.mediaStreamUpdateProcessor.init(this.context, this.reportsBuffer);
-		this.callCleaner.init(this.context, this.reportsBuffer);
 		int updatePeriodInS = this.config.updatePeriodInS;
 		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this);
 	}
@@ -85,10 +79,6 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 
 	}
 
-	public int getUpdatePeriodInS() {
-		return this.config.updatePeriodInS;
-	}
-
 	@Override
 	public void punctuate(long timestamp) {
 		if (0 < this.updates.size()) {
@@ -97,8 +87,6 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 			this.mediaStreamUpdateProcessor.accept(updateQ);
 			this.updates.clear();
 		}
-		this.callCleaner.setLastUpdate(this.lastUpdate);
-		this.callCleaner.run();
 		this.reportsBuffer.process();
 	}
 
@@ -121,11 +109,6 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 			Long SSRC = NumberConverter.toLong(rtcStats.getSsrc());
 			mediaStreamUpdate.add(SSRC, webExtrAppSample.timestamp);
 			updates.put(webExtrAppSample.peerConnectionUUID, mediaStreamUpdate);
-			if (mediaStreamUpdate.updated != null) {
-				if (lastUpdate == null || lastUpdate.compareTo(mediaStreamUpdate.updated) < 0) {
-					lastUpdate = mediaStreamUpdate.updated;
-				}
-			}
 		};
 		return new RTCStatsBiTransformer<WebExtrAppSample, Void>() {
 			@Override

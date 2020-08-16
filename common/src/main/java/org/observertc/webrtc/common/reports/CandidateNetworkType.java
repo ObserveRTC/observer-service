@@ -1,6 +1,6 @@
 package org.observertc.webrtc.common.reports;
 
-public enum NetworkType {
+public enum CandidateNetworkType {
 	BLUETOOTH,
 	CELLULAR,
 	ETHERNET,

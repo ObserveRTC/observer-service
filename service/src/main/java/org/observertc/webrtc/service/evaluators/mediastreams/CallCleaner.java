@@ -1,66 +1,86 @@
 package org.observertc.webrtc.service.evaluators.mediastreams;
 
-import io.micronaut.context.annotation.Prototype;
+import io.micronaut.scheduling.annotation.Scheduled;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
-import org.apache.kafka.streams.processor.ProcessorContext;
+import javax.inject.Singleton;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.EvaluatorsConfig;
+import org.observertc.webrtc.service.ObserverKafkaSinks;
 import org.observertc.webrtc.service.ObserverTimeZoneId;
 import org.observertc.webrtc.service.jooq.enums.PeerconnectionsState;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.service.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.service.repositories.SentReportsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Prototype
-public class CallCleaner implements Runnable {
+@Singleton
+public class CallCleaner {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallCleaner.class);
-	private final EvaluatorsConfig.ActiveStreamsConfig config;
-	private ProcessorContext context;
-	private LocalDateTime lastUpdate;
+	private final EvaluatorsConfig.CallCleanerConfig config;
 	private final ObserverTimeZoneId observerTimeZoneId;
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private ReportsBuffer reportsBuffer;
-	private int run = 0;
+	private final ObserverKafkaSinks observerKafkaSinks;
+	private final MaxIdleThresholdProvider maxIdleThresholdProvider;
+	private final ReportsBuffer reportsBuffer;
+	private final SentReportsRepository sentReportsRepository;
 
 	public CallCleaner(
-			EvaluatorsConfig.ActiveStreamsConfig config,
+			EvaluatorsConfig config,
+			SentReportsRepository sentReportsRepository,
 			ActiveStreamsRepository activeStreamsRepository,
 			PeerConnectionsRepository peerConnectionsRepository,
-
-			ObserverTimeZoneId observerTimeZoneId) {
-		this.config = config;
+			MaxIdleThresholdProvider maxIdleThresholdProvider,
+			ObserverKafkaSinks observerKafkaSinks,
+			ObserverTimeZoneId observerTimeZoneId,
+			ReportsBuffer reportsBuffer) {
+		this.config = config.callCleaner;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.observerTimeZoneId = observerTimeZoneId;
-	}
-
-	public void init(ProcessorContext context, ReportsBuffer reportsBuffer) {
-		this.context = context;
+		this.maxIdleThresholdProvider = maxIdleThresholdProvider;
+		this.observerKafkaSinks = observerKafkaSinks;
 		this.reportsBuffer = reportsBuffer;
+		this.sentReportsRepository = sentReportsRepository;
+		this.reportsBuffer.connect(this.observerKafkaSinks::sendReport);
 	}
 
-	public void setLastUpdate(LocalDateTime value) {
-		this.lastUpdate = value;
+	@Scheduled(initialDelay = "10m", fixedRate = "60m")
+	void deleteExpiredPCs() {
+		LocalDateTime now = LocalDateTime.now(this.observerTimeZoneId.getZoneId());
+		LocalDateTime threshold = now.minusDays(this.config.pcRetentionTimeInDays);
+		try {
+			this.peerConnectionsRepository.deleteDetachedPCsUpdatedLessThan(threshold);
+			this.sentReportsRepository.deleteReportedOlderThan(threshold);
+		} catch (Exception ex) {
+			logger.error("Cannot execute remove old PCs", ex);
+		}
 	}
 
-	@Override
-	public void run() {
-		if (this.run < this.config.waitingPeriods) {
-			++this.run;
+	@Scheduled(initialDelay = "2m", fixedRate = "2m")
+	void reportExpiredPCs() {
+		try {
+			this.cleanCalls();
+		} catch (Exception ex) {
+			logger.error("Cannot execute remove old PCs", ex);
+		}
+	}
+
+	private void cleanCalls() {
+		Optional<LocalDateTime> thresholdHolder = this.maxIdleThresholdProvider.get();
+		if (!thresholdHolder.isPresent()) {
 			return;
 		}
-
-		LocalDateTime threshold = this.getMaxIdleThreshold();
+		LocalDateTime threshold = thresholdHolder.get();
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findJoinedPCsUpdatedLowerThan(threshold).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
@@ -76,7 +96,7 @@ public class CallCleaner implements Runnable {
 					peerConnectionUUID,
 					record.getBrowserid(),
 					record.getUpdated());
-			this.context.forward(observerUUID, detachedPeerConnectionReport);
+			this.reportsBuffer.accept(detachedPeerConnectionReport);
 			record.store();
 			Optional<PeerconnectionsRecord> joinedPCHolder =
 					this.peerConnectionsRepository.findByCallUUIDBytes(record.getCalluuid()).filter(r -> r.getState().equals(PeerconnectionsState.joined)).findFirst();
@@ -90,34 +110,5 @@ public class CallCleaner implements Runnable {
 			this.reportsBuffer.accept(finishedCallReport);
 			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
 		}
-
-		++this.run;
 	}
-
-	private LocalDateTime getMaxIdleThreshold() {
-		LocalDateTime now = LocalDateTime.now(this.observerTimeZoneId.getZoneId());
-		LocalDateTime result = this.lastUpdate;
-		if (result == null) {
-			Optional<PeerconnectionsRecord> lastJoinedPCHolder = this.peerConnectionsRepository.getLastJoinedPC();
-			if (!lastJoinedPCHolder.isPresent()) {
-				logger.info("No new peer connection happened in the last {} periods, and no previous joined PC updated field can be used," +
-						" thus the threshold to declare PC detached is based on wall clock", this.run);
-				result = now;
-			} else {
-				PeerconnectionsRecord lastJoinedPC = lastJoinedPCHolder.get();
-				LocalDateTime lastUpdate = lastJoinedPC.getUpdated();
-				result = lastUpdate;
-			}
-		}
-
-		if (result.compareTo(now.minusSeconds(this.config.maxAllowedUpdateGapInS)) < 0) {
-			logger.info("The last updated PC updated time ({}) is older than the actual wall clock time minus the max allowed time gap in" +
-					"seconds {}, thereby the " +
-					"actual wall clock is used as thresholds for detached PCs", this.lastUpdate, this.config.maxAllowedUpdateGapInS);
-			result = now;
-		}
-
-		return result.minusSeconds(this.config.maxIdleTimeInS);
-	}
-
 }

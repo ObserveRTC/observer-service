@@ -1,39 +1,54 @@
 package org.observertc.webrtc.service;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.EachProperty;
+import java.util.List;
 
 @ConfigurationProperties("evaluators")
 public class EvaluatorsConfig {
 
 	public ActiveStreamsConfig activeStreams;
 
-	public RTCStatsConfig rtcStats;
+	public SampleTransformerConfig sampleTransformer;
 
-	public ICEStatsConfig iceStats;
+	public CallCleanerConfig callCleaner;
 
 	@ConfigurationProperties("activeStreams")
 	public static class ActiveStreamsConfig {
 		public int updatePeriodInS;
-		public int maxIdleTimeInS;
-		public int waitingPeriods;
-		public int retentionTimeInDays;
-		public int maxAllowedUpdateGapInS;
 	}
 
+	@ConfigurationProperties("callCleaner")
+	public static class CallCleanerConfig {
+		public int streamMaxIdleTimeInS;
+		public int streamMaxAllowedGapInS;
+		public int pcRetentionTimeInDays;
 
-	@ConfigurationProperties("rtcStats")
-	public static class RTCStatsConfig {
+	}
+
+	@ConfigurationProperties("sampleTransformer")
+	public static class SampleTransformerConfig {
 		public boolean useClientTimestamp;
 		public boolean reportOutboundRTP;
 		public boolean reportInboundRTP;
 		public boolean reportRemoteInboundRTP;
 		public boolean reportTracks;
 		public boolean reportMediaSource;
+		public boolean reportCandidatePairs;
+		public boolean reportLocalCandidates;
+		public boolean reportRemoteCandidates;
+		public int sentReportsCacheSize;
+		public String ipFlagsConfig = null;
+		public List<IPFlagConfig> ipFlags = null;
+
+		//		@ConfigurationProperties("ipFlags")
+		@EachProperty("ipFlags")
+		public static class IPFlagConfig {
+			public String name;
+			public List<String> networks;
+		}
 	}
 
-	@ConfigurationProperties("iceStats")
-	public static class ICEStatsConfig {
-		public boolean useClientTimestamp;
-	}
+
 }
 

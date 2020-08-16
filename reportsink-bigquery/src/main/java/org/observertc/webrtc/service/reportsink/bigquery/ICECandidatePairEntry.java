@@ -16,6 +16,7 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 
 	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
 	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String CANDIDATE_ID_FIELD_NAME = "CandidateID";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
 	public static final String WRITABLE_FIELD_NAME = "writable";
 	public static final String TOTAL_ROUND_TRIP_TIME_FIELD_NAME = "totalRoundTripTime";
@@ -39,6 +40,7 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 		return new ICECandidatePairEntry()
 				.withObserverUUID(iceCandidatePairReport.observerUUID)
 				.withPeerConnectionUUID(iceCandidatePairReport.peerConnectionUUID)
+				.withCandidateID(iceCandidatePairReport.candidateID)
 				.withTimestamp(iceCandidatePairReport.timestamp)
 				.withNominated(iceCandidatePairReport.nominated)
 				.withAvailableOutgoingBitrate(iceCandidatePairReport.availableOutgoingBitrate)
@@ -53,22 +55,29 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 				.withResponseSent(iceCandidatePairReport.responsesSent)
 				.withState(iceCandidatePairReport.state)
 				.withTotalRoundTripTime(iceCandidatePairReport.totalRoundTripTime)
-				.withWritable(iceCandidatePairReport.writable);
+				.withWritable(iceCandidatePairReport.writable)
+				;
 
 
 	}
 
-	private ICECandidatePairEntry withWritable(Boolean value) {
+	public ICECandidatePairEntry withWritable(Boolean value) {
 		this.values.put(WRITABLE_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withTotalRoundTripTime(Double value) {
+
+	public ICECandidatePairEntry withCandidateID(String value) {
+		this.values.put(CANDIDATE_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withTotalRoundTripTime(Double value) {
 		this.values.put(TOTAL_ROUND_TRIP_TIME_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withState(CandidatePairState value) {
+	public ICECandidatePairEntry withState(CandidatePairState value) {
 		String state = null;
 		if (value != null) {
 			state = value.name();
@@ -77,57 +86,57 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 		return this;
 	}
 
-	private ICECandidatePairEntry withResponseSent(Integer value) {
+	public ICECandidatePairEntry withResponseSent(Integer value) {
 		this.values.put(RESPONSES_SENT_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withResponseReceived(Integer value) {
+	public ICECandidatePairEntry withResponseReceived(Integer value) {
 		this.values.put(RESPONSES_RECEIVED_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withRequestsSent(Integer value) {
+	public ICECandidatePairEntry withRequestsSent(Integer value) {
 		this.values.put(REQUESTS_SENT_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withRequestsReceived(Integer value) {
+	public ICECandidatePairEntry withRequestsReceived(Integer value) {
 		this.values.put(REQUESTS_RECEIVED_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withPriority(Integer value) {
+	public ICECandidatePairEntry withPriority(Integer value) {
 		this.values.put(PRIORITY_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withCurrentRoundTripTime(Double value) {
+	public ICECandidatePairEntry withCurrentRoundTripTime(Double value) {
 		this.values.put(CURRENT_ROUND_TRIP_TIME_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withConsentRequestsSent(Integer value) {
+	public ICECandidatePairEntry withConsentRequestsSent(Integer value) {
 		this.values.put(CONSENT_REQUESTS_SENT_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withBytesSent(Integer value) {
+	public ICECandidatePairEntry withBytesSent(Integer value) {
 		this.values.put(BYTES_SENT_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withBytesReceived(Integer value) {
+	public ICECandidatePairEntry withBytesReceived(Integer value) {
 		this.values.put(BYTES_RECEIVED_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withAvailableOutgoingBitrate(Integer value) {
+	public ICECandidatePairEntry withAvailableOutgoingBitrate(Integer value) {
 		this.values.put(AVAILABLE_OUTGOING_BITRATE_FIELD_NAME, value);
 		return this;
 	}
 
-	private ICECandidatePairEntry withNominated(Boolean value) {
+	public ICECandidatePairEntry withNominated(Boolean value) {
 		this.values.put(NOMINATED_FIELD_NAME, value);
 		return this;
 	}

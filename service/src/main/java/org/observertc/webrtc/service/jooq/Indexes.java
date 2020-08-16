@@ -9,6 +9,7 @@ import org.jooq.OrderField;
 import org.jooq.impl.Internal;
 import org.observertc.webrtc.service.jooq.tables.Activestreams;
 import org.observertc.webrtc.service.jooq.tables.Peerconnections;
+import org.observertc.webrtc.service.jooq.tables.Sentreports;
 import org.observertc.webrtc.service.jooq.tables.Users;
 
 
@@ -27,6 +28,7 @@ public class Indexes {
     public static final Index PEERCONNECTIONS_PEERCONNECTIONS_CALLUUID_INDEX = Indexes0.PEERCONNECTIONS_PEERCONNECTIONS_CALLUUID_INDEX;
     public static final Index PEERCONNECTIONS_PEERCONNECTIONS_STATE_INDEX = Indexes0.PEERCONNECTIONS_PEERCONNECTIONS_STATE_INDEX;
     public static final Index PEERCONNECTIONS_PEERCONNECTIONS_UPDATED_INDEX = Indexes0.PEERCONNECTIONS_PEERCONNECTIONS_UPDATED_INDEX;
+    public static final Index SENTREPORTS_SENTREPORTS_PEERCONNECTIONUUID_INDEX = Indexes0.SENTREPORTS_SENTREPORTS_PEERCONNECTIONUUID_INDEX;
     public static final Index USERS_USERS_USERNAME_KEY = Indexes0.USERS_USERS_USERNAME_KEY;
 
     // -------------------------------------------------------------------------
@@ -38,6 +40,7 @@ public class Indexes {
         public static Index PEERCONNECTIONS_PEERCONNECTIONS_CALLUUID_INDEX = Internal.createIndex("PeerConnections_callUUID_index", Peerconnections.PEERCONNECTIONS, new OrderField[] { Peerconnections.PEERCONNECTIONS.CALLUUID }, false);
         public static Index PEERCONNECTIONS_PEERCONNECTIONS_STATE_INDEX = Internal.createIndex("PeerConnections_state_index", Peerconnections.PEERCONNECTIONS, new OrderField[] { Peerconnections.PEERCONNECTIONS.STATE }, false);
         public static Index PEERCONNECTIONS_PEERCONNECTIONS_UPDATED_INDEX = Internal.createIndex("PeerConnections_updated_index", Peerconnections.PEERCONNECTIONS, new OrderField[] { Peerconnections.PEERCONNECTIONS.UPDATED }, false);
+        public static Index SENTREPORTS_SENTREPORTS_PEERCONNECTIONUUID_INDEX = Internal.createIndex("SentReports_peerConnectionUUID_index", Sentreports.SENTREPORTS, new OrderField[] { Sentreports.SENTREPORTS.PEERCONNECTIONUUID }, false);
         public static Index USERS_USERS_USERNAME_KEY = Internal.createIndex("users_username_key", Users.USERS, new OrderField[] { Users.USERS.USERNAME }, false);
     }
 }

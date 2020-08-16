@@ -12,6 +12,7 @@ public class ICECandidatePairReport extends Report {
 
 	public static ICECandidatePairReport of(UUID observerUUID,
 											UUID peerConnectionUUID,
+											String candidateID,
 											LocalDateTime timestamp,
 											Boolean nominated,
 											Integer availableOutgoingBitrate,
@@ -31,6 +32,7 @@ public class ICECandidatePairReport extends Report {
 		ICECandidatePairReport result = new ICECandidatePairReport();
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
+		result.candidateID = candidateID;
 		result.timestamp = timestamp;
 		result.nominated = nominated;
 		result.availableOutgoingBitrate = availableOutgoingBitrate;
@@ -53,6 +55,8 @@ public class ICECandidatePairReport extends Report {
 	public UUID observerUUID;
 
 	public UUID peerConnectionUUID;
+
+	public String candidateID;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)

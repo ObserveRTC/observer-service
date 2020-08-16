@@ -14,6 +14,8 @@ public interface IConfigurationProfiles {
 	 */
 	Map<String, Object> getConfigurationFor(String profileKey);
 
+	Map<String, Map<String, Object>> getProfiles();
+
 	IConfigurationProfiles withProfiles(Map<String, Object> profles);
 
 	IConfigurationProfiles using(IConfigurationLoader configurationLoader);

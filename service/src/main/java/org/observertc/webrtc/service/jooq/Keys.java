@@ -11,10 +11,12 @@ import org.jooq.impl.Internal;
 import org.observertc.webrtc.service.jooq.tables.Activestreams;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Peerconnections;
+import org.observertc.webrtc.service.jooq.tables.Sentreports;
 import org.observertc.webrtc.service.jooq.tables.Users;
 import org.observertc.webrtc.service.jooq.tables.records.ActivestreamsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.ObserversRecord;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
+import org.observertc.webrtc.service.jooq.tables.records.SentreportsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.UsersRecord;
 
 
@@ -40,6 +42,7 @@ public class Keys {
     public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_PRIMARY = UniqueKeys0.KEY_OBSERVERS_PRIMARY;
     public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_UUID = UniqueKeys0.KEY_OBSERVERS_UUID;
     public static final UniqueKey<PeerconnectionsRecord> KEY_PEERCONNECTIONS_PRIMARY = UniqueKeys0.KEY_PEERCONNECTIONS_PRIMARY;
+    public static final UniqueKey<SentreportsRecord> KEY_SENTREPORTS_PRIMARY = UniqueKeys0.KEY_SENTREPORTS_PRIMARY;
     public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = UniqueKeys0.KEY_USERS_PRIMARY;
     public static final UniqueKey<UsersRecord> KEY_USERS_UUID = UniqueKeys0.KEY_USERS_UUID;
     public static final UniqueKey<UsersRecord> KEY_USERS_USERNAME = UniqueKeys0.KEY_USERS_USERNAME;
@@ -63,6 +66,7 @@ public class Keys {
         public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_PRIMARY = Internal.createUniqueKey(Observers.OBSERVERS, "KEY_Observers_PRIMARY", new TableField[] { Observers.OBSERVERS.ID }, true);
         public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_UUID = Internal.createUniqueKey(Observers.OBSERVERS, "KEY_Observers_uuid", new TableField[] { Observers.OBSERVERS.UUID }, true);
         public static final UniqueKey<PeerconnectionsRecord> KEY_PEERCONNECTIONS_PRIMARY = Internal.createUniqueKey(Peerconnections.PEERCONNECTIONS, "KEY_PeerConnections_PRIMARY", new TableField[] { Peerconnections.PEERCONNECTIONS.PEERCONNECTIONUUID }, true);
+        public static final UniqueKey<SentreportsRecord> KEY_SENTREPORTS_PRIMARY = Internal.createUniqueKey(Sentreports.SENTREPORTS, "KEY_SentReports_PRIMARY", new TableField[] { Sentreports.SENTREPORTS.SIGNATURE }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = Internal.createUniqueKey(Users.USERS, "KEY_Users_PRIMARY", new TableField[] { Users.USERS.ID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_UUID = Internal.createUniqueKey(Users.USERS, "KEY_Users_uuid", new TableField[] { Users.USERS.UUID }, true);
         public static final UniqueKey<UsersRecord> KEY_USERS_USERNAME = Internal.createUniqueKey(Users.USERS, "KEY_Users_username", new TableField[] { Users.USERS.USERNAME }, true);

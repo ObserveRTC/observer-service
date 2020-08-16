@@ -12,18 +12,22 @@ public class ICERemoteCandidateReport extends Report {
 
 	public static ICERemoteCandidateReport of(UUID observerUUID,
 											  UUID peerConnectionUUID,
+											  String candidateID,
 											  LocalDateTime timestamp,
 											  Boolean deleted,
 											  String ipLSH,
+											  String ipFlag,
 											  Integer port,
 											  Long priority,
 											  ProtocolType protocol) {
 		ICERemoteCandidateReport result = new ICERemoteCandidateReport();
 		result.observerUUID = observerUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
+		result.candidateID = candidateID;
 		result.timestamp = timestamp;
 		result.deleted = deleted;
 		result.ipLSH = ipLSH;
+		result.ipFlag = ipFlag;
 		result.port = port;
 		result.priority = priority;
 		result.protocol = protocol;
@@ -34,6 +38,8 @@ public class ICERemoteCandidateReport extends Report {
 
 	public UUID peerConnectionUUID;
 
+	public String candidateID;
+
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime timestamp;
@@ -41,6 +47,8 @@ public class ICERemoteCandidateReport extends Report {
 	public Boolean deleted;
 
 	public String ipLSH;
+
+	public String ipFlag;
 
 	public Integer port;
 

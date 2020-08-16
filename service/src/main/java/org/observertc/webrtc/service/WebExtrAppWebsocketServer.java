@@ -76,6 +76,7 @@ public class WebExtrAppWebsocketServer {
 			logger.error("The provided message cannot be parsed for " + observerUUID, e);
 			return;
 		}
+		
 		if (sample.getPeerConnectionID() == null) {
 			logger.warn("Sample is dropped due to null peerconnectionid");
 			return;

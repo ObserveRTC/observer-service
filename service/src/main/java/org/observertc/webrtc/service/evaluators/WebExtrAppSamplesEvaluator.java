@@ -1,8 +1,11 @@
 package org.observertc.webrtc.service.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
+import java.net.InetAddress;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
@@ -19,10 +22,12 @@ import org.observertc.webrtc.service.dto.webextrapp.LocalCandidate;
 import org.observertc.webrtc.service.dto.webextrapp.ObserveRTCCIceStats;
 import org.observertc.webrtc.service.dto.webextrapp.RTCStats;
 import org.observertc.webrtc.service.dto.webextrapp.RemoteCandidate;
+import org.observertc.webrtc.service.evaluators.ipflags.IPAddressConverter;
+import org.observertc.webrtc.service.evaluators.ipflags.IPFlags;
+import org.observertc.webrtc.service.evaluators.valueadapters.CandidateNetworkTypeConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.CandidatePairStateConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.InboundRTPConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.MediaSourceConverter;
-import org.observertc.webrtc.service.evaluators.valueadapters.NetworkTypeConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.NumberConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.OutboundRTPConverter;
 import org.observertc.webrtc.service.evaluators.valueadapters.ProtocolTypeConverter;
@@ -40,13 +45,22 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 	private final RTCStatsBiTransformer<WebExtrAppSample, Report> rtcStatsBiTransformer;
 	private final ICEStatsBiConsumer<WebExtrAppSample> iceStatsBiConsumer;
 	private ProcessorContext context;
-	private final EvaluatorsConfig.RTCStatsConfig config;
+	private final EvaluatorsConfig.SampleTransformerConfig config;
+	private final SentReportsChecker sentReportsChecker;
+	private final IPFlags ipFlags;
+	private final IPAddressConverter ipAddressConverter;
 
-	public WebExtrAppSamplesEvaluator(EvaluatorsConfig.RTCStatsConfig config) {
+	public WebExtrAppSamplesEvaluator(EvaluatorsConfig.SampleTransformerConfig config,
+									  SentReportsChecker sentReportsChecker,
+									  IPFlags ipFlags) {
 		this.config = config;
 		this.rtcStatsBiTransformer = this.makeRTCStatsEvaluator();
 		this.iceStatsBiConsumer = this.makeICEStatsEvaluator();
+		this.sentReportsChecker = sentReportsChecker;
+		this.ipFlags = ipFlags;
+		this.ipAddressConverter = new IPAddressConverter();
 	}
+
 
 	@Override
 	public void init(ProcessorContext context) {
@@ -103,7 +117,12 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 
 			@Override
 			public Report processMediaSource(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				return mediaSourceReportTransformer.apply(webExtrAppSample, rtcStats);
+				Report result = mediaSourceReportTransformer.apply(webExtrAppSample, rtcStats);
+				if (!sentReportsChecker.isSent(result)) {
+					return result;
+				} else {
+					return null;
+				}
 			}
 
 			@Override
@@ -114,59 +133,128 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 	}
 
 	private ICEStatsBiConsumer<WebExtrAppSample> makeICEStatsEvaluator() {
+		final BiConsumer<WebExtrAppSample, CandidatePair> candidatePairReporter = this.makeCandidatePairReporter();
+		final BiConsumer<WebExtrAppSample, LocalCandidate> localCandidateReporter = this.makeLocalCandidateReporter();
+		final BiConsumer<WebExtrAppSample, RemoteCandidate> remoteCandidateReporter = this.makeRemoteCandidateReporter();
 		return new ICEStatsBiConsumer<WebExtrAppSample>() {
 			@Override
 			public void processRemoteCandidate(WebExtrAppSample sample, RemoteCandidate remoteCandidate) {
-				Report iceRemoteCandidateReport = ICERemoteCandidateReport.of(sample.observerUUID,
-						sample.peerConnectionUUID,
-						sample.timestamp,
-						remoteCandidate.getDeleted(),
-						null, // Add IP LSH later!
-						NumberConverter.toInt(remoteCandidate.getPort()),
-						NumberConverter.toLong(remoteCandidate.getPriority()),
-						ProtocolTypeConverter.fromDTOProtocolType(remoteCandidate.getProtocol())
-				);
-				context.forward(sample.observerUUID, iceRemoteCandidateReport);
+				remoteCandidateReporter.accept(sample, remoteCandidate);
 			}
 
 			@Override
 			public void processLocalCandidate(WebExtrAppSample sample, LocalCandidate localCandidate) {
-				Report iceLocalCandidateReport = ICELocalCandidateReport.of(sample.observerUUID,
-						sample.peerConnectionUUID,
-						sample.timestamp,
-						localCandidate.getDeleted(),
-						null, // Add IP LSH later!
-						NetworkTypeConverter.fromDTONetworkType(localCandidate.getNetworkType()),
-						NumberConverter.toInt(localCandidate.getPort()),
-						NumberConverter.toLong(localCandidate.getPriority()),
-						ProtocolTypeConverter.fromDTOProtocolType(localCandidate.getProtocol())
-				);
-				context.forward(sample.observerUUID, iceLocalCandidateReport);
+				localCandidateReporter.accept(sample, localCandidate);
 			}
 
 			@Override
 			public void processCandidatePair(WebExtrAppSample sample, CandidatePair candidatePair) {
-				Report iceCandidatePairReport = ICECandidatePairReport.of(sample.observerUUID,
-						sample.peerConnectionUUID,
-						sample.timestamp,
-						candidatePair.getNominated(),
-						NumberConverter.toInt(candidatePair.getAvailableOutgoingBitrate()),
-						NumberConverter.toInt(candidatePair.getBytesReceived()),
-						NumberConverter.toInt(candidatePair.getBytesSent()),
-						NumberConverter.toInt(candidatePair.getConsentRequestsSent()),
-						candidatePair.getCurrentRoundTripTime(),
-						NumberConverter.toInt(candidatePair.getPriority()),
-						NumberConverter.toInt(candidatePair.getRequestsReceived()),
-						NumberConverter.toInt(candidatePair.getRequestsSent()),
-						NumberConverter.toInt(candidatePair.getResponsesReceived()),
-						NumberConverter.toInt(candidatePair.getResponsesSent()),
-						CandidatePairStateConverter.fromState(candidatePair.getState()),
-						candidatePair.getTotalRoundTripTime(),
-						candidatePair.getWritable()
-				);
+				candidatePairReporter.accept(sample, candidatePair);
+			}
+		};
+	}
+
+	private String getIPFlag(String ip) {
+		if (ip == null) {
+			return null;
+		}
+		Optional<InetAddress> inetAddressHolder = this.ipAddressConverter.apply(ip);
+		if (!inetAddressHolder.isPresent()) {
+			return null;
+		}
+		InetAddress inetAddress = inetAddressHolder.get();
+		Optional<String> ipFlagHolder = this.ipFlags.apply(inetAddress);
+		if (!ipFlagHolder.isPresent()) {
+			return null;
+		}
+		return ipFlagHolder.get();
+	}
+
+	private BiConsumer<WebExtrAppSample, RemoteCandidate> makeRemoteCandidateReporter() {
+		if (!this.config.reportRemoteCandidates) {
+			return (webExtrAppSample, remoteCandidate) -> {
+
+			};
+		}
+		BiConsumer<WebExtrAppSample, RemoteCandidate> result = (sample, remoteCandidate) -> {
+			String ipFlag = getIPFlag(remoteCandidate.getIP());
+			Report iceRemoteCandidateReport = ICERemoteCandidateReport.of(sample.observerUUID,
+					sample.peerConnectionUUID,
+					remoteCandidate.getID(),
+					sample.timestamp,
+					remoteCandidate.getDeleted(),
+					null, // Add IP LSH later!
+					ipFlag,
+					NumberConverter.toInt(remoteCandidate.getPort()),
+					NumberConverter.toLong(remoteCandidate.getPriority()),
+					ProtocolTypeConverter.fromDTOProtocolType(remoteCandidate.getProtocol())
+			);
+			if (!sentReportsChecker.isSent(iceRemoteCandidateReport)) {
+				context.forward(sample.observerUUID, iceRemoteCandidateReport);
+			}
+		};
+		return result;
+	}
+
+	private BiConsumer<WebExtrAppSample, LocalCandidate> makeLocalCandidateReporter() {
+		if (!this.config.reportLocalCandidates) {
+			return (webExtrAppSample, localCandidate) -> {
+
+			};
+		}
+
+		BiConsumer<WebExtrAppSample, LocalCandidate> result = (sample, localCandidate) -> {
+			String ipFlag = getIPFlag(localCandidate.getIP());
+			Report iceLocalCandidateReport = ICELocalCandidateReport.of(sample.observerUUID,
+					sample.peerConnectionUUID,
+					localCandidate.getID(),
+					sample.timestamp,
+					localCandidate.getDeleted(),
+					null, // Add IP LSH later!
+					ipFlag,
+					CandidateNetworkTypeConverter.fromDTONetworkType(localCandidate.getNetworkType()),
+					NumberConverter.toInt(localCandidate.getPort()),
+					NumberConverter.toLong(localCandidate.getPriority()),
+					ProtocolTypeConverter.fromDTOProtocolType(localCandidate.getProtocol())
+			);
+			if (!sentReportsChecker.isSent(iceLocalCandidateReport)) {
+				context.forward(sample.observerUUID, iceLocalCandidateReport);
+			}
+		};
+		return result;
+	}
+
+	private BiConsumer<WebExtrAppSample, CandidatePair> makeCandidatePairReporter() {
+		if (!this.config.reportCandidatePairs) {
+			return (webExtrAppSample, candidatePair) -> {
+
+			};
+		}
+		BiConsumer<WebExtrAppSample, CandidatePair> result = (sample, candidatePair) -> {
+			Report iceCandidatePairReport = ICECandidatePairReport.of(sample.observerUUID,
+					sample.peerConnectionUUID,
+					candidatePair.getID(),
+					sample.timestamp,
+					candidatePair.getNominated(),
+					NumberConverter.toInt(candidatePair.getAvailableOutgoingBitrate()),
+					NumberConverter.toInt(candidatePair.getBytesReceived()),
+					NumberConverter.toInt(candidatePair.getBytesSent()),
+					NumberConverter.toInt(candidatePair.getConsentRequestsSent()),
+					candidatePair.getCurrentRoundTripTime(),
+					NumberConverter.toInt(candidatePair.getPriority()),
+					NumberConverter.toInt(candidatePair.getRequestsReceived()),
+					NumberConverter.toInt(candidatePair.getRequestsSent()),
+					NumberConverter.toInt(candidatePair.getResponsesReceived()),
+					NumberConverter.toInt(candidatePair.getResponsesSent()),
+					CandidatePairStateConverter.fromState(candidatePair.getState()),
+					candidatePair.getTotalRoundTripTime(),
+					candidatePair.getWritable()
+			);
+			if (!sentReportsChecker.isSent(iceCandidatePairReport)) {
 				context.forward(sample.observerUUID, iceCandidatePairReport);
 			}
 		};
+		return result;
 	}
 
 	private BiFunction<WebExtrAppSample, RTCStats, Report> makeOutboundRTPReportTransformer() {

@@ -42,6 +42,11 @@ public class ConfigurationProfiles implements IConfigurationProfiles {
 		return profiles.getConfigurationFor(innerProfileKey);
 	}
 
+	@Override
+	public Map<String, Map<String, Object>> getProfiles() {
+		return this.profiles;
+	}
+
 	/**
 	 * @param profiles
 	 * @return

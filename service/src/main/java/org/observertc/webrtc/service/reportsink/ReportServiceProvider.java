@@ -38,5 +38,4 @@ public class ReportServiceProvider {
 		}
 		return this.reportService;
 	}
-
 }

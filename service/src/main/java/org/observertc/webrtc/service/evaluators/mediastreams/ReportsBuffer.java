@@ -7,10 +7,13 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.apache.kafka.streams.processor.ProcessorContext;
+import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
+import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.jooq.enums.PeerconnectionsState;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
@@ -41,6 +44,13 @@ public class ReportsBuffer implements Consumer<Report> {
 		this.context = context;
 	}
 
+	private BiConsumer<UUID, Report> output;
+
+	public void connect(BiConsumer<UUID, Report> output) {
+		this.output = output;
+	}
+
+
 	public void process() {
 		if (this.drafts.size() < 1) {
 			return;
@@ -61,6 +71,7 @@ public class ReportsBuffer implements Consumer<Report> {
 			draft = this.drafts.removeFirst();
 			Report report = draft.report;
 			UUID observerUUID = null;
+			boolean forward = false;
 			boolean passed = false;
 			AtomicReference<ReportDraft> newDraftHolder = new AtomicReference<>(null);
 			switch (report.type) {
@@ -74,6 +85,27 @@ public class ReportsBuffer implements Consumer<Report> {
 					observerUUID = finishedCallRepot.observerUUID;
 					passed = this.validateFinishedCallReport(finishedCallRepot, newDraftHolder);
 					break;
+				case JOINED_PEER_CONNECTION:
+					JoinedPeerConnectionReport joinedPeerConnectionReport = (JoinedPeerConnectionReport) report;
+					observerUUID = joinedPeerConnectionReport.observerUUID;
+					forward = true;
+					break;
+				case DETACHED_PEER_CONNECTION:
+					DetachedPeerConnectionReport detachedPeerConnectionReport = (DetachedPeerConnectionReport) report;
+					observerUUID = detachedPeerConnectionReport.observerUUID;
+					forward = true;
+					break;
+				default:
+					forward = true;
+					break;
+			}
+			if (forward) {
+				if (observerUUID != null) {
+					this.output.accept(observerUUID, report);
+				} else {
+					logger.warn("Reportsbuffer cannot forward report type of {}", report.type);
+				}
+				continue;
 			}
 			if (!passed) {
 				ReportDraft newDraft = newDraftHolder.get();
@@ -93,7 +125,8 @@ public class ReportsBuffer implements Consumer<Report> {
 				logger.warn("Observer UUID or report is null, cannot be forwarded");
 				continue;
 			}
-			this.context.forward(observerUUID, report);
+			this.output.accept(observerUUID, report);
+//			this.context.forward(observerUUID, report);
 		}
 	}
 

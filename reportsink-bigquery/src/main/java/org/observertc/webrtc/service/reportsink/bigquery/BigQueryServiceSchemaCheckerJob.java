@@ -7,7 +7,6 @@ import com.google.cloud.bigquery.Dataset;
 import com.google.cloud.bigquery.DatasetId;
 import com.google.cloud.bigquery.DatasetInfo;
 import com.google.cloud.bigquery.Field;
-import com.google.cloud.bigquery.FieldList;
 import com.google.cloud.bigquery.LegacySQLTypeName;
 import com.google.cloud.bigquery.Schema;
 import com.google.cloud.bigquery.StandardTableDefinition;
@@ -193,6 +192,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICECandidatePairEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(ICECandidatePairEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(ICECandidatePairEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICECandidatePairEntry.WRITABLE_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.REQUIRED).build()
@@ -238,6 +239,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICELocalCandidateEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(ICELocalCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(ICELocalCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
@@ -251,6 +254,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						Field.newBuilder(ICELocalCandidateEntry.NETWORK_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.PROTOCOL_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.IP_FLAG_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -268,6 +273,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(ICERemoteCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(ICERemoteCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
@@ -279,6 +286,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						Field.newBuilder(ICERemoteCandidateEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.PROTOCOL_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.IP_FLAG_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
