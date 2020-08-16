@@ -147,7 +147,7 @@ public class ReportSignatureMaker implements ReportProcessor<byte[]> {
 				UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null)
 		);
 		this.digester.update(
-				"MISSING".getBytes()
+				report.candidateID.getBytes()
 		);
 		return this.digester.digest();
 	}
@@ -159,7 +159,7 @@ public class ReportSignatureMaker implements ReportProcessor<byte[]> {
 				UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null)
 		);
 		this.digester.update(
-				"MISSING".getBytes()
+				report.candidateID.getBytes()
 		);
 		return this.digester.digest();
 	}
@@ -171,7 +171,7 @@ public class ReportSignatureMaker implements ReportProcessor<byte[]> {
 				UUIDAdapter.toBytesOrDefault(report.peerConnectionUUID, null)
 		);
 		this.digester.update(
-				"MISSING".getBytes()
+				report.candidateID.getBytes()
 		);
 		return this.digester.digest();
 	}
