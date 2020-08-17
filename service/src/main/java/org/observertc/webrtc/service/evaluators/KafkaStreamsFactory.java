@@ -34,16 +34,13 @@ public class KafkaStreamsFactory {
 	private final KafkaTopicsConfiguration kafkaTopicsConfiguration;
 	private final ReportServiceProvider reportServiceProvider;
 	private final Provider<ActiveStreamsEvaluator> activeStreamsEvaluatorProvider;
-	private final Provider<WebExtrAppSamplesEvaluator> webExtrAppSamplesEvaluatorProvider;
 
 	public KafkaStreamsFactory(
 			KafkaTopicsConfiguration kafkaTopicsConfiguration,
 			Provider<ActiveStreamsEvaluator> activeStreamsEvaluatorProvider,
-			Provider<WebExtrAppSamplesEvaluator> webExtrAppSamplesEvaluatorProvider,
 			ReportServiceProvider reportServiceProvider) {
 		this.kafkaTopicsConfiguration = kafkaTopicsConfiguration;
 		this.activeStreamsEvaluatorProvider = activeStreamsEvaluatorProvider;
-		this.webExtrAppSamplesEvaluatorProvider = webExtrAppSamplesEvaluatorProvider;
 		this.reportServiceProvider = reportServiceProvider;
 	}
 
@@ -60,13 +57,7 @@ public class KafkaStreamsFactory {
 				.stream(this.kafkaTopicsConfiguration.webExtrAppSamples, Consumed.with(Serdes.UUID(),
 						new JsonToPOJOMapper<>(WebExtrAppSample.class)));
 
-		WebExtrAppSampleDemuxer demuxer = new WebExtrAppSampleDemuxer(source);
-
-		demuxer.getMediaStatsStreams().transform(activeStreamsEvaluatorProvider::get)
-				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(),
-						new JsonToPOJOMapper<>(Report.class)));
-
-		demuxer.getDefaultStream().transform(webExtrAppSamplesEvaluatorProvider::get)
+		source.transform(activeStreamsEvaluatorProvider::get)
 				.to(this.kafkaTopicsConfiguration.observertcReports, Produced.with(Serdes.UUID(),
 						new JsonToPOJOMapper<>(Report.class)));
 		return source;

@@ -44,6 +44,7 @@ kafkaTopics:
   webExtrAppSamples: ${KAFKA_TOPICS_WEBEXTRAPP_SAMPLES:webExtrAppSamples}
   observertcReports: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
 ---
+
 evaluators:
   callCleaner:
     streamMaxIdleTimeInS: 30
