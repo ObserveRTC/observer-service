@@ -2,6 +2,7 @@ package org.observertc.webrtc.service;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 @ConfigurationProperties("evaluators")
@@ -28,18 +29,17 @@ public class EvaluatorsConfig {
 
 	@ConfigurationProperties("sampleTransformer")
 	public static class SampleTransformerConfig {
-		public boolean useClientTimestamp;
-		public boolean reportOutboundRTP;
-		public boolean reportInboundRTP;
-		public boolean reportRemoteInboundRTP;
-		public boolean reportTracks;
-		public boolean reportMediaSource;
-		public boolean reportCandidatePairs;
-		public boolean reportLocalCandidates;
-		public boolean reportRemoteCandidates;
-		public int sentReportsCacheSize;
-		public String ipFlagsConfig = null;
-		public List<IPFlagConfig> ipFlags = null;
+		public boolean useClientTimestamp = false;
+		public boolean reportOutboundRTPs = true;
+		public boolean reportInboundRTPs = true;
+		public boolean reportRemoteInboundRTPs = true;
+		public boolean reportTracks = true;
+		public boolean reportMediaSources = true;
+		public boolean reportCandidatePairs = true;
+		public boolean reportLocalCandidates = true;
+		public boolean reportRemoteCandidates = true;
+		public int sentReportsCacheSize = 100000;
+		public List<IPFlagConfig> ipFlags = new ArrayList<>();
 
 		//		@ConfigurationProperties("ipFlags")
 		@EachProperty("ipFlags")

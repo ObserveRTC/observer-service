@@ -7,14 +7,13 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import org.apache.kafka.streams.processor.ProcessorContext;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.Report;
+import org.observertc.webrtc.service.ObserverKafkaSinks;
 import org.observertc.webrtc.service.jooq.enums.PeerconnectionsState;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.service.repositories.PeerConnectionsRepository;
@@ -25,12 +24,14 @@ import org.slf4j.LoggerFactory;
 public class ReportsBuffer implements Consumer<Report> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReportsBuffer.class);
-	private ProcessorContext context;
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final Deque<ReportDraft> drafts;
+	private final ObserverKafkaSinks kafkaSinks;
 
-	public ReportsBuffer(PeerConnectionsRepository peerConnectionsRepository) {
+	public ReportsBuffer(PeerConnectionsRepository peerConnectionsRepository,
+						 ObserverKafkaSinks kafkaSinks) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
+		this.kafkaSinks = kafkaSinks;
 		this.drafts = new LinkedList<>();
 	}
 
@@ -39,17 +40,6 @@ public class ReportsBuffer implements Consumer<Report> {
 		ReportDraft draft = new ReportDraft(report);
 		this.drafts.addLast(draft);
 	}
-
-	public void init(ProcessorContext context) {
-		this.context = context;
-	}
-
-	private BiConsumer<UUID, Report> output;
-
-	public void connect(BiConsumer<UUID, Report> output) {
-		this.output = output;
-	}
-
 
 	public void process() {
 		if (this.drafts.size() < 1) {
@@ -101,7 +91,7 @@ public class ReportsBuffer implements Consumer<Report> {
 			}
 			if (forward) {
 				if (observerUUID != null) {
-					this.output.accept(observerUUID, report);
+					this.kafkaSinks.sendReport(observerUUID, report);
 				} else {
 					logger.warn("Reportsbuffer cannot forward report type of {}", report.type);
 				}
@@ -125,8 +115,7 @@ public class ReportsBuffer implements Consumer<Report> {
 				logger.warn("Observer UUID or report is null, cannot be forwarded");
 				continue;
 			}
-			this.output.accept(observerUUID, report);
-//			this.context.forward(observerUUID, report);
+			this.kafkaSinks.sendReport(observerUUID, report);
 		}
 	}
 

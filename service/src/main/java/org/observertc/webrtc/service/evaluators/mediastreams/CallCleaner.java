@@ -51,7 +51,6 @@ public class CallCleaner {
 		this.observerKafkaSinks = observerKafkaSinks;
 		this.reportsBuffer = reportsBuffer;
 		this.sentReportsRepository = sentReportsRepository;
-		this.reportsBuffer.connect(this.observerKafkaSinks::sendReport);
 	}
 
 	@Scheduled(initialDelay = "10m", fixedRate = "60m")
@@ -73,6 +72,7 @@ public class CallCleaner {
 		} catch (Exception ex) {
 			logger.error("Cannot execute remove old PCs", ex);
 		}
+		this.reportsBuffer.process();
 	}
 
 	private void cleanCalls() {

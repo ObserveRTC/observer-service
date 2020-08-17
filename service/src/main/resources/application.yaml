@@ -53,29 +53,26 @@ evaluators:
     updatePeriodInS: 10
   sampleTransformer:
     useClientTimestamp: False
-    reportOutboundRTP: True
-    reportInboundRTP: True
-    reportRemoteInboundRTP: True
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
     reportTracks: True
-    reportMediaSource: True
+    reportMediaSources: True
     candidatePairs: True
     reportCandidatePairs: True
     reportLocalCandidates: True
     reportRemoteCandidates: True
     sentReportsCacheSize: 100000
-    ipFlags:
-      - name: JVB
-        networks:
-          - "192.168.1.0/255.255.255.0"
-          - "192.168.1.104/255.255.255.255"
-#          - "192.168.1.64/255.255.255.224"
-#          - "192.168.1.96/255.255.255.224"
+    #    ipFlags:
+    #      - name: JVB
+    #        networks:
+    #          - "192.168.1.0/255.255.255.0"
 
 ---
 reportsink:
   configFile: ${REPORTSINK_CONFIG_FILE_PATH:`/reportsink.yml`}
-  #  profile: BigQueryProfile
-  profile: DebugProfile
+  profile: BigQueryProfile
+#  profile: DebugProfile
 ---
 hikari:
   username: ${HIKARI_USERNAME:root}

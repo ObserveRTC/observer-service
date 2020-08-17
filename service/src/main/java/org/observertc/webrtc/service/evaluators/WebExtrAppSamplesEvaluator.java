@@ -259,7 +259,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 
 	private BiFunction<WebExtrAppSample, RTCStats, Report> makeOutboundRTPReportTransformer() {
 		BiFunction<WebExtrAppSample, RTCStats, Report> result = (webExtrAppSample, rtcStats) -> null;
-		if (!this.config.reportOutboundRTP) {
+		if (!this.config.reportOutboundRTPs) {
 			return result;
 		}
 		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();
@@ -273,7 +273,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 
 	private BiFunction<WebExtrAppSample, RTCStats, Report> makeInboundRTPReportTransformer() {
 		BiFunction<WebExtrAppSample, RTCStats, Report> result = (webExtrAppSample, rtcStats) -> null;
-		if (!this.config.reportInboundRTP) {
+		if (!this.config.reportInboundRTPs) {
 			return result;
 		}
 		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();
@@ -287,7 +287,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 
 	private BiFunction<WebExtrAppSample, RTCStats, Report> makeRemoteInboundRTPReportTransformer() {
 		BiFunction<WebExtrAppSample, RTCStats, Report> result = (webExtrAppSample, rtcStats) -> null;
-		if (!this.config.reportRemoteInboundRTP) {
+		if (!this.config.reportRemoteInboundRTPs) {
 			return result;
 		}
 		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();
@@ -301,7 +301,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 
 	private BiFunction<WebExtrAppSample, RTCStats, Report> makeMediaSourceReportTransformer() {
 		BiFunction<WebExtrAppSample, RTCStats, Report> result = (webExtrAppSample, rtcStats) -> null;
-		if (!this.config.reportMediaSource) {
+		if (!this.config.reportMediaSources) {
 			return result;
 		}
 		BiFunction<WebExtrAppSample, RTCStats, MediaStreamSample> mediaStreamSampleConverter = this.makeMediaStreamConverter();

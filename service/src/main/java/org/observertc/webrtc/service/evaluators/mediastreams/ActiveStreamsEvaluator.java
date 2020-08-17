@@ -53,7 +53,6 @@ public class ActiveStreamsEvaluator implements Punctuator, Transformer<UUID, Web
 	@Override
 	public void init(ProcessorContext context) {
 		this.context = context;
-		this.reportsBuffer.init(this.context);
 		this.mediaStreamUpdateProcessor.init(this.context, this.reportsBuffer);
 		int updatePeriodInS = this.config.updatePeriodInS;
 		context.schedule(Duration.ofSeconds(updatePeriodInS), PunctuationType.WALL_CLOCK_TIME, this);
