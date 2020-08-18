@@ -125,7 +125,22 @@ public class WebExtrAppWebsocketServer {
 			return ZoneOffset.of("GMT").getId();
 		}
 //		char sign = 0 < hours ? '+' : '';
-		String offsetID = String.format("%02d:00", hours);
+		String offsetID;
+		if (0 < hours) {
+			if (9 < hours) {
+				offsetID = String.format("+%d:00", hours);
+			} else {
+				offsetID = String.format("+%02d:00", hours);
+			}
+		} else {
+			hours *= -1;
+			if (9 < hours) {
+				offsetID = String.format("-%d:00", hours);
+			} else {
+				offsetID = String.format("-%02d:00", hours);
+			}
+		}
+
 //		logger.info("Something 3: {}", offsetID);
 		ZoneOffset zoneOffset;
 		try {
