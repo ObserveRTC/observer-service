@@ -76,7 +76,7 @@ public class WebExtrAppWebsocketServer {
 			logger.error("The provided message cannot be parsed for " + observerUUID, e);
 			return;
 		}
-		
+
 		if (sample.getPeerConnectionID() == null) {
 			logger.warn("Sample is dropped due to null peerconnectionid");
 			return;
@@ -105,12 +105,19 @@ public class WebExtrAppWebsocketServer {
 
 	}
 
-	
+
 	private String getSampleTimeZoneID(PeerConnectionSample sample) {
 		if (sample.getTimeZoneOffsetInMinute() == null) {
 			return null;
 		}
-		Integer hours = sample.getTimeZoneOffsetInMinute().intValue() / 60;
+		Integer hours;
+		try {
+			hours = sample.getTimeZoneOffsetInMinute().intValue() / 60;
+		} catch (Exception ex) {
+			logger.warn("Cannot parse timeZoneOffsetInMinute {}", sample.getTimeZoneOffsetInMinute());
+			return ZoneOffset.of("GMT").getId();
+		}
+
 		if (hours == 0) {
 			return ZoneOffset.of("GMT").getId();
 		}

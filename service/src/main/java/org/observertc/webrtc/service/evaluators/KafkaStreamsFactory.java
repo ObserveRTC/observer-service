@@ -83,6 +83,10 @@ public class KafkaStreamsFactory {
 			return null;
 		}
 
+		if (reportProcessor == null) {
+			return null;
+		}
+
 
 		Properties props = builder.getConfiguration();
 		props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);

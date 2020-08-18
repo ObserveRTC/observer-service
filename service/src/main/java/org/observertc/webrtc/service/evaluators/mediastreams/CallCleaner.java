@@ -98,10 +98,10 @@ public class CallCleaner {
 					record.getUpdated());
 			this.reportsBuffer.accept(detachedPeerConnectionReport);
 			record.store();
-			Optional<PeerconnectionsRecord> joinedPCHolder =
+			Optional<PeerconnectionsRecord> detachedPCHolder =
 					this.peerConnectionsRepository.findByCallUUIDBytes(record.getCalluuid()).filter(r -> r.getState().equals(PeerconnectionsState.joined)).findFirst();
 
-			if (joinedPCHolder.isPresent()) {
+			if (detachedPCHolder.isPresent()) {
 				continue;
 			}
 
