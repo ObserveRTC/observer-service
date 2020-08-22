@@ -37,10 +37,10 @@ public class KafkaTopicCreatorTask extends AbstractTask {
 
 	@Override
 	protected void onExecution(Map<String, Map<String, Object>> results) {
-
-		List<String> topicsToCheck = Arrays.asList(
+		List<KafkaTopicsConfiguration.TopicConfig> topicConfigs = Arrays.asList(
 				this.kafkaTopicsConfiguration.observertcReports,
-				this.kafkaTopicsConfiguration.webExtrAppSamples
+				this.kafkaTopicsConfiguration.webExtrAppSamples,
+				this.kafkaTopicsConfiguration.observertcReportDrafts
 		);
 		AdminClient adminClient = AdminClient.create(this.kafkaConfiguration.getConfig());
 		Set<String> topics;
@@ -53,19 +53,21 @@ public class KafkaTopicCreatorTask extends AbstractTask {
 				logger.error("Could not get kafka topics by adminclient. The initializer failed");
 				return;
 			}
-			for (Iterator<String> it = topicsToCheck.iterator(); it.hasNext(); ) {
-				String topic = it.next();
-				logger.info("Checking existence of topic {}", topic);
-				if (topics.contains(topic)) {
+			for (Iterator<KafkaTopicsConfiguration.TopicConfig> it = topicConfigs.iterator(); it.hasNext(); ) {
+				KafkaTopicsConfiguration.TopicConfig topicConfig = it.next();
+				logger.info("Checking existence of topic {}", topicConfig.topicName);
+				if (topics.contains(topicConfig.topicName)) {
 					continue;
 				}
-				NewTopic newTopic = new NewTopic(topic, kafkaTopicsConfiguration.partitionNumberOnCreating,
-						(short) kafkaTopicsConfiguration.replicationFactorOnCreating);
+				NewTopic newTopic = new NewTopic(topicConfig.topicName, topicConfig.onCreatePartitionNums,
+						(short) topicConfig.onCreateReplicateFactor);
 
 				final CreateTopicsResult createTopicsResult = adminClient.createTopics(Collections.singleton(newTopic));
-				createTopicsResult.values().get(topic).get();
-				logger.info("{} topic is created with replication factor {} and partition number {}", topic,
-						kafkaTopicsConfiguration.replicationFactorOnCreating, kafkaTopicsConfiguration.partitionNumberOnCreating);
+				createTopicsResult.values().get(topicConfig.topicName).get();
+				logger.info("{} topic is created with replication factor {} and partition number {}",
+						topicConfig.topicName,
+						topicConfig.onCreateReplicateFactor,
+						topicConfig.onCreatePartitionNums);
 			}
 		} catch (InterruptedException | ExecutionException e) {
 			if (!(e.getCause() instanceof TopicExistsException))

@@ -1,14 +1,15 @@
 package org.observertc.webrtc.service;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.inject.Singleton;
 
 @Singleton
-public class ObserverTimeZoneId {
+public class ObserverDateTime {
 
 	private ZoneId zoneId;
 
-	public ObserverTimeZoneId(
+	public ObserverDateTime(
 			ObserverConfig config
 	) {
 		this.zoneId = ZoneId.of(config.timeZoneID);
@@ -17,4 +18,10 @@ public class ObserverTimeZoneId {
 	public ZoneId getZoneId() {
 		return this.zoneId;
 	}
+
+	public LocalDateTime now() {
+		return LocalDateTime.now(this.zoneId);
+	}
+	
+	
 }

@@ -4,7 +4,9 @@ import com.google.cloud.bigquery.BigQueryError;
 import com.google.cloud.bigquery.InsertAllRequest;
 import com.google.cloud.bigquery.InsertAllResponse;
 import com.google.cloud.bigquery.TableId;
+import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +18,7 @@ public class BigQueryTable<T extends BigQueryEntry> {
 
 	private final String tableName;
 	private final BigQueryService bigQueryService;
+	private Deque<T> buffer = new LinkedList<>();
 
 	public BigQueryTable(BigQueryService bigQueryService,
 						 String tableName
@@ -24,15 +27,24 @@ public class BigQueryTable<T extends BigQueryEntry> {
 		this.bigQueryService = bigQueryService;
 	}
 
-	public void insert(T entry) {
-		this.logEntry(entry);
-		TableId tableId = this.getTableId();
+	public void add(T entry) {
+		this.buffer.addLast(entry);
+	}
 
+	public void flush() {
+		if (this.buffer.size() < 1) {
+			return;
+		}
+		int buffered = this.buffer.size();
+		TableId tableId = this.getTableId();
+		InsertAllRequest.Builder builder = InsertAllRequest.newBuilder(tableId);
+		while (!this.buffer.isEmpty()) {
+			T entry = this.buffer.removeFirst();
+			builder.addRow(entry.toMap());
+		}
 		InsertAllResponse response =
-				this.bigQueryService.getBigQuery().insertAll(
-						InsertAllRequest.newBuilder(tableId)
-								.addRow(entry.toMap())
-								.build());
+				this.bigQueryService.getBigQuery().insertAll(builder.build());
+
 		if (response.hasErrors()) {
 			// If any of the insertions failed, this lets you inspect the errors
 			for (Map.Entry<Long, List<BigQueryError>> errorEntry : response.getInsertErrors().entrySet()) {
@@ -40,8 +52,29 @@ public class BigQueryTable<T extends BigQueryEntry> {
 						errorEntry.getValue().stream().map(Object::toString).collect(Collectors.toList())));
 				// inspect row error
 			}
+		} else {
+			logger.info("To {} inserted {} rows", tableId.toString(), buffered);
 		}
 	}
+
+//	public void insert(T entry) {
+//		this.logEntry(entry);
+//		TableId tableId = this.getTableId();
+//
+//		InsertAllResponse response =
+//				this.bigQueryService.getBigQuery().insertAll(
+//						InsertAllRequest.newBuilder(tableId)
+//								.addRow(entry.toMap())
+//								.build());
+//		if (response.hasErrors()) {
+//			// If any of the insertions failed, this lets you inspect the errors
+//			for (Map.Entry<Long, List<BigQueryError>> errorEntry : response.getInsertErrors().entrySet()) {
+//				logger.error("{}: {}", errorEntry.getKey(), String.join(", \n",
+//						errorEntry.getValue().stream().map(Object::toString).collect(Collectors.toList())));
+//				// inspect row error
+//			}
+//		}
+//	}
 
 	private TableId getTableId() {
 		String projectName = this.bigQueryService.getProjectName();

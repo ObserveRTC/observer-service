@@ -9,11 +9,15 @@ import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
 import org.observertc.webrtc.service.jooq.tables.Activestreams;
+import org.observertc.webrtc.service.jooq.tables.GlApiRefreshTokens;
+import org.observertc.webrtc.service.jooq.tables.GlMembershiprightsLog;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Peerconnections;
 import org.observertc.webrtc.service.jooq.tables.Sentreports;
 import org.observertc.webrtc.service.jooq.tables.Users;
 import org.observertc.webrtc.service.jooq.tables.records.ActivestreamsRecord;
+import org.observertc.webrtc.service.jooq.tables.records.GlApiRefreshTokensRecord;
+import org.observertc.webrtc.service.jooq.tables.records.GlMembershiprightsLogRecord;
 import org.observertc.webrtc.service.jooq.tables.records.ObserversRecord;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.service.jooq.tables.records.SentreportsRecord;
@@ -31,6 +35,7 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
+    public static final Identity<GlMembershiprightsLogRecord, Integer> IDENTITY_GL_MEMBERSHIPRIGHTS_LOG = Identities0.IDENTITY_GL_MEMBERSHIPRIGHTS_LOG;
     public static final Identity<ObserversRecord, Integer> IDENTITY_OBSERVERS = Identities0.IDENTITY_OBSERVERS;
     public static final Identity<UsersRecord, Integer> IDENTITY_USERS = Identities0.IDENTITY_USERS;
 
@@ -39,6 +44,8 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<ActivestreamsRecord> KEY_ACTIVESTREAMS_PRIMARY = UniqueKeys0.KEY_ACTIVESTREAMS_PRIMARY;
+    public static final UniqueKey<GlApiRefreshTokensRecord> KEY_GL_API_REFRESH_TOKENS_PRIMARY = UniqueKeys0.KEY_GL_API_REFRESH_TOKENS_PRIMARY;
+    public static final UniqueKey<GlMembershiprightsLogRecord> KEY_GL_MEMBERSHIPRIGHTS_LOG_PRIMARY = UniqueKeys0.KEY_GL_MEMBERSHIPRIGHTS_LOG_PRIMARY;
     public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_PRIMARY = UniqueKeys0.KEY_OBSERVERS_PRIMARY;
     public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_UUID = UniqueKeys0.KEY_OBSERVERS_UUID;
     public static final UniqueKey<PeerconnectionsRecord> KEY_PEERCONNECTIONS_PRIMARY = UniqueKeys0.KEY_PEERCONNECTIONS_PRIMARY;
@@ -57,12 +64,15 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 {
+        public static Identity<GlMembershiprightsLogRecord, Integer> IDENTITY_GL_MEMBERSHIPRIGHTS_LOG = Internal.createIdentity(GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG, GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG.LOGID);
         public static Identity<ObserversRecord, Integer> IDENTITY_OBSERVERS = Internal.createIdentity(Observers.OBSERVERS, Observers.OBSERVERS.ID);
         public static Identity<UsersRecord, Integer> IDENTITY_USERS = Internal.createIdentity(Users.USERS, Users.USERS.ID);
     }
 
     private static class UniqueKeys0 {
         public static final UniqueKey<ActivestreamsRecord> KEY_ACTIVESTREAMS_PRIMARY = Internal.createUniqueKey(Activestreams.ACTIVESTREAMS, "KEY_ActiveStreams_PRIMARY", new TableField[] { Activestreams.ACTIVESTREAMS.OBSERVERUUID, Activestreams.ACTIVESTREAMS.SSRC }, true);
+        public static final UniqueKey<GlApiRefreshTokensRecord> KEY_GL_API_REFRESH_TOKENS_PRIMARY = Internal.createUniqueKey(GlApiRefreshTokens.GL_API_REFRESH_TOKENS, "KEY_gl_api_refresh_tokens_PRIMARY", new TableField[] { GlApiRefreshTokens.GL_API_REFRESH_TOKENS.REFRESH_TOKEN }, true);
+        public static final UniqueKey<GlMembershiprightsLogRecord> KEY_GL_MEMBERSHIPRIGHTS_LOG_PRIMARY = Internal.createUniqueKey(GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG, "KEY_gl_membershiprights_log_PRIMARY", new TableField[] { GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG.LOGID }, true);
         public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_PRIMARY = Internal.createUniqueKey(Observers.OBSERVERS, "KEY_Observers_PRIMARY", new TableField[] { Observers.OBSERVERS.ID }, true);
         public static final UniqueKey<ObserversRecord> KEY_OBSERVERS_UUID = Internal.createUniqueKey(Observers.OBSERVERS, "KEY_Observers_uuid", new TableField[] { Observers.OBSERVERS.UUID }, true);
         public static final UniqueKey<PeerconnectionsRecord> KEY_PEERCONNECTIONS_PRIMARY = Internal.createUniqueKey(Peerconnections.PEERCONNECTIONS, "KEY_PeerConnections_PRIMARY", new TableField[] { Peerconnections.PEERCONNECTIONS.PEERCONNECTIONUUID }, true);

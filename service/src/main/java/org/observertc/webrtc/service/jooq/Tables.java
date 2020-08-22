@@ -5,6 +5,8 @@ package org.observertc.webrtc.service.jooq;
 
 
 import org.observertc.webrtc.service.jooq.tables.Activestreams;
+import org.observertc.webrtc.service.jooq.tables.GlApiRefreshTokens;
+import org.observertc.webrtc.service.jooq.tables.GlMembershiprightsLog;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Peerconnections;
 import org.observertc.webrtc.service.jooq.tables.Sentreports;
@@ -21,6 +23,16 @@ public class Tables {
      * A table to track the active streams
      */
     public static final Activestreams ACTIVESTREAMS = Activestreams.ACTIVESTREAMS;
+
+    /**
+     * The table <code>WebRTCObserver.gl_api_refresh_tokens</code>.
+     */
+    public static final GlApiRefreshTokens GL_API_REFRESH_TOKENS = GlApiRefreshTokens.GL_API_REFRESH_TOKENS;
+
+    /**
+     * The table <code>WebRTCObserver.gl_membershiprights_log</code>.
+     */
+    public static final GlMembershiprightsLog GL_MEMBERSHIPRIGHTS_LOG = GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG;
 
     /**
      * Observers

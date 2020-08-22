@@ -1,11 +1,12 @@
 package org.observertc.webrtc.service.evaluators.mediastreams;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.function.Supplier;
 import javax.inject.Singleton;
 import org.observertc.webrtc.service.EvaluatorsConfig;
-import org.observertc.webrtc.service.ObserverTimeZoneId;
+import org.observertc.webrtc.service.ObserverDateTime;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.service.repositories.PeerConnectionsRepository;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ class MaxIdleThresholdProvider implements Supplier<Optional<LocalDateTime>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(MaxIdleThresholdProvider.class);
 	private final EvaluatorsConfig.CallCleanerConfig config;
-	private final ObserverTimeZoneId observerTimeZoneId;
+	private final ObserverDateTime observerDateTime;
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final LocalDateTime initiated;
 	private volatile boolean noJoinedPCLogged = false;
@@ -25,16 +26,16 @@ class MaxIdleThresholdProvider implements Supplier<Optional<LocalDateTime>> {
 	public MaxIdleThresholdProvider(
 			EvaluatorsConfig.CallCleanerConfig config,
 			PeerConnectionsRepository peerConnectionsRepository,
-			ObserverTimeZoneId observerTimeZoneId) {
+			ObserverDateTime observerDateTime) {
 		this.config = config;
 		this.peerConnectionsRepository = peerConnectionsRepository;
-		this.observerTimeZoneId = observerTimeZoneId;
-		this.initiated = LocalDateTime.now(this.observerTimeZoneId.getZoneId());
+		this.observerDateTime = observerDateTime;
+		this.initiated = LocalDateTime.now(this.observerDateTime.getZoneId());
 	}
 
 	@Override
 	public Optional<LocalDateTime> get() {
-		LocalDateTime now = LocalDateTime.now(this.observerTimeZoneId.getZoneId());
+		LocalDateTime now = this.observerDateTime.now();
 		Optional<PeerconnectionsRecord> lastJoinedPCHolder = this.peerConnectionsRepository.getLastJoinedPC();
 		if (!lastJoinedPCHolder.isPresent()) {
 			if (!this.noJoinedPCLogged) {
@@ -47,8 +48,8 @@ class MaxIdleThresholdProvider implements Supplier<Optional<LocalDateTime>> {
 		this.noJoinedPCLogged = false;
 		PeerconnectionsRecord lastJoinedPC = lastJoinedPCHolder.get();
 		LocalDateTime lastUpdate = lastJoinedPC.getUpdated();
-
-		if (lastUpdate.compareTo(now.minusSeconds(this.config.streamMaxAllowedGapInS)) < 0) {
+		long elapsedTimeInS = ChronoUnit.SECONDS.between(lastUpdate, now);
+		if (this.config.streamMaxAllowedGapInS < elapsedTimeInS) {
 			if (this.joinedPCIsTooOldLogged) {
 				logger.info("The last updated PC updated time ({}) is older than the actual wall clock time minus the max allowed time gap in" +
 						"seconds {}, thereby the " +
@@ -58,7 +59,7 @@ class MaxIdleThresholdProvider implements Supplier<Optional<LocalDateTime>> {
 			return Optional.of(now.minusSeconds(this.config.streamMaxIdleTimeInS));
 		}
 		this.joinedPCIsTooOldLogged = false;
-		return Optional.of(now.minusSeconds(this.config.streamMaxIdleTimeInS));
+		return Optional.of(lastUpdate.minusSeconds(this.config.streamMaxIdleTimeInS));
 	}
 
 }

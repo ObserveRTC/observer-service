@@ -11,9 +11,8 @@ import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.EvaluatorsConfig;
-import org.observertc.webrtc.service.ObserverKafkaSinks;
-import org.observertc.webrtc.service.ObserverTimeZoneId;
-import org.observertc.webrtc.service.jooq.enums.PeerconnectionsState;
+import org.observertc.webrtc.service.KafkaSinks;
+import org.observertc.webrtc.service.ObserverDateTime;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.service.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.service.repositories.PeerConnectionsRepository;
@@ -26,12 +25,11 @@ public class CallCleaner {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallCleaner.class);
 	private final EvaluatorsConfig.CallCleanerConfig config;
-	private final ObserverTimeZoneId observerTimeZoneId;
+	private final ObserverDateTime observerDateTime;
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final ObserverKafkaSinks observerKafkaSinks;
+	private final KafkaSinks kafkaSinks;
 	private final MaxIdleThresholdProvider maxIdleThresholdProvider;
-	private final ReportsBuffer reportsBuffer;
 	private final SentReportsRepository sentReportsRepository;
 
 	public CallCleaner(
@@ -40,39 +38,36 @@ public class CallCleaner {
 			ActiveStreamsRepository activeStreamsRepository,
 			PeerConnectionsRepository peerConnectionsRepository,
 			MaxIdleThresholdProvider maxIdleThresholdProvider,
-			ObserverKafkaSinks observerKafkaSinks,
-			ObserverTimeZoneId observerTimeZoneId,
-			ReportsBuffer reportsBuffer) {
+			KafkaSinks kafkaSinks,
+			ObserverDateTime observerDateTime) {
 		this.config = config.callCleaner;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.peerConnectionsRepository = peerConnectionsRepository;
-		this.observerTimeZoneId = observerTimeZoneId;
+		this.observerDateTime = observerDateTime;
 		this.maxIdleThresholdProvider = maxIdleThresholdProvider;
-		this.observerKafkaSinks = observerKafkaSinks;
-		this.reportsBuffer = reportsBuffer;
+		this.kafkaSinks = kafkaSinks;
 		this.sentReportsRepository = sentReportsRepository;
 	}
 
 	@Scheduled(initialDelay = "10m", fixedRate = "60m")
 	void deleteExpiredPCs() {
-		LocalDateTime now = LocalDateTime.now(this.observerTimeZoneId.getZoneId());
+		LocalDateTime now = this.observerDateTime.now();
 		LocalDateTime threshold = now.minusDays(this.config.pcRetentionTimeInDays);
 		try {
-			this.peerConnectionsRepository.deleteDetachedPCsUpdatedLessThan(threshold);
+			this.peerConnectionsRepository.deletePCsDetachedOlderThan(threshold);
 			this.sentReportsRepository.deleteReportedOlderThan(threshold);
 		} catch (Exception ex) {
 			logger.error("Cannot execute remove old PCs", ex);
 		}
 	}
 
-	@Scheduled(initialDelay = "2m", fixedRate = "2m")
+	@Scheduled(initialDelay = "1m", fixedRate = "2m")
 	void reportExpiredPCs() {
 		try {
 			this.cleanCalls();
 		} catch (Exception ex) {
 			logger.error("Cannot execute remove old PCs", ex);
 		}
-		this.reportsBuffer.process();
 	}
 
 	private void cleanCalls() {
@@ -84,7 +79,7 @@ public class CallCleaner {
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findJoinedPCsUpdatedLowerThan(threshold).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
-			record.setState(PeerconnectionsState.detached);
+			record.setDetached(record.getUpdated());
 			record.setUpdated(record.getUpdated());
 
 			UUID observerUUID = UUIDAdapter.toUUID(record.getObserveruuid());
@@ -96,10 +91,10 @@ public class CallCleaner {
 					peerConnectionUUID,
 					record.getBrowserid(),
 					record.getUpdated());
-			this.reportsBuffer.accept(detachedPeerConnectionReport);
+			this.kafkaSinks.sendReport(observerUUID, detachedPeerConnectionReport);
 			record.store();
 			Optional<PeerconnectionsRecord> joinedPCHolder =
-					this.peerConnectionsRepository.findByCallUUIDBytes(record.getCalluuid()).filter(r -> r.getState().equals(PeerconnectionsState.joined)).findFirst();
+					this.peerConnectionsRepository.findJoinedPCsByCallUUIDBytes(record.getCalluuid()).findFirst();
 
 			if (joinedPCHolder.isPresent()) {
 				continue;
@@ -107,7 +102,8 @@ public class CallCleaner {
 
 			//finished call
 			Report finishedCallReport = FinishedCallReport.of(observerUUID, callUUID, record.getUpdated());
-			this.reportsBuffer.accept(finishedCallReport);
+			ReportDraft reportDraft = new ReportDraft(finishedCallReport, this.observerDateTime.now());
+			this.kafkaSinks.sendReportDraft(observerUUID, reportDraft);
 			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
 		}
 	}

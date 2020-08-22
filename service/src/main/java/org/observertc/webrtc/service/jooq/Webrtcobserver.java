@@ -11,6 +11,8 @@ import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 import org.observertc.webrtc.service.jooq.tables.Activestreams;
+import org.observertc.webrtc.service.jooq.tables.GlApiRefreshTokens;
+import org.observertc.webrtc.service.jooq.tables.GlMembershiprightsLog;
 import org.observertc.webrtc.service.jooq.tables.Observers;
 import org.observertc.webrtc.service.jooq.tables.Peerconnections;
 import org.observertc.webrtc.service.jooq.tables.Sentreports;
@@ -23,7 +25,7 @@ import org.observertc.webrtc.service.jooq.tables.Users;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Webrtcobserver extends SchemaImpl {
 
-    private static final long serialVersionUID = 1471620584;
+    private static final long serialVersionUID = 1926320120;
 
     /**
      * The reference instance of <code>WebRTCObserver</code>
@@ -34,6 +36,16 @@ public class Webrtcobserver extends SchemaImpl {
      * A table to track the active streams
      */
     public final Activestreams ACTIVESTREAMS = Activestreams.ACTIVESTREAMS;
+
+    /**
+     * The table <code>WebRTCObserver.gl_api_refresh_tokens</code>.
+     */
+    public final GlApiRefreshTokens GL_API_REFRESH_TOKENS = GlApiRefreshTokens.GL_API_REFRESH_TOKENS;
+
+    /**
+     * The table <code>WebRTCObserver.gl_membershiprights_log</code>.
+     */
+    public final GlMembershiprightsLog GL_MEMBERSHIPRIGHTS_LOG = GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG;
 
     /**
      * Observers
@@ -72,6 +84,8 @@ public class Webrtcobserver extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
             Activestreams.ACTIVESTREAMS,
+            GlApiRefreshTokens.GL_API_REFRESH_TOKENS,
+            GlMembershiprightsLog.GL_MEMBERSHIPRIGHTS_LOG,
             Observers.OBSERVERS,
             Peerconnections.PEERCONNECTIONS,
             Sentreports.SENTREPORTS,

@@ -15,7 +15,7 @@ import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
 import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.EvaluatorsConfig;
-import org.observertc.webrtc.service.ObserverKafkaSinks;
+import org.observertc.webrtc.service.KafkaSinks;
 import org.observertc.webrtc.service.dto.ICEStatsBiConsumer;
 import org.observertc.webrtc.service.dto.RTCStatsBiTransformer;
 import org.observertc.webrtc.service.dto.webextrapp.CandidatePair;
@@ -39,12 +39,11 @@ import org.observertc.webrtc.service.samples.WebExtrAppSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Prototype
 @KafkaListener(
 		groupId = "webrtc-observer-webExtrAppSamplesEvaluator",
-		clientId = "webExtrAppSamplesEvaluator",
 		threads = 4
 )
+@Prototype
 public class WebExtrAppSamplesEvaluatorNew {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebExtrAppSamplesEvaluatorNew.class);
@@ -55,11 +54,11 @@ public class WebExtrAppSamplesEvaluatorNew {
 	private final IPFlags ipFlags;
 	private final IPAddressConverter ipAddressConverter;
 
-	private final ObserverKafkaSinks kafkaSinks;
+	private final KafkaSinks kafkaSinks;
 
 	public WebExtrAppSamplesEvaluatorNew(EvaluatorsConfig.SampleTransformerConfig config,
 										 SentReportsChecker sentReportsChecker,
-										 ObserverKafkaSinks kafkaSinks,
+										 KafkaSinks kafkaSinks,
 										 IPFlags ipFlags) {
 		this.config = config;
 		this.rtcStatsBiTransformer = this.makeRTCStatsEvaluator();
@@ -71,7 +70,7 @@ public class WebExtrAppSamplesEvaluatorNew {
 	}
 
 
-	@Topic("${kafkaTopics.webExtrAppSamples}")
+	@Topic("${kafkaTopics.webExtrAppSamples.topicName}")
 	public void receive(@KafkaKey UUID peerConnectionUUID, WebExtrAppSample sample) {
 		Iterator<RTCStats> it = WebExtrAppSampleIteratorProvider.RTCStatsIt(sample);
 		for (; it.hasNext(); ) {
