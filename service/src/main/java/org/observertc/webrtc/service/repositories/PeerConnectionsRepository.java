@@ -3,6 +3,7 @@ package org.observertc.webrtc.service.repositories;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -12,12 +13,11 @@ import java.util.stream.StreamSupport;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import org.jooq.Field;
-import org.jooq.InsertValuesStep7;
+import org.jooq.InsertValuesStep8;
 import org.jooq.impl.DSL;
 import org.observertc.webrtc.common.BatchCollector;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.service.jooq.Tables;
-import org.observertc.webrtc.service.jooq.enums.PeerconnectionsState;
 import org.observertc.webrtc.service.jooq.tables.Peerconnections;
 import org.observertc.webrtc.service.jooq.tables.records.PeerconnectionsRecord;
 
@@ -27,7 +27,11 @@ public class PeerConnectionsRepository {
 	private static int DEFAULT_BULK_SIZE = 5000;
 
 	private static <T> Field<T> values(Field<T> field) {
-		return DSL.field("VALUES({0})", field.getDataType(), field);
+		return DSL.field("VALUES({0})", field.getDataType(), field.getUnqualifiedName());
+	}
+
+	private static <T> Field<T> newRow(Field<T> field) {
+		return DSL.field("new.{0}", field.getDataType(), field.getName());
 	}
 
 	private final IDSLContextProvider contextProvider;
@@ -49,7 +53,8 @@ public class PeerConnectionsRepository {
 				.onDuplicateKeyUpdate()
 				.set(TABLE.PEERCONNECTIONUUID, values(TABLE.PEERCONNECTIONUUID))
 				.set(TABLE.BROWSERID, values(TABLE.BROWSERID))
-				.set(TABLE.STATE, values(TABLE.STATE))
+				.set(TABLE.JOINED, values(TABLE.JOINED))
+				.set(TABLE.DETACHED, values(TABLE.DETACHED))
 				.set(TABLE.UPDATED, values(TABLE.UPDATED))
 				.set(TABLE.TIMEZONE, values(TABLE.TIMEZONE))
 				.set(TABLE.OBSERVERUUID, values(TABLE.OBSERVERUUID))
@@ -69,13 +74,14 @@ public class PeerConnectionsRepository {
 	@NonNull
 	public <S extends PeerconnectionsRecord> Iterable<S> updateAll(@NonNull @NotNull Iterable<S> entities) {
 		this.consumeBatches(entities, batchedEntities -> {
-			InsertValuesStep7<PeerconnectionsRecord, byte[], String, PeerconnectionsState, LocalDateTime, String, byte[], byte[]> sql =
+			InsertValuesStep8<PeerconnectionsRecord, byte[], String, LocalDateTime, LocalDateTime, LocalDateTime, String, byte[], byte[]> sql =
 					contextProvider.get().insertInto(
 							TABLE,
 							TABLE.PEERCONNECTIONUUID,
 							TABLE.BROWSERID,
-							TABLE.STATE,
+							TABLE.JOINED,
 							TABLE.UPDATED,
+							TABLE.DETACHED,
 							TABLE.TIMEZONE,
 							TABLE.OBSERVERUUID,
 							TABLE.CALLUUID);
@@ -84,8 +90,9 @@ public class PeerConnectionsRepository {
 				PeerconnectionsRecord record = it.next();
 				sql.values(record.getPeerconnectionuuid(),
 						record.getBrowserid(),
-						record.getState(),
+						record.getJoined(),
 						record.getUpdated(),
+						record.getDetached(),
 						record.getTimezone(),
 						record.getObserveruuid(),
 						record.getCalluuid()
@@ -95,8 +102,9 @@ public class PeerConnectionsRepository {
 					.onDuplicateKeyUpdate()
 					.set(TABLE.PEERCONNECTIONUUID, values(TABLE.PEERCONNECTIONUUID))
 					.set(TABLE.BROWSERID, values(TABLE.BROWSERID))
-					.set(TABLE.STATE, values(TABLE.STATE))
+					.set(TABLE.JOINED, values(TABLE.JOINED))
 					.set(TABLE.UPDATED, values(TABLE.UPDATED))
+					.set(TABLE.DETACHED, values(TABLE.DETACHED))
 					.set(TABLE.TIMEZONE, values(TABLE.TIMEZONE))
 					.set(TABLE.OBSERVERUUID, values(TABLE.OBSERVERUUID))
 					.set(TABLE.CALLUUID, values(TABLE.CALLUUID))
@@ -106,14 +114,13 @@ public class PeerConnectionsRepository {
 	}
 
 	private <S extends PeerconnectionsRecord> void consumeBatches(Iterable<S> entities, Consumer<Iterable<S>> consumer) {
-//		StreamSupport.stream(entities.spliterator(), false).collect(BatchCollector.makeCollector(DEFAULT_BULK_SIZE, batchedEntities -> {
-//			if (batchedEntities.size() < 1) {
-//				return;
-//			}
-//			consumer.accept(batchedEntities);
-//		}));
-		// TODO: fix it, because itw not working
-		consumer.accept(entities);
+		StreamSupport.stream(entities.spliterator(), false).collect(BatchCollector.makeCollector(DEFAULT_BULK_SIZE, batchedEntities -> {
+			if (batchedEntities.size() < 1) {
+				return;
+			}
+			consumer.accept(batchedEntities);
+		}));
+//		consumer.accept(entities);
 	}
 
 
@@ -124,14 +131,25 @@ public class PeerConnectionsRepository {
 	}
 
 	@NonNull
+	public Stream<PeerconnectionsRecord> findJoinedPCsByCallUUID(@NonNull @NotNull UUID callUUID) {
+		byte[] callUUIDBytes = UUIDAdapter.toBytesOrDefault(callUUID, null);
+		return this.findJoinedPCsByCallUUIDBytes(callUUIDBytes);
+	}
+
+	@NonNull
 	public Stream<PeerconnectionsRecord> findByCallUUIDBytes(@NonNull @NotNull byte[] callUUIDBytes) {
 		return this.contextProvider.get().selectFrom(TABLE).where(TABLE.CALLUUID.eq(callUUIDBytes)).stream();
+	}
+
+	@NonNull
+	public Stream<PeerconnectionsRecord> findJoinedPCsByCallUUIDBytes(@NonNull @NotNull byte[] callUUIDBytes) {
+		return this.contextProvider.get().selectFrom(TABLE).where(TABLE.CALLUUID.eq(callUUIDBytes)).and(TABLE.DETACHED.isNull()).stream();
 	}
 
 
 	@NonNull
 	public Stream<PeerconnectionsRecord> findJoinedPCsUpdatedLowerThan(@NonNull LocalDateTime threshold) {
-		return this.contextProvider.get().selectFrom(TABLE).where(TABLE.STATE.eq(PeerconnectionsState.joined)).and(TABLE.UPDATED.lt(threshold)).stream();
+		return this.contextProvider.get().selectFrom(TABLE).where(TABLE.UPDATED.lt(threshold)).and(TABLE.DETACHED.isNull()).stream();
 	}
 
 	@NonNull
@@ -140,6 +158,14 @@ public class PeerConnectionsRepository {
 				.selectFrom(TABLE)
 				.where(TABLE.PEERCONNECTIONUUID.eq(UUIDAdapter.toBytesOrDefault(peerConnectionUUID, null)))
 				.fetchOptionalInto(PeerconnectionsRecord.class);
+	}
+
+	@NonNull
+	public Stream<PeerconnectionsRecord> findAll(@NonNull @NotNull List<byte[]> peerConnectionUUIDs) {
+		return this.contextProvider.get()
+				.selectFrom(TABLE)
+				.where(TABLE.PEERCONNECTIONUUID.in(peerConnectionUUIDs))
+				.stream();
 	}
 
 	public boolean existsById(@NonNull @NotNull UUID peerConnectionUUID) {
@@ -192,16 +218,17 @@ public class PeerConnectionsRepository {
 		this.contextProvider.get().deleteFrom(TABLE).execute();
 	}
 
-	public void deleteDetachedPCsUpdatedLessThan(LocalDateTime threshold) {
-		this.contextProvider.get().deleteFrom(TABLE).where(TABLE.UPDATED.lt(threshold)).and(TABLE.STATE.eq(PeerconnectionsState.detached)).execute();
+	public void deletePCsDetachedOlderThan(LocalDateTime threshold) {
+		this.contextProvider.get().deleteFrom(TABLE).where(TABLE.UPDATED.lt(threshold)).and(TABLE.DETACHED.isNotNull()).execute();
 	}
 
 	public Optional<PeerconnectionsRecord> getLastJoinedPC() {
 		return this.contextProvider.get()
 				.selectFrom(TABLE)
-				.where(TABLE.STATE.eq(PeerconnectionsState.joined))
+				.where(TABLE.DETACHED.isNull())
 				.orderBy(TABLE.UPDATED.desc())
 				.limit(1)
 				.fetchOptional();
 	}
+
 }

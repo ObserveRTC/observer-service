@@ -6,7 +6,7 @@ import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.health.HeartbeatEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.observertc.webrtc.service.ObserverTimeZoneId;
+import org.observertc.webrtc.service.ObserverDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public class HeartBeatListener implements ApplicationEventListener<HeartbeatEven
 	private static final Logger logger = LoggerFactory.getLogger(HeartBeatListener.class);
 
 	@Inject
-	ObserverTimeZoneId observerTimeZoneId;
+	ObserverDateTime observerDateTime;
 
 	public HeartBeatListener(KafkaInitializerJob kafkaInitializerJob) {
 

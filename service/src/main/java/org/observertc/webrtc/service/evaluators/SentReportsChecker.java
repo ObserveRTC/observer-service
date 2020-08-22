@@ -24,7 +24,7 @@ import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.common.reports.ReportProcessor;
 import org.observertc.webrtc.common.reports.TrackReport;
 import org.observertc.webrtc.service.EvaluatorsConfig;
-import org.observertc.webrtc.service.ObserverTimeZoneId;
+import org.observertc.webrtc.service.ObserverDateTime;
 import org.observertc.webrtc.service.evaluators.valueadapters.ReportSignatureMaker;
 import org.observertc.webrtc.service.jooq.tables.records.SentreportsRecord;
 import org.observertc.webrtc.service.repositories.SentReportsRepository;
@@ -39,17 +39,17 @@ public class SentReportsChecker {
 	private final SentReportsRepository sentReportsRepository;
 	private final ReportSignatureMaker reportSignatureMaker;
 	private final Set<ByteBuffer> cache;
-	private final ObserverTimeZoneId observerTimeZoneId;
+	private final ObserverDateTime observerDateTime;
 	private final ReportProcessor<UUID> pcUUIDExtractor;
 
 	public SentReportsChecker(
 			EvaluatorsConfig config,
-			ObserverTimeZoneId observerTimeZoneId,
+			ObserverDateTime observerDateTime,
 			SentReportsRepository sentReportsRepository,
 			ReportSignatureMaker reportSignatureMaker
 	) {
 		this.config = config;
-		this.observerTimeZoneId = observerTimeZoneId;
+		this.observerDateTime = observerDateTime;
 		this.sentReportsRepository = sentReportsRepository;
 		this.reportSignatureMaker = reportSignatureMaker;
 		this.pcUUIDExtractor = this.makePCUUIDExtractor();
@@ -73,7 +73,7 @@ public class SentReportsChecker {
 		this.cache.add(wrappedSignature);
 		boolean exists = this.sentReportsRepository.existsBySignature(signature);
 		if (!exists) {
-			LocalDateTime now = LocalDateTime.now(this.observerTimeZoneId.getZoneId());
+			LocalDateTime now = LocalDateTime.now(this.observerDateTime.getZoneId());
 			UUID pcUUID = pcUUIDExtractor.process(report);
 			this.sentReportsRepository.update(
 					new SentreportsRecord(signature, UUIDAdapter.toBytesOrDefault(pcUUID, null), now)

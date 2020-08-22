@@ -24,11 +24,11 @@ import org.slf4j.LoggerFactory;
 public class WebExtrAppWebsocketServer {
 	private static final Logger logger = LoggerFactory.getLogger(WebExtrAppWebsocketServer.class);
 	private final ObserverRepository observerRepository;
-	private final ObserverKafkaSinks kafkaSinks;
+	private final KafkaSinks kafkaSinks;
 	private final ObserverConfig config;
 
 	@Inject
-	ObserverTimeZoneId observerTimeZoneId;
+	ObserverDateTime observerDateTime;
 //	private final IDSLContextProvider contextProvider;
 
 //	public DemoWebsocketServer(ObserverRepository observerRepository, DemoSink sink) {
@@ -39,7 +39,7 @@ public class WebExtrAppWebsocketServer {
 	public WebExtrAppWebsocketServer(
 			ObserverConfig config,
 			ObserverRepository observerRepository,
-			ObserverKafkaSinks kafkaSinks) {
+			KafkaSinks kafkaSinks) {
 		this.observerRepository = observerRepository;
 		this.kafkaSinks = kafkaSinks;
 		this.config = config;
@@ -81,7 +81,7 @@ public class WebExtrAppWebsocketServer {
 			logger.warn("Sample is dropped due to null peerconnectionid");
 			return;
 		}
-		LocalDateTime timestamp = LocalDateTime.now(observerTimeZoneId.getZoneId());
+		LocalDateTime timestamp = LocalDateTime.now(observerDateTime.getZoneId());
 		String sampleTimeZoneID = this.getSampleTimeZoneID(sample);
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.getPeerConnectionID());
 		if (!peerConnectionUUIDHolder.isPresent()) {
@@ -101,7 +101,7 @@ public class WebExtrAppWebsocketServer {
 				sampleTimeZoneID,
 				timestamp);
 
-		this.kafkaSinks.sendWebExtrAppSample(peerConnectionUUID, webExtrAppSample);
+		this.kafkaSinks.sendWebExtrAppSamples(peerConnectionUUID, webExtrAppSample);
 
 	}
 
