@@ -110,12 +110,38 @@ public class WebExtrAppWebsocketServer {
 		if (sample.getTimeZoneOffsetInMinute() == null) {
 			return null;
 		}
-		Integer hours = sample.getTimeZoneOffsetInMinute().intValue() / 60;
+		Integer hours;
+		try {
+			Double something = sample.getTimeZoneOffsetInMinute() / 60;
+//			logger.info("Something 1: {}", something);
+			hours = something.intValue();
+//			logger.info("Something 2: {}", hours);
+		} catch (Exception ex) {
+			logger.warn("Cannot parse timeZoneOffsetInMinute {}", sample.getTimeZoneOffsetInMinute());
+			return ZoneOffset.of("GMT").getId();
+		}
+
 		if (hours == 0) {
 			return ZoneOffset.of("GMT").getId();
 		}
-		char sign = 0 < hours ? '+' : '-';
-		String offsetID = String.format("%c%02d:00", sign, hours);
+//		char sign = 0 < hours ? '+' : '';
+		String offsetID;
+		if (0 < hours) {
+			if (9 < hours) {
+				offsetID = String.format("+%d:00", hours);
+			} else {
+				offsetID = String.format("+%02d:00", hours);
+			}
+		} else {
+			hours *= -1;
+			if (9 < hours) {
+				offsetID = String.format("-%d:00", hours);
+			} else {
+				offsetID = String.format("-%02d:00", hours);
+			}
+		}
+
+//		logger.info("Something 3: {}", offsetID);
 		ZoneOffset zoneOffset;
 		try {
 			zoneOffset = ZoneOffset.of(offsetID);
