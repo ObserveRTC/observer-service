@@ -1,5 +1,8 @@
 package org.observertc.webrtc.service.evaluators;
 
+import io.micronaut.configuration.kafka.annotation.KafkaKey;
+import io.micronaut.configuration.kafka.annotation.KafkaListener;
+import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.context.annotation.Prototype;
 import java.net.InetAddress;
 import java.util.Iterator;
@@ -7,14 +10,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import org.apache.kafka.streams.KeyValue;
-import org.apache.kafka.streams.kstream.Transformer;
-import org.apache.kafka.streams.processor.ProcessorContext;
 import org.observertc.webrtc.common.reports.ICECandidatePairReport;
 import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
 import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.service.EvaluatorsConfig;
+import org.observertc.webrtc.service.KafkaSinks;
 import org.observertc.webrtc.service.dto.ICEStatsBiConsumer;
 import org.observertc.webrtc.service.dto.RTCStatsBiTransformer;
 import org.observertc.webrtc.service.dto.webextrapp.CandidatePair;
@@ -38,20 +39,26 @@ import org.observertc.webrtc.service.samples.WebExtrAppSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@KafkaListener(
+		groupId = "webrtc-observer-webExtrAppSamplesEvaluator",
+		threads = 4
+)
 @Prototype
-public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppSample, KeyValue<UUID, Report>> {
+public class WebExtrAppSamplesEvaluator {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebExtrAppSamplesEvaluator.class);
 	private final RTCStatsBiTransformer<WebExtrAppSample, Report> rtcStatsBiTransformer;
 	private final ICEStatsBiConsumer<WebExtrAppSample> iceStatsBiConsumer;
-	private ProcessorContext context;
 	private final EvaluatorsConfig.SampleTransformerConfig config;
 	private final SentReportsChecker sentReportsChecker;
 	private final IPFlags ipFlags;
 	private final IPAddressConverter ipAddressConverter;
 
+	private final KafkaSinks kafkaSinks;
+
 	public WebExtrAppSamplesEvaluator(EvaluatorsConfig.SampleTransformerConfig config,
 									  SentReportsChecker sentReportsChecker,
+									  KafkaSinks kafkaSinks,
 									  IPFlags ipFlags) {
 		this.config = config;
 		this.rtcStatsBiTransformer = this.makeRTCStatsEvaluator();
@@ -59,32 +66,22 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 		this.sentReportsChecker = sentReportsChecker;
 		this.ipFlags = ipFlags;
 		this.ipAddressConverter = new IPAddressConverter();
+		this.kafkaSinks = kafkaSinks;
 	}
 
 
-	@Override
-	public void init(ProcessorContext context) {
-		this.context = context;
-	}
-
-	@Override
-	public void close() {
-
-	}
-
-	@Override
-	public KeyValue<UUID, Report> transform(UUID peerConnectionUUID, WebExtrAppSample sample) {
+	@Topic("${kafkaTopics.webExtrAppSamples.topicName}")
+	public void receive(@KafkaKey UUID peerConnectionUUID, WebExtrAppSample sample) {
 		Iterator<RTCStats> it = WebExtrAppSampleIteratorProvider.RTCStatsIt(sample);
 		for (; it.hasNext(); ) {
 			RTCStats rtcStatsItem = it.next();
 			Report report = this.rtcStatsBiTransformer.transform(rtcStatsItem, sample);
 			if (report != null) {
-				this.context.forward(sample.observerUUID, report);
+				kafkaSinks.sendReport(sample.observerUUID, report);
 			}
 		}
 		ObserveRTCCIceStats iceStats = sample.peerConnectionSample.getIceStats();
 		this.iceStatsBiConsumer.accept(iceStats, sample);
-		return null;
 	}
 
 	private RTCStatsBiTransformer<WebExtrAppSample, Report> makeRTCStatsEvaluator() {
@@ -190,7 +187,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 					ProtocolTypeConverter.fromDTOProtocolType(remoteCandidate.getProtocol())
 			);
 			if (!sentReportsChecker.isSent(iceRemoteCandidateReport)) {
-				context.forward(sample.observerUUID, iceRemoteCandidateReport);
+				kafkaSinks.sendReport(sample.observerUUID, iceRemoteCandidateReport);
 			}
 		};
 		return result;
@@ -218,7 +215,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 					ProtocolTypeConverter.fromDTOProtocolType(localCandidate.getProtocol())
 			);
 			if (!sentReportsChecker.isSent(iceLocalCandidateReport)) {
-				context.forward(sample.observerUUID, iceLocalCandidateReport);
+				kafkaSinks.sendReport(sample.observerUUID, iceLocalCandidateReport);
 			}
 		};
 		return result;
@@ -251,7 +248,7 @@ public class WebExtrAppSamplesEvaluator implements Transformer<UUID, WebExtrAppS
 					candidatePair.getWritable()
 			);
 			if (!sentReportsChecker.isSent(iceCandidatePairReport)) {
-				context.forward(sample.observerUUID, iceCandidatePairReport);
+				kafkaSinks.sendReport(sample.observerUUID, iceCandidatePairReport);
 			}
 		};
 		return result;
