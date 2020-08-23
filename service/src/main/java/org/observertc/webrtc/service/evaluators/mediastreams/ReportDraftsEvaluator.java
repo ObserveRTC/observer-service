@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 		threads = 1,
 		batch = true,
 		properties = {
-				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "30000"),
+				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "15000"),
 				@Property(name = ConsumerConfig.FETCH_MIN_BYTES_CONFIG, value = "10485760"),
 				@Property(name = ConsumerConfig.MAX_POLL_RECORDS_CONFIG, value = "5000")
 		}
