@@ -1,7 +1,6 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
 import java.time.Duration;
-import java.time.ZoneId;
 import java.util.UUID;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.PunctuationType;
@@ -25,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BigQueryReportService implements ReportService {
-	public static ZoneId serviceZoneId = ZoneId.of("EET");
 
 	private static final Logger logger = LoggerFactory.getLogger(BigQueryReportService.class);
 
@@ -49,8 +47,6 @@ public class BigQueryReportService implements ReportService {
 
 	public BigQueryReportService(BigQueryReportServiceBuilder.Config config) {
 		this.config = config;
-		// TODO: hacky solution!
-		serviceZoneId = ZoneId.of(config.timeZoneId);
 		this.bigQueryService = new BigQueryService(config.projectName, config.datasetName);
 		this.initiatedCalls = new BigQueryTable(bigQueryService, config.initiatedCallsTable);
 		this.finishedCalls = new BigQueryTable(bigQueryService, config.finishedCallsTable);

@@ -139,6 +139,7 @@ public class ActiveStreamsEvaluator {
 							.collect(Collectors.toList());
 			List<ActivestreamsRecord> activeStreamsRecords
 					= this.activeStreamsRepository.streamByIds(activeStreamKeys.stream()).collect(Collectors.toList());
+			byte[] callUUIDBytes = null;
 
 			if (activeStreamsRecords != null && 0 < activeStreamsRecords.size()) {
 				Optional<byte[]> callUUIDBytesHolder =
@@ -147,18 +148,30 @@ public class ActiveStreamsEvaluator {
 					logger.error("Active streams are detected without callUUID");
 					continue;
 				}
-				this.joinPeerConnection(callUUIDBytesHolder.get(), mediaStreamUpdate);
+				callUUIDBytes = callUUIDBytesHolder.get();
+			} else {
+				Optional<PeerconnectionsRecord> pcHolder =
+						this.peerConnectionsRepository.findByJoinedBrowserID(mediaStreamUpdate.created,
+								mediaStreamUpdate.browserID);
+				if (pcHolder.isPresent()) {
+					callUUIDBytes = pcHolder.get().getCalluuid();
+				}
+			}
+
+			if (callUUIDBytes != null) {
+				this.joinPeerConnection(callUUIDBytes, mediaStreamUpdate);
 				continue;
 			}
 
 			// INITIATED
 			UUID callUUID = UUID.randomUUID();
-			byte[] callUUIDBytes = UUIDAdapter.toBytes(callUUID);
+			callUUIDBytes = UUIDAdapter.toBytes(callUUID);
+			final byte[] finalCallUUIDBytes = callUUIDBytes;
 			List<ActivestreamsRecord> newActiveStreams = activeStreamKeys.stream()
 					.map(activeStreamKey -> new ActivestreamsRecord(
 							activeStreamKey.getObserverUUIDBytes(),
 							activeStreamKey.getSSRC(),
-							callUUIDBytes)
+							finalCallUUIDBytes)
 					)
 					.collect(Collectors.toList());
 			try {
@@ -177,6 +190,7 @@ public class ActiveStreamsEvaluator {
 			this.kafkaSinks.sendReportDraft(mediaStreamUpdate.observerUUID, reportDraft);
 			newPCs.addLast(mediaStreamUpdate);
 		}
+
 	}
 
 	private void joinPeerConnection(byte[] callUUIDBytes, MediaStreamUpdate mediaStreamUpdate) {

@@ -1,5 +1,6 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
+import java.time.ZoneId;
 import org.observertc.webrtc.common.builders.AbstractBuilder;
 import org.observertc.webrtc.common.reportsink.ReportService;
 import org.observertc.webrtc.common.reportsink.ReportServiceAbstractBuilder;
@@ -8,13 +9,15 @@ public class BigQueryReportServiceBuilder extends ReportServiceAbstractBuilder {
 
 	public ReportService build() {
 		Config config = this.convertAndValidate(Config.class);
+		ZoneId incomingTsZoneId = ZoneId.of(config.incomingTimestampsZoneId);
+		BigQueryServiceTimeConverter.construct(incomingTsZoneId);
 		BigQueryReportService result = new BigQueryReportService(config);
 		return result;
 	}
 
 	public static class Config extends AbstractBuilder.Config {
 
-		public String timeZoneId = "EET";
+		public String incomingTimestampsZoneId;
 
 		public String projectName;
 

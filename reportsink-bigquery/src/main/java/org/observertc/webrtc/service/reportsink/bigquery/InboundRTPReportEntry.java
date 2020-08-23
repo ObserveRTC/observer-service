@@ -1,7 +1,6 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -85,9 +84,7 @@ public class InboundRTPReportEntry implements BigQueryEntry {
 			logger.warn("No valid sample timestamp");
 			return this;
 		}
-		// TODO: change this into a proper format!
-		ZoneId zoneId = ZoneId.systemDefault();
-		Long epoch = value.atZone(zoneId).toEpochSecond();
+		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
 		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}

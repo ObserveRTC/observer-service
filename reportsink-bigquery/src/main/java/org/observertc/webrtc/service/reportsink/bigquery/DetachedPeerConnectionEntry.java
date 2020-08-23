@@ -1,8 +1,6 @@
 package org.observertc.webrtc.service.reportsink.bigquery;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -52,8 +50,7 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 	}
 
 	public DetachedPeerConnectionEntry withDetachedTimestamp(LocalDateTime value) {
-		ZoneId zoneId = ZoneId.systemDefault();
-		Long epoch = value.atZone(zoneId).toEpochSecond();
+		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
 		this.values.put(DETACHED_TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}
@@ -84,11 +81,7 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 
 	public LocalDateTime getDetachedTimestamp() {
 		Long value = (Long) this.values.get(DETACHED_TIMESTAMP_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		ZoneId zoneId = ZoneId.systemDefault();
-		return LocalDateTime.ofInstant(Instant.ofEpochMilli(value), zoneId);
+		return BigQueryServiceTimeConverter.getInstance().toLocalDateTime(value);
 	}
 
 	public Map<String, Object> toMap() {

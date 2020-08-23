@@ -231,4 +231,12 @@ public class PeerConnectionsRepository {
 				.fetchOptional();
 	}
 
+	public Optional<PeerconnectionsRecord> findByJoinedBrowserID(LocalDateTime joined, String browserID) {
+		return this.contextProvider.get()
+				.selectFrom(TABLE)
+				.where(TABLE.BROWSERID.eq(browserID))
+				.and(TABLE.JOINED.eq(joined))
+				.limit(1)
+				.fetchOptional();
+	}
 }
