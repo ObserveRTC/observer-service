@@ -235,8 +235,8 @@ public class PeerConnectionsRepository {
 		return this.contextProvider.get()
 				.selectFrom(TABLE)
 				.where(TABLE.BROWSERID.eq(browserID))
-				.and(TABLE.JOINED.gt(joined.minusSeconds(1)))
-				.and(TABLE.JOINED.lt(joined.plusSeconds(1)))
+				.and(TABLE.JOINED.gt(joined.minusNanos(1000)))
+				.and(TABLE.JOINED.lt(joined.plusNanos(1000)))
 				.limit(1)
 				.fetchOptional();
 	}
