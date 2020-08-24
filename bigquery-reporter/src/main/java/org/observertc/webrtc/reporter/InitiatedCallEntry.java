@@ -36,7 +36,7 @@ public class InitiatedCallEntry implements BigQueryEntry {
 	}
 
 	public InitiatedCallEntry withInitiatedTimestamp(LocalDateTime value) {
-		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
+		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
 		this.values.put(INITIATED_TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}
@@ -59,7 +59,7 @@ public class InitiatedCallEntry implements BigQueryEntry {
 
 	public LocalDateTime getInitiatedTimestamp() {
 		Long value = (Long) this.values.get(INITIATED_TIMESTAMP_FIELD_NAME);
-		return BigQueryServiceTimeConverter.getInstance().toLocalDateTime(value);
+		return TimeConverter.epochToGMTLocalDateTime(value);
 
 	}
 

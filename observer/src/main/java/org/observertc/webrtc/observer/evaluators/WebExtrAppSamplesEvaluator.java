@@ -72,7 +72,7 @@ public class WebExtrAppSamplesEvaluator {
 
 	@Topic("${kafkaTopics.webExtrAppSamples.topicName}")
 	public void receive(@KafkaKey UUID peerConnectionUUID, WebExtrAppSample sample) {
-		Iterator<RTCStats> it = WebExtrAppSampleIteratorProvider.RTCStatsIt(sample);
+		Iterator<RTCStats> it = IteratorProvider.makeRTCStatsIt(sample);
 		for (; it.hasNext(); ) {
 			RTCStats rtcStatsItem = it.next();
 			Report report = this.rtcStatsBiTransformer.transform(rtcStatsItem, sample);

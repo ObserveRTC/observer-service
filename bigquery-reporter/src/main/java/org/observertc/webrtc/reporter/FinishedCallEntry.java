@@ -36,7 +36,7 @@ public class FinishedCallEntry implements BigQueryEntry {
 	}
 
 	public FinishedCallEntry withFinishedTimestamp(LocalDateTime value) {
-		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
+		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
 		this.values.put(FINISHED_TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}
@@ -59,7 +59,7 @@ public class FinishedCallEntry implements BigQueryEntry {
 
 	public LocalDateTime getFinishedTimestamp() {
 		Long value = (Long) this.values.get(FINISHED_TIMESTAMP_FIELD_NAME);
-		return BigQueryServiceTimeConverter.getInstance().toLocalDateTime(value);
+		return TimeConverter.epochToGMTLocalDateTime(value);
 
 	}
 

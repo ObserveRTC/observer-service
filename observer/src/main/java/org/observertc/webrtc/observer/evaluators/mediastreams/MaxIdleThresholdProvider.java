@@ -6,9 +6,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import javax.inject.Singleton;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.ObserverDateTime;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
+import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,6 @@ class MaxIdleThresholdProvider implements Supplier<Optional<LocalDateTime>> {
 	private final EvaluatorsConfig.CallCleanerConfig config;
 	private final ObserverDateTime observerDateTime;
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final LocalDateTime initiated;
 	private volatile boolean noJoinedPCLogged = false;
 	private volatile boolean joinedPCIsTooOldLogged = false;
 
@@ -30,7 +29,6 @@ class MaxIdleThresholdProvider implements Supplier<Optional<LocalDateTime>> {
 		this.config = config;
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.observerDateTime = observerDateTime;
-		this.initiated = LocalDateTime.now(this.observerDateTime.getZoneId());
 	}
 
 	@Override

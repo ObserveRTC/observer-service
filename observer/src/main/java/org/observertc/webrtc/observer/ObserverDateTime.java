@@ -7,21 +7,15 @@ import javax.inject.Singleton;
 @Singleton
 public class ObserverDateTime {
 
-	private ZoneId zoneId;
+	private static final ZoneId GMT = ZoneId.of("GMT");
 
-	public ObserverDateTime(
-			ObserverConfig config
-	) {
-		this.zoneId = ZoneId.of(config.timeZoneID);
-	}
+	public ObserverDateTime() {
 
-	public ZoneId getZoneId() {
-		return this.zoneId;
 	}
 
 	public LocalDateTime now() {
-		return LocalDateTime.now(this.zoneId);
+		return LocalDateTime.now(GMT);
 	}
-	
-	
+
+
 }

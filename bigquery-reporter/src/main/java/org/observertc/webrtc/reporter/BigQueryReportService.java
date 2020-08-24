@@ -29,13 +29,13 @@ import org.slf4j.LoggerFactory;
 		offsetReset = OffsetReset.EARLIEST,
 		groupId = "observertc-webrtc-reporter-BigQueryReportService",
 		sessionTimeout = "120000ms",
-		pollTimeout = "60000ms",
+		pollTimeout = "15000ms",
 		threads = 6,
 		batch = true,
 		properties = {
-				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "30000"),
+				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "10000"),
 				@Property(name = ConsumerConfig.FETCH_MIN_BYTES_CONFIG, value = "10485760"),
-				@Property(name = ConsumerConfig.MAX_POLL_RECORDS_CONFIG, value = "10000")
+				@Property(name = ConsumerConfig.MAX_POLL_RECORDS_CONFIG, value = "999"),
 		}
 )
 @Prototype
@@ -75,7 +75,7 @@ public class BigQueryReportService {
 		this.processor = this.makeReportProcessor();
 	}
 
-	@Topic(value = "${reporter.kafkaReportsTopic}")
+	@Topic(value = "${reporter.observeRTCReportsTopic}")
 	public void receive(List<Report> reports) {
 		Iterator<Report> it = reports.iterator();
 		for (; it.hasNext(); ) {

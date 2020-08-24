@@ -1,16 +1,19 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import java.util.Iterator;
-import org.observertc.webrtc.observer.samples.WebExtrAppSample;
+import javax.inject.Singleton;
+import org.observertc.webrtc.observer.dto.webextrapp.PeerConnectionSample;
 import org.observertc.webrtc.observer.dto.webextrapp.RTCStats;
+import org.observertc.webrtc.observer.samples.WebExtrAppSample;
 
-public class WebExtrAppSampleIteratorProvider {
+@Singleton
+public class IteratorProvider {
 
-	public static Iterator<RTCStats> RTCStatsIt(WebExtrAppSample sample) {
+	public static Iterator<RTCStats> makeRTCStatsIt(PeerConnectionSample sample) {
 		return new Iterator<RTCStats>() {
 			private int index = 0;
 			private boolean finishedSenders = false;
-			private RTCStats[] rtcStats = sample.peerConnectionSample.getSenderStats();
+			private RTCStats[] rtcStats = sample.getSenderStats();
 
 			@Override
 			public boolean hasNext() {
@@ -19,14 +22,14 @@ public class WebExtrAppSampleIteratorProvider {
 						return false;
 					}
 					this.finishedSenders = true;
-					this.rtcStats = sample.peerConnectionSample.getReceiverStats();
+					this.rtcStats = sample.getReceiverStats();
 					return this.hasNext();
 				}
 				if (this.index < rtcStats.length) {
 					return true;
 				}
 				if (!this.finishedSenders) {
-					this.rtcStats = sample.peerConnectionSample.getReceiverStats();
+					this.rtcStats = sample.getReceiverStats();
 					this.finishedSenders = true;
 					this.index = 0;
 					return this.hasNext();
@@ -41,5 +44,9 @@ public class WebExtrAppSampleIteratorProvider {
 				return result;
 			}
 		};
+	}
+
+	public static Iterator<RTCStats> makeRTCStatsIt(WebExtrAppSample sample) {
+		return makeRTCStatsIt(sample.peerConnectionSample);
 	}
 }

@@ -50,7 +50,7 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 	}
 
 	public DetachedPeerConnectionEntry withDetachedTimestamp(LocalDateTime value) {
-		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
+		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
 		this.values.put(DETACHED_TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}
@@ -81,7 +81,7 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 
 	public LocalDateTime getDetachedTimestamp() {
 		Long value = (Long) this.values.get(DETACHED_TIMESTAMP_FIELD_NAME);
-		return BigQueryServiceTimeConverter.getInstance().toLocalDateTime(value);
+		return TimeConverter.epochToGMTLocalDateTime(value);
 	}
 
 	public Map<String, Object> toMap() {

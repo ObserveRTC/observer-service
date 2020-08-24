@@ -65,9 +65,9 @@ CREATE TABLE `WebRTCObserver`.`ActiveStreams`
 CREATE TABLE `WebRTCObserver`.`PeerConnections`
 (
     `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection',
-    `joined`              TIMESTAMP,
-    `updated`             TIMESTAMP,
-    `detached`            TIMESTAMP,
+    `joined`              DATETIME,
+    `updated`             DATETIME,
+    `detached`            DATETIME,
     `browserID`           VARCHAR (64),
     `timeZone`            VARCHAR (64),
     `callUUID`            BINARY(16) NOT NULL COMMENT 'The UUID of the call the peer connection belongs to',
@@ -85,7 +85,7 @@ CREATE TABLE `WebRTCObserver`.`SentReports`
 (
     `signature`             VARBINARY(255) COMMENT 'The signature of the report, which is sent',
     `peerConnectionUUID`    BINARY(16) COMMENT 'The UUID of the peerConnection sent the report',
-    `reported`              TIMESTAMP      DEFAULT NULL COMMENT 'The timestamp of the report has been sent',
+    `reported`              DATETIME      DEFAULT NULL COMMENT 'The timestamp of the report has been sent',
     PRIMARY KEY (`signature`),
     INDEX `SentReports_peerConnectionUUID_index` (`peerConnectionUUID`)
 ) ENGINE = InnoDB

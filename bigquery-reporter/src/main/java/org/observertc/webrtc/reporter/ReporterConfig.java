@@ -4,9 +4,8 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 
 @ConfigurationProperties("reporter")
 public class ReporterConfig {
-	public String incomingTimestampsZoneId;
 
-	public String kafkaReportsTopic;
+	public String observeRTCReportsTopic;
 
 	public String projectName;
 

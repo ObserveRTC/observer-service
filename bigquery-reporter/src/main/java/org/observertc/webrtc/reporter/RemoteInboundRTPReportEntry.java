@@ -57,7 +57,7 @@ public class RemoteInboundRTPReportEntry implements BigQueryEntry {
 			logger.warn("No valid sample timestamp");
 			return this;
 		}
-		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
+		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
 		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}

@@ -6,15 +6,12 @@ import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Prototype;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -24,10 +21,6 @@ import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.observer.KafkaSinks;
 import org.observertc.webrtc.observer.ObserverDateTime;
-import org.observertc.webrtc.observer.dto.RTCStatsBiTransformer;
-import org.observertc.webrtc.observer.dto.webextrapp.RTCStats;
-import org.observertc.webrtc.observer.evaluators.WebExtrAppSampleIteratorProvider;
-import org.observertc.webrtc.observer.evaluators.valueadapters.NumberConverter;
 import org.observertc.webrtc.observer.jooq.tables.records.ActivestreamsRecord;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.ActiveStreamKey;
@@ -55,34 +48,32 @@ public class ActiveStreamsEvaluator {
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final KafkaSinks kafkaSinks;
 	private final ObserverDateTime observerDateTime;
+	private final MediaStreamUpdatesProvider mediaStreamUpdatesProvider;
 
 	public ActiveStreamsEvaluator(
 			PeerConnectionsRepository peerConnectionsRepository,
 			ActiveStreamsRepository activeStreamsRepository,
 			ObserverDateTime observerDateTime,
+			MediaStreamUpdatesProvider mediaStreamUpdatesProvider,
 			KafkaSinks kafkaSinks
 	) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.observerDateTime = observerDateTime;
 		this.kafkaSinks = kafkaSinks;
+		this.mediaStreamUpdatesProvider = mediaStreamUpdatesProvider;
 	}
 
 
 	@Topic("${kafkaTopics.webExtrAppSamples.topicName}")
 	public void receive(List<WebExtrAppSample> samples) {
-		Map<UUID, MediaStreamUpdate> updatedPCs = new LinkedHashMap<>();
-		// TODO: this is performancewise kind of problematic, so refactor a bit!
-		RTCStatsBiTransformer<WebExtrAppSample, Void> rtcStatsProcessor = this.makeRTCStatsProcessor(updatedPCs);
+
 		for (int i = 0; i < samples.size(); i++) {
 			WebExtrAppSample sample = samples.get(i);
-			Iterator<RTCStats> it = WebExtrAppSampleIteratorProvider.RTCStatsIt(sample);
-			for (; it.hasNext(); ) {
-				RTCStats rtcStats = it.next();
-				rtcStatsProcessor.transform(rtcStats, sample);
-			}
+			this.mediaStreamUpdatesProvider.accept(sample);
 		}
 
+		Map<UUID, MediaStreamUpdate> updatedPCs = this.mediaStreamUpdatesProvider.get();
 		if (updatedPCs.size() < 1) {
 			return;
 		}
@@ -97,6 +88,7 @@ public class ActiveStreamsEvaluator {
 		updatedPCs.values().stream().forEach(mediaStreamUpdates::addLast);
 		this.processMediaStreamUppdates(mediaStreamUpdates);
 	}
+
 
 	public void updateAndRemoveExistingPCs(Map<UUID, MediaStreamUpdate> updates) {
 		List<PeerconnectionsRecord> updatedPCs = new LinkedList<>();
@@ -196,16 +188,25 @@ public class ActiveStreamsEvaluator {
 	}
 
 	private void joinPeerConnection(byte[] callUUIDBytes, MediaStreamUpdate mediaStreamUpdate) {
-		this.peerConnectionsRepository.save(new PeerconnectionsRecord(
-				UUIDAdapter.toBytes(mediaStreamUpdate.peerConnectionUUID),
-				mediaStreamUpdate.created,
-				mediaStreamUpdate.updated,
-				null,
-				mediaStreamUpdate.browserID,
-				mediaStreamUpdate.timeZoneID,
-				callUUIDBytes,
-				UUIDAdapter.toBytes(mediaStreamUpdate.observerUUID)
-		));
+		if (this.peerConnectionsRepository.existsById(mediaStreamUpdate.peerConnectionUUID)) {
+			logger.warn("Attempted to join a PC {} twice!", mediaStreamUpdate.peerConnectionUUID);
+			return;
+		}
+		try {
+			this.peerConnectionsRepository.save(new PeerconnectionsRecord(
+					UUIDAdapter.toBytes(mediaStreamUpdate.peerConnectionUUID),
+					mediaStreamUpdate.created,
+					mediaStreamUpdate.updated,
+					null,
+					mediaStreamUpdate.browserID,
+					mediaStreamUpdate.timeZoneID,
+					callUUIDBytes,
+					UUIDAdapter.toBytes(mediaStreamUpdate.observerUUID)
+			));
+		} catch (Exception ex) {
+			logger.error("Exception happened at saving new peer connection, report won't be sent", ex);
+			return;
+		}
 
 		Report joinedPeerConnectionReport = JoinedPeerConnectionReport.of(
 				mediaStreamUpdate.observerUUID,
@@ -216,60 +217,5 @@ public class ActiveStreamsEvaluator {
 				mediaStreamUpdate.timeZoneID);
 
 		this.kafkaSinks.sendReport(mediaStreamUpdate.observerUUID, joinedPeerConnectionReport);
-	}
-
-	private RTCStatsBiTransformer<WebExtrAppSample, Void> makeRTCStatsProcessor(Map<UUID, MediaStreamUpdate> storage) {
-		final Function<WebExtrAppSample, MediaStreamUpdate> updateMaker = (webExtrAppSample) -> {
-			return MediaStreamUpdate.of(
-					webExtrAppSample.observerUUID,
-					webExtrAppSample.peerConnectionUUID,
-					webExtrAppSample.timestamp,
-					webExtrAppSample.peerConnectionSample.getBrowserId(),
-					webExtrAppSample.sampleTimeZoneID
-			);
-		};
-		final BiConsumer<WebExtrAppSample, RTCStats> updater = (webExtrAppSample, rtcStats) -> {
-			MediaStreamUpdate mediaStreamUpdate = storage.getOrDefault(
-					webExtrAppSample.peerConnectionUUID,
-					updateMaker.apply(webExtrAppSample)
-			);
-			Long SSRC = NumberConverter.toLong(rtcStats.getSsrc());
-			mediaStreamUpdate.add(SSRC, webExtrAppSample.timestamp);
-			storage.put(webExtrAppSample.peerConnectionUUID, mediaStreamUpdate);
-		};
-		return new RTCStatsBiTransformer<WebExtrAppSample, Void>() {
-			@Override
-			public Void processInboundRTP(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				updater.accept(webExtrAppSample, rtcStats);
-				return null;
-			}
-
-			@Override
-			public Void processOutboundRTP(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				updater.accept(webExtrAppSample, rtcStats);
-				return null;
-			}
-
-			@Override
-			public Void processRemoteInboundRTP(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				updater.accept(webExtrAppSample, rtcStats);
-				return null;
-			}
-
-			@Override
-			public Void processTrack(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				return null;
-			}
-
-			@Override
-			public Void processMediaSource(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				return null;
-			}
-
-			@Override
-			public Void processCandidatePair(WebExtrAppSample webExtrAppSample, RTCStats rtcStats) {
-				return null;
-			}
-		};
 	}
 }

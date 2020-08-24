@@ -53,7 +53,7 @@ public class JoinedPeerConnectionEntry implements BigQueryEntry {
 	}
 
 	public JoinedPeerConnectionEntry withJoinedTimestamp(LocalDateTime value) {
-		Long epoch = BigQueryServiceTimeConverter.getInstance().toEpoch(value);
+		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
 		this.values.put(JOINED_TIMESTAMP_FIELD_NAME, epoch);
 		return this;
 	}

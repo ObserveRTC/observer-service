@@ -4,7 +4,7 @@ plugins {
     id "application"
 }
 
-version "0.1"
+version "$bigQueryReporterVersion"
 group "org.observertc.webrtc.reporter"
 
 repositories {
