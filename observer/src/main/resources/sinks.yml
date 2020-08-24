@@ -1,0 +1,16 @@
+micrometerEvaluators:
+  metricProfile:
+    builder: MetricName
+    configuration:
+
+sinks:
+  myKafkaSinkProfile:
+    builder: KafkaSinkBuilder
+    configuration:
+  myMicrometerSinkProfile:
+    builder: MicrometerSinkBuilder
+    configuration:
+      evaluators:
+        - using: micrometerEvaluators.metricProfile
+          
+          

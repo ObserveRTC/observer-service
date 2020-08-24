@@ -1,0 +1,14 @@
+micronaut:
+  application:
+    name: WebRTC-BigQueryReporter
+kafka:
+  bootstrap:
+    servers: localhost:9092
+
+reporter:
+  kafkaReportsTopic: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
+  incomingTimestampsZoneId: EET
+  projectName: ${REPORTSINK_BIGQUERY_PROJECT_NAME:observertc}
+  datasetName: ${REPORTSINK_BIGQUERY_DATASET_NAME:WebRTC}
+  createDatasetIfNotExists: ${REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS:True}
+  createTableIfNotExists: ${REPORTSINK_BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS:True}

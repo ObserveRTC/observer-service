@@ -1,7 +1,0 @@
-micronaut:
-  metrics:
-    enabled: true
-    export:
-      elastic:
-        enabled: true
-        step: PT1M

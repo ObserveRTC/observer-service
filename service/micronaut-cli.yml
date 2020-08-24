@@ -1,5 +1,0 @@
-profile: service
-defaultPackage: org.observertc.webrtc.service
----
-testFramework: junit
-sourceLanguage: java

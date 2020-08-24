@@ -1,0 +1,90 @@
+micronaut:
+  server:
+    port: ${APPLICATION_SERVER_PORT:8088}
+  application:
+    name: webrtc_observer
+  metrics:
+    enabled: ${METRICS_ENABLED:true}
+#    export:
+#      elastic:
+#        enabled: true
+#        step: PT1M
+---
+observer:
+  timeZoneID: ${SERVER_TIMEZONE_ID:EET}
+  authentication:
+    hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
+    stretching: ${AUTHENTICATION_STRETCHING:2}
+    saltSize: ${AUTHENTICATION_SALT_SIZE:32}
+---
+kafka:
+  consumers:
+    webrtc-observer-webExtrAppSamplesEvaluator:
+      session:
+        timeout:
+          ms: 30000
+    webrtc-observer-reportDraftsEvaluator:
+      session:
+        timeout:
+          ms: 30000
+
+  bootstrap:
+    servers: ${KAFKA_HOSTS:`localhost:9092`}
+
+---
+kafkaTopics:
+  #  createIfNotExists: True
+  webExtrAppSamples:
+    topicName: ${KAFKA_TOPICS_WEBEXTRAPP_SAMPLES:webExtrAppSamples}
+    onCreatePartitionNums: 12
+    onCreateReplicateFactor: 1
+
+  observertcReports:
+    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
+    onCreatePartitionNums: 6
+    onCreateReplicateFactor: 1
+
+  observertcReportDrafts:
+    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTDRAFTS:observertcReportDrafts}
+    onCreatePartitionNums: 4
+    onCreateReplicateFactor: 1
+---
+# /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic webExtrAppSamples --partitions 12 --replication-factor 1
+# /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReports --partitions 6 --replication-factor 1
+# /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReportDrafts --partitions 4 --replication-factor 1
+
+evaluators:
+  callCleaner:
+    streamMaxIdleTimeInS: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:30}
+    pcRetentionTimeInDays: ${PEERCONNECTION_RETETNTION_TIME_IN_DAYS:60}
+    maxAllowedUpdateGapInS: ${CALL_CLEANER_MAX_ALLOWED_UPDATED_GAP_DAYS:60}
+  #  activeStreams:
+  #    updatePeriodInS: 10
+  sampleTransformer:
+    reportOutboundRTPs: ${REPORT_OUTBOUND_RTPS:True}
+    reportInboundRTPs: ${REPORT_INBOUND_RTPS:True}
+    reportRemoteInboundRTPs: ${REPORT_REMOTE_INTBOUND_RTPS:True}
+    reportTracks: ${REPORT_TRACKS:True}
+    reportMediaSources: ${REPORT_MEDIA_SOURCES:True}
+    reportCandidatePairs: ${REPORT_ICE_CANDIDATE_PAIRS:True}
+    reportLocalCandidates: ${REPORT_LOCAL_ICE_CANDIDATES:True}
+    reportRemoteCandidates: ${REPORT_REMOE_ICE_CANDIDATES:True}
+    sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
+#    ipFlags:
+#      - name: JVB
+#        networks:
+#          - "192.168.1.0/255.255.255.0"
+
+---
+hikari:
+  username: ${DATABASE_USERNAME:root}
+  password: ${DATABASE_PASSWORD:password}
+  minIdleInMs: ${CONNECTION_POOL_MIN_IDLE_IN_MS:100}
+  timeout: ${CONNECTION_POOL_TIMEOUT_IN_MS:1000}
+  jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET`}
+  jdbcDriver: com.mysql.cj.jdbc.Driver
+  maxPoolSize: ${CONNECTION_POOL_MAX_POOL_SIZE:100}
+  poolname: ${CONNECTION_POOL_NAME:webrtc_observer}
+---
+jooq:
+  dialect: MySQL
