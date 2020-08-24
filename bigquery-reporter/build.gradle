@@ -1,0 +1,102 @@
+plugins {
+    id "com.diffplug.eclipse.apt" version "3.22.0"
+    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "application"
+}
+
+version "$bigQueryReporterVersion"
+group "org.observertc.webrtc.reporter"
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
+}
+
+dependencies {
+    compile project(":common")
+
+    annotationProcessor(platform("io.micronaut:micronaut-bom:$micronautBomVersion"))
+    annotationProcessor("io.micronaut:micronaut-inject-java")
+    annotationProcessor("io.micronaut:micronaut-validation")
+    implementation(platform("io.micronaut:micronaut-bom:$micronautBomVersion"))
+    implementation("io.micronaut:micronaut-inject")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut:micronaut-http-server-netty")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut.kafka:micronaut-kafka")
+    developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautRuntimeOSXVerrsion")
+    runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
+    testAnnotationProcessor(platform("io.micronaut:micronaut-bom:$micronautBomVersion"))
+    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testImplementation(platform("io.micronaut:micronaut-bom:$micronautBomVersion"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+    implementation "io.micronaut.configuration:micronaut-kafka:$micronautKafkaVersion"
+    compile 'com.google.cloud:google-cloud-bigquery:1.116.3'
+}
+
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "org.observertc.webrtc.reporter.Application"
+
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion('1.8')
+    targetCompatibility = JavaVersion.toVersion('1.8')
+}
+
+
+//googleApplicationCredentials = ClassLoader.getSystemClassLoader().getResource("ObserveRTC-5d4c3683dd2c.json");
+run {
+    //environment 'GOOGLE_APPLICATION_CREDENTIALS', file('/Users/balazskreith.finago/github/observertc/gatekeeper/webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json').absolutePath
+//    println System.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+//    if (System.getenv('GOOGLE_APPLICATION_CREDENTIALS') == null) {
+//        throw new MissingResourceException("GOOGLE_APPLICATION_CREDENTIALS environment value must be set. ")
+//         environment 'GOOGLE_APPLICATION_CREDENTIALS', file('/Users/balazskreith.finago/github/observertc/gatekeeper/webrtcstat/src/main/resources/ObserveRTC-5d4c3683dd2c.json').absolutePath
+//    }
+}
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll([
+            '-parameters',
+            // enables incremental compilation
+            '-Amicronaut.processing.incremental=true',
+            '-Amicronaut.processing.annotations=org.observertc.webrtc.reporter.*',
+            "-Amicronaut.processing.group=$project.group",
+            "-Amicronaut.processing.module=$project.name",
+    ])
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+tasks.withType(JavaExec) {
+    classpath += configurations.developmentOnly
+    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+    if (gradle.startParameter.continuous) {
+        systemProperties(
+                'micronaut.io.watch.restart': 'true',
+                'micronaut.io.watch.enabled': 'true',
+                "micronaut.io.watch.paths": "src/main"
+        )
+    }
+}
+
+
+

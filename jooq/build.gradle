@@ -1,0 +1,79 @@
+plugins {
+    id 'java-library'
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "nu.studer.jooq" version "4.2"
+}
+
+version '0.2'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+    maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+    compile group: 'javax.validation', name: 'validation-api', version: "${javaxValidationVersion}"
+    // ------------ Datasource integration: MySQL ---------
+    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
+    runtime "mysql:mysql-connector-java:${mysqlVersion}"
+    jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+    implementation 'org.jooq:jooq'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def generatedDir = 'src/main/java/'
+sourceSets {
+    main {
+        java {
+            srcDirs += [generatedDir]
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add('-parameters')
+}
+
+jooq {
+    version = "${jooqVersion}"
+    generateSchemaSourceOnCompilation = true
+
+    MySql(sourceSets.main) {
+        jdbc {
+            url = 'jdbc:mysql://localhost:3306/WebRTCObserver'
+            driver = 'com.mysql.cj.jdbc.Driver'
+            user = 'root'
+            password = 'password'
+        }
+
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = 'WebRTCObserver'
+                includes = '.*'
+            }
+            target {
+                packageName = 'org.observertc.webrtc.observer.jooq'
+                directory = generatedDir
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                immutablePojos = true
+                fluentSetters = true
+                validationAnnotations = true
+                jpaAnnotations = false
+            }
+        }
+    }
+}

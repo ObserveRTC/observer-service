@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: org.observertc.webrtc.reporter
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [app-name, docker, file-watch, file-watch-osx, gradle, http-client, java, java-application, junit, kafka, logback, netty-server, readme, shade, yaml]
