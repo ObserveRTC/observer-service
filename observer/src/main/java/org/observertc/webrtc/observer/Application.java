@@ -19,14 +19,13 @@ import org.observertc.webrtc.common.Sleeper;
 		}
 )
 public class Application {
-	private static final String INITIAL_WAIT_IN_MS = "OBSERVER_INITIAL_WAITING_TIME_IN_S";
+	private static final String INITIAL_WAIT_IN_MS = "INITIAL_WAITING_TIME_IN_S";
 
 	public static ApplicationContext context;
 
 	public static void main(String[] args) {
 		Sleeper.makeFromSystemEnv(INITIAL_WAIT_IN_MS, ChronoUnit.SECONDS).run();
-		context = Micronaut.
-				run(Application.class);
+		context = Micronaut.run(Application.class);
 
 	}
 }

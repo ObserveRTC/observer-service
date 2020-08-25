@@ -1,5 +1,26 @@
 version: '3.3'
 services:
+  webrtc_bigquery_reporter:
+    container_name: docker_webrtc_bigquery_reporter
+    image: webrtc_bigquery_reporter:latest
+    links:
+      - kafka
+    ports:
+      - 9088:9888
+    environment:
+      - INITIAL_WAITING_TIME_IN_S=20000
+      - REPORTSINK_BIGQUERY_PROJECT_NAME=observertc
+      - REPORTSINK_BIGQUERY_DATASET_NAME=WebRTC
+      - REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=False
+      - REPORTSINK_BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS=True
+      - GOOGLE_APPLICATION_CREDENTIALS=bg_credential.json
+      - APPLICATION_SERVER_PORT=9888
+      - KAFKA_HOSTS=docker_kafka:29092
+    depends_on:
+      - kafka
+      - mysql
+    volumes:
+      - ./reportsink-bigquery/google_api_credentials.json:/bg_credential.json
   webrtc_observer:
     container_name: docker_webrtc_observer
     image: webrtc_observer:latest
@@ -9,12 +30,7 @@ services:
     ports:
       - 8088:7080
     environment:
-      #      - OBSERVER_INITIAL_WAITING_TIME_IN_S=20000
-      #      - REPORTSINK_BIGQUERY_PROJECT_NAME=observertc
-      #      - REPORTSINK_BIGQUERY_DATASET_NAME=WebRTC
-      #      - REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=False
-      #      - REPORTSINK_BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS=True
-      #      - GOOGLE_APPLICATION_CREDENTIALS=bg_credential.json
+      - INITIAL_WAITING_TIME_IN_S=20000
       - APPLICATION_SERVER_PORT=7080
       - KAFKA_HOSTS=docker_kafka:29092
       - DATABASE_USERNAME=root
@@ -23,8 +39,6 @@ services:
     depends_on:
       - kafka
       - mysql
-  #    volumes:
-  #      - ./reportsink-bigquery/google_api_credentials.json:/bg_credential.json
   zookeeper:
     container_name: docker_zookeeper
     image: confluentinc/cp-zookeeper:latest
@@ -45,6 +59,24 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # This "container" is a workaround to pre-create topics
+  kafka-setup:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka-setup
+    container_name: docker_kafka_setup
+    depends_on:
+      - kafka
+    command: "bash -c ' cub kafka-ready -b docker_kafka:29092 1 20 &&
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 12 --replication-factor 1 --topic webExtrAppSamples && \
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 6 --replication-factor 1 --topic observertcReports && \
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 4 --replication-factor 1 --topic observertcReportDrafts  \
+                        sleep 30'"
+    environment:
+      # The following settings are listed here only to satisfy the image's requirements.
+      # We override the image's `command` anyways, hence this container will not start a broker.
+      KAFKA_BROKER_ID: ignored
+      KAFKA_ZOOKEEPER_CONNECT: ignored
   mysql:
     container_name: mysqldb
     image: mysql:8.0.19
