@@ -7,12 +7,5 @@ docker-compose up -d mysql &&
   ./gradlew clean build &&
   docker-compose stop mysql
 
-cd observer
 docker build -f ObserverBuilder.dockerfile . -t webrtc-observer:latest
-#./gradlew buildDockerImage
-cd ..
-
-cd bigquery-reporter
-docker build -f BigQueryReporterBuilding.dockerfile . -t webrtc-bigquery-reporter:latest
-#./gradlew buildDockerImage
-cd ..
+docker build -f BigQueryReporterBuilder.dockerfile . -t webrtc-bigquery-reporter:latest

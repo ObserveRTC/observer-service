@@ -2,13 +2,13 @@ version: '3.3'
 services:
   webrtc_bigquery_reporter:
     container_name: docker_webrtc_bigquery_reporter
-    image: webrtc_bigquery_reporter:latest
+    image: webrtc-bigquery-reporter:latest
     links:
       - kafka
     ports:
       - 9088:9888
     environment:
-      - INITIAL_WAITING_TIME_IN_S=20000
+      - INITIAL_WAITING_TIME_IN_S=20
       - REPORTSINK_BIGQUERY_PROJECT_NAME=observertc
       - REPORTSINK_BIGQUERY_DATASET_NAME=WebRTC
       - REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=False
@@ -23,14 +23,14 @@ services:
       - ./reportsink-bigquery/google_api_credentials.json:/bg_credential.json
   webrtc_observer:
     container_name: docker_webrtc_observer
-    image: webrtc_observer:latest
+    image: webrtc-observer:latest
     links:
       - kafka
       - mysql
     ports:
       - 8088:7080
     environment:
-      - INITIAL_WAITING_TIME_IN_S=20000
+      - INITIAL_WAITING_TIME_IN_S=20
       - APPLICATION_SERVER_PORT=7080
       - KAFKA_HOSTS=docker_kafka:29092
       - DATABASE_USERNAME=root
