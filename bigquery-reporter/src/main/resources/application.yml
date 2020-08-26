@@ -5,7 +5,7 @@ micronaut:
     name: WebRTC-BigQueryReporter
 kafka:
   bootstrap:
-    servers: localhost:9092
+    servers: ${KAFKA_HOSTS:`localhost:9092`}
 
 
 reporter:

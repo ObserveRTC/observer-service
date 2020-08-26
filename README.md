@@ -1,30 +1,27 @@
 # WebRTC-Observer
 
-A microservice to monitor WebRTC Systems.
+Microservice to monitor WebRTC Applications.
 
-## Quick Install & Run
+## Quick Deploy & Run
 
-Run
+Use docker to build and run the infrastructure
 
-      ./install.sh
+      docker-compose up kafka mysql webtc_observer
 
-This build the project and the docker containers.
+If you want to use BigQuery Reporting service, you should obtain 
+a credential json file from GCP to your BigQuery copy it to the 
+directory you run the `docker-compose` as google_api_creedentials.json.
+Then 
 
-If you are using BigQuery, before you 
-run the service check the following 
-configurations in docker-compose.yml file webrtc_observer 
-service:
+    docker-compose up kafka mysql webtc_observer webtc_bigquery_reporter
+    
+You can configure the [Observer](https://hub.docker.com/repository/docker/observertc/webrtc-observer), 
+and the [BigQuery Reporter](https://hub.docker.com/repository/docker/observertc/webrtc-bigquery-reporter) 
+via environment variables. 
 
-      - REPORTSINK_BIGQUERY_PROJECT_NAME=observertc
-      - REPORTSINK_BIGQUERY_DATASET_NAME=WebRTC
-      - REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=True
 
-Setup those accordingly. 
-Check volumes section at the service
-       
-       - /path/to/your/credentials:/bg_credential.json
+## Contribute 
 
-and setup the path accordingly.
-Then:
 
-    docker-compose up
+## License
+

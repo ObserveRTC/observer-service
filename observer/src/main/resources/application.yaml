@@ -4,7 +4,7 @@ micronaut:
   application:
     name: webrtc_observer
   metrics:
-    enabled: ${METRICS_ENABLED:true}
+    enabled: ${METRICS_ENABLED:True}
 #    export:
 #      elastic:
 #        enabled: true

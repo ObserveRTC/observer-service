@@ -2,7 +2,8 @@ version: '3.3'
 services:
   webrtc_bigquery_reporter:
     container_name: docker_webrtc_bigquery_reporter
-    image: webrtc-bigquery-reporter:latest
+    image: observertc/webrtc-bigquery-reporter:0.3-alpha
+    restart: always
     links:
       - kafka
     ports:
@@ -13,17 +14,18 @@ services:
       - REPORTSINK_BIGQUERY_DATASET_NAME=WebRTC
       - REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=False
       - REPORTSINK_BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS=True
-      - GOOGLE_APPLICATION_CREDENTIALS=bg_credential.json
+      - GOOGLE_APPLICATION_CREDENTIALS=bq_credential.json
       - APPLICATION_SERVER_PORT=9888
       - KAFKA_HOSTS=docker_kafka:29092
     depends_on:
       - kafka
       - mysql
     volumes:
-      - ./reportsink-bigquery/google_api_credentials.json:/bg_credential.json
+      - ./google_api_credentials.json:/bq_credential.json
   webrtc_observer:
+    restart: always
     container_name: docker_webrtc_observer
-    image: webrtc-observer:latest
+    image: observertc/webrtc-observer:0.3-alpha
     links:
       - kafka
       - mysql
@@ -39,6 +41,8 @@ services:
     depends_on:
       - kafka
       - mysql
+
+  # Infrastructure behind the Observer
   zookeeper:
     container_name: docker_zookeeper
     image: confluentinc/cp-zookeeper:latest
