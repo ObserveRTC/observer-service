@@ -245,6 +245,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICELocalCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
 						,
+						Field.newBuilder(ICELocalCandidateEntry.CANDIDATE_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
 						Field.newBuilder(ICELocalCandidateEntry.PORT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
@@ -276,6 +278,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						Field.newBuilder(ICERemoteCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.CANDIDATE_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
 						,

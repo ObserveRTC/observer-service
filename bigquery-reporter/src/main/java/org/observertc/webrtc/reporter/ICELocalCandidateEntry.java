@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.observertc.webrtc.common.reports.CandidateNetworkType;
+import org.observertc.webrtc.common.reports.CandidateType;
 import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
 import org.observertc.webrtc.common.reports.ProtocolType;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ public class ICELocalCandidateEntry implements BigQueryEntry {
 	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
 	public static final String CANDIDATE_ID_FIELD_NAME = "CandidateID";
+	public static final String CANDIDATE_TYPE_FIELD_NAME = "candidateType";
 	public static final String DELETED_FIELD_NAME = "deleted";
 	public static final String IP_LSH_FIELD_NAME = "ipLSH";
 	public static final String NETWORK_TYPE_FIELD_NAME = "networkType";
@@ -35,6 +37,7 @@ public class ICELocalCandidateEntry implements BigQueryEntry {
 				.withPeerConnectionUUID(iceLocalCandidateReport.peerConnectionUUID)
 				.withCandidateID(iceLocalCandidateReport.candidateID)
 				.withTimestamp(iceLocalCandidateReport.timestamp)
+				.withCandidateType(iceLocalCandidateReport.candidateType)
 				.withDeleted(iceLocalCandidateReport.deleted)
 				.withIPLSH(iceLocalCandidateReport.ipLSH)
 				.withNetworkType(iceLocalCandidateReport.networkType)
@@ -73,6 +76,15 @@ public class ICELocalCandidateEntry implements BigQueryEntry {
 			networkType = value.name();
 		}
 		this.values.put(NETWORK_TYPE_FIELD_NAME, networkType);
+		return this;
+	}
+
+	public ICELocalCandidateEntry withCandidateType(CandidateType value) {
+		String candidateType = null;
+		if (value != null) {
+			candidateType = value.name();
+		}
+		this.values.put(CANDIDATE_TYPE_FIELD_NAME, candidateType);
 		return this;
 	}
 

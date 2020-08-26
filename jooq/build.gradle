@@ -41,7 +41,7 @@ tasks.withType(JavaCompile) {
 
 jooq {
     version = "${jooqVersion}"
-    generateSchemaSourceOnCompilation = true
+    generateSchemaSourceOnCompilation = false
 
     MySql(sourceSets.main) {
         jdbc {

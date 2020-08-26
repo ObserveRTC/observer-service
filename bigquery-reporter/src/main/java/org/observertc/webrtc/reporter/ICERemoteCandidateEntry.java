@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.observertc.webrtc.common.reports.CandidateType;
 import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
 import org.observertc.webrtc.common.reports.ProtocolType;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ public class ICERemoteCandidateEntry implements BigQueryEntry {
 	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
 	public static final String CANDIDATE_ID_FIELD_NAME = "CandidateID";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String CANDIDATE_TYPE_FIELD_NAME = "candidateType";
 	public static final String DELETED_FIELD_NAME = "deleted";
 	public static final String IP_LSH_FIELD_NAME = "ipLSH";
 	public static final String PORT_FIELD_NAME = "port";
@@ -33,6 +35,7 @@ public class ICERemoteCandidateEntry implements BigQueryEntry {
 				.withPeerConnectionUUID(iceRemoteCandidateReport.peerConnectionUUID)
 				.withCandidateID(iceRemoteCandidateReport.candidateID)
 				.withTimestamp(iceRemoteCandidateReport.timestamp)
+				.withCandidateType(iceRemoteCandidateReport.candidateType)
 				.withDeleted(iceRemoteCandidateReport.deleted)
 				.withIPLSH(iceRemoteCandidateReport.ipLSH)
 				.withPort(iceRemoteCandidateReport.port)
@@ -54,6 +57,15 @@ public class ICERemoteCandidateEntry implements BigQueryEntry {
 
 	public ICERemoteCandidateEntry withCandidateID(String value) {
 		this.values.put(CANDIDATE_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICERemoteCandidateEntry withCandidateType(CandidateType value) {
+		String candidateType = null;
+		if (value != null) {
+			candidateType = value.name();
+		}
+		this.values.put(CANDIDATE_TYPE_FIELD_NAME, candidateType);
 		return this;
 	}
 

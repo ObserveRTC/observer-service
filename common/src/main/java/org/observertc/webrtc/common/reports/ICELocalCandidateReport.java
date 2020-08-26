@@ -14,6 +14,7 @@ public class ICELocalCandidateReport extends Report {
 											 UUID peerConnectionUUID,
 											 String candidateID,
 											 LocalDateTime timestamp,
+											 CandidateType candidateType,
 											 Boolean deleted,
 											 String ipLSH,
 											 String ipFlag,
@@ -26,6 +27,7 @@ public class ICELocalCandidateReport extends Report {
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.candidateID = candidateID;
 		result.timestamp = timestamp;
+		result.candidateType = candidateType;
 		result.deleted = deleted;
 		result.ipLSH = ipLSH;
 		result.ipFlag = ipFlag;
@@ -41,6 +43,8 @@ public class ICELocalCandidateReport extends Report {
 	public UUID peerConnectionUUID;
 
 	public String candidateID;
+
+	public CandidateType candidateType;
 
 	public String ipFlag;
 
@@ -59,6 +63,7 @@ public class ICELocalCandidateReport extends Report {
 	public Long priority;
 
 	public ProtocolType protocol;
+
 
 	@JsonCreator
 	public ICELocalCandidateReport() {

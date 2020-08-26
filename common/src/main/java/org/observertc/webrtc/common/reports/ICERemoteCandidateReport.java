@@ -14,6 +14,7 @@ public class ICERemoteCandidateReport extends Report {
 											  UUID peerConnectionUUID,
 											  String candidateID,
 											  LocalDateTime timestamp,
+											  CandidateType candidateType,
 											  Boolean deleted,
 											  String ipLSH,
 											  String ipFlag,
@@ -25,6 +26,7 @@ public class ICERemoteCandidateReport extends Report {
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.candidateID = candidateID;
 		result.timestamp = timestamp;
+		result.candidateType = candidateType;
 		result.deleted = deleted;
 		result.ipLSH = ipLSH;
 		result.ipFlag = ipFlag;
@@ -39,6 +41,8 @@ public class ICERemoteCandidateReport extends Report {
 	public UUID peerConnectionUUID;
 
 	public String candidateID;
+
+	public CandidateType candidateType;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)

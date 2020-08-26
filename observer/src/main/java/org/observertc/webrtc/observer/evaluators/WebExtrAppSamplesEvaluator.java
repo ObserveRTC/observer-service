@@ -27,6 +27,7 @@ import org.observertc.webrtc.observer.evaluators.ipflags.IPAddressConverter;
 import org.observertc.webrtc.observer.evaluators.ipflags.IPFlags;
 import org.observertc.webrtc.observer.evaluators.valueadapters.CandidateNetworkTypeConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.CandidatePairStateConverter;
+import org.observertc.webrtc.observer.evaluators.valueadapters.CandidateTypeConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.InboundRTPConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.MediaSourceConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.NumberConverter;
@@ -180,6 +181,7 @@ public class WebExtrAppSamplesEvaluator {
 					sample.peerConnectionUUID,
 					remoteCandidate.getID(),
 					sample.timestamp,
+					CandidateTypeConverter.from(remoteCandidate.getCandidateType()),
 					remoteCandidate.getDeleted(),
 					null, // Add IP LSH later!
 					ipFlag,
@@ -207,6 +209,7 @@ public class WebExtrAppSamplesEvaluator {
 					sample.peerConnectionUUID,
 					localCandidate.getID(),
 					sample.timestamp,
+					CandidateTypeConverter.from(localCandidate.getCandidateType()),
 					localCandidate.getDeleted(),
 					null, // Add IP LSH later!
 					ipFlag,
