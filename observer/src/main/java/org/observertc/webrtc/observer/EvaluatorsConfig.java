@@ -14,10 +14,17 @@ public class EvaluatorsConfig {
 
 	public CallCleanerConfig callCleaner;
 
+	public ReportDraftsConfig reportDrafts;
+	
 	@ConfigurationProperties("activeStreams")
 	public static class ActiveStreamsConfig {
 		public int missingBrowserIDMapSize;
 		public int maxTimeBrowserIdCanMiss;
+	}
+
+	@ConfigurationProperties("reportDrafts")
+	public static class ReportDraftsConfig {
+		public int TTL = 120;
 	}
 
 	@ConfigurationProperties("callCleaner")
@@ -30,7 +37,6 @@ public class EvaluatorsConfig {
 
 	@ConfigurationProperties("sampleTransformer")
 	public static class SampleTransformerConfig {
-		public boolean useClientTimestamp = false;
 		public boolean reportOutboundRTPs = true;
 		public boolean reportInboundRTPs = true;
 		public boolean reportRemoteInboundRTPs = true;

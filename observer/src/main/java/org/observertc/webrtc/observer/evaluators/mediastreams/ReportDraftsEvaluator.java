@@ -15,6 +15,7 @@ import org.observertc.webrtc.common.reports.FinishedCallReport;
 import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.common.reports.ReportObserverUUIDExtractor;
+import org.observertc.webrtc.observer.EvaluatorsConfig;
 import org.observertc.webrtc.observer.KafkaSinks;
 import org.observertc.webrtc.observer.ObserverDateTime;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
@@ -42,13 +43,16 @@ public class ReportDraftsEvaluator {
 	private final KafkaSinks kafkaSinks;
 	private final ObserverDateTime observerDateTime;
 	private final ReportObserverUUIDExtractor uuidExtractor;
+	private final EvaluatorsConfig.ReportDraftsConfig config;
 
 	public ReportDraftsEvaluator(PeerConnectionsRepository peerConnectionsRepository,
 								 ObserverDateTime observerDateTime,
+								 EvaluatorsConfig.ReportDraftsConfig config,
 								 KafkaSinks kafkaSinks) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.kafkaSinks = kafkaSinks;
 		this.observerDateTime = observerDateTime;
+		this.config = config;
 		this.uuidExtractor = new ReportObserverUUIDExtractor();
 	}
 
@@ -74,20 +78,16 @@ public class ReportDraftsEvaluator {
 
 	private void process(UUID observerUUID, ReportDraft reportDraft) {
 		LocalDateTime now = this.observerDateTime.now();
-		boolean validate = true;
 		if (reportDraft.drafted == null) {
 			logger.warn("ReportDraft drafted ts should have been not null. Please check preliminary injection to the topic and debug " +
 					"the missing assignment");
 			reportDraft.drafted = now;
 		}
-		if (reportDraft.processed == null) {
-			reportDraft.processed = now;
-		}
+		reportDraft.processed = now;
 		long elapsedTimeInS = ChronoUnit.SECONDS.between(reportDraft.drafted, now);
-		validate = 20 < elapsedTimeInS;
-		if (!validate) {
-			// if we do not have to validate, then send it back
-			this.kafkaSinks.sendReportDraft(observerUUID, reportDraft);
+		boolean invalid = this.config.TTL < elapsedTimeInS;
+		if (invalid) {
+			logger.warn("A ReportDraft is circulating in the system longer than {}s. We drop it. {}", this.config.TTL, reportDraft.toString());
 			return;
 		}
 
@@ -95,7 +95,7 @@ public class ReportDraftsEvaluator {
 		if (forward) {
 			this.kafkaSinks.sendReport(observerUUID, reportDraft.report);
 		} else {
-			logger.info("ReportDraft {} is dropped due to invalidation", reportDraft.toString());
+			this.kafkaSinks.sendReportDraft(observerUUID, reportDraft);
 		}
 	}
 
@@ -135,7 +135,6 @@ public class ReportDraftsEvaluator {
 			}
 		}
 		if (firstJoinedPC == null) {
-			logger.warn("There is no firstPC, we do not let this report go. {}", initiatedCallReport.toString());
 			return false;
 		}
 		if (firstJoinedPC.compareTo(initiatedCallReport.initiated) < 0) {
@@ -163,7 +162,6 @@ public class ReportDraftsEvaluator {
 			}
 		}
 		if (lastDetachedPC == null) {
-			logger.warn("There is no lastPC, we do not let this report go. {}", finishedCallReport.toString());
 			return false;
 		}
 		if (finishedCallReport.finished.compareTo(lastDetachedPC) < 0) {

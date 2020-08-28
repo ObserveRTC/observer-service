@@ -3,6 +3,8 @@ package org.observertc.webrtc.observer.dto.webextrapp;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public enum Protocol {
 	TCP, UDP;
@@ -10,16 +12,26 @@ public enum Protocol {
 	@JsonValue
 	public String toValue() {
 		switch (this) {
-			case TCP: return "tcp";
-			case UDP: return "udp";
+			case TCP:
+				return "tcp";
+			case UDP:
+				return "udp";
 		}
 		return null;
 	}
 
+
+	private static final Logger logger = LoggerFactory.getLogger(Protocol.class);
+
 	@JsonCreator
 	public static Protocol forValue(String value) throws IOException {
-		if (value.equals("tcp")) return TCP;
-		if (value.equals("udp")) return UDP;
-		throw new IOException("Cannot deserialize Protocol");
+		if (value == null) {
+			return null;
+		}
+		String name = value.toLowerCase();
+		if (name.equals("tcp")) return TCP;
+		if (name.equals("udp")) return UDP;
+		logger.warn("Cannot deseerialize state for name {}", name);
+		return null;
 	}
 }

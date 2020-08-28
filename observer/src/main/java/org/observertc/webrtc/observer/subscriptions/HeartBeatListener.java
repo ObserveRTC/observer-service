@@ -18,7 +18,7 @@ public class HeartBeatListener implements ApplicationEventListener<HeartbeatEven
 	@Inject
 	ObserverDateTime observerDateTime;
 
-	public HeartBeatListener(KafkaInitializerJob kafkaInitializerJob) {
+	public HeartBeatListener() {
 
 	}
 
@@ -28,6 +28,6 @@ public class HeartBeatListener implements ApplicationEventListener<HeartbeatEven
 
 	@Override
 	public void onApplicationEvent(HeartbeatEvent event) {
-		
+
 	}
 }

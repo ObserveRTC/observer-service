@@ -1,6 +1,6 @@
 rootProject.name = "WebRTC-Observer"
 include 'common'
 include 'observer'
-include 'bigquery-reporter'
+include 'reporter'
 include 'jooq'
 

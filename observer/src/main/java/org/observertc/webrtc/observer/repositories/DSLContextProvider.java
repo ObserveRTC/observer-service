@@ -29,7 +29,7 @@ public class DSLContextProvider implements IDSLContextProvider {
 		jdbcConfig.setUsername(hikariConfiguration.username);
 		jdbcConfig.setPassword(hikariConfiguration.password);
 		jdbcConfig.setDriverClassName(hikariConfiguration.jdbcDriver);
-		
+
 		// Add HealthCheck
 //		jdbcConfig.setHealthCheckRegistry(healthCheckRegistry);
 		// Add Metrics
@@ -62,7 +62,7 @@ public class DSLContextProvider implements IDSLContextProvider {
 			default:
 				new RuntimeException("Unsupported dialect: " + jooqConfiguration.dialect);
 		}
-		
+
 		result.setDataSource(dataSource);
 		result.set(recordMapperProvider);
 		return result;

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-docker-compose down
-docker-compose stop mysql
-docker-compose up -d mysql &&
-  sleep 10 &&
-  ./gradlew clean build &&
-  docker-compose stop mysql
+VERSION=0.3
 
-docker build -f ObserverBuilder.dockerfile . -t webrtc-observer:latest
-docker build -f BigQueryReporterBuilder.dockerfile . -t webrtc-bigquery-reporter:latest
+docker login
+
+docker build -f ObserverBuilder.dockerfile . -t observertc/webrtc-observer:$VERSION
+docker push observertc/webrtc-observer:$VERSION
+
+docker build -f ReporterBuilder.dockerfile . -t observertc/webrtc-reporter:$VERSION
+docker push observertc/webrtc-reporter:$VERSION

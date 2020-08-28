@@ -23,6 +23,7 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 		typeMap.put(OutboundRTPReport.class.getName(), ReportType.OUTBOUND_RTP_REPORT);
 		typeMap.put(ICELocalCandidateReport.class.getName(), ReportType.ICE_LOCAL_CANDIDATE_REPORT);
 		typeMap.put(ICERemoteCandidateReport.class.getName(), ReportType.ICE_REMOTE_CANDIDATE_REPORT);
+		typeMap.put(ICECandidatePairReport.class.getName(), ReportType.ICE_CANDIDATE_PAIR_REPORT);
 		typeMap.put(TrackReport.class.getName(), ReportType.TRACK_REPORT);
 		typeMap.put(MediaSourceReport.class.getName(), ReportType.MEDIA_SOURCE_REPORT);
 		typeMapper = Collections.unmodifiableMap(typeMap);
@@ -104,6 +105,6 @@ public abstract class AbstractReportProcessor<T> implements Function<Report, T>,
 	public T processICERemoteCandidateReport(ICERemoteCandidateReport report) {
 		return null;
 	}
-	
-	
+
+
 }

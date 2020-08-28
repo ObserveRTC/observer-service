@@ -54,10 +54,12 @@ kafkaTopics:
 # /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReportDrafts --partitions 4 --replication-factor 1
 
 evaluators:
+  reportDrafts:
+    TTL: 300
   callCleaner:
     streamMaxIdleTimeInS: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:30}
     pcRetentionTimeInDays: ${PEERCONNECTION_RETETNTION_TIME_IN_DAYS:60}
-    maxAllowedUpdateGapInS: ${CALL_CLEANER_MAX_ALLOWED_UPDATED_GAP_DAYS:60}
+    maxAllowedUpdateGapInS: ${CALL_CLEANER_MAX_ALLOWED_UPDATED_GAP_IN_S:3600}
   activeStreams:
     missingBrowserIDMapSize: ${MISSING_BROWSERID_MAP_SIZE:1000}
     maxTimeBrowserIdCanMiss: ${MAX_TIME_BRROWSERID_CAN_MISS_IN_S:10}
@@ -92,4 +94,4 @@ hikari:
   poolname: ${CONNECTION_POOL_NAME:webrtc_observer}
 ---
 jooq:
-  dialect: MySQL
+  dialect: ${JOOQ_DIALECT:MySQL}

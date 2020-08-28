@@ -2,7 +2,7 @@ version: '3.3'
 services:
   webrtc_bigquery_reporter:
     container_name: docker_webrtc_bigquery_reporter
-    image: observertc/webrtc-bigquery-reporter:0.3-alpha
+    image: observertc/webrtc-reporter:0.3-alpha
     restart: always
     links:
       - kafka
@@ -10,10 +10,10 @@ services:
       - 9088:9888
     environment:
       - INITIAL_WAITING_TIME_IN_S=20
-      - REPORTSINK_BIGQUERY_PROJECT_NAME=observertc
-      - REPORTSINK_BIGQUERY_DATASET_NAME=WebRTC
-      - REPORTSINK_BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=False
-      - REPORTSINK_BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS=True
+      - BIGQUERY_PROJECT_NAME=observertc
+      - BIGQUERY_DATASET_NAME=WebRTC
+      - BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS=False
+      - BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS=True
       - GOOGLE_APPLICATION_CREDENTIALS=bq_credential.json
       - APPLICATION_SERVER_PORT=9888
       - KAFKA_HOSTS=docker_kafka:29092
@@ -38,10 +38,12 @@ services:
       - DATABASE_USERNAME=root
       - DATABSE_PASSWORD=password
       - JDBC_URL=jdbc:mysql://mysqldb:3306/WebRTCObserver
+      - MICRONAUT_CONFIG_FILES=/observer-config.yml
     depends_on:
       - kafka
       - mysql
-
+    volumes:
+      - ./observer-config.yml:/observer-config.yml
   # Infrastructure behind the Observer
   zookeeper:
     container_name: docker_zookeeper

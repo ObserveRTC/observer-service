@@ -7,8 +7,6 @@ import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
-import io.micronaut.security.annotation.Secured;
-import io.micronaut.security.rules.SecurityRule;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -16,7 +14,7 @@ import javax.validation.Valid;
 import org.observertc.webrtc.observer.dto.ObserverDTO;
 import org.observertc.webrtc.observer.repositories.ObserverRepository;
 
-@Secured({SecurityRule.IS_AUTHENTICATED})
+//@Secured({SecurityRule.IS_AUTHENTICATED})
 @Controller("/observers")
 /**
  * The controller responsibility is to call the repositories with 
@@ -33,6 +31,10 @@ public class ObserversController {
 
 	@Post("/")
 	public HttpResponse<UUID> create(@Body @Valid ObserverDTO observerDTO) {
+		if (observerDTO.uuid != null) {
+			return HttpResponse.badRequest();
+		}
+		observerDTO.uuid = UUID.randomUUID();
 		return this.respond(() -> {
 			ObserverDTO result = this.observerRepository.save(observerDTO);
 			return HttpResponse.created(result.uuid);

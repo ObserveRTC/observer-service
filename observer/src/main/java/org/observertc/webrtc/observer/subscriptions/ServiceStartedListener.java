@@ -16,13 +16,8 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 
 	private final Job job;
 
-	public ServiceStartedListener(KafkaInitializerJob kafkaInitializerJob) {
-
-		this.job = new Job(ServiceStartedListener.class.getName())
-				.withDescription("ServiceStartedListener job performs all task necessary to check at starrtup time.")
-				.withTask(kafkaInitializerJob);
-		;
-		this.init();
+	public ServiceStartedListener() {
+		this.job = null;
 	}
 
 
@@ -32,6 +27,6 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 
 	@Override
 	public void onApplicationEvent(ServiceReadyEvent event) {
-		this.job.perform();
+
 	}
 }

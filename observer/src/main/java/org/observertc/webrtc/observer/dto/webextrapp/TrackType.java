@@ -30,6 +30,8 @@ package org.observertc.webrtc.observer.dto.webextrapp;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public enum TrackType {
 	TRACK;
@@ -43,10 +45,17 @@ public enum TrackType {
 		return null;
 	}
 
+	private static final Logger logger = LoggerFactory.getLogger(TrackType.class);
+
 	@JsonCreator
 	public static TrackType forValue(String value) throws IOException {
-		if (value.equals("track")) return TRACK;
-		throw new IOException("Cannot deserialize TrackType");
+		if (value == null) {
+			return null;
+		}
+		String name = value.toLowerCase();
+		if (name.equals("track")) return TRACK;
+		logger.warn("Cannot deseerialize state for name {}", name);
+		return null;
 	}
 }
 
