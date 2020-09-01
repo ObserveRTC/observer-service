@@ -35,7 +35,8 @@ public enum NetworkType {
 	@JsonCreator
 	public static NetworkType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for NetworkType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("bluetooth")) return BLUETOOTH;
@@ -46,6 +47,6 @@ public enum NetworkType {
 		if (name.equals("wifi")) return WIFI;
 		if (name.equals("wimax")) return WIMAX;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

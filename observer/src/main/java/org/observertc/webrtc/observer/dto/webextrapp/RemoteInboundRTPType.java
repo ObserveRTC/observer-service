@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum RemoteInboundRTPType {
-	REMOTE_INBOUND_RTP;
+	REMOTE_INBOUND_RTP, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -23,11 +23,12 @@ public enum RemoteInboundRTPType {
 	@JsonCreator
 	public static RemoteInboundRTPType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for RemoteInboundRTPType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("remote-inbound-rtp")) return REMOTE_INBOUND_RTP;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

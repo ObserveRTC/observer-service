@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum LocalCandidateType {
-	LOCAL_CANDIDATE;
+	LOCAL_CANDIDATE, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -23,11 +23,12 @@ public enum LocalCandidateType {
 	@JsonCreator
 	public static LocalCandidateType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for LocalCandidateType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("local-candidate")) return LOCAL_CANDIDATE;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum TrackType {
-	TRACK;
+	TRACK, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -50,12 +50,13 @@ public enum TrackType {
 	@JsonCreator
 	public static TrackType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for TrackType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("track")) return TRACK;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }
 

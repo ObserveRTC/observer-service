@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum Protocol {
-	TCP, UDP;
+	TCP, UDP, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -26,12 +26,13 @@ public enum Protocol {
 	@JsonCreator
 	public static Protocol forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for Protocol");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("tcp")) return TCP;
 		if (name.equals("udp")) return UDP;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

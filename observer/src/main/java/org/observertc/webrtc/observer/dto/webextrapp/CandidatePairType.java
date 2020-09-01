@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum CandidatePairType {
-	CANDIDATE_PAIR;
+	CANDIDATE_PAIR, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -23,11 +23,12 @@ public enum CandidatePairType {
 	@JsonCreator
 	public static CandidatePairType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for CandidatePairType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("candidate-pair")) return CANDIDATE_PAIR;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

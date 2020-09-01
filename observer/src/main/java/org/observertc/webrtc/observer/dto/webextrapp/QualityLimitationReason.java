@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum QualityLimitationReason {
-	BANDWIDTH, CPU, NONE, OTHER;
+	BANDWIDTH, CPU, NONE, OTHER, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -29,7 +29,8 @@ public enum QualityLimitationReason {
 	@JsonCreator
 	public static QualityLimitationReason forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for QualityLimitationReason");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("bandwidth")) return BANDWIDTH;
@@ -37,6 +38,6 @@ public enum QualityLimitationReason {
 		if (name.equals("none")) return NONE;
 		if (name.equals("other")) return OTHER;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

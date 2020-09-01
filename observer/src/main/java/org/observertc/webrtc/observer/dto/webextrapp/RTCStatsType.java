@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum RTCStatsType {
-	CANDIDATE_PAIR, INBOUND_RTP, MEDIA_SOURCE, OUTBOUND_RTP, REMOTE_INBOUND_RTP, TRACK;
+	CANDIDATE_PAIR, INBOUND_RTP, MEDIA_SOURCE, OUTBOUND_RTP, REMOTE_INBOUND_RTP, TRACK, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -34,16 +34,18 @@ public enum RTCStatsType {
 	@JsonCreator
 	public static RTCStatsType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for RTCStatsType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
-		if (name.equals("candidate-pair")) return CANDIDATE_PAIR;
-		if (name.equals("inbound-rtp")) return INBOUND_RTP;
-		if (name.equals("media-source")) return MEDIA_SOURCE;
-		if (name.equals("outbound-rtp")) return OUTBOUND_RTP;
-		if (name.equals("remote-inbound-rtp")) return REMOTE_INBOUND_RTP;
+		String secondary = name.replace("[^a-zA-Z0-9]", "");
+		if (name.equals("candidate-pair") || name.equals("candidatepair")) return CANDIDATE_PAIR;
+		if (name.equals("inbound-rtp") || name.equals("inboundrtp")) return INBOUND_RTP;
+		if (name.equals("media-source") || name.equals("mediasource")) return MEDIA_SOURCE;
+		if (name.equals("outbound-rtp") || name.equals("outboundrtp")) return OUTBOUND_RTP;
+		if (name.equals("remote-inbound-rtp") || name.equals("remoteinboundrtp")) return REMOTE_INBOUND_RTP;
 		if (name.equals("track")) return TRACK;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

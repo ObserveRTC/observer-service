@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.IOException;
 
 public enum CandidateType {
-	LOCAL_CANDIDATE, REMOTE_CANDIDATE;
+	LOCAL_CANDIDATE, REMOTE_CANDIDATE, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {

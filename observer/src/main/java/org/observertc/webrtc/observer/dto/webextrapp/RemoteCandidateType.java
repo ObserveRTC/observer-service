@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum RemoteCandidateType {
-	REMOTE_CANDIDATE;
+	REMOTE_CANDIDATE, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -23,11 +23,12 @@ public enum RemoteCandidateType {
 	@JsonCreator
 	public static RemoteCandidateType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for RemoteCandidateType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("remote-candidate")) return REMOTE_CANDIDATE;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

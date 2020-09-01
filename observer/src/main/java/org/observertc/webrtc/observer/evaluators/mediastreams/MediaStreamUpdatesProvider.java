@@ -57,6 +57,10 @@ public class MediaStreamUpdatesProvider implements Consumer<WebExtrAppSample>, S
 		Set<Long> SSRCs = new HashSet<>();
 		for (; it.hasNext(); ) {
 			RTCStats rtcStats = it.next();
+			if (rtcStats == null || rtcStats.getType() == null) {
+				logger.warn("RTCStats or type of the rtcstats was null");
+				continue;
+			}
 			switch (rtcStats.getType()) {
 				case INBOUND_RTP:
 				case OUTBOUND_RTP:

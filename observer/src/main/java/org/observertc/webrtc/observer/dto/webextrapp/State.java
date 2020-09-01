@@ -32,12 +32,14 @@ public enum State {
 	@JsonCreator
 	public static State forValue(String value) throws IOException {
 		if (value == null) {
+			logger.warn("value is null for State");
 			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
+		String secondary = name.replace("[^a-zA-Z0-9]", "");
 		if (name.equals("failed")) return FAILED;
 		if (name.equals("frozen")) return FROZEN;
-		if (name.equals("in-progress")) return IN_PROGRESS;
+		if (name.equals("in-progress") || secondary.equals("inprogress")) return IN_PROGRESS;
 		if (name.equals("succeeded")) return SUCCEEDED;
 		if (name.equals("waiting")) return WAITING;
 		logger.warn("Cannot deseerialize state for name {}", name);

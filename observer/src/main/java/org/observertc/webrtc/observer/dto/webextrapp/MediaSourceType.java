@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum MediaSourceType {
-	MEDIA_SOURCE;
+	MEDIA_SOURCE, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -23,11 +23,12 @@ public enum MediaSourceType {
 	@JsonCreator
 	public static MediaSourceType forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for MediaSourceType");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("media-source")) return MEDIA_SOURCE;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }

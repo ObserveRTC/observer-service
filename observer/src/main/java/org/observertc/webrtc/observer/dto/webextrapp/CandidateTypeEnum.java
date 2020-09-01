@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum CandidateTypeEnum {
-	HOST, PRFLX, RELAY, SRFLX;
+	HOST, PRFLX, RELAY, SRFLX, UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -29,7 +29,8 @@ public enum CandidateTypeEnum {
 	@JsonCreator
 	public static CandidateTypeEnum forValue(String value) throws IOException {
 		if (value == null) {
-			return null;
+			logger.warn("value is null for CandidateTypeEnum");
+			return UNKNOWN;
 		}
 		String name = value.toLowerCase();
 		if (name.equals("host")) return HOST;
@@ -37,6 +38,6 @@ public enum CandidateTypeEnum {
 		if (name.equals("relay")) return RELAY;
 		if (name.equals("srflx")) return SRFLX;
 		logger.warn("Cannot deseerialize state for name {}", name);
-		return null;
+		return UNKNOWN;
 	}
 }
