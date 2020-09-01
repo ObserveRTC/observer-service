@@ -77,11 +77,11 @@ public class WebExtrAppWebsocketServer {
 	@OnOpen
 	public void onOpen(UUID observerUUID, WebSocketSession session) {
 		Optional<ObserverDTO> observerDTO = observerRepository.findById(observerUUID);
-		if (!observerDTO.isPresent()) {
-			System.out.println("observer has not been found");
-			session.close();
-			return;
-		}
+//		if (!observerDTO.isPresent()) {
+//			System.out.println("observer has not been found");
+//			session.close();
+//			return;
+//		}
 	}
 
 	@OnClose

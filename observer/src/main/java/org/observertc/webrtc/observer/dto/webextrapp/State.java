@@ -7,12 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum State {
-	FAILED, FROZEN, IN_PROGRESS, SUCCEEDED, WAITING, UNKNOWN;
+	OPEN, FAILED, FROZEN, IN_PROGRESS, SUCCEEDED, WAITING, UNKNOWN;
 
 
 	@JsonValue
 	public String toValue() {
 		switch (this) {
+			case OPEN:
+				return "open";
 			case FAILED:
 				return "failed";
 			case FROZEN:
@@ -37,6 +39,7 @@ public enum State {
 		}
 		String name = value.toLowerCase();
 		String secondary = name.replace("[^a-zA-Z0-9]", "");
+		if (name.equals("open")) return OPEN;
 		if (name.equals("failed")) return FAILED;
 		if (name.equals("frozen")) return FROZEN;
 		if (name.equals("in-progress") || secondary.equals("inprogress")) return IN_PROGRESS;

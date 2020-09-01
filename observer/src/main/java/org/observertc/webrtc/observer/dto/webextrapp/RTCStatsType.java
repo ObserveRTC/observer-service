@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum RTCStatsType {
-	CANDIDATE_PAIR, INBOUND_RTP, MEDIA_SOURCE, OUTBOUND_RTP, REMOTE_INBOUND_RTP, TRACK, UNKNOWN;
+	CANDIDATE_PAIR, INBOUND_RTP, MEDIA_SOURCE, OUTBOUND_RTP, REMOTE_INBOUND_RTP, TRACK,
+	REMOTE_OUTBOUND_TYPE, // not part of the original schema
+	DATA_CHANNEL, // not part of the original schema
+	UNKNOWN;
 
 	@JsonValue
 	public String toValue() {
@@ -24,6 +27,11 @@ public enum RTCStatsType {
 				return "remote-inbound-rtp";
 			case TRACK:
 				return "track";
+			case REMOTE_OUTBOUND_TYPE:
+				return "remote-outbound-rtp";
+			case DATA_CHANNEL:
+				return "data-channel";
+
 		}
 		return null;
 	}
@@ -44,6 +52,8 @@ public enum RTCStatsType {
 		if (name.equals("media-source") || name.equals("mediasource")) return MEDIA_SOURCE;
 		if (name.equals("outbound-rtp") || name.equals("outboundrtp")) return OUTBOUND_RTP;
 		if (name.equals("remote-inbound-rtp") || name.equals("remoteinboundrtp")) return REMOTE_INBOUND_RTP;
+		if (name.equals("remote-outbound-rtp") || name.equals("remoteoutboundrtp")) return REMOTE_OUTBOUND_TYPE;
+		if (name.equals("data-channel") || name.equals("datachannel")) return DATA_CHANNEL;
 		if (name.equals("track")) return TRACK;
 		logger.warn("Cannot deseerialize state for name {}", name);
 		return UNKNOWN;
