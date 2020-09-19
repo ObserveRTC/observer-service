@@ -15,7 +15,7 @@ public class EvaluatorsConfig {
 	public CallCleanerConfig callCleaner;
 
 	public ReportDraftsConfig reportDrafts;
-	
+
 	@ConfigurationProperties("activeStreams")
 	public static class ActiveStreamsConfig {
 		public int missingBrowserIDMapSize;
@@ -24,7 +24,8 @@ public class EvaluatorsConfig {
 
 	@ConfigurationProperties("reportDrafts")
 	public static class ReportDraftsConfig {
-		public int TTL = 120;
+		public int expirationTimeInS = 300;
+		public int minEnforcedTimeInS = 60;
 	}
 
 	@ConfigurationProperties("callCleaner")

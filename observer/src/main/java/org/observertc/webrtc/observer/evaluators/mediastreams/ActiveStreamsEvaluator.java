@@ -19,7 +19,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.avro.JoinedPeerConnection;
 import org.observertc.webrtc.common.reports.avro.ReportType;
-import org.observertc.webrtc.observer.KafkaSinks;
+import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -50,19 +50,19 @@ public class ActiveStreamsEvaluator {
 	private static final Logger logger = LoggerFactory.getLogger(ActiveStreamsEvaluator.class);
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final ActiveStreamsRepository activeStreamsRepository;
-	private final KafkaSinks kafkaSinks;
 	private final ReportSink reportSink;
+	private final ReportDraftSink reportDraftSink;
 
 	public ActiveStreamsEvaluator(
 			PeerConnectionsRepository peerConnectionsRepository,
 			ActiveStreamsRepository activeStreamsRepository,
 			ReportSink reportSink,
-			KafkaSinks kafkaSinks
+			ReportDraftSink reportDraftSink
 	) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.activeStreamsRepository = activeStreamsRepository;
-		this.kafkaSinks = kafkaSinks;
 		this.reportSink = reportSink;
+		this.reportDraftSink = reportDraftSink;
 	}
 
 
@@ -226,7 +226,7 @@ public class ActiveStreamsEvaluator {
 					mediaStreamUpdate.created
 			);
 
-			this.kafkaSinks.sendReportDraft(mediaStreamUpdate.peerConnectionUUID, reportDraft);
+			this.reportDraftSink.send(mediaStreamUpdate.peerConnectionUUID, reportDraft);
 			newPCs.addLast(mediaStreamUpdate);
 		}
 
@@ -264,7 +264,7 @@ public class ActiveStreamsEvaluator {
 				.build();
 
 		this.reportSink.sendReport(
-				mediaStreamUpdate.peerConnectionUUID,
+				mediaStreamUpdate.serviceUUID,
 				mediaStreamUpdate.providedCallID,
 				mediaStreamUpdate.serviceUUID.toString(),
 				ReportType.JOINED_PEER_CONNECTION,

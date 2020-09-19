@@ -11,7 +11,7 @@ import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.avro.DetachedPeerConnection;
 import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.KafkaSinks;
+import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
@@ -28,7 +28,7 @@ public class CallCleaner {
 	private final EvaluatorsConfig.CallCleanerConfig config;
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final KafkaSinks kafkaSinks;
+	private final ReportDraftSink reportDraftSink;
 	private final MaxIdleThresholdProvider maxIdleThresholdProvider;
 	private final SentReportsRepository sentReportsRepository;
 	private final ReportSink reportSink;
@@ -40,13 +40,13 @@ public class CallCleaner {
 			PeerConnectionsRepository peerConnectionsRepository,
 			MaxIdleThresholdProvider maxIdleThresholdProvider,
 			ReportSink reportSink,
-			KafkaSinks kafkaSinks) {
+			ReportDraftSink reportDraftSink) {
 		this.config = config.callCleaner;
 		this.reportSink = reportSink;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.maxIdleThresholdProvider = maxIdleThresholdProvider;
-		this.kafkaSinks = kafkaSinks;
+		this.reportDraftSink = reportDraftSink;
 		this.sentReportsRepository = sentReportsRepository;
 	}
 
@@ -93,7 +93,7 @@ public class CallCleaner {
 					.setMediaUnitID(record.getMediaunitid())
 					.setPeerConnectionUUID(peerConnectionUUID.toString())
 					.build();
-			this.reportSink.sendReport(peerConnectionUUID,
+			this.reportSink.sendReport(serviceUUID,
 					record.getProvidedcallid(),
 					serviceUUID.toString(),
 					ReportType.DETACHED_PEER_CONNECTION,
@@ -109,7 +109,7 @@ public class CallCleaner {
 
 			//finished call
 			FinishedCallReportDraft reportDraft = FinishedCallReportDraft.of(serviceUUID, callUUID, record.getUpdated());
-			this.kafkaSinks.sendReportDraft(serviceUUID, reportDraft);
+			this.reportDraftSink.send(serviceUUID, reportDraft);
 			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
 		}
 	}

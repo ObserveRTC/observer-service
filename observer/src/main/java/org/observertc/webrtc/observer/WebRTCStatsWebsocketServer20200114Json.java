@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 public class WebRTCStatsWebsocketServer20200114Json {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebRTCStatsWebsocketServer20200114Json.class);
-	private final KafkaSinks kafkaSinks;
+	private final ObservedPCSSink observedPCSSink;
 	private final ObserverConfig config;
 	private final ObjectReader objectReader;
 //	private final IDSLContextProvider contextProvider;
@@ -39,8 +39,8 @@ public class WebRTCStatsWebsocketServer20200114Json {
 	public WebRTCStatsWebsocketServer20200114Json(
 			ObserverConfig config,
 			ObjectMapper objectMapper,
-			KafkaSinks kafkaSinks) {
-		this.kafkaSinks = kafkaSinks;
+			ObservedPCSSink observedPCSSink) {
+		this.observedPCSSink = observedPCSSink;
 		this.config = config;
 		this.objectReader = objectMapper.reader();
 	}
@@ -103,7 +103,7 @@ public class WebRTCStatsWebsocketServer20200114Json {
 
 		try {
 			// TODO: avro!
-			this.kafkaSinks.sendObservedPCS(peerConnectionUUID, observedPCS);
+			this.observedPCSSink.sendObservedPCS(peerConnectionUUID, observedPCS);
 		} catch (Exception ex) {
 			logger.error("Error happened for kafka push ", ex);
 		}

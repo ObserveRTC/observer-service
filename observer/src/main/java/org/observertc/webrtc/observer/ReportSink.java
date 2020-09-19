@@ -20,7 +20,7 @@ public class ReportSink {
 		this.reportProducer = reportProducer;
 	}
 
-	public Future<RecordMetadata> sendReport(UUID peerConnectionUUID,
+	public Future<RecordMetadata> sendReport(UUID serviceUUID,
 											 String callName,
 											 String serviceID,
 											 ReportType type,

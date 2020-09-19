@@ -7,8 +7,8 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractReportProcessor implements Consumer<ReportDraft> {
-	private static Logger logger = LoggerFactory.getLogger(AbstractReportProcessor.class);
+public abstract class AbstractReportDraftProcessor implements Consumer<ReportDraft> {
+	private static Logger logger = LoggerFactory.getLogger(AbstractReportDraftProcessor.class);
 
 	private static final Map<String, ReportDraftType> typeMapper;
 

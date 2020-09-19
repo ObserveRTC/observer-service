@@ -60,7 +60,8 @@ kafkaTopics:
 
 evaluators:
   reportDrafts:
-    TTL: 300
+    expirationTimeInS: 300
+    minEnforcedTimeInS: 60
   callCleaner:
     streamMaxIdleTimeInS: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:30}
     pcRetentionTimeInDays: ${PEERCONNECTION_RETETNTION_TIME_IN_DAYS:60}

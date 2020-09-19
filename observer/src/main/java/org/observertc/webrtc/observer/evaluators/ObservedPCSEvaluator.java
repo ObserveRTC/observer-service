@@ -16,7 +16,7 @@ import org.observertc.webrtc.common.reports.avro.OutboundRTP;
 import org.observertc.webrtc.common.reports.avro.RemoteInboundRTP;
 import org.observertc.webrtc.common.reports.avro.Report;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.KafkaSinks;
+import org.observertc.webrtc.observer.ObservedPCSSink;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -49,7 +49,7 @@ public class ObservedPCSEvaluator {
 								SignatureMaker signatureMaker,
 								SentReportsRepository sentReportsRepository,
 								ReportSink reportSink,
-								KafkaSinks kafkaSinks) {
+								ObservedPCSSink observedPCSSink) {
 		this.config = config;
 		this.reportSink = reportSink;
 		this.enumConverter = enumConverter;
