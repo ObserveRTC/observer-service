@@ -71,7 +71,7 @@ public class DetachedPeerConnection extends org.apache.avro.specific.SpecificRec
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
+   private java.lang.String peerConnectionUUID;
 
   /**
    * Default constructor.  Note that this does not initialize fields

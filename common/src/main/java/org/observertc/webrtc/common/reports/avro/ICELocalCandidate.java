@@ -71,16 +71,16 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public org.observertc.webrtc.common.reports.avro.CandidateType candidateType;
-   public java.lang.Boolean deleted;
-   public java.lang.String id;
-   public java.lang.String ip;
-   public java.lang.Boolean isRemote;
-   public org.observertc.webrtc.common.reports.avro.NetworkType networkType;
-   public java.lang.Integer port;
-   public java.lang.Long priority;
-   public java.lang.String transportID;
+   private java.lang.String peerConnectionUUID;
+   private org.observertc.webrtc.common.reports.avro.CandidateType candidateType;
+   private java.lang.Boolean deleted;
+   private java.lang.String id;
+   private java.lang.String ip;
+   private java.lang.Boolean isRemote;
+   private org.observertc.webrtc.common.reports.avro.NetworkType networkType;
+   private java.lang.Integer port;
+   private java.lang.Long priority;
+   private java.lang.String transportID;
 
   /**
    * Default constructor.  Note that this does not initialize fields

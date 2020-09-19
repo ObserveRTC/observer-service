@@ -71,7 +71,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
+   private java.lang.String peerConnectionUUID;
 
   /**
    * Default constructor.  Note that this does not initialize fields

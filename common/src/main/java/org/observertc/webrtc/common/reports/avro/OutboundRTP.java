@@ -71,33 +71,33 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public java.lang.Long bytesSent;
-   public java.lang.String codecID;
-   public java.lang.String encoderImplementation;
-   public java.lang.Integer firCount;
-   public java.lang.Integer framesEncoded;
-   public java.lang.Long headerBytesSent;
-   public java.lang.String id;
-   public java.lang.Boolean isRemote;
-   public java.lang.Long keyFramesEncoded;
-   public java.lang.String mediaSourceID;
-   public org.observertc.webrtc.common.reports.avro.MediaType mediaType;
-   public java.lang.Integer nackCount;
-   public java.lang.Integer packetsSent;
-   public java.lang.Integer pliCount;
-   public java.lang.Double qpSum;
-   public org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason qualityLimitationReason;
-   public java.lang.Long qualityLimitationResolutionChanges;
-   public java.lang.String remoteID;
-   public java.lang.Long retransmittedBytesSent;
-   public java.lang.Integer retransmittedPacketsSent;
-   public long ssrc;
-   public java.lang.Long totalEncodedBytesTarget;
-   public java.lang.Double totalEncodeTime;
-   public java.lang.Double totalPacketSendDelay;
-   public java.lang.String trackID;
-   public java.lang.String transportID;
+   private java.lang.String peerConnectionUUID;
+   private java.lang.Long bytesSent;
+   private java.lang.String codecID;
+   private java.lang.String encoderImplementation;
+   private java.lang.Integer firCount;
+   private java.lang.Integer framesEncoded;
+   private java.lang.Long headerBytesSent;
+   private java.lang.String id;
+   private java.lang.Boolean isRemote;
+   private java.lang.Long keyFramesEncoded;
+   private java.lang.String mediaSourceID;
+   private org.observertc.webrtc.common.reports.avro.MediaType mediaType;
+   private java.lang.Integer nackCount;
+   private java.lang.Integer packetsSent;
+   private java.lang.Integer pliCount;
+   private java.lang.Double qpSum;
+   private org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason qualityLimitationReason;
+   private java.lang.Long qualityLimitationResolutionChanges;
+   private java.lang.String remoteID;
+   private java.lang.Long retransmittedBytesSent;
+   private java.lang.Integer retransmittedPacketsSent;
+   private long ssrc;
+   private java.lang.Long totalEncodedBytesTarget;
+   private java.lang.Double totalEncodeTime;
+   private java.lang.Double totalPacketSendDelay;
+   private java.lang.String trackID;
+   private java.lang.String transportID;
 
   /**
    * Default constructor.  Note that this does not initialize fields

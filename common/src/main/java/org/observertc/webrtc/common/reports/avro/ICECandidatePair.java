@@ -71,25 +71,25 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public java.lang.Integer availableOutgoingBitrate;
-   public java.lang.Long bytesReceived;
-   public java.lang.Long bytesSent;
-   public java.lang.Integer consentRequestsSent;
-   public java.lang.Double currentRoundTripTime;
-   public java.lang.String id;
-   public java.lang.String localCandidateID;
-   public java.lang.Boolean nominated;
-   public java.lang.Integer priority;
-   public java.lang.String remoteCandidateID;
-   public java.lang.Integer requestsReceived;
-   public java.lang.Integer requestsSent;
-   public java.lang.Integer responsesReceived;
-   public java.lang.Integer responsesSent;
-   public org.observertc.webrtc.common.reports.avro.CandidateType state;
-   public java.lang.Double totalRoundTripTime;
-   public java.lang.String transportID;
-   public java.lang.String writable;
+   private java.lang.String peerConnectionUUID;
+   private java.lang.Integer availableOutgoingBitrate;
+   private java.lang.Long bytesReceived;
+   private java.lang.Long bytesSent;
+   private java.lang.Integer consentRequestsSent;
+   private java.lang.Double currentRoundTripTime;
+   private java.lang.String id;
+   private java.lang.String localCandidateID;
+   private java.lang.Boolean nominated;
+   private java.lang.Integer priority;
+   private java.lang.String remoteCandidateID;
+   private java.lang.Integer requestsReceived;
+   private java.lang.Integer requestsSent;
+   private java.lang.Integer responsesReceived;
+   private java.lang.Integer responsesSent;
+   private org.observertc.webrtc.common.reports.avro.CandidateType state;
+   private java.lang.Double totalRoundTripTime;
+   private java.lang.String transportID;
+   private java.lang.String writable;
 
   /**
    * Default constructor.  Note that this does not initialize fields

@@ -71,16 +71,16 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public java.lang.String codecID;
-   public java.lang.String id;
-   public java.lang.Float jitter;
-   public java.lang.String localID;
-   public org.observertc.webrtc.common.reports.avro.MediaType mediaType;
-   public java.lang.Integer packetsLost;
-   public java.lang.Double roundTripTime;
-   public long ssrc;
-   public java.lang.String transportID;
+   private java.lang.String peerConnectionUUID;
+   private java.lang.String codecID;
+   private java.lang.String id;
+   private java.lang.Float jitter;
+   private java.lang.String localID;
+   private org.observertc.webrtc.common.reports.avro.MediaType mediaType;
+   private java.lang.Integer packetsLost;
+   private java.lang.Double roundTripTime;
+   private long ssrc;
+   private java.lang.String transportID;
 
   /**
    * Default constructor.  Note that this does not initialize fields

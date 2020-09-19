@@ -71,16 +71,16 @@ public class ICERemoteCandidate extends org.apache.avro.specific.SpecificRecordB
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public org.observertc.webrtc.common.reports.avro.MediaType candidateType;
-   public java.lang.Boolean deleted;
-   public java.lang.String id;
-   public java.lang.String ip;
-   public java.lang.Boolean isRemote;
-   public java.lang.Integer port;
-   public java.lang.Long priority;
-   public org.observertc.webrtc.common.reports.avro.TransportProtocol protocol;
-   public java.lang.String transportID;
+   private java.lang.String peerConnectionUUID;
+   private org.observertc.webrtc.common.reports.avro.MediaType candidateType;
+   private java.lang.Boolean deleted;
+   private java.lang.String id;
+   private java.lang.String ip;
+   private java.lang.Boolean isRemote;
+   private java.lang.Integer port;
+   private java.lang.Long priority;
+   private org.observertc.webrtc.common.reports.avro.TransportProtocol protocol;
+   private java.lang.String transportID;
 
   /**
    * Default constructor.  Note that this does not initialize fields

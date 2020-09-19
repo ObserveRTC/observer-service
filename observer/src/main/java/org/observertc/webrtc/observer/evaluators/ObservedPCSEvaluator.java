@@ -35,7 +35,7 @@ public class ObservedPCSEvaluator {
 
 	@Topic("${kafkaTopics.observedPCS.topicName}")
 	public void receive(@KafkaKey UUID peerConnectionUUID, ObservedPCS sample) {
-
+		
 	}
 
 }

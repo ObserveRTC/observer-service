@@ -71,33 +71,33 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public java.lang.Long bytesReceived;
-   public java.lang.String codecId;
-   public java.lang.String decoderImplementation;
-   public java.lang.Double estimatedPlayoutTimestamp;
-   public java.lang.Integer fecPacketsDiscarded;
-   public java.lang.Integer fecPacketsReceived;
-   public java.lang.Integer firCount;
-   public java.lang.Integer framesDecoded;
-   public java.lang.Integer headerBytesReceived;
-   public java.lang.String id;
-   public java.lang.Boolean isRemote;
-   public java.lang.Double jitter;
-   public java.lang.Integer keyFramesDecoded;
-   public java.lang.Double lastPacketReceivedTimestamp;
-   public org.observertc.webrtc.common.reports.avro.MediaType mediaType;
-   public java.lang.Integer nackCount;
-   public java.lang.Integer packetsLost;
-   public java.lang.Integer packetsReceived;
-   public java.lang.Integer pliCount;
-   public java.lang.Integer qpSum;
-   public long ssrc;
-   public java.lang.Double totalDecodeTime;
-   public java.lang.Double totalInterFrameDelay;
-   public java.lang.Double totalSquaredInterFrameDelay;
-   public java.lang.String trackId;
-   public java.lang.String transportId;
+   private java.lang.String peerConnectionUUID;
+   private java.lang.Long bytesReceived;
+   private java.lang.String codecId;
+   private java.lang.String decoderImplementation;
+   private java.lang.Double estimatedPlayoutTimestamp;
+   private java.lang.Integer fecPacketsDiscarded;
+   private java.lang.Integer fecPacketsReceived;
+   private java.lang.Integer firCount;
+   private java.lang.Integer framesDecoded;
+   private java.lang.Integer headerBytesReceived;
+   private java.lang.String id;
+   private java.lang.Boolean isRemote;
+   private java.lang.Double jitter;
+   private java.lang.Integer keyFramesDecoded;
+   private java.lang.Double lastPacketReceivedTimestamp;
+   private org.observertc.webrtc.common.reports.avro.MediaType mediaType;
+   private java.lang.Integer nackCount;
+   private java.lang.Integer packetsLost;
+   private java.lang.Integer packetsReceived;
+   private java.lang.Integer pliCount;
+   private java.lang.Integer qpSum;
+   private long ssrc;
+   private java.lang.Double totalDecodeTime;
+   private java.lang.Double totalInterFrameDelay;
+   private java.lang.Double totalSquaredInterFrameDelay;
+   private java.lang.String trackId;
+   private java.lang.String transportId;
 
   /**
    * Default constructor.  Note that this does not initialize fields

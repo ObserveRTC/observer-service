@@ -71,26 +71,26 @@ public class Track extends org.apache.avro.specific.SpecificRecordBase implement
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public java.lang.Integer concealedSamples;
-   public java.lang.Integer concealmentEvents;
-   public java.lang.Boolean detached;
-   public java.lang.Boolean ended;
-   public java.lang.Long framesDecoded;
-   public java.lang.Long framesDropped;
-   public java.lang.Long framesReceived;
-   public java.lang.Long hugeFramesSent;
-   public java.lang.String id;
-   public java.lang.Integer insertedSamplesForDeceleration;
-   public java.lang.Double jitterBufferDelay;
-   public java.lang.Integer jitterBufferEmittedCount;
-   public java.lang.String mediaSourceID;
-   public org.observertc.webrtc.common.reports.avro.MediaType mediaType;
-   public java.lang.Boolean remoteSource;
-   public java.lang.Long removedSamplesForAcceleration;
-   public java.lang.Double samplesDuration;
-   public java.lang.Integer silentConcealedSamples;
-   public java.lang.Integer totalSamplesReceived;
+   private java.lang.String peerConnectionUUID;
+   private java.lang.Integer concealedSamples;
+   private java.lang.Integer concealmentEvents;
+   private java.lang.Boolean detached;
+   private java.lang.Boolean ended;
+   private java.lang.Long framesDecoded;
+   private java.lang.Long framesDropped;
+   private java.lang.Long framesReceived;
+   private java.lang.Long hugeFramesSent;
+   private java.lang.String id;
+   private java.lang.Integer insertedSamplesForDeceleration;
+   private java.lang.Double jitterBufferDelay;
+   private java.lang.Integer jitterBufferEmittedCount;
+   private java.lang.String mediaSourceID;
+   private org.observertc.webrtc.common.reports.avro.MediaType mediaType;
+   private java.lang.Boolean remoteSource;
+   private java.lang.Long removedSamplesForAcceleration;
+   private java.lang.Double samplesDuration;
+   private java.lang.Integer silentConcealedSamples;
+   private java.lang.Integer totalSamplesReceived;
 
   /**
    * Default constructor.  Note that this does not initialize fields

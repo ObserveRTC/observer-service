@@ -71,16 +71,16 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-   public java.lang.String peerConnectionUUID;
-   public java.lang.Float audioLevel;
-   public java.lang.Double framesPerSecond;
-   public java.lang.Double height;
-   public java.lang.String id;
-   public org.observertc.webrtc.common.reports.avro.MediaType mediaType;
-   public java.lang.Float totalAudioEnergy;
-   public java.lang.Double totalSamplesDuration;
-   public java.lang.String trackIdentifier;
-   public java.lang.Double width;
+   private java.lang.String peerConnectionUUID;
+   private java.lang.Float audioLevel;
+   private java.lang.Double framesPerSecond;
+   private java.lang.Double height;
+   private java.lang.String id;
+   private org.observertc.webrtc.common.reports.avro.MediaType mediaType;
+   private java.lang.Float totalAudioEnergy;
+   private java.lang.Double totalSamplesDuration;
+   private java.lang.String trackIdentifier;
+   private java.lang.Double width;
 
   /**
    * Default constructor.  Note that this does not initialize fields

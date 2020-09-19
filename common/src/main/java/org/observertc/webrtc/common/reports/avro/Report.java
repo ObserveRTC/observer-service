@@ -71,13 +71,13 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
     return DECODER.decode(b);
   }
 
-   public java.lang.String service;
-   public java.lang.String bridge;
-   public java.lang.String callUUID;
-   public java.lang.String callName;
-   public long timestamp;
-   public java.lang.Object payload;
-   public org.observertc.webrtc.common.reports.avro.ReportType type;
+   private java.lang.String service;
+   private java.lang.String bridge;
+   private java.lang.String callUUID;
+   private java.lang.String callName;
+   private long timestamp;
+   private java.lang.Object payload;
+   private org.observertc.webrtc.common.reports.avro.ReportType type;
 
   /**
    * Default constructor.  Note that this does not initialize fields
