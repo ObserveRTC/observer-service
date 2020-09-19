@@ -47,7 +47,7 @@ public class ActiveStreamsRepository {
 	public <S extends ActivestreamsRecord> S update(@NonNull @Valid @NotNull S entity) {
 		this.contextProvider.get().insertInto(TABLE).set(entity)
 				.onDuplicateKeyUpdate()
-				.set(TABLE.OBSERVERUUID, values(TABLE.OBSERVERUUID))
+				.set(TABLE.SERVICEUUID, values(TABLE.SERVICEUUID))
 				.set(TABLE.SSRC, values(TABLE.SSRC))
 				.set(TABLE.CALLUUID, values(TABLE.CALLUUID))
 				.execute();
@@ -68,19 +68,19 @@ public class ActiveStreamsRepository {
 			InsertValuesStep3<ActivestreamsRecord, byte[], Long, byte[]> sql =
 					contextProvider.get().insertInto(
 							TABLE,
-							TABLE.OBSERVERUUID,
+							TABLE.SERVICEUUID,
 							TABLE.SSRC,
 							TABLE.CALLUUID);
 			Iterator<S> it = batchedEntities.iterator();
 			for (; it.hasNext(); ) {
 				ActivestreamsRecord record = it.next();
-				sql.values(record.getObserveruuid(),
+				sql.values(record.getServiceuuid(),
 						record.getSsrc(),
 						record.getCalluuid());
 			}
 			sql
 					.onDuplicateKeyUpdate()
-					.set(TABLE.OBSERVERUUID, values(TABLE.OBSERVERUUID))
+					.set(TABLE.SERVICEUUID, values(TABLE.SERVICEUUID))
 					.set(TABLE.SSRC, values(TABLE.SSRC))
 					.set(TABLE.CALLUUID, values(TABLE.CALLUUID))
 					.execute();
@@ -102,7 +102,7 @@ public class ActiveStreamsRepository {
 	public Optional<ActivestreamsRecord> findById(@NonNull @NotNull ActiveStreamKey activeStreamKey) {
 		return this.contextProvider.get()
 				.selectFrom(TABLE)
-				.where(TABLE.OBSERVERUUID.eq(activeStreamKey.getObserverUUIDBytes()))
+				.where(TABLE.SERVICEUUID.eq(activeStreamKey.getServiceUUIDBytes()))
 				.and(TABLE.SSRC.eq(activeStreamKey.getSSRC()))
 				.fetchOptionalInto(ActivestreamsRecord.class);
 	}
@@ -111,8 +111,8 @@ public class ActiveStreamsRepository {
 	public Stream<ActivestreamsRecord> streamByIds(@NonNull @NotNull Stream<ActiveStreamKey> activeStreamKeys) {
 		return this.contextProvider.get()
 				.selectFrom(TABLE)
-				.where(row(TABLE.OBSERVERUUID, TABLE.SSRC).in(
-						activeStreamKeys.map(key -> row(key.getObserverUUIDBytes(), key.getSSRC()))
+				.where(row(TABLE.SERVICEUUID, TABLE.SSRC).in(
+						activeStreamKeys.map(key -> row(key.getServiceUUIDBytes(), key.getSSRC()))
 								.collect(Collectors.toList())
 				)).stream();
 	}
@@ -122,7 +122,7 @@ public class ActiveStreamsRepository {
 				this.contextProvider.get()
 						.selectOne()
 						.from(TABLE)
-						.where(TABLE.OBSERVERUUID.eq(activeStreamKey.getObserverUUIDBytes()))
+						.where(TABLE.SERVICEUUID.eq(activeStreamKey.getServiceUUIDBytes()))
 						.and(TABLE.SSRC.eq(activeStreamKey.getSSRC()))
 		);
 	}
@@ -142,14 +142,14 @@ public class ActiveStreamsRepository {
 
 	public void deleteById(@NonNull @NotNull ActiveStreamKey activeStreamKey) {
 		this.contextProvider.get().deleteFrom(TABLE)
-				.where(TABLE.OBSERVERUUID.eq(activeStreamKey.getObserverUUIDBytes()))
+				.where(TABLE.SERVICEUUID.eq(activeStreamKey.getServiceUUIDBytes()))
 				.and(TABLE.SSRC.eq(activeStreamKey.getSSRC()))
 				.execute();
 	}
 
 	public void delete(@NonNull @NotNull ActivestreamsRecord entity) {
 		this.contextProvider.get().deleteFrom(TABLE)
-				.where(TABLE.OBSERVERUUID.eq(entity.getObserveruuid()))
+				.where(TABLE.SERVICEUUID.eq(entity.getServiceuuid()))
 				.and(TABLE.SSRC.eq(entity.getSsrc()))
 				.execute();
 	}
@@ -168,9 +168,9 @@ public class ActiveStreamsRepository {
 	public void deleteAll(@NonNull @NotNull Iterable<? extends ActivestreamsRecord> entities) {
 		StreamSupport.stream(entities.spliterator(), false).collect(BatchCollector.makeCollector(DEFAULT_BULK_SIZE, batchedEntities -> {
 			contextProvider.get().deleteFrom(TABLE)
-					.where(row(TABLE.OBSERVERUUID, TABLE.SSRC)
+					.where(row(TABLE.SERVICEUUID, TABLE.SSRC)
 							.in(batchedEntities.stream().map(
-									entity -> row(entity.getObserveruuid(), entity.getSsrc())
+									entity -> row(entity.getServiceuuid(), entity.getSsrc())
 							).collect(Collectors.toList())))
 					.execute();
 		}));

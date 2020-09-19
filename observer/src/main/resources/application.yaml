@@ -10,12 +10,17 @@ micronaut:
 #        enabled: true
 #        step: PT1M
 ---
+serviceMap:
+  - uuid: "id"
+    name: "name"
+
+---
+authenticator:
+  service: authenticatorURL #optional
+---
 observer:
   useClientTimestamps: ${USE_CLIENT_TIMESTAMPS:False}
-  authentication:
-    hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
-    stretching: ${AUTHENTICATION_STRETCHING:2}
-    saltSize: ${AUTHENTICATION_SALT_SIZE:32}
+
 ---
 kafka:
   consumers:

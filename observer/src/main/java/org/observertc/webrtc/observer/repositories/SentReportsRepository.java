@@ -1,7 +1,6 @@
 package org.observertc.webrtc.observer.repositories;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -67,7 +66,7 @@ public class SentReportsRepository {
 	@NonNull
 	public <S extends SentreportsRecord> Iterable<S> updateAll(@NonNull @NotNull Iterable<S> entities) {
 		this.consumeBatches(entities, batchedEntities -> {
-			InsertValuesStep3<SentreportsRecord, byte[], byte[], LocalDateTime> sql =
+			InsertValuesStep3<SentreportsRecord, byte[], byte[], Long> sql =
 					contextProvider.get().insertInto(
 							TABLE,
 							TABLE.PEERCONNECTIONUUID,
@@ -159,7 +158,7 @@ public class SentReportsRepository {
 		this.contextProvider.get().deleteFrom(TABLE).execute();
 	}
 
-	public void deleteReportedOlderThan(LocalDateTime threshold) {
+	public void deleteReportedOlderThan(Long threshold) {
 		this.contextProvider.get().deleteFrom(TABLE).where(TABLE.REPORTED.lt(threshold)).execute();
 	}
 }

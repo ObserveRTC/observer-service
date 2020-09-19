@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import org.observertc.webrtc.observer.dto.webextrapp.PeerConnectionSample;
 
+/**
+ * Use {@link ObservedPCS}
+ */
+@Deprecated
 public class WebExtrAppSample {
 
 	public static WebExtrAppSample of(UUID observerUUID,
@@ -32,5 +36,6 @@ public class WebExtrAppSample {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime timestamp;
+
 
 }

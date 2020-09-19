@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.evaluators.mediastreams;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -8,36 +7,39 @@ import java.util.UUID;
 public class MediaStreamUpdate {
 
 	public static MediaStreamUpdate of(
-			UUID observerUUID,
+			UUID serviceUUID,
 			UUID peerConnectionUUID,
-			LocalDateTime created,
+			Long created,
 			String browserID,
-			String timeZoneID
+			String provdedCallID,
+			String timeZoneID,
+			String providedUserID,
+			String mediaUnitID,
+			String serviceName
 	) {
 		MediaStreamUpdate result = new MediaStreamUpdate();
-		result.observerUUID = observerUUID;
+		result.serviceUUID = serviceUUID;
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.created = result.updated = created;
 		result.browserID = browserID;
 		result.timeZoneID = timeZoneID;
+		result.providedCallID = provdedCallID;
+		result.providedUserID = providedUserID;
+		result.mediaUnitID = mediaUnitID;
+		result.serviceName = serviceName;
 		return result;
 	}
 
 	public Set<Long> SSRCs = new HashSet<>();
 	public UUID peerConnectionUUID;
-	public UUID observerUUID;
-	public LocalDateTime created;
-	public LocalDateTime updated;
+	public UUID serviceUUID;
+	public Long created;
+	public Long updated;
 	public String browserID;
 	public String timeZoneID;
+	public String providedCallID;
+	public String providedUserID;
+	public String mediaUnitID;
+	public String serviceName;
 
-	public MediaStreamUpdate add(Long SSRC, LocalDateTime timestamp) {
-		this.SSRCs.add(SSRC);
-		if (this.updated == null) {
-			this.updated = timestamp;
-		} else if (0 < this.updated.compareTo(timestamp)) {
-			this.updated = timestamp;
-		}
-		return this;
-	}
 }

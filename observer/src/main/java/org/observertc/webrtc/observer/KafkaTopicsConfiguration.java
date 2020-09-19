@@ -7,6 +7,7 @@ public class KafkaTopicsConfiguration {
 //	public boolean createIfNotExists = true;
 
 	public WebExtrAppSamplesConfig webExtrAppSamples;
+	public ObservedPCSConfig observedPCS;
 	public ObserveRTCReportsConfig observertcReports;
 	public ObserveRTCReportDraftsConfig observertcReportDrafts;
 
@@ -19,6 +20,11 @@ public class KafkaTopicsConfiguration {
 
 	@ConfigurationProperties("webExtrAppSamples")
 	public static class WebExtrAppSamplesConfig extends TopicConfig {
+
+	}
+
+	@ConfigurationProperties("observedPCS")
+	public static class ObservedPCSConfig extends TopicConfig {
 
 	}
 

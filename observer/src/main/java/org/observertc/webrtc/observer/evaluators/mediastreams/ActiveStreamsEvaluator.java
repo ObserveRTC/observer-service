@@ -4,7 +4,9 @@ import io.micronaut.configuration.kafka.annotation.KafkaListener;
 import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Prototype;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,17 +18,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.common.reports.InitiatedCallReport;
-import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
-import org.observertc.webrtc.common.reports.Report;
 import org.observertc.webrtc.observer.KafkaSinks;
 import org.observertc.webrtc.observer.ObserverDateTime;
+import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.jooq.tables.records.ActivestreamsRecord;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.ActiveStreamKey;
 import org.observertc.webrtc.observer.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.samples.WebExtrAppSample;
+import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,32 +48,24 @@ public class ActiveStreamsEvaluator {
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final KafkaSinks kafkaSinks;
 	private final ObserverDateTime observerDateTime;
-	private final MediaStreamUpdatesProvider mediaStreamUpdatesProvider;
 
 	public ActiveStreamsEvaluator(
 			PeerConnectionsRepository peerConnectionsRepository,
 			ActiveStreamsRepository activeStreamsRepository,
 			ObserverDateTime observerDateTime,
-			MediaStreamUpdatesProvider mediaStreamUpdatesProvider,
 			KafkaSinks kafkaSinks
 	) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.observerDateTime = observerDateTime;
 		this.kafkaSinks = kafkaSinks;
-		this.mediaStreamUpdatesProvider = mediaStreamUpdatesProvider;
 	}
 
 
 	@Topic("${kafkaTopics.webExtrAppSamples.topicName}")
-	public void receive(List<WebExtrAppSample> samples) {
+	public void receive(List<ObservedPCS> samples) {
+		Map<UUID, MediaStreamUpdate> updatedPCs = this.makeMediaStreamUpdates(samples);
 
-		for (int i = 0; i < samples.size(); i++) {
-			WebExtrAppSample sample = samples.get(i);
-			this.mediaStreamUpdatesProvider.accept(sample);
-		}
-
-		Map<UUID, MediaStreamUpdate> updatedPCs = this.mediaStreamUpdatesProvider.get();
 		if (updatedPCs.size() < 1) {
 			return;
 		}
@@ -86,7 +78,59 @@ public class ActiveStreamsEvaluator {
 
 		Deque<MediaStreamUpdate> mediaStreamUpdates = new LinkedList<>();
 		updatedPCs.values().stream().forEach(mediaStreamUpdates::addLast);
-		this.processMediaStreamUppdates(mediaStreamUpdates);
+		this.processMediaStreamUpdates(mediaStreamUpdates);
+	}
+
+
+	private Map<UUID, MediaStreamUpdate> makeMediaStreamUpdates(List<ObservedPCS> samples) {
+		Map<UUID, MediaStreamUpdate> result = new HashMap<>();
+		for (int i = 0; i < samples.size(); i++) {
+			ObservedPCS sample = samples.get(i);
+			PeerConnectionSample pcSample = sample.peerConnectionSample;
+			if (pcSample == null) {
+				logger.warn("Peer connection sample is null");
+				continue;
+			}
+			MediaStreamUpdate mediaStreamUpdate = result.get(sample.peerConnectionUUID);
+			if (mediaStreamUpdate == null) {
+				mediaStreamUpdate = MediaStreamUpdate.of(
+						sample.serviceUUID,
+						sample.peerConnectionUUID,
+						sample.timestamp,
+						pcSample.browserID,
+						pcSample.callId,
+						sample.timeZoneID,
+						pcSample.userId,
+						sample.mediaUnit,
+						sample.serviceName
+				);
+			} else {
+				mediaStreamUpdate.updated = sample.timestamp;
+			}
+			for (PeerConnectionSample.RTCStats rtcStats : Arrays.asList(pcSample.senderStats, pcSample.receiverStats)) {
+				if (rtcStats == null) {
+					continue;
+				}
+				if (rtcStats.inboundRTPStats != null) {
+					for (PeerConnectionSample.InboundRTPStreamStats stats : rtcStats.inboundRTPStats) {
+						mediaStreamUpdate.SSRCs.add(stats.ssrc);
+					}
+				}
+				if (rtcStats.outboundRTPStats != null) {
+					for (PeerConnectionSample.OutboundRTPStreamStats stats : rtcStats.outboundRTPStats) {
+						mediaStreamUpdate.SSRCs.add(stats.ssrc);
+					}
+				}
+				if (rtcStats.remoteInboundRTPStats != null) {
+					for (PeerConnectionSample.RemoteInboundRTPStreamStats stats : rtcStats.remoteInboundRTPStats) {
+						mediaStreamUpdate.SSRCs.add(stats.ssrc);
+					}
+				}
+			}
+
+			result.put(sample.peerConnectionUUID, mediaStreamUpdate);
+		}
+		return result;
 	}
 
 
@@ -110,7 +154,7 @@ public class ActiveStreamsEvaluator {
 			MediaStreamUpdate mediaStreamUpdate = updates.get(pcUUID);
 			if (mediaStreamUpdate == null) {
 				// something is wrong, log it!
-				logger.warn("The PC returned by the repository is not existiing in the current update. WTF?!?");
+				logger.warn("The PC returned by the repository is not existing in the current update. WTF?!?");
 				continue;
 			}
 			// Set the update time for the peer connection
@@ -121,14 +165,14 @@ public class ActiveStreamsEvaluator {
 		this.peerConnectionsRepository.updateAll(updatedPCs);
 	}
 
-	private void processMediaStreamUppdates(Deque<MediaStreamUpdate> newPCs) {
+	private void processMediaStreamUpdates(Deque<MediaStreamUpdate> newPCs) {
 		List<PeerconnectionsRecord> updatedPCs = new LinkedList<>();
 		while (!newPCs.isEmpty()) {
 			MediaStreamUpdate mediaStreamUpdate = newPCs.removeFirst();
 			// Check if active streams available
 			List<ActiveStreamKey> activeStreamKeys =
 					mediaStreamUpdate.SSRCs.stream()
-							.map(ssrc -> new ActiveStreamKey(mediaStreamUpdate.observerUUID, ssrc))
+							.map(ssrc -> new ActiveStreamKey(mediaStreamUpdate.serviceUUID, ssrc))
 							.collect(Collectors.toList());
 			List<ActivestreamsRecord> activeStreamsRecords
 					= this.activeStreamsRepository.streamByIds(activeStreamKeys.stream()).collect(Collectors.toList());
@@ -143,9 +187,10 @@ public class ActiveStreamsEvaluator {
 				}
 				callUUIDBytes = callUUIDBytesHolder.get();
 			} else {
+
 				Optional<PeerconnectionsRecord> pcHolder =
-						this.peerConnectionsRepository.findByJoinedBrowserID(mediaStreamUpdate.created,
-								mediaStreamUpdate.browserID);
+						this.peerConnectionsRepository.findByJoinedBrowserIDOrProvidedCallID(mediaStreamUpdate.created,
+								mediaStreamUpdate.browserID, mediaStreamUpdate.providedCallID);
 				if (pcHolder.isPresent()) {
 					callUUIDBytes = pcHolder.get().getCalluuid();
 				}
@@ -163,7 +208,7 @@ public class ActiveStreamsEvaluator {
 			final byte[] finalCallUUIDBytes = callUUIDBytes;
 			List<ActivestreamsRecord> newActiveStreams = activeStreamKeys.stream()
 					.map(activeStreamKey -> new ActivestreamsRecord(
-							activeStreamKey.getObserverUUIDBytes(),
+							activeStreamKey.getServiceUUIDBytes(),
 							activeStreamKey.getSSRC(),
 							finalCallUUIDBytes)
 					)
@@ -175,13 +220,14 @@ public class ActiveStreamsEvaluator {
 				continue;
 			}
 
-			Report initiatedCall = InitiatedCallReport.of(
-					mediaStreamUpdate.observerUUID,
-					callUUID,
-					mediaStreamUpdate.created
-			);
-			ReportDraft reportDraft = new ReportDraft(initiatedCall, this.observerDateTime.now());
-			this.kafkaSinks.sendReportDraft(mediaStreamUpdate.observerUUID, reportDraft);
+			// TODO: report the initiated call draft
+//			Report initiatedCall = InitiatedCallReport.of(
+//					mediaStreamUpdate.observerUUID,
+//					callUUID,
+//					mediaStreamUpdate.created
+//			);
+//			ReportDraft reportDraft = new ReportDraft(initiatedCall, this.observerDateTime.now());
+//			this.kafkaSinks.sendReportDraft(mediaStreamUpdate.observerUUID, reportDraft);
 			newPCs.addLast(mediaStreamUpdate);
 		}
 
@@ -195,27 +241,32 @@ public class ActiveStreamsEvaluator {
 		try {
 			this.peerConnectionsRepository.save(new PeerconnectionsRecord(
 					UUIDAdapter.toBytes(mediaStreamUpdate.peerConnectionUUID),
+					callUUIDBytes,
+					UUIDAdapter.toBytes(mediaStreamUpdate.serviceUUID),
 					mediaStreamUpdate.created,
 					mediaStreamUpdate.updated,
 					null,
+					mediaStreamUpdate.mediaUnitID,
 					mediaStreamUpdate.browserID,
+					mediaStreamUpdate.providedUserID,
+					mediaStreamUpdate.providedCallID,
 					mediaStreamUpdate.timeZoneID,
-					callUUIDBytes,
-					UUIDAdapter.toBytes(mediaStreamUpdate.observerUUID)
+					mediaStreamUpdate.serviceName
 			));
 		} catch (Exception ex) {
 			logger.error("Exception happened at saving new peer connection, report won't be sent", ex);
 			return;
 		}
+		// TODO: report it
 
-		Report joinedPeerConnectionReport = JoinedPeerConnectionReport.of(
-				mediaStreamUpdate.observerUUID,
-				UUIDAdapter.toUUID(callUUIDBytes),
-				mediaStreamUpdate.peerConnectionUUID,
-				mediaStreamUpdate.browserID,
-				mediaStreamUpdate.created,
-				mediaStreamUpdate.timeZoneID);
-
-		this.kafkaSinks.sendReport(mediaStreamUpdate.observerUUID, joinedPeerConnectionReport);
+//		Report joinedPeerConnectionReport = JoinedPeerConnectionReport.of(
+//				mediaStreamUpdate.observerUUID,
+//				UUIDAdapter.toUUID(callUUIDBytes),
+//				mediaStreamUpdate.peerConnectionUUID,
+//				mediaStreamUpdate.browserID,
+//				mediaStreamUpdate.created,
+//				mediaStreamUpdate.timeZoneID);
+//
+//		this.kafkaSinks.sendReport(mediaStreamUpdate.observerUUID, joinedPeerConnectionReport);
 	}
 }

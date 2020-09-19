@@ -32,7 +32,7 @@ import org.observertc.webrtc.observer.jooq.tables.records.ActivestreamsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Activestreams extends TableImpl<ActivestreamsRecord> {
 
-    private static final long serialVersionUID = -264361488;
+    private static final long serialVersionUID = -1974867936;
 
     /**
      * The reference instance of <code>WebRTCObserver.ActiveStreams</code>
@@ -48,19 +48,19 @@ public class Activestreams extends TableImpl<ActivestreamsRecord> {
     }
 
     /**
-     * The column <code>WebRTCObserver.ActiveStreams.observerUUID</code>. The UUID of the observer the SSRC belongs to
+     * The column <code>WebRTCObserver.ActiveStreams.serviceUUID</code>.
      */
-    public final TableField<ActivestreamsRecord, byte[]> OBSERVERUUID = createField(DSL.name("observerUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the observer the SSRC belongs to");
+    public final TableField<ActivestreamsRecord, byte[]> SERVICEUUID = createField(DSL.name("serviceUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
 
     /**
-     * The column <code>WebRTCObserver.ActiveStreams.SSRC</code>. The SSRC identifier
+     * The column <code>WebRTCObserver.ActiveStreams.SSRC</code>.
      */
-    public final TableField<ActivestreamsRecord, Long> SSRC = createField(DSL.name("SSRC"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "The SSRC identifier");
+    public final TableField<ActivestreamsRecord, Long> SSRC = createField(DSL.name("SSRC"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>WebRTCObserver.ActiveStreams.callUUID</code>. The UUID of the call the stream belongs to
+     * The column <code>WebRTCObserver.ActiveStreams.callUUID</code>.
      */
-    public final TableField<ActivestreamsRecord, byte[]> CALLUUID = createField(DSL.name("callUUID"), org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "The UUID of the call the stream belongs to");
+    public final TableField<ActivestreamsRecord, byte[]> CALLUUID = createField(DSL.name("callUUID"), org.jooq.impl.SQLDataType.BINARY(16), this, "");
 
     /**
      * Create a <code>WebRTCObserver.ActiveStreams</code> table reference

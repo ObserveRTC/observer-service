@@ -4,7 +4,6 @@
 package org.observertc.webrtc.observer.jooq.tables;
 
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +32,7 @@ import org.observertc.webrtc.observer.jooq.tables.records.SentreportsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Sentreports extends TableImpl<SentreportsRecord> {
 
-    private static final long serialVersionUID = 2048452476;
+    private static final long serialVersionUID = 1112679974;
 
     /**
      * The reference instance of <code>WebRTCObserver.SentReports</code>
@@ -49,19 +48,19 @@ public class Sentreports extends TableImpl<SentreportsRecord> {
     }
 
     /**
-     * The column <code>WebRTCObserver.SentReports.signature</code>. The signature of the report, which is sent
+     * The column <code>WebRTCObserver.SentReports.signature</code>.
      */
-    public final TableField<SentreportsRecord, byte[]> SIGNATURE = createField(DSL.name("signature"), org.jooq.impl.SQLDataType.VARBINARY(255).nullable(false), this, "The signature of the report, which is sent");
+    public final TableField<SentreportsRecord, byte[]> SIGNATURE = createField(DSL.name("signature"), org.jooq.impl.SQLDataType.VARBINARY(255).nullable(false), this, "");
 
     /**
-     * The column <code>WebRTCObserver.SentReports.peerConnectionUUID</code>. The UUID of the peerConnection sent the report
+     * The column <code>WebRTCObserver.SentReports.peerConnectionUUID</code>.
      */
-    public final TableField<SentreportsRecord, byte[]> PEERCONNECTIONUUID = createField(DSL.name("peerConnectionUUID"), org.jooq.impl.SQLDataType.BINARY(16), this, "The UUID of the peerConnection sent the report");
+    public final TableField<SentreportsRecord, byte[]> PEERCONNECTIONUUID = createField(DSL.name("peerConnectionUUID"), org.jooq.impl.SQLDataType.BINARY(16), this, "");
 
     /**
-     * The column <code>WebRTCObserver.SentReports.reported</code>. The timestamp of the report has been sent
+     * The column <code>WebRTCObserver.SentReports.reported</code>.
      */
-    public final TableField<SentreportsRecord, LocalDateTime> REPORTED = createField(DSL.name("reported"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "The timestamp of the report has been sent");
+    public final TableField<SentreportsRecord, Long> REPORTED = createField(DSL.name("reported"), org.jooq.impl.SQLDataType.BIGINT, this, "");
 
     /**
      * Create a <code>WebRTCObserver.SentReports</code> table reference
@@ -147,7 +146,7 @@ public class Sentreports extends TableImpl<SentreportsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<byte[], byte[], LocalDateTime> fieldsRow() {
+    public Row3<byte[], byte[], Long> fieldsRow() {
         return (Row3) super.fieldsRow();
     }
 }

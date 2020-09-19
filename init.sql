@@ -1,6 +1,72 @@
+DROP DATABASE IF EXISTS WebRTCObserver;
+CREATE DATABASE WebRTCObserver;
+
+
+-- --------------------------------------------------- 
+-- ---------- Observer -------------------------------
+-- ---------------------------------------------------
+
+
+
+DROP TABLE IF EXISTS `WebRTCObserver`.`ActiveStreams`;
+CREATE TABLE `WebRTCObserver`.`ActiveStreams`
+(
+    `serviceUUID`         BINARY(16),
+    `SSRC`                BIGINT(8),
+    `callUUID`            BINARY(16),
+    PRIMARY KEY (`serviceUUID`,`SSRC`),
+    INDEX `ActiveStreams_call_index` (`callUUID`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to track the active streams';
+ 
+
+DROP TABLE IF EXISTS `WebRTCObserver`.`PeerConnections`;
+CREATE TABLE `WebRTCObserver`.`PeerConnections`
+(
+    `peerConnectionUUID`  BINARY(16),
+    `callUUID`            BINARY(16),
+    `serviceUUID`         BINARY(16),
+    `joined`              BIGINT(8),
+    `updated`             BIGINT(8),
+    `detached`            BIGINT(8),
+    `bridgeID`            VARCHAR (255),
+    `browserID`           VARCHAR (255),
+    `providedUserID`      VARCHAR (255),
+    `providedCallID`      VARCHAR (255),
+    `timeZone`            VARCHAR (255),
+    `serviceName`         VARCHAR (255),
+    PRIMARY KEY (`peerConnectionUUID`),
+    INDEX `PeerConnections_updated_index` (`updated`),
+    INDEX `PeerConnections_detached_index` (`detached`),
+    INDEX `PeerConnections_browserID_index` (`browserID`),
+    INDEX `PeerConnections_providedCallID_index` (`providedCallID`),
+    INDEX `PeerConnections_callUUID_index` (`callUUID`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to store information related to peer connections';
+  
+DROP TABLE IF EXISTS `WebRTCObserver`.`SentReports`;
+CREATE TABLE `WebRTCObserver`.`SentReports`
+(
+    `signature`             VARBINARY(255),
+    `peerConnectionUUID`    BINARY(16),
+    `reported`              BIGINT(8),
+    PRIMARY KEY (`signature`),
+    INDEX `SentReports_peerConnectionUUID_index` (`peerConnectionUUID`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='SentReports';
+  
+  
+  
+-- --------------------------------------------------- 
+-- ---------- Authenticator --------------------------
+-- ---------------------------------------------------
+
+
+
 
 CREATE DATABASE IF NOT EXISTS WebRTCObserver;
 
+DROP TABLE IF EXISTS `WebRTCObserver`.`Users`;
 CREATE TABLE `WebRTCObserver`.`Users`
 (
     `id`              INT  NOT NULL AUTO_INCREMENT COMMENT 'The identifier of the user for inside relations, never outside',
@@ -14,18 +80,48 @@ CREATE TABLE `WebRTCObserver`.`Users`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='Users';
 
-CREATE TABLE `WebRTCObserver`.`Observers`
+DROP TABLE IF EXISTS `WebRTCObserver`.`Customers`;
+CREATE TABLE `WebRTCObserver`.`Customers`
 (
-    `id`          INT NOT NULL AUTO_INCREMENT COMMENT 'The identifier of the observer for inside relations, never outside',
-    `uuid`        BINARY(16) UNIQUE DEFAULT NULL COMMENT 'The UUID of the observer published outside ',
-    `name`        VARCHAR(255)      DEFAULT NULL COMMENT 'The name of the obersver',
-    `description` VARCHAR(255)      DEFAULT NULL COMMENT 'The description for the observer',
-    PRIMARY KEY (`id`)
+    `id`          INT NOT NULL AUTO_INCREMENT,
+    `uuid`        BINARY(16) UNIQUE DEFAULT NULL,
+    `name`        VARCHAR(255)      DEFAULT NULL,
+    `description` VARCHAR(255)      DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `customers_uuid_key` (`uuid`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='Observers';
+  DEFAULT CHARSET = utf8mb4 COMMENT ='Customers';
+  
+
+DROP TABLE IF EXISTS `WebRTCObserver`.`Services`;
+CREATE TABLE `WebRTCObserver`.`Services`
+(
+    `id`          INT NOT NULL AUTO_INCREMENT,
+    `customer_id` INT NOT NULL,
+    `uuid`        BINARY(16) UNIQUE DEFAULT NULL,
+    `name`        VARCHAR(255)      DEFAULT NULL,
+    `description` VARCHAR(255)      DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `services_uuid_key` (`uuid`),
+    FOREIGN KEY (customer_id) REFERENCES Customers(id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='Services';
+  
+
+DROP TABLE IF EXISTS `WebRTCObserver`.`Bridges`;
+CREATE TABLE `WebRTCObserver`.`Bridges`
+(
+    `id`          INT NOT NULL AUTO_INCREMENT,
+    `service_id`  INT NOT NULL,
+    `name`        VARCHAR(255)      DEFAULT NULL,
+    `description` VARCHAR(255)      DEFAULT NULL,
+     PRIMARY KEY (`id`),
+     FOREIGN KEY (service_id) REFERENCES Services(id),
+     UNIQUE `bridges_unique_index`(`service_id`, `name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='Services';
 
 USE `WebRTCObserver`;
- 
 INSERT INTO `Users`
 (`id`,
  `uuid`,
@@ -39,56 +135,4 @@ VALUES (1,
         UNHEX('e77183b020e803e858c39b95652c81084f19ed11e2e2d18433bcb2c8a8a46768'),
         UNHEX('e12'),
         'admin');
-
-INSERT INTO `Observers`
-(`id`,
- `uuid`,
- `name`,
- `description`)
-VALUES (1,
-        UNHEX(REPLACE('86ed98c6-b001-48bb-b31e-da638b979c72', '-', '')),
-        'demo',
-        'demo description');
-
-
-CREATE TABLE `WebRTCObserver`.`ActiveStreams`
-(
-    `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer the SSRC belongs to',
-    `SSRC`                BIGINT NOT NULL COMMENT 'The SSRC identifier',
-    `callUUID`            BINARY(16) NOT NULL COMMENT 'The UUID of the call the stream belongs to',
-    PRIMARY KEY (`observerUUID`,`SSRC`),
-    INDEX `ActiveStreams_call_index` (`callUUID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to track the active streams';
- 
-
-CREATE TABLE `WebRTCObserver`.`PeerConnections`
-(
-    `peerConnectionUUID`  BINARY(16) NOT NULL COMMENT 'The UUID of the peer connection',
-    `joined`              DATETIME,
-    `updated`             DATETIME,
-    `detached`            DATETIME,
-    `browserID`           VARCHAR (64),
-    `timeZone`            VARCHAR (64),
-    `callUUID`            BINARY(16) NOT NULL COMMENT 'The UUID of the call the peer connection belongs to',
-    `observerUUID`        BINARY(16) NOT NULL COMMENT 'The UUID of the observer reported the peer connection',
-    PRIMARY KEY (`peerConnectionUUID`),
-    INDEX `PeerConnections_updated_index` (`updated`),
-    INDEX `PeerConnections_detached_index` (`detached`),
-    INDEX `PeerConnections_browserID_index` (`browserID`),
-    INDEX `PeerConnections_callUUID_index` (`callUUID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='A table to store peer connection reports generated by the service';
-  
-
-CREATE TABLE `WebRTCObserver`.`SentReports`
-(
-    `signature`             VARBINARY(255) COMMENT 'The signature of the report, which is sent',
-    `peerConnectionUUID`    BINARY(16) COMMENT 'The UUID of the peerConnection sent the report',
-    `reported`              DATETIME      DEFAULT NULL COMMENT 'The timestamp of the report has been sent',
-    PRIMARY KEY (`signature`),
-    INDEX `SentReports_peerConnectionUUID_index` (`peerConnectionUUID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='SentReports';
-  
   

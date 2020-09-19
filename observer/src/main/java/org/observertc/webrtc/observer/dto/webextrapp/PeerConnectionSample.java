@@ -3,6 +3,10 @@ package org.observertc.webrtc.observer.dto.webextrapp;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Use {@link org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample}
+ */
+@Deprecated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PeerConnectionSample {
 	private ObserveRTCCIceStats iceStats;

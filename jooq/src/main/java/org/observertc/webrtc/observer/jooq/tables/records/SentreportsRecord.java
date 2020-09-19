@@ -4,8 +4,6 @@
 package org.observertc.webrtc.observer.jooq.tables.records;
 
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,12 +19,12 @@ import org.observertc.webrtc.observer.jooq.tables.Sentreports;
  * SentReports
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> implements Record3<byte[], byte[], LocalDateTime> {
+public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> implements Record3<byte[], byte[], Long> {
 
-    private static final long serialVersionUID = 1677246020;
+    private static final long serialVersionUID = -1217861013;
 
     /**
-     * Setter for <code>WebRTCObserver.SentReports.signature</code>. The signature of the report, which is sent
+     * Setter for <code>WebRTCObserver.SentReports.signature</code>.
      */
     public SentreportsRecord setSignature(byte[] value) {
         set(0, value);
@@ -34,7 +32,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     /**
-     * Getter for <code>WebRTCObserver.SentReports.signature</code>. The signature of the report, which is sent
+     * Getter for <code>WebRTCObserver.SentReports.signature</code>.
      */
     @NotNull
     @Size(max = 255)
@@ -43,7 +41,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     /**
-     * Setter for <code>WebRTCObserver.SentReports.peerConnectionUUID</code>. The UUID of the peerConnection sent the report
+     * Setter for <code>WebRTCObserver.SentReports.peerConnectionUUID</code>.
      */
     public SentreportsRecord setPeerconnectionuuid(byte[] value) {
         set(1, value);
@@ -51,7 +49,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     /**
-     * Getter for <code>WebRTCObserver.SentReports.peerConnectionUUID</code>. The UUID of the peerConnection sent the report
+     * Getter for <code>WebRTCObserver.SentReports.peerConnectionUUID</code>.
      */
     @Size(max = 16)
     public byte[] getPeerconnectionuuid() {
@@ -59,18 +57,18 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     /**
-     * Setter for <code>WebRTCObserver.SentReports.reported</code>. The timestamp of the report has been sent
+     * Setter for <code>WebRTCObserver.SentReports.reported</code>.
      */
-    public SentreportsRecord setReported(LocalDateTime value) {
+    public SentreportsRecord setReported(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>WebRTCObserver.SentReports.reported</code>. The timestamp of the report has been sent
+     * Getter for <code>WebRTCObserver.SentReports.reported</code>.
      */
-    public LocalDateTime getReported() {
-        return (LocalDateTime) get(2);
+    public Long getReported() {
+        return (Long) get(2);
     }
 
     // -------------------------------------------------------------------------
@@ -87,12 +85,12 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<byte[], byte[], LocalDateTime> fieldsRow() {
+    public Row3<byte[], byte[], Long> fieldsRow() {
         return (Row3) super.fieldsRow();
     }
 
     @Override
-    public Row3<byte[], byte[], LocalDateTime> valuesRow() {
+    public Row3<byte[], byte[], Long> valuesRow() {
         return (Row3) super.valuesRow();
     }
 
@@ -107,7 +105,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     @Override
-    public Field<LocalDateTime> field3() {
+    public Field<Long> field3() {
         return Sentreports.SENTREPORTS.REPORTED;
     }
 
@@ -122,7 +120,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     @Override
-    public LocalDateTime component3() {
+    public Long component3() {
         return getReported();
     }
 
@@ -137,7 +135,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     @Override
-    public LocalDateTime value3() {
+    public Long value3() {
         return getReported();
     }
 
@@ -154,13 +152,13 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     }
 
     @Override
-    public SentreportsRecord value3(LocalDateTime value) {
+    public SentreportsRecord value3(Long value) {
         setReported(value);
         return this;
     }
 
     @Override
-    public SentreportsRecord values(byte[] value1, byte[] value2, LocalDateTime value3) {
+    public SentreportsRecord values(byte[] value1, byte[] value2, Long value3) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -181,7 +179,7 @@ public class SentreportsRecord extends UpdatableRecordImpl<SentreportsRecord> im
     /**
      * Create a detached, initialised SentreportsRecord
      */
-    public SentreportsRecord(byte[] signature, byte[] peerconnectionuuid, LocalDateTime reported) {
+    public SentreportsRecord(byte[] signature, byte[] peerconnectionuuid, Long reported) {
         super(Sentreports.SENTREPORTS);
 
         set(0, signature);

@@ -9,6 +9,13 @@ import org.observertc.webrtc.observer.samples.WebExtrAppSample;
 @Singleton
 public class IteratorProvider {
 
+	/**
+	 * As PCS form is deprecated
+	 *
+	 * @param sample
+	 * @return
+	 */
+	@Deprecated
 	public static Iterator<RTCStats> makeRTCStatsIt(PeerConnectionSample sample) {
 		return new Iterator<RTCStats>() {
 			private int index = 0;
@@ -46,6 +53,7 @@ public class IteratorProvider {
 		};
 	}
 
+	@Deprecated
 	public static Iterator<RTCStats> makeRTCStatsIt(WebExtrAppSample sample) {
 		return makeRTCStatsIt(sample.peerConnectionSample);
 	}

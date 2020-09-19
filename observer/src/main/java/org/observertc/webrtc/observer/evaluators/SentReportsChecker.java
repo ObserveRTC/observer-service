@@ -2,7 +2,7 @@ package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
 import java.nio.ByteBuffer;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,7 +73,7 @@ public class SentReportsChecker {
 		this.cache.add(wrappedSignature);
 		boolean exists = this.sentReportsRepository.existsBySignature(signature);
 		if (!exists) {
-			LocalDateTime now = this.observerDateTime.now();
+			Long now = Instant.now().toEpochMilli();
 			UUID pcUUID = pcUUIDExtractor.process(report);
 			this.sentReportsRepository.update(
 					new SentreportsRecord(signature, UUIDAdapter.toBytesOrDefault(pcUUID, null), now)

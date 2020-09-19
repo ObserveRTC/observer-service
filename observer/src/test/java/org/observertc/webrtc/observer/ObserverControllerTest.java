@@ -3,15 +3,11 @@ package org.observertc.webrtc.observer;
 import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.test.annotation.MicronautTest;
 import javax.inject.Inject;
-import org.observertc.webrtc.observer.repositories.ObserverRepository;
 
 @MicronautTest
 public class ObserverControllerTest {
 
 	private static final String BASE = "/observers";
-
-	@Inject
-	ObserverRepository observerRepository;
 
 	@Inject
 	EmbeddedServer embeddedServer;

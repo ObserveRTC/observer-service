@@ -21,27 +21,27 @@ import org.observertc.webrtc.observer.jooq.tables.Activestreams;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord> implements Record3<byte[], Long, byte[]> {
 
-    private static final long serialVersionUID = 1638034411;
+    private static final long serialVersionUID = 137974039;
 
     /**
-     * Setter for <code>WebRTCObserver.ActiveStreams.observerUUID</code>. The UUID of the observer the SSRC belongs to
+     * Setter for <code>WebRTCObserver.ActiveStreams.serviceUUID</code>.
      */
-    public ActivestreamsRecord setObserveruuid(byte[] value) {
+    public ActivestreamsRecord setServiceuuid(byte[] value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>WebRTCObserver.ActiveStreams.observerUUID</code>. The UUID of the observer the SSRC belongs to
+     * Getter for <code>WebRTCObserver.ActiveStreams.serviceUUID</code>.
      */
     @NotNull
     @Size(max = 16)
-    public byte[] getObserveruuid() {
+    public byte[] getServiceuuid() {
         return (byte[]) get(0);
     }
 
     /**
-     * Setter for <code>WebRTCObserver.ActiveStreams.SSRC</code>. The SSRC identifier
+     * Setter for <code>WebRTCObserver.ActiveStreams.SSRC</code>.
      */
     public ActivestreamsRecord setSsrc(Long value) {
         set(1, value);
@@ -49,7 +49,7 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
     }
 
     /**
-     * Getter for <code>WebRTCObserver.ActiveStreams.SSRC</code>. The SSRC identifier
+     * Getter for <code>WebRTCObserver.ActiveStreams.SSRC</code>.
      */
     @NotNull
     public Long getSsrc() {
@@ -57,7 +57,7 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
     }
 
     /**
-     * Setter for <code>WebRTCObserver.ActiveStreams.callUUID</code>. The UUID of the call the stream belongs to
+     * Setter for <code>WebRTCObserver.ActiveStreams.callUUID</code>.
      */
     public ActivestreamsRecord setCalluuid(byte[] value) {
         set(2, value);
@@ -65,9 +65,8 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
     }
 
     /**
-     * Getter for <code>WebRTCObserver.ActiveStreams.callUUID</code>. The UUID of the call the stream belongs to
+     * Getter for <code>WebRTCObserver.ActiveStreams.callUUID</code>.
      */
-    @NotNull
     @Size(max = 16)
     public byte[] getCalluuid() {
         return (byte[]) get(2);
@@ -98,7 +97,7 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
 
     @Override
     public Field<byte[]> field1() {
-        return Activestreams.ACTIVESTREAMS.OBSERVERUUID;
+        return Activestreams.ACTIVESTREAMS.SERVICEUUID;
     }
 
     @Override
@@ -113,7 +112,7 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
 
     @Override
     public byte[] component1() {
-        return getObserveruuid();
+        return getServiceuuid();
     }
 
     @Override
@@ -128,7 +127,7 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
 
     @Override
     public byte[] value1() {
-        return getObserveruuid();
+        return getServiceuuid();
     }
 
     @Override
@@ -143,7 +142,7 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
 
     @Override
     public ActivestreamsRecord value1(byte[] value) {
-        setObserveruuid(value);
+        setServiceuuid(value);
         return this;
     }
 
@@ -181,10 +180,10 @@ public class ActivestreamsRecord extends UpdatableRecordImpl<ActivestreamsRecord
     /**
      * Create a detached, initialised ActivestreamsRecord
      */
-    public ActivestreamsRecord(byte[] observeruuid, Long ssrc, byte[] calluuid) {
+    public ActivestreamsRecord(byte[] serviceuuid, Long ssrc, byte[] calluuid) {
         super(Activestreams.ACTIVESTREAMS);
 
-        set(0, observeruuid);
+        set(0, serviceuuid);
         set(1, ssrc);
         set(2, calluuid);
     }

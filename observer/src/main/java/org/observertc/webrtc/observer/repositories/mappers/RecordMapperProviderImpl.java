@@ -9,7 +9,6 @@ import org.jooq.RecordMapper;
 import org.jooq.RecordMapperProvider;
 import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
-import org.observertc.webrtc.observer.dto.ObserverDTO;
 
 @Singleton
 public class RecordMapperProviderImpl implements RecordMapperProvider {
@@ -17,7 +16,8 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
 	private Map<Class, RecordMapper> mappers = new HashMap<>();
 
 	public RecordMapperProviderImpl() {
-		this.mappers.put(ObserverDTO.class, new ObserversRecordMapper());
+
+//		this.mappers.put(ObserverDTO.class, new ObserversRecordMapper());
 	}
 
 	@Override

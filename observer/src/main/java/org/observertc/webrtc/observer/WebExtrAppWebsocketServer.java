@@ -12,10 +12,8 @@ import java.time.ZoneOffset;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 import javax.inject.Inject;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.observer.dto.ObserverDTO;
 import org.observertc.webrtc.observer.dto.webextrapp.CandidatePair;
 import org.observertc.webrtc.observer.dto.webextrapp.Converter;
 import org.observertc.webrtc.observer.dto.webextrapp.LocalCandidate;
@@ -24,7 +22,6 @@ import org.observertc.webrtc.observer.dto.webextrapp.RTCStats;
 import org.observertc.webrtc.observer.dto.webextrapp.RemoteCandidate;
 import org.observertc.webrtc.observer.dto.webextrapp.Timestamp;
 import org.observertc.webrtc.observer.evaluators.IteratorProvider;
-import org.observertc.webrtc.observer.repositories.ObserverRepository;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.samples.WebExtrAppSample;
 import org.slf4j.Logger;
@@ -34,11 +31,9 @@ import org.slf4j.LoggerFactory;
 public class WebExtrAppWebsocketServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebExtrAppWebsocketServer.class);
-	private final ObserverRepository observerRepository;
 	private final KafkaSinks kafkaSinks;
 	private final ObserverConfig config;
 	private final PeerConnectionsRepository repository;
-	private final Function<PeerConnectionSample, LocalDateTime> timestampExtractor;
 
 	@Inject
 	ObserverDateTime observerDateTime;
@@ -51,37 +46,17 @@ public class WebExtrAppWebsocketServer {
 
 	public WebExtrAppWebsocketServer(
 			ObserverConfig config,
-			ObserverRepository observerRepository,
 			PeerConnectionsRepository repository,
 			KafkaSinks kafkaSinks) {
-		this.observerRepository = observerRepository;
 		this.kafkaSinks = kafkaSinks;
 		this.config = config;
 		this.repository = repository;
-		if (this.config.useClientTimestamps) {
-			this.timestampExtractor = sample -> {
-				LocalDateTime result = extractTs(sample);
-				if (result == null) {
-					logger.warn("The provided peer connection id {} does not have a timestamp, thus the server is giving one",
-							sample.getPeerConnectionID());
-					result = this.observerDateTime.now();
-				}
-				return result;
-			};
-		} else {
-			this.timestampExtractor = sample -> observerDateTime.now();
-		}
 	}
 
 
 	@OnOpen
 	public void onOpen(UUID observerUUID, WebSocketSession session) {
-		Optional<ObserverDTO> observerDTO = observerRepository.findById(observerUUID);
-//		if (!observerDTO.isPresent()) {
-//			System.out.println("observer has not been found");
-//			session.close();
-//			return;
-//		}
+
 	}
 
 	@OnClose
@@ -112,7 +87,7 @@ public class WebExtrAppWebsocketServer {
 		}
 
 		String sampleTimeZoneID = this.getSampleTimeZoneID(sample);
-		LocalDateTime timestamp = this.timestampExtractor.apply(sample);
+		LocalDateTime timestamp = this.observerDateTime.now();
 
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.getPeerConnectionID());
 		if (!peerConnectionUUIDHolder.isPresent()) {

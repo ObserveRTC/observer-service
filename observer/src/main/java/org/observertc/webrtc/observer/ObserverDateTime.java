@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.inject.Singleton;
 
+/**
+ * Ue epochmilli
+ */
+@Deprecated
 @Singleton
 public class ObserverDateTime {
 

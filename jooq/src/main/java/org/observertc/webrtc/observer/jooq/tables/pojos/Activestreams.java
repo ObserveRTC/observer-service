@@ -16,32 +16,32 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Activestreams implements Serializable {
 
-    private static final long serialVersionUID = -749952226;
+    private static final long serialVersionUID = 2071881000;
 
-    private final byte[] observeruuid;
+    private final byte[] serviceuuid;
     private final Long   ssrc;
     private final byte[] calluuid;
 
     public Activestreams(Activestreams value) {
-        this.observeruuid = value.observeruuid;
+        this.serviceuuid = value.serviceuuid;
         this.ssrc = value.ssrc;
         this.calluuid = value.calluuid;
     }
 
     public Activestreams(
-        byte[] observeruuid,
+        byte[] serviceuuid,
         Long   ssrc,
         byte[] calluuid
     ) {
-        this.observeruuid = observeruuid;
+        this.serviceuuid = serviceuuid;
         this.ssrc = ssrc;
         this.calluuid = calluuid;
     }
 
     @NotNull
     @Size(max = 16)
-    public byte[] getObserveruuid() {
-        return this.observeruuid;
+    public byte[] getServiceuuid() {
+        return this.serviceuuid;
     }
 
     @NotNull
@@ -49,7 +49,6 @@ public class Activestreams implements Serializable {
         return this.ssrc;
     }
 
-    @NotNull
     @Size(max = 16)
     public byte[] getCalluuid() {
         return this.calluuid;

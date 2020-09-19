@@ -1,0 +1,8 @@
+micronaut:
+  application:
+    name: authenticator
+
+storage:
+  hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
+  stretching: ${AUTHENTICATION_STRETCHING:2}
+  saltSize: ${AUTHENTICATION_SALT_SIZE:32}

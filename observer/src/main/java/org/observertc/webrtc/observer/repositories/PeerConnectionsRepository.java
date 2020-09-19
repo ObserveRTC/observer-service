@@ -1,7 +1,6 @@
 package org.observertc.webrtc.observer.repositories;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +12,7 @@ import java.util.stream.StreamSupport;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import org.jooq.Field;
-import org.jooq.InsertValuesStep8;
+import org.jooq.InsertValuesStep12;
 import org.jooq.impl.DSL;
 import org.observertc.webrtc.common.BatchCollector;
 import org.observertc.webrtc.common.UUIDAdapter;
@@ -57,8 +56,12 @@ public class PeerConnectionsRepository {
 				.set(TABLE.DETACHED, values(TABLE.DETACHED))
 				.set(TABLE.UPDATED, values(TABLE.UPDATED))
 				.set(TABLE.TIMEZONE, values(TABLE.TIMEZONE))
-				.set(TABLE.OBSERVERUUID, values(TABLE.OBSERVERUUID))
+				.set(TABLE.BRIDGEID, values(TABLE.BRIDGEID))
+				.set(TABLE.PROVIDEDUSERID, values(TABLE.PROVIDEDUSERID))
+				.set(TABLE.PROVIDEDCALLID, values(TABLE.PROVIDEDCALLID))
 				.set(TABLE.CALLUUID, values(TABLE.CALLUUID))
+				.set(TABLE.SERVICENAME, values(TABLE.SERVICENAME))
+				.set(TABLE.SERVICEUUID, values(TABLE.SERVICEUUID))
 				.execute();
 		return entity;
 	}
@@ -74,7 +77,8 @@ public class PeerConnectionsRepository {
 	@NonNull
 	public <S extends PeerconnectionsRecord> Iterable<S> updateAll(@NonNull @NotNull Iterable<S> entities) {
 		this.consumeBatches(entities, batchedEntities -> {
-			InsertValuesStep8<PeerconnectionsRecord, byte[], String, LocalDateTime, LocalDateTime, LocalDateTime, String, byte[], byte[]> sql =
+			InsertValuesStep12<PeerconnectionsRecord, byte[], String, Long, Long, Long, String, byte[], String, String, String,
+					String, byte[]> sql =
 					contextProvider.get().insertInto(
 							TABLE,
 							TABLE.PEERCONNECTIONUUID,
@@ -83,8 +87,12 @@ public class PeerConnectionsRepository {
 							TABLE.UPDATED,
 							TABLE.DETACHED,
 							TABLE.TIMEZONE,
-							TABLE.OBSERVERUUID,
-							TABLE.CALLUUID);
+							TABLE.CALLUUID,
+							TABLE.BRIDGEID,
+							TABLE.PROVIDEDCALLID,
+							TABLE.PROVIDEDUSERID,
+							TABLE.SERVICENAME,
+							TABLE.SERVICEUUID);
 			Iterator<S> it = batchedEntities.iterator();
 			for (; it.hasNext(); ) {
 				PeerconnectionsRecord record = it.next();
@@ -94,8 +102,12 @@ public class PeerConnectionsRepository {
 						record.getUpdated(),
 						record.getDetached(),
 						record.getTimezone(),
-						record.getObserveruuid(),
-						record.getCalluuid()
+						record.getCalluuid(),
+						record.getBridgeid(),
+						record.getProvidedcallid(),
+						record.getProvideduserid(),
+						record.getServicename(),
+						record.getServiceuuid()
 				);
 			}
 			sql
@@ -103,11 +115,15 @@ public class PeerConnectionsRepository {
 					.set(TABLE.PEERCONNECTIONUUID, values(TABLE.PEERCONNECTIONUUID))
 					.set(TABLE.BROWSERID, values(TABLE.BROWSERID))
 					.set(TABLE.JOINED, values(TABLE.JOINED))
-					.set(TABLE.UPDATED, values(TABLE.UPDATED))
 					.set(TABLE.DETACHED, values(TABLE.DETACHED))
+					.set(TABLE.UPDATED, values(TABLE.UPDATED))
 					.set(TABLE.TIMEZONE, values(TABLE.TIMEZONE))
-					.set(TABLE.OBSERVERUUID, values(TABLE.OBSERVERUUID))
+					.set(TABLE.BRIDGEID, values(TABLE.BRIDGEID))
+					.set(TABLE.PROVIDEDUSERID, values(TABLE.PROVIDEDUSERID))
+					.set(TABLE.PROVIDEDCALLID, values(TABLE.PROVIDEDCALLID))
 					.set(TABLE.CALLUUID, values(TABLE.CALLUUID))
+					.set(TABLE.SERVICENAME, values(TABLE.SERVICENAME))
+					.set(TABLE.SERVICEUUID, values(TABLE.SERVICEUUID))
 					.execute();
 		});
 		return entities;
@@ -148,7 +164,7 @@ public class PeerConnectionsRepository {
 
 
 	@NonNull
-	public Stream<PeerconnectionsRecord> findJoinedPCsUpdatedLowerThan(@NonNull LocalDateTime threshold) {
+	public Stream<PeerconnectionsRecord> findJoinedPCsUpdatedLowerThan(@NonNull Long threshold) {
 		return this.contextProvider.get().selectFrom(TABLE).where(TABLE.UPDATED.lt(threshold)).and(TABLE.DETACHED.isNull()).stream();
 	}
 
@@ -218,7 +234,7 @@ public class PeerConnectionsRepository {
 		this.contextProvider.get().deleteFrom(TABLE).execute();
 	}
 
-	public void deletePCsDetachedOlderThan(LocalDateTime threshold) {
+	public void deletePCsDetachedOlderThan(Long threshold) {
 		this.contextProvider.get().deleteFrom(TABLE).where(TABLE.UPDATED.lt(threshold)).and(TABLE.DETACHED.isNotNull()).execute();
 	}
 
@@ -231,12 +247,26 @@ public class PeerConnectionsRepository {
 				.fetchOptional();
 	}
 
-	public Optional<PeerconnectionsRecord> findByJoinedBrowserID(LocalDateTime joined, String browserID) {
+	public Optional<PeerconnectionsRecord> findByJoinedBrowserID(Long joined, String browserID) {
+		final long epsilon = 2000;
 		return this.contextProvider.get()
 				.selectFrom(TABLE)
 				.where(TABLE.BROWSERID.eq(browserID))
-				.and(TABLE.JOINED.gt(joined.minusSeconds(2)))
-				.and(TABLE.JOINED.lt(joined.plusSeconds(2)))
+				.and(TABLE.JOINED.gt(joined - epsilon))
+				.and(TABLE.JOINED.lt(joined + epsilon))
+				.limit(1)
+				.fetchOptional();
+	}
+
+	public Optional<PeerconnectionsRecord> findByJoinedBrowserIDOrProvidedCallID(Long joined, String browserID, String providedCallID) {
+		final long epsilon = 2000;
+//		Condition a = TABLE.BROWSERID.eq(browserID).or(TABLE.PROVIDEDCALLID.eq(providedCallID));
+//		Condition b = a.and(TABLE.JOINED.gt(joined - epsilon)).and(TABLE.JOINED.lt(joined + epsilon));
+		return this.contextProvider.get()
+				.selectFrom(TABLE)
+				.where(TABLE.BROWSERID.eq(browserID).or(TABLE.PROVIDEDCALLID.eq(providedCallID)))
+				.and(TABLE.JOINED.gt(joined - epsilon))
+				.and(TABLE.JOINED.lt(joined + epsilon))
 				.limit(1)
 				.fetchOptional();
 	}

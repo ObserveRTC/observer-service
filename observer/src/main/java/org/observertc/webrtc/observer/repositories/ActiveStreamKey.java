@@ -15,23 +15,23 @@ import org.observertc.webrtc.common.UUIDAdapter;
  */
 public class ActiveStreamKey extends Tuple2<UUID, Long> {
 
-	public ActiveStreamKey(UUID observerUUID, Long SSRC) {
-		super(observerUUID, SSRC);
+	public ActiveStreamKey(UUID serviceUUID, Long SSRC) {
+		super(serviceUUID, SSRC);
 	}
 
-	public ActiveStreamKey(byte[] observerUUIDBytes, Long SSRC) {
-		super(UUIDAdapter.toUUIDOrDefault(observerUUIDBytes, null), SSRC);
+	public ActiveStreamKey(byte[] serviceUUIDBytes, Long SSRC) {
+		super(UUIDAdapter.toUUIDOrDefault(serviceUUIDBytes, null), SSRC);
 	}
 
 	public ActiveStreamKey(Tuple2<UUID, Long> tuple) {
 		super(tuple);
 	}
 
-	public byte[] getObserverUUIDBytes() {
+	public byte[] getServiceUUIDBytes() {
 		return UUIDAdapter.toBytesOrDefault(this.v1, null);
 	}
 
-	public UUID getObserverUUID() {
+	public UUID getServiceUUID() {
 		return this.v1;
 	}
 

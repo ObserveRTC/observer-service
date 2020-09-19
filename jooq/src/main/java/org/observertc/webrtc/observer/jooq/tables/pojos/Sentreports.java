@@ -5,7 +5,6 @@ package org.observertc.webrtc.observer.jooq.tables.pojos;
 
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,11 +16,11 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Sentreports implements Serializable {
 
-    private static final long serialVersionUID = -1776259350;
+    private static final long serialVersionUID = -952130457;
 
-    private final byte[]        signature;
-    private final byte[]        peerconnectionuuid;
-    private final LocalDateTime reported;
+    private final byte[] signature;
+    private final byte[] peerconnectionuuid;
+    private final Long   reported;
 
     public Sentreports(Sentreports value) {
         this.signature = value.signature;
@@ -30,9 +29,9 @@ public class Sentreports implements Serializable {
     }
 
     public Sentreports(
-        byte[]        signature,
-        byte[]        peerconnectionuuid,
-        LocalDateTime reported
+        byte[] signature,
+        byte[] peerconnectionuuid,
+        Long   reported
     ) {
         this.signature = signature;
         this.peerconnectionuuid = peerconnectionuuid;
@@ -50,7 +49,7 @@ public class Sentreports implements Serializable {
         return this.peerconnectionuuid;
     }
 
-    public LocalDateTime getReported() {
+    public Long getReported() {
         return this.reported;
     }
 
