@@ -21,7 +21,7 @@ import org.observertc.webrtc.observer.jooq.tables.Peerconnections;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRecord> implements Record12<byte[], byte[], byte[], Long, Long, Long, String, String, String, String, String, String> {
 
-    private static final long serialVersionUID = 712879367;
+    private static final long serialVersionUID = -658735623;
 
     /**
      * Setter for <code>WebRTCObserver.PeerConnections.peerConnectionUUID</code>.
@@ -118,18 +118,18 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
     }
 
     /**
-     * Setter for <code>WebRTCObserver.PeerConnections.bridgeID</code>.
+     * Setter for <code>WebRTCObserver.PeerConnections.mediaUnitID</code>.
      */
-    public PeerconnectionsRecord setBridgeid(String value) {
+    public PeerconnectionsRecord setMediaunitid(String value) {
         set(6, value);
         return this;
     }
 
     /**
-     * Getter for <code>WebRTCObserver.PeerConnections.bridgeID</code>.
+     * Getter for <code>WebRTCObserver.PeerConnections.mediaUnitID</code>.
      */
     @Size(max = 255)
-    public String getBridgeid() {
+    public String getMediaunitid() {
         return (String) get(6);
     }
 
@@ -268,7 +268,7 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
 
     @Override
     public Field<String> field7() {
-        return Peerconnections.PEERCONNECTIONS.BRIDGEID;
+        return Peerconnections.PEERCONNECTIONS.MEDIAUNITID;
     }
 
     @Override
@@ -328,7 +328,7 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
 
     @Override
     public String component7() {
-        return getBridgeid();
+        return getMediaunitid();
     }
 
     @Override
@@ -388,7 +388,7 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
 
     @Override
     public String value7() {
-        return getBridgeid();
+        return getMediaunitid();
     }
 
     @Override
@@ -454,7 +454,7 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
 
     @Override
     public PeerconnectionsRecord value7(String value) {
-        setBridgeid(value);
+        setMediaunitid(value);
         return this;
     }
 
@@ -519,7 +519,7 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
     /**
      * Create a detached, initialised PeerconnectionsRecord
      */
-    public PeerconnectionsRecord(byte[] peerconnectionuuid, byte[] calluuid, byte[] serviceuuid, Long joined, Long updated, Long detached, String bridgeid, String browserid, String provideduserid, String providedcallid, String timezone, String servicename) {
+    public PeerconnectionsRecord(byte[] peerconnectionuuid, byte[] calluuid, byte[] serviceuuid, Long joined, Long updated, Long detached, String mediaunitid, String browserid, String provideduserid, String providedcallid, String timezone, String servicename) {
         super(Peerconnections.PEERCONNECTIONS);
 
         set(0, peerconnectionuuid);
@@ -528,7 +528,7 @@ public class PeerconnectionsRecord extends UpdatableRecordImpl<PeerconnectionsRe
         set(3, joined);
         set(4, updated);
         set(5, detached);
-        set(6, bridgeid);
+        set(6, mediaunitid);
         set(7, browserid);
         set(8, provideduserid);
         set(9, providedcallid);

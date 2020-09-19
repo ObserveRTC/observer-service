@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2341111553041514802L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RemoteInboundRTP\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"codecID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"float\"],\"default\":null},{\"name\":\"localID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"ssrc\",\"type\":\"long\"},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
+  private static final long serialVersionUID = -4119309954517992199L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RemoteInboundRTP\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"codecID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"float\"],\"default\":null},{\"name\":\"localID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"ssrc\",\"type\":\"long\"},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String mediaUnit;
    private java.lang.String codecID;
    private java.lang.String id;
    private java.lang.Float jitter;
@@ -92,6 +93,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param mediaUnit The new value for mediaUnit
    * @param codecID The new value for codecID
    * @param id The new value for id
    * @param jitter The new value for jitter
@@ -102,8 +104,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
    * @param ssrc The new value for ssrc
    * @param transportID The new value for transportID
    */
-  public RemoteInboundRTP(java.lang.String peerConnectionUUID, java.lang.String codecID, java.lang.String id, java.lang.Float jitter, java.lang.String localID, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Integer packetsLost, java.lang.Double roundTripTime, java.lang.Long ssrc, java.lang.String transportID) {
+  public RemoteInboundRTP(java.lang.String peerConnectionUUID, java.lang.String mediaUnit, java.lang.String codecID, java.lang.String id, java.lang.Float jitter, java.lang.String localID, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Integer packetsLost, java.lang.Double roundTripTime, java.lang.Long ssrc, java.lang.String transportID) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.mediaUnit = mediaUnit;
     this.codecID = codecID;
     this.id = id;
     this.jitter = jitter;
@@ -121,15 +124,16 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
-    case 1: return codecID;
-    case 2: return id;
-    case 3: return jitter;
-    case 4: return localID;
-    case 5: return mediaType;
-    case 6: return packetsLost;
-    case 7: return roundTripTime;
-    case 8: return ssrc;
-    case 9: return transportID;
+    case 1: return mediaUnit;
+    case 2: return codecID;
+    case 3: return id;
+    case 4: return jitter;
+    case 5: return localID;
+    case 6: return mediaType;
+    case 7: return packetsLost;
+    case 8: return roundTripTime;
+    case 9: return ssrc;
+    case 10: return transportID;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -139,15 +143,16 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
-    case 1: codecID = value$ != null ? value$.toString() : null; break;
-    case 2: id = value$ != null ? value$.toString() : null; break;
-    case 3: jitter = (java.lang.Float)value$; break;
-    case 4: localID = value$ != null ? value$.toString() : null; break;
-    case 5: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
-    case 6: packetsLost = (java.lang.Integer)value$; break;
-    case 7: roundTripTime = (java.lang.Double)value$; break;
-    case 8: ssrc = (java.lang.Long)value$; break;
-    case 9: transportID = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnit = value$ != null ? value$.toString() : null; break;
+    case 2: codecID = value$ != null ? value$.toString() : null; break;
+    case 3: id = value$ != null ? value$.toString() : null; break;
+    case 4: jitter = (java.lang.Float)value$; break;
+    case 5: localID = value$ != null ? value$.toString() : null; break;
+    case 6: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
+    case 7: packetsLost = (java.lang.Integer)value$; break;
+    case 8: roundTripTime = (java.lang.Double)value$; break;
+    case 9: ssrc = (java.lang.Long)value$; break;
+    case 10: transportID = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -158,6 +163,16 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnit' field.
+   * @return The value of the 'mediaUnit' field.
+   */
+  public java.lang.String getMediaUnit() {
+    return mediaUnit;
   }
 
 
@@ -294,6 +309,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
     implements org.apache.avro.data.RecordBuilder<RemoteInboundRTP> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String mediaUnit;
     private java.lang.String codecID;
     private java.lang.String id;
     private java.lang.Float jitter;
@@ -319,41 +335,45 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.codecID)) {
-        this.codecID = data().deepCopy(fields()[1].schema(), other.codecID);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.id)) {
-        this.id = data().deepCopy(fields()[2].schema(), other.id);
+      if (isValidValue(fields()[2], other.codecID)) {
+        this.codecID = data().deepCopy(fields()[2].schema(), other.codecID);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[3].schema(), other.jitter);
+      if (isValidValue(fields()[3], other.id)) {
+        this.id = data().deepCopy(fields()[3].schema(), other.id);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.localID)) {
-        this.localID = data().deepCopy(fields()[4].schema(), other.localID);
+      if (isValidValue(fields()[4], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[4].schema(), other.jitter);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[5].schema(), other.mediaType);
+      if (isValidValue(fields()[5], other.localID)) {
+        this.localID = data().deepCopy(fields()[5].schema(), other.localID);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[6].schema(), other.packetsLost);
+      if (isValidValue(fields()[6], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[6].schema(), other.mediaType);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.roundTripTime)) {
-        this.roundTripTime = data().deepCopy(fields()[7].schema(), other.roundTripTime);
+      if (isValidValue(fields()[7], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[7].schema(), other.packetsLost);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[8].schema(), other.ssrc);
+      if (isValidValue(fields()[8], other.roundTripTime)) {
+        this.roundTripTime = data().deepCopy(fields()[8].schema(), other.roundTripTime);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[9].schema(), other.transportID);
+      if (isValidValue(fields()[9], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[9].schema(), other.ssrc);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
+      }
+      if (isValidValue(fields()[10], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[10].schema(), other.transportID);
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
     }
 
@@ -367,41 +387,45 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.codecID)) {
-        this.codecID = data().deepCopy(fields()[1].schema(), other.codecID);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.id)) {
-        this.id = data().deepCopy(fields()[2].schema(), other.id);
+      if (isValidValue(fields()[2], other.codecID)) {
+        this.codecID = data().deepCopy(fields()[2].schema(), other.codecID);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[3].schema(), other.jitter);
+      if (isValidValue(fields()[3], other.id)) {
+        this.id = data().deepCopy(fields()[3].schema(), other.id);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.localID)) {
-        this.localID = data().deepCopy(fields()[4].schema(), other.localID);
+      if (isValidValue(fields()[4], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[4].schema(), other.jitter);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[5].schema(), other.mediaType);
+      if (isValidValue(fields()[5], other.localID)) {
+        this.localID = data().deepCopy(fields()[5].schema(), other.localID);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[6].schema(), other.packetsLost);
+      if (isValidValue(fields()[6], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[6].schema(), other.mediaType);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.roundTripTime)) {
-        this.roundTripTime = data().deepCopy(fields()[7].schema(), other.roundTripTime);
+      if (isValidValue(fields()[7], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[7].schema(), other.packetsLost);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[8].schema(), other.ssrc);
+      if (isValidValue(fields()[8], other.roundTripTime)) {
+        this.roundTripTime = data().deepCopy(fields()[8].schema(), other.roundTripTime);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[9].schema(), other.transportID);
+      if (isValidValue(fields()[9], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[9].schema(), other.ssrc);
         fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[10].schema(), other.transportID);
+        fieldSetFlags()[10] = true;
       }
     }
 
@@ -446,6 +470,46 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
     }
 
     /**
+      * Gets the value of the 'mediaUnit' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnit() {
+      return mediaUnit;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnit' field.
+      * @param value The value of 'mediaUnit'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setMediaUnit(java.lang.String value) {
+      validate(fields()[1], value);
+      this.mediaUnit = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnit' field has been set.
+      * @return True if the 'mediaUnit' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnit() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnit' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearMediaUnit() {
+      mediaUnit = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'codecID' field.
       * @return The value.
       */
@@ -460,9 +524,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setCodecID(java.lang.String value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.codecID = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -471,7 +535,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'codecID' field has been set, false otherwise.
       */
     public boolean hasCodecID() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -481,7 +545,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearCodecID() {
       codecID = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -500,9 +564,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setId(java.lang.String value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.id = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -511,7 +575,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'id' field has been set, false otherwise.
       */
     public boolean hasId() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -521,7 +585,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearId() {
       id = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -540,9 +604,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setJitter(java.lang.Float value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.jitter = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -551,7 +615,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'jitter' field has been set, false otherwise.
       */
     public boolean hasJitter() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -561,7 +625,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearJitter() {
       jitter = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -580,9 +644,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setLocalID(java.lang.String value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.localID = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -591,7 +655,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'localID' field has been set, false otherwise.
       */
     public boolean hasLocalID() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -601,7 +665,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearLocalID() {
       localID = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -620,9 +684,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setMediaType(org.observertc.webrtc.common.reports.avro.MediaType value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.mediaType = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -631,7 +695,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'mediaType' field has been set, false otherwise.
       */
     public boolean hasMediaType() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -641,7 +705,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearMediaType() {
       mediaType = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -660,9 +724,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setPacketsLost(java.lang.Integer value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.packetsLost = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -671,7 +735,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'packetsLost' field has been set, false otherwise.
       */
     public boolean hasPacketsLost() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -681,7 +745,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearPacketsLost() {
       packetsLost = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -700,9 +764,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setRoundTripTime(java.lang.Double value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.roundTripTime = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -711,7 +775,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'roundTripTime' field has been set, false otherwise.
       */
     public boolean hasRoundTripTime() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -721,7 +785,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearRoundTripTime() {
       roundTripTime = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -740,9 +804,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setSsrc(long value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.ssrc = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -751,7 +815,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'ssrc' field has been set, false otherwise.
       */
     public boolean hasSsrc() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -760,7 +824,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearSsrc() {
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -779,9 +843,9 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder setTransportID(java.lang.String value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.transportID = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -790,7 +854,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'transportID' field has been set, false otherwise.
       */
     public boolean hasTransportID() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -800,7 +864,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.RemoteInboundRTP.Builder clearTransportID() {
       transportID = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -810,15 +874,16 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       try {
         RemoteInboundRTP record = new RemoteInboundRTP();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
-        record.codecID = fieldSetFlags()[1] ? this.codecID : (java.lang.String) defaultValue(fields()[1]);
-        record.id = fieldSetFlags()[2] ? this.id : (java.lang.String) defaultValue(fields()[2]);
-        record.jitter = fieldSetFlags()[3] ? this.jitter : (java.lang.Float) defaultValue(fields()[3]);
-        record.localID = fieldSetFlags()[4] ? this.localID : (java.lang.String) defaultValue(fields()[4]);
-        record.mediaType = fieldSetFlags()[5] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[5]);
-        record.packetsLost = fieldSetFlags()[6] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[6]);
-        record.roundTripTime = fieldSetFlags()[7] ? this.roundTripTime : (java.lang.Double) defaultValue(fields()[7]);
-        record.ssrc = fieldSetFlags()[8] ? this.ssrc : (java.lang.Long) defaultValue(fields()[8]);
-        record.transportID = fieldSetFlags()[9] ? this.transportID : (java.lang.String) defaultValue(fields()[9]);
+        record.mediaUnit = fieldSetFlags()[1] ? this.mediaUnit : (java.lang.String) defaultValue(fields()[1]);
+        record.codecID = fieldSetFlags()[2] ? this.codecID : (java.lang.String) defaultValue(fields()[2]);
+        record.id = fieldSetFlags()[3] ? this.id : (java.lang.String) defaultValue(fields()[3]);
+        record.jitter = fieldSetFlags()[4] ? this.jitter : (java.lang.Float) defaultValue(fields()[4]);
+        record.localID = fieldSetFlags()[5] ? this.localID : (java.lang.String) defaultValue(fields()[5]);
+        record.mediaType = fieldSetFlags()[6] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[6]);
+        record.packetsLost = fieldSetFlags()[7] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[7]);
+        record.roundTripTime = fieldSetFlags()[8] ? this.roundTripTime : (java.lang.Double) defaultValue(fields()[8]);
+        record.ssrc = fieldSetFlags()[9] ? this.ssrc : (java.lang.Long) defaultValue(fields()[9]);
+        record.transportID = fieldSetFlags()[10] ? this.transportID : (java.lang.String) defaultValue(fields()[10]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -852,6 +917,8 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
     throws java.io.IOException
   {
     out.writeString(this.peerConnectionUUID);
+
+    out.writeString(this.mediaUnit);
 
     if (this.codecID == null) {
       out.writeIndex(0);
@@ -922,6 +989,8 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
 
+      this.mediaUnit = in.readString();
+
       if (in.readIndex() != 1) {
         in.readNull();
         this.codecID = null;
@@ -976,13 +1045,17 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
       }
 
     } else {
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < 11; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
           break;
 
         case 1:
+          this.mediaUnit = in.readString();
+          break;
+
+        case 2:
           if (in.readIndex() != 1) {
             in.readNull();
             this.codecID = null;
@@ -991,7 +1064,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 2:
+        case 3:
           if (in.readIndex() != 1) {
             in.readNull();
             this.id = null;
@@ -1000,7 +1073,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 3:
+        case 4:
           if (in.readIndex() != 1) {
             in.readNull();
             this.jitter = null;
@@ -1009,7 +1082,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 4:
+        case 5:
           if (in.readIndex() != 1) {
             in.readNull();
             this.localID = null;
@@ -1018,11 +1091,11 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 5:
+        case 6:
           this.mediaType = org.observertc.webrtc.common.reports.avro.MediaType.values()[in.readEnum()];
           break;
 
-        case 6:
+        case 7:
           if (in.readIndex() != 1) {
             in.readNull();
             this.packetsLost = null;
@@ -1031,7 +1104,7 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 7:
+        case 8:
           if (in.readIndex() != 1) {
             in.readNull();
             this.roundTripTime = null;
@@ -1040,11 +1113,11 @@ public class RemoteInboundRTP extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 8:
+        case 9:
           this.ssrc = in.readLong();
           break;
 
-        case 9:
+        case 10:
           if (in.readIndex() != 1) {
             in.readNull();
             this.transportID = null;

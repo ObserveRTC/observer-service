@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8164168167687397689L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ICELocalCandidate\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"candidateType\",\"type\":{\"type\":\"enum\",\"name\":\"CandidateType\",\"symbols\":[\"HOST\",\"PRFLX\",\"RELAY\",\"SRFLX\",\"UNKNOWN\"]}},{\"name\":\"deleted\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"ip\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"isRemote\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"networkType\",\"type\":{\"type\":\"enum\",\"name\":\"NetworkType\",\"symbols\":[\"BLUETOOTH\",\"CELLULAR\",\"ETHERNET\",\"UNKNOWN\",\"VPN\",\"WIFI\",\"WIMAX\"]},\"default\":\"UNKNOWN\"},{\"name\":\"port\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"priority\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
+  private static final long serialVersionUID = 6709225158902594998L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ICELocalCandidate\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"candidateType\",\"type\":{\"type\":\"enum\",\"name\":\"CandidateType\",\"symbols\":[\"HOST\",\"PRFLX\",\"RELAY\",\"SRFLX\",\"UNKNOWN\"]}},{\"name\":\"deleted\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"ip\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"isRemote\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"networkType\",\"type\":{\"type\":\"enum\",\"name\":\"NetworkType\",\"symbols\":[\"BLUETOOTH\",\"CELLULAR\",\"ETHERNET\",\"UNKNOWN\",\"VPN\",\"WIFI\",\"WIMAX\"]},\"default\":\"UNKNOWN\"},{\"name\":\"port\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"priority\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String mediaUnit;
    private org.observertc.webrtc.common.reports.avro.CandidateType candidateType;
    private java.lang.Boolean deleted;
    private java.lang.String id;
@@ -92,6 +93,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param mediaUnit The new value for mediaUnit
    * @param candidateType The new value for candidateType
    * @param deleted The new value for deleted
    * @param id The new value for id
@@ -102,8 +104,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
    * @param priority The new value for priority
    * @param transportID The new value for transportID
    */
-  public ICELocalCandidate(java.lang.String peerConnectionUUID, org.observertc.webrtc.common.reports.avro.CandidateType candidateType, java.lang.Boolean deleted, java.lang.String id, java.lang.String ip, java.lang.Boolean isRemote, org.observertc.webrtc.common.reports.avro.NetworkType networkType, java.lang.Integer port, java.lang.Long priority, java.lang.String transportID) {
+  public ICELocalCandidate(java.lang.String peerConnectionUUID, java.lang.String mediaUnit, org.observertc.webrtc.common.reports.avro.CandidateType candidateType, java.lang.Boolean deleted, java.lang.String id, java.lang.String ip, java.lang.Boolean isRemote, org.observertc.webrtc.common.reports.avro.NetworkType networkType, java.lang.Integer port, java.lang.Long priority, java.lang.String transportID) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.mediaUnit = mediaUnit;
     this.candidateType = candidateType;
     this.deleted = deleted;
     this.id = id;
@@ -121,15 +124,16 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
-    case 1: return candidateType;
-    case 2: return deleted;
-    case 3: return id;
-    case 4: return ip;
-    case 5: return isRemote;
-    case 6: return networkType;
-    case 7: return port;
-    case 8: return priority;
-    case 9: return transportID;
+    case 1: return mediaUnit;
+    case 2: return candidateType;
+    case 3: return deleted;
+    case 4: return id;
+    case 5: return ip;
+    case 6: return isRemote;
+    case 7: return networkType;
+    case 8: return port;
+    case 9: return priority;
+    case 10: return transportID;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -139,15 +143,16 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
-    case 1: candidateType = (org.observertc.webrtc.common.reports.avro.CandidateType)value$; break;
-    case 2: deleted = (java.lang.Boolean)value$; break;
-    case 3: id = value$ != null ? value$.toString() : null; break;
-    case 4: ip = value$ != null ? value$.toString() : null; break;
-    case 5: isRemote = (java.lang.Boolean)value$; break;
-    case 6: networkType = (org.observertc.webrtc.common.reports.avro.NetworkType)value$; break;
-    case 7: port = (java.lang.Integer)value$; break;
-    case 8: priority = (java.lang.Long)value$; break;
-    case 9: transportID = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnit = value$ != null ? value$.toString() : null; break;
+    case 2: candidateType = (org.observertc.webrtc.common.reports.avro.CandidateType)value$; break;
+    case 3: deleted = (java.lang.Boolean)value$; break;
+    case 4: id = value$ != null ? value$.toString() : null; break;
+    case 5: ip = value$ != null ? value$.toString() : null; break;
+    case 6: isRemote = (java.lang.Boolean)value$; break;
+    case 7: networkType = (org.observertc.webrtc.common.reports.avro.NetworkType)value$; break;
+    case 8: port = (java.lang.Integer)value$; break;
+    case 9: priority = (java.lang.Long)value$; break;
+    case 10: transportID = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -158,6 +163,16 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnit' field.
+   * @return The value of the 'mediaUnit' field.
+   */
+  public java.lang.String getMediaUnit() {
+    return mediaUnit;
   }
 
 
@@ -294,6 +309,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
     implements org.apache.avro.data.RecordBuilder<ICELocalCandidate> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String mediaUnit;
     private org.observertc.webrtc.common.reports.avro.CandidateType candidateType;
     private java.lang.Boolean deleted;
     private java.lang.String id;
@@ -319,41 +335,45 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.candidateType)) {
-        this.candidateType = data().deepCopy(fields()[1].schema(), other.candidateType);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.deleted)) {
-        this.deleted = data().deepCopy(fields()[2].schema(), other.deleted);
+      if (isValidValue(fields()[2], other.candidateType)) {
+        this.candidateType = data().deepCopy(fields()[2].schema(), other.candidateType);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.id)) {
-        this.id = data().deepCopy(fields()[3].schema(), other.id);
+      if (isValidValue(fields()[3], other.deleted)) {
+        this.deleted = data().deepCopy(fields()[3].schema(), other.deleted);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.ip)) {
-        this.ip = data().deepCopy(fields()[4].schema(), other.ip);
+      if (isValidValue(fields()[4], other.id)) {
+        this.id = data().deepCopy(fields()[4].schema(), other.id);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.isRemote)) {
-        this.isRemote = data().deepCopy(fields()[5].schema(), other.isRemote);
+      if (isValidValue(fields()[5], other.ip)) {
+        this.ip = data().deepCopy(fields()[5].schema(), other.ip);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.networkType)) {
-        this.networkType = data().deepCopy(fields()[6].schema(), other.networkType);
+      if (isValidValue(fields()[6], other.isRemote)) {
+        this.isRemote = data().deepCopy(fields()[6].schema(), other.isRemote);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.port)) {
-        this.port = data().deepCopy(fields()[7].schema(), other.port);
+      if (isValidValue(fields()[7], other.networkType)) {
+        this.networkType = data().deepCopy(fields()[7].schema(), other.networkType);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.priority)) {
-        this.priority = data().deepCopy(fields()[8].schema(), other.priority);
+      if (isValidValue(fields()[8], other.port)) {
+        this.port = data().deepCopy(fields()[8].schema(), other.port);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[9].schema(), other.transportID);
+      if (isValidValue(fields()[9], other.priority)) {
+        this.priority = data().deepCopy(fields()[9].schema(), other.priority);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
+      }
+      if (isValidValue(fields()[10], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[10].schema(), other.transportID);
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
     }
 
@@ -367,41 +387,45 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.candidateType)) {
-        this.candidateType = data().deepCopy(fields()[1].schema(), other.candidateType);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.deleted)) {
-        this.deleted = data().deepCopy(fields()[2].schema(), other.deleted);
+      if (isValidValue(fields()[2], other.candidateType)) {
+        this.candidateType = data().deepCopy(fields()[2].schema(), other.candidateType);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.id)) {
-        this.id = data().deepCopy(fields()[3].schema(), other.id);
+      if (isValidValue(fields()[3], other.deleted)) {
+        this.deleted = data().deepCopy(fields()[3].schema(), other.deleted);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.ip)) {
-        this.ip = data().deepCopy(fields()[4].schema(), other.ip);
+      if (isValidValue(fields()[4], other.id)) {
+        this.id = data().deepCopy(fields()[4].schema(), other.id);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.isRemote)) {
-        this.isRemote = data().deepCopy(fields()[5].schema(), other.isRemote);
+      if (isValidValue(fields()[5], other.ip)) {
+        this.ip = data().deepCopy(fields()[5].schema(), other.ip);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.networkType)) {
-        this.networkType = data().deepCopy(fields()[6].schema(), other.networkType);
+      if (isValidValue(fields()[6], other.isRemote)) {
+        this.isRemote = data().deepCopy(fields()[6].schema(), other.isRemote);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.port)) {
-        this.port = data().deepCopy(fields()[7].schema(), other.port);
+      if (isValidValue(fields()[7], other.networkType)) {
+        this.networkType = data().deepCopy(fields()[7].schema(), other.networkType);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.priority)) {
-        this.priority = data().deepCopy(fields()[8].schema(), other.priority);
+      if (isValidValue(fields()[8], other.port)) {
+        this.port = data().deepCopy(fields()[8].schema(), other.port);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[9].schema(), other.transportID);
+      if (isValidValue(fields()[9], other.priority)) {
+        this.priority = data().deepCopy(fields()[9].schema(), other.priority);
         fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[10].schema(), other.transportID);
+        fieldSetFlags()[10] = true;
       }
     }
 
@@ -446,6 +470,46 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
+      * Gets the value of the 'mediaUnit' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnit() {
+      return mediaUnit;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnit' field.
+      * @param value The value of 'mediaUnit'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setMediaUnit(java.lang.String value) {
+      validate(fields()[1], value);
+      this.mediaUnit = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnit' field has been set.
+      * @return True if the 'mediaUnit' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnit() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnit' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearMediaUnit() {
+      mediaUnit = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'candidateType' field.
       * @return The value.
       */
@@ -460,9 +524,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setCandidateType(org.observertc.webrtc.common.reports.avro.CandidateType value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.candidateType = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -471,7 +535,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidateType' field has been set, false otherwise.
       */
     public boolean hasCandidateType() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -481,7 +545,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearCandidateType() {
       candidateType = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -500,9 +564,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setDeleted(java.lang.Boolean value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.deleted = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -511,7 +575,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'deleted' field has been set, false otherwise.
       */
     public boolean hasDeleted() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -521,7 +585,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearDeleted() {
       deleted = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -540,9 +604,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setId(java.lang.String value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.id = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -551,7 +615,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'id' field has been set, false otherwise.
       */
     public boolean hasId() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -561,7 +625,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearId() {
       id = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -580,9 +644,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setIp(java.lang.String value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.ip = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -591,7 +655,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'ip' field has been set, false otherwise.
       */
     public boolean hasIp() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -601,7 +665,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearIp() {
       ip = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -620,9 +684,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setIsRemote(java.lang.Boolean value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.isRemote = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -631,7 +695,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'isRemote' field has been set, false otherwise.
       */
     public boolean hasIsRemote() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -641,7 +705,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearIsRemote() {
       isRemote = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -660,9 +724,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setNetworkType(org.observertc.webrtc.common.reports.avro.NetworkType value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.networkType = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -671,7 +735,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'networkType' field has been set, false otherwise.
       */
     public boolean hasNetworkType() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -681,7 +745,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearNetworkType() {
       networkType = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -700,9 +764,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setPort(java.lang.Integer value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.port = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -711,7 +775,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'port' field has been set, false otherwise.
       */
     public boolean hasPort() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -721,7 +785,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearPort() {
       port = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -740,9 +804,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setPriority(java.lang.Long value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.priority = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -751,7 +815,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'priority' field has been set, false otherwise.
       */
     public boolean hasPriority() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -761,7 +825,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearPriority() {
       priority = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -780,9 +844,9 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder setTransportID(java.lang.String value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.transportID = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -791,7 +855,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'transportID' field has been set, false otherwise.
       */
     public boolean hasTransportID() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -801,7 +865,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       */
     public org.observertc.webrtc.common.reports.avro.ICELocalCandidate.Builder clearTransportID() {
       transportID = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -811,15 +875,16 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       try {
         ICELocalCandidate record = new ICELocalCandidate();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
-        record.candidateType = fieldSetFlags()[1] ? this.candidateType : (org.observertc.webrtc.common.reports.avro.CandidateType) defaultValue(fields()[1]);
-        record.deleted = fieldSetFlags()[2] ? this.deleted : (java.lang.Boolean) defaultValue(fields()[2]);
-        record.id = fieldSetFlags()[3] ? this.id : (java.lang.String) defaultValue(fields()[3]);
-        record.ip = fieldSetFlags()[4] ? this.ip : (java.lang.String) defaultValue(fields()[4]);
-        record.isRemote = fieldSetFlags()[5] ? this.isRemote : (java.lang.Boolean) defaultValue(fields()[5]);
-        record.networkType = fieldSetFlags()[6] ? this.networkType : (org.observertc.webrtc.common.reports.avro.NetworkType) defaultValue(fields()[6]);
-        record.port = fieldSetFlags()[7] ? this.port : (java.lang.Integer) defaultValue(fields()[7]);
-        record.priority = fieldSetFlags()[8] ? this.priority : (java.lang.Long) defaultValue(fields()[8]);
-        record.transportID = fieldSetFlags()[9] ? this.transportID : (java.lang.String) defaultValue(fields()[9]);
+        record.mediaUnit = fieldSetFlags()[1] ? this.mediaUnit : (java.lang.String) defaultValue(fields()[1]);
+        record.candidateType = fieldSetFlags()[2] ? this.candidateType : (org.observertc.webrtc.common.reports.avro.CandidateType) defaultValue(fields()[2]);
+        record.deleted = fieldSetFlags()[3] ? this.deleted : (java.lang.Boolean) defaultValue(fields()[3]);
+        record.id = fieldSetFlags()[4] ? this.id : (java.lang.String) defaultValue(fields()[4]);
+        record.ip = fieldSetFlags()[5] ? this.ip : (java.lang.String) defaultValue(fields()[5]);
+        record.isRemote = fieldSetFlags()[6] ? this.isRemote : (java.lang.Boolean) defaultValue(fields()[6]);
+        record.networkType = fieldSetFlags()[7] ? this.networkType : (org.observertc.webrtc.common.reports.avro.NetworkType) defaultValue(fields()[7]);
+        record.port = fieldSetFlags()[8] ? this.port : (java.lang.Integer) defaultValue(fields()[8]);
+        record.priority = fieldSetFlags()[9] ? this.priority : (java.lang.Long) defaultValue(fields()[9]);
+        record.transportID = fieldSetFlags()[10] ? this.transportID : (java.lang.String) defaultValue(fields()[10]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -853,6 +918,8 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
     throws java.io.IOException
   {
     out.writeString(this.peerConnectionUUID);
+
+    out.writeString(this.mediaUnit);
 
     out.writeEnum(this.candidateType.ordinal());
 
@@ -917,6 +984,8 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
 
+      this.mediaUnit = in.readString();
+
       this.candidateType = org.observertc.webrtc.common.reports.avro.CandidateType.values()[in.readEnum()];
 
       if (in.readIndex() != 1) {
@@ -966,17 +1035,21 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
       }
 
     } else {
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < 11; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
           break;
 
         case 1:
-          this.candidateType = org.observertc.webrtc.common.reports.avro.CandidateType.values()[in.readEnum()];
+          this.mediaUnit = in.readString();
           break;
 
         case 2:
+          this.candidateType = org.observertc.webrtc.common.reports.avro.CandidateType.values()[in.readEnum()];
+          break;
+
+        case 3:
           if (in.readIndex() != 1) {
             in.readNull();
             this.deleted = null;
@@ -985,11 +1058,11 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
           }
           break;
 
-        case 3:
+        case 4:
           this.id = in.readString();
           break;
 
-        case 4:
+        case 5:
           if (in.readIndex() != 1) {
             in.readNull();
             this.ip = null;
@@ -998,7 +1071,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
           }
           break;
 
-        case 5:
+        case 6:
           if (in.readIndex() != 1) {
             in.readNull();
             this.isRemote = null;
@@ -1007,11 +1080,11 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
           }
           break;
 
-        case 6:
+        case 7:
           this.networkType = org.observertc.webrtc.common.reports.avro.NetworkType.values()[in.readEnum()];
           break;
 
-        case 7:
+        case 8:
           if (in.readIndex() != 1) {
             in.readNull();
             this.port = null;
@@ -1020,7 +1093,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
           }
           break;
 
-        case 8:
+        case 9:
           if (in.readIndex() != 1) {
             in.readNull();
             this.priority = null;
@@ -1029,7 +1102,7 @@ public class ICELocalCandidate extends org.apache.avro.specific.SpecificRecordBa
           }
           break;
 
-        case 9:
+        case 10:
           if (in.readIndex() != 1) {
             in.readNull();
             this.transportID = null;

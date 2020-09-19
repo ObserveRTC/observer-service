@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -3773514101259825172L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"FinishedCall\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[]}");
+  private static final long serialVersionUID = 1014785428424491242L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"FinishedCall\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"callUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -71,12 +71,29 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
     return DECODER.decode(b);
   }
 
+   private java.lang.String callUUID;
+
+  /**
+   * Default constructor.  Note that this does not initialize fields
+   * to their default values from the schema.  If that is desired then
+   * one should use <code>newBuilder()</code>.
+   */
+  public FinishedCall() {}
+
+  /**
+   * All-args constructor.
+   * @param callUUID The new value for callUUID
+   */
+  public FinishedCall(java.lang.String callUUID) {
+    this.callUUID = callUUID;
+  }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
+    case 0: return callUUID;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -85,9 +102,20 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
+    case 0: callUUID = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
+
+  /**
+   * Gets the value of the 'callUUID' field.
+   * @return The value of the 'callUUID' field.
+   */
+  public java.lang.String getCallUUID() {
+    return callUUID;
+  }
+
+
 
   /**
    * Creates a new FinishedCall RecordBuilder.
@@ -130,6 +158,7 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<FinishedCall>
     implements org.apache.avro.data.RecordBuilder<FinishedCall> {
 
+    private java.lang.String callUUID;
 
     /** Creates a new Builder */
     private Builder() {
@@ -142,6 +171,10 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
      */
     private Builder(org.observertc.webrtc.common.reports.avro.FinishedCall.Builder other) {
       super(other);
+      if (isValidValue(fields()[0], other.callUUID)) {
+        this.callUUID = data().deepCopy(fields()[0].schema(), other.callUUID);
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+      }
     }
 
     /**
@@ -150,6 +183,50 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
      */
     private Builder(org.observertc.webrtc.common.reports.avro.FinishedCall other) {
       super(SCHEMA$);
+      if (isValidValue(fields()[0], other.callUUID)) {
+        this.callUUID = data().deepCopy(fields()[0].schema(), other.callUUID);
+        fieldSetFlags()[0] = true;
+      }
+    }
+
+    /**
+      * Gets the value of the 'callUUID' field.
+      * @return The value.
+      */
+    public java.lang.String getCallUUID() {
+      return callUUID;
+    }
+
+
+    /**
+      * Sets the value of the 'callUUID' field.
+      * @param value The value of 'callUUID'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.FinishedCall.Builder setCallUUID(java.lang.String value) {
+      validate(fields()[0], value);
+      this.callUUID = value;
+      fieldSetFlags()[0] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'callUUID' field has been set.
+      * @return True if the 'callUUID' field has been set, false otherwise.
+      */
+    public boolean hasCallUUID() {
+      return fieldSetFlags()[0];
+    }
+
+
+    /**
+      * Clears the value of the 'callUUID' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.FinishedCall.Builder clearCallUUID() {
+      callUUID = null;
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     @Override
@@ -157,6 +234,7 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
     public FinishedCall build() {
       try {
         FinishedCall record = new FinishedCall();
+        record.callUUID = fieldSetFlags()[0] ? this.callUUID : (java.lang.String) defaultValue(fields()[0]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -189,6 +267,8 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
   @Override public void customEncode(org.apache.avro.io.Encoder out)
     throws java.io.IOException
   {
+    out.writeString(this.callUUID);
+
   }
 
   @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
@@ -196,9 +276,15 @@ public class FinishedCall extends org.apache.avro.specific.SpecificRecordBase im
   {
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
+      this.callUUID = in.readString();
+
     } else {
-      for (int i = 0; i < 0; i++) {
+      for (int i = 0; i < 1; i++) {
         switch (fieldOrder[i].pos()) {
+        case 0:
+          this.callUUID = in.readString();
+          break;
+
         default:
           throw new java.io.IOException("Corrupt ResolvingDecoder.");
         }

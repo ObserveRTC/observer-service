@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 7893766796761782834L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"JoinedPeerConnection\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = -5402231708526217464L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"JoinedPeerConnection\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"callUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnitID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"userID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,9 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String callUUID;
+   private java.lang.String mediaUnitID;
+   private java.lang.String userID;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -83,9 +86,15 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param callUUID The new value for callUUID
+   * @param mediaUnitID The new value for mediaUnitID
+   * @param userID The new value for userID
    */
-  public JoinedPeerConnection(java.lang.String peerConnectionUUID) {
+  public JoinedPeerConnection(java.lang.String peerConnectionUUID, java.lang.String callUUID, java.lang.String mediaUnitID, java.lang.String userID) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.callUUID = callUUID;
+    this.mediaUnitID = mediaUnitID;
+    this.userID = userID;
   }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
@@ -94,6 +103,9 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
+    case 1: return callUUID;
+    case 2: return mediaUnitID;
+    case 3: return userID;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -103,6 +115,9 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
+    case 1: callUUID = value$ != null ? value$.toString() : null; break;
+    case 2: mediaUnitID = value$ != null ? value$.toString() : null; break;
+    case 3: userID = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -113,6 +128,36 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'callUUID' field.
+   * @return The value of the 'callUUID' field.
+   */
+  public java.lang.String getCallUUID() {
+    return callUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnitID' field.
+   * @return The value of the 'mediaUnitID' field.
+   */
+  public java.lang.String getMediaUnitID() {
+    return mediaUnitID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'userID' field.
+   * @return The value of the 'userID' field.
+   */
+  public java.lang.String getUserID() {
+    return userID;
   }
 
 
@@ -159,6 +204,9 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
     implements org.apache.avro.data.RecordBuilder<JoinedPeerConnection> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String callUUID;
+    private java.lang.String mediaUnitID;
+    private java.lang.String userID;
 
     /** Creates a new Builder */
     private Builder() {
@@ -175,6 +223,18 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
+      if (isValidValue(fields()[1], other.callUUID)) {
+        this.callUUID = data().deepCopy(fields()[1].schema(), other.callUUID);
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      }
+      if (isValidValue(fields()[2], other.mediaUnitID)) {
+        this.mediaUnitID = data().deepCopy(fields()[2].schema(), other.mediaUnitID);
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      }
+      if (isValidValue(fields()[3], other.userID)) {
+        this.userID = data().deepCopy(fields()[3].schema(), other.userID);
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+      }
     }
 
     /**
@@ -186,6 +246,18 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       if (isValidValue(fields()[0], other.peerConnectionUUID)) {
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
+      }
+      if (isValidValue(fields()[1], other.callUUID)) {
+        this.callUUID = data().deepCopy(fields()[1].schema(), other.callUUID);
+        fieldSetFlags()[1] = true;
+      }
+      if (isValidValue(fields()[2], other.mediaUnitID)) {
+        this.mediaUnitID = data().deepCopy(fields()[2].schema(), other.mediaUnitID);
+        fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.userID)) {
+        this.userID = data().deepCopy(fields()[3].schema(), other.userID);
+        fieldSetFlags()[3] = true;
       }
     }
 
@@ -229,12 +301,135 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       return this;
     }
 
+    /**
+      * Gets the value of the 'callUUID' field.
+      * @return The value.
+      */
+    public java.lang.String getCallUUID() {
+      return callUUID;
+    }
+
+
+    /**
+      * Sets the value of the 'callUUID' field.
+      * @param value The value of 'callUUID'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.JoinedPeerConnection.Builder setCallUUID(java.lang.String value) {
+      validate(fields()[1], value);
+      this.callUUID = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'callUUID' field has been set.
+      * @return True if the 'callUUID' field has been set, false otherwise.
+      */
+    public boolean hasCallUUID() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'callUUID' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.JoinedPeerConnection.Builder clearCallUUID() {
+      callUUID = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'mediaUnitID' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnitID() {
+      return mediaUnitID;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnitID' field.
+      * @param value The value of 'mediaUnitID'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.JoinedPeerConnection.Builder setMediaUnitID(java.lang.String value) {
+      validate(fields()[2], value);
+      this.mediaUnitID = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnitID' field has been set.
+      * @return True if the 'mediaUnitID' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnitID() {
+      return fieldSetFlags()[2];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnitID' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.JoinedPeerConnection.Builder clearMediaUnitID() {
+      mediaUnitID = null;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'userID' field.
+      * @return The value.
+      */
+    public java.lang.String getUserID() {
+      return userID;
+    }
+
+
+    /**
+      * Sets the value of the 'userID' field.
+      * @param value The value of 'userID'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.JoinedPeerConnection.Builder setUserID(java.lang.String value) {
+      validate(fields()[3], value);
+      this.userID = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'userID' field has been set.
+      * @return True if the 'userID' field has been set, false otherwise.
+      */
+    public boolean hasUserID() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'userID' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.JoinedPeerConnection.Builder clearUserID() {
+      userID = null;
+      fieldSetFlags()[3] = false;
+      return this;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public JoinedPeerConnection build() {
       try {
         JoinedPeerConnection record = new JoinedPeerConnection();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
+        record.callUUID = fieldSetFlags()[1] ? this.callUUID : (java.lang.String) defaultValue(fields()[1]);
+        record.mediaUnitID = fieldSetFlags()[2] ? this.mediaUnitID : (java.lang.String) defaultValue(fields()[2]);
+        record.userID = fieldSetFlags()[3] ? this.userID : (java.lang.String) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -269,6 +464,12 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
   {
     out.writeString(this.peerConnectionUUID);
 
+    out.writeString(this.callUUID);
+
+    out.writeString(this.mediaUnitID);
+
+    out.writeString(this.userID);
+
   }
 
   @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
@@ -278,11 +479,29 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
 
+      this.callUUID = in.readString();
+
+      this.mediaUnitID = in.readString();
+
+      this.userID = in.readString();
+
     } else {
-      for (int i = 0; i < 1; i++) {
+      for (int i = 0; i < 4; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
+          break;
+
+        case 1:
+          this.callUUID = in.readString();
+          break;
+
+        case 2:
+          this.mediaUnitID = in.readString();
+          break;
+
+        case 3:
+          this.userID = in.readString();
           break;
 
         default:

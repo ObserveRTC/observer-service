@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
-import javax.inject.Inject;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
@@ -30,8 +29,6 @@ public class WebRTCStatsWebsocketServer20200114Json {
 	private final KafkaSinks kafkaSinks;
 	private final ObserverConfig config;
 	private final ObjectReader objectReader;
-	@Inject
-	ObserverDateTime observerDateTime;
 //	private final IDSLContextProvider contextProvider;
 
 //	public DemoWebsocketServer(ObserverRepository observerRepository, DemoSink sink) {
@@ -69,7 +66,7 @@ public class WebRTCStatsWebsocketServer20200114Json {
 			WebSocketSession session) {
 		PeerConnectionSample sample;
 		try {
-			sample = this.objectReader.readValue(message, org.observertc.webrtc.observer.dto.PeerConnectionSample.class);
+			sample = this.objectReader.readValue(message, PeerConnectionSample.class);
 		} catch (IOException e) {
 			logger.warn("Parse error", e);
 			return;

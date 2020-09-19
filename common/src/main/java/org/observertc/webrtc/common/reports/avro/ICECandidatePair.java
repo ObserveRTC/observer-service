@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2593130790919771841L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ICECandidatePair\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"availableOutgoingBitrate\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"consentRequestsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"currentRoundTripTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"localCandidateID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"nominated\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"priority\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"remoteCandidateID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"requestsReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"requestsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"responsesReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"responsesSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"state\",\"type\":{\"type\":\"enum\",\"name\":\"CandidateType\",\"symbols\":[\"HOST\",\"PRFLX\",\"RELAY\",\"SRFLX\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"totalRoundTripTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"writable\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
+  private static final long serialVersionUID = 4735940354891153940L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ICECandidatePair\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"availableOutgoingBitrate\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"consentRequestsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"currentRoundTripTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"localCandidateID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"nominated\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"priority\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"remoteCandidateID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"requestsReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"requestsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"responsesReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"responsesSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"state\",\"type\":{\"type\":\"enum\",\"name\":\"ICEState\",\"symbols\":[\"HOST\",\"PRFLX\",\"RELAY\",\"SRFLX\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"totalRoundTripTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"writable\",\"type\":[\"null\",\"boolean\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String mediaUnit;
    private java.lang.Integer availableOutgoingBitrate;
    private java.lang.Long bytesReceived;
    private java.lang.Long bytesSent;
@@ -80,16 +81,16 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
    private java.lang.String id;
    private java.lang.String localCandidateID;
    private java.lang.Boolean nominated;
-   private java.lang.Integer priority;
+   private java.lang.Long priority;
    private java.lang.String remoteCandidateID;
    private java.lang.Integer requestsReceived;
    private java.lang.Integer requestsSent;
    private java.lang.Integer responsesReceived;
    private java.lang.Integer responsesSent;
-   private org.observertc.webrtc.common.reports.avro.CandidateType state;
+   private org.observertc.webrtc.common.reports.avro.ICEState state;
    private java.lang.Double totalRoundTripTime;
    private java.lang.String transportID;
-   private java.lang.String writable;
+   private java.lang.Boolean writable;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -101,6 +102,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param mediaUnit The new value for mediaUnit
    * @param availableOutgoingBitrate The new value for availableOutgoingBitrate
    * @param bytesReceived The new value for bytesReceived
    * @param bytesSent The new value for bytesSent
@@ -120,8 +122,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
    * @param transportID The new value for transportID
    * @param writable The new value for writable
    */
-  public ICECandidatePair(java.lang.String peerConnectionUUID, java.lang.Integer availableOutgoingBitrate, java.lang.Long bytesReceived, java.lang.Long bytesSent, java.lang.Integer consentRequestsSent, java.lang.Double currentRoundTripTime, java.lang.String id, java.lang.String localCandidateID, java.lang.Boolean nominated, java.lang.Integer priority, java.lang.String remoteCandidateID, java.lang.Integer requestsReceived, java.lang.Integer requestsSent, java.lang.Integer responsesReceived, java.lang.Integer responsesSent, org.observertc.webrtc.common.reports.avro.CandidateType state, java.lang.Double totalRoundTripTime, java.lang.String transportID, java.lang.String writable) {
+  public ICECandidatePair(java.lang.String peerConnectionUUID, java.lang.String mediaUnit, java.lang.Integer availableOutgoingBitrate, java.lang.Long bytesReceived, java.lang.Long bytesSent, java.lang.Integer consentRequestsSent, java.lang.Double currentRoundTripTime, java.lang.String id, java.lang.String localCandidateID, java.lang.Boolean nominated, java.lang.Long priority, java.lang.String remoteCandidateID, java.lang.Integer requestsReceived, java.lang.Integer requestsSent, java.lang.Integer responsesReceived, java.lang.Integer responsesSent, org.observertc.webrtc.common.reports.avro.ICEState state, java.lang.Double totalRoundTripTime, java.lang.String transportID, java.lang.Boolean writable) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.mediaUnit = mediaUnit;
     this.availableOutgoingBitrate = availableOutgoingBitrate;
     this.bytesReceived = bytesReceived;
     this.bytesSent = bytesSent;
@@ -148,24 +151,25 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
-    case 1: return availableOutgoingBitrate;
-    case 2: return bytesReceived;
-    case 3: return bytesSent;
-    case 4: return consentRequestsSent;
-    case 5: return currentRoundTripTime;
-    case 6: return id;
-    case 7: return localCandidateID;
-    case 8: return nominated;
-    case 9: return priority;
-    case 10: return remoteCandidateID;
-    case 11: return requestsReceived;
-    case 12: return requestsSent;
-    case 13: return responsesReceived;
-    case 14: return responsesSent;
-    case 15: return state;
-    case 16: return totalRoundTripTime;
-    case 17: return transportID;
-    case 18: return writable;
+    case 1: return mediaUnit;
+    case 2: return availableOutgoingBitrate;
+    case 3: return bytesReceived;
+    case 4: return bytesSent;
+    case 5: return consentRequestsSent;
+    case 6: return currentRoundTripTime;
+    case 7: return id;
+    case 8: return localCandidateID;
+    case 9: return nominated;
+    case 10: return priority;
+    case 11: return remoteCandidateID;
+    case 12: return requestsReceived;
+    case 13: return requestsSent;
+    case 14: return responsesReceived;
+    case 15: return responsesSent;
+    case 16: return state;
+    case 17: return totalRoundTripTime;
+    case 18: return transportID;
+    case 19: return writable;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -175,24 +179,25 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
-    case 1: availableOutgoingBitrate = (java.lang.Integer)value$; break;
-    case 2: bytesReceived = (java.lang.Long)value$; break;
-    case 3: bytesSent = (java.lang.Long)value$; break;
-    case 4: consentRequestsSent = (java.lang.Integer)value$; break;
-    case 5: currentRoundTripTime = (java.lang.Double)value$; break;
-    case 6: id = value$ != null ? value$.toString() : null; break;
-    case 7: localCandidateID = value$ != null ? value$.toString() : null; break;
-    case 8: nominated = (java.lang.Boolean)value$; break;
-    case 9: priority = (java.lang.Integer)value$; break;
-    case 10: remoteCandidateID = value$ != null ? value$.toString() : null; break;
-    case 11: requestsReceived = (java.lang.Integer)value$; break;
-    case 12: requestsSent = (java.lang.Integer)value$; break;
-    case 13: responsesReceived = (java.lang.Integer)value$; break;
-    case 14: responsesSent = (java.lang.Integer)value$; break;
-    case 15: state = (org.observertc.webrtc.common.reports.avro.CandidateType)value$; break;
-    case 16: totalRoundTripTime = (java.lang.Double)value$; break;
-    case 17: transportID = value$ != null ? value$.toString() : null; break;
-    case 18: writable = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnit = value$ != null ? value$.toString() : null; break;
+    case 2: availableOutgoingBitrate = (java.lang.Integer)value$; break;
+    case 3: bytesReceived = (java.lang.Long)value$; break;
+    case 4: bytesSent = (java.lang.Long)value$; break;
+    case 5: consentRequestsSent = (java.lang.Integer)value$; break;
+    case 6: currentRoundTripTime = (java.lang.Double)value$; break;
+    case 7: id = value$ != null ? value$.toString() : null; break;
+    case 8: localCandidateID = value$ != null ? value$.toString() : null; break;
+    case 9: nominated = (java.lang.Boolean)value$; break;
+    case 10: priority = (java.lang.Long)value$; break;
+    case 11: remoteCandidateID = value$ != null ? value$.toString() : null; break;
+    case 12: requestsReceived = (java.lang.Integer)value$; break;
+    case 13: requestsSent = (java.lang.Integer)value$; break;
+    case 14: responsesReceived = (java.lang.Integer)value$; break;
+    case 15: responsesSent = (java.lang.Integer)value$; break;
+    case 16: state = (org.observertc.webrtc.common.reports.avro.ICEState)value$; break;
+    case 17: totalRoundTripTime = (java.lang.Double)value$; break;
+    case 18: transportID = value$ != null ? value$.toString() : null; break;
+    case 19: writable = (java.lang.Boolean)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -203,6 +208,16 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnit' field.
+   * @return The value of the 'mediaUnit' field.
+   */
+  public java.lang.String getMediaUnit() {
+    return mediaUnit;
   }
 
 
@@ -291,7 +306,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
    * Gets the value of the 'priority' field.
    * @return The value of the 'priority' field.
    */
-  public java.lang.Integer getPriority() {
+  public java.lang.Long getPriority() {
     return priority;
   }
 
@@ -351,7 +366,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
    * Gets the value of the 'state' field.
    * @return The value of the 'state' field.
    */
-  public org.observertc.webrtc.common.reports.avro.CandidateType getState() {
+  public org.observertc.webrtc.common.reports.avro.ICEState getState() {
     return state;
   }
 
@@ -381,7 +396,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
    * Gets the value of the 'writable' field.
    * @return The value of the 'writable' field.
    */
-  public java.lang.String getWritable() {
+  public java.lang.Boolean getWritable() {
     return writable;
   }
 
@@ -429,6 +444,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
     implements org.apache.avro.data.RecordBuilder<ICECandidatePair> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String mediaUnit;
     private java.lang.Integer availableOutgoingBitrate;
     private java.lang.Long bytesReceived;
     private java.lang.Long bytesSent;
@@ -437,16 +453,16 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
     private java.lang.String id;
     private java.lang.String localCandidateID;
     private java.lang.Boolean nominated;
-    private java.lang.Integer priority;
+    private java.lang.Long priority;
     private java.lang.String remoteCandidateID;
     private java.lang.Integer requestsReceived;
     private java.lang.Integer requestsSent;
     private java.lang.Integer responsesReceived;
     private java.lang.Integer responsesSent;
-    private org.observertc.webrtc.common.reports.avro.CandidateType state;
+    private org.observertc.webrtc.common.reports.avro.ICEState state;
     private java.lang.Double totalRoundTripTime;
     private java.lang.String transportID;
-    private java.lang.String writable;
+    private java.lang.Boolean writable;
 
     /** Creates a new Builder */
     private Builder() {
@@ -463,77 +479,81 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.availableOutgoingBitrate)) {
-        this.availableOutgoingBitrate = data().deepCopy(fields()[1].schema(), other.availableOutgoingBitrate);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[2].schema(), other.bytesReceived);
+      if (isValidValue(fields()[2], other.availableOutgoingBitrate)) {
+        this.availableOutgoingBitrate = data().deepCopy(fields()[2].schema(), other.availableOutgoingBitrate);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[3].schema(), other.bytesSent);
+      if (isValidValue(fields()[3], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[3].schema(), other.bytesReceived);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.consentRequestsSent)) {
-        this.consentRequestsSent = data().deepCopy(fields()[4].schema(), other.consentRequestsSent);
+      if (isValidValue(fields()[4], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[4].schema(), other.bytesSent);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.currentRoundTripTime)) {
-        this.currentRoundTripTime = data().deepCopy(fields()[5].schema(), other.currentRoundTripTime);
+      if (isValidValue(fields()[5], other.consentRequestsSent)) {
+        this.consentRequestsSent = data().deepCopy(fields()[5].schema(), other.consentRequestsSent);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.id)) {
-        this.id = data().deepCopy(fields()[6].schema(), other.id);
+      if (isValidValue(fields()[6], other.currentRoundTripTime)) {
+        this.currentRoundTripTime = data().deepCopy(fields()[6].schema(), other.currentRoundTripTime);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.localCandidateID)) {
-        this.localCandidateID = data().deepCopy(fields()[7].schema(), other.localCandidateID);
+      if (isValidValue(fields()[7], other.id)) {
+        this.id = data().deepCopy(fields()[7].schema(), other.id);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.nominated)) {
-        this.nominated = data().deepCopy(fields()[8].schema(), other.nominated);
+      if (isValidValue(fields()[8], other.localCandidateID)) {
+        this.localCandidateID = data().deepCopy(fields()[8].schema(), other.localCandidateID);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.priority)) {
-        this.priority = data().deepCopy(fields()[9].schema(), other.priority);
+      if (isValidValue(fields()[9], other.nominated)) {
+        this.nominated = data().deepCopy(fields()[9].schema(), other.nominated);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
-      if (isValidValue(fields()[10], other.remoteCandidateID)) {
-        this.remoteCandidateID = data().deepCopy(fields()[10].schema(), other.remoteCandidateID);
+      if (isValidValue(fields()[10], other.priority)) {
+        this.priority = data().deepCopy(fields()[10].schema(), other.priority);
         fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
-      if (isValidValue(fields()[11], other.requestsReceived)) {
-        this.requestsReceived = data().deepCopy(fields()[11].schema(), other.requestsReceived);
+      if (isValidValue(fields()[11], other.remoteCandidateID)) {
+        this.remoteCandidateID = data().deepCopy(fields()[11].schema(), other.remoteCandidateID);
         fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
-      if (isValidValue(fields()[12], other.requestsSent)) {
-        this.requestsSent = data().deepCopy(fields()[12].schema(), other.requestsSent);
+      if (isValidValue(fields()[12], other.requestsReceived)) {
+        this.requestsReceived = data().deepCopy(fields()[12].schema(), other.requestsReceived);
         fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
-      if (isValidValue(fields()[13], other.responsesReceived)) {
-        this.responsesReceived = data().deepCopy(fields()[13].schema(), other.responsesReceived);
+      if (isValidValue(fields()[13], other.requestsSent)) {
+        this.requestsSent = data().deepCopy(fields()[13].schema(), other.requestsSent);
         fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
-      if (isValidValue(fields()[14], other.responsesSent)) {
-        this.responsesSent = data().deepCopy(fields()[14].schema(), other.responsesSent);
+      if (isValidValue(fields()[14], other.responsesReceived)) {
+        this.responsesReceived = data().deepCopy(fields()[14].schema(), other.responsesReceived);
         fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
-      if (isValidValue(fields()[15], other.state)) {
-        this.state = data().deepCopy(fields()[15].schema(), other.state);
+      if (isValidValue(fields()[15], other.responsesSent)) {
+        this.responsesSent = data().deepCopy(fields()[15].schema(), other.responsesSent);
         fieldSetFlags()[15] = other.fieldSetFlags()[15];
       }
-      if (isValidValue(fields()[16], other.totalRoundTripTime)) {
-        this.totalRoundTripTime = data().deepCopy(fields()[16].schema(), other.totalRoundTripTime);
+      if (isValidValue(fields()[16], other.state)) {
+        this.state = data().deepCopy(fields()[16].schema(), other.state);
         fieldSetFlags()[16] = other.fieldSetFlags()[16];
       }
-      if (isValidValue(fields()[17], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[17].schema(), other.transportID);
+      if (isValidValue(fields()[17], other.totalRoundTripTime)) {
+        this.totalRoundTripTime = data().deepCopy(fields()[17].schema(), other.totalRoundTripTime);
         fieldSetFlags()[17] = other.fieldSetFlags()[17];
       }
-      if (isValidValue(fields()[18], other.writable)) {
-        this.writable = data().deepCopy(fields()[18].schema(), other.writable);
+      if (isValidValue(fields()[18], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[18].schema(), other.transportID);
         fieldSetFlags()[18] = other.fieldSetFlags()[18];
+      }
+      if (isValidValue(fields()[19], other.writable)) {
+        this.writable = data().deepCopy(fields()[19].schema(), other.writable);
+        fieldSetFlags()[19] = other.fieldSetFlags()[19];
       }
     }
 
@@ -547,77 +567,81 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.availableOutgoingBitrate)) {
-        this.availableOutgoingBitrate = data().deepCopy(fields()[1].schema(), other.availableOutgoingBitrate);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[2].schema(), other.bytesReceived);
+      if (isValidValue(fields()[2], other.availableOutgoingBitrate)) {
+        this.availableOutgoingBitrate = data().deepCopy(fields()[2].schema(), other.availableOutgoingBitrate);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[3].schema(), other.bytesSent);
+      if (isValidValue(fields()[3], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[3].schema(), other.bytesReceived);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.consentRequestsSent)) {
-        this.consentRequestsSent = data().deepCopy(fields()[4].schema(), other.consentRequestsSent);
+      if (isValidValue(fields()[4], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[4].schema(), other.bytesSent);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.currentRoundTripTime)) {
-        this.currentRoundTripTime = data().deepCopy(fields()[5].schema(), other.currentRoundTripTime);
+      if (isValidValue(fields()[5], other.consentRequestsSent)) {
+        this.consentRequestsSent = data().deepCopy(fields()[5].schema(), other.consentRequestsSent);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.id)) {
-        this.id = data().deepCopy(fields()[6].schema(), other.id);
+      if (isValidValue(fields()[6], other.currentRoundTripTime)) {
+        this.currentRoundTripTime = data().deepCopy(fields()[6].schema(), other.currentRoundTripTime);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.localCandidateID)) {
-        this.localCandidateID = data().deepCopy(fields()[7].schema(), other.localCandidateID);
+      if (isValidValue(fields()[7], other.id)) {
+        this.id = data().deepCopy(fields()[7].schema(), other.id);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.nominated)) {
-        this.nominated = data().deepCopy(fields()[8].schema(), other.nominated);
+      if (isValidValue(fields()[8], other.localCandidateID)) {
+        this.localCandidateID = data().deepCopy(fields()[8].schema(), other.localCandidateID);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.priority)) {
-        this.priority = data().deepCopy(fields()[9].schema(), other.priority);
+      if (isValidValue(fields()[9], other.nominated)) {
+        this.nominated = data().deepCopy(fields()[9].schema(), other.nominated);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.remoteCandidateID)) {
-        this.remoteCandidateID = data().deepCopy(fields()[10].schema(), other.remoteCandidateID);
+      if (isValidValue(fields()[10], other.priority)) {
+        this.priority = data().deepCopy(fields()[10].schema(), other.priority);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.requestsReceived)) {
-        this.requestsReceived = data().deepCopy(fields()[11].schema(), other.requestsReceived);
+      if (isValidValue(fields()[11], other.remoteCandidateID)) {
+        this.remoteCandidateID = data().deepCopy(fields()[11].schema(), other.remoteCandidateID);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.requestsSent)) {
-        this.requestsSent = data().deepCopy(fields()[12].schema(), other.requestsSent);
+      if (isValidValue(fields()[12], other.requestsReceived)) {
+        this.requestsReceived = data().deepCopy(fields()[12].schema(), other.requestsReceived);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.responsesReceived)) {
-        this.responsesReceived = data().deepCopy(fields()[13].schema(), other.responsesReceived);
+      if (isValidValue(fields()[13], other.requestsSent)) {
+        this.requestsSent = data().deepCopy(fields()[13].schema(), other.requestsSent);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.responsesSent)) {
-        this.responsesSent = data().deepCopy(fields()[14].schema(), other.responsesSent);
+      if (isValidValue(fields()[14], other.responsesReceived)) {
+        this.responsesReceived = data().deepCopy(fields()[14].schema(), other.responsesReceived);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.state)) {
-        this.state = data().deepCopy(fields()[15].schema(), other.state);
+      if (isValidValue(fields()[15], other.responsesSent)) {
+        this.responsesSent = data().deepCopy(fields()[15].schema(), other.responsesSent);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.totalRoundTripTime)) {
-        this.totalRoundTripTime = data().deepCopy(fields()[16].schema(), other.totalRoundTripTime);
+      if (isValidValue(fields()[16], other.state)) {
+        this.state = data().deepCopy(fields()[16].schema(), other.state);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[17].schema(), other.transportID);
+      if (isValidValue(fields()[17], other.totalRoundTripTime)) {
+        this.totalRoundTripTime = data().deepCopy(fields()[17].schema(), other.totalRoundTripTime);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.writable)) {
-        this.writable = data().deepCopy(fields()[18].schema(), other.writable);
+      if (isValidValue(fields()[18], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[18].schema(), other.transportID);
         fieldSetFlags()[18] = true;
+      }
+      if (isValidValue(fields()[19], other.writable)) {
+        this.writable = data().deepCopy(fields()[19].schema(), other.writable);
+        fieldSetFlags()[19] = true;
       }
     }
 
@@ -662,6 +686,46 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
     }
 
     /**
+      * Gets the value of the 'mediaUnit' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnit() {
+      return mediaUnit;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnit' field.
+      * @param value The value of 'mediaUnit'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setMediaUnit(java.lang.String value) {
+      validate(fields()[1], value);
+      this.mediaUnit = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnit' field has been set.
+      * @return True if the 'mediaUnit' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnit() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnit' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearMediaUnit() {
+      mediaUnit = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'availableOutgoingBitrate' field.
       * @return The value.
       */
@@ -676,9 +740,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setAvailableOutgoingBitrate(java.lang.Integer value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.availableOutgoingBitrate = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -687,7 +751,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'availableOutgoingBitrate' field has been set, false otherwise.
       */
     public boolean hasAvailableOutgoingBitrate() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -697,7 +761,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearAvailableOutgoingBitrate() {
       availableOutgoingBitrate = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -716,9 +780,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setBytesReceived(java.lang.Long value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.bytesReceived = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -727,7 +791,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -737,7 +801,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -756,9 +820,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setBytesSent(java.lang.Long value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.bytesSent = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -767,7 +831,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'bytesSent' field has been set, false otherwise.
       */
     public boolean hasBytesSent() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -777,7 +841,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearBytesSent() {
       bytesSent = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -796,9 +860,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setConsentRequestsSent(java.lang.Integer value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.consentRequestsSent = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -807,7 +871,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'consentRequestsSent' field has been set, false otherwise.
       */
     public boolean hasConsentRequestsSent() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -817,7 +881,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearConsentRequestsSent() {
       consentRequestsSent = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -836,9 +900,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setCurrentRoundTripTime(java.lang.Double value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.currentRoundTripTime = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -847,7 +911,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'currentRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasCurrentRoundTripTime() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -857,7 +921,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearCurrentRoundTripTime() {
       currentRoundTripTime = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -876,9 +940,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setId(java.lang.String value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.id = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -887,7 +951,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'id' field has been set, false otherwise.
       */
     public boolean hasId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -897,7 +961,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearId() {
       id = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -916,9 +980,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setLocalCandidateID(java.lang.String value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.localCandidateID = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -927,7 +991,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'localCandidateID' field has been set, false otherwise.
       */
     public boolean hasLocalCandidateID() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -937,7 +1001,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearLocalCandidateID() {
       localCandidateID = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -956,9 +1020,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setNominated(java.lang.Boolean value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.nominated = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -967,7 +1031,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'nominated' field has been set, false otherwise.
       */
     public boolean hasNominated() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -977,7 +1041,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearNominated() {
       nominated = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -985,7 +1049,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * Gets the value of the 'priority' field.
       * @return The value.
       */
-    public java.lang.Integer getPriority() {
+    public java.lang.Long getPriority() {
       return priority;
     }
 
@@ -995,10 +1059,10 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @param value The value of 'priority'.
       * @return This builder.
       */
-    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setPriority(java.lang.Integer value) {
-      validate(fields()[9], value);
+    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setPriority(java.lang.Long value) {
+      validate(fields()[10], value);
       this.priority = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -1007,7 +1071,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'priority' field has been set, false otherwise.
       */
     public boolean hasPriority() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -1017,7 +1081,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearPriority() {
       priority = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1036,9 +1100,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setRemoteCandidateID(java.lang.String value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.remoteCandidateID = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1047,7 +1111,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'remoteCandidateID' field has been set, false otherwise.
       */
     public boolean hasRemoteCandidateID() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1057,7 +1121,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearRemoteCandidateID() {
       remoteCandidateID = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1076,9 +1140,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setRequestsReceived(java.lang.Integer value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.requestsReceived = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1087,7 +1151,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'requestsReceived' field has been set, false otherwise.
       */
     public boolean hasRequestsReceived() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1097,7 +1161,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearRequestsReceived() {
       requestsReceived = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1116,9 +1180,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setRequestsSent(java.lang.Integer value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.requestsSent = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1127,7 +1191,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'requestsSent' field has been set, false otherwise.
       */
     public boolean hasRequestsSent() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1137,7 +1201,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearRequestsSent() {
       requestsSent = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1156,9 +1220,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setResponsesReceived(java.lang.Integer value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.responsesReceived = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1167,7 +1231,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'responsesReceived' field has been set, false otherwise.
       */
     public boolean hasResponsesReceived() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1177,7 +1241,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearResponsesReceived() {
       responsesReceived = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1196,9 +1260,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setResponsesSent(java.lang.Integer value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.responsesSent = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1207,7 +1271,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'responsesSent' field has been set, false otherwise.
       */
     public boolean hasResponsesSent() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1217,7 +1281,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearResponsesSent() {
       responsesSent = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1225,7 +1289,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * Gets the value of the 'state' field.
       * @return The value.
       */
-    public org.observertc.webrtc.common.reports.avro.CandidateType getState() {
+    public org.observertc.webrtc.common.reports.avro.ICEState getState() {
       return state;
     }
 
@@ -1235,10 +1299,10 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @param value The value of 'state'.
       * @return This builder.
       */
-    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setState(org.observertc.webrtc.common.reports.avro.CandidateType value) {
-      validate(fields()[15], value);
+    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setState(org.observertc.webrtc.common.reports.avro.ICEState value) {
+      validate(fields()[16], value);
       this.state = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1247,7 +1311,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'state' field has been set, false otherwise.
       */
     public boolean hasState() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1257,7 +1321,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearState() {
       state = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1276,9 +1340,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setTotalRoundTripTime(java.lang.Double value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.totalRoundTripTime = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1287,7 +1351,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'totalRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasTotalRoundTripTime() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1297,7 +1361,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearTotalRoundTripTime() {
       totalRoundTripTime = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1316,9 +1380,9 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setTransportID(java.lang.String value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.transportID = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1327,7 +1391,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'transportID' field has been set, false otherwise.
       */
     public boolean hasTransportID() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -1337,7 +1401,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearTransportID() {
       transportID = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1345,7 +1409,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * Gets the value of the 'writable' field.
       * @return The value.
       */
-    public java.lang.String getWritable() {
+    public java.lang.Boolean getWritable() {
       return writable;
     }
 
@@ -1355,10 +1419,10 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @param value The value of 'writable'.
       * @return This builder.
       */
-    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setWritable(java.lang.String value) {
-      validate(fields()[18], value);
+    public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder setWritable(java.lang.Boolean value) {
+      validate(fields()[19], value);
       this.writable = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -1367,7 +1431,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'writable' field has been set, false otherwise.
       */
     public boolean hasWritable() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -1377,7 +1441,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       */
     public org.observertc.webrtc.common.reports.avro.ICECandidatePair.Builder clearWritable() {
       writable = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -1387,24 +1451,25 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       try {
         ICECandidatePair record = new ICECandidatePair();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
-        record.availableOutgoingBitrate = fieldSetFlags()[1] ? this.availableOutgoingBitrate : (java.lang.Integer) defaultValue(fields()[1]);
-        record.bytesReceived = fieldSetFlags()[2] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[2]);
-        record.bytesSent = fieldSetFlags()[3] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[3]);
-        record.consentRequestsSent = fieldSetFlags()[4] ? this.consentRequestsSent : (java.lang.Integer) defaultValue(fields()[4]);
-        record.currentRoundTripTime = fieldSetFlags()[5] ? this.currentRoundTripTime : (java.lang.Double) defaultValue(fields()[5]);
-        record.id = fieldSetFlags()[6] ? this.id : (java.lang.String) defaultValue(fields()[6]);
-        record.localCandidateID = fieldSetFlags()[7] ? this.localCandidateID : (java.lang.String) defaultValue(fields()[7]);
-        record.nominated = fieldSetFlags()[8] ? this.nominated : (java.lang.Boolean) defaultValue(fields()[8]);
-        record.priority = fieldSetFlags()[9] ? this.priority : (java.lang.Integer) defaultValue(fields()[9]);
-        record.remoteCandidateID = fieldSetFlags()[10] ? this.remoteCandidateID : (java.lang.String) defaultValue(fields()[10]);
-        record.requestsReceived = fieldSetFlags()[11] ? this.requestsReceived : (java.lang.Integer) defaultValue(fields()[11]);
-        record.requestsSent = fieldSetFlags()[12] ? this.requestsSent : (java.lang.Integer) defaultValue(fields()[12]);
-        record.responsesReceived = fieldSetFlags()[13] ? this.responsesReceived : (java.lang.Integer) defaultValue(fields()[13]);
-        record.responsesSent = fieldSetFlags()[14] ? this.responsesSent : (java.lang.Integer) defaultValue(fields()[14]);
-        record.state = fieldSetFlags()[15] ? this.state : (org.observertc.webrtc.common.reports.avro.CandidateType) defaultValue(fields()[15]);
-        record.totalRoundTripTime = fieldSetFlags()[16] ? this.totalRoundTripTime : (java.lang.Double) defaultValue(fields()[16]);
-        record.transportID = fieldSetFlags()[17] ? this.transportID : (java.lang.String) defaultValue(fields()[17]);
-        record.writable = fieldSetFlags()[18] ? this.writable : (java.lang.String) defaultValue(fields()[18]);
+        record.mediaUnit = fieldSetFlags()[1] ? this.mediaUnit : (java.lang.String) defaultValue(fields()[1]);
+        record.availableOutgoingBitrate = fieldSetFlags()[2] ? this.availableOutgoingBitrate : (java.lang.Integer) defaultValue(fields()[2]);
+        record.bytesReceived = fieldSetFlags()[3] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[3]);
+        record.bytesSent = fieldSetFlags()[4] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[4]);
+        record.consentRequestsSent = fieldSetFlags()[5] ? this.consentRequestsSent : (java.lang.Integer) defaultValue(fields()[5]);
+        record.currentRoundTripTime = fieldSetFlags()[6] ? this.currentRoundTripTime : (java.lang.Double) defaultValue(fields()[6]);
+        record.id = fieldSetFlags()[7] ? this.id : (java.lang.String) defaultValue(fields()[7]);
+        record.localCandidateID = fieldSetFlags()[8] ? this.localCandidateID : (java.lang.String) defaultValue(fields()[8]);
+        record.nominated = fieldSetFlags()[9] ? this.nominated : (java.lang.Boolean) defaultValue(fields()[9]);
+        record.priority = fieldSetFlags()[10] ? this.priority : (java.lang.Long) defaultValue(fields()[10]);
+        record.remoteCandidateID = fieldSetFlags()[11] ? this.remoteCandidateID : (java.lang.String) defaultValue(fields()[11]);
+        record.requestsReceived = fieldSetFlags()[12] ? this.requestsReceived : (java.lang.Integer) defaultValue(fields()[12]);
+        record.requestsSent = fieldSetFlags()[13] ? this.requestsSent : (java.lang.Integer) defaultValue(fields()[13]);
+        record.responsesReceived = fieldSetFlags()[14] ? this.responsesReceived : (java.lang.Integer) defaultValue(fields()[14]);
+        record.responsesSent = fieldSetFlags()[15] ? this.responsesSent : (java.lang.Integer) defaultValue(fields()[15]);
+        record.state = fieldSetFlags()[16] ? this.state : (org.observertc.webrtc.common.reports.avro.ICEState) defaultValue(fields()[16]);
+        record.totalRoundTripTime = fieldSetFlags()[17] ? this.totalRoundTripTime : (java.lang.Double) defaultValue(fields()[17]);
+        record.transportID = fieldSetFlags()[18] ? this.transportID : (java.lang.String) defaultValue(fields()[18]);
+        record.writable = fieldSetFlags()[19] ? this.writable : (java.lang.Boolean) defaultValue(fields()[19]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -1438,6 +1503,8 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
     throws java.io.IOException
   {
     out.writeString(this.peerConnectionUUID);
+
+    out.writeString(this.mediaUnit);
 
     if (this.availableOutgoingBitrate == null) {
       out.writeIndex(0);
@@ -1502,7 +1569,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeInt(this.priority);
+      out.writeLong(this.priority);
     }
 
     if (this.remoteCandidateID == null) {
@@ -1568,7 +1635,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeString(this.writable);
+      out.writeBoolean(this.writable);
     }
 
   }
@@ -1579,6 +1646,8 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
+
+      this.mediaUnit = in.readString();
 
       if (in.readIndex() != 1) {
         in.readNull();
@@ -1635,7 +1704,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
         in.readNull();
         this.priority = null;
       } else {
-        this.priority = in.readInt();
+        this.priority = in.readLong();
       }
 
       if (in.readIndex() != 1) {
@@ -1673,7 +1742,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
         this.responsesSent = in.readInt();
       }
 
-      this.state = org.observertc.webrtc.common.reports.avro.CandidateType.values()[in.readEnum()];
+      this.state = org.observertc.webrtc.common.reports.avro.ICEState.values()[in.readEnum()];
 
       if (in.readIndex() != 1) {
         in.readNull();
@@ -1693,17 +1762,21 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
         in.readNull();
         this.writable = null;
       } else {
-        this.writable = in.readString();
+        this.writable = in.readBoolean();
       }
 
     } else {
-      for (int i = 0; i < 19; i++) {
+      for (int i = 0; i < 20; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
           break;
 
         case 1:
+          this.mediaUnit = in.readString();
+          break;
+
+        case 2:
           if (in.readIndex() != 1) {
             in.readNull();
             this.availableOutgoingBitrate = null;
@@ -1712,7 +1785,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 2:
+        case 3:
           if (in.readIndex() != 1) {
             in.readNull();
             this.bytesReceived = null;
@@ -1721,7 +1794,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 3:
+        case 4:
           if (in.readIndex() != 1) {
             in.readNull();
             this.bytesSent = null;
@@ -1730,7 +1803,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 4:
+        case 5:
           if (in.readIndex() != 1) {
             in.readNull();
             this.consentRequestsSent = null;
@@ -1739,7 +1812,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 5:
+        case 6:
           if (in.readIndex() != 1) {
             in.readNull();
             this.currentRoundTripTime = null;
@@ -1748,11 +1821,11 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 6:
+        case 7:
           this.id = in.readString();
           break;
 
-        case 7:
+        case 8:
           if (in.readIndex() != 1) {
             in.readNull();
             this.localCandidateID = null;
@@ -1761,7 +1834,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 8:
+        case 9:
           if (in.readIndex() != 1) {
             in.readNull();
             this.nominated = null;
@@ -1770,16 +1843,16 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 9:
+        case 10:
           if (in.readIndex() != 1) {
             in.readNull();
             this.priority = null;
           } else {
-            this.priority = in.readInt();
+            this.priority = in.readLong();
           }
           break;
 
-        case 10:
+        case 11:
           if (in.readIndex() != 1) {
             in.readNull();
             this.remoteCandidateID = null;
@@ -1788,7 +1861,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 11:
+        case 12:
           if (in.readIndex() != 1) {
             in.readNull();
             this.requestsReceived = null;
@@ -1797,7 +1870,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 12:
+        case 13:
           if (in.readIndex() != 1) {
             in.readNull();
             this.requestsSent = null;
@@ -1806,7 +1879,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 13:
+        case 14:
           if (in.readIndex() != 1) {
             in.readNull();
             this.responsesReceived = null;
@@ -1815,7 +1888,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 14:
+        case 15:
           if (in.readIndex() != 1) {
             in.readNull();
             this.responsesSent = null;
@@ -1824,11 +1897,11 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 15:
-          this.state = org.observertc.webrtc.common.reports.avro.CandidateType.values()[in.readEnum()];
+        case 16:
+          this.state = org.observertc.webrtc.common.reports.avro.ICEState.values()[in.readEnum()];
           break;
 
-        case 16:
+        case 17:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalRoundTripTime = null;
@@ -1837,7 +1910,7 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 17:
+        case 18:
           if (in.readIndex() != 1) {
             in.readNull();
             this.transportID = null;
@@ -1846,12 +1919,12 @@ public class ICECandidatePair extends org.apache.avro.specific.SpecificRecordBas
           }
           break;
 
-        case 18:
+        case 19:
           if (in.readIndex() != 1) {
             in.readNull();
             this.writable = null;
           } else {
-            this.writable = in.readString();
+            this.writable = in.readBoolean();
           }
           break;
 

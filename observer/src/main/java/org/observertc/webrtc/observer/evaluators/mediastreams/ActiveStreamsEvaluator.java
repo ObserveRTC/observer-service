@@ -4,7 +4,6 @@ import io.micronaut.configuration.kafka.annotation.KafkaListener;
 import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Prototype;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,9 +17,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.observertc.webrtc.common.UUIDAdapter;
+import org.observertc.webrtc.common.reports.avro.JoinedPeerConnection;
+import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.KafkaSinks;
-import org.observertc.webrtc.observer.ObserverDateTime;
+import org.observertc.webrtc.observer.ReportSink;
+import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+import org.observertc.webrtc.observer.evaluators.reportdrafts.InitiatedCallReportDraft;
+import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
 import org.observertc.webrtc.observer.jooq.tables.records.ActivestreamsRecord;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.ActiveStreamKey;
@@ -47,18 +51,18 @@ public class ActiveStreamsEvaluator {
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final KafkaSinks kafkaSinks;
-	private final ObserverDateTime observerDateTime;
+	private final ReportSink reportSink;
 
 	public ActiveStreamsEvaluator(
 			PeerConnectionsRepository peerConnectionsRepository,
 			ActiveStreamsRepository activeStreamsRepository,
-			ObserverDateTime observerDateTime,
+			ReportSink reportSink,
 			KafkaSinks kafkaSinks
 	) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.activeStreamsRepository = activeStreamsRepository;
-		this.observerDateTime = observerDateTime;
 		this.kafkaSinks = kafkaSinks;
+		this.reportSink = reportSink;
 	}
 
 
@@ -80,7 +84,6 @@ public class ActiveStreamsEvaluator {
 		updatedPCs.values().stream().forEach(mediaStreamUpdates::addLast);
 		this.processMediaStreamUpdates(mediaStreamUpdates);
 	}
-
 
 	private Map<UUID, MediaStreamUpdate> makeMediaStreamUpdates(List<ObservedPCS> samples) {
 		Map<UUID, MediaStreamUpdate> result = new HashMap<>();
@@ -107,27 +110,24 @@ public class ActiveStreamsEvaluator {
 			} else {
 				mediaStreamUpdate.updated = sample.timestamp;
 			}
-			for (PeerConnectionSample.RTCStats rtcStats : Arrays.asList(pcSample.senderStats, pcSample.receiverStats)) {
-				if (rtcStats == null) {
-					continue;
-				}
-				if (rtcStats.inboundRTPStats != null) {
-					for (PeerConnectionSample.InboundRTPStreamStats stats : rtcStats.inboundRTPStats) {
-						mediaStreamUpdate.SSRCs.add(stats.ssrc);
-					}
-				}
-				if (rtcStats.outboundRTPStats != null) {
-					for (PeerConnectionSample.OutboundRTPStreamStats stats : rtcStats.outboundRTPStats) {
-						mediaStreamUpdate.SSRCs.add(stats.ssrc);
-					}
-				}
-				if (rtcStats.remoteInboundRTPStats != null) {
-					for (PeerConnectionSample.RemoteInboundRTPStreamStats stats : rtcStats.remoteInboundRTPStats) {
-						mediaStreamUpdate.SSRCs.add(stats.ssrc);
-					}
-				}
-			}
 
+			MediaStreamUpdate finalMediaStreamUpdate = mediaStreamUpdate;
+			new AbstractPeerConnectionSampleVisitor<ObservedPCS>() {
+				@Override
+				public void visitRemoteInboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject) {
+					finalMediaStreamUpdate.SSRCs.add(subject.ssrc);
+				}
+
+				@Override
+				public void visitInboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.InboundRTPStreamStats subject) {
+					finalMediaStreamUpdate.SSRCs.add(subject.ssrc);
+				}
+
+				@Override
+				public void visitOutboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.OutboundRTPStreamStats subject) {
+					finalMediaStreamUpdate.SSRCs.add(subject.ssrc);
+				}
+			}.accept(sample, pcSample);
 			result.put(sample.peerConnectionUUID, mediaStreamUpdate);
 		}
 		return result;
@@ -220,14 +220,13 @@ public class ActiveStreamsEvaluator {
 				continue;
 			}
 
-			// TODO: report the initiated call draft
-//			Report initiatedCall = InitiatedCallReport.of(
-//					mediaStreamUpdate.observerUUID,
-//					callUUID,
-//					mediaStreamUpdate.created
-//			);
-//			ReportDraft reportDraft = new ReportDraft(initiatedCall, this.observerDateTime.now());
-//			this.kafkaSinks.sendReportDraft(mediaStreamUpdate.observerUUID, reportDraft);
+			ReportDraft reportDraft = InitiatedCallReportDraft.of(
+					mediaStreamUpdate.serviceUUID,
+					callUUID,
+					mediaStreamUpdate.created
+			);
+
+			this.kafkaSinks.sendReportDraft(mediaStreamUpdate.peerConnectionUUID, reportDraft);
 			newPCs.addLast(mediaStreamUpdate);
 		}
 
@@ -257,16 +256,20 @@ public class ActiveStreamsEvaluator {
 			logger.error("Exception happened at saving new peer connection, report won't be sent", ex);
 			return;
 		}
-		// TODO: report it
 
-//		Report joinedPeerConnectionReport = JoinedPeerConnectionReport.of(
-//				mediaStreamUpdate.observerUUID,
-//				UUIDAdapter.toUUID(callUUIDBytes),
-//				mediaStreamUpdate.peerConnectionUUID,
-//				mediaStreamUpdate.browserID,
-//				mediaStreamUpdate.created,
-//				mediaStreamUpdate.timeZoneID);
-//
-//		this.kafkaSinks.sendReport(mediaStreamUpdate.observerUUID, joinedPeerConnectionReport);
+		JoinedPeerConnection joinedPC = JoinedPeerConnection.newBuilder()
+				.setMediaUnitID(mediaStreamUpdate.mediaUnitID)
+				.setCallUUID(new String(callUUIDBytes))
+				.setPeerConnectionUUID(mediaStreamUpdate.peerConnectionUUID.toString())
+				.build();
+
+		this.reportSink.sendReport(
+				mediaStreamUpdate.peerConnectionUUID,
+				mediaStreamUpdate.providedCallID,
+				mediaStreamUpdate.serviceUUID.toString(),
+				ReportType.JOINED_PEER_CONNECTION,
+				mediaStreamUpdate.created,
+				joinedPC
+		);
 	}
 }

@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -4265864361879442224L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InboundRTP\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"codecId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"decoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"estimatedPlayoutTimestamp\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"framesDecoded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"headerBytesReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"isRemote\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"keyFramesDecoded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"lastPacketReceivedTimestamp\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"ssrc\",\"type\":\"long\"},{\"name\":\"totalDecodeTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"totalInterFrameDelay\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"totalSquaredInterFrameDelay\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
+  private static final long serialVersionUID = 5546989863624949594L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InboundRTP\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"codecId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"decoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"estimatedPlayoutTimestamp\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"framesDecoded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"headerBytesReceived\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"isRemote\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"keyFramesDecoded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"lastPacketReceivedTimestamp\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"ssrc\",\"type\":\"long\"},{\"name\":\"totalDecodeTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"totalInterFrameDelay\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"totalSquaredInterFrameDelay\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String mediaUnit;
    private java.lang.Long bytesReceived;
    private java.lang.String codecId;
    private java.lang.String decoderImplementation;
@@ -80,7 +81,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
    private java.lang.Integer fecPacketsReceived;
    private java.lang.Integer firCount;
    private java.lang.Integer framesDecoded;
-   private java.lang.Integer headerBytesReceived;
+   private java.lang.Long headerBytesReceived;
    private java.lang.String id;
    private java.lang.Boolean isRemote;
    private java.lang.Double jitter;
@@ -91,7 +92,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
    private java.lang.Integer packetsLost;
    private java.lang.Integer packetsReceived;
    private java.lang.Integer pliCount;
-   private java.lang.Integer qpSum;
+   private java.lang.Double qpSum;
    private long ssrc;
    private java.lang.Double totalDecodeTime;
    private java.lang.Double totalInterFrameDelay;
@@ -109,6 +110,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param mediaUnit The new value for mediaUnit
    * @param bytesReceived The new value for bytesReceived
    * @param codecId The new value for codecId
    * @param decoderImplementation The new value for decoderImplementation
@@ -136,8 +138,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
    * @param trackId The new value for trackId
    * @param transportId The new value for transportId
    */
-  public InboundRTP(java.lang.String peerConnectionUUID, java.lang.Long bytesReceived, java.lang.String codecId, java.lang.String decoderImplementation, java.lang.Double estimatedPlayoutTimestamp, java.lang.Integer fecPacketsDiscarded, java.lang.Integer fecPacketsReceived, java.lang.Integer firCount, java.lang.Integer framesDecoded, java.lang.Integer headerBytesReceived, java.lang.String id, java.lang.Boolean isRemote, java.lang.Double jitter, java.lang.Integer keyFramesDecoded, java.lang.Double lastPacketReceivedTimestamp, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Integer nackCount, java.lang.Integer packetsLost, java.lang.Integer packetsReceived, java.lang.Integer pliCount, java.lang.Integer qpSum, java.lang.Long ssrc, java.lang.Double totalDecodeTime, java.lang.Double totalInterFrameDelay, java.lang.Double totalSquaredInterFrameDelay, java.lang.String trackId, java.lang.String transportId) {
+  public InboundRTP(java.lang.String peerConnectionUUID, java.lang.String mediaUnit, java.lang.Long bytesReceived, java.lang.String codecId, java.lang.String decoderImplementation, java.lang.Double estimatedPlayoutTimestamp, java.lang.Integer fecPacketsDiscarded, java.lang.Integer fecPacketsReceived, java.lang.Integer firCount, java.lang.Integer framesDecoded, java.lang.Long headerBytesReceived, java.lang.String id, java.lang.Boolean isRemote, java.lang.Double jitter, java.lang.Integer keyFramesDecoded, java.lang.Double lastPacketReceivedTimestamp, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Integer nackCount, java.lang.Integer packetsLost, java.lang.Integer packetsReceived, java.lang.Integer pliCount, java.lang.Double qpSum, java.lang.Long ssrc, java.lang.Double totalDecodeTime, java.lang.Double totalInterFrameDelay, java.lang.Double totalSquaredInterFrameDelay, java.lang.String trackId, java.lang.String transportId) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.mediaUnit = mediaUnit;
     this.bytesReceived = bytesReceived;
     this.codecId = codecId;
     this.decoderImplementation = decoderImplementation;
@@ -172,32 +175,33 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
-    case 1: return bytesReceived;
-    case 2: return codecId;
-    case 3: return decoderImplementation;
-    case 4: return estimatedPlayoutTimestamp;
-    case 5: return fecPacketsDiscarded;
-    case 6: return fecPacketsReceived;
-    case 7: return firCount;
-    case 8: return framesDecoded;
-    case 9: return headerBytesReceived;
-    case 10: return id;
-    case 11: return isRemote;
-    case 12: return jitter;
-    case 13: return keyFramesDecoded;
-    case 14: return lastPacketReceivedTimestamp;
-    case 15: return mediaType;
-    case 16: return nackCount;
-    case 17: return packetsLost;
-    case 18: return packetsReceived;
-    case 19: return pliCount;
-    case 20: return qpSum;
-    case 21: return ssrc;
-    case 22: return totalDecodeTime;
-    case 23: return totalInterFrameDelay;
-    case 24: return totalSquaredInterFrameDelay;
-    case 25: return trackId;
-    case 26: return transportId;
+    case 1: return mediaUnit;
+    case 2: return bytesReceived;
+    case 3: return codecId;
+    case 4: return decoderImplementation;
+    case 5: return estimatedPlayoutTimestamp;
+    case 6: return fecPacketsDiscarded;
+    case 7: return fecPacketsReceived;
+    case 8: return firCount;
+    case 9: return framesDecoded;
+    case 10: return headerBytesReceived;
+    case 11: return id;
+    case 12: return isRemote;
+    case 13: return jitter;
+    case 14: return keyFramesDecoded;
+    case 15: return lastPacketReceivedTimestamp;
+    case 16: return mediaType;
+    case 17: return nackCount;
+    case 18: return packetsLost;
+    case 19: return packetsReceived;
+    case 20: return pliCount;
+    case 21: return qpSum;
+    case 22: return ssrc;
+    case 23: return totalDecodeTime;
+    case 24: return totalInterFrameDelay;
+    case 25: return totalSquaredInterFrameDelay;
+    case 26: return trackId;
+    case 27: return transportId;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -207,32 +211,33 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
-    case 1: bytesReceived = (java.lang.Long)value$; break;
-    case 2: codecId = value$ != null ? value$.toString() : null; break;
-    case 3: decoderImplementation = value$ != null ? value$.toString() : null; break;
-    case 4: estimatedPlayoutTimestamp = (java.lang.Double)value$; break;
-    case 5: fecPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 6: fecPacketsReceived = (java.lang.Integer)value$; break;
-    case 7: firCount = (java.lang.Integer)value$; break;
-    case 8: framesDecoded = (java.lang.Integer)value$; break;
-    case 9: headerBytesReceived = (java.lang.Integer)value$; break;
-    case 10: id = value$ != null ? value$.toString() : null; break;
-    case 11: isRemote = (java.lang.Boolean)value$; break;
-    case 12: jitter = (java.lang.Double)value$; break;
-    case 13: keyFramesDecoded = (java.lang.Integer)value$; break;
-    case 14: lastPacketReceivedTimestamp = (java.lang.Double)value$; break;
-    case 15: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
-    case 16: nackCount = (java.lang.Integer)value$; break;
-    case 17: packetsLost = (java.lang.Integer)value$; break;
-    case 18: packetsReceived = (java.lang.Integer)value$; break;
-    case 19: pliCount = (java.lang.Integer)value$; break;
-    case 20: qpSum = (java.lang.Integer)value$; break;
-    case 21: ssrc = (java.lang.Long)value$; break;
-    case 22: totalDecodeTime = (java.lang.Double)value$; break;
-    case 23: totalInterFrameDelay = (java.lang.Double)value$; break;
-    case 24: totalSquaredInterFrameDelay = (java.lang.Double)value$; break;
-    case 25: trackId = value$ != null ? value$.toString() : null; break;
-    case 26: transportId = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnit = value$ != null ? value$.toString() : null; break;
+    case 2: bytesReceived = (java.lang.Long)value$; break;
+    case 3: codecId = value$ != null ? value$.toString() : null; break;
+    case 4: decoderImplementation = value$ != null ? value$.toString() : null; break;
+    case 5: estimatedPlayoutTimestamp = (java.lang.Double)value$; break;
+    case 6: fecPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 7: fecPacketsReceived = (java.lang.Integer)value$; break;
+    case 8: firCount = (java.lang.Integer)value$; break;
+    case 9: framesDecoded = (java.lang.Integer)value$; break;
+    case 10: headerBytesReceived = (java.lang.Long)value$; break;
+    case 11: id = value$ != null ? value$.toString() : null; break;
+    case 12: isRemote = (java.lang.Boolean)value$; break;
+    case 13: jitter = (java.lang.Double)value$; break;
+    case 14: keyFramesDecoded = (java.lang.Integer)value$; break;
+    case 15: lastPacketReceivedTimestamp = (java.lang.Double)value$; break;
+    case 16: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
+    case 17: nackCount = (java.lang.Integer)value$; break;
+    case 18: packetsLost = (java.lang.Integer)value$; break;
+    case 19: packetsReceived = (java.lang.Integer)value$; break;
+    case 20: pliCount = (java.lang.Integer)value$; break;
+    case 21: qpSum = (java.lang.Double)value$; break;
+    case 22: ssrc = (java.lang.Long)value$; break;
+    case 23: totalDecodeTime = (java.lang.Double)value$; break;
+    case 24: totalInterFrameDelay = (java.lang.Double)value$; break;
+    case 25: totalSquaredInterFrameDelay = (java.lang.Double)value$; break;
+    case 26: trackId = value$ != null ? value$.toString() : null; break;
+    case 27: transportId = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -243,6 +248,16 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnit' field.
+   * @return The value of the 'mediaUnit' field.
+   */
+  public java.lang.String getMediaUnit() {
+    return mediaUnit;
   }
 
 
@@ -331,7 +346,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
    * Gets the value of the 'headerBytesReceived' field.
    * @return The value of the 'headerBytesReceived' field.
    */
-  public java.lang.Integer getHeaderBytesReceived() {
+  public java.lang.Long getHeaderBytesReceived() {
     return headerBytesReceived;
   }
 
@@ -441,7 +456,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
    * Gets the value of the 'qpSum' field.
    * @return The value of the 'qpSum' field.
    */
-  public java.lang.Integer getQpSum() {
+  public java.lang.Double getQpSum() {
     return qpSum;
   }
 
@@ -549,6 +564,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     implements org.apache.avro.data.RecordBuilder<InboundRTP> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String mediaUnit;
     private java.lang.Long bytesReceived;
     private java.lang.String codecId;
     private java.lang.String decoderImplementation;
@@ -557,7 +573,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     private java.lang.Integer fecPacketsReceived;
     private java.lang.Integer firCount;
     private java.lang.Integer framesDecoded;
-    private java.lang.Integer headerBytesReceived;
+    private java.lang.Long headerBytesReceived;
     private java.lang.String id;
     private java.lang.Boolean isRemote;
     private java.lang.Double jitter;
@@ -568,7 +584,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     private java.lang.Integer packetsLost;
     private java.lang.Integer packetsReceived;
     private java.lang.Integer pliCount;
-    private java.lang.Integer qpSum;
+    private java.lang.Double qpSum;
     private long ssrc;
     private java.lang.Double totalDecodeTime;
     private java.lang.Double totalInterFrameDelay;
@@ -591,109 +607,113 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[1].schema(), other.bytesReceived);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.codecId)) {
-        this.codecId = data().deepCopy(fields()[2].schema(), other.codecId);
+      if (isValidValue(fields()[2], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[2].schema(), other.bytesReceived);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.decoderImplementation)) {
-        this.decoderImplementation = data().deepCopy(fields()[3].schema(), other.decoderImplementation);
+      if (isValidValue(fields()[3], other.codecId)) {
+        this.codecId = data().deepCopy(fields()[3].schema(), other.codecId);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.estimatedPlayoutTimestamp)) {
-        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[4].schema(), other.estimatedPlayoutTimestamp);
+      if (isValidValue(fields()[4], other.decoderImplementation)) {
+        this.decoderImplementation = data().deepCopy(fields()[4].schema(), other.decoderImplementation);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[5].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[5], other.estimatedPlayoutTimestamp)) {
+        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[5].schema(), other.estimatedPlayoutTimestamp);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[6].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[6], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[6].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[7].schema(), other.firCount);
+      if (isValidValue(fields()[7], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[7].schema(), other.fecPacketsReceived);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.framesDecoded)) {
-        this.framesDecoded = data().deepCopy(fields()[8].schema(), other.framesDecoded);
+      if (isValidValue(fields()[8], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[8].schema(), other.firCount);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.headerBytesReceived)) {
-        this.headerBytesReceived = data().deepCopy(fields()[9].schema(), other.headerBytesReceived);
+      if (isValidValue(fields()[9], other.framesDecoded)) {
+        this.framesDecoded = data().deepCopy(fields()[9].schema(), other.framesDecoded);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
-      if (isValidValue(fields()[10], other.id)) {
-        this.id = data().deepCopy(fields()[10].schema(), other.id);
+      if (isValidValue(fields()[10], other.headerBytesReceived)) {
+        this.headerBytesReceived = data().deepCopy(fields()[10].schema(), other.headerBytesReceived);
         fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
-      if (isValidValue(fields()[11], other.isRemote)) {
-        this.isRemote = data().deepCopy(fields()[11].schema(), other.isRemote);
+      if (isValidValue(fields()[11], other.id)) {
+        this.id = data().deepCopy(fields()[11].schema(), other.id);
         fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
-      if (isValidValue(fields()[12], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[12].schema(), other.jitter);
+      if (isValidValue(fields()[12], other.isRemote)) {
+        this.isRemote = data().deepCopy(fields()[12].schema(), other.isRemote);
         fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
-      if (isValidValue(fields()[13], other.keyFramesDecoded)) {
-        this.keyFramesDecoded = data().deepCopy(fields()[13].schema(), other.keyFramesDecoded);
+      if (isValidValue(fields()[13], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[13].schema(), other.jitter);
         fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
-      if (isValidValue(fields()[14], other.lastPacketReceivedTimestamp)) {
-        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[14].schema(), other.lastPacketReceivedTimestamp);
+      if (isValidValue(fields()[14], other.keyFramesDecoded)) {
+        this.keyFramesDecoded = data().deepCopy(fields()[14].schema(), other.keyFramesDecoded);
         fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
-      if (isValidValue(fields()[15], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[15].schema(), other.mediaType);
+      if (isValidValue(fields()[15], other.lastPacketReceivedTimestamp)) {
+        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[15].schema(), other.lastPacketReceivedTimestamp);
         fieldSetFlags()[15] = other.fieldSetFlags()[15];
       }
-      if (isValidValue(fields()[16], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[16].schema(), other.nackCount);
+      if (isValidValue(fields()[16], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[16].schema(), other.mediaType);
         fieldSetFlags()[16] = other.fieldSetFlags()[16];
       }
-      if (isValidValue(fields()[17], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[17].schema(), other.packetsLost);
+      if (isValidValue(fields()[17], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[17].schema(), other.nackCount);
         fieldSetFlags()[17] = other.fieldSetFlags()[17];
       }
-      if (isValidValue(fields()[18], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[18].schema(), other.packetsReceived);
+      if (isValidValue(fields()[18], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[18].schema(), other.packetsLost);
         fieldSetFlags()[18] = other.fieldSetFlags()[18];
       }
-      if (isValidValue(fields()[19], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[19].schema(), other.pliCount);
+      if (isValidValue(fields()[19], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[19].schema(), other.packetsReceived);
         fieldSetFlags()[19] = other.fieldSetFlags()[19];
       }
-      if (isValidValue(fields()[20], other.qpSum)) {
-        this.qpSum = data().deepCopy(fields()[20].schema(), other.qpSum);
+      if (isValidValue(fields()[20], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[20].schema(), other.pliCount);
         fieldSetFlags()[20] = other.fieldSetFlags()[20];
       }
-      if (isValidValue(fields()[21], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[21].schema(), other.ssrc);
+      if (isValidValue(fields()[21], other.qpSum)) {
+        this.qpSum = data().deepCopy(fields()[21].schema(), other.qpSum);
         fieldSetFlags()[21] = other.fieldSetFlags()[21];
       }
-      if (isValidValue(fields()[22], other.totalDecodeTime)) {
-        this.totalDecodeTime = data().deepCopy(fields()[22].schema(), other.totalDecodeTime);
+      if (isValidValue(fields()[22], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[22].schema(), other.ssrc);
         fieldSetFlags()[22] = other.fieldSetFlags()[22];
       }
-      if (isValidValue(fields()[23], other.totalInterFrameDelay)) {
-        this.totalInterFrameDelay = data().deepCopy(fields()[23].schema(), other.totalInterFrameDelay);
+      if (isValidValue(fields()[23], other.totalDecodeTime)) {
+        this.totalDecodeTime = data().deepCopy(fields()[23].schema(), other.totalDecodeTime);
         fieldSetFlags()[23] = other.fieldSetFlags()[23];
       }
-      if (isValidValue(fields()[24], other.totalSquaredInterFrameDelay)) {
-        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[24].schema(), other.totalSquaredInterFrameDelay);
+      if (isValidValue(fields()[24], other.totalInterFrameDelay)) {
+        this.totalInterFrameDelay = data().deepCopy(fields()[24].schema(), other.totalInterFrameDelay);
         fieldSetFlags()[24] = other.fieldSetFlags()[24];
       }
-      if (isValidValue(fields()[25], other.trackId)) {
-        this.trackId = data().deepCopy(fields()[25].schema(), other.trackId);
+      if (isValidValue(fields()[25], other.totalSquaredInterFrameDelay)) {
+        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[25].schema(), other.totalSquaredInterFrameDelay);
         fieldSetFlags()[25] = other.fieldSetFlags()[25];
       }
-      if (isValidValue(fields()[26], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[26].schema(), other.transportId);
+      if (isValidValue(fields()[26], other.trackId)) {
+        this.trackId = data().deepCopy(fields()[26].schema(), other.trackId);
         fieldSetFlags()[26] = other.fieldSetFlags()[26];
+      }
+      if (isValidValue(fields()[27], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[27].schema(), other.transportId);
+        fieldSetFlags()[27] = other.fieldSetFlags()[27];
       }
     }
 
@@ -707,109 +727,113 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[1].schema(), other.bytesReceived);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.codecId)) {
-        this.codecId = data().deepCopy(fields()[2].schema(), other.codecId);
+      if (isValidValue(fields()[2], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[2].schema(), other.bytesReceived);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.decoderImplementation)) {
-        this.decoderImplementation = data().deepCopy(fields()[3].schema(), other.decoderImplementation);
+      if (isValidValue(fields()[3], other.codecId)) {
+        this.codecId = data().deepCopy(fields()[3].schema(), other.codecId);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.estimatedPlayoutTimestamp)) {
-        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[4].schema(), other.estimatedPlayoutTimestamp);
+      if (isValidValue(fields()[4], other.decoderImplementation)) {
+        this.decoderImplementation = data().deepCopy(fields()[4].schema(), other.decoderImplementation);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[5].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[5], other.estimatedPlayoutTimestamp)) {
+        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[5].schema(), other.estimatedPlayoutTimestamp);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[6].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[6], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[6].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[7].schema(), other.firCount);
+      if (isValidValue(fields()[7], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[7].schema(), other.fecPacketsReceived);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.framesDecoded)) {
-        this.framesDecoded = data().deepCopy(fields()[8].schema(), other.framesDecoded);
+      if (isValidValue(fields()[8], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[8].schema(), other.firCount);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.headerBytesReceived)) {
-        this.headerBytesReceived = data().deepCopy(fields()[9].schema(), other.headerBytesReceived);
+      if (isValidValue(fields()[9], other.framesDecoded)) {
+        this.framesDecoded = data().deepCopy(fields()[9].schema(), other.framesDecoded);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.id)) {
-        this.id = data().deepCopy(fields()[10].schema(), other.id);
+      if (isValidValue(fields()[10], other.headerBytesReceived)) {
+        this.headerBytesReceived = data().deepCopy(fields()[10].schema(), other.headerBytesReceived);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.isRemote)) {
-        this.isRemote = data().deepCopy(fields()[11].schema(), other.isRemote);
+      if (isValidValue(fields()[11], other.id)) {
+        this.id = data().deepCopy(fields()[11].schema(), other.id);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[12].schema(), other.jitter);
+      if (isValidValue(fields()[12], other.isRemote)) {
+        this.isRemote = data().deepCopy(fields()[12].schema(), other.isRemote);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.keyFramesDecoded)) {
-        this.keyFramesDecoded = data().deepCopy(fields()[13].schema(), other.keyFramesDecoded);
+      if (isValidValue(fields()[13], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[13].schema(), other.jitter);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.lastPacketReceivedTimestamp)) {
-        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[14].schema(), other.lastPacketReceivedTimestamp);
+      if (isValidValue(fields()[14], other.keyFramesDecoded)) {
+        this.keyFramesDecoded = data().deepCopy(fields()[14].schema(), other.keyFramesDecoded);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[15].schema(), other.mediaType);
+      if (isValidValue(fields()[15], other.lastPacketReceivedTimestamp)) {
+        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[15].schema(), other.lastPacketReceivedTimestamp);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[16].schema(), other.nackCount);
+      if (isValidValue(fields()[16], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[16].schema(), other.mediaType);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[17].schema(), other.packetsLost);
+      if (isValidValue(fields()[17], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[17].schema(), other.nackCount);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[18].schema(), other.packetsReceived);
+      if (isValidValue(fields()[18], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[18].schema(), other.packetsLost);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[19].schema(), other.pliCount);
+      if (isValidValue(fields()[19], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[19].schema(), other.packetsReceived);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.qpSum)) {
-        this.qpSum = data().deepCopy(fields()[20].schema(), other.qpSum);
+      if (isValidValue(fields()[20], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[20].schema(), other.pliCount);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[21].schema(), other.ssrc);
+      if (isValidValue(fields()[21], other.qpSum)) {
+        this.qpSum = data().deepCopy(fields()[21].schema(), other.qpSum);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.totalDecodeTime)) {
-        this.totalDecodeTime = data().deepCopy(fields()[22].schema(), other.totalDecodeTime);
+      if (isValidValue(fields()[22], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[22].schema(), other.ssrc);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.totalInterFrameDelay)) {
-        this.totalInterFrameDelay = data().deepCopy(fields()[23].schema(), other.totalInterFrameDelay);
+      if (isValidValue(fields()[23], other.totalDecodeTime)) {
+        this.totalDecodeTime = data().deepCopy(fields()[23].schema(), other.totalDecodeTime);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.totalSquaredInterFrameDelay)) {
-        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[24].schema(), other.totalSquaredInterFrameDelay);
+      if (isValidValue(fields()[24], other.totalInterFrameDelay)) {
+        this.totalInterFrameDelay = data().deepCopy(fields()[24].schema(), other.totalInterFrameDelay);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.trackId)) {
-        this.trackId = data().deepCopy(fields()[25].schema(), other.trackId);
+      if (isValidValue(fields()[25], other.totalSquaredInterFrameDelay)) {
+        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[25].schema(), other.totalSquaredInterFrameDelay);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[26].schema(), other.transportId);
+      if (isValidValue(fields()[26], other.trackId)) {
+        this.trackId = data().deepCopy(fields()[26].schema(), other.trackId);
         fieldSetFlags()[26] = true;
+      }
+      if (isValidValue(fields()[27], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[27].schema(), other.transportId);
+        fieldSetFlags()[27] = true;
       }
     }
 
@@ -854,6 +878,46 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     }
 
     /**
+      * Gets the value of the 'mediaUnit' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnit() {
+      return mediaUnit;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnit' field.
+      * @param value The value of 'mediaUnit'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setMediaUnit(java.lang.String value) {
+      validate(fields()[1], value);
+      this.mediaUnit = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnit' field has been set.
+      * @return True if the 'mediaUnit' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnit() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnit' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearMediaUnit() {
+      mediaUnit = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'bytesReceived' field.
       * @return The value.
       */
@@ -868,9 +932,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setBytesReceived(java.lang.Long value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.bytesReceived = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -879,7 +943,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -889,7 +953,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -908,9 +972,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setCodecId(java.lang.String value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.codecId = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -919,7 +983,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'codecId' field has been set, false otherwise.
       */
     public boolean hasCodecId() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -929,7 +993,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearCodecId() {
       codecId = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -948,9 +1012,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setDecoderImplementation(java.lang.String value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.decoderImplementation = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -959,7 +1023,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'decoderImplementation' field has been set, false otherwise.
       */
     public boolean hasDecoderImplementation() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -969,7 +1033,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearDecoderImplementation() {
       decoderImplementation = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -988,9 +1052,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setEstimatedPlayoutTimestamp(java.lang.Double value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.estimatedPlayoutTimestamp = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -999,7 +1063,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'estimatedPlayoutTimestamp' field has been set, false otherwise.
       */
     public boolean hasEstimatedPlayoutTimestamp() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -1009,7 +1073,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearEstimatedPlayoutTimestamp() {
       estimatedPlayoutTimestamp = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -1028,9 +1092,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setFecPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.fecPacketsDiscarded = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -1039,7 +1103,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'fecPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasFecPacketsDiscarded() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -1049,7 +1113,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearFecPacketsDiscarded() {
       fecPacketsDiscarded = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -1068,9 +1132,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setFecPacketsReceived(java.lang.Integer value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.fecPacketsReceived = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -1079,7 +1143,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'fecPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasFecPacketsReceived() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -1089,7 +1153,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearFecPacketsReceived() {
       fecPacketsReceived = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -1108,9 +1172,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setFirCount(java.lang.Integer value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.firCount = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -1119,7 +1183,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'firCount' field has been set, false otherwise.
       */
     public boolean hasFirCount() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -1129,7 +1193,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearFirCount() {
       firCount = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -1148,9 +1212,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setFramesDecoded(java.lang.Integer value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.framesDecoded = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -1159,7 +1223,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'framesDecoded' field has been set, false otherwise.
       */
     public boolean hasFramesDecoded() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -1169,7 +1233,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearFramesDecoded() {
       framesDecoded = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -1177,7 +1241,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * Gets the value of the 'headerBytesReceived' field.
       * @return The value.
       */
-    public java.lang.Integer getHeaderBytesReceived() {
+    public java.lang.Long getHeaderBytesReceived() {
       return headerBytesReceived;
     }
 
@@ -1187,10 +1251,10 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @param value The value of 'headerBytesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setHeaderBytesReceived(java.lang.Integer value) {
-      validate(fields()[9], value);
+    public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setHeaderBytesReceived(java.lang.Long value) {
+      validate(fields()[10], value);
       this.headerBytesReceived = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -1199,7 +1263,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'headerBytesReceived' field has been set, false otherwise.
       */
     public boolean hasHeaderBytesReceived() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -1209,7 +1273,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearHeaderBytesReceived() {
       headerBytesReceived = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1228,9 +1292,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setId(java.lang.String value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.id = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1239,7 +1303,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'id' field has been set, false otherwise.
       */
     public boolean hasId() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1249,7 +1313,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearId() {
       id = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1268,9 +1332,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setIsRemote(java.lang.Boolean value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.isRemote = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1279,7 +1343,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'isRemote' field has been set, false otherwise.
       */
     public boolean hasIsRemote() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1289,7 +1353,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearIsRemote() {
       isRemote = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1308,9 +1372,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setJitter(java.lang.Double value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.jitter = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1319,7 +1383,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'jitter' field has been set, false otherwise.
       */
     public boolean hasJitter() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1329,7 +1393,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearJitter() {
       jitter = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1348,9 +1412,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setKeyFramesDecoded(java.lang.Integer value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.keyFramesDecoded = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1359,7 +1423,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'keyFramesDecoded' field has been set, false otherwise.
       */
     public boolean hasKeyFramesDecoded() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1369,7 +1433,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearKeyFramesDecoded() {
       keyFramesDecoded = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1388,9 +1452,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setLastPacketReceivedTimestamp(java.lang.Double value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.lastPacketReceivedTimestamp = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1399,7 +1463,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'lastPacketReceivedTimestamp' field has been set, false otherwise.
       */
     public boolean hasLastPacketReceivedTimestamp() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1409,7 +1473,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearLastPacketReceivedTimestamp() {
       lastPacketReceivedTimestamp = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1428,9 +1492,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setMediaType(org.observertc.webrtc.common.reports.avro.MediaType value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.mediaType = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1439,7 +1503,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'mediaType' field has been set, false otherwise.
       */
     public boolean hasMediaType() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1449,7 +1513,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearMediaType() {
       mediaType = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1468,9 +1532,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setNackCount(java.lang.Integer value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.nackCount = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1479,7 +1543,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'nackCount' field has been set, false otherwise.
       */
     public boolean hasNackCount() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1489,7 +1553,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearNackCount() {
       nackCount = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1508,9 +1572,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setPacketsLost(java.lang.Integer value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.packetsLost = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1519,7 +1583,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'packetsLost' field has been set, false otherwise.
       */
     public boolean hasPacketsLost() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -1529,7 +1593,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearPacketsLost() {
       packetsLost = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1548,9 +1612,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setPacketsReceived(java.lang.Integer value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.packetsReceived = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -1559,7 +1623,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'packetsReceived' field has been set, false otherwise.
       */
     public boolean hasPacketsReceived() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -1569,7 +1633,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearPacketsReceived() {
       packetsReceived = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -1588,9 +1652,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setPliCount(java.lang.Integer value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.pliCount = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -1599,7 +1663,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'pliCount' field has been set, false otherwise.
       */
     public boolean hasPliCount() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -1609,7 +1673,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearPliCount() {
       pliCount = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -1617,7 +1681,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * Gets the value of the 'qpSum' field.
       * @return The value.
       */
-    public java.lang.Integer getQpSum() {
+    public java.lang.Double getQpSum() {
       return qpSum;
     }
 
@@ -1627,10 +1691,10 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @param value The value of 'qpSum'.
       * @return This builder.
       */
-    public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setQpSum(java.lang.Integer value) {
-      validate(fields()[20], value);
+    public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setQpSum(java.lang.Double value) {
+      validate(fields()[21], value);
       this.qpSum = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -1639,7 +1703,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'qpSum' field has been set, false otherwise.
       */
     public boolean hasQpSum() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -1649,7 +1713,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearQpSum() {
       qpSum = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -1668,9 +1732,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setSsrc(long value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.ssrc = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -1679,7 +1743,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'ssrc' field has been set, false otherwise.
       */
     public boolean hasSsrc() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -1688,7 +1752,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearSsrc() {
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -1707,9 +1771,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setTotalDecodeTime(java.lang.Double value) {
-      validate(fields()[22], value);
+      validate(fields()[23], value);
       this.totalDecodeTime = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -1718,7 +1782,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'totalDecodeTime' field has been set, false otherwise.
       */
     public boolean hasTotalDecodeTime() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[23];
     }
 
 
@@ -1728,7 +1792,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearTotalDecodeTime() {
       totalDecodeTime = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -1747,9 +1811,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setTotalInterFrameDelay(java.lang.Double value) {
-      validate(fields()[23], value);
+      validate(fields()[24], value);
       this.totalInterFrameDelay = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -1758,7 +1822,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'totalInterFrameDelay' field has been set, false otherwise.
       */
     public boolean hasTotalInterFrameDelay() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[24];
     }
 
 
@@ -1768,7 +1832,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearTotalInterFrameDelay() {
       totalInterFrameDelay = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -1787,9 +1851,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setTotalSquaredInterFrameDelay(java.lang.Double value) {
-      validate(fields()[24], value);
+      validate(fields()[25], value);
       this.totalSquaredInterFrameDelay = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -1798,7 +1862,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'totalSquaredInterFrameDelay' field has been set, false otherwise.
       */
     public boolean hasTotalSquaredInterFrameDelay() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[25];
     }
 
 
@@ -1808,7 +1872,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearTotalSquaredInterFrameDelay() {
       totalSquaredInterFrameDelay = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -1827,9 +1891,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setTrackId(java.lang.String value) {
-      validate(fields()[25], value);
+      validate(fields()[26], value);
       this.trackId = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -1838,7 +1902,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'trackId' field has been set, false otherwise.
       */
     public boolean hasTrackId() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[26];
     }
 
 
@@ -1848,7 +1912,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearTrackId() {
       trackId = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -1867,9 +1931,9 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder setTransportId(java.lang.String value) {
-      validate(fields()[26], value);
+      validate(fields()[27], value);
       this.transportId = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -1878,7 +1942,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'transportId' field has been set, false otherwise.
       */
     public boolean hasTransportId() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[27];
     }
 
 
@@ -1888,7 +1952,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public org.observertc.webrtc.common.reports.avro.InboundRTP.Builder clearTransportId() {
       transportId = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -1898,32 +1962,33 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       try {
         InboundRTP record = new InboundRTP();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
-        record.bytesReceived = fieldSetFlags()[1] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[1]);
-        record.codecId = fieldSetFlags()[2] ? this.codecId : (java.lang.String) defaultValue(fields()[2]);
-        record.decoderImplementation = fieldSetFlags()[3] ? this.decoderImplementation : (java.lang.String) defaultValue(fields()[3]);
-        record.estimatedPlayoutTimestamp = fieldSetFlags()[4] ? this.estimatedPlayoutTimestamp : (java.lang.Double) defaultValue(fields()[4]);
-        record.fecPacketsDiscarded = fieldSetFlags()[5] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[5]);
-        record.fecPacketsReceived = fieldSetFlags()[6] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[6]);
-        record.firCount = fieldSetFlags()[7] ? this.firCount : (java.lang.Integer) defaultValue(fields()[7]);
-        record.framesDecoded = fieldSetFlags()[8] ? this.framesDecoded : (java.lang.Integer) defaultValue(fields()[8]);
-        record.headerBytesReceived = fieldSetFlags()[9] ? this.headerBytesReceived : (java.lang.Integer) defaultValue(fields()[9]);
-        record.id = fieldSetFlags()[10] ? this.id : (java.lang.String) defaultValue(fields()[10]);
-        record.isRemote = fieldSetFlags()[11] ? this.isRemote : (java.lang.Boolean) defaultValue(fields()[11]);
-        record.jitter = fieldSetFlags()[12] ? this.jitter : (java.lang.Double) defaultValue(fields()[12]);
-        record.keyFramesDecoded = fieldSetFlags()[13] ? this.keyFramesDecoded : (java.lang.Integer) defaultValue(fields()[13]);
-        record.lastPacketReceivedTimestamp = fieldSetFlags()[14] ? this.lastPacketReceivedTimestamp : (java.lang.Double) defaultValue(fields()[14]);
-        record.mediaType = fieldSetFlags()[15] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[15]);
-        record.nackCount = fieldSetFlags()[16] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[16]);
-        record.packetsLost = fieldSetFlags()[17] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[17]);
-        record.packetsReceived = fieldSetFlags()[18] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[18]);
-        record.pliCount = fieldSetFlags()[19] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[19]);
-        record.qpSum = fieldSetFlags()[20] ? this.qpSum : (java.lang.Integer) defaultValue(fields()[20]);
-        record.ssrc = fieldSetFlags()[21] ? this.ssrc : (java.lang.Long) defaultValue(fields()[21]);
-        record.totalDecodeTime = fieldSetFlags()[22] ? this.totalDecodeTime : (java.lang.Double) defaultValue(fields()[22]);
-        record.totalInterFrameDelay = fieldSetFlags()[23] ? this.totalInterFrameDelay : (java.lang.Double) defaultValue(fields()[23]);
-        record.totalSquaredInterFrameDelay = fieldSetFlags()[24] ? this.totalSquaredInterFrameDelay : (java.lang.Double) defaultValue(fields()[24]);
-        record.trackId = fieldSetFlags()[25] ? this.trackId : (java.lang.String) defaultValue(fields()[25]);
-        record.transportId = fieldSetFlags()[26] ? this.transportId : (java.lang.String) defaultValue(fields()[26]);
+        record.mediaUnit = fieldSetFlags()[1] ? this.mediaUnit : (java.lang.String) defaultValue(fields()[1]);
+        record.bytesReceived = fieldSetFlags()[2] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[2]);
+        record.codecId = fieldSetFlags()[3] ? this.codecId : (java.lang.String) defaultValue(fields()[3]);
+        record.decoderImplementation = fieldSetFlags()[4] ? this.decoderImplementation : (java.lang.String) defaultValue(fields()[4]);
+        record.estimatedPlayoutTimestamp = fieldSetFlags()[5] ? this.estimatedPlayoutTimestamp : (java.lang.Double) defaultValue(fields()[5]);
+        record.fecPacketsDiscarded = fieldSetFlags()[6] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[6]);
+        record.fecPacketsReceived = fieldSetFlags()[7] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[7]);
+        record.firCount = fieldSetFlags()[8] ? this.firCount : (java.lang.Integer) defaultValue(fields()[8]);
+        record.framesDecoded = fieldSetFlags()[9] ? this.framesDecoded : (java.lang.Integer) defaultValue(fields()[9]);
+        record.headerBytesReceived = fieldSetFlags()[10] ? this.headerBytesReceived : (java.lang.Long) defaultValue(fields()[10]);
+        record.id = fieldSetFlags()[11] ? this.id : (java.lang.String) defaultValue(fields()[11]);
+        record.isRemote = fieldSetFlags()[12] ? this.isRemote : (java.lang.Boolean) defaultValue(fields()[12]);
+        record.jitter = fieldSetFlags()[13] ? this.jitter : (java.lang.Double) defaultValue(fields()[13]);
+        record.keyFramesDecoded = fieldSetFlags()[14] ? this.keyFramesDecoded : (java.lang.Integer) defaultValue(fields()[14]);
+        record.lastPacketReceivedTimestamp = fieldSetFlags()[15] ? this.lastPacketReceivedTimestamp : (java.lang.Double) defaultValue(fields()[15]);
+        record.mediaType = fieldSetFlags()[16] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[16]);
+        record.nackCount = fieldSetFlags()[17] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[17]);
+        record.packetsLost = fieldSetFlags()[18] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[18]);
+        record.packetsReceived = fieldSetFlags()[19] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[19]);
+        record.pliCount = fieldSetFlags()[20] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[20]);
+        record.qpSum = fieldSetFlags()[21] ? this.qpSum : (java.lang.Double) defaultValue(fields()[21]);
+        record.ssrc = fieldSetFlags()[22] ? this.ssrc : (java.lang.Long) defaultValue(fields()[22]);
+        record.totalDecodeTime = fieldSetFlags()[23] ? this.totalDecodeTime : (java.lang.Double) defaultValue(fields()[23]);
+        record.totalInterFrameDelay = fieldSetFlags()[24] ? this.totalInterFrameDelay : (java.lang.Double) defaultValue(fields()[24]);
+        record.totalSquaredInterFrameDelay = fieldSetFlags()[25] ? this.totalSquaredInterFrameDelay : (java.lang.Double) defaultValue(fields()[25]);
+        record.trackId = fieldSetFlags()[26] ? this.trackId : (java.lang.String) defaultValue(fields()[26]);
+        record.transportId = fieldSetFlags()[27] ? this.transportId : (java.lang.String) defaultValue(fields()[27]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -1957,6 +2022,8 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     throws java.io.IOException
   {
     out.writeString(this.peerConnectionUUID);
+
+    out.writeString(this.mediaUnit);
 
     if (this.bytesReceived == null) {
       out.writeIndex(0);
@@ -2027,7 +2094,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeInt(this.headerBytesReceived);
+      out.writeLong(this.headerBytesReceived);
     }
 
     if (this.id == null) {
@@ -2109,7 +2176,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeInt(this.qpSum);
+      out.writeDouble(this.qpSum);
     }
 
     out.writeLong(this.ssrc);
@@ -2162,6 +2229,8 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
+
+      this.mediaUnit = in.readString();
 
       if (in.readIndex() != 1) {
         in.readNull();
@@ -2223,7 +2292,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
         in.readNull();
         this.headerBytesReceived = null;
       } else {
-        this.headerBytesReceived = in.readInt();
+        this.headerBytesReceived = in.readLong();
       }
 
       if (in.readIndex() != 1) {
@@ -2295,7 +2364,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
         in.readNull();
         this.qpSum = null;
       } else {
-        this.qpSum = in.readInt();
+        this.qpSum = in.readDouble();
       }
 
       this.ssrc = in.readLong();
@@ -2336,13 +2405,17 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
       }
 
     } else {
-      for (int i = 0; i < 27; i++) {
+      for (int i = 0; i < 28; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
           break;
 
         case 1:
+          this.mediaUnit = in.readString();
+          break;
+
+        case 2:
           if (in.readIndex() != 1) {
             in.readNull();
             this.bytesReceived = null;
@@ -2351,7 +2424,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 2:
+        case 3:
           if (in.readIndex() != 1) {
             in.readNull();
             this.codecId = null;
@@ -2360,7 +2433,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 3:
+        case 4:
           if (in.readIndex() != 1) {
             in.readNull();
             this.decoderImplementation = null;
@@ -2369,7 +2442,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 4:
+        case 5:
           if (in.readIndex() != 1) {
             in.readNull();
             this.estimatedPlayoutTimestamp = null;
@@ -2378,7 +2451,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 5:
+        case 6:
           if (in.readIndex() != 1) {
             in.readNull();
             this.fecPacketsDiscarded = null;
@@ -2387,7 +2460,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 6:
+        case 7:
           if (in.readIndex() != 1) {
             in.readNull();
             this.fecPacketsReceived = null;
@@ -2396,7 +2469,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 7:
+        case 8:
           if (in.readIndex() != 1) {
             in.readNull();
             this.firCount = null;
@@ -2405,7 +2478,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 8:
+        case 9:
           if (in.readIndex() != 1) {
             in.readNull();
             this.framesDecoded = null;
@@ -2414,16 +2487,16 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 9:
+        case 10:
           if (in.readIndex() != 1) {
             in.readNull();
             this.headerBytesReceived = null;
           } else {
-            this.headerBytesReceived = in.readInt();
+            this.headerBytesReceived = in.readLong();
           }
           break;
 
-        case 10:
+        case 11:
           if (in.readIndex() != 1) {
             in.readNull();
             this.id = null;
@@ -2432,7 +2505,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 11:
+        case 12:
           if (in.readIndex() != 1) {
             in.readNull();
             this.isRemote = null;
@@ -2441,7 +2514,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 12:
+        case 13:
           if (in.readIndex() != 1) {
             in.readNull();
             this.jitter = null;
@@ -2450,7 +2523,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 13:
+        case 14:
           if (in.readIndex() != 1) {
             in.readNull();
             this.keyFramesDecoded = null;
@@ -2459,7 +2532,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 14:
+        case 15:
           if (in.readIndex() != 1) {
             in.readNull();
             this.lastPacketReceivedTimestamp = null;
@@ -2468,11 +2541,11 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 15:
+        case 16:
           this.mediaType = org.observertc.webrtc.common.reports.avro.MediaType.values()[in.readEnum()];
           break;
 
-        case 16:
+        case 17:
           if (in.readIndex() != 1) {
             in.readNull();
             this.nackCount = null;
@@ -2481,7 +2554,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 17:
+        case 18:
           if (in.readIndex() != 1) {
             in.readNull();
             this.packetsLost = null;
@@ -2490,7 +2563,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 18:
+        case 19:
           if (in.readIndex() != 1) {
             in.readNull();
             this.packetsReceived = null;
@@ -2499,7 +2572,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 19:
+        case 20:
           if (in.readIndex() != 1) {
             in.readNull();
             this.pliCount = null;
@@ -2508,20 +2581,20 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 20:
+        case 21:
           if (in.readIndex() != 1) {
             in.readNull();
             this.qpSum = null;
           } else {
-            this.qpSum = in.readInt();
+            this.qpSum = in.readDouble();
           }
           break;
 
-        case 21:
+        case 22:
           this.ssrc = in.readLong();
           break;
 
-        case 22:
+        case 23:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalDecodeTime = null;
@@ -2530,7 +2603,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 23:
+        case 24:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalInterFrameDelay = null;
@@ -2539,7 +2612,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 24:
+        case 25:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalSquaredInterFrameDelay = null;
@@ -2548,7 +2621,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 25:
+        case 26:
           if (in.readIndex() != 1) {
             in.readNull();
             this.trackId = null;
@@ -2557,7 +2630,7 @@ public class InboundRTP extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 26:
+        case 27:
           if (in.readIndex() != 1) {
             in.readNull();
             this.transportId = null;

@@ -56,7 +56,7 @@ public class PeerConnectionsRepository {
 				.set(TABLE.DETACHED, values(TABLE.DETACHED))
 				.set(TABLE.UPDATED, values(TABLE.UPDATED))
 				.set(TABLE.TIMEZONE, values(TABLE.TIMEZONE))
-				.set(TABLE.BRIDGEID, values(TABLE.BRIDGEID))
+				.set(TABLE.MEDIAUNITID, values(TABLE.MEDIAUNITID))
 				.set(TABLE.PROVIDEDUSERID, values(TABLE.PROVIDEDUSERID))
 				.set(TABLE.PROVIDEDCALLID, values(TABLE.PROVIDEDCALLID))
 				.set(TABLE.CALLUUID, values(TABLE.CALLUUID))
@@ -88,7 +88,7 @@ public class PeerConnectionsRepository {
 							TABLE.DETACHED,
 							TABLE.TIMEZONE,
 							TABLE.CALLUUID,
-							TABLE.BRIDGEID,
+							TABLE.MEDIAUNITID,
 							TABLE.PROVIDEDCALLID,
 							TABLE.PROVIDEDUSERID,
 							TABLE.SERVICENAME,
@@ -103,7 +103,7 @@ public class PeerConnectionsRepository {
 						record.getDetached(),
 						record.getTimezone(),
 						record.getCalluuid(),
-						record.getBridgeid(),
+						record.getMediaunitid(),
 						record.getProvidedcallid(),
 						record.getProvideduserid(),
 						record.getServicename(),
@@ -118,7 +118,7 @@ public class PeerConnectionsRepository {
 					.set(TABLE.DETACHED, values(TABLE.DETACHED))
 					.set(TABLE.UPDATED, values(TABLE.UPDATED))
 					.set(TABLE.TIMEZONE, values(TABLE.TIMEZONE))
-					.set(TABLE.BRIDGEID, values(TABLE.BRIDGEID))
+					.set(TABLE.MEDIAUNITID, values(TABLE.MEDIAUNITID))
 					.set(TABLE.PROVIDEDUSERID, values(TABLE.PROVIDEDUSERID))
 					.set(TABLE.PROVIDEDCALLID, values(TABLE.PROVIDEDCALLID))
 					.set(TABLE.CALLUUID, values(TABLE.CALLUUID))

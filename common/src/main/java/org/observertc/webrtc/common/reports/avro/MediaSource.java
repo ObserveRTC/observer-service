@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class MediaSource extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -4322868790520983598L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MediaSource\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"audioLevel\",\"type\":[\"null\",\"float\"],\"default\":null},{\"name\":\"framesPerSecond\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"height\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"totalAudioEnergy\",\"type\":[\"null\",\"float\"],\"default\":null},{\"name\":\"totalSamplesDuration\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"trackIdentifier\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"width\",\"type\":[\"null\",\"double\"],\"default\":null}]}");
+  private static final long serialVersionUID = -2761472915927121547L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MediaSource\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"audioLevel\",\"type\":[\"null\",\"float\"],\"default\":null},{\"name\":\"framesPerSecond\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"height\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"totalAudioEnergy\",\"type\":[\"null\",\"float\"],\"default\":null},{\"name\":\"totalSamplesDuration\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"trackIdentifier\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"width\",\"type\":[\"null\",\"double\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String mediaUnit;
    private java.lang.Float audioLevel;
    private java.lang.Double framesPerSecond;
    private java.lang.Double height;
@@ -92,6 +93,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param mediaUnit The new value for mediaUnit
    * @param audioLevel The new value for audioLevel
    * @param framesPerSecond The new value for framesPerSecond
    * @param height The new value for height
@@ -102,8 +104,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
    * @param trackIdentifier The new value for trackIdentifier
    * @param width The new value for width
    */
-  public MediaSource(java.lang.String peerConnectionUUID, java.lang.Float audioLevel, java.lang.Double framesPerSecond, java.lang.Double height, java.lang.String id, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Float totalAudioEnergy, java.lang.Double totalSamplesDuration, java.lang.String trackIdentifier, java.lang.Double width) {
+  public MediaSource(java.lang.String peerConnectionUUID, java.lang.String mediaUnit, java.lang.Float audioLevel, java.lang.Double framesPerSecond, java.lang.Double height, java.lang.String id, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Float totalAudioEnergy, java.lang.Double totalSamplesDuration, java.lang.String trackIdentifier, java.lang.Double width) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.mediaUnit = mediaUnit;
     this.audioLevel = audioLevel;
     this.framesPerSecond = framesPerSecond;
     this.height = height;
@@ -121,15 +124,16 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
-    case 1: return audioLevel;
-    case 2: return framesPerSecond;
-    case 3: return height;
-    case 4: return id;
-    case 5: return mediaType;
-    case 6: return totalAudioEnergy;
-    case 7: return totalSamplesDuration;
-    case 8: return trackIdentifier;
-    case 9: return width;
+    case 1: return mediaUnit;
+    case 2: return audioLevel;
+    case 3: return framesPerSecond;
+    case 4: return height;
+    case 5: return id;
+    case 6: return mediaType;
+    case 7: return totalAudioEnergy;
+    case 8: return totalSamplesDuration;
+    case 9: return trackIdentifier;
+    case 10: return width;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -139,15 +143,16 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
-    case 1: audioLevel = (java.lang.Float)value$; break;
-    case 2: framesPerSecond = (java.lang.Double)value$; break;
-    case 3: height = (java.lang.Double)value$; break;
-    case 4: id = value$ != null ? value$.toString() : null; break;
-    case 5: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
-    case 6: totalAudioEnergy = (java.lang.Float)value$; break;
-    case 7: totalSamplesDuration = (java.lang.Double)value$; break;
-    case 8: trackIdentifier = value$ != null ? value$.toString() : null; break;
-    case 9: width = (java.lang.Double)value$; break;
+    case 1: mediaUnit = value$ != null ? value$.toString() : null; break;
+    case 2: audioLevel = (java.lang.Float)value$; break;
+    case 3: framesPerSecond = (java.lang.Double)value$; break;
+    case 4: height = (java.lang.Double)value$; break;
+    case 5: id = value$ != null ? value$.toString() : null; break;
+    case 6: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
+    case 7: totalAudioEnergy = (java.lang.Float)value$; break;
+    case 8: totalSamplesDuration = (java.lang.Double)value$; break;
+    case 9: trackIdentifier = value$ != null ? value$.toString() : null; break;
+    case 10: width = (java.lang.Double)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -158,6 +163,16 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnit' field.
+   * @return The value of the 'mediaUnit' field.
+   */
+  public java.lang.String getMediaUnit() {
+    return mediaUnit;
   }
 
 
@@ -294,6 +309,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
     implements org.apache.avro.data.RecordBuilder<MediaSource> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String mediaUnit;
     private java.lang.Float audioLevel;
     private java.lang.Double framesPerSecond;
     private java.lang.Double height;
@@ -319,41 +335,45 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.audioLevel)) {
-        this.audioLevel = data().deepCopy(fields()[1].schema(), other.audioLevel);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.framesPerSecond)) {
-        this.framesPerSecond = data().deepCopy(fields()[2].schema(), other.framesPerSecond);
+      if (isValidValue(fields()[2], other.audioLevel)) {
+        this.audioLevel = data().deepCopy(fields()[2].schema(), other.audioLevel);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.height)) {
-        this.height = data().deepCopy(fields()[3].schema(), other.height);
+      if (isValidValue(fields()[3], other.framesPerSecond)) {
+        this.framesPerSecond = data().deepCopy(fields()[3].schema(), other.framesPerSecond);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.id)) {
-        this.id = data().deepCopy(fields()[4].schema(), other.id);
+      if (isValidValue(fields()[4], other.height)) {
+        this.height = data().deepCopy(fields()[4].schema(), other.height);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[5].schema(), other.mediaType);
+      if (isValidValue(fields()[5], other.id)) {
+        this.id = data().deepCopy(fields()[5].schema(), other.id);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.totalAudioEnergy)) {
-        this.totalAudioEnergy = data().deepCopy(fields()[6].schema(), other.totalAudioEnergy);
+      if (isValidValue(fields()[6], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[6].schema(), other.mediaType);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.totalSamplesDuration)) {
-        this.totalSamplesDuration = data().deepCopy(fields()[7].schema(), other.totalSamplesDuration);
+      if (isValidValue(fields()[7], other.totalAudioEnergy)) {
+        this.totalAudioEnergy = data().deepCopy(fields()[7].schema(), other.totalAudioEnergy);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.trackIdentifier)) {
-        this.trackIdentifier = data().deepCopy(fields()[8].schema(), other.trackIdentifier);
+      if (isValidValue(fields()[8], other.totalSamplesDuration)) {
+        this.totalSamplesDuration = data().deepCopy(fields()[8].schema(), other.totalSamplesDuration);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.width)) {
-        this.width = data().deepCopy(fields()[9].schema(), other.width);
+      if (isValidValue(fields()[9], other.trackIdentifier)) {
+        this.trackIdentifier = data().deepCopy(fields()[9].schema(), other.trackIdentifier);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
+      }
+      if (isValidValue(fields()[10], other.width)) {
+        this.width = data().deepCopy(fields()[10].schema(), other.width);
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
     }
 
@@ -367,41 +387,45 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.audioLevel)) {
-        this.audioLevel = data().deepCopy(fields()[1].schema(), other.audioLevel);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.framesPerSecond)) {
-        this.framesPerSecond = data().deepCopy(fields()[2].schema(), other.framesPerSecond);
+      if (isValidValue(fields()[2], other.audioLevel)) {
+        this.audioLevel = data().deepCopy(fields()[2].schema(), other.audioLevel);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.height)) {
-        this.height = data().deepCopy(fields()[3].schema(), other.height);
+      if (isValidValue(fields()[3], other.framesPerSecond)) {
+        this.framesPerSecond = data().deepCopy(fields()[3].schema(), other.framesPerSecond);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.id)) {
-        this.id = data().deepCopy(fields()[4].schema(), other.id);
+      if (isValidValue(fields()[4], other.height)) {
+        this.height = data().deepCopy(fields()[4].schema(), other.height);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[5].schema(), other.mediaType);
+      if (isValidValue(fields()[5], other.id)) {
+        this.id = data().deepCopy(fields()[5].schema(), other.id);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.totalAudioEnergy)) {
-        this.totalAudioEnergy = data().deepCopy(fields()[6].schema(), other.totalAudioEnergy);
+      if (isValidValue(fields()[6], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[6].schema(), other.mediaType);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.totalSamplesDuration)) {
-        this.totalSamplesDuration = data().deepCopy(fields()[7].schema(), other.totalSamplesDuration);
+      if (isValidValue(fields()[7], other.totalAudioEnergy)) {
+        this.totalAudioEnergy = data().deepCopy(fields()[7].schema(), other.totalAudioEnergy);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.trackIdentifier)) {
-        this.trackIdentifier = data().deepCopy(fields()[8].schema(), other.trackIdentifier);
+      if (isValidValue(fields()[8], other.totalSamplesDuration)) {
+        this.totalSamplesDuration = data().deepCopy(fields()[8].schema(), other.totalSamplesDuration);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.width)) {
-        this.width = data().deepCopy(fields()[9].schema(), other.width);
+      if (isValidValue(fields()[9], other.trackIdentifier)) {
+        this.trackIdentifier = data().deepCopy(fields()[9].schema(), other.trackIdentifier);
         fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.width)) {
+        this.width = data().deepCopy(fields()[10].schema(), other.width);
+        fieldSetFlags()[10] = true;
       }
     }
 
@@ -446,6 +470,46 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
     }
 
     /**
+      * Gets the value of the 'mediaUnit' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnit() {
+      return mediaUnit;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnit' field.
+      * @param value The value of 'mediaUnit'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setMediaUnit(java.lang.String value) {
+      validate(fields()[1], value);
+      this.mediaUnit = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnit' field has been set.
+      * @return True if the 'mediaUnit' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnit() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnit' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearMediaUnit() {
+      mediaUnit = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'audioLevel' field.
       * @return The value.
       */
@@ -460,9 +524,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setAudioLevel(java.lang.Float value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.audioLevel = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -471,7 +535,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'audioLevel' field has been set, false otherwise.
       */
     public boolean hasAudioLevel() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -481,7 +545,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearAudioLevel() {
       audioLevel = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -500,9 +564,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setFramesPerSecond(java.lang.Double value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.framesPerSecond = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -511,7 +575,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'framesPerSecond' field has been set, false otherwise.
       */
     public boolean hasFramesPerSecond() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -521,7 +585,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearFramesPerSecond() {
       framesPerSecond = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -540,9 +604,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setHeight(java.lang.Double value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.height = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -551,7 +615,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'height' field has been set, false otherwise.
       */
     public boolean hasHeight() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -561,7 +625,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearHeight() {
       height = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -580,9 +644,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setId(java.lang.String value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.id = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -591,7 +655,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'id' field has been set, false otherwise.
       */
     public boolean hasId() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -601,7 +665,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearId() {
       id = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -620,9 +684,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setMediaType(org.observertc.webrtc.common.reports.avro.MediaType value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.mediaType = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -631,7 +695,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'mediaType' field has been set, false otherwise.
       */
     public boolean hasMediaType() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -641,7 +705,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearMediaType() {
       mediaType = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -660,9 +724,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setTotalAudioEnergy(java.lang.Float value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.totalAudioEnergy = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -671,7 +735,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'totalAudioEnergy' field has been set, false otherwise.
       */
     public boolean hasTotalAudioEnergy() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -681,7 +745,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearTotalAudioEnergy() {
       totalAudioEnergy = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -700,9 +764,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setTotalSamplesDuration(java.lang.Double value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.totalSamplesDuration = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -711,7 +775,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'totalSamplesDuration' field has been set, false otherwise.
       */
     public boolean hasTotalSamplesDuration() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -721,7 +785,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearTotalSamplesDuration() {
       totalSamplesDuration = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -740,9 +804,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setTrackIdentifier(java.lang.String value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.trackIdentifier = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -751,7 +815,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'trackIdentifier' field has been set, false otherwise.
       */
     public boolean hasTrackIdentifier() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -761,7 +825,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearTrackIdentifier() {
       trackIdentifier = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -780,9 +844,9 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder setWidth(java.lang.Double value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.width = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -791,7 +855,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'width' field has been set, false otherwise.
       */
     public boolean hasWidth() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -801,7 +865,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.MediaSource.Builder clearWidth() {
       width = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -811,15 +875,16 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       try {
         MediaSource record = new MediaSource();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
-        record.audioLevel = fieldSetFlags()[1] ? this.audioLevel : (java.lang.Float) defaultValue(fields()[1]);
-        record.framesPerSecond = fieldSetFlags()[2] ? this.framesPerSecond : (java.lang.Double) defaultValue(fields()[2]);
-        record.height = fieldSetFlags()[3] ? this.height : (java.lang.Double) defaultValue(fields()[3]);
-        record.id = fieldSetFlags()[4] ? this.id : (java.lang.String) defaultValue(fields()[4]);
-        record.mediaType = fieldSetFlags()[5] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[5]);
-        record.totalAudioEnergy = fieldSetFlags()[6] ? this.totalAudioEnergy : (java.lang.Float) defaultValue(fields()[6]);
-        record.totalSamplesDuration = fieldSetFlags()[7] ? this.totalSamplesDuration : (java.lang.Double) defaultValue(fields()[7]);
-        record.trackIdentifier = fieldSetFlags()[8] ? this.trackIdentifier : (java.lang.String) defaultValue(fields()[8]);
-        record.width = fieldSetFlags()[9] ? this.width : (java.lang.Double) defaultValue(fields()[9]);
+        record.mediaUnit = fieldSetFlags()[1] ? this.mediaUnit : (java.lang.String) defaultValue(fields()[1]);
+        record.audioLevel = fieldSetFlags()[2] ? this.audioLevel : (java.lang.Float) defaultValue(fields()[2]);
+        record.framesPerSecond = fieldSetFlags()[3] ? this.framesPerSecond : (java.lang.Double) defaultValue(fields()[3]);
+        record.height = fieldSetFlags()[4] ? this.height : (java.lang.Double) defaultValue(fields()[4]);
+        record.id = fieldSetFlags()[5] ? this.id : (java.lang.String) defaultValue(fields()[5]);
+        record.mediaType = fieldSetFlags()[6] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[6]);
+        record.totalAudioEnergy = fieldSetFlags()[7] ? this.totalAudioEnergy : (java.lang.Float) defaultValue(fields()[7]);
+        record.totalSamplesDuration = fieldSetFlags()[8] ? this.totalSamplesDuration : (java.lang.Double) defaultValue(fields()[8]);
+        record.trackIdentifier = fieldSetFlags()[9] ? this.trackIdentifier : (java.lang.String) defaultValue(fields()[9]);
+        record.width = fieldSetFlags()[10] ? this.width : (java.lang.Double) defaultValue(fields()[10]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -853,6 +918,8 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
     throws java.io.IOException
   {
     out.writeString(this.peerConnectionUUID);
+
+    out.writeString(this.mediaUnit);
 
     if (this.audioLevel == null) {
       out.writeIndex(0);
@@ -923,6 +990,8 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
 
+      this.mediaUnit = in.readString();
+
       if (in.readIndex() != 1) {
         in.readNull();
         this.audioLevel = null;
@@ -977,13 +1046,17 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
       }
 
     } else {
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < 11; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
           break;
 
         case 1:
+          this.mediaUnit = in.readString();
+          break;
+
+        case 2:
           if (in.readIndex() != 1) {
             in.readNull();
             this.audioLevel = null;
@@ -992,7 +1065,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 2:
+        case 3:
           if (in.readIndex() != 1) {
             in.readNull();
             this.framesPerSecond = null;
@@ -1001,7 +1074,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 3:
+        case 4:
           if (in.readIndex() != 1) {
             in.readNull();
             this.height = null;
@@ -1010,15 +1083,15 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 4:
+        case 5:
           this.id = in.readString();
           break;
 
-        case 5:
+        case 6:
           this.mediaType = org.observertc.webrtc.common.reports.avro.MediaType.values()[in.readEnum()];
           break;
 
-        case 6:
+        case 7:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalAudioEnergy = null;
@@ -1027,7 +1100,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 7:
+        case 8:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalSamplesDuration = null;
@@ -1036,7 +1109,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 8:
+        case 9:
           if (in.readIndex() != 1) {
             in.readNull();
             this.trackIdentifier = null;
@@ -1045,7 +1118,7 @@ public class MediaSource extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 9:
+        case 10:
           if (in.readIndex() != 1) {
             in.readNull();
             this.width = null;

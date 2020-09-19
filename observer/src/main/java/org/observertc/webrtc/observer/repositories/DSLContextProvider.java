@@ -10,6 +10,8 @@ import org.jooq.RecordMapperProvider;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
+import org.observertc.webrtc.observer.HikariConfiguration;
+import org.observertc.webrtc.observer.JooqConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

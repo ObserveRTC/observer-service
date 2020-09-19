@@ -17,7 +17,7 @@
 //import org.observertc.webrtc.common.reports.ReportObserverUUIDExtractor;
 //import org.observertc.webrtc.observer.EvaluatorsConfig;
 //import org.observertc.webrtc.observer.KafkaSinks;
-//import org.observertc.webrtc.observer.ObserverDateTime;
+//import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
 //import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 //import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 //import org.slf4j.Logger;
@@ -41,17 +41,14 @@
 //	private static final Logger logger = LoggerFactory.getLogger(ReportDraftsEvaluator.class);
 //	private final PeerConnectionsRepository peerConnectionsRepository;
 //	private final KafkaSinks kafkaSinks;
-//	private final ObserverDateTime observerDateTime;
 //	private final ReportObserverUUIDExtractor uuidExtractor;
 //	private final EvaluatorsConfig.ReportDraftsConfig config;
 //
 //	public ReportDraftsEvaluator(PeerConnectionsRepository peerConnectionsRepository,
-//								 ObserverDateTime observerDateTime,
 //								 EvaluatorsConfig.ReportDraftsConfig config,
 //								 KafkaSinks kafkaSinks) {
 //		this.peerConnectionsRepository = peerConnectionsRepository;
 //		this.kafkaSinks = kafkaSinks;
-//		this.observerDateTime = observerDateTime;
 //		this.config = config;
 //		this.uuidExtractor = new ReportObserverUUIDExtractor();
 //	}

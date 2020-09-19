@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 8538602778379426323L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OutboundRTP\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"codecID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"encoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"framesEncoded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"headerBytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"isRemote\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"keyFramesEncoded\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"mediaSourceID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"qualityLimitationReason\",\"type\":{\"type\":\"enum\",\"name\":\"RTCQualityLimitationReason\",\"symbols\":[\"BANDWIDTH\",\"CPU\",\"NONE\",\"OTHER\",\"UNKNOWN\"]},\"default\":\"unknown\"},{\"name\":\"qualityLimitationResolutionChanges\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"remoteID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"retransmittedBytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"retransmittedPacketsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"ssrc\",\"type\":\"long\"},{\"name\":\"totalEncodedBytesTarget\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"totalEncodeTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"totalPacketSendDelay\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"trackID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
+  private static final long serialVersionUID = -7399591475411471820L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OutboundRTP\",\"namespace\":\"org.observertc.webrtc.common.reports.avro\",\"fields\":[{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"mediaUnit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"codecID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"encoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"framesEncoded\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"headerBytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"isRemote\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"keyFramesEncoded\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"mediaSourceID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"mediaType\",\"type\":{\"type\":\"enum\",\"name\":\"MediaType\",\"symbols\":[\"AUDIO\",\"VIDEO\",\"UNKNOWN\"]},\"default\":\"UNKNOWN\"},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"qualityLimitationReason\",\"type\":{\"type\":\"enum\",\"name\":\"RTCQualityLimitationReason\",\"symbols\":[\"BANDWIDTH\",\"CPU\",\"NONE\",\"OTHER\",\"UNKNOWN\"]},\"default\":\"unknown\"},{\"name\":\"qualityLimitationResolutionChanges\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"remoteID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"retransmittedBytesSent\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"retransmittedPacketsSent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"ssrc\",\"type\":\"long\"},{\"name\":\"totalEncodedBytesTarget\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"totalEncodeTime\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"totalPacketSendDelay\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"trackID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"transportID\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,6 +72,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
    private java.lang.String peerConnectionUUID;
+   private java.lang.String mediaUnit;
    private java.lang.Long bytesSent;
    private java.lang.String codecID;
    private java.lang.String encoderImplementation;
@@ -109,6 +110,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
   /**
    * All-args constructor.
    * @param peerConnectionUUID The new value for peerConnectionUUID
+   * @param mediaUnit The new value for mediaUnit
    * @param bytesSent The new value for bytesSent
    * @param codecID The new value for codecID
    * @param encoderImplementation The new value for encoderImplementation
@@ -136,8 +138,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
    * @param trackID The new value for trackID
    * @param transportID The new value for transportID
    */
-  public OutboundRTP(java.lang.String peerConnectionUUID, java.lang.Long bytesSent, java.lang.String codecID, java.lang.String encoderImplementation, java.lang.Integer firCount, java.lang.Integer framesEncoded, java.lang.Long headerBytesSent, java.lang.String id, java.lang.Boolean isRemote, java.lang.Long keyFramesEncoded, java.lang.String mediaSourceID, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Integer nackCount, java.lang.Integer packetsSent, java.lang.Integer pliCount, java.lang.Double qpSum, org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason qualityLimitationReason, java.lang.Long qualityLimitationResolutionChanges, java.lang.String remoteID, java.lang.Long retransmittedBytesSent, java.lang.Integer retransmittedPacketsSent, java.lang.Long ssrc, java.lang.Long totalEncodedBytesTarget, java.lang.Double totalEncodeTime, java.lang.Double totalPacketSendDelay, java.lang.String trackID, java.lang.String transportID) {
+  public OutboundRTP(java.lang.String peerConnectionUUID, java.lang.String mediaUnit, java.lang.Long bytesSent, java.lang.String codecID, java.lang.String encoderImplementation, java.lang.Integer firCount, java.lang.Integer framesEncoded, java.lang.Long headerBytesSent, java.lang.String id, java.lang.Boolean isRemote, java.lang.Long keyFramesEncoded, java.lang.String mediaSourceID, org.observertc.webrtc.common.reports.avro.MediaType mediaType, java.lang.Integer nackCount, java.lang.Integer packetsSent, java.lang.Integer pliCount, java.lang.Double qpSum, org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason qualityLimitationReason, java.lang.Long qualityLimitationResolutionChanges, java.lang.String remoteID, java.lang.Long retransmittedBytesSent, java.lang.Integer retransmittedPacketsSent, java.lang.Long ssrc, java.lang.Long totalEncodedBytesTarget, java.lang.Double totalEncodeTime, java.lang.Double totalPacketSendDelay, java.lang.String trackID, java.lang.String transportID) {
     this.peerConnectionUUID = peerConnectionUUID;
+    this.mediaUnit = mediaUnit;
     this.bytesSent = bytesSent;
     this.codecID = codecID;
     this.encoderImplementation = encoderImplementation;
@@ -172,32 +175,33 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return peerConnectionUUID;
-    case 1: return bytesSent;
-    case 2: return codecID;
-    case 3: return encoderImplementation;
-    case 4: return firCount;
-    case 5: return framesEncoded;
-    case 6: return headerBytesSent;
-    case 7: return id;
-    case 8: return isRemote;
-    case 9: return keyFramesEncoded;
-    case 10: return mediaSourceID;
-    case 11: return mediaType;
-    case 12: return nackCount;
-    case 13: return packetsSent;
-    case 14: return pliCount;
-    case 15: return qpSum;
-    case 16: return qualityLimitationReason;
-    case 17: return qualityLimitationResolutionChanges;
-    case 18: return remoteID;
-    case 19: return retransmittedBytesSent;
-    case 20: return retransmittedPacketsSent;
-    case 21: return ssrc;
-    case 22: return totalEncodedBytesTarget;
-    case 23: return totalEncodeTime;
-    case 24: return totalPacketSendDelay;
-    case 25: return trackID;
-    case 26: return transportID;
+    case 1: return mediaUnit;
+    case 2: return bytesSent;
+    case 3: return codecID;
+    case 4: return encoderImplementation;
+    case 5: return firCount;
+    case 6: return framesEncoded;
+    case 7: return headerBytesSent;
+    case 8: return id;
+    case 9: return isRemote;
+    case 10: return keyFramesEncoded;
+    case 11: return mediaSourceID;
+    case 12: return mediaType;
+    case 13: return nackCount;
+    case 14: return packetsSent;
+    case 15: return pliCount;
+    case 16: return qpSum;
+    case 17: return qualityLimitationReason;
+    case 18: return qualityLimitationResolutionChanges;
+    case 19: return remoteID;
+    case 20: return retransmittedBytesSent;
+    case 21: return retransmittedPacketsSent;
+    case 22: return ssrc;
+    case 23: return totalEncodedBytesTarget;
+    case 24: return totalEncodeTime;
+    case 25: return totalPacketSendDelay;
+    case 26: return trackID;
+    case 27: return transportID;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -207,32 +211,33 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
-    case 1: bytesSent = (java.lang.Long)value$; break;
-    case 2: codecID = value$ != null ? value$.toString() : null; break;
-    case 3: encoderImplementation = value$ != null ? value$.toString() : null; break;
-    case 4: firCount = (java.lang.Integer)value$; break;
-    case 5: framesEncoded = (java.lang.Integer)value$; break;
-    case 6: headerBytesSent = (java.lang.Long)value$; break;
-    case 7: id = value$ != null ? value$.toString() : null; break;
-    case 8: isRemote = (java.lang.Boolean)value$; break;
-    case 9: keyFramesEncoded = (java.lang.Long)value$; break;
-    case 10: mediaSourceID = value$ != null ? value$.toString() : null; break;
-    case 11: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
-    case 12: nackCount = (java.lang.Integer)value$; break;
-    case 13: packetsSent = (java.lang.Integer)value$; break;
-    case 14: pliCount = (java.lang.Integer)value$; break;
-    case 15: qpSum = (java.lang.Double)value$; break;
-    case 16: qualityLimitationReason = (org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason)value$; break;
-    case 17: qualityLimitationResolutionChanges = (java.lang.Long)value$; break;
-    case 18: remoteID = value$ != null ? value$.toString() : null; break;
-    case 19: retransmittedBytesSent = (java.lang.Long)value$; break;
-    case 20: retransmittedPacketsSent = (java.lang.Integer)value$; break;
-    case 21: ssrc = (java.lang.Long)value$; break;
-    case 22: totalEncodedBytesTarget = (java.lang.Long)value$; break;
-    case 23: totalEncodeTime = (java.lang.Double)value$; break;
-    case 24: totalPacketSendDelay = (java.lang.Double)value$; break;
-    case 25: trackID = value$ != null ? value$.toString() : null; break;
-    case 26: transportID = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnit = value$ != null ? value$.toString() : null; break;
+    case 2: bytesSent = (java.lang.Long)value$; break;
+    case 3: codecID = value$ != null ? value$.toString() : null; break;
+    case 4: encoderImplementation = value$ != null ? value$.toString() : null; break;
+    case 5: firCount = (java.lang.Integer)value$; break;
+    case 6: framesEncoded = (java.lang.Integer)value$; break;
+    case 7: headerBytesSent = (java.lang.Long)value$; break;
+    case 8: id = value$ != null ? value$.toString() : null; break;
+    case 9: isRemote = (java.lang.Boolean)value$; break;
+    case 10: keyFramesEncoded = (java.lang.Long)value$; break;
+    case 11: mediaSourceID = value$ != null ? value$.toString() : null; break;
+    case 12: mediaType = (org.observertc.webrtc.common.reports.avro.MediaType)value$; break;
+    case 13: nackCount = (java.lang.Integer)value$; break;
+    case 14: packetsSent = (java.lang.Integer)value$; break;
+    case 15: pliCount = (java.lang.Integer)value$; break;
+    case 16: qpSum = (java.lang.Double)value$; break;
+    case 17: qualityLimitationReason = (org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason)value$; break;
+    case 18: qualityLimitationResolutionChanges = (java.lang.Long)value$; break;
+    case 19: remoteID = value$ != null ? value$.toString() : null; break;
+    case 20: retransmittedBytesSent = (java.lang.Long)value$; break;
+    case 21: retransmittedPacketsSent = (java.lang.Integer)value$; break;
+    case 22: ssrc = (java.lang.Long)value$; break;
+    case 23: totalEncodedBytesTarget = (java.lang.Long)value$; break;
+    case 24: totalEncodeTime = (java.lang.Double)value$; break;
+    case 25: totalPacketSendDelay = (java.lang.Double)value$; break;
+    case 26: trackID = value$ != null ? value$.toString() : null; break;
+    case 27: transportID = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -243,6 +248,16 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
    */
   public java.lang.String getPeerConnectionUUID() {
     return peerConnectionUUID;
+  }
+
+
+
+  /**
+   * Gets the value of the 'mediaUnit' field.
+   * @return The value of the 'mediaUnit' field.
+   */
+  public java.lang.String getMediaUnit() {
+    return mediaUnit;
   }
 
 
@@ -549,6 +564,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
     implements org.apache.avro.data.RecordBuilder<OutboundRTP> {
 
     private java.lang.String peerConnectionUUID;
+    private java.lang.String mediaUnit;
     private java.lang.Long bytesSent;
     private java.lang.String codecID;
     private java.lang.String encoderImplementation;
@@ -591,109 +607,113 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[1].schema(), other.bytesSent);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.codecID)) {
-        this.codecID = data().deepCopy(fields()[2].schema(), other.codecID);
+      if (isValidValue(fields()[2], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[2].schema(), other.bytesSent);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.encoderImplementation)) {
-        this.encoderImplementation = data().deepCopy(fields()[3].schema(), other.encoderImplementation);
+      if (isValidValue(fields()[3], other.codecID)) {
+        this.codecID = data().deepCopy(fields()[3].schema(), other.codecID);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[4].schema(), other.firCount);
+      if (isValidValue(fields()[4], other.encoderImplementation)) {
+        this.encoderImplementation = data().deepCopy(fields()[4].schema(), other.encoderImplementation);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.framesEncoded)) {
-        this.framesEncoded = data().deepCopy(fields()[5].schema(), other.framesEncoded);
+      if (isValidValue(fields()[5], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[5].schema(), other.firCount);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.headerBytesSent)) {
-        this.headerBytesSent = data().deepCopy(fields()[6].schema(), other.headerBytesSent);
+      if (isValidValue(fields()[6], other.framesEncoded)) {
+        this.framesEncoded = data().deepCopy(fields()[6].schema(), other.framesEncoded);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.id)) {
-        this.id = data().deepCopy(fields()[7].schema(), other.id);
+      if (isValidValue(fields()[7], other.headerBytesSent)) {
+        this.headerBytesSent = data().deepCopy(fields()[7].schema(), other.headerBytesSent);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.isRemote)) {
-        this.isRemote = data().deepCopy(fields()[8].schema(), other.isRemote);
+      if (isValidValue(fields()[8], other.id)) {
+        this.id = data().deepCopy(fields()[8].schema(), other.id);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.keyFramesEncoded)) {
-        this.keyFramesEncoded = data().deepCopy(fields()[9].schema(), other.keyFramesEncoded);
+      if (isValidValue(fields()[9], other.isRemote)) {
+        this.isRemote = data().deepCopy(fields()[9].schema(), other.isRemote);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
-      if (isValidValue(fields()[10], other.mediaSourceID)) {
-        this.mediaSourceID = data().deepCopy(fields()[10].schema(), other.mediaSourceID);
+      if (isValidValue(fields()[10], other.keyFramesEncoded)) {
+        this.keyFramesEncoded = data().deepCopy(fields()[10].schema(), other.keyFramesEncoded);
         fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
-      if (isValidValue(fields()[11], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[11].schema(), other.mediaType);
+      if (isValidValue(fields()[11], other.mediaSourceID)) {
+        this.mediaSourceID = data().deepCopy(fields()[11].schema(), other.mediaSourceID);
         fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
-      if (isValidValue(fields()[12], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[12].schema(), other.nackCount);
+      if (isValidValue(fields()[12], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[12].schema(), other.mediaType);
         fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
-      if (isValidValue(fields()[13], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[13].schema(), other.packetsSent);
+      if (isValidValue(fields()[13], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[13].schema(), other.nackCount);
         fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
-      if (isValidValue(fields()[14], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[14].schema(), other.pliCount);
+      if (isValidValue(fields()[14], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[14].schema(), other.packetsSent);
         fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
-      if (isValidValue(fields()[15], other.qpSum)) {
-        this.qpSum = data().deepCopy(fields()[15].schema(), other.qpSum);
+      if (isValidValue(fields()[15], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[15].schema(), other.pliCount);
         fieldSetFlags()[15] = other.fieldSetFlags()[15];
       }
-      if (isValidValue(fields()[16], other.qualityLimitationReason)) {
-        this.qualityLimitationReason = data().deepCopy(fields()[16].schema(), other.qualityLimitationReason);
+      if (isValidValue(fields()[16], other.qpSum)) {
+        this.qpSum = data().deepCopy(fields()[16].schema(), other.qpSum);
         fieldSetFlags()[16] = other.fieldSetFlags()[16];
       }
-      if (isValidValue(fields()[17], other.qualityLimitationResolutionChanges)) {
-        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[17].schema(), other.qualityLimitationResolutionChanges);
+      if (isValidValue(fields()[17], other.qualityLimitationReason)) {
+        this.qualityLimitationReason = data().deepCopy(fields()[17].schema(), other.qualityLimitationReason);
         fieldSetFlags()[17] = other.fieldSetFlags()[17];
       }
-      if (isValidValue(fields()[18], other.remoteID)) {
-        this.remoteID = data().deepCopy(fields()[18].schema(), other.remoteID);
+      if (isValidValue(fields()[18], other.qualityLimitationResolutionChanges)) {
+        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[18].schema(), other.qualityLimitationResolutionChanges);
         fieldSetFlags()[18] = other.fieldSetFlags()[18];
       }
-      if (isValidValue(fields()[19], other.retransmittedBytesSent)) {
-        this.retransmittedBytesSent = data().deepCopy(fields()[19].schema(), other.retransmittedBytesSent);
+      if (isValidValue(fields()[19], other.remoteID)) {
+        this.remoteID = data().deepCopy(fields()[19].schema(), other.remoteID);
         fieldSetFlags()[19] = other.fieldSetFlags()[19];
       }
-      if (isValidValue(fields()[20], other.retransmittedPacketsSent)) {
-        this.retransmittedPacketsSent = data().deepCopy(fields()[20].schema(), other.retransmittedPacketsSent);
+      if (isValidValue(fields()[20], other.retransmittedBytesSent)) {
+        this.retransmittedBytesSent = data().deepCopy(fields()[20].schema(), other.retransmittedBytesSent);
         fieldSetFlags()[20] = other.fieldSetFlags()[20];
       }
-      if (isValidValue(fields()[21], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[21].schema(), other.ssrc);
+      if (isValidValue(fields()[21], other.retransmittedPacketsSent)) {
+        this.retransmittedPacketsSent = data().deepCopy(fields()[21].schema(), other.retransmittedPacketsSent);
         fieldSetFlags()[21] = other.fieldSetFlags()[21];
       }
-      if (isValidValue(fields()[22], other.totalEncodedBytesTarget)) {
-        this.totalEncodedBytesTarget = data().deepCopy(fields()[22].schema(), other.totalEncodedBytesTarget);
+      if (isValidValue(fields()[22], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[22].schema(), other.ssrc);
         fieldSetFlags()[22] = other.fieldSetFlags()[22];
       }
-      if (isValidValue(fields()[23], other.totalEncodeTime)) {
-        this.totalEncodeTime = data().deepCopy(fields()[23].schema(), other.totalEncodeTime);
+      if (isValidValue(fields()[23], other.totalEncodedBytesTarget)) {
+        this.totalEncodedBytesTarget = data().deepCopy(fields()[23].schema(), other.totalEncodedBytesTarget);
         fieldSetFlags()[23] = other.fieldSetFlags()[23];
       }
-      if (isValidValue(fields()[24], other.totalPacketSendDelay)) {
-        this.totalPacketSendDelay = data().deepCopy(fields()[24].schema(), other.totalPacketSendDelay);
+      if (isValidValue(fields()[24], other.totalEncodeTime)) {
+        this.totalEncodeTime = data().deepCopy(fields()[24].schema(), other.totalEncodeTime);
         fieldSetFlags()[24] = other.fieldSetFlags()[24];
       }
-      if (isValidValue(fields()[25], other.trackID)) {
-        this.trackID = data().deepCopy(fields()[25].schema(), other.trackID);
+      if (isValidValue(fields()[25], other.totalPacketSendDelay)) {
+        this.totalPacketSendDelay = data().deepCopy(fields()[25].schema(), other.totalPacketSendDelay);
         fieldSetFlags()[25] = other.fieldSetFlags()[25];
       }
-      if (isValidValue(fields()[26], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[26].schema(), other.transportID);
+      if (isValidValue(fields()[26], other.trackID)) {
+        this.trackID = data().deepCopy(fields()[26].schema(), other.trackID);
         fieldSetFlags()[26] = other.fieldSetFlags()[26];
+      }
+      if (isValidValue(fields()[27], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[27].schema(), other.transportID);
+        fieldSetFlags()[27] = other.fieldSetFlags()[27];
       }
     }
 
@@ -707,109 +727,113 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
         this.peerConnectionUUID = data().deepCopy(fields()[0].schema(), other.peerConnectionUUID);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[1].schema(), other.bytesSent);
+      if (isValidValue(fields()[1], other.mediaUnit)) {
+        this.mediaUnit = data().deepCopy(fields()[1].schema(), other.mediaUnit);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.codecID)) {
-        this.codecID = data().deepCopy(fields()[2].schema(), other.codecID);
+      if (isValidValue(fields()[2], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[2].schema(), other.bytesSent);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.encoderImplementation)) {
-        this.encoderImplementation = data().deepCopy(fields()[3].schema(), other.encoderImplementation);
+      if (isValidValue(fields()[3], other.codecID)) {
+        this.codecID = data().deepCopy(fields()[3].schema(), other.codecID);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[4].schema(), other.firCount);
+      if (isValidValue(fields()[4], other.encoderImplementation)) {
+        this.encoderImplementation = data().deepCopy(fields()[4].schema(), other.encoderImplementation);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.framesEncoded)) {
-        this.framesEncoded = data().deepCopy(fields()[5].schema(), other.framesEncoded);
+      if (isValidValue(fields()[5], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[5].schema(), other.firCount);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.headerBytesSent)) {
-        this.headerBytesSent = data().deepCopy(fields()[6].schema(), other.headerBytesSent);
+      if (isValidValue(fields()[6], other.framesEncoded)) {
+        this.framesEncoded = data().deepCopy(fields()[6].schema(), other.framesEncoded);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.id)) {
-        this.id = data().deepCopy(fields()[7].schema(), other.id);
+      if (isValidValue(fields()[7], other.headerBytesSent)) {
+        this.headerBytesSent = data().deepCopy(fields()[7].schema(), other.headerBytesSent);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.isRemote)) {
-        this.isRemote = data().deepCopy(fields()[8].schema(), other.isRemote);
+      if (isValidValue(fields()[8], other.id)) {
+        this.id = data().deepCopy(fields()[8].schema(), other.id);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.keyFramesEncoded)) {
-        this.keyFramesEncoded = data().deepCopy(fields()[9].schema(), other.keyFramesEncoded);
+      if (isValidValue(fields()[9], other.isRemote)) {
+        this.isRemote = data().deepCopy(fields()[9].schema(), other.isRemote);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.mediaSourceID)) {
-        this.mediaSourceID = data().deepCopy(fields()[10].schema(), other.mediaSourceID);
+      if (isValidValue(fields()[10], other.keyFramesEncoded)) {
+        this.keyFramesEncoded = data().deepCopy(fields()[10].schema(), other.keyFramesEncoded);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[11].schema(), other.mediaType);
+      if (isValidValue(fields()[11], other.mediaSourceID)) {
+        this.mediaSourceID = data().deepCopy(fields()[11].schema(), other.mediaSourceID);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[12].schema(), other.nackCount);
+      if (isValidValue(fields()[12], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[12].schema(), other.mediaType);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[13].schema(), other.packetsSent);
+      if (isValidValue(fields()[13], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[13].schema(), other.nackCount);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[14].schema(), other.pliCount);
+      if (isValidValue(fields()[14], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[14].schema(), other.packetsSent);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.qpSum)) {
-        this.qpSum = data().deepCopy(fields()[15].schema(), other.qpSum);
+      if (isValidValue(fields()[15], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[15].schema(), other.pliCount);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.qualityLimitationReason)) {
-        this.qualityLimitationReason = data().deepCopy(fields()[16].schema(), other.qualityLimitationReason);
+      if (isValidValue(fields()[16], other.qpSum)) {
+        this.qpSum = data().deepCopy(fields()[16].schema(), other.qpSum);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.qualityLimitationResolutionChanges)) {
-        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[17].schema(), other.qualityLimitationResolutionChanges);
+      if (isValidValue(fields()[17], other.qualityLimitationReason)) {
+        this.qualityLimitationReason = data().deepCopy(fields()[17].schema(), other.qualityLimitationReason);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.remoteID)) {
-        this.remoteID = data().deepCopy(fields()[18].schema(), other.remoteID);
+      if (isValidValue(fields()[18], other.qualityLimitationResolutionChanges)) {
+        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[18].schema(), other.qualityLimitationResolutionChanges);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.retransmittedBytesSent)) {
-        this.retransmittedBytesSent = data().deepCopy(fields()[19].schema(), other.retransmittedBytesSent);
+      if (isValidValue(fields()[19], other.remoteID)) {
+        this.remoteID = data().deepCopy(fields()[19].schema(), other.remoteID);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.retransmittedPacketsSent)) {
-        this.retransmittedPacketsSent = data().deepCopy(fields()[20].schema(), other.retransmittedPacketsSent);
+      if (isValidValue(fields()[20], other.retransmittedBytesSent)) {
+        this.retransmittedBytesSent = data().deepCopy(fields()[20].schema(), other.retransmittedBytesSent);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[21].schema(), other.ssrc);
+      if (isValidValue(fields()[21], other.retransmittedPacketsSent)) {
+        this.retransmittedPacketsSent = data().deepCopy(fields()[21].schema(), other.retransmittedPacketsSent);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.totalEncodedBytesTarget)) {
-        this.totalEncodedBytesTarget = data().deepCopy(fields()[22].schema(), other.totalEncodedBytesTarget);
+      if (isValidValue(fields()[22], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[22].schema(), other.ssrc);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.totalEncodeTime)) {
-        this.totalEncodeTime = data().deepCopy(fields()[23].schema(), other.totalEncodeTime);
+      if (isValidValue(fields()[23], other.totalEncodedBytesTarget)) {
+        this.totalEncodedBytesTarget = data().deepCopy(fields()[23].schema(), other.totalEncodedBytesTarget);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.totalPacketSendDelay)) {
-        this.totalPacketSendDelay = data().deepCopy(fields()[24].schema(), other.totalPacketSendDelay);
+      if (isValidValue(fields()[24], other.totalEncodeTime)) {
+        this.totalEncodeTime = data().deepCopy(fields()[24].schema(), other.totalEncodeTime);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.trackID)) {
-        this.trackID = data().deepCopy(fields()[25].schema(), other.trackID);
+      if (isValidValue(fields()[25], other.totalPacketSendDelay)) {
+        this.totalPacketSendDelay = data().deepCopy(fields()[25].schema(), other.totalPacketSendDelay);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.transportID)) {
-        this.transportID = data().deepCopy(fields()[26].schema(), other.transportID);
+      if (isValidValue(fields()[26], other.trackID)) {
+        this.trackID = data().deepCopy(fields()[26].schema(), other.trackID);
         fieldSetFlags()[26] = true;
+      }
+      if (isValidValue(fields()[27], other.transportID)) {
+        this.transportID = data().deepCopy(fields()[27].schema(), other.transportID);
+        fieldSetFlags()[27] = true;
       }
     }
 
@@ -854,6 +878,46 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
     }
 
     /**
+      * Gets the value of the 'mediaUnit' field.
+      * @return The value.
+      */
+    public java.lang.String getMediaUnit() {
+      return mediaUnit;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaUnit' field.
+      * @param value The value of 'mediaUnit'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setMediaUnit(java.lang.String value) {
+      validate(fields()[1], value);
+      this.mediaUnit = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaUnit' field has been set.
+      * @return True if the 'mediaUnit' field has been set, false otherwise.
+      */
+    public boolean hasMediaUnit() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaUnit' field.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearMediaUnit() {
+      mediaUnit = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'bytesSent' field.
       * @return The value.
       */
@@ -868,9 +932,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setBytesSent(java.lang.Long value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.bytesSent = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -879,7 +943,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'bytesSent' field has been set, false otherwise.
       */
     public boolean hasBytesSent() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -889,7 +953,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearBytesSent() {
       bytesSent = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -908,9 +972,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setCodecID(java.lang.String value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.codecID = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -919,7 +983,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'codecID' field has been set, false otherwise.
       */
     public boolean hasCodecID() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -929,7 +993,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearCodecID() {
       codecID = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -948,9 +1012,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setEncoderImplementation(java.lang.String value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.encoderImplementation = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -959,7 +1023,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'encoderImplementation' field has been set, false otherwise.
       */
     public boolean hasEncoderImplementation() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -969,7 +1033,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearEncoderImplementation() {
       encoderImplementation = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -988,9 +1052,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setFirCount(java.lang.Integer value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.firCount = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -999,7 +1063,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'firCount' field has been set, false otherwise.
       */
     public boolean hasFirCount() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -1009,7 +1073,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearFirCount() {
       firCount = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -1028,9 +1092,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setFramesEncoded(java.lang.Integer value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.framesEncoded = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -1039,7 +1103,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'framesEncoded' field has been set, false otherwise.
       */
     public boolean hasFramesEncoded() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -1049,7 +1113,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearFramesEncoded() {
       framesEncoded = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -1068,9 +1132,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setHeaderBytesSent(java.lang.Long value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.headerBytesSent = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -1079,7 +1143,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'headerBytesSent' field has been set, false otherwise.
       */
     public boolean hasHeaderBytesSent() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -1089,7 +1153,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearHeaderBytesSent() {
       headerBytesSent = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -1108,9 +1172,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setId(java.lang.String value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.id = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -1119,7 +1183,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'id' field has been set, false otherwise.
       */
     public boolean hasId() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -1129,7 +1193,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearId() {
       id = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -1148,9 +1212,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setIsRemote(java.lang.Boolean value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.isRemote = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -1159,7 +1223,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'isRemote' field has been set, false otherwise.
       */
     public boolean hasIsRemote() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -1169,7 +1233,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearIsRemote() {
       isRemote = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -1188,9 +1252,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setKeyFramesEncoded(java.lang.Long value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.keyFramesEncoded = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -1199,7 +1263,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'keyFramesEncoded' field has been set, false otherwise.
       */
     public boolean hasKeyFramesEncoded() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -1209,7 +1273,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearKeyFramesEncoded() {
       keyFramesEncoded = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1228,9 +1292,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setMediaSourceID(java.lang.String value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.mediaSourceID = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1239,7 +1303,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'mediaSourceID' field has been set, false otherwise.
       */
     public boolean hasMediaSourceID() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1249,7 +1313,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearMediaSourceID() {
       mediaSourceID = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1268,9 +1332,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setMediaType(org.observertc.webrtc.common.reports.avro.MediaType value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.mediaType = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1279,7 +1343,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'mediaType' field has been set, false otherwise.
       */
     public boolean hasMediaType() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1289,7 +1353,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearMediaType() {
       mediaType = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1308,9 +1372,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setNackCount(java.lang.Integer value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.nackCount = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1319,7 +1383,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'nackCount' field has been set, false otherwise.
       */
     public boolean hasNackCount() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1329,7 +1393,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearNackCount() {
       nackCount = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1348,9 +1412,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setPacketsSent(java.lang.Integer value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.packetsSent = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1359,7 +1423,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'packetsSent' field has been set, false otherwise.
       */
     public boolean hasPacketsSent() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1369,7 +1433,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearPacketsSent() {
       packetsSent = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1388,9 +1452,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setPliCount(java.lang.Integer value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.pliCount = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1399,7 +1463,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'pliCount' field has been set, false otherwise.
       */
     public boolean hasPliCount() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1409,7 +1473,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearPliCount() {
       pliCount = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1428,9 +1492,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setQpSum(java.lang.Double value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.qpSum = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1439,7 +1503,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'qpSum' field has been set, false otherwise.
       */
     public boolean hasQpSum() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1449,7 +1513,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearQpSum() {
       qpSum = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1468,9 +1532,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setQualityLimitationReason(org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.qualityLimitationReason = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1479,7 +1543,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'qualityLimitationReason' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationReason() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1489,7 +1553,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearQualityLimitationReason() {
       qualityLimitationReason = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1508,9 +1572,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setQualityLimitationResolutionChanges(java.lang.Long value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.qualityLimitationResolutionChanges = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1519,7 +1583,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'qualityLimitationResolutionChanges' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationResolutionChanges() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -1529,7 +1593,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearQualityLimitationResolutionChanges() {
       qualityLimitationResolutionChanges = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1548,9 +1612,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setRemoteID(java.lang.String value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.remoteID = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -1559,7 +1623,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'remoteID' field has been set, false otherwise.
       */
     public boolean hasRemoteID() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -1569,7 +1633,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearRemoteID() {
       remoteID = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -1588,9 +1652,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setRetransmittedBytesSent(java.lang.Long value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.retransmittedBytesSent = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -1599,7 +1663,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'retransmittedBytesSent' field has been set, false otherwise.
       */
     public boolean hasRetransmittedBytesSent() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -1609,7 +1673,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearRetransmittedBytesSent() {
       retransmittedBytesSent = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -1628,9 +1692,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setRetransmittedPacketsSent(java.lang.Integer value) {
-      validate(fields()[20], value);
+      validate(fields()[21], value);
       this.retransmittedPacketsSent = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -1639,7 +1703,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'retransmittedPacketsSent' field has been set, false otherwise.
       */
     public boolean hasRetransmittedPacketsSent() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -1649,7 +1713,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearRetransmittedPacketsSent() {
       retransmittedPacketsSent = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -1668,9 +1732,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setSsrc(long value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.ssrc = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -1679,7 +1743,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'ssrc' field has been set, false otherwise.
       */
     public boolean hasSsrc() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -1688,7 +1752,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearSsrc() {
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -1707,9 +1771,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setTotalEncodedBytesTarget(java.lang.Long value) {
-      validate(fields()[22], value);
+      validate(fields()[23], value);
       this.totalEncodedBytesTarget = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -1718,7 +1782,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'totalEncodedBytesTarget' field has been set, false otherwise.
       */
     public boolean hasTotalEncodedBytesTarget() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[23];
     }
 
 
@@ -1728,7 +1792,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearTotalEncodedBytesTarget() {
       totalEncodedBytesTarget = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -1747,9 +1811,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setTotalEncodeTime(java.lang.Double value) {
-      validate(fields()[23], value);
+      validate(fields()[24], value);
       this.totalEncodeTime = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -1758,7 +1822,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'totalEncodeTime' field has been set, false otherwise.
       */
     public boolean hasTotalEncodeTime() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[24];
     }
 
 
@@ -1768,7 +1832,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearTotalEncodeTime() {
       totalEncodeTime = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -1787,9 +1851,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setTotalPacketSendDelay(java.lang.Double value) {
-      validate(fields()[24], value);
+      validate(fields()[25], value);
       this.totalPacketSendDelay = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -1798,7 +1862,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'totalPacketSendDelay' field has been set, false otherwise.
       */
     public boolean hasTotalPacketSendDelay() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[25];
     }
 
 
@@ -1808,7 +1872,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearTotalPacketSendDelay() {
       totalPacketSendDelay = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -1827,9 +1891,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setTrackID(java.lang.String value) {
-      validate(fields()[25], value);
+      validate(fields()[26], value);
       this.trackID = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -1838,7 +1902,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'trackID' field has been set, false otherwise.
       */
     public boolean hasTrackID() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[26];
     }
 
 
@@ -1848,7 +1912,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearTrackID() {
       trackID = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -1867,9 +1931,9 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder setTransportID(java.lang.String value) {
-      validate(fields()[26], value);
+      validate(fields()[27], value);
       this.transportID = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -1878,7 +1942,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'transportID' field has been set, false otherwise.
       */
     public boolean hasTransportID() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[27];
     }
 
 
@@ -1888,7 +1952,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public org.observertc.webrtc.common.reports.avro.OutboundRTP.Builder clearTransportID() {
       transportID = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -1898,32 +1962,33 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       try {
         OutboundRTP record = new OutboundRTP();
         record.peerConnectionUUID = fieldSetFlags()[0] ? this.peerConnectionUUID : (java.lang.String) defaultValue(fields()[0]);
-        record.bytesSent = fieldSetFlags()[1] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[1]);
-        record.codecID = fieldSetFlags()[2] ? this.codecID : (java.lang.String) defaultValue(fields()[2]);
-        record.encoderImplementation = fieldSetFlags()[3] ? this.encoderImplementation : (java.lang.String) defaultValue(fields()[3]);
-        record.firCount = fieldSetFlags()[4] ? this.firCount : (java.lang.Integer) defaultValue(fields()[4]);
-        record.framesEncoded = fieldSetFlags()[5] ? this.framesEncoded : (java.lang.Integer) defaultValue(fields()[5]);
-        record.headerBytesSent = fieldSetFlags()[6] ? this.headerBytesSent : (java.lang.Long) defaultValue(fields()[6]);
-        record.id = fieldSetFlags()[7] ? this.id : (java.lang.String) defaultValue(fields()[7]);
-        record.isRemote = fieldSetFlags()[8] ? this.isRemote : (java.lang.Boolean) defaultValue(fields()[8]);
-        record.keyFramesEncoded = fieldSetFlags()[9] ? this.keyFramesEncoded : (java.lang.Long) defaultValue(fields()[9]);
-        record.mediaSourceID = fieldSetFlags()[10] ? this.mediaSourceID : (java.lang.String) defaultValue(fields()[10]);
-        record.mediaType = fieldSetFlags()[11] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[11]);
-        record.nackCount = fieldSetFlags()[12] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[12]);
-        record.packetsSent = fieldSetFlags()[13] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[13]);
-        record.pliCount = fieldSetFlags()[14] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[14]);
-        record.qpSum = fieldSetFlags()[15] ? this.qpSum : (java.lang.Double) defaultValue(fields()[15]);
-        record.qualityLimitationReason = fieldSetFlags()[16] ? this.qualityLimitationReason : (org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason) defaultValue(fields()[16]);
-        record.qualityLimitationResolutionChanges = fieldSetFlags()[17] ? this.qualityLimitationResolutionChanges : (java.lang.Long) defaultValue(fields()[17]);
-        record.remoteID = fieldSetFlags()[18] ? this.remoteID : (java.lang.String) defaultValue(fields()[18]);
-        record.retransmittedBytesSent = fieldSetFlags()[19] ? this.retransmittedBytesSent : (java.lang.Long) defaultValue(fields()[19]);
-        record.retransmittedPacketsSent = fieldSetFlags()[20] ? this.retransmittedPacketsSent : (java.lang.Integer) defaultValue(fields()[20]);
-        record.ssrc = fieldSetFlags()[21] ? this.ssrc : (java.lang.Long) defaultValue(fields()[21]);
-        record.totalEncodedBytesTarget = fieldSetFlags()[22] ? this.totalEncodedBytesTarget : (java.lang.Long) defaultValue(fields()[22]);
-        record.totalEncodeTime = fieldSetFlags()[23] ? this.totalEncodeTime : (java.lang.Double) defaultValue(fields()[23]);
-        record.totalPacketSendDelay = fieldSetFlags()[24] ? this.totalPacketSendDelay : (java.lang.Double) defaultValue(fields()[24]);
-        record.trackID = fieldSetFlags()[25] ? this.trackID : (java.lang.String) defaultValue(fields()[25]);
-        record.transportID = fieldSetFlags()[26] ? this.transportID : (java.lang.String) defaultValue(fields()[26]);
+        record.mediaUnit = fieldSetFlags()[1] ? this.mediaUnit : (java.lang.String) defaultValue(fields()[1]);
+        record.bytesSent = fieldSetFlags()[2] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[2]);
+        record.codecID = fieldSetFlags()[3] ? this.codecID : (java.lang.String) defaultValue(fields()[3]);
+        record.encoderImplementation = fieldSetFlags()[4] ? this.encoderImplementation : (java.lang.String) defaultValue(fields()[4]);
+        record.firCount = fieldSetFlags()[5] ? this.firCount : (java.lang.Integer) defaultValue(fields()[5]);
+        record.framesEncoded = fieldSetFlags()[6] ? this.framesEncoded : (java.lang.Integer) defaultValue(fields()[6]);
+        record.headerBytesSent = fieldSetFlags()[7] ? this.headerBytesSent : (java.lang.Long) defaultValue(fields()[7]);
+        record.id = fieldSetFlags()[8] ? this.id : (java.lang.String) defaultValue(fields()[8]);
+        record.isRemote = fieldSetFlags()[9] ? this.isRemote : (java.lang.Boolean) defaultValue(fields()[9]);
+        record.keyFramesEncoded = fieldSetFlags()[10] ? this.keyFramesEncoded : (java.lang.Long) defaultValue(fields()[10]);
+        record.mediaSourceID = fieldSetFlags()[11] ? this.mediaSourceID : (java.lang.String) defaultValue(fields()[11]);
+        record.mediaType = fieldSetFlags()[12] ? this.mediaType : (org.observertc.webrtc.common.reports.avro.MediaType) defaultValue(fields()[12]);
+        record.nackCount = fieldSetFlags()[13] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[13]);
+        record.packetsSent = fieldSetFlags()[14] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[14]);
+        record.pliCount = fieldSetFlags()[15] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[15]);
+        record.qpSum = fieldSetFlags()[16] ? this.qpSum : (java.lang.Double) defaultValue(fields()[16]);
+        record.qualityLimitationReason = fieldSetFlags()[17] ? this.qualityLimitationReason : (org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason) defaultValue(fields()[17]);
+        record.qualityLimitationResolutionChanges = fieldSetFlags()[18] ? this.qualityLimitationResolutionChanges : (java.lang.Long) defaultValue(fields()[18]);
+        record.remoteID = fieldSetFlags()[19] ? this.remoteID : (java.lang.String) defaultValue(fields()[19]);
+        record.retransmittedBytesSent = fieldSetFlags()[20] ? this.retransmittedBytesSent : (java.lang.Long) defaultValue(fields()[20]);
+        record.retransmittedPacketsSent = fieldSetFlags()[21] ? this.retransmittedPacketsSent : (java.lang.Integer) defaultValue(fields()[21]);
+        record.ssrc = fieldSetFlags()[22] ? this.ssrc : (java.lang.Long) defaultValue(fields()[22]);
+        record.totalEncodedBytesTarget = fieldSetFlags()[23] ? this.totalEncodedBytesTarget : (java.lang.Long) defaultValue(fields()[23]);
+        record.totalEncodeTime = fieldSetFlags()[24] ? this.totalEncodeTime : (java.lang.Double) defaultValue(fields()[24]);
+        record.totalPacketSendDelay = fieldSetFlags()[25] ? this.totalPacketSendDelay : (java.lang.Double) defaultValue(fields()[25]);
+        record.trackID = fieldSetFlags()[26] ? this.trackID : (java.lang.String) defaultValue(fields()[26]);
+        record.transportID = fieldSetFlags()[27] ? this.transportID : (java.lang.String) defaultValue(fields()[27]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -1957,6 +2022,8 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
     throws java.io.IOException
   {
     out.writeString(this.peerConnectionUUID);
+
+    out.writeString(this.mediaUnit);
 
     if (this.bytesSent == null) {
       out.writeIndex(0);
@@ -2157,6 +2224,8 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
     if (fieldOrder == null) {
       this.peerConnectionUUID = in.readString();
 
+      this.mediaUnit = in.readString();
+
       if (in.readIndex() != 1) {
         in.readNull();
         this.bytesSent = null;
@@ -2325,13 +2394,17 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
       }
 
     } else {
-      for (int i = 0; i < 27; i++) {
+      for (int i = 0; i < 28; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.peerConnectionUUID = in.readString();
           break;
 
         case 1:
+          this.mediaUnit = in.readString();
+          break;
+
+        case 2:
           if (in.readIndex() != 1) {
             in.readNull();
             this.bytesSent = null;
@@ -2340,7 +2413,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 2:
+        case 3:
           if (in.readIndex() != 1) {
             in.readNull();
             this.codecID = null;
@@ -2349,7 +2422,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 3:
+        case 4:
           if (in.readIndex() != 1) {
             in.readNull();
             this.encoderImplementation = null;
@@ -2358,7 +2431,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 4:
+        case 5:
           if (in.readIndex() != 1) {
             in.readNull();
             this.firCount = null;
@@ -2367,7 +2440,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 5:
+        case 6:
           if (in.readIndex() != 1) {
             in.readNull();
             this.framesEncoded = null;
@@ -2376,7 +2449,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 6:
+        case 7:
           if (in.readIndex() != 1) {
             in.readNull();
             this.headerBytesSent = null;
@@ -2385,7 +2458,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 7:
+        case 8:
           if (in.readIndex() != 1) {
             in.readNull();
             this.id = null;
@@ -2394,7 +2467,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 8:
+        case 9:
           if (in.readIndex() != 1) {
             in.readNull();
             this.isRemote = null;
@@ -2403,7 +2476,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 9:
+        case 10:
           if (in.readIndex() != 1) {
             in.readNull();
             this.keyFramesEncoded = null;
@@ -2412,7 +2485,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 10:
+        case 11:
           if (in.readIndex() != 1) {
             in.readNull();
             this.mediaSourceID = null;
@@ -2421,11 +2494,11 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 11:
+        case 12:
           this.mediaType = org.observertc.webrtc.common.reports.avro.MediaType.values()[in.readEnum()];
           break;
 
-        case 12:
+        case 13:
           if (in.readIndex() != 1) {
             in.readNull();
             this.nackCount = null;
@@ -2434,7 +2507,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 13:
+        case 14:
           if (in.readIndex() != 1) {
             in.readNull();
             this.packetsSent = null;
@@ -2443,7 +2516,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 14:
+        case 15:
           if (in.readIndex() != 1) {
             in.readNull();
             this.pliCount = null;
@@ -2452,7 +2525,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 15:
+        case 16:
           if (in.readIndex() != 1) {
             in.readNull();
             this.qpSum = null;
@@ -2461,11 +2534,11 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 16:
+        case 17:
           this.qualityLimitationReason = org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason.values()[in.readEnum()];
           break;
 
-        case 17:
+        case 18:
           if (in.readIndex() != 1) {
             in.readNull();
             this.qualityLimitationResolutionChanges = null;
@@ -2474,7 +2547,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 18:
+        case 19:
           if (in.readIndex() != 1) {
             in.readNull();
             this.remoteID = null;
@@ -2483,7 +2556,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 19:
+        case 20:
           if (in.readIndex() != 1) {
             in.readNull();
             this.retransmittedBytesSent = null;
@@ -2492,7 +2565,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 20:
+        case 21:
           if (in.readIndex() != 1) {
             in.readNull();
             this.retransmittedPacketsSent = null;
@@ -2501,11 +2574,11 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 21:
+        case 22:
           this.ssrc = in.readLong();
           break;
 
-        case 22:
+        case 23:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalEncodedBytesTarget = null;
@@ -2514,7 +2587,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 23:
+        case 24:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalEncodeTime = null;
@@ -2523,7 +2596,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 24:
+        case 25:
           if (in.readIndex() != 1) {
             in.readNull();
             this.totalPacketSendDelay = null;
@@ -2532,7 +2605,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 25:
+        case 26:
           if (in.readIndex() != 1) {
             in.readNull();
             this.trackID = null;
@@ -2541,7 +2614,7 @@ public class OutboundRTP extends org.apache.avro.specific.SpecificRecordBase imp
           }
           break;
 
-        case 26:
+        case 27:
           if (in.readIndex() != 1) {
             in.readNull();
             this.transportID = null;

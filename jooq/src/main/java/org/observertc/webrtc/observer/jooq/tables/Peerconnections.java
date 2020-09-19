@@ -32,7 +32,7 @@ import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Peerconnections extends TableImpl<PeerconnectionsRecord> {
 
-    private static final long serialVersionUID = -1132466978;
+    private static final long serialVersionUID = -1629431635;
 
     /**
      * The reference instance of <code>WebRTCObserver.PeerConnections</code>
@@ -78,9 +78,9 @@ public class Peerconnections extends TableImpl<PeerconnectionsRecord> {
     public final TableField<PeerconnectionsRecord, Long> DETACHED = createField(DSL.name("detached"), org.jooq.impl.SQLDataType.BIGINT, this, "");
 
     /**
-     * The column <code>WebRTCObserver.PeerConnections.bridgeID</code>.
+     * The column <code>WebRTCObserver.PeerConnections.mediaUnitID</code>.
      */
-    public final TableField<PeerconnectionsRecord, String> BRIDGEID = createField(DSL.name("bridgeID"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PeerconnectionsRecord, String> MEDIAUNITID = createField(DSL.name("mediaUnitID"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>WebRTCObserver.PeerConnections.browserID</code>.

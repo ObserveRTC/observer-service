@@ -1,24 +1,26 @@
 package org.observertc.webrtc.observer.evaluators.valueadapters;
 
+import io.micronaut.context.annotation.Prototype;
 import java.nio.ByteBuffer;
 
+@Prototype
 public class NumberConverter {
 
-	public static <T extends Number> Integer toInt(T value) {
+	public <T extends Number> Integer toInt(T value) {
 		if (value == null) {
 			return null;
 		}
 		return value.intValue();
 	}
 
-	public static <T extends Number> Short toShort(T value) {
+	public <T extends Number> Short toShort(T value) {
 		if (value == null) {
 			return null;
 		}
 		return value.shortValue();
 	}
 
-	public static byte[] longToBytes(Long value) {
+	public byte[] longToBytes(Long value) {
 		if (value == null) {
 			return null;
 		}
@@ -27,17 +29,25 @@ public class NumberConverter {
 		return buffer.array();
 	}
 
-	public static <T extends Number> Double toDouble(T value) {
+	public <T extends Number> Double toDouble(T value) {
 		if (value == null) {
 			return null;
 		}
 		return value.doubleValue();
 	}
 
-	public static <T extends Number> Long toLong(T value) {
+	public <T extends Number> Long toLong(T value) {
 		if (value == null) {
 			return null;
 		}
 		return value.longValue();
 	}
+
+	public <T extends Number> Float toFloat(T value) {
+		if (value == null) {
+			return null;
+		}
+		return value.floatValue();
+	}
+
 }

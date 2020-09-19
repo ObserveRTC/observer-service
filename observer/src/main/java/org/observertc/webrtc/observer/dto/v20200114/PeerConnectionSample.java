@@ -213,7 +213,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcreceivedrtpstreamstats-packetslost
 		 */
 		@JsonProperty("packetsLost")
-		public Long packetsLost;
+		public Integer packetsLost;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime
@@ -261,13 +261,13 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-fircount
 		 */
 		@JsonProperty("firCount")
-		public Long firCount;
+		public Integer firCount;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-framesencoded
 		 */
 		@JsonProperty("framesEncoded")
-		public Long framesEncoded;
+		public Integer framesEncoded;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-headerbytessent
@@ -300,19 +300,19 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount
 		 */
 		@JsonProperty("nackCount")
-		public Long nackCount;
+		public Integer nackCount;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtctransportstats-packetssent
 		 */
 		@JsonProperty("packetsSent")
-		public Long packetsSent;
+		public Integer packetsSent;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-plicount
 		 */
 		@JsonProperty("pliCount")
-		public Long pliCount;
+		public Integer pliCount;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-qpsum
@@ -345,7 +345,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-retransmittedpacketssent
 		 */
 		@JsonProperty("retransmittedPacketsSent")
-		public Long retransmittedPacketsSent;
+		public Integer retransmittedPacketsSent;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats-ssrc
@@ -357,7 +357,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-totalencodedbytestarget
 		 */
 		@JsonProperty("totalEncodedBytesTarget")
-		public Double totalEncodedBytesTarget;
+		public Long totalEncodedBytesTarget;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-totalencodetime
@@ -464,7 +464,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-availableoutgoingbitrate
 		 */
 		@JsonProperty("availableOutgoingBitrate")
-		public Long availableOutgoingBitrate;
+		public Integer availableOutgoingBitrate;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-bytesreceived
@@ -482,7 +482,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-consentrequestssent
 		 */
 		@JsonProperty("consentRequestsSent")
-		public Long consentRequestsSent;
+		public Integer consentRequestsSent;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-currentroundtriptime
@@ -512,7 +512,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-remotecandidateid
 		 */
 		@JsonProperty("priority")
-		public Double priority;
+		public Long priority;
 
 		/**
 		 * The priority of the candidate pair
@@ -524,25 +524,25 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-requestsreceived
 		 */
 		@JsonProperty("requestsReceived")
-		public Long requestsReceived;
+		public Integer requestsReceived;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-requestssent
 		 */
 		@JsonProperty("requestsSent")
-		public Long requestsSent;
+		public Integer requestsSent;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-responsesreceived
 		 */
 		@JsonProperty("responsesReceived")
-		public Long responsesReceived;
+		public Integer responsesReceived;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-responsessent
 		 */
 		@JsonProperty("responsesSent")
-		public Long responsesSent;
+		public Integer responsesSent;
 
 		/**
 		 * https://tools.ietf.org/html/rfc8445#section-6.1.2.6. The unknown state indicates value
@@ -607,7 +607,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats-port
 		 */
 		@JsonProperty("port")
-		public Long port;
+		public Integer port;
 
 		/**
 		 * The Priority of the candidate
@@ -660,7 +660,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats-port
 		 */
 		@JsonProperty("port")
-		public Long port;
+		public Integer port;
 
 		/**
 		 * The Priority of the candidate
@@ -711,25 +711,25 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-fecpacketsdiscarded
 		 */
 		@JsonProperty("fecPacketsDiscarded")
-		public Long fecPacketsDiscarded;
+		public Integer fecPacketsDiscarded;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-fecpacketsreceived
 		 */
 		@JsonProperty("fecPacketsReceived")
-		public Long fecPacketsReceived;
+		public Integer fecPacketsReceived;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-fircount
 		 */
 		@JsonProperty("firCount")
-		public Long firCount;
+		public Integer firCount;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-framesdecoded
 		 */
 		@JsonProperty("framesDecoded")
-		public Long framesDecoded;
+		public Integer framesDecoded;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-headerbytesreceived
@@ -759,7 +759,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-framesdecoded
 		 */
 		@JsonProperty("keyFramesDecoded")
-		public Long keyFramesDecoded;
+		public Integer keyFramesDecoded;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-lastpacketreceivedtimestamp
@@ -774,25 +774,25 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount
 		 */
 		@JsonProperty("nackCount")
-		public Long nackCount;
+		public Integer nackCount;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcreceivedrtpstreamstats-packetslost
 		 */
 		@JsonProperty("packetsLost")
-		public Long packetsLost;
+		public Integer packetsLost;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcreceivedrtpstreamstats-packetsreceived
 		 */
 		@JsonProperty("packetsReceived")
-		public Long packetsReceived;
+		public Integer packetsReceived;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-plicount
 		 */
 		@JsonProperty("pliCount")
-		public Long pliCount;
+		public Integer pliCount;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-qpsum

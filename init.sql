@@ -29,7 +29,7 @@ CREATE TABLE `WebRTCObserver`.`PeerConnections`
     `joined`              BIGINT(8),
     `updated`             BIGINT(8),
     `detached`            BIGINT(8),
-    `bridgeID`            VARCHAR (255),
+    `mediaUnitID`         VARCHAR (255),
     `browserID`           VARCHAR (255),
     `providedUserID`      VARCHAR (255),
     `providedCallID`      VARCHAR (255),

@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Peerconnections implements Serializable {
 
-    private static final long serialVersionUID = 883464582;
+    private static final long serialVersionUID = 1971148571;
 
     private final byte[] peerconnectionuuid;
     private final byte[] calluuid;
@@ -24,7 +24,7 @@ public class Peerconnections implements Serializable {
     private final Long   joined;
     private final Long   updated;
     private final Long   detached;
-    private final String bridgeid;
+    private final String mediaunitid;
     private final String browserid;
     private final String provideduserid;
     private final String providedcallid;
@@ -38,7 +38,7 @@ public class Peerconnections implements Serializable {
         this.joined = value.joined;
         this.updated = value.updated;
         this.detached = value.detached;
-        this.bridgeid = value.bridgeid;
+        this.mediaunitid = value.mediaunitid;
         this.browserid = value.browserid;
         this.provideduserid = value.provideduserid;
         this.providedcallid = value.providedcallid;
@@ -53,7 +53,7 @@ public class Peerconnections implements Serializable {
         Long   joined,
         Long   updated,
         Long   detached,
-        String bridgeid,
+        String mediaunitid,
         String browserid,
         String provideduserid,
         String providedcallid,
@@ -66,7 +66,7 @@ public class Peerconnections implements Serializable {
         this.joined = joined;
         this.updated = updated;
         this.detached = detached;
-        this.bridgeid = bridgeid;
+        this.mediaunitid = mediaunitid;
         this.browserid = browserid;
         this.provideduserid = provideduserid;
         this.providedcallid = providedcallid;
@@ -103,8 +103,8 @@ public class Peerconnections implements Serializable {
     }
 
     @Size(max = 255)
-    public String getBridgeid() {
-        return this.bridgeid;
+    public String getMediaunitid() {
+        return this.mediaunitid;
     }
 
     @Size(max = 255)
@@ -142,7 +142,7 @@ public class Peerconnections implements Serializable {
         sb.append(", ").append(joined);
         sb.append(", ").append(updated);
         sb.append(", ").append(detached);
-        sb.append(", ").append(bridgeid);
+        sb.append(", ").append(mediaunitid);
         sb.append(", ").append(browserid);
         sb.append(", ").append(provideduserid);
         sb.append(", ").append(providedcallid);

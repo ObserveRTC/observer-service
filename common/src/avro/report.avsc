@@ -3,13 +3,7 @@
   "name" : "Report",
   "namespace" : "org.observertc.webrtc.common.reports.avro",
   "fields" : [ {
-    "name" : "service",
-    "type" : "string"
-  }, {
-    "name" : "bridge",
-    "type" : "string"
-  }, {
-    "name" : "callUUID",
+    "name" : "serviceID",
     "type" : "string"
   }, {
     "name" : "callName",
@@ -23,16 +17,31 @@
     "type" : [ "null", {
       "type" : "record",
       "name" : "InitiatedCall",
-      "fields" : [ ]
+      "fields" : [ {
+        "name" : "callUUID",
+        "type" : "string"
+      } ]
     }, {
       "type" : "record",
       "name" : "FinishedCall",
-      "fields" : [ ]
+      "fields" : [ {
+        "name" : "callUUID",
+        "type" : "string"
+      } ]
     }, {
       "type" : "record",
       "name" : "JoinedPeerConnection",
       "fields" : [ {
         "name" : "peerConnectionUUID",
+        "type" : "string"
+      }, {
+        "name" : "callUUID",
+        "type" : "string"
+      }, {
+        "name" : "mediaUnitID",
+        "type" : "string"
+      }, {
+        "name" : "userID",
         "type" : "string"
       } ]
     }, {
@@ -41,12 +50,24 @@
       "fields" : [ {
         "name" : "peerConnectionUUID",
         "type" : "string"
+      }, {
+        "name" : "callUUID",
+        "type" : "string"
+      }, {
+        "name" : "mediaUnitID",
+        "type" : "string"
+      }, {
+        "name" : "userID",
+        "type" : "string"
       } ]
     }, {
       "type" : "record",
       "name" : "InboundRTP",
       "fields" : [ {
         "name" : "peerConnectionUUID",
+        "type" : "string"
+      }, {
+        "name" : "mediaUnit",
         "type" : "string"
       }, {
         "name" : "bytesReceived",
@@ -82,7 +103,7 @@
         "default" : null
       }, {
         "name" : "headerBytesReceived",
-        "type" : [ "null", "int" ],
+        "type" : [ "null", "long" ],
         "default" : null
       }, {
         "name" : "id",
@@ -130,7 +151,7 @@
         "default" : null
       }, {
         "name" : "qpSum",
-        "type" : [ "null", "int" ],
+        "type" : [ "null", "double" ],
         "default" : null
       }, {
         "name" : "ssrc",
@@ -161,6 +182,9 @@
       "name" : "OutboundRTP",
       "fields" : [ {
         "name" : "peerConnectionUUID",
+        "type" : "string"
+      }, {
+        "name" : "mediaUnit",
         "type" : "string"
       }, {
         "name" : "bytesSent",
@@ -277,6 +301,9 @@
         "name" : "peerConnectionUUID",
         "type" : "string"
       }, {
+        "name" : "mediaUnit",
+        "type" : "string"
+      }, {
         "name" : "codecID",
         "type" : [ "null", "string" ],
         "default" : null
@@ -319,6 +346,9 @@
         "name" : "peerConnectionUUID",
         "type" : "string"
       }, {
+        "name" : "mediaUnit",
+        "type" : "string"
+      }, {
         "name" : "availableOutgoingBitrate",
         "type" : [ "null", "int" ],
         "default" : null
@@ -351,7 +381,7 @@
         "default" : null
       }, {
         "name" : "priority",
-        "type" : [ "null", "int" ],
+        "type" : [ "null", "long" ],
         "default" : null
       }, {
         "name" : "remoteCandidateID",
@@ -377,7 +407,7 @@
         "name" : "state",
         "type" : {
           "type" : "enum",
-          "name" : "CandidateType",
+          "name" : "ICEState",
           "symbols" : [ "HOST", "PRFLX", "RELAY", "SRFLX", "UNKNOWN" ]
         },
         "default" : "UNKNOWN"
@@ -391,7 +421,7 @@
         "default" : null
       }, {
         "name" : "writable",
-        "type" : [ "null", "string" ],
+        "type" : [ "null", "boolean" ],
         "default" : null
       } ]
     }, {
@@ -401,8 +431,15 @@
         "name" : "peerConnectionUUID",
         "type" : "string"
       }, {
+        "name" : "mediaUnit",
+        "type" : "string"
+      }, {
         "name" : "candidateType",
-        "type" : "MediaType"
+        "type" : {
+          "type" : "enum",
+          "name" : "CandidateType",
+          "symbols" : [ "HOST", "PRFLX", "RELAY", "SRFLX", "UNKNOWN" ]
+        }
       }, {
         "name" : "deleted",
         "type" : [ "null", "boolean" ],
@@ -444,6 +481,9 @@
       "name" : "ICELocalCandidate",
       "fields" : [ {
         "name" : "peerConnectionUUID",
+        "type" : "string"
+      }, {
+        "name" : "mediaUnit",
         "type" : "string"
       }, {
         "name" : "candidateType",
@@ -489,6 +529,9 @@
       "name" : "Track",
       "fields" : [ {
         "name" : "peerConnectionUUID",
+        "type" : "string"
+      }, {
+        "name" : "mediaUnit",
         "type" : "string"
       }, {
         "name" : "concealedSamples",
@@ -573,6 +616,9 @@
         "name" : "peerConnectionUUID",
         "type" : "string"
       }, {
+        "name" : "mediaUnit",
+        "type" : "string"
+      }, {
         "name" : "audioLevel",
         "type" : [ "null", "float" ],
         "default" : null
@@ -620,3 +666,4 @@
     "default" : "UNKNOWN"
   } ]
 }
+
