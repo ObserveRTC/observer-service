@@ -8,19 +8,11 @@ import java.util.List;
 @ConfigurationProperties("evaluators")
 public class EvaluatorsConfig {
 
-	public ActiveStreamsConfig activeStreams;
-
 	public SampleTransformerConfig sampleTransformer;
 
 	public CallCleanerConfig callCleaner;
 
 	public ReportDraftsConfig reportDrafts;
-
-	@ConfigurationProperties("activeStreams")
-	public static class ActiveStreamsConfig {
-		public int missingBrowserIDMapSize;
-		public int maxTimeBrowserIdCanMiss;
-	}
 
 	@ConfigurationProperties("reportDrafts")
 	public static class ReportDraftsConfig {

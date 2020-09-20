@@ -11,6 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.observertc.webrtc.common.UUIDAdapter;
+import org.observertc.webrtc.common.reports.avro.FinishedCall;
+import org.observertc.webrtc.common.reports.avro.InitiatedCall;
+import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
 import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
@@ -100,7 +104,7 @@ public class ReportDraftsEvaluator {
 
 
 	private void evaluateInitiatedCallReport(InitiatedCallReportDraft initiatedCallReport) {
-		Long firstJoinedPC = null;
+		PeerconnectionsRecord firstJoinedPC = null;
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findByCallUUID(initiatedCallReport.callUUID).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
@@ -112,34 +116,71 @@ public class ReportDraftsEvaluator {
 						"now the joined timestamp anywhere.");
 				continue;
 			}
-			if (firstJoinedPC == null || record.getJoined().compareTo(firstJoinedPC) < 0) {
-				firstJoinedPC = record.getJoined();
+			if (firstJoinedPC == null) {
+				firstJoinedPC = record;
 			}
 		}
 		if (firstJoinedPC == null) {
 			logger.warn("No first joined PC is found. ReportDraft is dropped. {}", initiatedCallReport.toString());
 			return;
 		}
-		// TODO: send the report
+		//  || record.getJoined().compareTo(firstJoinedPC) < 0
+		String callUUIDStr;
+		if (firstJoinedPC.getCalluuid() != null) {
+			callUUIDStr = firstJoinedPC.getCalluuid().toString();
+		} else {
+			callUUIDStr = "NOT VALID UUID";
+		}
+
+		Object payload = InitiatedCall.newBuilder()
+				.setCallUUID(callUUIDStr)
+				.build();
+		UUID serviceUUID = UUIDAdapter.toUUIDOrDefault(firstJoinedPC.getServiceuuid(), null);
+		this.reportSink.sendReport(
+				serviceUUID,
+				firstJoinedPC.getProvidedcallid(),
+				serviceUUID.toString(),
+				ReportType.INITIATED_CALL,
+				firstJoinedPC.getJoined(),
+				payload
+		);
 	}
 
 	private void evaluateFinishedCallReport(FinishedCallReportDraft finishedCallReport) {
-		Long lastDetachedPC = null;
+		PeerconnectionsRecord lastDetachedPC = null;
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findByCallUUID(finishedCallReport.callUUID).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
 			if (record.getDetached() == null) {
 				continue;
 			}
-			if (lastDetachedPC == null || 0 < record.getDetached().compareTo(lastDetachedPC)) {
-				lastDetachedPC = record.getJoined();
+			if (lastDetachedPC == null) {
+				lastDetachedPC = record;
 			}
 		}
 		if (lastDetachedPC == null) {
 			logger.warn("No last detached PC is found. ReportDraft is dropped. {}", finishedCallReport.toString());
 			return;
 		}
-		// TODO: send the report
+
+		String callUUIDStr;
+		if (lastDetachedPC.getCalluuid() != null) {
+			callUUIDStr = lastDetachedPC.getCalluuid().toString();
+		} else {
+			callUUIDStr = "NOT VALID UUID";
+		}
+		Object payload = FinishedCall.newBuilder()
+				.setCallUUID(callUUIDStr)
+				.build();
+		UUID serviceUUID = UUIDAdapter.toUUIDOrDefault(lastDetachedPC.getServiceuuid(), null);
+		this.reportSink.sendReport(
+				serviceUUID,
+				lastDetachedPC.getProvidedcallid(),
+				serviceUUID.toString(),
+				ReportType.FINISHED_CALL,
+				lastDetachedPC.getUpdated(),
+				payload
+		);
 	}
 
 }

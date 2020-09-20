@@ -100,7 +100,7 @@ public class ActiveStreamsEvaluator {
 						sample.serviceUUID,
 						sample.peerConnectionUUID,
 						sample.timestamp,
-						pcSample.browserID,
+						pcSample.browserId,
 						pcSample.callId,
 						sample.timeZoneID,
 						pcSample.userId,
@@ -256,10 +256,16 @@ public class ActiveStreamsEvaluator {
 			logger.error("Exception happened at saving new peer connection, report won't be sent", ex);
 			return;
 		}
-
+		UUID callUUID = UUIDAdapter.toUUIDOrDefault(callUUIDBytes, null);
+		String callUUIDStr;
+		if (callUUID != null) {
+			callUUIDStr = callUUID.toString();
+		} else {
+			callUUIDStr = "NOT VALID UUID";
+		}
 		JoinedPeerConnection joinedPC = JoinedPeerConnection.newBuilder()
 				.setMediaUnitID(mediaStreamUpdate.mediaUnitID)
-				.setCallUUID(new String(callUUIDBytes))
+				.setCallUUID(callUUIDStr)
 				.setPeerConnectionUUID(mediaStreamUpdate.peerConnectionUUID.toString())
 				.build();
 

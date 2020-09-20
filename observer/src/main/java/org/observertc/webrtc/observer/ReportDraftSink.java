@@ -23,7 +23,7 @@ public class ReportDraftSink {
 	}
 
 	public Future<RecordMetadata> send(UUID peerConnectionUUID, ReportDraft reportDraft) {
-		return this.reportDraftProducer.send(new ProducerRecord<UUID, ReportDraft>(this.config.observertcReportDrafts.topicName, peerConnectionUUID,
+		return this.reportDraftProducer.send(new ProducerRecord<UUID, ReportDraft>(this.config.reportDrafts.topicName, peerConnectionUUID,
 				reportDraft));
 	}
 

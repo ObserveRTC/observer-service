@@ -6,21 +6,14 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 public class KafkaTopicsConfiguration {
 //	public boolean createIfNotExists = true;
 
-	public WebExtrAppSamplesConfig webExtrAppSamples;
 	public ObservedPCSConfig observedPCS;
-	public ObserveRTCReportsConfig observertcReports;
-	public ObserveRTCReportDraftsConfig observertcReportDrafts;
-
+	public ObserveRTCReportsConfig reports;
+	public ObserveRTCReportDraftsConfig reportDrafts;
 
 	public static class TopicConfig {
 		public String topicName;
 		public int onCreatePartitionNums;
 		public int onCreateReplicateFactor;
-	}
-
-	@ConfigurationProperties("webExtrAppSamples")
-	public static class WebExtrAppSamplesConfig extends TopicConfig {
-
 	}
 
 	@ConfigurationProperties("observedPCS")

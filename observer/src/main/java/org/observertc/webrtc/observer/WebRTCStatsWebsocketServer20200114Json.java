@@ -77,14 +77,14 @@ public class WebRTCStatsWebsocketServer20200114Json {
 			return;
 		}
 
-		if (sample.peerConnectionID == null) {
+		if (sample.peerConnectionId == null) {
 			logger.warn("Sample is dropped due to null peerconnection uuid");
 			return;
 		}
-		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionID);
+		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionId);
 
 		if (!peerConnectionUUIDHolder.isPresent()) {
-			logger.error("PC UUID is not parsable", sample.peerConnectionID);
+			logger.error("PC UUID is not parsable", sample.peerConnectionId);
 			return;
 		}
 		UUID peerConnectionUUID = peerConnectionUUIDHolder.get();

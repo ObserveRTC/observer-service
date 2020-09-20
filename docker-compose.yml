@@ -74,9 +74,9 @@ services:
     depends_on:
       - kafka
     command: "bash -c ' cub kafka-ready -b docker_kafka:29092 1 20 &&
-                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 12 --replication-factor 1 --topic webExtrAppSamples && \
-                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 6 --replication-factor 1 --topic observertcReports && \
-                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 4 --replication-factor 1 --topic observertcReportDrafts  \
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 12 --replication-factor 1 --topic observedPCS && \
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 6 --replication-factor 1 --topic reports && \
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 4 --replication-factor 1 --topic reportDrafts  \
                         sleep 30'"
     environment:
       # The following settings are listed here only to satisfy the image's requirements.
@@ -98,6 +98,7 @@ services:
       - '3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
 volumes:
   my-db:
     driver: local

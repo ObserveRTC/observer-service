@@ -80,10 +80,17 @@ dependencies {
     // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"
     compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
+    implementation 'org.jooq:jooq'
+
     // ------------ Datasource integration: MySQL ---------
     compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
     runtime "mysql:mysql-connector-java:${mysqlVersion}"
-    implementation 'org.jooq:jooq'
+
+    // ------------ Tracing -----------------
+//    compile "io.micronaut:micronaut-tracing"
+//    runtime 'io.zipkin.brave:brave-instrumentation-http'
+//    runtime 'io.zipkin.reporter2:zipkin-reporter'
+//    compile 'io.opentracing.brave:brave-opentracing'
 
     // ------------ Kafka streams ---------
 //    implementation "io.micronaut.configuration:micronaut-kafka-streams:$micronautKafkaStreamsVersion"

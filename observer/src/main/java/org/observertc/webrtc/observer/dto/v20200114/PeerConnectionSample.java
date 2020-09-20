@@ -10,18 +10,18 @@ import java.io.IOException;
 /**
  * A full sample a peer connection provides to the Observer
  */
-//@Schema(requiredProperties = {"peerConnectionID"})
+//@Schema(requiredProperties = {"peerConnectionId"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PeerConnectionSample {
 
-	@JsonProperty("browserID")
-	public String browserID;
+	@JsonProperty("browserId")
+	public String browserId;
 
 	@JsonProperty("iceStats")
 	public ICEStats iceStats;
 
 	@JsonProperty("peerConnectionId")
-	public String peerConnectionID;
+	public String peerConnectionId;
 
 	@JsonProperty("receiverStats")
 	public RTCStats receiverStats;
@@ -142,7 +142,7 @@ public class PeerConnectionSample {
 		 * The id of the media source the track is attached to
 		 */
 		@JsonProperty("mediaSourceId")
-		public String mediaSourceID;
+		public String mediaSourceId;
 
 		@JsonProperty("mediaType")
 		public RTCStreamMediaType mediaType;
@@ -185,7 +185,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats-codecid
 		 */
 		@JsonProperty("codecId")
-		public String codecID;
+		public String codecId;
 
 		/**
 		 * The id of the InboundRTP the client use in its dictionary
@@ -203,7 +203,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-localid
 		 */
 		@JsonProperty("localId")
-		public String localID;
+		public String localId;
 
 
 		@JsonProperty("mediaType")
@@ -231,7 +231,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats-transportid
 		 */
 		@JsonProperty("transportId")
-		public String transportID;
+		public String transportId;
 	}
 
 	/**
@@ -245,11 +245,8 @@ public class PeerConnectionSample {
 		@JsonProperty("bytesSent")
 		public Long bytesSent;
 
-		/**
-		 * https://www.w3.org/TR/webrtc-stats/#dom-rtctransportstats-bytessent
-		 */
-		@JsonProperty("codecID")
-		public String codecID;
+		@JsonProperty("codecId")
+		public String codecId;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-encoderimplementation
@@ -290,8 +287,8 @@ public class PeerConnectionSample {
 		@JsonProperty("keyFramesEncoded")
 		public Long keyFramesEncoded;
 
-		@JsonProperty("mediaSourceID")
-		public String mediaSourceID;
+		@JsonProperty("mediaSourceId")
+		public String mediaSourceId;
 
 		@JsonProperty("mediaType")
 		public RTCStreamMediaType mediaType;
@@ -332,8 +329,8 @@ public class PeerConnectionSample {
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-remoteid
 		 */
-		@JsonProperty("remoteID")
-		public String remoteID;
+		@JsonProperty("remoteid")
+		public String remoteid;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-retransmittedbytessent
@@ -374,14 +371,14 @@ public class PeerConnectionSample {
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcmediasourcestats-trackidentifier
 		 */
-		@JsonProperty("trackID")
-		public String trackID;
+		@JsonProperty("trackId")
+		public String trackId;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats-transportid
 		 */
-		@JsonProperty("transportID")
-		public String transportID;
+		@JsonProperty("transportId")
+		public String transportId;
 	}
 
 
@@ -431,8 +428,8 @@ public class PeerConnectionSample {
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcmediasourcestats-trackidentifier
 		 */
-		@JsonProperty("trackIdentifier")
-		public String trackIdentifier;
+		@JsonProperty("trackId")
+		public String trackId;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcvideosourcestats-width
@@ -499,8 +496,8 @@ public class PeerConnectionSample {
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-localcandidateid
 		 */
-		@JsonProperty("localCandidateID")
-		public String localCandidateID;
+		@JsonProperty("localCandidateId")
+		public String localCandidateId;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-nominated
@@ -517,8 +514,8 @@ public class PeerConnectionSample {
 		/**
 		 * The priority of the candidate pair
 		 */
-		@JsonProperty("remoteCandidateID")
-		public String remoteCandidateID;
+		@JsonProperty("remoteCandidateId")
+		public String remoteCandidateId;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-requestsreceived
@@ -557,8 +554,8 @@ public class PeerConnectionSample {
 		@JsonProperty("totalRoundTripTime")
 		public Double totalRoundTripTime;
 
-		@JsonProperty("transportID")
-		public String transportID;
+		@JsonProperty("transportId")
+		public String transportId;
 
 		@JsonProperty("writable")
 		public Boolean writable;
@@ -622,7 +619,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats-transportid
 		 */
 		@JsonProperty("transportId")
-		public String transportID;
+		public String transportId;
 	}
 
 	/**
@@ -675,7 +672,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats-transportid
 		 */
 		@JsonProperty("transportId")
-		public String transportID;
+		public String transportId;
 	}
 
 	/**
