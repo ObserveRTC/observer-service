@@ -329,8 +329,8 @@ public class PeerConnectionSample {
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-remoteid
 		 */
-		@JsonProperty("remoteid")
-		public String remoteid;
+		@JsonProperty("remoteId")
+		public String remoteId;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-retransmittedbytessent
