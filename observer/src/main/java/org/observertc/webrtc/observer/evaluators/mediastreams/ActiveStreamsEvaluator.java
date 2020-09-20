@@ -66,7 +66,7 @@ public class ActiveStreamsEvaluator {
 	}
 
 
-	@Topic("${kafkaTopics.webExtrAppSamples.topicName}")
+	@Topic("${kafkaTopics.observedPCS.topicName}")
 	public void receive(List<ObservedPCS> samples) {
 		Map<UUID, MediaStreamUpdate> updatedPCs = this.makeMediaStreamUpdates(samples);
 
