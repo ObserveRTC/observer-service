@@ -1,26 +1,44 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.reporter.bigquery;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.common.reports.AbstractReportProcessor;
 import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
-import org.observertc.webrtc.common.reports.FinishedCallReport;
-import org.observertc.webrtc.common.reports.ICECandidatePairReport;
-import org.observertc.webrtc.common.reports.ICELocalCandidateReport;
-import org.observertc.webrtc.common.reports.ICERemoteCandidateReport;
-import org.observertc.webrtc.common.reports.InboundRTPReport;
-import org.observertc.webrtc.common.reports.InitiatedCallReport;
 import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
-import org.observertc.webrtc.common.reports.MediaSourceReport;
-import org.observertc.webrtc.common.reports.OutboundRTPReport;
-import org.observertc.webrtc.common.reports.RemoteInboundRTPReport;
-import org.observertc.webrtc.common.reports.TrackReport;
+import org.observertc.webrtc.common.reports.avro.DetachedPeerConnection;
+import org.observertc.webrtc.common.reports.avro.FinishedCall;
+import org.observertc.webrtc.common.reports.avro.ICECandidatePair;
+import org.observertc.webrtc.common.reports.avro.ICELocalCandidate;
+import org.observertc.webrtc.common.reports.avro.ICERemoteCandidate;
+import org.observertc.webrtc.common.reports.avro.InboundRTP;
+import org.observertc.webrtc.common.reports.avro.InitiatedCall;
+import org.observertc.webrtc.common.reports.avro.JoinedPeerConnection;
+import org.observertc.webrtc.common.reports.avro.MediaSource;
+import org.observertc.webrtc.common.reports.avro.OutboundRTP;
+import org.observertc.webrtc.common.reports.avro.RemoteInboundRTP;
+import org.observertc.webrtc.common.reports.avro.Report;
+import org.observertc.webrtc.common.reports.avro.Track;
 import org.observertc.webrtc.reporter.Reporter;
 import org.observertc.webrtc.reporter.ReporterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class BigQueryReporter extends AbstractReportProcessor<Void> implements Reporter {
+public class BigQueryReporter implements Reporter {
 
 	private static final Logger logger = LoggerFactory.getLogger(BigQueryReporter.class);
 
@@ -71,39 +89,39 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processJoinedPeerConnectionReport(JoinedPeerConnectionReport report) {
-		JoinedPeerConnectionEntry joinedPeerConnection = JoinedPeerConnectionEntry.from((JoinedPeerConnectionReport) report);
+	public void processJoinedPeerConnectionReport(Report report, JoinedPeerConnection joinedPeerConnection) {
+		
+		JoinedPeerConnectionEntry joinedPeerConnection = JoinedPeerConnectionEntry.from((JoinedPeerConnection) report);
 //				joinedPeerConnections.insert(joinedPeerConnection);
 		joinedPeerConnections.add(joinedPeerConnection);
-		return null;
 	}
 
 	@Override
-	public Void processDetachedPeerConnectionReport(DetachedPeerConnectionReport report) {
-		DetachedPeerConnectionEntry detachedPeerConnectionEntry = DetachedPeerConnectionEntry.from((DetachedPeerConnectionReport) report);
+	public Void processDetachedPeerConnectionReport(DetachedPeerConnection report) {
+		DetachedPeerConnectionEntry detachedPeerConnectionEntry = DetachedPeerConnectionEntry.from((DetachedPeerConnection) report);
 //				detachedPeerConnections.insert(detachedPeerConnectionEntry);
 		detachedPeerConnections.add(detachedPeerConnectionEntry);
 		return null;
 	}
 
 	@Override
-	public Void processInitiatedCallReport(InitiatedCallReport report) {
-		InitiatedCallEntry initiatedCallEntry = InitiatedCallEntry.from((InitiatedCallReport) report);
+	public Void processInitiatedCallReport(InitiatedCall report) {
+		InitiatedCallEntry initiatedCallEntry = InitiatedCallEntry.from((InitiatedCall) report);
 //				initiatedCalls.insert(initiatedCallEntry);
 		initiatedCalls.add(initiatedCallEntry);
 		return null;
 	}
 
 	@Override
-	public Void processFinishedCallReport(FinishedCallReport report) {
-		FinishedCallEntry finishedCallEntry = FinishedCallEntry.from((FinishedCallReport) report);
+	public Void processFinishedCallReport(FinishedCall report) {
+		FinishedCallEntry finishedCallEntry = FinishedCallEntry.from((FinishedCall) report);
 //				finishedCalls.insert(finishedCallEntry);
 		finishedCalls.add(finishedCallEntry);
 		return null;
 	}
 
 	@Override
-	public Void processRemoteInboundRTPReport(RemoteInboundRTPReport report) {
+	public Void processRemoteInboundRTPReport(RemoteInboundRTP report) {
 		RemoteInboundRTPReportEntry remoteInboundRTPReportEntry = RemoteInboundRTPReportEntry.from(report);
 //				remoteInboundRTPSamples.insert(remoteInboundRTPReportEntry);
 		remoteInboundRTPSamples.add(remoteInboundRTPReportEntry);
@@ -111,7 +129,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processInboundRTPReport(InboundRTPReport report) {
+	public Void processInboundRTPReport(InboundRTP report) {
 		InboundRTPReportEntry inboundRTPReportEntry = InboundRTPReportEntry.from(report);
 //				inboundRTPSamples.insert(inboundRTPReportEntry);
 		inboundRTPSamples.add(inboundRTPReportEntry);
@@ -119,7 +137,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processOutboundRTPReport(OutboundRTPReport report) {
+	public Void processOutboundRTPReport(OutboundRTP report) {
 		OutboundRTPReportEntry outboundRTPReportEntry = OutboundRTPReportEntry.from(report);
 //				outboundRTPSamples.insert(outboundRTPReportEntry);
 		outboundRTPSamples.add(outboundRTPReportEntry);
@@ -127,7 +145,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processICECandidatePairReport(ICECandidatePairReport report) {
+	public Void processICECandidatePairReport(ICECandidatePair report) {
 		ICECandidatePairEntry iceCandidatePairEntry = ICECandidatePairEntry.from(report);
 //				iceCandidatePairs.insert(iceCandidatePairEntry);
 		iceCandidatePairs.add(iceCandidatePairEntry);
@@ -135,7 +153,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processICELocalCandidateReport(ICELocalCandidateReport report) {
+	public Void processICELocalCandidateReport(ICELocalCandidate report) {
 		ICELocalCandidateEntry iceCandidatePairEntry = ICELocalCandidateEntry.from(report);
 //				iceLocalCandidates.insert(iceCandidatePairEntry);
 		iceLocalCandidates.add(iceCandidatePairEntry);
@@ -143,7 +161,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processICERemoteCandidateReport(ICERemoteCandidateReport report) {
+	public Void processICERemoteCandidateReport(ICERemoteCandidate report) {
 		ICERemoteCandidateEntry iceRemoteCandidateEntry = ICERemoteCandidateEntry.from(report);
 //				iceRemoteCandidates.insert(iceRemoteCandidateEntry);
 		iceRemoteCandidates.add(iceRemoteCandidateEntry);
@@ -151,7 +169,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processTrackReport(TrackReport report) {
+	public Void processTrackReport(Track report) {
 		TrackReportEntry reportEntry = TrackReportEntry.from(report);
 //				trackReports.insert(reportEntry);
 		trackReports.add(reportEntry);
@@ -159,7 +177,7 @@ public class BigQueryReporter extends AbstractReportProcessor<Void> implements R
 	}
 
 	@Override
-	public Void processMediaSourceReport(MediaSourceReport report) {
+	public Void processMediaSourceReport(MediaSource report) {
 		MediaSourceEntry reportEntry = MediaSourceEntry.from(report);
 //				mediaSources.insert(reportEntry);
 		mediaSources.add(reportEntry);

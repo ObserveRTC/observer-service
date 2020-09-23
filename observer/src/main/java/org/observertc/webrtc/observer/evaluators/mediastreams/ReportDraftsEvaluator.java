@@ -1,3 +1,19 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer.evaluators.mediastreams;
 
 import io.micronaut.configuration.kafka.annotation.KafkaListener;
@@ -7,10 +23,17 @@ import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Prototype;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.common.TopicPartition;
+import org.observertc.webrtc.common.Sleeper;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.common.reports.avro.FinishedCall;
 import org.observertc.webrtc.common.reports.avro.InitiatedCall;
@@ -34,7 +57,7 @@ import org.slf4j.LoggerFactory;
 		threads = 1,
 		batch = true,
 		properties = {
-				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "15000"),
+				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "1000"),
 				@Property(name = ConsumerConfig.FETCH_MIN_BYTES_CONFIG, value = "10485760"),
 				@Property(name = ConsumerConfig.MAX_POLL_RECORDS_CONFIG, value = "5000")
 		}
@@ -48,6 +71,8 @@ public class ReportDraftsEvaluator {
 	private final EvaluatorsConfig.ReportDraftsConfig config;
 	private final AbstractReportDraftProcessor processor;
 	private final ReportDraftSink reportDraftSink;
+	private AtomicInteger sleepInMsHolder = new AtomicInteger(0);
+	private final Sleeper sleeper = new Sleeper(sleepInMsHolder::get);
 
 	public ReportDraftsEvaluator(PeerConnectionsRepository peerConnectionsRepository,
 								 EvaluatorsConfig.ReportDraftsConfig config,
@@ -61,14 +86,17 @@ public class ReportDraftsEvaluator {
 	}
 
 	@Topic("${kafkaTopics.observertcReportDrafts.topicName}")
-	public void receive(List<ReportDraft> reportDrafts) {
+	public void receive(List<ReportDraft> reportDrafts,
+						List<Long> offsets,
+						List<Integer> partitions,
+						List<String> topics,
+						Consumer kafkaConsumer) {
 		if (reportDrafts.size() < 1) {
 			return;
 		}
 		Instant now = Instant.now();
-		Iterator<ReportDraft> it = reportDrafts.iterator();
-		for (; it.hasNext(); ) {
-			ReportDraft reportDraft = it.next();
+		for (int i = 0; i < reportDrafts.size(); i++) {
+			ReportDraft reportDraft = reportDrafts.get(i);
 			if (reportDraft == null) {
 				logger.warn("Null rerportDraft or report occured in evaluation. skipping");
 				continue;
@@ -84,8 +112,30 @@ public class ReportDraftsEvaluator {
 				continue;
 			}
 			this.processor.accept(reportDraft);
+
+			// commit offsets
+			String topic = topics.get(i);
+			int partition = partitions.get(i);
+			long offset = offsets.get(i);
+
+			kafkaConsumer.commitSync(Collections.singletonMap(
+					new TopicPartition(topic, partition),
+					new OffsetAndMetadata(offset + 1, "my metadata")
+			));
 		}
 
+		/**
+		 * If the size of the batch is smaller than he maximum, let's put the process 
+		 * into a sleep (after it committed the offsets)
+		 */
+		if (reportDrafts.size() < 5000) {
+			Random r = new Random();
+			int low = 5000;
+			int high = 15000;
+			int sleepInMs = r.nextInt(high - low) + low;
+			sleepInMsHolder.set(sleepInMs);
+			sleeper.run();
+		}
 	}
 
 	private AbstractReportDraftProcessor makeProcessor() {

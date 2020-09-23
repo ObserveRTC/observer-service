@@ -1,3 +1,19 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.configuration.kafka.annotation.KafkaKey;
@@ -6,15 +22,13 @@ import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.context.annotation.Prototype;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import org.apache.avro.io.DatumWriter;
-import org.apache.avro.specific.SpecificDatumWriter;
 import org.observertc.webrtc.common.reports.avro.ICECandidatePair;
 import org.observertc.webrtc.common.reports.avro.ICELocalCandidate;
 import org.observertc.webrtc.common.reports.avro.ICERemoteCandidate;
 import org.observertc.webrtc.common.reports.avro.InboundRTP;
 import org.observertc.webrtc.common.reports.avro.OutboundRTP;
 import org.observertc.webrtc.common.reports.avro.RemoteInboundRTP;
-import org.observertc.webrtc.common.reports.avro.Report;
+import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
 import org.observertc.webrtc.observer.ObservedPCSSink;
 import org.observertc.webrtc.observer.ReportSink;
@@ -144,7 +158,7 @@ public class ObservedPCSEvaluator {
 					.setTransportID(subject.transportId)
 					.setWritable(subject.writable)
 					.build();
-			sendReport(observedPCS, candidatePair);
+			sendReport(observedPCS, ReportType.ICE_CANDIDATE_PAIR, candidatePair);
 		};
 	}
 
@@ -175,7 +189,7 @@ public class ObservedPCSEvaluator {
 					.setNetworkType(enumConverter.toNetworkType(subject.protocol))
 					.setTransportID(subject.transportId)
 					.build();
-			sendReport(observedPCS, localCandidate);
+			sendReport(observedPCS, ReportType.ICE_LOCAL_CANDIDATE, localCandidate);
 		};
 	}
 
@@ -204,7 +218,7 @@ public class ObservedPCSEvaluator {
 					.setProtocol(enumConverter.toInternetProtocol(subject.protocol))
 					.setTransportID(subject.transportId)
 					.build();
-			sendReport(observedPCS, remoteCandidate);
+			sendReport(observedPCS, ReportType.ICE_REMOTE_CANDIDATE, remoteCandidate);
 		};
 	}
 
@@ -229,7 +243,8 @@ public class ObservedPCSEvaluator {
 					.setSsrc(subject.ssrc)
 					.setTransportID(subject.transportId)
 					.build();
-			sendReport(observedPCS, remoteInboundRTP);
+			// TODO: this is missing
+//			sendReport(observedPCS, ReportType., remoteInboundRTP);
 		};
 	}
 
@@ -271,7 +286,7 @@ public class ObservedPCSEvaluator {
 					.setTrackId(subject.trackId)
 					.setTransportId(subject.transportId)
 					.build();
-			sendReport(observedPCS, inboundRTP);
+			sendReport(observedPCS, ReportType.INBOUND_RTP, inboundRTP);
 		};
 	}
 
@@ -304,7 +319,7 @@ public class ObservedPCSEvaluator {
 					.setQpSum(subject.qpSum)
 					.setQualityLimitationReason(enumConverter.toQualityLimitationReason(subject.qualityLimitationReason))
 					.setQualityLimitationResolutionChanges(subject.qualityLimitationResolutionChanges)
-					.setRemoteID(subject.remoteid)
+					.setRemoteID(subject.remoteId)
 					.setRetransmittedBytesSent(subject.retransmittedBytesSent)
 					.setRetransmittedPacketsSent(subject.retransmittedPacketsSent)
 					.setTotalEncodedBytesTarget(subject.totalEncodedBytesTarget)
@@ -313,15 +328,24 @@ public class ObservedPCSEvaluator {
 					.setTrackID(subject.trackId)
 					.setTransportID(subject.transportId)
 					.build();
-			sendReport(observedPCS, outboundRTP);
+			sendReport(observedPCS, ReportType.OUTBOUND_RTP, outboundRTP);
 		};
 	}
 
-	private void sendReport(ObservedPCS observedPCS, Object payload) {
-		DatumWriter<Report> writer = new SpecificDatumWriter<>(Report.class);
-		
-		Report report;
-		byte[] data;
+	private void sendReport(ObservedPCS observedPCS, ReportType reportType, Object payload) {
+		this.reportSink.sendReport(
+				observedPCS.peerConnectionUUID,
+				observedPCS.peerConnectionSample.callId,
+				"serviceName",
+				reportType,
+
+				observedPCS.timestamp,
+				payload
+		);
+//		DatumWriter<Report> writer = new SpecificDatumWriter<>(Report.class);
+//
+//		Report report;
+//		byte[] data;
 //		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //		BinaryMessageEncoder<Report> encoder = Report.getEncoder();
 //		try {
