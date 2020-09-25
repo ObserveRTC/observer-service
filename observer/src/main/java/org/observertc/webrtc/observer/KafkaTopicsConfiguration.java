@@ -1,3 +1,19 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
@@ -6,10 +22,9 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 public class KafkaTopicsConfiguration {
 //	public boolean createIfNotExists = true;
 
-	public WebExtrAppSamplesConfig webExtrAppSamples;
-	public ObserveRTCReportsConfig observertcReports;
-	public ObserveRTCReportDraftsConfig observertcReportDrafts;
-
+	public ObservedPCSConfig observedPCS;
+	public ObserveRTCReportsConfig reports;
+	public ObserveRTCReportDraftsConfig reportDrafts;
 
 	public static class TopicConfig {
 		public String topicName;
@@ -17,17 +32,17 @@ public class KafkaTopicsConfiguration {
 		public int onCreateReplicateFactor;
 	}
 
-	@ConfigurationProperties("webExtrAppSamples")
-	public static class WebExtrAppSamplesConfig extends TopicConfig {
+	@ConfigurationProperties("observedPCS")
+	public static class ObservedPCSConfig extends TopicConfig {
 
 	}
 
-	@ConfigurationProperties("observertcReports")
+	@ConfigurationProperties("reports")
 	public static class ObserveRTCReportsConfig extends TopicConfig {
 
 	}
 
-	@ConfigurationProperties("observertcReportDrafts")
+	@ConfigurationProperties("reportDrafts")
 	public static class ObserveRTCReportDraftsConfig extends TopicConfig {
 
 	}

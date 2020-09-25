@@ -1,22 +1,39 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer.evaluators.mediastreams;
 
 import io.micronaut.scheduling.annotation.Scheduled;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
 import javax.inject.Singleton;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
-import org.observertc.webrtc.common.reports.FinishedCallReport;
-import org.observertc.webrtc.common.reports.Report;
+import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
+import org.observertc.webrtc.schemas.reports.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.KafkaSinks;
+import org.observertc.webrtc.observer.ReportDraftSink;
+import org.observertc.webrtc.observer.ReportSink;
+import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
+import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.SentReportsRepository;
-import org.observertc.webrtc.observer.ObserverDateTime;
-import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +42,12 @@ public class CallCleaner {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallCleaner.class);
 	private final EvaluatorsConfig.CallCleanerConfig config;
-	private final ObserverDateTime observerDateTime;
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final KafkaSinks kafkaSinks;
+	private final ReportDraftSink reportDraftSink;
 	private final MaxIdleThresholdProvider maxIdleThresholdProvider;
 	private final SentReportsRepository sentReportsRepository;
+	private final ReportSink reportSink;
 
 	public CallCleaner(
 			EvaluatorsConfig config,
@@ -38,21 +55,20 @@ public class CallCleaner {
 			ActiveStreamsRepository activeStreamsRepository,
 			PeerConnectionsRepository peerConnectionsRepository,
 			MaxIdleThresholdProvider maxIdleThresholdProvider,
-			KafkaSinks kafkaSinks,
-			ObserverDateTime observerDateTime) {
+			ReportSink reportSink,
+			ReportDraftSink reportDraftSink) {
 		this.config = config.callCleaner;
+		this.reportSink = reportSink;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.peerConnectionsRepository = peerConnectionsRepository;
-		this.observerDateTime = observerDateTime;
 		this.maxIdleThresholdProvider = maxIdleThresholdProvider;
-		this.kafkaSinks = kafkaSinks;
+		this.reportDraftSink = reportDraftSink;
 		this.sentReportsRepository = sentReportsRepository;
 	}
 
 	@Scheduled(initialDelay = "10m", fixedRate = "60m")
 	void deleteExpiredPCs() {
-		LocalDateTime now = this.observerDateTime.now();
-		LocalDateTime threshold = now.minusDays(this.config.pcRetentionTimeInDays);
+		Long threshold = Instant.now().minus(this.config.pcRetentionTimeInDays, ChronoUnit.DAYS).toEpochMilli();
 		try {
 			this.peerConnectionsRepository.deletePCsDetachedOlderThan(threshold);
 			this.sentReportsRepository.deleteReportedOlderThan(threshold);
@@ -71,28 +87,39 @@ public class CallCleaner {
 	}
 
 	private void cleanCalls() {
-		Optional<LocalDateTime> thresholdHolder = this.maxIdleThresholdProvider.get();
+		Optional<Long> thresholdHolder = this.maxIdleThresholdProvider.get();
 		if (!thresholdHolder.isPresent()) {
 			return;
 		}
-		LocalDateTime threshold = thresholdHolder.get();
+		Long threshold = thresholdHolder.get();
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findJoinedPCsUpdatedLowerThan(threshold).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
 			record.setDetached(record.getUpdated());
 			record.setUpdated(record.getUpdated());
+			record.store();
 
-			UUID observerUUID = UUIDAdapter.toUUID(record.getObserveruuid());
+			UUID serviceUUID = UUIDAdapter.toUUID(record.getServiceuuid());
 			UUID callUUID = UUIDAdapter.toUUID(record.getCalluuid());
 			UUID peerConnectionUUID = UUIDAdapter.toUUID(record.getPeerconnectionuuid());
-			Report detachedPeerConnectionReport = DetachedPeerConnectionReport.of(
-					observerUUID,
-					callUUID,
-					peerConnectionUUID,
-					record.getBrowserid(),
-					record.getUpdated());
-			this.kafkaSinks.sendReport(observerUUID, detachedPeerConnectionReport);
-			record.store();
+
+			Object payload = DetachedPeerConnection.newBuilder()
+					.setMediaUnitId(record.getMediaunitid())
+					.setCallName(record.getProvidedcallid())
+					.setCallUUID(callUUID.toString())
+					.setUserId(record.getProvideduserid())
+					.setBrowserId(record.getBrowserid())
+					.setPeerConnectionUUID(peerConnectionUUID.toString())
+					.build();
+
+			this.reportSink.sendReport(serviceUUID,
+					serviceUUID,
+					record.getProvidedcallid(),
+					serviceUUID.toString(),
+					ReportType.DETACHED_PEER_CONNECTION,
+					record.getUpdated(),
+					payload);
+
 			Optional<PeerconnectionsRecord> joinedPCHolder =
 					this.peerConnectionsRepository.findJoinedPCsByCallUUIDBytes(record.getCalluuid()).findFirst();
 
@@ -101,9 +128,8 @@ public class CallCleaner {
 			}
 
 			//finished call
-			Report finishedCallReport = FinishedCallReport.of(observerUUID, callUUID, record.getUpdated());
-			ReportDraft reportDraft = new ReportDraft(finishedCallReport, this.observerDateTime.now());
-			this.kafkaSinks.sendReportDraft(observerUUID, reportDraft);
+			FinishedCallReportDraft reportDraft = FinishedCallReportDraft.of(serviceUUID, callUUID, record.getUpdated());
+			this.reportDraftSink.send(serviceUUID, reportDraft);
 			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
 		}
 	}

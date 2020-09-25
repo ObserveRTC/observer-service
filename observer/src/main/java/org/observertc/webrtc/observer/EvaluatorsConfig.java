@@ -1,37 +1,43 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.context.annotation.EachProperty;
-import java.util.ArrayList;
-import java.util.List;
 
 @ConfigurationProperties("evaluators")
 public class EvaluatorsConfig {
-
-	public ActiveStreamsConfig activeStreams;
 
 	public SampleTransformerConfig sampleTransformer;
 
 	public CallCleanerConfig callCleaner;
 
 	public ReportDraftsConfig reportDrafts;
-	
-	@ConfigurationProperties("activeStreams")
-	public static class ActiveStreamsConfig {
-		public int missingBrowserIDMapSize;
-		public int maxTimeBrowserIdCanMiss;
-	}
 
 	@ConfigurationProperties("reportDrafts")
 	public static class ReportDraftsConfig {
-		public int TTL = 120;
+		public int expirationTimeInS = 300;
+		public int minEnforcedTimeInS = 60;
 	}
 
 	@ConfigurationProperties("callCleaner")
 	public static class CallCleanerConfig {
-		public int streamMaxIdleTimeInS;
-		public int streamMaxAllowedGapInS;
-		public int pcRetentionTimeInDays;
+		public int streamMaxIdleTimeInS = 60;
+		public int streamMaxAllowedGapInS = 3600;
+		public int pcRetentionTimeInDays = 1;
 
 	}
 
@@ -45,15 +51,6 @@ public class EvaluatorsConfig {
 		public boolean reportCandidatePairs = true;
 		public boolean reportLocalCandidates = true;
 		public boolean reportRemoteCandidates = true;
-		public int sentReportsCacheSize = 100000;
-		public List<IPFlagConfig> ipFlags = new ArrayList<>();
-
-		//		@ConfigurationProperties("ipFlags")
-		@EachProperty("ipFlags")
-		public static class IPFlagConfig {
-			public String name;
-			public List<String> networks;
-		}
 	}
 
 

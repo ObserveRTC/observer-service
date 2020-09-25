@@ -1,3 +1,19 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.common;
 
 import static java.util.Objects.requireNonNull;
@@ -12,22 +28,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-/**
- * COPYRIGHT: Anonymous
- * I have found this solution in the article:
- * https://www.thetopsites.net/article/52751541.shtml
- * <p>
- * Collects elements in the stream and calls the supplied batch processor
- * after the configured batch size is reached.
- * <p>
- * In case of a parallel stream, the batch processor may be called with
- * elements less than the batch size.
- * <p>
- * The elements are not kept in memory, and the final result will be an
- * empty list.
- *
- * @param <T> Type of the elements being collected
- */
 public class BatchCollector<T> implements Collector<T, List<T>, List<T>> {
 
 	/**

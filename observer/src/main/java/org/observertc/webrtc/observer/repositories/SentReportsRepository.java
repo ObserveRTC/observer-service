@@ -1,7 +1,22 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer.repositories;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -67,7 +82,7 @@ public class SentReportsRepository {
 	@NonNull
 	public <S extends SentreportsRecord> Iterable<S> updateAll(@NonNull @NotNull Iterable<S> entities) {
 		this.consumeBatches(entities, batchedEntities -> {
-			InsertValuesStep3<SentreportsRecord, byte[], byte[], LocalDateTime> sql =
+			InsertValuesStep3<SentreportsRecord, byte[], byte[], Long> sql =
 					contextProvider.get().insertInto(
 							TABLE,
 							TABLE.PEERCONNECTIONUUID,
@@ -159,7 +174,7 @@ public class SentReportsRepository {
 		this.contextProvider.get().deleteFrom(TABLE).execute();
 	}
 
-	public void deleteReportedOlderThan(LocalDateTime threshold) {
+	public void deleteReportedOlderThan(Long threshold) {
 		this.contextProvider.get().deleteFrom(TABLE).where(TABLE.REPORTED.lt(threshold)).execute();
 	}
 }

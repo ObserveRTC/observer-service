@@ -10,12 +10,14 @@ micronaut:
 #        enabled: true
 #        step: PT1M
 ---
-observer:
-  useClientTimestamps: ${USE_CLIENT_TIMESTAMPS:False}
-  authentication:
-    hashAlgorithm: ${AUTHENTICATION_HASH_ALGORITHM:`SHA-512`}
-    stretching: ${AUTHENTICATION_STRETCHING:2}
-    saltSize: ${AUTHENTICATION_SALT_SIZE:32}
+serviceMap:
+  - uuid: "id"
+    name: "name"
+
+#---
+#observer:
+#  useClientTimestamps: ${USE_CLIENT_TIMESTAMPS:False}
+#
 ---
 kafka:
   consumers:
@@ -30,22 +32,29 @@ kafka:
 
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
-
+---
+tracing:
+  zipkin:
+    http:
+      url: ${ZIPKIN_HOST:`http://localhost:9411`}
+    enabled: ${ZIPKIN_ENABLED:`true`}
+    sampler:
+      probability: 1
 ---
 kafkaTopics:
   #  createIfNotExists: True
-  webExtrAppSamples:
-    topicName: ${KAFKA_TOPICS_WEBEXTRAPP_SAMPLES:webExtrAppSamples}
+  observedPCS:
+    topicName: ${KAFKA_TOPICS_WEBEXTRAPP_SAMPLES:observedPeerConnections}
     onCreatePartitionNums: 12
     onCreateReplicateFactor: 1
 
-  observertcReports:
-    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
+  reports:
+    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
     onCreatePartitionNums: 6
     onCreateReplicateFactor: 1
 
-  observertcReportDrafts:
-    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTDRAFTS:observertcReportDrafts}
+  reportDrafts:
+    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTDRAFTS:reportDrafts}
     onCreatePartitionNums: 4
     onCreateReplicateFactor: 1
 ---
@@ -55,14 +64,12 @@ kafkaTopics:
 
 evaluators:
   reportDrafts:
-    TTL: 300
+    expirationTimeInS: 300
+    minEnforcedTimeInS: 60
   callCleaner:
     streamMaxIdleTimeInS: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:30}
     pcRetentionTimeInDays: ${PEERCONNECTION_RETETNTION_TIME_IN_DAYS:60}
     maxAllowedUpdateGapInS: ${CALL_CLEANER_MAX_ALLOWED_UPDATED_GAP_IN_S:3600}
-  activeStreams:
-    missingBrowserIDMapSize: ${MISSING_BROWSERID_MAP_SIZE:1000}
-    maxTimeBrowserIdCanMiss: ${MAX_TIME_BRROWSERID_CAN_MISS_IN_S:10}
   sampleTransformer:
     reportOutboundRTPs: ${REPORT_OUTBOUND_RTPS:True}
     reportInboundRTPs: ${REPORT_INBOUND_RTPS:True}
@@ -73,14 +80,6 @@ evaluators:
     reportLocalCandidates: ${REPORT_LOCAL_ICE_CANDIDATES:True}
     reportRemoteCandidates: ${REPORT_REMOE_ICE_CANDIDATES:True}
     sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
-#    ipFlags:
-#      - name: JVB
-#        networks:
-#          - "192.168.1.0/255.255.255.0"
-#      - name: MyFlag
-#        networks:
-#          - "10.0.0.0/255.0.0.0"
-
 ---
 hikari:
   username: ${DATABASE_USERNAME:root}

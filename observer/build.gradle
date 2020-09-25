@@ -18,6 +18,22 @@ version "$observerVersion"
 group "webrtc_observer"
 
 
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 //repositories {
 //    mavenCentral()
 //    maven { url "https://jcenter.bintray.com" }
@@ -80,13 +96,19 @@ dependencies {
     // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"
     compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
+    implementation 'org.jooq:jooq'
+
     // ------------ Datasource integration: MySQL ---------
     compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
     runtime "mysql:mysql-connector-java:${mysqlVersion}"
-    implementation 'org.jooq:jooq'
+
+    // ------------ Tracing -----------------
+//    compile "io.micronaut:micronaut-tracing"
+//    runtime 'io.zipkin.brave:brave-instrumentation-http'
+//    runtime 'io.zipkin.reporter2:zipkin-reporter'
+//    compile 'io.opentracing.brave:brave-opentracing'
 
     // ------------ Kafka streams ---------
-//    compile "org.apache.avro:avro:1.9.2"
 //    implementation "io.micronaut.configuration:micronaut-kafka-streams:$micronautKafkaStreamsVersion"
 //    implementation "io.confluent:kafka-avro-serializer:5.4.0"
 //    implementation "io.confluent:kafka-streams-avro-serde:5.4.0"

@@ -1,3 +1,19 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.observertc.webrtc.observer.repositories;
 
 import java.util.UUID;
@@ -15,23 +31,23 @@ import org.observertc.webrtc.common.UUIDAdapter;
  */
 public class ActiveStreamKey extends Tuple2<UUID, Long> {
 
-	public ActiveStreamKey(UUID observerUUID, Long SSRC) {
-		super(observerUUID, SSRC);
+	public ActiveStreamKey(UUID serviceUUID, Long SSRC) {
+		super(serviceUUID, SSRC);
 	}
 
-	public ActiveStreamKey(byte[] observerUUIDBytes, Long SSRC) {
-		super(UUIDAdapter.toUUIDOrDefault(observerUUIDBytes, null), SSRC);
+	public ActiveStreamKey(byte[] serviceUUIDBytes, Long SSRC) {
+		super(UUIDAdapter.toUUIDOrDefault(serviceUUIDBytes, null), SSRC);
 	}
 
 	public ActiveStreamKey(Tuple2<UUID, Long> tuple) {
 		super(tuple);
 	}
 
-	public byte[] getObserverUUIDBytes() {
+	public byte[] getServiceUUIDBytes() {
 		return UUIDAdapter.toBytesOrDefault(this.v1, null);
 	}
 
-	public UUID getObserverUUID() {
+	public UUID getServiceUUID() {
 		return this.v1;
 	}
 
