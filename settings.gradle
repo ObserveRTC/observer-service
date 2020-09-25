@@ -27,7 +27,6 @@ pluginManagement {
 rootProject.name = "WebRTC-Observer"
 include 'common'
 include 'observer'
-include 'reporter'
 include 'jooq'
 
 
