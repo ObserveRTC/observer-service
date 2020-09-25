@@ -114,6 +114,7 @@ public class WebRTCStatsWebsocketServer20200114Json {
 				sample,
 				timeZoneID,
 				"serviceName",
+				"customProvided",
 				timestamp
 		);
 

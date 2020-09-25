@@ -18,12 +18,15 @@ package org.observertc.webrtc.observer.evaluators.reportdrafts;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.Instant;
 import java.util.UUID;
 
 @JsonTypeName("FINISHED_CALL")
 public class FinishedCallReportDraft extends ReportDraft {
 	public static FinishedCallReportDraft of(UUID serviceUUID, UUID callUUID, Long finished) {
+		Long created = Instant.now().toEpochMilli();
 		FinishedCallReportDraft result = new FinishedCallReportDraft();
+		result.created = created;
 		result.callUUID = callUUID;
 		result.serviceUUID = serviceUUID;
 		result.finished = finished;

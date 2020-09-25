@@ -18,7 +18,8 @@ package org.observertc.webrtc.reporter;
 
 import org.observertc.webrtc.reporter.bigquery.ReportProcessor;
 
-public interface Reporter extends ReportProcessor<Void> {
+public interface Reporter extends ReportProcessor {
 
 	void flush();
+
 }

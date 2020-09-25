@@ -16,21 +16,24 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.InboundRTPReport;
-import org.observertc.webrtc.common.reports.MediaType;
-import org.observertc.webrtc.reporter.TimeConverter;
+import org.observertc.webrtc.schemas.reports.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class InboundRTPReportEntry implements BigQueryEntry {
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-	public static final String SSRC_FIELD_NAME = "SSRC";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
+	public static final String USER_ID_FIELD_NAME = "userID";
+
+	public static final String SSRC_FIELD_NAME = "SSRC";
 	public static final String BYTES_RECEIVED_FIELD_NAME = "bytesReceived";
 	public static final String FIR_COUNT_FIELD_NAME = "firCount";
 	public static final String FRAMES_DECODED_FIELD_NAME = "framesDecoded";
@@ -54,60 +57,54 @@ public class InboundRTPReportEntry implements BigQueryEntry {
 
 	private static Logger logger = LoggerFactory.getLogger(InboundRTPReportEntry.class);
 
-	public static InboundRTPReportEntry from(
-			InboundRTPReport report) {
-		InboundRTPReportEntry result = new InboundRTPReportEntry()
-				.withObserverUUID(report.observerUUID)
-				.withPeerConnectionUUID(report.peerConnectionUUID)
-				.withSSRC(report.SSRC)
-				.withTimestamp(report.timestamp)
-				.withMediaType(report.mediaType)
-				.withBytesReceived(report.bytesReceived)
-				.withFirCount(report.firCount)
-				.withFramesDecoded(report.framesDecoded)
-				.withHeaderBytesReceived(report.headerBytesReceived)
-				.withKeyFramesDecoded(report.keyFramesDecoded)
-				.withNackCount(report.nackCount)
-				.withPacketsReceived(report.packetsReceived)
-				.withPLICount(report.pliCount)
-				.withQPSum(report.qpSum)
-				.withtDecoderImplementation(report.decoderImplementation)
-				.withEstimatedPlayoutTimestamp(report.estimatedPlayoutTimestamp)
-				.withJitter(report.jitter)
-				.withLastPacketReceivedTimestamp(report.lastPacketReceivedTimestamp)
-				.withPacketsLost(report.packetsLost)
-				.withTotalDecodeTime(report.totalDecodeTime)
-				.withTotalInterFrameDelay(report.totalInterFrameDelay)
-				.withTotalSquaredInterFrameDelay(report.totalSquaredInterFrameDelay)
-				.withFECPacketsDiscarded(report.fecPacketsDiscarded)
-				.withFECPacketsReceived(report.fecPacketsReceived);
-		return result;
-	}
-
 	private final Map<String, Object> values;
 
 	public InboundRTPReportEntry() {
 		this.values = new HashMap<>();
 	}
 
-	public InboundRTPReportEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public InboundRTPReportEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
-
-	public InboundRTPReportEntry withTimestamp(LocalDateTime value) {
-		if (value == null) {
-			logger.warn("No valid sample timestamp");
-			return this;
-		}
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
+	public InboundRTPReportEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
 		return this;
 	}
 
-	public InboundRTPReportEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+	public InboundRTPReportEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public InboundRTPReportEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public InboundRTPReportEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
+	}
+
+	public InboundRTPReportEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
+	}
+
+	public InboundRTPReportEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
+	}
+
+	public InboundRTPReportEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public InboundRTPReportEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
 		return this;
 	}
 
@@ -116,12 +113,15 @@ public class InboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public InboundRTPReportEntry withMediaType(MediaType value) {
-		String name = null;
-		if (value != null) {
-			name = value.name();
+	public InboundRTPReportEntry withMediaType(MediaType mediaType) {
+		if (mediaType == null) {
+			return this;
 		}
-		this.values.put(MEDIA_TYPE_FIELD_NAME, name);
+		return this.withMediaType(mediaType.name());
+	}
+
+	public InboundRTPReportEntry withMediaType(String value) {
+		this.values.put(MEDIA_TYPE_FIELD_NAME, value);
 		return this;
 	}
 
@@ -201,7 +201,7 @@ public class InboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public InboundRTPReportEntry withLastPacketReceivedTimestamp(Long value) {
+	public InboundRTPReportEntry withLastPacketReceivedTimestamp(Double value) {
 		this.values.put(LAST_PACKET_RECEIVED_TIMESTAMP, value);
 		return this;
 	}
@@ -216,12 +216,12 @@ public class InboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public InboundRTPReportEntry withEstimatedPlayoutTimestamp(Long value) {
+	public InboundRTPReportEntry withEstimatedPlayoutTimestamp(Double value) {
 		this.values.put(ESTIMATED_PLAYOUT_TIMESTAMP_FIELD_NAME, value);
 		return this;
 	}
 
-	public InboundRTPReportEntry withtDecoderImplementation(String value) {
+	public InboundRTPReportEntry withDecoderImplementation(String value) {
 		this.values.put(DECODER_IMPLEMENTATION_FIELD_NAME, value);
 		return this;
 	}

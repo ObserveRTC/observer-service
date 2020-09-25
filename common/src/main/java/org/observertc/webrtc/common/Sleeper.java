@@ -43,9 +43,15 @@ public class Sleeper implements Runnable {
 	}
 
 	private final Supplier<Integer> timeInMsProvider;
+	private final boolean log;
 
 	public Sleeper(Supplier<Integer> timeInMsProvider) {
+		this(timeInMsProvider, false);
+	}
+
+	public Sleeper(Supplier<Integer> timeInMsProvider, boolean log) {
 		this.timeInMsProvider = timeInMsProvider;
+		this.log = log;
 	}
 
 	@Override
@@ -54,7 +60,10 @@ public class Sleeper implements Runnable {
 			throw new NullPointerException();
 		}
 		int initialWaitInMs = this.timeInMsProvider.get();
-		logger.info("The configured initial waiting is {}ms", initialWaitInMs);
+		if (this.log) {
+			logger.info("The configured sleeping time is {}ms", initialWaitInMs);
+		}
+
 		if (initialWaitInMs < 1) {
 			return;
 		}

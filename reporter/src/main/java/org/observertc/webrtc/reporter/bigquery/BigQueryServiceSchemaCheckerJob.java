@@ -131,11 +131,17 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.initiatedCallsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(InitiatedCallEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InitiatedCallEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InitiatedCallEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(InitiatedCallEntry.CALL_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(InitiatedCallEntry.INITIATED_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(InitiatedCallEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InitiatedCallEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InitiatedCallEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -148,11 +154,17 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.finishedCallsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(FinishedCallEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(FinishedCallEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(FinishedCallEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(FinishedCallEntry.CALL_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(FinishedCallEntry.FINISHED_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(FinishedCallEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(FinishedCallEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(FinishedCallEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -165,15 +177,28 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.joinedPeerConnectionsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(JoinedPeerConnectionEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(JoinedPeerConnectionEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(JoinedPeerConnectionEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(JoinedPeerConnectionEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(JoinedPeerConnectionEntry.CALL_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(JoinedPeerConnectionEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(DetachedPeerConnectionEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(JoinedPeerConnectionEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(JoinedPeerConnectionEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(JoinedPeerConnectionEntry.BROWSERID_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(JoinedPeerConnectionEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(JoinedPeerConnectionEntry.JOINED_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(JoinedPeerConnectionEntry.TIMEZONE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(JoinedPeerConnectionEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -186,20 +211,227 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.detachedPeerConnectionsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(DetachedPeerConnectionEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(DetachedPeerConnectionEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(DetachedPeerConnectionEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(DetachedPeerConnectionEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(DetachedPeerConnectionEntry.CALL_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
+						Field.newBuilder(DetachedPeerConnectionEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(DetachedPeerConnectionEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(DetachedPeerConnectionEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
 						Field.newBuilder(DetachedPeerConnectionEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(DetachedPeerConnectionEntry.BROWSERID_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(DetachedPeerConnectionEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(DetachedPeerConnectionEntry.DETACHED_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(DetachedPeerConnectionEntry.TIMEZONE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(DetachedPeerConnectionEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+
 				);
 				createTableIfNotExists(tableId, schema);
 			}
 		};
 	}
+
+	private Task makeRemoteInboundRTPSamplesTableTask() {
+
+		return new AbstractTask(CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.remoteInboundRTPSamplesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(RemoteInboundRTPReportEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.PACKETSLOST_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.RTT_IN_MS_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.JITTER_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.CODEC_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.TRANSPORT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(RemoteInboundRTPReportEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeInboundRTPSamplesTableTask() {
+
+		return new AbstractTask(CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.inboundRTPSamplesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(InboundRTPReportEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+
+						,
+						Field.newBuilder(InboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.DECODER_IMPLEMENTATION_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FIR_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.NACK_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.HEADER_BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.KEYFRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PLI_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.QP_SUM_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.JITTER_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TOTAL_DECODE_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TOTAL_INTERFRAME_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.TOTAL_SQUARED_INITER_FREAME_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.PACKETS_LOST_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.ESTIMATED_PLAYOUT_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FEC_PACKETS_DISCARDED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.LAST_PACKET_RECEIVED_TIMESTAMP, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.FEC_PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(InboundRTPReportEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+
+				);
+
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
+	private Task makeOutboundRTPSamplesTableTask() {
+
+		return new AbstractTask(CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
+
+			@Override
+			protected void onExecution(Map<String, Map<String, Object>> results) {
+				TableId tableId = TableId.of(config.projectName, config.datasetName, config.outboundRTPSamplesTable);
+				Schema schema = Schema.of(
+						Field.newBuilder(OutboundRTPReportEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+
+						,
+						Field.newBuilder(OutboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.ENCODER_IMPLEMENTATION_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.FIR_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.FRAMES_ENCODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.NACK_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.HEADER_BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.KEYFRAMES_ENCODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.PLI_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.QP_SUM_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.QUALITY_LIMITATION_REASON_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.QUALITY_LIMITATION_RESOLUTION_CHANGES_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.RETRANSMITTED_BYTES_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.RETRANSMITTED_PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TOTAL_ENCODED_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TOTAL_PACKET_SEND_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.TOTAL_ENCODED_BYTES_TARGET_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(OutboundRTPReportEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+
+				);
+				createTableIfNotExists(tableId, schema);
+			}
+		};
+	}
+
 
 	private Task makeICECandidatePairsTableTask() {
 		return new AbstractTask(CREATE_ICE_CANDIDATE_PAIRS_TABLE_TASK_NAME) {
@@ -207,41 +439,58 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceCandidatePairsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(ICECandidatePairEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICECandidatePairEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.CANDIDATE_PAIR_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.WRITABLE_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.LOCAL_CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.TOTAL_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.REMOTE_CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.STATE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+
+						Field.newBuilder(ICECandidatePairEntry.WRITABLE_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.NOMINATED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.TOTAL_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.AVAILABLE_OUTGOING_BITRATE_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.ICE_STATE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.NOMINATED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.AVAILABLE_OUTGOING_BITRATE_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.CONSENT_REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.CURRENT_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.CONSENT_REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.REQUESTS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.CURRENT_ROUND_TRIP_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.RESPONSES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.REQUESTS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICECandidatePairEntry.RESPONSES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICECandidatePairEntry.REQUESTS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.RESPONSES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.RESPONSES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICECandidatePairEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -254,13 +503,23 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceLocalCandidatesTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(ICELocalCandidateEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICELocalCandidateEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICELocalCandidateEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICELocalCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICELocalCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICELocalCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICELocalCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.DELETED_FIELD_NAME, LegacySQLTypeName.BOOLEAN).setMode(Field.Mode.NULLABLE).build()
 						,
@@ -268,7 +527,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICELocalCandidateEntry.PORT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICELocalCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						Field.newBuilder(ICELocalCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
@@ -276,7 +535,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICELocalCandidateEntry.PROTOCOL_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICELocalCandidateEntry.IP_FLAG_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						Field.newBuilder(ICELocalCandidateEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -290,13 +549,24 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.iceRemoteCandidatesTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(ICERemoteCandidateEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICERemoteCandidateEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(ICERemoteCandidateEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICERemoteCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(ICERemoteCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(ICERemoteCandidateEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+
+						Field.newBuilder(ICERemoteCandidateEntry.CANDIDATE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(ICELocalCandidateEntry.CANDIDATE_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
@@ -304,13 +574,13 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.PORT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICERemoteCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
+						Field.newBuilder(ICERemoteCandidateEntry.IP_LSH_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.PRIORITY_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(ICERemoteCandidateEntry.PROTOCOL_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
-						Field.newBuilder(ICERemoteCandidateEntry.IP_FLAG_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						Field.newBuilder(ICERemoteCandidateEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -326,11 +596,21 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.mediaSourcesTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(MediaSourceEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(MediaSourceEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(MediaSourceEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(MediaSourceEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(MediaSourceEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(MediaSourceEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(MediaSourceEntry.MEDIA_SOURCE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
@@ -347,6 +627,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						Field.newBuilder(MediaSourceEntry.TOTAL_AUDIO_ENERGY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(MediaSourceEntry.TOTAL_SAMPLES_DURATION_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(MediaSourceEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -361,11 +643,21 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			protected void onExecution(Map<String, Map<String, Object>> results) {
 				TableId tableId = TableId.of(config.projectName, config.datasetName, config.trackReportsTable);
 				Schema schema = Schema.of(
-						Field.newBuilder(TrackReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(TrackReportEntry.SERVICE_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
+						,
+						Field.newBuilder(TrackReportEntry.SERVICE_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.MEDIA_UNIT_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.CALL_NAME_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.USER_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
+						,
+						Field.newBuilder(TrackReportEntry.BROWSERID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(TrackReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(TrackReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
+						Field.newBuilder(TrackReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
 						,
 						Field.newBuilder(TrackReportEntry.TRACK_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 						,
@@ -414,158 +706,8 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 						Field.newBuilder(TrackReportEntry.CONCEALMENT_EVENTS_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
 						,
 						Field.newBuilder(TrackReportEntry.MEDIA_SOURCE_ID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-				);
-				createTableIfNotExists(tableId, schema);
-			}
-		};
-	}
-
-	private Task makeRemoteInboundRTPSamplesTableTask() {
-
-		return new AbstractTask(CREATE_REMOTE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
-
-			@Override
-			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.remoteInboundRTPSamplesTable);
-				Schema schema = Schema.of(
-						Field.newBuilder(RemoteInboundRTPReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
 						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.PACKETSLOST_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.RTT_IN_MS_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.JITTER_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.CODEC_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(RemoteInboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-
-				);
-				createTableIfNotExists(tableId, schema);
-			}
-		};
-	}
-
-	private Task makeOutboundRTPSamplesTableTask() {
-
-		return new AbstractTask(CREATE_OUTBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
-
-			@Override
-			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.outboundRTPSamplesTable);
-				Schema schema = Schema.of(
-						Field.newBuilder(OutboundRTPReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.ENCODER_IMPLEMENTATION_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.FIR_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.FRAMES_ENCODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.NACK_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.HEADER_BYTES_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.KEYFRAMES_ENCODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.PLI_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.QP_SUM_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.QUALITY_LIMITATION_REASON_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.QUALITY_LIMITATION_RESOLUTION_CHANGES_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.RETRANSMITTED_BYTES_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.RETRANSMITTED_PACKETS_SENT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.TOTAL_ENCODED_TIME_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.TOTAL_PACKET_SEND_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(OutboundRTPReportEntry.TOTAL_ENCODED_BYTES_TARGET_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-
-				);
-				createTableIfNotExists(tableId, schema);
-			}
-		};
-	}
-
-	private Task makeInboundRTPSamplesTableTask() {
-
-		return new AbstractTask(CREATE_INBOUND_RTP_SAMPLES_TABLE_TASK_NAME) {
-
-			@Override
-			protected void onExecution(Map<String, Map<String, Object>> results) {
-				TableId tableId = TableId.of(config.projectName, config.datasetName, config.inboundRTPSamplesTable);
-				Schema schema = Schema.of(
-						Field.newBuilder(InboundRTPReportEntry.OBSERVER_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.PEER_CONNECTION_UUID_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.SSRC_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.TIMESTAMP_FIELD_NAME, LegacySQLTypeName.TIMESTAMP).setMode(Field.Mode.REQUIRED).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.DECODER_IMPLEMENTATION_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.FIR_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.FRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.NACK_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.HEADER_BYTES_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.KEYFRAMES_DECODED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.MEDIA_TYPE_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.PLI_COUNT_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.QP_SUM_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.JITTER_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.TOTAL_DECODE_TIME_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.TOTAL_INTERFRAME_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.TOTAL_SQUARED_INITER_FREAME_DELAY_FIELD_NAME, LegacySQLTypeName.FLOAT).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.PACKETS_LOST_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.ESTIMATED_PLAYOUT_TIMESTAMP_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.FEC_PACKETS_DISCARDED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.LAST_PACKET_RECEIVED_TIMESTAMP, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-						,
-						Field.newBuilder(InboundRTPReportEntry.FEC_PACKETS_RECEIVED_FIELD_NAME, LegacySQLTypeName.INTEGER).setMode(Field.Mode.NULLABLE).build()
-
+						Field.newBuilder(TrackReportEntry.CUSTOMER_PROVIDED_FIELD_NAME, LegacySQLTypeName.STRING).setMode(Field.Mode.NULLABLE).build()
 				);
 				createTableIfNotExists(tableId, schema);
 			}
@@ -586,7 +728,7 @@ public class BigQueryServiceSchemaCheckerJob extends Job {
 			TableDefinition tableDefinition = StandardTableDefinition.of(schema);
 			TableInfo tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build();
 			bigQuery.create(tableInfo);
-			logger.info("Table {} is succcessfully created", tableId.getTable());
+			logger.info("Table {} is successfully created", tableId.getTable());
 		} catch (BigQueryException e) {
 			logger.error("Error during table creation. Table: " + tableId.getTable(), e);
 		}

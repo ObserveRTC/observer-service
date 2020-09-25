@@ -61,16 +61,16 @@ public class PeerConnectionSample {
 	 * https://www.w3.org/TR/webrtc/#dom-rtcstats
 	 */
 	public static class RTCStats {
-		@JsonProperty("inboundRTPs")
+		@JsonProperty("inboundRTPStats")
 		public InboundRTPStreamStats[] inboundRTPStats;
 
 		@JsonProperty("mediaSources")
 		public MediaSourceStats[] mediaSources;
 
-		@JsonProperty("outboundRTPs")
+		@JsonProperty("outboundRTPStats")
 		public OutboundRTPStreamStats[] outboundRTPStats;
 
-		@JsonProperty("remoteInboundRTPs")
+		@JsonProperty("remoteInboundRTPStats")
 		public RemoteInboundRTPStreamStats[] remoteInboundRTPStats;
 
 		@JsonProperty("tracks")
@@ -86,13 +86,13 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudioreceiverstats-concealedsamples
 		 */
 		@JsonProperty("concealedSamples")
-		public Long concealedSamples;
+		public Integer concealedSamples;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudioreceiverstats-concealmentevents
 		 */
 		@JsonProperty("concealmentEvents")
-		public Long concealmentEvents;
+		public Integer concealmentEvents;
 
 		/**
 		 * Indicates if the track is detached from the source or not
@@ -110,25 +110,25 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-framesdecoded
 		 */
 		@JsonProperty("framesDecoded")
-		public Long framesDecoded;
+		public Integer framesDecoded;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcreceivedrtpstreamstats-framesdropped
 		 */
 		@JsonProperty("framesDropped")
-		public Long framesDropped;
+		public Integer framesDropped;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-framesreceived
 		 */
 		@JsonProperty("framesReceived")
-		public Long framesReceived;
+		public Integer framesReceived;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-hugeframessent
 		 */
 		@JsonProperty("hugeFramesSent")
-		public Long hugeFramesSent;
+		public Integer hugeFramesSent;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcmediasourcestats-trackidentifier
@@ -140,7 +140,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudioreceiverstats-insertedsamplesfordeceleration
 		 */
 		@JsonProperty("insertedSamplesForDeceleration")
-		public Long insertedSamplesForDeceleration;
+		public Integer insertedSamplesForDeceleration;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcvideoreceiverstats-jitterbufferdelay
@@ -152,7 +152,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcvideoreceiverstats-jitterbufferemittedcount
 		 */
 		@JsonProperty("jitterBufferEmittedCount")
-		public Long jitterBufferEmittedCount;
+		public Integer jitterBufferEmittedCount;
 
 		/**
 		 * The id of the media source the track is attached to
@@ -173,7 +173,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-removedsamplesforacceleration
 		 */
 		@JsonProperty("removedSamplesForAcceleration")
-		public Long removedSamplesForAcceleration;
+		public Integer removedSamplesForAcceleration;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudioreceiverstats-totalsamplesduration
@@ -185,13 +185,13 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudioreceiverstats-silentconcealedsamples
 		 */
 		@JsonProperty("silentConcealedSamples")
-		public Long silentConcealedSamples;
+		public Integer silentConcealedSamples;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-totalsamplesreceived
 		 */
 		@JsonProperty("totalSamplesReceived")
-		public Double totalSamplesReceived;
+		public Integer totalSamplesReceived;
 
 	}
 
@@ -406,7 +406,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudiosourcestats-audiolevel
 		 */
 		@JsonProperty("audioLevel")
-		public Double audioLevel;
+		public Float audioLevel;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcvideosourcestats-framespersecond
@@ -433,7 +433,7 @@ public class PeerConnectionSample {
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudiosourcestats-totalaudioenergy
 		 */
 		@JsonProperty("totalAudioEnergy")
-		public Double totalAudioEnergy;
+		public Float totalAudioEnergy;
 
 		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcaudiosourcestats-totalsamplesduration

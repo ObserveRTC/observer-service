@@ -24,8 +24,8 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.inject.Singleton;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.common.reports.avro.DetachedPeerConnection;
-import org.observertc.webrtc.common.reports.avro.ReportType;
+import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
+import org.observertc.webrtc.schemas.reports.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
 import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
@@ -104,12 +104,16 @@ public class CallCleaner {
 			UUID peerConnectionUUID = UUIDAdapter.toUUID(record.getPeerconnectionuuid());
 
 			Object payload = DetachedPeerConnection.newBuilder()
+					.setMediaUnitId(record.getMediaunitid())
+					.setCallName(record.getProvidedcallid())
 					.setCallUUID(callUUID.toString())
-					.setUserID(record.getProvideduserid())
-					.setMediaUnitID(record.getMediaunitid())
+					.setUserId(record.getProvideduserid())
+					.setBrowserId(record.getBrowserid())
 					.setPeerConnectionUUID(peerConnectionUUID.toString())
 					.build();
+
 			this.reportSink.sendReport(serviceUUID,
+					serviceUUID,
 					record.getProvidedcallid(),
 					serviceUUID.toString(),
 					ReportType.DETACHED_PEER_CONNECTION,

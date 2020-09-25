@@ -20,8 +20,3 @@ and the [Reporter](https://hub.docker.com/repository/docker/observertc/webrtc-re
 via environment variables. 
 
 
-## Contribute 
-
-
-## License
-

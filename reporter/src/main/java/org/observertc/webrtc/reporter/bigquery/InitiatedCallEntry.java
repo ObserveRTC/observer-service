@@ -16,25 +16,17 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.InitiatedCallReport;
-import org.observertc.webrtc.reporter.TimeConverter;
 
 public class InitiatedCallEntry implements BigQueryEntry {
 
-	public static InitiatedCallEntry from(InitiatedCallReport initiatedCallReport) {
-		return new InitiatedCallEntry()
-				.withObserverUUID(initiatedCallReport.observerUUID)
-				.withCallUUID(initiatedCallReport.callUUID)
-				.withInitiatedTimestamp(initiatedCallReport.initiated);
-	}
-
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
 	public static final String CALL_UUID_FIELD_NAME = "callUUID";
-	public static final String INITIATED_TIMESTAMP_FIELD_NAME = "initiated";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
+	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
 
 	private final Map<String, Object> values;
 
@@ -42,42 +34,34 @@ public class InitiatedCallEntry implements BigQueryEntry {
 		this.values = new HashMap<>();
 	}
 
-	public InitiatedCallEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public InitiatedCallEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
-	public InitiatedCallEntry withCallUUID(UUID value) {
+	public InitiatedCallEntry withCallUUID(String value) {
 		this.values.put(CALL_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 
-	public InitiatedCallEntry withInitiatedTimestamp(LocalDateTime value) {
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(INITIATED_TIMESTAMP_FIELD_NAME, epoch);
+	public InitiatedCallEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
 		return this;
 	}
 
-	public UUID getObserverUUID() {
-		String value = (String) this.values.get(OBSERVER_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public InitiatedCallEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
+		return this;
 	}
 
-	public UUID getPeerConnectionUUID() {
-		String value = (String) this.values.get(CALL_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public InitiatedCallEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
 	}
 
-	public LocalDateTime getInitiatedTimestamp() {
-		Long value = (Long) this.values.get(INITIATED_TIMESTAMP_FIELD_NAME);
-		return TimeConverter.epochToGMTLocalDateTime(value);
-
+	public InitiatedCallEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
 	}
 
 	public Map<String, Object> toMap() {

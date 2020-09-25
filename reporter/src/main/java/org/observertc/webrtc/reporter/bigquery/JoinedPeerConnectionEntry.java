@@ -16,31 +16,22 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
-import org.observertc.webrtc.reporter.TimeConverter;
 
 public class JoinedPeerConnectionEntry implements BigQueryEntry {
 
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
 	public static final String CALL_UUID_FIELD_NAME = "callUUID";
-	public static final String BROWSERID_TIMESTAMP_FIELD_NAME = "browserID";
-	public static final String JOINED_TIMESTAMP_FIELD_NAME = "joined";
-
-	public static JoinedPeerConnectionEntry from(JoinedPeerConnectionReport joinedPeerConnection) {
-		return new JoinedPeerConnectionEntry()
-				.withObserverUUID(joinedPeerConnection.observerUUID)
-				.withPeerConnectionUUID(joinedPeerConnection.peerConnectionUUID)
-				.withCallUUID(joinedPeerConnection.callUUID)
-				.withBrowserID(joinedPeerConnection.browserID)
-				.withJoinedTimestamp(joinedPeerConnection.joined);
-	}
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
+	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
+	public static final String USER_ID_FIELD_NAME = "userID";
+	public static final String TIMEZONE_FIELD_NAME = "timeZone";
 
 
 	private final Map<String, Object> values;
@@ -49,67 +40,64 @@ public class JoinedPeerConnectionEntry implements BigQueryEntry {
 		this.values = new HashMap<>();
 	}
 
-	public JoinedPeerConnectionEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public JoinedPeerConnectionEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
-	public JoinedPeerConnectionEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
-		return this;
-	}
-
-	public JoinedPeerConnectionEntry withCallUUID(UUID value) {
+	public JoinedPeerConnectionEntry withCallUUID(String value) {
 		this.values.put(CALL_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 
-	public JoinedPeerConnectionEntry withBrowserID(String browserId) {
-		this.values.put(BROWSERID_TIMESTAMP_FIELD_NAME, browserId);
+	public JoinedPeerConnectionEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
 		return this;
 	}
 
-	public JoinedPeerConnectionEntry withJoinedTimestamp(LocalDateTime value) {
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(JOINED_TIMESTAMP_FIELD_NAME, epoch);
+	public JoinedPeerConnectionEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
 		return this;
 	}
 
-	public UUID getObserverUUID() {
-		String value = (String) this.values.get(OBSERVER_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public JoinedPeerConnectionEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
 	}
 
-
-	public UUID getCallUUID() {
-		String value = (String) this.values.get(CALL_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public JoinedPeerConnectionEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
 	}
 
-	public UUID getPeerConnectionUUID() {
-		String value = (String) this.values.get(PEER_CONNECTION_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public JoinedPeerConnectionEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
 	}
 
-	public LocalDateTime getJoinedTimestamp() {
-		Long value = (Long) this.values.get(JOINED_TIMESTAMP_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		ZoneId zoneId = ZoneId.systemDefault();
-		return LocalDateTime.ofInstant(Instant.ofEpochMilli(value), zoneId);
+	public JoinedPeerConnectionEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
+	}
+
+	public JoinedPeerConnectionEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public JoinedPeerConnectionEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public JoinedPeerConnectionEntry withTimeZone(String value) {
+		this.values.put(TIMEZONE_FIELD_NAME, value);
+		return this;
 	}
 
 	public Map<String, Object> toMap() {
 		return this.values;
 	}
+
+
 }

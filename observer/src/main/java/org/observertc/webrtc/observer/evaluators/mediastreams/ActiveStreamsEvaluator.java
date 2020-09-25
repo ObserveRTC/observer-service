@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.common.reports.avro.JoinedPeerConnection;
-import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
@@ -47,17 +45,19 @@ import org.observertc.webrtc.observer.repositories.ActiveStreamKey;
 import org.observertc.webrtc.observer.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.observertc.webrtc.schemas.reports.JoinedPeerConnection;
+import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @KafkaListener(
 		groupId = "observertc-webrtc-observer-ActiveStreamsEvaluator",
 		batch = true,
-		pollTimeout = "5000ms",
+		pollTimeout = "50000ms",
 		threads = 2,
 		properties = {
 				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "5000"),
-				@Property(name = ConsumerConfig.FETCH_MIN_BYTES_CONFIG, value = "10485760"),
+				@Property(name = ConsumerConfig.FETCH_MIN_BYTES_CONFIG, value = "100000"),
 				@Property(name = ConsumerConfig.MAX_POLL_RECORDS_CONFIG, value = "5000")}
 )
 @Prototype
@@ -120,8 +120,9 @@ public class ActiveStreamsEvaluator {
 						pcSample.callId,
 						sample.timeZoneID,
 						pcSample.userId,
-						sample.mediaUnit,
-						sample.serviceName
+						sample.mediaUnitId,
+						sample.serviceName,
+						sample.customProvided
 				);
 			} else {
 				mediaStreamUpdate.updated = sample.timestamp;
@@ -206,7 +207,7 @@ public class ActiveStreamsEvaluator {
 
 				Optional<PeerconnectionsRecord> pcHolder =
 						this.peerConnectionsRepository.findByJoinedBrowserIDOrProvidedCallID(mediaStreamUpdate.created,
-								mediaStreamUpdate.browserID, mediaStreamUpdate.providedCallID);
+								mediaStreamUpdate.browserID, mediaStreamUpdate.callName);
 				if (pcHolder.isPresent()) {
 					callUUIDBytes = pcHolder.get().getCalluuid();
 				}
@@ -239,6 +240,7 @@ public class ActiveStreamsEvaluator {
 			ReportDraft reportDraft = InitiatedCallReportDraft.of(
 					mediaStreamUpdate.serviceUUID,
 					callUUID,
+					mediaStreamUpdate.customProvided,
 					mediaStreamUpdate.created
 			);
 
@@ -263,8 +265,8 @@ public class ActiveStreamsEvaluator {
 					null,
 					mediaStreamUpdate.mediaUnitID,
 					mediaStreamUpdate.browserID,
-					mediaStreamUpdate.providedUserID,
-					mediaStreamUpdate.providedCallID,
+					mediaStreamUpdate.userId,
+					mediaStreamUpdate.callName,
 					mediaStreamUpdate.timeZoneID,
 					mediaStreamUpdate.serviceName
 			));
@@ -280,15 +282,16 @@ public class ActiveStreamsEvaluator {
 			callUUIDStr = "NOT VALID UUID";
 		}
 		JoinedPeerConnection joinedPC = JoinedPeerConnection.newBuilder()
-				.setMediaUnitID(mediaStreamUpdate.mediaUnitID)
+				.setMediaUnitId(mediaStreamUpdate.mediaUnitID)
 				.setCallUUID(callUUIDStr)
 				.setPeerConnectionUUID(mediaStreamUpdate.peerConnectionUUID.toString())
 				.build();
 
 		this.reportSink.sendReport(
 				mediaStreamUpdate.serviceUUID,
-				mediaStreamUpdate.providedCallID,
-				mediaStreamUpdate.serviceUUID.toString(),
+				mediaStreamUpdate.serviceUUID,
+				mediaStreamUpdate.serviceName,
+				mediaStreamUpdate.customProvided,
 				ReportType.JOINED_PEER_CONNECTION,
 				mediaStreamUpdate.created,
 				joinedPC

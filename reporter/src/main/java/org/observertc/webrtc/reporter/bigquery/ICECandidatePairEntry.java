@@ -16,27 +16,31 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.CandidatePairState;
-import org.observertc.webrtc.common.reports.ICECandidatePairReport;
-import org.observertc.webrtc.reporter.TimeConverter;
+import org.observertc.webrtc.schemas.reports.ICEState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ICECandidatePairEntry implements BigQueryEntry {
 
 	private static Logger logger = LoggerFactory.getLogger(ICECandidatePairEntry.class);
-
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-	public static final String CANDIDATE_ID_FIELD_NAME = "CandidateID";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
+	public static final String USER_ID_FIELD_NAME = "userID";
+
+	public static final String CANDIDATE_PAIR_ID_FIELD_NAME = "candidatePairID";
+	public static final String LOCAL_CANDIDATE_ID_FIELD_NAME = "localCandidateID";
+	public static final String REMOTE_CANDIDATE_ID_FIELD_NAME = "remoteCandidateID";
 	public static final String WRITABLE_FIELD_NAME = "writable";
 	public static final String TOTAL_ROUND_TRIP_TIME_FIELD_NAME = "totalRoundTripTime";
-	public static final String STATE_FIELD_NAME = "state";
+	public static final String ICE_STATE_FIELD_NAME = "state";
 	public static final String NOMINATED_FIELD_NAME = "nominated";
 	public static final String AVAILABLE_OUTGOING_BITRATE_FIELD_NAME = "availableOutgoingBitrate";
 	public static final String BYTES_RECEIVED_FIELD_NAME = "bytesReceived";
@@ -49,32 +53,65 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 	public static final String RESPONSES_RECEIVED_FIELD_NAME = "responsesReceived";
 	public static final String RESPONSES_SENT_FIELD_NAME = "responsesSent";
 
-	public static ICECandidatePairEntry from(ICECandidatePairReport iceCandidatePairReport) {
-		if (iceCandidatePairReport == null) {
-			return null;
-		}
-		return new ICECandidatePairEntry()
-				.withObserverUUID(iceCandidatePairReport.observerUUID)
-				.withPeerConnectionUUID(iceCandidatePairReport.peerConnectionUUID)
-				.withCandidateID(iceCandidatePairReport.candidateID)
-				.withTimestamp(iceCandidatePairReport.timestamp)
-				.withNominated(iceCandidatePairReport.nominated)
-				.withAvailableOutgoingBitrate(iceCandidatePairReport.availableOutgoingBitrate)
-				.withBytesReceived(iceCandidatePairReport.bytesReceived)
-				.withBytesSent(iceCandidatePairReport.bytesSent)
-				.withConsentRequestsSent(iceCandidatePairReport.consentRequestsSent)
-				.withCurrentRoundTripTime(iceCandidatePairReport.currentRoundTripTime)
-				.withPriority(iceCandidatePairReport.priority)
-				.withRequestsReceived(iceCandidatePairReport.requestsReceived)
-				.withRequestsSent(iceCandidatePairReport.requestsSent)
-				.withResponseReceived(iceCandidatePairReport.responsesReceived)
-				.withResponseSent(iceCandidatePairReport.responsesSent)
-				.withState(iceCandidatePairReport.state)
-				.withTotalRoundTripTime(iceCandidatePairReport.totalRoundTripTime)
-				.withWritable(iceCandidatePairReport.writable)
-				;
+	private final Map<String, Object> values;
 
+	public ICECandidatePairEntry() {
+		this.values = new HashMap<>();
+	}
 
+	public ICECandidatePairEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withLocalCandidateId(String value) {
+		this.values.put(LOCAL_CANDIDATE_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withRemoteCandidateId(String value) {
+		this.values.put(REMOTE_CANDIDATE_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public ICECandidatePairEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
+		return this;
 	}
 
 	public ICECandidatePairEntry withWritable(Boolean value) {
@@ -83,22 +120,20 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 	}
 
 
-	public ICECandidatePairEntry withCandidateID(String value) {
-		this.values.put(CANDIDATE_ID_FIELD_NAME, value);
-		return this;
-	}
-
 	public ICECandidatePairEntry withTotalRoundTripTime(Double value) {
 		this.values.put(TOTAL_ROUND_TRIP_TIME_FIELD_NAME, value);
 		return this;
 	}
 
-	public ICECandidatePairEntry withState(CandidatePairState value) {
-		String state = null;
-		if (value != null) {
-			state = value.name();
+	public ICECandidatePairEntry withICEState(ICEState iceState) {
+		if (iceState == null) {
+			return this;
 		}
-		this.values.put(STATE_FIELD_NAME, state);
+		return this.withICEState(iceState.name());
+	}
+
+	public ICECandidatePairEntry withICEState(String value) {
+		this.values.put(ICE_STATE_FIELD_NAME, value);
 		return this;
 	}
 
@@ -122,7 +157,7 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public ICECandidatePairEntry withPriority(Integer value) {
+	public ICECandidatePairEntry withPriority(Long value) {
 		this.values.put(PRIORITY_FIELD_NAME, value);
 		return this;
 	}
@@ -137,12 +172,12 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public ICECandidatePairEntry withBytesSent(Integer value) {
+	public ICECandidatePairEntry withBytesSent(Long value) {
 		this.values.put(BYTES_SENT_FIELD_NAME, value);
 		return this;
 	}
 
-	public ICECandidatePairEntry withBytesReceived(Integer value) {
+	public ICECandidatePairEntry withBytesReceived(Long value) {
 		this.values.put(BYTES_RECEIVED_FIELD_NAME, value);
 		return this;
 	}
@@ -157,49 +192,12 @@ public class ICECandidatePairEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public ICECandidatePairEntry withTimestamp(LocalDateTime value) {
-		if (value == null) {
-			logger.warn("No valid sample timestamp");
-			return this;
-		}
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
-		return this;
-	}
-
-	private final Map<String, Object> values;
-
-	public ICECandidatePairEntry() {
-		this.values = new HashMap<>();
-	}
-
-	public ICECandidatePairEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
-		return this;
-	}
-
-	public ICECandidatePairEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
-		return this;
-	}
-
-	public UUID getObserverUUID() {
-		String value = (String) this.values.get(OBSERVER_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
-	}
-
-	public UUID getPeerConnectionUUID() {
-		String value = (String) this.values.get(PEER_CONNECTION_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
-	}
-
 	public Map<String, Object> toMap() {
 		return this.values;
+	}
+
+	public ICECandidatePairEntry withCandidatePairId(String candidatePairId) {
+		this.values.put(CANDIDATE_PAIR_ID_FIELD_NAME, candidatePairId);
+		return this;
 	}
 }

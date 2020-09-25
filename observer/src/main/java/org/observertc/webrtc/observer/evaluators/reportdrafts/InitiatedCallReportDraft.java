@@ -18,15 +18,21 @@ package org.observertc.webrtc.observer.evaluators.reportdrafts;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.Instant;
 import java.util.UUID;
 
 @JsonTypeName("INITIATED_CALL")
 public class InitiatedCallReportDraft extends ReportDraft {
-	public static InitiatedCallReportDraft of(UUID serviceUUID, UUID callUUID, Long initiated) {
+
+
+	public static InitiatedCallReportDraft of(UUID serviceUUID, UUID callUUID, String customProvided, Long initiated) {
+		Long created = Instant.now().toEpochMilli();
 		InitiatedCallReportDraft result = new InitiatedCallReportDraft();
+		result.created = created;
 		result.callUUID = callUUID;
 		result.serviceUUID = serviceUUID;
 		result.initiated = initiated;
+		result.customProvided = customProvided;
 		return result;
 	}
 
@@ -38,4 +44,5 @@ public class InitiatedCallReportDraft extends ReportDraft {
 	public UUID serviceUUID;
 	public UUID callUUID;
 	public Long initiated;
+	public String customProvided;
 }

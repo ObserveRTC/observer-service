@@ -22,15 +22,7 @@ import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.context.annotation.Prototype;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import org.observertc.webrtc.common.reports.avro.ICECandidatePair;
-import org.observertc.webrtc.common.reports.avro.ICELocalCandidate;
-import org.observertc.webrtc.common.reports.avro.ICERemoteCandidate;
-import org.observertc.webrtc.common.reports.avro.InboundRTP;
-import org.observertc.webrtc.common.reports.avro.OutboundRTP;
-import org.observertc.webrtc.common.reports.avro.RemoteInboundRTP;
-import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.ObservedPCSSink;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -38,6 +30,15 @@ import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.NumberConverter;
 import org.observertc.webrtc.observer.repositories.SentReportsRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.observertc.webrtc.schemas.reports.ICECandidatePair;
+import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
+import org.observertc.webrtc.schemas.reports.ICERemoteCandidate;
+import org.observertc.webrtc.schemas.reports.InboundRTP;
+import org.observertc.webrtc.schemas.reports.MediaSource;
+import org.observertc.webrtc.schemas.reports.OutboundRTP;
+import org.observertc.webrtc.schemas.reports.RemoteInboundRTP;
+import org.observertc.webrtc.schemas.reports.ReportType;
+import org.observertc.webrtc.schemas.reports.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,8 +63,7 @@ public class ObservedPCSEvaluator {
 								NumberConverter numberConverter,
 								SignatureMaker signatureMaker,
 								SentReportsRepository sentReportsRepository,
-								ReportSink reportSink,
-								ObservedPCSSink observedPCSSink) {
+								ReportSink reportSink) {
 		this.config = config;
 		this.reportSink = reportSink;
 		this.enumConverter = enumConverter;
@@ -91,7 +91,21 @@ public class ObservedPCSEvaluator {
 				this.makeRemoteInboundRTPReporter();
 		final BiConsumer<ObservedPCS, PeerConnectionSample.OutboundRTPStreamStats> outboundRTPReporter = this.makeOutboundRTPReporter();
 
+		final BiConsumer<ObservedPCS, PeerConnectionSample.RTCTrackStats> trackReporter = this.makeTrackReporter();
+
+		final BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> mediaSourceReporter = this.makeMediaSourceReporter();
+
 		return new PeerConnectionSampleVisitor<ObservedPCS>() {
+			@Override
+			public void visitMediaSource(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.MediaSourceStats subject) {
+				mediaSourceReporter.accept(obj, subject);
+			}
+
+			@Override
+			public void visitTrack(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.RTCTrackStats subject) {
+				trackReporter.accept(obj, subject);
+			}
+
 			@Override
 			public void visitRemoteInboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject) {
 				remoteInboundRTPReporter.accept(obj, subject);
@@ -124,6 +138,78 @@ public class ObservedPCSEvaluator {
 		};
 	}
 
+	private BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> makeMediaSourceReporter() {
+		if (!this.config.reportMediaSources) {
+			return (observedPCS, subject) -> {
+
+			};
+		}
+
+
+		return (observedPCS, subject) -> {
+			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+			MediaSource mediaSource = MediaSource.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
+					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+
+					.setAudioLevel(subject.audioLevel)
+					.setFramesPerSecond(subject.framesPerSecond)
+					.setHeight(subject.height)
+					.setMediaSourceId(subject.id)
+					.setMediaType(enumConverter.toReportMediaType(subject.mediaType))
+					.setTotalAudioEnergy(subject.totalAudioEnergy)
+					.setTotalSamplesDuration(subject.totalSamplesDuration)
+					.setTrackId(subject.trackId)
+					.setWidth(subject.width)
+					.build();
+			sendReport(observedPCS, ReportType.MEDIA_SOURCE, mediaSource);
+		};
+	}
+
+	private BiConsumer<ObservedPCS, PeerConnectionSample.RTCTrackStats> makeTrackReporter() {
+		if (!this.config.reportTracks) {
+			return (observedPCS, subject) -> {
+
+			};
+		}
+
+		return (observedPCS, subject) -> {
+			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+			Track track = Track.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
+					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+//
+					.setConcealedSamples(subject.concealedSamples)
+					.setConcealmentEvents(subject.concealmentEvents)
+					.setDetached(subject.detached)
+					.setEnded(subject.ended)
+					.setFramesDecoded(subject.framesDecoded)
+					.setFramesDropped(subject.framesDropped)
+					.setFramesReceived(subject.framesReceived)
+					.setHugeFramesSent(subject.hugeFramesSent)
+					.setTrackId(subject.id)
+					.setInsertedSamplesForDeceleration(subject.insertedSamplesForDeceleration)
+					.setJitterBufferDelay(subject.jitterBufferDelay)
+					.setJitterBufferEmittedCount(subject.jitterBufferEmittedCount)
+					.setMediaSourceID(subject.mediaSourceId)
+					.setMediaType(enumConverter.toReportMediaType(subject.mediaType))
+					.setRemoteSource(subject.remoteSource)
+					.setRemovedSamplesForAcceleration(subject.removedSamplesForAcceleration)
+					.setSamplesDuration(subject.samplesDuration)
+					.setSilentConcealedSamples(subject.silentConcealedSamples)
+					.setTotalSamplesReceived(subject.totalSamplesReceived)
+					.build();
+
+			sendReport(observedPCS, ReportType.TRACK, track);
+		};
+	}
+
 	private BiConsumer<ObservedPCS, PeerConnectionSample.ICECandidatePair> makeICECandidatePairReporter() {
 		if (!this.config.reportCandidatePairs) {
 			return (observedPCS, subject) -> {
@@ -132,23 +218,22 @@ public class ObservedPCSEvaluator {
 		}
 		return (observedPCS, subject) -> {
 			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
-			byte[] signature = signatureMaker.makeSignature(peerConnectionSample.peerConnectionId, subject.id, subject.transportId);
-			if (sentReportsRepository.existsBySignature(signature)) {
-				return;
-			}
 			ICECandidatePair candidatePair = ICECandidatePair.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
 					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
-					.setMediaUnit(observedPCS.mediaUnit)
+					.setCandidatePairId(subject.id)
+					.setLocalCandidateID(subject.localCandidateId)
+					.setRemoteCandidateID(subject.remoteCandidateId)
 					.setAvailableOutgoingBitrate(subject.availableOutgoingBitrate)
 					.setBytesReceived(subject.bytesReceived)
 					.setBytesSent(subject.bytesSent)
 					.setConsentRequestsSent(subject.consentRequestsSent)
 					.setCurrentRoundTripTime(subject.currentRoundTripTime)
-					.setId(subject.id)
-					.setLocalCandidateID(subject.localCandidateId)
 					.setNominated(subject.nominated)
 					.setPriority(subject.priority)
-					.setRemoteCandidateID(subject.remoteCandidateId)
 					.setRequestsReceived(subject.requestsReceived)
 					.setRequestsSent(subject.requestsSent)
 					.setResponsesReceived(subject.responsesReceived)
@@ -175,18 +260,22 @@ public class ObservedPCSEvaluator {
 			if (sentReportsRepository.existsBySignature(signature)) {
 				return;
 			}
-
+			String ipLSH = subject.ip;
 			ICELocalCandidate localCandidate = ICELocalCandidate.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
 					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
-					.setMediaUnit(observedPCS.mediaUnit)
+					.setCandidateId(subject.id)
 					.setCandidateType(enumConverter.toCandidateType(subject.candidateType))
 					.setDeleted(subject.deleted)
-					.setId(subject.id)
-					.setIp(subject.ip)
+					.setIpLSH(ipLSH)
 					.setIsRemote(subject.isRemote)
 					.setPort(subject.port)
 					.setPriority(subject.priority)
-					.setNetworkType(enumConverter.toNetworkType(subject.protocol))
+					.setNetworkType(enumConverter.toNetworkType(subject.networkType))
+					.setProtocol(enumConverter.toInternetProtocol(subject.protocol))
 					.setTransportID(subject.transportId)
 					.build();
 			sendReport(observedPCS, ReportType.ICE_LOCAL_CANDIDATE, localCandidate);
@@ -205,13 +294,17 @@ public class ObservedPCSEvaluator {
 			if (sentReportsRepository.existsBySignature(signature)) {
 				return;
 			}
+			String ipLSH = subject.ip;
 			ICERemoteCandidate remoteCandidate = ICERemoteCandidate.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
 					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
-					.setMediaUnit(observedPCS.mediaUnit)
+					.setCandidateId(subject.id)
 					.setCandidateType(enumConverter.toCandidateType(subject.candidateType))
 					.setDeleted(subject.deleted)
-					.setId(subject.id)
-					.setIp(subject.ip)
+					.setIpLSH(ipLSH)
 					.setIsRemote(subject.isRemote)
 					.setPort(subject.port)
 					.setPriority(subject.priority)
@@ -231,8 +324,12 @@ public class ObservedPCSEvaluator {
 		return (observedPCS, subject) -> {
 			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
 			RemoteInboundRTP remoteInboundRTP = RemoteInboundRTP.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
 					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
-					.setMediaUnit(observedPCS.mediaUnit)
+					.setSsrc(subject.ssrc)
 					.setCodecID(subject.codecId)
 					.setId(subject.id)
 					.setJitter(numberConverter.toFloat(subject.jitter))
@@ -240,11 +337,9 @@ public class ObservedPCSEvaluator {
 					.setMediaType(enumConverter.toReportMediaType(subject.mediaType))
 					.setPacketsLost(subject.packetsLost)
 					.setRoundTripTime(subject.roundTripTime)
-					.setSsrc(subject.ssrc)
 					.setTransportID(subject.transportId)
 					.build();
-			// TODO: this is missing
-//			sendReport(observedPCS, ReportType., remoteInboundRTP);
+			sendReport(observedPCS, ReportType.REMOTE_INBOUND_RTP, remoteInboundRTP);
 		};
 	}
 
@@ -257,8 +352,12 @@ public class ObservedPCSEvaluator {
 		return (observedPCS, subject) -> {
 			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
 			InboundRTP inboundRTP = InboundRTP.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
 					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
-					.setMediaUnit(observedPCS.mediaUnit)
+					.setSsrc(subject.ssrc)
 					.setBytesReceived(subject.bytesReceived)
 					.setCodecId(subject.codecId)
 					.setDecoderImplementation(subject.decoderImplementation)
@@ -300,8 +399,12 @@ public class ObservedPCSEvaluator {
 		return (observedPCS, subject) -> {
 			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
 			OutboundRTP outboundRTP = OutboundRTP.newBuilder()
-					.setPeerConnectionUUID(observedPCS.peerConnectionUUID.toString())
-					.setMediaUnit(observedPCS.mediaUnit)
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
+					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+					.setSsrc(subject.ssrc)
 					.setBytesSent(subject.bytesSent)
 					.setCodecID(subject.codecId)
 					.setEncoderImplementation(subject.encoderImplementation)
@@ -335,27 +438,12 @@ public class ObservedPCSEvaluator {
 	private void sendReport(ObservedPCS observedPCS, ReportType reportType, Object payload) {
 		this.reportSink.sendReport(
 				observedPCS.peerConnectionUUID,
+				observedPCS.serviceUUID,
 				observedPCS.peerConnectionSample.callId,
-				"serviceName",
+				observedPCS.customProvided,
 				reportType,
-
 				observedPCS.timestamp,
 				payload
 		);
-//		DatumWriter<Report> writer = new SpecificDatumWriter<>(Report.class);
-//
-//		Report report;
-//		byte[] data;
-//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//		BinaryMessageEncoder<Report> encoder = Report.getEncoder();
-//		try {
-////			jsonEncoder = EncoderFactory.get().jsonEncoder(
-////					Report.getClassSchema(), stream);
-//			writer.write(report, encoder);
-//			jsonEncoder.flush();
-//			data = stream.toByteArray();
-//		} catch (IOException e) {
-//			logger.error("Serialization error:" + e.getMessage());
-//		}
 	}
 }

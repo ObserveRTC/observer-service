@@ -16,21 +16,23 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.MediaType;
-import org.observertc.webrtc.common.reports.TrackReport;
-import org.observertc.webrtc.reporter.TimeConverter;
+import org.observertc.webrtc.schemas.reports.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TrackReportEntry implements BigQueryEntry {
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
 	public static final String TRACK_ID_FIELD_NAME = "trackID";
+	public static final String USER_ID_FIELD_NAME = "userID";
 
 	public static final String AUDIO_LEVEL_FIELD_NAME = "audioLevel";
 	public static final String CONCEALED_SAMPLES_FIELD_NAME = "concealedSamples";
@@ -59,75 +61,71 @@ public class TrackReportEntry implements BigQueryEntry {
 
 	private static Logger logger = LoggerFactory.getLogger(TrackReportEntry.class);
 
-	public static TrackReportEntry from(TrackReport report) {
-		TrackReportEntry result = new TrackReportEntry()
-				.withObserverUUID(report.observerUUID)
-				.withPeerConnectionUUID(report.peerConnectionUUID)
-				.withTimestamp(report.timestamp)
-				.withTrackID(report.trackID)
-				.withMediaType(report.mediaType)
-				.withAudioLevel(report.audioLevel)
-				.withConcealmentEvents(report.concealmentEvents)
-				.withDetached(report.detached)
-				.withEnded(report.ended)
-				.withFramesHeight(report.frameHeight)
-				.withConcealedSamples(report.concealedSamples)
-				.withFramesDecoded(report.framesDecoded)
-				.withFramesDropped(report.framesDropped)
-				.withFramesReceived(report.framesReceived)
-				.withFramesSent(report.framesSent)
-				.withFramesWidth(report.frameWidth)
-				.withHugeFramesSent(report.framesSent)
-				.withInsertedSamplesForDeceleration(report.insertedSamplesForDeceleration)
-				.withJitterBufferDelay(report.jitterBufferDelay)
-				.withJitterBufferEmittedCount(report.jitterBufferEmittedCount)
-				.withRemoteSource(report.remoteSource)
-				.withRemovedSamplesForAcceleration(report.removedSamplesForAcceleration)
-				.withSilentConcealedSamples(report.silentConcealedSamples)
-				.withTotalAudioEnergy(report.totalAudioEnergy)
-				.withTotalSamplesDuration(report.totalSamplesDuration)
-				.withTotalSamplesReceived(report.totalSamplesReceived)
-				.withMediaSourceID(report.mediaSourceID);
-		return result;
-	}
-
 	private final Map<String, Object> values;
 
 	public TrackReportEntry() {
 		this.values = new HashMap<>();
 	}
 
-	public TrackReportEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public TrackReportEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
-	public TrackReportEntry withTimestamp(LocalDateTime value) {
-		if (value == null) {
-			logger.warn("No valid sample timestamp");
+	public TrackReportEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public TrackReportEntry withMediaType(MediaType mediaType) {
+		if (mediaType == null) {
 			return this;
 		}
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
-		return this;
+		return this.withMediaType(mediaType.name());
 	}
 
-	public TrackReportEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+	public TrackReportEntry withMediaType(String value) {
+		this.values.put(MEDIA_TYPE_FIELD_NAME, value);
 		return this;
 	}
 
 	public TrackReportEntry withTrackID(String value) {
 		this.values.put(TRACK_ID_FIELD_NAME, value);
-		return this;
-	}
-
-	public TrackReportEntry withMediaType(MediaType value) {
-		String mediaType = null;
-		if (value != null) {
-			mediaType = value.name();
-		}
-		this.values.put(MEDIA_TYPE_FIELD_NAME, mediaType);
 		return this;
 	}
 
@@ -245,8 +243,15 @@ public class TrackReportEntry implements BigQueryEntry {
 		return this;
 	}
 
+	public TrackReportEntry withConcealmentSamples(Integer value) {
+		this.values.put(CONCEALED_SAMPLES_FIELD_NAME, value);
+		return this;
+	}
+
 	@Override
 	public Map<String, Object> toMap() {
 		return this.values;
 	}
+
+
 }

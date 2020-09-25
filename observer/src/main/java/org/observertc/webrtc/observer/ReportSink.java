@@ -29,8 +29,8 @@ import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.observertc.webrtc.common.reports.avro.Report;
-import org.observertc.webrtc.common.reports.avro.ReportType;
+import org.observertc.webrtc.schemas.reports.Report;
+import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,15 +54,18 @@ public class ReportSink {
 		this.encoder = EncoderFactory.get().binaryEncoder(this.outputStream, null);
 	}
 
-	public Future<RecordMetadata> sendReport(UUID serviceUUID,
-											 String callName,
-											 String serviceID,
+	public Future<RecordMetadata> sendReport(UUID reportKey,
+											 UUID serviceUUID,
+											 String serviceName,
+											 String customProvided,
 											 ReportType type,
 											 Long timestamp,
 											 Object payload) {
+		String serviceUUIDStr = serviceUUID != null ? serviceUUID.toString() : null;
 		Report report = Report.newBuilder()
-				.setCallName(callName)
-				.setServiceID(serviceID)
+				.setServiceUUID(serviceUUIDStr)
+				.setServiceName(serviceName)
+				.setCustomProvided(customProvided)
 				.setType(type)
 				.setTimestamp(timestamp)
 				.setPayload(payload)
@@ -71,7 +74,7 @@ public class ReportSink {
 		this.outputStream.reset();
 		try {
 			this.datumWriter.write(report, encoder);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("Error during serialization", e);
 			return null;
 		}
@@ -83,7 +86,7 @@ public class ReportSink {
 			logger.error("Error in streaming", e);
 			return null;
 		}
-		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(this.config.topicName, serviceUUID,
+		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(this.config.topicName, reportKey,
 				out));
 	}
 

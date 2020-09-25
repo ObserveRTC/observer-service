@@ -16,71 +16,93 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.RemoteInboundRTPReport;
-import org.observertc.webrtc.reporter.TimeConverter;
+import org.observertc.webrtc.schemas.reports.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RemoteInboundRTPReportEntry implements BigQueryEntry {
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	public static final String SSRC_FIELD_NAME = "SSRC";
-	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
+	public static final String USER_ID_FIELD_NAME = "userID";
+
+	public static final String SSRC_FIELD_NAME = "SSRC";
 	public static final String RTT_IN_MS_FIELD_NAME = "RTT";
 	public static final String PACKETSLOST_FIELD_NAME = "packetsLost";
 	public static final String JITTER_FIELD_NAME = "jitter";
 	public static final String CODEC_FIELD_NAME = "codec";
 	public static final String MEDIA_TYPE_FIELD_NAME = "mediaType";
+	public static final String TRANSPORT_ID_FIELD_NAME = "transportID";
 
 	private final Map<String, Object> values;
 
 	private static Logger logger = LoggerFactory.getLogger(RemoteInboundRTPReportEntry.class);
 
-	public static RemoteInboundRTPReportEntry from(RemoteInboundRTPReport report) {
-		String mediaType = null;
-		if (report.mediaType != null) {
-			mediaType = report.mediaType.name();
-		}
-
-		return new RemoteInboundRTPReportEntry()
-				.withObserverUUID(report.observerUUID)
-				.withPeerConnectionUUID(report.peerConnectionUUID)
-				.withSSRC(report.SSRC)
-				.withTimestamp(report.timestamp)
-				.withPacketsLost(report.packetsLost)
-				.withRTT(report.RTT)
-				.withJitter(report.jitter)
-				.withCodec(report.codec)
-				.withMediaType(mediaType);
-
-	}
-
 	public RemoteInboundRTPReportEntry() {
 		this.values = new HashMap<>();
 	}
 
-	public RemoteInboundRTPReportEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public RemoteInboundRTPReportEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
+	public RemoteInboundRTPReportEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
+		return this;
+	}
 
-	public RemoteInboundRTPReportEntry withTimestamp(LocalDateTime value) {
-		if (value == null) {
-			logger.warn("No valid sample timestamp");
+	public RemoteInboundRTPReportEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public RemoteInboundRTPReportEntry withMediaType(MediaType mediaType) {
+		if (mediaType == null) {
 			return this;
 		}
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
-		return this;
+		return this.withMediaType(mediaType.name());
 	}
 
-	public RemoteInboundRTPReportEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+	public RemoteInboundRTPReportEntry withMediaType(String value) {
+		this.values.put(MEDIA_TYPE_FIELD_NAME, value);
 		return this;
 	}
 
@@ -100,7 +122,7 @@ public class RemoteInboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public RemoteInboundRTPReportEntry withJitter(Double value) {
+	public RemoteInboundRTPReportEntry withJitter(Float value) {
 		this.values.put(JITTER_FIELD_NAME, value);
 		return this;
 	}
@@ -110,8 +132,9 @@ public class RemoteInboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public RemoteInboundRTPReportEntry withMediaType(String value) {
-		this.values.put(MEDIA_TYPE_FIELD_NAME, value);
+
+	public RemoteInboundRTPReportEntry withTransportId(String value) {
+		this.values.put(TRANSPORT_ID_FIELD_NAME, value);
 		return this;
 	}
 

@@ -17,9 +17,6 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.context.annotation.EachProperty;
-import java.util.ArrayList;
-import java.util.List;
 
 @ConfigurationProperties("evaluators")
 public class EvaluatorsConfig {
@@ -38,9 +35,9 @@ public class EvaluatorsConfig {
 
 	@ConfigurationProperties("callCleaner")
 	public static class CallCleanerConfig {
-		public int streamMaxIdleTimeInS;
-		public int streamMaxAllowedGapInS;
-		public int pcRetentionTimeInDays;
+		public int streamMaxIdleTimeInS = 60;
+		public int streamMaxAllowedGapInS = 3600;
+		public int pcRetentionTimeInDays = 1;
 
 	}
 
@@ -54,15 +51,6 @@ public class EvaluatorsConfig {
 		public boolean reportCandidatePairs = true;
 		public boolean reportLocalCandidates = true;
 		public boolean reportRemoteCandidates = true;
-		public int sentReportsCacheSize = 100000;
-		public List<IPFlagConfig> ipFlags = new ArrayList<>();
-
-		//		@ConfigurationProperties("ipFlags")
-		@EachProperty("ipFlags")
-		public static class IPFlagConfig {
-			public String name;
-			public List<String> networks;
-		}
 	}
 
 

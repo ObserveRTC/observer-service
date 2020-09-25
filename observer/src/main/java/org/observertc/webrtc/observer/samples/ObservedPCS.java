@@ -28,25 +28,27 @@ public class ObservedPCS {
 								 PeerConnectionSample peerConnectionSample,
 								 String timeZoneID,
 								 String serviceName,
+								 String customProvided,
 								 Long timestamp) {
 		ObservedPCS result = new ObservedPCS();
 		result.serviceUUID = serviceUUID;
-		result.mediaUnit = mediaUnit;
+		result.mediaUnitId = mediaUnit;
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.peerConnectionSample = peerConnectionSample;
 		result.timeZoneID = timeZoneID;
 		result.timestamp = timestamp;
 		result.serviceName = serviceName;
+		result.customProvided = customProvided;
 		return result;
 	}
 
 	public UUID serviceUUID;
-	public String mediaUnit;
+	public String mediaUnitId;
 	public UUID peerConnectionUUID;
 	public PeerConnectionSample peerConnectionSample;
 	public String timeZoneID;
 	public Long timestamp;
 	public String serviceName;
-
+	public String customProvided;
 
 }

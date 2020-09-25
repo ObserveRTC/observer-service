@@ -48,6 +48,18 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 					this.visitOutboundRTP(obj, sample, subject);
 				}
 			}
+
+			if (rtcStats.tracks != null) {
+				for (PeerConnectionSample.RTCTrackStats subject : rtcStats.tracks) {
+					this.visitTrack(obj, sample, subject);
+				}
+			}
+
+			if (rtcStats.mediaSources != null) {
+				for (PeerConnectionSample.MediaSourceStats subject : rtcStats.mediaSources) {
+					this.visitMediaSource(obj, sample, subject);
+				}
+			}
 		}
 		if (sample.iceStats != null) {
 			PeerConnectionSample.ICEStats iceStats = sample.iceStats;
@@ -71,6 +83,9 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 		}
 	}
 
+	void visitMediaSource(T obj, PeerConnectionSample sample, PeerConnectionSample.MediaSourceStats subject);
+
+	void visitTrack(T obj, PeerConnectionSample sample, PeerConnectionSample.RTCTrackStats subject);
 
 	void visitRemoteInboundRTP(T obj, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject);
 

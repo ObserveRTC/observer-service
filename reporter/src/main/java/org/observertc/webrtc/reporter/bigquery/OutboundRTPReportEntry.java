@@ -16,21 +16,26 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.MediaType;
-import org.observertc.webrtc.common.reports.OutboundRTPReport;
-import org.observertc.webrtc.reporter.TimeConverter;
+import org.observertc.webrtc.schemas.reports.MediaType;
+import org.observertc.webrtc.schemas.reports.RTCQualityLimitationReason;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OutboundRTPReportEntry implements BigQueryEntry {
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
-	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-	public static final String SSRC_FIELD_NAME = "SSRC";
+
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
 	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
+	public static final String USER_ID_FIELD_NAME = "userID";
+
+	public static final String SSRC_FIELD_NAME = "SSRC";
 	public static final String BYTES_SENT_FIELD_NAME = "bytesSent";
 	public static final String ENCODER_IMPLEMENTATION_FIELD_NAME = "encoderImplementation";
 	public static final String FIR_COUNT_FIELD_NAME = "firCount";
@@ -53,38 +58,6 @@ public class OutboundRTPReportEntry implements BigQueryEntry {
 
 	private static Logger logger = LoggerFactory.getLogger(OutboundRTPReportEntry.class);
 
-	public static OutboundRTPReportEntry from(
-			OutboundRTPReport report) {
-		OutboundRTPReportEntry result = new OutboundRTPReportEntry()
-				.withObserverUUID(report.observerUUID)
-				.withPeerConnectionUUID(report.peerConnectionUUID)
-				.withSSRC(report.SSRC)
-				.withTimestamp(report.timestamp)
-				.withMediaType(report.mediaType)
-				.withBytesSent(report.bytesSent)
-				.withEncoderImplementation(report.encoderImplementation)
-				.withFirCount(report.firCount)
-				.withFramesEncoded(report.framesEncoded)
-				.withHeaderBytesSent(report.headerBytesSent)
-				.withKeyFramesEncoded(report.keyFramesEncoded)
-				.withNackCount(report.nackCount)
-				.withPacketsSent(report.packetsSent)
-				.withPLICount(report.pliCount)
-				.withQPSum(report.qpSum)
-				.withQualityLimitationReason(report.qualityLimitationReason)
-				.withQualityLimitationResolutionChanges(report.qualityLimitationResolutionChanges)
-				.withRetransmittedBytesSent(report.retransmittedBytesSent)
-				.withRetransmittedPacketsSent(report.retransmittedPacketsSent)
-				.withTotalEncodedTime(report.totalEncodeTime)
-				.withTotalPacketsSendDelay(report.totalPacketSendDelay)
-				.withTotalEncodedByesTarget(report.totalEncodedBytesTarget);
-		return result;
-	}
-
-	private OutboundRTPReportEntry withEncoderImplementation(String value) {
-		this.values.put(ENCODER_IMPLEMENTATION_FIELD_NAME, value);
-		return this;
-	}
 
 	private final Map<String, Object> values;
 
@@ -92,24 +65,60 @@ public class OutboundRTPReportEntry implements BigQueryEntry {
 		this.values = new HashMap<>();
 	}
 
-	public OutboundRTPReportEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public OutboundRTPReportEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
+	public OutboundRTPReportEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
+		return this;
+	}
 
-	public OutboundRTPReportEntry withTimestamp(LocalDateTime value) {
-		if (value == null) {
-			logger.warn("No valid sample timestamp");
+	public OutboundRTPReportEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public OutboundRTPReportEntry withMediaType(MediaType mediaType) {
+		if (mediaType == null) {
 			return this;
 		}
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(TIMESTAMP_FIELD_NAME, epoch);
-		return this;
+		return this.withMediaType(mediaType.name());
 	}
 
-	public OutboundRTPReportEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+	public OutboundRTPReportEntry withMediaType(String value) {
+		this.values.put(MEDIA_TYPE_FIELD_NAME, value);
 		return this;
 	}
 
@@ -118,12 +127,8 @@ public class OutboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public OutboundRTPReportEntry withMediaType(MediaType value) {
-		String name = null;
-		if (value != null) {
-			name = value.name();
-		}
-		this.values.put(MEDIA_TYPE_FIELD_NAME, name);
+	public OutboundRTPReportEntry withEncoderImplementation(String value) {
+		this.values.put(ENCODER_IMPLEMENTATION_FIELD_NAME, value);
 		return this;
 	}
 
@@ -147,7 +152,7 @@ public class OutboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public OutboundRTPReportEntry withKeyFramesEncoded(Integer value) {
+	public OutboundRTPReportEntry withKeyFramesEncoded(Long value) {
 		this.values.put(KEYFRAMES_ENCODED_FIELD_NAME, value);
 		return this;
 	}
@@ -177,12 +182,19 @@ public class OutboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
+	public OutboundRTPReportEntry withQualityLimitationReason(RTCQualityLimitationReason rtcQualityLimitationReason) {
+		if (rtcQualityLimitationReason == null) {
+			return this;
+		}
+		return this.withQualityLimitationReason(rtcQualityLimitationReason.name());
+	}
+
 	public OutboundRTPReportEntry withQualityLimitationReason(String value) {
 		this.values.put(QUALITY_LIMITATION_REASON_FIELD_NAME, value);
 		return this;
 	}
 
-	public OutboundRTPReportEntry withQualityLimitationResolutionChanges(Double value) {
+	public OutboundRTPReportEntry withQualityLimitationResolutionChanges(Long value) {
 		this.values.put(QUALITY_LIMITATION_RESOLUTION_CHANGES_FIELD_NAME, value);
 		return this;
 	}
@@ -197,7 +209,7 @@ public class OutboundRTPReportEntry implements BigQueryEntry {
 		return this;
 	}
 
-	public OutboundRTPReportEntry withTotalEncodedTime(Long value) {
+	public OutboundRTPReportEntry withTotalEncodedTime(Double value) {
 		this.values.put(TOTAL_ENCODED_TIME_FIELD_NAME, value);
 		return this;
 	}

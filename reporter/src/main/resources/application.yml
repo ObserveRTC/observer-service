@@ -9,10 +9,10 @@ kafka:
 
 
 reporter:
-  observeRTCReportsTopic: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:observertcReports}
+  observeRTCReportsTopic: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
   profile: "bigQuery"
   bigQuery:
     projectName: ${BIGQUERY_PROJECT_NAME:observertc}
-    datasetName: ${BIGQUERY_DATASET_NAME:WebRTC}
+    datasetName: ${BIGQUERY_DATASET_NAME:WebRTC3}
     createDatasetIfNotExists: ${BIGQUERY_CREATE_DATASET_IF_NOT_EXISTS:True}
     createTableIfNotExists: ${BIGQUERY_CREATE_TABLE_IF_NOT_EXISTS:True}

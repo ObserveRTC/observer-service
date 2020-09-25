@@ -16,29 +16,22 @@
 
 package org.observertc.webrtc.reporter.bigquery;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
-import org.observertc.webrtc.reporter.TimeConverter;
 
 public class DetachedPeerConnectionEntry implements BigQueryEntry {
 
-	public static final String OBSERVER_UUID_FIELD_NAME = "observerUUID";
+	public static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	public static final String SERVICE_NAME_FIELD_NAME = "serviceName";
 	public static final String CALL_UUID_FIELD_NAME = "callUUID";
+	public static final String CALL_NAME_FIELD_NAME = "callName";
+	public static final String CUSTOMER_PROVIDED_FIELD_NAME = "customerProvided";
+	public static final String TIMESTAMP_FIELD_NAME = "timestamp";
 	public static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-	public static final String BROWSERID_TIMESTAMP_FIELD_NAME = "browserID";
-	public static final String DETACHED_TIMESTAMP_FIELD_NAME = "detached";
-
-	public static DetachedPeerConnectionEntry from(DetachedPeerConnectionReport detachedPeerConnectionReport) {
-		return new DetachedPeerConnectionEntry()
-				.withObserverUUID(detachedPeerConnectionReport.observerUUID)
-				.withPeerConnectionUUID(detachedPeerConnectionReport.peerConnectionUUID)
-				.withCallUUID(detachedPeerConnectionReport.callUUID)
-				.withBrowserID(detachedPeerConnectionReport.browserID)
-				.withDetachedTimestamp(detachedPeerConnectionReport.detached);
-	}
+	public static final String BROWSERID_FIELD_NAME = "browserID";
+	public static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitID";
+	public static final String USER_ID_FIELD_NAME = "userID";
+	public static final String TIMEZONE_FIELD_NAME = "timeZone";
 
 	private final Map<String, Object> values;
 
@@ -46,59 +39,59 @@ public class DetachedPeerConnectionEntry implements BigQueryEntry {
 		this.values = new HashMap<>();
 	}
 
-	public DetachedPeerConnectionEntry withObserverUUID(UUID value) {
-		this.values.put(OBSERVER_UUID_FIELD_NAME, value.toString());
+	public DetachedPeerConnectionEntry withServiceUUID(String value) {
+		this.values.put(SERVICE_UUID_FIELD_NAME, value);
 		return this;
 	}
 
-	public DetachedPeerConnectionEntry withCallUUID(UUID value) {
+	public DetachedPeerConnectionEntry withCallUUID(String value) {
 		this.values.put(CALL_UUID_FIELD_NAME, value.toString());
 		return this;
 	}
 
-	public DetachedPeerConnectionEntry withBrowserID(String browserId) {
-		this.values.put(BROWSERID_TIMESTAMP_FIELD_NAME, browserId);
+	public DetachedPeerConnectionEntry withServiceName(String value) {
+		this.values.put(SERVICE_NAME_FIELD_NAME, value);
 		return this;
 	}
 
-	public DetachedPeerConnectionEntry withPeerConnectionUUID(UUID value) {
-		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value.toString());
+	public DetachedPeerConnectionEntry withCallName(String value) {
+		this.values.put(CALL_NAME_FIELD_NAME, value);
 		return this;
 	}
 
-	public DetachedPeerConnectionEntry withDetachedTimestamp(LocalDateTime value) {
-		Long epoch = TimeConverter.GMTLocalDateTimeToEpoch(value);
-		this.values.put(DETACHED_TIMESTAMP_FIELD_NAME, epoch);
+	public DetachedPeerConnectionEntry withCustomProvided(String value) {
+		this.values.put(CUSTOMER_PROVIDED_FIELD_NAME, value);
 		return this;
 	}
 
-	public UUID getObserverUUID() {
-		String value = (String) this.values.get(OBSERVER_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public DetachedPeerConnectionEntry withUserId(String value) {
+		this.values.put(USER_ID_FIELD_NAME, value);
+		return this;
 	}
 
-	public UUID getCallUUID() {
-		String value = (String) this.values.get(CALL_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public DetachedPeerConnectionEntry withPeerConnectionUUID(String value) {
+		this.values.put(PEER_CONNECTION_UUID_FIELD_NAME, value);
+		return this;
 	}
 
-	public UUID getPeerConnectionUUID() {
-		String value = (String) this.values.get(PEER_CONNECTION_UUID_FIELD_NAME);
-		if (value == null) {
-			return null;
-		}
-		return UUID.fromString(value);
+	public DetachedPeerConnectionEntry withBrowserId(String value) {
+		this.values.put(BROWSERID_FIELD_NAME, value);
+		return this;
 	}
 
-	public LocalDateTime getDetachedTimestamp() {
-		Long value = (Long) this.values.get(DETACHED_TIMESTAMP_FIELD_NAME);
-		return TimeConverter.epochToGMTLocalDateTime(value);
+	public DetachedPeerConnectionEntry withTimestamp(Long value) {
+		this.values.put(TIMESTAMP_FIELD_NAME, value);
+		return this;
+	}
+
+	public DetachedPeerConnectionEntry withMediaUnitId(String value) {
+		this.values.put(MEDIA_UNIT_ID_FIELD_NAME, value);
+		return this;
+	}
+
+	public DetachedPeerConnectionEntry withTimeZone(String value) {
+		this.values.put(TIMEZONE_FIELD_NAME, value);
+		return this;
 	}
 
 	public Map<String, Object> toMap() {

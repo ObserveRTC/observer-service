@@ -35,9 +35,6 @@ import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.observertc.webrtc.common.Sleeper;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.common.reports.avro.FinishedCall;
-import org.observertc.webrtc.common.reports.avro.InitiatedCall;
-import org.observertc.webrtc.common.reports.avro.ReportType;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
 import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
@@ -47,6 +44,9 @@ import org.observertc.webrtc.observer.evaluators.reportdrafts.InitiatedCallRepor
 import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.schemas.reports.FinishedCall;
+import org.observertc.webrtc.schemas.reports.InitiatedCall;
+import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public class ReportDraftsEvaluator {
 	private final AbstractReportDraftProcessor processor;
 	private final ReportDraftSink reportDraftSink;
 	private AtomicInteger sleepInMsHolder = new AtomicInteger(0);
-	private final Sleeper sleeper = new Sleeper(sleepInMsHolder::get);
+	private final Sleeper sleeper = new Sleeper(sleepInMsHolder::get, false);
 
 	public ReportDraftsEvaluator(PeerConnectionsRepository peerConnectionsRepository,
 								 EvaluatorsConfig.ReportDraftsConfig config,
@@ -85,7 +85,7 @@ public class ReportDraftsEvaluator {
 		this.processor = this.makeProcessor();
 	}
 
-	@Topic("${kafkaTopics.observertcReportDrafts.topicName}")
+	@Topic("${kafkaTopics.reportDrafts.topicName}")
 	public void receive(List<ReportDraft> reportDrafts,
 						List<Long> offsets,
 						List<Integer> partitions,
@@ -98,8 +98,12 @@ public class ReportDraftsEvaluator {
 		for (int i = 0; i < reportDrafts.size(); i++) {
 			ReportDraft reportDraft = reportDrafts.get(i);
 			if (reportDraft == null) {
-				logger.warn("Null rerportDraft or report occured in evaluation. skipping");
+				logger.warn("Null reportDraft or report occured in evaluation. skipping");
 				continue;
+			}
+			if (reportDraft.created == null) {
+				reportDraft.created = Instant.now().toEpochMilli();
+				logger.warn("ReportDraft was without created timestamp");
 			}
 			Instant created = Instant.ofEpochMilli(reportDraft.created);
 			long elapsedSeconds = ChronoUnit.SECONDS.between(created, now);
@@ -184,12 +188,14 @@ public class ReportDraftsEvaluator {
 
 		Object payload = InitiatedCall.newBuilder()
 				.setCallUUID(callUUIDStr)
+				.setCallName(firstJoinedPC.getProvidedcallid())
 				.build();
 		UUID serviceUUID = UUIDAdapter.toUUIDOrDefault(firstJoinedPC.getServiceuuid(), null);
 		this.reportSink.sendReport(
 				serviceUUID,
-				firstJoinedPC.getProvidedcallid(),
-				serviceUUID.toString(),
+				serviceUUID,
+				firstJoinedPC.getServicename(),
+				initiatedCallReport.customProvided,
 				ReportType.INITIATED_CALL,
 				firstJoinedPC.getJoined(),
 				payload
@@ -221,12 +227,15 @@ public class ReportDraftsEvaluator {
 		}
 		Object payload = FinishedCall.newBuilder()
 				.setCallUUID(callUUIDStr)
+				.setCallName(lastDetachedPC.getProvidedcallid())
 				.build();
+
 		UUID serviceUUID = UUIDAdapter.toUUIDOrDefault(lastDetachedPC.getServiceuuid(), null);
 		this.reportSink.sendReport(
 				serviceUUID,
+				serviceUUID,
 				lastDetachedPC.getProvidedcallid(),
-				serviceUUID.toString(),
+				lastDetachedPC.getServicename(),
 				ReportType.FINISHED_CALL,
 				lastDetachedPC.getUpdated(),
 				payload

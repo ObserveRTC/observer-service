@@ -48,12 +48,12 @@ kafkaTopics:
     onCreatePartitionNums: 12
     onCreateReplicateFactor: 1
 
-  observertcReports:
+  reports:
     topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
     onCreatePartitionNums: 6
     onCreateReplicateFactor: 1
 
-  observertcReportDrafts:
+  reportDrafts:
     topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTDRAFTS:reportDrafts}
     onCreatePartitionNums: 4
     onCreateReplicateFactor: 1

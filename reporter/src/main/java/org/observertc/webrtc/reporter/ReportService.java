@@ -16,7 +16,6 @@
 
 package org.observertc.webrtc.reporter;
 
-import io.micronaut.configuration.kafka.annotation.KafkaKey;
 import io.micronaut.configuration.kafka.annotation.KafkaListener;
 import io.micronaut.configuration.kafka.annotation.OffsetReset;
 import io.micronaut.configuration.kafka.annotation.Topic;
@@ -25,14 +24,13 @@ import io.micronaut.context.annotation.Prototype;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 import javax.inject.Provider;
 import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.observertc.webrtc.common.reports.avro.Report;
 import org.observertc.webrtc.reporter.bigquery.BigQueryReporter;
+import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,18 +60,13 @@ public class ReportService {
 		this.reporter = bigQueryReporterProvider.get();
 	}
 
-	@Topic("${kafkaTopics.observertcReports.topicName}")
-	public void print(@KafkaKey UUID peerConnectionUUID, byte[] data) {
-
-	}
-
-	@Topic("${kafkaTopics.observertcReports.topicName}")
+	@Topic("${reporter.observeRTCReportsTopic}")
 	public void receive(List<byte[]> bytesList) {
 		Iterator<byte[]> it = bytesList.iterator();
 		for (; it.hasNext(); ) {
 			byte[] data = it.next();
 			BinaryDecoder binDecoder = DecoderFactory.get().binaryDecoder(data, null);
-			Report report = new org.observertc.webrtc.common.reports.avro.Report();
+			Report report = new Report();
 			try {
 				reader.read(report, binDecoder);
 			} catch (IOException e) {

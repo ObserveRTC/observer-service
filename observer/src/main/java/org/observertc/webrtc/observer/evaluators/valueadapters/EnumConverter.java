@@ -17,12 +17,12 @@
 package org.observertc.webrtc.observer.evaluators.valueadapters;
 
 import javax.inject.Singleton;
-import org.observertc.webrtc.common.reports.avro.CandidateType;
-import org.observertc.webrtc.common.reports.avro.ICEState;
-import org.observertc.webrtc.common.reports.avro.MediaType;
-import org.observertc.webrtc.common.reports.avro.NetworkType;
-import org.observertc.webrtc.common.reports.avro.RTCQualityLimitationReason;
-import org.observertc.webrtc.common.reports.avro.TransportProtocol;
+import org.observertc.webrtc.schemas.reports.CandidateType;
+import org.observertc.webrtc.schemas.reports.ICEState;
+import org.observertc.webrtc.schemas.reports.MediaType;
+import org.observertc.webrtc.schemas.reports.NetworkType;
+import org.observertc.webrtc.schemas.reports.RTCQualityLimitationReason;
+import org.observertc.webrtc.schemas.reports.TransportProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class EnumConverter {
 
 	public <S extends Enum> MediaType toReportMediaType(S source) {
 		if (source == null) {
-			return null;
+			return MediaType.NULL;
 		}
 		String sourceStr = source.name();
 		try {
@@ -48,7 +48,7 @@ public class EnumConverter {
 
 	public <S extends Enum> RTCQualityLimitationReason toQualityLimitationReason(S source) {
 		if (source == null) {
-			return null;
+			return RTCQualityLimitationReason.NULL;
 		}
 		String sourceStr = source.name();
 		try {
@@ -63,7 +63,7 @@ public class EnumConverter {
 
 	public <S extends Enum> CandidateType toCandidateType(S source) {
 		if (source == null) {
-			return null;
+			return CandidateType.NULL;
 		}
 		String sourceStr = source.name();
 		try {
@@ -78,7 +78,7 @@ public class EnumConverter {
 
 	public <S extends Enum> TransportProtocol toInternetProtocol(S source) {
 		if (source == null) {
-			return null;
+			return TransportProtocol.NULL;
 		}
 		String sourceStr = source.name();
 		try {
@@ -93,7 +93,7 @@ public class EnumConverter {
 
 	public <S extends Enum> NetworkType toNetworkType(S source) {
 		if (source == null) {
-			return null;
+			return NetworkType.NULL;
 		}
 		String sourceStr = source.name();
 		try {
@@ -101,14 +101,14 @@ public class EnumConverter {
 			return result;
 		} catch (Exception ex) {
 			logger.error("Cannot convert from {} of {} to {} so it is UNKNOWN result", sourceStr, source.getClass().getName(),
-					TransportProtocol.class.getName());
+					NetworkType.class.getName());
 			return NetworkType.UNKNOWN;
 		}
 	}
 
 	public <S extends Enum> ICEState toICEState(S source) {
 		if (source == null) {
-			return null;
+			return ICEState.NULL;
 		}
 		String sourceStr = source.name();
 		try {
@@ -116,7 +116,7 @@ public class EnumConverter {
 			return result;
 		} catch (Exception ex) {
 			logger.error("Cannot convert from {} of {} to {} so it is UNKNOWN result", sourceStr, source.getClass().getName(),
-					TransportProtocol.class.getName());
+					ICEState.class.getName());
 			return ICEState.UNKNOWN;
 		}
 	}

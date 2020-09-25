@@ -58,7 +58,7 @@ public class BigQueryTable<T extends BigQueryEntry> {
 			T entry = this.buffer.removeFirst();
 			builder.addRow(entry.toMap());
 		}
-		
+
 		InsertAllResponse response =
 				this.bigQueryService.getBigQuery().insertAll(builder.build());
 
@@ -73,25 +73,6 @@ public class BigQueryTable<T extends BigQueryEntry> {
 			logger.info("To {} inserted {} rows", tableId.toString(), buffered);
 		}
 	}
-
-//	public void insert(T entry) {
-//		this.logEntry(entry);
-//		TableId tableId = this.getTableId();
-//
-//		InsertAllResponse response =
-//				this.bigQueryService.getBigQuery().insertAll(
-//						InsertAllRequest.newBuilder(tableId)
-//								.addRow(entry.toMap())
-//								.build());
-//		if (response.hasErrors()) {
-//			// If any of the insertions failed, this lets you inspect the errors
-//			for (Map.Entry<Long, List<BigQueryError>> errorEntry : response.getInsertErrors().entrySet()) {
-//				logger.error("{}: {}", errorEntry.getKey(), String.join(", \n",
-//						errorEntry.getValue().stream().map(Object::toString).collect(Collectors.toList())));
-//				// inspect row error
-//			}
-//		}
-//	}
 
 	private TableId getTableId() {
 		String projectName = this.bigQueryService.getProjectName();

@@ -21,6 +21,16 @@ import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 public abstract class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSampleVisitor<T> {
 
 
+	@Override
+	public void visitMediaSource(T obj, PeerConnectionSample sample, PeerConnectionSample.MediaSourceStats subject) {
+
+	}
+
+	@Override
+	public void visitTrack(T obj, PeerConnectionSample sample, PeerConnectionSample.RTCTrackStats subject) {
+
+	}
+
 	public void visitRemoteInboundRTP(T obj, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject) {
 
 	}

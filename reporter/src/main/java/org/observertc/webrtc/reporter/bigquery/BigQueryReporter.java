@@ -17,23 +17,21 @@
 package org.observertc.webrtc.reporter.bigquery;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.common.reports.DetachedPeerConnectionReport;
-import org.observertc.webrtc.common.reports.JoinedPeerConnectionReport;
-import org.observertc.webrtc.common.reports.avro.DetachedPeerConnection;
-import org.observertc.webrtc.common.reports.avro.FinishedCall;
-import org.observertc.webrtc.common.reports.avro.ICECandidatePair;
-import org.observertc.webrtc.common.reports.avro.ICELocalCandidate;
-import org.observertc.webrtc.common.reports.avro.ICERemoteCandidate;
-import org.observertc.webrtc.common.reports.avro.InboundRTP;
-import org.observertc.webrtc.common.reports.avro.InitiatedCall;
-import org.observertc.webrtc.common.reports.avro.JoinedPeerConnection;
-import org.observertc.webrtc.common.reports.avro.MediaSource;
-import org.observertc.webrtc.common.reports.avro.OutboundRTP;
-import org.observertc.webrtc.common.reports.avro.RemoteInboundRTP;
-import org.observertc.webrtc.common.reports.avro.Report;
-import org.observertc.webrtc.common.reports.avro.Track;
 import org.observertc.webrtc.reporter.Reporter;
 import org.observertc.webrtc.reporter.ReporterConfig;
+import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
+import org.observertc.webrtc.schemas.reports.FinishedCall;
+import org.observertc.webrtc.schemas.reports.ICECandidatePair;
+import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
+import org.observertc.webrtc.schemas.reports.ICERemoteCandidate;
+import org.observertc.webrtc.schemas.reports.InboundRTP;
+import org.observertc.webrtc.schemas.reports.InitiatedCall;
+import org.observertc.webrtc.schemas.reports.JoinedPeerConnection;
+import org.observertc.webrtc.schemas.reports.MediaSource;
+import org.observertc.webrtc.schemas.reports.OutboundRTP;
+import org.observertc.webrtc.schemas.reports.RemoteInboundRTP;
+import org.observertc.webrtc.schemas.reports.Report;
+import org.observertc.webrtc.schemas.reports.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,98 +88,337 @@ public class BigQueryReporter implements Reporter {
 
 	@Override
 	public void processJoinedPeerConnectionReport(Report report, JoinedPeerConnection joinedPeerConnection) {
-		
-		JoinedPeerConnectionEntry joinedPeerConnection = JoinedPeerConnectionEntry.from((JoinedPeerConnection) report);
-//				joinedPeerConnections.insert(joinedPeerConnection);
-		joinedPeerConnections.add(joinedPeerConnection);
+
+		JoinedPeerConnectionEntry entry = new JoinedPeerConnectionEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallUUID(joinedPeerConnection.getCallUUID())
+				.withCallName(joinedPeerConnection.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				.withTimeZone("NOT IMPLEMENTED")
+				//
+				.withMediaUnitId(joinedPeerConnection.getMediaUnitId())
+				.withUserId(joinedPeerConnection.getUserId())
+				.withBrowserId(joinedPeerConnection.getBrowserId())
+				.withPeerConnectionUUID(joinedPeerConnection.getPeerConnectionUUID())
+				//
+				;
+		joinedPeerConnections.add(entry);
 	}
 
 	@Override
-	public Void processDetachedPeerConnectionReport(DetachedPeerConnection report) {
-		DetachedPeerConnectionEntry detachedPeerConnectionEntry = DetachedPeerConnectionEntry.from((DetachedPeerConnection) report);
-//				detachedPeerConnections.insert(detachedPeerConnectionEntry);
-		detachedPeerConnections.add(detachedPeerConnectionEntry);
-		return null;
+	public void processDetachedPeerConnectionReport(Report report, DetachedPeerConnection detachedPeerConnection) {
+		DetachedPeerConnectionEntry entry = new DetachedPeerConnectionEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallUUID(detachedPeerConnection.getCallUUID())
+				.withCallName(detachedPeerConnection.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				.withTimeZone("NOT IMPLEMENTED")
+
+				//
+				.withMediaUnitId(detachedPeerConnection.getMediaUnitId())
+				.withUserId(detachedPeerConnection.getUserId())
+				.withBrowserId(detachedPeerConnection.getBrowserId())
+				.withPeerConnectionUUID(detachedPeerConnection.getPeerConnectionUUID())
+				//
+				;
+		detachedPeerConnections.add(entry);
 	}
 
 	@Override
-	public Void processInitiatedCallReport(InitiatedCall report) {
-		InitiatedCallEntry initiatedCallEntry = InitiatedCallEntry.from((InitiatedCall) report);
-//				initiatedCalls.insert(initiatedCallEntry);
-		initiatedCalls.add(initiatedCallEntry);
-		return null;
+	public void processInitiatedCallReport(Report report, InitiatedCall initiatedCall) {
+		InitiatedCallEntry entry = new InitiatedCallEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallUUID(initiatedCall.getCallUUID())
+				.withCallName(initiatedCall.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				;
+		initiatedCalls.add(entry);
 	}
 
 	@Override
-	public Void processFinishedCallReport(FinishedCall report) {
-		FinishedCallEntry finishedCallEntry = FinishedCallEntry.from((FinishedCall) report);
+	public void processFinishedCallReport(Report report, FinishedCall finishedCall) {
+		FinishedCallEntry entry = new FinishedCallEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallUUID(finishedCall.getCallUUID())
+				.withCallName(finishedCall.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				// 
+				;
 //				finishedCalls.insert(finishedCallEntry);
-		finishedCalls.add(finishedCallEntry);
-		return null;
+		finishedCalls.add(entry);
 	}
 
 	@Override
-	public Void processRemoteInboundRTPReport(RemoteInboundRTP report) {
-		RemoteInboundRTPReportEntry remoteInboundRTPReportEntry = RemoteInboundRTPReportEntry.from(report);
-//				remoteInboundRTPSamples.insert(remoteInboundRTPReportEntry);
-		remoteInboundRTPSamples.add(remoteInboundRTPReportEntry);
-		return null;
+	public void processRemoteInboundRTPReport(Report report, RemoteInboundRTP remoteInboundRTP) {
+		RemoteInboundRTPReportEntry entry = new RemoteInboundRTPReportEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(remoteInboundRTP.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(remoteInboundRTP.getMediaUnitId())
+				.withUserId(remoteInboundRTP.getUserId())
+				.withBrowserId(remoteInboundRTP.getBrowserId())
+				.withPeerConnectionUUID(remoteInboundRTP.getPeerConnectionUUID())
+				//
+				.withSSRC(remoteInboundRTP.getSsrc())
+				.withPacketsLost(remoteInboundRTP.getPacketsLost())
+				.withRTT(remoteInboundRTP.getRoundTripTime())
+				.withJitter(remoteInboundRTP.getJitter())
+				.withCodec(remoteInboundRTP.getCodecID())
+				.withMediaType(remoteInboundRTP.getMediaType())
+				.withTransportId(remoteInboundRTP.getTransportID())
+				//
+				;
+		remoteInboundRTPSamples.add(entry);
 	}
 
 	@Override
-	public Void processInboundRTPReport(InboundRTP report) {
-		InboundRTPReportEntry inboundRTPReportEntry = InboundRTPReportEntry.from(report);
+	public void processInboundRTPReport(Report report, InboundRTP inboundRTP) {
+		InboundRTPReportEntry entry = new InboundRTPReportEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(inboundRTP.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(inboundRTP.getMediaUnitId())
+				.withUserId(inboundRTP.getUserId())
+				.withBrowserId(inboundRTP.getBrowserId())
+				.withPeerConnectionUUID(inboundRTP.getPeerConnectionUUID())
+				//
+				.withSSRC(inboundRTP.getSsrc())
+				.withMediaType(inboundRTP.getMediaType())
+				.withBytesReceived(inboundRTP.getBytesReceived())
+				.withFirCount(inboundRTP.getFirCount())
+				.withFramesDecoded(inboundRTP.getFramesDecoded())
+				.withHeaderBytesReceived(inboundRTP.getHeaderBytesReceived())
+				.withKeyFramesDecoded(inboundRTP.getKeyFramesDecoded())
+				.withNackCount(inboundRTP.getNackCount())
+				.withPacketsReceived(inboundRTP.getPacketsReceived())
+				.withPLICount(inboundRTP.getPliCount())
+				.withQPSum(inboundRTP.getQpSum())
+				.withDecoderImplementation(inboundRTP.getDecoderImplementation())
+				.withEstimatedPlayoutTimestamp(inboundRTP.getEstimatedPlayoutTimestamp())
+				.withJitter(inboundRTP.getJitter())
+				.withLastPacketReceivedTimestamp(inboundRTP.getLastPacketReceivedTimestamp())
+				.withPacketsLost(inboundRTP.getPacketsLost())
+				.withTotalDecodeTime(inboundRTP.getTotalDecodeTime())
+				.withTotalInterFrameDelay(inboundRTP.getTotalInterFrameDelay())
+				.withTotalSquaredInterFrameDelay(inboundRTP.getTotalSquaredInterFrameDelay())
+				.withFECPacketsDiscarded(inboundRTP.getFecPacketsDiscarded())
+				.withFECPacketsReceived(inboundRTP.getFecPacketsReceived())
+				//
+				;
 //				inboundRTPSamples.insert(inboundRTPReportEntry);
-		inboundRTPSamples.add(inboundRTPReportEntry);
-		return null;
+		inboundRTPSamples.add(entry);
 	}
 
 	@Override
-	public Void processOutboundRTPReport(OutboundRTP report) {
-		OutboundRTPReportEntry outboundRTPReportEntry = OutboundRTPReportEntry.from(report);
-//				outboundRTPSamples.insert(outboundRTPReportEntry);
-		outboundRTPSamples.add(outboundRTPReportEntry);
-		return null;
+	public void processOutboundRTPReport(Report report, OutboundRTP outboundRTP) {
+		OutboundRTPReportEntry entry = new OutboundRTPReportEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(outboundRTP.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(outboundRTP.getMediaUnitId())
+				.withUserId(outboundRTP.getUserId())
+				.withBrowserId(outboundRTP.getBrowserId())
+				.withPeerConnectionUUID(outboundRTP.getPeerConnectionUUID())
+				//
+				.withSSRC(outboundRTP.getSsrc())
+				.withMediaType(outboundRTP.getMediaType())
+				.withBytesSent(outboundRTP.getBytesSent())
+				.withEncoderImplementation(outboundRTP.getEncoderImplementation())
+				.withFirCount(outboundRTP.getFirCount())
+				.withFramesEncoded(outboundRTP.getFramesEncoded())
+				.withHeaderBytesSent(outboundRTP.getHeaderBytesSent())
+				.withKeyFramesEncoded(outboundRTP.getKeyFramesEncoded())
+				.withNackCount(outboundRTP.getNackCount())
+				.withPacketsSent(outboundRTP.getPacketsSent())
+				.withPLICount(outboundRTP.getPliCount())
+				.withQPSum(outboundRTP.getQpSum())
+				.withQualityLimitationReason(outboundRTP.getQualityLimitationReason())
+				.withQualityLimitationResolutionChanges(outboundRTP.getQualityLimitationResolutionChanges())
+				.withRetransmittedBytesSent(outboundRTP.getRetransmittedBytesSent())
+				.withRetransmittedPacketsSent(outboundRTP.getRetransmittedPacketsSent())
+				.withTotalEncodedTime(outboundRTP.getTotalEncodeTime())
+				.withTotalPacketsSendDelay(outboundRTP.getTotalPacketSendDelay())
+				.withTotalEncodedByesTarget(outboundRTP.getTotalEncodedBytesTarget());
+		outboundRTPSamples.add(entry);
 	}
 
 	@Override
-	public Void processICECandidatePairReport(ICECandidatePair report) {
-		ICECandidatePairEntry iceCandidatePairEntry = ICECandidatePairEntry.from(report);
+	public void processICECandidatePairReport(Report report, ICECandidatePair iceCandidatePair) {
+		ICECandidatePairEntry entry = new ICECandidatePairEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(iceCandidatePair.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(iceCandidatePair.getMediaUnitId())
+				.withUserId(iceCandidatePair.getUserId())
+				.withBrowserId(iceCandidatePair.getBrowserId())
+				.withPeerConnectionUUID(iceCandidatePair.getPeerConnectionUUID())
+				//
+				.withCandidatePairId(iceCandidatePair.getCandidatePairId())
+				.withLocalCandidateId(iceCandidatePair.getLocalCandidateID())
+				.withRemoteCandidateId(iceCandidatePair.getRemoteCandidateID())
+				.withNominated(iceCandidatePair.getNominated())
+				.withAvailableOutgoingBitrate(iceCandidatePair.getAvailableOutgoingBitrate())
+				.withBytesReceived(iceCandidatePair.getBytesReceived())
+				.withBytesSent(iceCandidatePair.getBytesSent())
+				.withConsentRequestsSent(iceCandidatePair.getConsentRequestsSent())
+				.withCurrentRoundTripTime(iceCandidatePair.getCurrentRoundTripTime())
+				.withPriority(iceCandidatePair.getPriority())
+				.withRequestsReceived(iceCandidatePair.getRequestsReceived())
+				.withRequestsSent(iceCandidatePair.getRequestsSent())
+				.withResponseReceived(iceCandidatePair.getResponsesReceived())
+				.withResponseSent(iceCandidatePair.getResponsesSent())
+				.withICEState(iceCandidatePair.getState())
+				.withTotalRoundTripTime(iceCandidatePair.getTotalRoundTripTime())
+				.withWritable(iceCandidatePair.getWritable())
+				//
+				;
+
 //				iceCandidatePairs.insert(iceCandidatePairEntry);
-		iceCandidatePairs.add(iceCandidatePairEntry);
-		return null;
+		iceCandidatePairs.add(entry);
 	}
 
 	@Override
-	public Void processICELocalCandidateReport(ICELocalCandidate report) {
-		ICELocalCandidateEntry iceCandidatePairEntry = ICELocalCandidateEntry.from(report);
-//				iceLocalCandidates.insert(iceCandidatePairEntry);
-		iceLocalCandidates.add(iceCandidatePairEntry);
-		return null;
-	}
-
-	@Override
-	public Void processICERemoteCandidateReport(ICERemoteCandidate report) {
-		ICERemoteCandidateEntry iceRemoteCandidateEntry = ICERemoteCandidateEntry.from(report);
-//				iceRemoteCandidates.insert(iceRemoteCandidateEntry);
-		iceRemoteCandidates.add(iceRemoteCandidateEntry);
-		return null;
-	}
-
-	@Override
-	public Void processTrackReport(Track report) {
-		TrackReportEntry reportEntry = TrackReportEntry.from(report);
+	public void processTrackReport(Report report, Track track) {
+		TrackReportEntry entry = new TrackReportEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(track.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(track.getMediaUnitId())
+				.withUserId(track.getUserId())
+				.withBrowserId(track.getBrowserId())
+				.withPeerConnectionUUID(track.getPeerConnectionUUID())
+				//
+				.withTrackID(track.getTrackId())
+				.withMediaType(track.getMediaType())
+				.withConcealmentSamples(track.getConcealedSamples())
+				.withConcealmentEvents(track.getConcealmentEvents())
+				.withDetached(track.getDetached())
+				.withEnded(track.getEnded())
+				.withConcealedSamples(track.getConcealedSamples())
+				.withFramesDecoded(track.getFramesDecoded())
+				.withFramesDropped(track.getFramesDropped())
+				.withFramesReceived(track.getFramesReceived())
+				.withFramesSent(track.getFramesSent())
+				.withHugeFramesSent(track.getHugeFramesSent())
+				.withInsertedSamplesForDeceleration(track.getInsertedSamplesForDeceleration())
+				.withJitterBufferDelay(track.getJitterBufferDelay())
+				.withJitterBufferEmittedCount(track.getJitterBufferEmittedCount())
+				.withRemoteSource(track.getRemoteSource())
+				.withRemovedSamplesForAcceleration(track.getRemovedSamplesForAcceleration())
+				.withSilentConcealedSamples(track.getSilentConcealedSamples())
+				.withTotalSamplesReceived(track.getTotalSamplesReceived())
+				.withMediaSourceID(track.getMediaSourceID());
 //				trackReports.insert(reportEntry);
-		trackReports.add(reportEntry);
-		return null;
+		trackReports.add(entry);
 	}
 
 	@Override
-	public Void processMediaSourceReport(MediaSource report) {
-		MediaSourceEntry reportEntry = MediaSourceEntry.from(report);
+	public void processMediaSource(Report report, MediaSource mediaSource) {
+		MediaSourceEntry reportEntry = new MediaSourceEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(mediaSource.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(mediaSource.getMediaUnitId())
+				.withUserId(mediaSource.getUserId())
+				.withBrowserId(mediaSource.getBrowserId())
+				.withPeerConnectionUUID(mediaSource.getPeerConnectionUUID())
+				//
+				.withMediaSourceID(mediaSource.getMediaSourceId())
+				.withAudioLevel(mediaSource.getAudioLevel())
+				.withFramesPerSecond(mediaSource.getFramesPerSecond())
+				.withHeight(mediaSource.getHeight())
+				.withWidth(mediaSource.getWidth())
+				.withAudioLevel(mediaSource.getAudioLevel())
+				.withMediaType(mediaSource.getMediaType())
+				.withTotalAudioEnergy(mediaSource.getTotalAudioEnergy())
+				.withTotalSamplesDuration(mediaSource.getTotalSamplesDuration())
+				//
+				;
 //				mediaSources.insert(reportEntry);
 		mediaSources.add(reportEntry);
-		return null;
 	}
+
+	@Override
+	public void processICELocalCandidateReport(Report report, ICELocalCandidate iceLocalCandidate) {
+		ICELocalCandidateEntry entry = new ICELocalCandidateEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(iceLocalCandidate.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(iceLocalCandidate.getMediaUnitId())
+				.withUserId(iceLocalCandidate.getUserId())
+				.withBrowserId(iceLocalCandidate.getBrowserId())
+				.withPeerConnectionUUID(iceLocalCandidate.getPeerConnectionUUID())
+				//
+				.withCandidateID(iceLocalCandidate.getCandidateId())
+				.withCandidateType(iceLocalCandidate.getCandidateType())
+				.withDeleted(iceLocalCandidate.getDeleted())
+				.withIPLSH(iceLocalCandidate.getIpLSH())
+				.withNetworkType(iceLocalCandidate.getNetworkType())
+				.withPort(iceLocalCandidate.getPort())
+				.withPriority(iceLocalCandidate.getPriority())
+				.withProtocol(iceLocalCandidate.getProtocol())
+				//
+				;
+//				iceLocalCandidates.insert(iceCandidatePairEntry);
+		iceLocalCandidates.add(entry);
+	}
+
+	@Override
+	public void processICERemoteCandidateReport(Report report, ICERemoteCandidate iceRemoteCandidate) {
+		ICERemoteCandidateEntry entry = new ICERemoteCandidateEntry()
+				.withServiceUUID(report.getServiceUUID())
+				.withServiceName(report.getServiceName())
+				.withCallName(iceRemoteCandidate.getCallName())
+				.withCustomProvided(report.getCustomProvided())
+				.withTimestamp(report.getTimestamp())
+				//
+				.withMediaUnitId(iceRemoteCandidate.getMediaUnitId())
+				.withUserId(iceRemoteCandidate.getUserId())
+				.withBrowserId(iceRemoteCandidate.getBrowserId())
+				.withPeerConnectionUUID(iceRemoteCandidate.getPeerConnectionUUID())
+				//
+				.withCandidateID(iceRemoteCandidate.getCandidateId())
+				.withCandidateType(iceRemoteCandidate.getCandidateType())
+				.withDeleted(iceRemoteCandidate.getDeleted())
+				.withIPLSH(iceRemoteCandidate.getIpLSH())
+				.withPort(iceRemoteCandidate.getPort())
+				.withPriority(iceRemoteCandidate.getPriority())
+				.withProtocol(iceRemoteCandidate.getProtocol())
+				//
+				;
+//				iceRemoteCandidates.insert(iceRemoteCandidateEntry);
+		iceRemoteCandidates.add(entry);
+	}
+
 
 }

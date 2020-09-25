@@ -37,12 +37,12 @@ public class KafkaTopicsConfiguration {
 
 	}
 
-	@ConfigurationProperties("observertcReports")
+	@ConfigurationProperties("reports")
 	public static class ObserveRTCReportsConfig extends TopicConfig {
 
 	}
 
-	@ConfigurationProperties("observertcReportDrafts")
+	@ConfigurationProperties("reportDrafts")
 	public static class ObserveRTCReportDraftsConfig extends TopicConfig {
 
 	}
