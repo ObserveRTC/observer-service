@@ -19,20 +19,17 @@ package org.observertc.webrtc.observer.micrometer;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Duration;
 import javax.inject.Singleton;
+import org.slf4j.Logger;
 
-/**
- * I hate the name! We need to refactor it something better.
- * The reason it is so long is because of the tuple.
- * We can either name the processor like Bart from Simpsonse,
- * or we can find some useful name.
- */
 @Singleton
 public class ObserverMetricsReporter {
-	private static final String METRIC_PREFIX = "ObserveRTC_samplesrocessor";
+	private static final String METRIC_PREFIX = "WebRTC-Observer";
 
 	private final MeterRegistry meterRegistry;
 
 	private enum Metrics {
+		FAILED_JSON_PARSE,
+
 		OBSERVER_SSRC_BUFFER_SIZE,
 		CALL_IDENTIFIER_EXECUTION_TIME_IN_MS,
 		CALL_CLEANER_EXECUTION_TIME_IN_MS,
@@ -47,6 +44,10 @@ public class ObserverMetricsReporter {
 		meterRegistry
 				.gauge(metricName, size);
 
+	}
+	
+	public void reportFailedJson(Logger logger, String serviceUUID, String serviceName, String mediaUnitID, String message) {
+		
 	}
 
 	public void setCallIdentificationExecutionTime(Duration duration) {

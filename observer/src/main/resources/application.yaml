@@ -1,10 +1,16 @@
 micronaut:
+  metrics:
+    enabled: ${METRICS_ENABLED:True}
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
   server:
     port: ${APPLICATION_SERVER_PORT:8088}
   application:
     name: webrtc_observer
-  metrics:
-    enabled: ${METRICS_ENABLED:True}
+
 #    export:
 #      elastic:
 #        enabled: true
@@ -44,7 +50,7 @@ tracing:
 kafkaTopics:
   #  createIfNotExists: True
   observedPCS:
-    topicName: ${KAFKA_TOPICS_WEBEXTRAPP_SAMPLES:observedPeerConnections}
+    topicName: ${KAFKA_TOPICS_OBSERVED_SAMPLES:observedPeerConnectionSamples}
     onCreatePartitionNums: 12
     onCreateReplicateFactor: 1
 
