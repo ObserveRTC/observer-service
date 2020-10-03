@@ -58,7 +58,6 @@ dedicated for this issue.
  - `REPORT_MEDIA_SOURCES` (*Default: True*): Determines if Media Source Reports are made or not.
  - `REPORT_ICE_CANDIDATE_PAIRS` (*Default: True*): Determines if ICE Candidate Pair Reports are made or not.
  - `REPORT_LOCAL_ICE_CANDIDATES` (*Default: True*): Determines if Local ICE Candidate Reports are made or not.
- - `REPORT_OUTBOUND_RTPS` (*Default: True*): Determines if Outbound RTP Reports are made or not.
  - `REPORT_REMOE_ICE_CANDIDATES` (*Default: True*): Determines if Remote ICE Candidate Reports are made or not.
  - `PEERCONNECTION_RETETNTION_TIME_IN_DAYS` (*Default: 60*): Defines the retention time for a Peer Connection to be stored in the Observer local database.
  - `CALL_CLEANER_MAX_ALLOWED_UPDATED_GAP_IN_S` (*Default: 3600*): Defines the maximum number of gap between the UTC wall clock from the Observer, and the UTC time of the last updated and joined peer connection. 

@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: observertc/webrtc-observer
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "0.4"
 
 imagePullSecrets: []
@@ -76,3 +76,29 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+secret:
+  databaseUsername: "root"
+  databasePassword: "password"
+  jdbcURI:
+    databaseType: "mysql"
+    serverAddress: "mywebrtc-mysql"
+    databaseName: "WebRTCObserver"
+    port: 3306
+
+kafka:
+  enabled: true
+
+mysql:
+  enabled: true
+  metrics:
+    enabled: true
+  db:
+    password: "myPassword"
+    forcePassword: false
+
+
+config:
+  initialWaitingTimeInS: 60
+  kafkaHosts:  "webrtc-observer-kafka"
+  

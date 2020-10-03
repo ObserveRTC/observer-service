@@ -14,31 +14,26 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.common;
 
-import io.micronaut.context.annotation.ConfigurationProperties;
-import org.observertc.webrtc.common.ObjectToString;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
-@ConfigurationProperties("hikari")
-public class HikariConfiguration {
+public class ObjectToString {
+	private static final ObjectWriter OBJECT_WRITER;
 
-	public String poolName;
-
-	public int maxPoolSize;
-
-	public int minIdle;
-
-	public String username;
-
-	public String password;
-
-	public String jdbcURL;
-
-	public String jdbcDriver;
+	static {
+		OBJECT_WRITER = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	}
 
 
-	@Override
-	public String toString() {
-		return ObjectToString.toString(this);
+	public static String toString(Object subject) {
+		try {
+			String result = OBJECT_WRITER.writeValueAsString(subject);
+			return result;
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		}
 	}
 }

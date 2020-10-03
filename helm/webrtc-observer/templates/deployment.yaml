@@ -35,14 +35,122 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 7080
               protocol: TCP
           env:
             - name: INITIAL_WAITING_TIME_IN_S
+              value: "20"
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ include "webrtc-observer.fullname" . }}-config
+#                  key: initialWaitingTimeInS
+            - name: APPLICATION_SERVER_PORT
+              value: "7080"
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ include "webrtc-observer.fullname" . }}-config
+#                  key: applicationServerPort
+            - name: METRICS_ENABLED
               valueFrom:
-                secretKeyRef:
-                  name: {{ include "backend.fullname" . }}-secret
-                  key: mongodb-uri
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: metricsEnabled
+            - name: CONNECTION_POOL_MIN_IDLE_IN_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: connectionPoolMinIdleInMs
+            - name: CONNECTION_POOL_MAX_IDLE_IN_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: connectionPoolMaxIdleInMs
+            - name: CONNECTION_POOL_MAX_POOL_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: connectionPoolMaxSize
+            - name: CONNECTION_POOL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-secret
+                  key: databaseUsername
+            - name: DATABASE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-secret
+                  key: databasePassword
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: kafkaTopicsObservedSamples
+            - name: JDBC_URL
+              value: "jdbc://mysql:1234/"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: {{ include "webrtc-observer.fullname" . }}-config
+#                  key: jdbcURI
+            - name: KAFKA_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: kafkaHosts
+            - name: KAFKA_TOPICS_OBSERVED_SAMPLES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: kafkaTopicsObservertcReports
+            - name: KAFKA_TOPICS_OBSERVERTC_REPORTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: kafkaTopicsObservertcReportDrafts
+            - name: KAFKA_TOPICS_OBSERVERTC_REPORTDRAFTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: mediastreamMaxIdleTimeInS
+            - name: MEDIA_STREAM_MAX_IDLE_TIME_IN_S
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportOutboundRTP
+            - name: REPORT_OUTBOUND_RTPS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportInboundRTP
+            - name: REPORT_REMOTE_INTBOUND_RTPS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportRemoteInboundRTP
+            - name: REPORT_TRACKS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportTracks
+            - name: REPORT_MEDIA_SOURCES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportMediaSources
+            - name: REPORT_ICE_CANDIDATE_PAIRS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportICECandidatePairs
+            - name: REPORT_LOCAL_ICE_CANDIDATES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportLocalICECandidates
+            - name: REPORT_REMOE_ICE_CANDIDATES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "webrtc-observer.fullname" . }}-config
+                  key: reportRemoteICECandidate
           livenessProbe:
             httpGet:
               path: /

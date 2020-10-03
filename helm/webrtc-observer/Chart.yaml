@@ -3,9 +3,11 @@ name: webrtc-observer
 description: A microservice to observe Web Real Time Communications (WebRTC)
 
 keywords:
-  - webtc
+  - webrtc
+  - analyze
   - monitor
-  - observe
+  - observer
+  - observertc
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -25,14 +27,16 @@ version: 0.1.0
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 20.10
+appVersion: 0.4
 
 dependencies:
   # https://github.com/bitnami/charts/tree/master/bitnami/kafka
   - name: kafka
     version: 11.8.6
     repository: https://charts.bitnami.com/bitnami
+    condition: kafka.enabled
   # https://github.com/bitnami/charts/tree/master/bitnami/mysql/
   - name: mysql
     version: 6.14.10
     repository: https://charts.bitnami.com/bitnami
+    condition: mysql.enabled

@@ -93,7 +93,7 @@ dependencies {
     compile "io.micronaut.configuration:micronaut-micrometer-core:1.3.1"
     compile "io.micronaut:micronaut-management"
 //    compile "io.micronaut.configuration:micronaut-micrometer-core"
-    compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus"
+    compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus:1.3.1"
 
     // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"

@@ -39,14 +39,6 @@ kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
-tracing:
-  zipkin:
-    http:
-      url: ${ZIPKIN_HOST:`http://localhost:9411`}
-    enabled: ${ZIPKIN_ENABLED:`true`}
-    sampler:
-      probability: 1
----
 kafkaTopics:
   #  createIfNotExists: True
   observedPCS:
