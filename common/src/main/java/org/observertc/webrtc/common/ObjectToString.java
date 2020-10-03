@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.micrometer;
+package org.observertc.webrtc.common;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import javax.inject.Singleton;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
-@Singleton
-public class WebRTCStatsReporter {
-	private static final String METRIC_PREFIX = "ObserveRTC";
+public class ObjectToString {
+	private static final ObjectWriter OBJECT_WRITER;
 
-	private final MeterRegistry meterRegistry;
-
-	public WebRTCStatsReporter(MeterRegistry meterRegistry) {
-		this.meterRegistry = meterRegistry;
+	static {
+		OBJECT_WRITER = new ObjectMapper().writer().withDefaultPrettyPrinter();
 	}
 
+
+	public static String toString(Object subject) {
+		try {
+			String result = OBJECT_WRITER.writeValueAsString(subject);
+			return result;
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		}
+	}
 }

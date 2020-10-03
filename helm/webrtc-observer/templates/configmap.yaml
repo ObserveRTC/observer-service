@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "webrtc-observer.fullname" . }}-config
+data:
+  #  initialWaitingTimeInS: {{ .initialWaitingTimeInS }}
+  #  applicationServerPort: {{ .applicationServerPort }}
+  metricsEnabled: {{ .Values.config.metricsEnabled | default false  | quote }}
+  connectionPoolMinIdleInMs: {{ .Values.config.connectionPoolMinIdleInMs | default 10  | quote }}
+  connectionPoolMaxIdleInMs: {{ .Values.config.connectionPoolMaxIdleInMs | default 1000  | quote }}
+  connectionPoolMaxSize: {{ .Values.config.connectionPoolMaxSize | default 100  | quote }}
+  connectionPoolName: {{ .Values.config.connectionPoolName | default "webrtc-observer" | quote }}
+  kafkaHosts: {{ .Values.config.kafkaHosts }}
+  kafkaTopicsObservedSamples: {{ .Values.config.kafkaTopicsObservedSamples | default "observedSamples" | quote  }}
+  kafkaTopicsObservertcReports: {{ .Values.config.kafkaTopicsObservertcReports | default "observertcReports" | quote }}
+  kafkaTopicsObservertcReportDrafts: {{ .Values.config.kafkaTopicsObservertcReportDrafts | default "observertcReportDrafts" | quote }}
+  mediastreamMaxIdleTimeInS: {{ .Values.config.mediastreamMaxIdleTimeInS | default  60  | quote }}
+  reportOutboundRTP: {{ .Values.config.reportOutboundRTP | default true  | quote }}
+  reportInboundRTP: {{ .Values.config.reportInboundRTP | default true  | quote }}
+  reportRemoteInboundRTP: {{ .Values.config.reportRemoteInboundRTP | default true  | quote }}
+  reportTracks: {{ .Values.config.reportTracks | default true  | quote }}
+  reportMediaSources: {{ .Values.config.reportMediaSources | default true  | quote }}
+  reportICECandidatePairs: {{ .Values.config.reportICECandidatePairs | default true  | quote  }}
+  reportLocalICECandidates: {{ .Values.config.reportLocalICECandidates | default true  | quote }}
+  reportRemoteICECandidate:  {{ .Values.config.repotRemoteICECandidate | default true  | quote }}

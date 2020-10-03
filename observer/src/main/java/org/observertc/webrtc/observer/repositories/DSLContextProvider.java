@@ -58,7 +58,8 @@ public class DSLContextProvider implements IDSLContextProvider {
 				HikariDataSource result = new HikariDataSource(jdbcConfig);
 				return result;
 			} catch (Exception ex) {
-				logger.warn("An exception happened while trying to connect to the database. This is the {} try. ", tried);
+				logger.warn("An exception happened while trying to connect to the database. This is the {} try. Configuration: {}", tried
+						, hikariConfiguration.toString());
 				exception = ex;
 				try {
 					Thread.sleep(10000);

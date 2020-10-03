@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
+import org.observertc.webrtc.common.ObjectToString;
 
 @ConfigurationProperties("hikari")
 public class HikariConfiguration {
@@ -35,4 +36,9 @@ public class HikariConfiguration {
 
 	public String jdbcDriver;
 
+
+	@Override
+	public String toString() {
+		return ObjectToString.toString(this);
+	}
 }
