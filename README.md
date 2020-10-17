@@ -16,11 +16,24 @@ Each Report has the following properties:
  
 The provided report has a schema available here.
 
+
 ## Deploy WebRTC-Observer
 
 If your aim is to use it in your environment 
 we highly recommend you our other [repository](https://github.com/ObserveRTC/WebRTC-Deployments) 
 dedicated for this issue.
+
+
+### Compatibility  
+
+The deployed version has compatibility with other components.
+
+|                                                        |   0.4     |
+|--------------------------------------------------------|-----------|
+| [webextrapp](https://github.com/ObserveRTC/webextrapp) | v0.1.2<=  | 
+
+
+
 
 ## Environment variables
 
@@ -75,6 +88,4 @@ then you need to run the Observer locally.
 TODO: TBD
 
       docker-compose up -d
-
-
 

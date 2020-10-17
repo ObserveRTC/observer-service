@@ -14,85 +14,50 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.mediastreams;
+package org.observertc.webrtc.observer.evaluators;
 
-import io.micronaut.scheduling.annotation.Scheduled;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import io.micronaut.context.annotation.Prototype;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.inject.Singleton;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
-import org.observertc.webrtc.schemas.reports.ReportType;
-import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.SentReportsRepository;
+import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
+import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Singleton
-public class CallCleaner {
+@Prototype
+public class ExpiredPCsConsumer {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallCleaner.class);
-	private final EvaluatorsConfig.CallCleanerConfig config;
+	private static final Logger logger = LoggerFactory.getLogger(ExpiredPCsConsumer.class);
+
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final ReportDraftSink reportDraftSink;
-	private final MaxIdleThresholdProvider maxIdleThresholdProvider;
-	private final SentReportsRepository sentReportsRepository;
 	private final ReportSink reportSink;
+	private final ReportDraftsEvaluator reportDraftsEvaluator;
 
-	public CallCleaner(
-			EvaluatorsConfig config,
-			SentReportsRepository sentReportsRepository,
+	public ExpiredPCsConsumer(
+			ReportDraftsEvaluator reportDraftsEvaluator,
 			ActiveStreamsRepository activeStreamsRepository,
 			PeerConnectionsRepository peerConnectionsRepository,
-			MaxIdleThresholdProvider maxIdleThresholdProvider,
-			ReportSink reportSink,
-			ReportDraftSink reportDraftSink) {
-		this.config = config.callCleaner;
+			ReportSink reportSink) {
 		this.reportSink = reportSink;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.peerConnectionsRepository = peerConnectionsRepository;
-		this.maxIdleThresholdProvider = maxIdleThresholdProvider;
-		this.reportDraftSink = reportDraftSink;
-		this.sentReportsRepository = sentReportsRepository;
+		this.reportDraftsEvaluator = reportDraftsEvaluator;
 	}
 
-	@Scheduled(initialDelay = "10m", fixedRate = "60m")
-	void deleteExpiredPCs() {
-		Long threshold = Instant.now().minus(this.config.pcRetentionTimeInDays, ChronoUnit.DAYS).toEpochMilli();
-		try {
-			this.peerConnectionsRepository.deletePCsDetachedOlderThan(threshold);
-			this.sentReportsRepository.deleteReportedOlderThan(threshold);
-		} catch (Exception ex) {
-			logger.error("Cannot execute remove old PCs", ex);
-		}
-	}
-
-	@Scheduled(initialDelay = "1m", fixedRate = "2m")
-	void reportExpiredPCs() {
-		try {
-			this.cleanCalls();
-		} catch (Exception ex) {
-			logger.error("Cannot execute remove old PCs", ex);
-		}
-	}
-
-	private void cleanCalls() {
-		Optional<Long> thresholdHolder = this.maxIdleThresholdProvider.get();
-		if (!thresholdHolder.isPresent()) {
+	public void processExpiredPCs(List<byte[]> peerConnectionUUIDs) {
+		if (peerConnectionUUIDs.size() < 1) {
 			return;
 		}
-		Long threshold = thresholdHolder.get();
-		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findJoinedPCsUpdatedLowerThan(threshold).iterator();
+		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findAll(peerConnectionUUIDs).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
 			record.setDetached(record.getUpdated());
@@ -129,7 +94,7 @@ public class CallCleaner {
 
 			//finished call
 			FinishedCallReportDraft reportDraft = FinishedCallReportDraft.of(serviceUUID, callUUID, record.getUpdated());
-			this.reportDraftSink.send(serviceUUID, reportDraft);
+			this.reportDraftsEvaluator.add(reportDraft);
 			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
 		}
 	}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.mediastreams;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
+package org.observertc.webrtc.observer.evaluators;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
 import java.util.HashSet;
 import java.util.Set;

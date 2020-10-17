@@ -2,6 +2,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "5.0.0"
     id "application"
     id "net.ltgt.apt-eclipse" version "0.21"
+    id 'com.google.cloud.tools.jib' version '1.4.0'
 //    id "nu.studer.jooq" version "4.2"
 }
 
@@ -15,8 +16,17 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 version "$observerVersion"
-group "webrtc_observer"
+group "observertc"
 
+jib {
+    from {
+//        image "openjdk:11.0.5-jre"
+        image "openjdk11-openj9:jdk-11.0.1.13-alpine-slim"
+    }
+    to {
+        image "$group/webrtc-observer:$version"
+    }
+}
 
 /*
  * Copyright  2020 Balazs Kreith
@@ -90,10 +100,10 @@ dependencies {
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautRuntimeOSXVerrsion")
 
     // ------------ Micrometer integration ---------
-    compile "io.micronaut.configuration:micronaut-micrometer-core:1.3.1"
+    compile "io.micronaut.configuration:micronaut-micrometer-core:$micraonutMicrometerCoreVersion"
     compile "io.micronaut:micronaut-management"
 //    compile "io.micronaut.configuration:micronaut-micrometer-core"
-    compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus:1.3.1"
+    compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus:$micronautMicrometerPrometheusVersion"
 
     // ------------ Datasource integration ---------
     implementation "org.jooq:jooq:${jooqVersion}"
@@ -110,6 +120,9 @@ dependencies {
 //    runtime 'io.zipkin.reporter2:zipkin-reporter'
 //    compile 'io.opentracing.brave:brave-opentracing'
 
+    // ------------ Kubernetes --------------
+//    compile "io.micronaut.kubernetes:micronaut-kubernetes-discovery-client:$micronautK8sVersion"
+
     // ------------ Kafka streams ---------
 //    implementation "io.micronaut.configuration:micronaut-kafka-streams:$micronautKafkaStreamsVersion"
 //    implementation "io.confluent:kafka-avro-serializer:5.4.0"
@@ -118,6 +131,9 @@ dependencies {
     // ------------ Datawarehouse utilities ------------
 //    compile 'com.google.cloud:google-cloud-bigquery:1.116.3'
     // the main library
+    
+    // ------------- RXJava --------------
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.20'
 
 }
 
@@ -139,3 +155,4 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs.add('-parameters')
 }
+

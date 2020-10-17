@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webrtc-observer
+spec:
+  selector:
+    matchLabels:
+      app: callme
+  template:
+    metadata:
+      labels:
+        app: webrtc-observer
+    spec:
+      containers:
+        - name: webrtc-observer
+          image: observertc/webrtc-observer
+          ports:
+            - containerPort: 7080

@@ -28,8 +28,8 @@ public class WebRTCStatsMeterFilterFactory {
 	 */
 	@Bean
 	@Singleton
-	MeterFilter jvmExclusionFilter() {
-		return MeterFilter.denyNameStartsWith("jvm");
+	MeterFilter exclusionFilter() {
+		return MeterFilter.denyNameStartsWith("kafka");
 	}
 
 }

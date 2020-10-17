@@ -16,25 +16,36 @@
 
 package org.observertc.webrtc.observer;
 
-import io.micronaut.context.annotation.ConfigurationProperties;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-@ConfigurationProperties("kafkaTopics")
-public class KafkaTopicsConfiguration {
-	public boolean createIfNotExists = true;
+public class LogEntry {
 
-	public ObserveRTCReportsConfig reports;
+	private final Consumer<String> logger;
+	private final Map<String, String> tags = new HashMap<>();
 
-	public static class TopicConfig {
-		public String topicName;
-		public int onCreatePartitionNums;
-		public int onCreateReplicateFactor;
-		public long retentionTimeInMs = 604800_000; // 1 week
+	public LogEntry(Consumer<String> logger) {
+		this.logger = logger;
 	}
 
-	@ConfigurationProperties("reports")
-	public static class ObserveRTCReportsConfig extends TopicConfig {
-
+	public LogEntry(BiConsumer<String, Throwable> logger, Throwable t) {
+		this.logger = str -> {
+			logger.accept(str, t);
+		};
 	}
 
+	public LogEntry addTag(Object tagName, Object tagValue) {
+		return this;
+	}
+
+	public LogEntry addMessage(String message) {
+		
+		return this;
+	}
+
+	public void doLog() {
+
+	}
 }
-
