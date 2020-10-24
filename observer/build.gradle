@@ -94,14 +94,13 @@ dependencies {
     testImplementation "io.micronaut.test:micronaut-test-junit5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     implementation "io.micronaut:micronaut-security-jwt:$micronautJwtVersion"
-    compile "io.micronaut:micronaut-management"
     implementation "io.micronaut.configuration:micronaut-kafka:$micronautKafkaVersion"
     implementation("io.micronaut.kafka:micronaut-kafka:$micronautKafkaVersion")
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautRuntimeOSXVerrsion")
 
     // ------------ Micrometer integration ---------
     compile "io.micronaut.configuration:micronaut-micrometer-core:$micraonutMicrometerCoreVersion"
-    compile "io.micronaut:micronaut-management"
+    compile "io.micronaut:micronaut-management:2.1.2"
 //    compile "io.micronaut.configuration:micronaut-micrometer-core"
     compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus:$micronautMicrometerPrometheusVersion"
 
@@ -131,7 +130,7 @@ dependencies {
     // ------------ Datawarehouse utilities ------------
 //    compile 'com.google.cloud:google-cloud-bigquery:1.116.3'
     // the main library
-    
+
     // ------------- RXJava --------------
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.20'
 

@@ -30,7 +30,7 @@ public class EvaluatorsConfig {
 	@ConfigurationProperties("reportDrafts")
 	public static class ReportDraftsConfig {
 		public int expirationTimeInS = 300;
-		public int minEnforcedTimeInS = 60;
+		public int minEnforcedTimeInS = 20;
 	}
 
 	@ConfigurationProperties("callCleaner")

@@ -77,7 +77,7 @@ public class ExpiredPCsConsumer {
 					.setPeerConnectionUUID(peerConnectionUUID.toString())
 					.build();
 
-			this.reportSink.sendReport(serviceUUID,
+			this.reportSink.sendReport(peerConnectionUUID,
 					serviceUUID,
 					record.getProvidedcallid(),
 					serviceUUID.toString(),

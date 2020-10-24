@@ -110,7 +110,7 @@ public class ReportSink {
 					.log();
 			return null;
 		}
-		
+
 		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(this.config.topicName, reportKey,
 				out));
 	}

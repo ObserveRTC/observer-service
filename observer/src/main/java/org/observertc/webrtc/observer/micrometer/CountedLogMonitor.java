@@ -132,7 +132,8 @@ public class CountedLogMonitor {
 		}
 
 		public void log() {
-			String[] tags = (String[]) this.tags.toArray();
+			String[] tags = this.tags.toArray(new String[]{});
+
 			String metricName = String.join(".", this.getNamePrefix(), this.metricName);
 			try {
 				meterRegistry.counter(metricName, tags).increment();

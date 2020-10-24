@@ -20,7 +20,8 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 
 @ConfigurationProperties("kafkaTopics")
 public class KafkaTopicsConfiguration {
-	public boolean createIfNotExists = true;
+	public boolean runAdminClient = false;
+	public boolean createIfNotExists = false;
 
 	public ObserveRTCReportsConfig reports;
 

@@ -125,7 +125,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 					.log();
 			return;
 		}
-
+		
 		if (sample.peerConnectionId == null) {
 			this.countedLogMonitor
 					.makeEntry("serviceName", serviceUUID, mediaUnitID)
@@ -136,7 +136,8 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			return;
 		}
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionId);
-
+		
+		// TODO: prrocess user media error here.
 		if (!peerConnectionUUIDHolder.isPresent()) {
 			this.countedLogMonitor
 					.makeEntry("serviceName", serviceUUID, mediaUnitID)

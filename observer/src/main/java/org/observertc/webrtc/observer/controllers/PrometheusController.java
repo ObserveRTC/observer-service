@@ -20,13 +20,13 @@ package org.observertc.webrtc.observer.controllers;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.micronaut.configuration.metrics.annotation.RequiresMetrics;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Produces;
+import io.micronaut.management.endpoint.annotation.Endpoint;
+import io.micronaut.management.endpoint.annotation.Read;
 import javax.inject.Inject;
 
 @RequiresMetrics
-@Controller("/prometheusMetrics")
+//@Controller("/prometheusMetrics")
+@Endpoint("prometheusMetrics")
 public class PrometheusController {
 
 	@Inject
@@ -39,8 +39,13 @@ public class PrometheusController {
 		this.prometheusMeterRegistry = prometheusMeterRegistry;
 	}
 
-	@Get
-	@Produces("text/plain")
+//	@Get
+//	@Produces("text/plain")
+//	public String metrics() {
+//		return prometheusMeterRegistry.scrape();
+//	}
+
+	@Read(produces = "text/plain")
 	public String metrics() {
 		return prometheusMeterRegistry.scrape();
 	}

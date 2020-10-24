@@ -17,7 +17,10 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
+import io.micronaut.scheduling.TaskExecutors;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.time.Instant;
 import java.util.HashMap;
@@ -25,9 +28,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import javax.inject.Named;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
@@ -53,23 +59,27 @@ public final class MediaStreamUpdater {
 	private String name = "UNDEFINED";
 
 	public MediaStreamUpdater(
+			@Named(TaskExecutors.IO) ExecutorService executorService,
 			ObserverMetricsReporter observerMetricsReporter,
 			ActiveStreamsEvaluator activeStreamsEvaluator,
 			ExpiredPCsConsumer expiredPCsConsumer,
 			EvaluatorsConfig.CallCleanerConfig callCleanerConfig
 	) {
+		Scheduler scheduler = Schedulers.from(executorService);
 		this.SSRCExtractor = this.makeSSRCExtractor();
 		this.callCleanerConfig = callCleanerConfig;
 		this.observerMetricsReporter = observerMetricsReporter;
 
+		Random random = new Random();
 		Supplier<Map<UUID, MediaStreamUpdate>> updateProvider = () -> this.evaluateActiveStreamUpdates();
 		Observable.just(updateProvider)
-				.delay(15000, TimeUnit.MILLISECONDS)
+//				.delay(Single.defer(() -> 1000), TimeUnit.SECONDS)
+				.delay(random.nextInt(5000) + 10000, TimeUnit.MILLISECONDS)
 				.repeat()
 				.doOnError(throwable -> {
 					logger.error("Error occured", throwable);
 				})
-				.subscribeOn(Schedulers.io())
+				.subscribeOn(scheduler)
 				.subscribe(updateP -> {
 					Map<UUID, MediaStreamUpdate> updates = updateP.get();
 					activeStreamsEvaluator.update(updates);
@@ -77,12 +87,12 @@ public final class MediaStreamUpdater {
 
 		Supplier<List<byte[]>> detachedPCsProvider = () -> this.evaluatePassiveStreamUpdates();
 		Observable.just(detachedPCsProvider)
-				.delay(60000, TimeUnit.MILLISECONDS)
+				.delay(random.nextInt(10000) + 50000, TimeUnit.MILLISECONDS)
 				.repeat()
 				.doOnError(throwable -> {
 					logger.error("Error occured", throwable);
 				})
-				.subscribeOn(Schedulers.io())
+				.subscribeOn(scheduler)
 				.subscribe(updateP -> {
 					List<byte[]> expiredPCs = updateP.get();
 					expiredPCsConsumer.processExpiredPCs(expiredPCs);

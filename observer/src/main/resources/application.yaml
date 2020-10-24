@@ -10,20 +10,16 @@ micronaut:
     port: ${APPLICATION_SERVER_PORT:8088}
   application:
     name: webrtc_observer
-  endpoints:
-    #    metrics:
-    #      enabled: false
-    #      sensitive: false
-    #    prometheus:
-    #      enabled: true
-    #      sensitive: false
-    health:
-      enabled: true
-      sensitive: false
-      details-visible: String
-      status:
-        http-mapping: Map<String, HttpStatus>
-
+---
+endpoints:
+  all:
+    port: ${APPLICATION_MANAGEMENT_PORT:7081}
+  prometheus:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
 ---
 serviceMap:
   - uuid: "id"
@@ -49,7 +45,8 @@ kafka:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
 kafkaTopics:
-  createIfNotExists: True
+  runAdminClient: False
+  createIfNotExists: False
   reports:
     topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
     onCreatePartitionNums: 30

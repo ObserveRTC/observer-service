@@ -56,6 +56,7 @@ public class ActiveStreamsEvaluator {
 	private final CountedLogMonitor countedLogMonitor;
 
 	public ActiveStreamsEvaluator(
+
 			ObserverMetricsReporter observerMetricsReporter,
 			ReportDraftsEvaluator reportDraftsEvaluator,
 			PeerConnectionsRepository peerConnectionsRepository,
@@ -144,7 +145,6 @@ public class ActiveStreamsEvaluator {
 				}
 				callUUIDBytes = callUUIDBytesHolder.get();
 			} else {
-
 				Optional<PeerconnectionsRecord> pcHolder =
 						this.peerConnectionsRepository.findByJoinedBrowserIDOrProvidedCallID(mediaStreamUpdate.created,
 								mediaStreamUpdate.browserID, mediaStreamUpdate.callName);
@@ -171,11 +171,11 @@ public class ActiveStreamsEvaluator {
 					)
 					.collect(Collectors.toList());
 			try {
-				this.activeStreamsRepository.updateAll(newActiveStreams);
+				this.activeStreamsRepository.saveAll(newActiveStreams);
 			} catch (Exception ex) {
 				this.countedLogMonitor
 						.makeEntry()
-						.withCategory("repositoryException")
+						.withCategory("registerCallUUID." + ex.getClass().getSimpleName())
 						.withLogLevel(Level.ERROR)
 						.withException(ex)
 						.withMessage("An exception caught during saving data.")
@@ -208,7 +208,7 @@ public class ActiveStreamsEvaluator {
 			return;
 		}
 		try {
-			this.peerConnectionsRepository.save(new PeerconnectionsRecord(
+			PeerconnectionsRecord record = new PeerconnectionsRecord(
 					UUIDAdapter.toBytes(mediaStreamUpdate.peerConnectionUUID),
 					callUUIDBytes,
 					UUIDAdapter.toBytes(mediaStreamUpdate.serviceUUID),
@@ -221,7 +221,8 @@ public class ActiveStreamsEvaluator {
 					mediaStreamUpdate.callName,
 					mediaStreamUpdate.timeZoneID,
 					mediaStreamUpdate.serviceName
-			));
+			);
+			this.peerConnectionsRepository.save(record);
 		} catch (Exception ex) {
 			this.countedLogMonitor
 					.makeEntry()
@@ -241,13 +242,14 @@ public class ActiveStreamsEvaluator {
 			callUUIDStr = "NOT VALID UUID";
 		}
 		JoinedPeerConnection joinedPC = JoinedPeerConnection.newBuilder()
+				.setBrowserId(mediaStreamUpdate.browserID)
 				.setMediaUnitId(mediaStreamUpdate.mediaUnitID)
 				.setCallUUID(callUUIDStr)
 				.setPeerConnectionUUID(mediaStreamUpdate.peerConnectionUUID.toString())
 				.build();
 
 		this.reportSink.sendReport(
-				mediaStreamUpdate.serviceUUID,
+				mediaStreamUpdate.peerConnectionUUID,
 				mediaStreamUpdate.serviceUUID,
 				mediaStreamUpdate.serviceName,
 				mediaStreamUpdate.customProvided,

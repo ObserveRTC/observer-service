@@ -57,6 +57,27 @@ public class PeerConnectionSample {
 	@JsonProperty("userId")
 	public String userId;
 
+	@JsonProperty("extensions")
+	public ExtensionStat[] extensionStats;
+
+	@JsonProperty("userMediaErrors")
+	public UserMediaError[] userMediaErrors;
+
+
+	public static class UserMediaError {
+		@JsonProperty("message")
+		public String message;
+	}
+
+	public static class ExtensionStat {
+
+		@JsonProperty("extensionType")
+		public String extensionType;
+
+		@JsonProperty("payload")
+		public String payload;
+	}
+
 	/**
 	 * https://www.w3.org/TR/webrtc/#dom-rtcstats
 	 */
@@ -848,6 +869,7 @@ public class PeerConnectionSample {
 		 */
 		@JsonProperty("transportId")
 		public String transportId;
+
 	}
 
 	/**

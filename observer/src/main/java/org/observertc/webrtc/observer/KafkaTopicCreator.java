@@ -39,25 +39,28 @@ public class KafkaTopicCreator
 	private static final Logger logger = LoggerFactory.getLogger(KafkaTopicCreator.class);
 	private final KafkaDefaultConfiguration kafkaConfiguration;
 	private final boolean createIfNotExists;
+	private final boolean runAdminClient;
 	private final Set<String> checkedTopics;
 
 	public KafkaTopicCreator(KafkaDefaultConfiguration configuration, KafkaTopicsConfiguration kafkaTopicsConfiguration) {
 		this.kafkaConfiguration = configuration;
 		this.checkedTopics = Collections.newSetFromMap(new ConcurrentHashMap<>());
 		this.createIfNotExists = kafkaTopicsConfiguration.createIfNotExists;
+		this.runAdminClient = kafkaTopicsConfiguration.runAdminClient;
 	}
 
 	//	@Override
 //	@Async
 	public void execute(KafkaTopicsConfiguration.TopicConfig topicConfig) {
-		// To avoid flooding zookeeper in case of several Observer starts at the same time.
-//		new Sleeper(() -> new Random().nextInt(1000) + 100).run();
-//		KafkaTopicsConfiguration.TopicConfig topicConfig = kafkaTopicCheckEvent.topicConfig;
 		if (this.checkedTopics.contains(topicConfig.topicName)) {
 			logger.info("{} topic is already checked", topicConfig.topicName);
 			return;
 		}
-
+		if (!this.runAdminClient) {
+			this.checkedTopics.add(topicConfig.topicName);
+			logger.info("AdminClient is not allowed to run");
+			return;
+		}
 		AdminClient adminClient = AdminClient.create(this.kafkaConfiguration.getConfig());
 		Set<String> topics;
 		try {

@@ -146,7 +146,7 @@ public class ReportDraftsEvaluator {
 		//  || record.getJoined().compareTo(firstJoinedPC) < 0
 		String callUUIDStr;
 		if (firstJoinedPC.getCalluuid() != null) {
-			callUUIDStr = firstJoinedPC.getCalluuid().toString();
+			callUUIDStr = UUIDAdapter.toUUID(firstJoinedPC.getCalluuid()).toString();
 		} else {
 			callUUIDStr = "NOT VALID UUID";
 		}
@@ -186,7 +186,7 @@ public class ReportDraftsEvaluator {
 
 		String callUUIDStr;
 		if (lastDetachedPC.getCalluuid() != null) {
-			callUUIDStr = lastDetachedPC.getCalluuid().toString();
+			callUUIDStr = UUIDAdapter.toUUID(lastDetachedPC.getCalluuid()).toString();
 		} else {
 			callUUIDStr = "NOT VALID UUID";
 		}
