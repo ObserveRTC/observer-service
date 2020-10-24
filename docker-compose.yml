@@ -1,27 +1,27 @@
 version: '3.3'
 services:
-  webrtc-observer:
-    restart: always
-    container_name: docker_webrtc_observer
-    image: observertc/webrtc-observer:0.4
-    links:
-      - kafka
-      - mysql
-    ports:
-      - 8088:7080
-    environment:
-      - INITIAL_WAITING_TIME_IN_S=20
-      - APPLICATION_SERVER_PORT=7080
-      - KAFKA_HOSTS=docker_kafka:29092
-      - DATABASE_USERNAME=root
-      - DATABSE_PASSWORD=password
-      - JDBC_URL=jdbc:mysql://mysqldb:3306/WebRTCObserver
-      - MICRONAUT_CONFIG_FILES=/observer-config.yml
-    depends_on:
-      - kafka
-      - mysql
-    volumes:
-      - ./observer-config.yml:/observer-config.yml
+#  webrtc-observer:
+#    restart: always
+#    container_name: docker_webrtc_observer
+#    image: observertc/webrtc-observer:0.4
+#    links:
+#      - kafka
+#      - mysql
+#    ports:
+#      - 8088:7080
+#    environment:
+#      - INITIAL_WAITING_TIME_IN_S=20
+#      - APPLICATION_SERVER_PORT=7080
+#      - KAFKA_HOSTS=docker_kafka:29092
+#      - DATABASE_USERNAME=root
+#      - DATABSE_PASSWORD=password
+#      - JDBC_URL=jdbc:mysql://mysqldb:3306/WebRTCObserver
+#      - MICRONAUT_CONFIG_FILES=/observer-config.yml
+#    depends_on:
+#      - kafka
+#      - mysql
+#    volumes:
+#      - ./observer-config.yml:/observer-config.yml
   # Infrastructure behind the Observer
   zookeeper:
     container_name: docker_zookeeper
@@ -76,6 +76,37 @@ services:
       - '3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+  prometheus:
+    image: prom/prometheus
+    command:
+      - --web.enable-lifecycle
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - 9099:9090
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  nodeexporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+  cadvisor:
+    image: google/cadvisor
+    ports:
+      - "8081:8080"
+  grafana:
+    image: grafana/grafana:6.3.5
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards:/var/lib/grafana/dashboards/default/grafana-dashboard.json
+
+
 
 volumes:
   my-db:

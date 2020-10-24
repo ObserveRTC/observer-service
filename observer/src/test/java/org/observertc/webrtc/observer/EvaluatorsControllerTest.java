@@ -17,6 +17,12 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.test.annotation.MicronautTest;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+import org.junit.jupiter.api.Test;
 
 @MicronautTest
 public class EvaluatorsControllerTest {
@@ -31,5 +37,36 @@ public class EvaluatorsControllerTest {
 //        }
 //    }
 
-	
+	@Test
+	public void t() throws InterruptedException {
+		Supplier<Integer> numP = () -> this.source();
+		Observable.just(numP)
+//		this.source()
+				.delay(1000, TimeUnit.MILLISECONDS)
+				.repeat()
+				.doOnError(throwable -> {
+					throwable.printStackTrace();
+				})
+//				.toMap(numProvider  -> numProvider.get())
+				.subscribeOn(Schedulers.io())
+				.subscribe(numProvider -> {
+					Integer num = numProvider.get();
+					System.out.println("Received int:" + num + " hash: " + num.hashCode());
+				});
+		Thread.sleep(10000);
+	}
+
+	private Supplier<Integer> integerSupplier = () -> new Random().nextInt();
+
+	private Integer source() {
+//		Unsafe unsafe = getUnsafeInstance();
+		Integer source = integerSupplier.get();
+		Integer result;
+		synchronized (EvaluatorsControllerTest.this) {
+			System.out.println("Generated int:" + source + " hash: " + source.hashCode());
+			result = source;
+			System.out.println("Copied int:" + source + " hash: " + source.hashCode());
+		}
+		return result;
+	}
 }

@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.mediastreams;
+package org.observertc.webrtc.observer.evaluators;
 
-import io.micronaut.configuration.kafka.annotation.KafkaListener;
-import io.micronaut.configuration.kafka.annotation.Topic;
-import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Prototype;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,35 +27,23 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.observer.ReportDraftSink;
 import org.observertc.webrtc.observer.ReportSink;
-import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
-import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.InitiatedCallReportDraft;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
 import org.observertc.webrtc.observer.jooq.tables.records.ActivestreamsRecord;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
+import org.observertc.webrtc.observer.micrometer.CountedLogMonitor;
+import org.observertc.webrtc.observer.micrometer.ObserverMetricsReporter;
 import org.observertc.webrtc.observer.repositories.ActiveStreamKey;
 import org.observertc.webrtc.observer.repositories.ActiveStreamsRepository;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.JoinedPeerConnection;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
-@KafkaListener(
-		groupId = "observertc-webrtc-observer-ActiveStreamsEvaluator",
-		batch = true,
-		pollTimeout = "50000ms",
-		threads = 2,
-		properties = {
-				@Property(name = ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, value = "5000"),
-				@Property(name = ConsumerConfig.FETCH_MIN_BYTES_CONFIG, value = "100000"),
-				@Property(name = ConsumerConfig.MAX_POLL_RECORDS_CONFIG, value = "5000")}
-)
 @Prototype
 public class ActiveStreamsEvaluator {
 
@@ -67,91 +51,31 @@ public class ActiveStreamsEvaluator {
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final ActiveStreamsRepository activeStreamsRepository;
 	private final ReportSink reportSink;
-	private final ReportDraftSink reportDraftSink;
+	private final ReportDraftsEvaluator reportDraftsEvaluator;
+	private final ObserverMetricsReporter observerMetricsReporter;
+	private final CountedLogMonitor countedLogMonitor;
 
 	public ActiveStreamsEvaluator(
+
+			ObserverMetricsReporter observerMetricsReporter,
+			ReportDraftsEvaluator reportDraftsEvaluator,
 			PeerConnectionsRepository peerConnectionsRepository,
 			ActiveStreamsRepository activeStreamsRepository,
-			ReportSink reportSink,
-			ReportDraftSink reportDraftSink
+			ReportSink reportSink
 	) {
+		this.observerMetricsReporter = observerMetricsReporter;
+		this.reportDraftsEvaluator = reportDraftsEvaluator;
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.activeStreamsRepository = activeStreamsRepository;
 		this.reportSink = reportSink;
-		this.reportDraftSink = reportDraftSink;
+
+		this.countedLogMonitor = observerMetricsReporter
+				.makeCountedLogMonitor(logger)
+				.withDefaultMetricName("activeStreamsEvaluator")
+		;
 	}
 
-
-	@Topic("${kafkaTopics.observedPCS.topicName}")
-	public void receive(List<ObservedPCS> samples) {
-		Map<UUID, MediaStreamUpdate> updatedPCs = this.makeMediaStreamUpdates(samples);
-
-		if (updatedPCs.size() < 1) {
-			return;
-		}
-
-		this.updateAndRemoveExistingPCs(updatedPCs);
-
-		if (updatedPCs.size() < 1) {
-			return;
-		}
-
-		Deque<MediaStreamUpdate> mediaStreamUpdates = new LinkedList<>();
-		updatedPCs.values().stream().forEach(mediaStreamUpdates::addLast);
-		this.processMediaStreamUpdates(mediaStreamUpdates);
-	}
-
-	private Map<UUID, MediaStreamUpdate> makeMediaStreamUpdates(List<ObservedPCS> samples) {
-		Map<UUID, MediaStreamUpdate> result = new HashMap<>();
-		for (int i = 0; i < samples.size(); i++) {
-			ObservedPCS sample = samples.get(i);
-			PeerConnectionSample pcSample = sample.peerConnectionSample;
-			if (pcSample == null) {
-				logger.warn("Peer connection sample is null");
-				continue;
-			}
-			MediaStreamUpdate mediaStreamUpdate = result.get(sample.peerConnectionUUID);
-			if (mediaStreamUpdate == null) {
-				mediaStreamUpdate = MediaStreamUpdate.of(
-						sample.serviceUUID,
-						sample.peerConnectionUUID,
-						sample.timestamp,
-						pcSample.browserId,
-						pcSample.callId,
-						sample.timeZoneID,
-						pcSample.userId,
-						sample.mediaUnitId,
-						sample.serviceName,
-						sample.customProvided
-				);
-			} else {
-				mediaStreamUpdate.updated = sample.timestamp;
-			}
-
-			MediaStreamUpdate finalMediaStreamUpdate = mediaStreamUpdate;
-			new AbstractPeerConnectionSampleVisitor<ObservedPCS>() {
-				@Override
-				public void visitRemoteInboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject) {
-					finalMediaStreamUpdate.SSRCs.add(subject.ssrc);
-				}
-
-				@Override
-				public void visitInboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.InboundRTPStreamStats subject) {
-					finalMediaStreamUpdate.SSRCs.add(subject.ssrc);
-				}
-
-				@Override
-				public void visitOutboundRTP(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.OutboundRTPStreamStats subject) {
-					finalMediaStreamUpdate.SSRCs.add(subject.ssrc);
-				}
-			}.accept(sample, pcSample);
-			result.put(sample.peerConnectionUUID, mediaStreamUpdate);
-		}
-		return result;
-	}
-
-
-	public void updateAndRemoveExistingPCs(Map<UUID, MediaStreamUpdate> updates) {
+	public void update(Map<UUID, MediaStreamUpdate> updates) {
 		List<PeerconnectionsRecord> updatedPCs = new LinkedList<>();
 		Stream<PeerconnectionsRecord> existingPCs =
 				this.peerConnectionsRepository.findAll(
@@ -170,8 +94,12 @@ public class ActiveStreamsEvaluator {
 			UUID pcUUID = UUIDAdapter.toUUIDOrDefault(record.getPeerconnectionuuid(), null);
 			MediaStreamUpdate mediaStreamUpdate = updates.get(pcUUID);
 			if (mediaStreamUpdate == null) {
-				// something is wrong, log it!
-				logger.warn("The PC returned by the repository is not existing in the current update. WTF?!?");
+				this.countedLogMonitor
+						.makeEntry()
+						.withCategory("notExistingPC")
+						.withLogLevel(Level.ERROR)
+						.withMessage("The PC returned by the repository is not existing in the current update.")
+						.log();
 				continue;
 			}
 			// Set the update time for the peer connection
@@ -180,6 +108,14 @@ public class ActiveStreamsEvaluator {
 			updates.remove(pcUUID);
 		}
 		this.peerConnectionsRepository.updateAll(updatedPCs);
+
+		if (updates.size() < 1) {
+			return;
+		}
+
+		Deque<MediaStreamUpdate> mediaStreamUpdates = new LinkedList<>();
+		updates.values().stream().forEach(mediaStreamUpdates::addLast);
+		this.processMediaStreamUpdates(mediaStreamUpdates);
 	}
 
 	private void processMediaStreamUpdates(Deque<MediaStreamUpdate> newPCs) {
@@ -199,12 +135,16 @@ public class ActiveStreamsEvaluator {
 				Optional<byte[]> callUUIDBytesHolder =
 						activeStreamsRecords.stream().filter(record -> record.getCalluuid() != null).map(ActivestreamsRecord::getCalluuid).findFirst();
 				if (!callUUIDBytesHolder.isPresent()) {
-					logger.error("Active streams are detected without callUUID");
+					this.countedLogMonitor
+							.makeEntry()
+							.withCategory("notExistingCallUUID")
+							.withLogLevel(Level.ERROR)
+							.withMessage("Active streams are detected without callUUID.")
+							.log();
 					continue;
 				}
 				callUUIDBytes = callUUIDBytesHolder.get();
 			} else {
-
 				Optional<PeerconnectionsRecord> pcHolder =
 						this.peerConnectionsRepository.findByJoinedBrowserIDOrProvidedCallID(mediaStreamUpdate.created,
 								mediaStreamUpdate.browserID, mediaStreamUpdate.callName);
@@ -231,9 +171,15 @@ public class ActiveStreamsEvaluator {
 					)
 					.collect(Collectors.toList());
 			try {
-				this.activeStreamsRepository.updateAll(newActiveStreams);
+				this.activeStreamsRepository.saveAll(newActiveStreams);
 			} catch (Exception ex) {
-				logger.error("An exception caught during saving data", ex);
+				this.countedLogMonitor
+						.makeEntry()
+						.withCategory("registerCallUUID." + ex.getClass().getSimpleName())
+						.withLogLevel(Level.ERROR)
+						.withException(ex)
+						.withMessage("An exception caught during saving data.")
+						.log();
 				continue;
 			}
 
@@ -244,7 +190,7 @@ public class ActiveStreamsEvaluator {
 					mediaStreamUpdate.created
 			);
 
-			this.reportDraftSink.send(mediaStreamUpdate.peerConnectionUUID, reportDraft);
+			this.reportDraftsEvaluator.add(reportDraft);
 			newPCs.addLast(mediaStreamUpdate);
 		}
 
@@ -252,11 +198,17 @@ public class ActiveStreamsEvaluator {
 
 	private void joinPeerConnection(byte[] callUUIDBytes, MediaStreamUpdate mediaStreamUpdate) {
 		if (this.peerConnectionsRepository.existsById(mediaStreamUpdate.peerConnectionUUID)) {
-			logger.warn("Attempted to join a PC {} twice!", mediaStreamUpdate.peerConnectionUUID);
+			this.countedLogMonitor
+					.makeEntry()
+					.withTag("peerConnectionUUID", mediaStreamUpdate.peerConnectionUUID)
+					.withCategory("invalidOperation")
+					.withLogLevel(Level.WARN)
+					.withMessage("Attempted to join a PC {} twice!")
+					.log();
 			return;
 		}
 		try {
-			this.peerConnectionsRepository.save(new PeerconnectionsRecord(
+			PeerconnectionsRecord record = new PeerconnectionsRecord(
 					UUIDAdapter.toBytes(mediaStreamUpdate.peerConnectionUUID),
 					callUUIDBytes,
 					UUIDAdapter.toBytes(mediaStreamUpdate.serviceUUID),
@@ -269,9 +221,17 @@ public class ActiveStreamsEvaluator {
 					mediaStreamUpdate.callName,
 					mediaStreamUpdate.timeZoneID,
 					mediaStreamUpdate.serviceName
-			));
+			);
+			this.peerConnectionsRepository.save(record);
 		} catch (Exception ex) {
-			logger.error("Exception happened at saving new peer connection, report won't be sent", ex);
+			this.countedLogMonitor
+					.makeEntry()
+					.withTag("peerConnectionUUID", mediaStreamUpdate.peerConnectionUUID)
+					.withCategory("repositoryException")
+					.withLogLevel(Level.ERROR)
+					.withException(ex)
+					.withMessage("Exception happened at saving new peer connection, report won't be sent")
+					.log();
 			return;
 		}
 		UUID callUUID = UUIDAdapter.toUUIDOrDefault(callUUIDBytes, null);
@@ -282,13 +242,14 @@ public class ActiveStreamsEvaluator {
 			callUUIDStr = "NOT VALID UUID";
 		}
 		JoinedPeerConnection joinedPC = JoinedPeerConnection.newBuilder()
+				.setBrowserId(mediaStreamUpdate.browserID)
 				.setMediaUnitId(mediaStreamUpdate.mediaUnitID)
 				.setCallUUID(callUUIDStr)
 				.setPeerConnectionUUID(mediaStreamUpdate.peerConnectionUUID.toString())
 				.build();
 
 		this.reportSink.sendReport(
-				mediaStreamUpdate.serviceUUID,
+				mediaStreamUpdate.peerConnectionUUID,
 				mediaStreamUpdate.serviceUUID,
 				mediaStreamUpdate.serviceName,
 				mediaStreamUpdate.customProvided,

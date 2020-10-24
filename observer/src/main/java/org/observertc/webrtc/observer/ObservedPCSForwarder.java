@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators;
+package org.observertc.webrtc.observer;
 
-import io.micronaut.configuration.kafka.annotation.KafkaKey;
-import io.micronaut.configuration.kafka.annotation.KafkaListener;
-import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.context.annotation.Prototype;
-import java.util.UUID;
 import java.util.function.BiConsumer;
-import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+import org.observertc.webrtc.observer.evaluators.SignatureMaker;
 import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.NumberConverter;
 import org.observertc.webrtc.observer.repositories.SentReportsRepository;
@@ -42,14 +37,10 @@ import org.observertc.webrtc.schemas.reports.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@KafkaListener(
-		groupId = "observertc-webrtc-observer-ObservedPCSEvaluator",
-		threads = 4
-)
 @Prototype
-public class ObservedPCSEvaluator {
+public class ObservedPCSForwarder {
 
-	private static final Logger logger = LoggerFactory.getLogger(ObservedPCSEvaluator.class);
+	private static final Logger logger = LoggerFactory.getLogger(ObservedPCSForwarder.class);
 	private final EvaluatorsConfig.SampleTransformerConfig config;
 	private final PeerConnectionSampleVisitor<ObservedPCS> processor;
 	private final ReportSink reportSink;
@@ -58,7 +49,7 @@ public class ObservedPCSEvaluator {
 	private final SignatureMaker signatureMaker;
 	private final SentReportsRepository sentReportsRepository;
 
-	public ObservedPCSEvaluator(EvaluatorsConfig.SampleTransformerConfig config,
+	public ObservedPCSForwarder(EvaluatorsConfig.SampleTransformerConfig config,
 								EnumConverter enumConverter,
 								NumberConverter numberConverter,
 								SignatureMaker signatureMaker,
@@ -74,9 +65,7 @@ public class ObservedPCSEvaluator {
 
 	}
 
-
-	@Topic("${kafkaTopics.observedPCS.topicName}")
-	public void receive(@KafkaKey UUID peerConnectionUUID, ObservedPCS sample) {
+	public void forward(ObservedPCS sample) {
 		this.processor.accept(sample, sample.peerConnectionSample);
 	}
 
@@ -90,9 +79,7 @@ public class ObservedPCSEvaluator {
 		final BiConsumer<ObservedPCS, PeerConnectionSample.RemoteInboundRTPStreamStats> remoteInboundRTPReporter =
 				this.makeRemoteInboundRTPReporter();
 		final BiConsumer<ObservedPCS, PeerConnectionSample.OutboundRTPStreamStats> outboundRTPReporter = this.makeOutboundRTPReporter();
-
 		final BiConsumer<ObservedPCS, PeerConnectionSample.RTCTrackStats> trackReporter = this.makeTrackReporter();
-
 		final BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> mediaSourceReporter = this.makeMediaSourceReporter();
 
 		return new PeerConnectionSampleVisitor<ObservedPCS>() {

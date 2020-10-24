@@ -21,7 +21,6 @@ import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.discovery.event.ServiceReadyEvent;
 import javax.inject.Singleton;
-import org.observertc.webrtc.common.jobs.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +29,9 @@ import org.slf4j.LoggerFactory;
 public class ServiceStartedListener implements ApplicationEventListener<ServiceReadyEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
 
-	private final Job job;
 
 	public ServiceStartedListener() {
-		this.job = null;
+		
 	}
 
 
@@ -43,6 +41,6 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 
 	@Override
 	public void onApplicationEvent(ServiceReadyEvent event) {
-
+		
 	}
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.mediastreams;
+package org.observertc.webrtc.observer.subscriptions;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
