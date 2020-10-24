@@ -28,7 +28,7 @@ public class ObservedPCS {
 								 PeerConnectionSample peerConnectionSample,
 								 String timeZoneID,
 								 String serviceName,
-								 String customProvided,
+								 String marker,
 								 Long timestamp) {
 		ObservedPCS result = new ObservedPCS();
 		result.serviceUUID = serviceUUID;
@@ -38,7 +38,7 @@ public class ObservedPCS {
 		result.timeZoneID = timeZoneID;
 		result.timestamp = timestamp;
 		result.serviceName = serviceName;
-		result.customProvided = customProvided;
+		result.marker = marker;
 		return result;
 	}
 
@@ -49,6 +49,6 @@ public class ObservedPCS {
 	public String timeZoneID;
 	public Long timestamp;
 	public String serviceName;
-	public String customProvided;
+	public String marker;
 
 }

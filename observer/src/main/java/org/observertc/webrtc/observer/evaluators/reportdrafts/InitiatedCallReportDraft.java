@@ -25,14 +25,14 @@ import java.util.UUID;
 public class InitiatedCallReportDraft extends ReportDraft {
 
 
-	public static InitiatedCallReportDraft of(UUID serviceUUID, UUID callUUID, String customProvided, Long initiated) {
+	public static InitiatedCallReportDraft of(UUID serviceUUID, UUID callUUID, String marker, Long initiated) {
 		Long created = Instant.now().toEpochMilli();
 		InitiatedCallReportDraft result = new InitiatedCallReportDraft();
 		result.created = created;
 		result.callUUID = callUUID;
 		result.serviceUUID = serviceUUID;
 		result.initiated = initiated;
-		result.customProvided = customProvided;
+		result.marker = marker;
 		return result;
 	}
 
@@ -44,5 +44,5 @@ public class InitiatedCallReportDraft extends ReportDraft {
 	public UUID serviceUUID;
 	public UUID callUUID;
 	public Long initiated;
-	public String customProvided;
+	public String marker;
 }

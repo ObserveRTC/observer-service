@@ -93,7 +93,7 @@ public class ExpiredPCsConsumer {
 			}
 
 			//finished call
-			FinishedCallReportDraft reportDraft = FinishedCallReportDraft.of(serviceUUID, callUUID, record.getUpdated());
+			FinishedCallReportDraft reportDraft = FinishedCallReportDraft.of(serviceUUID, callUUID, null, record.getUpdated());
 			this.reportDraftsEvaluator.add(reportDraft);
 			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
 		}

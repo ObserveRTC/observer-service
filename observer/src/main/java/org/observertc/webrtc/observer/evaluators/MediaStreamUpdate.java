@@ -32,7 +32,7 @@ public class MediaStreamUpdate {
 			String userId,
 			String mediaUnitID,
 			String serviceName,
-			String customProvided
+			String marker
 	) {
 		MediaStreamUpdate result = new MediaStreamUpdate();
 		result.serviceUUID = serviceUUID;
@@ -44,7 +44,7 @@ public class MediaStreamUpdate {
 		result.timeZoneID = timeZoneID;
 		result.callName = callName;
 		result.userId = userId;
-		result.customProvided = customProvided;
+		result.marker = marker;
 		return result;
 	}
 
@@ -59,7 +59,7 @@ public class MediaStreamUpdate {
 	public String timeZoneID;
 	public String callName;
 	public String userId;
-	public String customProvided;
+	public String marker;
 
 
 }
