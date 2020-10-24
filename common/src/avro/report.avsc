@@ -800,6 +800,63 @@
         "type" : [ "null", "string" ],
         "default" : null
       } ]
+    }, {
+      "type" : "record",
+      "name" : "UserMediaError",
+      "fields" : [ {
+        "name" : "mediaUnitId",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "callName",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "userId",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "browserId",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "peerConnectionUUID",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "message",
+        "type" : "string"
+      } ]
+    }, {
+      "type" : "record",
+      "name" : "ExtensionReport",
+      "fields" : [ {
+        "name" : "mediaUnitId",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "callName",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "userId",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "browserId",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "peerConnectionUUID",
+        "type" : "string"
+      }, {
+        "name" : "extensionType",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "payload",
+        "type" : "string"
+      } ]
     } ],
     "default" : null
   }, {
@@ -807,7 +864,7 @@
     "type" : {
       "type" : "enum",
       "name" : "ReportType",
-      "symbols" : [ "UNKNOWN", "INITIATED_CALL", "FINISHED_CALL", "JOINED_PEER_CONNECTION", "DETACHED_PEER_CONNECTION", "INBOUND_RTP", "REMOTE_INBOUND_RTP", "OUTBOUND_RTP", "MEDIA_SOURCE", "TRACK", "ICE_CANDIDATE_PAIR", "ICE_REMOTE_CANDIDATE", "ICE_LOCAL_CANDIDATE" ]
+      "symbols" : [ "UNKNOWN", "INITIATED_CALL", "FINISHED_CALL", "JOINED_PEER_CONNECTION", "DETACHED_PEER_CONNECTION", "INBOUND_RTP", "REMOTE_INBOUND_RTP", "OUTBOUND_RTP", "MEDIA_SOURCE", "TRACK", "ICE_CANDIDATE_PAIR", "ICE_REMOTE_CANDIDATE", "ICE_LOCAL_CANDIDATE", "USER_MEDIA_ERROR", "EXTENSION" ]
     },
     "default" : "UNKNOWN"
   } ]

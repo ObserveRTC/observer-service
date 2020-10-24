@@ -22,6 +22,11 @@ public abstract class AbstractPeerConnectionSampleVisitor<T> implements PeerConn
 
 
 	@Override
+	public void visitUserMediaError(T obj, PeerConnectionSample sample, PeerConnectionSample.UserMediaError userMediaError) {
+
+	}
+
+	@Override
 	public void visitMediaSource(T obj, PeerConnectionSample sample, PeerConnectionSample.MediaSourceStats subject) {
 
 	}

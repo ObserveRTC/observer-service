@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.Prototype;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -34,6 +35,7 @@ import org.observertc.webrtc.schemas.reports.OutboundRTP;
 import org.observertc.webrtc.schemas.reports.RemoteInboundRTP;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.observertc.webrtc.schemas.reports.Track;
+import org.observertc.webrtc.schemas.reports.UserMediaError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +71,20 @@ public class ObservedPCSForwarder {
 		this.processor.accept(sample, sample.peerConnectionSample);
 	}
 
+	public void forwardOnlyUserMediaError(ObservedPCS sample) {
+		PeerConnectionSample peerConnectionSample = sample.peerConnectionSample;
+		if (peerConnectionSample == null) {
+			return;
+		}
+		PeerConnectionSample.UserMediaError[] userMediaErrors = peerConnectionSample.userMediaErrors;
+		if (userMediaErrors == null) {
+			return;
+		}
+		for (PeerConnectionSample.UserMediaError userMediaError : userMediaErrors) {
+			this.processor.visitUserMediaError(sample, sample.peerConnectionSample, userMediaError);
+		}
+	}
+
 	private PeerConnectionSampleVisitor<ObservedPCS> makeProcessor() {
 		final BiConsumer<ObservedPCS, PeerConnectionSample.ICECandidatePair> ICECandidatePairReporter = this.makeICECandidatePairReporter();
 		final BiConsumer<ObservedPCS, PeerConnectionSample.ICELocalCandidate> ICELocalCandidateReporter =
@@ -81,8 +97,13 @@ public class ObservedPCSForwarder {
 		final BiConsumer<ObservedPCS, PeerConnectionSample.OutboundRTPStreamStats> outboundRTPReporter = this.makeOutboundRTPReporter();
 		final BiConsumer<ObservedPCS, PeerConnectionSample.RTCTrackStats> trackReporter = this.makeTrackReporter();
 		final BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> mediaSourceReporter = this.makeMediaSourceReporter();
-
+		final BiConsumer<ObservedPCS, PeerConnectionSample.UserMediaError> userMediaErrorReporter = this.makeUserMediaErrorReporter();
 		return new PeerConnectionSampleVisitor<ObservedPCS>() {
+			@Override
+			public void visitUserMediaError(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.UserMediaError subject) {
+				userMediaErrorReporter.accept(obj, subject);
+			}
+
 			@Override
 			public void visitMediaSource(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.MediaSourceStats subject) {
 				mediaSourceReporter.accept(obj, subject);
@@ -122,6 +143,27 @@ public class ObservedPCSForwarder {
 			public void visitICERemoteCandidate(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
 				ICERemoteCandidateReporter.accept(obj, subject);
 			}
+		};
+	}
+
+	private BiConsumer<ObservedPCS, PeerConnectionSample.UserMediaError> makeUserMediaErrorReporter() {
+		if (!this.config.reportUserMediaErrors) {
+			return (observedPCS, subject) -> {
+
+			};
+		}
+
+		return (observedPCS, subject) -> {
+			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+			UserMediaError mediaSource = UserMediaError.newBuilder()
+					.setMediaUnitId(observedPCS.mediaUnitId)
+					.setCallName(peerConnectionSample.callId)
+					.setUserId(peerConnectionSample.userId)
+					.setBrowserId(peerConnectionSample.browserId)
+					.setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+					.setMessage(subject.message)
+					.build();
+			sendReport(observedPCS, observedPCS.serviceUUID, ReportType.USER_MEDIA_ERROR, mediaSource);
 		};
 	}
 
@@ -423,8 +465,12 @@ public class ObservedPCSForwarder {
 	}
 
 	private void sendReport(ObservedPCS observedPCS, ReportType reportType, Object payload) {
+		this.sendReport(observedPCS, observedPCS.peerConnectionUUID, reportType, payload);
+	}
+
+	private void sendReport(ObservedPCS observedPCS, UUID kafkaKey, ReportType reportType, Object payload) {
 		this.reportSink.sendReport(
-				observedPCS.peerConnectionUUID,
+				kafkaKey,
 				observedPCS.serviceUUID,
 				observedPCS.peerConnectionSample.callId,
 				observedPCS.customProvided,

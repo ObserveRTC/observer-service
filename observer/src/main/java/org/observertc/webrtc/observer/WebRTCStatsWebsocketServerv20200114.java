@@ -125,8 +125,24 @@ public class WebRTCStatsWebsocketServerv20200114 {
 					.log();
 			return;
 		}
-		
+		String timeZoneID = this.getSampleTimeZoneID("serviceName", serviceUUID, mediaUnitID, sample);
+		Long timestamp = this.getTimestamp("serviceName", serviceUUID, mediaUnitID, sample);
+
 		if (sample.peerConnectionId == null) {
+			if (sample.userMediaErrors != null) {
+				ObservedPCS observedPCS = ObservedPCS.of(
+						serviceUUIDHolder.get(),
+						mediaUnitID,
+						null,
+						sample,
+						timeZoneID,
+						"serviceName",
+						null,
+						timestamp
+				);
+				this.observedPCSForwarder.forwardOnlyUserMediaError(observedPCS);
+				return;
+			}
 			this.countedLogMonitor
 					.makeEntry("serviceName", serviceUUID, mediaUnitID)
 					.withLogLevel(Level.WARN)
@@ -136,8 +152,8 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			return;
 		}
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionId);
-		
-		// TODO: prrocess user media error here.
+
+
 		if (!peerConnectionUUIDHolder.isPresent()) {
 			this.countedLogMonitor
 					.makeEntry("serviceName", serviceUUID, mediaUnitID)
@@ -148,8 +164,6 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			return;
 		}
 		UUID peerConnectionUUID = peerConnectionUUIDHolder.get();
-		String timeZoneID = this.getSampleTimeZoneID("serviceName", serviceUUID, mediaUnitID, sample);
-		Long timestamp = this.getTimestamp(sample);
 
 		ObservedPCS observedPCS = ObservedPCS.of(
 				serviceUUIDHolder.get(),
@@ -158,7 +172,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 				sample,
 				timeZoneID,
 				"serviceName",
-				"customProvided",
+				null,
 				timestamp
 		);
 
@@ -187,10 +201,17 @@ public class WebRTCStatsWebsocketServerv20200114 {
 
 	}
 
-	private Long getTimestamp(PeerConnectionSample sample) {
+	private Long getTimestamp(String serviceName, String serviceUUID,
+							  String mediaUnitID, PeerConnectionSample sample) {
 		if (sample.timestamp != null) {
 			return sample.timestamp;
 		}
+		this.countedLogMonitor
+				.makeEntry(serviceName, serviceUUID, mediaUnitID)
+				.withCategory("parsingTimezoneOffset")
+				.withLogLevel(Level.WARN)
+				.withMessage(String.format("Missing timestamp %d", sample.timeZoneOffsetInMinute))
+				.log();
 		Long result = Instant.now().toEpochMilli();
 		return result;
 	}

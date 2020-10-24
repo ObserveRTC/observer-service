@@ -81,7 +81,14 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 				}
 			}
 		}
+		if (sample.userMediaErrors != null) {
+			for (PeerConnectionSample.UserMediaError userMediaError : sample.userMediaErrors) {
+				this.visitUserMediaError(obj, sample, userMediaError);
+			}
+		}
 	}
+
+	void visitUserMediaError(T obj, PeerConnectionSample sample, PeerConnectionSample.UserMediaError userMediaError);
 
 	void visitMediaSource(T obj, PeerConnectionSample sample, PeerConnectionSample.MediaSourceStats subject);
 

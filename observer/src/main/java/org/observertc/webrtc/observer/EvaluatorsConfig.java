@@ -51,6 +51,7 @@ public class EvaluatorsConfig {
 		public boolean reportCandidatePairs = true;
 		public boolean reportLocalCandidates = true;
 		public boolean reportRemoteCandidates = true;
+		public boolean reportUserMediaErrors = true;
 	}
 
 
