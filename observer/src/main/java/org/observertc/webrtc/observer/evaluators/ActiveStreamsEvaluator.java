@@ -186,7 +186,7 @@ public class ActiveStreamsEvaluator {
 			ReportDraft reportDraft = InitiatedCallReportDraft.of(
 					mediaStreamUpdate.serviceUUID,
 					callUUID,
-					mediaStreamUpdate.customProvided,
+					mediaStreamUpdate.marker,
 					mediaStreamUpdate.created
 			);
 
@@ -252,7 +252,7 @@ public class ActiveStreamsEvaluator {
 				mediaStreamUpdate.peerConnectionUUID,
 				mediaStreamUpdate.serviceUUID,
 				mediaStreamUpdate.serviceName,
-				mediaStreamUpdate.customProvided,
+				mediaStreamUpdate.marker,
 				ReportType.JOINED_PEER_CONNECTION,
 				mediaStreamUpdate.created,
 				joinedPC

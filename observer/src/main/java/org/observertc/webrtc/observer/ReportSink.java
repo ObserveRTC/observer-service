@@ -71,7 +71,7 @@ public class ReportSink {
 	public Future<RecordMetadata> sendReport(UUID reportKey,
 											 UUID serviceUUID,
 											 String serviceName,
-											 String customProvided,
+											 String marker,
 											 ReportType type,
 											 Long timestamp,
 											 Object payload) {
@@ -79,7 +79,7 @@ public class ReportSink {
 		Report report = Report.newBuilder()
 				.setServiceUUID(serviceUUIDStr)
 				.setServiceName(serviceName)
-				.setCustomProvided(customProvided)
+				.setMarker(marker)
 				.setType(type)
 				.setTimestamp(timestamp)
 				.setPayload(payload)

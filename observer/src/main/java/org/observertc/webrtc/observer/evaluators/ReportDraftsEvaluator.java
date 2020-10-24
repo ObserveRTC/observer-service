@@ -160,7 +160,7 @@ public class ReportDraftsEvaluator {
 				serviceUUID,
 				serviceUUID,
 				firstJoinedPC.getServicename(),
-				initiatedCallReport.customProvided,
+				initiatedCallReport.marker,
 				ReportType.INITIATED_CALL,
 				firstJoinedPC.getJoined(),
 				payload
@@ -199,8 +199,8 @@ public class ReportDraftsEvaluator {
 		this.reportSink.sendReport(
 				serviceUUID,
 				serviceUUID,
-				lastDetachedPC.getProvidedcallid(),
 				lastDetachedPC.getServicename(),
+				finishedCallReport.marker,
 				ReportType.FINISHED_CALL,
 				lastDetachedPC.getUpdated(),
 				payload

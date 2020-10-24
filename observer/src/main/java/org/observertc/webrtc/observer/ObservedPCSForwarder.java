@@ -473,7 +473,7 @@ public class ObservedPCSForwarder {
 				kafkaKey,
 				observedPCS.serviceUUID,
 				observedPCS.peerConnectionSample.callId,
-				observedPCS.customProvided,
+				observedPCS.marker,
 				reportType,
 				observedPCS.timestamp,
 				payload

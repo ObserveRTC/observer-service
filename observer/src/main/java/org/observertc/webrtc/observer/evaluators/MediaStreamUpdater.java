@@ -20,7 +20,6 @@ import io.micronaut.context.annotation.Prototype;
 import io.micronaut.scheduling.TaskExecutors;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.time.Instant;
 import java.util.HashMap;
@@ -133,7 +132,7 @@ public final class MediaStreamUpdater {
 					pcSample.userId,
 					observedPCS.mediaUnitId,
 					observedPCS.serviceName,
-					observedPCS.customProvided
+					observedPCS.marker
 			);
 			this.activePeerConnections.put(peerConnectionUUID, mediaStreamUpdate);
 			this.SSRCExtractor.accept(observedPCS, pcSample);

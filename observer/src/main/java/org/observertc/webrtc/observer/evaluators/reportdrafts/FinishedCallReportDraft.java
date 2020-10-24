@@ -23,7 +23,8 @@ import java.util.UUID;
 
 @JsonTypeName("FINISHED_CALL")
 public class FinishedCallReportDraft extends ReportDraft {
-	public static FinishedCallReportDraft of(UUID serviceUUID, UUID callUUID, Long finished) {
+
+	public static FinishedCallReportDraft of(UUID serviceUUID, UUID callUUID, String marker, Long finished) {
 		Long created = Instant.now().toEpochMilli();
 		FinishedCallReportDraft result = new FinishedCallReportDraft();
 		result.created = created;
@@ -38,6 +39,7 @@ public class FinishedCallReportDraft extends ReportDraft {
 		super(ReportDraftType.FINISHED_CALL);
 	}
 
+	public String marker;
 	public UUID serviceUUID;
 	public UUID callUUID;
 	public Long finished;
