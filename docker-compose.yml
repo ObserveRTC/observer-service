@@ -1,27 +1,27 @@
 version: '3.3'
 services:
-#  webrtc-observer:
-#    restart: always
-#    container_name: docker_webrtc_observer
-#    image: observertc/webrtc-observer:0.4
-#    links:
-#      - kafka
-#      - mysql
-#    ports:
-#      - 8088:7080
-#    environment:
-#      - INITIAL_WAITING_TIME_IN_S=20
-#      - APPLICATION_SERVER_PORT=7080
-#      - KAFKA_HOSTS=docker_kafka:29092
-#      - DATABASE_USERNAME=root
-#      - DATABSE_PASSWORD=password
-#      - JDBC_URL=jdbc:mysql://mysqldb:3306/WebRTCObserver
-#      - MICRONAUT_CONFIG_FILES=/observer-config.yml
-#    depends_on:
-#      - kafka
-#      - mysql
-#    volumes:
-#      - ./observer-config.yml:/observer-config.yml
+  #  webrtc-observer:
+  #    restart: always
+  #    container_name: docker_webrtc_observer
+  #    image: observertc/webrtc-observer:0.4
+  #    links:
+  #      - kafka
+  #      - mysql
+  #    ports:
+  #      - 8088:7080
+  #    environment:
+  #      - INITIAL_WAITING_TIME_IN_S=20
+  #      - APPLICATION_SERVER_PORT=7080
+  #      - KAFKA_HOSTS=docker_kafka:29092
+  #      - DATABASE_USERNAME=root
+  #      - DATABSE_PASSWORD=password
+  #      - JDBC_URL=jdbc:mysql://mysqldb:3306/WebRTCObserver
+  #      - MICRONAUT_CONFIG_FILES=/observer-config.yml
+  #    depends_on:
+  #      - kafka
+  #      - mysql
+  #    volumes:
+  #      - ./observer-config.yml:/observer-config.yml
   # Infrastructure behind the Observer
   zookeeper:
     container_name: docker_zookeeper
@@ -100,6 +100,7 @@ services:
     image: grafana/grafana:6.3.5
     environment:
       GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS: mtanda-histogram-panel
     ports:
       - "3001:3000"
     volumes:

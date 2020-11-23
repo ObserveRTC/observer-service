@@ -16,20 +16,15 @@
 
 package org.observertc.webrtc.observer.evaluators;
 
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import javax.inject.Singleton;
+import org.jooq.lambda.tuple.Tuple2;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.AbstractReportDraftProcessor;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
 import org.observertc.webrtc.observer.evaluators.reportdrafts.InitiatedCallReportDraft;
@@ -38,88 +33,48 @@ import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.observertc.webrtc.schemas.reports.FinishedCall;
 import org.observertc.webrtc.schemas.reports.InitiatedCall;
+import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class ReportDraftsEvaluator {
+public class ReportDraftsEvaluator implements Observer<ReportDraft> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReportDraftsEvaluator.class);
 	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final ReportSink reportSink;
-	private final EvaluatorsConfig.ReportDraftsConfig config;
 	private final AbstractReportDraftProcessor processor;
-	private Queue<ReportDraft> reportDrafts = new LinkedList<>();
+	private Disposable subscription;
+	private final PublishSubject<Tuple2<UUID, Report>> reportSubject = PublishSubject.create();
 
-	public ReportDraftsEvaluator(PeerConnectionsRepository peerConnectionsRepository,
-								 EvaluatorsConfig.ReportDraftsConfig config,
-								 ReportSink reportSink) {
+	public ReportDraftsEvaluator(PeerConnectionsRepository peerConnectionsRepository) {
 		this.peerConnectionsRepository = peerConnectionsRepository;
-		this.reportSink = reportSink;
-		this.config = config;
 		this.processor = this.makeProcessor();
-
-		Supplier<Queue<ReportDraft>> reportDraftsSupplier = () -> this.retrieve();
-		Observable.just(reportDraftsSupplier)
-				.delay(15000, TimeUnit.MILLISECONDS)
-				.repeat()
-				.doOnError(throwable -> {
-					logger.error("Error occured", throwable);
-				})
-				.subscribeOn(Schedulers.io())
-				.subscribe(updateP -> {
-					Queue<ReportDraft> reportDrafts = updateP.get();
-					process(reportDrafts);
-				});
 	}
 
-	public void add(ReportDraft reportDraft) {
-		synchronized (this) {
-			this.reportDrafts.add(reportDraft);
-		}
+	@Override
+	public void onSubscribe(@NonNull Disposable d) {
+		this.subscription = d;
 	}
 
-	private Queue<ReportDraft> retrieve() {
-		Queue<ReportDraft> result = new LinkedList<>();
-		Instant now = Instant.now();
-		synchronized (this) {
-			for (int c = this.reportDrafts.size(); 0 < c; --c) {
-				ReportDraft reportDraft = this.reportDrafts.poll();
-				if (reportDraft.created == null) {
-					reportDraft.created = now.toEpochMilli();
-					logger.warn("ReportDraft was created without timestamp");
-					this.reportDrafts.add(reportDraft);
-					continue;
-				}
-				Instant created = Instant.ofEpochMilli(reportDraft.created);
-				long elapsedSeconds = ChronoUnit.SECONDS.between(created, now);
-				if (this.config.expirationTimeInS < elapsedSeconds) {
-					logger.warn("ReportDraft {} is expired", reportDraft.toString());
-					continue;
-				}
-				if (elapsedSeconds < this.config.minEnforcedTimeInS) {
-					this.reportDrafts.add(reportDraft);
-					continue;
-				}
-				result.add(reportDraft);
-			}
+	@Override
+	public void onNext(@NonNull ReportDraft reportDraft) {
+		if (this.subscription != null && this.subscription.isDisposed()) {
+			logger.warn("Report {} arrived after dispose.", reportDraft);
 		}
-		return result;
+		this.processor.accept(reportDraft);
 	}
 
-	private void process(Queue<ReportDraft> reportDrafts) {
-		if (reportDrafts.size() < 1) {
-			return;
-		}
-		while (!reportDrafts.isEmpty()) {
-			ReportDraft reportDraft = reportDrafts.poll();
-			if (reportDraft == null) {
-				logger.warn("Null reportDraft or report occured in evaluation. skipping");
-				continue;
-			}
-			this.processor.accept(reportDraft);
-		}
+	@Override
+	public void onError(@NonNull Throwable e) {
+		logger.error("Error occured during process", e);
+		this.subscription.dispose();
+	}
+
+	@Override
+	public void onComplete() {
+		logger.error("Process has been terminated");
+		this.subscription.dispose();
 	}
 
 	private void evaluateInitiatedCallReport(InitiatedCallReportDraft initiatedCallReport) {
@@ -127,9 +82,6 @@ public class ReportDraftsEvaluator {
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findByCallUUID(initiatedCallReport.callUUID).iterator();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
-			if (record.getDetached() != null) {
-				continue;
-			}
 			if (record.getJoined() == null) {
 				logger.warn("The joined timestamp for the PC {} is null. This should have not been happened, there is no way we can use " +
 						"now the joined timestamp anywhere.");
@@ -137,7 +89,10 @@ public class ReportDraftsEvaluator {
 			}
 			if (firstJoinedPC == null) {
 				firstJoinedPC = record;
+			} else if (record.getJoined() < firstJoinedPC.getJoined()) {
+				firstJoinedPC = record;
 			}
+
 		}
 		if (firstJoinedPC == null) {
 			logger.warn("No first joined PC is found. ReportDraft is dropped. {}", initiatedCallReport.toString());
@@ -156,15 +111,17 @@ public class ReportDraftsEvaluator {
 				.setCallName(firstJoinedPC.getProvidedcallid())
 				.build();
 		UUID serviceUUID = UUIDAdapter.toUUIDOrDefault(firstJoinedPC.getServiceuuid(), null);
-		this.reportSink.sendReport(
-				serviceUUID,
-				serviceUUID,
-				firstJoinedPC.getServicename(),
-				initiatedCallReport.marker,
-				ReportType.INITIATED_CALL,
-				firstJoinedPC.getJoined(),
-				payload
-		);
+		Report report = Report.newBuilder()
+				.setServiceUUID(serviceUUID.toString())
+				.setServiceName(firstJoinedPC.getServicename())
+				.setMarker(initiatedCallReport.marker)
+				.setType(ReportType.FINISHED_CALL)
+				.setTimestamp(firstJoinedPC.getUpdated())
+				.setPayload(payload)
+				.build();
+		Tuple2<UUID, Report> tuple = new Tuple2<>(serviceUUID, report);
+		this.reportSubject.onNext(tuple);
+
 	}
 
 	private void evaluateFinishedCallReport(FinishedCallReportDraft finishedCallReport) {
@@ -176,6 +133,8 @@ public class ReportDraftsEvaluator {
 				continue;
 			}
 			if (lastDetachedPC == null) {
+				lastDetachedPC = record;
+			} else if (lastDetachedPC.getDetached() < record.getDetached()) {
 				lastDetachedPC = record;
 			}
 		}
@@ -196,15 +155,17 @@ public class ReportDraftsEvaluator {
 				.build();
 
 		UUID serviceUUID = UUIDAdapter.toUUIDOrDefault(lastDetachedPC.getServiceuuid(), null);
-		this.reportSink.sendReport(
-				serviceUUID,
-				serviceUUID,
-				lastDetachedPC.getServicename(),
-				finishedCallReport.marker,
-				ReportType.FINISHED_CALL,
-				lastDetachedPC.getUpdated(),
-				payload
-		);
+		Report report = Report.newBuilder()
+				.setServiceUUID(serviceUUID.toString())
+				.setServiceName(lastDetachedPC.getServicename())
+				.setMarker(finishedCallReport.marker)
+				.setType(ReportType.FINISHED_CALL)
+				.setTimestamp(lastDetachedPC.getUpdated())
+				.setPayload(payload)
+				.build();
+		Tuple2<UUID, Report> tuple = new Tuple2<>(serviceUUID, report);
+		this.reportSubject.onNext(tuple);
+
 	}
 
 	private AbstractReportDraftProcessor makeProcessor() {
@@ -220,4 +181,6 @@ public class ReportDraftsEvaluator {
 			}
 		};
 	}
+
+
 }

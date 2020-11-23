@@ -7,9 +7,12 @@ micronaut:
         step: PT1M
         descriptions: true
   server:
-    port: ${APPLICATION_SERVER_PORT:8088}
+    port: ${APPLICATION_SERVER_PORT:7080}
   application:
     name: webrtc_observer
+#  ssl:
+#    enabled: true
+#    buildSelfSigned: true
 ---
 endpoints:
   all:
@@ -20,10 +23,12 @@ endpoints:
   health:
     enabled: true
     sensitive: false
+
 ---
-serviceMap:
-  - uuid: "id"
-    name: "name"
+services:
+  something:
+    uuids:
+      - "d0989cd8-3261-4d7e-94d2-497e36a01e56"
 
 #---
 #observer:
@@ -31,16 +36,6 @@ serviceMap:
 #
 ---
 kafka:
-  consumers:
-    webrtc-observer-webExtrAppSamplesEvaluator:
-      session:
-        timeout:
-          ms: 30000
-    webrtc-observer-reportDraftsEvaluator:
-      session:
-        timeout:
-          ms: 30000
-
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
@@ -57,7 +52,26 @@ kafkaTopics:
 # /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReports --partitions 6 --replication-factor 1
 # /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReportDrafts --partitions 4 --replication-factor 1
 
+outboundReports:
+  defaultServiceName: "serviceName"
+  reportOutboundRTPs: True
+  reportInboundRTPs: True
+  reportRemoteInboundRTPs: True
+  reportTracks: True
+  reportMediaSources: True
+  reportCandidatePairs: True
+  reportLocalCandidates: True
+  reportRemoteCandidates: True
+  reportUserMediaErrors: True
+
+streamsEvaluators:
+  peerConnectionMaxIdleTimeInS: 30
+
+
 evaluators:
+  defaultServiceName: "serviceName"
+  peerConnections:
+    maxIdleTime: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:60}
   reportDrafts:
     expirationTimeInS: 300
     minEnforcedTimeInS: 60
@@ -74,6 +88,7 @@ evaluators:
     reportCandidatePairs: ${REPORT_ICE_CANDIDATE_PAIRS:True}
     reportLocalCandidates: ${REPORT_LOCAL_ICE_CANDIDATES:True}
     reportRemoteCandidates: ${REPORT_REMOE_ICE_CANDIDATES:True}
+    reportUserMediaErrors: ${REPORT_USER_MEDIA_ERROR:True}
     sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
 ---
 hikari:

@@ -3,6 +3,7 @@ plugins {
     id "application"
     id "net.ltgt.apt-eclipse" version "0.21"
     id 'com.google.cloud.tools.jib' version '1.4.0'
+//    id 'groovy'
 //    id "nu.studer.jooq" version "4.2"
 }
 
@@ -12,8 +13,8 @@ repositories {
     maven { url 'https://packages.confluent.io/maven/' }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 
 version "$observerVersion"
 group "observertc"
@@ -27,27 +28,6 @@ jib {
         image "$group/webrtc-observer:$version"
     }
 }
-
-/*
- * Copyright  2020 Balazs Kreith
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-//repositories {
-//    mavenCentral()
-//    maven { url "https://jcenter.bintray.com" }
-//}
 
 configurations {
     // for dependencies that are needed for development only
@@ -93,10 +73,17 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "io.micronaut.test:micronaut-test-junit5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+
     implementation "io.micronaut:micronaut-security-jwt:$micronautJwtVersion"
     implementation "io.micronaut.configuration:micronaut-kafka:$micronautKafkaVersion"
     implementation("io.micronaut.kafka:micronaut-kafka:$micronautKafkaVersion")
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautRuntimeOSXVerrsion")
+
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.14.3"))
+    testCompile "org.testcontainers:testcontainers"
+    testCompile "org.testcontainers:junit-jupiter"
+    testCompile "org.testcontainers:mysql:1.15.0"
+    testRuntimeOnly "com.h2database:h2"
 
     // ------------ Micrometer integration ---------
     compile "io.micronaut.configuration:micronaut-micrometer-core:$micraonutMicrometerCoreVersion"
@@ -132,7 +119,10 @@ dependencies {
     // the main library
 
     // ------------- RXJava --------------
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.20'
+    compile group: 'io.reactivex.rxjava3', name: 'rxjava', version: "${rxjavaVersion}"
+
+    // https://mvnrepository.com/artifact/org.jeasy/easy-random
+    implementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
 
 }
 
@@ -143,6 +133,7 @@ mainClassName = "org.observertc.webrtc.observer.Application"
 test {
     useJUnitPlatform()
 }
+
 
 shadowJar {
     mergeServiceFiles()

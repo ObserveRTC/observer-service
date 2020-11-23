@@ -30,9 +30,10 @@ import java.util.Optional;
 import java.util.UUID;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.evaluators.MediaStreamUpdateRouter;
+import org.observertc.webrtc.observer.evaluators.StreamsEvaluator;
 import org.observertc.webrtc.observer.micrometer.CountedLogMonitor;
-import org.observertc.webrtc.observer.micrometer.ObserverMetricsReporter;
+import org.observertc.webrtc.observer.micrometer.MetricsReporter;
+import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ import org.slf4j.event.Level;
  * Service should be UUId, because currently mysql stores it as
  * binary and with that type the search is fast for activestreams. thats why.
  */
-@ServerWebSocket("/{serviceUUID}/{mediaUnitID}/v20200114/json")
+@ServerWebSocket("/{serviceUUIDStr}/{mediaUnitID}/v20200114/json")
 public class WebRTCStatsWebsocketServerv20200114 {
 	private static final String PC_SAMPLE_VERSION = "20200114";
 
@@ -51,10 +52,10 @@ public class WebRTCStatsWebsocketServerv20200114 {
 	private final ObserverConfig config;
 	private final ObjectReader objectReader;
 	private final ObservedPCSForwarder observedPCSForwarder;
-	private final MediaStreamUpdateRouter mediaStreamUpdateRouter;
-	private final ObserverMetricsReporter observerMetricsReporter;
+	private final MetricsReporter metricsReporter;
 	private final CountedLogMonitor countedLogMonitor;
-
+	private final StreamsEvaluator streamsEvaluator;
+	private final ServicesRepository servicesRepository;
 
 //	private final IDSLContextProvider contextProvider;
 
@@ -66,18 +67,20 @@ public class WebRTCStatsWebsocketServerv20200114 {
 	public WebRTCStatsWebsocketServerv20200114(
 			ObserverConfig config,
 			ObjectMapper objectMapper,
-			MediaStreamUpdateRouter mediaStreamUpdateRouter,
+			StreamsEvaluator streamsEvaluator,
 			ObservedPCSForwarder observedPCSForwarder,
-			ObserverMetricsReporter observerMetricsReporter
+			MetricsReporter metricsReporter,
+			ServicesRepository servicesRepository
 //			ObservedPCSSink observedPCSSink
 	) {
 //		this.observedPCSSink = observedPCSSink;
 		this.observedPCSForwarder = observedPCSForwarder;
 		this.config = config;
 		this.objectReader = objectMapper.reader();
-		this.mediaStreamUpdateRouter = mediaStreamUpdateRouter;
-		this.observerMetricsReporter = observerMetricsReporter;
-		this.countedLogMonitor = observerMetricsReporter.makeCountedLogMonitor(logger)
+		this.streamsEvaluator = streamsEvaluator;
+		this.metricsReporter = metricsReporter;
+		this.servicesRepository = servicesRepository;
+		this.countedLogMonitor = metricsReporter.makeCountedLogMonitor(logger)
 				.withCommonTags("version", "20200114")
 				.withRequiredTags("serviceName", "serviceUUID", "mediaUnitId")
 				.withDefaultMetricName("websocket");
@@ -85,49 +88,52 @@ public class WebRTCStatsWebsocketServerv20200114 {
 
 
 	@OnOpen
-	public void onOpen(String serviceUUID, String mediaUnitID, WebSocketSession session) {
-		this.observerMetricsReporter.incrementOpenedWebsocketConnectionsCounter(serviceUUID, mediaUnitID);
+	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
+		this.metricsReporter.incrementOpenedWebsocketConnectionsCounter();
 	}
 
 	@OnClose
 	public void onClose(
-			String serviceUUID,
+			String serviceUUIDStr,
 			String mediaUnitID,
 			WebSocketSession session) {
-		this.observerMetricsReporter.incrementClosedWebsocketConnectionsCounter(serviceUUID, mediaUnitID);
+		this.metricsReporter.incrementClosedWebsocketConnectionsCounter();
 	}
 
-	@OnMessage(maxPayloadLength = 1000000) // 1MB
+	//	@OnMessage(maxPayloadLength = 1000000) // 1MB
+	@OnMessage
 	public void onMessage(
-			String serviceUUID,
+			String serviceUUIDStr,
 			String mediaUnitID,
 			String message,
 			WebSocketSession session) {
+		Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
+		if (!serviceUUIDHolder.isPresent()) {
+			this.countedLogMonitor
+					.makeEntry("defaultServiceName", serviceUUIDStr, mediaUnitID)
+					.withMessage(String.format("Invalid service UUID %s", serviceUUIDStr))
+					.withLogLevel(Level.WARN)
+					.withCategory("invalid.serviceUUID")
+					.log();
+			return;
+		}
+		UUID serviceUUID = serviceUUIDHolder.get();
+		String serviceName = this.servicesRepository.getServiceName(serviceUUID);
 		PeerConnectionSample sample;
 		try {
 			sample = this.objectReader.readValue(message, PeerConnectionSample.class);
 		} catch (IOException e) {
 			this.countedLogMonitor
-					.makeEntry("serviceName", serviceUUID, mediaUnitID)
+					.makeEntry(serviceName, serviceUUID, mediaUnitID)
 					.withLogLevel(Level.WARN)
 					.withCategory("invalid.message")
 					.withException(e)
 					.log();
 			return;
 		}
-		Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUID);
-		if (!serviceUUIDHolder.isPresent()) {
-			this.countedLogMonitor
-					.makeEntry("serviceName", serviceUUID, mediaUnitID)
-					.withMessage(String.format("Invalid service UUID %s", serviceUUID))
-					.withLogLevel(Level.WARN)
-					.withCategory("invalid.serviceUUID")
-					.log();
-			return;
-		}
-		String timeZoneID = this.getSampleTimeZoneID("serviceName", serviceUUID, mediaUnitID, sample);
-		Long timestamp = this.getTimestamp("serviceName", serviceUUID, mediaUnitID, sample);
 
+		String timeZoneID = this.getSampleTimeZoneID(serviceName, serviceUUID, mediaUnitID, sample);
+		Long timestamp = this.getTimestamp(serviceName, serviceUUID, mediaUnitID, sample);
 		if (sample.peerConnectionId == null) {
 			if (sample.userMediaErrors != null) {
 				ObservedPCS observedPCS = ObservedPCS.of(
@@ -136,7 +142,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 						null,
 						sample,
 						timeZoneID,
-						"serviceName",
+						serviceName,
 						null,
 						timestamp
 				);
@@ -144,7 +150,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 				return;
 			}
 			this.countedLogMonitor
-					.makeEntry("serviceName", serviceUUID, mediaUnitID)
+					.makeEntry(serviceName, serviceUUID, mediaUnitID)
 					.withLogLevel(Level.WARN)
 					.withCategory("invalid.pcUUID")
 					.withMessage("pcUUID is null")
@@ -153,10 +159,9 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		}
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionId);
 
-
 		if (!peerConnectionUUIDHolder.isPresent()) {
 			this.countedLogMonitor
-					.makeEntry("serviceName", serviceUUID, mediaUnitID)
+					.makeEntry(serviceName, serviceUUID, mediaUnitID)
 					.withLogLevel(Level.WARN)
 					.withCategory("invalid.pcUUID")
 					.withMessage(String.format("pcUUID is invalid %s", sample.peerConnectionId))
@@ -171,7 +176,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 				peerConnectionUUID,
 				sample,
 				timeZoneID,
-				"serviceName",
+				serviceName,
 				null,
 				timestamp
 		);
@@ -180,7 +185,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			this.observedPCSForwarder.forward(observedPCS);
 		} catch (Exception ex) {
 			this.countedLogMonitor
-					.makeEntry("serviceName", serviceUUID, mediaUnitID)
+					.makeEntry(serviceName, serviceUUID, mediaUnitID)
 					.withLogLevel(Level.ERROR)
 					.withCategory("observedPCs.forwarding")
 					.withException(ex)
@@ -188,10 +193,10 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		}
 
 		try {
-			this.mediaStreamUpdateRouter.add(observedPCS);
+			this.streamsEvaluator.onNext(observedPCS);
 		} catch (Exception ex) {
 			this.countedLogMonitor
-					.makeEntry("serviceName", serviceUUID, mediaUnitID)
+					.makeEntry(serviceName, serviceUUID, mediaUnitID)
 					.withLogLevel(Level.ERROR)
 					.withCategory("observedPCs.evaluation")
 					.withException(ex)
@@ -201,7 +206,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 
 	}
 
-	private Long getTimestamp(String serviceName, String serviceUUID,
+	private Long getTimestamp(String serviceName, UUID serviceUUID,
 							  String mediaUnitID, PeerConnectionSample sample) {
 		if (sample.timestamp != null) {
 			return sample.timestamp;
@@ -218,7 +223,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 
 
 	private String getSampleTimeZoneID(String serviceName,
-									   String serviceUUID,
+									   UUID serviceUUID,
 									   String mediaUnitID,
 									   PeerConnectionSample sample) {
 		if (sample.timeZoneOffsetInMinute == null) {

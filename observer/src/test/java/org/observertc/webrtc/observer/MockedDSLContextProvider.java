@@ -50,6 +50,7 @@ public class MockedDSLContextProvider implements IDSLContextProvider {
 		MockDataProvider provider = null;
 		try {
 			provider = new MockFileDatabase(file);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

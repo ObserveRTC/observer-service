@@ -18,14 +18,24 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+@Deprecated(since = "0.6")
 @ConfigurationProperties("evaluators")
 public class EvaluatorsConfig {
+
+	public String defaultServiceName = "defaultServiceName";
 
 	public SampleTransformerConfig sampleTransformer;
 
 	public CallCleanerConfig callCleaner;
 
 	public ReportDraftsConfig reportDrafts;
+
+	public PeerConnectionsConfig config;
+
+	@ConfigurationProperties("peerConnections")
+	public static class PeerConnectionsConfig {
+		public int maxIdleTimeInS = 60;
+	}
 
 	@ConfigurationProperties("reportDrafts")
 	public static class ReportDraftsConfig {

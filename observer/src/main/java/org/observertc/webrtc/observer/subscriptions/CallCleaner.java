@@ -28,10 +28,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import javax.inject.Singleton;
 import org.observertc.webrtc.common.Sleeper;
+import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.evaluators.ExpiredPCsConsumer;
+import org.observertc.webrtc.observer.evaluators.ExpiredPCsEvaluator;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
 import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
 import org.slf4j.Logger;
@@ -45,15 +47,15 @@ public class CallCleaner implements ApplicationEventListener<ServiceReadyEvent> 
 	private final EvaluatorsConfig.CallCleanerConfig config;
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final MaxIdleThresholdProvider maxIdleThresholdProvider;
-	private final ExpiredPCsConsumer expiredPCsConsumer;
+	private final ExpiredPCsEvaluator expiredPCsEvaluator;
 
 	public CallCleaner(
-			ExpiredPCsConsumer expiredPCsConsumer,
+			ExpiredPCsEvaluator expiredPCsEvaluator,
 			EvaluatorsConfig config,
 			PeerConnectionsRepository peerConnectionsRepository,
 			MaxIdleThresholdProvider maxIdleThresholdProvider) {
 		this.config = config.callCleaner;
-		this.expiredPCsConsumer = expiredPCsConsumer;
+		this.expiredPCsEvaluator = expiredPCsEvaluator;
 		this.peerConnectionsRepository = peerConnectionsRepository;
 		this.maxIdleThresholdProvider = maxIdleThresholdProvider;
 	}
@@ -86,12 +88,17 @@ public class CallCleaner implements ApplicationEventListener<ServiceReadyEvent> 
 		}
 		Long threshold = thresholdHolder.get();
 		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findJoinedPCsUpdatedLowerThan(threshold).iterator();
-		List<byte[]> expiredPCs = new LinkedList<>();
+		List<UUID> expiredPCs = new LinkedList<>();
 		for (; it.hasNext(); ) {
 			PeerconnectionsRecord record = it.next();
-			expiredPCs.add(record.getPeerconnectionuuid());
+			UUID pcUUID = UUIDAdapter.toUUIDOrDefault(record.getPeerconnectionuuid(), null);
+			if (pcUUID == null) {
+				logger.warn("There was a null amongst the expired PCs.");
+				continue;
+			}
+			expiredPCs.add(pcUUID);
 		}
-		this.expiredPCsConsumer.processExpiredPCs(expiredPCs);
+		this.expiredPCsEvaluator.onNext(expiredPCs);
 	}
 
 

@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
-select `wobserver`.`Users`.`password_digest`, `wobserver`.`Users`.`password_salt`, `wobserver`.`Users`.`role` from `wobserver`.`Users` where `wobserver`.`Users`.`username` = 'test@test.test';
-> password_digest   password_salt role
-> ---------------   ------------- -------------
-> 1                 N/org.observertc.webrtc.observer.A           administrator
-@ rows: 1
+package org.observertc.webrtc.common;
+
+public final class Once<T> {
+	private T value = null;
+
+	public void set(final T value) {
+		if (null != this.value)
+			throw new IllegalStateException("Illegal attempt to set a Once value after it's value has already been set.");
+		if (null == value) throw new IllegalArgumentException("Illegal attempt to pass null value to Once setter.");
+		this.value = value;
+	}
+
+	public T get() {
+		if (null == this.value) throw new IllegalStateException("Illegal attempt to access unitialized Once value.");
+		return this.value;
+	}
+}

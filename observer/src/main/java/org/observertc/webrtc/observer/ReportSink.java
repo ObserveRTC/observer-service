@@ -20,6 +20,9 @@ import io.micronaut.configuration.kafka.annotation.KafkaClient;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -33,8 +36,9 @@ import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.jooq.lambda.tuple.Tuple2;
 import org.observertc.webrtc.observer.micrometer.CountedLogMonitor;
-import org.observertc.webrtc.observer.micrometer.ObserverMetricsReporter;
+import org.observertc.webrtc.observer.micrometer.MetricsReporter;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
@@ -42,18 +46,18 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 @Prototype
-public class ReportSink {
+public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 	private static final Logger logger = LoggerFactory.getLogger(ReportSink.class);
 	private final Producer<UUID, byte[]> reportProducer;
 	private final KafkaTopicsConfiguration.ObserveRTCReportsConfig config;
 	private final DatumWriter<Report> datumWriter;
 	private final ByteArrayOutputStream outputStream;
 	private final Encoder encoder;
-	private final ObserverMetricsReporter observerMetricsReporter;
+	private final MetricsReporter metricsReporter;
 	private final CountedLogMonitor countedLogMonitor;
 
 	public ReportSink(
-			ObserverMetricsReporter observerMetricsReporter,
+			MetricsReporter metricsReporter,
 			@KafkaClient("reportProducer") Producer<UUID, byte[]> reportProducer,
 			KafkaTopicsConfiguration.ObserveRTCReportsConfig config
 	) {
@@ -62,8 +66,8 @@ public class ReportSink {
 		this.outputStream = new ByteArrayOutputStream();
 		this.datumWriter = new SpecificDatumWriter<>(Report.SCHEMA$);
 		this.encoder = EncoderFactory.get().binaryEncoder(this.outputStream, null);
-		this.observerMetricsReporter = observerMetricsReporter;
-		this.countedLogMonitor = observerMetricsReporter
+		this.metricsReporter = metricsReporter;
+		this.countedLogMonitor = metricsReporter
 				.makeCountedLogMonitor(logger)
 				.withDefaultMetricName("reportsink");
 	}
@@ -115,6 +119,26 @@ public class ReportSink {
 				out));
 	}
 
+	@Override
+	public void onSubscribe(@NonNull Disposable d) {
+		
+	}
+
+	@Override
+	public void onNext(@NonNull Tuple2<UUID, Report> objects) {
+
+	}
+
+	@Override
+	public void onError(@NonNull Throwable e) {
+
+	}
+
+	@Override
+	public void onComplete() {
+
+	}
+
 	@Singleton
 	static class CreateReportDraftSinkListener implements BeanCreatedEventListener<ReportSink> {
 
@@ -129,6 +153,8 @@ public class ReportSink {
 			this.topicCreator.execute(config.reports);
 			return event.getBean();
 		}
+		
+		
 	}
 
 }

@@ -52,7 +52,7 @@ The deployed version has compatibility with other components.
  - `CONNECTION_POOL_NAME` (*Default: webrtc_observer*): Defines the name of the connection pool.
  - `DATABASE_USERNAME` (*Default: root*): The username for the database the Observer is using.
  - `DATABASE_PASSWORD`(*Default: password*): The password for the database.
- - `JDBC_URL` (*Default: jdbc:mysql://localhost:3306/WebRTCObserver*): A URL fo the database the connection pool is connecting to using the provided username and password.
+ - `JDBC_URL` (*Default: jdbc:mysql://localhost:3306/WebRTCObserver*): org.observertc.webrtc.observer.A URL fo the database the connection pool is connecting to using the provided username and password.
 
 ### Kafka Setup
 

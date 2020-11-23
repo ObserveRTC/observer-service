@@ -13,7 +13,7 @@
 //class PasswordEncoderTest {
 //
 //	/**
-//	 * Given: A {@link PasswordEncoder}, with saltsize N
+//	 * Given: org.observertc.webrtc.observer.A {@link PasswordEncoder}, with saltsize N
 //	 * <p>
 //	 * When we generate a salt
 //	 * <p>

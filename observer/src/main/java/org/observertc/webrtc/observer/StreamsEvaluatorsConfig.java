@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-select `wobserver`.`Users`.`password_digest`, `wobserver`.`Users`.`password_salt`, `wobserver`.`Users`.`role` from `wobserver`.`Users` where `wobserver`.`Users`.`username` = 'test@test.test';
-> password_digest   password_salt role
-> ---------------   ------------- -------------
-> 1                 N/org.observertc.webrtc.observer.A           administrator
-@ rows: 1
+package org.observertc.webrtc.observer;
+
+import io.micronaut.context.annotation.ConfigurationProperties;
+
+@ConfigurationProperties("streamsEvaluators")
+public class StreamsEvaluatorsConfig {
+	public int peerConnectionMaxIdleTimeInS = 60;
+	public int mediaStreamUpdatesFlushInS = 15;
+	public int mediaStreamsBufferNums = 0; // means it will be determined automatically
+	public int mediaStreamsBufferDebounceTimeInMs = 1000;
+}
+

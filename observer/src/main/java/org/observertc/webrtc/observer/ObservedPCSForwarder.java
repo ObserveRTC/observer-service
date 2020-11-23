@@ -21,10 +21,8 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.evaluators.SignatureMaker;
 import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.NumberConverter;
-import org.observertc.webrtc.observer.repositories.SentReportsRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.ICECandidatePair;
 import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
@@ -48,21 +46,15 @@ public class ObservedPCSForwarder {
 	private final ReportSink reportSink;
 	private final EnumConverter enumConverter;
 	private final NumberConverter numberConverter;
-	private final SignatureMaker signatureMaker;
-	private final SentReportsRepository sentReportsRepository;
 
 	public ObservedPCSForwarder(EvaluatorsConfig.SampleTransformerConfig config,
 								EnumConverter enumConverter,
 								NumberConverter numberConverter,
-								SignatureMaker signatureMaker,
-								SentReportsRepository sentReportsRepository,
 								ReportSink reportSink) {
 		this.config = config;
 		this.reportSink = reportSink;
 		this.enumConverter = enumConverter;
 		this.numberConverter = numberConverter;
-		this.signatureMaker = signatureMaker;
-		this.sentReportsRepository = sentReportsRepository;
 		this.processor = this.makeProcessor();
 
 	}
@@ -285,10 +277,6 @@ public class ObservedPCSForwarder {
 
 		return (observedPCS, subject) -> {
 			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
-			byte[] signature = signatureMaker.makeSignature(peerConnectionSample.peerConnectionId, subject.id, subject.transportId);
-			if (sentReportsRepository.existsBySignature(signature)) {
-				return;
-			}
 			String ipLSH = subject.ip;
 			ICELocalCandidate localCandidate = ICELocalCandidate.newBuilder()
 					.setMediaUnitId(observedPCS.mediaUnitId)
@@ -319,10 +307,6 @@ public class ObservedPCSForwarder {
 		}
 		return (observedPCS, subject) -> {
 			PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
-			byte[] signature = signatureMaker.makeSignature(peerConnectionSample.peerConnectionId, subject.id, subject.transportId);
-			if (sentReportsRepository.existsBySignature(signature)) {
-				return;
-			}
 			String ipLSH = subject.ip;
 			ICERemoteCandidate remoteCandidate = ICERemoteCandidate.newBuilder()
 					.setMediaUnitId(observedPCS.mediaUnitId)
@@ -472,7 +456,7 @@ public class ObservedPCSForwarder {
 		this.reportSink.sendReport(
 				kafkaKey,
 				observedPCS.serviceUUID,
-				observedPCS.peerConnectionSample.callId,
+				observedPCS.serviceName,
 				observedPCS.marker,
 				reportType,
 				observedPCS.timestamp,
