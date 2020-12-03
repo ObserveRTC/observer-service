@@ -31,6 +31,7 @@ import java.util.UUID;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.StreamsEvaluator;
+import org.observertc.webrtc.observer.evaluators.hazelcast.PCObserver;
 import org.observertc.webrtc.observer.micrometer.CountedLogMonitor;
 import org.observertc.webrtc.observer.micrometer.MetricsReporter;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
@@ -49,12 +50,12 @@ public class WebRTCStatsWebsocketServerv20200114 {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebRTCStatsWebsocketServerv20200114.class);
 	//	private final ObservedPCSSink observedPCSSink;
-	private final ObserverConfig config;
 	private final ObjectReader objectReader;
 	private final ObservedPCSForwarder observedPCSForwarder;
 	private final MetricsReporter metricsReporter;
 	private final CountedLogMonitor countedLogMonitor;
 	private final StreamsEvaluator streamsEvaluator;
+	private final PCObserver pcObserver;
 	private final ServicesRepository servicesRepository;
 
 //	private final IDSLContextProvider contextProvider;
@@ -65,21 +66,21 @@ public class WebRTCStatsWebsocketServerv20200114 {
 //	}
 
 	public WebRTCStatsWebsocketServerv20200114(
-			ObserverConfig config,
 			ObjectMapper objectMapper,
 			StreamsEvaluator streamsEvaluator,
 			ObservedPCSForwarder observedPCSForwarder,
 			MetricsReporter metricsReporter,
-			ServicesRepository servicesRepository
+			ServicesRepository servicesRepository,
+			PCObserver pcObserver
 //			ObservedPCSSink observedPCSSink
 	) {
 //		this.observedPCSSink = observedPCSSink;
 		this.observedPCSForwarder = observedPCSForwarder;
-		this.config = config;
 		this.objectReader = objectMapper.reader();
 		this.streamsEvaluator = streamsEvaluator;
 		this.metricsReporter = metricsReporter;
 		this.servicesRepository = servicesRepository;
+		this.pcObserver = pcObserver;
 		this.countedLogMonitor = metricsReporter.makeCountedLogMonitor(logger)
 				.withCommonTags("version", "20200114")
 				.withRequiredTags("serviceName", "serviceUUID", "mediaUnitId")
@@ -193,7 +194,8 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		}
 
 		try {
-			this.streamsEvaluator.onNext(observedPCS);
+			this.pcObserver.onNext(observedPCS);
+//			this.streamsEvaluator.onNext(observedPCS);
 		} catch (Exception ex) {
 			this.countedLogMonitor
 					.makeEntry(serviceName, serviceUUID, mediaUnitID)

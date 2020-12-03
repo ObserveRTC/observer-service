@@ -1,0 +1,240 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.observertc.webrtc.observer.tasks;
+
+import io.micronaut.context.annotation.Prototype;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import javax.inject.Provider;
+import javax.validation.constraints.NotNull;
+import org.observertc.webrtc.observer.models.CallEntity;
+import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.repositories.hazelcast.CallEntitiesRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.CallNamesRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.CallSynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Prototype
+public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
+
+
+	private enum State {
+		CREATED,
+		CALL_ENTITY_IS_REGISTERED,
+		CALL_NAME_IS_REGISTERED,
+		SSRCS_ARE_REGISTERED,
+		CALL_TO_SSRCS_IS_REGISTERED,
+		EXECUTED,
+		ROLLEDBACK,
+	}
+
+	private static final Logger logger = LoggerFactory.getLogger(CallInitializerTask.class);
+	private static final String LOCK_NAME = CallInitializerTask.class.getCanonicalName() + "-lock";
+
+	private final CallEntitiesRepository callEntitiesRepository;
+	private final SynchronizationSourcesRepository SSRCRepository;
+	private final CallFinderTask callFinderTask;
+	private final CallNamesRepository callNamesRepository;
+	private final CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
+	private final Provider<FencedLockAcquirer> lockProvider;
+	private CallEntity callEntity;
+	private Set<Long> SSRCs;
+	private State state = State.CREATED;
+	private final long operationTimeoutInMs = 10000L;
+
+
+	public CallInitializerTask(
+			RepositoryProvider repositoryProvider,
+			CallFinderTask callFinderTask,
+			Provider<FencedLockAcquirer> lockProvider
+	) {
+		super();
+		this.lockProvider = lockProvider;
+		this.callFinderTask = callFinderTask;
+		this.callSynchronizationSourcesRepository = repositoryProvider.getCallSynchronizationSourcesRepository();
+		this.callEntitiesRepository = repositoryProvider.getCallEntitiesRepository();
+		this.SSRCRepository = repositoryProvider.getSSRCRepository();
+		this.callNamesRepository = repositoryProvider.getCallNamesRepository();
+	}
+
+	public CallInitializerTask forCallEntity(CallEntity callEntity) {
+		this.callEntity = callEntity;
+		return this;
+	}
+
+	public CallInitializerTask forSSRCs(@NotNull Set<Long> SSRCs) {
+		this.SSRCs = SSRCs;
+		return this;
+	}
+
+	@Override
+	protected Maybe<UUID> doPerform() {
+		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
+			Set<UUID> callUUIDs = new HashSet<>();
+			AtomicReference<Throwable> error = new AtomicReference<>(null);
+			this.callFinderTask.forSSRCs(this.SSRCs)
+					.forServiceUUID(this.callEntity.serviceUUID)
+					.forCallName(this.callEntity.callName)
+					.withMultipleResultsAllowed(false)
+					.perform()
+					.subscribe(callUUIDs::add, error::set);
+
+			if (Objects.nonNull(error.get())) {
+				return Maybe.error(error.get());
+			}
+
+			if (0 < callUUIDs.size()) {
+				UUID result = callUUIDs.stream().findFirst().get();
+				return Maybe.just(result);
+			}
+
+			return Completable
+					.fromRunnable(this::execute)
+					.doOnError(this::rollback)
+					.andThen(Maybe.just(this.callEntity.callUUID));
+
+		} catch (Exception ex) {
+			return Maybe.error(ex);
+		}
+	}
+
+	private void execute() {
+		switch (this.state) {
+			default:
+			case CREATED:
+				this.registerCallEntity();
+				this.state = State.CALL_ENTITY_IS_REGISTERED;
+			case CALL_ENTITY_IS_REGISTERED:
+				this.registerCallName();
+				this.state = State.CALL_NAME_IS_REGISTERED;
+			case CALL_NAME_IS_REGISTERED:
+				this.registerSSRRCs();
+				this.state = State.SSRCS_ARE_REGISTERED;
+			case SSRCS_ARE_REGISTERED:
+				this.registerCallToSSRCs();
+				this.state = State.CALL_TO_SSRCS_IS_REGISTERED;
+			case CALL_TO_SSRCS_IS_REGISTERED:
+				this.state = State.EXECUTED;
+			case EXECUTED:
+			case ROLLEDBACK:
+				return;
+		}
+	}
+
+	private void rollback(Throwable t) {
+		try {
+			switch (this.state) {
+				case EXECUTED:
+				case CALL_TO_SSRCS_IS_REGISTERED:
+					this.unregisterCallToSSRCs(t);
+					this.state = State.SSRCS_ARE_REGISTERED;
+				case SSRCS_ARE_REGISTERED:
+					this.unregisterSSRCs(t);
+					this.state = State.CALL_NAME_IS_REGISTERED;
+				case CALL_NAME_IS_REGISTERED:
+					this.unregisterCallName(t);
+					this.state = State.CALL_ENTITY_IS_REGISTERED;
+				case CALL_ENTITY_IS_REGISTERED:
+					this.unregisterCallEntity(t);
+					this.state = State.ROLLEDBACK;
+				case CREATED:
+				case ROLLEDBACK:
+				default:
+					return;
+			}
+		} catch (Throwable another) {
+			logger.error("During rollback an error is occured", another);
+		}
+
+	}
+
+	private void registerCallEntity() {
+		this.callEntitiesRepository.add(this.callEntity.callUUID, this.callEntity);
+	}
+
+	private void unregisterCallEntity(Throwable exceptionInExecution) {
+		this.callEntitiesRepository.rxDelete(this.callEntity.callUUID);
+	}
+
+	private void registerCallName() {
+		if (Objects.isNull(this.callEntity.callName)) {
+			return;
+		}
+		this.callNamesRepository.add(this.callEntity.callName, this.callEntity.callUUID);
+	}
+
+	private void unregisterCallName(Throwable exceptionInExecution) {
+		if (Objects.isNull(this.callEntity.callName)) {
+			return;
+		}
+		this.callNamesRepository.remove(this.callEntity.callName, this.callEntity.callUUID);
+	}
+
+	private void registerSSRRCs() {
+		Map<String, SynchronizationSourceEntity> synchronizationSourceEntities =
+				this.SSRCs.stream()
+						.collect(Collectors.toMap(
+								ssrc -> SynchronizationSourcesRepository.getKey(this.callEntity.serviceUUID, ssrc),
+								ssrc -> SynchronizationSourceEntity.of(this.callEntity.serviceUUID, ssrc, this.callEntity.callUUID)
+						));
+		this.SSRCRepository.rxSaveAll(synchronizationSourceEntities);
+	}
+
+	private void unregisterSSRCs(Throwable exceptionInExecution) {
+		Set<String> streamKeys = this.SSRCs.stream().map(SSRC -> SynchronizationSourcesRepository.getKey(this.callEntity.serviceUUID,
+				SSRC)).collect(Collectors.toSet());
+		this.SSRCRepository.deleteAll(streamKeys);
+	}
+
+	private void registerCallToSSRCs() {
+		AtomicBoolean performed = new AtomicBoolean(false);
+		Set<String> synchronizationSourceKeys =
+				this.SSRCs.stream()
+						.map(ssrc -> SynchronizationSourcesRepository.getKey(this.callEntity.serviceUUID, ssrc))
+						.collect(Collectors.toSet());
+		this.callSynchronizationSourcesRepository
+				.addAll(this.callEntity.callUUID, synchronizationSourceKeys);
+	}
+
+	private void unregisterCallToSSRCs(Throwable exceptionInExecution) {
+		this.callSynchronizationSourcesRepository.removeAll(this.callEntity.callUUID);
+	}
+
+	@Override
+	protected void validate() {
+		super.validate();
+		if (this.callEntity == null) {
+			throw new IllegalStateException("To perform the task it is required to have a callEntity");
+		}
+		if (this.SSRCs == null) {
+			throw new IllegalStateException("To perform the task it is required to have a SSRCs");
+		}
+	}
+
+
+}

@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.tasks;
 
-import io.micronaut.context.annotation.ConfigurationProperties;
-
-@ConfigurationProperties("observer")
-public class ObserverConfig {
-
+public class NotFoundCallEntityException extends RuntimeException {
+	public NotFoundCallEntityException(String message) {
+		super(message);
+	}
 }
-

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.inject.Singleton;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.ServiceConfiguration;
+import org.observertc.webrtc.observer.ServiceRepositoryConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,32 +34,13 @@ public class ServicesRepository {
 	private final String defaultServiceName;
 
 	public ServicesRepository(EvaluatorsConfig evaluatorsConfig,
-							  List<ServiceConfiguration> services) {
+							  List<ServiceRepositoryConfiguration> services) {
 		this.defaultServiceName = evaluatorsConfig.defaultServiceName;
-		this.init(services);
 	}
 
 	public String getServiceName(UUID serviceUUID) {
 		String result = this.serviceMap.getOrDefault(serviceUUID, this.defaultServiceName);
 		return result;
-	}
-
-	private void init(List<ServiceConfiguration> services) {
-		ServiceConfiguration defaultConfig = null;
-		for (ServiceConfiguration serviceConfiguration : services) {
-			if (serviceConfiguration.name == null) {
-				logger.warn("name cannot be null for service");
-				continue;
-			}
-			for (UUID uuid : serviceConfiguration.UUIDs) {
-				if (this.serviceMap.containsKey(uuid)) {
-					logger.warn("Duplicated UUID {} in serviceMap for names: {} (old), {} (new). " +
-									"Actual behaviour: Overriding the old one.",
-							serviceConfiguration.name, this.serviceMap.get(uuid));
-				}
-				this.serviceMap.put(uuid, serviceConfiguration.name);
-			}
-		}
 	}
 
 }

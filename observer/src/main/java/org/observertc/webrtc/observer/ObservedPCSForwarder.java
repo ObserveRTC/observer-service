@@ -41,13 +41,13 @@ import org.slf4j.LoggerFactory;
 public class ObservedPCSForwarder {
 
 	private static final Logger logger = LoggerFactory.getLogger(ObservedPCSForwarder.class);
-	private final EvaluatorsConfig.SampleTransformerConfig config;
+	private final OutboundReportsConfig config;
 	private final PeerConnectionSampleVisitor<ObservedPCS> processor;
 	private final ReportSink reportSink;
 	private final EnumConverter enumConverter;
 	private final NumberConverter numberConverter;
 
-	public ObservedPCSForwarder(EvaluatorsConfig.SampleTransformerConfig config,
+	public ObservedPCSForwarder(OutboundReportsConfig config,
 								EnumConverter enumConverter,
 								NumberConverter numberConverter,
 								ReportSink reportSink) {

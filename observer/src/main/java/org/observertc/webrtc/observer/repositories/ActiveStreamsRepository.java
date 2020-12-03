@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer.repositories;
 
 import static org.jooq.impl.DSL.row;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.data.repository.CrudRepository;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;

@@ -99,7 +99,7 @@ public class ActivePCsEvaluatorTest {
 				.withPeerConnections(Arrays.asList(UUID.randomUUID()))
 				.build();
 		evaluator.getJoinedPeerConnectionSubject().subscribe(i -> reportedJoinedPCNumHolder.getAndIncrement());
-		evaluator.getInitiatedCallSubject().subscribe(i-> createdInitiatedCallsHolder.getAndIncrement());
+		evaluator.getInitiatedCallSubject().subscribe(i -> createdInitiatedCallsHolder.getAndIncrement());
 
 		// When
 

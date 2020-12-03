@@ -26,7 +26,9 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Singleton;
+import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.StreamsEvaluatorsConfig;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
@@ -42,7 +44,8 @@ public class StreamsEvaluator implements Observer<ObservedPCS> {
 			ActivePCsEvaluator activePCsEvaluator,
 			ExpiredPCsEvaluator expiredPCsEvaluator,
 			ReportDraftsEvaluator reportDraftsEvaluator,
-			ReportSink reportSink
+			ReportSink reportSink,
+			Provider<ObserverHazelcast> hazelcastTryProvider
 	) {
 		this.config = config;
 		// Construct the routes
@@ -83,6 +86,8 @@ public class StreamsEvaluator implements Observer<ObservedPCS> {
 		expiredPCsEvaluator
 				.getDetachedPeerConnections()
 				.subscribe(reportSink);
+
+//		ObserverHazelcast observerHazelcast = hazelcastTryProvider.get();
 	}
 
 
