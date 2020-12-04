@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.reportdrafts;
+package org.observertc.webrtc.observer.evaluators.trash.reportdrafts;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Instant;
 import java.util.UUID;
 
+@Deprecated
 @JsonTypeName("FINISHED_CALL")
 public class FinishedCallReportDraft extends ReportDraft {
 

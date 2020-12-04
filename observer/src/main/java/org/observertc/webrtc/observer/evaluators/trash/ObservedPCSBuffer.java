@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators;
+package org.observertc.webrtc.observer.evaluators.trash;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
@@ -34,6 +34,7 @@ import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 class ObservedPCSBuffer implements Observer<ObservedPCS>, Runnable {
 
 	private static final Logger logger = LoggerFactory.getLogger(ObservedPCSBuffer.class);

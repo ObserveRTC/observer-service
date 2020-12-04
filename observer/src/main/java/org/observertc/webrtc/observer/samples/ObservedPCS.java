@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer.samples;
 
 import java.util.UUID;
+import org.observertc.webrtc.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 
 public class ObservedPCS {
@@ -51,4 +52,7 @@ public class ObservedPCS {
 	public String serviceName;
 	public String marker;
 
+	public String toString() {
+		return ObjectToString.toString(this);
+	}
 }

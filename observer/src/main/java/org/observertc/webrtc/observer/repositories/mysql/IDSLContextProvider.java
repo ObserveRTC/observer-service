@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.mysql;
 
 import java.util.function.Supplier;
 import org.jooq.DSLContext;

@@ -33,9 +33,9 @@ import javax.inject.Singleton;
 import org.observertc.webrtc.common.Sleeper;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.evaluators.ExpiredPCsEvaluator;
+import org.observertc.webrtc.observer.evaluators.trash.ExpiredPCsEvaluator;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.mysql.PeerConnectionsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

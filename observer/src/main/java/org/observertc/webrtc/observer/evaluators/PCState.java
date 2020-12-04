@@ -20,9 +20,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class MediaStreamUpdate {
+class PCState {
 
-	public static MediaStreamUpdate of(
+	public static PCState of(
 			UUID serviceUUID,
 			UUID peerConnectionUUID,
 			Long created,
@@ -34,7 +34,7 @@ public class MediaStreamUpdate {
 			String serviceName,
 			String marker
 	) {
-		MediaStreamUpdate result = new MediaStreamUpdate();
+		PCState result = new PCState();
 		result.serviceUUID = serviceUUID;
 		result.serviceName = serviceName;
 		result.mediaUnitID = mediaUnitID;

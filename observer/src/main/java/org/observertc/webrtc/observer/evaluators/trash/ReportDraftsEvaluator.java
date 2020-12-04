@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators;
+package org.observertc.webrtc.observer.evaluators.trash;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
@@ -25,12 +25,12 @@ import java.util.UUID;
 import javax.inject.Singleton;
 import org.jooq.lambda.tuple.Tuple2;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.AbstractReportDraftProcessor;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.InitiatedCallReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.AbstractReportDraftProcessor;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.FinishedCallReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.InitiatedCallReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.ReportDraft;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.mysql.PeerConnectionsRepository;
 import org.observertc.webrtc.schemas.reports.FinishedCall;
 import org.observertc.webrtc.schemas.reports.InitiatedCall;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -38,6 +38,7 @@ import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 @Singleton
 public class ReportDraftsEvaluator implements Observer<ReportDraft> {
 

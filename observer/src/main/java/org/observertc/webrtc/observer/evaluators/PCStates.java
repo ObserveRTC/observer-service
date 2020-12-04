@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.hazelcast;
+package org.observertc.webrtc.observer.evaluators;
 
 import java.time.Instant;
 import java.util.HashMap;

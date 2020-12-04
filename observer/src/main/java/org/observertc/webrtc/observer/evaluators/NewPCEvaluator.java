@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.hazelcast;
+package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.annotations.NonNull;

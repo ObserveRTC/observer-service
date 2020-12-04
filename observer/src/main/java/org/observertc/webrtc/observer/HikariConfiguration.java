@@ -19,8 +19,11 @@ package org.observertc.webrtc.observer;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import org.observertc.webrtc.common.ObjectToString;
 
+@Deprecated
 @ConfigurationProperties("hikari")
 public class HikariConfiguration {
+
+	public boolean enabled = false;
 
 	public String poolName;
 

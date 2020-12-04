@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+@Deprecated
 @ConfigurationProperties("outboundsReports")
 public class OutboundReportsConfig {
 

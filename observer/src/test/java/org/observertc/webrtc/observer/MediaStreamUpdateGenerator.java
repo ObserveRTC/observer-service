@@ -32,7 +32,7 @@ import org.jeasy.random.api.Randomizer;
 import org.jeasy.random.randomizers.misc.UUIDRandomizer;
 import org.jeasy.random.randomizers.number.LongRandomizer;
 import org.jeasy.random.randomizers.time.TimeZoneRandomizer;
-import org.observertc.webrtc.observer.evaluators.MediaStreamUpdate;
+import org.observertc.webrtc.observer.evaluators.trash.MediaStreamUpdate;
 
 public class MediaStreamUpdateGenerator {
 

@@ -22,52 +22,50 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import org.jooq.lambda.tuple.Tuple2;
-import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
-import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
-import org.observertc.webrtc.observer.micrometer.MetricsReporter;
-import org.observertc.webrtc.observer.repositories.ActiveStreamsRepository;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.models.CallEntity;
+import org.observertc.webrtc.observer.models.PeerConnectionEntity;
+import org.observertc.webrtc.observer.monitors.FlawMonitor;
+import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.tasks.CallFinisherTask;
+import org.observertc.webrtc.observer.tasks.PeerConnectionDetacherTask;
+import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 @Prototype
-public class ExpiredPCsEvaluator implements Observer<List<UUID>> {
+public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ExpiredPCsEvaluator.class);
-	private final PublishSubject<Tuple2<UUID, Report>> detachedPeerConnections = PublishSubject.create();
-	private final PublishSubject<ReportDraft> finishedCalls = PublishSubject.create();
+	private final PublishSubject<Tuple2<UUID, Report>> reports = PublishSubject.create();
 
-	private final ActiveStreamsRepository activeStreamsRepository;
-	private final PeerConnectionsRepository peerConnectionsRepository;
-	private final MetricsReporter metricsReporter;
+	private final FlawMonitor flawMonitor;
+	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
+	private final TasksProvider tasksProvider;
 
 	public ExpiredPCsEvaluator(
-			ActiveStreamsRepository activeStreamsRepository,
-			PeerConnectionsRepository peerConnectionsRepository,
-			MetricsReporter metricsReporter) {
-		this.activeStreamsRepository = activeStreamsRepository;
-		this.peerConnectionsRepository = peerConnectionsRepository;
-		this.metricsReporter = metricsReporter;
+			MonitorProvider monitorProvider,
+			RepositoryProvider repositoryProvider,
+			TasksProvider tasksProvider) {
+		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass().getSimpleName());
+		this.tasksProvider = tasksProvider;
+		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 	}
 
-	public Subject<ReportDraft> getFinishedCallSubject() {
-		return this.finishedCalls;
-	}
-
-	public Subject<Tuple2<UUID, Report>> getDetachedPeerConnections() {
-		return this.detachedPeerConnections;
+	public Subject<Tuple2<UUID, Report>> getReportsSubject() {
+		return this.reports;
 	}
 
 	@Override
@@ -76,20 +74,24 @@ public class ExpiredPCsEvaluator implements Observer<List<UUID>> {
 	}
 
 	@Override
-	public void onNext(@NonNull List<UUID> uuids) {
-		if (uuids.size() < 1) {
+	public void onNext(@NonNull Map<UUID, PCState> expiredPCStates) {
+		if (expiredPCStates.size() < 1) {
 			return;
 		}
-		List<byte[]> uuidsInBytes = uuids.stream()
-				.filter(Objects::nonNull)
-				.map(UUIDAdapter::toBytes)
-				.collect(Collectors.toList());
 
-		try {
-			this.processExpiredPCs(uuidsInBytes);
-		} catch (Exception ex) {
-			logger.error("Error occurred", ex);
+		for (PCState expiredPCState : expiredPCStates.values()) {
+			try {
+				this.process(expiredPCState);
+			} catch (Exception ex) {
+				this.flawMonitor.makeLogEntry()
+						.withException(ex)
+						.withLogger(logger)
+						.withLogLevel(Level.WARN)
+						.withMessage("Unhandled error occurred by processing an expiredPCState {}", expiredPCState)
+						.complete();
+			}
 		}
+
 	}
 
 	@Override
@@ -102,56 +104,89 @@ public class ExpiredPCsEvaluator implements Observer<List<UUID>> {
 
 	}
 
-	private void processExpiredPCs(List<byte[]> peerConnectionUUIDs) {
-		if (peerConnectionUUIDs.size() < 1) {
+	/**
+	 * This is a transaction!
+	 *
+	 * @param pcState
+	 */
+	private void process(@NotNull PCState pcState) {
+		AtomicReference<Throwable> error = new AtomicReference<>(null);
+		AtomicReference<PeerConnectionEntity> entityHolder = new AtomicReference<>(null);
+		try (PeerConnectionDetacherTask task = this.tasksProvider.providePeerConnectionDetacherTask()) {
+			task.forPeerConnectionUUID(pcState.peerConnectionUUID)
+					.perform()
+					.subscribe(entityHolder::set, error::set);
+		} catch (Exception ex) {
+			this.flawMonitor.makeLogEntry()
+					.withException(ex)
+					.withLogger(logger)
+					.withLogLevel(Level.WARN)
+					.withMessage("Unhandled error occurred by executing {} ", PeerConnectionDetacherTask.class.getSimpleName())
+					.complete();
 			return;
 		}
-		Iterator<PeerconnectionsRecord> it = this.peerConnectionsRepository.findAll(peerConnectionUUIDs).iterator();
-		for (; it.hasNext(); ) {
-			PeerconnectionsRecord record = it.next();
-			record.setDetached(record.getUpdated());
-			record.setUpdated(record.getUpdated());
-			record.store();
-
-			UUID serviceUUID = UUIDAdapter.toUUID(record.getServiceuuid());
-			String serviceName = record.getServicename();
-			UUID callUUID = UUIDAdapter.toUUID(record.getCalluuid());
-			UUID peerConnectionUUID = UUIDAdapter.toUUID(record.getPeerconnectionuuid());
-
-			Object payload = DetachedPeerConnection.newBuilder()
-					.setMediaUnitId(record.getMediaunitid())
-					.setCallName(record.getProvidedcallid())
-					.setCallUUID(callUUID.toString())
-					.setUserId(record.getProvideduserid())
-					.setBrowserId(record.getBrowserid())
-					.setPeerConnectionUUID(peerConnectionUUID.toString())
-					.build();
-
-			Report report = Report.newBuilder()
-					.setServiceUUID(serviceUUID.toString())
-					.setServiceName(serviceName)
-					.setMarker(null)
-					.setType(ReportType.DETACHED_PEER_CONNECTION)
-					.setTimestamp(record.getUpdated())
-					.setPayload(payload)
-					.build();
-			Tuple2<UUID, Report> tuple = new Tuple2<>(peerConnectionUUID, report);
-
-			detachedPeerConnections.onNext(tuple);
-
-			Optional<PeerconnectionsRecord> joinedPCHolder =
-					this.peerConnectionsRepository.findJoinedPCsByCallUUIDBytes(record.getCalluuid()).findFirst();
-
-			if (joinedPCHolder.isPresent()) {
-				continue;
-			}
-
-			//finished call
-			FinishedCallReportDraft reportDraft = FinishedCallReportDraft.of(serviceUUID, callUUID, null, record.getUpdated());
-			this.finishedCalls.onNext(reportDraft);
-			this.activeStreamsRepository.deleteByCallUUIDBytes(record.getCalluuid());
+		if (error.get() != null) {
+			this.flawMonitor.makeLogEntry()
+					.withException(error.get())
+					.withLogger(logger)
+					.withLogLevel(Level.WARN)
+					.withMessage("Error occurred by executing {} ", PeerConnectionDetacherTask.class.getSimpleName())
+					.complete();
+			return;
 		}
+		if (entityHolder.get() == null) {
+			this.flawMonitor.makeLogEntry()
+					.withException(error.get())
+					.withLogger(logger)
+					.withLogLevel(Level.WARN)
+					.withMessage("{} has not been found for {}", PeerConnectionEntity.class.getSimpleName(), pcState)
+					.complete();
+			return;
+		}
+		PeerConnectionEntity entity = entityHolder.get();
+		Object payload = DetachedPeerConnection.newBuilder()
+				.setMediaUnitId(entity.mediaUnitId)
+				.setCallName(entity.callName)
+				.setCallUUID(entity.callUUID.toString())
+				.setUserId(entity.providedUserName)
+				.setBrowserId(entity.browserId)
+				.setPeerConnectionUUID(entity.peerConnectionUUID.toString())
+				.build();
+
+		Report report = Report.newBuilder()
+				.setServiceUUID(entity.serviceUUID.toString())
+				.setServiceName(entity.serviceName)
+				.setMarker(entity.marker)
+				.setType(ReportType.DETACHED_PEER_CONNECTION)
+				.setTimestamp(pcState.updated)
+				.setPayload(payload)
+				.build();
+		this.send(entity.peerConnectionUUID, report);
+
+		Set<UUID> remainingPCUUIIDs = this.callPeerConnectionsRepository.find(entity.callUUID).stream().collect(Collectors.toSet());
+		if (0 < remainingPCUUIIDs.size()) {
+			return;
+		}
+		AtomicReference<CallEntity> callEntityHolder = new AtomicReference<>(null);
+		error.set(null);
+		try (CallFinisherTask task = this.tasksProvider.provideCallFinisherTask()) {
+			task.forCallEntity(entity.callUUID)
+					.perform()
+					.subscribe(callEntityHolder::set, error::set);
+		} catch (Exception ex) {
+			this.flawMonitor.makeLogEntry()
+					.withException(ex)
+					.withLogger(logger)
+					.withLogLevel(Level.WARN)
+					.withMessage("Unhandled error occured by executing {}", CallFinisherTask.class.getSimpleName())
+					.complete();
+		}
+
 	}
 
+	private void send(UUID sendKey, Report report) {
+		Tuple2<UUID, Report> tuple = new Tuple2<>(sendKey, report);
+		this.reports.onNext(tuple);
+	}
 
 }

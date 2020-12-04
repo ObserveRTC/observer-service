@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+@Deprecated
 @ConfigurationProperties("jooq")
 public class JooqConfiguration {
 	public String dialect;

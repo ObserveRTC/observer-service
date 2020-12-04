@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.reportdrafts;
+package org.observertc.webrtc.observer.evaluators.trash.reportdrafts;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@Deprecated
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
 		include = JsonTypeInfo.As.PROPERTY,

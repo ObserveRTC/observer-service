@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators;
+package org.observertc.webrtc.observer.evaluators.trash;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 class PeerConnections {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnections.class);

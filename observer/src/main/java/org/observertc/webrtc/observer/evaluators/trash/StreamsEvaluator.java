@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators;
+package org.observertc.webrtc.observer.evaluators.trash;
 
 import io.micronaut.scheduling.TaskExecutors;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -33,6 +33,7 @@ import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.StreamsEvaluatorsConfig;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 
+@Deprecated
 @Singleton
 public class StreamsEvaluator implements Observer<ObservedPCS> {
 	private final PublishSubject<ObservedPCS> subject = PublishSubject.create();

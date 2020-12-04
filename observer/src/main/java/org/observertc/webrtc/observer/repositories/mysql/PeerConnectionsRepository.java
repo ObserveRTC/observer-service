@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.mysql;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Iterator;

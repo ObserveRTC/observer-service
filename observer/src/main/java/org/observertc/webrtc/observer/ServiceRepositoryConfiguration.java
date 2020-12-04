@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+@Deprecated
 @ConfigurationProperties("evaluators")
 public class ServiceRepositoryConfiguration {
 	public String defaultServiceName;

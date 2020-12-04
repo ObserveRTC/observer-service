@@ -38,10 +38,6 @@ kafkaTopics:
     onCreateReplicateFactor: 1
     retentionTimeInMs: 86400000
 ---
-# Configuration relevant for usinng hazelcast for the observer
-observerHazelcast:
-  instanceConfigFile: "classpath:hazelcast.yaml"
----
 # A static repository for mapping service UUIDs
 serviceRepository:
   defaultServiceName: "serviceName"
@@ -92,9 +88,59 @@ evaluators:
     reportRemoteCandidates: ${REPORT_REMOE_ICE_CANDIDATES:True}
     reportUserMediaErrors: ${REPORT_USER_MEDIA_ERROR:True}
     sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
-
+---
+observer:
+  evaluators:
+    activePeerConnections:
+      expirationTimeInS: 300
+      minEnforcedTimeInS: 60
+    newPeerConnections:
+      retryNumber: 3
+    expiredPeerConnections:
+      retryNumber: 3
+      
+  kafkaTopics:
+    runAdminClient: False
+    createIfNotExists: False
+    reports:
+      topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
+      onCreatePartitionNums: 30
+      onCreateReplicateFactor: 1
+      retentionTimeInMs: 86400000
+  reportsink:
+    enabled: False
+  outboundReports:
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
+    reportTracks: True
+    reportMediaSources: True
+    reportCandidatePairs: True
+    reportLocalCandidates: True
+    reportRemoteCandidates: True
+    reportUserMediaErrors: True
+  repositories:
+    active: "database"
+    hazelcast:
+      configfile: "classpath:hazelcast.yaml"
+    database:
+      username: root
+      password: password
+      minIdleInMs: 100
+      timeout: 1000
+      jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET&useLegacyDatetimeCode=false`}
+      jdbcDriver: "com.mysql.cj.jdbc.Driver"
+      maxPoolSize: 100
+      poolname: webrtc_observer
+      dialect: MySQL
+---
+# Configuration relevant for usinng hazelcast for the observer
+observerHazelcast:
+  enabled: True
+  instanceConfigFile: "classpath:hazelcast.yaml"
 ---
 hikari:
+  enabled: False
   username: ${DATABASE_USERNAME:root}
   password: ${DATABASE_PASSWORD:password}
   minIdleInMs: ${CONNECTION_POOL_MIN_IDLE_IN_MS:100}

@@ -50,7 +50,13 @@ public class MultiMapRepositoryAbstract<K, V> implements IMultiMap<K, V> {
 	public <R extends K, U extends V> void addAll(@NotNull R key, @NotNull Collection<U> entities) {
 		AtomicBoolean executed = new AtomicBoolean(false);
 		Object signal = new Object();
-		this.entities.putAllAsync(key, entities).thenRun(signal::notify).thenRun(() -> executed.set(true));
+		this.entities.putAllAsync(key, entities).thenRun(() -> {
+			synchronized (signal) {
+				signal.notify();
+				executed.set(true);
+			}
+
+		});
 		if (!executed.get()) {
 			synchronized (signal) {
 				if (executed.get()) {

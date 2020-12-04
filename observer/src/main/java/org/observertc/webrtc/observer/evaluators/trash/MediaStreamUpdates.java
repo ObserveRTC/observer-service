@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators;
+package org.observertc.webrtc.observer.evaluators.trash;
 
 import io.reactivex.rxjava3.core.ObservableOperator;
 import io.reactivex.rxjava3.core.Observer;
@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import java.util.UUID;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 
+@Deprecated
 class MediaStreamUpdates implements ObservableOperator<MediaStreamUpdate, ObservedPCS> {
 	private final Scheduler scheduler;
 	private final int periodInS;

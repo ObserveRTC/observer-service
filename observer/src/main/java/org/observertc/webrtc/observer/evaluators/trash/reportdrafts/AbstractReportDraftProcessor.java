@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.reportdrafts;
+package org.observertc.webrtc.observer.evaluators.trash.reportdrafts;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public abstract class AbstractReportDraftProcessor implements Consumer<ReportDraft> {
 	private static Logger logger = LoggerFactory.getLogger(AbstractReportDraftProcessor.class);
 

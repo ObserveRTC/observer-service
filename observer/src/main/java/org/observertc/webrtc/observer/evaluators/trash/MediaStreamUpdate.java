@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.hazelcast;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
+package org.observertc.webrtc.observer.evaluators.trash;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-class PCState {
+@Deprecated
+public class MediaStreamUpdate {
 
-	public static PCState of(
+	public static MediaStreamUpdate of(
 			UUID serviceUUID,
 			UUID peerConnectionUUID,
 			Long created,
@@ -34,7 +35,7 @@ class PCState {
 			String serviceName,
 			String marker
 	) {
-		PCState result = new PCState();
+		MediaStreamUpdate result = new MediaStreamUpdate();
 		result.serviceUUID = serviceUUID;
 		result.serviceName = serviceName;
 		result.mediaUnitID = mediaUnitID;

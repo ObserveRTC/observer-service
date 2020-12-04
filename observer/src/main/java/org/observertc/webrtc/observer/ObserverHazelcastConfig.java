@@ -18,8 +18,10 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+@Deprecated
 @ConfigurationProperties("observerHazelcast")
 public class ObserverHazelcastConfig {
-	String instanceConfigFile = null;
+	public boolean enabled = false;
+	public String instanceConfigFile = null;
 }
 

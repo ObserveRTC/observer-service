@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+@Deprecated
 @ConfigurationProperties("streamsEvaluators")
 public class StreamsEvaluatorsConfig {
 	public int peerConnectionMaxIdleTimeInS = 60;

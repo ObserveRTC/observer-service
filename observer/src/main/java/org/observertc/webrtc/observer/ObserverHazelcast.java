@@ -28,6 +28,7 @@ import java.io.InputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
+import org.observertc.webrtc.observer.models.EntityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +99,7 @@ public class ObserverHazelcast {
 //				new SerializerConfig().
 //						setTypeClass(CallEntity.class).
 //						setImplementation(new CallEntitySerializer()));
+		result.getSerializationConfig().addPortableFactory(EntityFactory.FACTORY_ID, new EntityFactory());
 		return result;
 	}
 

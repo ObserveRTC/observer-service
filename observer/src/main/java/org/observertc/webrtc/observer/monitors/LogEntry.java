@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.Prototype;
 import java.util.LinkedList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
+import org.observertc.webrtc.common.ObjectToString;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
@@ -182,5 +183,9 @@ public class LogEntry {
 				break;
 			default:
 		}
+	}
+
+	public String toString() {
+		return ObjectToString.toString(this);
 	}
 }

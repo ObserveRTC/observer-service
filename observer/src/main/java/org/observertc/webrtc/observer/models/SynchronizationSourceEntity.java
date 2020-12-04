@@ -16,9 +16,23 @@
 
 package org.observertc.webrtc.observer.models;
 
+import com.hazelcast.nio.serialization.Portable;
+import com.hazelcast.nio.serialization.PortableReader;
+import com.hazelcast.nio.serialization.PortableWriter;
+import java.io.IOException;
 import java.util.UUID;
+import org.observertc.webrtc.common.ObjectToString;
+import org.observertc.webrtc.common.UUIDAdapter;
 
-public class SynchronizationSourceEntity {
+public class SynchronizationSourceEntity implements Portable {
+
+	public static final int CLASS_ID = 2000;
+
+	private static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
+	private static final String CALL_UUID_FIELD_NAME = "callUUID";
+	private static final String SSRC_FIELD_NAME = "SSRC";
+
+
 	public static SynchronizationSourceEntity of(UUID serviceUUID, Long SSRC, UUID callUUID) {
 		SynchronizationSourceEntity result = new SynchronizationSourceEntity();
 		result.serviceUUID = serviceUUID;
@@ -30,4 +44,33 @@ public class SynchronizationSourceEntity {
 	public UUID serviceUUID;
 	public UUID callUUID;
 	public Long SSRC;
+
+	@Override
+	public String toString() {
+		return ObjectToString.toString(this);
+	}
+
+	@Override
+	public int getFactoryId() {
+		return EntityFactory.FACTORY_ID;
+	}
+
+	@Override
+	public int getClassId() {
+		return CLASS_ID;
+	}
+
+	@Override
+	public void writePortable(PortableWriter writer) throws IOException {
+		writer.writeByteArray(CALL_UUID_FIELD_NAME, UUIDAdapter.toBytesOrDefault(this.callUUID, EntityFactory.DEFAULT_UUID_BYTES));
+		writer.writeByteArray(SERVICE_UUID_FIELD_NAME, UUIDAdapter.toBytesOrDefault(this.serviceUUID, EntityFactory.DEFAULT_UUID_BYTES));
+		writer.writeLong(SSRC_FIELD_NAME, this.SSRC);
+	}
+
+	@Override
+	public void readPortable(PortableReader reader) throws IOException {
+		this.callUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(CALL_UUID_FIELD_NAME), null);
+		this.serviceUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(SERVICE_UUID_FIELD_NAME), null);
+		this.SSRC = reader.readLong(SSRC_FIELD_NAME);
+	}
 }

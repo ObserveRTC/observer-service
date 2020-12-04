@@ -27,12 +27,13 @@ import org.jooq.lambda.tuple.Tuple2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.common.UUIDAdapter;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.FinishedCallReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraftType;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.FinishedCallReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.ReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.ReportDraftType;
+import org.observertc.webrtc.observer.evaluators.trash.ExpiredPCsEvaluator;
 import org.observertc.webrtc.observer.jooq.Tables;
 import org.observertc.webrtc.observer.jooq.tables.records.PeerconnectionsRecord;
-import org.observertc.webrtc.observer.repositories.DSLContextProvider;
+import org.observertc.webrtc.observer.repositories.mysql.DSLContextProvider;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 

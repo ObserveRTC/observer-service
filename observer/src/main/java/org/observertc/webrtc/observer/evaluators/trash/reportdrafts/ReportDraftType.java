@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.evaluators.reportdrafts;
+package org.observertc.webrtc.observer.evaluators.trash.reportdrafts;
 
+@Deprecated
 public enum ReportDraftType {
 	INITIATED_CALL,
 	FINISHED_CALL,

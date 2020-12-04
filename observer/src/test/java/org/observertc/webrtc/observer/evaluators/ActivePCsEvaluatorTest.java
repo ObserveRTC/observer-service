@@ -26,9 +26,11 @@ import javax.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.MediaStreamUpdateGenerator;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.InitiatedCallReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraft;
-import org.observertc.webrtc.observer.evaluators.reportdrafts.ReportDraftType;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.InitiatedCallReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.ReportDraft;
+import org.observertc.webrtc.observer.evaluators.trash.reportdrafts.ReportDraftType;
+import org.observertc.webrtc.observer.evaluators.trash.ActivePCsEvaluator;
+import org.observertc.webrtc.observer.evaluators.trash.MediaStreamUpdate;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 
