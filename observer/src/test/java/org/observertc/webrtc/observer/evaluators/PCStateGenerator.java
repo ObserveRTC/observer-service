@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.evaluators;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -32,14 +32,13 @@ import org.jeasy.random.api.Randomizer;
 import org.jeasy.random.randomizers.misc.UUIDRandomizer;
 import org.jeasy.random.randomizers.number.LongRandomizer;
 import org.jeasy.random.randomizers.time.TimeZoneRandomizer;
-import org.observertc.webrtc.observer.evaluators.trash.MediaStreamUpdate;
 
-public class MediaStreamUpdateGenerator {
+public class PCStateGenerator {
 
 	private final EasyRandom generator;
 	private final Randomizer<Set<Long>> SSRCsRandomizer;
 
-	public MediaStreamUpdateGenerator(Instant startDate, Instant endDate, Set<Long> SSRCs, List<UUID> peerConnections) {
+	public PCStateGenerator(Instant startDate, Instant endDate, Set<Long> SSRCs, List<UUID> peerConnections) {
 		this.SSRCsRandomizer = this.makeSSRCsRandomizer(SSRCs);
 		EasyRandomParameters parameters = new EasyRandomParameters()
 				.randomize(field ->
@@ -85,8 +84,8 @@ public class MediaStreamUpdateGenerator {
 		this.generator = new EasyRandom(parameters);
 	}
 
-	public MediaStreamUpdate getNext() {
-		MediaStreamUpdate result = this.generator.nextObject(MediaStreamUpdate.class);
+	public PCState getNext() {
+		PCState result = this.generator.nextObject(PCState.class);
 		result.SSRCs = this.SSRCsRandomizer.getRandomValue();
 		return result;
 	}
@@ -128,12 +127,12 @@ public class MediaStreamUpdateGenerator {
 			return this;
 		}
 
-		public MediaStreamUpdateGenerator build() {
+		public PCStateGenerator build() {
 			Instant startDate = (Instant) this.values.get(START_DATE);
 			Instant endDate = (Instant) this.values.get(END_DATE);
 			Set<Long> SSRCSet = (Set<Long>) this.values.get(SSRCs);
 			List<UUID> peerConnections = (List<UUID>) this.values.get(PEER_CONNECTIONS_LIST);
-			return new MediaStreamUpdateGenerator(startDate, endDate, SSRCSet, peerConnections);
+			return new PCStateGenerator(startDate, endDate, SSRCSet, peerConnections);
 		}
 	}
 

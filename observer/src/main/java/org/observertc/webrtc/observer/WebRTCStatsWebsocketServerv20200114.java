@@ -30,11 +30,11 @@ import java.util.Optional;
 import java.util.UUID;
 import org.observertc.webrtc.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.evaluators.trash.StreamsEvaluator;
 import org.observertc.webrtc.observer.evaluators.PCObserver;
-import org.observertc.webrtc.observer.micrometer.CountedLogMonitor;
-import org.observertc.webrtc.observer.micrometer.MetricsReporter;
-import org.observertc.webrtc.observer.repositories.mysql.ServicesRepository;
+import org.observertc.webrtc.observer.monitors.FlawMonitor;
+import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.monitors.SessionMonitor;
+import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,48 +49,33 @@ public class WebRTCStatsWebsocketServerv20200114 {
 	private static final String PC_SAMPLE_VERSION = "20200114";
 
 	private static final Logger logger = LoggerFactory.getLogger(WebRTCStatsWebsocketServerv20200114.class);
-	//	private final ObservedPCSSink observedPCSSink;
 	private final ObjectReader objectReader;
 	private final ObservedPCSForwarder observedPCSForwarder;
-	private final MetricsReporter metricsReporter;
-	private final CountedLogMonitor countedLogMonitor;
-	private final StreamsEvaluator streamsEvaluator;
+	private final FlawMonitor flawMonitor;
 	private final PCObserver pcObserver;
 	private final ServicesRepository servicesRepository;
-
-//	private final IDSLContextProvider contextProvider;
-
-//	public DemoWebsocketServer(ObserverRepository observerRepository, DemoSink sink) {
-//		this.observerRepository = observerRepository;
-//		this.sink = sink;
-//	}
+	private final SessionMonitor sessionMonitor;
 
 	public WebRTCStatsWebsocketServerv20200114(
 			ObjectMapper objectMapper,
-			StreamsEvaluator streamsEvaluator,
 			ObservedPCSForwarder observedPCSForwarder,
-			MetricsReporter metricsReporter,
+			MonitorProvider monitorProvider,
 			ServicesRepository servicesRepository,
 			PCObserver pcObserver
-//			ObservedPCSSink observedPCSSink
 	) {
 //		this.observedPCSSink = observedPCSSink;
 		this.observedPCSForwarder = observedPCSForwarder;
 		this.objectReader = objectMapper.reader();
-		this.streamsEvaluator = streamsEvaluator;
-		this.metricsReporter = metricsReporter;
+		this.sessionMonitor = monitorProvider.makeWebsocketSessionMonitor(this.getClass().getSimpleName());
 		this.servicesRepository = servicesRepository;
 		this.pcObserver = pcObserver;
-		this.countedLogMonitor = metricsReporter.makeCountedLogMonitor(logger)
-				.withCommonTags("version", "20200114")
-				.withRequiredTags("serviceName", "serviceUUID", "mediaUnitId")
-				.withDefaultMetricName("websocket");
+		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass().getSimpleName());
 	}
 
 
 	@OnOpen
 	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
-		this.metricsReporter.incrementOpenedWebsocketConnectionsCounter();
+		this.sessionMonitor.added(session.getId());
 	}
 
 	@OnClose
@@ -98,7 +83,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			String serviceUUIDStr,
 			String mediaUnitID,
 			WebSocketSession session) {
-		this.metricsReporter.incrementClosedWebsocketConnectionsCounter();
+		this.sessionMonitor.removed(session.getId());
 	}
 
 	//	@OnMessage(maxPayloadLength = 1000000) // 1MB
@@ -106,30 +91,37 @@ public class WebRTCStatsWebsocketServerv20200114 {
 	public void onMessage(
 			String serviceUUIDStr,
 			String mediaUnitID,
-			String message,
+			byte[] messageBytes,
 			WebSocketSession session) {
 		Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
 		if (!serviceUUIDHolder.isPresent()) {
-			this.countedLogMonitor
-					.makeEntry("defaultServiceName", serviceUUIDStr, mediaUnitID)
-					.withMessage(String.format("Invalid service UUID %s", serviceUUIDStr))
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withLogLevel(Level.WARN)
-					.withCategory("invalid.serviceUUID")
-					.log();
+					.withMessage("Invalid service uuid {}, from {}", serviceUUIDStr, mediaUnitID)
+					.complete();
 			return;
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
 		String serviceName = this.servicesRepository.getServiceName(serviceUUID);
 		PeerConnectionSample sample;
 		try {
-			sample = this.objectReader.readValue(message, PeerConnectionSample.class);
+			sample = this.objectReader.readValue(messageBytes, PeerConnectionSample.class);
 		} catch (IOException e) {
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
-					.withLogLevel(Level.WARN)
-					.withCategory("invalid.message")
+			this.flawMonitor.makeLogEntry()
 					.withException(e)
-					.log();
+					.withLogger(logger)
+					.withLogLevel(Level.WARN)
+					.withMessage("Invalid message ", new String(messageBytes))
+					.complete();
+			return;
+		} catch (Throwable t) {
+			this.flawMonitor.makeLogEntry()
+					.withException(t)
+					.withLogger(logger)
+					.withLogLevel(Level.WARN)
+					.withMessage("There was an exception happened during interpretation")
+					.complete();
 			return;
 		}
 
@@ -150,23 +142,21 @@ public class WebRTCStatsWebsocketServerv20200114 {
 				this.observedPCSForwarder.forwardOnlyUserMediaError(observedPCS);
 				return;
 			}
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withLogLevel(Level.WARN)
-					.withCategory("invalid.pcUUID")
-					.withMessage("pcUUID is null")
-					.log();
+					.withMessage("pc uuid is null for ", sample)
+					.complete();
 			return;
 		}
 		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionId);
 
 		if (!peerConnectionUUIDHolder.isPresent()) {
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withLogLevel(Level.WARN)
-					.withCategory("invalid.pcUUID")
-					.withMessage(String.format("pcUUID is invalid %s", sample.peerConnectionId))
-					.log();
+					.withMessage("invalid peer connection uuid for sample {} ", sample)
+					.complete();
 			return;
 		}
 		UUID peerConnectionUUID = peerConnectionUUIDHolder.get();
@@ -185,24 +175,24 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		try {
 			this.observedPCSForwarder.forward(observedPCS);
 		} catch (Exception ex) {
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
-					.withLogLevel(Level.ERROR)
-					.withCategory("observedPCs.forwarding")
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withException(ex)
-					.log();
+					.withLogLevel(Level.WARN)
+					.withMessage("Error occured by forwarding message to {} ", this.observedPCSForwarder.getClass().getSimpleName())
+					.complete();
 		}
 
 		try {
 			this.pcObserver.onNext(observedPCS);
 //			this.streamsEvaluator.onNext(observedPCS);
 		} catch (Exception ex) {
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
-					.withLogLevel(Level.ERROR)
-					.withCategory("observedPCs.evaluation")
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withException(ex)
-					.log();
+					.withLogLevel(Level.WARN)
+					.withMessage("Error occured processing message by {} ", this.pcObserver.getClass().getSimpleName())
+					.complete();
 		}
 
 
@@ -213,12 +203,11 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		if (sample.timestamp != null) {
 			return sample.timestamp;
 		}
-		this.countedLogMonitor
-				.makeEntry(serviceName, serviceUUID, mediaUnitID)
-				.withCategory("parsingTimezoneOffset")
+		this.flawMonitor.makeLogEntry()
+				.withLogger(logger)
 				.withLogLevel(Level.WARN)
-				.withMessage(String.format("Missing timestamp %d", sample.timeZoneOffsetInMinute))
-				.log();
+				.withMessage("Missing timestamp at {} ", sample.timeZoneOffsetInMinute)
+				.complete();
 		Long result = Instant.now().toEpochMilli();
 		return result;
 	}
@@ -236,13 +225,12 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			Long timeZoneInHours = sample.timeZoneOffsetInMinute / 60;
 			hours = timeZoneInHours.intValue();
 		} catch (Exception ex) {
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
-					.withCategory("parsingTimezoneOffset")
-					.withLogLevel(Level.WARN)
-					.withMessage(String.format("Cannot parse timeZoneOffsetInMinute %d", sample.timeZoneOffsetInMinute))
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withException(ex)
-					.log();
+					.withLogLevel(Level.WARN)
+					.withMessage("Cannot parse timeZoneOffsetInMinute {} ", sample.timeZoneOffsetInMinute)
+					.complete();
 			return ZoneOffset.of("GMT").getId();
 		}
 
@@ -271,13 +259,12 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		try {
 			zoneOffset = ZoneOffset.of(offsetID);
 		} catch (Exception ex) {
-			this.countedLogMonitor
-					.makeEntry(serviceName, serviceUUID, mediaUnitID)
-					.withCategory("parsingZoneOffset")
-					.withLogLevel(Level.WARN)
-					.withMessage(String.format("Cannot parse zoneoffset %s", offsetID))
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
 					.withException(ex)
-					.log();
+					.withLogLevel(Level.WARN)
+					.withMessage("Cannot parse zoneoffset {} ", offsetID)
+					.complete();
 			return null;
 		}
 

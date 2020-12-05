@@ -18,8 +18,6 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
 import io.micronaut.context.annotation.Prototype;
-import io.micronaut.context.event.BeanCreatedEvent;
-import io.micronaut.context.event.BeanCreatedEventListener;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -27,8 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.Future;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
@@ -37,8 +33,8 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.jooq.lambda.tuple.Tuple2;
-import org.observertc.webrtc.observer.micrometer.CountedLogMonitor;
-import org.observertc.webrtc.observer.micrometer.MetricsReporter;
+import org.observertc.webrtc.observer.monitors.FlawMonitor;
+import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
@@ -49,27 +45,23 @@ import org.slf4j.event.Level;
 public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 	private static final Logger logger = LoggerFactory.getLogger(ReportSink.class);
 	private final Producer<UUID, byte[]> reportProducer;
-	private final KafkaTopicsConfiguration.ObserveRTCReportsConfig config;
+	private final FlawMonitor flawMonitor;
 	private final DatumWriter<Report> datumWriter;
 	private final ByteArrayOutputStream outputStream;
 	private final Encoder encoder;
-	private final MetricsReporter metricsReporter;
-	private final CountedLogMonitor countedLogMonitor;
+	private final ObserverConfig.KafkaTopicsConfiguration.ReportsConfig config;
 
 	public ReportSink(
-			MetricsReporter metricsReporter,
+			ObserverConfig.KafkaTopicsConfiguration.ReportsConfig config,
 			@KafkaClient("reportProducer") Producer<UUID, byte[]> reportProducer,
-			KafkaTopicsConfiguration.ObserveRTCReportsConfig config
+			MonitorProvider monitorProvider
 	) {
 		this.reportProducer = reportProducer;
-		this.config = config;
 		this.outputStream = new ByteArrayOutputStream();
 		this.datumWriter = new SpecificDatumWriter<>(Report.SCHEMA$);
 		this.encoder = EncoderFactory.get().binaryEncoder(this.outputStream, null);
-		this.metricsReporter = metricsReporter;
-		this.countedLogMonitor = metricsReporter
-				.makeCountedLogMonitor(logger)
-				.withDefaultMetricName("reportsink");
+		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass().getSimpleName());
+		this.config = config;
 	}
 
 	public Future<RecordMetadata> sendReport(UUID reportKey,
@@ -89,44 +81,20 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 				.setPayload(payload)
 				.build();
 
-		this.outputStream.reset();
-		try {
-			this.datumWriter.write(report, encoder);
-		} catch (Exception e) {
-			this.countedLogMonitor
-					.makeEntry()
-					.withCategory("datumWriter")
-					.withException(e)
-					.withLogLevel(Level.ERROR)
-					.log();
-			return null;
-		}
-		byte[] out;
-		try {
-			this.encoder.flush();
-			out = outputStream.toByteArray();
-		} catch (IOException e) {
-			this.countedLogMonitor
-					.makeEntry()
-					.withCategory("encoderFlush")
-					.withException(e)
-					.withLogLevel(Level.ERROR)
-					.log();
-			return null;
-		}
+		return this.send(reportKey, report);
 
-		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(this.config.topicName, reportKey,
-				out));
 	}
 
 	@Override
 	public void onSubscribe(@NonNull Disposable d) {
-		
+
 	}
 
 	@Override
 	public void onNext(@NonNull Tuple2<UUID, Report> objects) {
-
+		UUID key = objects.v1;
+		Report report = objects.v2;
+		this.send(key, report);
 	}
 
 	@Override
@@ -139,22 +107,38 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 
 	}
 
-	@Singleton
-	static class CreateReportDraftSinkListener implements BeanCreatedEventListener<ReportSink> {
-
-		@Inject
-		KafkaTopicCreator topicCreator;
-
-		@Inject
-		KafkaTopicsConfiguration config;
-
-		@Override
-		public ReportSink onCreated(BeanCreatedEvent<ReportSink> event) {
-			this.topicCreator.execute(config.reports);
-			return event.getBean();
+	private Future<RecordMetadata> send(UUID key, Report report) {
+		this.outputStream.reset();
+		try {
+			this.datumWriter.write(report, encoder);
+		} catch (Exception e) {
+			this.flawMonitor
+					.makeLogEntry()
+					.withLogger(logger)
+					.withMessage("error during serialization")
+					.withException(e)
+					.withLogLevel(Level.ERROR)
+					.complete();
+			return null;
 		}
-		
-		
-	}
+		byte[] out;
+		try {
+			this.encoder.flush();
+			out = outputStream.toByteArray();
+		} catch (IOException e) {
+			this.flawMonitor
+					.makeLogEntry()
+					.withLogger(logger)
+					.withMessage("Error during flushing")
+					.withException(e)
+					.withLogLevel(Level.ERROR)
+					.complete();
+			return null;
+		}
 
+		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(
+				this.config.topicName,
+				key,
+				out));
+	}
 }

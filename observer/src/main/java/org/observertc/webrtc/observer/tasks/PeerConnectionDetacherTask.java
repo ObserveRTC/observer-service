@@ -22,7 +22,6 @@ import io.reactivex.rxjava3.core.Maybe;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import javax.inject.Provider;
 import javax.validation.constraints.NotNull;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
@@ -57,8 +56,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 	private PeerConnectionEntity removedPCEntity;
 
 	public PeerConnectionDetacherTask(ObserverHazelcast observerHazelcast,
-									  RepositoryProvider repositoryProvider,
-									  Provider<FencedLockAcquirer> lockProvider
+									  RepositoryProvider repositoryProvider
 	) {
 		super();
 		this.observerHazelcast = observerHazelcast;

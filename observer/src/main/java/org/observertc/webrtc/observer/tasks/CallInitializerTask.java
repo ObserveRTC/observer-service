@@ -202,7 +202,7 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 								ssrc -> SynchronizationSourcesRepository.getKey(this.callEntity.serviceUUID, ssrc),
 								ssrc -> SynchronizationSourceEntity.of(this.callEntity.serviceUUID, ssrc, this.callEntity.callUUID)
 						));
-		this.SSRCRepository.rxSaveAll(synchronizationSourceEntities);
+		this.SSRCRepository.saveAll(synchronizationSourceEntities);
 	}
 
 	private void unregisterSSRCs(Throwable exceptionInExecution) {

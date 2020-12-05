@@ -16,7 +16,9 @@
 //
 //package org.observertc.webrtc.observer.repositories.mysql;
 //
-//import java.math.BigInteger;
+//import java.util.UUID;
+//import org.jooq.lambda.tuple.Tuple2;
+//import org.observertc.webrtc.common.UUIDAdapter;
 //
 ///**
 // * This class is a emporary collector class
@@ -28,26 +30,29 @@
 // * for later decide where to put that particular function
 // */
 //@Deprecated
-//public class Helpers {
+//public class ActiveStreamKey extends Tuple2<UUID, Long> {
 //
-//	/**
-//	 * Convert any byte array into a hexadecimial format and returns with the string
-//	 *
-//	 * @param hash
-//	 * @return
-//	 */
-//	public static String toHexString(byte[] hash) {
-//		// Convert byte array into signum representation  
-//		BigInteger number = new BigInteger(1, hash);
+//	public ActiveStreamKey(UUID serviceUUID, Long SSRC) {
+//		super(serviceUUID, SSRC);
+//	}
 //
-//		// Convert message digest into hex value  
-//		StringBuilder hexString = new StringBuilder(number.toString(16));
+//	public ActiveStreamKey(byte[] serviceUUIDBytes, Long SSRC) {
+//		super(UUIDAdapter.toUUIDOrDefault(serviceUUIDBytes, null), SSRC);
+//	}
 //
-//		// Pad with leading zeros 
-//		while (hexString.length() < 32) {
-//			hexString.insert(0, '0');
-//		}
+//	public ActiveStreamKey(Tuple2<UUID, Long> tuple) {
+//		super(tuple);
+//	}
 //
-//		return hexString.toString();
+//	public byte[] getServiceUUIDBytes() {
+//		return UUIDAdapter.toBytesOrDefault(this.v1, null);
+//	}
+//
+//	public UUID getServiceUUID() {
+//		return this.v1;
+//	}
+//
+//	public Long getSSRC() {
+//		return this.v2;
 //	}
 //}

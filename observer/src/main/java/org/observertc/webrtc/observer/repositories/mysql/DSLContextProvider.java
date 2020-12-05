@@ -26,8 +26,7 @@ import org.jooq.RecordMapperProvider;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
-import org.observertc.webrtc.observer.HikariConfiguration;
-import org.observertc.webrtc.observer.JooqConfiguration;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +37,7 @@ import org.slf4j.LoggerFactory;
 public class DSLContextProvider implements IDSLContextProvider {
 	private static Logger logger = LoggerFactory.getLogger(DSLContextProvider.class);
 
-	private static HikariDataSource makeDataSource(HikariConfiguration hikariConfiguration) {
+	private static HikariDataSource makeDataSource(ObserverConfig.DatabaseConfig hikariConfiguration) {
 		HikariConfig jdbcConfig = new HikariConfig();
 		jdbcConfig.setPoolName(hikariConfiguration.poolName);
 		jdbcConfig.setMaximumPoolSize(hikariConfiguration.maxPoolSize);
@@ -72,7 +71,7 @@ public class DSLContextProvider implements IDSLContextProvider {
 		throw new RuntimeException(exception);
 	}
 
-	private static Configuration getJooqConfiguration(DataSource dataSource, JooqConfiguration jooqConfiguration,
+	private static Configuration getJooqConfiguration(DataSource dataSource, ObserverConfig.DatabaseConfig jooqConfiguration,
 													  RecordMapperProvider recordMapperProvider) {
 		DefaultConfiguration result = new DefaultConfiguration();
 		switch (jooqConfiguration.dialect.toLowerCase()) {
@@ -89,10 +88,10 @@ public class DSLContextProvider implements IDSLContextProvider {
 
 	private final Configuration configuration;
 
-	public DSLContextProvider(HikariConfiguration hikariConfiguration, JooqConfiguration jooqConfiguration,
+	public DSLContextProvider(ObserverConfig.DatabaseConfig config,
 							  RecordMapperProvider recordMapperProvider) {
-		DataSource dataSource = makeDataSource(hikariConfiguration);
-		this.configuration = getJooqConfiguration(dataSource, jooqConfiguration, recordMapperProvider);
+		DataSource dataSource = makeDataSource(config);
+		this.configuration = getJooqConfiguration(dataSource, config, recordMapperProvider);
 	}
 
 	@Override

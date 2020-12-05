@@ -37,8 +37,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ReportSink;
-import org.observertc.webrtc.observer.StreamsEvaluatorsConfig;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,11 +57,11 @@ public class PCObserver implements Observer<ObservedPCS> {
 	private AtomicBoolean completedHolder = new AtomicBoolean(false);
 	private AtomicReference<Throwable> throwableHolder = new AtomicReference<>();
 	private Disposable disposable;
-	private final StreamsEvaluatorsConfig config;
+	private final ObserverConfig.PCObserverConfig config;
 
 	public PCObserver(
 			@Named(TaskExecutors.MESSAGE_CONSUMER) ExecutorService executorService,
-			StreamsEvaluatorsConfig config,
+			ObserverConfig.PCObserverConfig config,
 			ActivePCsEvaluator activePCsEvaluator,
 			NewPCEvaluator newPCEvaluator,
 			ExpiredPCsEvaluator expiredPCsEvaluator,
@@ -108,12 +108,6 @@ public class PCObserver implements Observer<ObservedPCS> {
 	@Override
 	public void onSubscribe(@NonNull Disposable d) {
 		this.disposable = d;
-//		this.worker.schedulePeriodically(
-//				this::send,
-//				this.config.mediaStreamUpdatesFlushInS,
-//				this.config.mediaStreamUpdatesFlushInS,
-//				TimeUnit.SECONDS
-//		);
 	}
 
 	@Override

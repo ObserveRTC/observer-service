@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories.mysql;
+package org.observertc.webrtc.observer.repositories;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Singleton;
-import org.observertc.webrtc.observer.EvaluatorsConfig;
-import org.observertc.webrtc.observer.ServiceRepositoryConfiguration;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +31,7 @@ public class ServicesRepository {
 	private final Map<UUID, String> serviceMap = new HashMap<>();
 	private final String defaultServiceName;
 
-	public ServicesRepository(EvaluatorsConfig evaluatorsConfig,
-							  List<ServiceRepositoryConfiguration> services) {
+	public ServicesRepository(ObserverConfig.OutboundReportsConfig evaluatorsConfig) {
 		this.defaultServiceName = evaluatorsConfig.defaultServiceName;
 	}
 

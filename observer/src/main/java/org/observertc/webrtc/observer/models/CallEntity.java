@@ -61,11 +61,6 @@ public class CallEntity implements Portable {
 	public String marker;
 
 	@Override
-	public String toString() {
-		return ObjectToString.toString(this);
-	}
-
-	@Override
 	public int getFactoryId() {
 		return EntityFactory.FACTORY_ID;
 	}
@@ -101,5 +96,10 @@ public class CallEntity implements Portable {
 			this.initiated = reader.readLong(FINISHED_FIELD_NAME);
 		}
 		this.marker = reader.readUTF(MARKER_FIELD_NAME);
+	}
+
+	@Override
+	public String toString() {
+		return ObjectToString.toString(this);
 	}
 }

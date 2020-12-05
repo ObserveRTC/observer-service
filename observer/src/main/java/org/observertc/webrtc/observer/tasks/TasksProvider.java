@@ -26,14 +26,14 @@ public class TasksProvider {
 	private final Provider<CallInitializerTask> callInitializerTaskProvider;
 	private final Provider<PeerConnectionJoinerTask> peerConnectionJoinerTaskProvider;
 	private final Provider<PeerConnectionDetacherTask> peerConnectionDetacherTaskProvider;
-	private final Provider<PeerConnectionsUpdaterTask> peerConnectionsUpdaterTaskProvider;
+	private final Provider<PeerConnectionsUpdaterTask2> peerConnectionsUpdaterTaskProvider;
 
 	public TasksProvider(Provider<CallFinderTask> callFinderTaskProvider,
 						 Provider<CallFinisherTask> callFinisherTaskProvider,
 						 Provider<CallInitializerTask> callInitializerTaskProvider,
 						 Provider<PeerConnectionJoinerTask> peerConnectionJoinerTaskProvider,
 						 Provider<PeerConnectionDetacherTask> peerConnectionDetacherTaskProvider,
-						 Provider<PeerConnectionsUpdaterTask> peerConnectionsUpdaterTaskProvider
+						 Provider<PeerConnectionsUpdaterTask2> peerConnectionsUpdaterTaskProvider
 	) {
 		this.callFinderTaskProvider = callFinderTaskProvider;
 		this.peerConnectionDetacherTaskProvider = peerConnectionDetacherTaskProvider;
@@ -55,7 +55,7 @@ public class TasksProvider {
 		return this.callFinisherTaskProvider.get();
 	}
 
-	public PeerConnectionsUpdaterTask providePeerConnectionsUpdaterTask() {
+	public PeerConnectionsUpdaterTask2 providePeerConnectionsUpdaterTask() {
 		return this.peerConnectionsUpdaterTaskProvider.get();
 	}
 

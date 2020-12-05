@@ -16,28 +16,31 @@
 
 package org.observertc.webrtc.observer.monitors;
 
+import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import javax.inject.Singleton;
 
-@Singleton
-public class MonitorProvider {
-	private static final String FLAW_METRIC_NAME = "flaws";
+public class SessionMonitor {
 
 	private final MeterRegistry meterRegistry;
+	private final Counter added;
+	private final Counter removed;
 
-	public MonitorProvider(
-			MeterRegistry meterRegistry
-	) {
+	public SessionMonitor(MeterRegistry meterRegistry, String name, String metricsAddedSuffix, String metricsRemovedSuffix) {
 		this.meterRegistry = meterRegistry;
+		this.added = this.meterRegistry.counter(String.format("%s-%s", name, metricsAddedSuffix));
+		this.removed = this.meterRegistry.counter(String.format("%s-%s", name, metricsRemovedSuffix));
 	}
 
-	public FlawMonitor makeFlawMonitorFor(String tagValue) {
-		return new FlawMonitor(this.meterRegistry)
-				.withTag(FLAW_METRIC_NAME, tagValue);
+	public SessionMonitor(MeterRegistry meterRegistry, String name) {
+		this(meterRegistry, name, "added", "removed");
 	}
 
-	public SessionMonitor makeWebsocketSessionMonitor(String name) {
-		return new SessionMonitor(this.meterRegistry, name, "opened", "removed");
+	public void added(String sessionId) {
+		this.added.increment();
+	}
+
+	public void removed(String sessionId) {
+		this.removed.increment();
 	}
 
 }

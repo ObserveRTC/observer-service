@@ -22,12 +22,6 @@ import org.observertc.webrtc.common.ObjectToString;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
-	public enum ActiveEngine {
-		HAZELCAST,
-		DATABASE
-	}
-
-	public String activeEngine = ActiveEngine.HAZELCAST.name();
 
 	public HazelcastConfig hazelcast;
 
@@ -35,13 +29,24 @@ public class ObserverConfig {
 
 	public KafkaTopicsConfiguration kafkaTopics;
 
+	public PCObserverConfig pcObserver;
+
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
 	}
 
+	@ConfigurationProperties("pcObserver")
+	public static class PCObserverConfig {
+		public int peerConnectionMaxIdleTimeInS = 60;
+		public int mediaStreamUpdatesFlushInS = 15;
+		public int mediaStreamsBufferNums = 0; // means it will be determined automatically
+		public int mediaStreamsBufferDebounceTimeInMs = 1000;
+	}
+
 	@ConfigurationProperties("outboundsReports")
 	public static class OutboundReportsConfig {
+		public String defaultServiceName = "defaultServiceName";
 		public boolean reportOutboundRTPs = true;
 		public boolean reportInboundRTPs = true;
 		public boolean reportRemoteInboundRTPs = true;
@@ -86,22 +91,13 @@ public class ObserverConfig {
 	@ConfigurationProperties("database")
 	public class DatabaseConfig {
 
-		public boolean enabled = false;
-
 		public String poolName = "webrtc-observer";
-
 		public int maxPoolSize = 100;
-
 		public int minIdle = 10;
-
 		public String username = "root";
-
 		public String password = "password";
-
-		public String jdbcURL;
-
-		public String jdbcDriver;
-
+		public String jdbcURL = "jdbc:mysql://localhost:3306/WebRTCObserver";
+		public String jdbcDriver = "com.mysql.cj.jdbc.Driver";
 		public String dialect = SQLDialect.MYSQL.getName();
 
 		@Override

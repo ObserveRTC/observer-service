@@ -19,7 +19,6 @@ package org.observertc.webrtc.observer.tasks;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Completable;
 import java.util.Objects;
-import javax.inject.Provider;
 import javax.validation.constraints.NotNull;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
@@ -52,8 +51,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 
 
 	public PeerConnectionJoinerTask(
-			RepositoryProvider repositoryProvider,
-			Provider<FencedLockAcquirer> lockProvider
+			RepositoryProvider repositoryProvider
 	) {
 		super();
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();

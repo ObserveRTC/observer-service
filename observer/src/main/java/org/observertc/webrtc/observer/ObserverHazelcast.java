@@ -39,7 +39,7 @@ public class ObserverHazelcast {
 
 	private final HazelcastInstance instance;
 
-	public ObserverHazelcast(ObserverHazelcastConfig observerHazelcastConfig) {
+	public ObserverHazelcast(ObserverConfig.HazelcastConfig observerHazelcastConfig) {
 		Config config = this.makeConfig(observerHazelcastConfig);
 		this.instance = Hazelcast.newHazelcastInstance(config);
 	}
@@ -67,8 +67,8 @@ public class ObserverHazelcast {
 		}
 	}
 
-	private Config makeConfig(ObserverHazelcastConfig observerHazelcastConfig) {
-		String configPath = observerHazelcastConfig.instanceConfigFile;
+	private Config makeConfig(ObserverConfig.HazelcastConfig observerHazelcastConfig) {
+		String configPath = observerHazelcastConfig.configFile;
 		// From ClassLoader, all paths are "absolute" already - there's no context
 // from which they could be relative. Therefore you don't need a leading slash.
 

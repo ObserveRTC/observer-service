@@ -46,11 +46,6 @@ public class SynchronizationSourceEntity implements Portable {
 	public Long SSRC;
 
 	@Override
-	public String toString() {
-		return ObjectToString.toString(this);
-	}
-
-	@Override
 	public int getFactoryId() {
 		return EntityFactory.FACTORY_ID;
 	}
@@ -73,4 +68,10 @@ public class SynchronizationSourceEntity implements Portable {
 		this.serviceUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(SERVICE_UUID_FIELD_NAME), null);
 		this.SSRC = reader.readLong(SSRC_FIELD_NAME);
 	}
+
+	@Override
+	public String toString() {
+		return ObjectToString.toString(this);
+	}
+
 }
