@@ -14,45 +14,52 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.samples;
+package org.observertc.webrtc.observer.evaluators;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
-import org.observertc.webrtc.common.ObjectToString;
-import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 
-public class ObservedPCS {
+class PCState {
 
-
-	public static ObservedPCS of(UUID serviceUUID,
-								 String mediaUnit,
-								 UUID peerConnectionUUID,
-								 PeerConnectionSample peerConnectionSample,
-								 String timeZoneID,
-								 String serviceName,
-								 String marker,
-								 Long timestamp) {
-		ObservedPCS result = new ObservedPCS();
+	public static PCState of(
+			UUID serviceUUID,
+			UUID peerConnectionUUID,
+			Long created,
+			String browserID,
+			String callName,
+			String timeZoneID,
+			String userId,
+			String mediaUnitID,
+			String serviceName,
+			String marker
+	) {
+		PCState result = new PCState();
 		result.serviceUUID = serviceUUID;
-		result.mediaUnitId = mediaUnit;
-		result.peerConnectionUUID = peerConnectionUUID;
-		result.peerConnectionSample = peerConnectionSample;
-		result.timeZoneID = timeZoneID;
-		result.timestamp = timestamp;
 		result.serviceName = serviceName;
+		result.mediaUnitID = mediaUnitID;
+		result.peerConnectionUUID = peerConnectionUUID;
+		result.created = result.updated = created;
+		result.browserID = browserID;
+		result.timeZoneID = timeZoneID;
+		result.callName = callName;
+		result.userId = userId;
 		result.marker = marker;
 		return result;
 	}
 
+	public Set<Long> SSRCs = new HashSet<>();
 	public UUID serviceUUID;
-	public String mediaUnitId;
-	public UUID peerConnectionUUID;
-	public PeerConnectionSample peerConnectionSample;
-	public String timeZoneID;
-	public Long timestamp;
 	public String serviceName;
+	public String mediaUnitID;
+	public UUID peerConnectionUUID;
+	public Long created;
+	public Long updated;
+	public String browserID;
+	public String timeZoneID;
+	public String callName;
+	public String userId;
 	public String marker;
 
-	public String toString() {
-		return ObjectToString.toString(this);
-	}
+
 }

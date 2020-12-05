@@ -25,16 +25,6 @@ endpoints:
     sensitive: false
 
 ---
-services:
-  something:
-    uuids:
-      - "d0989cd8-3261-4d7e-94d2-497e36a01e56"
-
-#---
-#observer:
-#  useClientTimestamps: ${USE_CLIENT_TIMESTAMPS:False}
-#
----
 kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
@@ -48,12 +38,20 @@ kafkaTopics:
     onCreateReplicateFactor: 1
     retentionTimeInMs: 86400000
 ---
-# /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic webExtrAppSamples --partitions 12 --replication-factor 1
-# /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReports --partitions 6 --replication-factor 1
-# /bin/kafka-topics.sh --create --zookeeper docker_zookeeper:2181 --topic observertcReportDrafts --partitions 4 --replication-factor 1
+# A static repository for mapping service UUIDs
+serviceRepository:
+  defaultServiceName: "serviceName"
+  mappings:
+    - uuid: "UUID"
+      name: "name"
+
+---
+# Configration for the reportsink
+reportSink:
+  outboundReports:
+    something: False
 
 outboundReports:
-  defaultServiceName: "serviceName"
   reportOutboundRTPs: True
   reportInboundRTPs: True
   reportRemoteInboundRTPs: True
@@ -91,7 +89,58 @@ evaluators:
     reportUserMediaErrors: ${REPORT_USER_MEDIA_ERROR:True}
     sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
 ---
+observer:
+  evaluators:
+    activePeerConnections:
+      expirationTimeInS: 300
+      minEnforcedTimeInS: 60
+    newPeerConnections:
+      retryNumber: 3
+    expiredPeerConnections:
+      retryNumber: 3
+      
+  kafkaTopics:
+    runAdminClient: False
+    createIfNotExists: False
+    reports:
+      topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
+      onCreatePartitionNums: 30
+      onCreateReplicateFactor: 1
+      retentionTimeInMs: 86400000
+  reportsink:
+    enabled: False
+  outboundReports:
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
+    reportTracks: True
+    reportMediaSources: True
+    reportCandidatePairs: True
+    reportLocalCandidates: True
+    reportRemoteCandidates: True
+    reportUserMediaErrors: True
+  repositories:
+    active: "database"
+    hazelcast:
+      configfile: "classpath:hazelcast.yaml"
+    database:
+      username: root
+      password: password
+      minIdleInMs: 100
+      timeout: 1000
+      jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET&useLegacyDatetimeCode=false`}
+      jdbcDriver: "com.mysql.cj.jdbc.Driver"
+      maxPoolSize: 100
+      poolname: webrtc_observer
+      dialect: MySQL
+---
+# Configuration relevant for usinng hazelcast for the observer
+observerHazelcast:
+  enabled: True
+  instanceConfigFile: "classpath:hazelcast.yaml"
+---
 hikari:
+  enabled: False
   username: ${DATABASE_USERNAME:root}
   password: ${DATABASE_PASSWORD:password}
   minIdleInMs: ${CONNECTION_POOL_MIN_IDLE_IN_MS:100}

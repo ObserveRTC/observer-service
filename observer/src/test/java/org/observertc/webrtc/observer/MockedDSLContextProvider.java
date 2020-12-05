@@ -25,7 +25,7 @@ import org.jooq.impl.DefaultConfiguration;
 import org.jooq.tools.jdbc.MockConnection;
 import org.jooq.tools.jdbc.MockDataProvider;
 import org.jooq.tools.jdbc.MockFileDatabase;
-import org.observertc.webrtc.observer.repositories.IDSLContextProvider;
+import org.observertc.webrtc.observer.repositories.mysql.IDSLContextProvider;
 import org.observertc.webrtc.observer.repositories.mappers.RecordMapperProviderImpl;
 
 public class MockedDSLContextProvider implements IDSLContextProvider {

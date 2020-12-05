@@ -14,30 +14,23 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.hazelcast;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import javax.inject.Singleton;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class ServicesRepository {
-	private static final Logger logger = LoggerFactory.getLogger(ServicesRepository.class);
+public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
 
-	private final Map<UUID, String> serviceMap = new HashMap<>();
-	private final String defaultServiceName;
+	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
 
-	public ServicesRepository(ObserverConfig.OutboundReportsConfig evaluatorsConfig) {
-		this.defaultServiceName = evaluatorsConfig.defaultServiceName;
+	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
+
+	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
+		super(observerHazelcast, HAZELCAST_MAP_KEY);
+
 	}
-
-	public String getServiceName(UUID serviceUUID) {
-		String result = this.serviceMap.getOrDefault(serviceUUID, this.defaultServiceName);
-		return result;
-	}
-
 }

@@ -118,6 +118,12 @@ dependencies {
 //    compile 'com.google.cloud:google-cloud-bigquery:1.116.3'
     // the main library
 
+    // ------------- Hazelcast -----------
+//    implementation("io.micronaut.cache:micronaut-cache-hazelcast:2.1.0")
+    // https://mvnrepository.com/artifact/com.hazelcast/hazelcast
+    compile group: 'com.hazelcast', name: 'hazelcast', version: '4.1'
+
+
     // ------------- RXJava --------------
     compile group: 'io.reactivex.rxjava3', name: 'rxjava', version: "${rxjavaVersion}"
 

@@ -21,6 +21,8 @@ import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.runtime.Micronaut;
 import java.time.temporal.ChronoUnit;
 import org.observertc.webrtc.common.Sleeper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @TypeHint(
@@ -35,6 +37,7 @@ import org.observertc.webrtc.common.Sleeper;
 		}
 )
 public class Application {
+	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	private static final String INITIAL_WAIT_IN_S = "INITIAL_WAITING_TIME_IN_S";
 
 	public static ApplicationContext context;
@@ -42,5 +45,8 @@ public class Application {
 	public static void main(String[] args) {
 		Sleeper.makeFromSystemEnv(INITIAL_WAIT_IN_S, ChronoUnit.SECONDS).run();
 		context = Micronaut.run(Application.class);
+		logger.info(context.getBean(ObserverConfig.class).toString());
+
 	}
+
 }

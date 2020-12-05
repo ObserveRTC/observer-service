@@ -42,7 +42,8 @@ public class KafkaTopicCreator
 	private final boolean runAdminClient;
 	private final Set<String> checkedTopics;
 
-	public KafkaTopicCreator(KafkaDefaultConfiguration configuration, KafkaTopicsConfiguration kafkaTopicsConfiguration) {
+	public KafkaTopicCreator(KafkaDefaultConfiguration configuration,
+							 ObserverConfig.KafkaTopicsConfiguration kafkaTopicsConfiguration) {
 		this.kafkaConfiguration = configuration;
 		this.checkedTopics = Collections.newSetFromMap(new ConcurrentHashMap<>());
 		this.createIfNotExists = kafkaTopicsConfiguration.createIfNotExists;
@@ -51,7 +52,7 @@ public class KafkaTopicCreator
 
 	//	@Override
 //	@Async
-	public void execute(KafkaTopicsConfiguration.TopicConfig topicConfig) {
+	public void execute(ObserverConfig.KafkaTopicsConfiguration.ReportsConfig topicConfig) {
 		if (this.checkedTopics.contains(topicConfig.topicName)) {
 			logger.info("{} topic is already checked", topicConfig.topicName);
 			return;
