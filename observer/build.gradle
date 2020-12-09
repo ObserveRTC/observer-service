@@ -3,7 +3,8 @@ plugins {
     id "application"
     id "net.ltgt.apt-eclipse" version "0.21"
     id 'com.google.cloud.tools.jib' version '1.4.0'
-//    id 'groovy'
+    id "com.adarshr.test-logger" version "2.0.0"
+    id 'groovy'
 //    id "nu.studer.jooq" version "4.2"
 }
 
@@ -13,8 +14,10 @@ repositories {
     maven { url 'https://packages.confluent.io/maven/' }
 }
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+java {
+    sourceCompatibility = JavaVersion.toVersion('11')
+    targetCompatibility = JavaVersion.toVersion('11')
+}
 
 version "$observerVersion"
 group "observertc"
@@ -44,6 +47,11 @@ task buildDockerImage(type: Exec) {
     commandLine "docker build . -t ${project.name}:latest"
 
 
+}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
 }
 
 dependencies {
@@ -80,15 +88,18 @@ dependencies {
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautRuntimeOSXVerrsion")
 
     testImplementation(platform("org.testcontainers:testcontainers-bom:1.14.3"))
+    testImplementation("io.micronaut:micronaut-inject-groovy")
+    testImplementation("org.spockframework:spock-core") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.14.3"))
     testCompile "org.testcontainers:testcontainers"
     testCompile "org.testcontainers:junit-jupiter"
-    testCompile "org.testcontainers:mysql:1.15.0"
     testRuntimeOnly "com.h2database:h2"
 
     // ------------ Micrometer integration ---------
     compile "io.micronaut.configuration:micronaut-micrometer-core:$micraonutMicrometerCoreVersion"
     compile "io.micronaut:micronaut-management:2.1.2"
-//    compile "io.micronaut.configuration:micronaut-micrometer-core"
     compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus:$micronautMicrometerPrometheusVersion"
 
     // ------------ Datasource integration ---------
@@ -100,12 +111,6 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
     runtime "mysql:mysql-connector-java:${mysqlVersion}"
 
-    // ------------ Tracing -----------------
-//    compile "io.micronaut:micronaut-tracing"
-//    runtime 'io.zipkin.brave:brave-instrumentation-http'
-//    runtime 'io.zipkin.reporter2:zipkin-reporter'
-//    compile 'io.opentracing.brave:brave-opentracing'
-
     // ------------ Kubernetes --------------
 //    compile "io.micronaut.kubernetes:micronaut-kubernetes-discovery-client:$micronautK8sVersion"
 
@@ -114,13 +119,7 @@ dependencies {
 //    implementation "io.confluent:kafka-avro-serializer:5.4.0"
 //    implementation "io.confluent:kafka-streams-avro-serde:5.4.0"
 
-    // ------------ Datawarehouse utilities ------------
-//    compile 'com.google.cloud:google-cloud-bigquery:1.116.3'
-    // the main library
-
     // ------------- Hazelcast -----------
-//    implementation("io.micronaut.cache:micronaut-cache-hazelcast:2.1.0")
-    // https://mvnrepository.com/artifact/com.hazelcast/hazelcast
     compile group: 'com.hazelcast', name: 'hazelcast', version: '4.1'
 
 
@@ -128,7 +127,7 @@ dependencies {
     compile group: 'io.reactivex.rxjava3', name: 'rxjava', version: "${rxjavaVersion}"
 
     // https://mvnrepository.com/artifact/org.jeasy/easy-random
-    implementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
+    testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
 
 }
 
@@ -147,8 +146,48 @@ shadowJar {
 
 run.classpath += configurations.developmentOnly
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+//tasks.withType(JavaCompile) {
+//    options.encoding = "UTF-8"
+//    options.compilerArgs.add('-parameters')
+//}
+
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    options.compilerArgs.add('-parameters')
+    options.compilerArgs.addAll([
+            '-parameters',
+            // enables incremental compilation
+            '-Amicronaut.processing.incremental=true',
+            '-Amicronaut.processing.annotations=org.observertc.webrtc.observer.*',
+            "-Amicronaut.processing.group=$project.group",
+            "-Amicronaut.processing.module=$project.name",
+    ])
 }
 
+tasks.withType(JavaExec) {
+    classpath += configurations.developmentOnly
+    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+    if (gradle.startParameter.continuous) {
+        systemProperties(
+                'micronaut.io.watch.restart': 'true',
+                'micronaut.io.watch.enabled': 'true',
+                "micronaut.io.watch.paths": "src/main"
+        )
+    }
+}
+
+testlogger {
+    theme 'standard-parallel'
+    showFullStackTraces true
+    showStandardStreams true
+    showPassedStandardStreams false
+    showSkippedStandardStreams false
+    showFailedStandardStreams true
+}
+
+task openApiProperties(type: WriteProperties) {
+    outputFile("${project.projectDir}/openapi.properties")
+    properties(
+            'swagger-ui.enabled': true,
+            'micronaut.openapi.expand.api.version': version
+    )
+}

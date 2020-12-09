@@ -19,16 +19,14 @@ package org.observertc.webrtc.observer.tasks;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Completable;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+import java.util.Queue;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
-import org.jooq.lambda.tuple.Tuple2;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
@@ -53,13 +51,11 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsUpdaterTask.class);
 
 	private final SynchronizationSourcesRepository SSRCRepository;
-	private Map<UUID, Set<Long>> peerConnectionsSSRCs = new HashMap<>();
-	private Map<UUID, UUID> peerConnectionsServiceUUID = new HashMap<>();
 	private State state = State.CREATED;
-	private Map<UUID, Set<String>> pcsStreamKeys = new HashMap<>();
-	private Map<String, Tuple2<UUID, Long>> missingStreamKeys;
-	private Map<String, SynchronizationSourceEntity> foundEntities;
-	private Map<String, SynchronizationSourceEntity> missingEntities;
+	private Map<String, UUID> streamKeysToPC = new HashMap<>();
+	private Map<String, SynchronizationSourceEntity> selectedEntities = new HashMap<>();
+	private Map<String, SynchronizationSourceEntity> foundEntities = new HashMap<>();
+	private Map<String, SynchronizationSourceEntity> missingEntities = new HashMap<>();
 
 	public PeerConnectionsUpdaterTask(
 			RepositoryProvider repositoryProvider
@@ -68,16 +64,18 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 		this.SSRCRepository = repositoryProvider.getSSRCRepository();
 	}
 
-	public PeerConnectionsUpdaterTask addStream(@NotNull UUID serviceUUD, @NotNull UUID pcUUID, @NotNull Set<Long> SSRCs) {
-		this.peerConnectionsServiceUUID.put(pcUUID, serviceUUD);
-		this.peerConnectionsSSRCs.put(pcUUID, SSRCs);
+
+	public PeerConnectionsUpdaterTask addStream(@NotNull UUID serviceUUD, @NotNull UUID pcUUID, @NotNull Long SSRC) {
+		String key = SynchronizationSourcesRepository.getKey(serviceUUD, SSRC);
+		SynchronizationSourceEntity entity = SynchronizationSourceEntity.of(serviceUUD, SSRC, null);
+		this.selectedEntities.put(key, entity);
+		this.streamKeysToPC.put(key, pcUUID);
 		return this;
 	}
 
-
 	@Override
 	protected Completable doPerform() {
-		if (this.peerConnectionsSSRCs.size() < 1) {
+		if (this.selectedEntities.size() < 1) {
 			logger.info("No PC has selected to be updated");
 			return Completable.complete();
 		}
@@ -90,7 +88,7 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 		switch (this.state) {
 			default:
 			case CREATED:
-				this.updateExistingSSRCs();
+				this.selectEntities();
 				this.state = State.EXISTING_ENTITIES_ARE_UPDATED;
 			case EXISTING_ENTITIES_ARE_UPDATED:
 				this.addMissingSSRCs();
@@ -123,75 +121,59 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 		}
 	}
 
-	private void updateExistingSSRCs() {
-		Map<String, Tuple2<UUID, Long>> mappedStreamKeys = new HashMap<>();
-		Iterator<Map.Entry<UUID, UUID>> it = this.peerConnectionsServiceUUID.entrySet().iterator();
+	private void selectEntities() {
+		Map<String, SynchronizationSourceEntity> foundEntities = this.SSRCRepository.findAll(this.selectedEntities.keySet());
+		Iterator<String> it = this.selectedEntities.keySet().iterator();
 		for (; it.hasNext(); ) {
-			Map.Entry<UUID, UUID> entry = it.next();
-			UUID pcUUID = entry.getKey();
-			UUID serviceUUID = entry.getValue();
-			Set<Long> SSRCs = this.peerConnectionsSSRCs.get(pcUUID);
-			for (Long SSRC : SSRCs) {
-				String streamKey = SynchronizationSourcesRepository.getKey(serviceUUID, SSRC);
-				mappedStreamKeys.put(streamKey, new Tuple2<>(pcUUID, SSRC));
-				Set<String> streamKeys = this.pcsStreamKeys.get(pcUUID);
-				if (streamKeys == null) {
-					streamKeys = new HashSet<>();
-					this.pcsStreamKeys.put(pcUUID, streamKeys);
-				}
-				streamKeys.add(streamKey);
+			String key = it.next();
+			SynchronizationSourceEntity selectedEntity = this.selectedEntities.get(key);
+			SynchronizationSourceEntity foundEntity = foundEntities.get(key);
+			if (Objects.nonNull(foundEntity)) {
+				this.foundEntities.put(key, foundEntity);
+			} else if (Objects.nonNull(selectedEntity)) {
+				this.missingEntities.put(key, selectedEntity);
+			} else {
+				logger.warn("Thee key for founded entities not matching with selected one. {} for pc {} is dropped",
+						selectedEntity, this.streamKeysToPC.get(key));
+				continue;
 			}
 		}
-		this.foundEntities = this.SSRCRepository.findAll(mappedStreamKeys.keySet());
-		this.missingStreamKeys =
-				mappedStreamKeys.entrySet().stream()
-						.filter(kv -> foundEntities.get(kv.getKey()) == null)
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	private void addMissingSSRCs() {
-		if (this.missingStreamKeys.size() < 1) {
+		if (this.missingEntities.size() < 1) {
 			return;
 		}
-		this.missingEntities = new HashMap<>();
-		Iterator<Map.Entry<String, Tuple2<UUID, Long>>> it = this.missingStreamKeys.entrySet().iterator();
-		for (; it.hasNext(); ) {
-			Map.Entry<String, Tuple2<UUID, Long>> entry = it.next();
-			String streamKey = entry.getKey();
-			Tuple2<UUID, Long> tuple = entry.getValue();
-			UUID pcUUID = tuple.v1;
-			Long SSRC = tuple.v2;
-			Set<String> belongingKeys = this.pcsStreamKeys.get(pcUUID);
-			if (belongingKeys == null) {
-				logger.warn("No existing key belongs to pc {}. SSRC {} s not going to be added", pcUUID, SSRC);
+		Queue<SynchronizationSourceEntity> missingEntities = new LinkedList<>();
+		this.missingEntities.values().stream().forEach(missingEntities::add);
+		while (!missingEntities.isEmpty()) {
+			SynchronizationSourceEntity missingEntity = missingEntities.poll();
+			String key = SynchronizationSourcesRepository.getKey(missingEntity.serviceUUID, missingEntity.SSRC);
+			UUID pcUUID = this.streamKeysToPC.get(key);
+			if (Objects.isNull(pcUUID)) {
+				logger.warn("Have not found pcUUID for entity {}", missingEntity);
 				continue;
 			}
-			Optional<SynchronizationSourceEntity> belongingEntityHolder =
-					belongingKeys.stream().map(foundEntities::get)
-							.filter(Objects::nonNull)
-							.filter(s -> s.callUUID != null)
-							.findFirst();
-			if (!belongingEntityHolder.isPresent()) {
-				logger.warn("No existing SSRC entity has found with a valid call UUID for pc {}, SSRC {}. this SSRC is not going to be " +
-						"added", pcUUID, SSRC);
+			Optional<UUID> callUUIDHolder = this.foundEntities.entrySet()
+					.stream()
+					.filter(entry -> this.streamKeysToPC.get(entry.getKey()).equals(pcUUID))
+					.map(entry -> entry.getValue().callUUID)
+					.findFirst();
+			if (!callUUIDHolder.isPresent()) {
+				logger.warn("Did not found any callUUID for pcUUID {}, and sync entity {}", pcUUID, missingEntity);
 				continue;
 			}
-			UUID callUUID = belongingEntityHolder.get().callUUID;
-			missingEntities.put(streamKey, SynchronizationSourceEntity.of(
-					this.peerConnectionsServiceUUID.get(pcUUID),
-					SSRC,
-					callUUID
-			));
+			this.selectedEntities.get(key).callUUID = callUUIDHolder.get();
 		}
-		this.SSRCRepository.saveAll(missingEntities);
+		this.SSRCRepository.saveAll(this.selectedEntities);
 	}
 
 	private void removeMissingSSRCs(Throwable exceptionInOperation) {
-		this.missingStreamKeys.keySet().stream().forEach(this.SSRCRepository::rxDelete);
+		this.SSRCRepository.deleteAll(this.missingEntities.keySet());
 	}
 
 	private void rollbackUpdateExistingSSRCs(Throwable exceptionInOperation) {
-		// That we should and cannot
+		// That we should not and we cannot
 	}
 
 	@Override
@@ -199,5 +181,9 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 		super.validate();
 	}
 
-
+//	private class PCItem {
+//		public Long SSRC;
+//		public UUID pcUUID;
+//		public UUID serviceUUID;
+//	}
 }

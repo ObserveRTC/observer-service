@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.test.annotation.MockBean;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,7 +32,9 @@ public class ActivePCsEvaluatorTest {
 
 	@Inject
 	ActivePCsEvaluator evaluator;
-
+	
+	
+	
 	@Test
 	public void when_newMediaStreamAppears_then_joinedPCIsReported() {
 

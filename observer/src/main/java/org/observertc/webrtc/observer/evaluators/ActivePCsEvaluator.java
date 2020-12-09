@@ -32,7 +32,7 @@ import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
-import org.observertc.webrtc.observer.tasks.PeerConnectionsUpdaterTask2;
+import org.observertc.webrtc.observer.tasks.PeerConnectionsUpdaterTask;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +138,7 @@ public class ActivePCsEvaluator implements Observer<Map<UUID, PCState>> {
 	private void update(@NonNull Map<UUID, PCState> peerConnectionStates) {
 		AtomicReference<Throwable> error = new AtomicReference<>(null);
 		AtomicBoolean performed = new AtomicBoolean(false);
-		try (PeerConnectionsUpdaterTask2 task = this.tasksProvider.providePeerConnectionsUpdaterTask()) {
+		try (PeerConnectionsUpdaterTask task = this.tasksProvider.providePeerConnectionsUpdaterTask()) {
 			peerConnectionStates.values().stream().forEach(
 					pcState -> pcState.SSRCs.stream().forEach(ssrc ->
 							task.addStream(

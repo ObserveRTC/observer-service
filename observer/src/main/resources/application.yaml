@@ -90,6 +90,8 @@ evaluators:
     sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
 ---
 observer:
+  hazelcast:
+    configFile: "classpath:hazelcast.yaml"
   evaluators:
     activePeerConnections:
       expirationTimeInS: 300
@@ -98,7 +100,6 @@ observer:
       retryNumber: 3
     expiredPeerConnections:
       retryNumber: 3
-      
   kafkaTopics:
     runAdminClient: False
     createIfNotExists: False
@@ -107,8 +108,6 @@ observer:
       onCreatePartitionNums: 30
       onCreateReplicateFactor: 1
       retentionTimeInMs: 86400000
-  reportsink:
-    enabled: False
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True
@@ -119,37 +118,13 @@ observer:
     reportLocalCandidates: True
     reportRemoteCandidates: True
     reportUserMediaErrors: True
-  repositories:
-    active: "database"
-    hazelcast:
-      configfile: "classpath:hazelcast.yaml"
-    database:
-      username: root
-      password: password
-      minIdleInMs: 100
-      timeout: 1000
-      jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET&useLegacyDatetimeCode=false`}
-      jdbcDriver: "com.mysql.cj.jdbc.Driver"
-      maxPoolSize: 100
-      poolname: webrtc_observer
-      dialect: MySQL
----
-# Configuration relevant for usinng hazelcast for the observer
-observerHazelcast:
-  enabled: True
-  instanceConfigFile: "classpath:hazelcast.yaml"
----
-hikari:
-  enabled: False
-  username: ${DATABASE_USERNAME:root}
-  password: ${DATABASE_PASSWORD:password}
-  minIdleInMs: ${CONNECTION_POOL_MIN_IDLE_IN_MS:100}
-  timeout: ${CONNECTION_POOL_TIMEOUT_IN_MS:1000}
-  #  jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET`}
-  jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET&useLegacyDatetimeCode=false`}
-  jdbcDriver: ${JDBC_DRIVER:`com.mysql.cj.jdbc.Driver`}
-  maxPoolSize: ${CONNECTION_POOL_MAX_POOL_SIZE:100}
-  poolname: ${CONNECTION_POOL_NAME:webrtc_observer}
----
-jooq:
-  dialect: ${JOOQ_DIALECT:MySQL}
+  database:
+    username: root
+    password: password
+    minIdleInMs: 100
+    timeout: 1000
+    jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET&useLegacyDatetimeCode=false`}
+    jdbcDriver: "com.mysql.cj.jdbc.Driver"
+    maxPoolSize: 100
+    poolname: webrtc_observer
+    dialect: MySQL
