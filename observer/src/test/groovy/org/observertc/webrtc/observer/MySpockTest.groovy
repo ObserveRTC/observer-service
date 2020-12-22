@@ -14,33 +14,34 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.tasks;
-
-public abstract class TaskAbstract<T> implements AutoCloseable {
-	private volatile boolean executed = false;
-
-	public T perform() {
-		this.validate();
-		try {
-			return this.doPerform();
-		} catch (Exception ex) {
-			throw ex;
-		} finally {
-			this.executed = true;
-		}
-	}
-
-	protected abstract T doPerform();
+package org.observertc.webrtc.observer
 
 
-	@Override
-	public void close() {
+import spock.lang.Specification
+import spock.lang.Unroll
 
-	}
+public class MySpockTest extends Specification {
 
-	protected void validate() {
-		if (this.executed) {
-			throw new IllegalStateException("The task is already executed");
-		}
-	}
+//    MathService mathService
+    Service mathService = new Service();
+
+    public class Service {
+        public int compute(int num) {
+            return num * 4;
+        }
+    }
+
+    @Unroll
+    void "should compute #num times 4"() {
+        when:
+        def result = mathService.compute(num)
+
+        then:
+        result == expected
+
+        where:
+        num | expected
+        2   | 8
+        3   | 12
+    }
 }

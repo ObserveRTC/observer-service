@@ -29,6 +29,8 @@ public class ObserverConfig {
 
 	public KafkaTopicsConfiguration kafkaTopics;
 
+	public OutboundReportsConfig outboundReportsConfig;
+
 	public PCObserverConfig pcObserver;
 
 	@ConfigurationProperties("hazelcast")
