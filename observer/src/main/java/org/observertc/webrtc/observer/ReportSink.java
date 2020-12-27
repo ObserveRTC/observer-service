@@ -23,8 +23,13 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Future;
+import java.util.function.Function;
+
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
@@ -33,6 +38,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.jooq.lambda.tuple.Tuple2;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -49,10 +55,10 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 	private final DatumWriter<Report> datumWriter;
 	private final ByteArrayOutputStream outputStream;
 	private final Encoder encoder;
-	private final ObserverConfig.KafkaTopicsConfiguration.ReportsConfig config;
+	private final Function<Report, String> topicNameRouter;
 
 	public ReportSink(
-			ObserverConfig.KafkaTopicsConfiguration.ReportsConfig config,
+			ObserverConfig config,
 			@KafkaClient("reportProducer") Producer<UUID, byte[]> reportProducer,
 			MonitorProvider monitorProvider
 	) {
@@ -61,7 +67,26 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 		this.datumWriter = new SpecificDatumWriter<>(Report.SCHEMA$);
 		this.encoder = EncoderFactory.get().binaryEncoder(this.outputStream, null);
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass().getSimpleName());
-		this.config = config;
+
+		Map<UUID, String> topicRoutes = new HashMap<>();
+		if (Objects.nonNull(config.serviceMappings)) {
+			config.serviceMappings.stream()
+					.filter(smc -> Objects.nonNull(smc.forwardTopicName))
+					.forEach(smc -> {
+						smc.uuids.stream()
+						.forEach(
+							uuid -> topicRoutes.put(uuid, smc.forwardTopicName));
+			});
+		}
+
+		if (0 < topicRoutes.size()) {
+			this.topicNameRouter = report -> {
+				UUID serviceUUID = UUID.fromString(report.getServiceUUID());
+				return topicRoutes.getOrDefault(serviceUUID, config.outboundReports.defaultTopicName);
+			};
+		} else {
+			this.topicNameRouter = report -> config.outboundReports.defaultTopicName;
+		}
 	}
 
 	public Future<RecordMetadata> sendReport(UUID reportKey,
@@ -109,6 +134,7 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 
 	private Future<RecordMetadata> send(UUID key, Report report) {
 		this.outputStream.reset();
+
 		try {
 			this.datumWriter.write(report, encoder);
 		} catch (Exception e) {
@@ -135,9 +161,9 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 					.complete();
 			return null;
 		}
-
+		String topic = this.topicNameRouter.apply(report);
 		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(
-				this.config.topicName,
+				topic,
 				key,
 				out));
 	}

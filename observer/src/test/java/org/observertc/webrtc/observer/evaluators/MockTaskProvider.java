@@ -24,12 +24,12 @@ import org.observertc.webrtc.observer.tasks.TasksProvider;
 
 public class MockTaskProvider extends TasksProvider {
 	public MockTaskProvider() {
-		super(null, // CallFinder
-				null, // CallFinisher
-				null, // CallInitializer
-				null, // PeerConnectionJoiner
+		super(null,              // CallFinder
+				null,           // CallFinisher
+				null,          // CallInitializer
+				null,   // PeerConnectionJoiner
 				null, // PeerConnectionDetacher
-				null // PeerConnectionUpdater
+				null  // PeerConnectionUpdater
 		);
 	}
 

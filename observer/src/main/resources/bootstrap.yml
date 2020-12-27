@@ -1,0 +1,5 @@
+micronaut:
+  application:
+    name: observer
+  config-client:
+    enabled: true

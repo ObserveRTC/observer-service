@@ -16,20 +16,21 @@
 
 package org.observertc.webrtc.observer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import org.jooq.SQLDialect;
-import org.observertc.webrtc.common.ObjectToString;
+import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
+import org.observertc.webrtc.observer.common.ObjectToString;
+
+import java.util.*;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
 
 	public HazelcastConfig hazelcast;
 
-	public DatabaseConfig database;
-
-	public KafkaTopicsConfiguration kafkaTopics;
-
-	public OutboundReportsConfig outboundReportsConfig;
+	public OutboundReportsConfig outboundReports;
 
 	public PCObserverConfig pcObserver;
 
@@ -43,12 +44,12 @@ public class ObserverConfig {
 		public int peerConnectionMaxIdleTimeInS = 60;
 		public int mediaStreamUpdatesFlushInS = 15;
 		public int mediaStreamsBufferNums = 0; // means it will be determined automatically
-		public int mediaStreamsBufferDebounceTimeInMs = 1000;
 	}
 
-	@ConfigurationProperties("outboundsReports")
+	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
 		public String defaultServiceName = "defaultServiceName";
+		public String defaultTopicName = "reports";
 		public boolean reportOutboundRTPs = true;
 		public boolean reportInboundRTPs = true;
 		public boolean reportRemoteInboundRTPs = true;
@@ -65,46 +66,26 @@ public class ObserverConfig {
 		public boolean reportDetachedPeerConnections = true;
 	}
 
-	@ConfigurationProperties("kafkaTopics")
-	public static class KafkaTopicsConfiguration {
-		public boolean runAdminClient = false;
-		public boolean createIfNotExists = false;
+	public List<ServiceMappingConfiguration> serviceMappings = new ArrayList<>();
 
-		public ReportsConfig reports;
+	@EachProperty("serviceMappings")
+	public static class ServiceMappingConfiguration {
+		public String name;
+		public List<UUID> uuids = new ArrayList<>();
+		public String forwardTopicName = null;
 
-		public static class TopicConfig {
-			public String topicName;
-			public int onCreatePartitionNums;
-			public int onCreateReplicateFactor;
-			public long retentionTimeInMs = 604800_000; // 1 week
-		}
-
-		@ConfigurationProperties("reports")
-		public static class ReportsConfig extends TopicConfig {
-
+		public ServiceMappingConfiguration(@Parameter String name) {
+			this.name = name;
 		}
 
 		@Override
 		public String toString() {
-			return ObjectToString.toString(this);
-		}
-	}
-
-	@ConfigurationProperties("database")
-	public class DatabaseConfig {
-
-		public String poolName = "webrtc-observer";
-		public int maxPoolSize = 100;
-		public int minIdle = 10;
-		public String username = "root";
-		public String password = "password";
-		public String jdbcURL = "jdbc:mysql://localhost:3306/WebRTCObserver";
-		public String jdbcDriver = "com.mysql.cj.jdbc.Driver";
-		public String dialect = SQLDialect.MYSQL.getName();
-
-		@Override
-		public String toString() {
-			return ObjectToString.toString(this);
+			try {
+				return new ObjectMapper().writeValueAsString(this);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+				return super.toString();
+			}
 		}
 	}
 }

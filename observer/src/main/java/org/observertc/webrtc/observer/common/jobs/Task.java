@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        jcenter()
-        maven {
-            name "JCenter Gradle Plugins"
-            url "https://dl.bintray.com/gradle/gradle-plugins"
-        }
-    }
+package org.observertc.webrtc.observer.common.jobs;
+
+import java.util.Map;
+
+public interface Task {
+	String getName();
+
+	String getDescription();
+
+	void execute(Map<String, Map<String, Object>> results);
+
+	Map<String, Object> getResults();
 }
-rootProject.name = "WebRTC-Observer"
-include 'observer'
-
-
-

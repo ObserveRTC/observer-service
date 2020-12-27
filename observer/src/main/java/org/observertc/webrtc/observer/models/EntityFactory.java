@@ -19,7 +19,7 @@ package org.observertc.webrtc.observer.models;
 import com.hazelcast.nio.serialization.Portable;
 import com.hazelcast.nio.serialization.PortableFactory;
 import java.util.UUID;
-import org.observertc.webrtc.common.UUIDAdapter;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 
 public class EntityFactory implements PortableFactory {
 

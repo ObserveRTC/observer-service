@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "observer"
+spec:
+  selector:
+    matchLabels:
+      app: "observer"
+  template:
+    metadata:
+      labels:
+        app: "observer"
+    spec:
+      containers:
+        - name: "observer"
+          image: "gcr.io/observer/jib-image"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health/liveness
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "observer"
+spec:
+  selector:
+    app: "observer"
+  type: LoadBalancer
+  ports:
+    - protocol: "TCP"
+      port: 8080

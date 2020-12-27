@@ -21,8 +21,8 @@ import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import java.io.IOException;
 import java.util.UUID;
-import org.observertc.webrtc.common.ObjectToString;
-import org.observertc.webrtc.common.UUIDAdapter;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 
 public class SynchronizationSourceEntity implements Portable {
 

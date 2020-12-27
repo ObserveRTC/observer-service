@@ -25,6 +25,7 @@ import com.hazelcast.cp.CPSubsystem;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
@@ -46,6 +47,12 @@ public class ObserverHazelcast {
 
 	@PostConstruct
 	void setup() {
+
+	}
+
+	@PreDestroy
+	void teardown() {
+
 	}
 
 	public HazelcastInstance getInstance() {
@@ -95,6 +102,8 @@ public class ObserverHazelcast {
 				result = new XmlConfigBuilder().build();
 			}
 		}
+
+
 //		result.getSerializationConfig().getSerializerConfigs().add(
 //				new SerializerConfig().
 //						setTypeClass(CallEntity.class).
@@ -103,5 +112,8 @@ public class ObserverHazelcast {
 		return result;
 	}
 
-
+	@Override
+	public String toString() {
+		return this.instance.getConfig().toString();
+	}
 }

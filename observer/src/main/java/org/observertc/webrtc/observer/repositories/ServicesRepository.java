@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer.repositories;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import javax.inject.Singleton;
 import org.observertc.webrtc.observer.ObserverConfig;
@@ -31,8 +32,14 @@ public class ServicesRepository {
 	private final Map<UUID, String> serviceMap = new HashMap<>();
 	private final String defaultServiceName;
 
-	public ServicesRepository(ObserverConfig.OutboundReportsConfig evaluatorsConfig) {
-		this.defaultServiceName = evaluatorsConfig.defaultServiceName;
+	public ServicesRepository(ObserverConfig config) {
+		this.defaultServiceName = config.outboundReports.defaultServiceName;
+		if (Objects.nonNull(config.serviceMappings)) {
+			config.serviceMappings.stream().forEach(serviceMappingConfiguration -> {
+				serviceMappingConfiguration.uuids.stream().forEach(
+						uuid -> serviceMap.put(uuid, serviceMappingConfiguration.name));
+			});
+		}
 	}
 
 	public String getServiceName(UUID serviceUUID) {

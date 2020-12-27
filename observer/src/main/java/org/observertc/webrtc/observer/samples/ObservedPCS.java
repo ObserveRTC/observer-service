@@ -17,7 +17,7 @@
 package org.observertc.webrtc.observer.samples;
 
 import java.util.UUID;
-import org.observertc.webrtc.common.ObjectToString;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 
 public class ObservedPCS {

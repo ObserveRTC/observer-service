@@ -18,6 +18,8 @@ package org.observertc.webrtc.observer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
@@ -28,7 +30,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
-import org.observertc.webrtc.common.UUIDAdapter;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.PCObserver;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
@@ -44,6 +46,7 @@ import org.slf4j.event.Level;
  * Service should be UUId, because currently mysql stores it as
  * binary and with that type the search is fast for activestreams. thats why.
  */
+@Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/{serviceUUIDStr}/{mediaUnitID}/v20200114/json")
 public class WebRTCStatsWebsocketServerv20200114 {
 	private static final String PC_SAMPLE_VERSION = "20200114";
@@ -63,7 +66,6 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			ServicesRepository servicesRepository,
 			PCObserver pcObserver
 	) {
-//		this.observedPCSSink = observedPCSSink;
 		this.observedPCSForwarder = observedPCSForwarder;
 		this.objectReader = objectMapper.reader();
 		this.sessionMonitor = monitorProvider.makeWebsocketSessionMonitor(this.getClass().getSimpleName());
@@ -231,11 +233,11 @@ public class WebRTCStatsWebsocketServerv20200114 {
 					.withLogLevel(Level.WARN)
 					.withMessage("Cannot parse timeZoneOffsetInMinute {} ", sample.timeZoneOffsetInMinute)
 					.complete();
-			return ZoneOffset.of("GMT").getId();
+			return ZoneOffset.UTC.getId();
 		}
 
 		if (hours == 0) {
-			return ZoneOffset.of("GMT").getId();
+			return ZoneOffset.UTC.getId();
 		}
 //		char sign = 0 < hours ? '+' : '';
 		String offsetID;
@@ -254,7 +256,6 @@ public class WebRTCStatsWebsocketServerv20200114 {
 			}
 		}
 
-//		logger.info("Something 3: {}", offsetID);
 		ZoneOffset zoneOffset;
 		try {
 			zoneOffset = ZoneOffset.of(offsetID);

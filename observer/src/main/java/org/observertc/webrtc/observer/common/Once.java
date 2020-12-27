@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        jcenter()
-        maven {
-            name "JCenter Gradle Plugins"
-            url "https://dl.bintray.com/gradle/gradle-plugins"
-        }
-    }
+package org.observertc.webrtc.observer.common;
+
+public final class Once<T> {
+	private T value = null;
+
+	public void set(final T value) {
+		if (null != this.value)
+			throw new IllegalStateException("Illegal attempt to set a Once value after it's value has already been set.");
+		if (null == value) throw new IllegalArgumentException("Illegal attempt to pass null value to Once setter.");
+		this.value = value;
+	}
+
+	public T get() {
+		if (null == this.value) throw new IllegalStateException("Illegal attempt to access unitialized Once value.");
+		return this.value;
+	}
 }
-rootProject.name = "WebRTC-Observer"
-include 'observer'
-
-
-

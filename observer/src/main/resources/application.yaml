@@ -4,12 +4,20 @@ micronaut:
     export:
       prometheus:
         enabled: true
-        step: PT1M
         descriptions: true
+        step: PT1M
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
   server:
     port: ${APPLICATION_SERVER_PORT:7080}
   application:
-    name: webrtc_observer
+    name: "webrtc-observer"
 #  ssl:
 #    enabled: true
 #    buildSelfSigned: true
@@ -23,91 +31,26 @@ endpoints:
   health:
     enabled: true
     sensitive: false
-
 ---
 kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
-kafkaTopics:
-  runAdminClient: False
-  createIfNotExists: False
-  reports:
-    topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
-    onCreatePartitionNums: 30
-    onCreateReplicateFactor: 1
-    retentionTimeInMs: 86400000
----
-# A static repository for mapping service UUIDs
-serviceRepository:
-  defaultServiceName: "serviceName"
-  mappings:
-    - uuid: "UUID"
-      name: "name"
-
----
-# Configration for the reportsink
-reportSink:
-  outboundReports:
-    something: False
-
-outboundReports:
-  reportOutboundRTPs: True
-  reportInboundRTPs: True
-  reportRemoteInboundRTPs: True
-  reportTracks: True
-  reportMediaSources: True
-  reportCandidatePairs: True
-  reportLocalCandidates: True
-  reportRemoteCandidates: True
-  reportUserMediaErrors: True
-
-streamsEvaluators:
-  peerConnectionMaxIdleTimeInS: 30
-
-
-evaluators:
-  defaultServiceName: "serviceName"
-  peerConnections:
-    maxIdleTime: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:60}
-  reportDrafts:
-    expirationTimeInS: 300
-    minEnforcedTimeInS: 60
-  callCleaner:
-    streamMaxIdleTimeInS: ${MEDIA_STREAM_MAX_IDLE_TIME_IN_S:30}
-    pcRetentionTimeInDays: ${PEERCONNECTION_RETETNTION_TIME_IN_DAYS:60}
-    maxAllowedUpdateGapInS: ${CALL_CLEANER_MAX_ALLOWED_UPDATED_GAP_IN_S:3600}
-  sampleTransformer:
-    reportOutboundRTPs: ${REPORT_OUTBOUND_RTPS:True}
-    reportInboundRTPs: ${REPORT_INBOUND_RTPS:True}
-    reportRemoteInboundRTPs: ${REPORT_REMOTE_INTBOUND_RTPS:True}
-    reportTracks: ${REPORT_TRACKS:True}
-    reportMediaSources: ${REPORT_MEDIA_SOURCES:True}
-    reportCandidatePairs: ${REPORT_ICE_CANDIDATE_PAIRS:True}
-    reportLocalCandidates: ${REPORT_LOCAL_ICE_CANDIDATES:True}
-    reportRemoteCandidates: ${REPORT_REMOE_ICE_CANDIDATES:True}
-    reportUserMediaErrors: ${REPORT_USER_MEDIA_ERROR:True}
-    sentReportsCacheSize: ${SENT_REPORT_CACHE_SIZE:100000}
----
 observer:
+  serviceMappings:
+    serviceName:
+      forwardTopicName: "mytopic"
+      uuids:
+        - "e2bae5af-32c4-4784-b393-96143df80e2a"
+        - "f672bf27-5de6-440a-a089-adb499633148"
   hazelcast:
     configFile: "classpath:hazelcast.yaml"
   evaluators:
-    activePeerConnections:
-      expirationTimeInS: 300
-      minEnforcedTimeInS: 60
-    newPeerConnections:
-      retryNumber: 3
-    expiredPeerConnections:
-      retryNumber: 3
-  kafkaTopics:
-    runAdminClient: False
-    createIfNotExists: False
-    reports:
-      topicName: ${KAFKA_TOPICS_OBSERVERTC_REPORTS:reports}
-      onCreatePartitionNums: 30
-      onCreateReplicateFactor: 1
-      retentionTimeInMs: 86400000
+    pcObserver:
+      peerConnectionMaxIdleTimeInS: 300
+      mediaStreamUpdatesFlushInS: 15
+      mediaStreamsBufferNums: 0
+
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True
@@ -118,13 +61,3 @@ observer:
     reportLocalCandidates: True
     reportRemoteCandidates: True
     reportUserMediaErrors: True
-  database:
-    username: root
-    password: password
-    minIdleInMs: 100
-    timeout: 1000
-    jdbcURL: ${JDBC_URL:`jdbc:mysql://localhost:3306/WebRTCObserver?serverTimezone=EET&useLegacyDatetimeCode=false`}
-    jdbcDriver: "com.mysql.cj.jdbc.Driver"
-    maxPoolSize: 100
-    poolname: webrtc_observer
-    dialect: MySQL

@@ -1,193 +1,73 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
-    id "application"
-    id "net.ltgt.apt-eclipse" version "0.21"
-    id 'com.google.cloud.tools.jib' version '1.4.0'
-    id "com.adarshr.test-logger" version "2.0.0"
-    id 'groovy'
-//    id "nu.studer.jooq" version "4.2"
+    id("io.micronaut.application") version "1.2.0"
+    id("com.google.cloud.tools.jib") version "2.6.0"
 }
+
+version = "0.6.0"
+group = "org.observertc.webrtc.observer"
 
 repositories {
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
-    maven { url 'https://packages.confluent.io/maven/' }
+    jcenter()
 }
 
-java {
-    sourceCompatibility = JavaVersion.toVersion('11')
-    targetCompatibility = JavaVersion.toVersion('11')
-}
-
-version "$observerVersion"
-group "observertc"
-
-jib {
-    from {
-//        image "openjdk:11.0.5-jre"
-        image "openjdk11-openj9:jdk-11.0.1.13-alpine-slim"
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("org.observertc.webrtc.observer.*")
     }
-    to {
-        image "$group/webrtc-observer:$version"
-    }
-}
-
-configurations {
-    // for dependencies that are needed for development only
-    developmentOnly
-}
-
-task makePretty(type: Delete) {
-    delete 'out'
-}
-
-task buildDockerImage(type: Exec) {
-//    workingDir "$buildDir"
-    workingDir "$projectDir"
-    commandLine "docker build . -t ${project.name}:latest"
-
-
-}
-
-configurations {
-    // for dependencies that are needed for development only
-    developmentOnly
 }
 
 dependencies {
-    // ------------ Project integration ---------
-    compile project(":common")
-    compile project(":jooq")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.dekorate:prometheus-annotations:${dekorateVersion}")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("javax.annotation:javax.annotation-api")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("io.micronaut:micronaut-management")
+//    implementation("io.micronaut.kubernetes:micronaut-kubernetes-discovery-client")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.rxjava3:micronaut-rxjava3")
+    implementation("io.micronaut.kafka:micronaut-kafka")
+    implementation("io.micronaut.jmx:micronaut-jmx")
 
-//    compile project(':reportsink-bigquery')
+    implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
+    runtimeOnly("ch.qos.logback:logback-classic")
 
-    // ------------ Micronaut framework ------------
-    implementation("io.micronaut.cache:micronaut-cache-caffeine")
-    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautBomVersion")
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut:micronaut-validation"
-    implementation platform("io.micronaut:micronaut-bom:$micronautBomVersion")
-    implementation "io.micronaut:micronaut-http-client"
-    implementation "io.micronaut:micronaut-inject"
-    implementation "io.micronaut:micronaut-validation"
-    implementation "io.micronaut:micronaut-runtime"
-    implementation "io.micronaut:micronaut-http-server-netty"
-    implementation "javax.annotation:javax.annotation-api"
-    runtimeOnly "ch.qos.logback:logback-classic:$logbackVersion"
-    compile group: 'io.micronaut.data', name: 'micronaut-data-model', version: "${micronautDataModelVersion}"
-    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautBomVersion")
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation platform("io.micronaut:micronaut-bom:$micronautBomVersion")
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "io.micronaut.test:micronaut-test-junit5"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-
-    implementation "io.micronaut:micronaut-security-jwt:$micronautJwtVersion"
-    implementation "io.micronaut.configuration:micronaut-kafka:$micronautKafkaVersion"
-    implementation("io.micronaut.kafka:micronaut-kafka:$micronautKafkaVersion")
-    developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautRuntimeOSXVerrsion")
-
-    testImplementation(platform("org.testcontainers:testcontainers-bom:1.14.3"))
-    testImplementation("io.micronaut:micronaut-inject-groovy")
-    testImplementation("org.spockframework:spock-core") {
-        exclude group: "org.codehaus.groovy", module: "groovy-all"
-    }
-    testImplementation(platform("org.testcontainers:testcontainers-bom:1.14.3"))
-    testCompile "org.testcontainers:testcontainers"
-    testCompile "org.testcontainers:junit-jupiter"
-    testRuntimeOnly "com.h2database:h2"
-
-    // ------------ Micrometer integration ---------
-    compile "io.micronaut.configuration:micronaut-micrometer-core:$micraonutMicrometerCoreVersion"
-    compile "io.micronaut:micronaut-management:2.1.2"
-    compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus:$micronautMicrometerPrometheusVersion"
-
-    // ------------ Datasource integration ---------
-    implementation "org.jooq:jooq:${jooqVersion}"
-    compile group: 'com.zaxxer', name: 'HikariCP', version: "${hikariCPVersion}"
-    implementation 'org.jooq:jooq'
-
-    // ------------ Datasource integration: MySQL ---------
-    compile group: 'mysql', name: 'mysql-connector-java', version: "${mysqlVersion}"
-    runtime "mysql:mysql-connector-java:${mysqlVersion}"
-
-    // ------------ Kubernetes --------------
-//    compile "io.micronaut.kubernetes:micronaut-kubernetes-discovery-client:$micronautK8sVersion"
-
-    // ------------ Kafka streams ---------
-//    implementation "io.micronaut.configuration:micronaut-kafka-streams:$micronautKafkaStreamsVersion"
-//    implementation "io.confluent:kafka-avro-serializer:5.4.0"
-//    implementation "io.confluent:kafka-streams-avro-serde:5.4.0"
-
+    compile group: 'org.jooq', name: 'jool', version: '0.9.14'
+    compile group: 'org.apache.avro', name: 'avro', version: '1.10.0'
+    testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
     // ------------- Hazelcast -----------
     compile group: 'com.hazelcast', name: 'hazelcast', version: '4.1'
-
-
-    // ------------- RXJava --------------
-    compile group: 'io.reactivex.rxjava3', name: 'rxjava', version: "${rxjavaVersion}"
-
-    // https://mvnrepository.com/artifact/org.jeasy/easy-random
-    testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
-
-}
-
-test.classpath += configurations.developmentOnly
-
-mainClassName = "org.observertc.webrtc.observer.Application"
-// use JUnit 5 platform
-test {
-    useJUnitPlatform()
 }
 
 
-shadowJar {
-    mergeServiceFiles()
+application {
+    mainClass.set("org.observertc.webrtc.observer.Application")
 }
 
-run.classpath += configurations.developmentOnly
-run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
-//tasks.withType(JavaCompile) {
-//    options.encoding = "UTF-8"
-//    options.compilerArgs.add('-parameters')
-//}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.compilerArgs.addAll([
-            '-parameters',
-            // enables incremental compilation
-            '-Amicronaut.processing.incremental=true',
-            '-Amicronaut.processing.annotations=org.observertc.webrtc.observer.*',
-            "-Amicronaut.processing.group=$project.group",
-            "-Amicronaut.processing.module=$project.name",
-    ])
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
 }
 
-tasks.withType(JavaExec) {
-    classpath += configurations.developmentOnly
-    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
-    if (gradle.startParameter.continuous) {
-        systemProperties(
-                'micronaut.io.watch.restart': 'true',
-                'micronaut.io.watch.enabled': 'true',
-                "micronaut.io.watch.paths": "src/main"
-        )
+tasks {
+
+    dockerBuild{
+        images = ["${System.env.DOCKER_IMAGE}:$project.version"]
+    }
+
+    jib {
+        to {
+            image = "gcr.io/myapp/jib-image"
+        }
     }
 }
 
-testlogger {
-    theme 'standard-parallel'
-    showFullStackTraces true
-    showStandardStreams true
-    showPassedStandardStreams false
-    showSkippedStandardStreams false
-    showFailedStandardStreams true
-}
-
-task openApiProperties(type: WriteProperties) {
-    outputFile("${project.projectDir}/openapi.properties")
-    properties(
-            'swagger-ui.enabled': true,
-            'micronaut.openapi.expand.api.version': version
-    )
-}
