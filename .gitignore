@@ -1,4 +1,7 @@
 Thumbs.db
+build/
+target/
+out/
 .DS_Store
 .gradle
 .idea
@@ -9,3 +12,4 @@ Thumbs.db
 .settings
 .classpath
 google_api_credentials.json
+

@@ -24,7 +24,7 @@ pluginManagement {
         }
     }
 }
-rootProject.name = "WebRTC-Observer"
+rootProject.name = "observer"
 include 'observer'
 
 
