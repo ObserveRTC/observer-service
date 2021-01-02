@@ -22,16 +22,16 @@ import com.hazelcast.config.YamlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Singleton;
 import org.observertc.webrtc.observer.models.EntityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.inject.Singleton;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 @Singleton
 public class ObserverHazelcast {
@@ -97,6 +97,7 @@ public class ObserverHazelcast {
 				}
 				YamlConfigBuilder builder = new YamlConfigBuilder(inputStream);
 				result = builder.build();
+				logger.info("Hazelcast config file at {} is loaded", configPath);
 			} catch (FileNotFoundException e) {
 				logger.warn("Config file cannot be loaded", e);
 				result = new XmlConfigBuilder().build();
