@@ -37,14 +37,8 @@ kafka:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
 observer:
-  serviceMappings:
-    serviceName:
-      forwardTopicName: "mytopic"
-      uuids:
-        - "e2bae5af-32c4-4784-b393-96143df80e2a"
-        - "f672bf27-5de6-440a-a089-adb499633148"
   hazelcast:
-    configFile: "classpath:hazelcast.yaml"
+    configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
   evaluators:
     pcObserver:
       peerConnectionMaxIdleTimeInS: 300

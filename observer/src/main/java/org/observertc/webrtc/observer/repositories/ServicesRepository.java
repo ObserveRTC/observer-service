@@ -37,8 +37,12 @@ public class ServicesRepository {
 		if (Objects.nonNull(config.serviceMappings)) {
 			config.serviceMappings.stream().forEach(serviceMappingConfiguration -> {
 				serviceMappingConfiguration.uuids.stream().forEach(
-						uuid -> serviceMap.put(uuid, serviceMappingConfiguration.name));
+						uuid -> {
+							serviceMap.put(uuid, serviceMappingConfiguration.name);
+							logger.info("{} is mapped to service name {}", uuid, serviceMappingConfiguration.name);
+						});
 			});
+
 		}
 	}
 

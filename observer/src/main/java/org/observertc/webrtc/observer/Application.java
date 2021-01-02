@@ -24,6 +24,7 @@ import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.observertc.webrtc.observer.common.Sleeper;
+import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +62,8 @@ public class Application {
         ObserverHazelcast observerHazelcast = context.getBean(ObserverHazelcast.class);
         logger.info("Hazelcast configuration: {}", observerHazelcast.toString());
         deployCheck(observerHazelcast);
+        context.getBean(ReportSink.class);
+        context.getBean(ServicesRepository.class);
     }
 
     /**

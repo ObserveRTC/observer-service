@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.6-alpha
+VERSION=0.6.0
 
 docker login
 

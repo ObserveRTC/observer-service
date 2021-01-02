@@ -22,13 +22,8 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
 import org.jooq.lambda.tuple.Tuple2;
+import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
@@ -45,11 +40,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import javax.validation.constraints.NotNull;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
 @Prototype
 public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ExpiredPCsEvaluator.class);
-	private final PublishSubject<Tuple2<UUID, Report>> reports = PublishSubject.create();
+	private final PublishSubject<ReportRecord> reports = PublishSubject.create();
 
 	private final FlawMonitor flawMonitor;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
@@ -64,7 +66,7 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 	}
 
-	public Subject<Tuple2<UUID, Report>> getReportsSubject() {
+	public Subject<ReportRecord> getReportsSubject() {
 		return this.reports;
 	}
 
@@ -185,8 +187,8 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 	private void send(UUID sendKey, Report report) {
-		Tuple2<UUID, Report> tuple = new Tuple2<>(sendKey, report);
-		this.reports.onNext(tuple);
+		ReportRecord reportRecord = ReportRecord.of(sendKey, report);
+		this.reports.onNext(reportRecord);
 	}
 
 }

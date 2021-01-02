@@ -17,28 +17,13 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
-import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.Future;
-import java.util.function.Function;
-
-import org.apache.avro.io.DatumWriter;
-import org.apache.avro.io.Encoder;
-import org.apache.avro.io.EncoderFactory;
-import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.jooq.lambda.tuple.Tuple2;
-import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -47,14 +32,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
-@Prototype
-public class ReportSink implements Observer<Tuple2<UUID, Report>> {
+import javax.inject.Singleton;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+
+@Singleton
+public class ReportSink implements Observer<ReportRecord> {
 	private static final Logger logger = LoggerFactory.getLogger(ReportSink.class);
 	private final Producer<UUID, byte[]> reportProducer;
 	private final FlawMonitor flawMonitor;
-	private final DatumWriter<Report> datumWriter;
-	private final ByteArrayOutputStream outputStream;
-	private final Encoder encoder;
 	private final Function<Report, String> topicNameRouter;
 
 	public ReportSink(
@@ -63,9 +53,6 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 			MonitorProvider monitorProvider
 	) {
 		this.reportProducer = reportProducer;
-		this.outputStream = new ByteArrayOutputStream();
-		this.datumWriter = new SpecificDatumWriter<>(Report.SCHEMA$);
-		this.encoder = EncoderFactory.get().binaryEncoder(this.outputStream, null);
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass().getSimpleName());
 
 		Map<UUID, String> topicRoutes = new HashMap<>();
@@ -73,9 +60,11 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 			config.serviceMappings.stream()
 					.filter(smc -> Objects.nonNull(smc.forwardTopicName))
 					.forEach(smc -> {
+						logger.info("{} will be reported to topic name {}", smc.name, smc.forwardTopicName);
 						smc.uuids.stream()
-						.forEach(
-							uuid -> topicRoutes.put(uuid, smc.forwardTopicName));
+						.forEach(uuid -> {
+							topicRoutes.put(uuid, smc.forwardTopicName);
+						});
 			});
 		}
 
@@ -116,9 +105,9 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 	}
 
 	@Override
-	public void onNext(@NonNull Tuple2<UUID, Report> objects) {
-		UUID key = objects.v1;
-		Report report = objects.v2;
+	public void onNext(@NonNull ReportRecord reportRecord) {
+		UUID key = reportRecord.key;
+		Report report = reportRecord.value;
 		this.send(key, report);
 	}
 
@@ -133,10 +122,9 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 	}
 
 	private Future<RecordMetadata> send(UUID key, Report report) {
-		this.outputStream.reset();
-
+		byte[] out;
 		try {
-			this.datumWriter.write(report, encoder);
+			out = report.toByteBuffer().array();
 		} catch (Exception e) {
 			this.flawMonitor
 					.makeLogEntry()
@@ -147,20 +135,7 @@ public class ReportSink implements Observer<Tuple2<UUID, Report>> {
 					.complete();
 			return null;
 		}
-		byte[] out;
-		try {
-			this.encoder.flush();
-			out = outputStream.toByteArray();
-		} catch (IOException e) {
-			this.flawMonitor
-					.makeLogEntry()
-					.withLogger(logger)
-					.withMessage("Error during flushing")
-					.withException(e)
-					.withLogLevel(Level.ERROR)
-					.complete();
-			return null;
-		}
+
 		String topic = this.topicNameRouter.apply(report);
 		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(
 				topic,

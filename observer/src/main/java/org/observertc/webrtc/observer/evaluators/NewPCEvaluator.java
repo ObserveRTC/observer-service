@@ -35,6 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import org.jooq.lambda.tuple.Tuple2;
+import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
@@ -56,7 +57,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(NewPCEvaluator.class);
 
-	private final PublishSubject<Tuple2<UUID, Report>> reports = PublishSubject.create();
+	private final PublishSubject<ReportRecord> reports = PublishSubject.create();
 	private Disposable subscription;
 
 	private final FlawMonitor flawMonitor;
@@ -102,7 +103,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 
-	public Subject<Tuple2<UUID, Report>> getReports() {
+	public Subject<ReportRecord> getReports() {
 		return this.reports;
 	}
 
@@ -306,9 +307,9 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 	private void send(UUID sendKey, Report report) {
-		Tuple2<UUID, Report> tuple = new Tuple2<>(sendKey, report);
+		ReportRecord reportRecord = ReportRecord.of(sendKey, report);
 		try {
-			this.reports.onNext(tuple);
+			this.reports.onNext(reportRecord);
 		} catch (Exception ex) {
 			logger.error("error", ex);
 		}
