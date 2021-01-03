@@ -24,24 +24,21 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.ReportSink;
+import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.ReportSink;
-import org.observertc.webrtc.observer.samples.ObservedPCS;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class PCObserver implements Observer<ObservedPCS> {
@@ -63,8 +60,8 @@ public class PCObserver implements Observer<ObservedPCS> {
 			@Named(TaskExecutors.MESSAGE_CONSUMER) ExecutorService executorService,
 			ObserverConfig.PCObserverConfig config,
 			ActivePCsEvaluator activePCsEvaluator,
-			NewPCEvaluator newPCEvaluator,
-			ExpiredPCsEvaluator expiredPCsEvaluator,
+			NewPCEvaluatorImpl newPCEvaluator,
+			ExpiredPCsEvaluatorImpl expiredPCsEvaluator,
 			ReportSink reportSink
 	) {
 		this.config = config;

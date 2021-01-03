@@ -25,11 +25,6 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Optional;
-import java.util.UUID;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.PCObserver;
@@ -41,6 +36,12 @@ import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service should be UUId, because currently mysql stores it as
@@ -71,7 +72,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		this.sessionMonitor = monitorProvider.makeWebsocketSessionMonitor(this.getClass().getSimpleName());
 		this.servicesRepository = servicesRepository;
 		this.pcObserver = pcObserver;
-		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass().getSimpleName());
+		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
 	}
 
 

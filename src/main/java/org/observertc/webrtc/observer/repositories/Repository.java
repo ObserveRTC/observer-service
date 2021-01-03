@@ -20,10 +20,11 @@ import io.reactivex.Single;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
+
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 public interface Repository<K, V> {
 

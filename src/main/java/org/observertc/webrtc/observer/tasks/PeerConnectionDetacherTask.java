@@ -17,12 +17,7 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import javax.validation.constraints.NotNull;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
@@ -30,6 +25,11 @@ import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepo
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Removes a Peer Connection to the distributed database, and returns completed when its done.
@@ -77,12 +77,11 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 				return Maybe.empty();
 			}
 			this.removedPCEntity = pcEntityHolder.get();
-			return Completable
-					.fromRunnable(this::execute)
-					.doOnError(this::rollback)
-					.andThen(Maybe.just(this.removedPCEntity));
+			this.execute();
+			return Maybe.just(this.removedPCEntity);
 
 		} catch (Exception ex) {
+			this.rollback(ex);
 			return Maybe.error(ex);
 		}
 	}
@@ -127,17 +126,17 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 
 	private void addCallToPeerConnection(Throwable exceptionInExecution) {
 		try {
-			this.peerConnectionsRepository.save(this.removedPCEntity.peerConnectionUUID, this.removedPCEntity);
-		} catch (Exception ex) {
-			logger.error("During rollback the following error occured", ex);
+			this.callPeerConnectionsRepository.add(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
+		} catch (Exception ex2) {
+			logger.error("During rollback the following error occured", ex2);
 		}
 	}
 
 	private void registerPeerConnection(Throwable exceptionInExecution) {
 		try {
-			this.callPeerConnectionsRepository.add(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
-		} catch (Exception ex2) {
-			logger.error("During rollback the following error occured", ex2);
+			this.peerConnectionsRepository.save(this.removedPCEntity.peerConnectionUUID, this.removedPCEntity);
+		} catch (Exception ex) {
+			logger.error("During rollback the following error occured", ex);
 		}
 	}
 
@@ -147,7 +146,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 	}
 
 	private void unregisterPeerConnection() {
-		this.peerConnectionsRepository.rxDelete(this.removedPCEntity.peerConnectionUUID);
+		this.peerConnectionsRepository.delete(this.removedPCEntity.peerConnectionUUID);
 
 	}
 

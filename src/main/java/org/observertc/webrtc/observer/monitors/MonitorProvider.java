@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer.monitors;
 
 import io.micrometer.core.instrument.MeterRegistry;
+
 import javax.inject.Singleton;
 
 @Singleton
@@ -31,9 +32,10 @@ public class MonitorProvider {
 		this.meterRegistry = meterRegistry;
 	}
 
-	public FlawMonitor makeFlawMonitorFor(String tagValue) {
+	public FlawMonitor makeFlawMonitorFor(Class klass) {
 		return new FlawMonitor(this.meterRegistry)
-				.withTag(FLAW_METRIC_NAME, tagValue);
+				.withName(FlawMonitor.class.getSimpleName())
+				.withTag(FLAW_METRIC_NAME, klass.getSimpleName());
 	}
 
 	public SessionMonitor makeWebsocketSessionMonitor(String name) {

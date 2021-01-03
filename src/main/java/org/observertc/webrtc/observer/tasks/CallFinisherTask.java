@@ -95,14 +95,10 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 			}
 
 			this.unregisteredCallEntity = entities.stream().findFirst().get();
-
-
-			return Completable
-					.fromRunnable(this::execute)
-					.doOnError(this::rollback)
-					.andThen(Maybe.just(this.unregisteredCallEntity));
-
+			this.execute();
+			return Maybe.just(this.unregisteredCallEntity);
 		} catch (Exception ex) {
+			this.rollback(ex);
 			return Maybe.error(ex);
 		}
 	}
@@ -163,7 +159,8 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 	}
 
 	private void unregisterCallEntity() {
-		this.callEntitiesRepository.rxDelete(this.unregisteredCallEntity.callUUID);
+		this.callEntitiesRepository
+				.delete(this.unregisteredCallEntity.callUUID);
 	}
 
 	private void registerCallName(Throwable exceptionInExecution) {
@@ -218,9 +215,10 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 	}
 
 	private void unregisterCallToSSRCs() {
-		this.unregisteredSSRCKeys = this.callSynchronizationSourcesRepository.removeAll(this.callUUID).stream().collect(Collectors.toSet());
+		this.unregisteredSSRCKeys = this.callSynchronizationSourcesRepository
+				.removeAll(this.callUUID).stream().collect(Collectors.toSet());
 		if (this.unregisteredSSRCKeys.size() < 1) {
-			logger.warn("There is no SSRC keys has found for callUUID {}", this.callUUID);
+			logger.warn("There are no SSRC keys has found for callUUID {}", this.callUUID);
 		}
 	}
 

@@ -17,10 +17,13 @@
 package org.observertc.webrtc.observer.monitors;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 
 public class FlawMonitor {
-
+	private static final Logger logger = LoggerFactory.getLogger(FlawMonitor.class);
 	private final MeterRegistry meterRegistry;
 	private String name;
 	private String tag;
@@ -58,6 +61,10 @@ public class FlawMonitor {
 		LogEntry result = new LogEntry();
 		if (Objects.nonNull(this.tag)) {
 			result.withTag(this.tag, value);
+		}
+		if (Objects.isNull(this.name)) {
+			logger.warn("No name provided for a flawmonitor, cannot provide metrics");
+			return result;
 		}
 		Runnable report = () -> this.meterRegistry.counter(this.name, this.tag, value).increment();
 		result.withPostAction(report);

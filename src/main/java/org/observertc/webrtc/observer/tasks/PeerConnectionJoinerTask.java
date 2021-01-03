@@ -18,14 +18,15 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Completable;
-import java.util.Objects;
-import javax.validation.constraints.NotNull;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * Adds a Peer Connection to the distributed database, and returns completed when its done.
@@ -65,9 +66,13 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 
 	@Override
 	protected Completable doPerform() {
-		return Completable
-				.fromRunnable(this::execute)
-				.doOnError(this::rollback);
+		try {
+			this.execute();
+			return Completable.complete();
+		} catch (Exception ex) {
+			this.rollback(ex);
+			return Completable.error(ex);
+		}
 	}
 
 	private void execute() {
@@ -109,10 +114,6 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 	}
 
 	private void addCallToPeerConnection() {
-		this.peerConnectionsRepository.save(this.entity.peerConnectionUUID, this.entity);
-	}
-
-	private void registerPeerConnection() {
 		this.callPeerConnectionsRepository.add(this.entity.callUUID, this.entity.peerConnectionUUID);
 	}
 
@@ -124,6 +125,9 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 		}
 	}
 
+	private void registerPeerConnection() {
+		this.peerConnectionsRepository.save(this.entity.peerConnectionUUID, this.entity);
+	}
 	private void unregisterPeerConnection(Throwable exceptionInExecution) {
 		try {
 			this.peerConnectionsRepository.rxDelete(this.entity.peerConnectionUUID);

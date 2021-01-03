@@ -113,12 +113,11 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 				return Maybe.just(result);
 			}
 
-			return Completable
-					.fromRunnable(this::execute)
-					.doOnError(this::rollback)
-					.andThen(Maybe.just(this.callEntity.callUUID));
+			this.execute();
+			return Maybe.just(this.callEntity.callUUID);
 
 		} catch (Exception ex) {
+			this.rollback(ex);
 			return Maybe.error(ex);
 		}
 	}
@@ -178,7 +177,7 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 	}
 
 	private void unregisterCallEntity(Throwable exceptionInExecution) {
-		this.callEntitiesRepository.rxDelete(this.callEntity.callUUID);
+		this.callEntitiesRepository.delete(this.callEntity.callUUID);
 	}
 
 	private void registerCallName() {

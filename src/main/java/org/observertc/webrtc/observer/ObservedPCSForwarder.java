@@ -17,25 +17,17 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.Prototype;
-import java.util.UUID;
-import java.util.function.BiConsumer;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
 import org.observertc.webrtc.observer.evaluators.valueadapters.NumberConverter;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
-import org.observertc.webrtc.schemas.reports.ICECandidatePair;
-import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
-import org.observertc.webrtc.schemas.reports.ICERemoteCandidate;
-import org.observertc.webrtc.schemas.reports.InboundRTP;
-import org.observertc.webrtc.schemas.reports.MediaSource;
-import org.observertc.webrtc.schemas.reports.OutboundRTP;
-import org.observertc.webrtc.schemas.reports.RemoteInboundRTP;
-import org.observertc.webrtc.schemas.reports.ReportType;
-import org.observertc.webrtc.schemas.reports.Track;
-import org.observertc.webrtc.schemas.reports.UserMediaError;
+import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
+import java.util.function.BiConsumer;
 
 @Prototype
 public class ObservedPCSForwarder {

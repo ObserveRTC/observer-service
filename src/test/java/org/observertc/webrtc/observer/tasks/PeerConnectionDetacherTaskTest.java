@@ -1,0 +1,71 @@
+package org.observertc.webrtc.observer.tasks;
+
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.models.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import java.util.Collection;
+import java.util.UUID;
+
+@MicronautTest
+class PeerConnectionDetacherTaskTest {
+    @Inject
+    ObserverHazelcast observerHazelcast;
+
+    @Inject
+    RepositoryProvider repositoryProvider;
+
+    @Inject
+    Provider<PeerConnectionDetacherTask> subjectProvider;
+
+    static EasyRandom generator;
+
+    @BeforeAll
+    static void setup() {
+        generator = new EasyRandom();
+    }
+
+    @AfterAll
+    static void teardown() {
+
+    }
+
+    @Test
+    public void shouldValidate() {
+        Assertions.assertThrows(Exception.class, () -> {
+            subjectProvider.get()
+                    .perform();
+        });
+    }
+
+    @Test
+    public void shouldDetachPeerConnection() {
+        // Given
+        PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);
+        this.repositoryProvider.getCallPeerConnectionsRepository().add(pcEntity.callUUID, pcEntity.peerConnectionUUID);
+        this.repositoryProvider.getPeerConnectionsRepository().save(pcEntity.peerConnectionUUID, pcEntity);
+
+        // When
+        try (PeerConnectionDetacherTask peerConnectionDetacherTask = subjectProvider.get()) {
+            peerConnectionDetacherTask
+                    .forPeerConnectionUUID(pcEntity.peerConnectionUUID)
+                    .perform();
+        }
+
+        // Then
+        PeerConnectionsRepository pcRepository = this.repositoryProvider.getPeerConnectionsRepository();
+        Assertions.assertFalse(pcRepository.exists(pcEntity.peerConnectionUUID));
+        Collection<UUID> pcUUIDs = this.repositoryProvider.getCallPeerConnectionsRepository().find(pcEntity.callUUID);
+        Assertions.assertNotNull(pcUUIDs);
+        Assertions.assertFalse(pcUUIDs.contains(pcEntity.peerConnectionUUID));
+    }
+}

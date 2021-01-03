@@ -16,12 +16,13 @@
 
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
-import java.util.UUID;
-import javax.inject.Singleton;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
+import java.util.UUID;
 
 @Singleton
 public class PeerConnectionsRepository extends MapRepositoryAbstract<UUID, PeerConnectionEntity> {
@@ -30,13 +31,7 @@ public class PeerConnectionsRepository extends MapRepositoryAbstract<UUID, PeerC
 
 	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverPeerConnections";
 
-//	private final ObserverHazelcast observerHazelcast;
-//	private final IMap<UUID, PeerConnectionEntity> entities;
-
 	public PeerConnectionsRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
-//		this.observerHazelcast = observerHazelcast;
-//		this.entities = observerHazelcast.getInstance().getMap(HAZELCAST_MAP_KEY);
-
 	}
 }
