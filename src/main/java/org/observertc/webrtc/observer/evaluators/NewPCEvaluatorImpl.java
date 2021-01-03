@@ -52,6 +52,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
+
 @Prototype
 public class NewPCEvaluatorImpl implements NewPCEvaluator {
 
@@ -239,6 +241,7 @@ public class NewPCEvaluatorImpl implements NewPCEvaluator {
 				.setCallName(callEntity.callName)
 				.build();
 		Report report = Report.newBuilder()
+				.setVersion(REPORT_VERSION_NUMBER)
 				.setServiceUUID(callEntity.serviceUUID.toString())
 				.setServiceName(callEntity.serviceName)
 				.setMarker(callEntity.marker)
@@ -295,6 +298,7 @@ public class NewPCEvaluatorImpl implements NewPCEvaluator {
 				.build();
 
 		Report report = Report.newBuilder()
+				.setVersion(REPORT_VERSION_NUMBER)
 				.setServiceUUID(pcEntity.serviceUUID.toString())
 				.setServiceName(pcEntity.serviceName)
 				.setMarker(pcEntity.marker)

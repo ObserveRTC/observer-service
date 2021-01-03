@@ -45,6 +45,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
+
 @Prototype
 public class ExpiredPCsEvaluatorImpl implements ExpiredPCsEvaluator {
 
@@ -154,6 +156,7 @@ public class ExpiredPCsEvaluatorImpl implements ExpiredPCsEvaluator {
 				.build();
 
 		Report report = Report.newBuilder()
+				.setVersion(REPORT_VERSION_NUMBER)
 				.setServiceUUID(entity.serviceUUID.toString())
 				.setServiceName(entity.serviceName)
 				.setMarker(entity.marker)

@@ -6,19 +6,15 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ReportRecord;
-import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
-import org.observertc.webrtc.schemas.reports.ReportType;
 
 import javax.inject.Inject;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 @MicronautTest
@@ -137,36 +133,6 @@ class PCObserverTest {
 			@Override
 			public void onNext(@NonNull Map<UUID, PCState> uuidpcStateMap) {
 				activePCs.onNext(uuidpcStateMap);
-			}
-
-			@Override
-			public void onError(@NonNull Throwable e) {
-
-			}
-
-			@Override
-			public void onComplete() {
-
-			}
-		};
-	}
-
-	@MockBean(ReportSink.class)
-	public ReportSink createReportSink() {
-		return new ReportSink() {
-			@Override
-			public Future<RecordMetadata> sendReport(UUID reportKey, UUID serviceUUID, String serviceName, String marker, ReportType type, Long timestamp, Object payload) {
-				return null;
-			}
-
-			@Override
-			public void onSubscribe(@NonNull Disposable d) {
-
-			}
-
-			@Override
-			public void onNext(@NonNull ReportRecord reportRecord) {
-
 			}
 
 			@Override
