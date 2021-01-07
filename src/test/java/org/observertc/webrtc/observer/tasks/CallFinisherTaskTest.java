@@ -73,8 +73,10 @@ class CallFinisherTaskTest {
         }
 
         // Then
+        Assertions.assertFalse(this.repositoryProvider.getCallSynchronizationSourcesRepository().exists(callEntity.callUUID));
         SSRCs.stream().forEach(ssrc -> {
-            Assertions.assertFalse(this.repositoryProvider.getSSRCRepository().exists(SynchronizationSourcesRepository.getKey(callEntity.serviceUUID, ssrc)));
+            String key = SynchronizationSourcesRepository.getKey(callEntity.serviceUUID, ssrc);
+            Assertions.assertFalse(this.repositoryProvider.getSSRCRepository().exists(key));
         });
         Assertions.assertFalse(this.repositoryProvider.getCallEntitiesRepository().exists(callEntity.callUUID));
         Assertions.assertFalse(this.repositoryProvider.getCallNamesRepository().exists(callEntity.callName));

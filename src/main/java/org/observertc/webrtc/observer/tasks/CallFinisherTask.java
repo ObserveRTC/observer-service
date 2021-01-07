@@ -217,9 +217,6 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 	private void unregisterCallToSSRCs() {
 		this.unregisteredSSRCKeys = this.callSynchronizationSourcesRepository
 				.removeAll(this.callUUID).stream().collect(Collectors.toSet());
-		if (this.unregisteredSSRCKeys.size() < 1) {
-			logger.warn("There are no SSRC keys has found for callUUID {}", this.callUUID);
-		}
 	}
 
 	@Override

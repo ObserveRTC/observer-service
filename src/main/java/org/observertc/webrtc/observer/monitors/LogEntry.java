@@ -62,7 +62,7 @@ public class LogEntry {
 	}
 
 	public LogEntry withMessage(@NotNull String message, Object... args) {
-		this.message = MessageFormatter.format(message, args).getMessage();
+		this.message = MessageFormatter.arrayFormat(message, args).getMessage();
 		return this;
 	}
 

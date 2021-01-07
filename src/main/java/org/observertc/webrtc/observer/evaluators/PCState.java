@@ -16,6 +16,9 @@
 
 package org.observertc.webrtc.observer.evaluators;//package com.observertc.gatekeeper.webrtcstat.processors.samples;
 
+import org.observertc.webrtc.observer.common.ObjectToString;
+
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -40,8 +43,8 @@ class PCState {
 		result.mediaUnitID = mediaUnitID;
 		result.peerConnectionUUID = peerConnectionUUID;
 		result.created = result.updated = created;
-		result.browserID = browserID;
-		result.timeZoneID = timeZoneID;
+		result.browserId = browserID;
+		result.timeZoneId = timeZoneID;
 		result.callName = callName;
 		result.userId = userId;
 		result.marker = marker;
@@ -55,11 +58,21 @@ class PCState {
 	public UUID peerConnectionUUID;
 	public Long created;
 	public Long updated;
-	public String browserID;
-	public String timeZoneID;
+	public String browserId;
+	public String timeZoneId;
 	public String callName;
 	public String userId;
 	public String marker;
 
+	/**
+	 * The timestamp when the pcState is touched last time
+	 * automatically initialized when the object has been created
+	 */
+	public Instant touched = Instant.now();
 
+
+	@Override
+	public String toString() {
+		return ObjectToString.toString(this);
+	}
 }

@@ -90,6 +90,10 @@ public class PCStateGenerator {
 		return result;
 	}
 
+	public<T> T getNext(Class<T> klass) {
+		return this.generator.nextObject(klass);
+	}
+
 	public static Builder builder() {
 		return new Builder();
 	}

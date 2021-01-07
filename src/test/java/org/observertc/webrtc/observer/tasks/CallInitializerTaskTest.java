@@ -30,7 +30,7 @@ class CallInitializerTaskTest {
     @Inject
     Provider<CallInitializerTask> subjectProvider;
 
-    static EasyRandom generator;
+    static EasyRandom generator = new EasyRandom();
 
     @BeforeAll
     static void setup() {
@@ -83,6 +83,9 @@ class CallInitializerTaskTest {
         Assertions.assertTrue(this.repositoryProvider.getCallNamesRepository().exists(callEntity.callName));
         Collection<String> keys = this.repositoryProvider.getCallSynchronizationSourcesRepository().find(callEntity.callUUID);
         Assertions.assertTrue(0 < keys.size());
+        keys.stream().forEach(key -> {
+            Assertions.assertTrue(this.repositoryProvider.getSSRCRepository().exists(key));
+        });
     }
 
 

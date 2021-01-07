@@ -16,20 +16,15 @@
 
 package org.observertc.webrtc.observer.evaluators;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Instant;
+import java.util.*;
 
 class PCStates {
 
@@ -38,7 +33,6 @@ class PCStates {
 	private final Map<UUID, PCState> activePCStates = new HashMap<>();
 	private final Map<UUID, PCState> passivePCStates = new HashMap<>();
 	private final PeerConnectionSampleVisitor<ObservedPCS> SSRCExtractor;
-	private Optional<Long> lastUpdateHolder = Optional.empty();
 	private int maxIdleTimeInS;
 
 	PCStates(int maxIdleTimeInS) {
@@ -55,12 +49,14 @@ class PCStates {
 		synchronized (this) {
 			PCState pcState = this.activePCStates.get(peerConnectionUUID);
 			if (pcState != null) {
+				pcState.touched = Instant.now();
 				pcState.updated = observedPCS.timestamp;
 				this.SSRCExtractor.accept(observedPCS, pcSample);
 				return;
 			}
 			pcState = this.passivePCStates.get(peerConnectionUUID);
 			if (pcState != null) {
+				pcState.touched = Instant.now();
 				pcState.updated = observedPCS.timestamp;
 				this.activePCStates.put(peerConnectionUUID, pcState);
 				this.passivePCStates.remove(peerConnectionUUID);
@@ -86,21 +82,13 @@ class PCStates {
 
 	public LinkedList<PCState> retrieveActives() {
 		LinkedList<PCState> result = new LinkedList<>();
-		Long lastUpdate = null;
 		synchronized (this) {
 			Iterator<Map.Entry<UUID, PCState>> it = this.activePCStates.entrySet().iterator();
 			for (; it.hasNext(); ) {
 				Map.Entry<UUID, PCState> entry = it.next();
-				PCState mediaStreamUpdate = entry.getValue();
-				if (lastUpdate == null || lastUpdate < mediaStreamUpdate.updated) {
-					lastUpdate = mediaStreamUpdate.updated;
-				}
 				result.add(entry.getValue());
 				this.passivePCStates.put(entry.getKey(), entry.getValue());
 				it.remove();
-			}
-			if (lastUpdate != null) {
-				this.lastUpdateHolder = Optional.of(lastUpdate);
 			}
 		}
 
@@ -109,25 +97,19 @@ class PCStates {
 
 	public LinkedList<PCState> retrieveExpired() {
 		LinkedList<PCState> result = new LinkedList<>();
-		long threshold;
+		final Instant threshold = Instant.now().minusSeconds(this.maxIdleTimeInS);
 		synchronized (this) {
-			if (this.lastUpdateHolder.isPresent()) {
-				threshold = this.lastUpdateHolder.get() - TimeUnit.SECONDS.toMillis(this.maxIdleTimeInS);
-				this.lastUpdateHolder = Optional.empty();
-			} else {
-				threshold = Instant.now().toEpochMilli() - TimeUnit.SECONDS.toMillis(this.maxIdleTimeInS);
-			}
 			Iterator<Map.Entry<UUID, PCState>> it = this.passivePCStates.entrySet().iterator();
 			for (; it.hasNext(); ) {
 				Map.Entry<UUID, PCState> entry = it.next();
 //				UUID peerConnectionUUID = entry.getKey();
 				PCState pcState = entry.getValue();
 				if (pcState == null) {
-					logger.warn("Null mediastreamupdate");
+					logger.warn("Null pcState");
 					it.remove();
 					continue;
 				}
-				if (threshold < pcState.updated) {
+				if (threshold.compareTo(pcState.touched) < 0) {
 					continue;
 				}
 				result.add(pcState);

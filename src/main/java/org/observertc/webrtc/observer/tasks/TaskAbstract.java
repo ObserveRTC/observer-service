@@ -43,4 +43,5 @@ public abstract class TaskAbstract<T> implements AutoCloseable {
 			throw new IllegalStateException("The task is already executed");
 		}
 	}
+
 }

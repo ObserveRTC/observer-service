@@ -1,0 +1,119 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.observertc.webrtc.observer.evaluators;
+
+import org.jeasy.random.EasyRandom;
+import org.observertc.webrtc.observer.models.CallEntity;
+import org.observertc.webrtc.observer.models.PeerConnectionEntity;
+import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.samples.ObservedPCS;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class TestInputsGenerator {
+
+	private final EasyRandom generator;
+
+	public TestInputsGenerator() {
+		this.generator = new EasyRandom();
+	}
+
+	public ObservedPCS makeObservedPCS() {
+		return this.generator.nextObject(ObservedPCS.class);
+	}
+
+	public PCState makePCState() {
+		return this.generator.nextObject(PCState.class);
+	}
+
+	public PCState makePCStateFor(PeerConnectionEntity pcEntity, SynchronizationSourceEntity... ssrcEntities) {
+		PCState result = this.makePCState();
+		result.serviceUUID = pcEntity.serviceUUID;
+		result.callName = pcEntity.callName;
+		result.browserId = pcEntity.browserId;
+		result.mediaUnitID = pcEntity.mediaUnitId;
+		result.serviceName = pcEntity.serviceName;
+		result.peerConnectionUUID = pcEntity.peerConnectionUUID;
+		result.timeZoneId = pcEntity.timeZone;
+		result.marker = pcEntity.marker;
+		result.userId = pcEntity.providedUserName;
+		if (Objects.nonNull(ssrcEntities)) {
+			Arrays.stream(ssrcEntities).map(e -> e.SSRC).forEach(result.SSRCs::add);
+		}
+
+		return result;
+	}
+
+	public PeerConnectionEntity makePeerConnectionEntity() {
+		return this.generator.nextObject(PeerConnectionEntity.class);
+	}
+
+	public SynchronizationSourceEntity makeSynchronizationSourceEntity() {
+		return this.generator.nextObject(SynchronizationSourceEntity.class);
+	}
+
+	public PeerConnectionEntity makePeerConnectionEntityFor(SynchronizationSourceEntity ssrcEntity) {
+		PeerConnectionEntity result = this.makePeerConnectionEntity();
+		result.callUUID = ssrcEntity.callUUID;
+		result.serviceUUID = ssrcEntity.serviceUUID;
+		return result;
+	}
+
+	public PCState makePCStateFor(ObservedPCS observedPCS) {
+		return this.generator.nextObject(PCState.class);
+	}
+
+
+	public static TestInputsGenerator.Builder builder() {
+		return new TestInputsGenerator.Builder();
+	}
+
+	public CallEntity makeCallEntityFor(PeerConnectionEntity... pcEntities) {
+		CallEntity result = this.makeCallEntity();
+		if (Objects.isNull(pcEntities) || pcEntities.length < 1) {
+			return result;
+		}
+		PeerConnectionEntity pcEntity = pcEntities[0];
+		result.serviceName = pcEntity.serviceName;
+		result.serviceUUID = pcEntity.serviceUUID;
+		result.callName = pcEntity.callName;
+		result.callUUID = pcEntity.callUUID;
+		result.marker = pcEntity.marker;
+		result.initiated = Arrays.stream(pcEntities).map(e -> e.joined).min(Long::compare).get();
+		return result;
+	}
+
+	private CallEntity makeCallEntity() {
+		return generator.nextObject(CallEntity.class);
+	}
+
+
+	public static class Builder {
+		private final Map<String, Object> values;
+
+		public Builder() {
+			this.values = new HashMap<>();
+		}
+
+		public TestInputsGenerator build() {
+			return new TestInputsGenerator();
+		}
+	}
+}

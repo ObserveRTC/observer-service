@@ -61,6 +61,7 @@ java {
 tasks {
 
     dockerBuild{
+
         images = ["${System.env.DOCKER_IMAGE}:$project.version"]
     }
 

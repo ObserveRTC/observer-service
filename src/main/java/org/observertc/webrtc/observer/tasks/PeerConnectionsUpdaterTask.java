@@ -130,6 +130,9 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 
 	@Override
 	protected void validate() {
+		if (this.addedStreams.size() < 1) {
+			throw new IllegalStateException("No stream added to find");
+		}
 		super.validate();
 	}
 

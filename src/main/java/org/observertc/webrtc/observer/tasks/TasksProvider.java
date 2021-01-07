@@ -16,25 +16,34 @@
 
 package org.observertc.webrtc.observer.tasks;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
 @Singleton
 public class TasksProvider {
-	private final Provider<CallFinderTask> callFinderTaskProvider;
-	private final Provider<CallFinisherTask> callFinisherTaskProvider;
-	private final Provider<CallInitializerTask> callInitializerTaskProvider;
-	private final Provider<PeerConnectionJoinerTask> peerConnectionJoinerTaskProvider;
-	private final Provider<PeerConnectionDetacherTask> peerConnectionDetacherTaskProvider;
-	private final Provider<PeerConnectionsUpdaterTask> peerConnectionsUpdaterTaskProvider;
+	@Inject
+	Provider<CallFinderTask> callFinderTaskProvider;
 
-	public TasksProvider(Provider<CallFinderTask> callFinderTaskProvider,
-						 Provider<CallFinisherTask> callFinisherTaskProvider,
-						 Provider<CallInitializerTask> callInitializerTaskProvider,
-						 Provider<PeerConnectionJoinerTask> peerConnectionJoinerTaskProvider,
-						 Provider<PeerConnectionDetacherTask> peerConnectionDetacherTaskProvider,
-						 Provider<PeerConnectionsUpdaterTask> peerConnectionsUpdaterTaskProvider
-	) {
+	@Inject
+	Provider<CallFinisherTask> callFinisherTaskProvider;
+
+	@Inject
+	Provider<CallInitializerTask> callInitializerTaskProvider;
+
+	@Inject
+	Provider<PeerConnectionJoinerTask> peerConnectionJoinerTaskProvider;
+
+	@Inject
+	Provider<PeerConnectionDetacherTask> peerConnectionDetacherTaskProvider;
+
+	@Inject
+	Provider<PeerConnectionsUpdaterTask> peerConnectionsUpdaterTaskProvider;
+
+	@Inject
+	Provider<PeerConnectionsFinderTask> peerConnectionsFinderTaskProvider;
+
+	public TasksProvider() {
 		this.callFinderTaskProvider = callFinderTaskProvider;
 		this.peerConnectionDetacherTaskProvider = peerConnectionDetacherTaskProvider;
 		this.callFinisherTaskProvider = callFinisherTaskProvider;
@@ -65,6 +74,10 @@ public class TasksProvider {
 
 	public PeerConnectionDetacherTask providePeerConnectionDetacherTask() {
 		return this.peerConnectionDetacherTaskProvider.get();
+	}
+
+	public PeerConnectionsFinderTask providePeerConnectionFinderTask() {
+		return this.peerConnectionsFinderTaskProvider.get();
 	}
 
 }

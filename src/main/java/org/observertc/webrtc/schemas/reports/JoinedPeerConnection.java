@@ -10,10 +10,11 @@ import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.SchemaStore;
 import org.apache.avro.specific.SpecificData;
 
+/** Joined Peer Connection payload. Contains information about a peer connection joined to a call */
 @org.apache.avro.specific.AvroGenerated
 public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 1071967648354249017L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"JoinedPeerConnection\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"callUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"callName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"browserId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = -5825837518372506455L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"JoinedPeerConnection\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Joined Peer Connection payload. Contains information about a peer connection joined to a call\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"callUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"callName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"browserId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"timeZoneId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"peerConnectionUUID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -74,6 +75,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
    private String callName;
    private String userId;
    private String browserId;
+   private String timeZoneId;
    private String peerConnectionUUID;
 
   /**
@@ -90,14 +92,16 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
    * @param callName The new value for callName
    * @param userId The new value for userId
    * @param browserId The new value for browserId
+   * @param timeZoneId The new value for timeZoneId
    * @param peerConnectionUUID The new value for peerConnectionUUID
    */
-  public JoinedPeerConnection(String mediaUnitId, String callUUID, String callName, String userId, String browserId, String peerConnectionUUID) {
+  public JoinedPeerConnection(String mediaUnitId, String callUUID, String callName, String userId, String browserId, String timeZoneId, String peerConnectionUUID) {
     this.mediaUnitId = mediaUnitId;
     this.callUUID = callUUID;
     this.callName = callName;
     this.userId = userId;
     this.browserId = browserId;
+    this.timeZoneId = timeZoneId;
     this.peerConnectionUUID = peerConnectionUUID;
   }
 
@@ -111,7 +115,8 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
     case 2: return callName;
     case 3: return userId;
     case 4: return browserId;
-    case 5: return peerConnectionUUID;
+    case 5: return timeZoneId;
+    case 6: return peerConnectionUUID;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -125,7 +130,8 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
     case 2: callName = value$ != null ? value$.toString() : null; break;
     case 3: userId = value$ != null ? value$.toString() : null; break;
     case 4: browserId = value$ != null ? value$.toString() : null; break;
-    case 5: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
+    case 5: timeZoneId = value$ != null ? value$.toString() : null; break;
+    case 6: peerConnectionUUID = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -181,6 +187,16 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
 
 
   /**
+   * Gets the value of the 'timeZoneId' field.
+   * @return The value of the 'timeZoneId' field.
+   */
+  public String getTimeZoneId() {
+    return timeZoneId;
+  }
+
+
+
+  /**
    * Gets the value of the 'peerConnectionUUID' field.
    * @return The value of the 'peerConnectionUUID' field.
    */
@@ -194,8 +210,8 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
    * Creates a new JoinedPeerConnection RecordBuilder.
    * @return A new JoinedPeerConnection RecordBuilder
    */
-  public static JoinedPeerConnection.Builder newBuilder() {
-    return new JoinedPeerConnection.Builder();
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   /**
@@ -203,11 +219,11 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
    * @param other The existing builder to copy.
    * @return A new JoinedPeerConnection RecordBuilder
    */
-  public static JoinedPeerConnection.Builder newBuilder(JoinedPeerConnection.Builder other) {
+  public static Builder newBuilder(Builder other) {
     if (other == null) {
-      return new JoinedPeerConnection.Builder();
+      return new Builder();
     } else {
-      return new JoinedPeerConnection.Builder(other);
+      return new Builder(other);
     }
   }
 
@@ -216,11 +232,11 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
    * @param other The existing instance to copy.
    * @return A new JoinedPeerConnection RecordBuilder
    */
-  public static JoinedPeerConnection.Builder newBuilder(JoinedPeerConnection other) {
+  public static Builder newBuilder(JoinedPeerConnection other) {
     if (other == null) {
-      return new JoinedPeerConnection.Builder();
+      return new Builder();
     } else {
-      return new JoinedPeerConnection.Builder(other);
+      return new Builder(other);
     }
   }
 
@@ -236,6 +252,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
     private String callName;
     private String userId;
     private String browserId;
+    private String timeZoneId;
     private String peerConnectionUUID;
 
     /** Creates a new Builder */
@@ -247,7 +264,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(JoinedPeerConnection.Builder other) {
+    private Builder(Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.mediaUnitId)) {
         this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
@@ -269,9 +286,13 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
         this.browserId = data().deepCopy(fields()[4].schema(), other.browserId);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.peerConnectionUUID)) {
-        this.peerConnectionUUID = data().deepCopy(fields()[5].schema(), other.peerConnectionUUID);
+      if (isValidValue(fields()[5], other.timeZoneId)) {
+        this.timeZoneId = data().deepCopy(fields()[5].schema(), other.timeZoneId);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
+      }
+      if (isValidValue(fields()[6], other.peerConnectionUUID)) {
+        this.peerConnectionUUID = data().deepCopy(fields()[6].schema(), other.peerConnectionUUID);
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
     }
 
@@ -301,9 +322,13 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
         this.browserId = data().deepCopy(fields()[4].schema(), other.browserId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.peerConnectionUUID)) {
-        this.peerConnectionUUID = data().deepCopy(fields()[5].schema(), other.peerConnectionUUID);
+      if (isValidValue(fields()[5], other.timeZoneId)) {
+        this.timeZoneId = data().deepCopy(fields()[5].schema(), other.timeZoneId);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.peerConnectionUUID)) {
+        this.peerConnectionUUID = data().deepCopy(fields()[6].schema(), other.peerConnectionUUID);
+        fieldSetFlags()[6] = true;
       }
     }
 
@@ -321,7 +346,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder setMediaUnitId(String value) {
+    public Builder setMediaUnitId(String value) {
       validate(fields()[0], value);
       this.mediaUnitId = value;
       fieldSetFlags()[0] = true;
@@ -341,7 +366,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'mediaUnitId' field.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder clearMediaUnitId() {
+    public Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -361,7 +386,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'callUUID'.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder setCallUUID(String value) {
+    public Builder setCallUUID(String value) {
       validate(fields()[1], value);
       this.callUUID = value;
       fieldSetFlags()[1] = true;
@@ -381,7 +406,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'callUUID' field.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder clearCallUUID() {
+    public Builder clearCallUUID() {
       callUUID = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -401,7 +426,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'callName'.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder setCallName(String value) {
+    public Builder setCallName(String value) {
       validate(fields()[2], value);
       this.callName = value;
       fieldSetFlags()[2] = true;
@@ -421,7 +446,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'callName' field.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder clearCallName() {
+    public Builder clearCallName() {
       callName = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -441,7 +466,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder setUserId(String value) {
+    public Builder setUserId(String value) {
       validate(fields()[3], value);
       this.userId = value;
       fieldSetFlags()[3] = true;
@@ -461,7 +486,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'userId' field.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder clearUserId() {
+    public Builder clearUserId() {
       userId = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -481,7 +506,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'browserId'.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder setBrowserId(String value) {
+    public Builder setBrowserId(String value) {
       validate(fields()[4], value);
       this.browserId = value;
       fieldSetFlags()[4] = true;
@@ -501,9 +526,49 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'browserId' field.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder clearBrowserId() {
+    public Builder clearBrowserId() {
       browserId = null;
       fieldSetFlags()[4] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'timeZoneId' field.
+      * @return The value.
+      */
+    public String getTimeZoneId() {
+      return timeZoneId;
+    }
+
+
+    /**
+      * Sets the value of the 'timeZoneId' field.
+      * @param value The value of 'timeZoneId'.
+      * @return This builder.
+      */
+    public Builder setTimeZoneId(String value) {
+      validate(fields()[5], value);
+      this.timeZoneId = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'timeZoneId' field has been set.
+      * @return True if the 'timeZoneId' field has been set, false otherwise.
+      */
+    public boolean hasTimeZoneId() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'timeZoneId' field.
+      * @return This builder.
+      */
+    public Builder clearTimeZoneId() {
+      timeZoneId = null;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -521,10 +586,10 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'peerConnectionUUID'.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder setPeerConnectionUUID(String value) {
-      validate(fields()[5], value);
+    public Builder setPeerConnectionUUID(String value) {
+      validate(fields()[6], value);
       this.peerConnectionUUID = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -533,7 +598,7 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * @return True if the 'peerConnectionUUID' field has been set, false otherwise.
       */
     public boolean hasPeerConnectionUUID() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -541,9 +606,9 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'peerConnectionUUID' field.
       * @return This builder.
       */
-    public JoinedPeerConnection.Builder clearPeerConnectionUUID() {
+    public Builder clearPeerConnectionUUID() {
       peerConnectionUUID = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -557,7 +622,8 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
         record.callName = fieldSetFlags()[2] ? this.callName : (String) defaultValue(fields()[2]);
         record.userId = fieldSetFlags()[3] ? this.userId : (String) defaultValue(fields()[3]);
         record.browserId = fieldSetFlags()[4] ? this.browserId : (String) defaultValue(fields()[4]);
-        record.peerConnectionUUID = fieldSetFlags()[5] ? this.peerConnectionUUID : (String) defaultValue(fields()[5]);
+        record.timeZoneId = fieldSetFlags()[5] ? this.timeZoneId : (String) defaultValue(fields()[5]);
+        record.peerConnectionUUID = fieldSetFlags()[6] ? this.peerConnectionUUID : (String) defaultValue(fields()[6]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -624,6 +690,14 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
       out.writeString(this.browserId);
     }
 
+    if (this.timeZoneId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.timeZoneId);
+    }
+
     out.writeString(this.peerConnectionUUID);
 
   }
@@ -663,10 +737,17 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
         this.browserId = in.readString();
       }
 
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.timeZoneId = null;
+      } else {
+        this.timeZoneId = in.readString();
+      }
+
       this.peerConnectionUUID = in.readString();
 
     } else {
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < 7; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           if (in.readIndex() != 1) {
@@ -709,6 +790,15 @@ public class JoinedPeerConnection extends org.apache.avro.specific.SpecificRecor
           break;
 
         case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.timeZoneId = null;
+          } else {
+            this.timeZoneId = in.readString();
+          }
+          break;
+
+        case 6:
           this.peerConnectionUUID = in.readString();
           break;
 

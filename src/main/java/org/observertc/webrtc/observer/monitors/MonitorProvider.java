@@ -22,7 +22,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MonitorProvider {
-	private static final String FLAW_METRIC_NAME = "flaws";
+	private static final String KLASS_TAG_NAME = "klass";
 
 	private final MeterRegistry meterRegistry;
 
@@ -35,7 +35,7 @@ public class MonitorProvider {
 	public FlawMonitor makeFlawMonitorFor(Class klass) {
 		return new FlawMonitor(this.meterRegistry)
 				.withName(FlawMonitor.class.getSimpleName())
-				.withTag(FLAW_METRIC_NAME, klass.getSimpleName());
+				.withTag(KLASS_TAG_NAME, klass.getSimpleName());
 	}
 
 	public SessionMonitor makeWebsocketSessionMonitor(String name) {

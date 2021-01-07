@@ -16,9 +16,11 @@
 
 package org.observertc.webrtc.observer.dto;
 
-import java.util.Arrays;
-import java.util.function.BiConsumer;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnectionSample> {
 
@@ -27,8 +29,13 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 		if (sample == null) {
 			return;
 		}
+		if (sample.userMediaErrors != null) {
+			for (PeerConnectionSample.UserMediaError userMediaError : sample.userMediaErrors) {
+				this.visitUserMediaError(obj, sample, userMediaError);
+			}
+		}
 		for (PeerConnectionSample.RTCStats rtcStats : Arrays.asList(sample.receiverStats, sample.senderStats)) {
-			if (rtcStats == null) {
+			if (Objects.isNull(rtcStats)) {
 				continue;
 			}
 			if (rtcStats.remoteInboundRTPStats != null) {
@@ -79,11 +86,6 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 				for (PeerConnectionSample.ICERemoteCandidate remoteCandidate : iceStats.remoteCandidates) {
 					this.visitICERemoteCandidate(obj, sample, remoteCandidate);
 				}
-			}
-		}
-		if (sample.userMediaErrors != null) {
-			for (PeerConnectionSample.UserMediaError userMediaError : sample.userMediaErrors) {
-				this.visitUserMediaError(obj, sample, userMediaError);
 			}
 		}
 	}

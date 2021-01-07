@@ -17,94 +17,71 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.schemas.reports.Report;
+import org.observertc.webrtc.observer.models.PeerConnectionEntity;
+import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+import javax.inject.Provider;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-//@Property(name = "hikari.jdbURL", value = "jdbc:h2:~/WebRTCObserver;MODE=MYSQL")
 @MicronautTest
 public class ActivePCsEvaluatorTest {
 
+	static TestInputsGenerator generator = TestInputsGenerator.builder().build();
+
 	@Inject
-	ActivePCsEvaluatorImpl evaluator;
+	Provider<ActivePCsEvaluator> subject;
+
+	@Inject
+	PeerConnectionsRepository peerConnectionsRepository;
+
+	@Inject
+	SynchronizationSourcesRepository synchronizationSourcesRepository;
 
 	@Test
-	public void when_newMediaStreamAppears_then_joinedPCIsReported() {
-
+	public void shouldUpdateExistingPeerConnections() {
 		// Given
-		AtomicReference<UUID> UUIDHolder = new AtomicReference<>(null);
-		AtomicReference<Report> reportHolder = new AtomicReference<>(null);
-		PCStateGenerator generator = PCStateGenerator.builder().build();
-		PCState PCState = generator.getNext();
-//		evaluator.getNewPeerConnectionsSubject().subscribe(t -> {
-//			UUIDHolder.set(t.v1);
-//			reportHolder.set(t.v2);
-//		});
+		ActivePCsEvaluator evaluator = subject.get();
+		SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
+		PeerConnectionEntity pcEntity = generator.makePeerConnectionEntityFor(ssrcEntity);
+		PCState pcState = generator.makePCStateFor(pcEntity, ssrcEntity);
+		this.peerConnectionsRepository.save(pcEntity.peerConnectionUUID, pcEntity);
+		this.synchronizationSourcesRepository.save(
+				SynchronizationSourcesRepository.getKey(ssrcEntity.serviceUUID, ssrcEntity.SSRC),
+				ssrcEntity
+		);
+		AtomicReference<Map<UUID, PCState>> newPcsHolder = new AtomicReference<>(null);
 
 		// When
-//		Observable
-//				.just(Arrays.asList(PCState))
-//				.subscribe(evaluator);
+		evaluator.onNext(Map.of(pcState.peerConnectionUUID, pcState));
+		evaluator.observableNewPeerConnections().subscribe(newPcsHolder::set);
 
 		// Then
-//		Assertions.assertEquals(PCState.peerConnectionUUID, UUIDHolder.get());
-//		Assertions.assertEquals(PCState.marker, reportHolder.get().getMarker());
-//		Assertions.assertEquals(PCState.serviceName, reportHolder.get().getServiceName());
-//		Assertions.assertEquals(PCState.serviceUUID.toString(), reportHolder.get().getServiceUUID());
-//		Assertions.assertEquals(PCState.created, reportHolder.get().getTimestamp());
-//		Assertions.assertEquals(ReportType.JOINED_PEER_CONNECTION, reportHolder.get().getType());
+		Assertions.assertNull(newPcsHolder.get());
 	}
 
 	@Test
-	public void when_newMediaStreamAppears_then_initiatedCallIsReported() {
-
+	public void shouldDetectNewPCs() {
 		// Given
-//		AtomicReference<ReportDraft> reportDraftHolder = new AtomicReference<>(null);
-		PCStateGenerator generator = PCStateGenerator.builder().build();
-		PCState PCState = generator.getNext();
-//		evaluator.getInitiatedCallSubject().subscribe(reportDraftHolder::set);
+		ActivePCsEvaluator evaluator = subject.get();
+		PCState pcState = generator.makePCState();
+		AtomicReference<Map<UUID, PCState>> newPCsHolder = new AtomicReference<>(null);
+		evaluator.observableNewPeerConnections().subscribe(newPCsHolder::set);
 
 		// When
-//		Observable
-//				.just(Arrays.asList(PCState))
-//				.subscribe(evaluator);
+		evaluator.onNext(Map.of(pcState.peerConnectionUUID, pcState));
 
 		// Then
-//		Assertions.assertEquals(ReportDraftType.INITIATED_CALL, reportDraftHolder.get().type);
-//		InitiatedCallReportDraft initiatedCallReportDraft = (InitiatedCallReportDraft) reportDraftHolder.get();
-//		Assertions.assertEquals(PCState.marker, initiatedCallReportDraft.marker);
-//		Assertions.assertEquals(PCState.serviceUUID, initiatedCallReportDraft.serviceUUID);
-//		Assertions.assertEquals(PCState.created, initiatedCallReportDraft.initiated);
-//		Assertions.assertNotNull(initiatedCallReportDraft.callUUID);
+		Assertions.assertNotNull(newPCsHolder.get());
+		PCState actual = newPCsHolder.get().get(pcState.peerConnectionUUID);
+		Assertions.assertNotNull(actual);
+		Assertions.assertEquals(actual, pcState);
 	}
 
-
-	@Test
-	public void when_mediaUpdateFromSamePC_then_onlyOneJoinedPC_oneCallIsInitiated() {
-		// Given
-		AtomicInteger reportedJoinedPCNumHolder = new AtomicInteger(0);
-		AtomicInteger createdInitiatedCallsHolder = new AtomicInteger(0);
-		PCStateGenerator generator = PCStateGenerator.builder()
-				.withPeerConnections(Arrays.asList(UUID.randomUUID()))
-				.build();
-//		evaluator.getJoinedPeerConnectionSubject().subscribe(i -> reportedJoinedPCNumHolder.getAndIncrement());
-//		evaluator.getInitiatedCallSubject().subscribe(i -> createdInitiatedCallsHolder.getAndIncrement());
-
-		// When
-
-//		Observable
-//				.fromCallable(generator::getNext)
-//				.buffer(1)
-//				.repeat(3)
-//				.subscribe(evaluator);
-
-		// Then
-//		Assertions.assertEquals(1, reportedJoinedPCNumHolder.get());
-//		Assertions.assertEquals(1, createdInitiatedCallsHolder.get());
-	}
 }

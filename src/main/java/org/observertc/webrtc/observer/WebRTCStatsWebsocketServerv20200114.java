@@ -27,7 +27,7 @@ import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.evaluators.PCObserver;
+import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.monitors.SessionMonitor;
@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -54,24 +55,21 @@ public class WebRTCStatsWebsocketServerv20200114 {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebRTCStatsWebsocketServerv20200114.class);
 	private final ObjectReader objectReader;
-	private final ObservedPCSForwarder observedPCSForwarder;
 	private final FlawMonitor flawMonitor;
-	private final PCObserver pcObserver;
 	private final ServicesRepository servicesRepository;
 	private final SessionMonitor sessionMonitor;
 
+	@Inject
+	Pipeline pipeline;
+
 	public WebRTCStatsWebsocketServerv20200114(
 			ObjectMapper objectMapper,
-			ObservedPCSForwarder observedPCSForwarder,
 			MonitorProvider monitorProvider,
-			ServicesRepository servicesRepository,
-			PCObserver pcObserver
+			ServicesRepository servicesRepository
 	) {
-		this.observedPCSForwarder = observedPCSForwarder;
 		this.objectReader = objectMapper.reader();
 		this.sessionMonitor = monitorProvider.makeWebsocketSessionMonitor(this.getClass().getSimpleName());
 		this.servicesRepository = servicesRepository;
-		this.pcObserver = pcObserver;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
 	}
 
@@ -111,12 +109,20 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		try {
 			sample = this.objectReader.readValue(messageBytes, PeerConnectionSample.class);
 		} catch (IOException e) {
+			String message = new String(messageBytes);
 			this.flawMonitor.makeLogEntry()
 					.withException(e)
 					.withLogger(logger)
 					.withLogLevel(Level.WARN)
-					.withMessage("Invalid message ", new String(messageBytes))
+					.withMessage("Invalid message ", message)
 					.complete();
+			int maxLogSize = 1000;
+			for(int i = 0; i <= message.length() / maxLogSize; i++) {
+				int start = i * maxLogSize;
+				int end = (i+1) * maxLogSize;
+				end = end > message.length() ? message.length() : end;
+				logger.warn("Invalid message part {}, message snippet####{}####", message.substring(start, end));
+			}
 			return;
 		} catch (Throwable t) {
 			this.flawMonitor.makeLogEntry()
@@ -142,7 +148,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 						null,
 						timestamp
 				);
-				this.observedPCSForwarder.forwardOnlyUserMediaError(observedPCS);
+				this.pipeline.input(observedPCS);
 				return;
 			}
 			this.flawMonitor.makeLogEntry()
@@ -176,25 +182,13 @@ public class WebRTCStatsWebsocketServerv20200114 {
 		);
 
 		try {
-			this.observedPCSForwarder.forward(observedPCS);
+			this.pipeline.input(observedPCS);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withLogger(logger)
 					.withException(ex)
 					.withLogLevel(Level.WARN)
-					.withMessage("Error occured by forwarding message to {} ", this.observedPCSForwarder.getClass().getSimpleName())
-					.complete();
-		}
-
-		try {
-			this.pcObserver.onNext(observedPCS);
-//			this.streamsEvaluator.onNext(observedPCS);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
-					.withException(ex)
-					.withLogLevel(Level.WARN)
-					.withMessage("Error occured processing message by {} ", this.pcObserver.getClass().getSimpleName())
+					.withMessage("Error occured processing message by {} ", this.pipeline.getClass().getSimpleName())
 					.complete();
 		}
 
