@@ -50,10 +50,10 @@ import java.util.UUID;
  */
 @Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/{serviceUUIDStr}/{mediaUnitID}/v20200114/json")
-public class WebRTCStatsWebsocketServerv20200114 {
+public class WebsocketPCSampleV20200114 {
 	private static final String PC_SAMPLE_VERSION = "20200114";
 
-	private static final Logger logger = LoggerFactory.getLogger(WebRTCStatsWebsocketServerv20200114.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSampleV20200114.class);
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
 	private final ServicesRepository servicesRepository;
@@ -62,7 +62,7 @@ public class WebRTCStatsWebsocketServerv20200114 {
 	@Inject
 	Pipeline pipeline;
 
-	public WebRTCStatsWebsocketServerv20200114(
+	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
 			MonitorProvider monitorProvider,
 			ServicesRepository servicesRepository
