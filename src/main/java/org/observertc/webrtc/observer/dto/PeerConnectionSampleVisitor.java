@@ -34,6 +34,12 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 				this.visitUserMediaError(obj, sample, userMediaError);
 			}
 		}
+		if (Objects.nonNull(sample.extensionStats)) {
+			for (int i = 0; i < sample.extensionStats.length; ++i) {
+				PeerConnectionSample.ExtensionStat subject = sample.extensionStats[i];
+				this.visitExtensionStat(obj, sample, subject);
+			}
+		}
 		for (PeerConnectionSample.RTCStats rtcStats : Arrays.asList(sample.receiverStats, sample.senderStats)) {
 			if (Objects.isNull(rtcStats)) {
 				continue;
@@ -89,6 +95,8 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 			}
 		}
 	}
+
+	void visitExtensionStat(T obj, PeerConnectionSample sample, PeerConnectionSample.ExtensionStat subject);
 
 	void visitUserMediaError(T obj, PeerConnectionSample sample, PeerConnectionSample.UserMediaError userMediaError);
 

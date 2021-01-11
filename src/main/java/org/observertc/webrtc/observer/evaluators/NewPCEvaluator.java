@@ -21,6 +21,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
@@ -240,7 +241,6 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 				.setPayload(payload)
 				.build();
 		this.send(callEntity.serviceUUID, report);
-		logger.info("Call is theoretically registered {}", callEntity);
 		return Optional.of(callUUID);
 	}
 

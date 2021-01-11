@@ -64,6 +64,8 @@ public class ObserverConfig {
 		public boolean reportFinishedCalls = true;
 		public boolean reportJoinedPeerConnections = true;
 		public boolean reportDetachedPeerConnections = true;
+		public boolean reportObserverEvents = true;
+		public boolean reportExtensions = true;
 	}
 
 	public List<ServiceMappingConfiguration> serviceMappings = new ArrayList<>();
