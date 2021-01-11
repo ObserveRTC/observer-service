@@ -67,47 +67,52 @@ public class Pipeline {
         // InboundRTP -> ReportSunk
         this.observedPCSEvaluator
                 .getInboundRTPReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // OutboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getOutboundRTPReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // RemoteInboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getRemoteInboundRTPReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // UserMediaError -> ReportSink
         this.observedPCSEvaluator
                 .getUserMediaErrorReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // ICELocalCandidate -> ReportSink
         this.observedPCSEvaluator
                 .getICELocalCandidateReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // ICERemoteCandidate -> ReportSink
         this.observedPCSEvaluator
                 .getICERemoteCandidateReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // ICECandidatePair -> ReportSink
         this.observedPCSEvaluator
                 .getICECandidatePairReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // Track -> ReportSink
         this.observedPCSEvaluator
                 .getTrackReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
 
         // MediaSource -> ReportSink
         this.observedPCSEvaluator
                 .getMediaSourceReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reportSink.bypassInput());
+
+        // Extension -> ReportSink
+        this.observedPCSEvaluator
+                .getExtensionReports()
+                .subscribe(this.reportSink.bypassInput());
 
 
     }

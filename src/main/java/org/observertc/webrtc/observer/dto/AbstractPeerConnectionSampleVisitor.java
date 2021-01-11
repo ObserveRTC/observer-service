@@ -18,8 +18,13 @@ package org.observertc.webrtc.observer.dto;
 
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 
-public abstract class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSampleVisitor<T> {
+public class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSampleVisitor<T> {
 
+
+	@Override
+	public void visitExtensionStat(T obj, PeerConnectionSample sample, PeerConnectionSample.ExtensionStat subject) {
+
+	}
 
 	@Override
 	public void visitUserMediaError(T obj, PeerConnectionSample sample, PeerConnectionSample.UserMediaError userMediaError) {

@@ -17,10 +17,11 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
-import io.micronaut.context.annotation.Primary;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -33,10 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -50,6 +48,16 @@ public class ReportSink implements Observer<ReportRecord> {
 	private final Producer<UUID, byte[]> reportProducer;
 	private final FlawMonitor flawMonitor;
 	private final Function<Report, String> topicNameRouter;
+	private final Subject<ReportRecord> bypassingInput = PublishSubject.create();
+	private final Map<ReportType, Boolean> permissions;
+	/**
+	 * {@link ReportRecord} received on this interface will not be checked if
+	 * they can be send or not regarding to the {@link ObserverConfig.OutboundReportsConfig}.
+	 * @return
+	 */
+	public Observer<ReportRecord> bypassInput() {
+		return this.bypassingInput;
+	}
 
 	public ReportSink(
 			ObserverConfig config,
@@ -58,6 +66,7 @@ public class ReportSink implements Observer<ReportRecord> {
 	) {
 		this.reportProducer = reportProducer;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+		this.permissions = this.buildPermissionMap(config.outboundReports);
 
 		Map<UUID, String> topicRoutes = new HashMap<>();
 		if (Objects.nonNull(config.serviceMappings)) {
@@ -80,28 +89,7 @@ public class ReportSink implements Observer<ReportRecord> {
 		} else {
 			this.topicNameRouter = report -> config.outboundReports.defaultTopicName;
 		}
-	}
-
-	public Future<RecordMetadata> sendReport(UUID reportKey,
-											 UUID serviceUUID,
-											 String serviceName,
-											 String marker,
-											 ReportType type,
-											 Long timestamp,
-											 Object payload) {
-		String serviceUUIDStr = serviceUUID != null ? serviceUUID.toString() : null;
-		Report report = Report.newBuilder()
-				.setVersion(REPORT_VERSION_NUMBER)
-				.setServiceUUID(serviceUUIDStr)
-				.setServiceName(serviceName)
-				.setMarker(marker)
-				.setType(type)
-				.setTimestamp(timestamp)
-				.setPayload(payload)
-				.build();
-
-		return this.send(reportKey, report);
-
+		this.bypassingInput.subscribe(this::onByPassedNext);
 	}
 
 	@Override
@@ -111,6 +99,19 @@ public class ReportSink implements Observer<ReportRecord> {
 
 	@Override
 	public void onNext(@NonNull ReportRecord reportRecord) {
+		UUID key = reportRecord.key;
+		Report report = reportRecord.value;
+		Boolean sendingIsAllowed = this.permissions.get(report.getType());
+		if (Objects.isNull(sendingIsAllowed)) {
+			logger.warn("Received an unknown ReportType {} to check if it can be sent or not", report.getType());
+		}else if (!sendingIsAllowed) {
+			return;
+		}
+
+		this.send(key, report);
+	}
+
+	public void onByPassedNext(@NonNull ReportRecord reportRecord) {
 		UUID key = reportRecord.key;
 		Report report = reportRecord.value;
 		this.send(key, report);
@@ -126,7 +127,27 @@ public class ReportSink implements Observer<ReportRecord> {
 
 	}
 
-	private Future<RecordMetadata> send(UUID key, Report report) {
+	private Map<ReportType, Boolean> buildPermissionMap(ObserverConfig.OutboundReportsConfig config) {
+		Map<ReportType, Boolean> result = new HashMap<>();
+		result.put(ReportType.INITIATED_CALL, config.reportInitiatedCalls);
+		result.put(ReportType.FINISHED_CALL, config.reportFinishedCalls);
+		result.put(ReportType.JOINED_PEER_CONNECTION, config.reportJoinedPeerConnections);
+		result.put(ReportType.DETACHED_PEER_CONNECTION, config.reportDetachedPeerConnections);
+		result.put(ReportType.OBSERVER_EVENT, config.reportObserverEvents);
+		result.put(ReportType.EXTENSION, config.reportExtensions);
+		result.put(ReportType.INBOUND_RTP, config.reportInboundRTPs);
+		result.put(ReportType.OUTBOUND_RTP, config.reportOutboundRTPs);
+		result.put(ReportType.REMOTE_INBOUND_RTP, config.reportRemoteInboundRTPs);
+		result.put(ReportType.ICE_CANDIDATE_PAIR, config.reportCandidatePairs);
+		result.put(ReportType.ICE_LOCAL_CANDIDATE, config.reportLocalCandidates);
+		result.put(ReportType.ICE_REMOTE_CANDIDATE, config.reportRemoteCandidates);
+		result.put(ReportType.TRACK, config.reportTracks);
+		result.put(ReportType.MEDIA_SOURCE, config.reportMediaSources);
+		result.put(ReportType.USER_MEDIA_ERROR, config.reportUserMediaErrors);
+		return Collections.unmodifiableMap(result);
+	}
+
+	private Optional<Future<RecordMetadata>> send(UUID key, Report report) {
 		byte[] out;
 		try {
 			out = report.toByteBuffer().array();
@@ -142,9 +163,34 @@ public class ReportSink implements Observer<ReportRecord> {
 		}
 
 		String topic = this.topicNameRouter.apply(report);
-		return this.reportProducer.send(new ProducerRecord<UUID, byte[]>(
-				topic,
-				key,
-				out));
+		return Optional.of(
+				this.reportProducer.send(new ProducerRecord<UUID, byte[]>(
+						topic,
+						key,
+						out))
+		);
 	}
+
+
+
+//	public Optional<Future<RecordMetadata>> sendReport(UUID reportKey,
+//											 UUID serviceUUID,
+//											 String serviceName,
+//											 String marker,
+//											 ReportType type,
+//											 Long timestamp,
+//											 Object payload) {
+//		String serviceUUIDStr = serviceUUID != null ? serviceUUID.toString() : null;
+//		Report report = Report.newBuilder()
+//				.setVersion(REPORT_VERSION_NUMBER)
+//				.setServiceUUID(serviceUUIDStr)
+//				.setServiceName(serviceName)
+//				.setMarker(marker)
+//				.setType(type)
+//				.setTimestamp(timestamp)
+//				.setPayload(payload)
+//				.build();
+//
+//		return this.send(reportKey, report);
+//	}
 }

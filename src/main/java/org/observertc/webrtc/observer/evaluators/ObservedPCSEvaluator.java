@@ -42,7 +42,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     private final Subject<ReportRecord> userMediaErrorReports = PublishSubject.create();
     private final Subject<ReportRecord> mediaSourceReports = PublishSubject.create();
     private final Subject<ReportRecord> trackReports = PublishSubject.create();
-
+    private final Subject<ReportRecord> extensionReports = PublishSubject.create();
     private AtomicReference<Disposable> disposable = new AtomicReference<>(null);
     private PeerConnectionSampleVisitor<ObservedPCS> processor;
 
@@ -54,6 +54,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     @Inject
     NumberConverter numberConverter;
+
 
     @PostConstruct
     void setup() {
@@ -101,6 +102,10 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
         return this.userMediaErrorReports;
     }
 
+    public Observable<ReportRecord> getExtensionReports() {
+        return this.extensionReports;
+    }
+
     @Override
     public void onSubscribe(@NonNull Disposable d) {
         this.disposable.set(d);
@@ -134,7 +139,13 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
         final BiConsumer<ObservedPCS, PeerConnectionSample.RTCTrackStats> trackReporter = this.makeTrackReporter();
         final BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> mediaSourceReporter = this.makeMediaSourceReporter();
         final BiConsumer<ObservedPCS, PeerConnectionSample.UserMediaError> userMediaErrorReporter = this.makeUserMediaErrorReporter();
+        final BiConsumer<ObservedPCS, PeerConnectionSample.ExtensionStat> extensionStatsReporter = this.makeExtensionStatsReporter();
         return new PeerConnectionSampleVisitor<ObservedPCS>() {
+            @Override
+            public void visitExtensionStat(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ExtensionStat subject) {
+                extensionStatsReporter.accept(obj, subject);
+            }
+
             @Override
             public void visitUserMediaError(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.UserMediaError subject) {
                 userMediaErrorReporter.accept(obj, subject);
@@ -179,6 +190,29 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
             public void visitICERemoteCandidate(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
                 ICERemoteCandidateReporter.accept(obj, subject);
             }
+        };
+    }
+
+    private BiConsumer<ObservedPCS, PeerConnectionSample.ExtensionStat> makeExtensionStatsReporter() {
+        if (!this.config.reportExtensions) {
+            return (observedPCS, subject) -> {
+
+            };
+        }
+
+        return (observedPCS, subject) -> {
+            PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+            ExtensionReport extensionReport = ExtensionReport.newBuilder()
+                    .setMediaUnitId(observedPCS.mediaUnitId)
+                    .setCallName(peerConnectionSample.callId)
+                    .setUserId(peerConnectionSample.userId)
+                    .setBrowserId(peerConnectionSample.browserId)
+                    .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+                    .setExtensionType(subject.extensionType)
+                    .setPayload(subject.payload)
+                    .build();
+            ReportRecord reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.EXTENSION, extensionReport);
+            this.extensionReports.onNext(reportRecord);
         };
     }
 
