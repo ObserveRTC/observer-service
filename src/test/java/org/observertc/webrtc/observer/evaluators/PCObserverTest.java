@@ -9,9 +9,7 @@ import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 
 import javax.inject.Inject;
-import java.time.Instant;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @MicronautTest
@@ -48,39 +46,39 @@ class PCObserverTest {
 		Assertions.assertEquals(pcState.userId, observedPCS.peerConnectionSample.userId);
 	}
 
-	@Test
-	public void shouldObserveAsExpiredAfterSomeTime() throws InterruptedException {
-		// Given
-		ObservedPCS observedPCS = generator.nextObject(ObservedPCS.class);
-		observedPCS.timestamp = Instant.now().getEpochSecond();
-		// When
-		Observable
-				.just(observedPCS)
-				.subscribe(this.pcObserver);
-		Map<UUID, PCState> result = null;
-		int timeout = config.peerConnectionMaxIdleTimeInS + config.mediaStreamUpdatesFlushInS * 2;
-		Instant started = Instant.now();
-		for (;;) {
-			result = this.pcObserver.getExpiredPCs().blockingFirst();
-			if (Objects.nonNull(result) && 0 < result.size()) {
-				break;
-			}
-			if (started.compareTo(Instant.now().minusSeconds(timeout)) < 0) {
-				break;
-			}
-		}
-
-		// Then
-		Assertions.assertNotNull(result);
-		PCState pcState = result.get(observedPCS.peerConnectionUUID);
-		Assertions.assertNotNull(pcState);
-		Assertions.assertEquals(pcState.peerConnectionUUID, observedPCS.peerConnectionUUID);
-		Assertions.assertEquals(pcState.serviceUUID, observedPCS.serviceUUID);
-		Assertions.assertEquals(pcState.browserId, observedPCS.peerConnectionSample.browserId);
-		Assertions.assertEquals(pcState.callName, observedPCS.peerConnectionSample.callId);
-		Assertions.assertEquals(pcState.updated, observedPCS.timestamp);
-		Assertions.assertEquals(pcState.userId, observedPCS.peerConnectionSample.userId);
-	}
+//	@Test
+//	public void shouldObserveAsExpiredAfterSomeTime() throws InterruptedException {
+//		// Given
+//		ObservedPCS observedPCS = generator.nextObject(ObservedPCS.class);
+//		observedPCS.timestamp = Instant.now().getEpochSecond();
+//		// When
+//		Observable
+//				.just(observedPCS)
+//				.subscribe(this.pcObserver);
+//		Map<UUID, PCState> result = null;
+//		int timeout = config.peerConnectionMaxIdleTimeInS + config.mediaStreamUpdatesFlushInS * 2;
+//		Instant started = Instant.now();
+//		for (;;) {
+//			result = this.pcObserver.getExpiredPCs().blockingFirst();
+//			if (Objects.nonNull(result) && 0 < result.size()) {
+//				break;
+//			}
+//			if (started.compareTo(Instant.now().minusSeconds(timeout)) < 0) {
+//				break;
+//			}
+//		}
+//
+//		// Then
+//		Assertions.assertNotNull(result);
+//		PCState pcState = result.get(observedPCS.peerConnectionUUID);
+//		Assertions.assertNotNull(pcState);
+//		Assertions.assertEquals(pcState.peerConnectionUUID, observedPCS.peerConnectionUUID);
+//		Assertions.assertEquals(pcState.serviceUUID, observedPCS.serviceUUID);
+//		Assertions.assertEquals(pcState.browserId, observedPCS.peerConnectionSample.browserId);
+//		Assertions.assertEquals(pcState.callName, observedPCS.peerConnectionSample.callId);
+//		Assertions.assertEquals(pcState.updated, observedPCS.timestamp);
+//		Assertions.assertEquals(pcState.userId, observedPCS.peerConnectionSample.userId);
+//	}
 
 
 }
