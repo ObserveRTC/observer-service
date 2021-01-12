@@ -224,6 +224,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 			return Optional.empty();
 		}
 		UUID callUUID = callUUIDReference.get();
+		logger.info("Call UUID {} is registered.", callUUID);
 		if (callUUID == null) {
 			return Optional.empty();
 		}
@@ -263,6 +264,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 		);
 		AtomicReference<Throwable> error = new AtomicReference<>(null);
 		AtomicBoolean performed = new AtomicBoolean(false);
+		logger.info("PC UUID {} is registered.", pcState.peerConnectionUUID);
 		try (PeerConnectionJoinerTask task = this.tasksProvider.providePeerConnectionJoinerTask()) {
 			task.forEntity(pcEntity)
 					.perform()

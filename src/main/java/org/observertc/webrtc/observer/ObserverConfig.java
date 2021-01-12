@@ -48,6 +48,7 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
+		public boolean enabled = true;
 		public String defaultServiceName = "defaultServiceName";
 		public String defaultTopicName = "reports";
 		public boolean reportOutboundRTPs = true;

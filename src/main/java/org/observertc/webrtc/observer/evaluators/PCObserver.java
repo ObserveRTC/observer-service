@@ -26,6 +26,7 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
@@ -109,6 +110,11 @@ public class PCObserver implements Observer<ObservedPCS> {
 			return;
 		}
 		UUID peerConnectionUUID = observedPCS.peerConnectionUUID;
+		if (Objects.isNull(peerConnectionUUID)) {
+			logger.info("No PeerConnection UUID for message {}. It will be dropped from PCObserver",
+					ObjectToString.toString(observedPCS));
+			return;
+		}
 		int index = Math.abs(peerConnectionUUID.hashCode()) % this.peerConnectionsLength;
 		PCStates PCStates = this.pcStates.get(index);
 		try {

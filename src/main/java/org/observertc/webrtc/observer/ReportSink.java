@@ -144,6 +144,10 @@ public class ReportSink implements Observer<ReportRecord> {
 		result.put(ReportType.TRACK, config.reportTracks);
 		result.put(ReportType.MEDIA_SOURCE, config.reportMediaSources);
 		result.put(ReportType.USER_MEDIA_ERROR, config.reportUserMediaErrors);
+		if (!config.enabled) {
+			Set<ReportType> types = new HashSet<>(result.keySet());
+			types.stream().forEach(type -> result.put(type, false));
+		}
 		return Collections.unmodifiableMap(result);
 	}
 

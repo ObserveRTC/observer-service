@@ -194,7 +194,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.ExtensionStat> makeExtensionStatsReporter() {
-        if (!this.config.reportExtensions) {
+        if (!this.config.enabled || !this.config.reportExtensions) {
             return (observedPCS, subject) -> {
 
             };
@@ -217,7 +217,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.UserMediaError> makeUserMediaErrorReporter() {
-        if (!this.config.reportUserMediaErrors) {
+        if (!this.config.enabled || !this.config.reportUserMediaErrors) {
             return (observedPCS, subject) -> {
 
             };
@@ -239,7 +239,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> makeMediaSourceReporter() {
-        if (!this.config.reportMediaSources) {
+        if (!this.config.enabled || !this.config.reportMediaSources) {
             return (observedPCS, subject) -> {
 
             };
@@ -271,7 +271,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.RTCTrackStats> makeTrackReporter() {
-        if (!this.config.reportTracks) {
+        if (!this.config.enabled || !this.config.reportTracks) {
             return (observedPCS, subject) -> {
 
             };
@@ -312,7 +312,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.ICECandidatePair> makeICECandidatePairReporter() {
-        if (!this.config.reportCandidatePairs) {
+        if (!this.config.enabled || !this.config.reportCandidatePairs) {
             return (observedPCS, subject) -> {
 
             };
@@ -350,7 +350,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.ICELocalCandidate> makeICELocalCandidateReporter() {
-        if (!this.config.reportLocalCandidates) {
+        if (!this.config.enabled || !this.config.reportLocalCandidates) {
             return (observedPCS, subject) -> {
 
             };
@@ -382,7 +382,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.ICERemoteCandidate> makeICERemoteCandidateReporter() {
-        if (!this.config.reportRemoteCandidates) {
+        if (!this.config.enabled || !this.config.reportRemoteCandidates) {
             return (observedPCS, subject) -> {
 
             };
@@ -412,7 +412,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.RemoteInboundRTPStreamStats> makeRemoteInboundRTPReporter() {
-        if (!this.config.reportRemoteInboundRTPs) {
+        if (!this.config.enabled || !this.config.reportRemoteInboundRTPs) {
             return (observedPCS, subject) -> {
 
             };
@@ -441,7 +441,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.InboundRTPStreamStats> makeInboundRTPReporter() {
-        if (!this.config.reportInboundRTPs) {
+        if (!this.config.enabled || !this.config.reportInboundRTPs) {
             return (observedPCS, subject) -> {
 
             };
@@ -488,7 +488,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.OutboundRTPStreamStats> makeOutboundRTPReporter() {
-        if (!this.config.reportOutboundRTPs) {
+        if (!this.config.enabled || !this.config.reportOutboundRTPs) {
             return (observedPCS, subject) -> {
 
             };
@@ -534,9 +534,6 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
         };
     }
 
-//    private void sendReport(ObservedPCS observedPCS, ReportType reportType, Object payload) {
-//        this.sendReport(observedPCS, observedPCS.peerConnectionUUID, reportType, payload);
-//    }
     private ReportRecord makeReportRecord(ObservedPCS observedPCS, ReportType reportType, Object payload) {
         return this.makeReportRecord(observedPCS, observedPCS.peerConnectionUUID, reportType, payload);
     }
@@ -555,16 +552,4 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                 .build()
         );
     }
-
-//    private void sendReport(ObservedPCS observedPCS, UUID kafkaKey, ReportType reportType, Object payload) {
-//        this.reportSink.sendReport(
-//                kafkaKey,
-//                observedPCS.serviceUUID,
-//                observedPCS.serviceName,
-//                observedPCS.marker,
-//                reportType,
-//                observedPCS.timestamp,
-//                payload
-//        );
-//    }
 }

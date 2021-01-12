@@ -179,7 +179,7 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 					.complete();
 			return;
 		}
-
+		logger.info("PC UUID {} is unregistered.", pcState.peerConnectionUUID);
 		if (remainingPCs.size() < 1) {
 			this.finnishCall(entity.callUUID, pcState.updated);
 			return;
@@ -204,13 +204,15 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 		}
 
 		if (Objects.isNull(callEntityHolder.get())) {
-			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("No call has found for call UUID {}", callUUID)
-					.complete();
+			logger.info("Call UUID {} is not found. Already unregistered?", callUUID);
+//			this.flawMonitor.makeLogEntry()
+//					.withLogger(logger)
+//					.withLogLevel(Level.WARN)
+//					.withMessage("No call has found for call UUID {}", callUUID)
+//					.complete();
 			return;
 		}
+		logger.info("Call UUID {} is unregistered.", callUUID);
 		CallEntity callEntity = callEntityHolder.get();
 
 		if (Objects.nonNull(error.get())) {
@@ -236,7 +238,7 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 				.setTimestamp(timestamp)
 				.setPayload(payload)
 				.build();
-
+		logger.info("Call UUID {} is not found. Already unregistered?", callUUID);
 		this.send(callEntity.serviceUUID, report);
 	}
 
