@@ -24,6 +24,9 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Singleton;
 import java.util.UUID;
 
+/**
+ * Repositry to store information related to Peer Connections
+ */
 @Singleton
 public class PeerConnectionsRepository extends MapRepositoryAbstract<UUID, PeerConnectionEntity> {
 

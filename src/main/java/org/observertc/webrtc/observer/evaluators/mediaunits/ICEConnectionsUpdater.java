@@ -1,0 +1,98 @@
+package org.observertc.webrtc.observer.evaluators.mediaunits;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.models.ICEConnectionEntity;
+import org.observertc.webrtc.observer.monitors.FlawMonitor;
+import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.tasks.ICEConnectionAdderTask;
+import org.observertc.webrtc.observer.tasks.ICEConnectionRemoverTask;
+import org.observertc.webrtc.observer.tasks.TasksProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+@Singleton
+public class ICEConnectionsUpdater  {
+
+    private static final Logger logger = LoggerFactory.getLogger(ICEConnectionsUpdater.class);
+    private Subject<ICEConnectionEntity> newICEConnection = PublishSubject.create();
+    private Subject<UUID> expiredPC = PublishSubject.create();
+    private final FlawMonitor flawMonitor;
+
+    @Inject
+    TasksProvider tasksProvider;
+
+    public ICEConnectionsUpdater(
+            MonitorProvider monitorProvider
+    ) {
+        this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+        this.newICEConnection
+                .buffer(10, TimeUnit.SECONDS)
+                .subscribe(this::processICEConnections);
+
+        this.expiredPC
+                .buffer(10, TimeUnit.SECONDS)
+                .subscribe(this::processExpiredPCs);
+    }
+
+
+    public Observable<ICEConnectionEntity> getNewICEConnectionsInput() {
+        return this.newICEConnection;
+    }
+
+    public Observable<UUID> getExpiredPCsInput() {
+        return this.expiredPC;
+    }
+
+    private void processICEConnections(List<ICEConnectionEntity> iceConnectionEntities) {
+        if (Objects.isNull(iceConnectionEntities)) {
+            return;
+        }
+        if (iceConnectionEntities.size() < 1) {
+            return;
+        }
+        ICEConnectionAdderTask task = this.tasksProvider.provideICEConnectionAdderTask();
+        iceConnectionEntities.forEach(task::forICEConnectionEntity);
+        task
+                .withLogger(logger)
+                .withFlawMonitor(this.flawMonitor)
+        ;
+
+        if (!task.execute().succeeded()) {
+            return;
+        }
+    }
+
+    private void processExpiredPCs(List<UUID> pcUUIDs) {
+        if (Objects.isNull(pcUUIDs)) {
+            return;
+        }
+        if (pcUUIDs.size() < 1) {
+            return;
+        }
+        ICEConnectionRemoverTask task =
+                this.tasksProvider.provideICEConnectionRemoverTask()
+                .forPcUUIDs(pcUUIDs);
+        task.withExceptionMessage(() ->
+                MessageFormatter.format("Cannot remove ICE connection belongs to peer connections ({}), due to exception", ObjectToString.toString(pcUUIDs)).getMessage()
+            )
+            .withFlawMonitor(this.flawMonitor)
+            .withLogger(logger)
+            .execute();
+
+        if (!task.succeeded()) {
+            return;
+        }
+    }
+
+}

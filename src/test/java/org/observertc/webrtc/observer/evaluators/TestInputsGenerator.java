@@ -69,6 +69,7 @@ public class TestInputsGenerator {
 		return this.generator.nextObject(SynchronizationSourceEntity.class);
 	}
 
+
 	public PeerConnectionEntity makePeerConnectionEntityFor(SynchronizationSourceEntity ssrcEntity) {
 		PeerConnectionEntity result = this.makePeerConnectionEntity();
 		result.callUUID = ssrcEntity.callUUID;
@@ -116,4 +117,6 @@ public class TestInputsGenerator {
 			return new TestInputsGenerator();
 		}
 	}
+
+
 }

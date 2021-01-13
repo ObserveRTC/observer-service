@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.common.jobs;
+package org.observertc.webrtc.observer.evaluators.mediaunits;
 
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public interface Task {
-	String getName();
+import javax.inject.Singleton;
 
-	String getDescription();
 
-	void execute(Map<String, Map<String, Object>> results);
+@Singleton
+public class MediaUnitConnectionsEvaluator {
 
-	Map<String, Object> getResults();
+	private static final Logger logger = LoggerFactory.getLogger(MediaUnitConnectionsEvaluator.class);
+
 }

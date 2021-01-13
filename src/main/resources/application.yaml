@@ -44,7 +44,9 @@ observer:
       peerConnectionMaxIdleTimeInS: 300
       mediaStreamUpdatesFlushInS: 15
       mediaStreamsBufferNums: 0
-
+    conurrentStreams:
+      enabled: true
+      threshold: 100
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True

@@ -17,24 +17,24 @@
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.observertc.webrtc.observer.models.ICEConnectionEntity;
 
 import javax.inject.Singleton;
 import java.util.UUID;
 
 /**
- * Callnames to call uuids
+ * Repository to store the (serviceUUID, SSRC) -> calls binding.
  */
 @Singleton
-public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
+public class ICEConnectionsRepository extends MapRepositoryAbstract<String, ICEConnectionEntity> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
+	private static final String HAZELCAST_IMAP_NAME = "WebRTCObserverICEConnections";
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
+	public static String getKey(UUID pcUUID, String localCandidateId, String remoteCandidateId) {
+		return String.format("%s-%s-%s", pcUUID.toString(), localCandidateId, remoteCandidateId);
+	}
 
-	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
-		super(observerHazelcast, HAZELCAST_MAP_KEY);
-
+	public ICEConnectionsRepository(ObserverHazelcast observerHazelcast) {
+		super(observerHazelcast, HAZELCAST_IMAP_NAME);
 	}
 }

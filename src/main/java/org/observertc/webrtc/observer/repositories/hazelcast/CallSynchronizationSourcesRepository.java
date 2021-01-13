@@ -16,12 +16,16 @@
 
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
-import java.util.UUID;
-import javax.inject.Singleton;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Singleton;
+import java.util.UUID;
+
+/**
+ * Call to SSRC source keys
+ */
 @Singleton
 public class CallSynchronizationSourcesRepository extends MultiMapRepositoryAbstract<UUID, String> {
 

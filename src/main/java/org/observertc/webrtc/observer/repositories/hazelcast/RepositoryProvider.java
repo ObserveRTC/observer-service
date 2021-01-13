@@ -16,32 +16,48 @@
 
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+/**
+ * Convinient way to provide all repositories from one
+ * singletone
+ */
 @Singleton
 public class RepositoryProvider {
-	private final Provider<CallPeerConnectionsRepository> callPeerConnectionsRepositoryProvider;
-	private final Provider<CallNamesRepository> callNamesRepositoryProvider;
-	private final Provider<CallEntitiesRepository> callEntitiesRepositoryProvider;
-	private final Provider<PeerConnectionsRepository> peerConnectionsRepositoryProvider;
-	private final Provider<SynchronizationSourcesRepository> SSRCRepositoryProvider;
-	private final Provider<CallSynchronizationSourcesRepository> callSynchronozationSourcesRepositoryProvider;
 
-	public RepositoryProvider(
-			Provider<CallEntitiesRepository> callEntitiesRepositoryProvider,
-			Provider<CallNamesRepository> callNamesRepositoryProvider,
-			Provider<CallPeerConnectionsRepository> callPeerConnectionsRepositoryProvider,
-			Provider<PeerConnectionsRepository> peerConnectionsRepositoryProvider,
-			Provider<SynchronizationSourcesRepository> SSRCRepositoryProvider,
-			Provider<CallSynchronizationSourcesRepository> callSynchronozationSourcesRepositoryProvider
-	) {
-		this.callNamesRepositoryProvider = callNamesRepositoryProvider;
-		this.callPeerConnectionsRepositoryProvider = callPeerConnectionsRepositoryProvider;
-		this.callEntitiesRepositoryProvider = callEntitiesRepositoryProvider;
-		this.peerConnectionsRepositoryProvider = peerConnectionsRepositoryProvider;
-		this.SSRCRepositoryProvider = SSRCRepositoryProvider;
-		this.callSynchronozationSourcesRepositoryProvider = callSynchronozationSourcesRepositoryProvider;
+	@Inject
+	Provider<CallPeerConnectionsRepository> callPeerConnectionsRepositoryProvider;
+
+	@Inject
+	Provider<CallNamesRepository> callNamesRepositoryProvider;
+
+	@Inject
+	Provider<CallEntitiesRepository> callEntitiesRepositoryProvider;
+
+	@Inject
+	Provider<PeerConnectionsRepository> peerConnectionsRepositoryProvider;
+
+	@Inject
+	Provider<SynchronizationSourcesRepository> SSRCRepositoryProvider;
+
+	@Inject
+	Provider<CallSynchronizationSourcesRepository> callSynchronozationSourcesRepositoryProvider;
+
+	@Inject
+	Provider<ICEConnectionsRepository> iceConnectionsRepositoryProvider;
+
+	@Inject
+	Provider<MediaUnitPeerConnectionsRepository> mediaUnitPeerConnectionsRepositoryProvider;
+
+	@Inject
+	Provider<PeerConnectionICEConnectionsRepository> peerConnectionICEConnectionsRepositoryProvider;
+
+	@PostConstruct
+	void setup() {
+
 	}
 
 	public SynchronizationSourcesRepository getSSRCRepository() {
@@ -66,5 +82,17 @@ public class RepositoryProvider {
 
 	public CallSynchronizationSourcesRepository getCallSynchronizationSourcesRepository() {
 		return this.callSynchronozationSourcesRepositoryProvider.get();
+	}
+
+	public PeerConnectionICEConnectionsRepository getPeerConnectionICEConnectionsRepository() {
+		return this.peerConnectionICEConnectionsRepositoryProvider.get();
+	}
+
+	public ICEConnectionsRepository getICEConnectionsRepository() {
+		return this.iceConnectionsRepositoryProvider.get();
+	}
+
+	public MediaUnitPeerConnectionsRepository getMediaUnitPeerConnectionsRepository() {
+		return this.mediaUnitPeerConnectionsRepositoryProvider.get();
 	}
 }

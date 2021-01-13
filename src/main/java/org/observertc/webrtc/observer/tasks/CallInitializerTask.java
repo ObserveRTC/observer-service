@@ -17,30 +17,21 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import javax.inject.Provider;
-import javax.validation.constraints.NotNull;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallEntitiesRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallNamesRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallSynchronizationSourcesRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Provider;
+import javax.validation.constraints.NotNull;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+
 @Prototype
-public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
+public class CallInitializerTask extends TaskAbstract<UUID> {
 
 
 	private enum State {
@@ -61,7 +52,7 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 	private final CallFinderTask callFinderTask;
 	private final CallNamesRepository callNamesRepository;
 	private final CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
-	private final Provider<FencedLockAcquirer> lockProvider;
+	private final WeakLockProvider lockProvider;
 	private CallEntity callEntity;
 	private Set<Long> SSRCs;
 	private State state = State.CREATED;
@@ -71,7 +62,7 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 	public CallInitializerTask(
 			RepositoryProvider repositoryProvider,
 			CallFinderTask callFinderTask,
-			Provider<FencedLockAcquirer> lockProvider
+			WeakLockProvider lockProvider
 	) {
 		super();
 		this.lockProvider = lockProvider;
@@ -92,37 +83,29 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 		return this;
 	}
 
+
 	@Override
-	protected Maybe<UUID> doPerform() {
-		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
-			Set<UUID> callUUIDs = new HashSet<>();
-			AtomicReference<Throwable> error = new AtomicReference<>(null);
-			this.callFinderTask.forSSRCs(this.SSRCs)
+	protected UUID perform() throws Throwable {
+//		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
+		try (var lock = this.lockProvider.autoLock(this.getClass().getSimpleName())) {
+			Set<UUID> callUUIDs = this.callFinderTask.forSSRCs(this.SSRCs)
 					.forServiceUUID(this.callEntity.serviceUUID)
 					.forCallName(this.callEntity.callName)
 					.withMultipleResultsAllowed(false)
-					.perform()
-					.subscribe(callUUIDs::add, error::set);
-
-			if (Objects.nonNull(error.get())) {
-				return Maybe.error(error.get());
-			}
+					.execute().getResultOrDefault(Collections.EMPTY_SET);
 
 			if (0 < callUUIDs.size()) {
 				UUID result = callUUIDs.stream().findFirst().get();
-				return Maybe.just(result);
+				return result;
 			}
 
-			this.execute();
-			return Maybe.just(this.callEntity.callUUID);
+			this.doPerform();
+			return this.callEntity.callUUID;
 
-		} catch (Exception ex) {
-			this.rollback(ex);
-			return Maybe.error(ex);
 		}
 	}
 
-	private void execute() {
+	private void doPerform() {
 		switch (this.state) {
 			default:
 			case CREATED:
@@ -145,7 +128,8 @@ public class CallInitializerTask extends TaskAbstract<Maybe<UUID>> {
 		}
 	}
 
-	private void rollback(Throwable t) {
+	@Override
+	protected void rollback(Throwable t) {
 		try {
 			switch (this.state) {
 				case EXECUTED:

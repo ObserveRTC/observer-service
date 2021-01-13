@@ -17,7 +17,6 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Completable;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
@@ -36,7 +35,7 @@ import java.util.stream.Collectors;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
-public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
+public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 	private enum State {
 		CREATED,
 		EXISTING_ENTITIES_ARE_UPDATED,
@@ -82,17 +81,7 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 	}
 
 	@Override
-	protected Completable doPerform() {
-		try {
-			this.execute();
-			return Completable.complete();
-		} catch (Exception ex) {
-			this.rollback(ex);
-			return Completable.error(ex);
-		}
-	}
-
-	private void execute() {
+	protected Void perform() {
 		switch (this.state) {
 			default:
 			case CREATED:
@@ -105,11 +94,11 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Completable> {
 				this.state = State.EXECUTED;
 			case EXECUTED:
 			case ROLLEDBACK:
-				return;
 		}
+		return null;
 	}
 
-	private void rollback(Throwable t) {
+	protected void rollback(Throwable t) {
 		try {
 			switch (this.state) {
 				case EXECUTED:

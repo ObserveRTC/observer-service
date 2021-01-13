@@ -42,7 +42,6 @@ import org.slf4j.event.Level;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
 
@@ -110,40 +109,13 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 	 * @param pcState
 	 */
 	private void process(@NotNull PCState pcState) {
-		AtomicReference<Throwable> error = new AtomicReference<>(null);
-		AtomicReference<PeerConnectionEntity> entityHolder = new AtomicReference<>(null);
-		try (PeerConnectionDetacherTask task = this.tasksProvider.providePeerConnectionDetacherTask()) {
-			task.forPeerConnectionUUID(pcState.peerConnectionUUID)
-					.perform()
-					.subscribe(entityHolder::set, error::set);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("Unexpected error occurred by executing {} ", PeerConnectionDetacherTask.class.getSimpleName())
-					.complete();
+		PeerConnectionDetacherTask task = this.tasksProvider.providePeerConnectionDetacherTask();
+		task.forPeerConnectionUUID(pcState.peerConnectionUUID);
+		if (!task.execute().succeeded()) {
 			return;
 		}
-		if (error.get() != null) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("Error occurred by executing {} ", PeerConnectionDetacherTask.class.getSimpleName())
-					.complete();
-			return;
-		}
-		if (entityHolder.get() == null) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("{} has not been found for {}", PeerConnectionEntity.class.getSimpleName(), pcState.toString())
-					.complete();
-			return;
-		}
-		PeerConnectionEntity entity = entityHolder.get();
+
+		PeerConnectionEntity entity = task.getResult();
 		Object payload = DetachedPeerConnection.newBuilder()
 				.setMediaUnitId(entity.mediaUnitId)
 				.setCallName(entity.callName)
@@ -165,20 +137,19 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 				.build();
 		this.send(entity.peerConnectionUUID, report);
 
-		Set<PeerConnectionEntity> remainingPCs = new HashSet<>();
-		try (PeerConnectionsFinderTask task = this.tasksProvider.providePeerConnectionFinderTask()) {
-			task.forCallUUIDs(Set.of(entity.callUUID))
-					.perform()
-					.subscribe(remainingPCs::add);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Unexpected error occurred by executing {}", PeerConnectionsFinderTask.class.getSimpleName())
-					.complete();
+		PeerConnectionsFinderTask peerConnectionsFinderTask = this.tasksProvider.providePeerConnectionFinderTask()
+			.forCallUUIDs(Set.of(entity.callUUID));
+
+		peerConnectionsFinderTask
+				.withLogger(logger)
+				.withFlawMonitor(this.flawMonitor)
+				.execute();
+
+		if (!peerConnectionsFinderTask.succeeded()) {
 			return;
 		}
+
+		Collection<PeerConnectionEntity> remainingPCs = peerConnectionsFinderTask.getResult();
 		logger.info("PC UUID {} is unregistered.", pcState.peerConnectionUUID);
 		if (remainingPCs.size() < 1) {
 			this.finnishCall(entity.callUUID, pcState.updated);
@@ -188,42 +159,17 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 	private void finnishCall(UUID callUUID, Long timestamp) {
-		AtomicReference<CallEntity> callEntityHolder = new AtomicReference<>(null);
-		AtomicReference<Throwable> error = new AtomicReference<>(null);
-		try (CallFinisherTask task = this.tasksProvider.provideCallFinisherTask()) {
-			task.forCallEntity(callUUID)
-					.perform()
-					.subscribe(callEntityHolder::set, error::set);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Unexpected error occurred by executing {}", CallFinisherTask.class.getSimpleName())
-					.complete();
+		CallFinisherTask task = this.tasksProvider.provideCallFinisherTask().forCallEntity(callUUID);
+		task.withLogger(logger).withFlawMonitor(flawMonitor);
+		if (!task.execute().succeeded()) {
+			return;
 		}
-
-		if (Objects.isNull(callEntityHolder.get())) {
+		CallEntity callEntity = task.getResult();
+		if (Objects.isNull(callEntity)) {
 			logger.info("Call UUID {} is not found. Already unregistered?", callUUID);
-//			this.flawMonitor.makeLogEntry()
-//					.withLogger(logger)
-//					.withLogLevel(Level.WARN)
-//					.withMessage("No call has found for call UUID {}", callUUID)
-//					.complete();
 			return;
 		}
 		logger.info("Call UUID {} is unregistered.", callUUID);
-		CallEntity callEntity = callEntityHolder.get();
-
-		if (Objects.nonNull(error.get())) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("An error occurred by executing {} CallUUID {} may not be finished, and not be reported as finished", CallFinisherTask.class.getSimpleName(), callUUID)
-					.complete();
-			return;
-		}
 
 		FinishedCall payload = FinishedCall.newBuilder()
 				.setCallName(callEntity.callName)

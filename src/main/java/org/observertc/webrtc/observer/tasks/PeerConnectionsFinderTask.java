@@ -17,7 +17,6 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
@@ -35,7 +34,7 @@ import java.util.stream.Collectors;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
-public class PeerConnectionsFinderTask extends TaskAbstract<Observable<PeerConnectionEntity>> {
+public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConnectionEntity>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsFinderTask.class);
 
@@ -76,20 +75,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Observable<PeerConne
 
 
 	@Override
-	protected Observable<PeerConnectionEntity> doPerform() {
-		try {
-			this.execute();
-			if (this.result.size() < 1) {
-				return Observable.empty();
-			}
-			return Observable.fromIterable(this.result.values());
-		} catch (Exception ex) {
-			this.rollback(ex);
-			return Observable.error(ex);
-		}
-	}
-
-	private void execute() {
+	protected Collection<PeerConnectionEntity> perform() {
 		switch (this.state) {
 			default:
 			case CREATED:
@@ -102,23 +88,23 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Observable<PeerConne
 				this.state = State.EXECUTED;
 			case EXECUTED:
 			case ROLLEDBACK:
-				return;
 		}
+		if (this.result.size() < 1) {
+			return Collections.EMPTY_LIST;
+		}
+		return this.result.values();
 	}
 
-	private void rollback(Throwable t) {
-		try {
-			switch (this.state) {
-				case EXECUTED:
-				case CHECK_PC_ENTITIES:
-					this.state = State.ROLLEDBACK;
-				case CREATED:
-				case ROLLEDBACK:
-				default:
-					return;
-			}
-		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+	@Override
+	protected void rollback(Throwable t) {
+		switch (this.state) {
+			case EXECUTED:
+			case CHECK_PC_ENTITIES:
+				this.state = State.ROLLEDBACK;
+			case CREATED:
+			case ROLLEDBACK:
+			default:
+				return;
 		}
 	}
 

@@ -34,6 +34,9 @@ public class MapRepositoryAbstract<K, V> implements Repository<K, V> {
 
 	}
 
+	protected IMap<K, V> getEntities() {
+		return this.entities;
+	}
 
 	@Override
 	public <R extends K, U extends V> void save(@NotNull R key, @NotNull U entity) {

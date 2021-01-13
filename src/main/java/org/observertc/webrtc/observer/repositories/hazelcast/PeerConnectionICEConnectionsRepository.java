@@ -27,13 +27,13 @@ import java.util.UUID;
  * Callnames to call uuids
  */
 @Singleton
-public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
+public class PeerConnectionICEConnectionsRepository extends MultiMapRepositoryAbstract<UUID, String> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
+	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionICEConnectionsRepository.class);
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
+	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverPeerConnectionICEConnections";
 
-	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
+	public PeerConnectionICEConnectionsRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
 
 	}

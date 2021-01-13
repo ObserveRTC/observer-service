@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-class PCState {
+public class PCState {
 
 	public static PCState of(
 			UUID serviceUUID,
