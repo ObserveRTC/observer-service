@@ -23,7 +23,6 @@ import org.slf4j.event.Level;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
@@ -98,6 +97,9 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	}
 
 	public T getResultOrDefault(T defaultValue) {
+		if (!this.executed) {
+			throw new IllegalStateException("The task has not been executed");
+		}
 		if (!this.succeeded) {
 			return defaultValue;
 		}
@@ -105,6 +107,9 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	}
 
 	public T getResultOrDefaultIfNull(T defaultValue) {
+		if (!this.executed) {
+			throw new IllegalStateException("The task has not been executed");
+		}
 		if (!this.succeeded) {
 			return defaultValue;
 		}
@@ -148,6 +153,9 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	}
 
 	public boolean succeeded() {
+		if (!this.executed) {
+			throw new IllegalStateException("The task has not been executed");
+		}
 		return succeeded;
 	}
 

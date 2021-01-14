@@ -76,5 +76,113 @@ class TaskAbstractTest {
         Assertions.assertTrue(rollback.get());
     }
 
+    @Test
+    public void shouldGetDefaultResultAfterRollback() {
+        // Given
+        AtomicBoolean rollback = new AtomicBoolean(false);
+        TaskAbstract<Integer> task = new TaskAbstract<Integer>() {
+            @Override
+            protected Integer perform() throws Throwable {
+                throw new RuntimeException();
+            }
+
+            @Override
+            protected void rollback(Throwable t) {
+                rollback.set(true);
+            }
+        };
+
+        // When
+        task.execute();
+
+        // Given
+        Assertions.assertEquals(1, task.getResultOrDefault(1));
+    }
+
+    @Test
+    public void shouldReturnResult() {
+        // Given
+        AtomicBoolean rollback = new AtomicBoolean(false);
+        TaskAbstract<Integer> task = new TaskAbstract<Integer>() {
+            @Override
+            protected Integer perform() throws Throwable {
+                return 1;
+            }
+
+            @Override
+            protected void rollback(Throwable t) {
+                rollback.set(true);
+            }
+        };
+
+        // When
+        task.execute();
+
+        // Given
+        Assertions.assertTrue(task.succeeded());
+        Assertions.assertEquals(1, task.getResult());
+        Assertions.assertFalse(rollback.get());
+    }
+
+    @Test
+    public void shouldResultNull() {
+        // Given
+        AtomicBoolean rollback = new AtomicBoolean(false);
+        TaskAbstract<Integer> task = new TaskAbstract<Integer>() {
+            @Override
+            protected Integer perform() throws Throwable {
+                return null;
+            }
+
+            @Override
+            protected void rollback(Throwable t) {
+                rollback.set(true);
+            }
+        };
+
+        // When
+        task.execute();
+
+        // Given
+        Assertions.assertTrue(task.succeeded());
+        Assertions.assertEquals(null, task.getResult());
+        Assertions.assertFalse(rollback.get());
+    }
+
+    @Test
+    public void whenNotExecutedShouldThrowException() {
+        // Given
+        AtomicBoolean rollback = new AtomicBoolean(false);
+        TaskAbstract<Integer> task = new TaskAbstract<Integer>() {
+            @Override
+            protected Integer perform() throws Throwable {
+                return null;
+            }
+
+            @Override
+            protected void rollback(Throwable t) {
+                rollback.set(true);
+            }
+        };
+
+        // When we do not execute the task
+        // task.execute();
+
+        // Given
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            task.getResult();
+        });
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            task.succeeded();
+        });
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            task.getResultOrDefault(null);
+        });
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            task.getResultOrDefaultIfNull(null);
+        });
+        Assertions.assertFalse(rollback.get());
+    }
+
 
 }

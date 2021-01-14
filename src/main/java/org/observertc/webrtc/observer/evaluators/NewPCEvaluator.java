@@ -232,7 +232,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 				pcState.created,
 				pcState.marker
 		);
-		logger.info("PC UUID {} is registered.", pcState.peerConnectionUUID);
+		logger.info("PC UUID {} is registered to callUUID {}.", pcState.peerConnectionUUID, callUUID);
 		PeerConnectionJoinerTask task = this.tasksProvider.providePeerConnectionJoinerTask();
 		task.forEntity(pcEntity)
 				.withLogger(logger)

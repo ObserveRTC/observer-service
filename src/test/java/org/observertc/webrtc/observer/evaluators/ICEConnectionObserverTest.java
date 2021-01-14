@@ -17,8 +17,6 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.evaluators.mediaunits.ICEConnectionObserver;
 import org.observertc.webrtc.observer.repositories.hazelcast.ICEConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.MediaUnitPeerConnectionsRepository;
 
@@ -39,10 +37,14 @@ public class ICEConnectionObserverTest {
 	@Inject
 	MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
 
-	@Test
-	public void shouldUpdateExistingPeerConnections() {
-
-	}
+//	@Test
+//	public void shouldUpdateExistingPeerConnections() {
+//		UUID key = UUID.randomUUID();
+//		ReportRecord localICECandidate = new ReportRecord(key, generator.generateICELocalCandidateReport());
+//		ReportRecord remoteICECandidate = new ReportRecord(key, generator.generateICELocalCandidateReport());
+//		ReportRecord candidatePair = new ReportRecord(key, generator.generateICELocalCandidateReport());
+//
+//	}
 
 
 }

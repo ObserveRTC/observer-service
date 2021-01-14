@@ -23,8 +23,8 @@ import javax.inject.Singleton;
 
 
 @Singleton
-public class MediaUnitConnectionsEvaluator {
+public class MediaUnitsEvaluator {
 
-	private static final Logger logger = LoggerFactory.getLogger(MediaUnitConnectionsEvaluator.class);
+	private static final Logger logger = LoggerFactory.getLogger(MediaUnitsEvaluator.class);
 
 }

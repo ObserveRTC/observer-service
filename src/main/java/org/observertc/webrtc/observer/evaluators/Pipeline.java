@@ -1,5 +1,9 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.rxjava3.core.ObservableOperator;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import org.observertc.webrtc.observer.ReportSink;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
@@ -8,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Map;
+import java.util.UUID;
 
 @Singleton
 public class Pipeline {
@@ -32,6 +38,12 @@ public class Pipeline {
 
     @Inject
     ExpiredPCsEvaluator expiredPCsEvaluator;
+
+    @Inject
+    ICEConnectionObserver iceConnectionObserver;
+
+    @Inject
+    ICEConnectionsEvaluator iceConnectionsEvaluator;
 
     public void input(ObservedPCS observedPCS) {
         this.pcObserver.onNext(observedPCS);
@@ -58,6 +70,11 @@ public class Pipeline {
         // PCObserver -> ExpiredPCEvaluator
         this.pcObserver.getExpiredPCs()
                 .subscribe(this.expiredPCsEvaluator);
+
+        // PCObserver -> ICEConnectionEvaluator
+        this.pcObserver.getExpiredPCs()
+                .lift(new PCObserverICEConnectionInputAdapter())
+                .subscribe(this.iceConnectionsEvaluator.getExpiredPCsInput());
 
         // ExpiredPCEvaluator -> ReportSink
         this.expiredPCsEvaluator
@@ -114,7 +131,59 @@ public class Pipeline {
                 .getExtensionReports()
                 .subscribe(this.reportSink.bypassInput());
 
+        // ICERemoteCandidate Report -> ICEConnectionObserver
+        this.observedPCSEvaluator
+                .getICERemoteCandidateReports()
+                .subscribe(this.iceConnectionObserver.getICERemoteCandidates());
 
+        // ICELocalCandidate Report -> ICEConnectionObserver
+        this.observedPCSEvaluator
+                .getICELocalCandidateReports()
+                .subscribe(this.iceConnectionObserver.getICELocalCandidates());
+
+        // ICECandidatePair Report -> ICEConnectionObserver
+        this.observedPCSEvaluator
+                .getICECandidatePairReports()
+                .subscribe(this.iceConnectionObserver.getICECandidatePairs());
+
+        // ICEConnectionObserver -> ICEConnectionEvaluator
+        this.iceConnectionObserver.getObservableICEConnection()
+                .subscribe(this.iceConnectionsEvaluator.getNewICEConnectionsInput());
+
+        // ICEConnectionObserver -> ICEConnectionEvaluator
+        this.iceConnectionObserver.getObservableExpiredICECandidatePairUpdates()
+                .subscribe(this.iceConnectionsEvaluator.getExpiredICECandidatePairs());
+
+
+    }
+
+    private class PCObserverICEConnectionInputAdapter implements ObservableOperator<UUID, Map<UUID, PCState>> {
+
+        @NonNull
+        @Override
+        public Observer<? super Map<UUID, PCState>> apply(@NonNull Observer<? super UUID> observer) throws Exception {
+            return new Observer<Map<UUID, PCState>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull Map<UUID, PCState> uuidpcStateMap) {
+                    uuidpcStateMap.keySet().stream().forEach(observer::onNext);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    observer.onError(e);
+                }
+
+                @Override
+                public void onComplete() {
+                    observer.onComplete();
+                }
+            };
+        }
     }
 
 }

@@ -38,7 +38,8 @@ import java.util.stream.Collectors;
 public class ICEConnectionRemoverTask extends TaskAbstract<Void> {
 	private enum State {
 		CREATED,
-		COLLECT_ICE_CONNECTIONS_BY_PC_UUIDS,
+		COLLECT_ICE_CONNECTIONS,
+		COLLECT_ICE_CONNECTIONS_BY_KEYS,
 		ICE_CONNECTION_IS_UNREGISTERED,
 		PC_IS_UNBOUND_TO_ICE_CONNECTION,
 		EXECUTED,
@@ -50,7 +51,8 @@ public class ICEConnectionRemoverTask extends TaskAbstract<Void> {
 	private final ICEConnectionsRepository iceConnectionsRepository;
 	private final PeerConnectionICEConnectionsRepository peerConnectionICEConnectionsRepository;
 	private List<ICEConnectionEntity> entities;
-	private Set<UUID> pcUUIDs;
+	private Set<UUID> pcUUIDs = new HashSet<>();
+	private Set<String> keys = new HashSet<>();
 	private State state = State.CREATED;
 
 
@@ -66,6 +68,11 @@ public class ICEConnectionRemoverTask extends TaskAbstract<Void> {
 
 	public ICEConnectionRemoverTask forICEConnectionEntity(@NotNull ICEConnectionEntity entity) {
 		this.entities.add(entity);
+		return this;
+	}
+
+	public ICEConnectionRemoverTask forICEConnectionKeys(@NotNull Set<String> keys) {
+		this.keys.addAll(keys);
 		return this;
 	}
 
@@ -85,9 +92,10 @@ public class ICEConnectionRemoverTask extends TaskAbstract<Void> {
 		switch (this.state) {
 			default:
 			case CREATED:
-				this.collectICEConnections();
-				this.state = State.ICE_CONNECTION_IS_UNREGISTERED;
-			case COLLECT_ICE_CONNECTIONS_BY_PC_UUIDS:
+				this.collectICEConnectionsByPCUUIDs();
+				this.collectICEConnectionsByKeys();
+				this.state = State.COLLECT_ICE_CONNECTIONS;
+			case COLLECT_ICE_CONNECTIONS:
 				this.removeICEConnectionsToPc();
 				this.state = State.PC_IS_UNBOUND_TO_ICE_CONNECTION;
 			case PC_IS_UNBOUND_TO_ICE_CONNECTION:
@@ -111,7 +119,7 @@ public class ICEConnectionRemoverTask extends TaskAbstract<Void> {
 			case ICE_CONNECTION_IS_UNREGISTERED:
 				this.registerICEConnections(t);
 				this.state = State.ROLLEDBACK;
-			case COLLECT_ICE_CONNECTIONS_BY_PC_UUIDS:
+			case COLLECT_ICE_CONNECTIONS:
 			case CREATED:
 			case ROLLEDBACK:
 			default:
@@ -119,13 +127,21 @@ public class ICEConnectionRemoverTask extends TaskAbstract<Void> {
 		}
 	}
 
-	private void collectICEConnections() {
+	private void collectICEConnectionsByPCUUIDs() {
 		if (this.pcUUIDs.size() < 1) {
 			return;
 		}
 		Map<UUID, Collection<String>> collectedKeys = this.peerConnectionICEConnectionsRepository.findAll(this.pcUUIDs);
 		Set<String> keys = collectedKeys.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
 		Map<String, ICEConnectionEntity> collectedEntities = this.iceConnectionsRepository.findAll(keys);
+		this.entities.addAll(collectedEntities.values());
+	}
+
+	private void collectICEConnectionsByKeys() {
+		if (this.keys.size() < 1) {
+			return;
+		}
+		Map<String, ICEConnectionEntity> collectedEntities = this.iceConnectionsRepository.findAll(this.keys);
 		this.entities.addAll(collectedEntities.values());
 	}
 

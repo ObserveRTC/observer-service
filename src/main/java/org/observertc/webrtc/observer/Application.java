@@ -64,6 +64,8 @@ public class Application {
         deployCheck(observerHazelcast);
         context.getBean(ReportSink.class);
         context.getBean(ServicesRepository.class);
+
+
     }
 
 

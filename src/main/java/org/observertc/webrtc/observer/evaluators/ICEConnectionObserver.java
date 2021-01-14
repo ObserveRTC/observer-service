@@ -1,15 +1,15 @@
-package org.observertc.webrtc.observer.evaluators.mediaunits;
+package org.observertc.webrtc.observer.evaluators;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ReportRecord;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.models.ICEConnectionEntity;
-import org.observertc.webrtc.schemas.reports.ICECandidatePair;
-import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
-import org.observertc.webrtc.schemas.reports.ICERemoteCandidate;
-import org.observertc.webrtc.schemas.reports.Report;
+import org.observertc.webrtc.observer.repositories.hazelcast.ICEConnectionsRepository;
+import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +25,13 @@ public class ICEConnectionObserver {
     private Subject<ReportRecord> ICECandidatePairs = PublishSubject.create();
     private Subject<ReportRecord> ICERemoteCandidates = PublishSubject.create();
     private Subject<ReportRecord> ICELocalCandidates = PublishSubject.create();
+    private Subject<ICECandidatePairUpdate> expiredICECandidatePairs = PublishSubject.create();
 
     private Subject<ICEConnectionEntity> iceConnections = PublishSubject.create();
 
     private Map<String, Report> localCandidates = new HashMap<>();
     private Map<String, Report> remoteCandidates = new HashMap<>();
-    private Map<String, Report> missingCandidates = new HashMap<>();
+    private Map<String, ICECandidatePairUpdate> candidatePairUpdates = new HashMap<>();
     private Instant lastCleaned = Instant.now();
 
     public Observer<ReportRecord> getICECandidatePairs() {
@@ -49,18 +50,25 @@ public class ICEConnectionObserver {
         return this.iceConnections;
     }
 
+    public Observable<ICECandidatePairUpdate> getObservableExpiredICECandidatePairUpdates() {
+        return this.expiredICECandidatePairs;
+    }
+
     public ICEConnectionObserver() {
         this.ICECandidatePairs
                 .filter(this::reportFilter)
                 .map(reportRecord -> reportRecord.value)
+                .filter(report -> report.getType().equals(ReportType.ICE_CANDIDATE_PAIR))
                 .subscribe(this::evaluateCandidatePairReport);
         this.ICERemoteCandidates
                 .filter(this::reportFilter)
                 .map(reportRecord -> reportRecord.value)
+                .filter(report -> report.getType().equals(ReportType.ICE_REMOTE_CANDIDATE))
                 .subscribe(this::evaluateICERemoteCandidateReport);
         this.ICELocalCandidates
                 .filter(this::reportFilter)
                 .map(reportRecord -> reportRecord.value)
+                .filter(report -> report.getType().equals(ReportType.ICE_LOCAL_CANDIDATE))
                 .subscribe(this::evaluateICELocalCandidateReport);
     }
 
@@ -69,8 +77,10 @@ public class ICEConnectionObserver {
             return false;
         }
         Report report = reportRecord.value;
-        ICERemoteCandidate iceRemoteCandidate = (ICERemoteCandidate) report.getPayload();
-        if (Objects.isNull(iceRemoteCandidate)) {
+        if (Objects.isNull(report)) {
+            return false;
+        }
+        if (Objects.isNull(report.getPayload())) {
             return false;
         }
         return true;
@@ -78,72 +88,56 @@ public class ICEConnectionObserver {
 
     private void evaluateICERemoteCandidateReport(@NotNull Report iceRemoteCandidateReport) {
         ICERemoteCandidate iceRemoteCandidate = (ICERemoteCandidate) iceRemoteCandidateReport.getPayload();
-        if (Objects.isNull(iceRemoteCandidate)) {
-            logger.warn("ICERemoteCandidate was null for report {}", iceRemoteCandidateReport);
-            return;
-        }
         String remoteCandidateId = iceRemoteCandidate.getCandidateId();
-        Report iceCandidatePairReport = this.missingCandidates.get(remoteCandidateId);
-        if (Objects.isNull(iceCandidatePairReport)) {
-            this.remoteCandidates.put(remoteCandidateId, iceRemoteCandidateReport);
-            return;
-        }
-        ICECandidatePair iceCandidatePair = (ICECandidatePair) iceCandidatePairReport.getPayload();
-
-        Report iceLocalCandidateReport = this.localCandidates.get(iceCandidatePair.getRemoteCandidateID());
-        if (Objects.isNull(iceLocalCandidateReport)) {
-            this.remoteCandidates.put(remoteCandidateId, iceLocalCandidateReport);
-            return;
-        }
-
-        this.process(iceLocalCandidateReport, iceRemoteCandidateReport, iceCandidatePairReport);
+        this.remoteCandidates.put(remoteCandidateId, iceRemoteCandidateReport);
+//        logger.info("remote candidate is arrived {} {}", remoteCandidateId, iceRemoteCandidateReport);
     }
 
     private void evaluateICELocalCandidateReport(@NotNull Report iceLocalCandidateReport) {
         ICELocalCandidate iceLocalCandidate = (ICELocalCandidate) iceLocalCandidateReport.getPayload();
-        if (Objects.isNull(iceLocalCandidate)) {
-            logger.warn("ICELocalCandidate was null for report {}", iceLocalCandidateReport);
-            return;
-        }
         String localCandidateId = iceLocalCandidate.getCandidateId();
-        Report iceCandidatePairReport = this.missingCandidates.get(localCandidateId);
-        if (Objects.isNull(iceCandidatePairReport)) {
-            this.localCandidates.put(localCandidateId, iceLocalCandidateReport);
-            return;
-        }
-        ICECandidatePair iceCandidatePair = (ICECandidatePair) iceCandidatePairReport.getPayload();
-
-        Report iceRemoteCandidateReport = this.remoteCandidates.get(iceCandidatePair.getRemoteCandidateID());
-        if (Objects.isNull(iceRemoteCandidateReport)) {
-            this.localCandidates.put(localCandidateId, iceLocalCandidateReport);
-            return;
-        }
-
-        this.process(iceLocalCandidateReport, iceRemoteCandidateReport, iceCandidatePairReport);
+        this.localCandidates.put(localCandidateId, iceLocalCandidateReport);
+//        logger.info("local candidate is arrived {} {}", localCandidateId, iceLocalCandidateReport);
     }
 
     private void evaluateCandidatePairReport(@NotNull Report iceCandidatePairReport) {
         ICECandidatePair iceCandidatePair = (ICECandidatePair) iceCandidatePairReport.getPayload();
-        if (Objects.isNull(iceCandidatePair)) {
-            logger.warn("ICECandidatePair was null for report {}", iceCandidatePairReport);
-            return;
-        }
         boolean doProcess = true;
         Report iceRemoteCandidateReport = this.remoteCandidates.get(iceCandidatePair.getRemoteCandidateID());
+//        logger.info("candidate pair is arrived {} {}", iceCandidatePair.getLocalCandidateID(), iceCandidatePair.getRemoteCandidateID());
         if (Objects.isNull(iceRemoteCandidateReport)) {
-            this.missingCandidates.put(iceCandidatePair.getRemoteCandidateID(), iceCandidatePairReport);
             doProcess = false;
         }
 
-        Report iceLocalCandidateReport = this.localCandidates.get(iceCandidatePair.getRemoteCandidateID());
+        Report iceLocalCandidateReport = this.localCandidates.get(iceCandidatePair.getLocalCandidateID());
         if (Objects.isNull(iceLocalCandidateReport)) {
-            this.missingCandidates.put(iceCandidatePair.getLocalCandidateID(), iceCandidatePairReport);
             doProcess = false;
         }
 
+        String key = ICEConnectionsRepository.getKey(
+                UUID.fromString(iceCandidatePair.getPeerConnectionUUID()),
+                iceCandidatePair.getLocalCandidateID(),
+                iceCandidatePair.getRemoteCandidateID()
+        );
+        ICECandidatePairUpdate update = this.candidatePairUpdates.get(key);
+        if (Objects.isNull(update)) {
+            Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(iceCandidatePairReport.getServiceUUID());
+            Optional<UUID> pcUUIDHolder = UUIDAdapter.tryParse(iceCandidatePairReport.getServiceUUID());
+            update = ICECandidatePairUpdate.of(
+                    iceCandidatePair.getLocalCandidateID(),
+                    iceCandidatePair.getRemoteCandidateID(),
+                    serviceUUIDHolder.orElse(null),
+                    pcUUIDHolder.orElse(null),
+                    iceCandidatePair.getMediaUnitId()
+            );
+            this.candidatePairUpdates.put(key, update);
+        }
         if (doProcess) {
             this.process(iceLocalCandidateReport, iceRemoteCandidateReport, iceCandidatePairReport);
+            update.processed = true;
         }
+        update.updated = Instant.now();
+        this.clean();
     }
 
     private void process(Report iceLocalCandidateReport, Report iceRemoteCandidateReport, Report iceCandidatePairReport) {
@@ -151,10 +145,15 @@ public class ICEConnectionObserver {
         ICERemoteCandidate iceRemoteCandidate = (ICERemoteCandidate) iceRemoteCandidateReport.getPayload();
         ICELocalCandidate iceLocalCandidate = (ICELocalCandidate) iceLocalCandidateReport.getPayload();
 
+//        logger.info("Process for localId {}, remoteId {}, candidatepair {} ({}, {}) has been started",
+//                iceCandidatePair.getLocalCandidateID(),
+//                iceCandidatePair.getRemoteCandidateID(),
+//                iceCandidatePair.getCandidatePairId(),
+//                iceCandidatePair.getLocalCandidateID(),
+//                iceCandidatePair.getRemoteCandidateID()
+//                );
         this.localCandidates.remove(iceLocalCandidate.getCandidateId());
         this.remoteCandidates.remove(iceRemoteCandidate.getCandidateId());
-        this.missingCandidates.remove(iceCandidatePair.getRemoteCandidateID());
-        this.missingCandidates.remove(iceCandidatePair.getLocalCandidateID());
 
         UUID serviceUUID = UUID.fromString(iceCandidatePairReport.getServiceUUID());
         UUID pcUUID = UUID.fromString(iceCandidatePair.getPeerConnectionUUID());
@@ -176,7 +175,6 @@ public class ICEConnectionObserver {
         );
 
         this.iceConnections.onNext(iceConnectionEntity);
-        this.clean();
     }
 
     private void clean() {
@@ -184,12 +182,13 @@ public class ICEConnectionObserver {
         if (Duration.between(this.lastCleaned, now).getSeconds() < 60) {
             return;
         }
-        this.clean(this.localCandidates);
-        this.clean(this.remoteCandidates);
-        this.clean(this.missingCandidates);
+        this.cleanCandidates(this.localCandidates);
+        this.cleanCandidates(this.remoteCandidates);
+        this.cleanUpdates();
+        this.lastCleaned = now;
     }
 
-    private void clean(Map<String, Report> candidates) {
+    private void cleanCandidates(Map<String, Report> candidates) {
         Instant now = Instant.now();
         Iterator<Map.Entry<String, Report>> it = candidates.entrySet().iterator();
         while (it.hasNext()) {
@@ -197,9 +196,54 @@ public class ICEConnectionObserver {
             Report report = entry.getValue();
             Instant timestamp = Instant.ofEpochMilli(report.getTimestamp());
             if (30 < Duration.between(timestamp, now).getSeconds()) {
-                logger.warn("A report is stucked in candidates map {}", report);
+                switch (report.getType()) {
+                    case ICE_LOCAL_CANDIDATE:
+                        ICELocalCandidate localCandidate = (ICELocalCandidate) report.getPayload();
+                        logger.warn("A local candidate is stucked. localId: {}", localCandidate.getCandidateId());
+                        break;
+                    case ICE_REMOTE_CANDIDATE:
+                        ICERemoteCandidate remoteCandidate = (ICERemoteCandidate) report.getPayload();
+                        logger.warn("A remote candidate is stucked. remoteId: {}", remoteCandidate.getCandidateId());
+                        break;
+                }
                 it.remove();
             }
         }
     }
+
+    private void cleanUpdates() {
+        List<ICECandidatePairUpdate> expiredICEConnections = new LinkedList<>();
+        Instant now = Instant.now();
+        Iterator<Map.Entry<String, ICECandidatePairUpdate>> it = this.candidatePairUpdates.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, ICECandidatePairUpdate> entry = it.next();
+            ICECandidatePairUpdate update = entry.getValue();
+            if (Duration.between(update.updated, now).getSeconds() < 30) {
+                continue;
+            }
+            if (!update.processed) {
+                logger.info("ICECandidatePairUpdate ({}) is expired and it " +
+                        "was never been processed, so no Connection has been registered in the database",
+                        ObjectToString.toString(update));
+                it.remove();
+                continue;
+            }
+
+            expiredICEConnections.add(update);
+            it.remove();
+        }
+        if (expiredICEConnections.size() < 1) {
+            return;
+        }
+        if (!this.expiredICECandidatePairs.hasObservers()) {
+            logger.info("No subscriber for expiredICECandidatePairs output, expired ICEConnections cannot be reported though");
+            return;
+        }
+        try {
+            expiredICEConnections.stream().forEach(this.expiredICECandidatePairs::onNext);
+        } catch (Throwable t) {
+            logger.error("Unexpected exception occurred at " + this.getClass().getSimpleName(), t);
+        }
+    }
+
 }
