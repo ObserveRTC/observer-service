@@ -21,11 +21,11 @@ import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
+import org.observertc.webrtc.schemas.reports.Report;
+import org.observertc.webrtc.schemas.reports.ReportType;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class TestInputsGenerator {
 
@@ -67,6 +67,33 @@ public class TestInputsGenerator {
 
 	public SynchronizationSourceEntity makeSynchronizationSourceEntity() {
 		return this.generator.nextObject(SynchronizationSourceEntity.class);
+	}
+
+	public Report generateICELocalCandidateReport() {
+		var payload = generator.nextObject(ICELocalCandidate.class);
+		return this.generateReport(ReportType.ICE_LOCAL_CANDIDATE, payload);
+	}
+
+	public Report generateICERemoteCandidateReport() {
+		var payload = generator.nextObject(ICELocalCandidate.class);
+		return this.generateReport(ReportType.ICE_REMOTE_CANDIDATE, payload);
+	}
+
+	public Report generateICECandidatePairReport() {
+		var payload = generator.nextObject(ICELocalCandidate.class);
+		return this.generateReport(ReportType.ICE_CANDIDATE_PAIR, payload);
+	}
+
+	private Report generateReport(ReportType type, Object payload) {
+		return Report.newBuilder()
+				.setVersion(1)
+				.setType(type)
+				.setTimestamp(1L)
+				.setServiceUUID(UUID.randomUUID().toString())
+				.setServiceName("serviceName")
+				.setMarker("marker")
+				.setPayload(payload)
+				.build();
 	}
 
 	public PeerConnectionEntity makePeerConnectionEntityFor(SynchronizationSourceEntity ssrcEntity) {
@@ -116,4 +143,6 @@ public class TestInputsGenerator {
 			return new TestInputsGenerator();
 		}
 	}
+
+
 }

@@ -17,21 +17,21 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Observable;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallNamesRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
 
-@Prototype
-public class CallFinderTask extends TaskAbstract<Observable<UUID>> {
+import javax.validation.constraints.NotNull;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Prototype
+public class CallFinderTask extends TaskAbstract<Set<UUID>> {
 	private final ObserverHazelcast observerHazelcast;
 	private final SynchronizationSourcesRepository SSRCRepository;
 	private final CallNamesRepository callNamesRepository;
@@ -70,35 +70,30 @@ public class CallFinderTask extends TaskAbstract<Observable<UUID>> {
 	}
 
 	@Override
-	protected Observable<UUID> doPerform() {
-		try {
-			Set<String> streamKeys = this.SSRCs.stream()
-					.map(ssrc -> SynchronizationSourcesRepository.getKey(this.serviceUUID, ssrc))
-					.collect(Collectors.toSet());
-			Map<String, SynchronizationSourceEntity> activeStreams = this.SSRCRepository.rxFindAll(streamKeys)
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).blockingGet();
+	protected Set<UUID> perform() {
+		Set<String> streamKeys = this.SSRCs.stream()
+				.map(ssrc -> SynchronizationSourcesRepository.getKey(this.serviceUUID, ssrc))
+				.collect(Collectors.toSet());
+		Map<String, SynchronizationSourceEntity> activeStreams = this.SSRCRepository.rxFindAll(streamKeys)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).blockingGet();
 //			activeStream.subscribe();
-			// Find by SSRC
-			if (activeStreams != null && 0 < activeStreams.size()) {
-				Set<UUID> callUUIDs = activeStreams.values().stream()
-						.map(c -> c.callUUID).collect(Collectors.toSet());
-				return Observable.fromIterable(callUUIDs);
-			}
-			if (this.callName != null) {
-				Set<UUID> callUUIDs = this.callNamesRepository.find(this.callName).stream().collect(Collectors.toSet());
-				int numberOfCallUUIDs = callUUIDs.size();
-				if (0 < numberOfCallUUIDs) {
-					if (this.isMultipleResultsAllowed || numberOfCallUUIDs == 1) {
-						return Observable.fromIterable(callUUIDs);
-					}
+		// Find by SSRC
+		if (activeStreams != null && 0 < activeStreams.size()) {
+			Set<UUID> callUUIDs = activeStreams.values().stream()
+					.map(c -> c.callUUID).collect(Collectors.toSet())
+					;
+			return callUUIDs;
+		}
+		if (this.callName != null) {
+			Set<UUID> callUUIDs = this.callNamesRepository.find(this.callName).stream().collect(Collectors.toSet());
+			int numberOfCallUUIDs = callUUIDs.size();
+			if (0 < numberOfCallUUIDs) {
+				if (this.isMultipleResultsAllowed || numberOfCallUUIDs == 1) {
+					return callUUIDs;
 				}
 			}
-			return Observable.empty();
-		} catch (Exception ex) {
-			return Observable.error(ex);
-		} finally {
-
 		}
+		return Collections.EMPTY_SET;
 	}
 
 	@Override

@@ -66,14 +66,13 @@ class CallInitializerTaskTest {
         AtomicReference<UUID> found = new AtomicReference<>(null);
         CallEntity callEntity = generator.nextObject(CallEntity.class);
         Set<Long> SSRCs = Set.of(1L, 2L);
+        CallInitializerTask callInitializerTask = subjectProvider.get();
 
         // When
-        try (CallInitializerTask callInitializerTask = subjectProvider.get()) {
-            callInitializerTask
-                    .forCallEntity(callEntity)
-                    .forSSRCs(SSRCs)
-                    .perform();
-        }
+        callInitializerTask
+                .forCallEntity(callEntity)
+                .forSSRCs(SSRCs)
+                .execute();
 
         // Then
         SSRCs.stream().forEach(ssrc -> {

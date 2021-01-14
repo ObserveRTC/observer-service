@@ -43,13 +43,14 @@ public class TasksProvider {
 	@Inject
 	Provider<PeerConnectionsFinderTask> peerConnectionsFinderTaskProvider;
 
+	@Inject
+	Provider<ICEConnectionAdderTask> iceConnectionAdderTaskProvider;
+
+	@Inject
+	Provider<ICEConnectionRemoverTask> iceConnectionRemoverTaskProvider;
+
 	public TasksProvider() {
-		this.callFinderTaskProvider = callFinderTaskProvider;
-		this.peerConnectionDetacherTaskProvider = peerConnectionDetacherTaskProvider;
-		this.callFinisherTaskProvider = callFinisherTaskProvider;
-		this.callInitializerTaskProvider = callInitializerTaskProvider;
-		this.peerConnectionJoinerTaskProvider = peerConnectionJoinerTaskProvider;
-		this.peerConnectionsUpdaterTaskProvider = peerConnectionsUpdaterTaskProvider;
+
 	}
 
 	public CallFinderTask getCallFinderTask() {
@@ -78,6 +79,14 @@ public class TasksProvider {
 
 	public PeerConnectionsFinderTask providePeerConnectionFinderTask() {
 		return this.peerConnectionsFinderTaskProvider.get();
+	}
+
+	public ICEConnectionAdderTask provideICEConnectionAdderTask() {
+		return this.iceConnectionAdderTaskProvider.get();
+	}
+
+	public ICEConnectionRemoverTask provideICEConnectionRemoverTask() {
+		return this.iceConnectionRemoverTaskProvider.get();
 	}
 
 }

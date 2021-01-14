@@ -18,8 +18,9 @@ package org.observertc.webrtc.observer.models;
 
 import com.hazelcast.nio.serialization.Portable;
 import com.hazelcast.nio.serialization.PortableFactory;
-import java.util.UUID;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
+
+import java.util.UUID;
 
 public class EntityFactory implements PortableFactory {
 
@@ -37,6 +38,10 @@ public class EntityFactory implements PortableFactory {
 				return new CallEntity();
 			case PeerConnectionEntity.CLASS_ID:
 				return new PeerConnectionEntity();
+			case ICEConnectionEntity.CLASS_ID:
+				return new ICEConnectionEntity();
+			case WeakLockEntity.CLASS_ID:
+				return new WeakLockEntity();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

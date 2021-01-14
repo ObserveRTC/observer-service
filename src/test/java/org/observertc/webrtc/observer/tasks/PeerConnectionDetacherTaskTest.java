@@ -53,13 +53,12 @@ class PeerConnectionDetacherTaskTest {
         PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);
         this.repositoryProvider.getCallPeerConnectionsRepository().add(pcEntity.callUUID, pcEntity.peerConnectionUUID);
         this.repositoryProvider.getPeerConnectionsRepository().save(pcEntity.peerConnectionUUID, pcEntity);
+        PeerConnectionDetacherTask peerConnectionDetacherTask = subjectProvider.get();
 
         // When
-        try (PeerConnectionDetacherTask peerConnectionDetacherTask = subjectProvider.get()) {
-            peerConnectionDetacherTask
-                    .forPeerConnectionUUID(pcEntity.peerConnectionUUID)
-                    .perform();
-        }
+        peerConnectionDetacherTask
+                .forPeerConnectionUUID(pcEntity.peerConnectionUUID)
+                .execute();
 
         // Then
         PeerConnectionsRepository pcRepository = this.repositoryProvider.getPeerConnectionsRepository();

@@ -19,11 +19,12 @@ package org.observertc.webrtc.observer.models;
 import com.hazelcast.nio.serialization.Portable;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
+
 import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
-import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.common.UUIDAdapter;
 
 public class PeerConnectionEntity implements Portable {
 
@@ -39,8 +40,6 @@ public class PeerConnectionEntity implements Portable {
 	private static final String BROWSERID_FIELD_NAME = "browserId";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
 	private static final String JOINED_FIELD_NAME = "joined";
-	private static final String UPDATED_FIELD_NAME = "updated";
-	private static final String DETACHED_FIELD_NAME = "detached";
 	private static final String MARKER_FIELD_NAME = "marker";
 
 
@@ -55,8 +54,6 @@ public class PeerConnectionEntity implements Portable {
 			String browserId,
 			String timeZone,
 			Long joined,
-			Long updated,
-			Long detached,
 			String marker
 	) {
 		PeerConnectionEntity result = new PeerConnectionEntity();
@@ -70,8 +67,6 @@ public class PeerConnectionEntity implements Portable {
 		result.browserId = browserId;
 		result.timeZone = timeZone;
 		result.joined = joined;
-		result.updated = updated;
-		result.detached = detached;
 		result.marker = marker;
 		return result;
 	}
@@ -86,8 +81,6 @@ public class PeerConnectionEntity implements Portable {
 	public String browserId;
 	public String timeZone;
 	public Long joined;
-	public Long updated;
-	public Long detached;
 	public String marker;
 
 	@Override
@@ -114,12 +107,6 @@ public class PeerConnectionEntity implements Portable {
 		if (Objects.nonNull(this.joined)) {
 			writer.writeLong(JOINED_FIELD_NAME, this.joined);
 		}
-		if (Objects.nonNull(this.updated)) {
-			writer.writeLong(UPDATED_FIELD_NAME, this.updated);
-		}
-		if (Objects.nonNull(this.detached)) {
-			writer.writeLong(DETACHED_FIELD_NAME, this.detached);
-		}
 		writer.writeUTF(MARKER_FIELD_NAME, this.marker);
 	}
 
@@ -135,12 +122,6 @@ public class PeerConnectionEntity implements Portable {
 		this.browserId = reader.readUTF(BROWSERID_FIELD_NAME);
 		this.timeZone = reader.readUTF(TIMEZONE_FIELD_NAME);
 		this.joined = reader.readLong(JOINED_FIELD_NAME);
-		if (reader.hasField(UPDATED_FIELD_NAME)) {
-			this.updated = reader.readLong(UPDATED_FIELD_NAME);
-		}
-		if (reader.hasField(DETACHED_FIELD_NAME)) {
-			this.detached = reader.readLong(DETACHED_FIELD_NAME);
-		}
 		this.marker = reader.readUTF(MARKER_FIELD_NAME);
 	}
 

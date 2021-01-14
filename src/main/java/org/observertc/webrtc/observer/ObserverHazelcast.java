@@ -32,6 +32,7 @@ import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.UUID;
 
 @Singleton
 public class ObserverHazelcast {
@@ -79,7 +80,6 @@ public class ObserverHazelcast {
 		// From ClassLoader, all paths are "absolute" already - there's no context
 // from which they could be relative. Therefore you don't need a leading slash.
 
-
 		Config result;
 		if (configPath == null) {
 			result = new XmlConfigBuilder().build();
@@ -116,5 +116,9 @@ public class ObserverHazelcast {
 	@Override
 	public String toString() {
 		return this.instance.getConfig().toString();
+	}
+
+	public UUID getLocalEndpointUUID() {
+		return this.instance.getLocalEndpoint().getUuid();
 	}
 }

@@ -16,6 +16,9 @@
 
 package org.observertc.webrtc.observer.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -24,6 +27,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author vrodionov
  */
 public class SpinLock {
+
+	private static final Logger logger = LoggerFactory.getLogger(SpinLock.class);
 
 	/**
 	 * The lock.
@@ -93,6 +98,21 @@ public class SpinLock {
 
 	}
 
+
+	public final AutoCloseable autoLock() {
+		this.lock();
+		return new AutoCloseable() {
+			@Override
+			public void close() throws Exception {
+				// this. is the normal if we want to close it
+				if (lock.compareAndSet(true, false)) {
+					return;
+				}
+				logger.info("Attempted to close an unlocked {}", SpinLock.class.getSimpleName());
+
+			}
+		};
+	}
 	/**
 	 * Lock.
 	 *
@@ -134,4 +154,5 @@ public class SpinLock {
 	public void unlock() {
 		lock.set(false);
 	}
+
 }

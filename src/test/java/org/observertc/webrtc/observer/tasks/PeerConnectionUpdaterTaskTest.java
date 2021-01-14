@@ -42,7 +42,7 @@ class PeerConnectionUpdaterTaskTest {
     public void shouldValidate() {
         Assertions.assertThrows(Exception.class, () -> {
             subjectProvider.get()
-                    .perform();
+                    .execute();
         });
     }
 
@@ -54,11 +54,9 @@ class PeerConnectionUpdaterTaskTest {
         this.repositoryProvider.getPeerConnectionsRepository().save(pcEntity.peerConnectionUUID, pcEntity);
 
         // When
-        try (PeerConnectionsUpdaterTask peerConnectionsUpdaterTask = subjectProvider.get()) {
-            peerConnectionsUpdaterTask
-                    .addStream(pcEntity.serviceUUID, pcEntity.peerConnectionUUID, SSRC)
-                    .perform();
-        }
+        PeerConnectionsUpdaterTask task = subjectProvider.get()
+                .addStream(pcEntity.serviceUUID, pcEntity.peerConnectionUUID, SSRC);
+        task.execute();
 
         // Then
         SynchronizationSourcesRepository SSRCRepository = this.repositoryProvider.getSSRCRepository();

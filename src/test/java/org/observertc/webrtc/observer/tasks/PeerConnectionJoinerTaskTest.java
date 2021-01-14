@@ -51,13 +51,12 @@ class PeerConnectionJoinerTaskTest {
     public void shouldUnRegisterCall() {
         // Given
         PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);
+        PeerConnectionJoinerTask peerConnectionJoinerTask = subjectProvider.get();
 
         // When
-        try (PeerConnectionJoinerTask peerConnectionJoinerTask = subjectProvider.get()) {
-            peerConnectionJoinerTask
-                    .forEntity(pcEntity)
-                    .perform();
-        }
+        peerConnectionJoinerTask
+                .forEntity(pcEntity)
+                .execute();
 
         // Then
         PeerConnectionsRepository pcRepository = this.repositoryProvider.getPeerConnectionsRepository();

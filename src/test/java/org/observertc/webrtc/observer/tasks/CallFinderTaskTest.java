@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @MicronautTest
 class CallFinderTaskTest {
@@ -63,46 +62,49 @@ class CallFinderTaskTest {
     @Test
     public void shouldFindByUUID() {
         // Given
-        AtomicReference<UUID> found = new AtomicReference<>(null);
         CallEntity callEntity = generator.nextObject(CallEntity.class);
         SynchronizationSourceEntity SSRCEntity = generator.nextObject(SynchronizationSourceEntity.class);
         SSRCEntity.callUUID = callEntity.callUUID;
         this.repositoryProvider.getCallEntitiesRepository().add(callEntity.callUUID, callEntity);
         this.repositoryProvider.getSSRCRepository().save(SynchronizationSourcesRepository.getKey(callEntity.serviceUUID, SSRCEntity.SSRC), SSRCEntity);
+        CallFinderTask task = subjectProvider.get();
 
         // When
-        try (CallFinderTask callFinderTask = subjectProvider.get()) {
-            callFinderTask
-                    .forSSRCs(Set.of(SSRCEntity.SSRC))
-                    .forServiceUUID(callEntity.serviceUUID)
-                    .perform()
-                    .subscribe(found::set);
-        }
 
-        Assertions.assertNotNull(found.get());
-        Assertions.assertEquals(found.get(), callEntity.callUUID);
+        Set<UUID> foundCallUUIDs = task
+                .forSSRCs(Set.of(SSRCEntity.SSRC))
+                .forServiceUUID(callEntity.serviceUUID)
+                .execute()
+                .getResult();
+
+        // Then
+        Assertions.assertEquals(1, foundCallUUIDs.size());
+        UUID foundCallUUID = foundCallUUIDs.stream().findFirst().get();
+        Assertions.assertNotNull(foundCallUUID);
+        Assertions.assertEquals(foundCallUUID, callEntity.callUUID);
     }
 
     @Test
     public void shouldFindByName() {
         // Given
-        AtomicReference<UUID> found = new AtomicReference<>(null);
         CallEntity callEntity = generator.nextObject(CallEntity.class);
         this.repositoryProvider.getCallNamesRepository().add(callEntity.callName, callEntity.callUUID);
         this.repositoryProvider.getCallEntitiesRepository().add(callEntity.callUUID, callEntity);
+        CallFinderTask task = subjectProvider.get();
 
         // When
-        try (CallFinderTask callFinderTask = subjectProvider.get()) {
-            callFinderTask
-                    .forSSRCs(Set.of(1L))
-                    .forServiceUUID(callEntity.serviceUUID)
-                    .forCallName(callEntity.callName)
-                    .perform()
-                    .subscribe(found::set);
-        }
+
+        Set<UUID> foundCallUUIDs = task
+                .forSSRCs(Set.of(1L))
+                .forServiceUUID(callEntity.serviceUUID)
+                .forCallName(callEntity.callName)
+                .execute()
+                .getResult();
 
         // Then
-        Assertions.assertNotNull(found.get());
-        Assertions.assertEquals(found.get(), callEntity.callUUID);
+        Assertions.assertEquals(1, foundCallUUIDs.size());
+        UUID foundCallUUID = foundCallUUIDs.stream().findFirst().get();
+        Assertions.assertNotNull(foundCallUUID);
+        Assertions.assertEquals(foundCallUUID, callEntity.callUUID);
     }
 }

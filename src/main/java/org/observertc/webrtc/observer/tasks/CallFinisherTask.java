@@ -17,28 +17,18 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Maybe;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import javax.inject.Provider;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallEntitiesRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallNamesRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallSynchronizationSourcesRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+
 @Prototype
-public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
+public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	private enum State {
 		CREATED,
 		CALL_ENTITY_IS_UNREGISTERED,
@@ -57,7 +47,7 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 	private final SynchronizationSourcesRepository SSRCRepository;
 	private final CallFinderTask callFinderTask;
 	private final CallNamesRepository callNamesRepository;
-	private final Provider<FencedLockAcquirer> lockProvider;
+	private final WeakLockProvider lockProvider;
 	private final long operationTimeoutInMs = 10000;
 	private UUID callUUID;
 	private Set<Long> unregisteredSSRCs;
@@ -69,7 +59,7 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 	public CallFinisherTask(
 			RepositoryProvider repositoryProvider,
 			CallFinderTask callFinderTask,
-			Provider<FencedLockAcquirer> lockProvider
+			WeakLockProvider lockProvider
 	) {
 		super();
 		this.lockProvider = lockProvider;
@@ -86,24 +76,22 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 	}
 
 	@Override
-	protected Maybe<CallEntity> doPerform() {
-		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
+	protected CallEntity perform() throws Exception {
+//		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
+		try (var lock = this.lockProvider.autoLock(this.getClass().getSimpleName())) {
 			Collection<CallEntity> entities = this.callEntitiesRepository.find(this.callUUID);
 
 			if (entities.size() < 1) {
-				return Maybe.empty();
+				return null;
 			}
 
 			this.unregisteredCallEntity = entities.stream().findFirst().get();
-			this.execute();
-			return Maybe.just(this.unregisteredCallEntity);
-		} catch (Exception ex) {
-			this.rollback(ex);
-			return Maybe.error(ex);
+			this.doPerform();
+			return this.unregisteredCallEntity;
 		}
 	}
 
-	private void execute() {
+	private void doPerform() {
 		switch (this.state) {
 			case CREATED:
 				this.unregisterCallToSSRCs();
@@ -127,29 +115,26 @@ public class CallFinisherTask extends TaskAbstract<Maybe<CallEntity>> {
 
 	}
 
-	private void rollback(Throwable t) {
-		try {
-			switch (this.state) {
-				case EXECUTED:
-				case CALL_TO_SSRCS_IS_UNREGISTERED:
-					this.registerCallToSSRCs(t);
-					this.state = State.SSRCS_ARE_UNREGISTERED;
-				case SSRCS_ARE_UNREGISTERED:
-					this.registerSSRRCs(t);
-					this.state = State.CALL_NAME_IS_UNREGISTERED;
-				case CALL_NAME_IS_UNREGISTERED:
-					this.registerCallName(t);
-					this.state = State.CALL_ENTITY_IS_UNREGISTERED;
-				case CALL_ENTITY_IS_UNREGISTERED:
-					this.registerCallEntity(t);
-					this.state = State.ROLLEDBACK;
-				default:
-				case CREATED:
-				case ROLLEDBACK:
-					return;
-			}
-		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+	@Override
+	protected void rollback(Throwable t) {
+		switch (this.state) {
+			case EXECUTED:
+			case CALL_TO_SSRCS_IS_UNREGISTERED:
+				this.registerCallToSSRCs(t);
+				this.state = State.SSRCS_ARE_UNREGISTERED;
+			case SSRCS_ARE_UNREGISTERED:
+				this.registerSSRRCs(t);
+				this.state = State.CALL_NAME_IS_UNREGISTERED;
+			case CALL_NAME_IS_UNREGISTERED:
+				this.registerCallName(t);
+				this.state = State.CALL_ENTITY_IS_UNREGISTERED;
+			case CALL_ENTITY_IS_UNREGISTERED:
+				this.registerCallEntity(t);
+				this.state = State.ROLLEDBACK;
+			default:
+			case CREATED:
+			case ROLLEDBACK:
+				return;
 		}
 
 	}

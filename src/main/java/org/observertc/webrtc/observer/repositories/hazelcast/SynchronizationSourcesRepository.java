@@ -16,11 +16,15 @@
 
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
-import java.util.UUID;
-import javax.inject.Singleton;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 
+import javax.inject.Singleton;
+import java.util.UUID;
+
+/**
+ * Repository to store the (serviceUUID, SSRC) -> calls binding.
+ */
 @Singleton
 public class SynchronizationSourcesRepository extends MapRepositoryAbstract<String, SynchronizationSourceEntity> {
 

@@ -21,6 +21,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
@@ -29,15 +30,11 @@ import org.observertc.webrtc.observer.tasks.PeerConnectionsUpdaterTask;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
+import org.slf4j.helpers.MessageFormatter;
 
 import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -87,41 +84,32 @@ public class ActivePCsEvaluator implements Observer<Map<UUID, PCState>> {
 		}
 		Map<UUID, PCState> existsPeerConnections = new HashMap<>();
 		Map<UUID, PCState> newPeerConnections = new HashMap<>();
-		try (PeerConnectionsFinderTask task = this.tasksProvider.providePeerConnectionFinderTask()) {
-			task.addPCUUIDs(peerConnectionStates.keySet());
-			Map<UUID, PeerConnectionEntity> activePCs = task
-					.perform()
-					.collect(Collectors.toMap(k -> k.peerConnectionUUID, Function.identity()))
-					.blockingGet();
-			Iterator<PCState> it = peerConnectionStates.values().iterator();
-			for (; it.hasNext(); ) {
-				PCState pcState = it.next();
-				if (activePCs.containsKey(pcState.peerConnectionUUID)) {
-					existsPeerConnections.put(pcState.peerConnectionUUID, pcState);
-				} else {
-					newPeerConnections.put(pcState.peerConnectionUUID, pcState);
-				}
-			}
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Error during peer connections fetching")
-					.complete();
+		PeerConnectionsFinderTask task = this.tasksProvider.providePeerConnectionFinderTask()
+				.addPCUUIDs(peerConnectionStates.keySet());
+
+		task
+				.withLogger(logger)
+				.withFlawMonitor(this.flawMonitor)
+				.execute();
+
+		if (!task.succeeded()) {
 			return;
 		}
-		try {
-			if (0 < existsPeerConnections.size()) {
-				this.update(existsPeerConnections);
+
+		Map<UUID, PeerConnectionEntity> activePCs = task.getResultOrDefault(new HashSet<>())
+				.stream().collect(Collectors.toMap(e -> e.peerConnectionUUID, Function.identity()));
+		Iterator<PCState> it = peerConnectionStates.values().iterator();
+		for (; it.hasNext(); ) {
+			PCState pcState = it.next();
+			if (activePCs.containsKey(pcState.peerConnectionUUID)) {
+				existsPeerConnections.put(pcState.peerConnectionUUID, pcState);
+			} else {
+				newPeerConnections.put(pcState.peerConnectionUUID, pcState);
 			}
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Error happened during update")
-					.complete();
+		}
+
+		if (0 < existsPeerConnections.size()) {
+			this.update(existsPeerConnections);
 		}
 
 		this.newPeerConnections.onNext(newPeerConnections);
@@ -141,52 +129,26 @@ public class ActivePCsEvaluator implements Observer<Map<UUID, PCState>> {
 		if (peerConnectionStates.size() < 1) {
 			return;
 		}
+		AtomicBoolean streamIsAdded = new AtomicBoolean(false);
+		PeerConnectionsUpdaterTask task = this.tasksProvider.providePeerConnectionsUpdaterTask();
+		peerConnectionStates.values().stream().forEach(
+				pcState -> pcState.SSRCs.stream().forEach(ssrc -> {
+					task.addStream(
+							pcState.serviceUUID,
+							pcState.peerConnectionUUID,
+							ssrc);
+					streamIsAdded.set(true);
+				})
+		);
+		task.withLogger(logger)
+				.withFlawMonitor(this.flawMonitor)
+				.withExceptionMessage(() -> MessageFormatter.format("Cannot update peer connections. pcstates: {}", ObjectToString.toString(peerConnectionStates)).getMessage())
+				.withLogger(logger);
 
-		AtomicReference<Throwable> error = new AtomicReference<>(null);
-		AtomicBoolean performed = new AtomicBoolean(false);
-		try (PeerConnectionsUpdaterTask task = this.tasksProvider.providePeerConnectionsUpdaterTask()) {
-			AtomicBoolean streamIsAdded = new AtomicBoolean(false);
-			peerConnectionStates.values().stream().forEach(
-					pcState -> pcState.SSRCs.stream().forEach(ssrc -> {
-
-						task.addStream(
-								pcState.serviceUUID,
-								pcState.peerConnectionUUID,
-								ssrc);
-						streamIsAdded.set(true);
-					})
-			);
-			if (!streamIsAdded.get()) {
-				return;
-			}
-			task.perform()
-					.subscribe(() -> performed.set(true), error::set);
-
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Uncatched error happened during update task execution")
-					.complete();
+		if (!streamIsAdded.get()) {
 			return;
 		}
-		if (error.get() != null) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Error happened during update task execution")
-					.complete();
-			return;
-		}
-		if (!performed.get()) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("PCState update task has not been completed successfully")
-					.complete();
+		if (!task.execute().succeeded()) {
 			return;
 		}
 	}

@@ -17,10 +17,10 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Maybe;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.MediaUnitPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.slf4j.Logger;
@@ -37,11 +37,12 @@ import java.util.UUID;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
-public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectionEntity>> {
+public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntity> {
 	private enum State {
 		CREATED,
 		PC_IS_UNREGISTERED,
-		PC_IS_REMOVED,
+		PC_IS_REMOVED_FROM_CALL,
+		PC_IS_REMOVED_FROM_MEDIAUNIT,
 		EXECUTED,
 		ROLLEDBACK,
 	}
@@ -51,6 +52,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 	private final ObserverHazelcast observerHazelcast;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
+	private final MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
 	private State state = State.CREATED;
 	private UUID pcUUID;
 	private PeerConnectionEntity removedPCEntity;
@@ -62,6 +64,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 		this.observerHazelcast = observerHazelcast;
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
+		this.mediaUnitPeerConnectionsRepository = repositoryProvider.getMediaUnitPeerConnectionsRepository();
 	}
 
 	public PeerConnectionDetacherTask forPeerConnectionUUID(@NotNull UUID pcUUID) {
@@ -70,23 +73,12 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 	}
 
 	@Override
-	protected Maybe<PeerConnectionEntity> doPerform() {
-		try {
-			Optional<PeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(this.pcUUID);
-			if (!pcEntityHolder.isPresent()) {
-				return Maybe.empty();
-			}
-			this.removedPCEntity = pcEntityHolder.get();
-			this.execute();
-			return Maybe.just(this.removedPCEntity);
-
-		} catch (Exception ex) {
-			this.rollback(ex);
-			return Maybe.error(ex);
+	protected PeerConnectionEntity perform() {
+		Optional<PeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(this.pcUUID);
+		if (!pcEntityHolder.isPresent()) {
+			return null;
 		}
-	}
-
-	private void execute() {
+		this.removedPCEntity = pcEntityHolder.get();
 		switch (this.state) {
 			default:
 			case CREATED:
@@ -94,34 +86,48 @@ public class PeerConnectionDetacherTask extends TaskAbstract<Maybe<PeerConnectio
 				this.state = State.PC_IS_UNREGISTERED;
 			case PC_IS_UNREGISTERED:
 				this.removeCallToPeerConnection();
-				this.state = State.PC_IS_REMOVED;
-			case PC_IS_REMOVED:
+				this.state = State.PC_IS_REMOVED_FROM_CALL;
+			case PC_IS_REMOVED_FROM_CALL:
+				this.removePcFromMediaUnit();
+				this.state = State.PC_IS_REMOVED_FROM_MEDIAUNIT;
+			case PC_IS_REMOVED_FROM_MEDIAUNIT:
 				this.state = State.EXECUTED;
 			case EXECUTED:
 			case ROLLEDBACK:
+		}
+		return this.removedPCEntity;
+	}
+
+	@Override
+	protected void rollback(Throwable t) {
+		switch (this.state) {
+			case EXECUTED:
+			case PC_IS_REMOVED_FROM_MEDIAUNIT:
+				this.addPcToMediaUnit(t);
+				this.state = State.PC_IS_REMOVED_FROM_CALL;
+			case PC_IS_REMOVED_FROM_CALL:
+				this.registerPeerConnection(t);
+				this.state = State.PC_IS_UNREGISTERED;
+			case PC_IS_UNREGISTERED:
+				this.addCallToPeerConnection(t);
+				this.state = State.ROLLEDBACK;
+			case CREATED:
+			case ROLLEDBACK:
+			default:
 				return;
 		}
 	}
 
-	private void rollback(Throwable t) {
+	private void addPcToMediaUnit(Throwable exceptionInExecution) {
 		try {
-			switch (this.state) {
-				case EXECUTED:
-				case PC_IS_REMOVED:
-					this.registerPeerConnection(t);
-					this.state = State.PC_IS_UNREGISTERED;
-				case PC_IS_UNREGISTERED:
-					this.addCallToPeerConnection(t);
-					this.state = State.ROLLEDBACK;
-				case CREATED:
-				case ROLLEDBACK:
-				default:
-					return;
-			}
-		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+			this.mediaUnitPeerConnectionsRepository.add(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
+		} catch (Exception ex2) {
+			logger.error("During rollback the following error occured", ex2);
 		}
+	}
 
+	private void removePcFromMediaUnit() {
+		this.mediaUnitPeerConnectionsRepository.remove(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
 	}
 
 	private void addCallToPeerConnection(Throwable exceptionInExecution) {

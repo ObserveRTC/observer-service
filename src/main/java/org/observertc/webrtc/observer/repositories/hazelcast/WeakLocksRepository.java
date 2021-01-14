@@ -17,24 +17,24 @@
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.observertc.webrtc.observer.models.WeakLockEntity;
 
 import javax.inject.Singleton;
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 /**
- * Callnames to call uuids
+ * Call to PC keys
  */
 @Singleton
-public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
+public class WeakLocksRepository extends MapRepositoryAbstract<String, WeakLockEntity> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
+	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverWeakLocks";
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
-
-	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
+	public WeakLocksRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
+	}
 
+	public WeakLockEntity saveIfAbsent(@NotNull String key, @NotNull WeakLockEntity entity) {
+		return this.getEntities().putIfAbsent(key, entity);
 	}
 }

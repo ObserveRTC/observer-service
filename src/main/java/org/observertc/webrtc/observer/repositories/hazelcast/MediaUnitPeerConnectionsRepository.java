@@ -24,17 +24,17 @@ import javax.inject.Singleton;
 import java.util.UUID;
 
 /**
- * Callnames to call uuids
+ * Call to PC keys
  */
 @Singleton
-public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
+public class MediaUnitPeerConnectionsRepository extends MultiMapRepositoryAbstract<String, UUID> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
+	private static final Logger logger = LoggerFactory.getLogger(MediaUnitPeerConnectionsRepository.class);
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
+	private static final String HAZELCAST_MAP_KEY = MediaUnitPeerConnectionsRepository.class.getName();
 
-	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
+	public MediaUnitPeerConnectionsRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
-
 	}
+
 }

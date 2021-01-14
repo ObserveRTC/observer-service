@@ -64,13 +64,12 @@ class CallFinisherTaskTest {
            );
         });
         this.repositoryProvider.getCallNamesRepository().add(callEntity.callName, callEntity.callUUID);
+        CallFinisherTask callFinisherTask = subjectProvider.get();
 
         // When
-        try (CallFinisherTask callFinisherTask = subjectProvider.get()) {
-            callFinisherTask
-                    .forCallEntity(callEntity.callUUID)
-                    .perform();
-        }
+        callFinisherTask
+                .forCallEntity(callEntity.callUUID)
+                .execute();
 
         // Then
         Assertions.assertFalse(this.repositoryProvider.getCallSynchronizationSourcesRepository().exists(callEntity.callUUID));

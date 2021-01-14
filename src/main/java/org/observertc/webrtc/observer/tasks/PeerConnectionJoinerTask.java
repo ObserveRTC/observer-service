@@ -17,9 +17,9 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Completable;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.hazelcast.MediaUnitPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.slf4j.Logger;
@@ -34,11 +34,12 @@ import java.util.Objects;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
-public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
+public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 	private enum State {
 		CREATED,
 		PC_IS_REGISTERED,
-		PC_IS_ADDED,
+		PC_IS_ADDED_TO_CALL,
+		PC_IS_ADDED_TO_MEDIAUNIT,
 		EXECUTED,
 		ROLLEDBACK,
 	}
@@ -47,6 +48,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
+	private final MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
 	private PeerConnectionEntity entity;
 	private State state = State.CREATED;
 
@@ -57,6 +59,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 		super();
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
+		this.mediaUnitPeerConnectionsRepository = repositoryProvider.getMediaUnitPeerConnectionsRepository();
 	}
 
 	public PeerConnectionJoinerTask forEntity(@NotNull PeerConnectionEntity entity) {
@@ -65,17 +68,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 	}
 
 	@Override
-	protected Completable doPerform() {
-		try {
-			this.execute();
-			return Completable.complete();
-		} catch (Exception ex) {
-			this.rollback(ex);
-			return Completable.error(ex);
-		}
-	}
-
-	private void execute() {
+	protected Void perform() {
 		switch (this.state) {
 			default:
 			case CREATED:
@@ -83,20 +76,27 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 				this.state = State.PC_IS_REGISTERED;
 			case PC_IS_REGISTERED:
 				this.addCallToPeerConnection();
-				this.state = State.PC_IS_ADDED;
-			case PC_IS_ADDED:
+				this.state = State.PC_IS_ADDED_TO_CALL;
+			case PC_IS_ADDED_TO_CALL:
+				this.addPcToMediaUnit();
+				this.state = State.PC_IS_ADDED_TO_MEDIAUNIT;
+			case PC_IS_ADDED_TO_MEDIAUNIT:
 				this.state = State.EXECUTED;
 			case EXECUTED:
 			case ROLLEDBACK:
-				return;
 		}
+		return null;
 	}
 
-	private void rollback(Throwable t) {
+	@Override
+	protected void rollback(Throwable t) {
 		try {
 			switch (this.state) {
 				case EXECUTED:
-				case PC_IS_ADDED:
+				case PC_IS_ADDED_TO_MEDIAUNIT:
+					this.removePcFromMediaUnit(t);
+					this.state = State.PC_IS_ADDED_TO_CALL;
+				case PC_IS_ADDED_TO_CALL:
 					this.unregisterPeerConnection(t);
 					this.state = State.PC_IS_REGISTERED;
 				case PC_IS_REGISTERED:
@@ -111,6 +111,18 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Completable> {
 			logger.error("During rollback an error is occured", another);
 		}
 
+	}
+
+	private void addPcToMediaUnit() {
+		this.mediaUnitPeerConnectionsRepository.add(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
+	}
+
+	private void removePcFromMediaUnit(Throwable exceptionInExecution) {
+		try {
+			this.mediaUnitPeerConnectionsRepository.remove(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
+		} catch (Exception ex) {
+			logger.error("During rollback the following error occured", ex);
+		}
 	}
 
 	private void addCallToPeerConnection() {

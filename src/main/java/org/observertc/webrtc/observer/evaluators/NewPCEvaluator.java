@@ -20,8 +20,8 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
@@ -39,9 +39,7 @@ import org.slf4j.helpers.MessageFormatter;
 
 import javax.inject.Singleton;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
 
@@ -158,33 +156,20 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 	private Optional<UUID> findCallUUID(PCState pcState) {
-		Set<UUID> callUUIDs = new HashSet<>();
-		AtomicReference<Throwable> error = new AtomicReference<>(null);
-		try (CallFinderTask task = this.tasksProvider.getCallFinderTask()) {
-			task.forServiceUUID(pcState.serviceUUID)
-					.forCallName(pcState.callName)
-					.forSSRCs(pcState.SSRCs)
-					.withMultipleResultsAllowed(false)
-					.perform()
-					.subscribe(callUUIDs::add, error::set);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Unhandled error occurred by executing {} ", CallFinderTask.class.getSimpleName())
-					.complete();
+		CallFinderTask task = this.tasksProvider.getCallFinderTask();
+		task.forServiceUUID(pcState.serviceUUID)
+				.forCallName(pcState.callName)
+				.forSSRCs(pcState.SSRCs)
+				.withMultipleResultsAllowed(false)
+				.withFlawMonitor(this.flawMonitor)
+				.withLogger(logger)
+				.withMaxRetry(3)
+		;
+		if (!task.execute().succeeded()) {
 			return Optional.empty();
 		}
-		if (error.get() != null) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Error occurred by executing {} ", CallFinderTask.class.getSimpleName())
-					.complete();
-			return Optional.empty();
-		}
+
+		Set<UUID> callUUIDs = task.getResult();
 		return callUUIDs.stream().findFirst();
 	}
 
@@ -198,32 +183,19 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 				pcState.callName,
 				pcState.marker
 		);
-		AtomicReference<Throwable> error = new AtomicReference<>(null);
-		AtomicReference<UUID> callUUIDReference = new AtomicReference(null);
-		try (CallInitializerTask task = this.tasksProvider.provideCallInitializerTask()) {
-			task.forCallEntity(callEntity)
-					.forSSRCs(pcState.SSRCs)
-					.perform()
-					.subscribe(callUUIDReference::set, error::set);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Unhandled error occurred by executing {} ", CallInitializerTask.class.getSimpleName())
-					.complete();
+		CallInitializerTask task = this.tasksProvider.provideCallInitializerTask();
+		task
+				.forCallEntity(callEntity)
+				.forSSRCs(pcState.SSRCs)
+				.withFlawMonitor(this.flawMonitor)
+				.withLogger(logger)
+		;
+		if (!task.execute().succeeded()) {
 			return Optional.empty();
 		}
-		if (error.get() != null) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Error occurred by executing {} ", CallInitializerTask.class.getSimpleName())
-					.complete();
-			return Optional.empty();
-		}
-		UUID callUUID = callUUIDReference.get();
+
+
+		UUID callUUID = task.getResult();
 		logger.info("Call UUID {} is registered.", callUUID);
 		if (callUUID == null) {
 			return Optional.empty();
@@ -258,28 +230,16 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 				pcState.browserId,
 				pcState.timeZoneId,
 				pcState.created,
-				pcState.updated,
-				null,
 				pcState.marker
 		);
-		AtomicReference<Throwable> error = new AtomicReference<>(null);
-		AtomicBoolean performed = new AtomicBoolean(false);
-		logger.info("PC UUID {} is registered.", pcState.peerConnectionUUID);
-		try (PeerConnectionJoinerTask task = this.tasksProvider.providePeerConnectionJoinerTask()) {
-			task.forEntity(pcEntity)
-					.perform()
-					.subscribe(() -> performed.set(true), error::set);
-		} catch (Exception ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(error.get())
-					.withLogger(logger)
-					.withLogLevel(Level.ERROR)
-					.withMessage("Error occurred by executing {} ", CallInitializerTask.class.getSimpleName())
-					.complete();
-			return false;
-		}
-		if (error.get() != null) {
-			logger.warn("Exception happened during execution", error.get());
+		logger.info("PC UUID {} is registered to callUUID {}.", pcState.peerConnectionUUID, callUUID);
+		PeerConnectionJoinerTask task = this.tasksProvider.providePeerConnectionJoinerTask();
+		task.forEntity(pcEntity)
+				.withLogger(logger)
+				.withFlawMonitor(this.flawMonitor)
+			;
+
+		if (!task.execute().succeeded()) {
 			return false;
 		}
 
@@ -305,7 +265,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 		if (pcState.SSRCs.size() < 1) {
 			this.reportNoSSRC(pcEntity);
 		}
-		return performed.get();
+		return true;
 	}
 
 	private void reportNoSSRC(PeerConnectionEntity pcEntity) {
