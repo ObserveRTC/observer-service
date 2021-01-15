@@ -147,13 +147,15 @@ public class Pipeline {
                 .subscribe(this.iceConnectionObserver.getICECandidatePairs());
 
         // ICEConnectionObserver -> ICEConnectionEvaluator
-        this.iceConnectionObserver.getObservableICEConnection()
+        this.iceConnectionObserver.getObservableNewICEConnection()
                 .subscribe(this.iceConnectionsEvaluator.getNewICEConnectionsInput());
 
         // ICEConnectionObserver -> ICEConnectionEvaluator
         this.iceConnectionObserver.getObservableExpiredICECandidatePairUpdates()
                 .subscribe(this.iceConnectionsEvaluator.getExpiredICECandidatePairs());
 
+        this.iceConnectionObserver.getObservableUpdatedICEConnection()
+                .subscribe(this.iceConnectionsEvaluator.getUpdatedICEConnectionsInput());
 
     }
 
