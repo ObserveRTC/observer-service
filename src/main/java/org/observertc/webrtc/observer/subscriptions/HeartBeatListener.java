@@ -21,6 +21,7 @@ import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.health.HeartbeatEvent;
 import javax.inject.Singleton;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ public class HeartBeatListener implements ApplicationEventListener<HeartbeatEven
 
 	@Override
 	public void onApplicationEvent(HeartbeatEvent event) {
+
 
 	}
 }

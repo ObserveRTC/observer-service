@@ -10,6 +10,7 @@ import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.repositories.hazelcast.ICEConnectionsRepository;
 import org.observertc.webrtc.observer.tasks.ICEConnectionAdderTask;
 import org.observertc.webrtc.observer.tasks.ICEConnectionRemoverTask;
+import org.observertc.webrtc.observer.tasks.ICEConnectionUpdaterTask;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,7 @@ import org.slf4j.helpers.MessageFormatter;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -29,6 +27,7 @@ public class ICEConnectionsEvaluator {
 
     private static final Logger logger = LoggerFactory.getLogger(ICEConnectionsEvaluator.class);
     private Subject<ICEConnectionEntity> newICEConnection = PublishSubject.create();
+    private Subject<ICEConnectionEntity> updatedICEConnection = PublishSubject.create();
     private Subject<UUID> expiredPC = PublishSubject.create();
     private Subject<ICECandidatePairUpdate> expiredCandidatePairs = PublishSubject.create();
     private final FlawMonitor flawMonitor;
@@ -43,6 +42,10 @@ public class ICEConnectionsEvaluator {
         this.newICEConnection
                 .buffer(10, TimeUnit.SECONDS)
                 .subscribe(this::processICEConnections);
+
+        this.updatedICEConnection
+                .buffer(30, TimeUnit.SECONDS)
+                .subscribe(this::processUpdatedICEConnectionUpdates);
 
         this.expiredPC
                 .buffer(10, TimeUnit.SECONDS)
@@ -66,6 +69,10 @@ public class ICEConnectionsEvaluator {
         return this.expiredCandidatePairs;
     }
 
+    public Observer<? super ICEConnectionEntity> getUpdatedICEConnectionsInput() {
+        return this.updatedICEConnection;
+    }
+
     private void processICEConnections(List<ICEConnectionEntity> iceConnectionEntities) {
         if (Objects.isNull(iceConnectionEntities)) {
             return;
@@ -85,6 +92,8 @@ public class ICEConnectionsEvaluator {
         }
     }
 
+
+
     private void processExpiredPCs(List<UUID> pcUUIDs) {
         if (Objects.isNull(pcUUIDs)) {
             return;
@@ -100,6 +109,33 @@ public class ICEConnectionsEvaluator {
         )
                 .withFlawMonitor(this.flawMonitor)
                 .withLogger(logger)
+                .execute();
+
+        if (!task.succeeded()) {
+            return;
+        }
+    }
+
+    private void processUpdatedICEConnectionUpdates(List<ICEConnectionEntity> updates) {
+        if (Objects.isNull(updates)) {
+            return;
+        }
+        if (updates.size() < 1) {
+            return;
+        }
+        Map<String, ICEConnectionEntity> updateMaps = new HashMap<>();
+        Iterator<ICEConnectionEntity> it = updates.listIterator();
+        while (it.hasNext()) {
+            ICEConnectionEntity entity = it.next();
+            String key = ICEConnectionsRepository.getKey(entity.pcUUID, entity.localCandidateId, entity.remoteCandidateId);
+            updateMaps.put(key, entity); // the newer update overrides the old one
+        }
+
+        ICEConnectionUpdaterTask task = this.tasksProvider.provideICEConnectionUpdaterTask();
+        updateMaps.values().stream().forEach(task::forICEConnectionEntity);
+
+        task.withLogger(logger)
+                .withFlawMonitor(this.flawMonitor)
                 .execute();
 
         if (!task.succeeded()) {
@@ -132,4 +168,5 @@ public class ICEConnectionsEvaluator {
             return;
         }
     }
+
 }

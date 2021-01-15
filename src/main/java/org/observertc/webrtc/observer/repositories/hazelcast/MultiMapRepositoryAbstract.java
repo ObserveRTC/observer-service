@@ -97,6 +97,12 @@ public class MultiMapRepositoryAbstract<K, V> implements IMultiMap<K, V> {
 	}
 
 	@Override
+	public Map<K, Collection<V>> getLocalEntries() {
+		Set<K> keys = this.entities.localKeySet();
+		return this.findAll(keys);
+	}
+
+	@Override
 	public <S extends K> boolean exists(@NotNull S key) {
 		return this.entities.containsKey(key);
 	}

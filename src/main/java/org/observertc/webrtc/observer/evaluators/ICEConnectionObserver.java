@@ -27,7 +27,8 @@ public class ICEConnectionObserver {
     private Subject<ReportRecord> ICELocalCandidates = PublishSubject.create();
     private Subject<ICECandidatePairUpdate> expiredICECandidatePairs = PublishSubject.create();
 
-    private Subject<ICEConnectionEntity> iceConnections = PublishSubject.create();
+    private Subject<ICEConnectionEntity> newICEConnections = PublishSubject.create();
+    private Subject<ICEConnectionEntity> updateICEConnections = PublishSubject.create();
 
     private Map<String, Report> localCandidates = new HashMap<>();
     private Map<String, Report> remoteCandidates = new HashMap<>();
@@ -46,8 +47,11 @@ public class ICEConnectionObserver {
         return this.ICERemoteCandidates;
     }
 
-    public Observable<ICEConnectionEntity> getObservableICEConnection() {
-        return this.iceConnections;
+    public Observable<ICEConnectionEntity> getObservableNewICEConnection() {
+        return this.newICEConnections;
+    }
+    public Observable<ICEConnectionEntity> getObservableUpdatedICEConnection() {
+        return this.updateICEConnections;
     }
 
     public Observable<ICECandidatePairUpdate> getObservableExpiredICECandidatePairUpdates() {
@@ -132,28 +136,41 @@ public class ICEConnectionObserver {
             );
             this.candidatePairUpdates.put(key, update);
         }
-        if (doProcess) {
-            this.process(iceLocalCandidateReport, iceRemoteCandidateReport, iceCandidatePairReport);
+        Instant now = Instant.now();
+
+        if (doProcess || (update.processed && 20 < Duration.between(update.updated, now).getSeconds())) {
+//            this.process(iceLocalCandidateReport, iceRemoteCandidateReport, iceCandidatePairReport);
+            ICEConnectionEntity iceConnectionEntity = this.makeICEConnectionEntity(iceLocalCandidateReport, iceRemoteCandidateReport, iceCandidatePairReport);
+            this.localCandidates.remove(iceCandidatePair.getLocalCandidateID());
+            this.remoteCandidates.remove(iceCandidatePair.getRemoteCandidateID());
+            if (!update.processed) {
+                this.newICEConnections.onNext(iceConnectionEntity);
+            } else {
+                this.updateICEConnections.onNext(iceConnectionEntity);
+            }
             update.processed = true;
+            update.updated = now;
         }
-        update.updated = Instant.now();
+
+        if (Objects.isNull(update.updated)) {
+            update.updated = now;
+        }
+
+
         this.clean();
     }
 
-    private void process(Report iceLocalCandidateReport, Report iceRemoteCandidateReport, Report iceCandidatePairReport) {
+    private ICEConnectionEntity makeICEConnectionEntity(Report iceLocalCandidateReport, Report iceRemoteCandidateReport, @NotNull Report iceCandidatePairReport) {
         ICECandidatePair iceCandidatePair = (ICECandidatePair) iceCandidatePairReport.getPayload();
-        ICERemoteCandidate iceRemoteCandidate = (ICERemoteCandidate) iceRemoteCandidateReport.getPayload();
-        ICELocalCandidate iceLocalCandidate = (ICELocalCandidate) iceLocalCandidateReport.getPayload();
-
-//        logger.info("Process for localId {}, remoteId {}, candidatepair {} ({}, {}) has been started",
-//                iceCandidatePair.getLocalCandidateID(),
-//                iceCandidatePair.getRemoteCandidateID(),
-//                iceCandidatePair.getCandidatePairId(),
-//                iceCandidatePair.getLocalCandidateID(),
-//                iceCandidatePair.getRemoteCandidateID()
-//                );
-        this.localCandidates.remove(iceLocalCandidate.getCandidateId());
-        this.remoteCandidates.remove(iceRemoteCandidate.getCandidateId());
+        CandidateType localCandidateType = null, remoteCandidateType = null;
+        if (Objects.nonNull(iceLocalCandidateReport)) {
+            ICELocalCandidate iceLocalCandidate = (ICELocalCandidate) iceLocalCandidateReport.getPayload();
+            localCandidateType = iceLocalCandidate.getCandidateType();
+        }
+        if (Objects.nonNull(iceRemoteCandidateReport)) {
+            ICERemoteCandidate iceRemoteCandidate = (ICERemoteCandidate) iceRemoteCandidateReport.getPayload();
+            remoteCandidateType = iceRemoteCandidate.getCandidateType();
+        }
 
         UUID serviceUUID = UUID.fromString(iceCandidatePairReport.getServiceUUID());
         UUID pcUUID = UUID.fromString(iceCandidatePair.getPeerConnectionUUID());
@@ -162,19 +179,19 @@ public class ICEConnectionObserver {
         if (Objects.nonNull(iceCandidatePair.getNominated())) {
             nominated = iceCandidatePair.getNominated();
         }
-        ICEConnectionEntity iceConnectionEntity = ICEConnectionEntity.of(
+        ICEConnectionEntity result = ICEConnectionEntity.of(
                 serviceUUID,
                 mediaUnitId,
                 pcUUID,
                 iceCandidatePair.getLocalCandidateID(),
                 iceCandidatePair.getRemoteCandidateID(),
-                iceLocalCandidate.getCandidateType(),
-                iceRemoteCandidate.getCandidateType(),
+                localCandidateType,
+                remoteCandidateType,
                 nominated,
                 iceCandidatePair.getState()
         );
 
-        this.iceConnections.onNext(iceConnectionEntity);
+        return result;
     }
 
     private void clean() {

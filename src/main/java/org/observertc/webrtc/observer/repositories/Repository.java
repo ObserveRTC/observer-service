@@ -157,6 +157,21 @@ public interface Repository<K, V> {
 	}
 
 	/**
+	 * Gets all entries stored in the local endpoint
+	 *
+	 * @return
+	 */
+	Map<K, V> getLocalEntries();
+
+	/**
+	 * The RXJava version to get all local entries
+	 * @return
+	 */
+	default Observable<Map.Entry<K, V>> rxGetAllLocalEntries() {
+		return Observable.fromIterable(this.getLocalEntries().entrySet());
+	}
+
+	/**
 	 * Check if the key is belong to a value
 	 *
 	 * @param key the key we are looking for

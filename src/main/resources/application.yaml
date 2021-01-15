@@ -1,4 +1,6 @@
 micronaut:
+  heartbeat:
+    enabled: true
   metrics:
     enabled: ${METRICS_ENABLED:True}
     export:
