@@ -38,8 +38,4 @@ public class MonitorProvider {
 				.withTag(KLASS_TAG_NAME, klass.getSimpleName());
 	}
 
-	public SessionMonitor makeWebsocketSessionMonitor(String name) {
-		return new SessionMonitor(this.meterRegistry, name, "opened", "removed");
-	}
-
 }

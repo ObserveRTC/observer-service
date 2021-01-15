@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import io.micrometer.core.annotation.Counted;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.websocket.WebSocketSession;
@@ -30,7 +31,6 @@ import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.monitors.SessionMonitor;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
@@ -57,7 +57,6 @@ public class WebsocketPCSampleV20200114 {
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
 	private final ServicesRepository servicesRepository;
-	private final SessionMonitor sessionMonitor;
 
 	@Inject
 	Pipeline pipeline;
@@ -68,23 +67,28 @@ public class WebsocketPCSampleV20200114 {
 			ServicesRepository servicesRepository
 	) {
 		this.objectReader = objectMapper.reader();
-		this.sessionMonitor = monitorProvider.makeWebsocketSessionMonitor(this.getClass().getSimpleName());
 		this.servicesRepository = servicesRepository;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
 	}
 
-
+	@Counted(
+			value = "observer_pcsample_opened_websocket",
+			description = "Counter to track the number of opened websocket for pcsamples per instance"
+	)
 	@OnOpen
 	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
-		this.sessionMonitor.added(session.getId());
+
 	}
 
+	@Counted(
+			value = "observer_pcsample_closed_websocket",
+			description = "Counter to track the number of closed websocket for pcsamples per instance"
+	)
 	@OnClose
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
 			WebSocketSession session) {
-		this.sessionMonitor.removed(session.getId());
 	}
 
 	//	@OnMessage(maxPayloadLength = 1000000) // 1MB

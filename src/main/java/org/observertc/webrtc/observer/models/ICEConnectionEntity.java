@@ -24,6 +24,21 @@ public class ICEConnectionEntity implements Portable {
     private static final String NOMINATED_FIELD_NAME = "nominated";
     private static final String ICE_STATE_FIELD_NAME = "iceState";
 
+    public static ICEConnectionEntity from(ICEConnectionEntity iceConnectionEntity) {
+        ICEConnectionEntity result = ICEConnectionEntity.of(
+                iceConnectionEntity.serviceUUID,
+                iceConnectionEntity.mediaUnitId,
+                iceConnectionEntity.pcUUID,
+                iceConnectionEntity.localCandidateId,
+                iceConnectionEntity.remoteCandidateId,
+                iceConnectionEntity.localCandidateType,
+                iceConnectionEntity.remoteCandidateType,
+                iceConnectionEntity.nominated,
+                iceConnectionEntity.state
+        );
+        return result;
+    }
+
     public static ICEConnectionEntity of(
             UUID serviceUUID,
             String mediaUnitId,
@@ -44,6 +59,7 @@ public class ICEConnectionEntity implements Portable {
         result.localCandidateType = localCandidateType;
         result.remoteCandidateType = remoteCandidateType;
         result.nominated = nominated;
+        result.state = iceState;
         return result;
     }
 

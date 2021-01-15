@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 
 @Prototype
 public class CallInitializerTask extends TaskAbstract<UUID> {
-
-
 	private enum State {
 		CREATED,
 		CALL_ENTITY_IS_REGISTERED,

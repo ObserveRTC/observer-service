@@ -20,10 +20,11 @@ import io.reactivex.Single;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
+
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 public interface IMultiMap<K, V> {
 
@@ -98,6 +99,13 @@ public interface IMultiMap<K, V> {
 	 * @return
 	 */
 	Map<K, Collection<V>> findAll(@NotNull Set<K> keys);
+
+	/**
+	 * Gets all entries stored in the local endpoint
+	 *
+	 * @return
+	 */
+	Map<K, Collection<V>> getLocalEntries();
 
 	/**
 	 * The reactiveX version of the {@link this#findAll(Set)} method.

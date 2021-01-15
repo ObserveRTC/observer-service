@@ -49,6 +49,12 @@ public class TasksProvider {
 	@Inject
 	Provider<ICEConnectionRemoverTask> iceConnectionRemoverTaskProvider;
 
+	@Inject
+	Provider<CallStatsMakerTask> callStatsMakerTaskProvider;
+
+	@Inject
+	Provider<ICEConnectionUpdaterTask> iceConnectionUpdaterTaskProvider;
+
 	public TasksProvider() {
 
 	}
@@ -89,4 +95,11 @@ public class TasksProvider {
 		return this.iceConnectionRemoverTaskProvider.get();
 	}
 
+	public ICEConnectionUpdaterTask provideICEConnectionUpdaterTask() {
+		return this.iceConnectionUpdaterTaskProvider.get();
+	}
+
+	public CallStatsMakerTask getCallStatsMakerTask() {
+		return this.callStatsMakerTaskProvider.get();
+	}
 }
