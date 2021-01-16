@@ -28,6 +28,8 @@ import java.util.*;
 @ConfigurationProperties("observer")
 public class ObserverConfig {
 
+	public List<Map<String, Object>> connectors = new LinkedList<>();
+
 	public HazelcastConfig hazelcast;
 
 	public OutboundReportsConfig outboundReports;

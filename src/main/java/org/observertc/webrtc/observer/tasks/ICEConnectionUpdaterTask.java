@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.models.ICEConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.ICEConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;

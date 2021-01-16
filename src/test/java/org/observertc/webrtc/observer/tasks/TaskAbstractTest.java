@@ -2,6 +2,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.observertc.webrtc.observer.common.TaskAbstract;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;

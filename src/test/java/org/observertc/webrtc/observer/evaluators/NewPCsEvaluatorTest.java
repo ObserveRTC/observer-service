@@ -3,11 +3,11 @@ package org.observertc.webrtc.observer.evaluators;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.*;
+import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 
 import javax.inject.Inject;
@@ -53,14 +53,14 @@ class NewPCsEvaluatorTest {
         this.synchronizationSourcesRepository.save(ssrcKey, ssrcEntity);
         this.callPeerConnectionsRepository.addAll(ssrcEntity.callUUID, List.of(alice.peerConnectionUUID, bob.peerConnectionUUID));
         this.callEntitiesRepository.add(callEntity.callUUID, callEntity);
-        List<ReportRecord> reports = new LinkedList<>();
+        List<Report> reports = new LinkedList<>();
         evaluator.getReports().subscribe(reports::add);
 
         // When
         evaluator.onNext(Map.of(pcState.peerConnectionUUID, pcState));
 
         // Then
-        Assertions.assertEquals(1, reports.stream().filter(r -> r.value.getType().equals(ReportType.JOINED_PEER_CONNECTION)).count());
-        Assertions.assertEquals(0, reports.stream().filter(r -> r.value.getType().equals(ReportType.INITIATED_CALL)).count());
+        Assertions.assertEquals(1, reports.stream().filter(r -> r.getType().equals(ReportType.JOINED_PEER_CONNECTION)).count());
+        Assertions.assertEquals(0, reports.stream().filter(r -> r.getType().equals(ReportType.INITIATED_CALL)).count());
     }
 }

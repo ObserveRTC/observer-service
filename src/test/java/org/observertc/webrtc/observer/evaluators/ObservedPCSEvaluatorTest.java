@@ -4,7 +4,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.reactivex.rxjava3.core.Observable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.*;
@@ -25,7 +24,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidICELocalCandidateReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getICELocalCandidateReports().subscribe(reportRecords::add);
 
@@ -36,7 +35,7 @@ class ObservedPCSEvaluatorTest {
 
         // Then
         Assertions.assertFalse(reportRecords.isEmpty());
-        reportRecords.stream().forEach(reportRecord -> validateICELocalCandidate(observedPCS, reportRecord.value));
+        reportRecords.stream().forEach(reportRecord -> validateICELocalCandidate(observedPCS, reportRecord));
     }
 
     private void validateICELocalCandidate(ObservedPCS observedPCS, Report report) {
@@ -84,7 +83,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidICERemoteCandidateReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getICERemoteCandidateReports().subscribe(reportRecords::add);
 
@@ -95,7 +94,7 @@ class ObservedPCSEvaluatorTest {
 
         // Then
         Assertions.assertFalse(reportRecords.isEmpty());
-        reportRecords.stream().forEach(reportRecord -> validateICERemoteCandidate(observedPCS, reportRecord.value));
+        reportRecords.stream().forEach(reportRecord -> validateICERemoteCandidate(observedPCS, reportRecord));
     }
 
     private void validateICERemoteCandidate(ObservedPCS observedPCS, Report report) {
@@ -129,7 +128,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidICECandidatePairReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getICECandidatePairReports().subscribe(reportRecords::add);
 
@@ -140,7 +139,7 @@ class ObservedPCSEvaluatorTest {
 
         // Then
         Assertions.assertFalse(reportRecords.isEmpty());
-        reportRecords.stream().forEach(reportRecord -> validateICECandidatePair(observedPCS, reportRecord.value));
+        reportRecords.stream().forEach(reportRecord -> validateICECandidatePair(observedPCS, reportRecord));
     }
 
     private void validateICECandidatePair(ObservedPCS observedPCS, Report report) {
@@ -183,7 +182,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidInboundRTPReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getInboundRTPReports().subscribe(reportRecords::add);
 
@@ -194,7 +193,7 @@ class ObservedPCSEvaluatorTest {
 
         // Then
         Assertions.assertFalse(reportRecords.isEmpty());
-        reportRecords.stream().forEach(reportRecord -> validateInboundRTPReport(observedPCS, reportRecord.value));
+        reportRecords.stream().forEach(reportRecord -> validateInboundRTPReport(observedPCS, reportRecord));
     }
 
     private void validateInboundRTPReport(ObservedPCS observedPCS, Report report) {
@@ -251,7 +250,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidOutboundRTPReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getOutboundRTPReports().subscribe(reportRecords::add);
 
@@ -262,7 +261,7 @@ class ObservedPCSEvaluatorTest {
 
         // Then
         Assertions.assertFalse(reportRecords.isEmpty());
-        reportRecords.stream().forEach(reportRecord -> validateOutboundRTPReport(observedPCS, reportRecord.value));
+        reportRecords.stream().forEach(reportRecord -> validateOutboundRTPReport(observedPCS, reportRecord));
     }
 
     private void validateOutboundRTPReport(ObservedPCS observedPCS, Report report) {
@@ -317,7 +316,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidRemoteInboundRTPReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getRemoteInboundRTPReports().subscribe(reportRecords::add);
 
@@ -328,7 +327,7 @@ class ObservedPCSEvaluatorTest {
 
         // Then
         Assertions.assertFalse(reportRecords.isEmpty());
-        reportRecords.stream().forEach(reportRecord -> validateRemoteInboundRTPReport(observedPCS, reportRecord.value));
+        reportRecords.stream().forEach(reportRecord -> validateRemoteInboundRTPReport(observedPCS, reportRecord));
     }
 
     private void validateRemoteInboundRTPReport(ObservedPCS observedPCS, Report report) {
@@ -365,7 +364,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidTrackReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getTrackReports().subscribe(reportRecords::add);
 
@@ -382,7 +381,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidMediaSourceReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getMediaSourceReports().subscribe(reportRecords::add);
 
@@ -399,7 +398,7 @@ class ObservedPCSEvaluatorTest {
     public void shouldValidUserMediaErrorReports() {
 
         // Given
-        List<ReportRecord> reportRecords = new LinkedList<>();
+        List<Report> reportRecords = new LinkedList<>();
         ObservedPCSEvaluator observedPCSObserver = subject.get();
         observedPCSObserver.getUserMediaErrorReports().subscribe(reportRecords::add);
 

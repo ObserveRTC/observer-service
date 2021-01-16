@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.tasks;
+package org.observertc.webrtc.observer.common;
 
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.slf4j.Logger;

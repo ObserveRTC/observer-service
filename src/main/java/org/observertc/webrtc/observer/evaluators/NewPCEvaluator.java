@@ -22,7 +22,6 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
@@ -41,14 +40,14 @@ import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
+import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
 
 @Singleton
 public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(NewPCEvaluator.class);
 
-	private final PublishSubject<ReportRecord> reports = PublishSubject.create();
+	private final PublishSubject<Report> reports = PublishSubject.create();
 	private Disposable subscription;
 
 	private final FlawMonitor flawMonitor;
@@ -93,7 +92,7 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 		logger.info("onComplete event is called");
 	}
 	
-	public Observable<ReportRecord> getReports() {
+	public Observable<Report> getReports() {
 		return this.reports;
 	}
 
@@ -298,11 +297,10 @@ public class NewPCEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 	private void send(UUID sendKey, Report report) {
-		ReportRecord reportRecord = ReportRecord.of(sendKey, report);
 		try {
-			this.reports.onNext(reportRecord);
+			this.reports.onNext(report);
 		} catch (Exception ex) {
-			logger.error("error", ex);
+			logger.error("Unexpected error occrred", ex);
 		}
 	}
 }

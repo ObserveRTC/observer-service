@@ -4,31 +4,33 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.rxjava3.core.ObservableOperator;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import org.observertc.webrtc.observer.ReportSink;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.Connectors;
+import org.observertc.webrtc.observer.connector.Connector;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Singleton
 public class Pipeline {
-
+    public static final int REPORT_VERSION_NUMBER = 1;
     private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
-    private boolean run = false;
+    private final Subject<Report> reports = PublishSubject.create();
 
     @Inject
     PCObserver pcObserver;
 
     @Inject
     ObservedPCSEvaluator observedPCSEvaluator;
-
-    @Inject
-    ReportSink reportSink;
 
     @Inject
     ActivePCsEvaluator activePCsEvaluator;
@@ -44,6 +46,9 @@ public class Pipeline {
 
     @Inject
     ICEConnectionsEvaluator iceConnectionsEvaluator;
+
+    @Inject
+    Connectors connectors;
 
     public void input(ObservedPCS observedPCS) {
         this.pcObserver.onNext(observedPCS);
@@ -64,7 +69,7 @@ public class Pipeline {
 
         // NewPCsEvaluator -> ReportSink
         this.newPCEvaluator.getReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reports);
 
 
         // PCObserver -> ExpiredPCEvaluator
@@ -79,57 +84,57 @@ public class Pipeline {
         // ExpiredPCEvaluator -> ReportSink
         this.expiredPCsEvaluator
                 .observableReports()
-                .subscribe(this.reportSink);
+                .subscribe(this.reports);
 
         // InboundRTP -> ReportSunk
         this.observedPCSEvaluator
                 .getInboundRTPReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // OutboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getOutboundRTPReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // RemoteInboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getRemoteInboundRTPReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // UserMediaError -> ReportSink
         this.observedPCSEvaluator
                 .getUserMediaErrorReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // ICELocalCandidate -> ReportSink
         this.observedPCSEvaluator
                 .getICELocalCandidateReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // ICERemoteCandidate -> ReportSink
         this.observedPCSEvaluator
                 .getICERemoteCandidateReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // ICECandidatePair -> ReportSink
         this.observedPCSEvaluator
                 .getICECandidatePairReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // Track -> ReportSink
         this.observedPCSEvaluator
                 .getTrackReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // MediaSource -> ReportSink
         this.observedPCSEvaluator
                 .getMediaSourceReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // Extension -> ReportSink
         this.observedPCSEvaluator
                 .getExtensionReports()
-                .subscribe(this.reportSink.bypassInput());
+                .subscribe(this.reports);
 
         // ICERemoteCandidate Report -> ICEConnectionObserver
         this.observedPCSEvaluator
@@ -150,13 +155,26 @@ public class Pipeline {
         this.iceConnectionObserver.getObservableNewICEConnection()
                 .subscribe(this.iceConnectionsEvaluator.getNewICEConnectionsInput());
 
-        // ICEConnectionObserver -> ICEConnectionEvaluator
+        // ICEConnectionObserver.expiredICEConnectionOutput -> ICEConnectionEvaluator
         this.iceConnectionObserver.getObservableExpiredICECandidatePairUpdates()
                 .subscribe(this.iceConnectionsEvaluator.getExpiredICECandidatePairs());
 
+        // ICEConnectionObserver.updatedICEConnectionOutput -> ICEConnectionEvaluator
         this.iceConnectionObserver.getObservableUpdatedICEConnection()
                 .subscribe(this.iceConnectionsEvaluator.getUpdatedICEConnectionsInput());
 
+        this.addConnectors();
+    }
+
+    private void addConnectors() {
+        List<Connector> builtConnectors = this.connectors.getConnectors();
+        if (builtConnectors.size() < 1) {
+            logger.warn("No Connector has been built for the observer. The generated reports will not be forwarded");
+            return;
+        }
+        for (Connector connector : builtConnectors) {
+            reports.subscribe(connector);
+        }
     }
 
     private class PCObserverICEConnectionInputAdapter implements ObservableOperator<UUID, Map<UUID, PCState>> {

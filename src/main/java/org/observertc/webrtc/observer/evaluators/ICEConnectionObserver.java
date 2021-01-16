@@ -4,7 +4,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.models.ICEConnectionEntity;
@@ -22,9 +21,9 @@ import java.util.*;
 @Singleton
 public class ICEConnectionObserver {
     private static final Logger logger = LoggerFactory.getLogger(ICEConnectionObserver.class);
-    private Subject<ReportRecord> ICECandidatePairs = PublishSubject.create();
-    private Subject<ReportRecord> ICERemoteCandidates = PublishSubject.create();
-    private Subject<ReportRecord> ICELocalCandidates = PublishSubject.create();
+    private Subject<Report> ICECandidatePairs = PublishSubject.create();
+    private Subject<Report> ICERemoteCandidates = PublishSubject.create();
+    private Subject<Report> ICELocalCandidates = PublishSubject.create();
     private Subject<ICECandidatePairUpdate> expiredICECandidatePairs = PublishSubject.create();
 
     private Subject<ICEConnectionEntity> newICEConnections = PublishSubject.create();
@@ -35,15 +34,15 @@ public class ICEConnectionObserver {
     private Map<String, ICECandidatePairUpdate> candidatePairUpdates = new HashMap<>();
     private Instant lastCleaned = Instant.now();
 
-    public Observer<ReportRecord> getICECandidatePairs() {
+    public Observer<Report> getICECandidatePairs() {
         return this.ICECandidatePairs;
     }
 
-    public Observer<ReportRecord> getICELocalCandidates() {
+    public Observer<Report> getICELocalCandidates() {
         return this.ICELocalCandidates;
     }
 
-    public Observer<ReportRecord> getICERemoteCandidates() {
+    public Observer<Report> getICERemoteCandidates() {
         return this.ICERemoteCandidates;
     }
 
@@ -61,26 +60,19 @@ public class ICEConnectionObserver {
     public ICEConnectionObserver() {
         this.ICECandidatePairs
                 .filter(this::reportFilter)
-                .map(reportRecord -> reportRecord.value)
                 .filter(report -> report.getType().equals(ReportType.ICE_CANDIDATE_PAIR))
                 .subscribe(this::evaluateCandidatePairReport);
         this.ICERemoteCandidates
                 .filter(this::reportFilter)
-                .map(reportRecord -> reportRecord.value)
                 .filter(report -> report.getType().equals(ReportType.ICE_REMOTE_CANDIDATE))
                 .subscribe(this::evaluateICERemoteCandidateReport);
         this.ICELocalCandidates
                 .filter(this::reportFilter)
-                .map(reportRecord -> reportRecord.value)
                 .filter(report -> report.getType().equals(ReportType.ICE_LOCAL_CANDIDATE))
                 .subscribe(this::evaluateICELocalCandidateReport);
     }
 
-    private boolean reportFilter (ReportRecord reportRecord) {
-        if (Objects.isNull(reportRecord)) {
-            return false;
-        }
-        Report report = reportRecord.value;
+    private boolean reportFilter (Report report) {
         if (Objects.isNull(report)) {
             return false;
         }

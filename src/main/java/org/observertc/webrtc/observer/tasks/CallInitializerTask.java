@@ -17,14 +17,13 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Maybe;
+import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Provider;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;

@@ -39,6 +39,18 @@ kafka:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
 observer:
+  connectors:
+    - name: "ReportSinkLogger"
+      transformations:
+        - type: Filter
+          config:
+            serviceUUIDs:
+              including:
+                - "86ed98c6-b001-48bb-b31e-da638b979c72"
+      sink:
+        type: LoggerSink
+        config:
+          printReports: False
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
   evaluators:
@@ -59,3 +71,4 @@ observer:
     reportLocalCandidates: True
     reportRemoteCandidates: True
     reportUserMediaErrors: True
+
