@@ -55,6 +55,12 @@ public class TasksProvider {
 	@Inject
 	Provider<ICEConnectionUpdaterTask> iceConnectionUpdaterTaskProvider;
 
+	@Inject
+	Provider<UserMediaErrorsUpdaterTask> userMediaErrorsUpdaterTaskProvider;
+
+	@Inject
+	Provider<UserMediaErrorsExtractorTask> userMediaErrorsExtractorTaskProvider;
+
 	public TasksProvider() {
 
 	}
@@ -101,5 +107,13 @@ public class TasksProvider {
 
 	public CallStatsMakerTask getCallStatsMakerTask() {
 		return this.callStatsMakerTaskProvider.get();
+	}
+
+	public UserMediaErrorsUpdaterTask getUserMediaErrorUpdaterTask() {
+		return this.userMediaErrorsUpdaterTaskProvider.get();
+	}
+
+	public UserMediaErrorsExtractorTask getUserMediaErrorExtractorTask() {
+		return this.userMediaErrorsExtractorTaskProvider.get();
 	}
 }

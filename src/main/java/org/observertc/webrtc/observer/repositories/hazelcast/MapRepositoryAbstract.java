@@ -30,7 +30,9 @@ public class MapRepositoryAbstract<K, V> implements Repository<K, V> {
 
 	public MapRepositoryAbstract(ObserverHazelcast observerHazelcast, String name) {
 		this.observerHazelcast = observerHazelcast;
-		this.entities = observerHazelcast.getInstance().getMap(name);
+		this.entities = observerHazelcast
+				.getInstance()
+				.getMap(name);
 
 	}
 

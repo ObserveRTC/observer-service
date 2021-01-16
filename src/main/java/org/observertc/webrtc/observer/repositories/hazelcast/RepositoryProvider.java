@@ -55,6 +55,9 @@ public class RepositoryProvider {
 	@Inject
 	Provider<PeerConnectionICEConnectionsRepository> peerConnectionICEConnectionsRepositoryProvider;
 
+	@Inject
+	Provider<UserMediaErrorsRepository> userMediaErrorsRepositoryProvider;
+
 	@PostConstruct
 	void setup() {
 
@@ -94,5 +97,9 @@ public class RepositoryProvider {
 
 	public MediaUnitPeerConnectionsRepository getMediaUnitPeerConnectionsRepository() {
 		return this.mediaUnitPeerConnectionsRepositoryProvider.get();
+	}
+
+	public UserMediaErrorsRepository getUserMediaErrorsRepository() {
+		return this.userMediaErrorsRepositoryProvider.get();
 	}
 }

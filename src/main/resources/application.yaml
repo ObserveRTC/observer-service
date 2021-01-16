@@ -39,6 +39,8 @@ kafka:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
 observer:
+  userMediaErrorsMonitor:
+    periodInS: 300
   connectors:
     - name: "ReportSinkLogger"
       transformations:

@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.dekorate.deps.openshift.api.model.User;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.rxjava3.core.ObservableOperator;
 import io.reactivex.rxjava3.core.Observer;
@@ -9,6 +10,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
 import org.observertc.webrtc.observer.connector.Connector;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.observertc.webrtc.observer.tasks.UserMediaErrorsUpdaterTask;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,9 @@ public class Pipeline {
 
     @Inject
     ICEConnectionsEvaluator iceConnectionsEvaluator;
+
+    @Inject
+    UserMediaReportsEvaluator userMediaReportsEvaluator;
 
     @Inject
     Connectors connectors;
@@ -109,6 +114,11 @@ public class Pipeline {
         this.observedPCSEvaluator
                 .getUserMediaErrorReports()
                 .subscribe(this.reports);
+
+        // UserMediaError -> UserMediaReportEvalautor
+        this.observedPCSEvaluator
+                .getUserMediaErrorReports()
+                .subscribe(this.userMediaReportsEvaluator.getInput());
 
         // ICELocalCandidate -> ReportSink
         this.observedPCSEvaluator

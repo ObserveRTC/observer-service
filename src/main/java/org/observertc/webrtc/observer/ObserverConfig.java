@@ -36,6 +36,13 @@ public class ObserverConfig {
 
 	public PCObserverConfig pcObserver;
 
+	public UserMeidaErrorsMonitorConfig userMediaErrorsMonitor;
+
+	@ConfigurationProperties("userMediaErrorsMonitor")
+	public static class UserMeidaErrorsMonitorConfig {
+		public int periodInS = 300;
+	}
+
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
