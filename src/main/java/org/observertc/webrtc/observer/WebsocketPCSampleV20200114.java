@@ -152,7 +152,7 @@ public class WebsocketPCSampleV20200114 {
 						null,
 						timestamp
 				);
-				this.pipeline.input(observedPCS);
+				this.pipeline.inputUserMediaError(observedPCS);
 				return;
 			}
 			this.flawMonitor.makeLogEntry()

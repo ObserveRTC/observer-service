@@ -55,6 +55,10 @@ public class Pipeline {
         this.observedPCSEvaluator.onNext(observedPCS);
     }
 
+    public void inputUserMediaError(ObservedPCS observedPCS) {
+        this.observedPCSEvaluator.onNext(observedPCS);
+    }
+
     @PostConstruct
     void setup() {
 
