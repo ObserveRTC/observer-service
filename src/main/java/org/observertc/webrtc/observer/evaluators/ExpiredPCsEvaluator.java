@@ -21,7 +21,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
@@ -43,13 +42,13 @@ import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
+import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
 
 @Singleton
 public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ExpiredPCsEvaluator.class);
-	private final PublishSubject<ReportRecord> reports = PublishSubject.create();
+	private final PublishSubject<Report> reports = PublishSubject.create();
 
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
@@ -63,7 +62,7 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 
-	public Observable<ReportRecord> observableReports() {
+	public Observable<Report> observableReports() {
 		return this.reports;
 	}
 
@@ -135,7 +134,7 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 				.setTimestamp(pcState.updated)
 				.setPayload(payload)
 				.build();
-		this.send(entity.peerConnectionUUID, report);
+		this.reports.onNext(report);
 
 		PeerConnectionsFinderTask peerConnectionsFinderTask = this.tasksProvider.providePeerConnectionFinderTask()
 			.forCallUUIDs(Set.of(entity.callUUID));
@@ -185,12 +184,7 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 				.setPayload(payload)
 				.build();
 		logger.info("Call UUID {} is not found. Already unregistered?", callUUID);
-		this.send(callEntity.serviceUUID, report);
-	}
-
-	private void send(UUID sendKey, Report report) {
-		ReportRecord reportRecord = ReportRecord.of(sendKey, report);
-		this.reports.onNext(reportRecord);
+		this.reports.onNext(report);
 	}
 
 }

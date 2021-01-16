@@ -7,7 +7,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.ReportRecord;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
@@ -21,28 +20,27 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
-import static org.observertc.webrtc.observer.ReportSink.REPORT_VERSION_NUMBER;
+import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
 
 @Singleton
 public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     private static final Logger logger = LoggerFactory.getLogger(ObservedPCSEvaluator.class);
 
-    private final Subject<ReportRecord> ICELocalCandidateReports = PublishSubject.create();
-    private final Subject<ReportRecord> ICERemoteCandidateReports = PublishSubject.create();
-    private final Subject<ReportRecord> ICECandidatePairReports = PublishSubject.create();
-    private final Subject<ReportRecord> outboundRTPReports = PublishSubject.create();
-    private final Subject<ReportRecord> inboundRTPReports = PublishSubject.create();
-    private final Subject<ReportRecord> remoteInboundRTPReports = PublishSubject.create();
-    private final Subject<ReportRecord> userMediaErrorReports = PublishSubject.create();
-    private final Subject<ReportRecord> mediaSourceReports = PublishSubject.create();
-    private final Subject<ReportRecord> trackReports = PublishSubject.create();
-    private final Subject<ReportRecord> extensionReports = PublishSubject.create();
+    private final Subject<Report> ICELocalCandidateReports = PublishSubject.create();
+    private final Subject<Report> ICERemoteCandidateReports = PublishSubject.create();
+    private final Subject<Report> ICECandidatePairReports = PublishSubject.create();
+    private final Subject<Report> outboundRTPReports = PublishSubject.create();
+    private final Subject<Report> inboundRTPReports = PublishSubject.create();
+    private final Subject<Report> remoteInboundRTPReports = PublishSubject.create();
+    private final Subject<Report> userMediaErrorReports = PublishSubject.create();
+    private final Subject<Report> mediaSourceReports = PublishSubject.create();
+    private final Subject<Report> trackReports = PublishSubject.create();
+    private final Subject<Report> extensionReports = PublishSubject.create();
     private AtomicReference<Disposable> disposable = new AtomicReference<>(null);
     private PeerConnectionSampleVisitor<ObservedPCS> processor;
 
@@ -66,43 +64,43 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     }
 
-    public Observable<ReportRecord> getICELocalCandidateReports() {
+    public Observable<Report> getICELocalCandidateReports() {
         return this.ICELocalCandidateReports;
     }
 
-    public Observable<ReportRecord> getICERemoteCandidateReports() {
+    public Observable<Report> getICERemoteCandidateReports() {
         return this.ICERemoteCandidateReports;
     }
 
-    public Observable<ReportRecord> getICECandidatePairReports() {
+    public Observable<Report> getICECandidatePairReports() {
         return this.ICECandidatePairReports;
     }
 
-    public Observable<ReportRecord> getInboundRTPReports() {
+    public Observable<Report> getInboundRTPReports() {
         return this.inboundRTPReports;
     }
 
-    public Observable<ReportRecord> getOutboundRTPReports() {
+    public Observable<Report> getOutboundRTPReports() {
         return this.outboundRTPReports;
     }
 
-    public Observable<ReportRecord> getRemoteInboundRTPReports() {
+    public Observable<Report> getRemoteInboundRTPReports() {
         return this.remoteInboundRTPReports;
     }
 
-    public Observable<ReportRecord> getMediaSourceReports() {
+    public Observable<Report> getMediaSourceReports() {
         return this.mediaSourceReports;
     }
 
-    public Observable<ReportRecord> getTrackReports() {
+    public Observable<Report> getTrackReports() {
         return this.trackReports;
     }
 
-    public Observable<ReportRecord> getUserMediaErrorReports() {
+    public Observable<Report> getUserMediaErrorReports() {
         return this.userMediaErrorReports;
     }
 
-    public Observable<ReportRecord> getExtensionReports() {
+    public Observable<Report> getExtensionReports() {
         return this.extensionReports;
     }
 
@@ -211,7 +209,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setExtensionType(subject.extensionType)
                     .setPayload(subject.payload)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.EXTENSION, extensionReport);
+            Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.EXTENSION, extensionReport);
             this.extensionReports.onNext(reportRecord);
         };
     }
@@ -233,7 +231,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
                     .setMessage(subject.message)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.USER_MEDIA_ERROR, mediaSource);
+            Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.USER_MEDIA_ERROR, mediaSource);
             this.userMediaErrorReports.onNext(reportRecord);
         };
     }
@@ -265,7 +263,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setTrackId(subject.trackId)
                     .setWidth(subject.width)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.MEDIA_SOURCE, mediaSource);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.MEDIA_SOURCE, mediaSource);
             this.mediaSourceReports.onNext(reportRecord);
         };
     }
@@ -306,7 +304,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setSilentConcealedSamples(subject.silentConcealedSamples)
                     .setTotalSamplesReceived(subject.totalSamplesReceived)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.TRACK, track);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.TRACK, track);
             this.trackReports.onNext(reportRecord);
         };
     }
@@ -344,7 +342,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setTransportID(subject.transportId)
                     .setWritable(subject.writable)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.ICE_CANDIDATE_PAIR, candidatePair);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.ICE_CANDIDATE_PAIR, candidatePair);
             this.ICECandidatePairReports.onNext(reportRecord);
         };
     }
@@ -376,7 +374,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setProtocol(enumConverter.toInternetProtocol(subject.protocol))
                     .setTransportID(subject.transportId)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.ICE_LOCAL_CANDIDATE, localCandidate);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.ICE_LOCAL_CANDIDATE, localCandidate);
             this.ICELocalCandidateReports.onNext(reportRecord);
         };
     }
@@ -406,7 +404,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setProtocol(enumConverter.toInternetProtocol(subject.protocol))
                     .setTransportID(subject.transportId)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.ICE_REMOTE_CANDIDATE, remoteCandidate);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.ICE_REMOTE_CANDIDATE, remoteCandidate);
             this.ICERemoteCandidateReports.onNext(reportRecord);
         };
     }
@@ -435,7 +433,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setRoundTripTime(subject.roundTripTime)
                     .setTransportID(subject.transportId)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.REMOTE_INBOUND_RTP, remoteInboundRTP);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.REMOTE_INBOUND_RTP, remoteInboundRTP);
             this.remoteInboundRTPReports.onNext(reportRecord);
         };
     }
@@ -482,7 +480,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setTrackId(subject.trackId)
                     .setTransportId(subject.transportId)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.INBOUND_RTP, inboundRTP);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.INBOUND_RTP, inboundRTP);
             this.inboundRTPReports.onNext(reportRecord);
         };
     }
@@ -529,27 +527,24 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setTrackID(subject.trackId)
                     .setTransportID(subject.transportId)
                     .build();
-            ReportRecord reportRecord = makeReportRecord(observedPCS, ReportType.OUTBOUND_RTP, outboundRTP);
+            Report reportRecord = makeReportRecord(observedPCS, ReportType.OUTBOUND_RTP, outboundRTP);
             this.outboundRTPReports.onNext(reportRecord);
         };
     }
 
-    private ReportRecord makeReportRecord(ObservedPCS observedPCS, ReportType reportType, Object payload) {
+    private Report makeReportRecord(ObservedPCS observedPCS, ReportType reportType, Object payload) {
         return this.makeReportRecord(observedPCS, observedPCS.peerConnectionUUID, reportType, payload);
     }
 
-    private ReportRecord makeReportRecord(ObservedPCS observedPCS, UUID kafkaKey, ReportType reportType, Object payload) {
-        return ReportRecord.of(
-                kafkaKey,
-                Report.newBuilder()
-                        .setVersion(REPORT_VERSION_NUMBER)
-                        .setServiceUUID(observedPCS.serviceUUID.toString())
-                        .setServiceName(observedPCS.serviceName)
-                        .setType(reportType)
-                        .setMarker(observedPCS.marker)
-                        .setTimestamp(observedPCS.timestamp)
-                        .setPayload(payload)
-                .build()
-        );
+    private Report makeReportRecord(ObservedPCS observedPCS, UUID kafkaKey, ReportType reportType, Object payload) {
+        return Report.newBuilder()
+                .setVersion(REPORT_VERSION_NUMBER)
+                .setServiceUUID(observedPCS.serviceUUID.toString())
+                .setServiceName(observedPCS.serviceName)
+                .setType(reportType)
+                .setMarker(observedPCS.marker)
+                .setTimestamp(observedPCS.timestamp)
+                .setPayload(payload)
+                .build();
     }
 }

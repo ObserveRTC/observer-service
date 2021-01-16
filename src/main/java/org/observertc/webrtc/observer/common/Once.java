@@ -22,7 +22,8 @@ public final class Once<T> {
 	public void set(final T value) {
 		if (null != this.value)
 			throw new IllegalStateException("Illegal attempt to set a Once value after it's value has already been set.");
-		if (null == value) throw new IllegalArgumentException("Illegal attempt to pass null value to Once setter.");
+		if (null == value)
+			throw new IllegalArgumentException("Illegal attempt to pass null value to Once setter.");
 		this.value = value;
 	}
 

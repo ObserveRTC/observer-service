@@ -62,7 +62,7 @@ public class PCObserver implements Observer<ObservedPCS> {
 	private final ObserverConfig.PCObserverConfig config;
 
 	public PCObserver(
-			@Named(TaskExecutors.MESSAGE_CONSUMER) ExecutorService executorService,
+			@Named(TaskExecutors.IO) ExecutorService executorService,
 			MonitorProvider monitorProvider,
 			ObserverConfig.PCObserverConfig config
 	) {

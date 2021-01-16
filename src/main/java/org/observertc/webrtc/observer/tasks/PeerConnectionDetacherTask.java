@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.hazelcast.MediaUnitPeerConnectionsRepository;

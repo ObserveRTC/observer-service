@@ -7,7 +7,6 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.health.HeartbeatEvent;
-import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.monitorstats.CallStats;
 import org.observertc.webrtc.observer.tasks.CallStatsMakerTask;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
