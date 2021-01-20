@@ -67,6 +67,7 @@ public class Application {
         ObserverHazelcast observerHazelcast = context.getBean(ObserverHazelcast.class);
         logger.info("Hazelcast configuration: {}", observerHazelcast.toString());
         deployCheck(observerHazelcast);
+        logger.info("ServicesRepository config");
         context.getBean(ServicesRepository.class);
         loadConnectorConfigFiles();
     }

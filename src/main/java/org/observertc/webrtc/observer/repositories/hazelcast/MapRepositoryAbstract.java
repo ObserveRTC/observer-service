@@ -91,6 +91,15 @@ public class MapRepositoryAbstract<K, V> implements Repository<K, V> {
 	}
 
 	@Override
+	public Set<K> getLocalKeySet() {
+		Set<K> keys = this.entities.localKeySet();
+		if (Objects.isNull(keys)) {
+			return Collections.EMPTY_SET;
+		}
+		return keys;
+	}
+
+	@Override
 	public <S extends K> boolean exists(@NotNull S key) {
 		return this.entities.containsKey(key);
 	}

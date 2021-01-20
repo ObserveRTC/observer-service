@@ -7,7 +7,9 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.connector.Connector;
+import org.observertc.webrtc.observer.monitors.CounterMonitorProvider;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Singleton
@@ -49,6 +52,12 @@ public class Pipeline {
 
     @Inject
     Connectors connectors;
+
+    @Inject
+    CounterMonitorProvider counterMonitorProvider;
+
+    @Inject
+    ObserverConfig.EvaluatorsConfig evaluatorsConfig;
 
     public void input(ObservedPCS observedPCS) {
         this.pcObserver.onNext(observedPCS);
@@ -167,8 +176,15 @@ public class Pipeline {
         this.iceConnectionObserver.getObservableUpdatedICEConnection()
                 .subscribe(this.iceConnectionsEvaluator.getUpdatedICEConnectionsInput());
 
+
+        if (Objects.nonNull(this.evaluatorsConfig.reportMonitor)) {
+            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.evaluatorsConfig.reportMonitor);
+            this.reports.lift(reportMonitor).subscribe();
+        }
+
         this.addConnectors();
     }
+
 
     private void addConnectors() {
         List<Connector> builtConnectors = this.connectors.getConnectors();

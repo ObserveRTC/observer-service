@@ -31,6 +31,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private FlawMonitor flawMonitor;
 	private Supplier<String> errorMessageSupplier = () -> "";
 	private Logger onLogger = DEFAULT_LOGGER;
+	private Logger defaultLogger = DEFAULT_LOGGER;
 	private Level onErrorLogLevel = Level.ERROR;
 	private boolean rethrowException = false;
 	private boolean succeeded = false;
@@ -80,6 +81,20 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 			this.executed = true;
 		}
 		return this;
+	}
+
+	protected Logger getLogger() {
+		if (Objects.nonNull(this.onLogger)) {
+			return this.onLogger;
+		}
+		if (Objects.nonNull(this.defaultLogger)) {
+			return this.defaultLogger;
+		}
+		return DEFAULT_LOGGER;
+	}
+
+	protected void setDefaultLogger(Logger logger) {
+		this.defaultLogger = logger;
 	}
 
 	protected abstract T perform() throws Throwable;

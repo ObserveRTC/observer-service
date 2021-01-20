@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 @Prototype
 public class ICEConnectionUpdaterTask extends TaskAbstract<Void> {
-
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(ICEConnectionUpdaterTask.class);
 	private enum State {
 		CREATED,
 		ICE_CONNECTIONS_ARE_LOADED,
@@ -46,7 +46,7 @@ public class ICEConnectionUpdaterTask extends TaskAbstract<Void> {
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(ICEConnectionUpdaterTask.class);
+
 
 	private final ICEConnectionsRepository iceConnectionsRepository;
 	private final Map<String, ICEConnectionEntity> selectedEntities = new HashMap<>();
@@ -60,19 +60,20 @@ public class ICEConnectionUpdaterTask extends TaskAbstract<Void> {
 	) {
 		super();
 		this.iceConnectionsRepository = repositoryProvider.getICEConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public ICEConnectionUpdaterTask forICEConnectionEntity(@NotNull ICEConnectionEntity entity) {
 		if (Objects.isNull(entity.pcUUID)) {
-			logger.warn("Cannot update ICEConnection if the pcUUID is null in {}", entity);
+			this.getLogger().warn("Cannot update ICEConnection if the pcUUID is null in {}", entity);
 			return this;
 		}
 		if (Objects.isNull(entity.localCandidateId)) {
-			logger.warn("Cannot update ICEConnection if the pcUUID is null in {}", entity);
+			this.getLogger().warn("Cannot update ICEConnection if the pcUUID is null in {}", entity);
 			return this;
 		}
 		if (Objects.isNull(entity.remoteCandidateId)) {
-			logger.warn("Cannot update ICEConnection if the pcUUID is null in {}", entity);
+			this.getLogger().warn("Cannot update ICEConnection if the pcUUID is null in {}", entity);
 			return this;
 		}
 		String key = ICEConnectionsRepository.getKey(entity.pcUUID, entity.localCandidateId, entity.remoteCandidateId);
@@ -146,6 +147,16 @@ public class ICEConnectionUpdaterTask extends TaskAbstract<Void> {
 			String key = entry.getKey();
 			ICEConnectionEntity loadedEntity = this.loadedEntities.get(key);
 			ICEConnectionEntity updatedEntity = entry.getValue();
+			if (Objects.isNull(updatedEntity)) {
+				this.getLogger().warn("Cannot update {} entity for key {}, because the update is null", ICEConnectionEntity.class.getSimpleName(), key);
+				continue;
+			}
+			if (Objects.isNull(loadedEntity)) {
+				this.getLogger().warn("Loaded {} entity for key {} is null, but the update is not, hence the update will be used.",
+						ICEConnectionEntity.class.getSimpleName(), key);
+				this.updatedEntities.put(key, updatedEntity);
+				continue;
+			}
 			ICEConnectionEntity newEntity = ICEConnectionEntity.from(loadedEntity);
 			boolean modified = false;
 			if (this.nonNullAndDifferent(loadedEntity.mediaUnitId, updatedEntity.mediaUnitId)) {

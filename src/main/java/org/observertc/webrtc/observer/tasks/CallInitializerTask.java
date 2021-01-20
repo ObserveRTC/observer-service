@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 
 @Prototype
 public class CallInitializerTask extends TaskAbstract<UUID> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(CallInitializerTask.class);
+	private static final String LOCK_NAME = CallInitializerTask.class.getSimpleName() + "-lock";
 	private enum State {
 		CREATED,
 		CALL_ENTITY_IS_REGISTERED,
@@ -41,8 +43,8 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(CallInitializerTask.class);
-	private static final String LOCK_NAME = CallInitializerTask.class.getCanonicalName() + "-lock";
+
+
 
 	private final CallEntitiesRepository callEntitiesRepository;
 	private final SynchronizationSourcesRepository SSRCRepository;
@@ -68,6 +70,7 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 		this.callEntitiesRepository = repositoryProvider.getCallEntitiesRepository();
 		this.SSRCRepository = repositoryProvider.getSSRCRepository();
 		this.callNamesRepository = repositoryProvider.getCallNamesRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public CallInitializerTask forCallEntity(CallEntity callEntity) {
@@ -84,7 +87,7 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 	@Override
 	protected UUID perform() throws Throwable {
 //		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
-		try (var lock = this.lockProvider.autoLock(this.getClass().getSimpleName())) {
+		try (var lock = this.lockProvider.autoLock(LOCK_NAME)) {
 			Set<UUID> callUUIDs = this.callFinderTask.forSSRCs(this.SSRCs)
 					.forServiceUUID(this.callEntity.serviceUUID)
 					.forCallName(this.callEntity.callName)
@@ -148,7 +151,7 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 					return;
 			}
 		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+			this.getLogger().error("During rollback an error is occured", another);
 		}
 
 	}

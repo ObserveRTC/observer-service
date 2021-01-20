@@ -7,6 +7,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.health.HeartbeatEvent;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.monitorstats.CallStats;
 import org.observertc.webrtc.observer.tasks.CallStatsMakerTask;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
@@ -36,12 +37,17 @@ public class CallsMonitor implements ApplicationEventListener<HeartbeatEvent> {
     private static final Logger logger = LoggerFactory.getLogger(CallsMonitor.class);
 
     @Inject
+    ObserverConfig.MonitorsConfig.CallsMonitorConfig config;
+
+    @Inject
     MeterRegistry meterRegistry;
 
     @Inject
     TasksProvider tasksProvider;
 
     private Instant lastExecuted = Instant.now();
+    private boolean enabled = true;
+    private int consecutiveErrors = 0;
 
     public CallsMonitor() {
 
@@ -49,15 +55,29 @@ public class CallsMonitor implements ApplicationEventListener<HeartbeatEvent> {
 
     @Override
     public void onApplicationEvent(HeartbeatEvent event) {
-        if (Duration.between(this.lastExecuted, Instant.now()).getSeconds() < 60) {
+        if (!this.config.enabled || !this.enabled) {
             return;
         }
+        if (Duration.between(this.lastExecuted, Instant.now()).getSeconds() < this.config.reportPeriodInS) {
+            return;
+        }
+        logger.info("{} is started", CallsMonitor.class.getSimpleName());
         try {
             this.execute();
+            this.consecutiveErrors = 0;
         } catch (Throwable t) {
             logger.error("Unexpected error occurred during execution", t);
+            ++this.consecutiveErrors;
+        }
+        if (3 < this.consecutiveErrors) {
+            logger.warn("Unexpected error occurred for monitor {} for {} times. The module will be shut down",
+                    this.getClass().getSimpleName(),
+                    this.consecutiveErrors
+                    );
+            this.enabled = false;
         }
         this.lastExecuted = Instant.now();
+        logger.info("{} is ended", CallsMonitor.class.getSimpleName());
     }
 
     @Timed(

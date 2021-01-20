@@ -18,7 +18,6 @@ package org.observertc.webrtc.observer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import io.micrometer.core.annotation.Counted;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.websocket.WebSocketSession;
@@ -29,6 +28,7 @@ import io.micronaut.websocket.annotation.ServerWebSocket;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
+import org.observertc.webrtc.observer.monitors.CountInvocations;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
@@ -71,20 +71,14 @@ public class WebsocketPCSampleV20200114 {
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
 	}
 
-	@Counted(
-			value = "observer_pcsample_opened_websocket",
-			description = "Counter to track the number of opened websocket for pcsamples per instance"
-	)
 	@OnOpen
+	@CountInvocations(value = "pcsamples_opened_websocket")
 	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
 
 	}
 
-	@Counted(
-			value = "observer_pcsample_closed_websocket",
-			description = "Counter to track the number of closed websocket for pcsamples per instance"
-	)
 	@OnClose
+	@CountInvocations(value = "pcsamples_closed_websocket")
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
@@ -92,6 +86,7 @@ public class WebsocketPCSampleV20200114 {
 	}
 
 	//	@OnMessage(maxPayloadLength = 1000000) // 1MB
+	@CountInvocations(value = "pcsamples_received_samples")
 	@OnMessage
 	public void onMessage(
 			String serviceUUIDStr,

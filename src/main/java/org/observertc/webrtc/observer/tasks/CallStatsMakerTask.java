@@ -1,6 +1,7 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.ICEConnectionEntity;
@@ -102,19 +103,27 @@ public class CallStatsMakerTask extends TaskAbstract<CallStats> {
 
         this.locallyStoredCalls = this.callEntitiesRepository.getLocalEntries();
         Set<UUID> callUUIDs = this.locallyStoredCalls.keySet();
-        this.locallyStoredCallsPcKeys = this.callPeerConnectionsRepository.findAll(locallyStoredCalls.keySet());
+//        this.getLogger().info("callUUIDs: {}", ObjectToString.toString(callUUIDs));
+        this.locallyStoredCallsPcKeys = this.callPeerConnectionsRepository.findAll(callUUIDs);
+//        this.getLogger().info("locallyStoredCallsPcKeys: {}", ObjectToString.toString(this.locallyStoredCallsPcKeys));
         Set<UUID> pcUUIDs = locallyStoredCallsPcKeys.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
+//        this.getLogger().info("pcUUIDs: {}", ObjectToString.toString(pcUUIDs));
+
         this.peerConnections = this.peerConnectionsRepository.findAll(pcUUIDs);
+//        this.getLogger().info("peerConnections: {}", ObjectToString.toString(this.peerConnections));
         this.peerIceConnectionKeys = this.peerConnectionICEConnectionsRepository.findAll(pcUUIDs);
+//        this.getLogger().info("peerIceConnectionKeys: {}", ObjectToString.toString(this.peerIceConnectionKeys));
         Set<String> iceKeys = peerIceConnectionKeys.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
+//        this.getLogger().info("iceKeys: {}", ObjectToString.toString(iceKeys));
         this.iceConnections = this.iceConnectionsRepository.findAll(iceKeys);
+//        this.getLogger().info("iceConnections: {}", ObjectToString.toString(this.iceConnections));
         this.callStreamsNum = this.callSynchronizationSourcesRepository.findAll(callUUIDs)
                 .entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> e.getValue().size()
                 ));
-
+//        this.getLogger().info("callStreamsNum: {}", ObjectToString.toString(this.callStreamsNum));
     }
 
     private List<ICEConnectionEntity> getICEConnections(UUID pcUUID) {

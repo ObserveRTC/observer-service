@@ -39,6 +39,7 @@ import java.util.UUID;
  */
 @Prototype
 public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntity> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionDetacherTask.class);
 	private enum State {
 		CREATED,
 		PC_IS_UNREGISTERED,
@@ -48,9 +49,6 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionDetacherTask.class);
-
-	private final ObserverHazelcast observerHazelcast;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
@@ -58,14 +56,13 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 	private UUID pcUUID;
 	private PeerConnectionEntity removedPCEntity;
 
-	public PeerConnectionDetacherTask(ObserverHazelcast observerHazelcast,
-									  RepositoryProvider repositoryProvider
+	public PeerConnectionDetacherTask(RepositoryProvider repositoryProvider
 	) {
 		super();
-		this.observerHazelcast = observerHazelcast;
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
 		this.mediaUnitPeerConnectionsRepository = repositoryProvider.getMediaUnitPeerConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public PeerConnectionDetacherTask forPeerConnectionUUID(@NotNull UUID pcUUID) {
@@ -123,7 +120,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		try {
 			this.mediaUnitPeerConnectionsRepository.add(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
 		} catch (Exception ex2) {
-			logger.error("During rollback the following error occured", ex2);
+			this.getLogger().error("During rollback the following error occured", ex2);
 		}
 	}
 
@@ -135,7 +132,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		try {
 			this.callPeerConnectionsRepository.add(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
 		} catch (Exception ex2) {
-			logger.error("During rollback the following error occured", ex2);
+			this.getLogger().error("During rollback the following error occured", ex2);
 		}
 	}
 
@@ -143,7 +140,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		try {
 			this.peerConnectionsRepository.save(this.removedPCEntity.peerConnectionUUID, this.removedPCEntity);
 		} catch (Exception ex) {
-			logger.error("During rollback the following error occured", ex);
+			this.getLogger().error("During rollback the following error occured", ex);
 		}
 	}
 

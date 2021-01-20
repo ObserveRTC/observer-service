@@ -167,8 +167,23 @@ public interface Repository<K, V> {
 	 * The RXJava version to get all local entries
 	 * @return
 	 */
-	default Observable<Map.Entry<K, V>> rxGetAllLocalEntries() {
+	default Observable<Map.Entry<K, V>> rxGetLocalEntries() {
 		return Observable.fromIterable(this.getLocalEntries().entrySet());
+	}
+
+	/**
+	 * Gets all keys stored in the local endpoint
+	 *
+	 * @return
+	 */
+	Set<K> getLocalKeySet();
+
+	/**
+	 * The RXJava version to get all local keyset
+	 * @return
+	 */
+	default Observable<K> rxGetLocalKeySet() {
+		return Observable.fromIterable(this.getLocalKeySet());
 	}
 
 	/**
