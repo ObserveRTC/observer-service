@@ -16,14 +16,16 @@
 
 package org.observertc.webrtc.observer.repositories;
 
+import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import javax.inject.Singleton;
-import org.observertc.webrtc.observer.ObserverConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class ServicesRepository {
@@ -34,6 +36,8 @@ public class ServicesRepository {
 
 	public ServicesRepository(ObserverConfig config) {
 		this.defaultServiceName = config.outboundReports.defaultServiceName;
+		logger.info("Default service name is {}", this.defaultServiceName);
+		logger.info("ServiceMappings config {}", ObjectToString.toString(config.serviceMappings));
 		if (Objects.nonNull(config.serviceMappings)) {
 			config.serviceMappings.stream().forEach(serviceMappingConfiguration -> {
 				serviceMappingConfiguration.uuids.stream().forEach(

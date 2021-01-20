@@ -115,6 +115,15 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 		}
 
 		PeerConnectionEntity entity = task.getResult();
+		if (Objects.isNull(entity)) {
+			this.flawMonitor.makeLogEntry()
+					.withLogLevel(Level.WARN)
+					.withMessage("Entity for PCState is null. {} report will not send. PCState: {}", ReportType.DETACHED_PEER_CONNECTION, pcState)
+					.withLogger(logger)
+					.complete();
+			return;
+		}
+
 		Object payload = DetachedPeerConnection.newBuilder()
 				.setMediaUnitId(entity.mediaUnitId)
 				.setCallName(entity.callName)

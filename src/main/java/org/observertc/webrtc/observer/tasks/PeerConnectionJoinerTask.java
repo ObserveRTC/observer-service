@@ -36,6 +36,7 @@ import java.util.Objects;
  */
 @Prototype
 public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionJoinerTask.class);
 	private enum State {
 		CREATED,
 		PC_IS_REGISTERED,
@@ -44,8 +45,6 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		EXECUTED,
 		ROLLEDBACK,
 	}
-
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionJoinerTask.class);
 
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
@@ -61,6 +60,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
 		this.mediaUnitPeerConnectionsRepository = repositoryProvider.getMediaUnitPeerConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public PeerConnectionJoinerTask forEntity(@NotNull PeerConnectionEntity entity) {
@@ -109,7 +109,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 					return;
 			}
 		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+			this.getLogger().error("During rollback an error is occured", another);
 		}
 
 	}
@@ -122,7 +122,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		try {
 			this.mediaUnitPeerConnectionsRepository.remove(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
 		} catch (Exception ex) {
-			logger.error("During rollback the following error occured", ex);
+			this.getLogger().error("During rollback the following error occured", ex);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		try {
 			this.callPeerConnectionsRepository.remove(this.entity.callUUID, this.entity.peerConnectionUUID);
 		} catch (Exception ex2) {
-			logger.error("During rollback the following error occured", ex2);
+			this.getLogger().error("During rollback the following error occured", ex2);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		try {
 			this.peerConnectionsRepository.rxDelete(this.entity.peerConnectionUUID);
 		} catch (Exception ex) {
-			logger.error("During rollback the following error occured", ex);
+			this.getLogger().error("During rollback the following error occured", ex);
 		}
 	}
 

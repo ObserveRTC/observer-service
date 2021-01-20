@@ -16,12 +16,9 @@
 
 package org.observertc.webrtc.observer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
-import io.micronaut.context.annotation.Parameter;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.monitors.ReportMonitorConfig;
 
 import java.util.*;
 
@@ -34,11 +31,41 @@ public class ObserverConfig {
 
 	public OutboundReportsConfig outboundReports;
 
-	public PCObserverConfig pcObserver;
+
+	public MonitorsConfig monitors;
+
+	public EvaluatorsConfig evaluators;
+
+	@ConfigurationProperties("evaluators")
+	public static class EvaluatorsConfig {
+
+		public Map<String, Object> reportMonitor;
+
+		public PCObserverConfig pcObserver;
+
+		@ConfigurationProperties("pcObserver")
+		public static class PCObserverConfig {
+			public int peerConnectionMaxIdleTimeInS = 60;
+			public int mediaStreamUpdatesFlushInS = 15;
+			public int mediaStreamsBufferNums = 0; // means it will be determined automatically
+		}
+	}
 
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
+	}
+
+	@ConfigurationProperties("monitors")
+	public static class MonitorsConfig {
+
+		public CallsMonitorConfig callsMonitor;
+
+		@ConfigurationProperties("callsMonitor")
+		public static class CallsMonitorConfig {
+			public boolean enabled = false;
+			public long reportPeriodInS = 300;
+		}
 	}
 
 	@ConfigurationProperties("pcObserver")
@@ -77,21 +104,6 @@ public class ObserverConfig {
 	public static class ServiceMappingConfiguration {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
-		public String forwardTopicName = null;
-
-		public ServiceMappingConfiguration(@Parameter String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			try {
-				return new ObjectMapper().writeValueAsString(this);
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-				return super.toString();
-			}
-		}
 	}
 }
 

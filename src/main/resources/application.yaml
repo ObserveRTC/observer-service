@@ -41,26 +41,30 @@ kafka:
 observer:
   connectors:
     - name: "ReportSinkLogger"
-      transformations:
-        - type: Filter
-          config:
-            serviceUUIDs:
-              including:
-                - "86ed98c6-b001-48bb-b31e-da638b979c72"
+      buffer:
+        maxItems: 100
+        maxWaitingTimeInS: 10
       sink:
         type: LoggerSink
         config:
           printReports: False
+
+  monitors:
+    callsMonitor:
+      enabled: true
+      reportPeriodInS: 300
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
   evaluators:
+    reportMonitor:
+      enabled: true
+      tagByServiceName: true
+      tagByServiceUUID: false
+      tagByType: false
     pcObserver:
       peerConnectionMaxIdleTimeInS: 300
       mediaStreamUpdatesFlushInS: 15
       mediaStreamsBufferNums: 0
-    conurrentStreams:
-      enabled: true
-      threshold: 100
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True

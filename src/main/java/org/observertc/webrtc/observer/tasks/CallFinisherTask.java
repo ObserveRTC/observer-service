@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 
 @Prototype
 public class CallFinisherTask extends TaskAbstract<CallEntity> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(CallFinisherTask.class);
+	private static final String LOCK_NAME = CallFinisherTask.class.getCanonicalName() + "-lock";
 	private enum State {
 		CREATED,
 		CALL_ENTITY_IS_UNREGISTERED,
@@ -40,8 +42,6 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(CallFinisherTask.class);
-	private static final String LOCK_NAME = CallFinisherTask.class.getCanonicalName() + "-lock";
 
 	private final CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
 	private final CallEntitiesRepository callEntitiesRepository;
@@ -69,6 +69,7 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 		this.SSRCRepository = repositoryProvider.getSSRCRepository();
 		this.callNamesRepository = repositoryProvider.getCallNamesRepository();
 		this.callSynchronizationSourcesRepository = repositoryProvider.getCallSynchronizationSourcesRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public CallFinisherTask forCallEntity(UUID callUUID) {
@@ -79,7 +80,7 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	@Override
 	protected CallEntity perform() throws Exception {
 //		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
-		try (var lock = this.lockProvider.autoLock(this.getClass().getSimpleName())) {
+		try (var lock = this.lockProvider.autoLock(LOCK_NAME)) {
 			Collection<CallEntity> entities = this.callEntitiesRepository.find(this.callUUID);
 
 			if (entities.size() < 1) {
@@ -180,7 +181,7 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 		Map<String, SynchronizationSourceEntity> entities = this.SSRCRepository.findAll(this.unregisteredSSRCKeys);
 		this.unregisteredSSRCs = entities.values().stream().map(ssrc -> ssrc.SSRC).collect(Collectors.toSet());
 		if (unregisteredSSRCs.size() < 1) {
-			logger.warn("There was no SSRC for call {} ", this.callUUID);
+			this.getLogger().warn("There was no SSRC for call {} ", this.callUUID);
 		}
 		this.SSRCRepository.deleteAll(this.unregisteredSSRCKeys);
 	}

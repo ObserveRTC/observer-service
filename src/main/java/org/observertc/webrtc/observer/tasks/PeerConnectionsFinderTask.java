@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
  */
 @Prototype
 public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConnectionEntity>> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionsFinderTask.class);
 	private enum State {
 		CREATED,
 		CHECK_PC_ENTITIES,
@@ -44,7 +45,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsFinderTask.class);
+
 
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
@@ -60,6 +61,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 		super();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public PeerConnectionsFinderTask addPCUUIDs(@NotNull Set<UUID> keySet) {

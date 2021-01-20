@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
  */
 @Prototype
 public class ICEConnectionAdderTask extends TaskAbstract<Void> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(ICEConnectionAdderTask.class);
+
 	private enum State {
 		CREATED,
 		ICE_CONNECTION_IS_REGISTERED,
@@ -45,7 +47,7 @@ public class ICEConnectionAdderTask extends TaskAbstract<Void> {
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(ICEConnectionAdderTask.class);
+
 
 	private final ICEConnectionsRepository iceConnectionsRepository;
 	private final PeerConnectionICEConnectionsRepository peerConnectionICEConnectionsRepository;
@@ -60,6 +62,7 @@ public class ICEConnectionAdderTask extends TaskAbstract<Void> {
 		this.iceConnectionsRepository = repositoryProvider.getICEConnectionsRepository();
 		this.peerConnectionICEConnectionsRepository = repositoryProvider.getPeerConnectionICEConnectionsRepository();
 		this.entities = new LinkedList<>();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public ICEConnectionAdderTask forICEConnectionEntity(@NotNull ICEConnectionEntity entity) {
@@ -150,7 +153,7 @@ public class ICEConnectionAdderTask extends TaskAbstract<Void> {
 			).collect(Collectors.toSet());
 			this.iceConnectionsRepository.deleteAll(keySet);
 		} catch (Exception ex) {
-			logger.error("During rollback the following error occurred", ex);
+			this.getLogger().error("During rollback the following error occurred", ex);
 		}
 	}
 

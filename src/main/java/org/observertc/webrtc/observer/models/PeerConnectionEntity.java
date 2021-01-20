@@ -121,7 +121,10 @@ public class PeerConnectionEntity implements Portable {
 		this.providedUserName = reader.readUTF(PROVIDED_USER_NAME_FIELD_NAME);
 		this.browserId = reader.readUTF(BROWSERID_FIELD_NAME);
 		this.timeZone = reader.readUTF(TIMEZONE_FIELD_NAME);
-		this.joined = reader.readLong(JOINED_FIELD_NAME);
+		if (reader.hasField(JOINED_FIELD_NAME)) {
+			this.joined = reader.readLong(JOINED_FIELD_NAME);
+		}
+
 		this.marker = reader.readUTF(MARKER_FIELD_NAME);
 	}
 
