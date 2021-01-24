@@ -56,6 +56,9 @@ observer:
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
   evaluators:
+    peerConnectionMaxIdleTimeInS: 300
+    observedPCSBufferMaxTimeInS: 10
+    observedPCSBufferMaxItemNums: 10000
     reportMonitor:
       enabled: true
       tagByServiceName: true

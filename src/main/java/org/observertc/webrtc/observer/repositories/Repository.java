@@ -299,4 +299,6 @@ public interface Repository<K, V> {
 	default Observable<Map.Entry<K, V>> rxRemoveAll(@NotNull Set<K> keys) {
 		return Observable.fromIterable(this.removeAll(keys).entrySet());
 	}
+
+    void purge();
 }

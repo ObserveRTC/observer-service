@@ -20,6 +20,8 @@ import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
 
 import javax.inject.Singleton;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -29,9 +31,25 @@ import java.util.UUID;
 public class SynchronizationSourcesRepository extends MapRepositoryAbstract<String, SynchronizationSourceEntity> {
 
 	private static final String HAZELCAST_IMAP_NAME = "WebRTCObserverSynchronizationSources";
+	private static final String DELIMITER = "#!#";
 
 	public static String getKey(UUID serviceUUID, Long SSRC) {
-		return String.format("%s-%d", serviceUUID.toString(), SSRC);
+		return String.format("%s%s%d", serviceUUID.toString(), DELIMITER, SSRC);
+	}
+
+	public Map.Entry<UUID, Long> splitKey(String key) {
+		if (Objects.isNull(key)) {
+			return null;
+		}
+		String[] parts = key.split(DELIMITER);
+		UUID uuid = UUID.fromString(parts[0]);
+		Long SSRC = null;
+		try {
+			SSRC = Long.parseLong(parts[1]);
+		} catch (Throwable t) {
+
+		}
+		return Map.entry(uuid, SSRC);
 	}
 
 	public SynchronizationSourcesRepository(ObserverHazelcast observerHazelcast) {

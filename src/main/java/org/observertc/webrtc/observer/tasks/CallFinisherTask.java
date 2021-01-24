@@ -46,7 +46,7 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	private final CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
 	private final CallEntitiesRepository callEntitiesRepository;
 	private final SynchronizationSourcesRepository SSRCRepository;
-	private final CallFinderTask callFinderTask;
+	private final SSRCEntityFinderTask SSRCEntityFinderTask;
 	private final CallNamesRepository callNamesRepository;
 	private final WeakLockProvider lockProvider;
 	private final long operationTimeoutInMs = 10000;
@@ -59,12 +59,12 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 
 	public CallFinisherTask(
 			RepositoryProvider repositoryProvider,
-			CallFinderTask callFinderTask,
+			SSRCEntityFinderTask SSRCEntityFinderTask,
 			WeakLockProvider lockProvider
 	) {
 		super();
 		this.lockProvider = lockProvider;
-		this.callFinderTask = callFinderTask;
+		this.SSRCEntityFinderTask = SSRCEntityFinderTask;
 		this.callEntitiesRepository = repositoryProvider.getCallEntitiesRepository();
 		this.SSRCRepository = repositoryProvider.getSSRCRepository();
 		this.callNamesRepository = repositoryProvider.getCallNamesRepository();
@@ -81,13 +81,13 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	protected CallEntity perform() throws Exception {
 //		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
 		try (var lock = this.lockProvider.autoLock(LOCK_NAME)) {
-			Collection<CallEntity> entities = this.callEntitiesRepository.find(this.callUUID);
+			Optional<CallEntity> entityHolder = this.callEntitiesRepository.find(this.callUUID);
 
-			if (entities.size() < 1) {
+			if (!entityHolder.isPresent()) {
 				return null;
 			}
 
-			this.unregisteredCallEntity = entities.stream().findFirst().get();
+			this.unregisteredCallEntity = entityHolder.get();
 			this.doPerform();
 			return this.unregisteredCallEntity;
 		}
@@ -96,16 +96,19 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	private void doPerform() {
 		switch (this.state) {
 			case CREATED:
-				this.unregisterCallToSSRCs();
+				this.unregisteredSSRCKeys = this.callSynchronizationSourcesRepository
+						.removeAll(this.callUUID).stream().collect(Collectors.toSet());
 				this.state = State.CALL_TO_SSRCS_IS_UNREGISTERED;
 			case CALL_TO_SSRCS_IS_UNREGISTERED:
 				this.unregisterSSRCs();
 				this.state = State.SSRCS_ARE_UNREGISTERED;
 			case SSRCS_ARE_UNREGISTERED:
-				this.unregisterCallName();
+				if (Objects.nonNull(this.unregisteredCallEntity.callName)) {
+					this.callNamesRepository.remove(this.unregisteredCallEntity.callName, this.unregisteredCallEntity.callUUID);
+				}
 				this.state = State.CALL_NAME_IS_UNREGISTERED;
 			case CALL_NAME_IS_UNREGISTERED:
-				this.unregisterCallEntity();
+				this.callEntitiesRepository.delete(this.unregisteredCallEntity.callUUID);
 				this.state = State.CALL_ENTITY_IS_UNREGISTERED;
 			case CALL_ENTITY_IS_UNREGISTERED:
 				this.state = State.EXECUTED;
@@ -128,10 +131,12 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 				this.registerSSRRCs(t);
 				this.state = State.CALL_NAME_IS_UNREGISTERED;
 			case CALL_NAME_IS_UNREGISTERED:
-				this.registerCallName(t);
+				if (Objects.nonNull(this.unregisteredCallEntity.callName)) {
+					this.callNamesRepository.add(this.unregisteredCallEntity.callName, this.unregisteredCallEntity.callUUID);
+				}
 				this.state = State.CALL_ENTITY_IS_UNREGISTERED;
 			case CALL_ENTITY_IS_UNREGISTERED:
-				this.registerCallEntity(t);
+				this.callEntitiesRepository.save(this.unregisteredCallEntity.callUUID, this.unregisteredCallEntity);
 				this.state = State.ROLLEDBACK;
 			default:
 			case CREATED:
@@ -141,28 +146,6 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 
 	}
 
-	private void registerCallEntity(Throwable exceptionInExecution) {
-		this.callEntitiesRepository.add(this.unregisteredCallEntity.callUUID, this.unregisteredCallEntity);
-	}
-
-	private void unregisterCallEntity() {
-		this.callEntitiesRepository
-				.delete(this.unregisteredCallEntity.callUUID);
-	}
-
-	private void registerCallName(Throwable exceptionInExecution) {
-		if (Objects.isNull(this.unregisteredCallEntity.callName)) {
-			return;
-		}
-		this.callNamesRepository.add(this.unregisteredCallEntity.callName, this.unregisteredCallEntity.callUUID);
-	}
-
-	private void unregisterCallName() {
-		if (Objects.isNull(this.unregisteredCallEntity.callName)) {
-			return;
-		}
-		this.callNamesRepository.remove(this.unregisteredCallEntity.callName, this.unregisteredCallEntity.callUUID);
-	}
 
 	private void registerSSRRCs(Throwable exceptionInExecution) {
 		Map<String, SynchronizationSourceEntity> synchronizationSourceEntities =
@@ -199,11 +182,6 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 		if (!performed.get()) {
 			throw new RuntimeException("The operation has not been finished properly");
 		}
-	}
-
-	private void unregisterCallToSSRCs() {
-		this.unregisteredSSRCKeys = this.callSynchronizationSourcesRepository
-				.removeAll(this.callUUID).stream().collect(Collectors.toSet());
 	}
 
 	@Override

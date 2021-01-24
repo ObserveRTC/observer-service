@@ -16,17 +16,19 @@
 
 package org.observertc.webrtc.observer.models;
 
-import com.hazelcast.nio.serialization.Portable;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
-import java.io.IOException;
-import java.util.UUID;
+import com.hazelcast.nio.serialization.VersionedPortable;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 
-public class CallEntity implements Portable {
+import java.io.IOException;
+import java.util.UUID;
+
+public class CallEntity implements VersionedPortable {
 
 	public static final int CLASS_ID = 3000;
+	public static final int CLASS_VERSION = 1;
 	private static final String CALL_UUID_FIELD_NAME = "callUUID";
 	private static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
 	private static final String SERVICE_NAME_FIELD_NAME = "serviceName";
@@ -101,5 +103,10 @@ public class CallEntity implements Portable {
 	@Override
 	public String toString() {
 		return ObjectToString.toString(this);
+	}
+
+	@Override
+	public int getClassVersion() {
+		return CLASS_VERSION;
 	}
 }

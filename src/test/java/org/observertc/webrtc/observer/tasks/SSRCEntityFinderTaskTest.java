@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @MicronautTest
-class CallFinderTaskTest {
+class SSRCEntityFinderTaskTest {
 
     @Inject
     ObserverHazelcast observerHazelcast;
@@ -27,7 +27,7 @@ class CallFinderTaskTest {
     RepositoryProvider repositoryProvider;
 
     @Inject
-    Provider<CallFinderTask> subjectProvider;
+    Provider<SSRCEntityFinderTask> subjectProvider;
 
     static EasyRandom generator;
 
@@ -65,9 +65,9 @@ class CallFinderTaskTest {
         CallEntity callEntity = generator.nextObject(CallEntity.class);
         SynchronizationSourceEntity SSRCEntity = generator.nextObject(SynchronizationSourceEntity.class);
         SSRCEntity.callUUID = callEntity.callUUID;
-        this.repositoryProvider.getCallEntitiesRepository().add(callEntity.callUUID, callEntity);
+        this.repositoryProvider.getCallEntitiesRepository().save(callEntity.callUUID, callEntity);
         this.repositoryProvider.getSSRCRepository().save(SynchronizationSourcesRepository.getKey(callEntity.serviceUUID, SSRCEntity.SSRC), SSRCEntity);
-        CallFinderTask task = subjectProvider.get();
+        SSRCEntityFinderTask task = subjectProvider.get();
 
         // When
 
@@ -89,8 +89,8 @@ class CallFinderTaskTest {
         // Given
         CallEntity callEntity = generator.nextObject(CallEntity.class);
         this.repositoryProvider.getCallNamesRepository().add(callEntity.callName, callEntity.callUUID);
-        this.repositoryProvider.getCallEntitiesRepository().add(callEntity.callUUID, callEntity);
-        CallFinderTask task = subjectProvider.get();
+        this.repositoryProvider.getCallEntitiesRepository().save(callEntity.callUUID, callEntity);
+        SSRCEntityFinderTask task = subjectProvider.get();
 
         // When
 

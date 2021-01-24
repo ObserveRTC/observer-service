@@ -20,6 +20,7 @@ public class CounterMonitorProvider {
     @Inject
     Provider<CounterMonitorBuilder<Report>> counterMonitorBuilderProvider;
 
+
     public ObservableOperator<Report, Report> buildReportMonitor(String metricName, Map<String, Object> configMap) {
         ConfigConverter.forceKeysToBeCamelCase(configMap);
         ReportMonitorConfig config = ConfigConverter.convert(ReportMonitorConfig.class, configMap);

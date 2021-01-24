@@ -14,7 +14,6 @@ import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 
 @MicronautTest
@@ -29,26 +28,6 @@ class PeerConnectionJoinerTaskTest {
     Provider<PeerConnectionJoinerTask> subjectProvider;
 
     static EasyRandom generator;
-
-    @Test
-    public void t() {
-        var e = PeerConnectionEntity.of(UUID.randomUUID(),
-                "serviceName",
-                "mediaUnitId",
-                UUID.randomUUID(),
-                "callName",
-                UUID.randomUUID(),
-                "userName",
-                "browserid",
-                null,
-                null,
-                null
-        );
-        PeerConnectionsRepository repository = this.repositoryProvider.getPeerConnectionsRepository();
-        repository.save(e.peerConnectionUUID, e);
-        Map<UUID, PeerConnectionEntity> map = repository.getLocalEntries();
-
-    }
 
     @BeforeAll
     static void setup() {
@@ -68,7 +47,6 @@ class PeerConnectionJoinerTaskTest {
         });
     }
 
-    @Test
     public void shouldUnRegisterCall() {
         // Given
         PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);

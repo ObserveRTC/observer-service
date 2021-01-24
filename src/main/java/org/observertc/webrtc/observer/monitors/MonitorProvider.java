@@ -18,13 +18,19 @@ package org.observertc.webrtc.observer.monitors;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 @Singleton
 public class MonitorProvider {
 	private static final String KLASS_TAG_NAME = "klass";
 
-	private final MeterRegistry meterRegistry;
+	@Inject
+	Provider<CounterMonitorBuilder> counterMonitorBuilderProvider;
+
+	@Inject
+	MeterRegistry meterRegistry;
 
 	public MonitorProvider(
 			MeterRegistry meterRegistry
@@ -36,6 +42,11 @@ public class MonitorProvider {
 		return new FlawMonitor(this.meterRegistry)
 				.withName(FlawMonitor.class.getSimpleName())
 				.withTag(KLASS_TAG_NAME, klass.getSimpleName());
+	}
+
+	public<T> CounterMonitorBuilder<T> makeCounterMonitorBuilder(String name) {
+		CounterMonitorBuilder<T> result = this.counterMonitorBuilderProvider.get();
+		return result.withName(name);
 	}
 
 }

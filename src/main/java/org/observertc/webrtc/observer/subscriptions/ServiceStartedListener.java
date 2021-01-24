@@ -20,15 +20,21 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.discovery.event.ServiceReadyEvent;
-import javax.inject.Singleton;
+import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 @Requires(notEnv = Environment.TEST) // Don't load data in tests.
 public class ServiceStartedListener implements ApplicationEventListener<ServiceReadyEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
 
+
+	@Inject
+	RepositoryProvider repositoryProvider;
 
 	public ServiceStartedListener() {
 		
@@ -41,6 +47,11 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 
 	@Override
 	public void onApplicationEvent(ServiceReadyEvent event) {
-		
+//		Repository<String, ICEConnectionEntity> repository = this.repositoryProvider.getICEConnectionsRepository();
+//		repository.purge();
+//		logger.info("{} is cleared", repository.getClass().getSimpleName());
+//		MultiMapRepositoryAbstract<UUID, String> repository2 = this.repositoryProvider.getPeerConnectionICEConnectionsRepository();
+//		repository2.purge();
+//		logger.info("{} is cleared", repository2.getClass().getSimpleName());
 	}
 }

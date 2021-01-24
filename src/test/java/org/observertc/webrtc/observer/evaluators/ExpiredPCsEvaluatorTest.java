@@ -38,7 +38,7 @@ class ExpiredPCsEvaluatorTest {
     CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
 
     @Test
-    public void shouldRemovePeerConnection() {
+    public void shouldRemovePeerConnection() throws Throwable {
         // Given
         ExpiredPCsEvaluator evaluator = subject.get();
         SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
@@ -51,12 +51,12 @@ class ExpiredPCsEvaluatorTest {
         String ssrcKey = SynchronizationSourcesRepository.getKey(ssrcEntity.serviceUUID, ssrcEntity.SSRC);
         this.synchronizationSourcesRepository.save(ssrcKey, ssrcEntity);
         this.callPeerConnectionsRepository.addAll(ssrcEntity.callUUID, List.of(alice.peerConnectionUUID, bob.peerConnectionUUID));
-        this.callEntitiesRepository.add(callEntity.callUUID, callEntity);
+        this.callEntitiesRepository.save(callEntity.callUUID, callEntity);
         List<Report> reports = new LinkedList<>();
-        evaluator.observableReports().subscribe(reports::add);
+        evaluator.getObservableReports().subscribe(reports::add);
 
         // When
-        evaluator.onNext(Map.of(pcState.peerConnectionUUID, pcState));
+        evaluator.accept(Map.of(pcState.peerConnectionUUID, pcState));
 
         // Then
         Assertions.assertFalse(this.peerConnectionsRepository.exists(alice.peerConnectionUUID));
@@ -71,7 +71,7 @@ class ExpiredPCsEvaluatorTest {
     }
 
     @Test
-    public void shouldRemoveCall() {
+    public void shouldRemoveCall() throws Throwable {
         // Given
         ExpiredPCsEvaluator evaluator = subject.get();
         SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
@@ -82,13 +82,13 @@ class ExpiredPCsEvaluatorTest {
         String ssrcKey = SynchronizationSourcesRepository.getKey(ssrcEntity.serviceUUID, ssrcEntity.SSRC);
         this.synchronizationSourcesRepository.save(ssrcKey, ssrcEntity);
         this.callPeerConnectionsRepository.addAll(ssrcEntity.callUUID, List.of(alice.peerConnectionUUID));
-        this.callEntitiesRepository.add(callEntity.callUUID, callEntity);
+        this.callEntitiesRepository.save(callEntity.callUUID, callEntity);
         this.callSynchronizationSourcesRepository.add(callEntity.callUUID, ssrcKey);
         List<Report> reports = new LinkedList<>();
-        evaluator.observableReports().subscribe(reports::add);
+        evaluator.getObservableReports().subscribe(reports::add);
 
         // When
-        evaluator.onNext(Map.of(pcState.peerConnectionUUID, pcState));
+        evaluator.accept(Map.of(pcState.peerConnectionUUID, pcState));
 
         // Then
         Assertions.assertFalse(this.peerConnectionsRepository.exists(alice.peerConnectionUUID));
