@@ -25,10 +25,7 @@ import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Prototype
