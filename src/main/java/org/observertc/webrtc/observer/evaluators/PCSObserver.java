@@ -65,6 +65,9 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             pcState.touched = now;
 
             this.SSRCExtractor.accept(pcState, observedPCS.peerConnectionSample);
+            if (pcState.SSRCs.size() < 1 && Objects.isNull(pcState.callName)) {
+                pcState.callName = this.config.impairablePCsCallName;
+            }
             activePCs.put(observedPCS.peerConnectionUUID, pcState);
         }
 
@@ -92,7 +95,6 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             this.expiredPCsSubject.onNext(expiredPCs);
         }
     }
-
 
 
     private PCState makePCState(ObservedPCS observedPCS) {

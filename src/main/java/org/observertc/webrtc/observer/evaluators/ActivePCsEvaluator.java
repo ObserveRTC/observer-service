@@ -21,6 +21,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.Task;
 import org.observertc.webrtc.observer.models.CallEntity;
@@ -33,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,6 +57,10 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	private final Subject<Report> reports = PublishSubject.create();
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
+
+
+	@Inject
+	ObserverConfig.EvaluatorsConfig config;
 
 	public ActivePCsEvaluator(
 			MonitorProvider monitorProvider,
@@ -157,6 +163,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 			}
 
 			Set<UUID> callUUIDs = task.getResult();
+
 			if (0 < callUUIDs.size()) {
 				UUID callUUID = callUUIDs.stream().findFirst().get();
 				this.addNewPeerConnection(callUUID, pcState);

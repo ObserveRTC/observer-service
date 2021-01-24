@@ -48,6 +48,8 @@ public class ObserverConfig {
 		@Min(15)
 		public int peerConnectionMaxIdleTimeInS = 60;
 
+		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
+
 		public Map<String, Object> reportMonitor;
 
 	}

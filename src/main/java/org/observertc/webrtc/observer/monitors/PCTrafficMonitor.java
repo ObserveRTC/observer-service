@@ -39,7 +39,7 @@ public class PCTrafficMonitor extends ExposedMonitorAbstract {
     @PostConstruct
     void setup() {
         Config config = new Config();
-        config.detailedLogs = true;
+        config.detailedLogs = false;
         config.maxConsecutiveErrors = 3;
         config.periodTimeInS = 30;
         config.initialDelayInS = 60;

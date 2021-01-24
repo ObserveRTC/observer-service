@@ -20,6 +20,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
@@ -38,6 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -52,6 +55,14 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
+
+	@Inject
+	ObserverConfig.EvaluatorsConfig config;
+
+	@PostConstruct
+	void setup() {
+
+	}
 
 	public ExpiredPCsEvaluator(
 			MonitorProvider monitorProvider,

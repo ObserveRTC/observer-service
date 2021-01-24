@@ -45,7 +45,7 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
 
     @Override
     public void accept(List<ObservedPCS> samples) throws Throwable {
-        Map<UUID, List<ConnectionTypes>> journal = new HashMap<>();
+        Map<UUID, List<JournalEntry>> journal = new HashMap<>();
         for (ObservedPCS sample : samples) {
             try {
                 this.processSample(sample, journal);
@@ -58,7 +58,7 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
         }
     }
 
-    public void processSample(ObservedPCS sample, Map<UUID, List<ConnectionTypes>> journal) {
+    public void processSample(ObservedPCS sample, Map<UUID, List<JournalEntry>> journal) {
         if (Objects.isNull(sample) ||
             Objects.isNull(sample.peerConnectionSample) ||
                 Objects.isNull(sample.peerConnectionSample.iceStats) ||
@@ -111,11 +111,13 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
             }
             ConnectionTypes oldConnectionType = iceConnections.connectionTypes.get(candidatePair.id);
             ConnectionTypes newConnectionType = ConnectionTypes.UNKNOWN;
+            String target = null;
             if (Objects.nonNull(localCandidate.candidateType) &&
                 Objects.nonNull(remoteCandidate.candidateType)) {
                 if (localCandidate.candidateType.equals(PeerConnectionSample.CandidateType.RELAY) ||
                     remoteCandidate.candidateType.equals(PeerConnectionSample.CandidateType.RELAY)) {
                     newConnectionType = ConnectionTypes.RELAYED;
+                    target = remoteCandidate.ip;
                     logger.info("RELAYED connection is detected: localCandidate: {}, remoteCandidate: {}", localCandidate, remoteCandidate);
                 } else {
                     newConnectionType = ConnectionTypes.PEER_TO_PEER;
@@ -126,12 +128,15 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
             if (Objects.isNull(oldConnectionType) || !oldConnectionType.equals(newConnectionType)) {
                 if (!newConnectionType.equals(ConnectionTypes.UNKNOWN)) {
                     iceConnections.connectionTypes.put(candidatePair.id, newConnectionType);
-                    List<ConnectionTypes> pcJournal = journal.get(sample.peerConnectionUUID);
+                    List<JournalEntry> pcJournal = journal.get(sample.peerConnectionUUID);
                     if (Objects.isNull(pcJournal)) {
                         pcJournal = new LinkedList<>();
                         journal.put(sample.peerConnectionUUID, pcJournal);
                     }
-                    pcJournal.add(newConnectionType);
+                    JournalEntry journalEntry = new JournalEntry();
+                    journalEntry.connectionType = newConnectionType;
+                    journalEntry.target = target;
+                    pcJournal.add(journalEntry);
                 } else {
                     logger.warn("Cannot determine the connection type for the following configuration: LocalCandidate: {}, RemoteCanddiate: {} CandidatePair: {}", localCandidate, remoteCandidate, candidatePair);
                 }
@@ -140,17 +145,17 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
         }
     }
 
-    private void processJournal(Map<UUID, List<ConnectionTypes>> journal) {
-        Iterator<Map.Entry<UUID, List<ConnectionTypes>>> it = journal.entrySet().iterator();
+    private void processJournal(Map<UUID, List<JournalEntry>> journal) {
+        Iterator<Map.Entry<UUID, List<JournalEntry>>> it = journal.entrySet().iterator();
         while(it.hasNext()) {
-            Map.Entry<UUID, List<ConnectionTypes>> entry = it.next();
+            Map.Entry<UUID, List<JournalEntry>> entry = it.next();
             UUID peerConnectionUUID = entry.getKey();
-            List<ConnectionTypes> connectionTypes = entry.getValue();
-            Iterator<ConnectionTypes> jt = connectionTypes.listIterator();
+            List<JournalEntry> journalEntries = entry.getValue();
+            Iterator<JournalEntry> jt = journalEntries.listIterator();
             int state = 0;
             while(jt.hasNext()) {
-                ConnectionTypes connectionType = jt.next();
-                switch (connectionType) {
+                JournalEntry journalEntry = jt.next();
+                switch (journalEntry.connectionType) {
                     case PEER_TO_PEER:
                         state |= 1;
                         break;
@@ -182,13 +187,16 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
         }
     }
 
+    private class JournalEntry {
+        ConnectionTypes connectionType = ConnectionTypes.UNKNOWN;
+        String target;
+    }
+
     private enum ConnectionTypes {
         PEER_TO_PEER,
         RELAYED,
         UNKNOWN
         ;
-
-        String target;
     }
 
     private class ICEConnections {
