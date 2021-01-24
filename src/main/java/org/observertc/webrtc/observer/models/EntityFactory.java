@@ -38,8 +38,6 @@ public class EntityFactory implements PortableFactory {
 				return new CallEntity();
 			case PeerConnectionEntity.CLASS_ID:
 				return new PeerConnectionEntity();
-			case ICEConnectionEntity.CLASS_ID:
-				return new ICEConnectionEntity();
 			case WeakLockEntity.CLASS_ID:
 				return new WeakLockEntity();
 		}

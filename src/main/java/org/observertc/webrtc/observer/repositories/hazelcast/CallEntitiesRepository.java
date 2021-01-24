@@ -17,13 +17,14 @@
 package org.observertc.webrtc.observer.repositories.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
-import java.util.UUID;
-import javax.inject.Singleton;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.models.CallEntity;
 
+import javax.inject.Singleton;
+import java.util.UUID;
+
 @Singleton
-public class CallEntitiesRepository extends MultiMapRepositoryAbstract<UUID, CallEntity> {
+public class CallEntitiesRepository extends MapRepositoryAbstract<UUID, CallEntity> {
 	private static final String HAZELCAST_MAP_CALLS_MAP_KEY = "WebRTCObserverCalls";
 
 //	private final IMap<UUID, CallEntity> entities;

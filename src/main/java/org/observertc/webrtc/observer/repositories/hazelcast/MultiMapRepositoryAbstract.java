@@ -135,4 +135,9 @@ public class MultiMapRepositoryAbstract<K, V> implements IMultiMap<K, V> {
 		}
 		return result;
 	}
+
+	@Override
+	public void purge() {
+		this.entities.clear();
+	}
 }

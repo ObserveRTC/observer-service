@@ -52,7 +52,7 @@ class CallFinisherTaskTest {
         // Given
         CallEntity callEntity = generator.nextObject(CallEntity.class);
         Set<Long> SSRCs = Set.of(1L, 2L);
-        this.repositoryProvider.getCallEntitiesRepository().add(callEntity.callUUID, callEntity);
+        this.repositoryProvider.getCallEntitiesRepository().save(callEntity.callUUID, callEntity);
         SSRCs.stream().forEach(ssrc -> {
            this.repositoryProvider.getSSRCRepository().save(
                    SynchronizationSourcesRepository.getKey(callEntity.serviceUUID, ssrc),

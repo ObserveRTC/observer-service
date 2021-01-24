@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Prototype
-public class CallFinderTask extends TaskAbstract<Set<UUID>> {
+public class SSRCEntityFinderTask extends TaskAbstract<Set<UUID>> {
 	private final ObserverHazelcast observerHazelcast;
 	private final SynchronizationSourcesRepository SSRCRepository;
 	private final CallNamesRepository callNamesRepository;
@@ -41,8 +41,8 @@ public class CallFinderTask extends TaskAbstract<Set<UUID>> {
 	private UUID serviceUUID;
 	private boolean isMultipleResultsAllowed = true;
 
-	public CallFinderTask(ObserverHazelcast observerHazelcast,
-						  RepositoryProvider repositoryProvider
+	public SSRCEntityFinderTask(ObserverHazelcast observerHazelcast,
+								RepositoryProvider repositoryProvider
 	) {
 		super();
 		this.observerHazelcast = observerHazelcast;
@@ -50,22 +50,22 @@ public class CallFinderTask extends TaskAbstract<Set<UUID>> {
 		this.callNamesRepository = repositoryProvider.getCallNamesRepository();
 	}
 
-	public CallFinderTask forServiceUUID(@NotNull UUID serviceUUID) {
+	public SSRCEntityFinderTask forServiceUUID(@NotNull UUID serviceUUID) {
 		this.serviceUUID = serviceUUID;
 		return this;
 	}
 
-	public CallFinderTask forCallName(String callName) {
+	public SSRCEntityFinderTask forCallName(String callName) {
 		this.callName = callName;
 		return this;
 	}
 
-	public CallFinderTask withMultipleResultsAllowed(boolean value) {
+	public SSRCEntityFinderTask withMultipleResultsAllowed(boolean value) {
 		this.isMultipleResultsAllowed = value;
 		return this;
 	}
 
-	public CallFinderTask forSSRCs(@NotNull Set<Long> SSRCs) {
+	public SSRCEntityFinderTask forSSRCs(@NotNull Set<Long> SSRCs) {
 		this.SSRCs = SSRCs;
 		return this;
 	}

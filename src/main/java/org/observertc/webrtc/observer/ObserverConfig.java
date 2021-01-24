@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
 import org.observertc.webrtc.observer.monitors.ReportMonitorConfig;
 
+import javax.validation.constraints.Min;
 import java.util.*;
 
 @ConfigurationProperties("observer")
@@ -31,7 +32,6 @@ public class ObserverConfig {
 
 	public OutboundReportsConfig outboundReports;
 
-
 	public MonitorsConfig monitors;
 
 	public EvaluatorsConfig evaluators;
@@ -39,16 +39,17 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
+		@Min(0)
+		public int observedPCSBufferMaxTimeInS = 30;
+
+		@Min(1)
+		public int observedPCSBufferMaxItemNums = 10000;
+
+		@Min(15)
+		public int peerConnectionMaxIdleTimeInS = 60;
+
 		public Map<String, Object> reportMonitor;
 
-		public PCObserverConfig pcObserver;
-
-		@ConfigurationProperties("pcObserver")
-		public static class PCObserverConfig {
-			public int peerConnectionMaxIdleTimeInS = 60;
-			public int mediaStreamUpdatesFlushInS = 15;
-			public int mediaStreamsBufferNums = 0; // means it will be determined automatically
-		}
 	}
 
 	@ConfigurationProperties("hazelcast")
@@ -66,13 +67,6 @@ public class ObserverConfig {
 			public boolean enabled = false;
 			public long reportPeriodInS = 300;
 		}
-	}
-
-	@ConfigurationProperties("pcObserver")
-	public static class PCObserverConfig {
-		public int peerConnectionMaxIdleTimeInS = 60;
-		public int mediaStreamUpdatesFlushInS = 15;
-		public int mediaStreamsBufferNums = 0; // means it will be determined automatically
 	}
 
 	@ConfigurationProperties("outboundReports")

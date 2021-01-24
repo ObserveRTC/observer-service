@@ -231,4 +231,6 @@ public interface IMultiMap<K, V> {
 	default <S extends K> Observable<V> rxRemoveAll(@NotNull S key) {
 		return Observable.fromIterable(this.removeAll(key));
 	}
+
+	void purge();
 }

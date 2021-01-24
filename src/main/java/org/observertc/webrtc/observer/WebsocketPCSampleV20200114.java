@@ -18,6 +18,8 @@ package org.observertc.webrtc.observer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.websocket.WebSocketSession;
@@ -25,6 +27,7 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
@@ -41,6 +44,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,6 +65,9 @@ public class WebsocketPCSampleV20200114 {
 	@Inject
 	Pipeline pipeline;
 
+	@Inject
+	MeterRegistry meterRegistry;
+
 	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
 			MonitorProvider monitorProvider,
@@ -69,24 +76,59 @@ public class WebsocketPCSampleV20200114 {
 		this.objectReader = objectMapper.reader();
 		this.servicesRepository = servicesRepository;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+
 	}
 
 	@OnOpen
-	@CountInvocations(value = "pcsamples_opened_websocket")
 	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
+		try {
+			String service;
+			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
+			if (serviceUUIDHolder.isPresent()) {
+				UUID serviceUUID = serviceUUIDHolder.get();
+				service = this.servicesRepository.getServiceName(serviceUUID);
+			} else {
+				service = serviceUUIDStr;
+			}
 
+			this.meterRegistry.counter(
+					"observertc_opened_websockets",
+					List.of(Tag.of("mediaunit", mediaUnitID),
+							Tag.of("service", service)
+					)
+			).increment();
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
 	}
 
 	@OnClose
-	@CountInvocations(value = "pcsamples_closed_websocket")
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
 			WebSocketSession session) {
+		try {
+			String service;
+			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
+			if (serviceUUIDHolder.isPresent()) {
+				UUID serviceUUID = serviceUUIDHolder.get();
+				service = this.servicesRepository.getServiceName(serviceUUID);
+			} else {
+				service = serviceUUIDStr;
+			}
+
+			this.meterRegistry.counter(
+					"observertc_closed_websockets",
+					List.of(Tag.of("mediaunit", mediaUnitID),
+							Tag.of("service", service)
+					)
+			).increment();
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
 	}
 
 	//	@OnMessage(maxPayloadLength = 1000000) // 1MB
-	@CountInvocations(value = "pcsamples_received_samples")
 	@OnMessage
 	public void onMessage(
 			String serviceUUIDStr,
@@ -104,6 +146,16 @@ public class WebsocketPCSampleV20200114 {
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
 		String serviceName = this.servicesRepository.getServiceName(serviceUUID);
+		try {
+			this.meterRegistry.counter(
+					"observertc_pcsamples",
+					List.of(Tag.of("mediaUnit", mediaUnitID),
+							Tag.of("serviceName", serviceName)
+					)
+			).increment();
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
 		PeerConnectionSample sample;
 		try {
 			sample = this.objectReader.readValue(messageBytes, PeerConnectionSample.class);
@@ -181,7 +233,7 @@ public class WebsocketPCSampleV20200114 {
 		);
 
 		try {
-			this.pipeline.input(observedPCS);
+			this.pipeline.getObservedPCSObserver().onNext(observedPCS);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withLogger(logger)

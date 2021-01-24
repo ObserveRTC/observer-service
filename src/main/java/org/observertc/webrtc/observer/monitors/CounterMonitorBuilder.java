@@ -38,7 +38,7 @@ public class CounterMonitorBuilder<T> extends AbstractBuilder implements Builder
         return result.withTagsResolver(this.tagsResolver).withName(this.name);
     }
 
-    CounterMonitorBuilder<T> withTagResolver(String tagName, java.util.function.Function<T, String> valueExtractor) {
+    public CounterMonitorBuilder<T> withTagResolver(String tagName, java.util.function.Function<T, String> valueExtractor) {
 
         BiConsumer<T, List<Tag>> tagsResolver = (input, tags) -> {
             String tagValue = valueExtractor.apply(input);

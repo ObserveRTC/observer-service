@@ -46,14 +46,9 @@ public class RepositoryProvider {
 	@Inject
 	Provider<CallSynchronizationSourcesRepository> callSynchronozationSourcesRepositoryProvider;
 
-	@Inject
-	Provider<ICEConnectionsRepository> iceConnectionsRepositoryProvider;
 
 	@Inject
 	Provider<MediaUnitPeerConnectionsRepository> mediaUnitPeerConnectionsRepositoryProvider;
-
-	@Inject
-	Provider<PeerConnectionICEConnectionsRepository> peerConnectionICEConnectionsRepositoryProvider;
 
 	@PostConstruct
 	void setup() {
@@ -82,14 +77,6 @@ public class RepositoryProvider {
 
 	public CallSynchronizationSourcesRepository getCallSynchronizationSourcesRepository() {
 		return this.callSynchronozationSourcesRepositoryProvider.get();
-	}
-
-	public PeerConnectionICEConnectionsRepository getPeerConnectionICEConnectionsRepository() {
-		return this.peerConnectionICEConnectionsRepositoryProvider.get();
-	}
-
-	public ICEConnectionsRepository getICEConnectionsRepository() {
-		return this.iceConnectionsRepositoryProvider.get();
 	}
 
 	public MediaUnitPeerConnectionsRepository getMediaUnitPeerConnectionsRepository() {

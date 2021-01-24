@@ -141,4 +141,9 @@ public class MapRepositoryAbstract<K, V> implements Repository<K, V> {
 		keys.stream().forEach(this.entities::delete);
 		return Collections.unmodifiableMap(result);
 	}
+
+	@Override
+	public void purge() {
+		this.entities.clear();
+	}
 }

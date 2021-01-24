@@ -8,5 +8,5 @@ public class BufferConfig {
     public int maxItems = 1000;
 
     @Min(0)
-    public int maxWaitingTimeInS = 30;
+    public int maxWaitingTimeInS = 5;
 }
