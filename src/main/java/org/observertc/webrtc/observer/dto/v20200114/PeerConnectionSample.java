@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.io.IOException;
 
 /**
@@ -77,6 +79,38 @@ public class PeerConnectionSample {
 		@JsonProperty("payload")
 		public String payload;
 	}
+
+	@Schema(title = "RTC Client Device list",
+			nullable = true,
+			description = "Custom defined measurements attached to peer connection sample")
+	@JsonProperty("deviceList")
+	public MediaDeviceInfo[] deviceList;
+
+	@Schema(title = "RTC Client browser details",
+			nullable = true,
+			description = "Custom defined measurements attached to peer connection sample")
+	@JsonProperty("clientDetails")
+	public ClientDetails clientDetails;
+
+	@Schema(description = "Client media device details. Taken from https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo")
+	public static class MediaDeviceInfo {
+		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId")
+		@JsonProperty("deviceId")
+		public String deviceId;
+
+		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/groupId")
+		@JsonProperty("groupId")
+		public String groupId;
+
+		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/kind")
+		@JsonProperty("kind")
+		public MediaDeviceKind kind;
+
+		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label")
+		@JsonProperty("label")
+		public String label;
+	}
+
 
 	/**
 	 * https://www.w3.org/TR/webrtc/#dom-rtcstats
@@ -872,6 +906,50 @@ public class PeerConnectionSample {
 
 	}
 
+	@Schema(description = "General browser details of a client to understand more about about the platform, browser version where webrtc is running")
+	public static class ClientDetails {
+		@JsonProperty("browser")
+		public BrowserDetails browser;
+		@JsonProperty("os")
+		public OSDetails os;
+		@JsonProperty("platform")
+		public PlatformDetails platform;
+		@JsonProperty("engine")
+		public EngineDetails engine;
+	}
+
+	@Schema(description = "Base details for browser. It will later extended by browser and engine details")
+	public static class BaseBrowserDetails {
+		@JsonProperty("name")
+		public String name;
+		@JsonProperty("version")
+		public String version;
+	}
+
+	@Schema(description = "Platform related information of a client")
+	public static class PlatformDetails {
+		@JsonProperty("type")
+		public String type;
+		@JsonProperty("vendor")
+		public String vendor;
+		@JsonProperty("model")
+		public String model;
+	}
+
+	@Schema(description = "OS specific details of a client")
+	public static class OSDetails extends BaseBrowserDetails {
+		@JsonProperty("versionName")
+		public String versionName;
+	}
+
+	@Schema(description = "Browser detail specific details of a client")
+	public static class BrowserDetails extends BaseBrowserDetails {
+	}
+
+	@Schema(description = "Browser engine detail specific details of a client")
+	public static class EngineDetails extends BaseBrowserDetails {
+	}
+
 	/**
 	 * https://www.w3.org/TR/webrtc-stats/#dom-rtcqualitylimitationreason
 	 */
@@ -1070,6 +1148,34 @@ public class PeerConnectionSample {
 			if (value.equals("inprogress")) return IN_PROGRESS;
 			if (value.equals("succeeded")) return SUCCEEDED;
 			if (value.equals("waiting")) return WAITING;
+			return UNKNOWN;
+		}
+	}
+
+	@Schema(description = "Media device kind https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/kind")
+	public enum MediaDeviceKind {
+		VIDEO_INPUT, AUDIO_INPUT, AUDIO_OUTPUT, UNKNOWN;
+
+		@JsonValue
+		public String toValue() {
+			switch (this) {
+				case VIDEO_INPUT:
+					return "videoinput";
+				case AUDIO_INPUT:
+					return "audioinput";
+				case AUDIO_OUTPUT:
+					return "audiooutput";
+				default:
+					return "unknown";
+			}
+		}
+
+		@JsonCreator
+		public static MediaDeviceKind forValue(String value) throws IOException {
+			if (value == null) return UNKNOWN;
+			if (value.equals("videoinput")) return VIDEO_INPUT;
+			if (value.equals("audioinput")) return AUDIO_INPUT;
+			if (value.equals("audiooutput")) return AUDIO_OUTPUT;
 			return UNKNOWN;
 		}
 	}
