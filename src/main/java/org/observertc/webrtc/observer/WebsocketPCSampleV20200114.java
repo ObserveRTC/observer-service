@@ -28,6 +28,7 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.core.Observable;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
@@ -233,6 +234,7 @@ public class WebsocketPCSampleV20200114 {
 		);
 
 		try {
+//			logger.info(ObjectToString.toString(observedPCS));
 			this.pipeline.getObservedPCSObserver().onNext(observedPCS);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()

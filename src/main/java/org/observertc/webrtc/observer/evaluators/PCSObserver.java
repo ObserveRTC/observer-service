@@ -8,7 +8,10 @@ import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+import org.observertc.webrtc.observer.monitors.ObserverMetrics;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -19,11 +22,14 @@ import java.util.*;
 
 @Singleton
 public class PCSObserver implements Consumer<List<ObservedPCS>> {
-
+    private static final Logger logger = LoggerFactory.getLogger(PCSObserver.class);
     private final Subject<Map<UUID, PCState>> expiredPCsSubject = PublishSubject.create();
     private final Subject<Map<UUID, PCState>> activePCsSubject = PublishSubject.create();
     private final Map<UUID, PCState> pcStates = new HashMap<>();
     private final PeerConnectionSampleVisitor<PCState> SSRCExtractor;
+
+    @Inject
+    ObserverMetrics observerMetrics;
 
     @Inject
     ObserverConfig.EvaluatorsConfig config;
@@ -67,6 +73,7 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             this.SSRCExtractor.accept(pcState, observedPCS.peerConnectionSample);
             if (pcState.SSRCs.size() < 1 && Objects.isNull(pcState.callName)) {
                 pcState.callName = this.config.impairablePCsCallName;
+                this.observerMetrics.incrementImpairedPCs(pcState.serviceName, pcState.mediaUnitID);
             }
             activePCs.put(observedPCS.peerConnectionUUID, pcState);
         }

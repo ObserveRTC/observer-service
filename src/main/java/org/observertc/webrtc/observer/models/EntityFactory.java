@@ -26,7 +26,6 @@ public class EntityFactory implements PortableFactory {
 
 	public static final UUID DEFAULT_UUID = UUID.fromString("7c55dd42-614d-42d9-9b1d-8fac560d71e3");
 	public static final byte[] DEFAULT_UUID_BYTES = UUIDAdapter.toBytes(DEFAULT_UUID);
-
 	public static final int FACTORY_ID = 10000000; // 2^30
 
 	@Override

@@ -67,8 +67,10 @@ public class Pipeline {
 
     @PostConstruct
     void setup() {
+        var source = this.observedPCSSubject;
+        // TODO: Insert our load balancer for pcs here.
 
-        var samplesBuffer = this.observedPCSSubject
+        var samplesBuffer = source
                 .buffer(config.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, config.observedPCSBufferMaxItemNums)
                 .share();
 

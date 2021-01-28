@@ -4,6 +4,10 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.LRULinkedHashMap;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
+import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.models.PCTrafficType;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
@@ -24,9 +28,13 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
 
     private final Map<UUID, ICEConnections> connections = new HashMap<>();
     private final Subject<PCTrafficState> pcConnectionStateSubject = PublishSubject.create();
+    private final LRULinkedHashMap<String, PeerConnectionSample.ICELocalCandidate> localCandidateCache = new LRULinkedHashMap<>(1000);
+    private final LRULinkedHashMap<String, PeerConnectionSample.ICERemoteCandidate> remoteCandidateCache = new LRULinkedHashMap<>(1000);
+    private final LRULinkedHashMap<String, PeerConnectionSample.ICECandidatePair> candidatePairsCache = new LRULinkedHashMap<>(1000);
+    private final PeerConnectionSampleVisitor<ObservedPCS> sampleVisitor;
 
     public PCTrafficObserver() {
-
+        this.sampleVisitor = this.makeVisitor();
     }
 
     @PostConstruct
@@ -47,8 +55,12 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
     public void accept(List<ObservedPCS> samples) throws Throwable {
         Map<UUID, List<JournalEntry>> journal = new HashMap<>();
         for (ObservedPCS sample : samples) {
+            if (Objects.isNull(sample) || Objects.isNull(sample.peerConnectionSample)) {
+                continue;
+            }
             try {
-                this.processSample(sample, journal);
+//                this.processSample(sample, journal);
+                this.sampleVisitor.accept(sample, sample.peerConnectionSample);
             } catch (Throwable t) {
                 logger.error("Unexpected error occurred in execution", t);
             }
@@ -59,12 +71,11 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
     }
 
     public void processSample(ObservedPCS sample, Map<UUID, List<JournalEntry>> journal) {
-        if (Objects.isNull(sample) ||
-            Objects.isNull(sample.peerConnectionSample) ||
-                Objects.isNull(sample.peerConnectionSample.iceStats) ||
-                Objects.isNull(sample.peerConnectionSample.iceStats.localCandidates) ||
-                Objects.isNull(sample.peerConnectionSample.iceStats.remoteCandidates) ||
-                Objects.isNull(sample.peerConnectionSample.iceStats.candidatePairs))
+        if (
+            Objects.isNull(sample.peerConnectionSample.iceStats) ||
+            Objects.isNull(sample.peerConnectionSample.iceStats.localCandidates) ||
+            Objects.isNull(sample.peerConnectionSample.iceStats.remoteCandidates) ||
+            Objects.isNull(sample.peerConnectionSample.iceStats.candidatePairs))
         {
             return;
         }
@@ -123,7 +134,7 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
                     newConnectionType = ConnectionTypes.PEER_TO_PEER;
                 }
             }
-
+            logger.info("PC: {} local candidate: {}, remote candidate: {}", sample.peerConnectionUUID, ObjectToString.toString(localCandidate), ObjectToString.toString(remoteCandidate));
             // Detect changes, and add it to a journal for further processing
             if (Objects.isNull(oldConnectionType) || !oldConnectionType.equals(newConnectionType)) {
                 if (!newConnectionType.equals(ConnectionTypes.UNKNOWN)) {
@@ -138,7 +149,7 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
                     journalEntry.target = target;
                     pcJournal.add(journalEntry);
                 } else {
-                    logger.warn("Cannot determine the connection type for the following configuration: LocalCandidate: {}, RemoteCanddiate: {} CandidatePair: {}", localCandidate, remoteCandidate, candidatePair);
+                    logger.warn("Cannot determine the connection type for the following configuration: LocalCandidate: {}, RemoteCanddiate: {} CandidatePair: {}", ObjectToString.toString(localCandidate), ObjectToString.toString(remoteCandidate), ObjectToString.toString(candidatePair));
                 }
                 iceConnections.connectionTypes.put(candidatePair.id, newConnectionType);
             }
@@ -224,5 +235,71 @@ public class PCTrafficObserver implements Consumer<List<ObservedPCS>> {
         }
     }
 
+    private void process(ObservedPCS obj,
+                         PeerConnectionSample sample,
+                         PeerConnectionSample.ICELocalCandidate localCandidate,
+                         PeerConnectionSample.ICERemoteCandidate remoteCandidate,
+                         PeerConnectionSample.ICECandidatePair candidatePair) {
+        logger.info("Threesome! PC: {} local candidate: {}, remote candidate: {}, candidatepair: {}", obj.peerConnectionUUID, ObjectToString.toString(localCandidate), ObjectToString.toString(remoteCandidate), ObjectToString.toString(candidatePair));
+        boolean relayed = false;
+        if (localCandidate.candidateType.equals(PeerConnectionSample.CandidateType.RELAY) || remoteCandidate.candidateType.equals(PeerConnectionSample.CandidateType.RELAY)) {
+            relayed = true;
+        }
+
+    }
+
+    private PeerConnectionSampleVisitor<ObservedPCS> makeVisitor() {
+        return new AbstractPeerConnectionSampleVisitor<>() {
+            public void visitICECandidatePair(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ICECandidatePair subject) {
+                PeerConnectionSample.ICERemoteCandidate remoteCandidate = remoteCandidateCache.remove(subject.remoteCandidateId);
+                if (Objects.isNull(remoteCandidate)) {
+                    candidatePairsCache.put(subject.localCandidateId, subject);
+                    candidatePairsCache.put(subject.remoteCandidateId, subject);
+                    return;
+                }
+
+                PeerConnectionSample.ICELocalCandidate localCandidate = localCandidateCache.remove(subject.localCandidateId);
+                if (Objects.isNull(localCandidate)) {
+                    remoteCandidateCache.put(remoteCandidate.id, remoteCandidate);
+                    candidatePairsCache.put(subject.localCandidateId, subject);
+                    candidatePairsCache.put(subject.remoteCandidateId, subject);
+                    return;
+                }
+
+                process(obj, sample, localCandidate, remoteCandidate, subject);
+            }
+
+            public void visitICELocalCandidate(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ICELocalCandidate subject) {
+                PeerConnectionSample.ICECandidatePair candidatePair = candidatePairsCache.get(subject.id);
+                if (Objects.isNull(candidatePair)) {
+                    localCandidateCache.put(subject.id, subject);
+                    return;
+                }
+                PeerConnectionSample.ICERemoteCandidate remoteCandidate = remoteCandidateCache.remove(candidatePair.remoteCandidateId);
+                if (Objects.isNull(remoteCandidate)) {
+                    localCandidateCache.put(subject.id, subject);
+                    return;
+                }
+
+                process(obj, sample, subject, remoteCandidate, candidatePair);
+            }
+
+            public void visitICERemoteCandidate(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
+                PeerConnectionSample.ICECandidatePair candidatePair = candidatePairsCache.get(subject.id);
+                if (Objects.isNull(candidatePair)) {
+                    remoteCandidateCache.put(subject.id, subject);
+                    return;
+                }
+                PeerConnectionSample.ICELocalCandidate localCandidate = localCandidateCache.remove(candidatePair.localCandidateId);
+                if (Objects.isNull(localCandidate)) {
+                    remoteCandidateCache.put(subject.id, subject);
+                    return;
+                }
+
+                process(obj, sample, localCandidate, subject, candidatePair);
+            }
+
+        };
+    }
 
 }

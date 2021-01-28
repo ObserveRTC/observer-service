@@ -26,6 +26,7 @@ import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.monitors.ObserverMetrics;
 import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
 import org.observertc.webrtc.observer.tasks.CallDetailsFinderTask;
 import org.observertc.webrtc.observer.tasks.CallFinisherTask;
@@ -55,6 +56,9 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
+
+	@Inject
+	ObserverMetrics observerMetrics;
 
 	@Inject
 	ObserverConfig.EvaluatorsConfig config;
@@ -111,7 +115,10 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				continue;
 			}
 
-			logger.info("Peer Connection {} is unregistered to Call {}.", pcState.peerConnectionUUID, callDetails.callUUID);
+			if (!this.config.impairablePCsCallName.equals(pcState.callName)) {
+				logger.info("Peer Connection {} is unregistered to Call {}.", pcState.peerConnectionUUID, callDetails.callUUID);
+			}
+
 			if (!callDetails.peerConnectionUUIDs.contains(pcState.peerConnectionUUID)) {
 				logger.warn("Peer connection {} in call details has not found {}", pcState.peerConnectionUUID, ObjectToString.toString(callDetails));
 			}
@@ -123,7 +130,10 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				logger.warn("Task to finish call {} is finished", callDetails.callUUID);
 				continue;
 			}
-			logger.info("Call is unregistered with a uuid: {}", callDetails.callUUID);
+			if (!this.config.impairablePCsCallName.equals(callDetails.callEntity.callName)) {
+				logger.info("Call is unregistered with a uuid: {}", callDetails.callUUID);
+			}
+
 		}
 	}
 
@@ -168,6 +178,7 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 					.setPayload(payload)
 					.build();
 			this.reports.onNext(report);
+			this.observerMetrics.incrementDetachedPCs(entity.serviceName, entity.mediaUnitId);
 		} finally {
 			return true;
 		}
@@ -203,6 +214,7 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				.setPayload(payload)
 				.build();
 		this.reports.onNext(report);
+		this.observerMetrics.incrementFinishedCall(callEntity.serviceName);
 		return true;
 	}
 }

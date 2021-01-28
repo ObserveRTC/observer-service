@@ -28,6 +28,7 @@ import org.observertc.webrtc.observer.models.CallEntity;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.monitors.ObserverMetrics;
 import org.observertc.webrtc.observer.tasks.*;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
@@ -58,6 +59,8 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
 
+	@Inject
+	ObserverMetrics observerMetrics;
 
 	@Inject
 	ObserverConfig.EvaluatorsConfig config;
@@ -199,7 +202,9 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				pcState.marker
 		);
 		pcEntity.SSRCs.addAll(pcState.SSRCs);
-		logger.info("Peer Connection {} is registered to Call {}.", pcState.peerConnectionUUID, callUUID);
+		if (!this.config.impairablePCsCallName.equals(pcEntity.callName)) {
+			logger.info("Peer Connection {} is registered to Call {}.", pcState.peerConnectionUUID, callUUID);
+		}
 
 		PeerConnectionJoinerTask task = this.tasksProvider.getPeerConnectionJoinerTask();
 		task.forEntity(pcEntity)
@@ -236,6 +241,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 			}
 
 			this.send(pcEntity.peerConnectionUUID, report);
+			this.observerMetrics.incrementJoinedPCs(pcEntity.serviceName, pcEntity.mediaUnitId);
 		} finally {
 			return true;
 		}
@@ -266,7 +272,9 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		if (callUUID == null) {
 			return false;
 		}
-		logger.info("Call is registered with a uuid: {}", callUUID);
+		if (!this.config.impairablePCsCallName.equals(callEntity.callName)) {
+			logger.info("Call is registered with a uuid: {}", callUUID);
+		}
 
 		try {
 			Object payload = InitiatedCall.newBuilder()
@@ -283,6 +291,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 					.setPayload(payload)
 					.build();
 			this.send(callEntity.serviceUUID, report);
+			this.observerMetrics.incrementInitiatedCall(callEntity.serviceName);
 		} finally {
 			return true;
 		}

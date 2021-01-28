@@ -4,7 +4,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
-import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.models.PCTrafficType;
 import org.observertc.webrtc.observer.models.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
@@ -43,7 +42,7 @@ public class PCTrafficMonitor extends ExposedMonitorAbstract {
         config.maxConsecutiveErrors = 3;
         config.periodTimeInS = 30;
         config.initialDelayInS = 60;
-        config.enabled = true;
+        config.enabled = false;
         config.name = "PCTrafficMonitor";
         this.configure(config);
     }
@@ -52,7 +51,7 @@ public class PCTrafficMonitor extends ExposedMonitorAbstract {
     protected void execute() {
         PeerConnectionsRepository repository = this.repositoryProvider.getPeerConnectionsRepository();
         Map<UUID, PeerConnectionEntity> entities = repository.getLocalEntries();
-        logger.info("Locally stored PC keys {}", ObjectToString.toString(entities.keySet()));
+//        logger.info("Locally stored PC keys {}", ObjectToString.toString(entities.keySet()));
         Map<PCTrafficType, Integer> pcNums = new HashMap<>();
         Map<PCTrafficType, Integer> streamNums = new HashMap<>();
         Set<PCTrafficType> trafficTypes = new HashSet<>();
