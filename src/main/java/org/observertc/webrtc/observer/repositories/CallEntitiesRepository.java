@@ -23,6 +23,9 @@ import org.observertc.webrtc.observer.entities.CallEntity;
 import javax.inject.Singleton;
 import java.util.UUID;
 
+import javax.inject.Singleton;
+import java.util.UUID;
+
 @Singleton
 public class CallEntitiesRepository extends MapRepositoryAbstract<UUID, CallEntity> {
 	private static final String HAZELCAST_MAP_CALLS_MAP_KEY = "WebRTCObserverCalls";
