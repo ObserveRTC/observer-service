@@ -17,13 +17,12 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.MediaUnitPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.MediaUnitPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +38,7 @@ import java.util.UUID;
  */
 @Prototype
 public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntity> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionDetacherTask.class);
 	private enum State {
 		CREATED,
 		PC_IS_UNREGISTERED,
@@ -48,9 +48,6 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionDetacherTask.class);
-
-	private final ObserverHazelcast observerHazelcast;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
@@ -58,14 +55,13 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 	private UUID pcUUID;
 	private PeerConnectionEntity removedPCEntity;
 
-	public PeerConnectionDetacherTask(ObserverHazelcast observerHazelcast,
-									  RepositoryProvider repositoryProvider
+	public PeerConnectionDetacherTask(RepositoryProvider repositoryProvider
 	) {
 		super();
-		this.observerHazelcast = observerHazelcast;
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
 		this.mediaUnitPeerConnectionsRepository = repositoryProvider.getMediaUnitPeerConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public PeerConnectionDetacherTask forPeerConnectionUUID(@NotNull UUID pcUUID) {
@@ -83,13 +79,13 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		switch (this.state) {
 			default:
 			case CREATED:
-				this.unregisterPeerConnection();
+				this.peerConnectionsRepository.delete(this.removedPCEntity.peerConnectionUUID);
 				this.state = State.PC_IS_UNREGISTERED;
 			case PC_IS_UNREGISTERED:
-				this.removeCallToPeerConnection();
+				this.callPeerConnectionsRepository.remove(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
 				this.state = State.PC_IS_REMOVED_FROM_CALL;
 			case PC_IS_REMOVED_FROM_CALL:
-				this.removePcFromMediaUnit();
+				this.mediaUnitPeerConnectionsRepository.remove(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
 				this.state = State.PC_IS_REMOVED_FROM_MEDIAUNIT;
 			case PC_IS_REMOVED_FROM_MEDIAUNIT:
 				this.state = State.EXECUTED;
@@ -104,57 +100,19 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 		switch (this.state) {
 			case EXECUTED:
 			case PC_IS_REMOVED_FROM_MEDIAUNIT:
-				this.addPcToMediaUnit(t);
+				this.mediaUnitPeerConnectionsRepository.add(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
 				this.state = State.PC_IS_REMOVED_FROM_CALL;
 			case PC_IS_REMOVED_FROM_CALL:
-				this.registerPeerConnection(t);
+				this.callPeerConnectionsRepository.add(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
 				this.state = State.PC_IS_UNREGISTERED;
 			case PC_IS_UNREGISTERED:
-				this.addCallToPeerConnection(t);
+				this.peerConnectionsRepository.save(this.removedPCEntity.peerConnectionUUID, this.removedPCEntity);
 				this.state = State.ROLLEDBACK;
 			case CREATED:
 			case ROLLEDBACK:
 			default:
 				return;
 		}
-	}
-
-	private void addPcToMediaUnit(Throwable exceptionInExecution) {
-		try {
-			this.mediaUnitPeerConnectionsRepository.add(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
-		} catch (Exception ex2) {
-			logger.error("During rollback the following error occured", ex2);
-		}
-	}
-
-	private void removePcFromMediaUnit() {
-		this.mediaUnitPeerConnectionsRepository.remove(this.removedPCEntity.mediaUnitId, this.removedPCEntity.peerConnectionUUID);
-	}
-
-	private void addCallToPeerConnection(Throwable exceptionInExecution) {
-		try {
-			this.callPeerConnectionsRepository.add(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
-		} catch (Exception ex2) {
-			logger.error("During rollback the following error occured", ex2);
-		}
-	}
-
-	private void registerPeerConnection(Throwable exceptionInExecution) {
-		try {
-			this.peerConnectionsRepository.save(this.removedPCEntity.peerConnectionUUID, this.removedPCEntity);
-		} catch (Exception ex) {
-			logger.error("During rollback the following error occured", ex);
-		}
-	}
-
-	private void removeCallToPeerConnection() {
-		this.callPeerConnectionsRepository.remove(this.removedPCEntity.callUUID, this.removedPCEntity.peerConnectionUUID);
-
-	}
-
-	private void unregisterPeerConnection() {
-		this.peerConnectionsRepository.delete(this.removedPCEntity.peerConnectionUUID);
-
 	}
 
 	@Override

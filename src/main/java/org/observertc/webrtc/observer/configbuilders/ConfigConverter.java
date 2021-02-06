@@ -93,6 +93,42 @@ public class ConfigConverter<T> implements Function<Map<String, Object>, T>{
 		return result;
 	}
 
+	public static void forceKeysToBeCamelCase(Map<String, Object> map) {
+		Map<String, Object> copy = new HashMap<>(map);
+		Iterator<Map.Entry<String, Object>> it = copy.entrySet().iterator();
+		for (; it.hasNext(); ) {
+			Map.Entry<String, Object> entry = it.next();
+			String key = entry.getKey();
+			Object value = entry.getValue();
+			if (value instanceof Map == false) {
+				String[] parts = key.split("-");
+				if (1 < parts.length) {
+					String newKey = parts[0];
+					for (int i = 1; i < parts.length; ++i) {
+						String part = parts[i];
+						// If you have your hair pulled out because of a
+						// config bug you have not found the reason
+						// why it does not work, and in the end you
+						// find yourself here, and it turns out
+						// you wanted to use Uuid, but its always UUID, then
+						//
+						// I am sorry!
+						//
+						if (part.equals("uuid")) {
+							newKey += "UUID";
+						} else {
+							newKey += part.substring(0, 1).toUpperCase() + part.substring(1);
+						}
+					}
+					map.remove(key);
+					map.put(newKey, value);
+				}
+				continue;
+			}
+			forceKeysToBeCamelCase((Map<String, Object>) value);
+		}
+	}
+
 	private final Class<T> klass;
 
 	/**

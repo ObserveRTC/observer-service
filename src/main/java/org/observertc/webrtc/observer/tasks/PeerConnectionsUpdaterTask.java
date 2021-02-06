@@ -18,11 +18,11 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.hazelcast.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
  */
 @Prototype
 public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionsUpdaterTask.class);
 	private enum State {
 		CREATED,
 		EXISTING_ENTITIES_ARE_UPDATED,
@@ -57,7 +58,7 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 		}
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsUpdaterTask.class);
+
 
 	private final SynchronizationSourcesRepository SSRCRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
@@ -72,6 +73,7 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 		super();
 		this.SSRCRepository = repositoryProvider.getSSRCRepository();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 
@@ -114,7 +116,7 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 					return;
 			}
 		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+			this.getLogger().error("During rollback an error is occured", another);
 		}
 	}
 
@@ -150,12 +152,12 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 	private void addMissingPCStream(PCStream pcStream) {
 		Optional<PeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(pcStream.pcUUID);
 		if (!pcEntityHolder.isPresent()) {
-			logger.warn("Cannot find pcEntity for UUID {}", pcStream.pcUUID);
+			this.getLogger().warn("Cannot find pcEntity for UUID {}", pcStream.pcUUID);
 			return;
 		}
 		PeerConnectionEntity pcEntity = pcEntityHolder.get();
 		if (Objects.isNull(pcEntity.callUUID)) {
-			logger.warn("No callUUID exists in pcEntity {}", pcEntity);
+			this.getLogger().warn("No callUUID exists in pcEntity {}", pcEntity);
 			return;
 		}
 
@@ -177,7 +179,7 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 					.collect(Collectors.toSet());
 			this.SSRCRepository.removeAll(keys);
 		} catch (Exception ex) {
-			logger.warn("Exception occured during rollback process", ex);
+			this.getLogger().warn("Exception occured during rollback process", ex);
 		}
 	}
 

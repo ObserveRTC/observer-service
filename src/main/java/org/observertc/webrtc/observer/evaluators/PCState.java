@@ -51,7 +51,7 @@ public class PCState {
 		return result;
 	}
 
-	public Set<Long> SSRCs = new HashSet<>();
+
 	public UUID serviceUUID;
 	public String serviceName;
 	public String mediaUnitID;
@@ -63,6 +63,11 @@ public class PCState {
 	public String callName;
 	public String userId;
 	public String marker;
+
+	// these attributes are set by post processing, not constructing
+	public Set<Long> SSRCs = new HashSet<>();
+//	public Set<String> localAddresses = new HashSet<>();
+//	public Set<String> remoteAddresses = new HashSet<>();
 
 	/**
 	 * The timestamp when the pcState is touched last time

@@ -1,35 +1,54 @@
 package org.observertc.webrtc.observer.subscriptions;
 
-import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.health.HeartbeatEvent;
-import org.observertc.webrtc.observer.monitors.CallsMonitor;
+import com.hazelcast.nio.serialization.HazelcastSerializationException;
+import io.micronaut.scheduling.annotation.Scheduled;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
-import java.time.Instant;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
-public class RepositoryCleaner implements ApplicationEventListener<HeartbeatEvent> {
+@Singleton
+public class RepositoryCleaner {
 
-    private static final Logger logger = LoggerFactory.getLogger(CallsMonitor.class);
+    private static final Logger logger = LoggerFactory.getLogger(RepositoryCleaner.class);
 
-    private Instant lastCleaned = Instant.now();
+    private volatile boolean run = true;
 
-    @Override
-    public void onApplicationEvent(HeartbeatEvent event) {
-        Instant now = Instant.now();
-        if (Duration.between(this.lastCleaned, now).getSeconds() < 3600) {
-            return;
-        }
+    @Inject
+    RepositoryProvider repositoryProvider;
+
+    @Scheduled(initialDelay = "5m", fixedDelay = "10m")
+    public void start() {
+//        if (this.run) {
+//            return;
+//        }
         try {
-            this.doClean();
-        } catch(Throwable t) {
-
+            Set<UUID> keys = this.repositoryProvider.getPeerConnectionsRepository().getLocalKeySet();
+            Iterator<UUID> it = keys.iterator();
+            while (it.hasNext()) {
+                UUID key = it.next();
+                try {
+                    Optional<PeerConnectionEntity> pcEntityHolder =  this.repositoryProvider.getPeerConnectionsRepository().find(key);
+                    pcEntityHolder.get();
+                } catch (HazelcastSerializationException ex) {
+                    logger.warn("Need to delete PC {}, becasue it cannot be deserialized", key);
+                    try {
+                        this.repositoryProvider.getPeerConnectionsRepository().delete(key);
+                    } catch (Throwable t) {
+                        logger.warn("Unexpected exception during deletion", t);
+                    }
+                }
+            }
+        } catch (Throwable t) {
+            logger.warn("Unexpected error during repository cleaner", t);
         }
-        this.lastCleaned = now;
-    }
-
-    private void doClean() {
-
+//        this.run = true;
     }
 }

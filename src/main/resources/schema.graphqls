@@ -1,0 +1,23 @@
+type Query {
+    calls: [Call]!
+    peerConnections: [PeerConnection]!
+    receivedSamples(serviceName: String, mediaUnit: String): [Int]!
+
+}
+
+type Call {
+    callUUID: ID!
+    serviceUUID: ID
+    serviceName: String
+    initiated: Int
+    callName: String
+    marker: String
+    peerConnections: [PeerConnection]
+}
+
+type PeerConnection {
+    peerConnectionUUID: ID!
+    SSRCs: [BigDecimal]
+}
+
+scalar BigDecimal

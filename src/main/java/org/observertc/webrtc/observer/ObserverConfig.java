@@ -16,13 +16,10 @@
 
 package org.observertc.webrtc.observer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
-import io.micronaut.context.annotation.Parameter;
-import org.observertc.webrtc.observer.common.ObjectToString;
 
+import javax.validation.constraints.Min;
 import java.util.*;
 
 @ConfigurationProperties("observer")
@@ -34,18 +31,64 @@ public class ObserverConfig {
 
 	public OutboundReportsConfig outboundReports;
 
-	public PCObserverConfig pcObserver;
+	public MonitorsConfig monitors;
+
+	public List<SentinelConfig> sentinels = new ArrayList<>();
+
+	public EvaluatorsConfig evaluators;
+
+	public IPAddressConverterConfig ipAddressConverter;
+
+	public List<ServiceConfiguration> services = new ArrayList<>();
+
+	@ConfigurationProperties("ipaddress")
+	public static class IPAddressConverterConfig {
+		public boolean enabled = false;
+		public String algorithm = "SHA-256";
+		public String salt = "mySalt";
+	}
+
+
+	@ConfigurationProperties("evaluators")
+	public static class EvaluatorsConfig {
+
+		@Min(0)
+		public int observedPCSBufferMaxTimeInS = 30;
+
+		@Min(1)
+		public int observedPCSBufferMaxItemNums = 10000;
+
+		@Min(15)
+		public int peerConnectionMaxIdleTimeInS = 60;
+
+		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
+
+		public Map<String, Object> reportMonitor;
+
+	}
+
+	@EachProperty("sentinels")
+	public static class SentinelConfig {
+		public String name;
+		public List<String> addresses;
+		public List<String> callFilters;
+	}
 
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
 	}
 
-	@ConfigurationProperties("pcObserver")
-	public static class PCObserverConfig {
-		public int peerConnectionMaxIdleTimeInS = 60;
-		public int mediaStreamUpdatesFlushInS = 15;
-		public int mediaStreamsBufferNums = 0; // means it will be determined automatically
+	@ConfigurationProperties("monitors")
+	public static class MonitorsConfig {
+
+		public CallsMonitorConfig callsMonitor;
+
+		@ConfigurationProperties("callsMonitor")
+		public static class CallsMonitorConfig {
+			public boolean enabled = false;
+			public long reportPeriodInS = 300;
+		}
 	}
 
 	@ConfigurationProperties("outboundReports")
@@ -69,29 +112,14 @@ public class ObserverConfig {
 		public boolean reportDetachedPeerConnections = true;
 		public boolean reportObserverEvents = true;
 		public boolean reportExtensions = true;
+		public boolean mediaDevices = true;
+		public boolean clientDetails = true;
 	}
 
-	public List<ServiceMappingConfiguration> serviceMappings = new ArrayList<>();
-
-	@EachProperty("serviceMappings")
-	public static class ServiceMappingConfiguration {
+	@EachProperty("services")
+	public static class ServiceConfiguration {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
-		public String forwardTopicName = null;
-
-		public ServiceMappingConfiguration(@Parameter String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			try {
-				return new ObjectMapper().writeValueAsString(this);
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-				return super.toString();
-			}
-		}
 	}
 }
 

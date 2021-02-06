@@ -18,10 +18,10 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
  */
 @Prototype
 public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConnectionEntity>> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionsFinderTask.class);
 	private enum State {
 		CREATED,
 		CHECK_PC_ENTITIES,
@@ -44,7 +45,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsFinderTask.class);
+
 
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
@@ -60,6 +61,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 		super();
 		this.peerConnectionsRepository = repositoryProvider.getPeerConnectionsRepository();
 		this.callPeerConnectionsRepository = repositoryProvider.getCallPeerConnectionsRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public PeerConnectionsFinderTask addPCUUIDs(@NotNull Set<UUID> keySet) {

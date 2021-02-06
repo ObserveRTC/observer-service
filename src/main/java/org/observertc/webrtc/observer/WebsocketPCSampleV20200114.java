@@ -18,7 +18,8 @@ package org.observertc.webrtc.observer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.websocket.WebSocketSession;
@@ -31,6 +32,7 @@ import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.repositories.resolvers.ServiceNameResolver;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
@@ -41,6 +43,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,10 +59,15 @@ public class WebsocketPCSampleV20200114 {
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSampleV20200114.class);
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
-	private final ServicesRepository servicesRepository;
 
 	@Inject
 	Pipeline pipeline;
+
+	@Inject
+	MeterRegistry meterRegistry;
+
+	@Inject
+	ServiceNameResolver serviceNameResolver;
 
 	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
@@ -67,28 +75,57 @@ public class WebsocketPCSampleV20200114 {
 			ServicesRepository servicesRepository
 	) {
 		this.objectReader = objectMapper.reader();
-		this.servicesRepository = servicesRepository;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+
 	}
 
-	@Counted(
-			value = "observer_pcsample_opened_websocket",
-			description = "Counter to track the number of opened websocket for pcsamples per instance"
-	)
 	@OnOpen
 	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
+		try {
+			String service;
+			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
+			if (serviceUUIDHolder.isPresent()) {
+				UUID serviceUUID = serviceUUIDHolder.get();
+				service = this.serviceNameResolver.apply(serviceUUID);
+			} else {
+				service = serviceUUIDStr;
+			}
 
+			this.meterRegistry.counter(
+					"observertc_opened_websockets",
+					List.of(Tag.of("mediaunit", mediaUnitID),
+							Tag.of("service", service)
+					)
+			).increment();
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
 	}
 
-	@Counted(
-			value = "observer_pcsample_closed_websocket",
-			description = "Counter to track the number of closed websocket for pcsamples per instance"
-	)
 	@OnClose
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
 			WebSocketSession session) {
+		try {
+			String service;
+			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
+			if (serviceUUIDHolder.isPresent()) {
+				UUID serviceUUID = serviceUUIDHolder.get();
+				service = this.serviceNameResolver.apply(serviceUUID);
+			} else {
+				service = serviceUUIDStr;
+			}
+
+			this.meterRegistry.counter(
+					"observertc_closed_websockets",
+					List.of(Tag.of("mediaunit", mediaUnitID),
+							Tag.of("service", service)
+					)
+			).increment();
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
 	}
 
 	//	@OnMessage(maxPayloadLength = 1000000) // 1MB
@@ -108,7 +145,17 @@ public class WebsocketPCSampleV20200114 {
 			return;
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
-		String serviceName = this.servicesRepository.getServiceName(serviceUUID);
+		String serviceName = this.serviceNameResolver.apply(serviceUUID);
+		try {
+			this.meterRegistry.counter(
+					"observertc_pcsamples",
+					List.of(Tag.of("mediaUnit", mediaUnitID),
+							Tag.of("serviceName", serviceName)
+					)
+			).increment();
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
 		PeerConnectionSample sample;
 		try {
 			sample = this.objectReader.readValue(messageBytes, PeerConnectionSample.class);
@@ -186,7 +233,8 @@ public class WebsocketPCSampleV20200114 {
 		);
 
 		try {
-			this.pipeline.input(observedPCS);
+//			logger.info(ObjectToString.toString(observedPCS));
+			this.pipeline.getObservedPCSObserver().onNext(observedPCS);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withLogger(logger)

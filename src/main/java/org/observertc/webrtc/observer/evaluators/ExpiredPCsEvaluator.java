@@ -18,17 +18,19 @@ package org.observertc.webrtc.observer.evaluators;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import org.observertc.webrtc.observer.models.CallEntity;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
+import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.monitors.ObserverMetrics;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
+import org.observertc.webrtc.observer.tasks.CallDetailsFinderTask;
 import org.observertc.webrtc.observer.tasks.CallFinisherTask;
 import org.observertc.webrtc.observer.tasks.PeerConnectionDetacherTask;
-import org.observertc.webrtc.observer.tasks.PeerConnectionsFinderTask;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.observertc.webrtc.schemas.reports.DetachedPeerConnection;
 import org.observertc.webrtc.schemas.reports.FinishedCall;
@@ -38,6 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -45,13 +49,24 @@ import java.util.*;
 import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
 
 @Singleton
-public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
+public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ExpiredPCsEvaluator.class);
 	private final PublishSubject<Report> reports = PublishSubject.create();
 
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
+
+	@Inject
+	ObserverMetrics observerMetrics;
+
+	@Inject
+	ObserverConfig.EvaluatorsConfig config;
+
+	@PostConstruct
+	void setup() {
+
+	}
 
 	public ExpiredPCsEvaluator(
 			MonitorProvider monitorProvider,
@@ -62,113 +77,128 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 	}
 
 
-	public Observable<Report> observableReports() {
+	public Observable<Report> getObservableReports() {
 		return this.reports;
 	}
 
 	@Override
-	public void onSubscribe(@NonNull Disposable d) {
-
-	}
-
-	@Override
-	public void onNext(@NonNull Map<UUID, PCState> expiredPCStates) {
+	public void accept(@NonNull Map<UUID, PCState> expiredPCStates) throws Throwable{
 		if (expiredPCStates.size() < 1) {
 			return;
 		}
+		Queue<PCState> pcStates = new LinkedList<>();
+		pcStates.addAll(expiredPCStates.values());
+		while (!pcStates.isEmpty()) {
+			PCState pcState = pcStates.poll();
+			CallDetailsFinderTask callDetailsFinderTask = this.tasksProvider.getCallDetailsFinderTask();
+			callDetailsFinderTask
+					.forPcUUID(pcState.peerConnectionUUID)
+					.collectPeerConnectionUUIDs(true)
+					.collectSynchronizationSourceKeys(false)
+					.withFlawMonitor(this.flawMonitor)
+					.withLogger(logger)
+					.execute()
+			;
 
-		for (PCState expiredPCState : expiredPCStates.values()) {
-			try {
-				this.process(expiredPCState);
-			} catch (Exception ex) {
-				this.flawMonitor.makeLogEntry()
-						.withException(ex)
-						.withLogger(logger)
-						.withLogLevel(Level.WARN)
-						.withMessage("Unhandled error occurred by processing an expiredPCState {}", expiredPCState)
-						.complete();
+			if (!callDetailsFinderTask.succeeded()) {
+				continue;
 			}
+			Optional<CallDetailsFinderTask.Result> callDetailsHolder = callDetailsFinderTask.getResult();
+			if (!callDetailsHolder.isPresent()) {
+				logger.warn("Cannot find a call for the peer connection {}", pcState);
+				continue;
+			}
+			CallDetailsFinderTask.Result callDetails = callDetailsHolder.get();
+
+			if (!this.detachPeerConnection(pcState)) {
+				logger.warn("Detach process has failed {}", pcState);
+				continue;
+			}
+
+			if (!this.config.impairablePCsCallName.equals(pcState.callName)) {
+				logger.info("Peer Connection {} is unregistered to Call {}.", pcState.peerConnectionUUID, callDetails.callUUID);
+			}
+
+			if (!callDetails.peerConnectionUUIDs.contains(pcState.peerConnectionUUID)) {
+				logger.warn("Peer connection {} in call details has not found {}", pcState.peerConnectionUUID, ObjectToString.toString(callDetails));
+			}
+			if (1 < callDetails.peerConnectionUUIDs.size()) {
+				continue;
+			}
+
+			if (!this.finnishCall(callDetails.callUUID, pcState.updated)) {
+				logger.warn("Task to finish call {} is finished", callDetails.callUUID);
+				continue;
+			}
+			if (!this.config.impairablePCsCallName.equals(callDetails.callEntity.callName)) {
+				logger.info("Call is unregistered with a uuid: {}", callDetails.callUUID);
+			}
+
 		}
-
 	}
 
-	@Override
-	public void onError(@NonNull Throwable e) {
+	private boolean detachPeerConnection(@NotNull PCState pcState) {
+		PeerConnectionDetacherTask task = this.tasksProvider.getPeerConnectionDetacherTask();
+		task
+				.forPeerConnectionUUID(pcState.peerConnectionUUID)
+		;
 
-	}
-
-	@Override
-	public void onComplete() {
-
-	}
-
-	/**
-	 * This is a transaction!
-	 *
-	 * @param pcState
-	 */
-	private void process(@NotNull PCState pcState) {
-		PeerConnectionDetacherTask task = this.tasksProvider.providePeerConnectionDetacherTask();
-		task.forPeerConnectionUUID(pcState.peerConnectionUUID);
 		if (!task.execute().succeeded()) {
-			return;
+			return false;
 		}
 
 		PeerConnectionEntity entity = task.getResult();
-		Object payload = DetachedPeerConnection.newBuilder()
-				.setMediaUnitId(entity.mediaUnitId)
-				.setCallName(entity.callName)
-				.setTimeZoneId(pcState.timeZoneId)
-				.setCallUUID(entity.callUUID.toString())
-				.setUserId(entity.providedUserName)
-				.setBrowserId(entity.browserId)
-				.setPeerConnectionUUID(entity.peerConnectionUUID.toString())
-				.build();
-
-		Report report = Report.newBuilder()
-				.setVersion(REPORT_VERSION_NUMBER)
-				.setServiceUUID(entity.serviceUUID.toString())
-				.setServiceName(entity.serviceName)
-				.setMarker(entity.marker)
-				.setType(ReportType.DETACHED_PEER_CONNECTION)
-				.setTimestamp(pcState.updated)
-				.setPayload(payload)
-				.build();
-		this.reports.onNext(report);
-
-		PeerConnectionsFinderTask peerConnectionsFinderTask = this.tasksProvider.providePeerConnectionFinderTask()
-			.forCallUUIDs(Set.of(entity.callUUID));
-
-		peerConnectionsFinderTask
-				.withLogger(logger)
-				.withFlawMonitor(this.flawMonitor)
-				.execute();
-
-		if (!peerConnectionsFinderTask.succeeded()) {
-			return;
+		if (Objects.isNull(entity)) {
+			this.flawMonitor.makeLogEntry()
+					.withLogLevel(Level.WARN)
+					.withMessage("Entity for PCState is null. {} report will not send. PCState: {}", ReportType.DETACHED_PEER_CONNECTION, pcState)
+					.withLogger(logger)
+					.complete();
+			return false;
 		}
 
-		Collection<PeerConnectionEntity> remainingPCs = peerConnectionsFinderTask.getResult();
-		logger.info("PC UUID {} is unregistered.", pcState.peerConnectionUUID);
-		if (remainingPCs.size() < 1) {
-			this.finnishCall(entity.callUUID, pcState.updated);
-			return;
-		}
+		try {
+			Object payload = DetachedPeerConnection.newBuilder()
+					.setMediaUnitId(entity.mediaUnitId)
+					.setCallName(entity.callName)
+					.setTimeZoneId(pcState.timeZoneId)
+					.setCallUUID(entity.callUUID.toString())
+					.setUserId(entity.providedUserName)
+					.setBrowserId(entity.browserId)
+					.setPeerConnectionUUID(entity.peerConnectionUUID.toString())
+					.build();
 
+			Report report = Report.newBuilder()
+					.setVersion(REPORT_VERSION_NUMBER)
+					.setServiceUUID(entity.serviceUUID.toString())
+					.setServiceName(entity.serviceName)
+					.setMarker(entity.marker)
+					.setType(ReportType.DETACHED_PEER_CONNECTION)
+					.setTimestamp(pcState.updated)
+					.setPayload(payload)
+					.build();
+			this.reports.onNext(report);
+			this.observerMetrics.incrementDetachedPCs(entity.serviceName, entity.mediaUnitId);
+		} finally {
+			return true;
+		}
 	}
 
-	private void finnishCall(UUID callUUID, Long timestamp) {
-		CallFinisherTask task = this.tasksProvider.provideCallFinisherTask().forCallEntity(callUUID);
-		task.withLogger(logger).withFlawMonitor(flawMonitor);
-		if (!task.execute().succeeded()) {
-			return;
+	private boolean finnishCall(UUID callUUID, Long timestamp) {
+		CallFinisherTask task = this.tasksProvider.getCallFinisherTask();
+		task
+				.forCallEntity(callUUID)
+				.withLogger(logger)
+				.withFlawMonitor(flawMonitor)
+				.execute()
+		;
+		if (!task.succeeded()) {
+			return false;
 		}
 		CallEntity callEntity = task.getResult();
 		if (Objects.isNull(callEntity)) {
-			logger.info("Call UUID {} is not found. Already unregistered?", callUUID);
-			return;
+			return false;
 		}
-		logger.info("Call UUID {} is unregistered.", callUUID);
 
 		FinishedCall payload = FinishedCall.newBuilder()
 				.setCallName(callEntity.callName)
@@ -183,8 +213,8 @@ public class ExpiredPCsEvaluator implements Observer<Map<UUID, PCState>> {
 				.setTimestamp(timestamp)
 				.setPayload(payload)
 				.build();
-		logger.info("Call UUID {} is not found. Already unregistered?", callUUID);
 		this.reports.onNext(report);
+		this.observerMetrics.incrementFinishedCall(callEntity.serviceName);
+		return true;
 	}
-
 }

@@ -1,13 +1,12 @@
 package org.observertc.webrtc.observer.evaluators;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.rxjava3.core.ObservableOperator;
 import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
-import org.observertc.webrtc.observer.connector.Connector;
+import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.connectors.Connector;
+import org.observertc.webrtc.observer.monitors.CounterMonitorProvider;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
@@ -17,17 +16,26 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class Pipeline {
-    public static final int REPORT_VERSION_NUMBER = 1;
+    public static final int REPORT_VERSION_NUMBER = 2;
     private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
     private final Subject<Report> reports = PublishSubject.create();
 
+    private final Subject<ObservedPCS> observedPCSSubject = PublishSubject.create();
+
+    public Observer<ObservedPCS> getObservedPCSObserver() {
+        return this.observedPCSSubject;
+    }
+
     @Inject
-    PCObserver pcObserver;
+    ObserverConfig.EvaluatorsConfig config;
+
+    @Inject
+    PCSObserver PCSObserver;
 
     @Inject
     ObservedPCSEvaluator observedPCSEvaluator;
@@ -36,24 +44,19 @@ public class Pipeline {
     ActivePCsEvaluator activePCsEvaluator;
 
     @Inject
-    NewPCEvaluator newPCEvaluator;
-
-    @Inject
     ExpiredPCsEvaluator expiredPCsEvaluator;
-
-    @Inject
-    ICEConnectionObserver iceConnectionObserver;
-
-    @Inject
-    ICEConnectionsEvaluator iceConnectionsEvaluator;
 
     @Inject
     Connectors connectors;
 
-    public void input(ObservedPCS observedPCS) {
-        this.pcObserver.onNext(observedPCS);
-        this.observedPCSEvaluator.onNext(observedPCS);
-    }
+    @Inject
+    CounterMonitorProvider counterMonitorProvider;
+
+    @Inject
+    ObserverConfig.EvaluatorsConfig evaluatorsConfig;
+
+    @Inject
+    PCSSentinels PCSSentinels;
 
     public void inputUserMediaError(ObservedPCS observedPCS) {
         this.observedPCSEvaluator.onNext(observedPCS);
@@ -61,34 +64,47 @@ public class Pipeline {
 
     @PostConstruct
     void setup() {
+        var source = this.observedPCSSubject;
+        // TODO: Insert our load balancer for pcs here.
 
-        // PCObserver -> ActivePCEvaluator
-        this.pcObserver.getActivePCs()
+        var samplesBuffer = source
+                .buffer(config.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, config.observedPCSBufferMaxItemNums)
+                .share();
+
+        samplesBuffer
+                .subscribe(this.PCSObserver);
+
+        samplesBuffer
+                .subscribe(this.PCSSentinels);
+
+        this.PCSObserver
+                .getObservableSentinelSignals().subscribe(this.PCSSentinels.getMessageObserver());
+
+        this.activePCsEvaluator
+                .getObservableSentinelSignals().subscribe(this.PCSSentinels.getMessageObserver());
+
+        this.PCSObserver
+                .getObservableActivePCs()
                 .subscribe(this.activePCsEvaluator);
+
+        this.PCSObserver
+                .getObservableExpiredPCs()
+                .subscribe(this.expiredPCsEvaluator);
+
 
         // ActivePCsEvaluator -> NewPCsEvaluator
         this.activePCsEvaluator
-                .observableNewPeerConnections()
-                .subscribe(this.newPCEvaluator);
+                .getObservableReports()
+                .subscribe(this.reports);
 
         // NewPCsEvaluator -> ReportSink
-        this.newPCEvaluator.getReports()
-                .subscribe(this.reports);
-
-
-        // PCObserver -> ExpiredPCEvaluator
-        this.pcObserver.getExpiredPCs()
-                .subscribe(this.expiredPCsEvaluator);
-
-        // PCObserver -> ICEConnectionEvaluator
-        this.pcObserver.getExpiredPCs()
-                .lift(new PCObserverICEConnectionInputAdapter())
-                .subscribe(this.iceConnectionsEvaluator.getExpiredPCsInput());
-
-        // ExpiredPCEvaluator -> ReportSink
         this.expiredPCsEvaluator
-                .observableReports()
+                .getObservableReports()
                 .subscribe(this.reports);
+
+
+        this.observedPCSSubject
+                .subscribe(this.observedPCSEvaluator);
 
         // InboundRTP -> ReportSunk
         this.observedPCSEvaluator
@@ -140,35 +156,14 @@ public class Pipeline {
                 .getExtensionReports()
                 .subscribe(this.reports);
 
-        // ICERemoteCandidate Report -> ICEConnectionObserver
-        this.observedPCSEvaluator
-                .getICERemoteCandidateReports()
-                .subscribe(this.iceConnectionObserver.getICERemoteCandidates());
-
-        // ICELocalCandidate Report -> ICEConnectionObserver
-        this.observedPCSEvaluator
-                .getICELocalCandidateReports()
-                .subscribe(this.iceConnectionObserver.getICELocalCandidates());
-
-        // ICECandidatePair Report -> ICEConnectionObserver
-        this.observedPCSEvaluator
-                .getICECandidatePairReports()
-                .subscribe(this.iceConnectionObserver.getICECandidatePairs());
-
-        // ICEConnectionObserver -> ICEConnectionEvaluator
-        this.iceConnectionObserver.getObservableNewICEConnection()
-                .subscribe(this.iceConnectionsEvaluator.getNewICEConnectionsInput());
-
-        // ICEConnectionObserver.expiredICEConnectionOutput -> ICEConnectionEvaluator
-        this.iceConnectionObserver.getObservableExpiredICECandidatePairUpdates()
-                .subscribe(this.iceConnectionsEvaluator.getExpiredICECandidatePairs());
-
-        // ICEConnectionObserver.updatedICEConnectionOutput -> ICEConnectionEvaluator
-        this.iceConnectionObserver.getObservableUpdatedICEConnection()
-                .subscribe(this.iceConnectionsEvaluator.getUpdatedICEConnectionsInput());
+        if (Objects.nonNull(this.evaluatorsConfig.reportMonitor)) {
+            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.evaluatorsConfig.reportMonitor);
+            this.reports.lift(reportMonitor).subscribe();
+        }
 
         this.addConnectors();
     }
+
 
     private void addConnectors() {
         List<Connector> builtConnectors = this.connectors.getConnectors();
@@ -180,34 +175,4 @@ public class Pipeline {
             reports.subscribe(connector);
         }
     }
-
-    private class PCObserverICEConnectionInputAdapter implements ObservableOperator<UUID, Map<UUID, PCState>> {
-
-        @NonNull
-        @Override
-        public Observer<? super Map<UUID, PCState>> apply(@NonNull Observer<? super UUID> observer) throws Exception {
-            return new Observer<Map<UUID, PCState>>() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(@NonNull Map<UUID, PCState> uuidpcStateMap) {
-                    uuidpcStateMap.keySet().stream().forEach(observer::onNext);
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-                    observer.onError(e);
-                }
-
-                @Override
-                public void onComplete() {
-                    observer.onComplete();
-                }
-            };
-        }
-    }
-
 }

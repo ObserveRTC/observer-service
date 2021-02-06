@@ -16,11 +16,17 @@
 
 package org.observertc.webrtc.observer;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hazelcast.collection.ISet;
 import io.dekorate.prometheus.annotation.EnableServiceMonitor;
 import io.micrometer.core.instrument.util.StringUtils;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.TypeHint;
+import io.micronaut.jackson.JacksonConfiguration;
+import io.micronaut.jackson.ObjectMapperFactory;
 import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -30,6 +36,7 @@ import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.temporal.ChronoUnit;
@@ -67,6 +74,7 @@ public class Application {
         ObserverHazelcast observerHazelcast = context.getBean(ObserverHazelcast.class);
         logger.info("Hazelcast configuration: {}", observerHazelcast.toString());
         deployCheck(observerHazelcast);
+        logger.info("ServicesRepository config");
         context.getBean(ServicesRepository.class);
         loadConnectorConfigFiles();
     }
@@ -136,4 +144,19 @@ public class Application {
 
         }
     }
+
+//    @Factory
+//    @Replaces(ObjectMapperFactory.class)
+//    static class CustomObjectMapperFactory extends ObjectMapperFactory {
+//
+//        @Override
+//        @Singleton
+//        @Replaces(ObjectMapper.class)
+//        public ObjectMapper objectMapper(JacksonConfiguration jacksonConfiguration, JsonFactory jsonFactory) {
+//            final ObjectMapper mapper = super.objectMapper(jacksonConfiguration, jsonFactory);
+//
+//            mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+//            return mapper;
+//        }
+//    }
 }

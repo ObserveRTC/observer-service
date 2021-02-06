@@ -23,7 +23,7 @@ import javax.inject.Singleton;
 @Singleton
 public class TasksProvider {
 	@Inject
-	Provider<CallFinderTask> callFinderTaskProvider;
+	Provider<SSRCEntityFinderTask> ssrcEntityTaskProvider;
 
 	@Inject
 	Provider<CallFinisherTask> callFinisherTaskProvider;
@@ -44,62 +44,49 @@ public class TasksProvider {
 	Provider<PeerConnectionsFinderTask> peerConnectionsFinderTaskProvider;
 
 	@Inject
-	Provider<ICEConnectionAdderTask> iceConnectionAdderTaskProvider;
+	Provider<CallDetailsFinderTask> callDetailsFinderTaskProvider;
 
 	@Inject
-	Provider<ICEConnectionRemoverTask> iceConnectionRemoverTaskProvider;
-
-	@Inject
-	Provider<CallStatsMakerTask> callStatsMakerTaskProvider;
-
-	@Inject
-	Provider<ICEConnectionUpdaterTask> iceConnectionUpdaterTaskProvider;
+	Provider<PeerConnectionDetailsFinderTask> peerConnectionDetailsFinderTaskProvider;
 
 	public TasksProvider() {
 
 	}
 
-	public CallFinderTask getCallFinderTask() {
-		return this.callFinderTaskProvider.get();
+	public SSRCEntityFinderTask getSSRCFinderTask() {
+		return this.ssrcEntityTaskProvider.get();
 	}
 
-	public CallInitializerTask provideCallInitializerTask() {
+	public CallInitializerTask getCallInitializerTask() {
 		return this.callInitializerTaskProvider.get();
 	}
 
-	public CallFinisherTask provideCallFinisherTask() {
+	public CallFinisherTask getCallFinisherTask() {
 		return this.callFinisherTaskProvider.get();
 	}
 
-	public PeerConnectionsUpdaterTask providePeerConnectionsUpdaterTask() {
+	public PeerConnectionsUpdaterTask getPeerConnectionsUpdaterTask() {
 		return this.peerConnectionsUpdaterTaskProvider.get();
 	}
 
-	public PeerConnectionJoinerTask providePeerConnectionJoinerTask() {
+	public PeerConnectionJoinerTask getPeerConnectionJoinerTask() {
 		return this.peerConnectionJoinerTaskProvider.get();
 	}
 
-	public PeerConnectionDetacherTask providePeerConnectionDetacherTask() {
+	public PeerConnectionDetacherTask getPeerConnectionDetacherTask() {
 		return this.peerConnectionDetacherTaskProvider.get();
 	}
 
-	public PeerConnectionsFinderTask providePeerConnectionFinderTask() {
+	public PeerConnectionsFinderTask getPeerConnectionFinderTask() {
 		return this.peerConnectionsFinderTaskProvider.get();
 	}
 
-	public ICEConnectionAdderTask provideICEConnectionAdderTask() {
-		return this.iceConnectionAdderTaskProvider.get();
+	public CallDetailsFinderTask getCallDetailsFinderTask() {
+		return this.callDetailsFinderTaskProvider.get();
 	}
 
-	public ICEConnectionRemoverTask provideICEConnectionRemoverTask() {
-		return this.iceConnectionRemoverTaskProvider.get();
+	public PeerConnectionDetailsFinderTask getPeerConnectionDetailsFinderTask() {
+		return this.peerConnectionDetailsFinderTaskProvider.get();
 	}
 
-	public ICEConnectionUpdaterTask provideICEConnectionUpdaterTask() {
-		return this.iceConnectionUpdaterTaskProvider.get();
-	}
-
-	public CallStatsMakerTask getCallStatsMakerTask() {
-		return this.callStatsMakerTaskProvider.get();
-	}
 }

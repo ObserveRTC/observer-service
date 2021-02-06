@@ -18,9 +18,9 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.models.CallEntity;
-import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.*;
+import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 
 @Prototype
 public class CallInitializerTask extends TaskAbstract<UUID> {
+	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(CallInitializerTask.class);
+	private static final String LOCK_NAME = CallInitializerTask.class.getSimpleName() + "-lock";
 	private enum State {
 		CREATED,
 		CALL_ENTITY_IS_REGISTERED,
@@ -41,12 +43,10 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 		ROLLEDBACK,
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(CallInitializerTask.class);
-	private static final String LOCK_NAME = CallInitializerTask.class.getCanonicalName() + "-lock";
 
 	private final CallEntitiesRepository callEntitiesRepository;
 	private final SynchronizationSourcesRepository SSRCRepository;
-	private final CallFinderTask callFinderTask;
+	private final SSRCEntityFinderTask SSRCEntityFinderTask;
 	private final CallNamesRepository callNamesRepository;
 	private final CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
 	private final WeakLockProvider lockProvider;
@@ -58,16 +58,17 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 
 	public CallInitializerTask(
 			RepositoryProvider repositoryProvider,
-			CallFinderTask callFinderTask,
+			SSRCEntityFinderTask SSRCEntityFinderTask,
 			WeakLockProvider lockProvider
 	) {
 		super();
 		this.lockProvider = lockProvider;
-		this.callFinderTask = callFinderTask;
+		this.SSRCEntityFinderTask = SSRCEntityFinderTask;
 		this.callSynchronizationSourcesRepository = repositoryProvider.getCallSynchronizationSourcesRepository();
 		this.callEntitiesRepository = repositoryProvider.getCallEntitiesRepository();
 		this.SSRCRepository = repositoryProvider.getSSRCRepository();
 		this.callNamesRepository = repositoryProvider.getCallNamesRepository();
+		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
 	public CallInitializerTask forCallEntity(CallEntity callEntity) {
@@ -84,8 +85,8 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 	@Override
 	protected UUID perform() throws Throwable {
 //		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
-		try (var lock = this.lockProvider.autoLock(this.getClass().getSimpleName())) {
-			Set<UUID> callUUIDs = this.callFinderTask.forSSRCs(this.SSRCs)
+		try (var lock = this.lockProvider.autoLock(LOCK_NAME)) {
+			Set<UUID> callUUIDs = this.SSRCEntityFinderTask.forSSRCs(this.SSRCs)
 					.forServiceUUID(this.callEntity.serviceUUID)
 					.forCallName(this.callEntity.callName)
 					.withMultipleResultsAllowed(false)
@@ -106,13 +107,21 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 		switch (this.state) {
 			default:
 			case CREATED:
-				this.registerCallEntity();
+				this.callEntitiesRepository.save(this.callEntity.callUUID, this.callEntity);
 				this.state = State.CALL_ENTITY_IS_REGISTERED;
 			case CALL_ENTITY_IS_REGISTERED:
-				this.registerCallName();
+				if (Objects.nonNull(this.callEntity.callName)) {
+					this.callNamesRepository.add(this.callEntity.callName, this.callEntity.callUUID);
+				}
 				this.state = State.CALL_NAME_IS_REGISTERED;
 			case CALL_NAME_IS_REGISTERED:
-				this.registerSSRRCs();
+				Map<String, SynchronizationSourceEntity> synchronizationSourceEntities =
+						this.SSRCs.stream()
+								.collect(Collectors.toMap(
+										ssrc -> SynchronizationSourcesRepository.getKey(this.callEntity.serviceUUID, ssrc),
+										ssrc -> SynchronizationSourceEntity.of(this.callEntity.serviceUUID, ssrc, this.callEntity.callUUID)
+								));
+				this.SSRCRepository.saveAll(synchronizationSourceEntities);
 				this.state = State.SSRCS_ARE_REGISTERED;
 			case SSRCS_ARE_REGISTERED:
 				this.registerCallToSSRCs();
@@ -131,16 +140,18 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 			switch (this.state) {
 				case EXECUTED:
 				case CALL_TO_SSRCS_IS_REGISTERED:
-					this.unregisterCallToSSRCs(t);
+					this.callSynchronizationSourcesRepository.removeAll(this.callEntity.callUUID);
 					this.state = State.SSRCS_ARE_REGISTERED;
 				case SSRCS_ARE_REGISTERED:
 					this.unregisterSSRCs(t);
 					this.state = State.CALL_NAME_IS_REGISTERED;
 				case CALL_NAME_IS_REGISTERED:
-					this.unregisterCallName(t);
+					if (Objects.nonNull(this.callEntity.callName)) {
+						this.callNamesRepository.remove(this.callEntity.callName, this.callEntity.callUUID);
+					}
 					this.state = State.CALL_ENTITY_IS_REGISTERED;
 				case CALL_ENTITY_IS_REGISTERED:
-					this.unregisterCallEntity(t);
+					this.callEntitiesRepository.delete(this.callEntity.callUUID);
 					this.state = State.ROLLEDBACK;
 				case CREATED:
 				case ROLLEDBACK:
@@ -148,41 +159,9 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 					return;
 			}
 		} catch (Throwable another) {
-			logger.error("During rollback an error is occured", another);
+			this.getLogger().error("During rollback an error is occured", another);
 		}
 
-	}
-
-	private void registerCallEntity() {
-		this.callEntitiesRepository.add(this.callEntity.callUUID, this.callEntity);
-	}
-
-	private void unregisterCallEntity(Throwable exceptionInExecution) {
-		this.callEntitiesRepository.delete(this.callEntity.callUUID);
-	}
-
-	private void registerCallName() {
-		if (Objects.isNull(this.callEntity.callName)) {
-			return;
-		}
-		this.callNamesRepository.add(this.callEntity.callName, this.callEntity.callUUID);
-	}
-
-	private void unregisterCallName(Throwable exceptionInExecution) {
-		if (Objects.isNull(this.callEntity.callName)) {
-			return;
-		}
-		this.callNamesRepository.remove(this.callEntity.callName, this.callEntity.callUUID);
-	}
-
-	private void registerSSRRCs() {
-		Map<String, SynchronizationSourceEntity> synchronizationSourceEntities =
-				this.SSRCs.stream()
-						.collect(Collectors.toMap(
-								ssrc -> SynchronizationSourcesRepository.getKey(this.callEntity.serviceUUID, ssrc),
-								ssrc -> SynchronizationSourceEntity.of(this.callEntity.serviceUUID, ssrc, this.callEntity.callUUID)
-						));
-		this.SSRCRepository.saveAll(synchronizationSourceEntities);
 	}
 
 	private void unregisterSSRCs(Throwable exceptionInExecution) {
@@ -199,10 +178,6 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 						.collect(Collectors.toSet());
 		this.callSynchronizationSourcesRepository
 				.addAll(this.callEntity.callUUID, synchronizationSourceKeys);
-	}
-
-	private void unregisterCallToSSRCs(Throwable exceptionInExecution) {
-		this.callSynchronizationSourcesRepository.removeAll(this.callEntity.callUUID);
 	}
 
 	@Override

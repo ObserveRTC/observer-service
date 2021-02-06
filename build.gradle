@@ -3,7 +3,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "2.6.0"
 }
 
-version = "0.6.0"
+version = "0.6.5"
 group = "org.observertc.webrtc.observer"
 
 repositories {
@@ -38,6 +38,8 @@ dependencies {
 //    implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("io.micronaut.jmx:micronaut-jmx")
 
+    implementation("io.micronaut.graphql:micronaut-graphql:2.2.0")
+
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
 
@@ -65,6 +67,19 @@ java {
     targetCompatibility = JavaVersion.toVersion("11")
 }
 
+task createProperties {
+    doLast {
+        new File("$buildDir/resources/main/version.properties").withWriter { w ->
+            Properties p = new Properties()
+            p['version'] = project.version.toString()
+            p.store w, null
+        }
+    }
+}
+
+classes {
+    dependsOn createProperties
+}
 tasks {
 
     dockerBuild{

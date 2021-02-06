@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -47,7 +47,6 @@ class PeerConnectionJoinerTaskTest {
         });
     }
 
-    @Test
     public void shouldUnRegisterCall() {
         // Given
         PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);

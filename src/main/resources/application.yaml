@@ -9,6 +9,7 @@ micronaut:
         descriptions: true
         step: PT1M
   security:
+    enabled: false
     authentication: bearer
     token:
       jwt:
@@ -23,6 +24,10 @@ micronaut:
 #  ssl:
 #    enabled: true
 #    buildSelfSigned: true
+---
+graphql:
+  graphiql:
+    enabled: false
 ---
 endpoints:
   all:
@@ -41,26 +46,45 @@ kafka:
 observer:
   connectors:
     - name: "ReportSinkLogger"
-      transformations:
-        - type: Filter
-          config:
-            serviceUUIDs:
-              including:
-                - "86ed98c6-b001-48bb-b31e-da638b979c72"
+      buffer:
+        maxItems: 100
+        maxWaitingTimeInS: 10
       sink:
         type: LoggerSink
         config:
           printReports: False
+  sentinels:
+    - name: "example-sentinel"
+      callFilters:
+        - "example-service-name 1"
+      addresses:
+        - "192.168.1.1"
+  services:
+    - name: "example-service-name"
+      uuids:
+        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+  ipAddressConverter:
+    enabled: False
+  monitors:
+    callsMonitor:
+      enabled: true
+      reportPeriodInS: 300
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
   evaluators:
+    impairablePCsCallName: "impairable-peer-connections-default-call-name"
+    observedPCSBufferMaxTimeInS: 10
+    observedPCSBufferMaxItemNums: 10000
+    peerConnectionMaxIdleTimeInS: 15
+    reportMonitor:
+      enabled: true
+      tagByServiceName: true
+      tagByServiceUUID: false
+      tagByType: false
     pcObserver:
       peerConnectionMaxIdleTimeInS: 300
       mediaStreamUpdatesFlushInS: 15
       mediaStreamsBufferNums: 0
-    conurrentStreams:
-      enabled: true
-      threshold: 100
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True

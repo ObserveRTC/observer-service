@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
@@ -20,9 +21,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
 
@@ -52,6 +55,12 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     @Inject
     NumberConverter numberConverter;
+
+    private final Function<String, String> ipAddressConverter;
+
+    public ObservedPCSEvaluator(IPAddressConverterProvider ipAddressConverterProvider) {
+        this.ipAddressConverter = ipAddressConverterProvider.provide();
+    }
 
 
     @PostConstruct
@@ -138,6 +147,8 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
         final BiConsumer<ObservedPCS, PeerConnectionSample.MediaSourceStats> mediaSourceReporter = this.makeMediaSourceReporter();
         final BiConsumer<ObservedPCS, PeerConnectionSample.UserMediaError> userMediaErrorReporter = this.makeUserMediaErrorReporter();
         final BiConsumer<ObservedPCS, PeerConnectionSample.ExtensionStat> extensionStatsReporter = this.makeExtensionStatsReporter();
+        final BiConsumer<ObservedPCS, PeerConnectionSample.MediaDeviceInfo> mediaDeviceReporter = this.makeMediaDeviceReporter();
+        final BiConsumer<ObservedPCS, PeerConnectionSample.ClientDetails> clientDetailsReporter = this.makeClientDetailsReporter();
         return new PeerConnectionSampleVisitor<ObservedPCS>() {
             @Override
             public void visitExtensionStat(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ExtensionStat subject) {
@@ -188,6 +199,100 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
             public void visitICERemoteCandidate(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
                 ICERemoteCandidateReporter.accept(obj, subject);
             }
+
+            @Override
+            public void visitMediaDeviceInfo(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.MediaDeviceInfo deviceInfo) {
+                mediaDeviceReporter.accept(obj, deviceInfo);
+            }
+
+            @Override
+            public void visitClientDetails(ObservedPCS obj, PeerConnectionSample sample, PeerConnectionSample.ClientDetails clientDetails) {
+                clientDetailsReporter.accept(obj, clientDetails);
+            }
+        };
+    }
+
+    private BiConsumer<ObservedPCS, PeerConnectionSample.ClientDetails> makeClientDetailsReporter() {
+        if (!this.config.enabled || !this.config.clientDetails) {
+            return (observedPCS, subject) -> {
+
+            };
+        }
+
+        return (observedPCS, subject) -> {
+            String browserName = null;
+            String browserVersion = null;
+            if (Objects.nonNull(subject.browser)) {
+                browserName = subject.browser.name;
+                browserVersion = subject.browser.version;
+            }
+            String osName = null;
+            String osVersion = null;
+            if (Objects.nonNull(subject.os)) {
+                osName = subject.os.name;
+                osVersion = subject.os.version;
+            }
+
+            String engineName = null;
+            String engineVersion = null;
+            if (Objects.nonNull(subject.engine)) {
+                engineName = subject.engine.name;
+                engineVersion = subject.engine.version;
+            }
+
+            String platformModel = null;
+            String platformType = null;
+            String platformVendor = null;
+            if (Objects.nonNull(subject.platform)) {
+                platformModel = subject.platform.model;
+                platformType = subject.platform.type;
+                platformVendor = subject.platform.vendor;
+            }
+            PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+            ClientDetails clientDetails = ClientDetails.newBuilder()
+                    .setMediaUnitId(observedPCS.mediaUnitId)
+                    .setCallName(peerConnectionSample.callId)
+                    .setUserId(peerConnectionSample.userId)
+                    .setBrowserId(peerConnectionSample.browserId)
+                    .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+                    .setBrowserName(browserName)
+                    .setBrowserVersion(browserVersion)
+                    .setOsName(osName)
+                    .setOsVersion(osVersion)
+                    .setEngineName(engineName)
+                    .setEngineVersion(engineVersion)
+                    .setPlatformModel(platformModel)
+                    .setPlatformType(platformType)
+                    .setPlatformVendor(platformVendor)
+                    .build();
+            Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.CLIENT_DETAILS, clientDetails);
+            this.extensionReports.onNext(reportRecord);
+        };
+
+    }
+
+    private BiConsumer<ObservedPCS, PeerConnectionSample.MediaDeviceInfo> makeMediaDeviceReporter() {
+        if (!this.config.enabled || !this.config.mediaDevices) {
+            return (observedPCS, subject) -> {
+
+            };
+        }
+
+        return (observedPCS, subject) -> {
+            PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+            MediaDevice mediaDeviceInfo = MediaDevice.newBuilder()
+                    .setMediaUnitId(observedPCS.mediaUnitId)
+                    .setCallName(peerConnectionSample.callId)
+                    .setUserId(peerConnectionSample.userId)
+                    .setBrowserId(peerConnectionSample.browserId)
+                    .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+                    .setDeviceId(subject.deviceId)
+                    .setGroupId(subject.groupId)
+                    .setKind(enumConverter.toMediaDeviceKind(subject.kind))
+                    .setLabel(subject.label)
+                    .build();
+            Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.MEDIA_DEVICE, mediaDeviceInfo);
+            this.extensionReports.onNext(reportRecord);
         };
     }
 
@@ -356,7 +461,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
         return (observedPCS, subject) -> {
             PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
-            String ipLSH = subject.ip;
+            String ipLSH = ipAddressConverter.apply(subject.ip);
             ICELocalCandidate localCandidate = ICELocalCandidate.newBuilder()
                     .setMediaUnitId(observedPCS.mediaUnitId)
                     .setCallName(peerConnectionSample.callId)
@@ -387,7 +492,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
         }
         return (observedPCS, subject) -> {
             PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
-            String ipLSH = subject.ip;
+            String ipLSH = ipAddressConverter.apply(subject.ip);
             ICERemoteCandidate remoteCandidate = ICERemoteCandidate.newBuilder()
                     .setMediaUnitId(observedPCS.mediaUnitId)
                     .setCallName(peerConnectionSample.callId)
