@@ -64,6 +64,7 @@ public class SentinelCallParticipantsResolver implements BiFunction<String, Inte
                             return parts[0].equals(serviceName);
                         }
                     });
+                    logger.info("Sentinel filter for {} is registered. serviceName: {}, number of minimum participant is 1", entity.name, parts[0]);
                     continue;
                 }
                 try {
@@ -74,6 +75,7 @@ public class SentinelCallParticipantsResolver implements BiFunction<String, Inte
                             return parts[0].equals(serviceName) &&  minParticipantNum <= participantsNum;
                         }
                     });
+                    logger.info("Sentinel filter for {} is registered. serviceName: {}, number of minimum participant is {}", entity.name, parts[0], minParticipantNum);
                 }catch (Throwable t) {
                     logger.warn("Exception during fetching ", t);
                 }

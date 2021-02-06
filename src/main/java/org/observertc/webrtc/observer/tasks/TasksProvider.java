@@ -49,9 +49,6 @@ public class TasksProvider {
 	@Inject
 	Provider<PeerConnectionDetailsFinderTask> peerConnectionDetailsFinderTaskProvider;
 
-	@Inject
-	Provider<PeerConnectionsTrafficUpdater> peerConnectionsTrafficUpdaterProvider;
-
 	public TasksProvider() {
 
 	}
@@ -90,10 +87,6 @@ public class TasksProvider {
 
 	public PeerConnectionDetailsFinderTask getPeerConnectionDetailsFinderTask() {
 		return this.peerConnectionDetailsFinderTaskProvider.get();
-	}
-
-	public PeerConnectionsTrafficUpdater getPeerConnectionsTrafficUpdater() {
-		return this.peerConnectionsTrafficUpdaterProvider.get();
 	}
 
 }

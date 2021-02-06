@@ -233,7 +233,7 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
 
             this.packetLost = meterRegistry.gauge("sentinel_packetLost_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
             this.streamNums = meterRegistry.gauge("sentinel_streamNums_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
-            this.userMediaErrors = meterRegistry.gauge("sentinel_streamNums_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
+            this.userMediaErrors = meterRegistry.gauge("sentinel_userMediaErrors_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
         }
     }
 }

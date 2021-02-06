@@ -109,11 +109,6 @@ public class PeerConnectionEntity implements VersionedPortable {
 	public Set<String> localAddresses = new HashSet<>();
 	public Set<String> remoteAddresses = new HashSet<>();
 
-	@Deprecated
-	public PCTrafficType trafficType = PCTrafficType.UNKNOWN;
-
-
-
 	@Override
 	public int getFactoryId() {
 		return EntityFactory.FACTORY_ID;

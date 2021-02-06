@@ -27,7 +27,7 @@ micronaut:
 ---
 graphql:
   graphiql:
-    enabled: true
+    enabled: false
 ---
 endpoints:
   all:
