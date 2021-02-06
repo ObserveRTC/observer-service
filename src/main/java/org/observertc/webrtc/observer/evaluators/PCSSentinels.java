@@ -226,14 +226,14 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
 
 
         public Metrics(String sentinelName) {
-            this.RTT = DistributionSummary.builder("rtt_stats")
+            this.RTT = DistributionSummary.builder("sentinel_rtt_stats")
                     .baseUnit(BaseUnits.MILLISECONDS)
-                    .tag("sentinel", sentinelName)
+                    .tag("sentinelName", sentinelName)
                     .register(meterRegistry);
 
-            this.packetLost = meterRegistry.gauge("packetLost_stats", List.of(Tag.of("sentinel", sentinelName)), new AtomicInteger(0));
-            this.streamNums = meterRegistry.gauge("streamNums_stats", List.of(Tag.of("sentinel", sentinelName)), new AtomicInteger(0));
-            this.userMediaErrors = meterRegistry.gauge("streamNums_stats", List.of(Tag.of("sentinel", sentinelName)), new AtomicInteger(0));
+            this.packetLost = meterRegistry.gauge("sentinel_packetLost_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
+            this.streamNums = meterRegistry.gauge("sentinel_streamNums_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
+            this.userMediaErrors = meterRegistry.gauge("sentinel_streamNums_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
         }
     }
 }
