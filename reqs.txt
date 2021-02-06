@@ -1,0 +1,32 @@
+1. No "traffic" within 6 hours. Successful peerConnections is probably the best proxy for traffic. This is meant to show if there is something seriously wrong with the system. (Vidhealth)
+2. Concurrent streams on a single mediaUnit exceeds 100. This is mean to show where / when more capacity might be needed. (Vidhealth)
+3. Average packet loss across all connections exceeds 5% for 60 seconds - this is meant to show a networking or server issue impacting users. (all)
+4. RTT increased by more than 20% in a 2 hour window during normal "business hours" - this is meant to show a networking or server issue impacting users. Needs to be filtered in a way that a couple bad call in the middle of the night does not trigger the alert. (all)
+5. Users with media errors increased more than 20% in a 1-hour window during normal "business hours". This is meant to show a JS config issue. (Meetaway)
+
+1. traffics buckets for service/mediaunit -> receivedSamples
+2. get concurrent streams for a specified address -> addressStats
+3.
+queries:
+how many peer connection we have now?
+how many concurrent stream is going through a specific address
+
+mediaServerStats: A configured address, which will be watched, reported and queried.
+ - RTTStats
+ - callStats
+ - streamStats
+ - pcStats
+ - packetLossStats
+ - usermediaErrorStats
+ - samplesStats
+
+
+
+micrometer histograms:
+RTTStats
+callStats -> CallStatSentinel
+pcStats ->
+callStats ->
+addressStats -> requires config.
+mediaUnitStats -> MediaServerSentinel
+serviceStats ->

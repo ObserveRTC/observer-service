@@ -74,6 +74,30 @@ public interface Repository<K, V> {
 
 
 	/**
+	 * Saves the entity to the map if it has not been saved before, and returns with the value associated with the key
+	 *
+	 * @param key   the key we save the entity for
+	 * @param value
+	 * @param <R>   The type of the key, extending the type of the key of the repository
+	 * @param <U>   the type of the value extending the type of the value of the repository
+	 * @return An {@link Optional} holding the value or an empty optional
+	 */
+	<R extends K, U extends V> Optional<V> saveIfAbsent(@NotNull R key, @NotNull U value);
+
+	/**
+	 * The reactiveX version of the {@link this#saveIfAbsent(Object, Object)}
+	 *
+	 * @param key   the key we save the entity for if it is absent
+	 * @param value
+	 * @param <R>   The type of the key, extending the type of the key of the repository
+	 * @param <U>   the type of the value extending the type of the value of the repository
+	 * @return
+	 */
+	default <R extends K, U extends V> Maybe<V> rxSaveIfAbsent(@NotNull R key, @NotNull U value) {
+		return Maybe.fromOptional(this.saveIfAbsent(key, value));
+	}
+
+	/**
 	 * Saves the entity to the map, and returns with its previous value
 	 * if it had
 	 *
@@ -157,6 +181,21 @@ public interface Repository<K, V> {
 	}
 
 	/**
+	 * Gets all entries stored in all endpoints
+	 *
+	 * @return
+	 */
+	Map<K, V> getAllEntries();
+
+	/**
+	 * The RXJava version to get all entries
+	 * @return
+	 */
+	default Observable<Map.Entry<K, V>> rxGetAllEntries() {
+		return Observable.fromIterable(this.getAllEntries().entrySet());
+	}
+
+	/**
 	 * Gets all entries stored in the local endpoint
 	 *
 	 * @return
@@ -169,6 +208,21 @@ public interface Repository<K, V> {
 	 */
 	default Observable<Map.Entry<K, V>> rxGetLocalEntries() {
 		return Observable.fromIterable(this.getLocalEntries().entrySet());
+	}
+
+	/**
+	 * Gets all keys stored in the local endpoint
+	 *
+	 * @return
+	 */
+	Set<K> getTotalKeySet();
+
+	/**
+	 * The RXJava version to get all local keyset
+	 * @return
+	 */
+	default Observable<K> rxGetTotalKeySet() {
+		return Observable.fromIterable(this.getTotalKeySet());
 	}
 
 	/**

@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.dto;
 
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 
-public class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSampleVisitor<T> {
+public abstract class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSampleVisitor<T> {
 
 
 	@Override
@@ -41,27 +41,43 @@ public class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSam
 
 	}
 
+	@Override
 	public void visitRemoteInboundRTP(T obj, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject) {
 
 	}
 
+	@Override
 	public void visitInboundRTP(T obj, PeerConnectionSample sample, PeerConnectionSample.InboundRTPStreamStats subject) {
 
 	}
 
+	@Override
 	public void visitOutboundRTP(T obj, PeerConnectionSample sample, PeerConnectionSample.OutboundRTPStreamStats subject) {
 
 	}
 
+	@Override
 	public void visitICECandidatePair(T obj, PeerConnectionSample sample, PeerConnectionSample.ICECandidatePair subject) {
 
 	}
 
+	@Override
 	public void visitICELocalCandidate(T obj, PeerConnectionSample sample, PeerConnectionSample.ICELocalCandidate subject) {
 
 	}
 
+	@Override
 	public void visitICERemoteCandidate(T obj, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
+
+	}
+
+	@Override
+	public void visitMediaDeviceInfo(T obj, PeerConnectionSample sample, PeerConnectionSample.MediaDeviceInfo deviceInfo) {
+
+	}
+
+	@Override
+	public void visitClientDetails(T obj, PeerConnectionSample sample, PeerConnectionSample.ClientDetails clientDetails) {
 
 	}
 

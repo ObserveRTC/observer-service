@@ -65,6 +65,11 @@ public class PeerConnectionSample {
 	@JsonProperty("userMediaErrors")
 	public UserMediaError[] userMediaErrors;
 
+	@JsonProperty("deviceList")
+	public MediaDeviceInfo[] deviceList;
+
+	@JsonProperty("clientDetails")
+	public ClientDetails clientDetails;
 
 	public static class UserMediaError {
 		@JsonProperty("message")
@@ -80,33 +85,16 @@ public class PeerConnectionSample {
 		public String payload;
 	}
 
-	@Schema(title = "RTC Client Device list",
-			nullable = true,
-			description = "Custom defined measurements attached to peer connection sample")
-	@JsonProperty("deviceList")
-	public MediaDeviceInfo[] deviceList;
-
-	@Schema(title = "RTC Client browser details",
-			nullable = true,
-			description = "Custom defined measurements attached to peer connection sample")
-	@JsonProperty("clientDetails")
-	public ClientDetails clientDetails;
-
-	@Schema(description = "Client media device details. Taken from https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo")
 	public static class MediaDeviceInfo {
-		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId")
 		@JsonProperty("deviceId")
 		public String deviceId;
 
-		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/groupId")
 		@JsonProperty("groupId")
 		public String groupId;
 
-		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/kind")
 		@JsonProperty("kind")
 		public MediaDeviceKind kind;
 
-		@Schema(description = "Map the value of https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label")
 		@JsonProperty("label")
 		public String label;
 	}
@@ -906,7 +894,6 @@ public class PeerConnectionSample {
 
 	}
 
-	@Schema(description = "General browser details of a client to understand more about about the platform, browser version where webrtc is running")
 	public static class ClientDetails {
 		@JsonProperty("browser")
 		public BrowserDetails browser;
@@ -918,7 +905,6 @@ public class PeerConnectionSample {
 		public EngineDetails engine;
 	}
 
-	@Schema(description = "Base details for browser. It will later extended by browser and engine details")
 	public static class BaseBrowserDetails {
 		@JsonProperty("name")
 		public String name;
@@ -926,7 +912,6 @@ public class PeerConnectionSample {
 		public String version;
 	}
 
-	@Schema(description = "Platform related information of a client")
 	public static class PlatformDetails {
 		@JsonProperty("type")
 		public String type;
@@ -936,13 +921,11 @@ public class PeerConnectionSample {
 		public String model;
 	}
 
-	@Schema(description = "OS specific details of a client")
 	public static class OSDetails extends BaseBrowserDetails {
 		@JsonProperty("versionName")
 		public String versionName;
 	}
 
-	@Schema(description = "Browser detail specific details of a client")
 	public static class BrowserDetails extends BaseBrowserDetails {
 	}
 

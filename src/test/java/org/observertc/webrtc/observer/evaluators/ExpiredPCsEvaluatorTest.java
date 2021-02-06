@@ -3,10 +3,10 @@ package org.observertc.webrtc.observer.evaluators;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.models.CallEntity;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.*;
+import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.repositories.*;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 

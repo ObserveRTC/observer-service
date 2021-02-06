@@ -24,11 +24,12 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.Task;
-import org.observertc.webrtc.observer.models.CallEntity;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.monitors.ObserverMetrics;
+import org.observertc.webrtc.observer.repositories.resolvers.SentinelCallParticipantsResolver;
 import org.observertc.webrtc.observer.tasks.*;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_
 public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ActivePCsEvaluator.class);
-
+	private final Subject<Map.Entry<UUID, String>> sentinelSignaledPCs = PublishSubject.create();
 	private final Subject<Report> reports = PublishSubject.create();
 	private final FlawMonitor flawMonitor;
 	private final TasksProvider tasksProvider;
@@ -65,6 +66,9 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	@Inject
 	ObserverConfig.EvaluatorsConfig config;
 
+	@Inject
+	SentinelCallParticipantsResolver sentinelCallParticipantsResolver;
+
 	public ActivePCsEvaluator(
 			MonitorProvider monitorProvider,
 			TasksProvider tasksProvider
@@ -74,6 +78,9 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		this.tasksProvider = tasksProvider;
 	}
 
+	public Observable<Map.Entry<UUID, String>> getObservableSentinelSignals() {
+		return this.sentinelSignaledPCs;
+	}
 	public Observable<Report> getObservableReports() {
 		return this.reports;
 	}
@@ -170,8 +177,10 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 			if (0 < callUUIDs.size()) {
 				UUID callUUID = callUUIDs.stream().findFirst().get();
 				this.addNewPeerConnection(callUUID, pcState);
+				this.signalSentinels(callUUID, pcState.serviceName);
 				continue;
 			}
+
 			if (pcDidNotHaveCalls.contains(pcState.peerConnectionUUID)) {
 				logger.warn("PCState {} has already seen in the process at newPeerConnections and tried to registered to a enw call. Now this state is dropped", pcState);
 				continue;
@@ -325,6 +334,37 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				.build();
 
 		this.send(pcEntity.peerConnectionUUID, report);
+	}
+
+	private void signalSentinels(UUID callUUID, String serviceName) {
+		CallDetailsFinderTask callDetailsFinderTask = this.tasksProvider.getCallDetailsFinderTask();
+		callDetailsFinderTask
+				.forCallUUID(callUUID)
+				.collectPeerConnectionUUIDs(true)
+				.collectSynchronizationSourceKeys(false)
+				.withFlawMonitor(this.flawMonitor)
+				.withLogger(logger)
+				.execute()
+		;
+
+		if (!callDetailsFinderTask.succeeded()) {
+			return;
+		}
+		Optional<CallDetailsFinderTask.Result> callDetailsHolder = callDetailsFinderTask.getResult();
+		if (!callDetailsHolder.isPresent()) {
+			return;
+		}
+		CallDetailsFinderTask.Result callDetails = callDetailsHolder.get();
+
+		Optional<String> sentinelNameHolder = sentinelCallParticipantsResolver.apply(serviceName, callDetails.peerConnectionUUIDs.size());
+
+		if (!sentinelNameHolder.isPresent()) {
+			return;
+		}
+		callDetails.peerConnectionUUIDs.stream().forEach(pcUUID -> {
+			this.sentinelSignaledPCs.onNext(Map.entry(pcUUID, sentinelNameHolder.get()));
+		});
+
 	}
 
 	private void send(UUID sendKey, Report report) {

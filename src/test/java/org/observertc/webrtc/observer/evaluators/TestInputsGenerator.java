@@ -17,9 +17,9 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import org.jeasy.random.EasyRandom;
-import org.observertc.webrtc.observer.models.CallEntity;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.models.SynchronizationSourceEntity;
+import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
 import org.observertc.webrtc.schemas.reports.Report;

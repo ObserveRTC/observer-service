@@ -27,14 +27,12 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import io.reactivex.rxjava3.core.Observable;
-import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
-import org.observertc.webrtc.observer.monitors.CountInvocations;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.repositories.resolvers.ServiceNameResolver;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
@@ -61,7 +59,6 @@ public class WebsocketPCSampleV20200114 {
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSampleV20200114.class);
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
-	private final ServicesRepository servicesRepository;
 
 	@Inject
 	Pipeline pipeline;
@@ -69,13 +66,15 @@ public class WebsocketPCSampleV20200114 {
 	@Inject
 	MeterRegistry meterRegistry;
 
+	@Inject
+	ServiceNameResolver serviceNameResolver;
+
 	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
 			MonitorProvider monitorProvider,
 			ServicesRepository servicesRepository
 	) {
 		this.objectReader = objectMapper.reader();
-		this.servicesRepository = servicesRepository;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
 
 	}
@@ -87,7 +86,7 @@ public class WebsocketPCSampleV20200114 {
 			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
 			if (serviceUUIDHolder.isPresent()) {
 				UUID serviceUUID = serviceUUIDHolder.get();
-				service = this.servicesRepository.getServiceName(serviceUUID);
+				service = this.serviceNameResolver.apply(serviceUUID);
 			} else {
 				service = serviceUUIDStr;
 			}
@@ -113,7 +112,7 @@ public class WebsocketPCSampleV20200114 {
 			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
 			if (serviceUUIDHolder.isPresent()) {
 				UUID serviceUUID = serviceUUIDHolder.get();
-				service = this.servicesRepository.getServiceName(serviceUUID);
+				service = this.serviceNameResolver.apply(serviceUUID);
 			} else {
 				service = serviceUUIDStr;
 			}
@@ -146,7 +145,7 @@ public class WebsocketPCSampleV20200114 {
 			return;
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
-		String serviceName = this.servicesRepository.getServiceName(serviceUUID);
+		String serviceName = this.serviceNameResolver.apply(serviceUUID);
 		try {
 			this.meterRegistry.counter(
 					"observertc_pcsamples",

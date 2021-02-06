@@ -3,7 +3,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "2.6.0"
 }
 
-version = "0.6.2"
+version = "0.6.5"
 group = "org.observertc.webrtc.observer"
 
 repositories {
@@ -37,6 +37,8 @@ dependencies {
     implementation("io.micronaut.rxjava3:micronaut-rxjava3")
 //    implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("io.micronaut.jmx:micronaut-jmx")
+
+    implementation("io.micronaut.graphql:micronaut-graphql:2.2.0")
 
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")

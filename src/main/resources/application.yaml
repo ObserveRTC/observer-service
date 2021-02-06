@@ -9,6 +9,7 @@ micronaut:
         descriptions: true
         step: PT1M
   security:
+    enabled: false
     authentication: bearer
     token:
       jwt:
@@ -23,6 +24,10 @@ micronaut:
 #  ssl:
 #    enabled: true
 #    buildSelfSigned: true
+---
+graphql:
+  graphiql:
+    enabled: true
 ---
 endpoints:
   all:
@@ -48,7 +53,18 @@ observer:
         type: LoggerSink
         config:
           printReports: False
-
+  sentinels:
+    - name: "example-sentinel"
+      callFilters:
+        - "example-service-name 1"
+      addresses:
+        - "192.168.1.1"
+  services:
+    - name: "example-service-name"
+      uuids:
+        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+  ipAddressConverter:
+    enabled: False
   monitors:
     callsMonitor:
       enabled: true
@@ -60,7 +76,6 @@ observer:
     observedPCSBufferMaxTimeInS: 10
     observedPCSBufferMaxItemNums: 10000
     peerConnectionMaxIdleTimeInS: 15
-
     reportMonitor:
       enabled: true
       tagByServiceName: true

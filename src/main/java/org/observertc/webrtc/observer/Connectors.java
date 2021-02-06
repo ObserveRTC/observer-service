@@ -1,8 +1,8 @@
 package org.observertc.webrtc.observer;
 
 import io.reactivex.rxjava3.annotations.NonNull;
-import org.observertc.webrtc.observer.connector.Connector;
-import org.observertc.webrtc.observer.connector.ConnectorBuilder;
+import org.observertc.webrtc.observer.connectors.Connector;
+import org.observertc.webrtc.observer.connectors.ConnectorBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

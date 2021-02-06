@@ -2,8 +2,8 @@ package org.observertc.webrtc.observer.subscriptions;
 
 import com.hazelcast.nio.serialization.HazelcastSerializationException;
 import io.micronaut.scheduling.annotation.Scheduled;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,8 +49,6 @@ public class RepositoryCleaner {
         } catch (Throwable t) {
             logger.warn("Unexpected error during repository cleaner", t);
         }
-
-
 //        this.run = true;
     }
 }

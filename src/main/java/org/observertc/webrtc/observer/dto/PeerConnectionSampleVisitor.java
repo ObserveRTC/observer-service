@@ -94,6 +94,16 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 				}
 			}
 		}
+
+		if (sample.clientDetails != null) {
+			this.visitClientDetails(obj, sample, sample.clientDetails);
+		}
+
+		if (sample.deviceList != null) {
+			for (PeerConnectionSample.MediaDeviceInfo deviceInfo : sample.deviceList) {
+				this.visitMediaDeviceInfo(obj, sample, deviceInfo);
+			}
+		}
 	}
 
 	void visitExtensionStat(T obj, PeerConnectionSample sample, PeerConnectionSample.ExtensionStat subject);
@@ -116,4 +126,7 @@ public interface PeerConnectionSampleVisitor<T> extends BiConsumer<T, PeerConnec
 
 	void visitICERemoteCandidate(T obj, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject);
 
+	void visitMediaDeviceInfo(T obj, PeerConnectionSample sample, PeerConnectionSample.MediaDeviceInfo deviceInfo);
+
+	void visitClientDetails(T obj, PeerConnectionSample sample, PeerConnectionSample.ClientDetails clientDetails);
 }

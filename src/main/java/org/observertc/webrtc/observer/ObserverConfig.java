@@ -18,7 +18,6 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
-import org.observertc.webrtc.observer.monitors.ReportMonitorConfig;
 
 import javax.validation.constraints.Min;
 import java.util.*;
@@ -34,7 +33,21 @@ public class ObserverConfig {
 
 	public MonitorsConfig monitors;
 
+	public List<SentinelConfig> sentinels = new ArrayList<>();
+
 	public EvaluatorsConfig evaluators;
+
+	public IPAddressConverterConfig ipAddressConverter;
+
+	public List<ServiceConfiguration> services = new ArrayList<>();
+
+	@ConfigurationProperties("ipaddress")
+	public static class IPAddressConverterConfig {
+		public boolean enabled = false;
+		public String algorithm = "SHA-256";
+		public String salt = "mySalt";
+	}
+
 
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
@@ -52,6 +65,13 @@ public class ObserverConfig {
 
 		public Map<String, Object> reportMonitor;
 
+	}
+
+	@EachProperty("sentinels")
+	public static class SentinelConfig {
+		public String name;
+		public List<String> addresses;
+		public List<String> callFilters;
 	}
 
 	@ConfigurationProperties("hazelcast")
@@ -92,12 +112,12 @@ public class ObserverConfig {
 		public boolean reportDetachedPeerConnections = true;
 		public boolean reportObserverEvents = true;
 		public boolean reportExtensions = true;
+		public boolean mediaDevices = true;
+		public boolean clientDetails = true;
 	}
 
-	public List<ServiceMappingConfiguration> serviceMappings = new ArrayList<>();
-
-	@EachProperty("serviceMappings")
-	public static class ServiceMappingConfiguration {
+	@EachProperty("services")
+	public static class ServiceConfiguration {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}

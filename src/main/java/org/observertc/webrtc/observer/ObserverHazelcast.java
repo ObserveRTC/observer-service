@@ -22,7 +22,7 @@ import com.hazelcast.config.YamlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
-import org.observertc.webrtc.observer.models.EntityFactory;
+import org.observertc.webrtc.observer.entities.EntityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

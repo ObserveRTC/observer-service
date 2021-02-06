@@ -17,12 +17,8 @@
 package org.observertc.webrtc.observer.evaluators.valueadapters;
 
 import javax.inject.Singleton;
-import org.observertc.webrtc.schemas.reports.CandidateType;
-import org.observertc.webrtc.schemas.reports.ICEState;
-import org.observertc.webrtc.schemas.reports.MediaType;
-import org.observertc.webrtc.schemas.reports.NetworkType;
-import org.observertc.webrtc.schemas.reports.RTCQualityLimitationReason;
-import org.observertc.webrtc.schemas.reports.TransportProtocol;
+
+import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,6 +114,22 @@ public class EnumConverter {
 			logger.error("Cannot convert from {} of {} to {} so it is UNKNOWN result", sourceStr, source.getClass().getName(),
 					ICEState.class.getName());
 			return ICEState.UNKNOWN;
+		}
+	}
+
+
+	public <S extends Enum> MediaDeviceKind toMediaDeviceKind(S source) {
+		if (source == null) {
+			return MediaDeviceKind.NULL;
+		}
+		String sourceStr = source.name();
+		try {
+			MediaDeviceKind result = MediaDeviceKind.valueOf(sourceStr);
+			return result;
+		} catch (Exception ex) {
+			logger.error("Cannot convert from {} of {} to {} so it is UNKNOWN result", sourceStr, source.getClass().getName(),
+					ICEState.class.getName());
+			return MediaDeviceKind.UNKNOWN;
 		}
 	}
 

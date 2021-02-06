@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.connector.Connector;
+import org.observertc.webrtc.observer.connectors.Connector;
 import org.observertc.webrtc.observer.monitors.CounterMonitorProvider;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class Pipeline {
-    public static final int REPORT_VERSION_NUMBER = 1;
+    public static final int REPORT_VERSION_NUMBER = 2;
     private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
     private final Subject<Report> reports = PublishSubject.create();
 
@@ -56,10 +56,7 @@ public class Pipeline {
     ObserverConfig.EvaluatorsConfig evaluatorsConfig;
 
     @Inject
-    PCTrafficObserver PCTrafficObserver;
-
-    @Inject
-    PCTrafficEvaluator PCTrafficEvaluator;
+    PCSSentinels PCSSentinels;
 
     public void inputUserMediaError(ObservedPCS observedPCS) {
         this.observedPCSEvaluator.onNext(observedPCS);
@@ -75,15 +72,16 @@ public class Pipeline {
                 .share();
 
         samplesBuffer
-                .subscribe(this.PCTrafficObserver);
-
-        this.PCTrafficObserver
-                .observablePCConnectionStates()
-                .buffer(30, TimeUnit.SECONDS)
-                .subscribe(this.PCTrafficEvaluator);
+                .subscribe(this.PCSObserver);
 
         samplesBuffer
-                .subscribe(this.PCSObserver);
+                .subscribe(this.PCSSentinels);
+
+        this.PCSObserver
+                .getObservableSentinelSignals().subscribe(this.PCSSentinels.getMessageObserver());
+
+        this.activePCsEvaluator
+                .getObservableSentinelSignals().subscribe(this.PCSSentinels.getMessageObserver());
 
         this.PCSObserver
                 .getObservableActivePCs()

@@ -16,8 +16,8 @@
 
 package org.observertc.webrtc.observer.tasks;
 
-import org.observertc.webrtc.observer.models.WeakLockEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.WeakLocksRepository;
+import org.observertc.webrtc.observer.entities.WeakLockEntity;
+import org.observertc.webrtc.observer.repositories.WeakLocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +40,11 @@ class WeakSpinLock implements AutoCloseable {
 	}
 
 	private boolean tryLock(AtomicReference<WeakLockEntity> actualHolder) {
-        WeakLockEntity actual = this.weakLocksRepository.saveIfAbsent(lockEntity.name, lockEntity);
-        if (Objects.isNull(actual)) {
+        Optional<WeakLockEntity> lockResult = this.weakLocksRepository.saveIfAbsent(lockEntity.name, lockEntity);
+        if (!lockResult.isPresent()) {
             return true;
         }
+        WeakLockEntity actual = lockResult.get();
         if (this.lockEntity.equals(actual)) {
             return true;
         }
@@ -54,6 +55,7 @@ class WeakSpinLock implements AutoCloseable {
     }
 
 	public void lock(int maxWaitingTimeInS) {
+        int consecutiveNoActualLockCounter = 0;
         Random random = new Random();
         AtomicReference<WeakLockEntity> actualHolder = new AtomicReference<>();
         if (this.tryLock(actualHolder)) {
@@ -73,6 +75,16 @@ class WeakSpinLock implements AutoCloseable {
             }
 
             actual = actualHolder.get();
+            if (Objects.isNull(actual)) {
+                logger.warn("There was no actual lock registered in the database, although the locking mechanism is failed. consecutiveNoActualLockCounter is {}", consecutiveNoActualLockCounter);
+                if (++consecutiveNoActualLockCounter < 3) {
+                    continue;
+                }
+                logger.warn("The number of tries to retrieve actual lock registered is {}, and now we forcefully save our ones as no alternative has given at this point.");
+                break;
+            } else {
+                consecutiveNoActualLockCounter = 0;
+            }
 
             if (Objects.isNull(actual.created)) {
                 logger.warn("The actual lock {} does not have a created timestamp, therefore the lock is overridden and forced to this one {} ",
@@ -83,6 +95,7 @@ class WeakSpinLock implements AutoCloseable {
         } while(Duration.between(actual.created, Instant.now()).getSeconds() < maxWaitingTimeInS);
 
         if (Objects.isNull(actual)) {
+            this.weakLocksRepository.save(this.lockEntity.name, this.lockEntity);
             return;
         }
         if (this.lockEntity.equals(actual)) {

@@ -18,18 +18,16 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.models.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.hazelcast.CallPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.MediaUnitPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.hazelcast.RepositoryProvider;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.MediaUnitPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Adds a Peer Connection to the distributed database, and returns completed when its done.
@@ -75,13 +73,13 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		switch (this.state) {
 			default:
 			case CREATED:
-				this.registerPeerConnection();
+				this.peerConnectionsRepository.save(this.entity.peerConnectionUUID, this.entity);
 				this.state = State.PC_IS_REGISTERED;
 			case PC_IS_REGISTERED:
-				this.addCallToPeerConnection();
+				this.callPeerConnectionsRepository.add(this.entity.callUUID, this.entity.peerConnectionUUID);
 				this.state = State.PC_IS_ADDED_TO_CALL;
 			case PC_IS_ADDED_TO_CALL:
-				this.addPcToMediaUnit();
+				this.mediaUnitPeerConnectionsRepository.add(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
 				this.state = State.PC_IS_ADDED_TO_MEDIAUNIT;
 			case PC_IS_ADDED_TO_MEDIAUNIT:
 				this.state = State.EXECUTED;
@@ -97,13 +95,13 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 			switch (this.state) {
 				case EXECUTED:
 				case PC_IS_ADDED_TO_MEDIAUNIT:
-					this.removePcFromMediaUnit(t);
+					this.mediaUnitPeerConnectionsRepository.remove(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
 					this.state = State.PC_IS_ADDED_TO_CALL;
 				case PC_IS_ADDED_TO_CALL:
-					this.unregisterPeerConnection(t);
+					this.callPeerConnectionsRepository.remove(this.entity.callUUID, this.entity.peerConnectionUUID);
 					this.state = State.PC_IS_REGISTERED;
 				case PC_IS_REGISTERED:
-					this.removeCallToPeerConnection(t);
+					this.peerConnectionsRepository.rxDelete(this.entity.peerConnectionUUID);
 					this.state = State.ROLLEDBACK;
 				case CREATED:
 				case ROLLEDBACK:
@@ -114,41 +112,6 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 			this.getLogger().error("During rollback an error is occured", another);
 		}
 
-	}
-
-	private void addPcToMediaUnit() {
-		this.mediaUnitPeerConnectionsRepository.add(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
-	}
-
-	private void removePcFromMediaUnit(Throwable exceptionInExecution) {
-		try {
-			this.mediaUnitPeerConnectionsRepository.remove(this.entity.mediaUnitId, this.entity.peerConnectionUUID);
-		} catch (Exception ex) {
-			this.getLogger().error("During rollback the following error occured", ex);
-		}
-	}
-
-	private void addCallToPeerConnection() {
-		this.callPeerConnectionsRepository.add(this.entity.callUUID, this.entity.peerConnectionUUID);
-	}
-
-	private void removeCallToPeerConnection(Throwable exceptionInExecution) {
-		try {
-			this.callPeerConnectionsRepository.remove(this.entity.callUUID, this.entity.peerConnectionUUID);
-		} catch (Exception ex2) {
-			this.getLogger().error("During rollback the following error occured", ex2);
-		}
-	}
-
-	private void registerPeerConnection() {
-		this.peerConnectionsRepository.save(this.entity.peerConnectionUUID, this.entity);
-	}
-	private void unregisterPeerConnection(Throwable exceptionInExecution) {
-		try {
-			this.peerConnectionsRepository.rxDelete(this.entity.peerConnectionUUID);
-		} catch (Exception ex) {
-			this.getLogger().error("During rollback the following error occured", ex);
-		}
 	}
 
 	@Override

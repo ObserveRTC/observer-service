@@ -17,42 +17,59 @@
 package org.observertc.webrtc.observer.repositories;
 
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.entities.ServiceEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.Queue;
 
 @Singleton
-public class ServicesRepository {
+public class ServicesRepository extends MapRepositoryAbstract<String, ServiceEntity> {
 	private static final Logger logger = LoggerFactory.getLogger(ServicesRepository.class);
+	private static final String HAZELCAST_IMAP_NAME = "WebRTCObserverServices";
 
-	private final Map<UUID, String> serviceMap = new HashMap<>();
-	private final String defaultServiceName;
-
-	public ServicesRepository(ObserverConfig config) {
-		this.defaultServiceName = config.outboundReports.defaultServiceName;
-		logger.info("Default service name is {}", this.defaultServiceName);
-		logger.info("ServiceMappings config {}", ObjectToString.toString(config.serviceMappings));
-		if (Objects.nonNull(config.serviceMappings)) {
-			config.serviceMappings.stream().forEach(serviceMappingConfiguration -> {
-				serviceMappingConfiguration.uuids.stream().forEach(
-						uuid -> {
-							serviceMap.put(uuid, serviceMappingConfiguration.name);
-							logger.info("{} is mapped to service name {}", uuid, serviceMappingConfiguration.name);
-						});
-			});
-
+//	private final Map<UUID, String> serviceMap = new ConcurrentHashMap<>();
+	private final Queue<ObserverConfig.ServiceConfiguration> messages;
+	public ServicesRepository(ObserverHazelcast observerHazelcast, ObserverConfig config) {
+		super(observerHazelcast, HAZELCAST_IMAP_NAME);
+		this.messages = new LinkedList<>();
+		if (Objects.nonNull(config.services)) {
+			config.services.forEach(this.messages::add);
 		}
 	}
 
-	public String getServiceName(UUID serviceUUID) {
-		String result = this.serviceMap.getOrDefault(serviceUUID, this.defaultServiceName);
-		return result;
+	@PostConstruct
+	void setup() {
+		if (0 < this.messages.size()) {
+			while(!this.messages.isEmpty()) {
+				ObserverConfig.ServiceConfiguration config = this.messages.poll();
+				Optional<ServiceEntity> serviceEntityOptional = this.make(config);
+				if (!serviceEntityOptional.isPresent()) {
+					continue;
+				}
+				ServiceEntity entity = serviceEntityOptional.get();
+				this.saveIfAbsent(entity.serviceName, entity);
+			}
+			return;
+		}
+
 	}
 
+	private Optional<ServiceEntity> make(ObserverConfig.ServiceConfiguration config) {
+		if (Objects.isNull(config)) {
+			return Optional.empty();
+		}
+
+		ServiceEntity entity = ServiceEntity.of(config.name);
+		if (Objects.nonNull(config.uuids)) {
+			config.uuids.stream().forEach(entity.serviceUUIDs::add);
+		}
+		return Optional.of(entity);
+	}
 }
