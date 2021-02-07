@@ -19,7 +19,7 @@ public class SentinelCallParticipantsResolver implements BiFunction<String, Inte
     @Inject
     SentinelsRepository repository;
 
-    private Map<String, BiPredicate<String, Integer>> predicators;
+    private Map<String, List<BiPredicate<String, Integer>>> predicators = new HashMap<>();
     private int counter = 0;
 
     @PostConstruct
@@ -29,25 +29,29 @@ public class SentinelCallParticipantsResolver implements BiFunction<String, Inte
 
     @Override
     public Optional<String> apply(String serviceName, Integer participantNumber) {
-        if (0 == this.counter) {
+        if (++this.counter == 1) {
             this.predicators = this.fetch();
             logger.info("Sentinels are fetched for callFilters");
         }
-        ++this.counter;
-        Iterator<Map.Entry<String, BiPredicate<String, Integer>>> it = this.predicators.entrySet().iterator();
+        Iterator<Map.Entry<String, List<BiPredicate<String, Integer>>>> it = this.predicators.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<String, BiPredicate<String, Integer>> entry = it.next();
+            Map.Entry<String, List<BiPredicate<String, Integer>>> entry = it.next();
             String sentinelName = entry.getKey();
-            BiPredicate<String, Integer> tester = entry.getValue();
-            if (tester.test(serviceName, participantNumber)) {
-                return Optional.of(sentinelName);
+            List<BiPredicate<String, Integer>> testers = entry.getValue();
+            if (Objects.isNull(testers)) {
+                continue;
+            }
+            for (BiPredicate<String, Integer> tester : testers) {
+                if (tester.test(serviceName, participantNumber)) {
+                    return Optional.of(sentinelName);
+                }
             }
         }
         return Optional.empty();
     }
 
-    private Map<String, BiPredicate<String, Integer>> fetch() {
-        Map<String, BiPredicate<String, Integer>> result = new HashMap<>();
+    private Map<String, List<BiPredicate<String, Integer>>> fetch() {
+        Map<String, List<BiPredicate<String, Integer>>> result = new HashMap<>();
         Map<String, SentinelEntity> entries = this.repository.getAllEntries();
         Iterator<SentinelEntity> it = entries.values().iterator();
         while (it.hasNext()) {
@@ -57,19 +61,23 @@ public class SentinelCallParticipantsResolver implements BiFunction<String, Inte
                 if (Objects.isNull(parts) || parts.length < 1) {
                     continue;
                 }
+                List<BiPredicate<String, Integer>> testers = result.get(entity.name);
+                if (Objects.isNull(testers)) {
+                    testers = new LinkedList<>();
+                    result.put(entity.name, testers);
+                }
                 if (parts.length < 2) {
-                    result.put(entity.name, new BiPredicate<String, Integer>() {
+                    testers.add(new BiPredicate<String, Integer>() {
                         @Override
                         public boolean test(String serviceName, Integer integer) {
                             return parts[0].equals(serviceName);
                         }
                     });
-                    logger.info("Sentinel filter for {} is registered. serviceName: {}, number of minimum participant is 1", entity.name, parts[0]);
                     continue;
                 }
                 try {
                     int minParticipantNum = Integer.valueOf(parts[1]);
-                    result.put(entity.name, new BiPredicate<String, Integer>() {
+                    testers.add(new BiPredicate<String, Integer>() {
                         @Override
                         public boolean test(String serviceName, Integer participantsNum) {
                             return parts[0].equals(serviceName) &&  minParticipantNum <= participantsNum;

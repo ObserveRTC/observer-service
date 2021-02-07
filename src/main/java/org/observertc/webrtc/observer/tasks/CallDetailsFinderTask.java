@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
@@ -25,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
 public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFinderTask.Result>> {
@@ -35,6 +37,7 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 		public Collection<String> synchronizationSourceKeys;
 		public Collection<UUID> peerConnectionUUIDs;
 		public CallEntity callEntity;
+		public Set<String> browserIds = new HashSet<>();
 	}
 
 	private enum State {
@@ -53,6 +56,7 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 	private State state = State.CREATED;
 	private boolean collectSynchronizationSourceKeys = true;
 	private boolean collectPeerConnectionUUIDs = true;
+	private boolean collectBrowserIds = false;
 	private UUID callUUID;
 	private UUID pcUUID;
 
@@ -75,6 +79,14 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 
 	public CallDetailsFinderTask collectSynchronizationSourceKeys(boolean value) {
 		this.collectSynchronizationSourceKeys = value;
+		return this;
+	}
+
+	public CallDetailsFinderTask collectBrowserIds(boolean value) {
+		this.collectBrowserIds = value;
+		if (value) {
+			this.collectPeerConnectionUUIDs = true;
+		}
 		return this;
 	}
 
@@ -117,6 +129,14 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 		this.state = State.CALL_ENTITY_IS_COLLECTED;
 		if (this.collectPeerConnectionUUIDs) {
 			result.peerConnectionUUIDs = this.callPeerConnectionsRepository.find(this.callUUID);
+			if (this.collectBrowserIds) {
+				Set<UUID> pcUUIDs = new HashSet<>(result.peerConnectionUUIDs);
+				this.peerConnectionsRepository.findAll(pcUUIDs)
+					.values().stream()
+					.map(pc -> pc.browserId)
+					.filter(Objects::nonNull)
+					.forEach(result.browserIds::add);
+			}
 		} else {
 			result.peerConnectionUUIDs = Collections.EMPTY_SET;
 		}

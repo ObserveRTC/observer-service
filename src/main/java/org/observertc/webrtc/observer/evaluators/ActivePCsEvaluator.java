@@ -341,7 +341,8 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		callDetailsFinderTask
 				.forCallUUID(callUUID)
 				.collectPeerConnectionUUIDs(true)
-				.collectSynchronizationSourceKeys(false)
+				.collectBrowserIds(true)
+				.collectSynchronizationSourceKeys(true)
 				.withFlawMonitor(this.flawMonitor)
 				.withLogger(logger)
 				.execute()
@@ -356,14 +357,14 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		}
 		CallDetailsFinderTask.Result callDetails = callDetailsHolder.get();
 
-		Optional<String> sentinelNameHolder = sentinelCallParticipantsResolver.apply(serviceName, callDetails.peerConnectionUUIDs.size());
+		Optional<String> sentinelNameHolder = sentinelCallParticipantsResolver.apply(serviceName, callDetails.browserIds.size());
 
-		if (!sentinelNameHolder.isPresent()) {
-			return;
+		if (sentinelNameHolder.isPresent()) {
+			callDetails.peerConnectionUUIDs.stream().forEach(pcUUID -> {
+				this.sentinelSignaledPCs.onNext(Map.entry(pcUUID, sentinelNameHolder.get()));
+			});
 		}
-		callDetails.peerConnectionUUIDs.stream().forEach(pcUUID -> {
-			this.sentinelSignaledPCs.onNext(Map.entry(pcUUID, sentinelNameHolder.get()));
-		});
+
 
 	}
 

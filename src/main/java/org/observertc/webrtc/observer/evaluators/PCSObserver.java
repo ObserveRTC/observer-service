@@ -143,8 +143,13 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
                 return;
             }
 
-            if (SSRC < 16) { // because of TokBox uses ssrc 1,2 for probing purpose
-                SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFFFFFFE) + SSRC;
+//            if (SSRC < 16) { // because of TokBox uses ssrc 1,2 for probing purpose
+//                SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFFFFFFE) + SSRC;
+//            } else if( 10000 < SSRC && SSRC < 10004 ) {
+//                SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFF00000) + SSRC;
+//            }
+            if (SSRC < 3 || (10000 <= SSRC && SSRC < 10004)) { // because of TokBox uses fixed SSRC numbers for testing
+                return;
             }
             pcState.SSRCs.add(SSRC);
         };

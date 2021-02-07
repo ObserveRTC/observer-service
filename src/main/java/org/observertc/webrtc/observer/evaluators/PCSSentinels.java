@@ -82,6 +82,9 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
             }
             checkedPCs.add(sample.peerConnectionUUID);
             SignaledPC signaledPC = this.signaledPCs.get(sample.peerConnectionUUID);
+            if (Objects.isNull(signaledPC)) {
+                continue;
+            }
             String sentinelName = signaledPC.sentinelName;
             signaledPC.touched = now;
             if (Objects.isNull(sentinelName)) {
@@ -102,7 +105,7 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
             Map.Entry<UUID, SignaledPC> entry = it.next();
             UUID pcUUID = entry.getKey();
             SignaledPC signaledPC = entry.getValue();
-            if (60 < Duration.between(signaledPC.touched, now).getSeconds()) {
+            if (300 < Duration.between(signaledPC.touched, now).getSeconds()) {
                 this.pcMeasurements.remove(pcUUID);
                 it.remove();
                 continue;
@@ -132,10 +135,10 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
                 metrics = new Metrics(sentinelName);
                 this.metrics.put(sentinelName, metrics);
             }
-            metrics.packetLost.set(measurement.packetLost);
-            metrics.streamNums.set(measurement.SSRCs.size());
+            metrics.packetLost.record(measurement.packetLost);
+            metrics.streamNums.record(measurement.SSRCs.size());
             measurement.RttInMs.forEach(metrics.RTT::record);
-            metrics.userMediaErrors.set(measurement.userMediaErrors);
+            metrics.userMediaErrors.record(measurement.userMediaErrors);
         }
     }
 
@@ -148,7 +151,8 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
             if (Objects.nonNull(signaledPC)) {
                 continue;
             }
-            this.signaledPCs.put(pcUUID, new SignaledPC(sentinelName));
+            signaledPC = new SignaledPC(sentinelName);
+            this.signaledPCs.put(pcUUID, signaledPC);
         }
     }
 
@@ -220,20 +224,35 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
 
     class Metrics {
         DistributionSummary RTT;
-        AtomicInteger packetLost;
-        AtomicInteger streamNums;
-        AtomicInteger userMediaErrors;
+        DistributionSummary packetLost;
+        DistributionSummary streamNums;
+        DistributionSummary userMediaErrors;
 
 
         public Metrics(String sentinelName) {
             this.RTT = DistributionSummary.builder("sentinel_rtt_stats")
                     .baseUnit(BaseUnits.MILLISECONDS)
                     .tag("sentinelName", sentinelName)
+                    .publishPercentiles(.75, .95)
+                    .publishPercentileHistogram()
                     .register(meterRegistry);
 
-            this.packetLost = meterRegistry.gauge("sentinel_packetLost_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
-            this.streamNums = meterRegistry.gauge("sentinel_streamNums_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
-            this.userMediaErrors = meterRegistry.gauge("sentinel_userMediaErrors_stats", List.of(Tag.of("sentinelName", sentinelName)), new AtomicInteger(0));
+            this.packetLost = DistributionSummary.builder("sentinel_packetLost_stats")
+                    .baseUnit(BaseUnits.EVENTS)
+                    .tag("sentinelName", sentinelName)
+                    .publishPercentiles(.75, .95)
+                    .publishPercentileHistogram()
+                    .register(meterRegistry);
+
+            this.streamNums = DistributionSummary.builder("sentinel_streamNums_stats")
+                    .baseUnit(BaseUnits.EVENTS)
+                    .tag("sentinelName", sentinelName)
+                    .register(meterRegistry);
+
+            this.userMediaErrors = DistributionSummary.builder("sentinel_userMediaErrors_stats")
+                    .baseUnit(BaseUnits.EVENTS)
+                    .tag("sentinelName", sentinelName)
+                    .register(meterRegistry);
         }
     }
 }
