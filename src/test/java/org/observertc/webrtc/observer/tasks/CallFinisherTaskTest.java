@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -50,7 +50,7 @@ class CallFinisherTaskTest {
     @Test
     public void shouldUnRegisterCall() {
         // Given
-        CallEntity callEntity = generator.nextObject(CallEntity.class);
+        OldCallEntity callEntity = generator.nextObject(OldCallEntity.class);
         Set<Long> SSRCs = Set.of(1L, 2L);
         this.repositoryProvider.getCallEntitiesRepository().save(callEntity.callUUID, callEntity);
         SSRCs.stream().forEach(ssrc -> {

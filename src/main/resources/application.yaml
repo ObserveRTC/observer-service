@@ -43,6 +43,29 @@ kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
+failsafeStore:
+  - yarns:
+      - "services"
+      - "sentinels"
+      - "calls"
+    invoked: "Always / Never / OnStartup / OnShutdown / OnStartupShutdown"
+    engine: "MountedVolume"
+    engineConfig:
+      path: "myPath"
+
+
+---
+sentinels:
+  - name: "SentinelName"
+    watch:
+      - "RTT"
+      - "streamNums"
+    invoked:
+      - on: "Call"
+        when:
+          option: "value"
+
+---
 observer:
   connectors:
     - name: "ReportSinkLogger"

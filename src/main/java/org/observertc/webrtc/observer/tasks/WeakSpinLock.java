@@ -17,7 +17,7 @@
 package org.observertc.webrtc.observer.tasks;
 
 import org.observertc.webrtc.observer.entities.WeakLockEntity;
-import org.observertc.webrtc.observer.repositories.WeakLocksRepository;
+import org.observertc.webrtc.observer.repositories.stores.WeakLocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

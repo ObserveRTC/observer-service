@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.stores;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.slf4j.Logger;
@@ -24,17 +24,17 @@ import javax.inject.Singleton;
 import java.util.UUID;
 
 /**
- * Call to PC keys
+ * Callnames to call uuids
  */
 @Singleton
-public class MediaUnitPeerConnectionsRepository extends MultiMapRepositoryAbstract<String, UUID> {
+public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
 
-	private static final Logger logger = LoggerFactory.getLogger(MediaUnitPeerConnectionsRepository.class);
+	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
 
-	private static final String HAZELCAST_MAP_KEY = MediaUnitPeerConnectionsRepository.class.getName();
+	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
 
-	public MediaUnitPeerConnectionsRepository(ObserverHazelcast observerHazelcast) {
+	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
-	}
 
+	}
 }

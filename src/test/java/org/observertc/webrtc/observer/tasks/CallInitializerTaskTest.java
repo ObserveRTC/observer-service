@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.CallEntity;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -46,7 +46,7 @@ class CallInitializerTaskTest {
     public void shouldNotRegisterCallsWithoutSSRC() {
         Assertions.assertThrows(Exception.class, () -> {
             subjectProvider.get()
-                    .forCallEntity(generator.nextObject(CallEntity.class))
+                    .forCallEntity(generator.nextObject(OldCallEntity.class))
                     .perform();
         });
     }
@@ -64,7 +64,7 @@ class CallInitializerTaskTest {
     public void shouldRegisterCall() {
         // Given
         AtomicReference<UUID> found = new AtomicReference<>(null);
-        CallEntity callEntity = generator.nextObject(CallEntity.class);
+        OldCallEntity callEntity = generator.nextObject(OldCallEntity.class);
         Set<Long> SSRCs = Set.of(1L, 2L);
         CallInitializerTask callInitializerTask = subjectProvider.get();
 

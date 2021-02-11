@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.stores;
 
+import com.hazelcast.core.HazelcastInstance;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.WeakLockEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 
 import javax.inject.Singleton;
+import java.util.UUID;
 
-/**
- * Call to PC keys
- */
 @Singleton
-public class WeakLocksRepository extends MapRepositoryAbstract<String, WeakLockEntity> {
+public class CallEntitiesRepository extends MapRepositoryAbstract<UUID, OldCallEntity> {
+	private static final String HAZELCAST_MAP_CALLS_MAP_KEY = "WebRTCObserverCalls";
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverWeakLocks";
+//	private final IMap<UUID, CallEntity> entities;
 
-	public WeakLocksRepository(ObserverHazelcast observerHazelcast) {
-		super(observerHazelcast, HAZELCAST_MAP_KEY);
+	public CallEntitiesRepository(ObserverHazelcast observerHazelcast) {
+		super(observerHazelcast, HAZELCAST_MAP_CALLS_MAP_KEY);
+		HazelcastInstance hazelcastInstance = observerHazelcast.getInstance();
 	}
-
 }

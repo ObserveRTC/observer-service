@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.entities.WeakLockEntity;
-import org.observertc.webrtc.observer.repositories.WeakLocksRepository;
+import org.observertc.webrtc.observer.repositories.stores.WeakLocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Singleton
-class WeakLockProvider {
+public class WeakLockProvider {
     private static final int DEFAULT_MAX_WAITING_TIME_IN_S = 15;
     private static final Logger logger = LoggerFactory.getLogger(WeakLockProvider.class);
 

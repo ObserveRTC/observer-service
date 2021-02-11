@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -62,7 +62,7 @@ class SSRCEntityFinderTaskTest {
     @Test
     public void shouldFindByUUID() {
         // Given
-        CallEntity callEntity = generator.nextObject(CallEntity.class);
+        OldCallEntity callEntity = generator.nextObject(OldCallEntity.class);
         SynchronizationSourceEntity SSRCEntity = generator.nextObject(SynchronizationSourceEntity.class);
         SSRCEntity.callUUID = callEntity.callUUID;
         this.repositoryProvider.getCallEntitiesRepository().save(callEntity.callUUID, callEntity);
@@ -87,7 +87,7 @@ class SSRCEntityFinderTaskTest {
     @Test
     public void shouldFindByName() {
         // Given
-        CallEntity callEntity = generator.nextObject(CallEntity.class);
+        OldCallEntity callEntity = generator.nextObject(OldCallEntity.class);
         this.repositoryProvider.getCallNamesRepository().add(callEntity.callName, callEntity.callUUID);
         this.repositoryProvider.getCallEntitiesRepository().save(callEntity.callUUID, callEntity);
         SSRCEntityFinderTask task = subjectProvider.get();

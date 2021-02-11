@@ -20,9 +20,9 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.CallNamesRepository;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.stores.CallNamesRepository;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;

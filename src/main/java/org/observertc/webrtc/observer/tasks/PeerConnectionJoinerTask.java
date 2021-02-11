@@ -19,10 +19,10 @@ package org.observertc.webrtc.observer.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.CallPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.MediaUnitPeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.CallPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.stores.MediaUnitPeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

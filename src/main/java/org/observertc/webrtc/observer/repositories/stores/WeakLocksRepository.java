@@ -14,27 +14,23 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.stores;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.observertc.webrtc.observer.entities.WeakLockEntity;
 
 import javax.inject.Singleton;
-import java.util.UUID;
 
 /**
- * Callnames to call uuids
+ * Call to PC keys
  */
 @Singleton
-public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
+public class WeakLocksRepository extends MapRepositoryAbstract<String, WeakLockEntity> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);
+	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverWeakLocks";
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverCallNames";
-
-	public CallNamesRepository(ObserverHazelcast observerHazelcast) {
+	public WeakLocksRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
-
 	}
+
 }

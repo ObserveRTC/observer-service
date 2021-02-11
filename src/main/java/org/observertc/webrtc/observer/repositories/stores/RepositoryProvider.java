@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.stores;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;

@@ -16,9 +16,12 @@
 
 package org.observertc.webrtc.observer.repositories;
 
+import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.dto.ServiceDTO;
 import org.observertc.webrtc.observer.entities.ServiceEntity;
+import org.observertc.webrtc.observer.repositories.stores.MapRepositoryAbstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,12 +35,15 @@ import java.util.Queue;
 @Singleton
 public class ServicesRepository extends MapRepositoryAbstract<String, ServiceEntity> {
 	private static final Logger logger = LoggerFactory.getLogger(ServicesRepository.class);
-	private static final String HAZELCAST_IMAP_NAME = "WebRTCObserverServices";
+	private static final String HAZELCAST_IMAP_NAME = String.format("observertc-%s", ServicesRepository.class.getSimpleName());
+
+	private final IMap<String, ServiceDTO> services;
 
 //	private final Map<UUID, String> serviceMap = new ConcurrentHashMap<>();
 	private final Queue<ObserverConfig.ServiceConfiguration> messages;
 	public ServicesRepository(ObserverHazelcast observerHazelcast, ObserverConfig config) {
 		super(observerHazelcast, HAZELCAST_IMAP_NAME);
+		this.services = observerHazelcast.getInstance().getMap(HAZELCAST_IMAP_NAME);
 		this.messages = new LinkedList<>();
 		if (Objects.nonNull(config.services)) {
 			config.services.forEach(this.messages::add);

@@ -2,7 +2,7 @@ package org.observertc.webrtc.observer.repositories.resolvers;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.entities.SentinelEntity;
-import org.observertc.webrtc.observer.repositories.SentinelsRepository;
+import org.observertc.webrtc.observer.repositories.stores.SentinelsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

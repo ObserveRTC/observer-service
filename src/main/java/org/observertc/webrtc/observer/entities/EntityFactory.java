@@ -35,8 +35,8 @@ public class EntityFactory implements PortableFactory {
 				return new PeerConnectionEntity();
 			case SynchronizationSourceEntity.CLASS_ID:
 				return new SynchronizationSourceEntity();
-			case CallEntity.CLASS_ID:
-				return new CallEntity();
+			case OldCallEntity.CLASS_ID:
+				return new OldCallEntity();
 			case WeakLockEntity.CLASS_ID:
 				return new WeakLockEntity();
 			case ServiceEntity.CLASS_ID:

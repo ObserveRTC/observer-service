@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
-import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

@@ -19,7 +19,6 @@ package org.observertc.webrtc.observer.subscriptions;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.discovery.event.ServiceReadyEvent;
 import io.micronaut.discovery.event.ServiceStoppedEvent;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.slf4j.Logger;
@@ -49,6 +48,7 @@ public class ServiceShutdownListener implements ApplicationEventListener<Service
 	@Override
 	public void onApplicationEvent(ServiceStoppedEvent event) {
 		logger.info("Shutdown started");
+//		this.observerHazelcast.getInstance().getConfig().getMapConfig("whatever").getMapStoreConfig().setEnabled(false);
 		this.observerHazelcast.getInstance().getLifecycleService().shutdown();
 		logger.info("Shutdown ended");
 	}

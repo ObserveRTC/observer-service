@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.subscriptions;
 import com.hazelcast.nio.serialization.HazelcastSerializationException;
 import io.micronaut.scheduling.annotation.Scheduled;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

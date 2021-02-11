@@ -22,12 +22,12 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.monitors.ObserverMetrics;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.observertc.webrtc.observer.tasks.CallDetailsFinderTask;
 import org.observertc.webrtc.observer.tasks.CallFinisherTask;
 import org.observertc.webrtc.observer.tasks.PeerConnectionDetacherTask;
@@ -195,7 +195,7 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		if (!task.succeeded()) {
 			return false;
 		}
-		CallEntity callEntity = task.getResult();
+		OldCallEntity callEntity = task.getResult();
 		if (Objects.isNull(callEntity)) {
 			return false;
 		}

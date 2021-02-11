@@ -8,8 +8,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
-import org.observertc.webrtc.observer.repositories.SynchronizationSourcesRepository;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -24,7 +25,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
 @Singleton
@@ -93,6 +93,9 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
             Measurement measurement = new Measurement();
             this.pcVisitor.accept(measurement, sample.peerConnectionSample);
             this.pcMeasurements.put(sample.peerConnectionUUID, measurement);
+            if (measurement.log) {
+                logger.info("Measurement logging request. sentinel: {}, sample: {}", sentinelName, ObjectToString.toString(sample));
+            }
         }
         Map<String, Measurement> aggregatedMeasurements = this.aggregate(now);
         this.update(aggregatedMeasurements);
@@ -135,10 +138,10 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
                 metrics = new Metrics(sentinelName);
                 this.metrics.put(sentinelName, metrics);
             }
-            metrics.packetLost.record(measurement.packetLost);
-            metrics.streamNums.record(measurement.SSRCs.size());
+            meterRegistry.gauge("sentinel_streamNums_stats", List.of(Tag.of("sentinelName", sentinelName)), measurement.streamNums);
+            meterRegistry.gauge("sentinel_userMediaErrors_stats", List.of(Tag.of("sentinelName", sentinelName)), measurement.userMediaErrors);
+            measurement.fractionalLosts.forEach(metrics.fractionalLost::record);
             measurement.RttInMs.forEach(metrics.RTT::record);
-            metrics.userMediaErrors.record(measurement.userMediaErrors);
         }
     }
 
@@ -161,27 +164,29 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
             if (Objects.isNull(SSRC)) {
                 return;
             }
-            measurement.SSRCs.add(SSRC);
+            ++measurement.streamNums;
+//            measurement.SSRCs.add(SSRC);
         };
         return new AbstractPeerConnectionSampleVisitor<Measurement>() {
 
             @Override
             public void visitRemoteInboundRTP(Measurement measurement, PeerConnectionSample sample, PeerConnectionSample.RemoteInboundRTPStreamStats subject) {
                 Double RTTInS = subject.roundTripTime;
+                if (5. < RTTInS) { // by def. it would mean that 5s RTT, which is impropable. more likely that the RTT is in ms, but let's first log these infos
+                    measurement.log = true;
+                }
                 if (Objects.nonNull(RTTInS)) {
                     measurement.RttInMs.add(RTTInS * 1000.);
                 }
                 streamUpdater.accept(measurement, subject.ssrc);
-                if (Objects.nonNull(subject.packetsLost)) {
-                    measurement.packetLost += subject.packetsLost;
-                }
             }
 
             @Override
             public void visitInboundRTP(Measurement measurement, PeerConnectionSample sample, PeerConnectionSample.InboundRTPStreamStats subject) {
                 streamUpdater.accept(measurement, subject.ssrc);
-                if (Objects.nonNull(subject.packetsLost)) {
-                    measurement.packetLost += subject.packetsLost;
+                if (Objects.nonNull(subject.packetsLost) && Objects.nonNull(subject.packetsReceived)) {
+                    double fractionalLost = ((double) subject.packetsLost) / (((double) subject.packetsReceived) + ((double) subject.packetsLost));
+                    measurement.fractionalLosts.add(fractionalLost);
                 }
             }
 
@@ -200,14 +205,15 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
     }
 
     private class Measurement {
-        Set<Long> SSRCs = new HashSet<>();
-        int packetLost = 0;
+        int streamNums = 0;
+        List<Double> fractionalLosts = new LinkedList<>();
         int userMediaErrors = 0;
         List<Double> RttInMs = new LinkedList<>();
+        boolean log = false;
 
         void eat(Measurement other) {
-            this.SSRCs.addAll(other.SSRCs);
-            this.packetLost += other.packetLost;
+            this.streamNums += other.streamNums;
+            this.fractionalLosts.addAll(other.fractionalLosts);
             this.userMediaErrors += other.userMediaErrors;
             this.RttInMs.addAll(other.RttInMs);
         }
@@ -224,9 +230,7 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
 
     class Metrics {
         DistributionSummary RTT;
-        DistributionSummary packetLost;
-        DistributionSummary streamNums;
-        DistributionSummary userMediaErrors;
+        DistributionSummary fractionalLost;
 
 
         public Metrics(String sentinelName) {
@@ -237,22 +241,13 @@ public class PCSSentinels implements Consumer<List<ObservedPCS>> {
                     .publishPercentileHistogram()
                     .register(meterRegistry);
 
-            this.packetLost = DistributionSummary.builder("sentinel_packetLost_stats")
+            this.fractionalLost = DistributionSummary.builder("sentinel_fractionalLost_stats")
                     .baseUnit(BaseUnits.EVENTS)
                     .tag("sentinelName", sentinelName)
                     .publishPercentiles(.75, .95)
                     .publishPercentileHistogram()
                     .register(meterRegistry);
 
-            this.streamNums = DistributionSummary.builder("sentinel_streamNums_stats")
-                    .baseUnit(BaseUnits.EVENTS)
-                    .tag("sentinelName", sentinelName)
-                    .register(meterRegistry);
-
-            this.userMediaErrors = DistributionSummary.builder("sentinel_userMediaErrors_stats")
-                    .baseUnit(BaseUnits.EVENTS)
-                    .tag("sentinelName", sentinelName)
-                    .register(meterRegistry);
         }
     }
 }

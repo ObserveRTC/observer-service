@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.repositories.stores;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,16 +24,17 @@ import javax.inject.Singleton;
 import java.util.UUID;
 
 /**
- * Repositry to store information related to Peer Connections
+ * Call to PC keys
  */
 @Singleton
-public class PeerConnectionsRepository extends MapRepositoryAbstract<UUID, PeerConnectionEntity> {
+public class MediaUnitPeerConnectionsRepository extends MultiMapRepositoryAbstract<String, UUID> {
 
-	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsRepository.class);
+	private static final Logger logger = LoggerFactory.getLogger(MediaUnitPeerConnectionsRepository.class);
 
-	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverPeerConnections";
+	private static final String HAZELCAST_MAP_KEY = MediaUnitPeerConnectionsRepository.class.getName();
 
-	public PeerConnectionsRepository(ObserverHazelcast observerHazelcast) {
+	public MediaUnitPeerConnectionsRepository(ObserverHazelcast observerHazelcast) {
 		super(observerHazelcast, HAZELCAST_MAP_KEY);
 	}
+
 }

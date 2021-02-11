@@ -17,7 +17,7 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import org.jeasy.random.EasyRandom;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
@@ -112,8 +112,8 @@ public class TestInputsGenerator {
 		return new TestInputsGenerator.Builder();
 	}
 
-	public CallEntity makeCallEntityFor(PeerConnectionEntity... pcEntities) {
-		CallEntity result = this.makeCallEntity();
+	public OldCallEntity makeCallEntityFor(PeerConnectionEntity... pcEntities) {
+		OldCallEntity result = this.makeCallEntity();
 		if (Objects.isNull(pcEntities) || pcEntities.length < 1) {
 			return result;
 		}
@@ -127,8 +127,8 @@ public class TestInputsGenerator {
 		return result;
 	}
 
-	private CallEntity makeCallEntity() {
-		return generator.nextObject(CallEntity.class);
+	private OldCallEntity makeCallEntity() {
+		return generator.nextObject(OldCallEntity.class);
 	}
 
 

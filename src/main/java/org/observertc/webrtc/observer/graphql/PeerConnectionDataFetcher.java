@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.graphql;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.PeerConnectionsRepository;
+import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

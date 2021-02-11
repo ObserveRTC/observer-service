@@ -17,6 +17,7 @@
 package org.observertc.webrtc.observer.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hazelcast.internal.serialization.impl.portable.DefaultPortableReader;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;

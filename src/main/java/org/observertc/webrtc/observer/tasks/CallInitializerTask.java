@@ -18,9 +18,9 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.*;
+import org.observertc.webrtc.observer.repositories.stores.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 	private final CallNamesRepository callNamesRepository;
 	private final CallSynchronizationSourcesRepository callSynchronizationSourcesRepository;
 	private final WeakLockProvider lockProvider;
-	private CallEntity callEntity;
+	private OldCallEntity callEntity;
 	private Set<Long> SSRCs;
 	private State state = State.CREATED;
 	private final long operationTimeoutInMs = 10000L;
@@ -71,7 +71,7 @@ public class CallInitializerTask extends TaskAbstract<UUID> {
 		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
-	public CallInitializerTask forCallEntity(CallEntity callEntity) {
+	public CallInitializerTask forCallEntity(OldCallEntity callEntity) {
 		this.callEntity = callEntity;
 		return this;
 	}

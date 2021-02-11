@@ -18,9 +18,9 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.*;
+import org.observertc.webrtc.observer.repositories.stores.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Prototype
-public class CallFinisherTask extends TaskAbstract<CallEntity> {
+public class CallFinisherTask extends TaskAbstract<OldCallEntity> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(CallFinisherTask.class);
 	private static final String LOCK_NAME = CallFinisherTask.class.getCanonicalName() + "-lock";
 	private enum State {
@@ -53,7 +53,7 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	private UUID callUUID;
 	private Set<Long> unregisteredSSRCs;
 	private Set<String> unregisteredSSRCKeys;
-	private CallEntity unregisteredCallEntity;
+	private OldCallEntity unregisteredCallEntity;
 	private State state = State.CREATED;
 
 
@@ -78,10 +78,10 @@ public class CallFinisherTask extends TaskAbstract<CallEntity> {
 	}
 
 	@Override
-	protected CallEntity perform() throws Exception {
+	protected OldCallEntity perform() throws Exception {
 //		try (FencedLockAcquirer lock = this.lockProvider.get().forLockName(LOCK_NAME).acquire()) {
 		try (var lock = this.lockProvider.autoLock(LOCK_NAME)) {
-			Optional<CallEntity> entityHolder = this.callEntitiesRepository.find(this.callUUID);
+			Optional<OldCallEntity> entityHolder = this.callEntitiesRepository.find(this.callUUID);
 
 			if (!entityHolder.isPresent()) {
 				return null;

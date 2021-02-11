@@ -3,10 +3,10 @@ package org.observertc.webrtc.observer.evaluators;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
-import org.observertc.webrtc.observer.repositories.*;
+import org.observertc.webrtc.observer.repositories.stores.*;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 
@@ -44,7 +44,7 @@ class ExpiredPCsEvaluatorTest {
         SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
         PeerConnectionEntity alice = generator.makePeerConnectionEntityFor(ssrcEntity);
         PeerConnectionEntity bob = generator.makePeerConnectionEntityFor(ssrcEntity);
-        CallEntity callEntity = generator.makeCallEntityFor(alice, bob);
+        OldCallEntity callEntity = generator.makeCallEntityFor(alice, bob);
         PCState pcState = generator.makePCStateFor(alice, ssrcEntity);
         this.peerConnectionsRepository.save(alice.peerConnectionUUID, alice);
         this.peerConnectionsRepository.save(bob.peerConnectionUUID, bob);
@@ -76,7 +76,7 @@ class ExpiredPCsEvaluatorTest {
         ExpiredPCsEvaluator evaluator = subject.get();
         SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
         PeerConnectionEntity alice = generator.makePeerConnectionEntityFor(ssrcEntity);
-        CallEntity callEntity = generator.makeCallEntityFor(alice);
+        OldCallEntity callEntity = generator.makeCallEntityFor(alice);
         PCState pcState = generator.makePCStateFor(alice, ssrcEntity);
         this.peerConnectionsRepository.save(alice.peerConnectionUUID, alice);
         String ssrcKey = SynchronizationSourcesRepository.getKey(ssrcEntity.serviceUUID, ssrcEntity.SSRC);

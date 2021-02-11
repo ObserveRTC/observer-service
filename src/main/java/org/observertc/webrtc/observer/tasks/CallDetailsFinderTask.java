@@ -17,16 +17,14 @@
 package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.*;
+import org.observertc.webrtc.observer.repositories.stores.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Prototype
 public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFinderTask.Result>> {
@@ -36,7 +34,7 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 		public UUID callUUID;
 		public Collection<String> synchronizationSourceKeys;
 		public Collection<UUID> peerConnectionUUIDs;
-		public CallEntity callEntity;
+		public OldCallEntity callEntity;
 		public Set<String> browserIds = new HashSet<>();
 	}
 
@@ -121,7 +119,7 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 			return Optional.empty();
 		}
 		result.callUUID = this.callUUID;
-		Optional<CallEntity> callEntityOptional = this.callEntitiesRepository.find(this.callUUID);
+		Optional<OldCallEntity> callEntityOptional = this.callEntitiesRepository.find(this.callUUID);
 		if (!callEntityOptional.isPresent()) {
 			return Optional.empty();
 		}

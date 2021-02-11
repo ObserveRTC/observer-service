@@ -24,7 +24,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.Task;
-import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
@@ -258,7 +258,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	}
 
 	private boolean addNewCall(PCState pcState) {
-		CallEntity callEntity = CallEntity.of(
+		OldCallEntity callEntity = OldCallEntity.of(
 				UUID.randomUUID(),
 				pcState.serviceUUID,
 				pcState.serviceName,

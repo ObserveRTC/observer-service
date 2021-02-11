@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.monitors;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
-import org.observertc.webrtc.observer.repositories.RepositoryProvider;
+import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
