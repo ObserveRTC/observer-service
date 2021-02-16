@@ -38,8 +38,6 @@ dependencies {
 //    implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("io.micronaut.jmx:micronaut-jmx")
 
-    implementation("io.micronaut.graphql:micronaut-graphql:2.2.0")
-
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
 
@@ -55,6 +53,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
     implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator:3.0.0")
+
+    testCompile "org.mockito:mockito-core:2.+"
 }
 
 

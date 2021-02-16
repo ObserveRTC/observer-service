@@ -21,6 +21,7 @@ import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;
 import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.dto.PortableDTOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,7 @@ public class ServiceEntity implements VersionedPortable {
 
 	@Override
 	public int getFactoryId() {
-		return EntityFactory.FACTORY_ID;
+		return PortableDTOFactory.FACTORY_ID;
 	}
 
 	@Override

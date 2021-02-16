@@ -25,10 +25,6 @@ micronaut:
 #    enabled: true
 #    buildSelfSigned: true
 ---
-graphql:
-  graphiql:
-    enabled: false
----
 endpoints:
   all:
     port: ${APPLICATION_MANAGEMENT_PORT:7081}
@@ -43,7 +39,40 @@ kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
+failsafeStore:
+  - repositories:
+      - "services"
+      - "sentinels"
+      - "calls"
+    invoked: "Always / Never / OnStartup / OnShutdown / OnStartupShutdown"
+    engine: "MountedVolume"
+    engineConfig:
+      path: "myPath"
+
+
+---
 observer:
+  sentinels:
+    - type: "CallRule"
+      name: "SFUCallsOnVidhealth"
+      periodInMins: 5
+      report: true # if we sent reports about it
+      expose: true # if we expose it through metrics
+      rules:
+        serviceName: "required"
+        mediaUnitId: "optional"
+        callName: "optional"
+        ssrcs:
+          gt: 1
+          lt: 2
+          anyMatch: []
+          allMatch: []
+        browserIds:
+          gt: 1
+          lt: 100
+        pcs:
+          gt: 1
+          lt: 100
   connectors:
     - name: "ReportSinkLogger"
       buffer:
@@ -53,12 +82,6 @@ observer:
         type: LoggerSink
         config:
           printReports: False
-  sentinels:
-    - name: "example-sentinel"
-      callFilters:
-        - "example-service-name 1"
-      addresses:
-        - "192.168.1.1"
   services:
     - name: "example-service-name"
       uuids:

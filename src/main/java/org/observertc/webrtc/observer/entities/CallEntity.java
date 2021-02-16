@@ -16,91 +16,46 @@
 
 package org.observertc.webrtc.observer.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hazelcast.nio.serialization.PortableReader;
-import com.hazelcast.nio.serialization.PortableWriter;
-import com.hazelcast.nio.serialization.VersionedPortable;
 import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.common.UUIDAdapter;
+import org.observertc.webrtc.observer.dto.CallDTO;
 
-import java.io.IOException;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // To avoid exposing hazelcast serialization specific fields
-@JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
-public class CallEntity implements VersionedPortable {
+public class CallEntity {
 
-	public static final int CLASS_ID = 3000;
-	public static final int CLASS_VERSION = 1;
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
-	private static final String SERVICE_NAME_FIELD_NAME = "serviceName";
-	private static final String INITIATED_FIELD_NAME = "initiated";
-	private static final String FINISHED_FIELD_NAME = "finished";
-	private static final String CALL_NAME_FIELD_NAME = "callName";
-	private static final String MARKER_FIELD_NAME = "marker";
-
-	public static CallEntity of(
-			UUID callUUID,
-			UUID serviceUUID,
-			String serviceName,
-			Long initiated,
-			String callName,
-			String marker) {
-		CallEntity result = new CallEntity();
-		result.callUUID = callUUID;
-		result.initiated = initiated;
-		result.serviceUUID = serviceUUID;
-		result.serviceName = serviceName;
-		result.callName = callName;
-		result.marker = marker;
-		return result;
+	public static Builder builder() {
+		return new Builder();
 	}
 
-	public UUID serviceUUID;
-	public String serviceName;
-	public Long initiated;
-	public Long finished;
-	public UUID callUUID;
-	public String callName;
-	public String marker;
+	public final CallDTO call;
+	public final Set<Long> SSRCs;
+	public final Map<UUID, PeerConnectionEntity> peerConnections;
 
-	@Override
-	public int getFactoryId() {
-		return EntityFactory.FACTORY_ID;
+	private CallEntity(CallDTO call, Set<Long> ssrCs, Map<UUID, PeerConnectionEntity> peerConnections) {
+		this.call = call;
+		SSRCs = ssrCs;
+		this.peerConnections = peerConnections;
 	}
 
 	@Override
-	public int getClassId() {
-		return CLASS_ID;
-	}
-
-	@Override
-	public void writePortable(PortableWriter writer) throws IOException {
-
-		writer.writeByteArray(CALL_UUID_FIELD_NAME, UUIDAdapter.toBytesOrDefault(this.callUUID, EntityFactory.DEFAULT_UUID_BYTES));
-		writer.writeByteArray(SERVICE_UUID_FIELD_NAME, UUIDAdapter.toBytesOrDefault(this.serviceUUID, EntityFactory.DEFAULT_UUID_BYTES));
-		writer.writeUTF(SERVICE_NAME_FIELD_NAME, this.serviceName);
-		writer.writeUTF(CALL_NAME_FIELD_NAME, this.callName);
-		writer.writeLong(INITIATED_FIELD_NAME, this.initiated);
-		if (this.finished != null) {
-			writer.writeLong(FINISHED_FIELD_NAME, this.finished);
+	public boolean equals(Object other) {
+		if (Objects.isNull(other) || other instanceof CallEntity == false) {
+			return false;
 		}
-		writer.writeUTF(MARKER_FIELD_NAME, this.marker);
-
+		CallEntity otherEntity = (CallEntity) other;
+		if (!this.call.equals(otherEntity.call)) return false;
+		if (!this.SSRCs.stream().allMatch(otherEntity.SSRCs::contains)) return false;
+		if (!otherEntity.SSRCs.stream().allMatch(this.SSRCs::contains)) return false;
+		if (!this.peerConnections.values().stream().allMatch(pcE -> pcE.equals(otherEntity.peerConnections.get(pcE.pcUUID)))) return false;
+		if (!otherEntity.peerConnections.values().stream().allMatch(pcE -> pcE.equals(this.peerConnections.get(pcE.pcUUID)))) return false;
+		return true;
 	}
 
 	@Override
-	public void readPortable(PortableReader reader) throws IOException {
-		this.callUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(CALL_UUID_FIELD_NAME), null);
-		this.serviceUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(SERVICE_UUID_FIELD_NAME), null);
-		this.serviceName = reader.readUTF(SERVICE_NAME_FIELD_NAME);
-		this.callName = reader.readUTF(CALL_NAME_FIELD_NAME);
-		this.initiated = reader.readLong(INITIATED_FIELD_NAME);
-		if (reader.hasField(FINISHED_FIELD_NAME)) {
-			this.initiated = reader.readLong(FINISHED_FIELD_NAME);
-		}
-		this.marker = reader.readUTF(MARKER_FIELD_NAME);
+	public int hashCode() {
+		return this.call.callUUID.hashCode();
 	}
 
 	@Override
@@ -108,8 +63,28 @@ public class CallEntity implements VersionedPortable {
 		return ObjectToString.toString(this);
 	}
 
-	@Override
-	public int getClassVersion() {
-		return CLASS_VERSION;
-	}
+	public static class Builder {
+		public CallDTO callDTO;
+		public Map<UUID, PeerConnectionEntity> peerConnections = new HashMap<>();
+
+		public CallEntity build() {
+			Objects.requireNonNull(this.callDTO);
+			Objects.requireNonNull(this.peerConnections);
+			Set<Long> SSRCs = this.peerConnections.values().stream().flatMap(pc -> pc.SSRCs.stream()).collect(Collectors.toSet());
+			return new CallEntity(this.callDTO,
+					Collections.unmodifiableSet(SSRCs),
+					Collections.unmodifiableMap(this.peerConnections)
+			);
+		}
+
+		public Builder withCallDTO(CallDTO callDTO) {
+			this.callDTO = callDTO;
+			return this;
+		}
+
+		public Builder withPeerConnections(Map<UUID, PeerConnectionEntity> peerConnectionEntities) {
+			this.peerConnections.putAll(peerConnectionEntities);
+			return this;
+		}
+    }
 }

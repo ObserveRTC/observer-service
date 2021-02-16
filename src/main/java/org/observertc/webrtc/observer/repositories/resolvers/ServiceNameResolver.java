@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.repositories.resolvers;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.entities.ServiceEntity;
+import org.observertc.webrtc.observer.dto.ServiceDTO;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +51,10 @@ public class ServiceNameResolver implements Function<UUID, String> {
 
     private Map<UUID, String> fetch() {
         Map<UUID, String> result = new HashMap<>();
-        Map<String, ServiceEntity> entries = this.servicesRepository.getAllEntries();
-        Iterator<ServiceEntity> it = entries.values().iterator();
+        Map<String, ServiceDTO> entries = this.servicesRepository.getAllEntries();
+        Iterator<ServiceDTO> it = entries.values().iterator();
         while (it.hasNext()) {
-            ServiceEntity entity = it.next();
+            ServiceDTO entity = it.next();
             for (UUID serviceUUID : entity.serviceUUIDs) {
                 result.put(serviceUUID, entity.serviceName);
             }

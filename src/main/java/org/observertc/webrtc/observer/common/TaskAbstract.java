@@ -37,13 +37,14 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private boolean succeeded = false;
 	private int maxRetry = 1;
 	private T result = null;
+	private Supplier<AutoCloseable> lockProvider = () -> { return () -> {};};
 
 	public TaskAbstract<T> execute() {
 		this.validate();
 		Throwable thrown = null;
 		try {
 			for (int run = 0; run < this.maxRetry; ++run) {
-				try {
+				try (var lock = this.lockProvider.get()){
 					T result = this.perform();
 					this.succeeded = true;
 					this.result = result;
@@ -109,6 +110,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 			throw new IllegalStateException("Task has not succeeded, result is not ready");
 		}
 		return this.result;
+	}
+
+	TaskAbstract<T> withLockProvider(Supplier<AutoCloseable> value) {
+		this.lockProvider = value;
+		return this;
 	}
 
 	public T getResultOrDefault(T defaultValue) {
