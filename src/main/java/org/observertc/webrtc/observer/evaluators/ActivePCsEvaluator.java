@@ -26,12 +26,9 @@ import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.monitors.FlawMonitor;
-import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.monitors.ObserverMetrics;
 import org.observertc.webrtc.observer.repositories.CallsRepository;
 import org.observertc.webrtc.observer.repositories.tasks.UpdatePCsTask;
-import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,10 +53,7 @@ import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_
 public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ActivePCsEvaluator.class);
-	private final Subject<Map.Entry<UUID, String>> sentinelSignaledPCs = PublishSubject.create();
 	private final Subject<Report> reports = PublishSubject.create();
-	private final FlawMonitor flawMonitor;
-	private final TasksProvider tasksProvider;
 
 	@Inject
 	ObserverMetrics observerMetrics;
@@ -70,18 +64,9 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	@Inject
 	CallsRepository calls;
 
-	public ActivePCsEvaluator(
-			MonitorProvider monitorProvider,
-			TasksProvider tasksProvider
-	) {
-
-		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
-		this.tasksProvider = tasksProvider;
+	public ActivePCsEvaluator() {
 	}
 
-	public Observable<Map.Entry<UUID, String>> getObservableSentinelSignals() {
-		return this.sentinelSignaledPCs;
-	}
 	public Observable<Report> getObservableReports() {
 		return this.reports;
 	}

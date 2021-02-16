@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.WeakLockDTO;
-import org.observertc.webrtc.observer.repositories.stores.WeakLocksRepository;
+import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +32,11 @@ public class WeakLockProvider {
     private static final int DEFAULT_MAX_WAITING_TIME_IN_S = 15;
     private static final Logger logger = LoggerFactory.getLogger(WeakLockProvider.class);
 
-	@Inject
-	ObserverHazelcast observerHazelcast;
+    @Inject
+    HazelcastMaps hazelcastMaps;
 
 	@Inject
-	WeakLocksRepository weakLocksRepository;
+	ObserverHazelcast observerHazelcast;
 
     public WeakLockProvider() {
 
@@ -46,7 +46,7 @@ public class WeakLockProvider {
         UUID endpointUUID = this.observerHazelcast.getLocalEndpointUUID();
         final String instance = Objects.isNull(endpointUUID) ? "noName" : endpointUUID.toString();
         final WeakLockDTO lockEntity = WeakLockDTO.of(name, instance);
-        return new WeakSpinLock(this.weakLocksRepository, lockEntity);
+        return new WeakSpinLock(hazelcastMaps.getWeakLocks(), lockEntity);
     }
 
     public AutoCloseable autoLock(String name) {

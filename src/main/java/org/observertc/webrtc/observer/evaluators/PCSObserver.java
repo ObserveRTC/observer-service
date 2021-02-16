@@ -5,12 +5,10 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.monitors.ObserverMetrics;
-import org.observertc.webrtc.observer.repositories.resolvers.SentinelAddressesResolver;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,25 +20,19 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 @Singleton
 public class PCSObserver implements Consumer<List<ObservedPCS>> {
     private static final Logger logger = LoggerFactory.getLogger(PCSObserver.class);
     private final Subject<Map<UUID, PCState>> expiredPCsSubject = PublishSubject.create();
     private final Subject<Map<UUID, PCState>> activePCsSubject = PublishSubject.create();
-    private final Subject<Map.Entry<UUID, String>> sentinelSignaledPCs = PublishSubject.create();
     private final Map<UUID, PCState> pcStates = new HashMap<>();
     private final PeerConnectionSampleVisitor<PCState> pcStateProcessor;
-    private final Function<String, String> ipAddressConverter;
     @Inject
     ObserverMetrics observerMetrics;
 
     @Inject
     ObserverConfig.EvaluatorsConfig config;
-
-    @Inject
-    SentinelAddressesResolver sentinelAddressesResolver;
 
     @PostConstruct
     void setup() {
@@ -55,12 +47,7 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
         return this.activePCsSubject;
     }
 
-    public Observable<Map.Entry<UUID, String>> getObservableSentinelSignals() {
-        return this.sentinelSignaledPCs;
-    }
-
-    public PCSObserver(IPAddressConverterProvider ipAddressConverterProvider) {
-        this.ipAddressConverter = ipAddressConverterProvider.provide();
+    public PCSObserver() {
         this.pcStateProcessor = this.makeSSRCExtractor();
     }
 
@@ -173,20 +160,12 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             @Override
             public void visitICELocalCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICELocalCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
-                    Optional<String> sentinelHolder = sentinelAddressesResolver.apply(subject.ip);
-                    if (sentinelHolder.isPresent()) {
-                        sentinelSignaledPCs.onNext(Map.entry(pcState.peerConnectionUUID, sentinelHolder.get()));
-                    }
                 }
             }
 
             @Override
             public void visitICERemoteCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
-                    Optional<String> sentinelHolder = sentinelAddressesResolver.apply(subject.ip);
-                    if (sentinelHolder.isPresent()) {
-                        sentinelSignaledPCs.onNext(Map.entry(pcState.peerConnectionUUID, sentinelHolder.get()));
-                    }
                 }
             }
         };

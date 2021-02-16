@@ -16,40 +16,38 @@
 
 package org.observertc.webrtc.observer.repositories.tasks;
 
+import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.dto.WeakLockDTO;
-import org.observertc.webrtc.observer.repositories.stores.WeakLocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 class WeakSpinLock implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(WeakSpinLock.class);
-	private final WeakLocksRepository weakLocksRepository;
+	private final IMap<String, WeakLockDTO> weakLocksRepository;
     private final WeakLockDTO lockEntity;
 
-    public WeakSpinLock(WeakLocksRepository weakLocksRepository, WeakLockDTO lockEntity) {
+    public WeakSpinLock(IMap<String, WeakLockDTO> weakLocksRepository, WeakLockDTO lockEntity) {
         this.weakLocksRepository = weakLocksRepository;
         this.lockEntity = lockEntity;
 	}
 
 	private boolean tryLock(AtomicReference<WeakLockDTO> actualHolder) {
-        Optional<WeakLockDTO> lockResult = this.weakLocksRepository.saveIfAbsent(lockEntity.name, lockEntity);
-        if (!lockResult.isPresent()) {
+        WeakLockDTO insertedLock = this.weakLocksRepository.putIfAbsent(lockEntity.name, lockEntity);
+        if (Objects.isNull(insertedLock)) {
             return true;
         }
-        WeakLockDTO actual = lockResult.get();
-        if (this.lockEntity.equals(actual)) {
+        if (this.lockEntity.equals(insertedLock)) {
             return true;
         }
         if (Objects.nonNull(actualHolder)) {
-            actualHolder.set(actual);
+            actualHolder.set(insertedLock);
         }
         return false;
     }
@@ -89,13 +87,13 @@ class WeakSpinLock implements AutoCloseable {
             if (Objects.isNull(actual.created)) {
                 logger.warn("The actual lock {} does not have a created timestamp, therefore the lock is overridden and forced to this one {} ",
                         actual, this.lockEntity);
-                this.weakLocksRepository.save(this.lockEntity.name, this.lockEntity);
+                this.weakLocksRepository.put(this.lockEntity.name, this.lockEntity);
                 return;
             }
         } while(Duration.between(actual.created, Instant.now()).getSeconds() < maxWaitingTimeInS);
 
         if (Objects.isNull(actual)) {
-            this.weakLocksRepository.save(this.lockEntity.name, this.lockEntity);
+            this.weakLocksRepository.put(this.lockEntity.name, this.lockEntity);
             return;
         }
         if (this.lockEntity.equals(actual)) {
@@ -104,20 +102,14 @@ class WeakSpinLock implements AutoCloseable {
         logger.warn("Max timeout ({}) is elapsed for lock {}, " +
                 "it is going to be forcefully replaced to {}", maxWaitingTimeInS,
                 actual, this.lockEntity);
-        this.weakLocksRepository.save(this.lockEntity.name, this.lockEntity);
+        this.weakLocksRepository.put(this.lockEntity.name, this.lockEntity);
 	}
 
 	public void unlock() {
         try {
-            Optional<WeakLockDTO> actualHolder = weakLocksRepository.find(this.lockEntity.name);
-            if (!actualHolder.isPresent()) {
-                logger.warn("{} was not presented in the locktable. Has it unlocked before?", this.lockEntity.name);
-                return;
-            }
-            WeakLockDTO actual = actualHolder.get();
+            WeakLockDTO actual = weakLocksRepository.get(this.lockEntity.name);
             if (Objects.isNull(actual)) {
-                logger.warn("Expected {} but was null.", this.lockEntity);
-                weakLocksRepository.delete(this.lockEntity.name);
+                logger.warn("{} was not presented in the locktable. Has it unlocked before?", this.lockEntity.name);
                 return;
             }
             if (!actual.equals(this.lockEntity)) {

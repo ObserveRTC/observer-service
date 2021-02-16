@@ -20,11 +20,9 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.discovery.event.ServiceReadyEvent;
-import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
@@ -32,9 +30,6 @@ import javax.inject.Singleton;
 public class ServiceStartedListener implements ApplicationEventListener<ServiceReadyEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
 
-
-	@Inject
-	RepositoryProvider repositoryProvider;
 
 	public ServiceStartedListener() {
 		

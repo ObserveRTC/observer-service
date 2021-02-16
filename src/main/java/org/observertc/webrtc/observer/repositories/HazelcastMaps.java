@@ -5,6 +5,7 @@ import com.hazelcast.multimap.MultiMap;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.dto.WeakLockDTO;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -21,13 +22,14 @@ public class HazelcastMaps {
 
     private IMap<UUID, PeerConnectionDTO> pcDTOs;
     private MultiMap<UUID, UUID> callToPCUUIDs;
-
+    private IMap<String, WeakLockDTO> weakLocks;
 
     @PostConstruct
     void setup() {
         this.callDTOs = observerHazelcast.getInstance().getMap("observertc-calldtos");
         this.pcDTOs = observerHazelcast.getInstance().getMap("observertc-pcdtos");
         this.callToPCUUIDs = observerHazelcast.getInstance().getMultiMap("observertc-call-to-pcuuids");
+        this.weakLocks = observerHazelcast.getInstance().getMap("observertc-weaklocks");
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {
@@ -59,4 +61,6 @@ public class HazelcastMaps {
     public MultiMap<UUID, UUID> getCallToPCUUIDs() {
         return this.callToPCUUIDs;
     }
+
+    public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
 }

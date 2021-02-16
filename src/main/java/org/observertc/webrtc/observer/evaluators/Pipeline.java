@@ -55,8 +55,6 @@ public class Pipeline {
     @Inject
     ObserverConfig.EvaluatorsConfig evaluatorsConfig;
 
-    @Inject
-    PCSSentinels PCSSentinels;
 
     public void inputUserMediaError(ObservedPCS observedPCS) {
         this.observedPCSEvaluator.onNext(observedPCS);
@@ -73,15 +71,6 @@ public class Pipeline {
 
         samplesBuffer
                 .subscribe(this.PCSObserver);
-
-        samplesBuffer
-                .subscribe(this.PCSSentinels);
-
-        this.PCSObserver
-                .getObservableSentinelSignals().subscribe(this.PCSSentinels.getMessageObserver());
-
-        this.activePCsEvaluator
-                .getObservableSentinelSignals().subscribe(this.PCSSentinels.getMessageObserver());
 
         this.PCSObserver
                 .getObservableActivePCs()

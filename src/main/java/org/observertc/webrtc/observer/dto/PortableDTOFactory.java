@@ -36,8 +36,6 @@ public class PortableDTOFactory implements PortableFactory {
 				return new CallDTO();
 			case WEAKLOCKS_DTO_CLASS_ID:
 				return new WeakLockDTO();
-			case SentinelEntity.CLASS_ID:
-				return new SentinelEntity();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}
