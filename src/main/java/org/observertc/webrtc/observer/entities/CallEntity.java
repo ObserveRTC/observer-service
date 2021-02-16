@@ -45,12 +45,12 @@ public class CallEntity {
 			return false;
 		}
 		CallEntity otherEntity = (CallEntity) other;
-		return this.call.equals(otherEntity.call) &&
-				this.SSRCs.stream().allMatch(otherEntity.SSRCs::contains) &&
-				otherEntity.SSRCs.stream().allMatch(this.SSRCs::contains) &&
-				this.peerConnections.values().stream().allMatch(pcE -> pcE == this.peerConnections.get(pcE.pcUUID)) &&
-				otherEntity.peerConnections.values().stream().allMatch(pcE -> pcE == this.peerConnections.get(pcE.pcUUID))
-				;
+		if (!this.call.equals(otherEntity.call)) return false;
+		if (!this.SSRCs.stream().allMatch(otherEntity.SSRCs::contains)) return false;
+		if (!otherEntity.SSRCs.stream().allMatch(this.SSRCs::contains)) return false;
+		if (!this.peerConnections.values().stream().allMatch(pcE -> pcE.equals(otherEntity.peerConnections.get(pcE.pcUUID)))) return false;
+		if (!otherEntity.peerConnections.values().stream().allMatch(pcE -> pcE.equals(this.peerConnections.get(pcE.pcUUID)))) return false;
+		return true;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class CallEntity {
 			);
 		}
 
-		public Builder withCallDTO(CallDTO of) {
+		public Builder withCallDTO(CallDTO callDTO) {
 			this.callDTO = callDTO;
 			return this;
 		}

@@ -38,8 +38,6 @@ dependencies {
 //    implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("io.micronaut.jmx:micronaut-jmx")
 
-    implementation("io.micronaut.graphql:micronaut-graphql:2.2.0")
-
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
 

@@ -101,6 +101,7 @@ public class UpdatePCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> 
             result.pcDTO = null;
             result.serviceUUID = serviceUUID;
             result.SSRCs = new HashSet<>();
+            result.pcUUID = pcUUID;
             this.items.put(pcUUID, result);
         }
         return result;

@@ -181,17 +181,24 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	}
 
 	private CallEntity addNewCall(PCState pcState) {
-		CallEntity candidate = CallEntity.builder()
-				.withCallDTO(CallDTO.of(
-						UUID.randomUUID(),
-						pcState.serviceUUID,
-						pcState.serviceName,
-						pcState.created,
-						pcState.callName,
-						pcState.marker
-				))
-				.build();
-		CallEntity callEntity = this.calls.addCall(candidate);
+		CallEntity callEntity;
+		try {
+			CallEntity candidate = CallEntity.builder()
+					.withCallDTO(CallDTO.of(
+							UUID.randomUUID(),
+							pcState.serviceUUID,
+							pcState.serviceName,
+							pcState.created,
+							pcState.callName,
+							pcState.marker
+					))
+					.build();
+			callEntity = this.calls.addCall(candidate);
+		} catch (Exception ex) {
+			logger.error("Unexpected exception occurred", ex);
+			return null;
+		}
+
 
 		if (!this.config.impairablePCsCallName.equals(callEntity.call.callName)) {
 			logger.info("Call is registered with a uuid: {}", callEntity.call.callUUID);

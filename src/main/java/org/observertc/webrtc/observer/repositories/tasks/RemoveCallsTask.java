@@ -97,7 +97,9 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                         // action
                         callEntities -> {
                             for (CallEntity callEntity : callEntities.values()) {
-                                hazelcastMaps.getCallNames(callEntity.call.serviceUUID).remove(callEntity.call.callName, callEntity.call.callUUID);
+                                if (Objects.nonNull(callEntity.call.callName)) {
+                                    hazelcastMaps.getCallNames(callEntity.call.serviceUUID).remove(callEntity.call.callName, callEntity.call.callUUID);
+                                }
                             }
                             return callEntities;
                         },
@@ -109,7 +111,9 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                             }
                             Map<UUID, CallEntity> callEntities = (Map<UUID, CallEntity>) callEntitiesHolder.get();
                             for (CallEntity callEntity : callEntities.values()) {
-                                hazelcastMaps.getCallNames(callEntity.call.serviceUUID).put(callEntity.call.callName, callEntity.call.callUUID);
+                                if (Objects.nonNull(callEntity.call.callName)) {
+                                    hazelcastMaps.getCallNames(callEntity.call.serviceUUID).put(callEntity.call.callName, callEntity.call.callUUID);
+                                }
                             }
                         })
                 .<Map<UUID, CallEntity>, Map<UUID, CallEntity>> addFunctionalStage("Remove Peer Connections", callEntities -> {

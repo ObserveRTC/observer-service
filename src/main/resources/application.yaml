@@ -25,10 +25,6 @@ micronaut:
 #    enabled: true
 #    buildSelfSigned: true
 ---
-graphql:
-  graphiql:
-    enabled: false
----
 endpoints:
   all:
     port: ${APPLICATION_MANAGEMENT_PORT:7081}
@@ -44,7 +40,7 @@ kafka:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
 failsafeStore:
-  - yarns:
+  - repositories:
       - "services"
       - "sentinels"
       - "calls"
@@ -53,17 +49,6 @@ failsafeStore:
     engineConfig:
       path: "myPath"
 
-
----
-sentinels:
-  - name: "SentinelName"
-    watch:
-      - "RTT"
-      - "streamNums"
-    invoked:
-      - on: "Call"
-        when:
-          option: "value"
 
 ---
 observer:

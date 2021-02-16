@@ -17,7 +17,7 @@ public class FindPCsBySSRCTask extends ChainedTask<Map<UUID, PeerConnectionEntit
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    FetchCallsTask fetchCallsTask;
+    FetchPCsTask fetchPCsTask;
 
     private Map<UUID, Set<Long>> serviceSSRCs = new HashMap<>();
 
@@ -57,7 +57,14 @@ public class FindPCsBySSRCTask extends ChainedTask<Map<UUID, PeerConnectionEntit
                 });
                 return result;
             })
-            .addSupplierChainedTask("Fetch PCs", fetchCallsTask)
+            .<Set<UUID>>addBreakCondition((pcUUIDS, resultHolder) -> {
+                if (pcUUIDS.size() < 1) {
+                    resultHolder.set(Collections.EMPTY_MAP);
+                    return true;
+                }
+                return false;
+            })
+            .addSupplierChainedTask("Fetch PCs", fetchPCsTask)
             .addTerminalPassingStage("Completed")
         .build();
     }
@@ -74,7 +81,7 @@ public class FindPCsBySSRCTask extends ChainedTask<Map<UUID, PeerConnectionEntit
             return this;
         }
         Set<Long> target = this.serviceSSRCs.get(serviceUUID);
-        if (Objects.isNull(SSRCs)) {
+        if (Objects.isNull(target)) {
             target = new HashSet<>();
             this.serviceSSRCs.put(serviceUUID, target);
         }

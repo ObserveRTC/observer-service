@@ -4,7 +4,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.entities.CallEntity;
-import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -17,10 +16,8 @@ class FetchCallsTaskTest {
 
     @Inject
     Provider<FetchCallsTask> callEntitiesFetcherTaskProvider;
-
-    @Inject
-    HazelcastMaps hazelcastMaps;
-
+//
+//
     @Inject
     TestUtils testUtils;
 
@@ -28,7 +25,7 @@ class FetchCallsTaskTest {
     public void shouldFetchEntity_1() {
         CallEntity callEntity = testUtils.generateCallEntity();
         testUtils.insertCallEntity(callEntity);
-
+//
         Map<UUID, CallEntity> callEntities = callEntitiesFetcherTaskProvider.get()
                 .whereCallUUID(callEntity.call.callUUID)
                 .execute()

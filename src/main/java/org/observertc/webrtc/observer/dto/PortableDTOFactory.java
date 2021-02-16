@@ -36,6 +36,8 @@ public class PortableDTOFactory implements PortableFactory {
 				return new CallDTO();
 			case WEAKLOCKS_DTO_CLASS_ID:
 				return new WeakLockDTO();
+			case SERVICE_DTO_CLASS_ID:
+				return new ServiceDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

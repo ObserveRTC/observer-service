@@ -20,59 +20,60 @@ import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.ServiceDTO;
-import org.observertc.webrtc.observer.entities.ServiceEntity;
-import org.observertc.webrtc.observer.repositories.stores.MapRepositoryAbstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Queue;
+import java.util.*;
 
 @Singleton
-public class ServicesRepository extends MapRepositoryAbstract<String, ServiceEntity> {
+public class ServicesRepository {
 	private static final Logger logger = LoggerFactory.getLogger(ServicesRepository.class);
-	private static final String HAZELCAST_IMAP_NAME = String.format("observertc-%s", ServicesRepository.class.getSimpleName());
 
-	private final IMap<String, ServiceDTO> services;
+	@Inject
+	ObserverHazelcast observerHazelcast;
+
+	private IMap<String, ServiceDTO> services;
 
 //	private final Map<UUID, String> serviceMap = new ConcurrentHashMap<>();
 	private final Queue<ObserverConfig.ServiceConfiguration> messages;
 	public ServicesRepository(ObserverHazelcast observerHazelcast, ObserverConfig config) {
-		super(observerHazelcast, HAZELCAST_IMAP_NAME);
-		this.services = observerHazelcast.getInstance().getMap(HAZELCAST_IMAP_NAME);
 		this.messages = new LinkedList<>();
-		if (Objects.nonNull(config.services)) {
-			config.services.forEach(this.messages::add);
-		}
+//		if (Objects.nonNull(config.services)) {
+//			config.services.forEach(this.messages::add);
+//		}
 	}
 
 	@PostConstruct
 	void setup() {
-		if (0 < this.messages.size()) {
-			while(!this.messages.isEmpty()) {
-				ObserverConfig.ServiceConfiguration config = this.messages.poll();
-				Optional<ServiceEntity> serviceEntityOptional = this.make(config);
-				if (!serviceEntityOptional.isPresent()) {
-					continue;
-				}
-				ServiceEntity entity = serviceEntityOptional.get();
-				this.saveIfAbsent(entity.serviceName, entity);
-			}
-			return;
-		}
-
+		this.services = observerHazelcast.getInstance().getMap("observertc-services");
+//		if (0 < this.messages.size()) {
+//			while(!this.messages.isEmpty()) {
+//				ObserverConfig.ServiceConfiguration config = this.messages.poll();
+//				Optional<ServiceDTO> serviceEntityOptional = this.make(config);
+//				if (!serviceEntityOptional.isPresent()) {
+//					continue;
+//				}
+//				ServiceDTO entity = serviceEntityOptional.get();
+//				this.services.putIfAbsent(entity.serviceName, entity);
+//			}
+//			return;
+//		}
 	}
 
-	private Optional<ServiceEntity> make(ObserverConfig.ServiceConfiguration config) {
+	public Map<String, ServiceDTO> getAllEntries() {
+		Set<String> keys = this.services.keySet();
+		return this.services.getAll(keys);
+	}
+
+	private Optional<ServiceDTO> make(ObserverConfig.ServiceConfiguration config) {
 		if (Objects.isNull(config)) {
 			return Optional.empty();
 		}
 
-		ServiceEntity entity = ServiceEntity.of(config.name);
+		ServiceDTO entity = ServiceDTO.of(config.name);
 		if (Objects.nonNull(config.uuids)) {
 			config.uuids.stream().forEach(entity.serviceUUIDs::add);
 		}

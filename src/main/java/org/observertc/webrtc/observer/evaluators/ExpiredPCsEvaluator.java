@@ -21,7 +21,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
@@ -85,18 +84,19 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 			PCState pcState = pcStates.poll();
 
 			PeerConnectionEntity pcEntity = this.detachPeerConnection(pcState);
-			logger.info("Peer Connection {} is unregistered to Call {}.", pcState.peerConnectionUUID, pcEntity);
+			logger.info("Peer Connection {} is unregistered to Call {}.", pcState, pcEntity.callUUID);
 
 			if (Objects.isNull(pcEntity)) {
 				logger.warn("Detach process has failed {}", pcState);
 				continue;
 			}
 
-			CallEntity callEntity = this.calls.removeCall(pcEntity.callUUID);
-			if (Objects.isNull(callEntity)) {
-				logger.warn("Peer connection {} in call details has not found {}", pcState.peerConnectionUUID, ObjectToString.toString(callEntity));
+			Optional<CallEntity> callEntityHolder = this.calls.findCall(pcEntity.callUUID);
+			if (!callEntityHolder.isPresent()) {
+				logger.warn("Peer connection {} does not belong to any call", pcEntity);
 				continue;
 			}
+			CallEntity callEntity = callEntityHolder.get();
 
 			if (0 < callEntity.peerConnections.size()) {
 				continue;

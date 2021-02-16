@@ -5,7 +5,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
-import org.observertc.webrtc.observer.entities.ServiceEntity;
+import org.observertc.webrtc.observer.dto.ServiceDTO;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 
 import javax.inject.Inject;
@@ -24,12 +24,12 @@ public class ServiceController {
 	}
 
 	@Post("/")
-	public HttpStatus save(@Body ServiceEntity serviceEntity) {
+	public HttpStatus save(@Body ServiceDTO serviceEntity) {
 		return HttpStatus.OK;
 	}
 
 	@Get("/")
-	public List<ServiceEntity> findAll() {
+	public List<ServiceDTO> findAll() {
 		return this.servicesRepository.getAllEntries().values().stream().collect(Collectors.toList());
 	}
 

@@ -10,9 +10,7 @@ import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Singleton
 public class TestUtils {
@@ -23,7 +21,17 @@ public class TestUtils {
     HazelcastMaps hazelcastMaps;
 
     public PeerConnectionEntity generatePeerConnectionEntity() {
+        return this.generatePeerConnectionEntity(null, null);
+    }
+
+    public PeerConnectionEntity generatePeerConnectionEntity(UUID callUUID, UUID serviceUUID) {
         PeerConnectionDTO pcDTO = generator.nextObject(PeerConnectionDTO.class);
+        if (Objects.nonNull(callUUID)) {
+            pcDTO.callUUID = callUUID;
+        }
+        if (Objects.nonNull(serviceUUID)) {
+            pcDTO.serviceUUID = serviceUUID;
+        }
         Set<Long> SSRCs = generator.longs(new Random().nextInt(10) + 1).boxed().collect(Collectors.toSet());
         return PeerConnectionEntity.builder()
                 .withPCDTO(pcDTO)
@@ -33,10 +41,15 @@ public class TestUtils {
 
     public CallEntity generateCallEntity() {
         CallDTO callDTO = generator.nextObject(CallDTO.class);
-        Map<UUID, PeerConnectionEntity> peerConnectionEntities = Stream.generate(this::generatePeerConnectionEntity).collect(Collectors.toMap(pc -> pc.pcUUID, Function.identity()));
+        Map<UUID, PeerConnectionEntity> pcs = new HashMap<>();
+        for (int i =0, c = 1; i < c; ++i) {
+            PeerConnectionEntity pcEntity = this.generatePeerConnectionEntity(callDTO.callUUID, callDTO.serviceUUID);
+            pcs.put(pcEntity.pcUUID, pcEntity);
+        }
+
         return CallEntity.builder()
                 .withCallDTO(callDTO)
-                .withPeerConnections(peerConnectionEntities)
+                .withPeerConnections(pcs)
                 .build();
     }
 

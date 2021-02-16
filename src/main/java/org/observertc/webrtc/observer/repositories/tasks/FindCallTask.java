@@ -26,8 +26,8 @@ public class FindCallTask extends ChainedTask<Map<UUID, CallEntity>> {
     @Inject
     FetchCallsTask fetchCallsTask;
 
-    private Map<UUID, Set<String>> serviceCallNames = new HashMap<>();
-    private boolean removeUnboundNames = false;
+    private boolean haveCallNames = false;
+    private boolean haveSSRCs = false;
 
     private Map<UUID, CallEntity> foundCallEntities = new HashMap<>();
 
@@ -38,6 +38,9 @@ public class FindCallTask extends ChainedTask<Map<UUID, CallEntity>> {
             .addActionStage("Fetch Calls by name",
             // action
             () -> {
+                if (!this.haveCallNames) {
+                    return;
+                }
                 if (!findCallsByNameTask.execute().succeeded()) {
                     return;
                 }
@@ -49,6 +52,9 @@ public class FindCallTask extends ChainedTask<Map<UUID, CallEntity>> {
             .addActionStage("Fetch Calls by SSRCs",
             // action
             () -> {
+                if (!this.haveSSRCs) {
+                    return;
+                }
                 if (!findPCsBySSRCTask.execute().succeeded()) {
                     return;
                 }
@@ -72,11 +78,13 @@ public class FindCallTask extends ChainedTask<Map<UUID, CallEntity>> {
 
     public FindCallTask whereCallName(UUID serviceUUID, String callName) {
         this.findCallsByNameTask.whereCallName(serviceUUID, callName);
+        this.haveCallNames = true;
         return this;
     }
 
     public FindCallTask whereSSRC(UUID serviceUUID, Set<Long> SSRCs) {
         this.findPCsBySSRCTask.whereServiceAndSSRC(serviceUUID, SSRCs);
+        this.haveSSRCs = true;
         return this;
     }
 
