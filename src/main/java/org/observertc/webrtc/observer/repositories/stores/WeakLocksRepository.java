@@ -17,7 +17,7 @@
 package org.observertc.webrtc.observer.repositories.stores;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.WeakLockEntity;
+import org.observertc.webrtc.observer.dto.WeakLockDTO;
 
 import javax.inject.Singleton;
 
@@ -25,7 +25,8 @@ import javax.inject.Singleton;
  * Call to PC keys
  */
 @Singleton
-public class WeakLocksRepository extends MapRepositoryAbstract<String, WeakLockEntity> {
+@Deprecated
+public class WeakLocksRepository extends MapRepositoryAbstract<String, WeakLockDTO> {
 
 	private static final String HAZELCAST_MAP_KEY = "WebRTCObserverWeakLocks";
 

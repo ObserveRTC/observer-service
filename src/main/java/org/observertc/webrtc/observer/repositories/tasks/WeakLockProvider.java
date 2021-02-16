@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.tasks;
+package org.observertc.webrtc.observer.repositories.tasks;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.WeakLockEntity;
+import org.observertc.webrtc.observer.dto.WeakLockDTO;
 import org.observertc.webrtc.observer.repositories.stores.WeakLocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class WeakLockProvider {
 	private WeakSpinLock makeSpinLock(String name) {
         UUID endpointUUID = this.observerHazelcast.getLocalEndpointUUID();
         final String instance = Objects.isNull(endpointUUID) ? "noName" : endpointUUID.toString();
-        final WeakLockEntity lockEntity = WeakLockEntity.of(name, instance);
+        final WeakLockDTO lockEntity = WeakLockDTO.of(name, instance);
         return new WeakSpinLock(this.weakLocksRepository, lockEntity);
     }
 

@@ -18,19 +18,16 @@ package org.observertc.webrtc.observer.repositories.stores;
 
 
 import com.hazelcast.multimap.MultiMap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import org.observertc.webrtc.observer.ObserverHazelcast;
+
+import javax.validation.constraints.NotNull;
+import java.util.*;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
-import org.observertc.webrtc.observer.ObserverHazelcast;
 
+@Deprecated
 public class MultiMapRepositoryAbstract<K, V> implements IMultiMap<K, V> {
 	private final ObserverHazelcast observerHazelcast;
 	private final MultiMap<K, V> entities;

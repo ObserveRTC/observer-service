@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.tasks;
+package org.observertc.webrtc.observer.repositories.tasks;
 
-import org.observertc.webrtc.observer.entities.WeakLockEntity;
+import org.observertc.webrtc.observer.dto.WeakLockDTO;
 import org.observertc.webrtc.observer.repositories.stores.WeakLocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,19 +32,19 @@ class WeakSpinLock implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(WeakSpinLock.class);
 	private final WeakLocksRepository weakLocksRepository;
-    private final WeakLockEntity lockEntity;
+    private final WeakLockDTO lockEntity;
 
-    public WeakSpinLock(WeakLocksRepository weakLocksRepository, WeakLockEntity lockEntity) {
+    public WeakSpinLock(WeakLocksRepository weakLocksRepository, WeakLockDTO lockEntity) {
         this.weakLocksRepository = weakLocksRepository;
         this.lockEntity = lockEntity;
 	}
 
-	private boolean tryLock(AtomicReference<WeakLockEntity> actualHolder) {
-        Optional<WeakLockEntity> lockResult = this.weakLocksRepository.saveIfAbsent(lockEntity.name, lockEntity);
+	private boolean tryLock(AtomicReference<WeakLockDTO> actualHolder) {
+        Optional<WeakLockDTO> lockResult = this.weakLocksRepository.saveIfAbsent(lockEntity.name, lockEntity);
         if (!lockResult.isPresent()) {
             return true;
         }
-        WeakLockEntity actual = lockResult.get();
+        WeakLockDTO actual = lockResult.get();
         if (this.lockEntity.equals(actual)) {
             return true;
         }
@@ -57,11 +57,11 @@ class WeakSpinLock implements AutoCloseable {
 	public void lock(int maxWaitingTimeInS) {
         int consecutiveNoActualLockCounter = 0;
         Random random = new Random();
-        AtomicReference<WeakLockEntity> actualHolder = new AtomicReference<>();
+        AtomicReference<WeakLockDTO> actualHolder = new AtomicReference<>();
         if (this.tryLock(actualHolder)) {
             return;
         }
-        WeakLockEntity actual;
+        WeakLockDTO actual;
         do {
             long millis = random.nextInt(1500) + 500;
             try {
@@ -109,12 +109,12 @@ class WeakSpinLock implements AutoCloseable {
 
 	public void unlock() {
         try {
-            Optional<WeakLockEntity> actualHolder = weakLocksRepository.find(this.lockEntity.name);
+            Optional<WeakLockDTO> actualHolder = weakLocksRepository.find(this.lockEntity.name);
             if (!actualHolder.isPresent()) {
                 logger.warn("{} was not presented in the locktable. Has it unlocked before?", this.lockEntity.name);
                 return;
             }
-            WeakLockEntity actual = actualHolder.get();
+            WeakLockDTO actual = actualHolder.get();
             if (Objects.isNull(actual)) {
                 logger.warn("Expected {} but was null.", this.lockEntity);
                 weakLocksRepository.delete(this.lockEntity.name);

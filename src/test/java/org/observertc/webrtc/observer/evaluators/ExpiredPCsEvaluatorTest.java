@@ -4,7 +4,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.entities.OldCallEntity;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.stores.*;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -42,8 +42,8 @@ class ExpiredPCsEvaluatorTest {
         // Given
         ExpiredPCsEvaluator evaluator = subject.get();
         SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
-        PeerConnectionEntity alice = generator.makePeerConnectionEntityFor(ssrcEntity);
-        PeerConnectionEntity bob = generator.makePeerConnectionEntityFor(ssrcEntity);
+        OldPeerConnectionEntity alice = generator.makePeerConnectionEntityFor(ssrcEntity);
+        OldPeerConnectionEntity bob = generator.makePeerConnectionEntityFor(ssrcEntity);
         OldCallEntity callEntity = generator.makeCallEntityFor(alice, bob);
         PCState pcState = generator.makePCStateFor(alice, ssrcEntity);
         this.peerConnectionsRepository.save(alice.peerConnectionUUID, alice);
@@ -75,7 +75,7 @@ class ExpiredPCsEvaluatorTest {
         // Given
         ExpiredPCsEvaluator evaluator = subject.get();
         SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
-        PeerConnectionEntity alice = generator.makePeerConnectionEntityFor(ssrcEntity);
+        OldPeerConnectionEntity alice = generator.makePeerConnectionEntityFor(ssrcEntity);
         OldCallEntity callEntity = generator.makeCallEntityFor(alice);
         PCState pcState = generator.makePCStateFor(alice, ssrcEntity);
         this.peerConnectionsRepository.save(alice.peerConnectionUUID, alice);

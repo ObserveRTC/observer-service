@@ -19,7 +19,7 @@ package org.observertc.webrtc.observer.evaluators;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
@@ -49,7 +49,7 @@ public class ActivePCsEvaluatorTest {
 		// Given
 		ActivePCsEvaluator evaluator = subject.get();
 		SynchronizationSourceEntity ssrcEntity = generator.makeSynchronizationSourceEntity();
-		PeerConnectionEntity pcEntity = generator.makePeerConnectionEntityFor(ssrcEntity);
+		OldPeerConnectionEntity pcEntity = generator.makePeerConnectionEntityFor(ssrcEntity);
 		PCState pcState = generator.makePCStateFor(pcEntity, ssrcEntity);
 		this.peerConnectionsRepository.save(pcEntity.peerConnectionUUID, pcEntity);
 		this.synchronizationSourcesRepository.save(

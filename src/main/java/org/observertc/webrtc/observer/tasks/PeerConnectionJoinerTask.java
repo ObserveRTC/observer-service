@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.CallPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.MediaUnitPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
@@ -35,6 +35,7 @@ import java.util.Objects;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
+@Deprecated
 public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionJoinerTask.class);
 	private enum State {
@@ -49,7 +50,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private final PeerConnectionsRepository peerConnectionsRepository;
 	private final MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
-	private PeerConnectionEntity entity;
+	private OldPeerConnectionEntity entity;
 	private State state = State.CREATED;
 
 
@@ -63,7 +64,7 @@ public class PeerConnectionJoinerTask extends TaskAbstract<Void> {
 		this.setDefaultLogger(DEFAULT_LOGGER);
 	}
 
-	public PeerConnectionJoinerTask forEntity(@NotNull PeerConnectionEntity entity) {
+	public PeerConnectionJoinerTask forEntity(@NotNull OldPeerConnectionEntity entity) {
 		this.entity = entity;
 		return this;
 	}

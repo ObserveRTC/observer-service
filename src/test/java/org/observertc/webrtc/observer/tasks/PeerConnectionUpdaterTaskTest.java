@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.observertc.webrtc.observer.repositories.stores.SynchronizationSourcesRepository;
 
@@ -50,7 +50,7 @@ class PeerConnectionUpdaterTaskTest {
     public void shouldAddMissingSSRCs() {
         // Given
         final long SSRC = 1L;
-        PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);
+        OldPeerConnectionEntity pcEntity = generator.nextObject(OldPeerConnectionEntity.class);
         this.repositoryProvider.getPeerConnectionsRepository().save(pcEntity.peerConnectionUUID, pcEntity);
 
         // When

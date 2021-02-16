@@ -55,6 +55,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
     implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator:3.0.0")
+
+    testCompile "org.mockito:mockito-core:2.+"
 }
 
 

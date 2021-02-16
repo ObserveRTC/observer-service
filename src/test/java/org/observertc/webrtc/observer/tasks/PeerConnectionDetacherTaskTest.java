@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 
@@ -50,7 +50,7 @@ class PeerConnectionDetacherTaskTest {
     @Test
     public void shouldDetachPeerConnection() {
         // Given
-        PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);
+        OldPeerConnectionEntity pcEntity = generator.nextObject(OldPeerConnectionEntity.class);
         this.repositoryProvider.getCallPeerConnectionsRepository().add(pcEntity.callUUID, pcEntity.peerConnectionUUID);
         this.repositoryProvider.getPeerConnectionsRepository().save(pcEntity.peerConnectionUUID, pcEntity);
         PeerConnectionDetacherTask peerConnectionDetacherTask = subjectProvider.get();

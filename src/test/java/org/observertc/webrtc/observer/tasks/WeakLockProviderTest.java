@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.tasks;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.observertc.webrtc.observer.repositories.tasks.WeakLockProvider;
 
 import javax.inject.Inject;
 import java.time.Instant;

@@ -17,7 +17,7 @@
 package org.observertc.webrtc.observer.repositories.stores;
 
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,8 @@ import java.util.UUID;
  * Repositry to store information related to Peer Connections
  */
 @Singleton
-public class PeerConnectionsRepository extends MapRepositoryAbstract<UUID, PeerConnectionEntity> {
+@Deprecated
+public class PeerConnectionsRepository extends MapRepositoryAbstract<UUID, OldPeerConnectionEntity> {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionsRepository.class);
 

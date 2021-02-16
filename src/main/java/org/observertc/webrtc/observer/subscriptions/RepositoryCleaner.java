@@ -2,7 +2,7 @@ package org.observertc.webrtc.observer.subscriptions;
 
 import com.hazelcast.nio.serialization.HazelcastSerializationException;
 import io.micronaut.scheduling.annotation.Scheduled;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class RepositoryCleaner {
             while (it.hasNext()) {
                 UUID key = it.next();
                 try {
-                    Optional<PeerConnectionEntity> pcEntityHolder =  this.repositoryProvider.getPeerConnectionsRepository().find(key);
+                    Optional<OldPeerConnectionEntity> pcEntityHolder =  this.repositoryProvider.getPeerConnectionsRepository().find(key);
                     pcEntityHolder.get();
                 } catch (HazelcastSerializationException ex) {
                     logger.warn("Need to delete PC {}, becasue it cannot be deserialized", key);

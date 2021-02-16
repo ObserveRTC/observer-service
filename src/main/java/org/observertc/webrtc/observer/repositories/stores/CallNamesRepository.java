@@ -27,6 +27,7 @@ import java.util.UUID;
  * Callnames to call uuids
  */
 @Singleton
+@Deprecated
 public class CallNamesRepository extends MultiMapRepositoryAbstract<String, UUID> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallNamesRepository.class);

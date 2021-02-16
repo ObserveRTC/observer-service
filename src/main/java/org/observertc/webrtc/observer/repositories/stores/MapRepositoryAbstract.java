@@ -19,6 +19,7 @@ package org.observertc.webrtc.observer.repositories.stores;
 
 import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.repositories.Repository;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;

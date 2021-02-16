@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Prototype
+@Deprecated
 public class SSRCEntityFinderTask extends TaskAbstract<Set<UUID>> {
 	private final ObserverHazelcast observerHazelcast;
 	private final SynchronizationSourcesRepository SSRCRepository;

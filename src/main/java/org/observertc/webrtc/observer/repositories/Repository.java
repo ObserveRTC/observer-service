@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories.stores;
+package org.observertc.webrtc.observer.repositories;
 
 import io.reactivex.Single;
 import io.reactivex.rxjava3.core.Completable;
@@ -73,15 +73,6 @@ public interface Repository<K, V> {
 	}
 
 
-	/**
-	 * Saves the entity to the map if it has not been saved before, and returns with the value associated with the key
-	 *
-	 * @param key   the key we save the entity for
-	 * @param value
-	 * @param <R>   The type of the key, extending the type of the key of the repository
-	 * @param <U>   the type of the value extending the type of the value of the repository
-	 * @return An {@link Optional} holding the value or an empty optional
-	 */
 	<R extends K, U extends V> Optional<V> saveIfAbsent(@NotNull R key, @NotNull U value);
 
 	/**

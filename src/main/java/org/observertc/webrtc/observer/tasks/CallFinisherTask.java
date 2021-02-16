@@ -21,6 +21,7 @@ import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.entities.OldCallEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.stores.*;
+import org.observertc.webrtc.observer.repositories.tasks.WeakLockProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Prototype
+@Deprecated
 public class CallFinisherTask extends TaskAbstract<OldCallEntity> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(CallFinisherTask.class);
 	private static final String LOCK_NAME = CallFinisherTask.class.getCanonicalName() + "-lock";

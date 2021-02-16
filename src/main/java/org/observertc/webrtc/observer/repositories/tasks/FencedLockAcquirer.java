@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.tasks;
+package org.observertc.webrtc.observer.repositories.tasks;
 
 import com.hazelcast.cp.lock.FencedLock;
 import io.micronaut.context.annotation.Prototype;

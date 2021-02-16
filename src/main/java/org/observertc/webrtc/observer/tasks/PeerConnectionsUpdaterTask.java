@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
+@Deprecated
 public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionsUpdaterTask.class);
 	private enum State {
@@ -150,12 +151,12 @@ public class PeerConnectionsUpdaterTask extends TaskAbstract<Void> {
 	}
 
 	private void addMissingPCStream(PCStream pcStream) {
-		Optional<PeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(pcStream.pcUUID);
+		Optional<OldPeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(pcStream.pcUUID);
 		if (!pcEntityHolder.isPresent()) {
 			this.getLogger().warn("Cannot find pcEntity for UUID {}", pcStream.pcUUID);
 			return;
 		}
-		PeerConnectionEntity pcEntity = pcEntityHolder.get();
+		OldPeerConnectionEntity pcEntity = pcEntityHolder.get();
 		if (Objects.isNull(pcEntity.callUUID)) {
 			this.getLogger().warn("No callUUID exists in pcEntity {}", pcEntity);
 			return;

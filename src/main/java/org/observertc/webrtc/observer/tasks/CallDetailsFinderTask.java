@@ -19,7 +19,7 @@ package org.observertc.webrtc.observer.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
 import org.observertc.webrtc.observer.entities.OldCallEntity;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 @Prototype
+@Deprecated
 public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFinderTask.Result>> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(CallDetailsFinderTask.class);
 
@@ -102,16 +103,16 @@ public class CallDetailsFinderTask extends TaskAbstract<Optional<CallDetailsFind
 	protected Optional<Result> perform() throws Exception {
 		Result result = new Result();
 		if (Objects.nonNull(this.pcUUID)) {
-			Optional<PeerConnectionEntity> peerConnectionEntityHolder = this.peerConnectionsRepository.find(this.pcUUID);
+			Optional<OldPeerConnectionEntity> peerConnectionEntityHolder = this.peerConnectionsRepository.find(this.pcUUID);
 			if (peerConnectionEntityHolder.isPresent()) {
-				PeerConnectionEntity peerConnectionEntity = peerConnectionEntityHolder.get();
+				OldPeerConnectionEntity oldPeerConnectionEntity = peerConnectionEntityHolder.get();
 				if (Objects.nonNull(this.callUUID)) {
-					if (!this.callUUID.equals(peerConnectionEntity.callUUID)) {
-						getLogger().warn("The provided peer connection entity {}, has a different callUUID {}, which was provided", peerConnectionEntity, this.callUUID);
+					if (!this.callUUID.equals(oldPeerConnectionEntity.callUUID)) {
+						getLogger().warn("The provided peer connection entity {}, has a different callUUID {}, which was provided", oldPeerConnectionEntity, this.callUUID);
 						return Optional.empty();
 					}
 				} else {
-					this.callUUID = peerConnectionEntity.callUUID;
+					this.callUUID = oldPeerConnectionEntity.callUUID;
 				}
 			}
 		}

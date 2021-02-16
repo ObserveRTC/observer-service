@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.CallPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.MediaUnitPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
@@ -37,7 +37,8 @@ import java.util.UUID;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
-public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntity> {
+@Deprecated
+public class PeerConnectionDetacherTask extends TaskAbstract<OldPeerConnectionEntity> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionDetacherTask.class);
 	private enum State {
 		CREATED,
@@ -53,7 +54,7 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 	private final MediaUnitPeerConnectionsRepository mediaUnitPeerConnectionsRepository;
 	private State state = State.CREATED;
 	private UUID pcUUID;
-	private PeerConnectionEntity removedPCEntity;
+	private OldPeerConnectionEntity removedPCEntity;
 
 	public PeerConnectionDetacherTask(RepositoryProvider repositoryProvider
 	) {
@@ -70,8 +71,8 @@ public class PeerConnectionDetacherTask extends TaskAbstract<PeerConnectionEntit
 	}
 
 	@Override
-	protected PeerConnectionEntity perform() {
-		Optional<PeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(this.pcUUID);
+	protected OldPeerConnectionEntity perform() {
+		Optional<OldPeerConnectionEntity> pcEntityHolder = this.peerConnectionsRepository.find(this.pcUUID);
 		if (!pcEntityHolder.isPresent()) {
 			return null;
 		}

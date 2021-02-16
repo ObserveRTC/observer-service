@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
@@ -36,11 +36,12 @@ import java.util.stream.Collectors;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
+@Deprecated
 public class PeerConnectionDetailsFinderTask extends TaskAbstract<Optional<PeerConnectionDetailsFinderTask.Result>> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionDetailsFinderTask.class);
 
 	public class Result {
-		public PeerConnectionEntity pcEntity;
+		public OldPeerConnectionEntity pcEntity;
 		public Map<String, SynchronizationSourceEntity> ssrcEntities;
 	}
 
@@ -76,12 +77,12 @@ public class PeerConnectionDetailsFinderTask extends TaskAbstract<Optional<PeerC
 
 	@Override
 	protected Optional<Result> perform() {
-		Optional<PeerConnectionEntity> peerConnectionEntityOptional = this.peerConnectionsRepository.find(this.pcUUID);
+		Optional<OldPeerConnectionEntity> peerConnectionEntityOptional = this.peerConnectionsRepository.find(this.pcUUID);
 		if (!peerConnectionEntityOptional.isPresent()) {
 			return Optional.empty();
 		}
 		Result result = new Result();
-		PeerConnectionEntity pcEntity = peerConnectionEntityOptional.get();
+		OldPeerConnectionEntity pcEntity = peerConnectionEntityOptional.get();
 		result.pcEntity = pcEntity;
 		if (this.collectSSRCEntities && Objects.nonNull(pcEntity.SSRCs)) {
 			Set<String> keys = pcEntity.SSRCs.stream()

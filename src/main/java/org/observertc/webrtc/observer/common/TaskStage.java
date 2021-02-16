@@ -4,8 +4,13 @@ import io.reactivex.rxjava3.functions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class TaskStage {
     private static final Logger logger = LoggerFactory.getLogger(TaskStage.class);
@@ -15,6 +20,7 @@ public class TaskStage {
     }
 
     private String name;
+    private boolean throwExceptionIfNotExecuted = false;
     private boolean executed = false;
     private boolean rolledbacked = false;
     private Function onExecFunc;
@@ -73,7 +79,10 @@ public class TaskStage {
         }
         this.executed = executed;
         if (!this.executed) {
-            logger.warn("Stage {} did not executed action");
+            if (this.throwExceptionIfNotExecuted) {
+                throw new IllegalStateException("Stage " + this.name + " was not executed");
+            }
+            logger.warn("Stage {} did not executed action", this.name);
             return null;
         }
 
@@ -112,9 +121,20 @@ public class TaskStage {
         }
     }
 
+    @Override
+    public String toString() {
+        java.util.function.Function<Object, String> ifNull = obj -> Objects.isNull(obj) ? "false": "true";
+        return ObjectToString.toString(Map.of(
+                "name", this.name,
+                "func, consumer, supplier, action", String.format("%s, %s, %s, %s", ifNull.apply(this.onExecFunc), ifNull.apply(this.onExecConsumer), ifNull.apply(this.onExecSupplier), ifNull.apply(this.onExecAction)),
+                "input", Objects.nonNull(this.inputHolder) ? Objects.nonNull(inputHolder.get()) ? inputHolder.get().toString() : "null Input" : "null inputHolder"
+        ));
+    }
+
 
     public static class Builder {
         private TaskStage result;
+        private boolean rollbackSet = false;
         public Builder(String stageName) {
             this.result = new TaskStage();
             this.result.name = stageName;
@@ -126,29 +146,30 @@ public class TaskStage {
             return this;
         }
 
-        public Builder withConsumer(Consumer action) {
+        public<R> Builder withConsumer(Consumer<R> action) {
             this.requireCleanExecFlow();
             this.result.onExecConsumer = action;
             return this;
         }
 
-        public Builder withSupplier(Supplier action) {
+        public<U> Builder withSupplier(Supplier<U> action) {
             this.requireCleanExecFlow();
             this.result.onExecSupplier = action;
             return this;
         }
 
-        public Builder withFunction(Function action) {
+        public<U, V> Builder withFunction(Function<U, V> action) {
             this.requireCleanExecFlow();
             this.result.onExecFunc = action;
             return this;
         }
 
         public Builder withRollback(BiConsumer<AtomicReference, Throwable> action) {
-            if (Objects.nonNull(this.result.onRollback)) {
+            if (this.rollbackSet) {
                 throw new IllegalStateException("Cannot set a rollback function twice");
             }
             this.result.onRollback = action;
+            this.rollbackSet = true;
             return this;
         }
 
@@ -162,6 +183,11 @@ public class TaskStage {
             return this;
         }
 
+        public TaskStage.Builder throwExceptionIfNotExecuted(boolean value) {
+            this.result.throwExceptionIfNotExecuted = value;
+            return this;
+        }
+
         public TaskStage build() {
             if (Objects.isNull(this.result.onExecAction) &&
                     Objects.isNull(this.result.onExecConsumer) &&
@@ -170,6 +196,7 @@ public class TaskStage {
             ) {
                 throw new IllegalStateException("A Stage cannot be built without an action");
             }
+            this.requireCleanExecFlow();
             return this.result;
         }
 
@@ -185,3 +212,50 @@ public class TaskStage {
         }
     }
 }
+    /**
+     *
+     * WARNING! The input reference is shared. whatever you are producing in the previous step
+     * make sure the output is thread safe. One way you may wanna affect the input goes through every
+     * thread is to add the inputHandler implementation and clone the input.
+     *
+     * @param joiner
+     * @param functions
+     * @param <U>
+     * @param <V>
+     * @return
+     */
+//    public<U, V> ChainedTask.Builder<R> addParallelFunctions(String stageName, Function<U, U> inputHandler, Function<List<V>, V> joiner, Function<U, V>... functions) {
+//        this.requireExecutorService();
+//        return this.<U, V>addFunctionalStage(stageName, input -> {
+//            List<Callable<V>> callables = Arrays.asList(functions).stream().map(function ->
+//                    new Callable<V>() {
+//                        @Override
+//                        public V call() throws Exception {
+//                            U handledInput = null;
+//                            try {
+//                                handledInput = inputHandler.apply(input);
+//                            } catch (Throwable throwable) {
+//                                throwable.printStackTrace();
+//                            }
+//                            try {
+//                                return function.apply(handledInput);
+//                            } catch (Throwable throwable) {
+//                                throwable.printStackTrace();
+//                                return null;
+//                            }
+//                        }
+//                    }).collect(Collectors.toList());
+//
+//            List<V> results = executorService.invokeAll(callables)
+//                    .stream()
+//                    .map(future -> {
+//                        try {
+//                            return future.get();
+//                        }
+//                        catch (Exception e) {
+//                            throw new IllegalStateException(e);
+//                        }
+//                    }).collect(Collectors.toList());
+//            return joiner.apply(results);
+//        });
+//    }

@@ -1,25 +1,25 @@
-package org.observertc.webrtc.observer.entities;
+package org.observertc.webrtc.observer.dto;
 
-import com.hazelcast.nio.serialization.Portable;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
+import com.hazelcast.nio.serialization.VersionedPortable;
 import org.observertc.webrtc.observer.common.ObjectToString;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Objects;
 
-public class WeakLockEntity implements Portable {
-    public static final int CLASS_ID = 5000;
+public class WeakLockDTO implements VersionedPortable {
+    private static final int CLASS_VERSION = 1;
     private static final String NAME_FIELD_NAME = "name";
     private static final String INSTANCE_FIELD_NAME = "instance";
     private static final String CREATED_FIELD_NAME = "created";
 
-    public static WeakLockEntity of(
+    public static WeakLockDTO of(
             String name,
             String instance
     ) {
-        WeakLockEntity result = new WeakLockEntity();
+        WeakLockDTO result = new WeakLockDTO();
         result.instance = instance;
         result.name = name;
         return result;
@@ -31,12 +31,17 @@ public class WeakLockEntity implements Portable {
 
     @Override
     public int getFactoryId() {
-        return EntityFactory.FACTORY_ID;
+        return PortableDTOFactory.FACTORY_ID;
     }
 
     @Override
     public int getClassId() {
-        return CLASS_ID;
+        return PortableDTOFactory.WEAKLOCKS_DTO_CLASS_ID;
+    }
+
+    @Override
+    public int getClassVersion() {
+        return CLASS_VERSION;
     }
 
     @Override
@@ -63,10 +68,10 @@ public class WeakLockEntity implements Portable {
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof WeakLockEntity == false) {
+        if (other instanceof WeakLockDTO == false) {
             return false;
         }
-        WeakLockEntity otherLock = (WeakLockEntity) other;
+        WeakLockDTO otherLock = (WeakLockDTO) other;
         if (Objects.isNull(this.name)) {
             return  Objects.isNull(otherLock.name);
         } else if (!this.name.equals(otherLock.name)) {
@@ -84,4 +89,5 @@ public class WeakLockEntity implements Portable {
         long otherEpochMilli = otherLock.created.toEpochMilli();
         return thisEpochMilli == otherEpochMilli;
     }
+
 }

@@ -22,24 +22,25 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.common.Task;
-import org.observertc.webrtc.observer.entities.OldCallEntity;
+import org.observertc.webrtc.observer.dto.CallDTO;
+import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.monitors.ObserverMetrics;
-import org.observertc.webrtc.observer.repositories.resolvers.SentinelCallParticipantsResolver;
-import org.observertc.webrtc.observer.tasks.*;
+import org.observertc.webrtc.observer.repositories.CallsRepository;
+import org.observertc.webrtc.observer.repositories.tasks.UpdatePCsTask;
+import org.observertc.webrtc.observer.tasks.TasksProvider;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -67,7 +68,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	ObserverConfig.EvaluatorsConfig config;
 
 	@Inject
-	SentinelCallParticipantsResolver sentinelCallParticipantsResolver;
+	CallsRepository calls;
 
 	public ActivePCsEvaluator(
 			MonitorProvider monitorProvider,
@@ -86,35 +87,14 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	}
 
 	@Override
-	public void accept(Map<UUID, PCState> peerConnectionStates) throws Throwable {
-		if (peerConnectionStates.size() < 1) {
+	public void accept(Map<UUID, PCState> newPeerConnections) throws Throwable {
+		if (newPeerConnections.size() < 1) {
 			return;
 		}
 
-		Map<UUID, PCState> existsPeerConnections = new HashMap<>();
-		Map<UUID, PCState> newPeerConnections = new HashMap<>();
-		Task<Collection<PeerConnectionEntity>> task = this.tasksProvider.getPeerConnectionFinderTask()
-				.addPCUUIDs(peerConnectionStates.keySet())
-				.withLogger(logger)
-				.withFlawMonitor(this.flawMonitor)
-				;
+		Map<UUID, PCState> existsPeerConnections = this.calls.filterExistingPeerConnectionUUIDs(newPeerConnections.keySet())
+				.stream().map(newPeerConnections::remove).collect(Collectors.toMap(pcState -> pcState.peerConnectionUUID, Function.identity()));
 
-		if (!task.execute().succeeded()) {
-			return;
-		}
-
-		Map<UUID, PeerConnectionEntity> activePCs = task.getResultOrDefault(new HashSet<>())
-				.stream().collect(Collectors.toMap(e -> e.peerConnectionUUID, Function.identity()));
-		Iterator<PCState> it = peerConnectionStates.values().iterator();
-
-		while(it.hasNext()) {
-			PCState pcState = it.next();
-			if (activePCs.containsKey(pcState.peerConnectionUUID)) {
-				existsPeerConnections.put(pcState.peerConnectionUUID, pcState);
-			} else {
-				newPeerConnections.put(pcState.peerConnectionUUID, pcState);
-			}
-		}
 
 		if (0 < existsPeerConnections.size()) {
 			this.update(existsPeerConnections);
@@ -125,123 +105,81 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		}
 	}
 
+	@Inject
+	Provider<UpdatePCsTask> updatePCsTaskProvider;
+
 	private void update(@NonNull Map<UUID, PCState> peerConnectionStates) {
 		if (peerConnectionStates.size() < 1) {
 			return;
 		}
-		AtomicBoolean streamIsAdded = new AtomicBoolean(false);
-		PeerConnectionsUpdaterTask task = this.tasksProvider.getPeerConnectionsUpdaterTask();
-		peerConnectionStates.values().stream().forEach(
-				pcState -> pcState.SSRCs.stream().forEach(ssrc -> {
-					task.addStream(
-							pcState.serviceUUID,
-							pcState.peerConnectionUUID,
-							ssrc);
-					streamIsAdded.set(true);
-				})
-		);
-		task.withLogger(logger)
-				.withFlawMonitor(this.flawMonitor)
-				.withExceptionMessage(() -> MessageFormatter.format("Cannot update peer connections. pcstates: {}", ObjectToString.toString(peerConnectionStates)).getMessage())
-				.withLogger(logger);
-
-		if (!streamIsAdded.get()) {
-			return;
+		var task = updatePCsTaskProvider.get();
+		for (PCState pcState : peerConnectionStates.values()) {
+			task.withPeerConnectionSSRCs(pcState.serviceUUID,
+					pcState.peerConnectionUUID,
+					pcState.SSRCs
+			);
 		}
-		if (!task.execute().succeeded()) {
-			return;
-		}
+		task.execute();
 	}
 
 	private void add(Map<UUID, PCState> newPeerConnections) {
 		Queue<PCState> pcStates = new LinkedList<>();
 		pcStates.addAll(newPeerConnections.values());
-		Set<UUID> pcDidNotHaveCalls = new HashSet<>();
 		while (!pcStates.isEmpty()) {
 			PCState pcState = pcStates.poll();
-			SSRCEntityFinderTask task = this.tasksProvider.getSSRCFinderTask();
-			task.forServiceUUID(pcState.serviceUUID)
-					.forCallName(pcState.callName)
-					.forSSRCs(pcState.SSRCs)
-					.withMultipleResultsAllowed(false)
-					.withFlawMonitor(this.flawMonitor)
-					.withLogger(logger)
-					.withMaxRetry(3)
-			;
-			if (!task.execute().succeeded()) {
-				continue;
+			Optional<CallEntity> maybeCallEntity = this.calls.findCall(pcState.serviceUUID, pcState.callName, pcState.SSRCs);
+			CallEntity callEntity;
+			if (maybeCallEntity.isPresent()) {
+				callEntity = maybeCallEntity.get();
+			} else {
+				callEntity = this.addNewCall(pcState);
 			}
 
-			Set<UUID> callUUIDs = task.getResult();
-
-			if (0 < callUUIDs.size()) {
-				UUID callUUID = callUUIDs.stream().findFirst().get();
-				this.addNewPeerConnection(callUUID, pcState);
-				this.signalSentinels(callUUID, pcState.serviceName);
-				continue;
-			}
-
-			if (pcDidNotHaveCalls.contains(pcState.peerConnectionUUID)) {
-				logger.warn("PCState {} has already seen in the process at newPeerConnections and tried to registered to a enw call. Now this state is dropped", pcState);
-				continue;
-			}
-
-			if (!this.addNewCall(pcState)) {
-				logger.warn("Call has not been added for pcUUID {}", pcState.peerConnectionUUID);
-				continue;
-			}
-			pcDidNotHaveCalls.add(pcState.peerConnectionUUID);
-			pcStates.add(pcState);
+			PeerConnectionEntity pcEntity = this.addNewPeerConnection(callEntity.call.callUUID, pcState);
 		}
 	}
 
-	private boolean addNewPeerConnection(UUID callUUID, PCState pcState) {
+	private PeerConnectionEntity addNewPeerConnection(UUID callUUID, PCState pcState) {
 
-		PeerConnectionEntity pcEntity = PeerConnectionEntity.of(
-				pcState.serviceUUID,
-				pcState.serviceName,
-				pcState.mediaUnitID,
-				callUUID,
-				pcState.callName,
-				pcState.peerConnectionUUID,
-				pcState.userId,
-				pcState.browserId,
-				pcState.timeZoneId,
-				pcState.created,
-				pcState.marker
-		);
-		pcEntity.SSRCs.addAll(pcState.SSRCs);
-		if (!this.config.impairablePCsCallName.equals(pcEntity.callName)) {
+		PeerConnectionEntity pcEntity = PeerConnectionEntity.builder()
+				.withPCDTO(PeerConnectionDTO.of(
+						pcState.serviceUUID,
+						pcState.serviceName,
+						pcState.mediaUnitID,
+						callUUID,
+						pcState.callName,
+						pcState.peerConnectionUUID,
+						pcState.userId,
+						pcState.browserId,
+						pcState.timeZoneId,
+						pcState.created,
+						pcState.marker)
+				)
+				.withSSRCs(pcState.SSRCs)
+				.build();
+
+		if (!this.config.impairablePCsCallName.equals(pcEntity.peerConnection.callName)) {
 			logger.info("Peer Connection {} is registered to Call {}.", pcState.peerConnectionUUID, callUUID);
 		}
 
-		PeerConnectionJoinerTask task = this.tasksProvider.getPeerConnectionJoinerTask();
-		task.forEntity(pcEntity)
-				.withLogger(logger)
-				.withFlawMonitor(this.flawMonitor)
-				.execute()
-		;
-
-		if (!task.succeeded()) {
-			return false;
-		}
+		pcEntity = this.calls.addPeerConnection(pcEntity);
 
 		try {
 			JoinedPeerConnection joinedPC = JoinedPeerConnection.newBuilder()
-					.setBrowserId(pcEntity.browserId)
-					.setMediaUnitId(pcEntity.mediaUnitId)
+					.setBrowserId(pcEntity.peerConnection.browserId)
+					.setMediaUnitId(pcEntity.peerConnection.mediaUnitId)
 					.setTimeZoneId(pcState.timeZoneId)
 					.setCallUUID(pcEntity.callUUID.toString())
-					.setPeerConnectionUUID(pcEntity.peerConnectionUUID.toString())
+					.setPeerConnectionUUID(pcEntity.peerConnection.peerConnectionUUID.toString())
 					.build();
 
 			Report report = Report.newBuilder()
 					.setVersion(REPORT_VERSION_NUMBER)
 					.setServiceUUID(pcEntity.serviceUUID.toString())
-					.setServiceName(pcEntity.serviceName)
-					.setMarker(pcEntity.marker)
+					.setServiceName(pcEntity.peerConnection.serviceName)
+					.setMarker(pcEntity.peerConnection.marker)
 					.setType(ReportType.JOINED_PEER_CONNECTION)
-					.setTimestamp(pcEntity.joined)
+					.setTimestamp(pcEntity.peerConnection.joined)
 					.setPayload(joinedPC)
 					.build();
 
@@ -249,60 +187,49 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				this.reportNoSSRC(pcEntity);
 			}
 
-			this.send(pcEntity.peerConnectionUUID, report);
-			this.observerMetrics.incrementJoinedPCs(pcEntity.serviceName, pcEntity.mediaUnitId);
+			this.send(pcEntity.peerConnection.peerConnectionUUID, report);
+			this.observerMetrics.incrementJoinedPCs(pcEntity.peerConnection.serviceName, pcEntity.peerConnection.mediaUnitId);
 		} finally {
-			return true;
+			return pcEntity;
 		}
 
 	}
 
-	private boolean addNewCall(PCState pcState) {
-		OldCallEntity callEntity = OldCallEntity.of(
-				UUID.randomUUID(),
-				pcState.serviceUUID,
-				pcState.serviceName,
-				pcState.created,
-				pcState.callName,
-				pcState.marker
-		);
-		CallInitializerTask task = this.tasksProvider.getCallInitializerTask();
-		task
-				.forCallEntity(callEntity)
-				.forSSRCs(pcState.SSRCs)
-				.withFlawMonitor(this.flawMonitor)
-				.withLogger(logger)
-		;
-		if (!task.execute().succeeded()) {
-			return false;
-		}
+	private CallEntity addNewCall(PCState pcState) {
+		CallEntity candidate = CallEntity.builder()
+				.withCallDTO(CallDTO.of(
+						UUID.randomUUID(),
+						pcState.serviceUUID,
+						pcState.serviceName,
+						pcState.created,
+						pcState.callName,
+						pcState.marker
+				))
+				.build();
+		CallEntity callEntity = this.calls.addCall(candidate);
 
-		UUID callUUID = task.getResult();
-		if (callUUID == null) {
-			return false;
-		}
-		if (!this.config.impairablePCsCallName.equals(callEntity.callName)) {
-			logger.info("Call is registered with a uuid: {}", callUUID);
+		if (!this.config.impairablePCsCallName.equals(callEntity.call.callName)) {
+			logger.info("Call is registered with a uuid: {}", callEntity.call.callUUID);
 		}
 
 		try {
 			Object payload = InitiatedCall.newBuilder()
-					.setCallUUID(callUUID.toString())
-					.setCallName(callEntity.callName)
+					.setCallUUID(callEntity.call.callUUID.toString())
+					.setCallName(callEntity.call.callName)
 					.build();
 			Report report = Report.newBuilder()
 					.setVersion(REPORT_VERSION_NUMBER)
-					.setServiceUUID(callEntity.serviceUUID.toString())
-					.setServiceName(callEntity.serviceName)
-					.setMarker(callEntity.marker)
+					.setServiceUUID(callEntity.call.serviceUUID.toString())
+					.setServiceName(callEntity.call.serviceName)
+					.setMarker(callEntity.call.marker)
 					.setType(ReportType.INITIATED_CALL)
-					.setTimestamp(callEntity.initiated)
+					.setTimestamp(callEntity.call.initiated)
 					.setPayload(payload)
 					.build();
-			this.send(callEntity.serviceUUID, report);
-			this.observerMetrics.incrementInitiatedCall(callEntity.serviceName);
+			this.send(callEntity.call.serviceUUID, report);
+			this.observerMetrics.incrementInitiatedCall(callEntity.call.serviceName);
 		} finally {
-			return true;
+			return callEntity;
 		}
 	}
 
@@ -314,11 +241,11 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 
 		ObserverEventReport observerEventReport = ObserverEventReport
 				.newBuilder()
-				.setUserId(pcEntity.providedUserName)
-				.setBrowserId(pcEntity.browserId)
-				.setMediaUnitId(pcEntity.mediaUnitId)
-				.setCallName(pcEntity.callName)
-				.setPeerConnectionUUID(pcEntity.peerConnectionUUID.toString())
+				.setUserId(pcEntity.peerConnection.providedUserName)
+				.setBrowserId(pcEntity.peerConnection.browserId)
+				.setMediaUnitId(pcEntity.peerConnection.mediaUnitId)
+				.setCallName(pcEntity.peerConnection.callName)
+				.setPeerConnectionUUID(pcEntity.peerConnection.peerConnectionUUID.toString())
 				.setEventType("NoSSRC")
 				.setMessage(message)
 				.build();
@@ -326,46 +253,14 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		Report report = Report.newBuilder()
 				.setVersion(REPORT_VERSION_NUMBER)
 				.setServiceUUID(pcEntity.serviceUUID.toString())
-				.setServiceName(pcEntity.serviceName)
-				.setMarker(pcEntity.marker)
+				.setServiceName(pcEntity.peerConnection.serviceName)
+				.setMarker(pcEntity.peerConnection.marker)
 				.setType(ReportType.OBSERVER_EVENT)
-				.setTimestamp(pcEntity.joined)
+				.setTimestamp(pcEntity.peerConnection.joined)
 				.setPayload(observerEventReport)
 				.build();
 
-		this.send(pcEntity.peerConnectionUUID, report);
-	}
-
-	private void signalSentinels(UUID callUUID, String serviceName) {
-		CallDetailsFinderTask callDetailsFinderTask = this.tasksProvider.getCallDetailsFinderTask();
-		callDetailsFinderTask
-				.forCallUUID(callUUID)
-				.collectPeerConnectionUUIDs(true)
-				.collectBrowserIds(true)
-				.collectSynchronizationSourceKeys(true)
-				.withFlawMonitor(this.flawMonitor)
-				.withLogger(logger)
-				.execute()
-		;
-
-		if (!callDetailsFinderTask.succeeded()) {
-			return;
-		}
-		Optional<CallDetailsFinderTask.Result> callDetailsHolder = callDetailsFinderTask.getResult();
-		if (!callDetailsHolder.isPresent()) {
-			return;
-		}
-		CallDetailsFinderTask.Result callDetails = callDetailsHolder.get();
-
-		Optional<String> sentinelNameHolder = sentinelCallParticipantsResolver.apply(serviceName, callDetails.browserIds.size());
-
-		if (sentinelNameHolder.isPresent()) {
-			callDetails.peerConnectionUUIDs.stream().forEach(pcUUID -> {
-				this.sentinelSignaledPCs.onNext(Map.entry(pcUUID, sentinelNameHolder.get()));
-			});
-		}
-
-
+		this.send(pcEntity.peerConnection.peerConnectionUUID, report);
 	}
 
 	private void send(UUID sendKey, Report report) {

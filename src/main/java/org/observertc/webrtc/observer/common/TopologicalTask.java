@@ -3,29 +3,28 @@
 // (powered by FernFlower decompiler)
 //
 
-package org.observertc.webrtc.observer.tasks;
+package org.observertc.webrtc.observer.common;
 
-import org.observertc.webrtc.observer.common.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.Map.Entry;
 
-public class Job implements Task {
-    private static final Logger logger = LoggerFactory.getLogger(Job.class);
+public class TopologicalTask implements Task {
+    private static final Logger logger = LoggerFactory.getLogger(TopologicalTask.class);
     private final Map<Task, List<Task>> taskGraph;
     private boolean succeeded = false;
     private boolean executed = false;
-    public Job(String name) {
+    public TopologicalTask(String name) {
         this.taskGraph = new HashMap();
     }
 
-    public Job() {
+    public TopologicalTask() {
         this(null);
     }
 
-    public Job withTask(Task task, Task... dependencies) {
+    public TopologicalTask withTask(Task task, Task... dependencies) {
         if (this.taskGraph.containsKey(task)) {
             throw new IllegalStateException("Task " + task.getName() + "has already been added to the job. Adding twice violates the the rule of universe.");
         }

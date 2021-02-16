@@ -27,6 +27,7 @@ import java.util.UUID;
  * Call to PC keys
  */
 @Singleton
+@Deprecated
 public class CallPeerConnectionsRepository extends MultiMapRepositoryAbstract<UUID, UUID> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallPeerConnectionsRepository.class);

@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.evaluators;
 
 import org.jeasy.random.EasyRandom;
 import org.observertc.webrtc.observer.entities.OldCallEntity;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SynchronizationSourceEntity;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.ICELocalCandidate;
@@ -43,7 +43,7 @@ public class TestInputsGenerator {
 		return this.generator.nextObject(PCState.class);
 	}
 
-	public PCState makePCStateFor(PeerConnectionEntity pcEntity, SynchronizationSourceEntity... ssrcEntities) {
+	public PCState makePCStateFor(OldPeerConnectionEntity pcEntity, SynchronizationSourceEntity... ssrcEntities) {
 		PCState result = this.makePCState();
 		result.serviceUUID = pcEntity.serviceUUID;
 		result.callName = pcEntity.callName;
@@ -61,8 +61,8 @@ public class TestInputsGenerator {
 		return result;
 	}
 
-	public PeerConnectionEntity makePeerConnectionEntity() {
-		return this.generator.nextObject(PeerConnectionEntity.class);
+	public OldPeerConnectionEntity makePeerConnectionEntity() {
+		return this.generator.nextObject(OldPeerConnectionEntity.class);
 	}
 
 	public SynchronizationSourceEntity makeSynchronizationSourceEntity() {
@@ -96,8 +96,8 @@ public class TestInputsGenerator {
 				.build();
 	}
 
-	public PeerConnectionEntity makePeerConnectionEntityFor(SynchronizationSourceEntity ssrcEntity) {
-		PeerConnectionEntity result = this.makePeerConnectionEntity();
+	public OldPeerConnectionEntity makePeerConnectionEntityFor(SynchronizationSourceEntity ssrcEntity) {
+		OldPeerConnectionEntity result = this.makePeerConnectionEntity();
 		result.callUUID = ssrcEntity.callUUID;
 		result.serviceUUID = ssrcEntity.serviceUUID;
 		return result;
@@ -112,12 +112,12 @@ public class TestInputsGenerator {
 		return new TestInputsGenerator.Builder();
 	}
 
-	public OldCallEntity makeCallEntityFor(PeerConnectionEntity... pcEntities) {
+	public OldCallEntity makeCallEntityFor(OldPeerConnectionEntity... pcEntities) {
 		OldCallEntity result = this.makeCallEntity();
 		if (Objects.isNull(pcEntities) || pcEntities.length < 1) {
 			return result;
 		}
-		PeerConnectionEntity pcEntity = pcEntities[0];
+		OldPeerConnectionEntity pcEntity = pcEntities[0];
 		result.serviceName = pcEntity.serviceName;
 		result.serviceUUID = pcEntity.serviceUUID;
 		result.callName = pcEntity.callName;

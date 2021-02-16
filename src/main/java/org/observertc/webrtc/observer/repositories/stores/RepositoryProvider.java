@@ -26,6 +26,7 @@ import javax.inject.Singleton;
  * singletone
  */
 @Singleton
+@Deprecated
 public class RepositoryProvider {
 
 	@Inject

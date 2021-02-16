@@ -27,6 +27,7 @@ import java.util.UUID;
  * Call to SSRC source keys
  */
 @Singleton
+@Deprecated
 public class CallSynchronizationSourcesRepository extends MultiMapRepositoryAbstract<UUID, String> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallSynchronizationSourcesRepository.class);

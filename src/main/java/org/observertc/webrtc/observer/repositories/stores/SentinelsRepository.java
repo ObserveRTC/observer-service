@@ -33,6 +33,7 @@ import java.util.Queue;
  * Repositry to store information related to Peer Connections
  */
 @Singleton
+@Deprecated
 public class SentinelsRepository extends MapRepositoryAbstract<String, SentinelEntity> {
 
 	private static final Logger logger = LoggerFactory.getLogger(SentinelsRepository.class);

@@ -28,6 +28,7 @@ import java.util.UUID;
  * Repository to store the (serviceUUID, SSRC) -> calls binding.
  */
 @Singleton
+@Deprecated
 public class SynchronizationSourcesRepository extends MapRepositoryAbstract<String, SynchronizationSourceEntity> {
 
 	private static final String HAZELCAST_IMAP_NAME = "WebRTCObserverSynchronizationSources";

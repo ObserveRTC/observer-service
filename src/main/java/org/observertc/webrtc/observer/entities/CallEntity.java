@@ -18,22 +18,73 @@ package org.observertc.webrtc.observer.entities;
 
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.CallDTO;
-import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // To avoid exposing hazelcast serialization specific fields
 public class CallEntity {
-	public CallDTO call;
-	public Set<Long> SSRCs = new HashSet<>();
-	public List<PeerConnectionDTO> peerConnections = new ArrayList<>();
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public final CallDTO call;
+	public final Set<Long> SSRCs;
+	public final Map<UUID, PeerConnectionEntity> peerConnections;
+
+	private CallEntity(CallDTO call, Set<Long> ssrCs, Map<UUID, PeerConnectionEntity> peerConnections) {
+		this.call = call;
+		SSRCs = ssrCs;
+		this.peerConnections = peerConnections;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (Objects.isNull(other) || other instanceof CallEntity == false) {
+			return false;
+		}
+		CallEntity otherEntity = (CallEntity) other;
+		return this.call.equals(otherEntity.call) &&
+				this.SSRCs.stream().allMatch(otherEntity.SSRCs::contains) &&
+				otherEntity.SSRCs.stream().allMatch(this.SSRCs::contains) &&
+				this.peerConnections.values().stream().allMatch(pcE -> pcE == this.peerConnections.get(pcE.pcUUID)) &&
+				otherEntity.peerConnections.values().stream().allMatch(pcE -> pcE == this.peerConnections.get(pcE.pcUUID))
+				;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.call.callUUID.hashCode();
+	}
 
 	@Override
 	public String toString() {
 		return ObjectToString.toString(this);
 	}
 
+	public static class Builder {
+		public CallDTO callDTO;
+		public Map<UUID, PeerConnectionEntity> peerConnections = new HashMap<>();
+
+		public CallEntity build() {
+			Objects.requireNonNull(this.callDTO);
+			Objects.requireNonNull(this.peerConnections);
+			Set<Long> SSRCs = this.peerConnections.values().stream().flatMap(pc -> pc.SSRCs.stream()).collect(Collectors.toSet());
+			return new CallEntity(this.callDTO,
+					Collections.unmodifiableSet(SSRCs),
+					Collections.unmodifiableMap(this.peerConnections)
+			);
+		}
+
+		public Builder withCallDTO(CallDTO of) {
+			this.callDTO = callDTO;
+			return this;
+		}
+
+		public Builder withPeerConnections(Map<UUID, PeerConnectionEntity> peerConnectionEntities) {
+			this.peerConnections.putAll(peerConnectionEntities);
+			return this;
+		}
+    }
 }

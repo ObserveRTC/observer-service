@@ -22,6 +22,7 @@ import org.observertc.webrtc.observer.common.UUIDAdapter;
 
 import java.util.UUID;
 
+@Deprecated
 public class EntityFactory implements PortableFactory {
 
 	public static final UUID DEFAULT_UUID = UUID.fromString("7c55dd42-614d-42d9-9b1d-8fac560d71e3");
@@ -31,14 +32,12 @@ public class EntityFactory implements PortableFactory {
 	@Override
 	public Portable create(int classId) {
 		switch (classId) {
-			case PeerConnectionEntity.CLASS_ID:
-				return new PeerConnectionEntity();
+			case OldPeerConnectionEntity.CLASS_ID:
+				return new OldPeerConnectionEntity();
 			case SynchronizationSourceEntity.CLASS_ID:
 				return new SynchronizationSourceEntity();
 			case OldCallEntity.CLASS_ID:
 				return new OldCallEntity();
-			case WeakLockEntity.CLASS_ID:
-				return new WeakLockEntity();
 			case ServiceEntity.CLASS_ID:
 				return new ServiceEntity();
 			case SentinelEntity.CLASS_ID:

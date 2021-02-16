@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
 
@@ -49,7 +49,7 @@ class PeerConnectionJoinerTaskTest {
 
     public void shouldUnRegisterCall() {
         // Given
-        PeerConnectionEntity pcEntity = generator.nextObject(PeerConnectionEntity.class);
+        OldPeerConnectionEntity pcEntity = generator.nextObject(OldPeerConnectionEntity.class);
         PeerConnectionJoinerTask peerConnectionJoinerTask = subjectProvider.get();
 
         // When

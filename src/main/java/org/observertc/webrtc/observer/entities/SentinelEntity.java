@@ -29,6 +29,7 @@ import java.util.*;
 
 // To avoid exposing hazelcast serialization specific fields
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
+@Deprecated
 public class SentinelEntity implements VersionedPortable {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceEntity.class);
 

@@ -28,6 +28,7 @@ import java.util.UUID;
 
 // To avoid exposing hazelcast serialization specific fields
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
+@Deprecated
 public class OldCallEntity implements VersionedPortable {
 
 	public static final int CLASS_ID = 3000;

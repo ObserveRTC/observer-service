@@ -21,6 +21,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 @Singleton
+@Deprecated
 public class TasksProvider {
 	@Inject
 	Provider<SSRCEntityFinderTask> ssrcEntityTaskProvider;

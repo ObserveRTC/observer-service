@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import java.util.Map;
 import java.util.UUID;
 
+@Deprecated
 public class SynchronizationSourcesRepository {
     @Inject
     HazelcastInstance hazelcastInstance;

@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.TaskAbstract;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.entities.OldPeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.stores.CallPeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.PeerConnectionsRepository;
 import org.observertc.webrtc.observer.repositories.stores.RepositoryProvider;
@@ -35,7 +35,8 @@ import java.util.stream.Collectors;
  * we rely on the fact that one PC joins to only one observer instance and sending samples to that one only.
  */
 @Prototype
-public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConnectionEntity>> {
+@Deprecated
+public class PeerConnectionsFinderTask extends TaskAbstract<Collection<OldPeerConnectionEntity>> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(PeerConnectionsFinderTask.class);
 	private enum State {
 		CREATED,
@@ -51,7 +52,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 	private final CallPeerConnectionsRepository callPeerConnectionsRepository;
 	private State state = State.CREATED;
 
-	private Map<UUID, PeerConnectionEntity> result = new HashMap<>();
+	private Map<UUID, OldPeerConnectionEntity> result = new HashMap<>();
 	private Set<UUID> pcUUIDs = new HashSet<>();
 	private Set<UUID> callUUIDs = new HashSet<>();
 
@@ -76,7 +77,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 
 
 	@Override
-	protected Collection<PeerConnectionEntity> perform() {
+	protected Collection<OldPeerConnectionEntity> perform() {
 		switch (this.state) {
 			default:
 			case CREATED:
@@ -121,7 +122,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 		if (this.pcUUIDs.size() < 1) {
 			return;
 		}
-		Map<UUID, PeerConnectionEntity> foundEntities = this.peerConnectionsRepository.findAll(this.pcUUIDs);
+		Map<UUID, OldPeerConnectionEntity> foundEntities = this.peerConnectionsRepository.findAll(this.pcUUIDs);
 		if (foundEntities.size() < 1) {
 			return;
 		}
@@ -137,7 +138,7 @@ public class PeerConnectionsFinderTask extends TaskAbstract<Collection<PeerConne
 			return;
 		}
 		Set<UUID> keys = foundPCUUIDs.values().stream().flatMap(Collection::stream).filter(Objects::nonNull).collect(Collectors.toSet());
-		Map<UUID, PeerConnectionEntity> foundEntities = this.peerConnectionsRepository.findAll(keys);
+		Map<UUID, OldPeerConnectionEntity> foundEntities = this.peerConnectionsRepository.findAll(keys);
 		if (foundEntities.size() < 1) {
 			return;
 		}
