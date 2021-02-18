@@ -52,27 +52,7 @@ failsafeStore:
 
 ---
 observer:
-  sentinels:
-    - type: "CallRule"
-      name: "SFUCallsOnVidhealth"
-      periodInMins: 5
-      report: true # if we sent reports about it
-      expose: true # if we expose it through metrics
-      rules:
-        serviceName: "required"
-        mediaUnitId: "optional"
-        callName: "optional"
-        ssrcs:
-          gt: 1
-          lt: 2
-          anyMatch: []
-          allMatch: []
-        browserIds:
-          gt: 1
-          lt: 100
-        pcs:
-          gt: 1
-          lt: 100
+  
   connectors:
     - name: "ReportSinkLogger"
       buffer:
