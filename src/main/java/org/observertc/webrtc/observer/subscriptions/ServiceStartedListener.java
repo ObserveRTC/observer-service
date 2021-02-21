@@ -36,17 +36,8 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 	}
 
 
-	private void init() {
-
-	}
-
 	@Override
 	public void onApplicationEvent(ServiceReadyEvent event) {
-//		Repository<String, ICEConnectionEntity> repository = this.repositoryProvider.getICEConnectionsRepository();
-//		repository.purge();
-//		logger.info("{} is cleared", repository.getClass().getSimpleName());
-//		MultiMapRepositoryAbstract<UUID, String> repository2 = this.repositoryProvider.getPeerConnectionICEConnectionsRepository();
-//		repository2.purge();
-//		logger.info("{} is cleared", repository2.getClass().getSimpleName());
+
 	}
 }

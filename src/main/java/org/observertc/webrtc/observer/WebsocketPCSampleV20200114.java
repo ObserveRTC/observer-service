@@ -32,7 +32,6 @@ import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.repositories.resolvers.ServiceNameResolver;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
@@ -43,9 +42,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Service should be UUId, because currently mysql stores it as
@@ -67,12 +64,17 @@ public class WebsocketPCSampleV20200114 {
 	MeterRegistry meterRegistry;
 
 	@Inject
-	ServiceNameResolver serviceNameResolver;
+	ServicesRepository servicesRepository;
+
+	@Inject
+	ObserverConfig observerConfig;
+
+	private Map<String, String> serviceNameMapper = new HashMap<>();
+
 
 	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
-			MonitorProvider monitorProvider,
-			ServicesRepository servicesRepository
+			MonitorProvider monitorProvider
 	) {
 		this.objectReader = objectMapper.reader();
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
@@ -84,11 +86,20 @@ public class WebsocketPCSampleV20200114 {
 		try {
 			String service;
 			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
+			boolean closeConnection = observerConfig.security.dropUnknownServices;
 			if (serviceUUIDHolder.isPresent()) {
 				UUID serviceUUID = serviceUUIDHolder.get();
-				service = this.serviceNameResolver.apply(serviceUUID);
+				closeConnection &= !this.servicesRepository.hasServiceUUID(serviceUUID);
+
+				service = this.servicesRepository.resolve(serviceUUID);
 			} else {
 				service = serviceUUIDStr;
+			}
+			serviceNameMapper.put(session.getId(), service);
+			if (closeConnection) {
+				logger.warn("Unregistered service UUID {} is not allowed to connect to the service", serviceUUIDStr);
+				session.close();
+				return;
 			}
 
 			this.meterRegistry.counter(
@@ -97,6 +108,7 @@ public class WebsocketPCSampleV20200114 {
 							Tag.of("service", service)
 					)
 			).increment();
+
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -112,11 +124,11 @@ public class WebsocketPCSampleV20200114 {
 			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
 			if (serviceUUIDHolder.isPresent()) {
 				UUID serviceUUID = serviceUUIDHolder.get();
-				service = this.serviceNameResolver.apply(serviceUUID);
+				service = this.servicesRepository.resolve(serviceUUID);
 			} else {
 				service = serviceUUIDStr;
 			}
-
+			this.serviceNameMapper.remove(session.getId());
 			this.meterRegistry.counter(
 					"observertc_closed_websockets",
 					List.of(Tag.of("mediaunit", mediaUnitID),
@@ -145,7 +157,8 @@ public class WebsocketPCSampleV20200114 {
 			return;
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
-		String serviceName = this.serviceNameResolver.apply(serviceUUID);
+
+		String serviceName = this.serviceNameMapper.get(session.getId());
 		try {
 			this.meterRegistry.counter(
 					"observertc_pcsamples",

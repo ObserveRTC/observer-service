@@ -16,7 +16,6 @@
 
 package org.observertc.webrtc.observer.repositories;
 
-import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.ServiceDTO;
@@ -35,37 +34,48 @@ public class ServicesRepository {
 	@Inject
 	ObserverHazelcast observerHazelcast;
 
-	private IMap<String, ServiceDTO> services;
+	@Inject
+	HazelcastMaps hazelcastMaps;
 
-//	private final Map<UUID, String> serviceMap = new ConcurrentHashMap<>();
-	private final Queue<ObserverConfig.ServiceConfiguration> messages;
-	public ServicesRepository(ObserverHazelcast observerHazelcast, ObserverConfig config) {
-		this.messages = new LinkedList<>();
-//		if (Objects.nonNull(config.services)) {
-//			config.services.forEach(this.messages::add);
-//		}
+	@Inject
+	ObserverConfig config;
+
+
+	private final Map<UUID, String> serviceMap = new HashMap<>();
+
+	public ServicesRepository() {
+
 	}
 
 	@PostConstruct
 	void setup() {
-		this.services = observerHazelcast.getInstance().getMap("observertc-services");
-//		if (0 < this.messages.size()) {
-//			while(!this.messages.isEmpty()) {
-//				ObserverConfig.ServiceConfiguration config = this.messages.poll();
-//				Optional<ServiceDTO> serviceEntityOptional = this.make(config);
-//				if (!serviceEntityOptional.isPresent()) {
-//					continue;
-//				}
-//				ServiceDTO entity = serviceEntityOptional.get();
-//				this.services.putIfAbsent(entity.serviceName, entity);
-//			}
-//			return;
-//		}
+		List<ObserverConfig.ServiceConfiguration> configs = this.config.services;
+		if (Objects.nonNull(configs)) {
+			for (ObserverConfig.ServiceConfiguration config : configs) {
+				Optional<ServiceDTO> serviceEntityOptional = this.make(config);
+				if (!serviceEntityOptional.isPresent()) {
+					continue;
+				}
+				ServiceDTO entity = serviceEntityOptional.get();
+				for (UUID serviceUUID : entity.serviceUUIDs) {
+					this.serviceMap.put(serviceUUID, entity.serviceName);
+				}
+				this.hazelcastMaps.getServiceDTOs().putIfAbsent(entity.serviceName, entity);
+			}
+		}
 	}
 
 	public Map<String, ServiceDTO> getAllEntries() {
-		Set<String> keys = this.services.keySet();
-		return this.services.getAll(keys);
+		Set<String> keys = this.hazelcastMaps.getServiceDTOs().keySet();
+		return this.hazelcastMaps.getServiceDTOs().getAll(keys);
+	}
+
+	public boolean hasServiceUUID(UUID serviceUUID) {
+		return this.serviceMap.containsKey(serviceUUID);
+	}
+
+	public String resolve(UUID serviceUUID) {
+		return this.serviceMap.getOrDefault(serviceUUID, this.config.outboundReports.defaultServiceName);
 	}
 
 	private Optional<ServiceDTO> make(ObserverConfig.ServiceConfiguration config) {
@@ -79,4 +89,5 @@ public class ServicesRepository {
 		}
 		return Optional.of(entity);
 	}
+
 }

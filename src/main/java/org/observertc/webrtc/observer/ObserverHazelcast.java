@@ -46,6 +46,7 @@ public class ObserverHazelcast {
 		this.instance = Hazelcast.newHazelcastInstance(config);
 	}
 
+
 	@PostConstruct
 	void setup() {
 

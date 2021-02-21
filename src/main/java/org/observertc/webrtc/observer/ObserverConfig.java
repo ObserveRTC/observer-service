@@ -18,6 +18,8 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import org.observertc.webrtc.observer.dto.SentinelDTO;
+import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
 
 import javax.validation.constraints.Min;
 import java.util.*;
@@ -33,7 +35,11 @@ public class ObserverConfig {
 
 	public MonitorsConfig monitors;
 
-	public List<SentinelConfig> sentinels = new ArrayList<>();
+	public int sentinelInvasionPeriodInMin = 1;
+
+	public List<SentinelDTO> sentinels = new ArrayList<>();
+
+	public List<SentinelFilterDTO> sentinelFilters = new ArrayList<>();
 
 	public EvaluatorsConfig evaluators;
 
@@ -41,11 +47,18 @@ public class ObserverConfig {
 
 	public List<ServiceConfiguration> services = new ArrayList<>();
 
+	public SecurityConfig security;
+
 	@ConfigurationProperties("ipaddress")
 	public static class IPAddressConverterConfig {
 		public boolean enabled = false;
 		public String algorithm = "SHA-256";
 		public String salt = "mySalt";
+	}
+
+	@ConfigurationProperties("security")
+	public static class SecurityConfig {
+		public boolean dropUnknownServices = false;
 	}
 
 
@@ -65,13 +78,6 @@ public class ObserverConfig {
 
 		public Map<String, Object> reportMonitor;
 
-	}
-
-	@EachProperty("sentinels")
-	public static class SentinelConfig {
-		public String name;
-		public List<String> addresses;
-		public List<String> callFilters;
 	}
 
 	@ConfigurationProperties("hazelcast")

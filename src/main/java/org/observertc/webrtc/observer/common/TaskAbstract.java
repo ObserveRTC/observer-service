@@ -16,12 +16,17 @@
 
 package org.observertc.webrtc.observer.common;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -33,6 +38,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private Logger onLogger = DEFAULT_LOGGER;
 	private Logger defaultLogger = DEFAULT_LOGGER;
 	private Level onErrorLogLevel = Level.ERROR;
+	private MeterRegistry meterRegistry = null;
 	private boolean rethrowException = false;
 	private boolean succeeded = false;
 	private int maxRetry = 1;
@@ -45,7 +51,14 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 		try {
 			for (int run = 0; run < this.maxRetry; ++run) {
 				try (var lock = this.lockProvider.get()){
+					thrown = null;
+					Instant started = Instant.now();
 					T result = this.perform();
+					if (Objects.nonNull(this.meterRegistry)) {
+						this.meterRegistry
+								.timer("observertc_tasks_execution_time_in_ms", List.of(Tag.of("task", this.getClass().getSimpleName())))
+								.record(Duration.between(started, Instant.now()));
+					}
 					this.succeeded = true;
 					this.result = result;
 					break;
@@ -165,6 +178,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	public TaskAbstract<T> withLogger(Logger logger) {
 		this.onLogger = logger;
+		return this;
+	}
+
+	public TaskAbstract<T> withMeterRegistry(MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
 		return this;
 	}
 

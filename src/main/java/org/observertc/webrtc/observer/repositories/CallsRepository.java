@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.repositories;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.tasks.*;
@@ -28,9 +29,6 @@ public class CallsRepository {
     Provider<RemovePCsTask> removePCsTaskProvider;
 
     @Inject
-    Provider<UpdatePCsTask> updatePCsTaskProvider;
-
-    @Inject
     Provider<RemoveCallsTask> removeCallsTaskProvider;
 
     @Inject
@@ -45,9 +43,13 @@ public class CallsRepository {
     @Inject
     Provider<FindCallTask> findCallTaskProvider;
 
+    @Inject
+    MeterRegistry meterRegistry;
+
     public <U extends CallEntity> CallEntity addCall(@NotNull U entity) {
         var task = this.addCallsTaskProvider.get()
                 .withCallEntity(entity)
+                .withMeterRegistry(meterRegistry)
                 ;
 
         if (!task.execute().succeeded()) {
@@ -64,6 +66,7 @@ public class CallsRepository {
     public <U extends PeerConnectionEntity> PeerConnectionEntity addPeerConnection(@NotNull U entity) {
         var task = this.addPCsTaskProvider.get()
                 .withPeerConnection(entity)
+                .withMeterRegistry(meterRegistry)
                 ;
 
         if (!task.execute().succeeded()) {
@@ -158,7 +161,9 @@ public class CallsRepository {
 
     public <R extends UUID> CallEntity removeCall(@NotNull R callUUID) {
         var task = this.removeCallsTaskProvider.get()
-                .whereCallUUID(callUUID);
+                .whereCallUUID(callUUID)
+                .withMeterRegistry(meterRegistry)
+                ;
 
         if (!task.execute().succeeded()) {
             return null;
@@ -173,7 +178,9 @@ public class CallsRepository {
 
     public <R extends CallEntity> CallEntity removeCall(@NotNull R callEntity) {
         var task = this.removeCallsTaskProvider.get()
-                .whereCallEntities(callEntity);
+                .whereCallEntities(callEntity)
+                .withMeterRegistry(meterRegistry)
+                ;
 
         if (!task.execute().succeeded()) {
             return null;
@@ -189,6 +196,7 @@ public class CallsRepository {
     public <U extends UUID> PeerConnectionEntity removePeerConnection(@NotNull U pcUUID) {
         var task = this.removePCsTaskProvider.get()
                 .wherePCUUIDs(pcUUID)
+                .withMeterRegistry(meterRegistry)
         ;
 
         if (!task.execute().succeeded()) {
@@ -208,5 +216,26 @@ public class CallsRepository {
             return Collections.EMPTY_SET;
         }
         return result;
+    }
+
+    /**
+     * Gets all call entities, for which calls DTO is stored in this instance!
+     * @return
+     */
+    public Map<UUID, CallEntity> fetchLocallyStoredCalls() {
+        Set<UUID> keys = this.hazelcastMaps.getCallDTOs().localKeySet();
+        var task = this.fetchCallsTaskProvider.get()
+                .whereCallUUIDs(keys)
+                .withMeterRegistry(meterRegistry)
+                ;
+
+        if (!task.execute().succeeded()) {
+            return Collections.EMPTY_MAP;
+        }
+        Map<UUID, CallEntity> callEntities = task.getResult();
+        if (Objects.isNull(callEntities)) {
+            return Collections.EMPTY_MAP;
+        }
+        return callEntities;
     }
 }

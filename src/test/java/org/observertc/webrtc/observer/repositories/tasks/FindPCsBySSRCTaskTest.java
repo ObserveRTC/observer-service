@@ -3,7 +3,9 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.repositories.HazelcastMapTestUtils;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -14,15 +16,18 @@ import java.util.UUID;
 class FindPCsBySSRCTaskTest {
 
     @Inject
+    EntitiesTestUtils entitiesTestUtils;
+
+    @Inject
     Provider<FindPCsBySSRCTask> findPCsBySSRCTaskProvider;
 
     @Inject
-    TestUtils testUtils;
+    HazelcastMapTestUtils hazelcastMapTestUtils;
 
     @Test
-    void shouldFoundCallByCallName_1() {
-        PeerConnectionEntity pcEntity = testUtils.generatePeerConnectionEntity();
-        testUtils.insertPeerConnectionEntity(pcEntity);
+    void shouldFoundPCBySSRC_1() {
+        PeerConnectionEntity pcEntity = entitiesTestUtils.generatePeerConnectionEntity();
+        hazelcastMapTestUtils.insertPeerConnectionEntity(pcEntity);
 
         Map<UUID, PeerConnectionEntity> map = findPCsBySSRCTaskProvider.get()
                 .whereServiceAndSSRC(pcEntity.serviceUUID, pcEntity.SSRCs)
@@ -33,9 +38,9 @@ class FindPCsBySSRCTaskTest {
     }
 
     @Test
-    void shouldFoundCallByCallName_2() {
-        PeerConnectionEntity pcEntity = testUtils.generatePeerConnectionEntity();
-        testUtils.insertPeerConnectionEntity(pcEntity);
+    void shouldFoundPCBySSRC_2() {
+        PeerConnectionEntity pcEntity = entitiesTestUtils.generatePeerConnectionEntity();
+        hazelcastMapTestUtils.insertPeerConnectionEntity(pcEntity);
 
         Map<UUID, PeerConnectionEntity> map = findPCsBySSRCTaskProvider.get()
                 .execute(Map.of(pcEntity.serviceUUID, pcEntity.SSRCs))
