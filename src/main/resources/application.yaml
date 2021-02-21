@@ -79,7 +79,7 @@ observer:
       streamMetrics: True
       anyMatchFilters:
         - "MyPeerToPeerFilter"
-
+        
   connectors:
     - name: "ReportSinkLogger"
       buffer:
