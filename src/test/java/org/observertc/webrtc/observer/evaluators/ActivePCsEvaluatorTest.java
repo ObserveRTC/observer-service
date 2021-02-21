@@ -17,7 +17,6 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -29,15 +28,5 @@ public class ActivePCsEvaluatorTest {
 	Provider<ActivePCsEvaluator> subject;
 
 
-	@Test
-	public void shouldUpdateExistingPeerConnections() throws Throwable {
-
-	}
-
-	@Test
-	public void shouldDetectNewPCs() throws Throwable {
-		// Given
-		// Then
-	}
 
 }
