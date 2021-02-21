@@ -49,30 +49,37 @@ failsafeStore:
     engineConfig:
       path: "myPath"
 
+---
+filters:
+  - type: "CallFilter"
+    filterName: "myCallFilterName"
+    config:
+      serviceName: "required"
+      callName: "regex pattern"
+      marker: "regex pattern"
 
 ---
 observer:
+  security:
+    dropUnknownServices: False
+
+  sentinelInvasionPeriodInMin: 1
+  sentinelFilters:
+    - name: "MyPeerToPeerFilter"
+      serviceName: "example-service-name"
+#      callName: "regex pattern"
+#      marker: "regex pattern"
+      browserIds:
+        gt: 0
+        lt: 3
   sentinels:
-    - type: "CallRule"
-      name: "SFUCallsOnVidhealth"
-      periodInMins: 5
-      report: true # if we sent reports about it
-      expose: true # if we expose it through metrics
-      rules:
-        serviceName: "required"
-        mediaUnitId: "optional"
-        callName: "optional"
-        ssrcs:
-          gt: 1
-          lt: 2
-          anyMatch: []
-          allMatch: []
-        browserIds:
-          gt: 1
-          lt: 100
-        pcs:
-          gt: 1
-          lt: 100
+    - name: "MySentinel"
+      expose: True
+      reports: True
+      streamMetrics: True
+      anyMatchFilters:
+        - "MyPeerToPeerFilter"
+
   connectors:
     - name: "ReportSinkLogger"
       buffer:

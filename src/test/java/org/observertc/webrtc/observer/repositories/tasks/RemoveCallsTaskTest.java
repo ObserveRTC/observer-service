@@ -4,6 +4,8 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
+import org.observertc.webrtc.observer.repositories.HazelcastMapTestUtils;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.inject.Inject;
@@ -12,9 +14,11 @@ import javax.inject.Provider;
 @MicronautTest
 class RemoveCallsTaskTest {
 
+    @Inject
+    EntitiesTestUtils entitiesTestUtils;
 
     @Inject
-    TestUtils testUtils;
+    HazelcastMapTestUtils hazelcastMapTestUtils;
 
     @Inject
     Provider<RemoveCallsTask> removeCallsTaskProvider;
@@ -24,26 +28,26 @@ class RemoveCallsTaskTest {
 
     @Test
     void shouldPurgeCallEntity_1() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         removeCallsTaskProvider.get()
                 .whereCallEntities(callEntity)
                 .execute();
 
-        Assertions.assertTrue(testUtils.isCallEntityDeleted(callEntity));
+        Assertions.assertTrue(hazelcastMapTestUtils.isCallEntityDeleted(callEntity));
     }
 
     @Test
     void shouldPurgeCallEntity_2() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         removeCallsTaskProvider.get()
                 .whereCallUUID(callEntity.call.callUUID)
                 .execute();
 
-        Assertions.assertTrue(testUtils.isCallEntityDeleted(callEntity));
+        Assertions.assertTrue(hazelcastMapTestUtils.isCallEntityDeleted(callEntity));
     }
 
 

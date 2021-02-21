@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.BiFunction;
 import org.observertc.webrtc.observer.common.ChainedTask;
@@ -41,7 +42,11 @@ public class AddCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
     FetchCallsTask fetchCallsTask;
 
     @Inject
+    AddPCsTask addPCsTask;
+
+    @Inject
     WeakLockProvider weakLockProvider;
+
 
     @PostConstruct
     void setup() {
@@ -138,6 +143,7 @@ public class AddCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                 if (foundPCs.size() < 1) {
                     return;
                 }
+                boolean executeFetchCalls = false;
                 for (PeerConnectionEntity pcEntity : foundPCs.values()) {
                     UUID callUUID = null;
                     for (Long SSRC : pcEntity.SSRCs) {
@@ -153,8 +159,9 @@ public class AddCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                     }
                     newCallEntities.remove(callUUID);
                     fetchCallsTask.whereCallUUID(pcEntity.callUUID);
+                    executeFetchCalls = true;
                 }
-                if (!fetchCallsTask.execute().succeeded()) {
+                if (!executeFetchCalls || !fetchCallsTask.execute().succeeded()) {
                     return;
                 }
                 Map<UUID, CallEntity> newlyFoundCalls = fetchCallsTask.getResult();
@@ -183,6 +190,12 @@ public class AddCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                     }
                 }
             )
+            .addActionStage("Add Peer Connections", () -> {
+                for (CallEntity callEntity : this.newCallEntities.values()) {
+                    addPCsTask.withPeerConnection(callEntity.peerConnections.values().toArray(new PeerConnectionEntity[0]));
+                }
+                addPCsTask.execute();
+            })
             .addActionStage("Bind calls by names",
                 // action
                 () -> {

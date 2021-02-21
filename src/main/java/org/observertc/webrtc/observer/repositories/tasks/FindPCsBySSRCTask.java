@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.CallDTO;
@@ -21,10 +22,8 @@ public class FindPCsBySSRCTask extends ChainedTask<Map<UUID, PeerConnectionEntit
 
     private Map<UUID, Set<Long>> serviceSSRCs = new HashMap<>();
 
-
     @PostConstruct
     void setup() {
-
         new Builder<>(this)
             .<Map<UUID, Set<Long>>> addConsumerEntry("Merge all provided inputs",
                     () -> {}, // no input was invoked

@@ -115,6 +115,56 @@ class ChainedTaskTest {
     }
 
     @Test
+    void shouldRunPipeline_5() {
+        var task = ChainedTask.builder()
+                .<Integer>addSupplierStage("provide int", () -> 1)
+                .<Integer, Double>addFunctionalStage("make double", num -> (double) num + 1.5)
+                .<Double>addTerminalFunction("pass as result", num -> num.toString())
+                .build();
+
+        task.execute();
+
+        Assertions.assertTrue(task.succeeded());
+        Assertions.assertEquals("2.5", task.getResult());
+    }
+
+
+
+    @Test
+    void shouldRollbackPipeline_1() {
+        AtomicInteger state = new AtomicInteger(0);
+        AtomicBoolean touched = new AtomicBoolean(false);
+        var task = ChainedTask.builder()
+                .addActionStage("stage 1", () -> state.incrementAndGet(), (resultHolder, thrown) -> state.decrementAndGet())
+                .addActionStage("stage 2", () -> state.incrementAndGet(), (resultHolder, thrown) -> state.decrementAndGet())
+                .addActionStage("stage 3", () -> state.incrementAndGet(), (resultHolder, thrown) -> state.decrementAndGet())
+                .addActionStage("throwing exception", () -> {touched.set(true); throw new RuntimeException(); })
+                .build();
+
+        task.execute();
+
+        Assertions.assertTrue(touched.get());
+        Assertions.assertEquals(0, state.get());
+    }
+
+    @Test
+    void shouldRollbackPipeline_2() {
+        AtomicInteger state = new AtomicInteger(0);
+        AtomicInteger touched = new AtomicInteger(0);
+        var task = ChainedTask.builder()
+                .addActionStage("stage 1", () -> state.incrementAndGet(), (resultHolder, thrown) -> state.decrementAndGet())
+                .addActionStage("stage 2", () -> state.incrementAndGet(), (resultHolder, thrown) -> state.decrementAndGet())
+                .addActionStage("throwing exception", () -> {touched.set(state.get()); throw new RuntimeException(); })
+                .addActionStage("stage 3", () -> state.incrementAndGet(), (resultHolder, thrown) -> state.decrementAndGet())
+                .build();
+
+        task.execute();
+
+        Assertions.assertEquals(2, touched.get());
+        Assertions.assertEquals(0, state.get());
+    }
+
+    @Test
     void shouldHitBreakConditionPipeline_1() {
         Supplier<ChainedTask<Integer>> taskProvider = () -> ChainedTask.<Integer>builder()
                 .<Integer, Integer>addFunctionalStage("test stage 1", num -> num + 1)

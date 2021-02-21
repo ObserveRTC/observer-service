@@ -5,6 +5,8 @@ import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
+import org.observertc.webrtc.observer.repositories.HazelcastMapTestUtils;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -18,15 +20,18 @@ class FindCallsByNameTaskTest {
     private static final EasyRandom generator = new EasyRandom();
 
     @Inject
+    EntitiesTestUtils entitiesTestUtils;
+
+    @Inject
     Provider<FindCallsByNameTask> findCallsByNameTaskProvider;
 
     @Inject
-    TestUtils testUtils;
+    HazelcastMapTestUtils hazelcastMapTestUtils;
 
     @Test
     void shouldFoundCallByCallName_1() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         Map<UUID, CallEntity> map = findCallsByNameTaskProvider.get()
                 .whereCallName(callEntity.call.serviceUUID, callEntity.call.callName)
@@ -38,8 +43,8 @@ class FindCallsByNameTaskTest {
 
     @Test
     void shouldFoundCallByCallName_2() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         Map<UUID, CallEntity> map = findCallsByNameTaskProvider.get()
                 .execute(Map.of(callEntity.call.serviceUUID, Set.of(callEntity.call.callName)))

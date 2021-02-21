@@ -65,6 +65,10 @@ public class FindCallsByNameTask extends ChainedTask<Map<UUID, CallEntity>> {
                     return false;
                 }
                 // we do not want to remove unbound names, so we just fetch the result and go
+                if (callUUIDs.size() < 1) { // if we have any!
+                    resultHolder.set(Collections.EMPTY_MAP);
+                    return true;
+                }
                 Map<UUID, CallEntity> result = this.fetchCallsTask.whereCallUUIDs(callUUIDs).execute().getResult();
                 resultHolder.set(result);
                 return true;

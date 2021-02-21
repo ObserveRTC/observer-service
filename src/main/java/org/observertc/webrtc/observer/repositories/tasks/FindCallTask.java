@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.entities.CallEntity;
@@ -33,7 +34,6 @@ public class FindCallTask extends ChainedTask<Map<UUID, CallEntity>> {
 
     @PostConstruct
     void setup() {
-
         new Builder<>(this)
             .addActionStage("Fetch Calls by name",
             // action

@@ -27,6 +27,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * This class converts {@link Map<String, Object>} config to a target class.
+ * Additionally before the validation it tries to match system env variables if it is given to supply values.
+ * The target class will be validated with {@link javax.validation.ConstraintViolation}, so it should been
+ * wired to an implementation like hybernite
  *
  * @author Balazs Kreith
  * @since 0.1

@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ChainedTask;
@@ -20,6 +21,7 @@ public class FetchPCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> {
     @Inject
     HazelcastMaps hazelcastMaps;
     private boolean fetchSSRCs = true;
+
 
     @PostConstruct
     void setup() {

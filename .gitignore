@@ -12,5 +12,6 @@ debug_*.log
 .project
 .settings
 .classpath
+mynotes.txt
 google_api_credentials.json
 

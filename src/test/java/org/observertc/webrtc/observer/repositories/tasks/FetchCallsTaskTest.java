@@ -4,6 +4,8 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
+import org.observertc.webrtc.observer.repositories.HazelcastMapTestUtils;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -19,12 +21,15 @@ class FetchCallsTaskTest {
 //
 //
     @Inject
-    TestUtils testUtils;
+    HazelcastMapTestUtils hazelcastMapTestUtils;
+
+    @Inject
+    EntitiesTestUtils entitiesTestUtils;
 
     @Test
     public void shouldFetchEntity_1() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 //
         Map<UUID, CallEntity> callEntities = callEntitiesFetcherTaskProvider.get()
                 .whereCallUUID(callEntity.call.callUUID)
@@ -37,8 +42,8 @@ class FetchCallsTaskTest {
 
     @Test
     public void shouldFetchEntity_2() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         Map<UUID, CallEntity> callEntities = callEntitiesFetcherTaskProvider.get()
                 .whereCallUUIDs(Set.of(callEntity.call.callUUID))
@@ -51,8 +56,8 @@ class FetchCallsTaskTest {
 
     @Test
     public void shouldFetchEntity_3() {
-        CallEntity callEntity = testUtils.generateCallEntity();
-        testUtils.insertCallEntity(callEntity);
+        CallEntity callEntity = entitiesTestUtils.generateCallEntity();
+        hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         Map<UUID, CallEntity> callEntities = callEntitiesFetcherTaskProvider.get()
                 .execute(Set.of(callEntity.call.callUUID))

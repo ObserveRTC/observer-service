@@ -3,9 +3,7 @@ package org.observertc.webrtc.observer.repositories;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.dto.CallDTO;
-import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
-import org.observertc.webrtc.observer.dto.WeakLockDTO;
+import org.observertc.webrtc.observer.dto.*;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -23,6 +21,9 @@ public class HazelcastMaps {
     private IMap<UUID, PeerConnectionDTO> pcDTOs;
     private MultiMap<UUID, UUID> callToPCUUIDs;
     private IMap<String, WeakLockDTO> weakLocks;
+    private IMap<String, SentinelDTO> sentinelDTOs;
+    private IMap<String, SentinelFilterDTO> sentinelFilterDTOs;
+    private IMap<String, ServiceDTO> serviceDTOs;
 
     @PostConstruct
     void setup() {
@@ -30,6 +31,9 @@ public class HazelcastMaps {
         this.pcDTOs = observerHazelcast.getInstance().getMap("observertc-pcdtos");
         this.callToPCUUIDs = observerHazelcast.getInstance().getMultiMap("observertc-call-to-pcuuids");
         this.weakLocks = observerHazelcast.getInstance().getMap("observertc-weaklocks");
+        this.sentinelDTOs = observerHazelcast.getInstance().getMap("observertc-sentinels");
+        this.sentinelFilterDTOs = observerHazelcast.getInstance().getMap("observertc-sentinel-filters");
+        this.serviceDTOs = observerHazelcast.getInstance().getMap("observertc-services");
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {
@@ -63,4 +67,10 @@ public class HazelcastMaps {
     }
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
+
+    public IMap<String, SentinelFilterDTO> getSentinelFilterDTOs() {return this.sentinelFilterDTOs;}
+
+    public IMap<String, SentinelDTO> getSentinelDTOs() {return this.sentinelDTOs;}
+
+    public IMap<String, ServiceDTO> getServiceDTOs() {return this.serviceDTOs;}
 }

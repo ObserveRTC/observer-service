@@ -33,7 +33,6 @@ import java.util.UUID;
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
 public class PeerConnectionDTO implements VersionedPortable {
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionDTO.class);
-	public static final int CLASS_ID = 1001;
 	public static final int CLASS_VERSION = 6;
 
 	private static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
@@ -157,18 +156,14 @@ public class PeerConnectionDTO implements VersionedPortable {
 			return false;
 		}
 		PeerConnectionDTO otherDTO = (PeerConnectionDTO) other;
-		if (!Objects.equals(this.callName, otherDTO.callName) ||
-				!Objects.equals(this.callUUID, otherDTO.callUUID) ||
-				!Objects.equals(this.serviceUUID, otherDTO.serviceUUID) ||
-				!Objects.equals(this.marker, otherDTO.marker) ||
-				!Objects.equals(this.joined, otherDTO.joined) ||
-				!Objects.equals(this.serviceName, otherDTO.serviceName) ||
-				!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
-				!Objects.equals(this.providedUserName, otherDTO.providedUserName) ||
-				!Objects.equals(this.serviceName, otherDTO.serviceName)
-		) {
-			return false;
-		}
+		if (!Objects.equals(this.callName, otherDTO.callName)) return false;
+		if (!Objects.equals(this.callUUID, otherDTO.callUUID)) return false;
+		if (!Objects.equals(this.serviceUUID, otherDTO.serviceUUID)) return false;
+		if (!Objects.equals(this.marker, otherDTO.marker)) return false;
+		if (!Objects.equals(this.joined, otherDTO.joined)) return false;
+		if (!Objects.equals(this.serviceName, otherDTO.serviceName)) return false;
+		if (!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId)) return false;
+		if (!Objects.equals(this.providedUserName, otherDTO.providedUserName)) return false;
 		return true;
 	}
 }

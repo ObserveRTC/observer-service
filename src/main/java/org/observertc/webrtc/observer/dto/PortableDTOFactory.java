@@ -26,6 +26,9 @@ public class PortableDTOFactory implements PortableFactory {
 	public static final int CALL_DTO_CLASS_ID = 2000;
 	public static final int SERVICE_DTO_CLASS_ID = 3000;
 	public static final int WEAKLOCKS_DTO_CLASS_ID = 4000;
+	public static final int SENTINEL_DTO_CLASS_ID = 5000;
+	public static final int COLLECTION_FILTER_DTO_CLASS_ID = 6000;
+	public static final int SENTINEL_FILTER_DTO_CLASS_ID = 7000;
 
 	@Override
 	public Portable create(int classId) {
@@ -38,6 +41,12 @@ public class PortableDTOFactory implements PortableFactory {
 				return new WeakLockDTO();
 			case SERVICE_DTO_CLASS_ID:
 				return new ServiceDTO();
+			case SENTINEL_DTO_CLASS_ID:
+				return new SentinelDTO();
+			case SENTINEL_FILTER_DTO_CLASS_ID:
+				return new SentinelFilterDTO();
+			case COLLECTION_FILTER_DTO_CLASS_ID:
+				return new CollectionFilterDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

@@ -28,7 +28,7 @@ import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.monitors.ObserverMetrics;
 import org.observertc.webrtc.observer.repositories.CallsRepository;
-import org.observertc.webrtc.observer.repositories.tasks.UpdatePCsTask;
+import org.observertc.webrtc.observer.repositories.tasks.UpdatePCSSRCsTask;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +64,9 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 	@Inject
 	CallsRepository calls;
 
+	@Inject
+	Provider<UpdatePCSSRCsTask> updatePCsTaskProvider;
+
 	public ActivePCsEvaluator() {
 	}
 
@@ -90,8 +93,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 		}
 	}
 
-	@Inject
-	Provider<UpdatePCsTask> updatePCsTaskProvider;
+
 
 	private void update(@NonNull Map<UUID, PCState> peerConnectionStates) {
 		if (peerConnectionStates.size() < 1) {
@@ -118,6 +120,11 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				callEntity = maybeCallEntity.get();
 			} else {
 				callEntity = this.addNewCall(pcState);
+			}
+
+			if (Objects.isNull(callEntity)) {
+				logger.warn("No Call Entity has been added");
+				return;
 			}
 
 			PeerConnectionEntity pcEntity = this.addNewPeerConnection(callEntity.call.callUUID, pcState);
@@ -199,6 +206,10 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 			return null;
 		}
 
+		if (Objects.isNull(callEntity)) {
+			logger.warn("CallEntity is null {}", pcState);
+			return null;
+		}
 
 		if (!this.config.impairablePCsCallName.equals(callEntity.call.callName)) {
 			logger.info("Call is registered with a uuid: {}", callEntity.call.callUUID);

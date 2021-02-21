@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.common.TaskStage;
@@ -24,6 +25,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
 
     @Inject
     FetchPCsTask fetchPCsTask;
+
 
     @PostConstruct
     void setup() {
