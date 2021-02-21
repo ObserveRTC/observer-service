@@ -1,7 +1,7 @@
 WebRTC-Observer
 ===
 
-[![Build Actions Status](https://github.com/ObserveRTC/observer/workflows/Java CI with Gradle/badge.svg)](https://github.com/ObserveRTC/observer/actions)
+![Build](https://github.com/ObserveRTC/observer/actions/workflows/build.yml/badge.svg)
 
 WebRTC-Observer is a microservice collect and analyze 
 samples provided by a WebRTC application and make 
