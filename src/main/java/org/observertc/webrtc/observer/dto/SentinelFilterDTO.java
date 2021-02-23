@@ -12,6 +12,10 @@ import java.util.Objects;
 public class SentinelFilterDTO implements VersionedPortable {
     private static final int CLASS_VERSION = 1;
 
+    public static SentinelFilterDTO.Builder builder() {
+        return new Builder();
+    }
+
     @NotNull
     public String name;
 
@@ -24,6 +28,8 @@ public class SentinelFilterDTO implements VersionedPortable {
     public CollectionFilterDTO SSRCs = new CollectionFilterDTO();
     public CollectionFilterDTO browserIds =  new CollectionFilterDTO();
     public CollectionFilterDTO peerConnections = new CollectionFilterDTO();
+
+
 
     @Override
     public String toString() {
@@ -80,5 +86,48 @@ public class SentinelFilterDTO implements VersionedPortable {
         this.SSRCs = reader.readPortable("ssrcs");
         this.browserIds = reader.readPortable("browserids");
         this.peerConnections = reader.readPortable("peerconnections");
+    }
+
+    public static class Builder {
+        private SentinelFilterDTO result = new SentinelFilterDTO();
+
+        public Builder withServiceName(String value) {
+            this.result.serviceName = value;
+            return this;
+        }
+
+        public Builder withMarker(String value) {
+            this.result.marker = value;
+            return this;
+        }
+
+        public Builder withCallName(String value) {
+            this.result.callName = value;
+            return this;
+        }
+
+        public Builder withName(String value) {
+            this.result.name = value;
+            return this;
+        }
+
+        public Builder withBrowserIdsCollectionFilter(CollectionFilterDTO value) {
+            this.result.browserIds = value;
+            return this;
+        }
+
+        public Builder withPeerConnectionsCollectionFilter(CollectionFilterDTO value) {
+            this.result.peerConnections = value;
+            return this;
+        }
+
+        public Builder withSSRCsCollectionFilter(CollectionFilterDTO value) {
+            this.result.SSRCs = value;
+            return this;
+        }
+
+        public SentinelFilterDTO build() {
+            return this.result;
+        }
     }
 }

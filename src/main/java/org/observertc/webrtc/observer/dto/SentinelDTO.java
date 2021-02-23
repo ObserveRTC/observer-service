@@ -11,6 +11,9 @@ import java.util.Objects;
 
 public class SentinelDTO implements VersionedPortable {
     private static final int CLASS_VERSION = 1;
+    public static SentinelDTO.Builder builder() {
+        return new SentinelDTO.Builder();
+    }
 
     @NotNull
     public String name;
@@ -21,6 +24,8 @@ public class SentinelDTO implements VersionedPortable {
 
     public String[] anyMatchFilters = new String[0];
     public String[] allMatchFilters = new String[0];
+
+
 
     @Override
     public String toString() {
@@ -73,5 +78,39 @@ public class SentinelDTO implements VersionedPortable {
         this.streamMetrics = reader.readBoolean("streamMetrics");
         this.anyMatchFilters = reader.readUTFArray("anymatchFilters");
         this.allMatchFilters = reader.readUTFArray("allmatchFilters");
+    }
+
+
+    public static class Builder {
+        private SentinelDTO result = new SentinelDTO();
+
+        public Builder withReport(boolean value) {
+            this.result.report = value;
+            return this;
+        }
+
+        public Builder withExpose(boolean value) {
+            this.result.expose = value;
+            return this;
+        }
+
+        public Builder withStreamMetrics(boolean value) {
+            this.result.streamMetrics = value;
+            return this;
+        }
+
+        public Builder withAllMatchFilterNames(String... values) {
+            this.result.allMatchFilters = values;
+            return this;
+        }
+
+        public Builder withAnyMatchFilterNames(String... values) {
+            this.result.anyMatchFilters = values;
+            return this;
+        }
+
+        public SentinelDTO build() {
+            return this.result;
+        }
     }
 }

@@ -3,8 +3,7 @@ package org.observertc.webrtc.observer.dto;
 import org.jeasy.random.EasyRandom;
 
 import javax.inject.Singleton;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class DTOTestUtils {
@@ -33,5 +32,32 @@ public class DTOTestUtils {
 
     public SentinelDTO generateSentinelDTO() {
         return generator.nextObject(SentinelDTO.class);
+    }
+
+    public SentinelFilterDTO generateSentinelFilterDTO() {
+        return generator.nextObject(SentinelFilterDTO.class);
+    }
+
+    public CollectionFilterDTO generateCollectionFilter() {
+        return generator.nextObject(CollectionFilterDTO.class);
+    }
+
+    public CollectionFilterDTO generateSSRCCollectionFilter() {
+        Random random = new Random();
+        CollectionFilterDTO result = generator.nextObject(CollectionFilterDTO.class);
+        List<String> SSRCsList = new LinkedList<>();
+        for (int i = 0; i < random.nextInt(10); ++i)
+            SSRCsList.add(Long.toString(random.nextLong()));
+        result.anyMatch = SSRCsList.toArray(new String[0]);
+
+        SSRCsList.clear();
+        for (int i = 0; i < random.nextInt(10); ++i)
+            SSRCsList.add(Long.toString(random.nextLong()));
+        result.allMatch = SSRCsList.toArray(new String[0]);
+        return result;
+    }
+
+    public WeakLockDTO generateWeakLockDTO() {
+        return generator.nextObject(WeakLockDTO.class);
     }
 }
