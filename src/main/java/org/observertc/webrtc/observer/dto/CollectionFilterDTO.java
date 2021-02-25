@@ -7,6 +7,7 @@ import org.observertc.webrtc.observer.common.ObjectToString;
 
 import javax.validation.constraints.Min;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CollectionFilterDTO implements VersionedPortable {
@@ -41,6 +42,11 @@ public class CollectionFilterDTO implements VersionedPortable {
             return false;
         }
         CollectionFilterDTO otherDTO = (CollectionFilterDTO) other;
+        if (this.gt != otherDTO.gt) return false;
+        if (this.eq != otherDTO.eq) return false;
+        if (this.lt != otherDTO.lt) return false;
+        if (!Arrays.equals(this.allMatch, otherDTO.allMatch)) return false;
+        if (!Arrays.equals(this.anyMatch, otherDTO.anyMatch)) return false;
         return true;
     }
 

@@ -25,7 +25,6 @@ class CallDTOTest {
         Assertions.assertEquals(1L, callDTO.initiated);
         Assertions.assertEquals("callName", callDTO.callName);
         Assertions.assertEquals("marker", callDTO.marker);
-
     }
 
 }

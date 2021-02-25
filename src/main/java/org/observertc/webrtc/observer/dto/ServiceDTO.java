@@ -29,6 +29,7 @@ import java.util.*;
 
 // To avoid exposing hazelcast serialization specific fields
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
+@Deprecated(since = "0.7")
 public class ServiceDTO implements VersionedPortable {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceDTO.class);
 

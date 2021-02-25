@@ -46,7 +46,6 @@ public class WeakLockDTO implements VersionedPortable {
 
     @Override
     public void writePortable(PortableWriter writer) throws IOException {
-
         writer.writeUTF(NAME_FIELD_NAME, this.name);
         writer.writeUTF(INSTANCE_FIELD_NAME, this.instance);
         long epochMilli = this.created.toEpochMilli();
