@@ -39,31 +39,21 @@ kafka:
   bootstrap:
     servers: ${KAFKA_HOSTS:`localhost:9092`}
 ---
-failsafeStore:
-  - repositories:
-      - "services"
-      - "sentinels"
-      - "calls"
-    invoked: "Always / Never / OnStartup / OnShutdown / OnStartupShutdown"
-    engine: "MountedVolume"
-    engineConfig:
-      path: "myPath"
-
----
-filters:
-  - type: "CallFilter"
-    filterName: "myCallFilterName"
-    config:
-      serviceName: "required"
-      callName: "regex pattern"
-      marker: "regex pattern"
-
+#failsafeStore:
+#  - repositories:
+#      - "services"
+#      - "sentinels"
+#      - "calls"
+#    invoked: "Always / Never / OnStartup / OnShutdown / OnStartupShutdown"
+#    engine: "MountedVolume"
+#    engineConfig:
+#      path: "myPath"
 ---
 observer:
   security:
     dropUnknownServices: False
 
-  sentinelInvasionPeriodInMin: 1
+  sentinelsCheckingPeriodInMin: 1
   sentinelFilters:
     - name: "MyPeerToPeerFilter"
       serviceName: "example-service-name"
@@ -79,7 +69,10 @@ observer:
       streamMetrics: True
       anyMatchFilters:
         - "MyPeerToPeerFilter"
-        
+  services:
+    - name: "example-service-name"
+      uuids:
+        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
   connectors:
     - name: "ReportSinkLogger"
       buffer:
@@ -89,32 +82,20 @@ observer:
         type: LoggerSink
         config:
           printReports: False
-  services:
-    - name: "example-service-name"
-      uuids:
-        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
   ipAddressConverter:
     enabled: False
-  monitors:
-    callsMonitor:
-      enabled: true
-      reportPeriodInS: 300
-  hazelcast:
-    configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
     observedPCSBufferMaxTimeInS: 10
     observedPCSBufferMaxItemNums: 10000
-    peerConnectionMaxIdleTimeInS: 15
+    peerConnectionMaxIdleTimeInS: 60
     reportMonitor:
       enabled: true
       tagByServiceName: true
       tagByServiceUUID: false
       tagByType: false
-    pcObserver:
-      peerConnectionMaxIdleTimeInS: 300
-      mediaStreamUpdatesFlushInS: 15
-      mediaStreamsBufferNums: 0
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True
@@ -125,4 +106,5 @@ observer:
     reportLocalCandidates: True
     reportRemoteCandidates: True
     reportUserMediaErrors: True
-
+  hazelcast:
+    configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
