@@ -1,12 +1,16 @@
 package org.observertc.webrtc.observer.controllers;///*
 
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import org.observertc.webrtc.observer.repositories.ServicesRepository;
 
 import javax.inject.Inject;
 
-//@Secured(SecurityRule.IS_ANONYMOUS)
-@Controller(value = "services")
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller(value = "/services")
 public class ServiceController {
 
 	@Inject
@@ -21,9 +25,10 @@ public class ServiceController {
 //		return HttpStatus.OK;
 //	}
 //
-//	@Get("/")
-//	public List<ServiceDTO> findAll() {
-//		return this.servicesRepository.getAllEntries().values().stream().collect(Collectors.toList());
-//	}
+	@Secured(SecurityRule.IS_AUTHENTICATED)
+	@Get("/")
+	public HttpResponse findAll() {
+		return HttpResponse.ok();
+	}
 
 }

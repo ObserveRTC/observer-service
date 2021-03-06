@@ -10,13 +10,34 @@ micronaut:
         step: PT1M
   security:
     enabled: false
-    authentication: bearer
-    token:
-      jwt:
-        signatures:
-          secret:
-            generator:
-              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+#    oauth2:
+#      clients:
+#        google:
+#          client-id: '${OAUTH_CLIENT_ID}'
+#          client-secret: '${OAUTH_CLIENT_SECRET}'
+#          openid:
+#            issuer: 'https://accounts.google.com'
+#        cognito:
+#          client-id: '${OAUTH_CLIENT_ID}'
+#          client-secret: '${OAUTH_CLIENT_SECRET}'
+#          openid:
+#            issuer: 'https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_POOL_ID}/'
+#         okta:
+#           client-secret: '${OAUTH_CLIENT_SECRET}'
+#           client-id: '${OAUTH_CLIENT_ID}'
+#            openid:
+#              issuer: '${OIDC_ISSUER_DOMAIN}/oauth2/${OIDC_ISSUER_AUTHSERVERID}'
+#    authentication: bearer
+#    token:
+#      jwt:
+#        signatures:
+#          secret:
+#            generator:
+#              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
   server:
     port: ${APPLICATION_SERVER_PORT:7080}
   application:
@@ -34,6 +55,8 @@ endpoints:
   health:
     enabled: true
     sensitive: false
+  logout:
+    get-allowed: true
 ---
 kafka:
   bootstrap:
