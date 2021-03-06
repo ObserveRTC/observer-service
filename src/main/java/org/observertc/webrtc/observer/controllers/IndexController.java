@@ -1,17 +1,13 @@
 package org.observertc.webrtc.observer.controllers;///*
 
-import com.hazelcast.map.IMap;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.ObserverHazelcast;
+import io.micronaut.views.View;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @Secured(SecurityRule.IS_ANONYMOUS)
@@ -27,4 +23,10 @@ public class IndexController {
 		return HttpStatus.OK;
 	}
 
+	@Secured(SecurityRule.IS_ANONYMOUS)
+	@View("home")
+	@Get("/home")
+	public Map<String, Object> getHome() {
+		return new HashMap<>();
+	}
 }
