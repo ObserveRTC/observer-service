@@ -21,6 +21,7 @@ import io.micronaut.context.annotation.EachProperty;
 import org.observertc.webrtc.observer.dto.SentinelDTO;
 import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.*;
 
@@ -33,9 +34,9 @@ public class ObserverConfig {
 
 	public OutboundReportsConfig outboundReports;
 
-	public MonitorsConfig monitors;
-
-	public int sentinelInvasionPeriodInMin = 1;
+	@Min(1)
+	@Max(60)
+	public int sentinelsCheckingPeriodInMin = 1;
 
 	public List<SentinelDTO> sentinels = new ArrayList<>();
 
@@ -72,7 +73,7 @@ public class ObserverConfig {
 		public int observedPCSBufferMaxItemNums = 10000;
 
 		@Min(15)
-		public int peerConnectionMaxIdleTimeInS = 60;
+		public int peerConnectionMaxIdleTimeInS = 300;
 
 		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
 
@@ -83,18 +84,6 @@ public class ObserverConfig {
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
-	}
-
-	@ConfigurationProperties("monitors")
-	public static class MonitorsConfig {
-
-		public CallsMonitorConfig callsMonitor;
-
-		@ConfigurationProperties("callsMonitor")
-		public static class CallsMonitorConfig {
-			public boolean enabled = false;
-			public long reportPeriodInS = 300;
-		}
 	}
 
 	@ConfigurationProperties("outboundReports")

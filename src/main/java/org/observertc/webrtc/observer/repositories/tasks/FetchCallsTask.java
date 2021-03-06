@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.common.TaskStage;
@@ -33,14 +32,14 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
             .addStage(TaskStage.builder("Find Call By UUID")
                     .<Map<UUID, CallDTO>>withSupplier(() -> {
                         if (callUUIDs.size() < 1) {
-                            this.getLogger().warn("Call tried to find by provided callUUIDs, but the there is no");
+                            this.getLogger().info("Call tried to find by provided callUUIDs, but the there is no");
                             return null;
                         }
                         return hazelcastMaps.getCallDTOs().getAll(callUUIDs);
                     })
                     .<Set<UUID>, Map<UUID, CallDTO>>withFunction(passedCallUUIDs -> {
                         if (Objects.isNull(passedCallUUIDs)) {
-                            this.getLogger().warn("Call tried to find by passed callUUID, but the callUUID is null");
+                            this.getLogger().info("Call tried to find by passed callUUID, but the callUUID is null");
                             return null;
                         }
                         callUUIDs.addAll(passedCallUUIDs);

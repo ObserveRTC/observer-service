@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.util.Objects;
+
 public class ObjectToString {
 	private static final ObjectWriter OBJECT_WRITER;
 
@@ -29,6 +31,9 @@ public class ObjectToString {
 
 
 	public static String toString(Object subject) {
+		if (Objects.isNull(subject)) {
+			return "null";
+		}
 		try {
 			String result = OBJECT_WRITER.writeValueAsString(subject);
 			return result;

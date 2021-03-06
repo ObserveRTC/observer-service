@@ -62,9 +62,12 @@ public class SentinelFilterBuilder extends AbstractBuilder implements Function<S
             Predicate<CallEntity> filter = this.makeRegexFilter(filterConfig.marker, callEntity -> callEntity.call.marker);
             result.add(filter);
         }
-        if (Objects.nonNull(filterConfig.browserIds)) {
+        if (Objects.nonNull(filterConfig.browserIds) && !CollectionFilterBuilder.isEmpty(filterConfig.browserIds)) {
             CollectionFilterBuilder collectionFilterBuilder = collectionFilterBuilderProvider.get();
             Predicate<Collection<String>> filter = collectionFilterBuilder.build(filterConfig.browserIds, item -> item);
+            if (collectionFilterBuilder.isWarned()) {
+                logger.warn("While building filter {} a warning is emerged. please check the configuration for the filter", filterConfig.name);
+            }
             result.add(callEntity -> {
                 Set<String> browserIds = callEntity.peerConnections.values().stream()
                         .map(pc -> pc.peerConnection.browserId)
@@ -73,9 +76,12 @@ public class SentinelFilterBuilder extends AbstractBuilder implements Function<S
                 return filter.test(browserIds);
             });
         }
-        if (Objects.nonNull(filterConfig.peerConnections)) {
+        if (Objects.nonNull(filterConfig.peerConnections) && !CollectionFilterBuilder.isEmpty(filterConfig.peerConnections)) {
             CollectionFilterBuilder collectionFilterBuilder = collectionFilterBuilderProvider.get();
             Predicate<Collection<UUID>> filter = collectionFilterBuilder.build(filterConfig.peerConnections, UUID::fromString);
+            if (collectionFilterBuilder.isWarned()) {
+                logger.warn("While building filter {} a warning is emerged. please check the configuration for the filter", filterConfig.name);
+            }
             result.add(callEntity -> {
                 Set<UUID> pcUUIDs = callEntity.peerConnections.values().stream()
                         .map(pc -> pc.peerConnection.peerConnectionUUID)
@@ -84,9 +90,12 @@ public class SentinelFilterBuilder extends AbstractBuilder implements Function<S
                 return filter.test(pcUUIDs);
             });
         }
-        if (Objects.nonNull(filterConfig.SSRCs)) {
+        if (Objects.nonNull(filterConfig.SSRCs) && !CollectionFilterBuilder.isEmpty(filterConfig.SSRCs)) {
             CollectionFilterBuilder collectionFilterBuilder = collectionFilterBuilderProvider.get();
             Predicate<Collection<Long>> filter = collectionFilterBuilder.build(filterConfig.SSRCs, item -> Long.parseLong(item));
+            if (collectionFilterBuilder.isWarned()) {
+                logger.warn("While building filter {} a warning is emerged. please check the configuration for the filter", filterConfig.name);
+            }
             result.add(callEntity -> filter.test(callEntity.SSRCs));
         }
         return result;
