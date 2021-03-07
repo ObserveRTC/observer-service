@@ -5,7 +5,10 @@ import org.observertc.webrtc.observer.dto.SentinelDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 public class SentinelEntity implements Predicate<CallEntity>{
     private static final Logger logger = LoggerFactory.getLogger(SentinelEntity.class);
@@ -36,8 +39,6 @@ public class SentinelEntity implements Predicate<CallEntity>{
         boolean result = this.filter.test(callEntity);
         return result;
     }
-
-
 
     public static class Builder {
         public SentinelDTO sentinelDTO;

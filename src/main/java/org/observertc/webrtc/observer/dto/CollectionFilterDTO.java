@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
+@JsonIgnoreProperties(value = { "classId", "factoryId", "classVersion" })
 public class CollectionFilterDTO implements VersionedPortable {
 
     private static final int CLASS_VERSION = 1;

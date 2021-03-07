@@ -14,13 +14,15 @@ micronaut:
     endpoints:
       logout:
         get-allowed: true
-#    oauth2:
-#      clients:
-#        google:
-#          client-id: '${OAUTH_CLIENT_ID}'
-#          client-secret: '${OAUTH_CLIENT_SECRET}'
-#          openid:
-#            issuer: 'https://accounts.google.com'
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        google:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: 'https://accounts.google.com'
 #        cognito:
 #          client-id: '${OAUTH_CLIENT_ID}'
 #          client-secret: '${OAUTH_CLIENT_SECRET}'
@@ -92,7 +94,7 @@ observer:
       streamMetrics: True
       anyMatchFilters:
         - "MyPeerToPeerFilter"
-  services:
+  servicemappings:
     - name: "example-service-name"
       uuids:
         - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
