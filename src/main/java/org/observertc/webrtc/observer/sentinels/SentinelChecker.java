@@ -75,7 +75,7 @@ public class SentinelChecker {
 
     private void doRun() throws Throwable {
         Map<UUID, CallEntity> callEntities = this.callsRepository.fetchLocallyStoredCalls();
-        Map<String, SentinelEntity> sentinelEntities = this.sentinelsRepository.fetchAll();
+        Map<String, SentinelEntity> sentinelEntities = this.sentinelsRepository.fetchAllEntities();
         for (SentinelEntity sentinelEntity : sentinelEntities.values()) {
             int numOfSSRCs = 0;
             int numOfPCs = 0;

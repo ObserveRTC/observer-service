@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.observertc.webrtc.observer.common.Sleeper;
 import org.observertc.webrtc.observer.configbuilders.ObservableConfig;
-import org.observertc.webrtc.observer.repositories.ServicesRepository;
+import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +68,7 @@ public class Application {
         logger.info("Hazelcast configuration: {}", observerHazelcast.toString());
         deployCheck(observerHazelcast);
         logger.info("ServicesRepository config");
-        context.getBean(ServicesRepository.class);
+        context.getBean(ServiceMapsRepository.class);
         loadConnectorConfigFiles();
     }
 

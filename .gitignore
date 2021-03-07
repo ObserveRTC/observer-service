@@ -15,4 +15,5 @@ debug_*.log
 mynotes.txt
 google_api_credentials.json
 keys/
+clients/python/mydev
 

@@ -29,10 +29,12 @@ import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+import org.observertc.webrtc.observer.entities.ServiceMapEntity;
 import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.repositories.ServicesRepository;
+import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
+import org.observertc.webrtc.observer.repositories.resolvers.ServiceNameResolver;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +66,10 @@ public class WebsocketPCSampleV20200114 {
 	MeterRegistry meterRegistry;
 
 	@Inject
-	ServicesRepository servicesRepository;
+	ServiceMapsRepository serviceMapsRepository;
+
+	@Inject
+	ServiceNameResolver serviceNameResolver;
 
 	@Inject
 	ObserverConfig observerConfig;
@@ -86,18 +91,20 @@ public class WebsocketPCSampleV20200114 {
 		try {
 			String service;
 			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
-			boolean closeConnection = observerConfig.security.dropUnknownServices;
+			boolean closeConnection = this.observerConfig.security.dropUnknownServices;
 			if (serviceUUIDHolder.isPresent()) {
-				UUID serviceUUID = serviceUUIDHolder.get();
-				closeConnection &= !this.servicesRepository.hasServiceUUID(serviceUUID);
-
-				service = this.servicesRepository.resolve(serviceUUID);
+				service = this.resolveServiceName(serviceUUIDHolder.get());
+				if (Objects.nonNull(service)) {
+					closeConnection = false;
+				} else {
+					service = this.observerConfig.outboundReports.defaultServiceName;
+				}
 			} else {
-				service = serviceUUIDStr;
+				service = this.observerConfig.outboundReports.defaultServiceName;
 			}
 			serviceNameMapper.put(session.getId(), service);
 			if (closeConnection) {
-				logger.warn("Unregistered service UUID {} is not allowed to connect to the service", serviceUUIDStr);
+				logger.warn("Unregistered service UUID {} is not allowed to connect to the websocket", serviceUUIDStr);
 				session.close();
 				return;
 			}
@@ -123,8 +130,10 @@ public class WebsocketPCSampleV20200114 {
 			String service;
 			Optional<UUID> serviceUUIDHolder = UUIDAdapter.tryParse(serviceUUIDStr);
 			if (serviceUUIDHolder.isPresent()) {
-				UUID serviceUUID = serviceUUIDHolder.get();
-				service = this.servicesRepository.resolve(serviceUUID);
+				service = this.resolveServiceName(serviceUUIDHolder.get());
+				if (Objects.isNull(service)) {
+					service = this.observerConfig.outboundReports.defaultServiceName;
+				}
 			} else {
 				service = serviceUUIDStr;
 			}
@@ -333,5 +342,13 @@ public class WebsocketPCSampleV20200114 {
 			return null;
 		}
 		return zoneOffset.getId();
+	}
+
+	private String resolveServiceName(UUID serviceUUID) {
+		Optional<ServiceMapEntity> found = this.serviceMapsRepository.findByUUID(serviceUUID);
+		if (!found.isPresent()) {
+			return null;
+		}
+		return found.get().name;
 	}
 }

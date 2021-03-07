@@ -3,8 +3,8 @@ package org.observertc.webrtc.observer.repositories.resolvers;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.dto.ServiceDTO;
-import org.observertc.webrtc.observer.repositories.ServicesRepository;
+import org.observertc.webrtc.observer.entities.ServiceMapEntity;
+import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class ServiceNameResolver implements Function<UUID, String> {
     private static final Logger logger = LoggerFactory.getLogger(ServiceNameResolver.class);
 
     @Inject
-    ServicesRepository servicesRepository;
+    ServiceMapsRepository serviceMapsRepository;
 
     private Map<UUID, String> dictionary;
     private String defaultServiceName;
@@ -51,12 +51,12 @@ public class ServiceNameResolver implements Function<UUID, String> {
 
     private Map<UUID, String> fetch() {
         Map<UUID, String> result = new HashMap<>();
-        Map<String, ServiceDTO> entries = this.servicesRepository.getAllEntries();
-        Iterator<ServiceDTO> it = entries.values().iterator();
+        Map<String, ServiceMapEntity> entries = this.serviceMapsRepository.findAll();
+        Iterator<ServiceMapEntity> it = entries.values().iterator();
         while (it.hasNext()) {
-            ServiceDTO entity = it.next();
-            for (UUID serviceUUID : entity.serviceUUIDs) {
-                result.put(serviceUUID, entity.serviceName);
+            ServiceMapEntity entity = it.next();
+            for (UUID serviceUUID : entity.uuids) {
+                result.put(serviceUUID, entity.name);
             }
         }
         return result;

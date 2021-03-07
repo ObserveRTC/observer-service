@@ -46,7 +46,7 @@ public class ObserverConfig {
 
 	public IPAddressConverterConfig ipAddressConverter;
 
-	public List<ServiceConfiguration> services = new ArrayList<>();
+	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
 
 	public SecurityConfig security;
 
@@ -111,8 +111,8 @@ public class ObserverConfig {
 		public boolean clientDetails = true;
 	}
 
-	@EachProperty("services")
-	public static class ServiceConfiguration {
+	@EachProperty("servicemappings")
+	public static class ServiceMapConfiguration {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}

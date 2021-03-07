@@ -19,7 +19,6 @@ package org.observertc.webrtc.observer.repositories;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.SentinelDTO;
-import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
 import org.observertc.webrtc.observer.entities.SentinelEntity;
 import org.observertc.webrtc.observer.repositories.tasks.FetchSentinelEntitiesTask;
 import org.slf4j.Logger;
@@ -30,6 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 public class SentinelsRepository {
@@ -37,6 +37,9 @@ public class SentinelsRepository {
 
 	@Inject
 	HazelcastMaps hazelcastMaps;
+
+	@Inject
+	SentinelFiltersRepository sentinelFiltersRepository; // we must invoke this to have a proper result
 
 	@Inject
 	Provider<FetchSentinelEntitiesTask> sentinelEntitiesTaskProvider;
@@ -59,15 +62,9 @@ public class SentinelsRepository {
 				this.hazelcastMaps.getSentinelDTOs().put(sentinelDTO.name, sentinelDTO);
 			}
 		}
-
-		if (Objects.nonNull(config.sentinelFilters)) {
-			for (SentinelFilterDTO sentinelFilterDTO : config.sentinelFilters) {
-				this.hazelcastMaps.getSentinelFilterDTOs().put(sentinelFilterDTO.name, sentinelFilterDTO);
-			}
-		}
 	}
 
-	public Optional<SentinelEntity> find(String name) {
+	public Optional<SentinelEntity> findEntity(String name) {
 		var task = sentinelEntitiesTaskProvider.get()
 				.whereSentinelNames(name);
 
@@ -78,7 +75,7 @@ public class SentinelsRepository {
 		return task.getResult().values().stream().findFirst();
 	}
 
-	public Map<String, SentinelEntity> fetchAll() {
+	public Map<String, SentinelEntity> fetchAllEntities() {
 		Set<String> sentinelNames = this.hazelcastMaps.getSentinelDTOs().keySet();
 
 		var task = this.sentinelEntitiesTaskProvider.get()
@@ -88,6 +85,48 @@ public class SentinelsRepository {
 			return Collections.EMPTY_MAP;
 		}
 		return task.getResult();
+	}
+
+
+	public Map<String, SentinelDTO> findAll() {
+		return this.hazelcastMaps.getSentinelDTOs().entrySet()
+				.stream()
+				.collect(Collectors.toMap(
+						Map.Entry::getKey,
+						Map.Entry::getValue
+				));
+	}
+
+	public Map<String, SentinelDTO> findByNames(Set<String> names) {
+		return this.hazelcastMaps.getSentinelDTOs().getAll(names);
+	}
+
+	public Optional<SentinelDTO> findByName(String name) {
+		var result = this.hazelcastMaps.getSentinelDTOs().get(name);
+		if (Objects.isNull(result)) {
+			return Optional.empty();
+		}
+		return Optional.of(result);
+	}
+
+	public SentinelDTO save(SentinelDTO sentinelDTO) {
+		var found = this.hazelcastMaps.getSentinelDTOs().putIfAbsent(sentinelDTO.name, sentinelDTO);
+		if (Objects.nonNull(found)) {
+			return found;
+		}
+		return sentinelDTO;
+	}
+
+	public SentinelDTO delete(String filterName) {
+		return this.hazelcastMaps.getSentinelDTOs().remove(filterName);
+	}
+
+	public SentinelDTO update(SentinelDTO sentinelDTO) {
+		var result = this.hazelcastMaps.getSentinelDTOs().put(sentinelDTO.name, sentinelDTO);
+		if (Objects.isNull(result)) {
+			return sentinelDTO;
+		}
+		return result;
 	}
 
 
