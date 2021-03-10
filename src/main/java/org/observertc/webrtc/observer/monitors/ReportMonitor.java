@@ -14,6 +14,7 @@ import java.util.function.BiConsumer;
 
 @Singleton
 public class ReportMonitor implements Consumer<Report> {
+    private static final String UNKNOWN_TAG_VALUE = "Unknown";
     private static final String METRIC_NAME = "generated_reports";
     private static final String SERVICE_UUID_TAG_NAME = "serviceUUID";
     private static final String SERVICE_NAME_TAG_NAME = "serviceName";
@@ -44,8 +45,14 @@ public class ReportMonitor implements Consumer<Report> {
 
         if (config.tagByServiceUUID) {
             result = result.andThen((report, tags) -> {
+                String serviceUUID;
+                if (Objects.nonNull(report.getType())) {
+                    serviceUUID =  report.getServiceUUID();
+                } else {
+                    serviceUUID = UNKNOWN_TAG_VALUE;
+                }
                 if (Objects.nonNull(report.getServiceUUID())) {
-                    Tag tag = Tag.of(SERVICE_UUID_TAG_NAME, report.getServiceUUID());
+                    Tag tag = Tag.of(SERVICE_UUID_TAG_NAME, serviceUUID);
                     tags.add(tag);
                 }
             });
@@ -53,19 +60,27 @@ public class ReportMonitor implements Consumer<Report> {
 
         if (config.tagByServiceName) {
             result = result.andThen((report, tags) -> {
-                if (Objects.nonNull(report.getServiceName())) {
-                    Tag tag = Tag.of(SERVICE_NAME_TAG_NAME, report.getServiceName());
-                    tags.add(tag);
+                String serviceName;
+                if (Objects.nonNull(report.getType())) {
+                    serviceName = report.getServiceName();
+                } else {
+                    serviceName = UNKNOWN_TAG_VALUE;
                 }
+                Tag tag = Tag.of(SERVICE_NAME_TAG_NAME, serviceName);
+                tags.add(tag);
             });
         }
 
         if (config.tagByType) {
             result = result.andThen((report, tags) -> {
+                String reportType;
                 if (Objects.nonNull(report.getType())) {
-                    Tag tag = Tag.of(REPORT_TYPE_TAG_NAME, report.getType().name());
-                    tags.add(tag);
+                    reportType = report.getType().name();
+                } else {
+                    reportType = UNKNOWN_TAG_VALUE;
                 }
+                Tag tag = Tag.of(REPORT_TYPE_TAG_NAME, reportType);
+                tags.add(tag);
             });
         }
 

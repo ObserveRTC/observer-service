@@ -1,7 +1,6 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
-
 ## 0.7.0 -
 
 ### Added
@@ -23,7 +22,8 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 ### Fixed
  * Illmatched calls by fixed SSRCs without call names.
  * WeakLocks to handle timeouts
- * 
+ * Fix null exception thrown when user media does not have pc uuid.
+ * Fix null tag value in report counting.
 
 ### Refactored
  * `repositories` package to use `ChainedTasks` newly created object performing tasks in a transactional manner.

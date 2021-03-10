@@ -60,10 +60,6 @@ endpoints:
   logout:
     get-allowed: true
 ---
-kafka:
-  bootstrap:
-    servers: ${KAFKA_HOSTS:`localhost:9092`}
----
 #failsafeStore:
 #  - repositories:
 #      - "services"

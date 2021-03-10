@@ -120,6 +120,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     @Override
     public void onNext(@NonNull ObservedPCS sample) {
+
         this.processor.accept(sample, sample.peerConnectionSample);
     }
 
@@ -328,12 +329,21 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
         return (observedPCS, subject) -> {
             PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
+            // peer connection sample uuid
+            String pcUUIDStr = "Unknown";
+            if (Objects.nonNull(peerConnectionSample.peerConnectionId)) {
+                pcUUIDStr = peerConnectionSample.peerConnectionId;
+            }
+            String browserId = "Unknown";
+            if (Objects.nonNull(peerConnectionSample.browserId)) {
+                browserId = peerConnectionSample.browserId;
+            }
             UserMediaError mediaSource = UserMediaError.newBuilder()
                     .setMediaUnitId(observedPCS.mediaUnitId)
                     .setCallName(peerConnectionSample.callId)
                     .setUserId(peerConnectionSample.userId)
-                    .setBrowserId(peerConnectionSample.browserId)
-                    .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+                    .setBrowserId(browserId)
+                    .setPeerConnectionUUID(pcUUIDStr)
                     .setMessage(subject.message)
                     .build();
             Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.USER_MEDIA_ERROR, mediaSource);

@@ -55,19 +55,6 @@ second of all, please read [CONTRIBUTING](CONTRIBUTING.md) guidline.
 
 ----
 
-## Open source licensing info
-
-1. [LICENSE](LICENSE)
-
-----
-
-## Credits and references
-
-1. Projects that inspired you
-2. Related projects
-3. Books, papers, talks, or other sources that have meaningful impact or influence on this project
-
-
 ## Configurations
 
 Under the hood the `observer` is built by using:
@@ -151,8 +138,11 @@ observer:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
 ```
 
+----
 
+## Open source licensing info
 
+1. [LICENSE](LICENSE)
 
 
 
