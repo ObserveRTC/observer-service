@@ -46,7 +46,7 @@ public class ReportMonitor implements Consumer<Report> {
         if (config.tagByServiceUUID) {
             result = result.andThen((report, tags) -> {
                 String serviceUUID;
-                if (Objects.nonNull(report.getType())) {
+                if (Objects.nonNull(report.getServiceUUID())) {
                     serviceUUID =  report.getServiceUUID();
                 } else {
                     serviceUUID = UNKNOWN_TAG_VALUE;
@@ -61,7 +61,7 @@ public class ReportMonitor implements Consumer<Report> {
         if (config.tagByServiceName) {
             result = result.andThen((report, tags) -> {
                 String serviceName;
-                if (Objects.nonNull(report.getType())) {
+                if (Objects.nonNull(report.getServiceName())) {
                     serviceName = report.getServiceName();
                 } else {
                     serviceName = UNKNOWN_TAG_VALUE;

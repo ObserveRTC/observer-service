@@ -150,8 +150,23 @@ public class SentinelDTO implements VersionedPortable {
             return this;
         }
 
+        public Builder withAllPCMatchFilterNames(String... values) {
+            this.result.pcFilters.allMatch = values;
+            return this;
+        }
+
+        public Builder withAnyPCMatchFilterNames(String... values) {
+            this.result.pcFilters.anyMatch = values;
+            return this;
+        }
+
         public SentinelDTO build() {
             return this.result;
+        }
+
+        public Builder withMediaUnitMetric(boolean value) {
+            this.result.mediaUnits = value;
+            return this;
         }
     }
 
