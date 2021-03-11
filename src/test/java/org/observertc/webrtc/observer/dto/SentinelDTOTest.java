@@ -15,8 +15,8 @@ class SentinelDTOTest {
     @Test
     void shouldBuild_1() {
         SentinelDTO sentinelDTO = SentinelDTO.builder()
-                .withAllMatchFilterNames("1", "2")
-                .withAnyMatchFilterNames("3", "4")
+                .withAllCallMatchFilterNames("1", "2")
+                .withAnyCallMatchFilterNames("3", "4")
                 .withExpose(true)
                 .withReport(true)
                 .withStreamMetrics(true)
@@ -31,11 +31,11 @@ class SentinelDTOTest {
 
     @Test
     void shouldCheckEquality_1() {
-        SentinelFilterDTO sentinelFilterDTO_1 = testUtils.generateSentinelFilterDTO();
-        SentinelFilterDTO sentinelFilterDTO_2 = testUtils.generateSentinelFilterDTO();
+        CallFilterDTO callFilterDTO_1 = testUtils.generateSentinelFilterDTO();
+        CallFilterDTO callFilterDTO_2 = testUtils.generateSentinelFilterDTO();
 
-        Assertions.assertEquals(sentinelFilterDTO_1, sentinelFilterDTO_1);
-        Assertions.assertNotEquals(sentinelFilterDTO_1, sentinelFilterDTO_2);
+        Assertions.assertEquals(callFilterDTO_1, callFilterDTO_1);
+        Assertions.assertNotEquals(callFilterDTO_1, callFilterDTO_2);
     }
 
 }

@@ -3,26 +3,35 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.observertc.webrtc.observer.common.ChainedTask;
+import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
 import org.observertc.webrtc.observer.dto.SentinelDTO;
-import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
+import org.observertc.webrtc.observer.dto.CallFilterDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SentinelEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.observer.sentinels.SentinelFilterBuilder;
+import org.observertc.webrtc.observer.sentinels.CallFilterBuilder;
+import org.observertc.webrtc.observer.sentinels.PeerConnectionFilterBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Prototype
 public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelEntity>> {
 
     private Set<String> sentinelNames = new HashSet<>();
     private Map<String, SentinelDTO> sentinelDTOs = null;
-    private Map<String, SentinelFilterDTO> filterDTOs = null;
+    private Map<String, CallFilterDTO> callFilterDTOs = new HashMap<>();
+    private Map<String, PeerConnectionFilterDTO> pcFilterDTOs = new HashMap<>();
 
     @Inject
-    SentinelFilterBuilder sentinelFilterBuilder;
+    CallFilterBuilder callFilterBuilder;
+
+    @Inject
+    PeerConnectionFilterBuilder peerConnectionFilterBuilder;
 
     @Inject
     HazelcastMaps hazelcastMaps;
@@ -45,12 +54,16 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
             .addActionStage("Fetch Filters",
                 () -> {
                     Set<String> filterNames = new HashSet<>();
-                    this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.anyMatchFilters)).flatMap(s -> Arrays.stream(s.anyMatchFilters)).forEach(filterNames::add);
-                    this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.allMatchFilters)).flatMap(s -> Arrays.stream(s.allMatchFilters)).forEach(filterNames::add);
-                    this.filterDTOs = this.hazelcastMaps.getSentinelFilterDTOs().getAll(filterNames);
+                    this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.callFilters.anyMatch)).flatMap(s -> Arrays.stream(s.callFilters.anyMatch)).forEach(filterNames::add);
+                    this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.callFilters.allMatch)).flatMap(s -> Arrays.stream(s.callFilters.allMatch)).forEach(filterNames::add);
+                    this.callFilterDTOs = this.hazelcastMaps.getCallFilterDTOs().getAll(filterNames);
+                    filterNames.clear();
+                    this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.pcFilters.anyMatch)).flatMap(s -> Arrays.stream(s.pcFilters.anyMatch)).forEach(filterNames::add);
+                    this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.pcFilters.allMatch)).flatMap(s -> Arrays.stream(s.pcFilters.allMatch)).forEach(filterNames::add);
+                    this.pcFilterDTOs = this.hazelcastMaps.getPeerConnectionFilterDTOs().getAll(filterNames);
                 })
             .addBreakCondition(resultHolder -> {
-                if (Objects.isNull(this.filterDTOs) || this.filterDTOs.size() < 1) {
+                if (Objects.isNull(this.callFilterDTOs) || this.callFilterDTOs.size() < 1) {
                     getLogger().info("No Filter has been added for sentinels {}", this.sentinelDTOs);
                     resultHolder.set(Collections.EMPTY_MAP);
                     return true;
@@ -72,24 +85,57 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
         if (Objects.isNull(sentinelDTO)) {
             return null;
         }
-        if ((Objects.isNull(sentinelDTO.anyMatchFilters) || sentinelDTO.anyMatchFilters.length < 1) &&
-            (Objects.isNull(sentinelDTO.allMatchFilters) || sentinelDTO.allMatchFilters.length < 1)) {
-            getLogger().warn("Sentinel {} does not have any filter configured");
+        if (Objects.isNull(sentinelDTO.callFilters) || Objects.isNull(sentinelDTO.pcFilters)) {
+            getLogger().warn("Cannot instantiate sentinel {}, because there call filter or pcfilter is null", sentinelDTO);
+            return null;
+        } else if (
+                Objects.isNull(sentinelDTO.callFilters.allMatch) ||
+                Objects.isNull(sentinelDTO.callFilters.anyMatch) ||
+                Objects.isNull(sentinelDTO.pcFilters.allMatch) ||
+                Objects.isNull(sentinelDTO.pcFilters.anyMatch)
+        ) {
+            getLogger().warn("Cannot instantiate sentinel {}, because one of the internal filter is null pcfilter or callfilter", sentinelDTO);
             return null;
         }
 
-        Predicate<CallEntity> filter;
-        List<Predicate<CallEntity>> allMatches = new LinkedList<>();
-        List<Predicate<CallEntity>> anyMatches = new LinkedList<>();
-        if (Objects.nonNull(sentinelDTO.anyMatchFilters)) {
-            Arrays.stream(sentinelDTO.anyMatchFilters).forEach(filterName -> addSentinelFilter(anyMatches, filterName));
-        }
-        if (Objects.nonNull(sentinelDTO.allMatchFilters)) {
-            Arrays.stream(sentinelDTO.allMatchFilters).forEach(filterName -> addSentinelFilter(allMatches, filterName));
+        if (sentinelDTO.callFilters.allMatch.length < 1 && sentinelDTO.callFilters.anyMatch.length < 1 &&
+            sentinelDTO.pcFilters.allMatch.length < 1 && sentinelDTO.pcFilters.anyMatch.length < 1
+        ) {
+            getLogger().warn("Sentinel {} does not have any filter configured, it will not be built", sentinelDTO);
+            return null;
         }
 
+        List<Predicate<CallEntity>> allCallsMatch = Arrays.stream(sentinelDTO.callFilters.allMatch).map(this::makeCallFilter).collect(Collectors.toList());
+        List<Predicate<CallEntity>> anyCallsMatch = Arrays.stream(sentinelDTO.callFilters.anyMatch).map(this::makeCallFilter).collect(Collectors.toList());
+        final Function<CallEntity, Boolean> callFilter = this.makePredicate(allCallsMatch, anyCallsMatch);
+
+        List<Predicate<PeerConnectionEntity>> allPCsMatch = Arrays.stream(sentinelDTO.pcFilters.allMatch).map(this::makePCFilter).collect(Collectors.toList());
+        List<Predicate<PeerConnectionEntity>> anyPCsMatch = Arrays.stream(sentinelDTO.pcFilters.anyMatch).map(this::makePCFilter).collect(Collectors.toList());
+        final Function<PeerConnectionEntity, Boolean> pcFilter = this.makePredicate(allPCsMatch, anyPCsMatch);
+
+        Predicate<CallEntity> filter;
+        if (Objects.nonNull(callFilter) && Objects.nonNull(pcFilter)) {
+            filter = callEntity -> callFilter.apply(callEntity) &&
+                    callEntity.peerConnections.values().stream().allMatch(pcFilter::apply);
+        } else if (Objects.nonNull(callFilter)) {
+            filter = callFilter::apply;
+        } else if (Objects.nonNull(pcFilter)) {
+            filter = callEntity -> callEntity.peerConnections.values().stream().allMatch(pcFilter::apply);
+        } else {
+            getLogger().warn("No filter has been added to sentinel", sentinelDTO);
+            filter = c -> false;
+        }
+        return SentinelEntity.builder()
+                .withSentinelDTO(sentinelDTO)
+                .withFilter(filter)
+                .build();
+    }
+
+
+    private<T> Function<T, Boolean> makePredicate(List<Predicate<T>> allMatches, List<Predicate<T>> anyMatches) {
+        Function<T, Boolean> result = null;
         if (0 < allMatches.size() && 0 < anyMatches.size()) {
-            filter = callEntity -> allMatches.stream().allMatch(predicate -> {
+            result = callEntity -> allMatches.stream().allMatch(predicate -> {
                 try {
                     return predicate.test(callEntity);
                 } catch (Throwable throwable) {
@@ -105,7 +151,7 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
                 }
             });
         } else if (0 < allMatches.size()) {
-            filter = callEntity -> allMatches.stream().allMatch(predicate -> {
+            result = callEntity -> allMatches.stream().allMatch(predicate -> {
                 try {
                     return predicate.test(callEntity);
                 } catch (Throwable throwable) {
@@ -114,39 +160,47 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
                 }
             });
         } else if (0 < anyMatches.size()) {
-            filter = callEntity -> anyMatches.stream().anyMatch(predicate -> {
+            result = callEntity -> anyMatches.stream().anyMatch(predicate -> {
                 try {
                     return predicate.test(callEntity);
                 } catch (Throwable throwable) {
-                    getLogger().warn("Exception during predicate evaluation", throwable);
+
                     return false;
                 }
             });
-        } else {
-            getLogger().warn("No filter has been defined for sentinel {}", sentinelDTO.name);
-            filter = callEntity -> false;
         }
-
-        return SentinelEntity.builder()
-                .withSentinelDTO(sentinelDTO)
-                .withFilter(filter)
-                .build();
+        if (Objects.isNull(result)) {
+            return null;
+        }
+        return result;
     }
 
-    private void addSentinelFilter(List<Predicate<CallEntity>> target, String filterName) {
-        SentinelFilterDTO filterDTO = this.filterDTOs.get(filterName);
+    private Predicate<CallEntity> makeCallFilter(String filterName) {
+        CallFilterDTO filterDTO = this.callFilterDTOs.get(filterName);
         if (Objects.isNull(filterDTO)) {
             getLogger().warn("Cannot find filter {}", filterName);
-            return;
+            return c -> true;
         }
-        Predicate<CallEntity> filter;
         try {
-            filter = this.sentinelFilterBuilder.apply(filterDTO);
+            return this.callFilterBuilder.apply(filterDTO);
         } catch (Throwable throwable) {
             getLogger().warn("Cannot make filter {}", filterName, throwable);
-            return;
+            return c -> true;
         }
-        target.add(filter);
+    }
+
+    private Predicate<PeerConnectionEntity> makePCFilter(String filterName) {
+        PeerConnectionFilterDTO filterDTO = this.pcFilterDTOs.get(filterName);
+        if (Objects.isNull(filterDTO)) {
+            getLogger().warn("Cannot find filter {}", filterName);
+            return c -> true;
+        }
+        try {
+            return this.peerConnectionFilterBuilder.apply(filterDTO);
+        } catch (Throwable throwable) {
+            getLogger().warn("Cannot make filter {}", filterName, throwable);
+            return c -> true;
+        }
     }
 
     @Override

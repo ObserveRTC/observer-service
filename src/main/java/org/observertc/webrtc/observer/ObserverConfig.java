@@ -18,8 +18,9 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
 import org.observertc.webrtc.observer.dto.SentinelDTO;
-import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
+import org.observertc.webrtc.observer.dto.CallFilterDTO;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -40,7 +41,9 @@ public class ObserverConfig {
 
 	public List<SentinelDTO> sentinels = new ArrayList<>();
 
-	public List<SentinelFilterDTO> sentinelFilters = new ArrayList<>();
+	public List<CallFilterDTO> callFilters = new ArrayList<>();
+
+	public List<PeerConnectionFilterDTO> pcFilters = new ArrayList<>();
 
 	public EvaluatorsConfig evaluators;
 

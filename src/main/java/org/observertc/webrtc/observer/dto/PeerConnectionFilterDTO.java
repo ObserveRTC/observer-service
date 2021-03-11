@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classVersion" })
-public class SentinelFilterDTO implements VersionedPortable {
-    private static final int CLASS_VERSION = 2;
+public class PeerConnectionFilterDTO implements VersionedPortable {
+    private static final int CLASS_VERSION = 1;
 
-    public static SentinelFilterDTO.Builder builder() {
+    public static PeerConnectionFilterDTO.Builder builder() {
         return new Builder();
     }
 
@@ -28,9 +28,6 @@ public class SentinelFilterDTO implements VersionedPortable {
     public String marker = null;
 
     public CollectionFilterDTO SSRCs = new CollectionFilterDTO();
-    public CollectionFilterDTO browserIds =  new CollectionFilterDTO();
-    public CollectionFilterDTO peerConnections = new CollectionFilterDTO();
-
     // version 2
     public CollectionFilterDTO remoteIPs = new CollectionFilterDTO();
 
@@ -45,11 +42,9 @@ public class SentinelFilterDTO implements VersionedPortable {
             return false;
         }
 
-        SentinelFilterDTO otherDTO = (SentinelFilterDTO) other;
+        PeerConnectionFilterDTO otherDTO = (PeerConnectionFilterDTO) other;
         if (this.serviceName != otherDTO.serviceName) return false;
         if (!this.SSRCs.equals(otherDTO.SSRCs)) return false;
-        if (!this.browserIds.equals(otherDTO.browserIds)) return false;
-        if (!this.peerConnections.equals(otherDTO.peerConnections)) return false;
         return true;
     }
 
@@ -66,7 +61,7 @@ public class SentinelFilterDTO implements VersionedPortable {
 
     @Override
     public int getClassId() {
-        return PortableDTOFactory.SENTINEL_FILTER_DTO_CLASS_ID;
+        return PortableDTOFactory.PEER_CONNECTION_FILTER_DTO_CLASS_ID;
     }
 
     @Override
@@ -76,12 +71,6 @@ public class SentinelFilterDTO implements VersionedPortable {
         writer.writeUTF("callName", this.callName);
         writer.writeUTF("marker", this.marker);
         writer.writePortable("ssrcs", this.SSRCs);
-        writer.writePortable("browserids", this.browserIds);
-        writer.writePortable("peerconnections", this.peerConnections);
-
-        if (this.getClassVersion() < 2) {
-            return;
-        }
         writer.writePortable("remoteIPs", this.remoteIPs);
     }
 
@@ -92,18 +81,11 @@ public class SentinelFilterDTO implements VersionedPortable {
         this.callName = reader.readUTF("callName");
         this.marker = reader.readUTF("marker");
         this.SSRCs = reader.readPortable("ssrcs");
-        this.browserIds = reader.readPortable("browserids");
-        this.peerConnections = reader.readPortable("peerconnections");
-
-        if (reader.getVersion() < 2) {
-            this.remoteIPs = new CollectionFilterDTO();
-            return;
-        }
         this.remoteIPs = reader.readPortable("remoteIPs");
     }
 
     public static class Builder {
-        private SentinelFilterDTO result = new SentinelFilterDTO();
+        private PeerConnectionFilterDTO result = new PeerConnectionFilterDTO();
 
         public Builder withServiceName(String value) {
             this.result.serviceName = value;
@@ -125,13 +107,8 @@ public class SentinelFilterDTO implements VersionedPortable {
             return this;
         }
 
-        public Builder withBrowserIdsCollectionFilter(CollectionFilterDTO value) {
-            this.result.browserIds = value;
-            return this;
-        }
-
-        public Builder withPeerConnectionsCollectionFilter(CollectionFilterDTO value) {
-            this.result.peerConnections = value;
+        public Builder withRemoteIPs(CollectionFilterDTO value) {
+            this.result.remoteIPs = value;
             return this;
         }
 
@@ -140,7 +117,7 @@ public class SentinelFilterDTO implements VersionedPortable {
             return this;
         }
 
-        public SentinelFilterDTO build() {
+        public PeerConnectionFilterDTO build() {
             return this.result;
         }
     }

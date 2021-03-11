@@ -24,7 +24,8 @@ public class HazelcastMaps {
     private MultiMap<UUID, UUID> callToPCUUIDs;
     private IMap<String, WeakLockDTO> weakLocks;
     private IMap<String, SentinelDTO> sentinelDTOs;
-    private IMap<String, SentinelFilterDTO> sentinelFilterDTOs;
+    private IMap<String, CallFilterDTO> callFilterDTOs;
+    private IMap<String, PeerConnectionFilterDTO> pcFilterDTOs;
     private MultiMap<String, UUID> serviceToUUIDs;
     private IMap<UUID, String> uuidToService;
 
@@ -38,7 +39,8 @@ public class HazelcastMaps {
         this.callToPCUUIDs = observerHazelcast.getInstance().getMultiMap("observertc-call-to-pcuuids");
         this.weakLocks = observerHazelcast.getInstance().getMap("observertc-weaklocks");
         this.sentinelDTOs = observerHazelcast.getInstance().getMap("observertc-sentinels");
-        this.sentinelFilterDTOs = observerHazelcast.getInstance().getMap("observertc-sentinel-filters");
+        this.callFilterDTOs = observerHazelcast.getInstance().getMap("observertc-call-filters");
+        this.pcFilterDTOs = observerHazelcast.getInstance().getMap("observertc-pc-filters");
         this.uuidToService = observerHazelcast.getInstance().getMap("observertc-uuid-to-service");
         this.serviceToUUIDs = observerHazelcast.getInstance().getMultiMap("observertc-service-to-uuid");
     }
@@ -75,7 +77,9 @@ public class HazelcastMaps {
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
 
-    public IMap<String, SentinelFilterDTO> getSentinelFilterDTOs() {return this.sentinelFilterDTOs;}
+    public IMap<String, CallFilterDTO> getCallFilterDTOs() {return this.callFilterDTOs;}
+
+    public IMap<String, PeerConnectionFilterDTO> getPeerConnectionFilterDTOs() { return this.pcFilterDTOs; }
 
     public IMap<String, SentinelDTO> getSentinelDTOs() {return this.sentinelDTOs;}
 

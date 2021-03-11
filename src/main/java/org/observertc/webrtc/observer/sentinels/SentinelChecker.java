@@ -15,9 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class SentinelChecker {
@@ -76,27 +74,35 @@ public class SentinelChecker {
     private void doRun() throws Throwable {
         Map<UUID, CallEntity> callEntities = this.callsRepository.fetchLocallyStoredCalls();
         Map<String, SentinelEntity> sentinelEntities = this.sentinelsRepository.fetchAllEntities();
+
         for (SentinelEntity sentinelEntity : sentinelEntities.values()) {
             int numOfSSRCs = 0;
             int numOfPCs = 0;
             int numOfCalls = 0;
+            Set<String> mediaUnits = new HashSet<>();
             for (CallEntity callEntity : callEntities.values()) {
                 boolean watched = sentinelEntity.test(callEntity);
                 logger.info("Sentinel {} is checked call {}, and it is {} watched", sentinelEntity.getName(), callEntity.call.callUUID, watched ? "" : "not");
                 if (!watched) {
                     continue;
                 }
+                // mediaunits
                 ++numOfCalls;
                 numOfSSRCs += callEntity.SSRCs.size();
                 numOfPCs += callEntity.peerConnections.size();
+                callEntity.peerConnections.values().stream().map(pc -> pc.peerConnection.mediaUnitId).filter(Objects::nonNull).forEach(mediaUnits::add);
             }
             logger.info("Sentinel {} is checked all call and counted SSRCs: {} PCs: {} calls: {}", sentinelEntity.getName(), numOfSSRCs, numOfPCs, numOfCalls);
+            final String sentinelName = sentinelEntity.getName();
             if (sentinelEntity.streamMetrics()) {
-                final String sentinelName = sentinelEntity.getName();
                 this.sentinelMonitor.getSentinelMetrics(sentinelName)
                         .setNumberOfCalls(numOfCalls)
                         .setNumberOfSSRCs(numOfSSRCs)
                         .setNumberOfPeerConnections(numOfPCs);
+            }
+            if (sentinelEntity.mediaUnits()) {
+                this.sentinelMonitor.getSentinelMetrics(sentinelName)
+                        .incrementMediaUnits(mediaUnits);
             }
         }
     }

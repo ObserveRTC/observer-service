@@ -75,9 +75,14 @@ observer:
     dropUnknownServices: False
 
   sentinelsCheckingPeriodInMin: 1
-#  sentinelFilters:
+#  pcFilters:
+#    - name: "myPCFilter"
+#      SSRCs:
+#        gt: 0
+#        lt: 10
+#  callFilters:
 #    - name: "MyPeerToPeerFilter"
-#      serviceName: "example-service-name"
+##      serviceName: "example-service-name"
 ##      callName: "regex pattern"
 ##      marker: "regex pattern"
 #      browserIds:
@@ -88,8 +93,13 @@ observer:
 #      expose: True
 #      reports: True
 #      streamMetrics: True
-#      anyMatchFilters:
-#        - "MyPeerToPeerFilter"
+#      mediaUnits: True
+#      pcFilters:
+#        anyMatch:
+#          - "myPCFilter"
+#      callFilters:
+#        anyMatch:
+#          - "MyPeerToPeerFilter"
 #  servicemappings:
 #    - name: "example-service-name"
 #      uuids:

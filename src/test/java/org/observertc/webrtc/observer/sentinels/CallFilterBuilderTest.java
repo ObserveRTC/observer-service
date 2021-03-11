@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.functions.Predicate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
-import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
+import org.observertc.webrtc.observer.dto.CallFilterDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
 
@@ -13,10 +13,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 @MicronautTest
-class SentinelFilterBuilderTest {
+class CallFilterBuilderTest {
 
     @Inject
-    Provider<SentinelFilterBuilder> sentinelFilterBuilderProvider;
+    Provider<CallFilterBuilder> sentinelFilterBuilderProvider;
 
     @Inject
     EntitiesTestUtils entitiesTestUtils;
@@ -27,11 +27,11 @@ class SentinelFilterBuilderTest {
                 .numOfElementsIsLessThan(3)
                 .numOfElementsIsGreaterThan(0)
                 .build();
-        SentinelFilterDTO sentinelFilterDTO = SentinelFilterDTO.builder()
+        CallFilterDTO callFilterDTO = CallFilterDTO.builder()
                 .withPeerConnectionsCollectionFilter(collectionFilterDTO)
                 .build();
 
-        Predicate<CallEntity> filter = sentinelFilterBuilderProvider.get().apply(sentinelFilterDTO);
+        Predicate<CallEntity> filter = sentinelFilterBuilderProvider.get().apply(callFilterDTO);
 
         var c1 = entitiesTestUtils.generateCallEntity(2);
         var c2 = entitiesTestUtils.generateCallEntity(3);

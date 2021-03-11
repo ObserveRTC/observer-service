@@ -39,7 +39,7 @@ public class SentinelsRepository {
 	HazelcastMaps hazelcastMaps;
 
 	@Inject
-	SentinelFiltersRepository sentinelFiltersRepository; // we must invoke this to have a proper result
+    CallFiltersRepository callFiltersRepository; // we must invoke this to have a proper result
 
 	@Inject
 	Provider<FetchSentinelEntitiesTask> sentinelEntitiesTaskProvider;

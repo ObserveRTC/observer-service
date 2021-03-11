@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Singleton
@@ -21,13 +18,14 @@ public class SentinelMetrics {
     private static final String MONITORED_SSRCS_NUM_METRIC_NAME = "observertc_monitored_ssrcs_num";
     private static final String MONITORED_PEER_CONNECTIONS_NUM_METRIC_NAME = "observertc_monitored_pcs_num";
     private static final String MONITORED_CALLS_NUM_METRIC_NAME = "observertc_monitored_calls_num";
+    private static final String MONITORED_MEDIA_UNITS_COUNTER_METRIC_NAME = "observertc_monitored_media_units";
 
     @Inject
     MeterRegistry meterRegistry;
 
     private String sentinelName = null;
     private final Map<String, AtomicLong> metrics;
-    private List<Tag> tags;
+    private List<Tag> baseTags;
 
     SentinelMetrics() {
         this.metrics = new HashMap<>();
@@ -40,7 +38,7 @@ public class SentinelMetrics {
         }
         this.sentinelName = sentinelName;
         var sentinelTag = Tag.of(SENTINEL_TAG_NAME, sentinelName);
-        this.tags = List.of(sentinelTag);
+        this.baseTags = List.of(sentinelTag);
         return this;
     }
 
@@ -50,10 +48,22 @@ public class SentinelMetrics {
         }
         AtomicLong result = this.metrics.get(metricsName);
         if (Objects.isNull(result)) {
-            result = this.meterRegistry.gauge(metricsName, this.tags, new AtomicLong(0), AtomicLong::doubleValue);
+            result = this.meterRegistry.gauge(metricsName, this.baseTags, new AtomicLong(0), AtomicLong::doubleValue);
             this.metrics.put(metricsName, result);
         }
         return result;
+    }
+
+    private void incrementMediaUnit(String mediaUnit) {
+        if (Objects.isNull(this.sentinelName)) {
+            throw new IllegalStateException("SentinelMetric cannot exists withou a name! Did you initialize this metric?");
+        }
+        if (Objects.isNull(mediaUnit)) {
+            mediaUnit = "Unknown";
+        }
+        List<Tag> tags = new ArrayList<>(this.baseTags);
+        tags.add(Tag.of("mediaUnit", mediaUnit));
+        this.meterRegistry.counter(MONITORED_MEDIA_UNITS_COUNTER_METRIC_NAME, tags).increment();
     }
 
     public SentinelMetrics setNumberOfSSRCs(int numOfSSRCs) {
@@ -69,5 +79,12 @@ public class SentinelMetrics {
     public SentinelMetrics setNumberOfCalls(int numOfCalls) {
         this.getGauge(MONITORED_CALLS_NUM_METRIC_NAME).set(numOfCalls);
         return this;
+    }
+
+    public void incrementMediaUnits(Set<String> mediaUnits) {
+        if (Objects.isNull(mediaUnits)) {
+            return;
+        }
+        mediaUnits.stream().forEach(this::incrementMediaUnit);
     }
 }
