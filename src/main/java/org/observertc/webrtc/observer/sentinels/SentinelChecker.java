@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 public class SentinelChecker {
@@ -79,6 +80,7 @@ public class SentinelChecker {
             int numOfSSRCs = 0;
             int numOfPCs = 0;
             int numOfCalls = 0;
+            int browserIds = 0;
             Set<String> mediaUnits = new HashSet<>();
             for (CallEntity callEntity : callEntities.values()) {
                 boolean watched = sentinelEntity.test(callEntity);
@@ -88,6 +90,7 @@ public class SentinelChecker {
                 }
                 // mediaunits
                 ++numOfCalls;
+                browserIds += callEntity.peerConnections.values().stream().map(pc -> pc.peerConnection.browserId).filter(Objects::nonNull).collect(Collectors.toSet()).size();
                 numOfSSRCs += callEntity.SSRCs.size();
                 numOfPCs += callEntity.peerConnections.size();
                 callEntity.peerConnections.values().stream().map(pc -> pc.peerConnection.mediaUnitId).filter(Objects::nonNull).forEach(mediaUnits::add);
@@ -97,6 +100,7 @@ public class SentinelChecker {
             if (sentinelEntity.streamMetrics()) {
                 this.sentinelMonitor.getSentinelMetrics(sentinelName)
                         .setNumberOfCalls(numOfCalls)
+                        .setNumberOfBrowserIds(browserIds)
                         .setNumberOfSSRCs(numOfSSRCs)
                         .setNumberOfPeerConnections(numOfPCs);
             }

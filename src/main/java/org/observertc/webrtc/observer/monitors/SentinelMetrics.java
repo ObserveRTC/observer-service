@@ -19,6 +19,7 @@ public class SentinelMetrics {
     private static final String MONITORED_PEER_CONNECTIONS_NUM_METRIC_NAME = "observertc_monitored_pcs_num";
     private static final String MONITORED_CALLS_NUM_METRIC_NAME = "observertc_monitored_calls_num";
     private static final String MONITORED_MEDIA_UNITS_COUNTER_METRIC_NAME = "observertc_monitored_media_units";
+    private static final String MONITORED_BROWSER_IDS_NUM_METRIC_NAME = "observertc_monitored_browser_ids_num";
 
     @Inject
     MeterRegistry meterRegistry;
@@ -81,10 +82,17 @@ public class SentinelMetrics {
         return this;
     }
 
+    public SentinelMetrics setNumberOfBrowserIds(int browserIds) {
+        this.getGauge(MONITORED_BROWSER_IDS_NUM_METRIC_NAME).set(browserIds);
+        return this;
+    }
+
     public void incrementMediaUnits(Set<String> mediaUnits) {
         if (Objects.isNull(mediaUnits)) {
             return;
         }
         mediaUnits.stream().forEach(this::incrementMediaUnit);
     }
+
+
 }
