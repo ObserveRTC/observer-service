@@ -130,7 +130,7 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
                 return;
             }
 
-            if (SSRC < 16) { // because of TokBox uses ssrc 1,2 for probing purpose
+            if (SSRC < 16) {
                 SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFFFFFFE) + SSRC;
             } else if( 10000 < SSRC && SSRC < 10004 ) {
                 SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFF00000) + SSRC;
@@ -160,12 +160,14 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             @Override
             public void visitICELocalCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICELocalCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
+
                 }
             }
 
             @Override
             public void visitICERemoteCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
+                    pcState.remoteAddresses.add(subject.ip);
                 }
             }
         };

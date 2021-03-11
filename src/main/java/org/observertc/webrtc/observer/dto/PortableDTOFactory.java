@@ -24,7 +24,6 @@ public class PortableDTOFactory implements PortableFactory {
 	public static final int FACTORY_ID = 200000;
 	public static final int PEER_CONNECTION_DTO_CLASS_ID = 1000;
 	public static final int CALL_DTO_CLASS_ID = 2000;
-	public static final int SERVICE_DTO_CLASS_ID = 3000;
 	public static final int WEAKLOCKS_DTO_CLASS_ID = 4000;
 	public static final int SENTINEL_DTO_CLASS_ID = 5000;
 	public static final int COLLECTION_FILTER_DTO_CLASS_ID = 6000;

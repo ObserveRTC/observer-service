@@ -147,8 +147,6 @@ public class Application {
 //        @Replaces(ObjectMapper.class)
 //        public ObjectMapper objectMapper(JacksonConfiguration jacksonConfiguration, JsonFactory jsonFactory) {
 //            final ObjectMapper mapper = super.objectMapper(jacksonConfiguration, jsonFactory);
-//
-//            mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 //            return mapper;
 //        }
 //    }

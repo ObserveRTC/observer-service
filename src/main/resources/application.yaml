@@ -75,25 +75,25 @@ observer:
     dropUnknownServices: False
 
   sentinelsCheckingPeriodInMin: 1
-  sentinelFilters:
-    - name: "MyPeerToPeerFilter"
-      serviceName: "example-service-name"
-#      callName: "regex pattern"
-#      marker: "regex pattern"
-      browserIds:
-        gt: 0
-        lt: 3
-  sentinels:
-    - name: "MySentinel"
-      expose: True
-      reports: True
-      streamMetrics: True
-      anyMatchFilters:
-        - "MyPeerToPeerFilter"
-  servicemappings:
-    - name: "example-service-name"
-      uuids:
-        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+#  sentinelFilters:
+#    - name: "MyPeerToPeerFilter"
+#      serviceName: "example-service-name"
+##      callName: "regex pattern"
+##      marker: "regex pattern"
+#      browserIds:
+#        gt: 0
+#        lt: 3
+#  sentinels:
+#    - name: "MySentinel"
+#      expose: True
+#      reports: True
+#      streamMetrics: True
+#      anyMatchFilters:
+#        - "MyPeerToPeerFilter"
+#  servicemappings:
+#    - name: "example-service-name"
+#      uuids:
+#        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
   connectors:
     - name: "ReportSinkLogger"
       buffer:

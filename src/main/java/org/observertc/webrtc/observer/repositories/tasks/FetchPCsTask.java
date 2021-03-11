@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ChainedTask;
@@ -21,6 +20,7 @@ public class FetchPCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> {
     @Inject
     HazelcastMaps hazelcastMaps;
     private boolean fetchSSRCs = true;
+    private boolean fetchIPs = true;
 
 
     @PostConstruct
@@ -58,16 +58,28 @@ public class FetchPCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> {
                 return pcBuilders;
             })
             .<Map<UUID, PeerConnectionEntity.Builder>, Map<UUID, PeerConnectionEntity.Builder>> addFunctionalStage("Add SSRCs",
-                pcEntityBuilders -> {
-                    if (!this.fetchSSRCs) {
+                    pcEntityBuilders -> {
+                        if (!this.fetchSSRCs) {
+                            return pcEntityBuilders;
+                        }
+                        for (PeerConnectionEntity.Builder pcEntityBuilder : pcEntityBuilders.values()) {
+                            Collection<Long> SSRCs = hazelcastMaps.getPCsToSSRCMap(pcEntityBuilder.pcDTO.serviceUUID).get(pcEntityBuilder.pcDTO.peerConnectionUUID);
+                            pcEntityBuilder.SSRCs.addAll(SSRCs);
+                        }
                         return pcEntityBuilders;
                     }
-                    for (PeerConnectionEntity.Builder pcEntityBuilder : pcEntityBuilders.values()) {
-                        Collection<Long> SSRCs = hazelcastMaps.getPCsToSSRCMap(pcEntityBuilder.pcDTO.serviceUUID).get(pcEntityBuilder.pcDTO.peerConnectionUUID);
-                        pcEntityBuilder.SSRCs.addAll(SSRCs);
+            )
+            .<Map<UUID, PeerConnectionEntity.Builder>, Map<UUID, PeerConnectionEntity.Builder>> addFunctionalStage("Add IPs",
+                    pcEntityBuilders -> {
+                        if (!this.fetchIPs) {
+                            return pcEntityBuilders;
+                        }
+                        for (PeerConnectionEntity.Builder pcEntityBuilder : pcEntityBuilders.values()) {
+                            Collection<String> IPs = hazelcastMaps.getPCsToRemoteIP().get(pcEntityBuilder.pcDTO.peerConnectionUUID);
+                            pcEntityBuilder.withRemoteIPs(IPs);
+                        }
+                        return pcEntityBuilders;
                     }
-                    return pcEntityBuilders;
-                }
             )
             .<Map<UUID, PeerConnectionEntity.Builder>> addTerminalFunction("Creating Peer Connection Entities", dataCarriers -> {
                 return dataCarriers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> {
@@ -96,6 +108,11 @@ public class FetchPCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> {
 
     public FetchPCsTask doNotFetchSSRCs() {
         this.fetchSSRCs = false;
+        return this;
+    }
+
+    public FetchPCsTask doNotFetchIPs() {
+        this.fetchIPs = false;
         return this;
     }
 

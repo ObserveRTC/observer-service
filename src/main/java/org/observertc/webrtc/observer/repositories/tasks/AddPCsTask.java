@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
@@ -88,6 +87,27 @@ public class AddPCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> {
                 // rollback
                 (inputHolder, thrownException) -> {
                     RemovePCsTask.removeSSRCs(this.getLogger(), this.hazelcastMaps, this.peerConnectionEntities);
+                })
+                .addActionStage("Bind IP",
+                () -> {
+                    for (PeerConnectionEntity pcEntity : peerConnectionEntities.values()) {
+                        if (Objects.nonNull(pcEntity.remoteIPs)) {
+                            for (String IP : pcEntity.remoteIPs) {
+                                hazelcastMaps.getPCsToRemoteIP().put(pcEntity.pcUUID, IP);
+                                hazelcastMaps.getRemoteIPToPCs().put(IP, pcEntity.pcUUID);
+                            }
+                        }
+                    }
+                },
+                (inputHolder, thrownException) -> {
+                    for (PeerConnectionEntity pcEntity : peerConnectionEntities.values()) {
+                        if (Objects.nonNull(pcEntity.remoteIPs)) {
+                            for (String IP : pcEntity.remoteIPs) {
+                                hazelcastMaps.getPCsToRemoteIP().remove(pcEntity.pcUUID, IP);
+                                hazelcastMaps.getRemoteIPToPCs().remove(IP, pcEntity.pcUUID);
+                            }
+                        }
+                    }
                 })
                 .<Map<UUID, PeerConnectionEntity>>addSupplierStage("Fetch Result Entities", () -> {
                     return Collections.unmodifiableMap(this.peerConnectionEntities);

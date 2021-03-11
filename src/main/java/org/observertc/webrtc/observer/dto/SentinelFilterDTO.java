@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classVersion" })
 public class SentinelFilterDTO implements VersionedPortable {
-    private static final int CLASS_VERSION = 1;
+    private static final int CLASS_VERSION = 2;
 
     public static SentinelFilterDTO.Builder builder() {
         return new Builder();
@@ -30,6 +30,9 @@ public class SentinelFilterDTO implements VersionedPortable {
     public CollectionFilterDTO SSRCs = new CollectionFilterDTO();
     public CollectionFilterDTO browserIds =  new CollectionFilterDTO();
     public CollectionFilterDTO peerConnections = new CollectionFilterDTO();
+
+    // version 2
+    public CollectionFilterDTO remoteIPs = new CollectionFilterDTO();
 
     @Override
     public String toString() {
@@ -75,6 +78,11 @@ public class SentinelFilterDTO implements VersionedPortable {
         writer.writePortable("ssrcs", this.SSRCs);
         writer.writePortable("browserids", this.browserIds);
         writer.writePortable("peerconnections", this.peerConnections);
+
+        if (this.getClassVersion() < 2) {
+            return;
+        }
+        writer.writePortable("remoteIPs", this.remoteIPs);
     }
 
     @Override
@@ -86,6 +94,12 @@ public class SentinelFilterDTO implements VersionedPortable {
         this.SSRCs = reader.readPortable("ssrcs");
         this.browserIds = reader.readPortable("browserids");
         this.peerConnections = reader.readPortable("peerconnections");
+
+        if (reader.getVersion() < 2) {
+            this.remoteIPs = new CollectionFilterDTO();
+            return;
+        }
+        this.remoteIPs = reader.readPortable("remoteIPs");
     }
 
     public static class Builder {

@@ -98,6 +98,20 @@ public class SentinelFilterBuilder extends AbstractBuilder implements Function<S
             }
             result.add(callEntity -> filter.test(callEntity.SSRCs));
         }
+
+        if (Objects.nonNull(filterConfig.remoteIPs) && !CollectionFilterBuilder.isEmpty(filterConfig.remoteIPs)) {
+            CollectionFilterBuilder collectionFilterBuilder = collectionFilterBuilderProvider.get();
+            Predicate<Collection<String>> filter = collectionFilterBuilder.build(filterConfig.remoteIPs, item -> item);
+            if (collectionFilterBuilder.isWarned()) {
+                logger.warn("While building filter {} a warning is emerged. please check the configuration for the filter", filterConfig.name);
+            }
+            result.add(callEntity -> {
+                Set<String> remoteIPs = callEntity.peerConnections.values().stream()
+                        .flatMap(pc -> pc.remoteIPs.stream())
+                        .collect(Collectors.toSet());
+                return filter.test(remoteIPs);
+            });
+        }
         return result;
     }
 
