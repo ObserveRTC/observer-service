@@ -80,26 +80,24 @@ observer:
 #      SSRCs:
 #        gt: 0
 #        lt: 10
-#  callFilters:
-#    - name: "MyPeerToPeerFilter"
-##      serviceName: "example-service-name"
-##      callName: "regex pattern"
-##      marker: "regex pattern"
-#      browserIds:
-#        gt: 0
-#        lt: 3
-#  sentinels:
-#    - name: "MySentinel"
-#      expose: True
-#      reports: True
-#      streamMetrics: True
-#      mediaUnits: True
+  callFilters:
+    - name: "MyPeerToPeerFilter"
+#      serviceName: "example-service-name"
+#      callName: "regex pattern"
+#      marker: "regex pattern"
+      browserIds:
+        gt: 0
+        lt: 3
+  sentinels:
+    - name: "MySentinel"
+      expose: True
+      reports: True
 #      pcFilters:
 #        anyMatch:
 #          - "myPCFilter"
-#      callFilters:
-#        anyMatch:
-#          - "MyPeerToPeerFilter"
+      callFilters:
+        anyMatch:
+          - "MyPeerToPeerFilter"
 #  servicemappings:
 #    - name: "example-service-name"
 #      uuids:
@@ -117,16 +115,31 @@ observer:
   ipAddressConverter:
     enabled: False
 
+  inboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+
+  remoteInboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+    weightFactor: 0.3
+
+  outboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+
+  reportMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
+    tagByType: false
+
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
     observedPCSBufferMaxTimeInS: 10
     observedPCSBufferMaxItemNums: 10000
     peerConnectionMaxIdleTimeInS: 60
-    reportMonitor:
-      enabled: true
-      tagByServiceName: true
-      tagByServiceUUID: false
-      tagByType: false
+
   outboundReports:
     reportOutboundRTPs: True
     reportInboundRTPs: True

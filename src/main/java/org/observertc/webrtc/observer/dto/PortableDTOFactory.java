@@ -29,6 +29,9 @@ public class PortableDTOFactory implements PortableFactory {
 	public static final int COLLECTION_FILTER_DTO_CLASS_ID = 6000;
 	public static final int CALL_FILTER_DTO_CLASS_ID = 7000;
 	public static final int PEER_CONNECTION_FILTER_DTO_CLASS_ID = 8000;
+	public static final int INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 9000;
+	public static final int OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 10000;
+	public static final int REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 11000;
 
 	@Override
 	public Portable create(int classId) {
@@ -47,6 +50,12 @@ public class PortableDTOFactory implements PortableFactory {
 				return new CollectionFilterDTO();
 			case PEER_CONNECTION_FILTER_DTO_CLASS_ID:
 				return new PeerConnectionFilterDTO();
+			case INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
+				return new InboundRtpTrafficDTO();
+			case OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
+				return new OutboundRtpTrafficDTO();
+			case REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
+				return new RemoteInboundRtpTrafficDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

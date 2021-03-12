@@ -27,18 +27,10 @@ public class SentinelEntity implements Predicate<CallEntity>{
 
     public boolean isReported() { return this.sentinelDTO.report; }
 
-    public boolean streamMetrics() {
-        return this.sentinelDTO.streamMetrics;
-    }
-
     @Override
     public boolean test(CallEntity callEntity) throws Throwable {
         boolean result = this.callFilter.test(callEntity);
         return result;
-    }
-
-    public boolean mediaUnits() {
-        return this.sentinelDTO.mediaUnits;
     }
 
     public static class Builder {

@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.connectors.sinks;
 
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configbuilders.Builder;
-import org.observertc.webrtc.observer.monitors.ReportMonitorConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +45,6 @@ public class SinkBuilder extends AbstractBuilder {
         public String type;
 
         public Map<String, Object> config;
-
-        public ReportMonitorConfig reportMonitor = null;
 
     }
 }

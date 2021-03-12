@@ -53,6 +53,14 @@ public class ObserverConfig {
 
 	public SecurityConfig security;
 
+	public InboundRtpMonitorConfig inboundRtpMonitor;
+
+	public OutboundRtpMonitorConfig outboundRtpMonitor;
+
+	public RemoteInboundRtpMonitorConfig remoteInboundRtpMonitor;
+
+	public ReportCounterMonitorConfig reportMonitor;
+
 	@ConfigurationProperties("ipaddress")
 	public static class IPAddressConverterConfig {
 		public boolean enabled = false;
@@ -64,7 +72,6 @@ public class ObserverConfig {
 	public static class SecurityConfig {
 		public boolean dropUnknownServices = false;
 	}
-
 
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
@@ -79,9 +86,6 @@ public class ObserverConfig {
 		public int peerConnectionMaxIdleTimeInS = 300;
 
 		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
-
-		public Map<String, Object> reportMonitor;
-
 	}
 
 	@ConfigurationProperties("hazelcast")
@@ -119,5 +123,39 @@ public class ObserverConfig {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}
+
+	public static class RtpMonitorConfig {
+		public boolean enabled = false;
+		public int retentionTimeInS = 300;
+	}
+
+	@ConfigurationProperties("inboundRtpMonitor")
+	public static class InboundRtpMonitorConfig extends RtpMonitorConfig{
+
+	}
+
+	@ConfigurationProperties("outboundRtpMonitor")
+	public static class OutboundRtpMonitorConfig extends RtpMonitorConfig{
+
+	}
+
+	@ConfigurationProperties("remoteInboundRtpMonitor")
+	public static class RemoteInboundRtpMonitorConfig extends RtpMonitorConfig {
+		public double weightFactor = 0.5;
+	}
+
+	public static class CounterMonitorConfig {
+		public boolean enabled = false;
+		public boolean tagByType = true;
+		public boolean tagByServiceName = false;
+		public boolean tagByServiceUUID = false;
+	}
+
+	@EachProperty("reportMonitor")
+	public static class ReportCounterMonitorConfig extends CounterMonitorConfig {
+
+	}
+
+
 }
 

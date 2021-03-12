@@ -1,14 +1,13 @@
 package org.observertc.webrtc.observer.monitors;
 
 import io.reactivex.rxjava3.core.ObservableOperator;
-import org.observertc.webrtc.observer.configbuilders.ConfigConverter;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.Map;
 import java.util.Objects;
 
 @Singleton
@@ -21,13 +20,7 @@ public class CounterMonitorProvider {
     Provider<CounterMonitorBuilder<Report>> counterMonitorBuilderProvider;
 
 
-    public ObservableOperator<Report, Report> buildReportMonitor(String metricName, Map<String, Object> configMap) {
-        ConfigConverter.forceKeysToBeCamelCase(configMap);
-        ReportMonitorConfig config = ConfigConverter.convert(ReportMonitorConfig.class, configMap);
-        return this.buildReportMonitor(metricName, config);
-    }
-
-    public ObservableOperator<Report, Report> buildReportMonitor(String metricName, ReportMonitorConfig config) {
+    public ObservableOperator<Report, Report> buildReportMonitor(String metricName, ObserverConfig.CounterMonitorConfig config) {
         if (!config.enabled) {
             return report -> report;
         }

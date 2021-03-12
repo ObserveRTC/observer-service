@@ -6,6 +6,9 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.connectors.Connector;
+import org.observertc.webrtc.observer.evaluators.rtpmonitors.InboundRtpMonitor;
+import org.observertc.webrtc.observer.evaluators.rtpmonitors.OutboundRtpMonitor;
+import org.observertc.webrtc.observer.evaluators.rtpmonitors.RemoteInboundRtpMonitor;
 import org.observertc.webrtc.observer.monitors.CounterMonitorProvider;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -32,7 +35,7 @@ public class Pipeline {
     }
 
     @Inject
-    ObserverConfig.EvaluatorsConfig config;
+    ObserverConfig config;
 
     @Inject
     PCSObserver PCSObserver;
@@ -55,6 +58,15 @@ public class Pipeline {
     @Inject
     ObserverConfig.EvaluatorsConfig evaluatorsConfig;
 
+    @Inject
+    InboundRtpMonitor inboundRTPMonitor;
+
+    @Inject
+    OutboundRtpMonitor outboundRtpMonitor;
+
+    @Inject
+    RemoteInboundRtpMonitor remoteInboundRtpMonitor;
+
 
     public void inputUserMediaError(ObservedPCS observedPCS) {
 
@@ -68,7 +80,7 @@ public class Pipeline {
         // TODO: Insert our load balancer for pcs here.
 
         var samplesBuffer = source
-                .buffer(config.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, config.observedPCSBufferMaxItemNums)
+                .buffer(evaluatorsConfig.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, evaluatorsConfig.observedPCSBufferMaxItemNums)
                 .share();
 
         samplesBuffer
@@ -100,16 +112,19 @@ public class Pipeline {
         // InboundRTP -> ReportSunk
         this.observedPCSEvaluator
                 .getInboundRTPReports()
+                .map(this.inboundRTPMonitor)
                 .subscribe(this.reports);
 
         // OutboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getOutboundRTPReports()
+                .map(this.outboundRtpMonitor)
                 .subscribe(this.reports);
 
         // RemoteInboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getRemoteInboundRTPReports()
+                .map(this.remoteInboundRtpMonitor)
                 .subscribe(this.reports);
 
         // UserMediaError -> ReportSink
@@ -147,8 +162,8 @@ public class Pipeline {
                 .getExtensionReports()
                 .subscribe(this.reports);
 
-        if (Objects.nonNull(this.evaluatorsConfig.reportMonitor)) {
-            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.evaluatorsConfig.reportMonitor);
+        if (Objects.nonNull(this.config.reportMonitor)) {
+            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.config.reportMonitor);
             this.reports.lift(reportMonitor).subscribe();
         }
 

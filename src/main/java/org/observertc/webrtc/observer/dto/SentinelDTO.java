@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classVersion" })
 public class SentinelDTO implements VersionedPortable {
-    private static final int CLASS_VERSION = 2;
+    private static final int CLASS_VERSION = 3;
 
 
     public static SentinelDTO.Builder builder() {
@@ -23,9 +23,6 @@ public class SentinelDTO implements VersionedPortable {
     public String name;
     public boolean report = false;
     public boolean expose = false;
-
-    public boolean streamMetrics = false;
-    public boolean mediaUnits = false;
 
     // version 1 (only in migration it exists)
 //    public String[] allmatchFilters = new String[0];
@@ -53,7 +50,6 @@ public class SentinelDTO implements VersionedPortable {
         if (this.name != otherDTO.name) return false;
         if (this.report != otherDTO.report) return false;
         if (this.expose != otherDTO.expose) return false;
-        if (this.streamMetrics != otherDTO.streamMetrics) return false;
         return true;
     }
 
@@ -77,7 +73,7 @@ public class SentinelDTO implements VersionedPortable {
         writer.writeUTF("name", this.name);
         writer.writeBoolean("expose", this.expose);
         writer.writeBoolean("report", this.report);
-        writer.writeBoolean("streamMetrics", this.streamMetrics);
+
         if (this.getClassVersion() < 2) { // migration
             writer.writeUTFArray("allmatchFilters", this.callFilters.allMatch);
             writer.writeUTFArray("anymatchFilters", this.callFilters.anyMatch);
@@ -91,7 +87,6 @@ public class SentinelDTO implements VersionedPortable {
         writer.writeUTFArray("pcs_allmatch", this.pcFilters.allMatch);
         writer.writeUTFArray("pcs_anymatch", this.pcFilters.anyMatch);
 
-        writer.writeBoolean("mediaUnits", this.mediaUnits);
     }
 
     @Override
@@ -99,7 +94,7 @@ public class SentinelDTO implements VersionedPortable {
         this.name = reader.readUTF("name");
         this.expose = reader.readBoolean("expose");
         this.report = reader.readBoolean("report");
-        this.streamMetrics = reader.readBoolean("streamMetrics");
+
         if (reader.getVersion() < 2) { // migration!
             this.callFilters.allMatch = reader.readUTFArray("allmatchFilters");
             this.callFilters.anyMatch = reader.readUTFArray("anymatchFilters");
@@ -118,7 +113,6 @@ public class SentinelDTO implements VersionedPortable {
         this.pcFilters.allMatch = reader.readUTFArray("pcs_allmatch");
         this.pcFilters.anyMatch = reader.readUTFArray("pcs_anymatch");
 
-        this.mediaUnits = reader.readBoolean("mediaUnits");
     }
 
 
@@ -132,11 +126,6 @@ public class SentinelDTO implements VersionedPortable {
 
         public Builder withExpose(boolean value) {
             this.result.expose = value;
-            return this;
-        }
-
-        public Builder withStreamMetrics(boolean value) {
-            this.result.streamMetrics = value;
             return this;
         }
 
@@ -164,10 +153,6 @@ public class SentinelDTO implements VersionedPortable {
             return this.result;
         }
 
-        public Builder withMediaUnitMetric(boolean value) {
-            this.result.mediaUnits = value;
-            return this;
-        }
     }
 
 }
