@@ -34,8 +34,8 @@ public class DTOTestUtils {
         return generator.nextObject(SentinelDTO.class);
     }
 
-    public SentinelFilterDTO generateSentinelFilterDTO() {
-        return generator.nextObject(SentinelFilterDTO.class);
+    public CallFilterDTO generateSentinelFilterDTO() {
+        return generator.nextObject(CallFilterDTO.class);
     }
 
     public CollectionFilterDTO generateCollectionFilter() {

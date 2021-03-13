@@ -148,6 +148,7 @@ public class ActivePCsEvaluator implements Consumer<Map<UUID, PCState>> {
 						pcState.marker)
 				)
 				.withSSRCs(pcState.SSRCs)
+				.withRemoteIPs(pcState.remoteAddresses)
 				.build();
 
 		if (!this.config.impairablePCsCallName.equals(pcEntity.peerConnection.callName)) {

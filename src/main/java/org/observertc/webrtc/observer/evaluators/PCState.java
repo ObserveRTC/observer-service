@@ -67,8 +67,7 @@ public class PCState {
 	// these attributes are set by post processing, not constructing
 	public Set<Long> SSRCs = new HashSet<>();
 //	public Set<String> localAddresses = new HashSet<>();
-//	public Set<String> remoteAddresses = new HashSet<>();
-
+	public Set<String> remoteAddresses = new HashSet<>();
 	/**
 	 * The timestamp when the pcState is touched last time
 	 * automatically initialized when the object has been created

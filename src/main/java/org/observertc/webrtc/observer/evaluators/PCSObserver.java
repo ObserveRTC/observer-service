@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -20,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 @Singleton
 public class PCSObserver implements Consumer<List<ObservedPCS>> {
@@ -28,11 +30,13 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
     private final Subject<Map<UUID, PCState>> activePCsSubject = PublishSubject.create();
     private final Map<UUID, PCState> pcStates = new HashMap<>();
     private final PeerConnectionSampleVisitor<PCState> pcStateProcessor;
+    private final Function<String, String> ipAddressConverter;
     @Inject
     ObserverMetrics observerMetrics;
 
     @Inject
     ObserverConfig.EvaluatorsConfig config;
+
 
     @PostConstruct
     void setup() {
@@ -47,7 +51,10 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
         return this.activePCsSubject;
     }
 
-    public PCSObserver() {
+    public PCSObserver(
+            IPAddressConverterProvider ipAddressConverterProvider
+    ) {
+        this.ipAddressConverter = ipAddressConverterProvider.provide();
         this.pcStateProcessor = this.makeSSRCExtractor();
     }
 
@@ -130,7 +137,7 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
                 return;
             }
 
-            if (SSRC < 16) { // because of TokBox uses ssrc 1,2 for probing purpose
+            if (SSRC < 16) {
                 SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFFFFFFE) + SSRC;
             } else if( 10000 < SSRC && SSRC < 10004 ) {
                 SSRC = (pcState.peerConnectionUUID.getMostSignificantBits() & 0xFFF00000) + SSRC;
@@ -160,12 +167,15 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             @Override
             public void visitICELocalCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICELocalCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
+
                 }
             }
 
             @Override
             public void visitICERemoteCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
+                    String savedIP = ipAddressConverter.apply(subject.ip);
+                    pcState.remoteAddresses.add(savedIP);
                 }
             }
         };

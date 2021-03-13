@@ -24,11 +24,14 @@ public class PortableDTOFactory implements PortableFactory {
 	public static final int FACTORY_ID = 200000;
 	public static final int PEER_CONNECTION_DTO_CLASS_ID = 1000;
 	public static final int CALL_DTO_CLASS_ID = 2000;
-	public static final int SERVICE_DTO_CLASS_ID = 3000;
 	public static final int WEAKLOCKS_DTO_CLASS_ID = 4000;
 	public static final int SENTINEL_DTO_CLASS_ID = 5000;
 	public static final int COLLECTION_FILTER_DTO_CLASS_ID = 6000;
-	public static final int SENTINEL_FILTER_DTO_CLASS_ID = 7000;
+	public static final int CALL_FILTER_DTO_CLASS_ID = 7000;
+	public static final int PEER_CONNECTION_FILTER_DTO_CLASS_ID = 8000;
+	public static final int INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 9000;
+	public static final int OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 10000;
+	public static final int REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 11000;
 
 	@Override
 	public Portable create(int classId) {
@@ -41,10 +44,18 @@ public class PortableDTOFactory implements PortableFactory {
 				return new WeakLockDTO();
 			case SENTINEL_DTO_CLASS_ID:
 				return new SentinelDTO();
-			case SENTINEL_FILTER_DTO_CLASS_ID:
-				return new SentinelFilterDTO();
+			case CALL_FILTER_DTO_CLASS_ID:
+				return new CallFilterDTO();
 			case COLLECTION_FILTER_DTO_CLASS_ID:
 				return new CollectionFilterDTO();
+			case PEER_CONNECTION_FILTER_DTO_CLASS_ID:
+				return new PeerConnectionFilterDTO();
+			case INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
+				return new InboundRtpTrafficDTO();
+			case OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
+				return new OutboundRtpTrafficDTO();
+			case REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
+				return new RemoteInboundRtpTrafficDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

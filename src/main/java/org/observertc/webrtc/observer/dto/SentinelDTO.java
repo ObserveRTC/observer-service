@@ -12,7 +12,9 @@ import java.util.Objects;
 
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classVersion" })
 public class SentinelDTO implements VersionedPortable {
-    private static final int CLASS_VERSION = 1;
+    private static final int CLASS_VERSION = 3;
+
+
     public static SentinelDTO.Builder builder() {
         return new SentinelDTO.Builder();
     }
@@ -22,12 +24,17 @@ public class SentinelDTO implements VersionedPortable {
     public boolean report = false;
     public boolean expose = false;
 
-    public boolean streamMetrics = false;
+    // version 1 (only in migration it exists)
+//    public String[] allmatchFilters = new String[0];
+//    public String[] anymatchFilters = new String[0];
 
-    public String[] anyMatchFilters = new String[0];
-    public String[] allMatchFilters = new String[0];
+    public Filters callFilters = new Filters();
+    public Filters pcFilters = new Filters();
 
-
+    public static class Filters {
+        public String[] anyMatch = new String[0];
+        public String[] allMatch = new String[0];
+    }
 
     @Override
     public String toString() {
@@ -43,7 +50,6 @@ public class SentinelDTO implements VersionedPortable {
         if (this.name != otherDTO.name) return false;
         if (this.report != otherDTO.report) return false;
         if (this.expose != otherDTO.expose) return false;
-        if (this.streamMetrics != otherDTO.streamMetrics) return false;
         return true;
     }
 
@@ -67,9 +73,20 @@ public class SentinelDTO implements VersionedPortable {
         writer.writeUTF("name", this.name);
         writer.writeBoolean("expose", this.expose);
         writer.writeBoolean("report", this.report);
-        writer.writeBoolean("streamMetrics", this.streamMetrics);
-        writer.writeUTFArray("anymatchFilters", this.anyMatchFilters);
-        writer.writeUTFArray("allmatchFilters", this.allMatchFilters);
+
+        if (this.getClassVersion() < 2) { // migration
+            writer.writeUTFArray("allmatchFilters", this.callFilters.allMatch);
+            writer.writeUTFArray("anymatchFilters", this.callFilters.anyMatch);
+
+            return;
+        }
+
+        writer.writeUTFArray("calls_allmatch", this.callFilters.allMatch);
+        writer.writeUTFArray("calls_anymatch", this.callFilters.anyMatch);
+
+        writer.writeUTFArray("pcs_allmatch", this.pcFilters.allMatch);
+        writer.writeUTFArray("pcs_anymatch", this.pcFilters.anyMatch);
+
     }
 
     @Override
@@ -77,9 +94,25 @@ public class SentinelDTO implements VersionedPortable {
         this.name = reader.readUTF("name");
         this.expose = reader.readBoolean("expose");
         this.report = reader.readBoolean("report");
-        this.streamMetrics = reader.readBoolean("streamMetrics");
-        this.anyMatchFilters = reader.readUTFArray("anymatchFilters");
-        this.allMatchFilters = reader.readUTFArray("allmatchFilters");
+
+        if (reader.getVersion() < 2) { // migration!
+            this.callFilters.allMatch = reader.readUTFArray("allmatchFilters");
+            this.callFilters.anyMatch = reader.readUTFArray("anymatchFilters");
+            return;
+        }
+
+        if (Objects.isNull(this.callFilters)) {
+            this.callFilters = new Filters();
+        }
+        this.callFilters.allMatch = reader.readUTFArray("calls_allmatch");
+        this.callFilters.anyMatch = reader.readUTFArray("calls_anymatch");
+
+        if (Objects.isNull(this.pcFilters)) {
+            this.pcFilters = new Filters();
+        }
+        this.pcFilters.allMatch = reader.readUTFArray("pcs_allmatch");
+        this.pcFilters.anyMatch = reader.readUTFArray("pcs_anymatch");
+
     }
 
 
@@ -96,23 +129,30 @@ public class SentinelDTO implements VersionedPortable {
             return this;
         }
 
-        public Builder withStreamMetrics(boolean value) {
-            this.result.streamMetrics = value;
+        public Builder withAllCallMatchFilterNames(String... values) {
+            this.result.callFilters.allMatch = values;
             return this;
         }
 
-        public Builder withAllMatchFilterNames(String... values) {
-            this.result.allMatchFilters = values;
+        public Builder withAnyCallMatchFilterNames(String... values) {
+            this.result.callFilters.anyMatch = values;
             return this;
         }
 
-        public Builder withAnyMatchFilterNames(String... values) {
-            this.result.anyMatchFilters = values;
+        public Builder withAllPCMatchFilterNames(String... values) {
+            this.result.pcFilters.allMatch = values;
+            return this;
+        }
+
+        public Builder withAnyPCMatchFilterNames(String... values) {
+            this.result.pcFilters.anyMatch = values;
             return this;
         }
 
         public SentinelDTO build() {
             return this.result;
         }
+
     }
+
 }

@@ -35,13 +35,15 @@ public class PeerConnectionEntity {
     public final UUID serviceUUID;
 	public final PeerConnectionDTO peerConnection;
 	public final Set<Long> SSRCs;
+	public final Set<String> remoteIPs;
 
-    private PeerConnectionEntity(PeerConnectionDTO pcDTO, Set<Long> SSRCs) {
+    private PeerConnectionEntity(PeerConnectionDTO pcDTO, Set<Long> SSRCs, Set<String> remoteIPs) {
         this.callUUID = pcDTO.callUUID;
         this.pcUUID = pcDTO.peerConnectionUUID;
         this.serviceUUID = pcDTO.serviceUUID;
         this.peerConnection = pcDTO;
         this.SSRCs = SSRCs;
+        this.remoteIPs = remoteIPs;
     }
 
     @Override
@@ -72,12 +74,14 @@ public class PeerConnectionEntity {
 
         public PeerConnectionDTO pcDTO = null;
         public Set<Long> SSRCs = new HashSet<>();
+        public Set<String> remoteIPs = new HashSet<>();
 
         public PeerConnectionEntity build() {
             Objects.requireNonNull(this.pcDTO);
             Objects.requireNonNull(this.SSRCs);
             return new PeerConnectionEntity(this.pcDTO,
-                    Collections.unmodifiableSet(this.SSRCs)
+                    Collections.unmodifiableSet(this.SSRCs),
+                    Collections.unmodifiableSet(this.remoteIPs)
             );
         }
 
@@ -88,6 +92,11 @@ public class PeerConnectionEntity {
 
         public PeerConnectionEntity.Builder withSSRCs(Set<Long> ssrCs) {
             this.SSRCs.addAll(ssrCs);
+            return this;
+        }
+
+        public PeerConnectionEntity.Builder withRemoteIPs(Collection<String> remoteIPs) {
+            this.remoteIPs.addAll(remoteIPs);
             return this;
         }
     }

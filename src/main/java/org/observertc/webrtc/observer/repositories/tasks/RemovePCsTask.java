@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ChainedTask;
@@ -101,6 +100,31 @@ public class RemovePCsTask extends ChainedTask<Map<UUID, PeerConnectionEntity>> 
                                 pcEntity.SSRCs.forEach(SSRC -> {
                                     hazelcastMaps.getSSRCsToPCMap(pcEntity.serviceUUID).put(SSRC, pcEntity.pcUUID);
                                     hazelcastMaps.getPCsToSSRCMap(pcEntity.serviceUUID).put(pcEntity.pcUUID, SSRC);
+                                });
+                            }
+                        })
+                .<Map<UUID, PeerConnectionEntity>, Map<UUID, PeerConnectionEntity>> addFunctionalStage("Remove IP Binds",
+                        // action
+                        pcEntities -> {
+                            for (PeerConnectionEntity pcEntity : pcEntities.values()) {
+                                pcEntity.remoteIPs.forEach(IP -> {
+                                    hazelcastMaps.getPCsToRemoteIP().remove(pcEntity.pcUUID, IP);
+                                    hazelcastMaps.getRemoteIPToPCs().remove(IP, pcEntity.pcUUID);
+                                });
+                            }
+                            return pcEntities;
+                        },
+                        // rollback
+                        (pcEntitiesHolder, thrownException) -> {
+                            if (Objects.isNull(pcEntitiesHolder) || Objects.isNull(pcEntitiesHolder.get())) {
+                                this.getLogger().warn("Unexpected condition at rollback. callEntities are null");
+                                return;
+                            }
+                            Map<UUID, PeerConnectionEntity> pcEntities = (Map<UUID, PeerConnectionEntity>) pcEntitiesHolder.get();
+                            for (PeerConnectionEntity pcEntity : pcEntities.values()) {
+                                pcEntity.remoteIPs.forEach(IP -> {
+                                    hazelcastMaps.getPCsToRemoteIP().put(pcEntity.pcUUID, IP);
+                                    hazelcastMaps.getRemoteIPToPCs().put(IP, pcEntity.pcUUID);
                                 });
                             }
                         })

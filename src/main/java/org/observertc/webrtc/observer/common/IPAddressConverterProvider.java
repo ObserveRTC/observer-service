@@ -26,6 +26,19 @@ public class IPAddressConverterProvider {
 
     }
 
+    public io.reactivex.rxjava3.functions.Function<String, String> provideReactiveX() {
+        if (!config.enabled) {
+            return v -> v;
+        }
+        Function<String, String> resolver = provide();
+        return new io.reactivex.rxjava3.functions.Function<String, String>() {
+            @Override
+            public String apply(String s) throws Throwable {
+                return resolver.apply(s);
+            }
+        };
+    }
+
     public Function<String, String> provide() {
         if (!this.config.enabled) {
             return Function.identity();

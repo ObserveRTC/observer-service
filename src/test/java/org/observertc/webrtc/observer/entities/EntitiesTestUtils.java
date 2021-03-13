@@ -38,11 +38,14 @@ public class EntitiesTestUtils {
                 .withSentinelDTO(sentinelDTO)
                 .build();
     }
-
     public CallEntity generateCallEntity() {
+        return this.generateCallEntity(1);
+    }
+
+    public CallEntity generateCallEntity(int pcNum) {
         CallDTO callDTO = dtoTestUtils.generateCallDTO();
         Map<UUID, PeerConnectionEntity> pcs = new HashMap<>();
-        for (int i =0, c = 1; i < c; ++i) {
+        for (int i =0; i < pcNum; ++i) {
             PeerConnectionEntity pcEntity = this.generatePeerConnectionEntity(callDTO.callUUID, callDTO.serviceUUID);
             pcs.put(pcEntity.pcUUID, pcEntity);
         }

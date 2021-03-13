@@ -15,27 +15,29 @@ class SentinelDTOTest {
     @Test
     void shouldBuild_1() {
         SentinelDTO sentinelDTO = SentinelDTO.builder()
-                .withAllMatchFilterNames("1", "2")
-                .withAnyMatchFilterNames("3", "4")
+                .withAllCallMatchFilterNames("1", "2")
+                .withAnyCallMatchFilterNames("3", "4")
+                .withAllPCMatchFilterNames("5", "6")
+                .withAnyPCMatchFilterNames("7", "8")
                 .withExpose(true)
                 .withReport(true)
-                .withStreamMetrics(true)
                 .build();
 
         Assertions.assertEquals(true, sentinelDTO.expose);
         Assertions.assertEquals(true, sentinelDTO.report);
-        Assertions.assertEquals(true, sentinelDTO.streamMetrics);
-        Assertions.assertArrayEquals(new String[]{"1", "2"}, sentinelDTO.allMatchFilters);
-        Assertions.assertArrayEquals(new String[]{"3", "4"}, sentinelDTO.anyMatchFilters);
+        Assertions.assertArrayEquals(new String[]{"1", "2"}, sentinelDTO.callFilters.allMatch);
+        Assertions.assertArrayEquals(new String[]{"3", "4"}, sentinelDTO.callFilters.anyMatch);
+        Assertions.assertArrayEquals(new String[]{"5", "6"}, sentinelDTO.pcFilters.allMatch);
+        Assertions.assertArrayEquals(new String[]{"7", "8"}, sentinelDTO.pcFilters.anyMatch);
     }
 
     @Test
     void shouldCheckEquality_1() {
-        SentinelFilterDTO sentinelFilterDTO_1 = testUtils.generateSentinelFilterDTO();
-        SentinelFilterDTO sentinelFilterDTO_2 = testUtils.generateSentinelFilterDTO();
+        CallFilterDTO callFilterDTO_1 = testUtils.generateSentinelFilterDTO();
+        CallFilterDTO callFilterDTO_2 = testUtils.generateSentinelFilterDTO();
 
-        Assertions.assertEquals(sentinelFilterDTO_1, sentinelFilterDTO_1);
-        Assertions.assertNotEquals(sentinelFilterDTO_1, sentinelFilterDTO_2);
+        Assertions.assertEquals(callFilterDTO_1, callFilterDTO_1);
+        Assertions.assertNotEquals(callFilterDTO_1, callFilterDTO_2);
     }
 
 }

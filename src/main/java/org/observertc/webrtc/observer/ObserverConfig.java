@@ -18,8 +18,9 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
 import org.observertc.webrtc.observer.dto.SentinelDTO;
-import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
+import org.observertc.webrtc.observer.dto.CallFilterDTO;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -40,7 +41,9 @@ public class ObserverConfig {
 
 	public List<SentinelDTO> sentinels = new ArrayList<>();
 
-	public List<SentinelFilterDTO> sentinelFilters = new ArrayList<>();
+	public List<CallFilterDTO> callFilters = new ArrayList<>();
+
+	public List<PeerConnectionFilterDTO> pcFilters = new ArrayList<>();
 
 	public EvaluatorsConfig evaluators;
 
@@ -49,6 +52,16 @@ public class ObserverConfig {
 	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
 
 	public SecurityConfig security;
+
+	public InboundRtpMonitorConfig inboundRtpMonitor;
+
+	public OutboundRtpMonitorConfig outboundRtpMonitor;
+
+	public RemoteInboundRtpMonitorConfig remoteInboundRtpMonitor;
+
+	public ReportMonitorConfig reportMonitor;
+
+	public UserMediaErrorsMonitorConfig userMediaErrorsMonitor;
 
 	@ConfigurationProperties("ipaddress")
 	public static class IPAddressConverterConfig {
@@ -61,7 +74,6 @@ public class ObserverConfig {
 	public static class SecurityConfig {
 		public boolean dropUnknownServices = false;
 	}
-
 
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
@@ -76,9 +88,6 @@ public class ObserverConfig {
 		public int peerConnectionMaxIdleTimeInS = 300;
 
 		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
-
-		public Map<String, Object> reportMonitor;
-
 	}
 
 	@ConfigurationProperties("hazelcast")
@@ -90,7 +99,6 @@ public class ObserverConfig {
 	public static class OutboundReportsConfig {
 		public boolean enabled = true;
 		public String defaultServiceName = "defaultServiceName";
-		public String defaultTopicName = "reports";
 		public boolean reportOutboundRTPs = true;
 		public boolean reportInboundRTPs = true;
 		public boolean reportRemoteInboundRTPs = true;
@@ -107,8 +115,8 @@ public class ObserverConfig {
 		public boolean reportDetachedPeerConnections = true;
 		public boolean reportObserverEvents = true;
 		public boolean reportExtensions = true;
-		public boolean mediaDevices = true;
-		public boolean clientDetails = true;
+		public boolean reportMediaDevices = true;
+		public boolean reportClientDetails = true;
 	}
 
 	@EachProperty("servicemappings")
@@ -116,5 +124,44 @@ public class ObserverConfig {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}
+
+	public static class RtpMonitorConfig {
+		public boolean enabled = false;
+		public int retentionTimeInS = 300;
+	}
+
+	@ConfigurationProperties("inboundRtpMonitor")
+	public static class InboundRtpMonitorConfig extends RtpMonitorConfig{
+
+	}
+
+	@ConfigurationProperties("outboundRtpMonitor")
+	public static class OutboundRtpMonitorConfig extends RtpMonitorConfig{
+
+	}
+
+	@ConfigurationProperties("remoteInboundRtpMonitor")
+	public static class RemoteInboundRtpMonitorConfig extends RtpMonitorConfig {
+		public double weightFactor = 0.5;
+	}
+
+	public static class ReportCounterMonitorConfig {
+		public boolean enabled = false;
+		public boolean tagByType = false;
+		public boolean tagByServiceName = false;
+		public boolean tagByServiceUUID = false;
+	}
+
+	@ConfigurationProperties("reportMonitor")
+	public static class ReportMonitorConfig extends ReportCounterMonitorConfig {
+
+	}
+
+	@ConfigurationProperties("userMediaErrorsMonitor")
+	public static class UserMediaErrorsMonitorConfig extends ReportCounterMonitorConfig {
+
+	}
+
+
 }
 

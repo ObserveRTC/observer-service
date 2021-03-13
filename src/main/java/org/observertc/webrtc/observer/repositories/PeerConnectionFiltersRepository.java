@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.repositories;
 
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.dto.SentinelFilterDTO;
+import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +32,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SentinelFiltersRepository {
-	private static final Logger logger = LoggerFactory.getLogger(SentinelFiltersRepository.class);
+public class PeerConnectionFiltersRepository {
+	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionFiltersRepository.class);
 
 	@Inject
 	HazelcastMaps hazelcastMaps;
@@ -45,21 +45,21 @@ public class SentinelFiltersRepository {
 	ObserverHazelcast observerHazelcast;
 
 
-	public SentinelFiltersRepository() {
+	public PeerConnectionFiltersRepository() {
 
 	}
 
 	@PostConstruct
 	void setup() {
-		if (Objects.nonNull(config.sentinelFilters)) {
-			for (SentinelFilterDTO sentinelFilterDTO : config.sentinelFilters) {
-				this.hazelcastMaps.getSentinelFilterDTOs().put(sentinelFilterDTO.name, sentinelFilterDTO);
+		if (Objects.nonNull(config.pcFilters)) {
+			for (PeerConnectionFilterDTO pcFilterDTO : config.pcFilters) {
+				this.hazelcastMaps.getPeerConnectionFilterDTOs().put(pcFilterDTO.name, pcFilterDTO);
 			}
 		}
 	}
 
-	public Map<String, SentinelFilterDTO> findAll() {
-		return this.hazelcastMaps.getSentinelFilterDTOs().entrySet()
+	public Map<String, PeerConnectionFilterDTO> findAll() {
+		return this.hazelcastMaps.getPeerConnectionFilterDTOs().entrySet()
 				.stream()
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,
@@ -67,34 +67,34 @@ public class SentinelFiltersRepository {
 				));
 	}
 
-	public Map<String, SentinelFilterDTO> findByNames(Set<String> names) {
-		return this.hazelcastMaps.getSentinelFilterDTOs().getAll(names);
+	public Map<String, PeerConnectionFilterDTO> findByNames(Set<String> names) {
+		return this.hazelcastMaps.getPeerConnectionFilterDTOs().getAll(names);
 	}
 
-	public Optional<SentinelFilterDTO> findByName(String name) {
-		var result = this.hazelcastMaps.getSentinelFilterDTOs().get(name);
+	public Optional<PeerConnectionFilterDTO> findByName(String name) {
+		var result = this.hazelcastMaps.getPeerConnectionFilterDTOs().get(name);
 		if (Objects.isNull(result)) {
 			return Optional.empty();
 		}
 		return Optional.of(result);
 	}
 
-	public SentinelFilterDTO save(SentinelFilterDTO sentinelFilterDTO) {
-		var found = this.hazelcastMaps.getSentinelFilterDTOs().putIfAbsent(sentinelFilterDTO.name, sentinelFilterDTO);
+	public PeerConnectionFilterDTO save(PeerConnectionFilterDTO pcFilterDTO) {
+		var found = this.hazelcastMaps.getPeerConnectionFilterDTOs().putIfAbsent(pcFilterDTO.name, pcFilterDTO);
 		if (Objects.nonNull(found)) {
 			return found;
 		}
-		return sentinelFilterDTO;
+		return pcFilterDTO;
 	}
 
-	public SentinelFilterDTO delete(String filterName) {
-		return this.hazelcastMaps.getSentinelFilterDTOs().remove(filterName);
+	public PeerConnectionFilterDTO delete(String filterName) {
+		return this.hazelcastMaps.getPeerConnectionFilterDTOs().remove(filterName);
 	}
 
-	public SentinelFilterDTO update(SentinelFilterDTO sentinelFilterDTO) {
-		var result = this.hazelcastMaps.getSentinelFilterDTOs().put(sentinelFilterDTO.name, sentinelFilterDTO);
+	public PeerConnectionFilterDTO update(PeerConnectionFilterDTO pcFilterDTO) {
+		var result = this.hazelcastMaps.getPeerConnectionFilterDTOs().put(pcFilterDTO.name, pcFilterDTO);
 		if (Objects.isNull(result)) {
-			return sentinelFilterDTO;
+			return pcFilterDTO;
 		}
 		return result;
 	}
