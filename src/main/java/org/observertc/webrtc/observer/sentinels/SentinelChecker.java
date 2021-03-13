@@ -225,7 +225,7 @@ public class SentinelChecker {
             }
 
             if (sentinelEntity.isReported()) {
-
+                logger.warn("Sentinel Metric Reporting is not supported in this version. Only metric exposing!");
             }
             if (remoteInboundIsMonitored) { // making the RTT clean
                 Map<String, RemoteInboundRtpTrafficDTO> map = this.hazelcastMaps.getRemoteInboundTrafficDTOs().getAll(touchedRTPKeys);
@@ -233,7 +233,7 @@ public class SentinelChecker {
                 this.hazelcastMaps.getRemoteInboundTrafficDTOs().putAll(map);
             }
         }
+
 //        pipeline.getObservedPCSObserver()
     }
-
 }

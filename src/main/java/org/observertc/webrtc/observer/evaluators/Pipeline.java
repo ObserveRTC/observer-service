@@ -11,6 +11,7 @@ import org.observertc.webrtc.observer.evaluators.monitors.InboundRtpMonitor;
 import org.observertc.webrtc.observer.evaluators.monitors.OutboundRtpMonitor;
 import org.observertc.webrtc.observer.evaluators.monitors.RemoteInboundRtpMonitor;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
+import org.observertc.webrtc.schemas.reports.ObserverEventReport;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class Pipeline {
     private final Subject<Report> reports = PublishSubject.create();
 
     private final Subject<ObservedPCS> observedPCSSubject = PublishSubject.create();
-
+    private final Subject<ObserverEventReport> observerEventsSubject = PublishSubject.create();
     public Observer<ObservedPCS> getObservedPCSObserver() {
         return this.observedPCSSubject;
     }
@@ -171,7 +172,6 @@ public class Pipeline {
             var reportMonitor = this.counterMonitorBuilder.build(GENERATED_REPORTS_METRIC_NAME, this.config.reportMonitor);
 //            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.config.reportMonitor);
             this.reports.map(reportMonitor).subscribe();
-
         }
 
         this.addConnectors();
