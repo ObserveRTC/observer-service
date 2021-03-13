@@ -1,4 +1,4 @@
-package org.observertc.webrtc.observer.evaluators.rtpmonitors;
+package org.observertc.webrtc.observer.evaluators.monitors;
 
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.ObserverConfig;
@@ -51,13 +51,18 @@ public abstract class RtpMonitorAbstract<T> implements Function<Report, Report> 
         if (Objects.isNull(key)) {
             return;
         }
-        this.accessedKeys.put(key, Instant.now());
+        synchronized (this) {
+            this.accessedKeys.put(key, Instant.now());
+        }
+
         try {
             this.doMonitor(payload, key);
         } catch (Throwable t) {
             logger.warn("Exception occurred while monitoring process", t);
         } finally {
-            this.removeUnusedItems();
+            synchronized (this) {
+                this.removeUnusedItems();
+            }
         }
     }
 

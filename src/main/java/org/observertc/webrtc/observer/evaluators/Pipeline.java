@@ -6,10 +6,10 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.connectors.Connector;
-import org.observertc.webrtc.observer.evaluators.rtpmonitors.InboundRtpMonitor;
-import org.observertc.webrtc.observer.evaluators.rtpmonitors.OutboundRtpMonitor;
-import org.observertc.webrtc.observer.evaluators.rtpmonitors.RemoteInboundRtpMonitor;
-import org.observertc.webrtc.observer.monitors.CounterMonitorProvider;
+import org.observertc.webrtc.observer.evaluators.monitors.CounterMonitorBuilder;
+import org.observertc.webrtc.observer.evaluators.monitors.InboundRtpMonitor;
+import org.observertc.webrtc.observer.evaluators.monitors.OutboundRtpMonitor;
+import org.observertc.webrtc.observer.evaluators.monitors.RemoteInboundRtpMonitor;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
@@ -25,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class Pipeline {
     public static final int REPORT_VERSION_NUMBER = 2;
+    private static final String GENERATED_REPORTS_METRIC_NAME = "observertc_generated_reports";
+    private static final String USER_MEDIA_REPORTS_METRIC_NAME = "observertc_user_media_errors";
+
     private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
     private final Subject<Report> reports = PublishSubject.create();
 
@@ -53,9 +56,6 @@ public class Pipeline {
     Connectors connectors;
 
     @Inject
-    CounterMonitorProvider counterMonitorProvider;
-
-    @Inject
     ObserverConfig.EvaluatorsConfig evaluatorsConfig;
 
     @Inject
@@ -67,18 +67,17 @@ public class Pipeline {
     @Inject
     RemoteInboundRtpMonitor remoteInboundRtpMonitor;
 
+    @Inject
+    CounterMonitorBuilder counterMonitorBuilder;
 
     public void inputUserMediaError(ObservedPCS observedPCS) {
-
-//        this.observedPCSEvaluator.onNext(observedPCS);
-
+        this.observedPCSEvaluator.onNext(observedPCS);
     }
 
     @PostConstruct
     void setup() {
         var source = this.observedPCSSubject;
-        // TODO: Insert our load balancer for pcs here.
-
+        var userMediaErrorsMonitor = this.counterMonitorBuilder.build(USER_MEDIA_REPORTS_METRIC_NAME, this.config.userMediaErrorsMonitor);
         var samplesBuffer = source
                 .buffer(evaluatorsConfig.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, evaluatorsConfig.observedPCSBufferMaxItemNums)
                 .share();
@@ -130,6 +129,7 @@ public class Pipeline {
         // UserMediaError -> ReportSink
         this.observedPCSEvaluator
                 .getUserMediaErrorReports()
+                .map(userMediaErrorsMonitor)
                 .subscribe(this.reports);
 
         // ICELocalCandidate -> ReportSink
@@ -162,9 +162,16 @@ public class Pipeline {
                 .getExtensionReports()
                 .subscribe(this.reports);
 
+        // ClientDetails -> ReportSink
+        this.observedPCSEvaluator
+                .getClientDetailsReports()
+                .subscribe(this.reports);
+
         if (Objects.nonNull(this.config.reportMonitor)) {
-            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.config.reportMonitor);
-            this.reports.lift(reportMonitor).subscribe();
+            var reportMonitor = this.counterMonitorBuilder.build(GENERATED_REPORTS_METRIC_NAME, this.config.reportMonitor);
+//            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.config.reportMonitor);
+            this.reports.map(reportMonitor).subscribe();
+
         }
 
         this.addConnectors();

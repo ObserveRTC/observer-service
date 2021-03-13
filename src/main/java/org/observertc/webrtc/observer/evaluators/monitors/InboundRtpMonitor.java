@@ -1,4 +1,4 @@
-package org.observertc.webrtc.observer.evaluators.rtpmonitors;
+package org.observertc.webrtc.observer.evaluators.monitors;
 
 import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.ObserverConfig;
@@ -43,6 +43,7 @@ public class InboundRtpMonitor extends RtpMonitorAbstract<InboundRTP> {
         );
         this.updateReceivedBytes(inboundRtpTrafficDTO, payload.getBytesReceived());
         this.updateReceivedPackets(inboundRtpTrafficDTO, payload.getPacketsReceived());
+        this.updateLostPackets(inboundRtpTrafficDTO, payload.getPacketsLost());
         this.inboundRtpDTOs.put(payloadKey, inboundRtpTrafficDTO);
     }
 

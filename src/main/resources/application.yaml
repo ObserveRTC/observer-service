@@ -10,19 +10,19 @@ micronaut:
         step: PT1M
   security:
     enabled: false
-    authentication: idtoken
-    endpoints:
-      logout:
-        get-allowed: true
-    redirect:
-      login-success: /whoiam
-    oauth2:
-      clients:
-        google:
-          client-id: '${OAUTH_CLIENT_ID}'
-          client-secret: '${OAUTH_CLIENT_SECRET}'
-          openid:
-            issuer: 'https://accounts.google.com'
+#    authentication: idtoken
+#    endpoints:
+#      logout:
+#        get-allowed: true
+#    redirect:
+#      login-success: /whoiam
+#    oauth2:
+#      clients:
+#        google:
+#          client-id: '${OAUTH_CLIENT_ID}'
+#          client-secret: '${OAUTH_CLIENT_SECRET}'
+#          openid:
+#            issuer: 'https://accounts.google.com'
 #        cognito:
 #          client-id: '${OAUTH_CLIENT_ID}'
 #          client-secret: '${OAUTH_CLIENT_SECRET}'
@@ -80,24 +80,24 @@ observer:
 #      SSRCs:
 #        gt: 0
 #        lt: 10
-  callFilters:
-    - name: "MyPeerToPeerFilter"
+#  callFilters:
+#    - name: "MyPeerToPeerFilter"
 #      serviceName: "example-service-name"
 #      callName: "regex pattern"
 #      marker: "regex pattern"
-      browserIds:
-        gt: 0
-        lt: 3
-  sentinels:
-    - name: "MySentinel"
-      expose: True
-      reports: True
+#      browserIds:
+#        gt: 0
+#        lt: 3
+#  sentinels:
+#    - name: "MySentinel"
+#      expose: True
+#      reports: True
 #      pcFilters:
 #        anyMatch:
 #          - "myPCFilter"
-      callFilters:
-        anyMatch:
-          - "MyPeerToPeerFilter"
+#      callFilters:
+#        anyMatch:
+#          - "MyPeerToPeerFilter"
 #  servicemappings:
 #    - name: "example-service-name"
 #      uuids:
@@ -114,25 +114,32 @@ observer:
 
   ipAddressConverter:
     enabled: False
+    algorithm: SHA-256
+    salt: "MySalt"
 
-  inboundRtpMonitor:
-    enabled: True
-    retentionTimeInS: 300
-
-  remoteInboundRtpMonitor:
-    enabled: True
-    retentionTimeInS: 300
-    weightFactor: 0.3
-
-  outboundRtpMonitor:
-    enabled: True
-    retentionTimeInS: 300
+#  inboundRtpMonitor:
+#    enabled: True
+#    retentionTimeInS: 300
+#
+#  remoteInboundRtpMonitor:
+#    enabled: True
+#    retentionTimeInS: 300
+#    weightFactor: 0.3
+#
+#  outboundRtpMonitor:
+#    enabled: True
+#    retentionTimeInS: 300
 
   reportMonitor:
     enabled: true
     tagByServiceName: true
     tagByServiceUUID: false
     tagByType: false
+
+  userMediaErrorsMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
 
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"

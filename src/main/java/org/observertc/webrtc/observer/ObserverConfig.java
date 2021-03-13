@@ -59,7 +59,9 @@ public class ObserverConfig {
 
 	public RemoteInboundRtpMonitorConfig remoteInboundRtpMonitor;
 
-	public ReportCounterMonitorConfig reportMonitor;
+	public ReportMonitorConfig reportMonitor;
+
+	public UserMediaErrorsMonitorConfig userMediaErrorsMonitor;
 
 	@ConfigurationProperties("ipaddress")
 	public static class IPAddressConverterConfig {
@@ -97,7 +99,6 @@ public class ObserverConfig {
 	public static class OutboundReportsConfig {
 		public boolean enabled = true;
 		public String defaultServiceName = "defaultServiceName";
-		public String defaultTopicName = "reports";
 		public boolean reportOutboundRTPs = true;
 		public boolean reportInboundRTPs = true;
 		public boolean reportRemoteInboundRTPs = true;
@@ -114,8 +115,8 @@ public class ObserverConfig {
 		public boolean reportDetachedPeerConnections = true;
 		public boolean reportObserverEvents = true;
 		public boolean reportExtensions = true;
-		public boolean mediaDevices = true;
-		public boolean clientDetails = true;
+		public boolean reportMediaDevices = true;
+		public boolean reportClientDetails = true;
 	}
 
 	@EachProperty("servicemappings")
@@ -144,15 +145,20 @@ public class ObserverConfig {
 		public double weightFactor = 0.5;
 	}
 
-	public static class CounterMonitorConfig {
+	public static class ReportCounterMonitorConfig {
 		public boolean enabled = false;
-		public boolean tagByType = true;
+		public boolean tagByType = false;
 		public boolean tagByServiceName = false;
 		public boolean tagByServiceUUID = false;
 	}
 
-	@EachProperty("reportMonitor")
-	public static class ReportCounterMonitorConfig extends CounterMonitorConfig {
+	@ConfigurationProperties("reportMonitor")
+	public static class ReportMonitorConfig extends ReportCounterMonitorConfig {
+
+	}
+
+	@ConfigurationProperties("userMediaErrorsMonitor")
+	public static class UserMediaErrorsMonitorConfig extends ReportCounterMonitorConfig {
 
 	}
 

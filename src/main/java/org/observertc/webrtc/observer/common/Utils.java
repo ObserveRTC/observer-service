@@ -6,17 +6,19 @@ import java.util.function.Consumer;
 
 public class Utils {
 
+//    public static final String UNKOWN_TAG_VALUE;
+
     public static<T> T ifExpectedThenAlternative(T subject, T expected, T alternative) {
         return !Objects.equals(subject, expected) ? expected : alternative;
     }
 
-    public static<T> void runIfNonNull(T value, Runnable action) {
+    public static<T> void runIfValueNonNull(T value, Runnable action) {
         if (Objects.nonNull(value)) {
             action.run();
         }
     }
 
-    public static<T> void execIfValueNonNull(T value, Consumer<T> action) {
+    public static<T> void acceptIfValueNonNull(T value, Consumer<T> action) {
         if (Objects.nonNull(value)) {
             action.accept(value);
         }

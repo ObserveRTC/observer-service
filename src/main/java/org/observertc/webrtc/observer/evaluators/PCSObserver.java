@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
@@ -20,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 @Singleton
 public class PCSObserver implements Consumer<List<ObservedPCS>> {
@@ -28,11 +30,13 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
     private final Subject<Map<UUID, PCState>> activePCsSubject = PublishSubject.create();
     private final Map<UUID, PCState> pcStates = new HashMap<>();
     private final PeerConnectionSampleVisitor<PCState> pcStateProcessor;
+    private final Function<String, String> ipAddressConverter;
     @Inject
     ObserverMetrics observerMetrics;
 
     @Inject
     ObserverConfig.EvaluatorsConfig config;
+
 
     @PostConstruct
     void setup() {
@@ -47,7 +51,10 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
         return this.activePCsSubject;
     }
 
-    public PCSObserver() {
+    public PCSObserver(
+            IPAddressConverterProvider ipAddressConverterProvider
+    ) {
+        this.ipAddressConverter = ipAddressConverterProvider.provide();
         this.pcStateProcessor = this.makeSSRCExtractor();
     }
 
@@ -167,7 +174,8 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
             @Override
             public void visitICERemoteCandidate(PCState pcState, PeerConnectionSample sample, PeerConnectionSample.ICERemoteCandidate subject) {
                 if (Objects.nonNull(subject.ip)) {
-                    pcState.remoteAddresses.add(subject.ip);
+                    String savedIP = ipAddressConverter.apply(subject.ip);
+                    pcState.remoteAddresses.add(savedIP);
                 }
             }
         };

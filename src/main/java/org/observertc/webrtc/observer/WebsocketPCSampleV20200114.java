@@ -110,10 +110,11 @@ public class WebsocketPCSampleV20200114 {
 			}
 
 			this.meterRegistry.counter(
-					"observertc_opened_websockets",
-					List.of(Tag.of("mediaunit", mediaUnitID),
-							Tag.of("service", service)
-					)
+					"observertc_opened_websockets"
+//					,
+//					List.of(Tag.of("mediaunit", mediaUnitID),
+//							Tag.of("service", service)
+//					)
 			).increment();
 
 		} catch (Throwable t) {
@@ -139,10 +140,11 @@ public class WebsocketPCSampleV20200114 {
 			}
 			this.serviceNameMapper.remove(session.getId());
 			this.meterRegistry.counter(
-					"observertc_closed_websockets",
-					List.of(Tag.of("mediaunit", mediaUnitID),
-							Tag.of("service", service)
-					)
+					"observertc_closed_websockets"
+//					,
+//					List.of(Tag.of("mediaunit", mediaUnitID),
+//							Tag.of("service", service)
+//					)
 			).increment();
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -167,7 +169,7 @@ public class WebsocketPCSampleV20200114 {
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
 
-		String serviceName = this.serviceNameMapper.get(session.getId());
+		String serviceName = this.serviceNameMapper.getOrDefault(session.getId(), "Unknown");
 		try {
 			this.meterRegistry.counter(
 					"observertc_pcsamples",

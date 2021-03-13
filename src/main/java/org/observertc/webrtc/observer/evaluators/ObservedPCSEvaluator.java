@@ -44,6 +44,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     private final Subject<Report> mediaSourceReports = PublishSubject.create();
     private final Subject<Report> trackReports = PublishSubject.create();
     private final Subject<Report> extensionReports = PublishSubject.create();
+    private final Subject<Report> clientDetailsReports = PublishSubject.create();
     private AtomicReference<Disposable> disposable = new AtomicReference<>(null);
     private PeerConnectionSampleVisitor<ObservedPCS> processor;
 
@@ -110,6 +111,10 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     public Observable<Report> getExtensionReports() {
+        return this.extensionReports;
+    }
+
+    public Observable<Report> getClientDetailsReports() {
         return this.extensionReports;
     }
 
@@ -214,7 +219,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.ClientDetails> makeClientDetailsReporter() {
-        if (!this.config.enabled || !this.config.clientDetails) {
+        if (!this.config.enabled || !this.config.reportClientDetails) {
             return (observedPCS, subject) -> {
 
             };
@@ -267,13 +272,12 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setPlatformVendor(platformVendor)
                     .build();
             Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.CLIENT_DETAILS, clientDetails);
-            this.extensionReports.onNext(reportRecord);
+            this.clientDetailsReports.onNext(reportRecord);
         };
-
     }
 
     private BiConsumer<ObservedPCS, PeerConnectionSample.MediaDeviceInfo> makeMediaDeviceReporter() {
-        if (!this.config.enabled || !this.config.mediaDevices) {
+        if (!this.config.enabled || !this.config.reportMediaDevices) {
             return (observedPCS, subject) -> {
 
             };

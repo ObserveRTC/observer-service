@@ -11,7 +11,8 @@ import org.observertc.webrtc.observer.dto.RemoteInboundRtpTrafficDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SentinelEntity;
-import org.observertc.webrtc.observer.evaluators.rtpmonitors.RtpMonitorAbstract;
+import org.observertc.webrtc.observer.evaluators.Pipeline;
+import org.observertc.webrtc.observer.evaluators.monitors.RtpMonitorAbstract;
 import org.observertc.webrtc.observer.monitors.SentinelMonitor;
 import org.observertc.webrtc.observer.repositories.CallsRepository;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
@@ -53,6 +54,9 @@ public class SentinelChecker {
 
     @Inject
     HazelcastMaps hazelcastMaps;
+
+    @Inject
+    Pipeline pipeline;
 
     private Instant lastRun = null;
 
@@ -130,9 +134,9 @@ public class SentinelChecker {
                     continue;
                 }
                 for (PeerConnectionEntity pcEntity : callEntity.peerConnections.values()) {
-                    Utils.execIfValueNonNull(pcEntity.peerConnection.browserId, browserIds::add);
-                    Utils.execIfValueNonNull(pcEntity.peerConnection.providedUserName, userNames::add);
-                    Utils.execIfValueNonNull(pcEntity.peerConnection.mediaUnitId, mediaUnits::add);
+                    Utils.acceptIfValueNonNull(pcEntity.peerConnection.browserId, browserIds::add);
+                    Utils.acceptIfValueNonNull(pcEntity.peerConnection.providedUserName, userNames::add);
+                    Utils.acceptIfValueNonNull(pcEntity.peerConnection.mediaUnitId, mediaUnits::add);
 
                     if (!inboundIsMonitored && !outboundIsMonitored && !remoteInboundIsMonitored) {
                         // if no metric is enabled then we probably should not go through the SSRCs
@@ -218,6 +222,9 @@ public class SentinelChecker {
                     sentinelMetrics
                             .setRoundTripTimeDistributions(RttAvgs);
                 }
+            }
+
+            if (sentinelEntity.isReported()) {
 
             }
             if (remoteInboundIsMonitored) { // making the RTT clean
@@ -226,5 +233,7 @@ public class SentinelChecker {
                 this.hazelcastMaps.getRemoteInboundTrafficDTOs().putAll(map);
             }
         }
+//        pipeline.getObservedPCSObserver()
     }
+
 }

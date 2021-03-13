@@ -1,4 +1,4 @@
-package org.observertc.webrtc.observer.evaluators.rtpmonitors;
+package org.observertc.webrtc.observer.evaluators.monitors;
 
 import com.hazelcast.map.IMap;
 import org.observertc.webrtc.observer.ObserverConfig;
