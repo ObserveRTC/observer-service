@@ -17,17 +17,11 @@ or [helm](https://github.com/ObserveRTC/helm).
 To integrate `observer-js`, please visit the integration [guidline](https://github.com/ObserveRTC/integrations)
 
 
-## Dependencies
-
-Describe any dependencies that must be installed for this software to work.
-This includes programming languages, databases or other storage mechanisms, build tools, frameworks, and so forth.
-If specific versions of other software are required, or known not to work, call that out.
-
 ## Installation
 
 Please read [INSTALL](INSTALL.md) instructions.
 
-## How to test the software
+## Test
 
 The service uses `gradle` to build and test.
 To simply run tests: `gradle test`
@@ -46,8 +40,10 @@ We currently focusing on the following areas of development this service:
 * Better documentation
 * Improve test coverage
 * Improve call monitoring capabilities
+* Improve Reporting capabilities
+* Add failsafe configuration store for certain DTOs and configurations
+* Optimize Sentinel checking execution time
 * Improve automatic hazelcast migration between different version of observer
-* Add repository cleaner for stalled calls
 * Improve configuration structure
 
 If you would like to contribute, first of all many thanks,
@@ -138,9 +134,9 @@ observer:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
 ```
 
-----
 
 ## Open source licensing info
+=======
 
 1. [LICENSE](LICENSE)
 
