@@ -1,7 +1,8 @@
-Observer Documentation
+Observer Documentation <img src="hydrogen.png" width="32">
 ===
+<img src="hydrogen.png" width="32">
 
-![hydrogen](hydrogen.png)
+![](hydrogen.png =100)
 
 # Introduction
 
