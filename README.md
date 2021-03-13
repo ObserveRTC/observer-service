@@ -72,24 +72,84 @@ observer:
     - name: "example-service-name"
       uuids:
         - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
+  # if enabled the generated reports from the observer 
+  # are monitored and the metrics are exposed.
+  reportMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
+    tagByType: false
+
+  # if enabled the incoming user media errors are monitored  
+  # and the metrics are exposed.
+  userMediaErrorsMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
   
-  sentinelFilters:
+  # if enabled IP addresses are obfuscated
+  ipAddressConverter:
+    enabled: False
+    algorithm: SHA-256
+    salt: "MySalt"
+
+  # If enabled the observer monitors inbound RTP traffic, 
+  # and through sentinels it exposes metrics (received bytes, 
+  # lost packets, etc.)
+  # 
+  inboundRtpMonitor:
+    enabled: False
+    retentionTimeInS: 300
+
+  # If enabled the observer monitors remote inbound RTP traffic, 
+  # and through sentinels it exposes metrics (RTT, etc.)
+  # 
+  remoteInboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+    weightFactor: 0.3
+
+  # If enabled the observer monitors outbound RTP traffic, 
+  # and through sentinels it exposes metrics (sent bytes, 
+  # sent packets, etc.)
+  # 
+  # NOTE: this increase memory storage consumption and 
+  # hazelcast traffic
+  outboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300  
+
+  # Sets a filter for peer connections
+  pcFilters:
+    - name: "MyTurnServerFilter"
+      remoteIPs:
+        anyMatch: 
+          - "10.10.10.10"
+          - "20.20.20.20"
+  
+  # Add a call filter for peer to peer calls
+  callFilters:
     - name: "MyPeerToPeerFilter"
-      serviceName: "example-service-name"
       browserIds:
-        gt: 0 # greater then
-        lt: 3 # less then
+        eq: 2 
   
-  # A configured sentinel exposing metrics about the filtered calls
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
   sentinels:
     - name: "MySentinel"
-      anyMatchFilters:
-        - "MyPeerToPeerFilter"
-      allMatchFilters:
-        - "MyOtherFilter"
+      expose: true 
+      callFilters:
+        allMatch: 
+          - "MyPeerToPeerFilter"
+      pcFilters:
+        allMatch:
+          - "MyTurnServerFilter"
+  
   
   # The time Period sentinels are checking calls in minutes
   sentinelsCheckingPeriodInMin: 1
+  
   
   # Defines the configuration for a connector the reports are sent to
   connectors:
