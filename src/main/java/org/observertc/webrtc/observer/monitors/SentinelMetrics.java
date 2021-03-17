@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.monitors;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.micronaut.context.annotation.Prototype;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,7 @@ import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Singleton
+@Prototype
 public class SentinelMetrics {
     private static final Logger logger = LoggerFactory.getLogger(SentinelMetrics.class);
 
@@ -30,7 +31,7 @@ public class SentinelMetrics {
     private static final String MONITORED_BYTES_SENT_METRIC_NAME = "observertc_monitored_bytes_sent";
     private static final String MONITORED_PACKETS_SENT_METRIC_NAME = "observertc_monitored_packets_sent";
 
-    private static final String MONITORED_RTT_METRIC_NAME = "observertc_monitored_rtt";
+        private static final String MONITORED_RTT_METRIC_NAME = "observertc_monitored_rtt";
     @Inject
     MeterRegistry meterRegistry;
 

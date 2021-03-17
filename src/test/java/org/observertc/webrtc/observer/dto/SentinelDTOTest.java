@@ -17,8 +17,6 @@ class SentinelDTOTest {
         SentinelDTO sentinelDTO = SentinelDTO.builder()
                 .withAllCallMatchFilterNames("1", "2")
                 .withAnyCallMatchFilterNames("3", "4")
-                .withAllPCMatchFilterNames("5", "6")
-                .withAnyPCMatchFilterNames("7", "8")
                 .withExpose(true)
                 .withReport(true)
                 .build();
@@ -27,8 +25,6 @@ class SentinelDTOTest {
         Assertions.assertEquals(true, sentinelDTO.report);
         Assertions.assertArrayEquals(new String[]{"1", "2"}, sentinelDTO.callFilters.allMatch);
         Assertions.assertArrayEquals(new String[]{"3", "4"}, sentinelDTO.callFilters.anyMatch);
-        Assertions.assertArrayEquals(new String[]{"5", "6"}, sentinelDTO.pcFilters.allMatch);
-        Assertions.assertArrayEquals(new String[]{"7", "8"}, sentinelDTO.pcFilters.anyMatch);
     }
 
     @Test

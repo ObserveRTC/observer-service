@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @OpenAPIDefinition(
         info = @Info(
                 title = "observer",
-                version = "0.6"
+                version = "H"
         )
 )
 @EnableServiceMonitor(port = "http", path = "/prometheus")

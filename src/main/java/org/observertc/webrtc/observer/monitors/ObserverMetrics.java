@@ -14,7 +14,7 @@ public class ObserverMetrics {
     private static final String FINISHED_CALLS_COUNTER_NAME = String.join("_", OBSERVERTC_PREFIX, "finished_calls");
     private static final String JOINED_PCS_COUNTER_NAME = String.join("_", OBSERVERTC_PREFIX, "joined_pcs");
     private static final String DETACHED_PCS_COUNTER_NAME = String.join("_", OBSERVERTC_PREFIX, "detached_pcs");
-    private static final String IMPAIRABLE_PCS_COUNTER_NAME = String.join("_", OBSERVERTC_PREFIX, "impairable_pcs");;
+        private static final String IMPAIRABLE_PCS_COUNTER_NAME = String.join("_", OBSERVERTC_PREFIX, "impairable_pcs");;
 
     private static final String SERVICE_TAG_NAME = "service";
     private static final String MEDIA_UNIT_TAG_NAME = "mediaunit";

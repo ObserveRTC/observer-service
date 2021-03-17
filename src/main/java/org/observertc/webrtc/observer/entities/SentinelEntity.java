@@ -7,14 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-public class SentinelEntity implements Predicate<CallEntity>{
+public class SentinelEntity {
     private static final Logger logger = LoggerFactory.getLogger(SentinelEntity.class);
     private final SentinelDTO sentinelDTO;
     private final Predicate<CallEntity> callFilter;
+    private final Predicate<PeerConnectionEntity> pcFilter;
 
-    public SentinelEntity(SentinelDTO sentinelDTO, Predicate<CallEntity> callFilter) {
+    public SentinelEntity(SentinelDTO sentinelDTO, Predicate<CallEntity> callFilter, Predicate<PeerConnectionEntity> pcFilter) {
         this.sentinelDTO = sentinelDTO;
         this.callFilter = callFilter;
+        this.pcFilter = pcFilter;
     }
 
     public static SentinelEntity.Builder builder() {
@@ -27,28 +29,45 @@ public class SentinelEntity implements Predicate<CallEntity>{
 
     public boolean isReported() { return this.sentinelDTO.report; }
 
-    @Override
-    public boolean test(CallEntity callEntity) throws Throwable {
+    public boolean testCall(CallEntity callEntity) throws Throwable {
         boolean result = this.callFilter.test(callEntity);
+        return result;
+    }
+
+    public boolean testPeerConnection(PeerConnectionEntity pcEntity) throws Throwable {
+        boolean result = this.pcFilter.test(pcEntity);
         return result;
     }
 
     public static class Builder {
         public SentinelDTO sentinelDTO;
-        public Predicate<CallEntity> filter;
+        public Predicate<CallEntity> callFilter;
+        public Predicate<PeerConnectionEntity> pcFilter;
 
 
         public SentinelEntity build() {
             Objects.requireNonNull(this.sentinelDTO);
-            if (Objects.isNull(this.filter)) {
+
+            if (Objects.isNull(this.callFilter) && Objects.isNull(this.pcFilter)) {
                 logger.warn("No filter was defined for sentinel {}. It will always be false", sentinelDTO.name);
-                this.filter = callEntity -> false;
+                this.callFilter = callEntity -> false;
+                this.pcFilter = pcEntity -> false;
+            } else if (Objects.isNull(this.callFilter)) {
+                this.callFilter = callEntity -> false;
+            } else if (Objects.isNull(this.pcFilter)) {
+                this.pcFilter = pcEntity -> false;
             }
-            return new SentinelEntity(this.sentinelDTO, this.filter);
+
+            return new SentinelEntity(this.sentinelDTO, this.callFilter, this.pcFilter);
         }
 
-        public Builder withFilter(Predicate<CallEntity> filter) {
-            this.filter = filter;
+        public Builder withCallFilter(Predicate<CallEntity> filter) {
+            this.callFilter = filter;
+            return this;
+        }
+
+        public Builder withPCFilter(Predicate<PeerConnectionEntity> filter) {
+            this.pcFilter = filter;
             return this;
         }
 

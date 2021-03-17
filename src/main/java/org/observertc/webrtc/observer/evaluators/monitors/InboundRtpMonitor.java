@@ -92,7 +92,7 @@ public class InboundRtpMonitor extends RtpMonitorAbstract<InboundRTP> {
             // either it is started now, or reset happened.
             inboundRtpTrafficDTO.firstPacketsLost = inboundRtpTrafficDTO.lastPacketsLost = packetsLost;
         } else {
-            inboundRtpTrafficDTO.firstPacketsLost = packetsLost;
+            inboundRtpTrafficDTO.lastPacketsLost = packetsLost;
         }
     }
 

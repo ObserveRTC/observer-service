@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.functions.Predicate;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.dto.CallFilterDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,9 @@ import java.util.stream.Collectors;
 @Prototype
 public class CallFilterBuilder extends AbstractBuilder implements Function<CallFilterDTO, Predicate<CallEntity>> {
     private static final Logger logger = LoggerFactory.getLogger(CallFilterBuilder.class);
+
+    @Inject
+    HazelcastMaps hazelcastMaps;
 
     @Inject
     Provider<CollectionFilterBuilder> collectionFilterBuilderProvider;
@@ -74,20 +78,6 @@ public class CallFilterBuilder extends AbstractBuilder implements Function<CallF
                         .filter(Objects::nonNull)
                         .collect(Collectors.toSet());
                 return filter.test(browserIds);
-            });
-        }
-        if (Objects.nonNull(filterConfig.peerConnections) && !CollectionFilterBuilder.isEmpty(filterConfig.peerConnections)) {
-            CollectionFilterBuilder collectionFilterBuilder = collectionFilterBuilderProvider.get();
-            Predicate<Collection<UUID>> filter = collectionFilterBuilder.build(filterConfig.peerConnections, UUID::fromString);
-            if (collectionFilterBuilder.isWarned()) {
-                logger.warn("While building filter {} a warning is emerged. please check the configuration for the filter", filterConfig.name);
-            }
-            result.add(callEntity -> {
-                Set<UUID> pcUUIDs = callEntity.peerConnections.values().stream()
-                        .map(pc -> pc.peerConnection.peerConnectionUUID)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toSet());
-                return filter.test(pcUUIDs);
             });
         }
         return result;

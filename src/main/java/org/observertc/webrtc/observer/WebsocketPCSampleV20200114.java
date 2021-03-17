@@ -53,7 +53,6 @@ import java.util.*;
 @Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/{serviceUUIDStr}/{mediaUnitID}/v20200114/json")
 public class WebsocketPCSampleV20200114 {
-	private static final String PC_SAMPLE_VERSION = "20200114";
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSampleV20200114.class);
 	private final ObjectReader objectReader;
