@@ -61,12 +61,15 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
                     this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.pcFilters.anyMatch)).flatMap(s -> Arrays.stream(s.pcFilters.anyMatch)).forEach(filterNames::add);
                     this.sentinelDTOs.values().stream().filter(s -> Objects.nonNull(s.pcFilters.allMatch)).flatMap(s -> Arrays.stream(s.pcFilters.allMatch)).forEach(filterNames::add);
                     this.pcFilterDTOs = this.hazelcastMaps.getPeerConnectionFilterDTOs().getAll(filterNames);
+                    filterNames.clear();
                 })
             .addBreakCondition(resultHolder -> {
                 if (Objects.isNull(this.callFilterDTOs) || this.callFilterDTOs.size() < 1) {
-                    getLogger().info("No Filter has been added for sentinels {}", this.sentinelDTOs);
-                    resultHolder.set(Collections.EMPTY_MAP);
-                    return true;
+                    if (Objects.isNull(this.pcFilterDTOs) || this.pcFilterDTOs.size() < 1) {
+                        getLogger().info("No Filter has been added for sentinels {}", this.sentinelDTOs);
+                        resultHolder.set(Collections.EMPTY_MAP);
+                        return true;
+                    }
                 }
                 return false;
             })
@@ -74,6 +77,9 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
                 Map<String, SentinelEntity> result = new HashMap<>();
                 for (SentinelDTO sentinelDTO : this.sentinelDTOs.values()) {
                     SentinelEntity sentinelEntity = this.makeSentinelEntity(sentinelDTO);
+                    if (Objects.isNull(sentinelEntity)) {
+                        continue;
+                    }
                     result.put(sentinelEntity.getName(), sentinelEntity);
                 }
                 return Collections.unmodifiableMap(result);
@@ -85,7 +91,7 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
         if (Objects.isNull(sentinelDTO)) {
             return null;
         }
-        if (Objects.isNull(sentinelDTO.callFilters) || Objects.isNull(sentinelDTO.pcFilters)) {
+        if (Objects.isNull(sentinelDTO.callFilters) ) {
             getLogger().warn("Cannot instantiate sentinel {}, because there call filter or pcfilter is null", sentinelDTO);
             return null;
         } else if (
@@ -107,27 +113,32 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
 
         List<Predicate<CallEntity>> allCallsMatch = Arrays.stream(sentinelDTO.callFilters.allMatch).map(this::makeCallFilter).collect(Collectors.toList());
         List<Predicate<CallEntity>> anyCallsMatch = Arrays.stream(sentinelDTO.callFilters.anyMatch).map(this::makeCallFilter).collect(Collectors.toList());
-        final Function<CallEntity, Boolean> callFilter = this.makePredicate(allCallsMatch, anyCallsMatch);
+        final Function<CallEntity, Boolean> callFilterFunc = this.makePredicate(allCallsMatch, anyCallsMatch);
+
+        Predicate<CallEntity> callFilter;
+
+        if (Objects.nonNull(callFilterFunc)) {
+            callFilter = callFilterFunc::apply;
+        } else {
+            callFilter = c -> false;
+        }
 
         List<Predicate<PeerConnectionEntity>> allPCsMatch = Arrays.stream(sentinelDTO.pcFilters.allMatch).map(this::makePCFilter).collect(Collectors.toList());
         List<Predicate<PeerConnectionEntity>> anyPCsMatch = Arrays.stream(sentinelDTO.pcFilters.anyMatch).map(this::makePCFilter).collect(Collectors.toList());
-        final Function<PeerConnectionEntity, Boolean> pcFilter = this.makePredicate(allPCsMatch, anyPCsMatch);
+        final Function<PeerConnectionEntity, Boolean> pcFilterFunc = this.makePredicate(allPCsMatch, anyPCsMatch);
 
-        Predicate<CallEntity> filter;
-        if (Objects.nonNull(callFilter) && Objects.nonNull(pcFilter)) {
-            filter = callEntity -> callFilter.apply(callEntity) &&
-                    callEntity.peerConnections.values().stream().allMatch(pcFilter::apply);
-        } else if (Objects.nonNull(callFilter)) {
-            filter = callFilter::apply;
-        } else if (Objects.nonNull(pcFilter)) {
-            filter = callEntity -> callEntity.peerConnections.values().stream().allMatch(pcFilter::apply);
+        Predicate<PeerConnectionEntity> pcFilter;
+
+        if (Objects.nonNull(pcFilterFunc)) {
+            pcFilter = pcFilterFunc::apply;
         } else {
-            getLogger().warn("No filter has been added to sentinel", sentinelDTO);
-            filter = c -> false;
+            pcFilter = c -> false;
         }
+
         return SentinelEntity.builder()
                 .withSentinelDTO(sentinelDTO)
-                .withFilter(filter)
+                .withCallFilter(callFilter)
+                .withPCFilter(pcFilter)
                 .build();
     }
 
@@ -135,34 +146,34 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
     private<T> Function<T, Boolean> makePredicate(List<Predicate<T>> allMatches, List<Predicate<T>> anyMatches) {
         Function<T, Boolean> result = null;
         if (0 < allMatches.size() && 0 < anyMatches.size()) {
-            result = callEntity -> allMatches.stream().allMatch(predicate -> {
+            result = entity -> allMatches.stream().allMatch(predicate -> {
                 try {
-                    return predicate.test(callEntity);
+                    return predicate.test(entity);
                 } catch (Throwable throwable) {
                     getLogger().warn("Exception during predicate evaluation", throwable);
                     return false;
                 }
             }) && anyMatches.stream().anyMatch(predicate -> {
                 try {
-                    return predicate.test(callEntity);
+                    return predicate.test(entity);
                 } catch (Throwable throwable) {
                     getLogger().warn("Exception during predicate evaluation", throwable);
                     return false;
                 }
             });
         } else if (0 < allMatches.size()) {
-            result = callEntity -> allMatches.stream().allMatch(predicate -> {
+            result = entity -> allMatches.stream().allMatch(predicate -> {
                 try {
-                    return predicate.test(callEntity);
+                    return predicate.test(entity);
                 } catch (Throwable throwable) {
                     getLogger().warn("Exception during predicate evaluation", throwable);
                     return false;
                 }
             });
         } else if (0 < anyMatches.size()) {
-            result = callEntity -> anyMatches.stream().anyMatch(predicate -> {
+            result = entity -> anyMatches.stream().anyMatch(predicate -> {
                 try {
-                    return predicate.test(callEntity);
+                    return predicate.test(entity);
                 } catch (Throwable throwable) {
 
                     return false;

@@ -113,11 +113,11 @@ public class SentinelChecker {
         Set<String> mediaUnits = new HashSet<>();
         Set<String> browserIds = new HashSet<>();
         Set<String> userNames = new HashSet<>();
+        Set<Long> SSRCs = new HashSet<>();
+        Set<UUID> pcUUIDs = new HashSet<>();
+        Set<UUID> callUUIDs = new HashSet<>();
         List<Double> RttAvgs = new LinkedList<>();
         for (SentinelEntity sentinelEntity : sentinelEntities.values()) {
-            int numOfSSRCs = 0;
-            int numOfPCs = 0;
-            int numOfCalls = 0;
             long bytesReceived = 0;
             long packetsReceived = 0;
             long packetsLost = 0;
@@ -126,22 +126,30 @@ public class SentinelChecker {
             browserIds.clear();
             userNames.clear();
             mediaUnits.clear();
+            SSRCs.clear();
+            pcUUIDs.clear();
+            callUUIDs.clear();
             RttAvgs.clear();
             for (CallEntity callEntity : callEntities.values()) {
-                boolean watched = sentinelEntity.test(callEntity);
-                logger.info("Sentinel {} is checked call {}, and it is {} watched", sentinelEntity.getName(), callEntity.call.callUUID, watched ? "" : "not");
-                if (!watched) {
-                    continue;
-                }
+                boolean callIsWatched = sentinelEntity.testCall(callEntity);
                 for (PeerConnectionEntity pcEntity : callEntity.peerConnections.values()) {
+                    boolean pcIsWatched = sentinelEntity.testPeerConnection(pcEntity);
+                    if (!callIsWatched && !pcIsWatched) {
+                        continue;
+                    }
                     Utils.acceptIfValueNonNull(pcEntity.peerConnection.browserId, browserIds::add);
                     Utils.acceptIfValueNonNull(pcEntity.peerConnection.providedUserName, userNames::add);
                     Utils.acceptIfValueNonNull(pcEntity.peerConnection.mediaUnitId, mediaUnits::add);
+                    Utils.acceptIfValueNonNull(callEntity.call.callUUID, callUUIDs::add);
+                    Utils.acceptIfValueNonNull(pcEntity.pcUUID, pcUUIDs::add);
+                    Utils.acceptIfValueNonNull(pcEntity.SSRCs, SSRCs::addAll);
+
 
                     if (!inboundIsMonitored && !outboundIsMonitored && !remoteInboundIsMonitored) {
                         // if no metric is enabled then we probably should not go through the SSRCs
                         continue;
                     }
+
                     for (Long SSRC : pcEntity.SSRCs) {
                         String key = RtpMonitorAbstract.getKey(pcEntity.pcUUID, SSRC);
                         touchedRTPKeys.add(key);
@@ -185,16 +193,16 @@ public class SentinelChecker {
                     }
 
                 }
-                ++numOfCalls;
-                numOfSSRCs += callEntity.SSRCs.size();
-                numOfPCs += callEntity.peerConnections.size();
             }
 
-            logger.info("Sentinel {} is checked all call and counted SSRCs: {} PCs: {} calls: {}", sentinelEntity.getName(), numOfSSRCs, numOfPCs, numOfCalls);
+//            logger.info("Sentinel {} is checked all call and counted SSRCs: {} PCs: {} calls: {}", sentinelEntity.getName(), numOfSSRCs, numOfPCs, numOfCalls);
             final String sentinelName = sentinelEntity.getName();
             if (sentinelEntity.isExposed()) {
                 final int numOfBrowserIds = browserIds.size();
                 final int numOfUserNames = userNames.size();
+                int numOfSSRCs = SSRCs.size();
+                int numOfPCs = pcUUIDs.size();
+                int numOfCalls = callUUIDs.size();
                 var sentinelMetrics = this.sentinelMonitor.getSentinelMetrics(sentinelName)
                         .setNumberOfCalls(numOfCalls)
                         .setNumberOfBrowserIds(numOfBrowserIds)

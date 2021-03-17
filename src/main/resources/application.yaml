@@ -76,7 +76,10 @@ observer:
 
   sentinelsCheckingPeriodInMin: 1
 #  pcFilters:
-#    - name: "myPCFilter"
+#    - name: "myServerFilter"
+#      remoteIPs:
+#        anyMatch:
+#          - "10.10.10.10"
 #      SSRCs:
 #        gt: 0
 #        lt: 10
@@ -94,7 +97,7 @@ observer:
 #      reports: True
 #      pcFilters:
 #        anyMatch:
-#          - "myPCFilter"
+#          - "myServerFilter"
 #      callFilters:
 #        anyMatch:
 #          - "MyPeerToPeerFilter"

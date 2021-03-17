@@ -1,7 +1,19 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
-## 0.7.0 -
+## 0.7.1 (H)
+
+### Added
+ * Sentinels checking peer connections distinguished from calls
+
+### Removed
+ * SSRCs attribute from callFiltersDTO
+
+### Fixed
+ * packetlost metric exposed by inbpundRTPMonitor now has positive values. 
+ * Use Prototype instead of Singletone at SentinelMetricsProvider to have more than one sentinel
+
+## 0.7.0 (H)
 
 ### Added
 

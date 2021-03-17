@@ -4,8 +4,8 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
 import org.observertc.webrtc.observer.dto.CallFilterDTO;
+import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
 
@@ -28,7 +28,7 @@ class CallFilterBuilderTest {
                 .numOfElementsIsGreaterThan(0)
                 .build();
         CallFilterDTO callFilterDTO = CallFilterDTO.builder()
-                .withPeerConnectionsCollectionFilter(collectionFilterDTO)
+                .withBrowserIdsCollectionFilter(collectionFilterDTO)
                 .build();
 
         Predicate<CallEntity> filter = sentinelFilterBuilderProvider.get().apply(callFilterDTO);

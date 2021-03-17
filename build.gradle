@@ -3,7 +3,12 @@ plugins {
     id("com.google.cloud.tools.jib") version "2.6.0"
 }
 
-version = "0.7.0"
+// target version:
+//version = "H"
+// all client library compiled:
+//version = "hydrogen:deuterium"
+
+version = "0.7.1"
 group = "org.observertc.webrtc.observer"
 
 repositories {
@@ -30,18 +35,37 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut:micronaut-management")
-//    implementation("io.micronaut.kubernetes:micronaut-kubernetes-discovery-client")
-    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
-    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
-    implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.rxjava3:micronaut-rxjava3")
-//    implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("io.micronaut.jmx:micronaut-jmx")
 
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    compile group: 'org.jooq', name: 'jool', version: '0.9.14'
+    // Exposed Metrics Client Libraries
+    // https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html
+    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-datadog")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-elastic")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-appoptics")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-atlas")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-azure-monitor")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-cloudwatch")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-dynatrace")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-ganglia")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-graphite")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-humio")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-influx")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-jmx")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-kairos")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-signalfx")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-stackdriver")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-statsd")
+//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-wavefront")
+
+
     compile group: 'org.apache.avro', name: 'avro', version: '1.10.0'
     testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
     // ------------- Hazelcast -----------

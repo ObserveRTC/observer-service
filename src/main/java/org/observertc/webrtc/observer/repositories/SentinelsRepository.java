@@ -42,6 +42,9 @@ public class SentinelsRepository {
     CallFiltersRepository callFiltersRepository; // we must invoke this to have a proper result
 
 	@Inject
+	PeerConnectionFiltersRepository peerConnectionFiltersRepository; // we must invoke this to have a proper result
+
+	@Inject
 	Provider<FetchSentinelEntitiesTask> sentinelEntitiesTaskProvider;
 
 	@Inject
