@@ -51,7 +51,7 @@ The version number (more or less) follows [semantic versioning](https://semver.o
 The major versions are named, and tagged.
 
 Major versions:
-* [hydrogen](hydrogen.md) The first viable service of the product
+* [hydrogen](docs/index.md) The first viable service of the product
 
 
 ## Open source licensing info
