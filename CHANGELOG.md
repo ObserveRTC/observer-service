@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
+## 0.7.2 (H)
+
+### Added
+ * Websocket URL address /pcsamples/{serviceUUID}/{mediaUnitId}/
+ * `SourceSample` class can serve as a general intermediate object for different kind of source types
+ * Configuration for sources.pcSamples 
+ * `Sources` singletone object to funnel different type of sources
+
+### Deprecated
+ * Websocket URL address /{serviceUUID}/{mediaUnitId}/v20200114/json
+ * Configuration property security.dropUnknownServices as this option will belongs to the configurable sources. 
+
 ## 0.7.1 (H)
 
 ### Added

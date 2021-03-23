@@ -11,7 +11,6 @@ import org.observertc.webrtc.observer.dto.RemoteInboundRtpTrafficDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.entities.SentinelEntity;
-import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.evaluators.monitors.RtpMonitorAbstract;
 import org.observertc.webrtc.observer.monitors.SentinelMonitor;
 import org.observertc.webrtc.observer.repositories.CallsRepository;
@@ -54,9 +53,6 @@ public class SentinelChecker {
 
     @Inject
     HazelcastMaps hazelcastMaps;
-
-    @Inject
-    Pipeline pipeline;
 
     private Instant lastRun = null;
 
@@ -241,7 +237,5 @@ public class SentinelChecker {
                 this.hazelcastMaps.getRemoteInboundTrafficDTOs().putAll(map);
             }
         }
-
-//        pipeline.getObservedPCSObserver()
     }
 }

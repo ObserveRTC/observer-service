@@ -16,7 +16,7 @@
 
 package org.observertc.webrtc.observer.dto;
 
-import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
 
 public abstract class AbstractPeerConnectionSampleVisitor<T> implements PeerConnectionSampleVisitor<T> {
 

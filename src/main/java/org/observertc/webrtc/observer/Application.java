@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.observertc.webrtc.observer.common.Sleeper;
 import org.observertc.webrtc.observer.configbuilders.ObservableConfig;
+import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +65,8 @@ public class Application {
     public static void main(String[] args) {
         Sleeper.makeFromSystemEnv(INITIAL_WAIT_IN_S, ChronoUnit.SECONDS).run();
         context = Micronaut.run(Application.class);
+        // To make the pipeline run!
+        Pipeline pipeline = context.getBean(Pipeline.class);
         ObserverHazelcast observerHazelcast = context.getBean(ObserverHazelcast.class);
         logger.info("Hazelcast configuration: {}", observerHazelcast.toString());
         deployCheck(observerHazelcast);

@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.evaluators;
 
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
@@ -11,7 +10,7 @@ import org.observertc.webrtc.observer.evaluators.monitors.InboundRtpMonitor;
 import org.observertc.webrtc.observer.evaluators.monitors.OutboundRtpMonitor;
 import org.observertc.webrtc.observer.evaluators.monitors.RemoteInboundRtpMonitor;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
-import org.observertc.webrtc.schemas.reports.ObserverEventReport;
+import org.observertc.webrtc.observer.sources.Sources;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +31,17 @@ public class Pipeline {
     private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
     private final Subject<Report> reports = PublishSubject.create();
 
-    private final Subject<ObservedPCS> observedPCSSubject = PublishSubject.create();
-    private final Subject<ObserverEventReport> observerEventsSubject = PublishSubject.create();
-    public Observer<ObservedPCS> getObservedPCSObserver() {
-        return this.observedPCSSubject;
-    }
+//    private final Subject<ObservedPCS> observedPCSSubject = PublishSubject.create();
+//    private final Subject<ObserverEventReport> observerEventsSubject = PublishSubject.create();
+//    public Observer<ObservedPCS> getObservedPCSObserver() {
+//        return this.observedPCSSubject;
+//    }
 
     @Inject
     ObserverConfig config;
+
+    @Inject
+    Sources sources;
 
     @Inject
     PCSObserver PCSObserver;
@@ -77,9 +79,9 @@ public class Pipeline {
 
     @PostConstruct
     void setup() {
-        var source = this.observedPCSSubject;
         var userMediaErrorsMonitor = this.counterMonitorBuilder.build(USER_MEDIA_REPORTS_METRIC_NAME, this.config.userMediaErrorsMonitor);
-        var samplesBuffer = source
+        var samplesBuffer = this.sources
+                .filter(observedPCS -> Objects.nonNull(observedPCS.peerConnectionUUID))
                 .buffer(evaluatorsConfig.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, evaluatorsConfig.observedPCSBufferMaxItemNums)
                 .share();
 
@@ -106,7 +108,7 @@ public class Pipeline {
                 .subscribe(this.reports);
 
 
-        this.observedPCSSubject
+        this.sources
                 .subscribe(this.observedPCSEvaluator);
 
         // InboundRTP -> ReportSunk
@@ -170,7 +172,6 @@ public class Pipeline {
 
         if (Objects.nonNull(this.config.reportMonitor)) {
             var reportMonitor = this.counterMonitorBuilder.build(GENERATED_REPORTS_METRIC_NAME, this.config.reportMonitor);
-//            var reportMonitor = this.counterMonitorProvider.buildReportMonitor("generated_reports", this.config.reportMonitor);
             this.reports.map(reportMonitor).subscribe();
         }
 
