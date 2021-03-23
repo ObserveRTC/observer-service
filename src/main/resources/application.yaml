@@ -71,6 +71,13 @@ endpoints:
 #      path: "myPath"
 ---
 observer:
+  sources:
+    pcSamples:
+      enabled: true
+      defaultServiceName: "defaultServiceName"
+      security:
+        dropUnknownServices: False
+
   security:
     dropUnknownServices: False
 

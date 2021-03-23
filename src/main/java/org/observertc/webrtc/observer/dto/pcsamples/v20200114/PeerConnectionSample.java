@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.dto.v20200114;
+package org.observertc.webrtc.observer.dto.pcsamples.v20200114;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;

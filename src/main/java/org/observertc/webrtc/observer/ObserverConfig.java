@@ -29,41 +29,29 @@ import java.util.*;
 @ConfigurationProperties("observer")
 public class ObserverConfig {
 
+	// Connectors Config
 	public List<Map<String, Object>> connectors = new LinkedList<>();
-
-	public HazelcastConfig hazelcast;
-
-	public OutboundReportsConfig outboundReports;
 
 	@Min(1)
 	@Max(60)
 	public int sentinelsCheckingPeriodInMin = 1;
 
+	// Sentinels Config
 	public List<SentinelDTO> sentinels = new ArrayList<>();
 
+	// CallFilters Config
 	public List<CallFilterDTO> callFilters = new ArrayList<>();
 
+	// PC Filters Config
 	public List<PeerConnectionFilterDTO> pcFilters = new ArrayList<>();
 
-	public EvaluatorsConfig evaluators;
-
-	public IPAddressConverterConfig ipAddressConverter;
-
-	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
-
+	// Security Configurations
 	public SecurityConfig security;
 
-	public InboundRtpMonitorConfig inboundRtpMonitor;
+	// IP Address Converter Config
+	public IPAddressConverterConfig ipAddressConverter;
 
-	public OutboundRtpMonitorConfig outboundRtpMonitor;
-
-	public RemoteInboundRtpMonitorConfig remoteInboundRtpMonitor;
-
-	public ReportMonitorConfig reportMonitor;
-
-	public UserMediaErrorsMonitorConfig userMediaErrorsMonitor;
-
-	@ConfigurationProperties("ipaddress")
+	@ConfigurationProperties("ipAddressConverter")
 	public static class IPAddressConverterConfig {
 		public boolean enabled = false;
 		public String algorithm = "SHA-256";
@@ -72,8 +60,13 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
+
+		@Deprecated(since = "0.7.2")
 		public boolean dropUnknownServices = false;
 	}
+
+	// Evaluators Config
+	public EvaluatorsConfig evaluators;
 
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
@@ -90,10 +83,17 @@ public class ObserverConfig {
 		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
 	}
 
+	// Hazelcast Config
+	public HazelcastConfig hazelcast;
+
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
 	}
+
+
+	// Outbound Reports Config
+	public OutboundReportsConfig outboundReports;
 
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
@@ -119,30 +119,74 @@ public class ObserverConfig {
 		public boolean reportClientDetails = true;
 	}
 
+	// Service Mappings Config
+	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
+
 	@EachProperty("servicemappings")
 	public static class ServiceMapConfiguration {
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}
 
-	public static class RtpMonitorConfig {
-		public boolean enabled = false;
-		public int retentionTimeInS = 300;
-	}
+	// Inbound RTP Monitoring Config
+	public InboundRtpMonitorConfig inboundRtpMonitor;
 
 	@ConfigurationProperties("inboundRtpMonitor")
 	public static class InboundRtpMonitorConfig extends RtpMonitorConfig{
 
 	}
 
+	// Outbound RTP Monitoring Config
+	public OutboundRtpMonitorConfig outboundRtpMonitor;
+
 	@ConfigurationProperties("outboundRtpMonitor")
 	public static class OutboundRtpMonitorConfig extends RtpMonitorConfig{
 
 	}
 
+	// Remote Inbound RTP Monitoring Config
+	public RemoteInboundRtpMonitorConfig remoteInboundRtpMonitor;
+
 	@ConfigurationProperties("remoteInboundRtpMonitor")
 	public static class RemoteInboundRtpMonitorConfig extends RtpMonitorConfig {
 		public double weightFactor = 0.5;
+	}
+
+	// Report Monitor Config
+	public ReportMonitorConfig reportMonitor;
+
+	@ConfigurationProperties("reportMonitor")
+	public static class ReportMonitorConfig extends ReportCounterMonitorConfig {
+
+	}
+
+	// User Media Errors Monitoring Config
+	public UserMediaErrorsMonitorConfig userMediaErrorsMonitor;
+
+	@ConfigurationProperties("userMediaErrorsMonitor")
+	public static class UserMediaErrorsMonitorConfig extends ReportCounterMonitorConfig {
+
+	}
+
+	// Sources Config
+	public SourcesConfig sources;
+
+	@ConfigurationProperties("sources")
+	public static class SourcesConfig {
+
+		public PCSamplesConfig pcSamples;
+
+		@ConfigurationProperties("pcSamples")
+		public static class PCSamplesConfig {
+			public boolean enabled = false;
+			public String defaultServiceName = "defaultServiceName";
+			public boolean dropUnknownServiceName = false;
+		}
+	}
+
+	public static class RtpMonitorConfig {
+		public boolean enabled = false;
+		public int retentionTimeInS = 300;
 	}
 
 	public static class ReportCounterMonitorConfig {
@@ -151,17 +195,6 @@ public class ObserverConfig {
 		public boolean tagByServiceName = false;
 		public boolean tagByServiceUUID = false;
 	}
-
-	@ConfigurationProperties("reportMonitor")
-	public static class ReportMonitorConfig extends ReportCounterMonitorConfig {
-
-	}
-
-	@ConfigurationProperties("userMediaErrorsMonitor")
-	public static class UserMediaErrorsMonitorConfig extends ReportCounterMonitorConfig {
-
-	}
-
 
 }
 

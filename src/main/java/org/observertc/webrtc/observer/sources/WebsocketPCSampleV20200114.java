@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.sources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -27,10 +27,13 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
-import org.observertc.webrtc.observer.dto.v20200114.PeerConnectionSample;
+import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.entities.ServiceMapEntity;
-import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
@@ -46,20 +49,14 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.*;
 
-/**
- * Service should be UUId, because currently mysql stores it as
- * binary and with that type the search is fast for activestreams. thats why.
- */
+@Deprecated(since = "0.7.2")
 @Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/{serviceUUIDStr}/{mediaUnitID}/v20200114/json")
-public class WebsocketPCSampleV20200114 {
+public class WebsocketPCSampleV20200114 extends Observable<ObservedPCS> {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSampleV20200114.class);
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
-
-	@Inject
-	Pipeline pipeline;
 
 	@Inject
 	MeterRegistry meterRegistry;
@@ -74,7 +71,7 @@ public class WebsocketPCSampleV20200114 {
 	ObserverConfig observerConfig;
 
 	private Map<String, String> serviceNameMapper = new HashMap<>();
-
+	private Observer<? super ObservedPCS> observer = null;
 
 	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
@@ -82,7 +79,11 @@ public class WebsocketPCSampleV20200114 {
 	) {
 		this.objectReader = objectMapper.reader();
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+	}
 
+	@Override
+	protected void subscribeActual(@NonNull Observer<? super ObservedPCS> observer) {
+		this.observer = observer;
 	}
 
 	@OnOpen
@@ -222,7 +223,8 @@ public class WebsocketPCSampleV20200114 {
 						null,
 						timestamp
 				);
-				this.pipeline.inputUserMediaError(observedPCS);
+				this.observer.onNext(observedPCS);
+//				this.pipeline.inputUserMediaError(observedPCS);
 				return;
 			}
 			this.flawMonitor.makeLogEntry()
@@ -257,13 +259,14 @@ public class WebsocketPCSampleV20200114 {
 
 		try {
 //			logger.info(ObjectToString.toString(observedPCS));
-			this.pipeline.getObservedPCSObserver().onNext(observedPCS);
+			this.observer.onNext(observedPCS);
+//			this.pipeline.getObservedPCSObserver().onNext(observedPCS);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withLogger(logger)
 					.withException(ex)
 					.withLogLevel(Level.WARN)
-					.withMessage("Error occured processing message by {} ", this.pipeline.getClass().getSimpleName())
+					.withMessage("Error occured processing message by {} ", this.getClass().getSimpleName())
 					.complete();
 		}
 
