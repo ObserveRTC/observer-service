@@ -3,14 +3,14 @@ package org.observertc.webrtc.observer.connectors.sinks;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import org.observertc.webrtc.schemas.reports.Report;
+import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Sink implements Observer<List<Report>> {
+public abstract class Sink implements Observer<List<EncodedRecord>> {
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(Sink.class);
     private Disposable upstream;
     protected Logger logger = DEFAULT_LOGGER;

@@ -114,6 +114,10 @@ observer:
 #        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
   connectors:
     - name: "ReportSinkLogger"
+      encoder:
+        type: AvroEncoder
+        config:
+          addMetaKey: True
       buffer:
         maxItems: 100
         maxWaitingTimeInS: 10

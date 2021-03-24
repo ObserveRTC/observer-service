@@ -6,11 +6,10 @@ import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.utils.Bytes;
-import org.observertc.webrtc.observer.common.ReportVisitor;
+import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.observer.connectors.sinks.Sink;
-import org.observertc.webrtc.schemas.reports.*;
+import org.observertc.webrtc.schemas.reports.Report;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -22,10 +21,8 @@ public class KafkaSink extends Sink {
     private boolean tryReconnectOnFailure = false;
     private KafkaProducer<UUID, Bytes> producer;
     private final BinaryMessageEncoder<Report> encoder;
-    private final ReportVisitor<UUID> keyConverter;
     public KafkaSink() {
         this.encoder = Report.getEncoder();
-        this.keyConverter = this.makeKeyConverter();
     }
 
     protected void connect() {
@@ -41,23 +38,23 @@ public class KafkaSink extends Sink {
 
 
     @Override
-    public void onNext(@NonNull List<Report> reports) {
-        if (reports.size() < 1) {
+    public void onNext(@NonNull List<EncodedRecord> records) {
+        if (records.size() < 1) {
             return;
         }
         try {
-            for (Report report : reports) {
-                ProducerRecord<UUID, Bytes> record = this.makeProducerRecord(report);
-                this.producer.send(record);
+            for (EncodedRecord record : records) {
+                ProducerRecord<UUID, Bytes> producerRecord = this.makeProducerRecord(record);
+                this.producer.send(producerRecord);
             }
         } catch (Throwable t) {
             logger.error("Unexpected exception", t);
             if (this.tryReconnectOnFailure) {
                 try {
                     this.connect();
-                    for (Report report : reports) {
-                        ProducerRecord<UUID, Bytes> record = this.makeProducerRecord(report);
-                        this.producer.send(record);
+                    for (EncodedRecord record : records) {
+                        ProducerRecord<UUID, Bytes> producerRecord = this.makeProducerRecord(record);
+                        this.producer.send(producerRecord);
                     }
                 } catch (Throwable t2) {
                     logger.error("Error occurred while we tried to sent the messages at the second attempt after reconnect. this is bad, messages will be lost", t2);
@@ -66,18 +63,12 @@ public class KafkaSink extends Sink {
         }
     }
 
-    private ProducerRecord<UUID, Bytes> makeProducerRecord(Report report) {
-        UUID key = this.keyConverter.apply(report);
-        ByteBuffer message;
-        try {
-            message = this.encoder.encode(report);
-        } catch (Throwable t) {
-            this.logger.warn("Exception by serializing report " + report.toString(), t);
-            return null;
-        }
-        Bytes bytes = new Bytes(message.array());
-        ProducerRecord<UUID, Bytes> record = new ProducerRecord<UUID, Bytes>(this.topic, key, bytes);
-        return record;
+    private ProducerRecord<UUID, Bytes> makeProducerRecord(EncodedRecord record) {
+        UUID key = record.getKey();
+        byte[] bytes = record.getMessage();
+        Bytes message = new Bytes(bytes);
+        ProducerRecord<UUID, Bytes> result = new ProducerRecord<UUID, Bytes>(this.topic, key, message);
+        return result;
     }
 
 
@@ -97,94 +88,5 @@ public class KafkaSink extends Sink {
     KafkaSink byReconnectOnFailure(boolean value) {
         this.tryReconnectOnFailure = value;
         return this;
-    }
-
-    private ReportVisitor<UUID> makeKeyConverter() {
-        return new ReportVisitor<UUID>() {
-            @Override
-            public UUID visitTrackReport(Report report, Track payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitFinishedCallReport(Report report, FinishedCall payload) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-
-            @Override
-            public UUID visitInitiatedCallReport(Report report, InitiatedCall payload) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-
-            @Override
-            public UUID visitJoinedPeerConnectionReport(Report report, JoinedPeerConnection payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitDetachedPeerConnectionReport(Report report, DetachedPeerConnection payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitInboundRTPReport(Report report, InboundRTP payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitOutboundRTPReport(Report report, OutboundRTP payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitRemoteInboundRTPReport(Report report, RemoteInboundRTP payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitMediaSourceReport(Report report, MediaSource payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitObserverReport(Report report, ObserverEventReport payload) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-
-            @Override
-            public UUID visitUserMediaErrorReport(Report report, UserMediaError payload) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-
-            @Override
-            public UUID visitICECandidatePairReport(Report report, ICECandidatePair payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitICELocalCandidateReport(Report report, ICELocalCandidate payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitICERemoteCandidateReport(Report report, ICERemoteCandidate payload) {
-                return UUID.fromString(payload.getPeerConnectionUUID());
-            }
-
-            @Override
-            public UUID visitUnrecognizedReport(Report report) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-
-            @Override
-            public UUID visitExtensionReport(Report report, ExtensionReport payload) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-
-            @Override
-            public UUID visitUnknownType(Report report) {
-                return UUID.fromString(report.getServiceUUID());
-            }
-        };
     }
 }

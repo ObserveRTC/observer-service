@@ -6,6 +6,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
+import org.observertc.webrtc.observer.connectors.encoders.Encoder;
+import org.observertc.webrtc.observer.connectors.encoders.EncoderBuilder;
 import org.observertc.webrtc.observer.connectors.sinks.Sink;
 import org.observertc.webrtc.observer.connectors.sinks.SinkBuilder;
 import org.observertc.webrtc.observer.connectors.transformations.Transformation;
@@ -55,6 +57,15 @@ public class ConnectorBuilder extends AbstractBuilder implements Function<Map<St
             result.withTransformation(transformation);
         }
 
+        EncoderBuilder encoderBuilder = new EncoderBuilder();
+        encoderBuilder.withConfiguration(config.encoder);
+        Optional<Encoder> encoder = encoderBuilder.build();
+        if (!encoder.isPresent()) {
+            logger.warn("Cannot make a pipeline without an encoder");
+            return Optional.empty();
+        }
+        result.withEncoder(encoder.get());
+
         result.withBuffer(config.buffer);
 
         SinkBuilder sinkBuilder = new SinkBuilder();
@@ -77,6 +88,8 @@ public class ConnectorBuilder extends AbstractBuilder implements Function<Map<St
         public List<Map<String, Object>> transformations = new ArrayList<>();
 
         public BufferConfig buffer = new BufferConfig();
+
+        public Map<String, Object> encoder = new HashMap<>();
 
         @NotNull
         public Map<String, Object> sink;

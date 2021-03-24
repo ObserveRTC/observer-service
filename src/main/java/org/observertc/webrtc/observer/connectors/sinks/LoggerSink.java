@@ -3,12 +3,14 @@ package org.observertc.webrtc.observer.connectors.sinks;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
+import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import java.io.IOException;
 import java.util.*;
 
 public class LoggerSink extends Sink {
@@ -42,10 +44,17 @@ public class LoggerSink extends Sink {
     }
 
     @Override
-    public void onNext(@NonNull List<Report> reports) {
-        logger.info("Number of reports are: {}", reports.size());
+    public void onNext(@NonNull List<EncodedRecord> records) {
+        logger.info("Number of reports are: {}", records.size());
         Map<ReportType, Integer> typeSummary = new HashMap<>();
-        for (Report report : reports) {
+        for (EncodedRecord record : records) {
+            Report report;
+            try {
+                report = Report.getDecoder().decode(record.getMessage());
+            } catch (IOException e) {
+                logger.warn("Cannot decode input bytes. Is it in the right Avro format?");
+                continue;
+            }
             typeSummary.put(report.getType(), typeSummary.getOrDefault(report.getType(), 0) + 1);
             if (this.printReports) {
                 String message = String.format("Received report: %s", report.toString());
