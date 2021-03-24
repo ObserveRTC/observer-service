@@ -4,8 +4,10 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.connectors.encoders.Encoder;
 import org.observertc.webrtc.observer.connectors.sinks.Sink;
 import org.observertc.webrtc.observer.connectors.transformations.Transformation;
 import org.observertc.webrtc.schemas.reports.Report;
@@ -22,6 +24,7 @@ public class Connector implements Observer<Report> {
     private String name;
     private final Subject<Report> input = PublishSubject.create();
     private List<Transformation> transformations = new LinkedList<>();
+    private Encoder encoder;
     private Sink sink;
     private BufferConfig bufferConfig = null;
     private final Logger logger;
@@ -40,19 +43,21 @@ public class Connector implements Observer<Report> {
             observableReport = observableReport.lift(transformation).share();
         }
 
-        Observable<List<Report>> observableReports;
+        var observableRecord = observableReport.map(this.encoder).share();
+
+        Observable<List<EncodedRecord>> observableRecords;
         if (1 < this.bufferConfig.maxItems) {
             if (this.bufferConfig.maxWaitingTimeInS < 1) {
-                observableReports = observableReport.buffer(this.bufferConfig.maxItems).share();
+                observableRecords = observableRecord.buffer(this.bufferConfig.maxItems).share();
             } else {
-                observableReports = observableReport.buffer(this.bufferConfig.maxWaitingTimeInS, TimeUnit.SECONDS, this.bufferConfig.maxItems).share();
+                observableRecords = observableRecord.buffer(this.bufferConfig.maxWaitingTimeInS, TimeUnit.SECONDS, this.bufferConfig.maxItems).share();
             }
         } else {
-            observableReports = observableReport.map(List::of);
+            observableRecords = observableRecord.map(List::of);
         }
 
-
-        observableReports.subscribe(this.sink);
+        observableRecords
+                .subscribe(this.sink);
     }
 
     @Override
@@ -99,6 +104,11 @@ public class Connector implements Observer<Report> {
         return this;
     }
 
+    Connector withEncoder(Encoder encoder) {
+        this.encoder = encoder;
+        return this;
+    }
+
     Connector withSink(Sink sink) {
         if (Objects.nonNull(this.sink)) {
             throw new IllegalStateException(this.getName() + ": cannot set the source for a pipeline twice");
@@ -107,6 +117,25 @@ public class Connector implements Observer<Report> {
                 .withLogger(logger)
         ;
         return this;
+    }
+
+    private List<EncodedRecord> mapper(List<Report> reports) {
+        if (Objects.isNull(reports)) {
+            return null;
+        }
+        List<EncodedRecord> result = new LinkedList<>();
+        for (Report report : reports) {
+            try {
+                EncodedRecord record = this.encoder.apply(report);
+                if (Objects.isNull(record)) {
+                    continue;
+                }
+                result.add(record);
+            } catch (Throwable t) {
+                logger.warn("Encoding failure", t);
+            }
+        }
+        return result;
     }
 
 }
