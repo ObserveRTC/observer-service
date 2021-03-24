@@ -447,6 +447,7 @@ A connector object can be described as follows:
 ```yaml
 name: "MyConnectorName"  # required
 transformations: []      # optional
+encoder: {}              # optional
 buffer: {}               # optional
 sink: {}                 # required
 ```
@@ -454,6 +455,10 @@ sink: {}                 # required
 
 **Transformations**: A connector may have transformations, such as 
 Filter, or Obfuscator. Transformations are optional.
+
+**Encoder**: Specifies the encoding from an inner Report format 
+to the sink accepted byte array format with optional meta information.
+The default encoder is AvroEncoder.
 
 **Buffer**: A buffer takes place between the observer
 inner pipeline forwarded report and the sink. 
@@ -472,6 +477,10 @@ connectors:
           serviceName:
             including:
               - "MyService"
+    encoder:
+      type: AvroEncoder
+      config:
+        addMetaKey: True
     buffer:
       maxItems: 100
       maxWaitingTimeInS: 30
