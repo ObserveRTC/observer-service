@@ -115,6 +115,7 @@ observer:
   connectors:
     - name: "ReportSinkLogger"
       encoder:
+#        type: JacksonEncoder
         type: AvroEncoder
         config:
           addMetaKey: True
@@ -124,6 +125,8 @@ observer:
       sink:
         type: LoggerSink
         config:
+          messageFormat: AVRO
+#          messageFormat: JSON
           printReports: False
 
   ipAddressConverter:

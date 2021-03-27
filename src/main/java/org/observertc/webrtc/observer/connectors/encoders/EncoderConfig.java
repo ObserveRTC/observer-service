@@ -1,5 +1,7 @@
 package org.observertc.webrtc.observer.connectors.encoders;
 
+import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
+
 import java.util.Map;
 
 public class EncoderConfig {

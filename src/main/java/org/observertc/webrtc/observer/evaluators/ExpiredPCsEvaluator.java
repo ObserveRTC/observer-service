@@ -38,6 +38,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
+import java.time.Duration;
 import java.util.*;
 
 import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
@@ -157,5 +158,8 @@ public class ExpiredPCsEvaluator implements Consumer<Map<UUID, PCState>> {
 				.build();
 		this.reports.onNext(report);
 		this.observerMetrics.incrementFinishedCall(callEntity.call.serviceName);
+		Long durationInMillis = timestamp - callEntity.call.initiated;
+		Duration callDuration = Duration.ofMillis(durationInMillis);
+		this.observerMetrics.addCallDuration(callEntity.call.serviceName, callDuration);
 	}
 }

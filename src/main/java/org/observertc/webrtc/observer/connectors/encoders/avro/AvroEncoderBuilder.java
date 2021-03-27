@@ -1,13 +1,17 @@
-package org.observertc.webrtc.observer.connectors.encoders;
+package org.observertc.webrtc.observer.connectors.encoders.avro;
 
+import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configbuilders.Builder;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
+import org.observertc.webrtc.observer.connectors.encoders.Encoder;
+import org.observertc.webrtc.observer.connectors.encoders.ReportKeyMaker;
 import org.observertc.webrtc.schemas.reports.Report;
 
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
+@Prototype
 public class AvroEncoderBuilder extends AbstractBuilder implements Builder<Encoder> {
 
     @Override

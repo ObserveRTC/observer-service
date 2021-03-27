@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
+## 0.7.3 (H)
+
+### Added
+ * Add Jackson Encoder to the encoder type, in order to transform avro reports to json format
+ * Add `messageFormat` field to the LoggerSink configuration to support printing and accepting json type encoded messages.
+ * Added exposed metric `call_durations_in_mins` reports the duration of an ended call at the time it is ended
+ * Add marker field to the PeerConnectionSample schema
+
 ## 0.7.2 (H)
 
 ### Added
@@ -10,7 +18,6 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
  * `Sources` singletone object to funnel different type of sources
  * Encoders concept, to make different type of encoding for sink for reports possible
  * `AvroEncoder`, `AvroEncoderBuilder`, `EncoderBuilder` for encoding
- 
 
 ### Deprecated
  * Websocket URL address /{serviceUUID}/{mediaUnitId}/v20200114/json
