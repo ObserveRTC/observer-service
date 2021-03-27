@@ -53,7 +53,7 @@ import java.util.UUID;
  * binary and with that type the search is fast for activestreams. thats why.
  */
 @Secured(SecurityRule.IS_ANONYMOUS)
-@ServerWebSocket("/{serviceUUIDStr}/{mediaUnitID}/pcsamples/")
+@ServerWebSocket("/pcsamples/{serviceUUIDStr}/{mediaUnitID}/")
 public class WebsocketPCSamples extends Observable<SourceSample> {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSamples.class);

@@ -8,6 +8,8 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
  * Add `messageFormat` field to the LoggerSink configuration to support printing and accepting json type encoded messages.
  * Added exposed metric `call_durations_in_mins` reports the duration of an ended call at the time it is ended
  * Add marker field to the PeerConnectionSample schema
+ * Added new address for pc samples `/pcsamples/{serviceUUID}/{mediaUnitId}`
+
 
 ## 0.7.2 (H)
 
