@@ -18,6 +18,7 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
  * `Sources` singletone object to funnel different type of sources
  * Encoders concept, to make different type of encoding for sink for reports possible
  * `AvroEncoder`, `AvroEncoderBuilder`, `EncoderBuilder` for encoding
+ 
 
 ### Deprecated
  * Websocket URL address /{serviceUUID}/{mediaUnitId}/v20200114/json
