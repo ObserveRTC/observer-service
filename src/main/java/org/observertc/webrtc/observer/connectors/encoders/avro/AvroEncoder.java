@@ -1,6 +1,7 @@
-package org.observertc.webrtc.observer.connectors.encoders;
+package org.observertc.webrtc.observer.connectors.encoders.avro;
 
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
+import org.observertc.webrtc.observer.connectors.encoders.Encoder;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

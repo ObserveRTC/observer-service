@@ -85,7 +85,7 @@ class PCSampleConverter implements Function<SourceSample, ObservedPCS> {
                 timeZoneId = zoneOffset.getId();
             }
         }
-        String marker = null;
+        String marker = sample.marker;
         return ObservedPCS.of(
                 sourceSample.serviceUUID,
                 sourceSample.mediaUnitId,

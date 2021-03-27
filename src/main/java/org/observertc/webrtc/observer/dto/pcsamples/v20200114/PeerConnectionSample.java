@@ -71,6 +71,9 @@ public class PeerConnectionSample {
 	@JsonProperty("clientDetails")
 	public ClientDetails clientDetails;
 
+	@JsonProperty("marker")
+	public String marker;
+
 	public static class UserMediaError {
 		@JsonProperty("message")
 		public String message;

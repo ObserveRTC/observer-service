@@ -6,8 +6,10 @@ import org.observertc.webrtc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * To make the package scannable, we need to add this annotation
@@ -27,7 +29,13 @@ public class EncoderBuilder extends AbstractBuilder {
         String builderClassName = AbstractBuilder.getBuilderClassName(config.type);
         Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
         if (!builderHolder.isPresent()) {
-            logger.warn("Encoder builder for class {} has not been found", config.type);
+            final Package thisPackage = this.getClass().getPackage();
+            final Package[] packages = Package.getPackages();
+            var packageList = Arrays.stream(packages)
+                    .filter(p -> p.getName().startsWith(thisPackage.getName()))
+                    .map(Package::getName)
+                    .collect(Collectors.toList());
+            logger.warn("Encoder builder for class {} has not been found in packages {}", config.type, packageList);
             return Optional.empty();
         }
         Builder<Encoder> builder = builderHolder.get();

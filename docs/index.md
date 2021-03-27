@@ -135,6 +135,7 @@ General metrics are enabled by default, and provides an overall state of the ser
 | observertc_joined_pcs        | Counter | Indicates the number of peer connections joined to the observer                                               | service, mediaunit     |
 | observertc_detached_pcs      | Counter | Indicates the number of peer connections detached from the observer                                           | service, mediaunit     |
 | observertc_impairable_pcs    | Counter | Indicates the number of peer connections the observer skips to join to any call due to missing its parameters | service, mediaunit     |
+| call_durations_in_mins       | Summary | A distribution summary about the duration of calls, reported at the end of every call                         | service                |
 | Flaws_monitor                | Counter | Indicates the number of errors reported by various part of the system.                                        | klass                  |
 
 

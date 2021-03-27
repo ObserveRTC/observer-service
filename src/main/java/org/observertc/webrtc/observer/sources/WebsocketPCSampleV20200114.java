@@ -253,7 +253,7 @@ public class WebsocketPCSampleV20200114 extends Observable<ObservedPCS> {
 				sample,
 				timeZoneID,
 				serviceName,
-				null,
+				sample.marker,
 				timestamp
 		);
 

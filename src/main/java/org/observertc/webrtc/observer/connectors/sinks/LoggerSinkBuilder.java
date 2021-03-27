@@ -14,6 +14,7 @@ public class LoggerSinkBuilder extends AbstractBuilder implements Builder<Sink> 
 
         return result
                 .witLogLevel(level)
+                .withMessageFormat(config.messageFormat)
                 .withPrintTypeSummary(config.printTypeSummary)
                 .withPrintReports(config.printReports);
     }
@@ -22,5 +23,6 @@ public class LoggerSinkBuilder extends AbstractBuilder implements Builder<Sink> 
         public boolean printTypeSummary = true;
         public boolean printReports = false;
         public String logLevel = Level.INFO.name();
+        public MessageFormat messageFormat = MessageFormat.AVRO;
     }
 }
