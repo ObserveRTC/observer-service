@@ -1,5 +1,7 @@
 package org.observertc.webrtc.observer.connectors;
 
+import org.observertc.webrtc.observer.common.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +12,7 @@ public class EncodedRecord {
         return new Builder();
     }
 
+    private MessageFormat format;
     private byte[] message;
     private Map<String, Object> meta = new HashMap<>();
 
@@ -19,6 +22,10 @@ public class EncodedRecord {
 
     private EncodedRecord() {
 
+    }
+
+    public MessageFormat getFormat() {
+        return this.format;
     }
 
     public byte[] getMessage() {
@@ -32,22 +39,25 @@ public class EncodedRecord {
     public static class Builder {
         private final EncodedRecord result = new EncodedRecord();
 
-        public<T> Builder withMeta(String key, T value) {
-            this.result.meta.put(key, value);
-            return this;
-        }
-
         public Builder withKey(UUID value) {
             this.result.meta.put(KEY_FIELD_NAME, value);
             return this;
         }
 
-        public<T> Builder withMessage(byte[] message) {
+        public Builder withMessage(byte[] message) {
             this.result.message = message;
             return this;
         }
 
+        public Builder withFormat(MessageFormat format) {
+            this.result.format = format;
+            return this;
+        }
+
         public EncodedRecord build() {
+            if (Utils.anyNull(this.result.message)) {
+                throw new IllegalStateException("Encoded message cannot be null");
+            }
             return this.result;
         }
     }

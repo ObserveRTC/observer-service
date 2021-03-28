@@ -2,6 +2,7 @@ package org.observertc.webrtc.observer.connectors.encoders.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
+import org.observertc.webrtc.observer.connectors.MessageFormat;
 import org.observertc.webrtc.observer.connectors.encoders.Encoder;
 import org.observertc.webrtc.observer.connectors.encoders.ReportMapper;
 import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
@@ -44,7 +45,9 @@ public class JacksonEncoder implements Encoder {
         }
 
         EncodedRecord.Builder recordBuilder = EncodedRecord.builder();
-        recordBuilder.withMessage(message);
+        recordBuilder
+                .withMessage(message)
+                .withFormat(MessageFormat.JSON);;
         this.metaBuilder.accept(recordBuilder, report);
         return recordBuilder.build();
     }

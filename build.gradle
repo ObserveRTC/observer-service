@@ -41,6 +41,7 @@ dependencies {
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
 
+
     // Exposed Metrics Client Libraries
     // https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
@@ -73,6 +74,7 @@ dependencies {
 
     // --------- Connector dependencies -----
     compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.7.0'
+    compile 'org.mongodb:mongodb-driver-sync:4.2.2'
 
     // ------- Render Views --------
     implementation("io.micronaut.views:micronaut-views-thymeleaf")

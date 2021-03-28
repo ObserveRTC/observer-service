@@ -1,6 +1,7 @@
 package org.observertc.webrtc.observer.connectors.encoders.avro;
 
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
+import org.observertc.webrtc.observer.connectors.MessageFormat;
 import org.observertc.webrtc.observer.connectors.encoders.Encoder;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
@@ -28,7 +29,9 @@ public class AvroEncoder implements Encoder {
             return null;
         }
         EncodedRecord.Builder recordBuilder = EncodedRecord.builder();
-        recordBuilder.withMessage(message.array());
+        recordBuilder
+                .withMessage(message.array())
+                .withFormat(MessageFormat.AVRO);
         this.metaBuilder.accept(recordBuilder, report);
         return recordBuilder.build();
     }
