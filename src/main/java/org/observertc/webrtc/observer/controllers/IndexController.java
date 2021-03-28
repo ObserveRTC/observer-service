@@ -34,7 +34,7 @@ public class IndexController {
 
 	@Secured(SecurityRule.IS_AUTHENTICATED)
 	@Get("/whoiam")
-	public HttpResponse whiam() {
+	public HttpResponse whoiam() {
 		return HttpResponse.ok("something");
 	}
 
