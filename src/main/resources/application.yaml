@@ -125,8 +125,6 @@ observer:
       sink:
         type: LoggerSink
         config:
-          messageFormat: AVRO
-#          messageFormat: JSON
           printReports: False
 
   ipAddressConverter:

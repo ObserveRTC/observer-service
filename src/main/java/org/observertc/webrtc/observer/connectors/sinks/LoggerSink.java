@@ -20,7 +20,6 @@ public class LoggerSink extends Sink {
     private boolean printReports = true;
     private Consumer<String> sink = logger::info;
     private Level level = Level.INFO;
-    private MessageFormat messageFormat = MessageFormat.AVRO;
     private boolean typeSummary = false;
 
     @Override
@@ -49,16 +48,19 @@ public class LoggerSink extends Sink {
     @Override
     public void onNext(@NonNull List<EncodedRecord> records) {
         logger.info("Number of reports are: {}", records.size());
-        Map<ReportType, Integer> typeSummary;
-        switch (this.messageFormat) {
-            case JSON:
-                typeSummary = this.summariesJsonRecords(records);
-                break;
-            case AVRO:
-            default:
-                typeSummary = this.summariesAvroRecords(records);
-                break;
+        Map<ReportType, Integer> typeSummary = new HashMap<>();
+        for (EncodedRecord record : records) {
+            switch (record.getFormat()) {
+                case JSON:
+                    this.perceiveJsonFormat(record, typeSummary);
+                    break;
+                case AVRO:
+                default:
+                    this.perceiveAvroFormat(record, typeSummary);
+                    break;
+            }
         }
+
 
         if (this.typeSummary) {
             Iterator<Map.Entry<ReportType, Integer>> it = typeSummary.entrySet().iterator();
@@ -72,11 +74,6 @@ public class LoggerSink extends Sink {
                 }
             }
         }
-    }
-
-    LoggerSink withMessageFormat(MessageFormat messageFormat) {
-        this.messageFormat = messageFormat;
-        return this;
     }
 
     LoggerSink withPrintTypeSummary(boolean value) {
@@ -95,53 +92,45 @@ public class LoggerSink extends Sink {
         return this;
     }
 
-    private Map<ReportType, Integer> summariesAvroRecords (List<EncodedRecord> records) {
-        Map<ReportType, Integer> result = new HashMap<>();
-        for (EncodedRecord record : records) {
-            Report report;
+    private void perceiveAvroFormat (EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+        Report report;
+        try {
+            report = Report.getDecoder().decode(record.getMessage());
+        } catch (IOException e) {
+            logger.warn("Cannot decode input bytes. Is it in the right Avro format?");
+            return;
+        }
+        typeSummary.put(report.getType(), typeSummary.getOrDefault(report.getType(), 0) + 1);
+        if (this.printReports) {
+            String message = String.format("Received report: %s", report.toString());
             try {
-                report = Report.getDecoder().decode(record.getMessage());
-            } catch (IOException e) {
-                logger.warn("Cannot decode input bytes. Is it in the right Avro format?");
-                continue;
-            }
-            result.put(report.getType(), result.getOrDefault(report.getType(), 0) + 1);
-            if (this.printReports) {
-                String message = String.format("Received report: %s", report.toString());
-                try {
-                    this.sink.accept(message);
-                } catch (Throwable throwable) {
-                    DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
-                }
+                this.sink.accept(message);
+            } catch (Throwable throwable) {
+                DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
             }
         }
-        return result;
     }
 
-    private Map<ReportType, Integer> summariesJsonRecords(List<EncodedRecord> records) {
-        Map<ReportType, Integer> result = new HashMap<>();
-        for (EncodedRecord record : records) {
-            Map<String, Object> map;
-            try {
-                map = OBJECT_MAPPER.readValue(record.getMessage(), Map.class);
-            } catch (Throwable e) {
-                logger.warn("Cannot decode input bytes. Is it in the right format?");
-                continue;
-            }
-            String type = (String) map.get("type");
+    private void perceiveJsonFormat (EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+        Map<String, Object> map;
+        try {
+            map = OBJECT_MAPPER.readValue(record.getMessage(), Map.class);
+        } catch (Throwable e) {
+            logger.warn("Cannot decode input bytes. Is it in the right format?");
+            return;
+        }
+        String type = (String) map.get("type");
 
-            ReportType reportType = ReportType.valueOf(type);
-            result.put(reportType, result.getOrDefault(reportType, 0) + 1);
-            if (this.printReports) {
-                try {
-                    String message = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(map);
-                    message = String.format("Received report: %s", message);
-                    this.sink.accept(message);
-                } catch (Throwable throwable) {
-                    DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
-                }
+        ReportType reportType = ReportType.valueOf(type);
+        typeSummary.put(reportType, typeSummary.getOrDefault(reportType, 0) + 1);
+        if (this.printReports) {
+            try {
+                String message = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+                message = String.format("Received report: %s", message);
+                this.sink.accept(message);
+            } catch (Throwable throwable) {
+                DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
             }
         }
-        return result;
     }
 }
