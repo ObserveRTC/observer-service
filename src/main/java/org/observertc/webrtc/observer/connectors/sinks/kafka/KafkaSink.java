@@ -2,13 +2,11 @@ package org.observertc.webrtc.observer.connectors.sinks.kafka;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
-import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.utils.Bytes;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.observer.connectors.sinks.Sink;
-import org.observertc.webrtc.schemas.reports.Report;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,9 +18,9 @@ public class KafkaSink extends Sink {
     private Properties properties;
     private boolean tryReconnectOnFailure = false;
     private KafkaProducer<UUID, Bytes> producer;
-    private final BinaryMessageEncoder<Report> encoder;
+
     public KafkaSink() {
-        this.encoder = Report.getEncoder();
+
     }
 
     protected void connect() {
