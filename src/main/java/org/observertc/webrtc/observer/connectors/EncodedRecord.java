@@ -7,13 +7,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class EncodedRecord {
-    private static final String KEY_FIELD_NAME = "key";
+    private static final EncodedRecord EMPTY_RECORD = EncodedRecord.builder().withEmptyFlag().build();
+    private static final String REPORT_KEY_FIELD_NAME = "reportKey";
+    private static final String ENCODER_CLASS_FIELD_NAME = "encoderClass";
+    private static final String MESSAGE_FORMAT_FIELD_NAME = "messageFormat";
     public static Builder builder() {
         return new Builder();
     }
 
-    private MessageFormat format;
-    private byte[] message;
+    public static EncodedRecord ofEmpty() {
+        return EMPTY_RECORD;
+    }
+
+    private boolean empty = false;
+
+    private Object message;
     private Map<String, Object> meta = new HashMap<>();
 
     public EncodedRecord(byte[] message) {
@@ -24,39 +32,63 @@ public class EncodedRecord {
 
     }
 
-    public MessageFormat getFormat() {
-        return this.format;
+    public boolean isEmpty() {
+        return this.empty;
     }
 
-    public byte[] getMessage() {
-        return this.message;
+    public MessageFormat getFormat() {
+        return (MessageFormat) this.meta.get(MESSAGE_FORMAT_FIELD_NAME);
+    }
+
+    public Class getEncoderType() {
+        return (Class) this.meta.get(ENCODER_CLASS_FIELD_NAME);
+    }
+
+    public<T> T getMessage() {
+        return (T) this.message;
     }
 
     public UUID getKey() {
-        return (UUID) this.meta.get(KEY_FIELD_NAME);
+        return (UUID) this.meta.get(REPORT_KEY_FIELD_NAME);
     }
 
     public static class Builder {
         private final EncodedRecord result = new EncodedRecord();
 
         public Builder withKey(UUID value) {
-            this.result.meta.put(KEY_FIELD_NAME, value);
+            this.result.meta.put(REPORT_KEY_FIELD_NAME, value);
             return this;
         }
 
-        public Builder withMessage(byte[] message) {
+        public Builder withMessage(Object message) {
             this.result.message = message;
             return this;
         }
 
+        public Builder withEncoderType(Class klass) {
+            this.result.meta.put(ENCODER_CLASS_FIELD_NAME, klass);
+            return this;
+        }
+
         public Builder withFormat(MessageFormat format) {
-            this.result.format = format;
+            this.result.meta.put(MESSAGE_FORMAT_FIELD_NAME, format);
+            return this;
+        }
+
+        Builder withEmptyFlag() {
+            this.result.empty = true;
             return this;
         }
 
         public EncodedRecord build() {
-            if (Utils.anyNull(this.result.message)) {
-                throw new IllegalStateException("Encoded message cannot be null");
+            if (this.result.empty) {
+                return this.result;
+            }
+            if (Utils.anyNull(this.result.message,
+                    this.result.meta.get(ENCODER_CLASS_FIELD_NAME),
+                    this.result.meta.get(MESSAGE_FORMAT_FIELD_NAME)))
+            {
+                throw new IllegalStateException("Encoded message, encoder type, message format cannot be null");
             }
             return this.result;
         }

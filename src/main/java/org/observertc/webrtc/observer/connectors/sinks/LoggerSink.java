@@ -1,10 +1,14 @@
 package org.observertc.webrtc.observer.connectors.sinks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
+import org.observertc.webrtc.observer.connectors.MessageFormat;
+import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
+import org.observertc.webrtc.observer.connectors.encoders.json.JsonEncoder;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
@@ -50,17 +54,38 @@ public class LoggerSink extends Sink {
         logger.info("Number of reports are: {}", records.size());
         Map<ReportType, Integer> typeSummary = new HashMap<>();
         for (EncodedRecord record : records) {
-            switch (record.getFormat()) {
-                case JSON:
-                    this.perceiveJsonFormat(record, typeSummary);
-                    break;
-                case AVRO:
-                default:
-                    this.perceiveAvroFormat(record, typeSummary);
-                    break;
+            Class encoderType = record.getEncoderType();
+            if (Objects.isNull(encoderType)) {
+                logger.warn("No encoder type is attached to record", record);
+                continue;
+            }
+            MessageFormat format = record.getFormat();
+            if (encoderType.equals(AvroEncoder.class)) {
+                switch (format) {
+                    case BYTES:
+                        this.perceiveAvroBytesFormat(record, typeSummary);
+                        break;
+                    case OBJECT:
+                        this.perceiveAvroObjectFormat(record, typeSummary);
+                        break;
+                    default:
+                        logger.warn("Not implemented logger format interpreter for {} encodertype, {} messageformat", encoderType, format);
+                }
+            } else if (encoderType.equals(JsonEncoder.class)) {
+                switch (format) {
+                    case BYTES:
+                        this.perceiveJsonBytesFormat(record, typeSummary);
+                        break;
+                    case OBJECT:
+                        this.perceiveJsonObjectFormat(record, typeSummary);
+                        break;
+                    default:
+                        logger.warn("Not implemented logger format interpreter for {} encodertype, {} messageformat", encoderType, format);
+                }
+            } else {
+                logger.warn("Not implemented logger format interpreter for {} encodertype, {} messageformat", encoderType, format);
             }
         }
-
 
         if (this.typeSummary) {
             Iterator<Map.Entry<ReportType, Integer>> it = typeSummary.entrySet().iterator();
@@ -92,14 +117,24 @@ public class LoggerSink extends Sink {
         return this;
     }
 
-    private void perceiveAvroFormat (EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+    private void perceiveAvroBytesFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
         Report report;
         try {
-            report = Report.getDecoder().decode(record.getMessage());
+            byte[] bytes = record.getMessage();
+            report = Report.getDecoder().decode(bytes);
         } catch (IOException e) {
             logger.warn("Cannot decode input bytes. Is it in the right Avro format?");
             return;
         }
+        this.processAvroObjectFormat(report, typeSummary);
+    }
+
+    private void perceiveAvroObjectFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+        Report report = record.getMessage();
+        this.processAvroObjectFormat(report, typeSummary);
+    }
+
+    private void processAvroObjectFormat(Report report, Map<ReportType, Integer> typeSummary) {
         typeSummary.put(report.getType(), typeSummary.getOrDefault(report.getType(), 0) + 1);
         if (this.printReports) {
             String message = String.format("Received report: %s", report.toString());
@@ -111,10 +146,11 @@ public class LoggerSink extends Sink {
         }
     }
 
-    private void perceiveJsonFormat (EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+    private void perceiveJsonBytesFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
         Map<String, Object> map;
         try {
-            map = OBJECT_MAPPER.readValue(record.getMessage(), Map.class);
+            byte[] bytes = record.getMessage();
+            map = OBJECT_MAPPER.readValue(bytes, Map.class);
         } catch (Throwable e) {
             logger.warn("Cannot decode input bytes. Is it in the right format?");
             return;
@@ -126,6 +162,29 @@ public class LoggerSink extends Sink {
         if (this.printReports) {
             try {
                 String message = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+                message = String.format("Received report: %s", message);
+                this.sink.accept(message);
+            } catch (Throwable throwable) {
+                DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
+            }
+        }
+    }
+
+    private void perceiveJsonObjectFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+        ObjectNode objectNode;
+        try {
+            objectNode = record.getMessage();
+        } catch (Throwable e) {
+            logger.warn("Cannot decode input bytes. Is it in the right format?");
+            return;
+        }
+        String type = objectNode.get("type").asText();
+
+        ReportType reportType = ReportType.valueOf(type);
+        typeSummary.put(reportType, typeSummary.getOrDefault(reportType, 0) + 1);
+        if (this.printReports) {
+            try {
+                String message = objectNode.toString();
                 message = String.format("Received report: %s", message);
                 this.sink.accept(message);
             } catch (Throwable throwable) {
