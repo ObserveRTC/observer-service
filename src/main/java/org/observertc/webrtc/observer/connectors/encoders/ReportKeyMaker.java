@@ -1,11 +1,25 @@
 package org.observertc.webrtc.observer.connectors.encoders;
 
 import org.observertc.webrtc.observer.common.ReportVisitor;
+import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.schemas.reports.*;
 
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 public class ReportKeyMaker implements ReportVisitor<UUID> {
+
+    public static BiConsumer<EncodedRecord.Builder, Report> makeMetaKeyMaker() {
+        final ReportKeyMaker keyMaker = new ReportKeyMaker();
+        return new BiConsumer<EncodedRecord.Builder, Report>() {
+            @Override
+            public void accept(EncodedRecord.Builder recordBuilder, Report report) {
+                UUID key = keyMaker.apply(report);
+                recordBuilder.withKey(key);
+            }
+        };
+    }
+
 
     @Override
     public UUID visitTrackReport(Report report, Track payload) {

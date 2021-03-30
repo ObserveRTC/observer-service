@@ -44,6 +44,7 @@ public class EncoderBuilder extends AbstractBuilder {
         if (Objects.isNull(result)) {
             return Optional.empty();
         }
+        result.withMessageFormat(config.format);
         return Optional.of(result);
     }
 
