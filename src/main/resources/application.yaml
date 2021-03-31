@@ -115,16 +115,21 @@ observer:
   connectors:
     - name: "ReportSinkLogger"
       encoder:
-        type: JsonEncoder
-#        type: AvroEncoder
-        format: BYTES
-#        format: OBJECT
+#        type: BsonEncoder
+#        type: JsonEncoder
+        type: AvroEncoder
+        format: OBJECT
+#        format: BYTES
         config:
           addMetaKey: True
       buffer:
         maxItems: 100
         maxWaitingTimeInS: 10
       sink:
+#        type: MongoSink
+#        config:
+#          URI: "mongodb://root:password@localhost:27017"
+#          database: "myDb"
         type: LoggerSink
         config:
           printReports: True

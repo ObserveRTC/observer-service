@@ -1,13 +1,16 @@
 package org.observertc.webrtc.observer.connectors.sinks;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
+import org.bson.Document;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.observer.connectors.MessageFormat;
 import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
+import org.observertc.webrtc.observer.connectors.encoders.bson.BsonEncoder;
 import org.observertc.webrtc.observer.connectors.encoders.json.JsonEncoder;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.observertc.webrtc.schemas.reports.ReportType;
@@ -82,6 +85,17 @@ public class LoggerSink extends Sink {
                     default:
                         logger.warn("Not implemented logger format interpreter for {} encodertype, {} messageformat", encoderType, format);
                 }
+            } else if(encoderType.equals(BsonEncoder.class)) {
+                switch (format) {
+                    case BYTES:
+                        this.perceiveBsonBytesFormat(record, typeSummary);
+                        break;
+                    case OBJECT:
+                        this.perceiveBsonObjectFormat(record, typeSummary);
+                        break;
+                    default:
+                        logger.warn("Not implemented logger format interpreter for {} encodertype, {} messageformat", encoderType, format);
+                }
             } else {
                 logger.warn("Not implemented logger format interpreter for {} encodertype, {} messageformat", encoderType, format);
             }
@@ -126,15 +140,15 @@ public class LoggerSink extends Sink {
             logger.warn("Cannot decode input bytes. Is it in the right Avro format?");
             return;
         }
-        this.processAvroObjectFormat(report, typeSummary);
+        this.processAvroReport(report, typeSummary);
     }
 
     private void perceiveAvroObjectFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
         Report report = record.getMessage();
-        this.processAvroObjectFormat(report, typeSummary);
+        this.processAvroReport(report, typeSummary);
     }
 
-    private void processAvroObjectFormat(Report report, Map<ReportType, Integer> typeSummary) {
+    private void processAvroReport(Report report, Map<ReportType, Integer> typeSummary) {
         typeSummary.put(report.getType(), typeSummary.getOrDefault(report.getType(), 0) + 1);
         if (this.printReports) {
             String message = String.format("Received report: %s", report.toString());
@@ -147,29 +161,16 @@ public class LoggerSink extends Sink {
     }
 
     private void perceiveJsonBytesFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
-        Map<String, Object> map;
+        JsonNode jsonNode;
         try {
             byte[] bytes = record.getMessage();
-            map = OBJECT_MAPPER.readValue(bytes, Map.class);
+            jsonNode = OBJECT_MAPPER.readTree(bytes);
         } catch (Throwable e) {
             logger.warn("Cannot decode input bytes. Is it in the right format?");
             return;
         }
-        String type = (String) map.get("type");
-
-        ReportType reportType = ReportType.valueOf(type);
-        typeSummary.put(reportType, typeSummary.getOrDefault(reportType, 0) + 1);
-        if (this.printReports) {
-            try {
-                String message = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(map);
-                message = String.format("Received report: %s", message);
-                this.sink.accept(message);
-            } catch (Throwable throwable) {
-                DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
-            }
-        }
+        this.processJsonNode(jsonNode, typeSummary);
     }
-
     private void perceiveJsonObjectFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
         ObjectNode objectNode;
         try {
@@ -178,13 +179,55 @@ public class LoggerSink extends Sink {
             logger.warn("Cannot decode input bytes. Is it in the right format?");
             return;
         }
-        String type = objectNode.get("type").asText();
+        this.processJsonNode(objectNode, typeSummary);
+    }
+
+    private void processJsonNode(JsonNode jsonNode, Map<ReportType, Integer> typeSummary) {
+        String type = jsonNode.get("type").asText();
 
         ReportType reportType = ReportType.valueOf(type);
         typeSummary.put(reportType, typeSummary.getOrDefault(reportType, 0) + 1);
         if (this.printReports) {
             try {
-                String message = objectNode.toString();
+                String message = jsonNode.toString();
+                message = String.format("Received report: %s", message);
+                this.sink.accept(message);
+            } catch (Throwable throwable) {
+                DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
+            }
+        }
+    }
+
+    private void perceiveBsonBytesFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+        Document document;
+        try {
+            byte[] message = record.getMessage();
+            document = Document.parse(new String(message));
+        } catch (Throwable e) {
+            logger.warn("Cannot decode input bytes. Is it in the right format?");
+            return;
+        }
+        ReportType reportType = record.getReportType();
+        this.processBsonDocument(document, reportType, typeSummary);
+    }
+
+    private void perceiveBsonObjectFormat(EncodedRecord record, Map<ReportType, Integer> typeSummary) {
+        Document document;
+        try {
+            document = record.getMessage();
+        } catch (Throwable e) {
+            logger.warn("Cannot decode input bytes. Is it in the right format?");
+            return;
+        }
+        ReportType reportType = record.getReportType();
+        this.processBsonDocument(document, reportType, typeSummary);
+    }
+
+    private void processBsonDocument(Document document, ReportType reportType, Map<ReportType, Integer> typeSummary) {
+        typeSummary.put(reportType, typeSummary.getOrDefault(reportType, 0) + 1);
+        if (this.printReports) {
+            try {
+                String message = document.toString();
                 message = String.format("Received report: %s", message);
                 this.sink.accept(message);
             } catch (Throwable throwable) {

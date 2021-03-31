@@ -16,4 +16,5 @@ mynotes.txt
 google_api_credentials.json
 keys/
 clients/python/mydev
+docker-compose.yaml
 
