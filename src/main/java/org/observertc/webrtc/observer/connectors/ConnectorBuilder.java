@@ -59,12 +59,14 @@ public class ConnectorBuilder extends AbstractBuilder implements Function<Map<St
 
         EncoderBuilder encoderBuilder = new EncoderBuilder();
         encoderBuilder.withConfiguration(config.encoder);
-        Optional<Encoder> encoder = encoderBuilder.build();
-        if (!encoder.isPresent()) {
+        Optional<Encoder> encoderHolder = encoderBuilder.build();
+        if (!encoderHolder.isPresent()) {
             logger.warn("Cannot make a pipeline without an encoder");
             return Optional.empty();
         }
-        result.withEncoder(encoder.get());
+        Encoder encoder = encoderHolder.get();
+        logger.info("Pipeline {} uses encoder {}, provided message format: {}", config.name, encoder.getClass().getSimpleName(), encoder.getMessageFormat().name());
+        result.withEncoder(encoder);
 
         result.withBuffer(config.buffer);
 
@@ -75,6 +77,7 @@ public class ConnectorBuilder extends AbstractBuilder implements Function<Map<St
             logger.warn("Sink was not build for pipeline {}, this pipeline cannot be built.", config.name);
             return Optional.empty();
         }
+        logger.info("Pipeline {} uses sink {}", config.name, sink.getClass().getSimpleName());
         result.withSink(sink);
 
         return Optional.of(result);

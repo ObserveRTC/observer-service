@@ -75,6 +75,10 @@ public abstract class EncoderAbstract<T> implements Encoder {
         return this;
     }
 
+    public MessageFormat getMessageFormat() {
+        return this.format;
+    }
+
     protected abstract T make(Report report) throws Throwable;
 
     protected abstract byte[] convertToBytes(T object) throws Throwable;

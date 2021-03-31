@@ -114,14 +114,14 @@ observer:
 #        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
   connectors:
     - name: "ReportSinkLogger"
-      encoder:
+#      encoder:
 #        type: BsonEncoder
 #        type: JsonEncoder
-        type: AvroEncoder
-        format: OBJECT
-#        format: BYTES
-        config:
-          addMetaKey: True
+#        type: AvroEncoder
+#        format: OBJECT
+##        format: BYTES
+#        config:
+#          addMetaKey: True
       buffer:
         maxItems: 100
         maxWaitingTimeInS: 10

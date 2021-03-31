@@ -7,4 +7,5 @@ import org.observertc.webrtc.schemas.reports.Report;
 
 public interface Encoder extends Function<Report, EncodedRecord> {
     Encoder withMessageFormat(MessageFormat format);
+    MessageFormat getMessageFormat();
 }

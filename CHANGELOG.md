@@ -9,7 +9,8 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
  * Added exposed metric `call_durations_in_mins` reports the duration of an ended call at the time it is ended
  * Add marker field to the PeerConnectionSample schema
  * Added new address for pc samples `/pcsamples/{serviceUUID}/{mediaUnitId}`
-
+ * Add Bson Encoder to the encoder type
+ * Add MongoSink to the sinks
 
 ## 0.7.2 (H)
 
