@@ -132,7 +132,7 @@ observer:
 #          database: "myDb"
         type: LoggerSink
         config:
-          printReports: True
+          printReports: False
 
   ipAddressConverter:
     enabled: False
