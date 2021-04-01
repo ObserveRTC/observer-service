@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<title>WebRTC-Observer Documentation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:50%;border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>WebRTC-Observer Documentation</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_overview">Overview</a>
+<ul class="sectlevel2">
+<li><a href="#_data_hierarchy">Data Hierarchy</a></li>
+</ul>
+</li>
+<li><a href="#_accepted_samples">Accepted Samples</a>
+<ul class="sectlevel2">
+<li><a href="#_peer_connection_sample">Peer Connection Sample</a></li>
+</ul>
+</li>
+<li><a href="#_api_endpoints">API Endpoints</a>
+<ul class="sectlevel2">
+<li><a href="#_authentication">Authentication</a></li>
+<li><a href="#_client_applications">Client applications</a></li>
+<li><a href="#_oauth_2_0">OAuth 2.0</a></li>
+</ul>
+</li>
+<li><a href="#_provided_metrics">Provided Metrics</a>
+<ul class="sectlevel2">
+<li><a href="#_integrations">Integrations</a></li>
+<li><a href="#_peer_connection_sample_metrics">Peer Connection Sample Metrics</a></li>
+<li><a href="#_call_related_metrics">Call Related Metrics</a></li>
+<li><a href="#_report_related_metrics">Report Related Metrics</a></li>
+<li><a href="#_sentinel_metrics">Sentinel Metrics</a></li>
+<li><a href="#_health_metrics">Health Metrics</a></li>
+</ul>
+</li>
+<li><a href="#_observer_reports">Observer Reports</a>
+<ul class="sectlevel2">
+<li><a href="#_turn_onoff_reports">Turn on/off reports</a></li>
+</ul>
+</li>
+<li><a href="#_sentinels">Sentinels</a>
+<ul class="sectlevel2">
+<li><a href="#_filtering_concept">Filtering Concept</a></li>
+<li><a href="#_call_filters">Call Filters</a></li>
+<li><a href="#_peer_connection_filters">Peer Connection Filters</a></li>
+<li><a href="#_examples_for_sentinels">Examples for Sentinels</a></li>
+</ul>
+</li>
+<li><a href="#_connectors">Connectors</a>
+<ul class="sectlevel2">
+<li><a href="#_transformations">Transformations</a></li>
+<li><a href="#_buffers">Buffers</a></li>
+<li><a href="#_encoders">Encoders</a></li>
+<li><a href="#_sinks">Sinks</a></li>
+</ul>
+</li>
+<li><a href="#_configuration_references">Configuration References</a>
+<ul class="sectlevel2">
+<li><a href="#_micronaut_configuration">Micronaut Configuration</a></li>
+<li><a href="#_hazelcast_configuration">Hazelcast Configuration</a></li>
+<li><a href="#_observer_configuration">Observer Configuration</a></li>
+</ul>
+</li>
+<li><a href="#_known_limitations">Known Limitations</a></li>
+<li><a href="#_contributors">Contributors</a></li>
+<li><a href="#_licenses">Licenses</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>WebRTC-Observer is a microservice written in Java to collect and analyze
+WebRTC stats. It is designed to be a monitoring solution for WebRTC Applications scalable
+from a single, local development handling a few calls, up to a large kubernetes cluster accepting millions
+of samples per minutes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_overview">Overview</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="data-flow.png" alt="data flow" width="538" height="472">
+</div>
+</div>
+<div class="paragraph">
+<p>Observer is a focus point for metrics originated
+from a WebRTC application. It takes place as a
+processing element, capable of accepting samples from the
+collecting components, providing basic metrics for operations,
+and can forward reports to a Data warehouses for further analysis.</p>
+</div>
+<div class="paragraph">
+<p>The application is written in Java uses the <a href="https://micronaut.io">micronaut</a>
+framework to implement business logic and <a href="https://hazelcast.org">hazelcast</a>
+in-memory-data-grid is used to share data between observer instances.</p>
+</div>
+<div class="sect2">
+<h3 id="_data_hierarchy">Data Hierarchy</h3>
+<div class="paragraph">
+<p>Monitoring a WebRTC application includes several aspect from a quality of service (QoS) point of view.
+A typical WebRTC application creates one or more <a href="https://w3c.github.io/webrtc-pc/#peer-to-peer-connections">peer connections</a> to establish real-time communication between participants. WebRTC employs (<a href="https://tools.ietf.org/html/rfc3550)">Real-Time Protocol</a> to transport media. One peer connection usually combines several media flows, and each media flow can be identified by their synchronization source (<a href="https://tools.ietf.org/html/rfc3550#section-8">SSRC</a>).
+Apart from media flows a WebRTC application contains other, user related configurations, such as platform,
+browser, operation system, etc., all of them should be monitored in order to evaluate the user experience accordingly.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="data-hierarchy.png" alt="data hierarchy" width="256" height="582">
+</div>
+</div>
+<div class="paragraph">
+<p>The start point in Collection part is to monitor the WebRTC peer connections.
+The <mark>peer connection</mark> is monitored periodically by creating samples. A <mark>sample</mark> contains
+all information can be retrieved to the peer connection at the moment the sample is created.</p>
+</div>
+<div class="paragraph">
+<p>A peer connection belong to a user. A <mark>user</mark> is the enduser of a WebRTC application, and to fulfill the service the WebRTC application is created for, a user may initiates several peer connections.</p>
+</div>
+<div class="paragraph">
+<p>The next level up in our data hierarchy is the call. A <mark>call</mark> is a group of users shares media flows with each other using the WebRTC Application. To identify a group of user belongs to the same call we either can use the custom provided field called the <code>callId</code>, or the observer tries to match the SSRCs of peer connections considering the origin (the user).</p>
+</div>
+<div class="paragraph">
+<p>As we have the call, every call belongs to a WebRTC application. The observer is designed to accept samples from different WebRTC applications, and application can even belong to different service providers. At this point two levels of freedom are given. Every sample is originated by a media unit, and every <mark>media unit</mark> belongs to a <mark>service</mark>. For instance, if your organization collecting samples from a broadcasting television service, and wants to distinguish client provided service and the bridge the service is actually broadcasting the media, you can use media unit ids as <code>client</code>, and <code>bridge</code> for your service called for example <code>my-television</code>. If your organization initiates or collect from another service, the freedom of distinguishing sources can belong to the newly created service name.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accepted_samples">Accepted Samples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Observer listen for samples on input channels (e.g. websocket), and samples are accepted if
+the invoked input accepted and validated the provided sample successfully.</p>
+</div>
+<div class="paragraph">
+<p>The following schemas are accepted as sample inputs:
+* [Peer Connection Samples](###peer-connection-sample)</p>
+</div>
+<div class="sect2">
+<h3 id="_peer_connection_sample">Peer Connection Sample</h3>
+<div class="paragraph">
+<p>The peer connection sample multiplexes webrtc stats metrics, client details, and user media info.
+<strong>Schema description</strong>: (pcsample-v20200114.md)</p>
+</div>
+<div class="ulist">
+<div class="title">Client library:</div>
+<ul>
+<li>
+<p><a href="https://github.com/ObserveRTC/observer-js">observer-js</a></p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Client Integrations</div>
+<ul>
+<li>
+<p><a href="https://github.com/ObserveRTC/integrations/wiki/Vonage-OpenTok-Integration">Tokbox</a></p>
+</li>
+<li>
+<p><a href="https://github.com/ObserveRTC/integrations/wiki/Jitsi-Integration">Jitsi</a></p>
+</li>
+<li>
+<p><a href="https://github.com/ObserveRTC/integrations/wiki/Mediasoup-Integration">Mediasoup</a></p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Input channels</div>
+<ul>
+<li>
+<p><code>ws(s)://{HOST}:{PORT}/pcsamples/{serviceUUID}/{mediaUnitID}</code></p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">More information</div>
+<ul>
+<li>
+<p><a href="https://github.com/ObserveRTC/integrations/wiki">wiki</a></p>
+</li>
+<li>
+<p><a href="https://github.com/ObserveRTC/observer-js/issues">Issues</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_endpoints">API Endpoints</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>REST API endpoints are provided to control the observer.
+Using the endpoints you can configure the followings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Services</p>
+</li>
+<li>
+<p>Sentinels</p>
+</li>
+<li>
+<p>Peer Connection Filters</p>
+</li>
+<li>
+<p>Call Filters</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Services, Sentinels, Peer Connection Filters, and Call Filters can also be set in bootstrap configuration. The purpose of endpoints are to change them dynamically, and the purpose of configuration is to provide them statically, but the two concept can clash. For instance you setup a call filter in configuration, which you remove while the service is running, but you have not removed it from configuration, then next time the service bootstraps, the call filter will be in the service.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_authentication">Authentication</h3>
+<div class="paragraph">
+<p>Observer supports authentication by using <a href="https://micronaut.io">micronaut</a> framework. All controlling endpoints requires
+authentication if authentication is enabled by configuration.
+The following type of <a href="https://micronaut-projects.github.io/micronaut-security/latest/guide/#authenticationStrategies">authorizations</a> are built in with the observer:
+ * <a href="https://micronaut-projects.github.io/micronaut-security/latest/guide/#oauth">OAuth 2.0</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_client_applications">Client applications</h3>
+<div class="paragraph">
+<p>The following client application has been written using the observer endpoints.</p>
+</div>
+<div class="ulist">
+<div class="title">Python</div>
+<ul>
+<li>
+<p><a href="https://github.com/ObserveRTC/observer/tree/master/clients/python">observer-0-7.x</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_oauth_2_0">OAuth 2.0</h3>
+<div class="paragraph">
+<p>Observer built with <a href="https://micronaut-projects.github.io/micronaut-security/latest/guide/#oauth">Oauth 2.0</a> supports with micronaut. In the following example configurations are given for different oauth providers are given.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For more information on how to apply the configuration please read the <a href="#_configuration_references">Configuration References</a> section.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+You can use more than one oauth provider, but take attention to the environment variables especially the values for <code>client-id</code>, and <code>client-secret</code> as each provider gives you different values.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_google_gcp">Google (GCP)</h4>
+<div class="paragraph">
+<p>To enable a google provided OAuth 2.0 authentication for observer, alter the micronaut configuration as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">micronaut:
+  security:
+    enabled: true
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        google:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: 'https://accounts.google.com'</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Take attention of the <code>OAUTH_CLIENT_ID</code>, and <code>OAUTH_CLIENT_SECRET</code> environment variables. Make sure you follow the <a href="https://support.google.com/cloud/answer/6158849?hl=en">appropriate steps</a> necessary for that.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_amazon_aws">Amazon (AWS)</h4>
+<div class="paragraph">
+<p>To enable the amazon provided OAuth 2.0 authentication for observer, alter the micronaut configuration as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">micronaut:
+  security:
+    enabled: true
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        cognito:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: 'https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_POOL_ID}/'</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Take attention of the <code>OAUTH_CLIENT_ID</code>, <code>OAUTH_CLIENT_SECRET</code>, <code>COGNITO_REGION</code>, AND <code>COGNITO_POOL_ID</code> environment variables. Make sure you follow the <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/getting-credentials.html">appropriate steps</a> necessary for that.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_okta">Okta</h4>
+<div class="paragraph">
+<p>To enable a google provided OAuth 2.0 authentication for observer, alter the micronaut configuration as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">micronaut:
+  security:
+    enabled: true
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        okta:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: '${OIDC_ISSUER_DOMAIN}/oauth2/${OIDC_ISSUER_AUTHSERVERID}'</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Take attention of the <code>OAUTH_CLIENT_ID</code>, <code>OAUTH_CLIENT_SECRET</code>, <code>OIDC_ISSUER_DOMAIN</code>, and <code>OIDC_ISSUER_AUTHSERVERID</code> environment variables. Make sure you follow the <a href="https://developer.okta.com/docs/reference/api/authn/">appropriate steps</a> necessary for that.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_provided_metrics">Provided Metrics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The observer monitors the incoming samples and expose metrics.
+The metrics are exposed using <a href="https://micrometer.io/">micrometer</a> plugin in
+<a href="https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html#introduction">micronaut</a>
+framework.</p>
+</div>
+<div class="sect2">
+<h3 id="_integrations">Integrations</h3>
+<div class="paragraph">
+<p>The default integration this version is compiled with is <a href="https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html#prometheus">prometheus</a></p>
+</div>
+<div class="paragraph">
+<p>By default, metrics are exposed. The configuration belongs to micronaut detailed below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">micronaut:
+  metrics:
+    enabled: True
+    export:
+      prometheus:
+        enabled: true
+        descriptions: true
+        step: PT1M</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+For more infromation about the configuration related to metrics, please visit the official <a href="https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/">documentation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If you want to use different integrations, you need to compile the project with the appropriate dependency in the <code>build.gradle</code>, and use the related configuration for it.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_peer_connection_sample_metrics">Peer Connection Sample Metrics</h3>
+<div class="paragraph">
+<p>Metrics related to peer connections samples provide general information about the
+load the observer receive because of executing peer connection samples.</p>
+</div>
+<table class="tableblock frame-none grid-all fit-content stripes-even">
+<caption class="title">Table 1. Peer Connection Samples</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_opened_websockets</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of opened websocket</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serviceName</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_closed_websockets</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of closed websocket</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serviceName</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_pcsamples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of peer connection samples received by the service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mediaUnit, serviceName</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_call_related_metrics">Call Related Metrics</h3>
+<table class="tableblock frame-none grid-all fit-content stripes-even">
+<caption class="title">Table 2. Call Related Reports</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_initiated_calls</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of calls identified and initiated by the observer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">service, mediaunit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_finished_calls</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of calls identified and finished by the observer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">service, mediaunit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_joined_pcs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of peer connections joined to the observer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">service, mediaunit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_detached_pcs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of peer connections detached from the observer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">service, mediaunit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_impairable_pcs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of peer connections the observer skips to join to any call due to missing its parameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">service, mediaunit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">call_durations_in_mins</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Summary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A distribution summary about the duration of calls, reported at the end of every call</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">service</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_user_media_errors</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of user media errors reported by the samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serviceName</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_report_related_metrics">Report Related Metrics</h3>
+<table class="tableblock frame-none grid-all fit-content stripes-even">
+<caption class="title">Table 3. Report Related Reports</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_generated_reports</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of WebRTC-Reports generated by the service from the incoming samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serviceName</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_sentinel_metrics">Sentinel Metrics</h3>
+<table class="tableblock frame-none grid-all fit-content stripes-even">
+<caption class="title">Table 4. Sentinel Metrics</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_ssrcs_num</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the total number of SSRC calls counted by a sentinel over matching calls</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_pcs_num</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the total number of Peer Connections counted by a sentinel over matching calls</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_calls_num</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the total number of Calls counted by a sentinel over matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_media_units</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of media units a sentinel encounted during matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel, mediaUnit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_browser_ids_num</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the total number of browser ids counted by a sentinel over matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_user_names_num</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the total number of user names counted by a sentinel over matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_bytes_received<sup class="footnote" id="_footnote_inbound_rtp_monitor">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the sum of bytes received on peer connections a sentinel have found over a matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_packets_received<sup class="footnoteref">[<a class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the sum of packets received on peer connections a sentinel have found over a matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_packets_lost<sup class="footnoteref">[<a class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the sum of packets lost on peer connections a sentinel have found over a matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_bytes_sent<sup class="footnote" id="_footnote_outbound_rtp_monitor">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the sum of bytes sent on peer connections a sentinel have found over a matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_packets_sent<sup class="footnoteref">[<a class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gauge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the sum of packets sent on peer connections a sentinel have found over a matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">observertc_monitored_rtt<sup class="footnote" id="_footnote_remote_inbound_rtp_monitor">[<a id="_footnoteref_3" class="footnote" href="#_footnotedef_3" title="View footnote.">3</a>]</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Summary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the RTT of SSRCs a sentinel have found over a matching operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sentinel</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_health_metrics">Health Metrics</h3>
+<div class="paragraph">
+<p>Health metrics can be used by devops to monitor the healthiness of the observer,
+make sure it operates in an acceptable level.</p>
+</div>
+<table class="tableblock frame-none grid-all fit-content stripes-even">
+<caption class="title">Table 5. Health Metrics</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flaws_monitor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the number of errors reported by various part of the system.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">klass</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_observer_reports">Observer Reports</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Observer forward reports based on the incoming samples. Reports are either
+part of the incoming samples, like WebRTCStats measurements, or a generated event
+deducted from the samples, like a group of peer connection belonging to the same
+call. Reports are forwarded by the <a href="#_connectors">Connectors</a> in a format defined by an <a href="#_encoders">Encoders</a>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Fields such as <code>peerConnectionUUID</code>, serviceUUID`, <code>serviceName</code>, <code>callName</code>, <code>browserId</code>, <code>timestamp</code>, and <code>marker</code> are part of all reports.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>, , , , , , , , , , , , , , , ,</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Inbound RTP Reports (INBOUND_RTP)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats">RTCInboundRtpStreamStats</a>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Outbound RTP Reports (OUTBOUND_RTP)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats">RTCOutboundRtpStreamStats</a>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Remote Inbound RTP Reports (REMOTE_INBOUND_RTP)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats">RTCRemoteInboundRtpStreamStats</a>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Local ICE Candidate Reports (ICE_LOCAL_CANDIDATE)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats">RTCIceCandidateStats</a> according to the local candidates.</p>
+</div>
+<div class="paragraph">
+<div class="title">Remote ICE Candidate Reports (ICE_REMOTE_CANDIDATE)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats">RTCIceCandidateStats</a> according to the remote candidates.</p>
+</div>
+<div class="paragraph">
+<div class="title">ICE Candidate Pairs (ICE_CANDIDATE_PAIR)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats">RTCIceCandidatePairStats</a> according to the candidate pairs.</p>
+</div>
+<div class="paragraph">
+<div class="title">Media Source Reports (MEDIA_SOURCE)</div>
+<p>Contain all fields provided by a client integration <a href="https://www.w3.org/TR/webrtc-stats/#dom-rtcmediasourcestats">RTCMediaSourceStats</a>.</p>
+</div>
+<div class="paragraph">
+<div class="title">User Media Errors Reports (USER_MEDIA_ERROR)</div>
+<p>Contain message provided by a <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia">getUserMediaError</a> interface call at the browser.</p>
+</div>
+<div class="paragraph">
+<div class="title">Track Reports (TRACK)</div>
+<p>Contain message provided by track stats.</p>
+</div>
+<div class="paragraph">
+<div class="title">Initiated Call Reports (INITIATED_CALL)</div>
+<p>Generated every time when a user initiates a new call. All Joined, and Detached Peer Connection Reports holds the newly generated <code>callUUID</code> in order to group peer connections in further evaluation.</p>
+</div>
+<div class="paragraph">
+<div class="title">Finished Call Reports (FINISHED_CALL)</div>
+<p>Generated every time when the last user detached from a call.</p>
+</div>
+<div class="paragraph">
+<div class="title">Joined Peer Connection Reports (JOINED_PEER_CONNECTION)</div>
+<p>Generated every time when a new peer connection occurred at the observer.</p>
+</div>
+<div class="paragraph">
+<div class="title">Detached Peer Connection Reports (DETACHED_PEER_CONNECTION)</div>
+<p>Generated every time when a peer connection is detached from the observer.</p>
+</div>
+<div class="paragraph">
+<div class="title">Observer Event Reports (OBSERVER_EVENT)</div>
+<p>The observer can provide additional information may helps in further analysis.
+Observer event types are the following:
+ * <strong>NoSSRC</strong>: Generated every time when a peer connection does not have any reported SSRC.</p>
+</div>
+<div class="paragraph">
+<div class="title">Extension Reports (EXTENSION)</div>
+<p>Extension reports are messages provided by the client integration. They are not processed by the observer, but
+forwarded intact.</p>
+</div>
+<div class="sect2">
+<h3 id="_turn_onoff_reports">Turn on/off reports</h3>
+<div class="paragraph">
+<p>It is important to note in case of thousands of ongoing calls the amount of generated reports
+is immense. Furthermore, depending on the usage of course, not every type of report is necessary.
+By changing the configuration we can enable / disable report generation at the observer by
+setting the appropriate flags</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">observer:
+  outboundReports:
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
+    reportTracks: True
+    reportMediaSources: True
+    reportCandidatePairs: True
+    reportLocalCandidates: True
+    reportRemoteCandidates: True
+    reportUserMediaErrors: True</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sentinels">Sentinels</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The observer applies sentinels to monitor peer connections and calls.
+A Sentinel filters all calls' and all peer connections going through
+the observer and watches the ones matching for its defined criteria.
+Properties of the watched calls and peer connections are accumulated and metrics are exposed.</p>
+</div>
+<div class="paragraph">
+<p>Sentinels are designed to watch certain subset of the calls and peer connections, and
+providing useful metrics. Just like WebRTCStats metrics are useless if you do not know
+what you are looking for, or what do you want to measure. We give a few practical examples
+how to use sentinels for different scenarios in the [Example](#examples-for-sentinels) subsection.</p>
+</div>
+<div class="paragraph">
+<p>A Sentinel uses a collection of <code>call filters</code> and <code>peer connection filters</code>
+to decide if a call is watched or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  "expose": true,
+  "name": "MySentinel",
+   // list the filters for calls.
+   "callFilters": {
+        // the allMatch part of the filter matches if all of the filters listed below are match
+        "allMatch": [],
+        // the anyMatch part of the filter matches if any of the filters listed below are match
+        "anyMatch": []
+   },
+  "pcFilters": {
+        // the allMatch part of the filter matches if all of the filters listed below are match
+        "allMatch": [],
+        // the anyMatch part of the filter matches if any of the filters listed below are match
+        "anyMatch": []
+  },
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_filtering_concept">Filtering Concept</h3>
+<div class="paragraph">
+<p>The main building component of a sentinel is a filter. Filter itself does not exists,
+it is an abstract element inside the program, but this element is used to define
+criteria. We define a filter element as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  "filter": {
+    "allMatch": [],
+    "anyMatch": []
+  },
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The filter element has two array type attributes: <code>allMatch</code>, and <code>anyMatch</code>.
+Every listed item in the allMatch must be evaluated true in order the <code>allMatch</code> part to be true in the filter.
+Contrary, the <code>anyMatch</code> part is evaluated to be true if any of the item listed there is evaluated to be true.
+A filter is evaluated as true if the two parts are evaluated as true. If the attribute is an empty array,
+that part always evaluated to be true.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s define a filter for collections as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"MyFilter": { "allMatch": ["a", "b"], "anyMatch": ["c", "d"] } }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Applying the above filter for the following collection (the result of the evaluation is in comments)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">["a", "b", "c"] # True
+["a", "b", "d"] # True
+["a", "c", "d"] # False
+["b", "c", "d"] # False</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Different type of filters are inherited manifestation of the above defined abstract element,
+which are used to define what we want to filter for a sentinel. Filters can be embedded into another filter.
+For instance we can gave filter names to the <code>anyMatch</code> attribute of a filter, which means
+the actual filter matches if any of the filter listed there matches.
+In the following we define the different type of filters and in the end we give examples how to use them.</p>
+</div>
+<div class="paragraph">
+<p><strong>Collection Filter</strong>: Collection filter is a building block for actual filters for sentienl.
+They are part of <code>Call Filters</code> and <code>Peer connection filters</code> and this is why we need to describe beforehand.</p>
+</div>
+<div class="paragraph">
+<p>A collection filter is defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  // the size of the collection is equal to the given value
+  "eq": -1, // -1 is the default, which means it is not given by the user
+
+  //the size of the collection is greater than the given value
+  "gt": -1, // -1 is the default, which means it is not given by the user
+
+  //the size of the collection is less than the given value
+  "lt": -1, // -1 is the default, which means it is not given by the user
+
+  // evaluated as true if any of the item in the collection matches
+  anyMatch: [], // the default is an empty array
+
+  // evaluated as true if all of the item in the collection matches
+  allMatch: []  // the default is an empty array
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_call_filters">Call Filters</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  name: "CallFilterName",
+  marker: "", // a regex expression or empty for the marker of the samples
+  serviceName: "", // a regex expression or empty for the service name of the samples
+  callName: "", // a regex expression or empty for the service name of the samples
+  browserIds: {}, // a collection filter
+  peerConnections: {}, // a collection filter
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_peer_connection_filters">Peer Connection Filters</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  name: "PCFilterName",
+  marker: "", // a regex expression or empty for the marker of the samples
+  serviceName: "", // a regex expression or empty for the service name of the samples
+  callName: "", // a regex expression or empty for the service name of the samples
+  remoteIPs: {}, // a collection filter
+  SSRCs: {}, // a collection filter
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_examples_for_sentinels">Examples for Sentinels</h3>
+<div class="sect3">
+<h4 id="_watch_peer_to_peer_connections">Watch peer to peer connections</h4>
+<div class="paragraph">
+<p>In this example we want to watch all calls have two participants communicate to each other.
+For this we need to create a call filter matches with calls have exactly two different participants,
+and then we need to define a sentinel applies that filter in every check.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  name: "PeerToPeerCallsFilter",
+  browserIds: {
+    eq: 2
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We define a call filter matches with calls have exactly two browserIds. BrowserIds are
+the fingerprint of browser added to every sample incoming to the observer. It ensures
+the filter matches the calls have at least two different browsers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+you can setup the filter to matches the calls have exactly two peer connections,
+but keep in mind that certain client integration may uses more than 2 RTCPeerConnection
+in their peer to peer connections.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Next we need to define a sentinel applies our defined call filter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  "expose": true,
+  "name": "MyP2PSentinel",
+  "callFilters": {
+    "anyMatch": ["PeerToPeerCallsFilter"]
+  },
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you see the sentinel references the previously defined call filter by its name.</p>
+</div>
+<div class="paragraph">
+<p>Defining Filters and Sentinels can be done through the application API controlling endpoints
+for configurations, or putting giving a configuration through a yaml at bootstrap.
+For the latter here is the snippet in yaml what you can use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml"># Add a call filter for peer to peer calls
+  callFilters:
+    - name: "MyPeerToPeerFilter"
+      browserIds:
+        eq: 2
+
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
+  sentinels:
+    - name: "MySentinel"
+      expose: true
+      callFilters:
+        anyMatch:
+          - "MyPeerToPeerFilter"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_watch_calls_using_turn">Watch Calls using TURN</h4>
+<div class="paragraph">
+<p>In this example we want to watch all peer connections using TURN server
+to resolve their IP addresses.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  name: "MyTurnServersFilter",
+  remoteIPs: {
+    anyMatch: [
+      "10.10.10.10",
+      "20.20.20.20"
+    ]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>First we create a filter matches for any peer connection targeted the turn server in their
+remote ICE candidates. Once we have registered this filter we can create the sentinel
+applies it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json5" data-lang="json5">{
+  "expose": true,
+  "name": "MyTURNSentinel",
+  "pcFilters": {
+    "anyMatch": ["MyTurnServersFilter"]
+  },
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Defining Filters and Sentinels can be done through the application API controlling endpoints
+for configurations, or putting giving a configuration through a yaml at bootstrap.
+For the latter here is the snippet in yaml what you can use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml"># Add a call filter for peer to peer calls
+  pcFilters:
+    - name: "MyTurnServersFilter"
+      pcFilters:
+        anyMatch:
+          - "10.10.10.10"
+          - "20.20.20.20"
+
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
+  sentinels:
+    - name: "MyTURNSentinel"
+      expose: true
+      pcFilters:
+        anyMatch:
+          - "MyTurnServersFilter"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_connectors">Connectors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Connectors are used to connect the observer generated reports to
+another service. Connectors are described in configuration as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">name: "MyConnectorName"  # required
+transformations: []      # optional
+buffer: {}               # optional
+encoder: {}              # optional
+sink: {}                 # required</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Name</strong>: Every connector must have a name, identifying it in the logging mechanism.</p>
+</li>
+<li>
+<p><strong>Transformations</strong>: A connector may have transformations, such as Filter, or Obfuscator. Transformations are optional.</p>
+</li>
+<li>
+<p><strong>Buffer</strong>: A buffer takes place between the observer inner pipeline forwarded report and the sink.</p>
+</li>
+<li>
+<p><strong>Encoder</strong>: Specifies the encoding from an inner Report format to the sink accepted byte array format with optional meta information.</p>
+</li>
+<li>
+<p><strong>Sink</strong>: Sinks are the client library integration in the observer to forward the generated reports to.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_transformations">Transformations</h3>
+<div class="paragraph">
+<p>Transformation including Filter, or Obfuscation alters the configuration of the connector and transforms the Reprots to match the expectation for the forwarded data.
+Multiple transformation can be applied for one connector, each of them adds an additional overhead may affect performance.</p>
+</div>
+<div class="sect3">
+<h4 id="_filter">Filter</h4>
+<div class="paragraph">
+<p>Filters the report going through the connector. It gives a possibility to forward reports
+to a certain sink, for example from only a certain name of services.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">transformations:
+  - type: Filter
+    config:
+      reportType:
+        including: []
+        excluding: []
+      serviceUUIDs:
+        including: []
+        excluding: []
+      serviceName:
+        including: []
+        excluding: []
+      marker:
+        including: []
+        excluding: []</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_obfuscation">Obfuscation</h4>
+<div class="paragraph">
+<p>Obfuscator obfuscate fields in every reports potentially belongs to private concerns, like GDPR, user name, etc..</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">transformations:
+  - type: Obfuscator
+    config:
+      algorithm: SHA-512 # default
+      serviceName: Null # default
+      marker: Null # default</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>algorithm</strong>: the hash algorithm used to obfuscate fields in reports</p>
+</li>
+<li>
+<p><strong>serviceName</strong>: If it is provided then all servicename is replaced with the provided name</p>
+</li>
+<li>
+<p><strong>marker</strong>: If it is provided then all marker is replaced with the provided name</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_buffers">Buffers</h3>
+<div class="paragraph">
+<p>Reports are accumulated to a buffer for a certain time or quantity. The configuration clearly describes the expected behaviour:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">buffer:
+  maxItems: 100 #optional
+  maxWaitingTimeInS: 10 #optional</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Although both <code>maxItems</code>, and <code>maxWaitingTimeInS</code> must be larger than 0.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encoders">Encoders</h3>
+<div class="paragraph">
+<p>By default reports are encoded by avro into a byte array. However, as
+different Sink may accept different type of encoded messages and format, through
+encoders the encoding can be altered.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+It is important to notice, that any other encoder than avro add an additional
+(O(1)) overhead in terms of time complexity.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The general structure of an encoder is given below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">encoder:
+  type: ENCODER_NAME
+  format: BYTES / OBJECT
+  config: {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Every encoder should provide at least two type of format for the encoded records. These are
+BYTES, and OBJECT. The actual value depends on the Sink accepted message format. For example, KafkaSink
+only accept BYTES format, meanwhile MongoSink only accept OBJECT format from BsonEncoder.</p>
+</div>
+<div class="sect3">
+<h4 id="_avro_encoder">Avro Encoder</h4>
+<div class="paragraph">
+<p><a href="http://avro.apache.org/">Apache Avro</a> is a data serialization system highly efficient in terms of throughput.
+The observer inner pipeline prepares the reports in avro format, thus the default encoder is avro for the observer.</p>
+</div>
+<div class="paragraph">
+<p>Below the configuration properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">encoder:
+  type: AvroEncoder
+  format: BYTES / OBJECT
+  config:
+    addMetaKey: True # default</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>format</code> attribute determines the format the encoded emssage is forwarded.</p>
+</li>
+<li>
+<p><code>addMetaKey</code> attribute configure the encoder to add a preferable key information. This is important for service like kafka, where the forwarded record always a key, value pair, and the key influences the message partitioning, and, eventually, determines the effectiveness of the evaluation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Schema</div>
+<p>The avro generated schema can be downloaded here.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_json_encoder">Json Encoder</h4>
+<div class="paragraph">
+<p><a href="https://tools.ietf.org/html/rfc7159">JSON</a> is a lightweight, text-based, language-independent data interchange format</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">encoder:
+  type: JsonEncoder
+  format: BYTES / OBJECT
+  config:
+    addMetaKey: True # default</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>format</code> attribute determines the format the encoded emssage is forwarded.</p>
+</li>
+<li>
+<p><code>addMetaKey</code> attribute configure the encoder to add a preferable key information. This is important for service like kafka, where the forwarded record always a key, value pair, and the key influences the message partitioning, and, eventually, determines the effectiveness of the evaluation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bson_encoder">Bson Encoder</h4>
+<div class="paragraph">
+<p><a href="https://www.mongodb.com/json-and-bson">BSON</a> is a binary format of Json, primarly used by MongoSink.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">encoder:
+  type: BsonEncoder
+  format: BYTES / OBJECT</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>format</code> attribute determines the format the encoded emssage is forwarded.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+MongoSink only accepts OBJECT message format.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sinks">Sinks</h3>
+<div class="paragraph">
+<p>Sinks client integration of services accepting Reports for further evaluation.</p>
+</div>
+<div class="sect3">
+<h4 id="_loggersink">LoggerSink</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Accepted Encoder</strong>: All</p>
+</li>
+<li>
+<p><strong>Accepted message format</strong>: All</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">sink:
+  type: LoggerSink
+  config:
+    printReports: False #default</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The LoggerSink added for debug purposes,
+uses the facade logger to provide summary information about the generated reports
+from the observer. if the <code>printReports</code> option is true, it also prints out the received reports.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_kafkasink">KafkaSink</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Accepted Encoder</strong>: All</p>
+</li>
+<li>
+<p><strong>Accepted message format</strong>: BYTES</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">sink:
+  type: KafkaSink
+  config:
+    topic: "MyTopic"  # required
+    properties:
+      bootstrap.servers: "localhost:9092" # required</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The kafka sink connects the observer to a kafka message broker and forward the reports to
+the kafka. It is agonistic int terms of encoded type, all it matters is to receive it
+in bytes message format.
+The required attribute is the <code>topic</code>, which is used to dump all reports.
+The sub structure of the <code>properties</code> attribute paste the provided fields to a
+<a href="https://kafka.apache.org/documentation/#producerconfigs">kafka producer</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mongosink">MongoSink</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Accepted Encoder</strong>: BsonEncoder</p>
+</li>
+<li>
+<p><strong>Accepted message format</strong>: OBJECT</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">sink:
+  type: MongoSink
+  config:
+    database: "MyTopic"  # required
+    collectionNames:
+      INBOUND_RTP: "MyCollectionNameForInboundRTPReports"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The MongoSink is primarly added to the base version of observer to make the deployment easy
+for developers or organization in the state where perforamnce is not the primary concerns, but
+simplicity of usage. It accept Bson encdoded records with OBJECT message format and forward all reports
+into a configured database.</p>
+</div>
+<div class="paragraph">
+<p>The <code>collectionNames</code> field the name of the collection for each type of report can be configured to a custom one. However the keys are strict and bound to the type of Reports. The type of reports are listed in <a href="#_observer_reports">Observer Reports</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_references">Configuration References</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Observer reads provided configuration at bootstrap using micronaut config files (typically the <code>application.yaml</code>). As the observer itself is bound to micronaut and hazelcast, configuration of the three
+determines the behaviour of the service. In the following we try to summarize how to customize your observer through configurations.</p>
+</div>
+<div class="sect2">
+<h3 id="_micronaut_configuration">Micronaut Configuration</h3>
+<div class="paragraph">
+<p>The micronaut frameworks controls all 3rd party dependencies and plugins the
+observer uses.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hazelcast_configuration">Hazelcast Configuration</h3>
+<div class="paragraph">
+<p>Hazelcast determines the behaviour of the in-memory grid, plays crucial role when the service
+is replicated to scale out for loads, or to communicate throughout data centers.
+The <a href="https://docs.hazelcast.com/imdg/4.2/index.html">official documentation</a> provides a thrilling
+description about the service.
+From the observer point of view it is important that instances forming a cluster
+must share information between each other.
+Hazelcast configuration plays also an important role in backup configuration, as
+the number of backup determines how many observer crashes are tolerated without data losses.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_observer_configuration">Observer Configuration</h3>
+<div class="paragraph">
+<p>The following configuration serves as a reference configuration
+for this version in <code>yaml</code> format with comments
+explaining (more or less) what that configuration is intended
+to setup.</p>
+</div>
+<div class="paragraph">
+<p>The configuration must be parsed by the service engine framework
+([micronaut](<a href="https://micronaut.io)" class="bare">https://micronaut.io)</a>), thus it should be placed
+one of the config file it loads (e.g.: <code>application.yaml</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">observer:
+
+  # Setup security configuration specific to the observer service
+  security:
+    # Drop Peer Connection Samples, for which the service uuid does not match any service name
+    dropUnknownServices: False
+
+  # Sets up the mapping between service UUID and service Name.
+  servicemappings:
+    - name: "example-service-name"
+      uuids:
+        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
+  # if enabled the generated reports from the observer
+  # are monitored and the metrics are exposed.
+  reportMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
+    tagByType: false
+
+  # if enabled the incoming user media errors are monitored
+  # and the metrics are exposed.
+  userMediaErrorsMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
+
+  # if enabled IP addresses are obfuscated
+  ipAddressConverter:
+    enabled: False
+    algorithm: SHA-256
+    salt: "MySalt"
+
+  # If enabled the observer monitors inbound RTP traffic,
+  # and through sentinels it exposes metrics (received bytes,
+  # lost packets, etc.)
+  #
+  inboundRtpMonitor:
+    enabled: False
+    retentionTimeInS: 300
+
+  # If enabled the observer monitors remote inbound RTP traffic,
+  # and through sentinels it exposes metrics (RTT, etc.)
+  #
+  remoteInboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+    weightFactor: 0.3
+
+  # If enabled the observer monitors outbound RTP traffic,
+  # and through sentinels it exposes metrics (sent bytes,
+  # sent packets, etc.)
+  #
+  # NOTE: this increase memory storage consumption and
+  # hazelcast traffic
+  outboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+
+  # Sets a filter for peer connections
+  pcFilters:
+    - name: "MyTurnServerFilter"
+      remoteIPs:
+        anyMatch:
+          - "10.10.10.10"
+          - "20.20.20.20"
+
+  # Add a call filter for peer to peer calls
+  callFilters:
+    - name: "MyPeerToPeerFilter"
+      browserIds:
+        eq: 2
+
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
+  sentinels:
+    - name: "MySentinel"
+      expose: true
+      callFilters:
+        allMatch:
+          - "MyPeerToPeerFilter"
+      pcFilters:
+        allMatch:
+          - "MyTurnServerFilter"
+
+
+  # The time Period sentinels are checking calls in minutes
+  sentinelsCheckingPeriodInMin: 1
+
+
+  # Defines the configuration for a connector the reports are sent to
+  connectors:
+    - name: "ReportSinkLogger"
+      buffer:
+        maxItems: 100
+        maxWaitingTimeInS: 10
+      sink:
+        type: LoggerSink
+        config:
+          printReports: False
+
+  # Sets up the Evaluators every incoming sample is subjected
+  evaluators:
+
+    # name of the calls, which cannot be paired (nor SSRC, neither call name was provided to match)
+    impairablePCsCallName: "impairable-peer-connections-default-call-name"
+
+    # The incoming sample buffer maximum waiting time before emission
+    observedPCSBufferMaxTimeInS: 10
+
+    # The incoming sample buffer maximum amount of items it can hold
+    observedPCSBufferMaxItemNums: 10000
+
+    # The maximum idle time for a peer connection before it is declared to be detached.
+    peerConnectionMaxIdleTimeInS: 60
+
+  # Sets up which type of webrtc reports the service can forward
+  outboundReports:
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
+    reportTracks: True
+    reportMediaSources: True
+    reportCandidatePairs: True
+    reportLocalCandidates: True
+    reportRemoteCandidates: True
+    reportUserMediaErrors: True
+
+  # Sets up the hazelcast configuration file
+  hazelcast:
+    configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_known_limitations">Known Limitations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following limitations are known to this version</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contributors">Contributors</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>[Balazs Kreith](<a href="https://github.com/balazskreith" class="bare">https://github.com/balazskreith</a>)</p>
+</li>
+<li>
+<p>[Pallab Gain](<a href="https://github.com/pallab-gain" class="bare">https://github.com/pallab-gain</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_licenses">Licenses</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Apache 2.0</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. Only if Inbound RTP Monitor is enabled
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. Only if Outbound RTP Monitor is enabled
+</div>
+<div class="footnote" id="_footnotedef_3">
+<a href="#_footnoteref_3">3</a>. Only if remote inbound monitor is enabled
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-04-01 13:33:18 UTC
+</div>
+</div>
+</body>
+</html>

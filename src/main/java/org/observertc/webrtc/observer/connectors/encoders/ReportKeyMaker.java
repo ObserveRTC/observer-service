@@ -22,6 +22,16 @@ public class ReportKeyMaker implements ReportVisitor<UUID> {
 
 
     @Override
+    public UUID visitClientDetailsReport(Report report, ClientDetails payload) {
+        return UUID.fromString(payload.getPeerConnectionUUID());
+    }
+
+    @Override
+    public UUID visitMediaDeviceReport(Report report, MediaDevice payload) {
+        return UUID.fromString(payload.getPeerConnectionUUID());
+    }
+
+    @Override
     public UUID visitTrackReport(Report report, Track payload) {
         return UUID.fromString(payload.getPeerConnectionUUID());
     }
