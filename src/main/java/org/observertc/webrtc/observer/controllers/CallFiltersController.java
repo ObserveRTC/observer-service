@@ -6,8 +6,8 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
-import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
 import org.observertc.webrtc.observer.dto.CallFilterDTO;
+import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
 import org.observertc.webrtc.observer.repositories.CallFiltersRepository;
 
 import javax.inject.Inject;
@@ -24,7 +24,6 @@ public class CallFiltersController {
 	CallFiltersRepository callFiltersRepository;
 
 	public CallFiltersController() {
-
 	}
 
 	@Secured(SecurityRule.IS_AUTHENTICATED)
