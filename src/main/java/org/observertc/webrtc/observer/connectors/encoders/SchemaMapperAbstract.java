@@ -56,8 +56,9 @@ public abstract class SchemaMapperAbstract<T> extends TaskAbstract<Map<ReportTyp
         Supplier<T> supplier = this.makeSupplier(reportType);
         result.withSupplier(supplier);
         // common fields
+        List<String> excludedFields = List.of("payload", "version");
         Report.getClassSchema().getFields().stream().forEach(field -> {
-            if (field.name().equals("payload")) {
+            if (excludedFields.stream().anyMatch(excludedField -> field.name().equals(excludedField))) {
                 return;
             }
             var fieldName = field.name();

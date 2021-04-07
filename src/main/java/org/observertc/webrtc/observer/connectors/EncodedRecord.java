@@ -1,6 +1,7 @@
 package org.observertc.webrtc.observer.connectors;
 
 import org.observertc.webrtc.observer.common.Utils;
+import org.observertc.webrtc.schemas.reports.ReportType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,8 @@ public class EncodedRecord {
     private static final String REPORT_KEY_FIELD_NAME = "reportKey";
     private static final String ENCODER_CLASS_FIELD_NAME = "encoderClass";
     private static final String MESSAGE_FORMAT_FIELD_NAME = "messageFormat";
+    private static final String REPORT_TYPE_FIELD_NAME = "reportType";
+
     public static Builder builder() {
         return new Builder();
     }
@@ -52,6 +55,8 @@ public class EncodedRecord {
         return (UUID) this.meta.get(REPORT_KEY_FIELD_NAME);
     }
 
+    public ReportType getReportType() { return (ReportType) this.meta.get(REPORT_TYPE_FIELD_NAME);}
+
     public static class Builder {
         private final EncodedRecord result = new EncodedRecord();
 
@@ -75,6 +80,11 @@ public class EncodedRecord {
             return this;
         }
 
+        public Builder withReportType(ReportType type) {
+            this.result.meta.put(REPORT_TYPE_FIELD_NAME, type);
+            return this;
+        }
+
         Builder withEmptyFlag() {
             this.result.empty = true;
             return this;
@@ -92,5 +102,7 @@ public class EncodedRecord {
             }
             return this.result;
         }
+
+
     }
 }
