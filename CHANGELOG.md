@@ -11,6 +11,8 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
  * Added new address for pc samples `/pcsamples/{serviceUUID}/{mediaUnitId}`
  * Add Bson Encoder to the encoder type
  * Add MongoSink to the sinks
+ * Change the documentation to asciidoc
+ * Add Obfuscator transfromations
 
 ## 0.7.2 (H)
 

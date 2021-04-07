@@ -1,0 +1,1172 @@
+= WebRTC-Observer Documentation
+:toc: left
+
+== Introduction
+
+WebRTC-Observer is a microservice written in Java to collect and analyze
+WebRTC stats. It is designed to be a monitoring solution for WebRTC Applications scalable
+from a single, local development handling a few calls, up to a large kubernetes cluster accepting millions
+of samples per minutes.
+
+== Overview
+
+[plantuml, data-flow, png]
+----
+@startuml
+skinparam handwritten true
+skinparam monochrome true
+skinparam backgroundColor transparent
+
+package "Collection" {
+  ws - [WebRTC App]
+}
+
+cloud "Processing" {
+  ws --> [Observer]
+  [Observer] --> [Connector]
+}
+
+database "Data warehouse" {
+    [Connector] --> [BigQuery]
+    [Connector] --> [RedShift]
+    [Connector] --> [MongoDB]
+    [Connector] --> [Kafka]
+}
+
+@enduml
+----
+
+Observer is a focus point for metrics originated
+from a WebRTC application. It takes place as a
+processing element, capable of accepting samples from the
+collecting components, providing basic metrics for operations,
+and can forward reports to a Data warehouses for further analysis.
+
+The application is written in Java uses the https://micronaut.io[micronaut]
+framework to implement business logic and https://hazelcast.org[hazelcast]
+in-memory-data-grid is used to share data between observer instances.
+
+=== Data Hierarchy
+
+Monitoring a WebRTC application includes several aspect from a quality of service (QoS) point of view.
+A typical WebRTC application creates one or more https://w3c.github.io/webrtc-pc/#peer-to-peer-connections[peer connections] to establish real-time communication between participants. WebRTC employs (https://tools.ietf.org/html/rfc3550)[Real-Time Protocol] to transport media. One peer connection usually combines several media flows, and each media flow can be identified by their synchronization source (https://tools.ietf.org/html/rfc3550#section-8[SSRC]).
+Apart from media flows a WebRTC application contains other, user related configurations, such as platform,
+browser, operation system, etc., all of them should be monitored in order to evaluate the user experience accordingly.
+
+
+[plantuml, data-hierarchy, png]
+----
+@startuml
+skinparam handwritten true
+skinparam monochrome true
+skinparam backgroundColor transparent
+
+' hide the spot
+hide circle
+
+entity "Peer Connection Sample" as pcs {
+*peerConnectionId: UUID <<generated>>
+--
+...metrics...
+}
+
+entity "User" as user {
+*browserId: String <<generated>>
+--
+providedUserId: String <<optional>>
+}
+
+entity "Call" as call {
+*call: UUID <<generated>>
+--
+providedCallId: String <<optional>>
+}
+
+entity "Media Unit" as mediaUnit {
+*mediaUnitId: String <<generated>>
+}
+
+entity "Service" as service {
+*serviceUUID: UUID <<generated>>
+---
+serviceName: String <<optional>>
+}
+
+
+user ||..o{ pcs
+call ||..o{ user
+mediaUnit ||..o{ call
+service ||..o{ mediaUnit
+
+@enduml
+----
+
+The start point in Collection part is to monitor the WebRTC peer connections.
+The #peer connection# is monitored periodically by creating samples. A #sample# contains
+all information can be retrieved to the peer connection at the moment the sample is created.
+
+A peer connection belong to a user. A #user# is the enduser of a WebRTC application, and to fulfill the service the WebRTC application is created for, a user may initiates several peer connections.
+
+The next level up in our data hierarchy is the call. A #call# is a group of users shares media flows with each other using the WebRTC Application. To identify a group of user belongs to the same call we either can use the custom provided field called the `callId`, or the observer tries to match the SSRCs of peer connections considering the origin (the user).
+
+As we have the call, every call belongs to a WebRTC application. The observer is designed to accept samples from different WebRTC applications, and application can even belong to different service providers. At this point two levels of freedom are given. Every sample is originated by a media unit, and every #media unit# belongs to a #service#. For instance, if your organization collecting samples from a broadcasting television service, and wants to distinguish client provided service and the bridge the service is actually broadcasting the media, you can use media unit ids as `client`, and `bridge` for your service called for example `my-television`. If your organization initiates or collect from another service, the freedom of distinguishing sources can belong to the newly created service name.
+
+
+
+== Accepted Samples
+
+Observer listen for samples on input channels (e.g. websocket), and samples are accepted if
+the invoked input accepted and validated the provided sample successfully.
+
+The following schemas are accepted as sample inputs:
+* [Peer Connection Samples](###peer-connection-sample)
+
+=== Peer Connection Sample
+
+The peer connection sample multiplexes webrtc stats metrics, client details, and user media info.
+*Schema description*: (pcsample-v20200114.md)
+
+.Client library:
+ * https://github.com/ObserveRTC/observer-js[observer-js]
+
+.Client Integrations
+ * https://github.com/ObserveRTC/integrations/wiki/Vonage-OpenTok-Integration[Tokbox]
+ * https://github.com/ObserveRTC/integrations/wiki/Jitsi-Integration[Jitsi]
+ * https://github.com/ObserveRTC/integrations/wiki/Mediasoup-Integration[Mediasoup]
+
+.Input channels
+ * `ws(s)://{HOST}:{PORT}/pcsamples/{serviceUUID}/{mediaUnitID}`
+
+.More information
+ * https://github.com/ObserveRTC/integrations/wiki[wiki]
+ * https://github.com/ObserveRTC/observer-js/issues[Issues]
+
+
+== API Endpoints
+
+REST API endpoints are provided to control the observer.
+Using the endpoints you can configure the followings:
+
+ * Services
+ * Sentinels
+ * Peer Connection Filters
+ * Call Filters
+
+IMPORTANT: Services, Sentinels, Peer Connection Filters, and Call Filters can also be set in bootstrap configuration. The purpose of endpoints are to change them dynamically, and the purpose of configuration is to provide them statically, but the two concept can clash. For instance you setup a call filter in configuration, which you remove while the service is running, but you have not removed it from configuration, then next time the service bootstraps, the call filter will be in the service.
+
+
+=== Authentication
+
+Observer supports authentication by using https://micronaut.io[micronaut] framework. All controlling endpoints requires
+authentication if authentication is enabled by configuration.
+The following type of https://micronaut-projects.github.io/micronaut-security/latest/guide/#authenticationStrategies[authorizations] are built in with the observer:
+ * https://micronaut-projects.github.io/micronaut-security/latest/guide/#oauth[OAuth 2.0]
+
+
+=== Client applications
+
+The following client application has been written using the observer endpoints.
+
+.Python
+ * https://github.com/ObserveRTC/observer/tree/master/clients/python[observer-0-7.x]
+
+
+=== OAuth 2.0
+
+Observer built with https://micronaut-projects.github.io/micronaut-security/latest/guide/#oauth[Oauth 2.0] supports with micronaut. In the following example configurations are given for different oauth providers are given.
+
+NOTE: For more information on how to apply the configuration please read the <<Configuration References>> section.
+
+TIP: You can use more than one oauth provider, but take attention to the environment variables especially the values for `client-id`, and `client-secret` as each provider gives you different values.
+
+==== Google (GCP)
+
+To enable a google provided OAuth 2.0 authentication for observer, alter the micronaut configuration as follows:
+```yaml
+micronaut:
+  security:
+    enabled: true
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        google:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: 'https://accounts.google.com'
+```
+
+NOTE: Take attention of the `OAUTH_CLIENT_ID`, and `OAUTH_CLIENT_SECRET` environment variables. Make sure you follow the https://support.google.com/cloud/answer/6158849?hl=en[appropriate steps] necessary for that.
+
+==== Amazon (AWS)
+
+To enable the amazon provided OAuth 2.0 authentication for observer, alter the micronaut configuration as follows:
+
+```yaml
+micronaut:
+  security:
+    enabled: true
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        cognito:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: 'https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_POOL_ID}/'
+```
+
+NOTE: Take attention of the `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `COGNITO_REGION`, AND `COGNITO_POOL_ID` environment variables. Make sure you follow the https://docs.aws.amazon.com/cognito/latest/developerguide/getting-credentials.html[appropriate steps] necessary for that.
+
+==== Okta
+To enable a google provided OAuth 2.0 authentication for observer, alter the micronaut configuration as follows:
+```yaml
+micronaut:
+  security:
+    enabled: true
+    authentication: idtoken
+    endpoints:
+      logout:
+        get-allowed: true
+    redirect:
+      login-success: /whoiam
+    oauth2:
+      clients:
+        okta:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: '${OIDC_ISSUER_DOMAIN}/oauth2/${OIDC_ISSUER_AUTHSERVERID}'
+```
+
+NOTE: Take attention of the `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `OIDC_ISSUER_DOMAIN`, and `OIDC_ISSUER_AUTHSERVERID` environment variables. Make sure you follow the https://developer.okta.com/docs/reference/api/authn/[appropriate steps] necessary for that.
+
+
+== Provided Metrics
+
+The observer monitors the incoming samples and expose metrics.
+The metrics are exposed using https://micrometer.io/[micrometer] plugin in
+https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html#introduction[micronaut]
+framework.
+
+=== Integrations
+
+The default integration this version is compiled with is https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html#prometheus[prometheus]
+
+By default, metrics are exposed. The configuration belongs to micronaut detailed below:
+```yaml
+micronaut:
+  metrics:
+    enabled: True
+    export:
+      prometheus:
+        enabled: true
+        descriptions: true
+        step: PT1M
+```
+
+TIP: For more infromation about the configuration related to metrics, please visit the official https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/[documentation].
+
+NOTE: If you want to use different integrations, you need to compile the project with the appropriate dependency in the `build.gradle`, and use the related configuration for it.
+
+=== Peer Connection Sample Metrics
+
+Metrics related to peer connections samples provide general information about the
+load the observer receive because of executing peer connection samples.
+
+.Peer Connection Samples
+[frame=none]
+[.stripes-even,cols=4*]
+[%autowidth]
+|===
+|Metric Name |Type |Description |Tags
+
+|observertc_opened_websockets
+|Counter
+|Indicates the number of opened websocket
+|serviceName
+
+|observertc_closed_websockets
+|Counter
+|Indicates the number of closed websocket
+|serviceName
+
+|observertc_pcsamples
+|Counter
+|Indicates the number of peer connection samples received by the service
+|mediaUnit, serviceName
+|===
+
+=== Call Related Metrics
+
+.Call Related Reports
+[frame=none]
+[.stripes-even,cols=4*]
+[%autowidth]
+|===
+|Metric Name |Type |Description |Tags
+
+|observertc_initiated_calls
+|Counter
+|Indicates the number of calls identified and initiated by the observer
+|service, mediaunit
+
+|observertc_finished_calls
+|Counter
+|Indicates the number of calls identified and finished by the observer
+|service, mediaunit
+
+|observertc_joined_pcs
+|Counter
+|Indicates the number of peer connections joined to the observer
+|service, mediaunit
+
+|observertc_detached_pcs
+|Counter
+|Indicates the number of peer connections detached from the observer
+|service, mediaunit
+
+|observertc_impairable_pcs
+|Counter
+|Indicates the number of peer connections the observer skips to join to any call due to missing its parameters
+|service, mediaunit
+
+|call_durations_in_mins
+|Summary
+|A distribution summary about the duration of calls, reported at the end of every call
+|service
+
+|observertc_user_media_errors
+|Counter
+|Indicates the number of user media errors reported by the samples
+|serviceName
+|===
+
+
+=== Report Related Metrics
+
+.Report Related Reports
+[frame=none]
+[.stripes-even,cols=4*]
+[%autowidth]
+|===
+|Metric Name |Type |Description |Tags
+
+|observertc_generated_reports
+|Counter
+|Indicates the number of WebRTC-Reports generated by the service from the incoming samples
+|serviceName
+|===
+
+
+=== Sentinel Metrics
+
+.Sentinel Metrics
+[frame=none]
+[.stripes-even,cols=4*]
+[%autowidth]
+|===
+|Metric Name |Type |Description |Tags
+
+|observertc_monitored_ssrcs_num
+|Gauge
+|Indicates the total number of SSRC calls counted by a sentinel over matching calls
+|sentinel
+
+|observertc_monitored_pcs_num
+|Gauge
+|Indicates the total number of Peer Connections counted by a sentinel over matching calls
+|sentinel
+
+|observertc_monitored_calls_num
+|Gauge
+|Indicates the total number of Calls counted by a sentinel over matching operation
+|sentinel
+
+|observertc_monitored_media_units
+|Counter
+|Indicates the number of media units a sentinel encounted during matching operation
+|sentinel, mediaUnit
+
+|observertc_monitored_browser_ids_num
+|Gauge
+|Indicates the total number of browser ids counted by a sentinel over matching operation
+|sentinel
+
+|observertc_monitored_user_names_num
+|Gauge
+|Indicates the total number of user names counted by a sentinel over matching operation
+|sentinel
+
+|observertc_monitored_bytes_receivedfootnote:inbound_rtp_monitor[Only if Inbound RTP Monitor is enabled]
+|Gauge
+|Indicates the sum of bytes received on peer connections a sentinel have found over a matching operation
+|sentinel
+
+|observertc_monitored_packets_receivedfootnote:inbound_rtp_monitor[]
+|Gauge
+|Indicates the sum of packets received on peer connections a sentinel have found over a matching operation
+|sentinel
+
+|observertc_monitored_packets_lostfootnote:inbound_rtp_monitor[]
+|Gauge
+|Indicates the sum of packets lost on peer connections a sentinel have found over a matching operation
+|sentinel
+
+|observertc_monitored_bytes_sentfootnote:outbound_rtp_monitor[Only if Outbound RTP Monitor is enabled]
+|Gauge
+|Indicates the sum of bytes sent on peer connections a sentinel have found over a matching operation
+|sentinel
+
+|observertc_monitored_packets_sentfootnote:outbound_rtp_monitor[]
+|Gauge
+|Indicates the sum of packets sent on peer connections a sentinel have found over a matching operation
+|sentinel
+
+|observertc_monitored_rttfootnote:remote_inbound_rtp_monitor[Only if remote inbound monitor is enabled]
+|Summary
+|Indicates the RTT of SSRCs a sentinel have found over a matching operation
+|sentinel
+
+|===
+
+
+=== Health Metrics
+
+Health metrics can be used by devops to monitor the healthiness of the observer,
+make sure it operates in an acceptable level.
+
+.Health Metrics
+[frame=none]
+[.stripes-even,cols=4*]
+[%autowidth]
+|===
+|Metric Name |Type |Description |Tags
+
+|Flaws_monitor
+|Counter
+|Indicates the number of errors reported by various part of the system.
+|klass
+|===
+
+
+== Observer Reports
+
+Observer forward reports based on the incoming samples. Reports are either
+part of the incoming samples, like WebRTCStats measurements, or a generated event
+deducted from the samples, like a group of peer connection belonging to the same
+call. Reports are forwarded by the <<Connectors>> in a format defined by an <<Encoders>>.
+
+IMPORTANT: Fields such as `peerConnectionUUID`, serviceUUID`, `serviceName`, `callName`, `browserId`, `timestamp`, and `marker` are part of all reports.
+
+* , , , , , , , , , , , , , , , ,
+
+
+.Inbound RTP Reports (INBOUND_RTP)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats[RTCInboundRtpStreamStats].
+
+.Outbound RTP Reports (OUTBOUND_RTP)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats[RTCOutboundRtpStreamStats].
+
+.Remote Inbound RTP Reports (REMOTE_INBOUND_RTP)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats[RTCRemoteInboundRtpStreamStats].
+
+.Local ICE Candidate Reports (ICE_LOCAL_CANDIDATE)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats[RTCIceCandidateStats] according to the local candidates.
+
+.Remote ICE Candidate Reports (ICE_REMOTE_CANDIDATE)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatestats[RTCIceCandidateStats] according to the remote candidates.
+
+.ICE Candidate Pairs (ICE_CANDIDATE_PAIR)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats[RTCIceCandidatePairStats] according to the candidate pairs.
+
+.Media Source Reports (MEDIA_SOURCE)
+Contain all fields provided by a client integration https://www.w3.org/TR/webrtc-stats/#dom-rtcmediasourcestats[RTCMediaSourceStats].
+
+.User Media Errors Reports (USER_MEDIA_ERROR)
+Contain message provided by a https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia[getUserMediaError] interface call at the browser.
+
+.Track Reports (TRACK)
+Contain message provided by track stats.
+
+.Initiated Call Reports (INITIATED_CALL)
+Generated every time when a user initiates a new call. All Joined, and Detached Peer Connection Reports holds the newly generated `callUUID` in order to group peer connections in further evaluation.
+
+.Finished Call Reports (FINISHED_CALL)
+Generated every time when the last user detached from a call.
+
+.Joined Peer Connection Reports (JOINED_PEER_CONNECTION)
+Generated every time when a new peer connection occurred at the observer.
+
+.Detached Peer Connection Reports (DETACHED_PEER_CONNECTION)
+Generated every time when a peer connection is detached from the observer.
+
+.Media Device Reports (MEDIA_DEVICE)
+
+.Client Details (CLIENT_DETAILS)
+
+.Observer Event Reports (OBSERVER_EVENT)
+The observer can provide additional information may helps in further analysis.
+Observer event types are the following:
+ * *NoSSRC*: Generated every time when a peer connection does not have any reported SSRC.
+
+.Extension Reports (EXTENSION)
+Extension reports are messages provided by the client integration. They are not processed by the observer, but
+forwarded intact.
+
+=== Turn on/off reports
+
+It is important to note in case of thousands of ongoing calls the amount of generated reports
+is immense. Furthermore, depending on the usage of course, not every type of report is necessary.
+By changing the configuration we can enable / disable report generation at the observer by
+setting the appropriate flags
+
+```yaml
+observer:
+  outboundReports:
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
+    reportTracks: True
+    reportMediaSources: True
+    reportCandidatePairs: True
+    reportLocalCandidates: True
+    reportRemoteCandidates: True
+    reportUserMediaErrors: True
+```
+
+== Sentinels
+
+The observer applies sentinels to monitor peer connections and calls.
+A Sentinel filters all calls' and all peer connections going through
+the observer and watches the ones matching for its defined criteria.
+Properties of the watched calls and peer connections are accumulated and metrics are exposed.
+
+Sentinels are designed to watch certain subset of the calls and peer connections, and
+providing useful metrics. Just like WebRTCStats metrics are useless if you do not know
+what you are looking for, or what do you want to measure. We give a few practical examples
+how to use sentinels for different scenarios in the [Example](#examples-for-sentinels) subsection.
+
+A Sentinel uses a collection of `call filters` and `peer connection filters`
+to decide if a call is watched or not.
+
+```json5
+{
+  "expose": true,
+  "name": "MySentinel",
+   // list the filters for calls.
+   "callFilters": {
+        // the allMatch part of the filter matches if all of the filters listed below are match
+        "allMatch": [],
+        // the anyMatch part of the filter matches if any of the filters listed below are match
+        "anyMatch": []
+   },
+  "pcFilters": {
+        // the allMatch part of the filter matches if all of the filters listed below are match
+        "allMatch": [],
+        // the anyMatch part of the filter matches if any of the filters listed below are match
+        "anyMatch": []
+  },
+}
+```
+
+=== Filtering Concept
+
+The main building component of a sentinel is a filter. Filter itself does not exists,
+it is an abstract element inside the program, but this element is used to define
+criteria. We define a filter element as follows:
+
+```json5
+{
+  "filter": {
+    "allMatch": [],
+    "anyMatch": []
+  },
+}
+```
+The filter element has two array type attributes: `allMatch`, and `anyMatch`.
+Every listed item in the allMatch must be evaluated true in order the `allMatch` part to be true in the filter.
+Contrary, the `anyMatch` part is evaluated to be true if any of the item listed there is evaluated to be true.
+A filter is evaluated as true if the two parts are evaluated as true. If the attribute is an empty array,
+that part always evaluated to be true.
+
+Example:
+
+Let's define a filter for collections as follows:
+
+```json
+{"MyFilter": { "allMatch": ["a", "b"], "anyMatch": ["c", "d"] } }
+```
+Applying the above filter for the following collection (the result of the evaluation is in comments)
+```shell
+["a", "b", "c"] # True
+["a", "b", "d"] # True
+["a", "c", "d"] # False
+["b", "c", "d"] # False
+```
+
+Different type of filters are inherited manifestation of the above defined abstract element,
+which are used to define what we want to filter for a sentinel. Filters can be embedded into another filter.
+For instance we can gave filter names to the `anyMatch` attribute of a filter, which means
+the actual filter matches if any of the filter listed there matches.
+In the following we define the different type of filters and in the end we give examples how to use them.
+
+**Collection Filter**: Collection filter is a building block for actual filters for sentienl.
+They are part of `Call Filters` and `Peer connection filters` and this is why we need to describe beforehand.
+
+A collection filter is defined as follows:
+```json5
+{
+  // the size of the collection is equal to the given value
+  "eq": -1, // -1 is the default, which means it is not given by the user
+
+  //the size of the collection is greater than the given value
+  "gt": -1, // -1 is the default, which means it is not given by the user
+
+  //the size of the collection is less than the given value
+  "lt": -1, // -1 is the default, which means it is not given by the user
+
+  // evaluated as true if any of the item in the collection matches
+  anyMatch: [], // the default is an empty array
+
+  // evaluated as true if all of the item in the collection matches
+  allMatch: []  // the default is an empty array
+}
+```
+
+=== Call Filters
+
+```json5
+{
+  name: "CallFilterName",
+  marker: "", // a regex expression or empty for the marker of the samples
+  serviceName: "", // a regex expression or empty for the service name of the samples
+  callName: "", // a regex expression or empty for the service name of the samples
+  browserIds: {}, // a collection filter
+  peerConnections: {}, // a collection filter
+}
+```
+
+=== Peer Connection Filters
+```json5
+{
+  name: "PCFilterName",
+  marker: "", // a regex expression or empty for the marker of the samples
+  serviceName: "", // a regex expression or empty for the service name of the samples
+  callName: "", // a regex expression or empty for the service name of the samples
+  remoteIPs: {}, // a collection filter
+  SSRCs: {}, // a collection filter
+}
+```
+
+=== Examples for Sentinels
+
+==== Watch peer to peer connections
+
+In this example we want to watch all calls have two participants communicate to each other.
+For this we need to create a call filter matches with calls have exactly two different participants,
+and then we need to define a sentinel applies that filter in every check.
+
+```json5
+{
+  name: "PeerToPeerCallsFilter",
+  browserIds: {
+    eq: 2
+  }
+}
+```
+We define a call filter matches with calls have exactly two browserIds. BrowserIds are
+the fingerprint of browser added to every sample incoming to the observer. It ensures
+the filter matches the calls have at least two different browsers.
+
+NOTE: you can setup the filter to matches the calls have exactly two peer connections,
+but keep in mind that certain client integration may uses more than 2 RTCPeerConnection
+in their peer to peer connections.
+
+Next we need to define a sentinel applies our defined call filter.
+
+```json5
+{
+  "expose": true,
+  "name": "MyP2PSentinel",
+  "callFilters": {
+    "anyMatch": ["PeerToPeerCallsFilter"]
+  },
+}
+```
+
+As you see the sentinel references the previously defined call filter by its name.
+
+Defining Filters and Sentinels can be done through the application API controlling endpoints
+for configurations, or putting giving a configuration through a yaml at bootstrap.
+For the latter here is the snippet in yaml what you can use:
+
+```yaml
+# Add a call filter for peer to peer calls
+  callFilters:
+    - name: "MyPeerToPeerFilter"
+      browserIds:
+        eq: 2
+
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
+  sentinels:
+    - name: "MySentinel"
+      expose: true
+      callFilters:
+        anyMatch:
+          - "MyPeerToPeerFilter"
+```
+
+==== Watch Calls using TURN
+
+In this example we want to watch all peer connections using TURN server
+to resolve their IP addresses.
+
+```json5
+{
+  name: "MyTurnServersFilter",
+  remoteIPs: {
+    anyMatch: [
+      "10.10.10.10",
+      "20.20.20.20"
+    ]
+  }
+}
+```
+
+First we create a filter matches for any peer connection targeted the turn server in their
+remote ICE candidates. Once we have registered this filter we can create the sentinel
+applies it.
+
+```json5
+{
+  "expose": true,
+  "name": "MyTURNSentinel",
+  "pcFilters": {
+    "anyMatch": ["MyTurnServersFilter"]
+  },
+}
+```
+
+Defining Filters and Sentinels can be done through the application API controlling endpoints
+for configurations, or putting giving a configuration through a yaml at bootstrap.
+For the latter here is the snippet in yaml what you can use:
+
+```yaml
+# Add a call filter for peer to peer calls
+  pcFilters:
+    - name: "MyTurnServersFilter"
+      pcFilters:
+        anyMatch:
+          - "10.10.10.10"
+          - "20.20.20.20"
+
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
+  sentinels:
+    - name: "MyTURNSentinel"
+      expose: true
+      pcFilters:
+        anyMatch:
+          - "MyTurnServersFilter"
+```
+
+== Connectors
+
+Connectors are used to connect the observer generated reports to
+another service. Connectors are described in configuration as follows:
+
+```yaml
+name: "MyConnectorName"  # required
+transformations: []      # optional
+buffer: {}               # optional
+encoder: {}              # optional
+sink: {}                 # required
+```
+ * **Name**: Every connector must have a name, identifying it in the logging mechanism.
+ * **Transformations**: A connector may have transformations, such as Filter, or Obfuscator. Transformations are optional.
+ * **Buffer**: A buffer takes place between the observer inner pipeline forwarded report and the sink.
+ * **Encoder**: Specifies the encoding from an inner Report format to the sink accepted byte array format with optional meta information.
+ * **Sink**: Sinks are the client library integration in the observer to forward the generated reports to.
+
+=== Transformations
+
+Transformation including Filter, or Obfuscation alters the configuration of the connector and transforms the Reprots to match the expectation for the forwarded data.
+Multiple transformation can be applied for one connector, each of them adds an additional overhead may affect performance.
+
+==== Filter
+
+Filters the report going through the connector. It gives a possibility to forward reports
+to a certain sink, for example from only a certain name of services.
+
+```yaml
+transformations:
+  - type: Filter
+    config:
+      reportType:
+        including: []
+        excluding: []
+      serviceUUIDs:
+        including: []
+        excluding: []
+      serviceName:
+        including: []
+        excluding: []
+      marker:
+        including: []
+        excluding: []
+```
+
+==== Obfuscation
+
+Obfuscator obfuscate fields in every reports potentially belongs to private concerns, like GDPR, user name, etc..
+
+```yaml
+transformations:
+  - type: Obfuscator
+    config:
+      algorithm: SHA-512 # default
+      serviceName: Null # default
+      marker: Null # default
+```
+
+ * **algorithm**: the hash algorithm used to obfuscate fields in reports
+ * **serviceName**: If it is provided then all servicename is replaced with the provided name
+ * **marker**: If it is provided then all marker is replaced with the provided name
+
+=== Buffers
+
+Reports are accumulated to a buffer for a certain time or quantity. The configuration clearly describes the expected behaviour:
+
+```yaml
+buffer:
+  maxItems: 100 #optional
+  maxWaitingTimeInS: 10 #optional
+```
+
+IMPORTANT: Although both `maxItems`, and `maxWaitingTimeInS` must be larger than 0.
+
+=== Encoders
+
+By default reports are encoded by avro into a byte array. However, as
+different Sink may accept different type of encoded messages and format, through
+encoders the encoding can be altered.
+
+IMPORTANT: It is important to notice, that any other encoder than avro add an additional
+(O(1)) overhead in terms of time complexity.
+
+The general structure of an encoder is given below:
+```yaml
+encoder:
+  type: ENCODER_NAME
+  format: BYTES / OBJECT
+  config: {}
+```
+
+Every encoder should provide at least two type of format for the encoded records. These are
+BYTES, and OBJECT. The actual value depends on the Sink accepted message format. For example, KafkaSink
+only accept BYTES format, meanwhile MongoSink only accept OBJECT format from BsonEncoder.
+
+==== Avro Encoder
+
+http://avro.apache.org/[Apache Avro] is a data serialization system highly efficient in terms of throughput.
+The observer inner pipeline prepares the reports in avro format, thus the default encoder is avro for the observer.
+
+Below the configuration properties.
+
+```yaml
+encoder:
+  type: AvroEncoder
+  format: BYTES / OBJECT
+  config:
+    addMetaKey: True # default
+```
+
+ * `format` attribute determines the format the encoded emssage is forwarded.
+ * `addMetaKey` attribute configure the encoder to add a preferable key information. This is important for service like kafka, where the forwarded record always a key, value pair, and the key influences the message partitioning, and, eventually, determines the effectiveness of the evaluation.
+
+.Schema
+The avro generated schema can be downloaded here.
+
+==== Json Encoder
+
+https://tools.ietf.org/html/rfc7159[JSON] is a lightweight, text-based, language-independent data interchange format
+
+```yaml
+encoder:
+  type: JsonEncoder
+  format: BYTES / OBJECT
+  config:
+    addMetaKey: True # default
+```
+
+* `format` attribute determines the format the encoded emssage is forwarded.
+* `addMetaKey` attribute configure the encoder to add a preferable key information. This is important for service like kafka, where the forwarded record always a key, value pair, and the key influences the message partitioning, and, eventually, determines the effectiveness of the evaluation.
+
+
+==== Bson Encoder
+
+https://www.mongodb.com/json-and-bson[BSON] is a binary format of Json, primarly used by MongoSink.
+
+```yaml
+encoder:
+  type: BsonEncoder
+  format: BYTES / OBJECT
+```
+
+* `format` attribute determines the format the encoded emssage is forwarded.
+
+NOTE: MongoSink only accepts OBJECT message format.
+
+=== Sinks
+
+Sinks client integration of services accepting Reports for further evaluation.
+
+==== LoggerSink
+* *Accepted Encoder*: All
+* *Accepted message format*: All
+
+```yaml
+sink:
+  type: LoggerSink
+  config:
+    printReports: False #default
+```
+
+The LoggerSink added for debug purposes,
+uses the facade logger to provide summary information about the generated reports
+from the observer. if the `printReports` option is true, it also prints out the received reports.
+
+==== KafkaSink
+ * *Accepted Encoder*: All
+ * *Accepted message format*: BYTES
+
+```yaml
+sink:
+  type: KafkaSink
+  config:
+    topic: "MyTopic"  # required
+    properties:
+      bootstrap.servers: "localhost:9092" # required
+```
+
+The kafka sink connects the observer to a kafka message broker and forward the reports to
+the kafka. It is agonistic int terms of encoded type, all it matters is to receive it
+in bytes message format.
+The required attribute is the `topic`, which is used to dump all reports.
+The sub structure of the `properties` attribute paste the provided fields to a
+https://kafka.apache.org/documentation/#producerconfigs[kafka producer].
+
+==== MongoSink
+* *Accepted Encoder*: BsonEncoder
+* *Accepted message format*: OBJECT
+
+```yaml
+sink:
+  type: MongoSink
+  config:
+    database: "MyTopic"  # required
+    collectionNames:
+      INBOUND_RTP: "MyCollectionNameForInboundRTPReports"
+```
+
+The MongoSink is primarly added to the base version of observer to make the deployment easy
+for developers or organization in the state where perforamnce is not the primary concerns, but
+simplicity of usage. It accept Bson encdoded records with OBJECT message format and forward all reports
+into a configured database.
+
+The `collectionNames` field the name of the collection for each type of report can be configured to a custom one. However the keys are strict and bound to the type of Reports. The type of reports are listed in <<Observer Reports>>
+
+== Configuration References
+
+Observer reads provided configuration at bootstrap using micronaut config files (typically the `application.yaml`). As the observer itself is bound to micronaut and hazelcast, configuration of the three
+determines the behaviour of the service. In the following we try to summarize how to customize your observer through configurations.
+
+=== Micronaut Configuration
+
+The micronaut frameworks controls all 3rd party dependencies and plugins the
+observer uses.
+
+
+=== Hazelcast Configuration
+
+Hazelcast determines the behaviour of the in-memory grid, plays crucial role when the service
+is replicated to scale out for loads, or to communicate throughout data centers.
+The https://docs.hazelcast.com/imdg/4.2/index.html[official documentation] provides a thrilling
+description about the service.
+From the observer point of view it is important that instances forming a cluster
+must share information between each other.
+Hazelcast configuration plays also an important role in backup configuration, as
+the number of backup determines how many observer crashes are tolerated without data losses.
+
+=== Observer Configuration
+
+The following configuration serves as a reference configuration
+for this version in `yaml` format with comments
+explaining (more or less) what that configuration is intended
+to setup.
+
+The configuration must be parsed by the service engine framework
+([micronaut](https://micronaut.io)), thus it should be placed
+one of the config file it loads (e.g.: `application.yaml`).
+
+```yaml
+observer:
+
+  # Setup security configuration specific to the observer service
+  security:
+    # Drop Peer Connection Samples, for which the service uuid does not match any service name
+    dropUnknownServices: False
+
+  # Sets up the mapping between service UUID and service Name.
+  servicemappings:
+    - name: "example-service-name"
+      uuids:
+        - "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
+  # if enabled the generated reports from the observer
+  # are monitored and the metrics are exposed.
+  reportMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
+    tagByType: false
+
+  # if enabled the incoming user media errors are monitored
+  # and the metrics are exposed.
+  userMediaErrorsMonitor:
+    enabled: true
+    tagByServiceName: true
+    tagByServiceUUID: false
+
+  # if enabled IP addresses are obfuscated
+  ipAddressConverter:
+    enabled: False
+    algorithm: SHA-256
+    salt: "MySalt"
+
+  # If enabled the observer monitors inbound RTP traffic,
+  # and through sentinels it exposes metrics (received bytes,
+  # lost packets, etc.)
+  #
+  inboundRtpMonitor:
+    enabled: False
+    retentionTimeInS: 300
+
+  # If enabled the observer monitors remote inbound RTP traffic,
+  # and through sentinels it exposes metrics (RTT, etc.)
+  #
+  remoteInboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+    weightFactor: 0.3
+
+  # If enabled the observer monitors outbound RTP traffic,
+  # and through sentinels it exposes metrics (sent bytes,
+  # sent packets, etc.)
+  #
+  # NOTE: this increase memory storage consumption and
+  # hazelcast traffic
+  outboundRtpMonitor:
+    enabled: True
+    retentionTimeInS: 300
+
+  # Sets a filter for peer connections
+  pcFilters:
+    - name: "MyTurnServerFilter"
+      remoteIPs:
+        anyMatch:
+          - "10.10.10.10"
+          - "20.20.20.20"
+
+  # Add a call filter for peer to peer calls
+  callFilters:
+    - name: "MyPeerToPeerFilter"
+      browserIds:
+        eq: 2
+
+  # Configure a sentinel for your turn servers used by peer to peer calls
+  # and expose metrics
+  sentinels:
+    - name: "MySentinel"
+      expose: true
+      callFilters:
+        allMatch:
+          - "MyPeerToPeerFilter"
+      pcFilters:
+        allMatch:
+          - "MyTurnServerFilter"
+
+
+  # The time Period sentinels are checking calls in minutes
+  sentinelsCheckingPeriodInMin: 1
+
+
+  # Defines the configuration for a connector the reports are sent to
+  connectors:
+    - name: "ReportSinkLogger"
+      buffer:
+        maxItems: 100
+        maxWaitingTimeInS: 10
+      sink:
+        type: LoggerSink
+        config:
+          printReports: False
+
+  # Sets up the Evaluators every incoming sample is subjected
+  evaluators:
+
+    # name of the calls, which cannot be paired (nor SSRC, neither call name was provided to match)
+    impairablePCsCallName: "impairable-peer-connections-default-call-name"
+
+    # The incoming sample buffer maximum waiting time before emission
+    observedPCSBufferMaxTimeInS: 10
+
+    # The incoming sample buffer maximum amount of items it can hold
+    observedPCSBufferMaxItemNums: 10000
+
+    # The maximum idle time for a peer connection before it is declared to be detached.
+    peerConnectionMaxIdleTimeInS: 60
+
+  # Sets up which type of webrtc reports the service can forward
+  outboundReports:
+    reportOutboundRTPs: True
+    reportInboundRTPs: True
+    reportRemoteInboundRTPs: True
+    reportTracks: True
+    reportMediaSources: True
+    reportCandidatePairs: True
+    reportLocalCandidates: True
+    reportRemoteCandidates: True
+    reportUserMediaErrors: True
+
+  # Sets up the hazelcast configuration file
+  hazelcast:
+    configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+```
+
+== Known Limitations
+
+The following limitations are known to this version
+
+
+== Contributors
+
+* [Balazs Kreith](https://github.com/balazskreith)
+* [Pallab Gain](https://github.com/pallab-gain)
+
+== Licenses
+
+Apache 2.0
+

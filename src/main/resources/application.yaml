@@ -8,8 +8,8 @@ micronaut:
         enabled: true
         descriptions: true
         step: PT1M
-  security:
-    enabled: false
+#  security:
+#    enabled: false
 #    authentication: idtoken
 #    endpoints:
 #      logout:
@@ -134,6 +134,14 @@ observer:
         config:
           printReports: False
 
+    - name: "ReportSinkLogger"
+      buffer:
+        maxItems: 100
+        maxWaitingTimeInS: 10
+      sink:
+        type: LoggerSink
+        config:
+          printReports: False
   ipAddressConverter:
     enabled: False
     algorithm: SHA-256
