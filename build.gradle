@@ -26,6 +26,8 @@ micronaut {
 }
 
 dependencies {
+
+
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     annotationProcessor("io.dekorate:prometheus-annotations:${dekorateVersion}")
@@ -74,7 +76,7 @@ dependencies {
 
     // --------- Connector dependencies -----
     compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.7.0'
-//    compile 'org.mongodb:mongodb-driver-sync:4.2.2'
+    compile 'org.mongodb:mongodb-driver-sync:4.2.2'
 
     // ------- Render Views --------
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
@@ -89,6 +91,7 @@ dependencies {
     implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator:3.0.0")
 
     testCompile "org.mockito:mockito-core:2.+"
+
 }
 
 
@@ -115,9 +118,7 @@ classes {
     dependsOn createProperties
 }
 tasks {
-
     dockerBuild{
-
         images = ["${System.env.DOCKER_IMAGE}:$project.version"]
     }
 
