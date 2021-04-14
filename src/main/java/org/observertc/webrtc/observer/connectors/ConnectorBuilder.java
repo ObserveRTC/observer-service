@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Function;
+import org.observertc.webrtc.observer.common.ObjectMapperInstance;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.connectors.encoders.Encoder;
@@ -21,7 +22,7 @@ import java.util.*;
 @Prototype
 public class ConnectorBuilder extends AbstractBuilder implements Function<Map<String, Object>, Optional<Connector>> {
     private static final Logger logger = LoggerFactory.getLogger(ConnectorBuilder.class);
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    protected static final ObjectMapper OBJECT_MAPPER = ObjectMapperInstance.get();
 
     private Disposable disposable;
 

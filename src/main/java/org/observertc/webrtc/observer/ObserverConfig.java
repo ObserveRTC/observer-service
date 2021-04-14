@@ -18,6 +18,7 @@ package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import org.observertc.webrtc.observer.configbuilders.ConfigAssent;
 import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
 import org.observertc.webrtc.observer.dto.SentinelDTO;
 import org.observertc.webrtc.observer.dto.CallFilterDTO;
@@ -30,6 +31,7 @@ import java.util.*;
 public class ObserverConfig {
 
 	// Connectors Config
+	@ConfigAssent(keyField = "name")
 	public List<Map<String, Object>> connectors = new LinkedList<>();
 
 	@Min(1)
@@ -37,12 +39,15 @@ public class ObserverConfig {
 	public int sentinelsCheckingPeriodInMin = 1;
 
 	// Sentinels Config
+	@ConfigAssent(keyField = "name")
 	public List<SentinelDTO> sentinels = new ArrayList<>();
 
 	// CallFilters Config
+	@ConfigAssent(keyField = "name")
 	public List<CallFilterDTO> callFilters = new ArrayList<>();
 
 	// PC Filters Config
+	@ConfigAssent(keyField = "name")
 	public List<PeerConnectionFilterDTO> pcFilters = new ArrayList<>();
 
 	// Security Configurations
@@ -68,6 +73,7 @@ public class ObserverConfig {
 	// Evaluators Config
 	public EvaluatorsConfig evaluators;
 
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
@@ -86,6 +92,7 @@ public class ObserverConfig {
 	// Hazelcast Config
 	public HazelcastConfig hazelcast;
 
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
@@ -95,6 +102,7 @@ public class ObserverConfig {
 	// Outbound Reports Config
 	public OutboundReportsConfig outboundReports;
 
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
 		public boolean enabled = true;
@@ -120,6 +128,7 @@ public class ObserverConfig {
 	}
 
 	// Service Mappings Config
+	@ConfigAssent(keyField = "name")
 	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
 
 	@EachProperty("servicemappings")
@@ -184,11 +193,13 @@ public class ObserverConfig {
 		}
 	}
 
+	@ConfigAssent(mutable = false)
 	public static class RtpMonitorConfig {
 		public boolean enabled = false;
 		public int retentionTimeInS = 300;
 	}
 
+	@ConfigAssent(mutable = false)
 	public static class ReportCounterMonitorConfig {
 		public boolean enabled = false;
 		public boolean tagByType = false;

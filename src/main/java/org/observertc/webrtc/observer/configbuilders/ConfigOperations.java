@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.BiFunction;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ConfigOperations {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -16,7 +18,7 @@ public class ConfigOperations {
 
     private final boolean mustMatchClasses;
     private final Map<String, Object> subject;
-    private Map<String, NodePredicate> predicates = new HashMap<>();
+    private ConfigNode configNode;
 
     public ConfigOperations(Map<String, Object> subject) throws IOException {
         this(subject, false);
@@ -28,31 +30,61 @@ public class ConfigOperations {
         this.mustMatchClasses = mustMatchClasses;
     }
 
-    public ConfigOperations add(Map<String, Object> map) {
-        this.reduceMaps(this.subject, map, this.predicates);
+    public ConfigOperations withConfigPredicate(ConfigNode configNode) {
+        this.configNode = configNode;
         return this;
     }
 
-    public ConfigOperations withIndexOfPredicate(List<String> keys, BiFunction<List, Object, Integer> indexOf) {
-        if (Objects.isNull(keys) && keys.size() < 1) {
-            throw new IllegalStateException("keys for predicate must be provided");
-        }
-        Map<String, NodePredicate> predicates = this.predicates;
+    public ConfigOperations replace(Map<String, Object> map) {
+        this.subject.clear();
+        this.subject.putAll(map);
+        return this;
+    }
+
+    public ConfigOperations add(Map<String, Object> map) {
+        Map<String, ConfigNode> predicates = this.configNode != null ? this.configNode.children : Collections.EMPTY_MAP;
+        this.reduceMaps(this.subject, map, predicates);
+        return this;
+    }
+
+    public ConfigOperations remove(List<String> keys) {
+        Map<String, ConfigNode> configNodes = this.configNode != null ? this.configNode.children : Collections.EMPTY_MAP;
+        Map<String, Object> values = this.subject;
         for (int i = 0; i < keys.size(); ++i) {
-            String key = keys.get(i);
             boolean lastKey = i == keys.size() - 1;
-            NodePredicate nodePredicate = predicates.get(key);
-            if (Objects.nonNull(nodePredicate)) {
-                if (lastKey) {
-                    throw new IllegalStateException("Cannot have two predicate for the same key: " + key);
-                }
-                predicates = nodePredicate.children;
-                continue;
+            String key = keys.get(i);
+            Object value = values.get(key);
+            ConfigNode configNode = configNodes == null ? null : configNodes.get(key);
+            if (Objects.isNull(value)) {
+                return this;
             }
-            nodePredicate = new NodePredicate();
-            predicates.put(key, nodePredicate);
+            if (Objects.nonNull(configNode) && !configNode.mutable) {
+                throw new IllegalStateException("field " + key + " is immutable");
+            }
             if (lastKey) {
-                nodePredicate.indexOf = indexOf;
+                values.remove(key);
+                return this;
+            }
+            if (value instanceof Map) {
+                values = (Map<String, Object>) value;
+                configNodes = configNode == null ? null : configNode.children;
+                continue;
+            } else if (value instanceof List) {
+                Function<Object, String> keyMaker;
+                if (configNode == null || configNode.keyMaker == null) {
+                    keyMaker = Object::toString;
+                } else {
+                    keyMaker = configNode.keyMaker;
+                }
+                Map newValues = ((List<?>) value).stream().collect(Collectors.toMap(keyMaker, Function.identity()));
+                if (i + 1 < keys.size() - 1) { // the next key is not the last key
+                    values = newValues;
+                    continue;
+                }
+                String nextKey = keys.get(++i);
+                newValues.remove(nextKey);
+                values.put(key, newValues.values().stream().collect(Collectors.toList()));
+                return this;
             }
         }
         return this;
@@ -64,7 +96,7 @@ public class ConfigOperations {
         return result;
     }
 
-    private Map reduceMaps(Map result, Map newMap, Map<String, NodePredicate> predicates) {
+    private Map reduceMaps(Map result, Map newMap, Map<String, ConfigNode> configNodes) {
         if (Utils.allNull(result, newMap)) {
             return null;
         }
@@ -80,14 +112,14 @@ public class ConfigOperations {
             String key = entry.getKey();
             Object mapValue = entry.getValue();
             Object currentValue = result.get(key);
-            NodePredicate predicate = predicates == null ? null : predicates.get(key);
-            Object value = this.reduceValues(currentValue, mapValue, predicate);
+            ConfigNode configNode = configNodes == null ? null : configNodes.get(key);
+            Object value = this.reduceValues(currentValue, mapValue, configNode);
             result.put(key, value);
         }
         return result;
     }
 
-    private List reduceLists(List result, List newList, NodePredicate predicate) {
+    private List reduceLists(List result, List newList, ConfigNode configNode) {
         if (Utils.allNull(result, newList)) {
             return null;
         }
@@ -97,29 +129,25 @@ public class ConfigOperations {
         if (Objects.isNull(newList)) {
             return result;
         }
-        BiFunction<List, Object, Integer> indexOf = null;
-        if (Objects.isNull(predicate) || Objects.isNull(predicate.indexOf)) {
-            indexOf = (list, item) -> list.indexOf(item);
+        AtomicInteger index = new AtomicInteger();
+        Function<Object, String> keyMaker;
+        if (configNode != null && configNode.keyMaker != null) {
+            keyMaker = configNode.keyMaker;
         } else {
-            indexOf = predicate.indexOf;
+            keyMaker = o -> Integer.toString(index.incrementAndGet());
         }
-        for (Object newItem : newList) {
-            int index = indexOf.apply(result, newItem);
-            if (index < 0) {
-                // not found
-                result.add(newItem);
-                continue;
-            }
-            Object currentItem = result.get(index);
-            Object value = this.reduceValues(currentItem, newItem, predicate);
-            result.set(index, value);
-        }
-        return result;
+        Map<String, Object> resultMap = (Map<String, Object>) result.stream().collect(Collectors.toMap(keyMaker, o -> o));
+        Map<String, Object> newMap = (Map<String, Object>) newList.stream().collect(Collectors.toMap(keyMaker, o -> o));
+        resultMap = this.reduceMaps(resultMap, newMap, configNode == null ? null : configNode.children);
+        return resultMap.values().stream().collect(Collectors.toList());
     }
 
-    private Object reduceValues(Object actualValue, Object newValue, NodePredicate predicate) {
+    private Object reduceValues(Object actualValue, Object newValue, ConfigNode configNode) {
         if (Utils.allNull(actualValue, newValue)) {
             return null;
+        }
+        if (Objects.nonNull(configNode) && !configNode.mutable) {
+            return actualValue;
         }
         if (Objects.isNull(actualValue)) {
             return newValue;
@@ -128,11 +156,11 @@ public class ConfigOperations {
             return actualValue;
         }
         if (actualValue instanceof Map && newValue instanceof Map) {
-            Map<String, NodePredicate> predicates = predicate == null ? null : predicate.children;
-            return this.reduceMaps((Map) actualValue, (Map) newValue, predicates);
+            Map<String, ConfigNode> configNodes = configNode == null ? Collections.EMPTY_MAP : configNode.children;
+            return this.reduceMaps((Map) actualValue, (Map) newValue, configNodes);
         }
         if (actualValue instanceof List && newValue instanceof List) {
-            return this.reduceLists((List) actualValue, (List) newValue, predicate);
+            return this.reduceLists((List) actualValue, (List) newValue, configNode);
         }
         if (!actualValue.getClass().equals(newValue.getClass())) {
             if (this.mustMatchClasses) {
@@ -147,13 +175,4 @@ public class ConfigOperations {
         }
         return newValue;
     }
-
-    private class NodePredicate {
-        BiFunction<List, Object, Integer> indexOf;
-        final Map<String, NodePredicate> children = new HashMap<>();
-        private NodePredicate() {
-        }
-    }
-
-
 }

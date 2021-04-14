@@ -119,6 +119,11 @@ public class SentinelDTO implements VersionedPortable {
     public static class Builder {
         private SentinelDTO result = new SentinelDTO();
 
+        public Builder withName(String name) {
+            this.result.name = name;
+            return this;
+        }
+
         public Builder withReport(boolean value) {
             this.result.report = value;
             return this;

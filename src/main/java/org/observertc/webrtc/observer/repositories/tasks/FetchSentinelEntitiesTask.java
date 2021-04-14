@@ -66,7 +66,7 @@ public class FetchSentinelEntitiesTask extends ChainedTask<Map<String, SentinelE
             .addBreakCondition(resultHolder -> {
                 if (Objects.isNull(this.callFilterDTOs) || this.callFilterDTOs.size() < 1) {
                     if (Objects.isNull(this.pcFilterDTOs) || this.pcFilterDTOs.size() < 1) {
-                        getLogger().info("No Filter has been added for sentinels {}", this.sentinelDTOs);
+                        getLogger().info("No Filter has been found for sentinels {}", this.sentinelDTOs);
                         resultHolder.set(Collections.EMPTY_MAP);
                         return true;
                     }

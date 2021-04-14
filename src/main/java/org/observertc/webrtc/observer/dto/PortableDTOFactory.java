@@ -32,6 +32,7 @@ public class PortableDTOFactory implements PortableFactory {
 	public static final int INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 9000;
 	public static final int OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 10000;
 	public static final int REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 11000;
+	public static final int CONFIG_DTO_CLASS_ID = 12000;
 
 	@Override
 	public Portable create(int classId) {
@@ -56,6 +57,8 @@ public class PortableDTOFactory implements PortableFactory {
 				return new OutboundRtpTrafficDTO();
 			case REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
 				return new RemoteInboundRtpTrafficDTO();
+			case CONFIG_DTO_CLASS_ID:
+				return new ConfigDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

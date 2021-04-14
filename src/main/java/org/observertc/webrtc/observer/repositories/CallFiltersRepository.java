@@ -39,7 +39,7 @@ public class CallFiltersRepository {
 	HazelcastMaps hazelcastMaps;
 
 	@Inject
-	ObserverConfig config;
+	ObserverConfigDispatcher configDispatcher;
 
 	@Inject
 	ObserverHazelcast observerHazelcast;
@@ -51,6 +51,7 @@ public class CallFiltersRepository {
 
 	@PostConstruct
 	void setup() {
+		ObserverConfig config = configDispatcher.getConfig();
 		if (Objects.nonNull(config.callFilters)) {
 			for (CallFilterDTO callFilterDTO : config.callFilters) {
 				this.hazelcastMaps.getCallFilterDTOs().put(callFilterDTO.name, callFilterDTO);
