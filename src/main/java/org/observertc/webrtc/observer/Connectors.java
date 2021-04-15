@@ -1,6 +1,7 @@
 package org.observertc.webrtc.observer;
 
 import io.reactivex.rxjava3.annotations.NonNull;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.connectors.Connector;
 import org.observertc.webrtc.observer.connectors.ConnectorBuilder;
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import java.util.*;
 @Singleton
 public class Connectors {
     private static final Logger logger = LoggerFactory.getLogger(Connectors.class);
-    public static final String CONNECTOR_CONFIG_FILES_SYSTEM_ENV = "CONNECTOR_CONFIG_FILES";
     private final List<ConnectorBuilder> builders = new ArrayList<>();
 
     @Inject

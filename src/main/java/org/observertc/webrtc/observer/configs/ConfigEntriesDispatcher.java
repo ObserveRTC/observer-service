@@ -1,4 +1,4 @@
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hazelcast.core.EntryEvent;
@@ -7,6 +7,7 @@ import com.hazelcast.map.MapEvent;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.dto.ConfigDTO;
+import org.observertc.webrtc.observer.repositories.ConfigRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,13 +47,20 @@ public class ConfigEntriesDispatcher implements EntryListener<String, ConfigDTO>
 
     @Override
     public void entryAdded(EntryEvent<String, ConfigDTO> event) {
-        String key = event.getKey();
-        ConfigDTO configDTO = event.getValue();
-        switch (key) {
-            case ConfigRepository.OBSERVER_CONFIG_KEY:
-                this.observerConfigUpdated.onNext(configDTO);
-            default:
-                logger.warn("Unhandled config key ({}) is added", key);
+        this.dispatch(event);
+    }
+
+    public void dispatch(String key, ConfigDTO configDTO) {
+        try {
+            switch (key) {
+                case ConfigRepository.OBSERVER_CONFIG_KEY:
+                    this.observerConfigUpdated.onNext(configDTO);
+                    break;
+                default:
+                    logger.warn("Unhandled config key ({}) is tried to be dispatched", key);
+            }
+        } catch (Throwable t) {
+            logger.warn("An exception occurred during execution", t);
         }
     }
 
@@ -68,26 +76,12 @@ public class ConfigEntriesDispatcher implements EntryListener<String, ConfigDTO>
 
     @Override
     public void entryRemoved(EntryEvent<String, ConfigDTO> event) {
-        String key = event.getKey();
-        ConfigDTO configDTO = ConfigDTO.of(null);
-        switch (key) {
-            case ConfigRepository.OBSERVER_CONFIG_KEY:
-                this.observerConfigUpdated.onNext(configDTO);
-            default:
-                logger.warn("Unhandled config key ({}) is removed", key);
-        }
+        this.dispatch(event);
     }
 
     @Override
     public void entryUpdated(EntryEvent<String, ConfigDTO> event) {
-        String key = event.getKey();
-        ConfigDTO configDTO = event.getValue();
-        switch (key) {
-            case ConfigRepository.OBSERVER_CONFIG_KEY:
-                this.observerConfigUpdated.onNext(configDTO);
-            default:
-                logger.warn("Unhandled config key ({}) is updated", key);
-        }
+        this.dispatch(event);
     }
 
     @Override
@@ -98,5 +92,9 @@ public class ConfigEntriesDispatcher implements EntryListener<String, ConfigDTO>
     @Override
     public void mapEvicted(MapEvent event) {
         logger.info("Config Map is evicted, {} item(s) deleted", event.getNumberOfEntriesAffected());
+    }
+
+    private void dispatch(EntryEvent<String, ConfigDTO> event) {
+        this.dispatch(event.getKey(), event.getValue());
     }
 }

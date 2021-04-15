@@ -185,8 +185,7 @@ public class ConfigConverter<T> implements Function<Map<String, Object>, T>{
 		if (violations != null && !violations.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			for (ConstraintViolation<T> constraintViolation : violations) {
-				sb.append(constraintViolation.getMessage())
-						.append(" ");
+				sb.append(constraintViolation.getMessage()).append(" ");
 			}
 
 			String errorMessage = sb.toString();

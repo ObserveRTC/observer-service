@@ -1,9 +1,8 @@
-package org.observertc.webrtc.observer.repositories;
+package org.observertc.webrtc.observer.configs;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.configbuilders.ConfigHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,10 @@ public class ObserverConfigDispatcher implements Consumer<Map<String, Object>> {
 
     private static final Logger logger = LoggerFactory.getLogger(ObserverConfigDispatcher.class);
     private final Subject<Event> sentinelSubject = PublishSubject.create();
+    private final Subject<Event> pcFiltersSubject = PublishSubject.create();
+    private final Subject<Event> callFiltersSubject = PublishSubject.create();
     private final Subject<Event> connectorsSubject = PublishSubject.create();
+    private final Subject<Event> serviceMappingsSubject = PublishSubject.create();
     private Map<String, Consumer<Event>> consumers = new HashMap<>();
     private ConfigHolder<ObserverConfig> configHolder;
 
@@ -31,7 +33,10 @@ public class ObserverConfigDispatcher implements Consumer<Map<String, Object>> {
     @PostConstruct
     void setup() {
         this.consumers.put("sentinels", sentinelSubject::onNext);
+        this.consumers.put("callFilters", callFiltersSubject::onNext);
+        this.consumers.put("pcFilters", callFiltersSubject::onNext);
         this.consumers.put("connectors", connectorsSubject::onNext);
+        this.consumers.put("servicemappings", serviceMappingsSubject::onNext);
     }
 
     @Override
@@ -51,8 +56,20 @@ public class ObserverConfigDispatcher implements Consumer<Map<String, Object>> {
         return this.sentinelSubject;
     }
 
+    public Observable<Event> onServiceMappingsChanged() {
+        return this.serviceMappingsSubject;
+    }
+
     public Observable<Event> onConnectorsChanged() {
         return this.connectorsSubject;
+    }
+
+    public Observable<Event> onCallFiltersChanged() {
+        return this.callFiltersSubject;
+    }
+
+    public Observable<Event> onPCFiltersChanged() {
+        return this.pcFiltersSubject;
     }
 
     public ObserverConfig getConfig() {

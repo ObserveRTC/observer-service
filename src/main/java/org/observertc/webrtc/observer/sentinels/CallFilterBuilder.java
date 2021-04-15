@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
-import org.observertc.webrtc.observer.dto.CallFilterDTO;
+import org.observertc.webrtc.observer.configs.CallFilterConfig;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Prototype
-public class CallFilterBuilder extends AbstractBuilder implements Function<CallFilterDTO, Predicate<CallEntity>> {
+public class CallFilterBuilder extends AbstractBuilder implements Function<CallFilterConfig, Predicate<CallEntity>> {
     private static final Logger logger = LoggerFactory.getLogger(CallFilterBuilder.class);
 
     @Inject
@@ -28,10 +28,10 @@ public class CallFilterBuilder extends AbstractBuilder implements Function<CallF
     Provider<CollectionFilterBuilder> collectionFilterBuilderProvider;
 
     @Override
-    public Predicate<CallEntity> apply(CallFilterDTO callFilterDTO) throws Throwable {
-        final List<Predicate<CallEntity>> filters = this.makeFilters(callFilterDTO);
+    public Predicate<CallEntity> apply(CallFilterConfig callFilterConfig) throws Throwable {
+        final List<Predicate<CallEntity>> filters = this.makeFilters(callFilterConfig);
         if (filters.size() < 1) {
-            logger.warn("There is no filter condition gven for filter {}. Hence it will be always false", callFilterDTO);
+            logger.warn("There is no filter condition gven for filter {}. Hence it will be always false", callFilterConfig);
             return callEntity -> false;
         }
         return callEntity -> {
@@ -45,11 +45,11 @@ public class CallFilterBuilder extends AbstractBuilder implements Function<CallF
     }
 
     public Predicate<CallEntity> build() throws Throwable {
-        CallFilterDTO config = this.convertAndValidate(CallFilterDTO.class);
+        CallFilterConfig config = this.convertAndValidate(CallFilterConfig.class);
         return this.apply(config);
     }
 
-    private List<Predicate<CallEntity>> makeFilters(CallFilterDTO filterConfig) {
+    private List<Predicate<CallEntity>> makeFilters(CallFilterConfig filterConfig) {
         List<Predicate<CallEntity>> result = new LinkedList<>();
         if (Objects.nonNull(filterConfig.serviceName)) {
             Predicate<CallEntity> filter = callEntity ->

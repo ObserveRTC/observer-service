@@ -2,7 +2,7 @@ package org.observertc.webrtc.observer.sources;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.MinuteToTimeZoneId;
 import org.observertc.webrtc.observer.common.TimeLimitedMap;
 import org.observertc.webrtc.observer.common.Utils;
@@ -10,7 +10,7 @@ import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSamp
 import org.observertc.webrtc.observer.entities.ServiceMapEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
+import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.observertc.webrtc.observer.samples.SourceSample;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ class PCSampleConverter implements Function<SourceSample, ObservedPCS> {
     MinuteToTimeZoneId minuteToTimeZoneId;
 
     @Inject
-    ServiceMapsRepository serviceMapsRepository;
+    ServiceMapsStore serviceMapsStore;
 
     private final TimeLimitedMap<UUID, String> peerConnectionServices;
     private final FlawMonitor flawMonitor;
@@ -100,7 +100,7 @@ class PCSampleConverter implements Function<SourceSample, ObservedPCS> {
 
     private String getServiceName(UUID serviceUUID, UUID pcUUID) {
         if (Objects.isNull(pcUUID)) {
-            Optional<ServiceMapEntity> entityHolder = this.serviceMapsRepository.findByUUID(serviceUUID);
+            Optional<ServiceMapEntity> entityHolder = this.serviceMapsStore.findByUUID(serviceUUID);
             if (!entityHolder.isPresent()) {
                 return null;
             }
@@ -108,7 +108,7 @@ class PCSampleConverter implements Function<SourceSample, ObservedPCS> {
         }
         boolean pcExists = this.peerConnectionServices.containsKey(pcUUID);
         if (!pcExists) {
-            Optional<ServiceMapEntity> entityHolder = this.serviceMapsRepository.findByUUID(serviceUUID);
+            Optional<ServiceMapEntity> entityHolder = this.serviceMapsStore.findByUUID(serviceUUID);
             if (entityHolder.isPresent()) {
                 ServiceMapEntity entity = entityHolder.get();
                 this.peerConnectionServices.put(pcUUID, entity.name);

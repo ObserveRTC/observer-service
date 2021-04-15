@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.Utils;
-import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
+import org.observertc.webrtc.observer.configs.CollectionFilterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ import java.util.Objects;
 public class CollectionFilterBuilder {
     private static final Logger logger = LoggerFactory.getLogger(CollectionFilterBuilder.class);
 
-    public static boolean isEmpty(CollectionFilterDTO config) {
+    public static boolean isEmpty(CollectionFilterConfig config) {
         return !hasSizeConstrain(config) &&
                 Objects.nonNull(config.anyMatch) &&
                 config.anyMatch.length < 1 &&
@@ -27,13 +27,13 @@ public class CollectionFilterBuilder {
                 ;
     }
 
-    private static boolean hasSizeConstrain(CollectionFilterDTO config) {
+    private static boolean hasSizeConstrain(CollectionFilterConfig config) {
         return config.eq != -1 || config.lt != -1 || config.gt != -1;
     }
 
     private boolean warned = false;
 
-    public<T> Predicate<Collection<T>> build(CollectionFilterDTO config, Function<String, T> converter) {
+    public<T> Predicate<Collection<T>> build(CollectionFilterConfig config, Function<String, T> converter) {
         if (Utils.anyNull(config, config.anyMatch, config.allMatch)) {
             logger.warn("One of the configuration for collection filter is null. It cannot be built, will always report false! The collection filter config is {}",
                     ObjectToString.toString(config));
@@ -93,7 +93,7 @@ public class CollectionFilterBuilder {
         return this.warned;
     }
 
-    private<T> Predicate<Collection<T>> buildSizeConstrain(CollectionFilterDTO config) {
+    private<T> Predicate<Collection<T>> buildSizeConstrain(CollectionFilterConfig config) {
         return values -> {
             int count = values.size();
             if (config.eq != -1 && config.eq == count) {

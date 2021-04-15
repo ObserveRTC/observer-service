@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;

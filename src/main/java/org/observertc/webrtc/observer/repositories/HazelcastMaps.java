@@ -2,7 +2,11 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
+import org.observertc.webrtc.observer.configs.CallFilterConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.configs.PeerConnectionFilterConfig;
+import org.observertc.webrtc.observer.configs.SentinelConfig;
 import org.observertc.webrtc.observer.dto.*;
 
 import javax.annotation.PostConstruct;
@@ -26,9 +30,9 @@ public class HazelcastMaps {
     private MultiMap<UUID, String> pcToRemoteIPs;
     private MultiMap<UUID, UUID> callToPCUUIDs;
     private IMap<String, WeakLockDTO> weakLocks;
-    private IMap<String, SentinelDTO> sentinelDTOs;
-    private IMap<String, CallFilterDTO> callFilterDTOs;
-    private IMap<String, PeerConnectionFilterDTO> pcFilterDTOs;
+    private IMap<String, SentinelConfig> sentinelDTOs;
+    private IMap<String, CallFilterConfig> callFilterDTOs;
+    private IMap<String, PeerConnectionFilterConfig> pcFilterDTOs;
     private MultiMap<String, UUID> serviceToUUIDs;
     private IMap<UUID, String> uuidToService;
     private IMap<String, InboundRtpTrafficDTO> inboundRtpTrafficDTOs;
@@ -89,11 +93,11 @@ public class HazelcastMaps {
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
 
-    public IMap<String, CallFilterDTO> getCallFilterDTOs() {return this.callFilterDTOs;}
+    public IMap<String, CallFilterConfig> getCallFilterDTOs() {return this.callFilterDTOs;}
 
-    public IMap<String, PeerConnectionFilterDTO> getPeerConnectionFilterDTOs() { return this.pcFilterDTOs; }
+    public IMap<String, PeerConnectionFilterConfig> getPeerConnectionFilterDTOs() { return this.pcFilterDTOs; }
 
-    public IMap<String, SentinelDTO> getSentinelDTOs() {return this.sentinelDTOs;}
+    public IMap<String, SentinelConfig> getSentinelDTOs() {return this.sentinelDTOs;}
 
     public IMap<UUID, String> getUuidToService() {return this.uuidToService;}
 

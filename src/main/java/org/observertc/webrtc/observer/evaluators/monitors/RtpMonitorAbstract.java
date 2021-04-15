@@ -1,7 +1,7 @@
 package org.observertc.webrtc.observer.evaluators.monitors;
 
 import io.reactivex.rxjava3.functions.Function;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

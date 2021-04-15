@@ -19,17 +19,18 @@ package org.observertc.webrtc.observer.entities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-// To avoid exposing hazelcast serialization specific fields
 public class ServiceMapEntity {
 	private static final Logger logger = LoggerFactory.getLogger(SentinelEntity.class);
 
+	@NotNull
 	public final String name;
-	public final Set<UUID> uuids;
 
+	public final Set<UUID> uuids;
 
 	public static ServiceMapEntity.Builder builder() { return new ServiceMapEntity.Builder();}
 

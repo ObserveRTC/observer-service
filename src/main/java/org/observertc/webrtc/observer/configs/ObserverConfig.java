@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.configs;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
 import org.observertc.webrtc.observer.configbuilders.ConfigAssent;
-import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
-import org.observertc.webrtc.observer.dto.SentinelDTO;
-import org.observertc.webrtc.observer.dto.CallFilterDTO;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @ConfigurationProperties("observer")
@@ -39,16 +38,19 @@ public class ObserverConfig {
 	public int sentinelsCheckingPeriodInMin = 1;
 
 	// Sentinels Config
+	@Valid
 	@ConfigAssent(keyField = "name")
-	public List<SentinelDTO> sentinels = new ArrayList<>();
+	public List<SentinelConfig> sentinels = new ArrayList<>();
 
 	// CallFilters Config
+	@Valid
 	@ConfigAssent(keyField = "name")
-	public List<CallFilterDTO> callFilters = new ArrayList<>();
+	public List<CallFilterConfig> callFilters = new ArrayList<>();
 
 	// PC Filters Config
+	@Valid
 	@ConfigAssent(keyField = "name")
-	public List<PeerConnectionFilterDTO> pcFilters = new ArrayList<>();
+	public List<PeerConnectionFilterConfig> pcFilters = new ArrayList<>();
 
 	// Security Configurations
 	public SecurityConfig security;
@@ -128,11 +130,14 @@ public class ObserverConfig {
 	}
 
 	// Service Mappings Config
+	@Valid
 	@ConfigAssent(keyField = "name")
 	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
 
 	@EachProperty("servicemappings")
 	public static class ServiceMapConfiguration {
+
+		@NotNull
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}

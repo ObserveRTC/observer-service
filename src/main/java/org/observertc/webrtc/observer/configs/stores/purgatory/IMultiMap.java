@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.repositories.stores;
+package org.observertc.webrtc.observer.configs.stores.purgatory;
 
 import io.reactivex.Single;
 import io.reactivex.rxjava3.core.Completable;

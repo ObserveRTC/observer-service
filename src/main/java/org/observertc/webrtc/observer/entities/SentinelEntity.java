@@ -1,7 +1,7 @@
 package org.observertc.webrtc.observer.entities;
 
 import io.reactivex.rxjava3.functions.Predicate;
-import org.observertc.webrtc.observer.dto.SentinelDTO;
+import org.observertc.webrtc.observer.configs.SentinelConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,12 +9,12 @@ import java.util.Objects;
 
 public class SentinelEntity {
     private static final Logger logger = LoggerFactory.getLogger(SentinelEntity.class);
-    private final SentinelDTO sentinelDTO;
+    private final SentinelConfig sentinelConfig;
     private final Predicate<CallEntity> callFilter;
     private final Predicate<PeerConnectionEntity> pcFilter;
 
-    public SentinelEntity(SentinelDTO sentinelDTO, Predicate<CallEntity> callFilter, Predicate<PeerConnectionEntity> pcFilter) {
-        this.sentinelDTO = sentinelDTO;
+    public SentinelEntity(SentinelConfig sentinelConfig, Predicate<CallEntity> callFilter, Predicate<PeerConnectionEntity> pcFilter) {
+        this.sentinelConfig = sentinelConfig;
         this.callFilter = callFilter;
         this.pcFilter = pcFilter;
     }
@@ -23,11 +23,11 @@ public class SentinelEntity {
         return new SentinelEntity.Builder();
     }
 
-    public String getName() {return this.sentinelDTO.name;}
+    public String getName() {return this.sentinelConfig.name;}
 
-    public boolean isExposed() { return this.sentinelDTO.expose; }
+    public boolean isExposed() { return this.sentinelConfig.expose; }
 
-    public boolean isReported() { return this.sentinelDTO.report; }
+    public boolean isReported() { return this.sentinelConfig.report; }
 
     public boolean testCall(CallEntity callEntity) throws Throwable {
         boolean result = this.callFilter.test(callEntity);
@@ -40,16 +40,16 @@ public class SentinelEntity {
     }
 
     public static class Builder {
-        public SentinelDTO sentinelDTO;
+        public SentinelConfig sentinelConfig;
         public Predicate<CallEntity> callFilter;
         public Predicate<PeerConnectionEntity> pcFilter;
 
 
         public SentinelEntity build() {
-            Objects.requireNonNull(this.sentinelDTO);
+            Objects.requireNonNull(this.sentinelConfig);
 
             if (Objects.isNull(this.callFilter) && Objects.isNull(this.pcFilter)) {
-                logger.warn("No filter was defined for sentinel {}. It will always be false", sentinelDTO.name);
+                logger.warn("No filter was defined for sentinel {}. It will always be false", sentinelConfig.name);
                 this.callFilter = callEntity -> false;
                 this.pcFilter = pcEntity -> false;
             } else if (Objects.isNull(this.callFilter)) {
@@ -58,7 +58,7 @@ public class SentinelEntity {
                 this.pcFilter = pcEntity -> false;
             }
 
-            return new SentinelEntity(this.sentinelDTO, this.callFilter, this.pcFilter);
+            return new SentinelEntity(this.sentinelConfig, this.callFilter, this.pcFilter);
         }
 
         public Builder withCallFilter(Predicate<CallEntity> filter) {
@@ -71,8 +71,8 @@ public class SentinelEntity {
             return this;
         }
 
-        public Builder withSentinelDTO(SentinelDTO sentinelDTO) {
-            this.sentinelDTO = sentinelDTO;
+        public Builder withSentinelDTO(SentinelConfig sentinelConfig) {
+            this.sentinelConfig = sentinelConfig;
             return this;
         }
     }

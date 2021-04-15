@@ -2,7 +2,8 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ConfigEntriesDispatcher;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.ConfigDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Objects;
 
 @Singleton
 public class ConfigRepository  {
@@ -26,6 +28,12 @@ public class ConfigRepository  {
     @PostConstruct
     void setup() {
         this.hazelcastMaps.getConfigurations().addEntryListener(this.configEntriesDispatcher, true);
+
+        ConfigDTO observerConfigDTO = this.hazelcastMaps.getConfigurations().get(OBSERVER_CONFIG_KEY);
+        if (Objects.nonNull(observerConfigDTO)) {
+            this.configEntriesDispatcher.dispatch(OBSERVER_CONFIG_KEY, observerConfigDTO);
+        }
+
     }
 
     public void updateObserverConfig(ObserverConfig observerConfig) {

@@ -31,10 +31,9 @@ import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
-import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.samples.SourceSample;
@@ -62,9 +61,6 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 
 	@Inject
 	MeterRegistry meterRegistry;
-
-	@Inject
-	ObserverConfig observerConfig;
 
 	private Observer<? super SourceSample> observer = null;
 

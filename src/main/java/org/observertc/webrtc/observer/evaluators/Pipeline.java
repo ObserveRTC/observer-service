@@ -3,7 +3,8 @@ package org.observertc.webrtc.observer.evaluators;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.connectors.Connector;
 import org.observertc.webrtc.observer.evaluators.monitors.CounterMonitorBuilder;
 import org.observertc.webrtc.observer.evaluators.monitors.InboundRtpMonitor;
@@ -31,14 +32,8 @@ public class Pipeline {
     private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
     private final Subject<Report> reports = PublishSubject.create();
 
-//    private final Subject<ObservedPCS> observedPCSSubject = PublishSubject.create();
-//    private final Subject<ObserverEventReport> observerEventsSubject = PublishSubject.create();
-//    public Observer<ObservedPCS> getObservedPCSObserver() {
-//        return this.observedPCSSubject;
-//    }
-
     @Inject
-    ObserverConfig config;
+    ObserverConfigDispatcher configDispatcher;
 
     @Inject
     Sources sources;
@@ -79,7 +74,8 @@ public class Pipeline {
 
     @PostConstruct
     void setup() {
-        var userMediaErrorsMonitor = this.counterMonitorBuilder.build(USER_MEDIA_REPORTS_METRIC_NAME, this.config.userMediaErrorsMonitor);
+        ObserverConfig config = configDispatcher.getConfig();
+        var userMediaErrorsMonitor = this.counterMonitorBuilder.build(USER_MEDIA_REPORTS_METRIC_NAME, config.userMediaErrorsMonitor);
         var samplesBuffer = this.sources
                 .filter(observedPCS -> Objects.nonNull(observedPCS.peerConnectionUUID))
                 .buffer(evaluatorsConfig.observedPCSBufferMaxTimeInS, TimeUnit.SECONDS, evaluatorsConfig.observedPCSBufferMaxItemNums)
@@ -170,8 +166,8 @@ public class Pipeline {
                 .getClientDetailsReports()
                 .subscribe(this.reports);
 
-        if (Objects.nonNull(this.config.reportMonitor)) {
-            var reportMonitor = this.counterMonitorBuilder.build(GENERATED_REPORTS_METRIC_NAME, this.config.reportMonitor);
+        if (Objects.nonNull(config.reportMonitor)) {
+            var reportMonitor = this.counterMonitorBuilder.build(GENERATED_REPORTS_METRIC_NAME, config.reportMonitor);
             this.reports.map(reportMonitor).subscribe();
         }
 
