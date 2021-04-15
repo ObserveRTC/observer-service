@@ -3,7 +3,6 @@ package org.observertc.webrtc.observer.configbuilders;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ class ConfigHolderTest {
 
         ConfigBuildersTestUtils.assertMapsEqual(holder.getConfig(), Map.of("a", 1));
         ConfigBuildersTestUtils.assertMapsEqual(holder.getAdditions(), Map.of("a", 1));
-        ConfigBuildersTestUtils.assertMapsEqual(holder.getRemovals(), Map.of("a", Map.of("b", 1), "c", 1));
+        ConfigBuildersTestUtils.assertMapsEqual(holder.getRemovals(), Map.of("a", Map.of("b", 1), "c", 2));
     }
 
     @Test

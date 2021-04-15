@@ -156,7 +156,8 @@ public class ConfigHolder<T> {
             } else if (baseValue instanceof List) {
                 Map<String, ConfigNode> childConfigNodes = configNode == null ? Collections.EMPTY_MAP : configNode.children;
                 Function<Object, String> keyMaker = getKeyMaker(configNode);
-                Map<String, Object> childMap = ((List<?>) baseValue).stream().collect(Collectors.toMap(keyMaker, Function.identity()));
+                List<?> baseList = ((List<?>) baseValue);
+                Map<String, Object> childMap = baseList.stream().collect(Collectors.toMap(keyMaker, Function.identity()));
                 getFlatMap(childMap, delimiter, childConfigNodes)
                         .entrySet()
                         .stream()

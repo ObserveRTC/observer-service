@@ -39,16 +39,6 @@ public class ConfigOperationsTest {
     }
 
     @Test
-    public void shouldNotAssign_withoutKeyMaker() throws IOException {
-        Map values = Map.of("a", List.of(Map.of("b", 2), 2));
-        ConfigOperations configOps = new ConfigOperations(Map.of("a", List.of(Map.of("b", 1), 3)));
-
-        configOps.add(values);
-
-        ConfigBuildersTestUtils.assertMapsEqual(configOps.makeConfig(), Map.of("a", List.of(Map.of("b", 2), 2, 3)));
-    }
-
-    @Test
     public void shouldAssign_withKeyMaker() throws IOException {
         Map values = Map.of("a", List.of(Map.of("id", 1, "value", 2)));
         ConfigNode configNode = new ConfigNode().withConfigNode(List.of("a"), new ConfigNode().withKeyMaker(o -> o instanceof Map ? ((Map) o).get("id").toString() : o.toString()));
