@@ -177,6 +177,18 @@ public class PeerConnectionSample {
 		public Integer hugeFramesSent;
 
 		/**
+		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-framewidth
+		 */
+		@JsonProperty("frameWidth")
+		public Integer frameWidth;
+
+		/**
+		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-frameheight
+		 */
+		@JsonProperty("frameHeight")
+		public Integer frameHeight;
+
+		/**
 		 * https://www.w3.org/TR/webrtc-stats/#dom-rtcmediasourcestats-trackidentifier
 		 */
 		@JsonProperty("id")

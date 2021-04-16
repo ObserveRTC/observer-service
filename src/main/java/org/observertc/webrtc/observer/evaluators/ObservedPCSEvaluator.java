@@ -411,6 +411,8 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
                     .setFramesDropped(subject.framesDropped)
                     .setFramesReceived(subject.framesReceived)
                     .setHugeFramesSent(subject.hugeFramesSent)
+                    .setFrameWidth(subject.frameWidth)
+                    .setFrameHeight(subject.frameHeight)
                     .setTrackId(subject.id)
                     .setInsertedSamplesForDeceleration(subject.insertedSamplesForDeceleration)
                     .setJitterBufferDelay(subject.jitterBufferDelay)
