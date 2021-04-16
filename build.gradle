@@ -7,8 +7,9 @@ plugins {
 //version = "H"
 // all client library compiled:
 //version = "hydrogen:deuterium"
-
-version = "0.7.3"
+// latest vetsion
+//version = "latest"
+version = "0.8.0"
 group = "org.observertc.webrtc.observer"
 
 repositories {

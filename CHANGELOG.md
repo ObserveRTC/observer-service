@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
+## 0.8.0 (H)
+ * Add `framewidth`, and `frameHeight` fields to tracks.
+ * Change Report schema
+
 ## 0.7.3 (H)
 
 ### Added
