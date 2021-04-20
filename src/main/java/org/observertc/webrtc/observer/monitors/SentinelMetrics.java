@@ -58,7 +58,7 @@ public class SentinelMetrics {
 
     private AtomicLong getGauge(String metricsName) {
         if (Objects.isNull(this.sentinelName)) {
-            throw new IllegalStateException("SentinelMetric cannot exists withou a name! Did you initialize this metric?");
+            throw new IllegalStateException("SentinelMetric cannot exists without a name! Did you initialize this metric?");
         }
         AtomicLong result = this.gauges.get(metricsName);
         if (Objects.isNull(result)) {
@@ -70,7 +70,7 @@ public class SentinelMetrics {
 
     private DistributionSummary getSummary(String metricsName) {
         if (Objects.isNull(this.sentinelName)) {
-            throw new IllegalStateException("SentinelMetric cannot exists withou a name! Did you initialize this metric?");
+            throw new IllegalStateException("SentinelMetric cannot exists without a name! Did you initialize this metric?");
         }
         DistributionSummary result = this.summaries.get(metricsName);
         if (Objects.isNull(result)) {
@@ -82,7 +82,7 @@ public class SentinelMetrics {
 
     private void incrementMediaUnit(String mediaUnit) {
         if (Objects.isNull(this.sentinelName)) {
-            throw new IllegalStateException("SentinelMetric cannot exists withou a name! Did you initialize this metric?");
+            throw new IllegalStateException("SentinelMetric cannot exists without a name! Did you initialize this metric?");
         }
         if (Objects.isNull(mediaUnit)) {
             mediaUnit = "Unknown";
