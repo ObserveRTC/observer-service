@@ -31,7 +31,7 @@ public class ObserverConfig {
 
 	// Connectors Config
 	@ConfigAssent(keyField = "name")
-	public List<Map<String, Object>> connectors = new LinkedList<>();
+	public List<Map<String, Object>> connectors = new ArrayList<>();
 
 	@Min(1)
 	@Max(60)
@@ -198,7 +198,6 @@ public class ObserverConfig {
 		}
 	}
 
-	@ConfigAssent(mutable = false)
 	public static class RtpMonitorConfig {
 		public boolean enabled = false;
 		public int retentionTimeInS = 300;

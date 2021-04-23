@@ -23,6 +23,7 @@ public class ObserverConfigDispatcher implements Consumer<Map<String, Object>> {
     private final Subject<Event> callFiltersSubject = PublishSubject.create();
     private final Subject<Event> connectorsSubject = PublishSubject.create();
     private final Subject<Event> serviceMappingsSubject = PublishSubject.create();
+    private final Subject<Event> outboundReportsSubject = PublishSubject.create();
     private Map<String, Consumer<Event>> consumers = new HashMap<>();
     private ConfigHolder<ObserverConfig> configHolder;
 
@@ -37,6 +38,7 @@ public class ObserverConfigDispatcher implements Consumer<Map<String, Object>> {
         this.consumers.put("pcFilters", callFiltersSubject::onNext);
         this.consumers.put("connectors", connectorsSubject::onNext);
         this.consumers.put("servicemappings", serviceMappingsSubject::onNext);
+        this.consumers.put("outboundReports", outboundReportsSubject::onNext);
     }
 
     @Override
@@ -70,6 +72,10 @@ public class ObserverConfigDispatcher implements Consumer<Map<String, Object>> {
 
     public Observable<Event> onPCFiltersChanged() {
         return this.pcFiltersSubject;
+    }
+
+    public Observable<Event> onOutboundReportsChanged() {
+        return this.outboundReportsSubject;
     }
 
     public ObserverConfig getConfig() {

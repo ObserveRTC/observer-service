@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.evaluators.valueadapters.EnumConverter;
@@ -25,6 +26,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
@@ -46,16 +48,21 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     private final Subject<Report> extensionReports = PublishSubject.create();
     private final Subject<Report> clientDetailsReports = PublishSubject.create();
     private AtomicReference<Disposable> disposable = new AtomicReference<>(null);
-    private PeerConnectionSampleVisitor<ObservedPCS> processor;
+//    private PeerConnectionSampleVisitor<ObservedPCS> processor;
+    private AtomicReference<PeerConnectionSampleVisitor<ObservedPCS>> processorHolder = new AtomicReference<>(null);
 
-    @Inject
-    ObserverConfig.OutboundReportsConfig config;
+    private ObserverConfig.OutboundReportsConfig config;
+//    @Inject
+//    ObserverConfig.OutboundReportsConfig config;
 
     @Inject
     EnumConverter enumConverter;
 
     @Inject
     NumberConverter numberConverter;
+
+    @Inject
+    ObserverConfigDispatcher configDispatcher;
 
     private final Function<String, String> ipAddressConverter;
 
@@ -66,7 +73,15 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     @PostConstruct
     void setup() {
-        this.processor = this.makeProcessor();
+        var observerConfig = configDispatcher.getConfig();
+        this.update(observerConfig);
+        this.configDispatcher.onOutboundReportsChanged().map(event -> event.config).subscribe(this::update);
+    }
+
+    private void update(ObserverConfig observerConfig) {
+        this.config = observerConfig.outboundReports;
+        var processor = this.makeProcessor();
+        this.processorHolder.set(processor);
     }
 
     @PreDestroy
@@ -125,8 +140,12 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
     @Override
     public void onNext(@NonNull ObservedPCS sample) {
-
-        this.processor.accept(sample, sample.peerConnectionSample);
+        var processor = this.processorHolder.get();
+        if (Objects.isNull(processor)) {
+            return;
+        }
+        processor.accept(sample, sample.peerConnectionSample);
+//        this.processor.accept(sample, sample.peerConnectionSample);
     }
 
     @Override

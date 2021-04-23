@@ -19,6 +19,7 @@ public class ConfigOperations {
     private final boolean mustMatchClasses;
     private final Map<String, Object> subject;
     private ConfigNode configNode;
+    private List<String> errors = new LinkedList<>();
 
     public ConfigOperations(Map<String, Object> subject) throws IOException {
         this(subject, false);
@@ -30,21 +31,60 @@ public class ConfigOperations {
         this.mustMatchClasses = mustMatchClasses;
     }
 
-    public ConfigOperations withConfigPredicate(ConfigNode configNode) {
+    public ConfigOperations withConfigNode(ConfigNode configNode) {
         this.configNode = configNode;
         return this;
     }
 
     public ConfigOperations replace(Map<String, Object> map) {
+        this.errors.clear();
         this.subject.clear();
         this.subject.putAll(map);
         return this;
+    }
+
+    public List<String> getErrors() {
+        var result = this.errors;
+        this.errors = new LinkedList<>();
+        return result;
     }
 
     public ConfigOperations add(Map<String, Object> map) {
         Map<String, ConfigNode> predicates = this.configNode != null ? this.configNode.children : Collections.EMPTY_MAP;
         this.reduceMaps(this.subject, map, predicates);
         return this;
+    }
+
+    public Map<String, Object> getPath(List<String> keys) {
+        Map<String, ConfigNode> configNodes = this.configNode != null ? this.configNode.children : Collections.EMPTY_MAP;
+        Map<String, Object> result = this.subject;
+        for (int i = 0; i < keys.size(); ++i) {
+            String key = keys.get(i);
+            Object value = result.get(key);
+            boolean lastKey = i == keys.size() - 1;
+            ConfigNode configNode = configNodes == null ? null : configNodes.get(key);
+            if (Objects.isNull(value)) {
+                return Collections.EMPTY_MAP;
+            }
+            if (value instanceof Map) {
+                result = (Map<String, Object>) value;
+                configNodes = configNode == null ? null : configNode.children;
+                continue;
+            } else if (value instanceof List) {
+                if (lastKey) { // last key
+                    return Map.of(key, value);
+                }
+                Function<Object, String> keyMaker;
+                if (configNode == null || configNode.keyMaker == null) {
+                    keyMaker = Object::toString;
+                } else {
+                    keyMaker = configNode.keyMaker;
+                }
+                Map newValues = ((List<?>) value).stream().collect(Collectors.toMap(keyMaker, Function.identity()));
+                result = newValues;
+            }
+        }
+        return result;
     }
 
     public ConfigOperations remove(List<String> keys) {
@@ -146,13 +186,19 @@ public class ConfigOperations {
         if (Utils.allNull(actualValue, newValue)) {
             return null;
         }
-        if (Objects.nonNull(configNode) && !configNode.mutable) {
-            return actualValue;
-        }
+        boolean immutable = Objects.nonNull(configNode) && !configNode.mutable;
         if (Objects.isNull(actualValue)) {
+            if (immutable) {
+                this.errors.add("Attempted to alter value null value, which belongs to an immutable key");
+                return actualValue;
+            }
             return newValue;
         }
         if (Objects.isNull(newValue)) {
+            if (immutable) {
+                this.errors.add("Attempted to alter value " + actualValue.toString() + " to null, but the key the value belongs to is immutable");
+                return actualValue;
+            }
             return actualValue;
         }
         if (actualValue instanceof Map && newValue instanceof Map) {
@@ -172,6 +218,10 @@ public class ConfigOperations {
             } else {
                 return newValue;
             }
+        }
+        if (immutable && !actualValue.equals(newValue)) {
+            this.errors.add("Attempted to alter value " + actualValue.toString() + " but it is immutable");
+            return actualValue;
         }
         return newValue;
     }

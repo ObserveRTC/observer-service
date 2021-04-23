@@ -5,7 +5,6 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.Connectors;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
-import org.observertc.webrtc.observer.connectors.Connector;
 import org.observertc.webrtc.observer.evaluators.monitors.CounterMonitorBuilder;
 import org.observertc.webrtc.observer.evaluators.monitors.InboundRtpMonitor;
 import org.observertc.webrtc.observer.evaluators.monitors.OutboundRtpMonitor;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -51,9 +49,6 @@ public class Pipeline {
     ExpiredPCsEvaluator expiredPCsEvaluator;
 
     @Inject
-    Connectors connectors;
-
-    @Inject
     ObserverConfig.EvaluatorsConfig evaluatorsConfig;
 
     @Inject
@@ -67,6 +62,9 @@ public class Pipeline {
 
     @Inject
     CounterMonitorBuilder counterMonitorBuilder;
+
+    @Inject
+    Connectors connectors;
 
     public void inputUserMediaError(ObservedPCS observedPCS) {
         this.observedPCSEvaluator.onNext(observedPCS);
@@ -171,18 +169,6 @@ public class Pipeline {
             this.reports.map(reportMonitor).subscribe();
         }
 
-        this.addConnectors();
-    }
-
-
-    private void addConnectors() {
-        List<Connector> builtConnectors = this.connectors.getConnectors();
-        if (builtConnectors.size() < 1) {
-            logger.warn("No Connector has been built for the observer. The generated reports will not be forwarded");
-            return;
-        }
-        for (Connector connector : builtConnectors) {
-            reports.subscribe(connector);
-        }
+        this.reports.subscribe(this.connectors);
     }
 }

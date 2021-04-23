@@ -18,24 +18,19 @@ package org.observertc.webrtc.observer;
 
 import com.hazelcast.collection.ISet;
 import io.dekorate.prometheus.annotation.EnableServiceMonitor;
-import io.micrometer.core.instrument.util.StringUtils;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.observertc.webrtc.observer.common.Sleeper;
-import org.observertc.webrtc.observer.configbuilders.ObservableConfig;
-import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
+import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Random;
 
 
 @TypeHint(
@@ -72,7 +67,6 @@ public class Application {
         deployCheck(observerHazelcast);
         logger.info("ServicesRepository config");
         context.getBean(ServiceMapsStore.class);
-        loadConnectorConfigFiles();
     }
 
 
@@ -96,50 +90,6 @@ public class Application {
         }
     }
 
-    private static void loadConnectorConfigFiles() {
-        List<String> paths = new LinkedList<>();
-        String connectorConfigFiles = System.getenv(CONNECTOR_CONFIG_FILES_SYSTEM_ENV);
-        if (Objects.isNull(connectorConfigFiles)) {
-            return;
-        }
-
-        logger.info("Loading files {}", connectorConfigFiles);
-        Arrays.asList(connectorConfigFiles.split(",")).stream().forEach(paths::add);
-
-        AtomicReference<Throwable> error = new AtomicReference<>(null);
-        Connectors connectors = context.getBean(Connectors.class);
-        ObservableConfig observerConfig = context.getBean(ObservableConfig.class);
-        for (String configPath : paths) {
-            if (StringUtils.isBlank(configPath)) {
-                continue;
-            }
-            InputStream inputStream = null;
-            try {
-                if (configPath.startsWith("classpath:")) {
-                    configPath = configPath.substring(10);
-                    inputStream = Application.class.getClassLoader()
-                            .getResourceAsStream(configPath);
-                } else {
-                    inputStream = new FileInputStream(configPath);
-                }
-                if (Objects.isNull(inputStream)) {
-                    logger.warn("Cannot find {}", configPath);
-                    continue;
-                }
-                observerConfig
-                        .fromYamlInputStream(inputStream)
-                        .subscribe(connectors::add, error::set);
-                if (Objects.nonNull(error.get())) {
-                    logger.error("During connector loading an error happened", error.get());
-                    return;
-                }
-            } catch (Exception e) {
-                logger.error("Error during connector configuration loading", e);
-                continue;
-            }
-
-        }
-    }
 
 //    @Factory
 //    @Replaces(ObjectMapperFactory.class)

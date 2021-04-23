@@ -32,6 +32,11 @@ public abstract class Sink implements Observer<List<EncodedRecord>> {
 
     @Override
     public void onComplete() {
+        if (Objects.nonNull(this.upstream)) {
+            if (!upstream.isDisposed()) {
+                this.upstream.dispose();
+            }
+        }
         logger.info("Pipeline is completed");
     }
 

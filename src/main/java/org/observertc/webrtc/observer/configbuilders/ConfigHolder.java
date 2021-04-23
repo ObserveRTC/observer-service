@@ -86,6 +86,8 @@ public class ConfigHolder<T> {
         return result;
     }
 
+
+
     public T getConfig() {
         return this.configConverter.apply(this.actual);
     }
@@ -115,7 +117,15 @@ public class ConfigHolder<T> {
             ConfigNode predicate = predicates == null ? null : predicates.get(key);
             Object diff = getValueSurplus(baseValue, subjectValue, predicate);
             if (Objects.nonNull(diff)) {
-                result.put(key, diff);
+                boolean add = true;
+                if (diff instanceof Map && ((Map<?, ?>) diff).size() < 1) {
+                    add = false;
+                } else if (diff instanceof List && ((List<?>) diff).size() < 1) {
+                    add = false;
+                }
+                if (add) {
+                    result.put(key, diff);
+                }
             }
         }
 

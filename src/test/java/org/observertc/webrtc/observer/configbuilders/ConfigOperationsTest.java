@@ -43,7 +43,7 @@ public class ConfigOperationsTest {
         Map values = Map.of("a", List.of(Map.of("id", 1, "value", 2)));
         ConfigNode configNode = new ConfigNode().withConfigNode(List.of("a"), new ConfigNode().withKeyMaker(o -> o instanceof Map ? ((Map) o).get("id").toString() : o.toString()));
         ConfigOperations configOps = new ConfigOperations(Map.of("a", List.of(Map.of("id", 1, "value", 1))))
-                .withConfigPredicate(configNode);
+                .withConfigNode(configNode);
 
         configOps.add(values);
 
@@ -54,7 +54,7 @@ public class ConfigOperationsTest {
     public void shouldRemove_withKeyMaker() throws IOException {
         ConfigNode configNode = new ConfigNode().withConfigNode(List.of("a"), new ConfigNode().withKeyMaker(o -> o instanceof Map ? ((Map) o).get("id").toString() : o.toString()));
         ConfigOperations configOps = new ConfigOperations(Map.of("a", List.of(Map.of("id", 2), Map.of("id", 1))))
-                .withConfigPredicate(configNode);
+                .withConfigNode(configNode);
 
         configOps.remove(List.of("a", "2"));
 
@@ -65,7 +65,7 @@ public class ConfigOperationsTest {
     public void shouldRemove_withKeyMaker_2() throws IOException {
         ConfigNode configNode = new ConfigNode().withConfigNode(List.of("connectors"), new ConfigNode().withKeyMaker(o -> o instanceof Map ? ((Map) o).get("name").toString() : o.toString()));
         ConfigOperations configOps = new ConfigOperations(Map.of("connectors", List.of(Map.of("name", "mongo", "config", Map.of("addMetaKey", true, "server", "localhost")))))
-               .withConfigPredicate(configNode);
+               .withConfigNode(configNode);
 
         configOps.remove(List.of("connectors", "mongo", "config", "addMetaKey"));
 

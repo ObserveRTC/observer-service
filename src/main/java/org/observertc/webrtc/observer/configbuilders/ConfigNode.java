@@ -23,7 +23,16 @@ public class ConfigNode {
             result.mutable = ((ConfigAssent) assent).mutable();
             if (!StringUtils.isEmpty(((ConfigAssent) assent).keyField())) {
                 if (klass.isAssignableFrom(List.class)) {
-                    result.keyMaker = o -> (String) ((Map) o).get(((ConfigAssent) assent).keyField());
+                    result.keyMaker = obj -> {
+                      Map map = (Map) obj;
+                      String key = ((ConfigAssent) assent).keyField();
+                      var value = map.get(key);
+                      if (Objects.isNull(value)) {
+                          return null;
+                      }
+                      return value.toString();
+                    };
+//                    result.keyMaker = o -> (String) ((Map) o).get(((ConfigAssent) assent).keyField());
                 } else {
                     throw new IllegalStateException("Only List type of klass can have keyField. The provided type is " + klass.getName());
                 }
@@ -37,6 +46,14 @@ public class ConfigNode {
             Annotation klassAnnotation = field.getType().getAnnotation(ConfigAssent.class);
             Annotation fieldAnnotation = field.getAnnotation(ConfigAssent.class);
             Annotation annotation = Objects.nonNull(fieldAnnotation) ? fieldAnnotation : klassAnnotation;
+            if (Objects.isNull(annotation)) {
+                // let's check if any ancestor has a ConfigAssent
+                for (Class ancestor = field.getType().getSuperclass();
+                     Objects.nonNull(ancestor) && Objects.isNull(annotation);
+                     ancestor = ancestor.getSuperclass()) {
+                    annotation = ancestor.getAnnotation(ConfigAssent.class);
+                }
+            }
             String name = field.getName();
             result.children.put(name, make(field.getType(), annotation));
         }
