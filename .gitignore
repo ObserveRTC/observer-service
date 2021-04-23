@@ -15,6 +15,7 @@ debug_*.log
 mynotes.txt
 google_api_credentials.json
 keys/
+temp/
 clients/python/mydev
 docker-compose.yaml
 

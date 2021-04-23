@@ -1,7 +1,7 @@
 package org.observertc.webrtc.observer.evaluators.monitors;
 
 import com.hazelcast.map.IMap;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.RemoteInboundRtpTrafficDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.schemas.reports.RemoteInboundRTP;

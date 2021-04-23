@@ -4,8 +4,8 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.CallFilterDTO;
-import org.observertc.webrtc.observer.dto.CollectionFilterDTO;
+import org.observertc.webrtc.observer.configs.CallFilterConfig;
+import org.observertc.webrtc.observer.configs.CollectionFilterConfig;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.EntitiesTestUtils;
 
@@ -23,15 +23,15 @@ class CallFilterBuilderTest {
 
     @Test
     void shouldFilterPeerToPeer() throws Throwable {
-        CollectionFilterDTO collectionFilterDTO = CollectionFilterDTO.builder()
+        CollectionFilterConfig collectionFilterConfig = CollectionFilterConfig.builder()
                 .numOfElementsIsLessThan(3)
                 .numOfElementsIsGreaterThan(0)
                 .build();
-        CallFilterDTO callFilterDTO = CallFilterDTO.builder()
-                .withBrowserIdsCollectionFilter(collectionFilterDTO)
+        CallFilterConfig callFilterConfig = CallFilterConfig.builder()
+                .withBrowserIdsCollectionFilter(collectionFilterConfig)
                 .build();
 
-        Predicate<CallEntity> filter = sentinelFilterBuilderProvider.get().apply(callFilterDTO);
+        Predicate<CallEntity> filter = sentinelFilterBuilderProvider.get().apply(callFilterConfig);
 
         var c1 = entitiesTestUtils.generateCallEntity(2);
         var c2 = entitiesTestUtils.generateCallEntity(3);

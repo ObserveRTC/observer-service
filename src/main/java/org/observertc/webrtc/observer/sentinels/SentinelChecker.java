@@ -3,8 +3,10 @@ package org.observertc.webrtc.observer.sentinels;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import io.micronaut.scheduling.annotation.Scheduled;
-import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.Utils;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
+import org.observertc.webrtc.observer.configs.stores.SentinelsStore;
 import org.observertc.webrtc.observer.dto.InboundRtpTrafficDTO;
 import org.observertc.webrtc.observer.dto.OutboundRtpTrafficDTO;
 import org.observertc.webrtc.observer.dto.RemoteInboundRtpTrafficDTO;
@@ -15,12 +17,13 @@ import org.observertc.webrtc.observer.evaluators.monitors.RtpMonitorAbstract;
 import org.observertc.webrtc.observer.monitors.SentinelMonitor;
 import org.observertc.webrtc.observer.repositories.CallsRepository;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.observer.repositories.SentinelsRepository;
+import org.observertc.webrtc.observer.repositories.tasks.FetchSentinelEntitiesTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.time.Duration;
 import java.time.Instant;
@@ -40,7 +43,7 @@ public class SentinelChecker {
     CallsRepository callsRepository;
 
     @Inject
-    SentinelsRepository sentinelsRepository;
+    SentinelsStore sentinelsStore;
 
     @Inject
     SentinelMonitor sentinelMonitor;
@@ -49,7 +52,10 @@ public class SentinelChecker {
     MeterRegistry meterRegistry;
 
     @Inject
-    ObserverConfig observerConfig;
+    ObserverConfigDispatcher configDispatcher;
+
+    @Inject
+    Provider<FetchSentinelEntitiesTask> sentinelEntitiesTaskProvider;
 
     @Inject
     HazelcastMaps hazelcastMaps;
@@ -66,6 +72,7 @@ public class SentinelChecker {
         if (!this.run) {
             return;
         }
+        ObserverConfig observerConfig = configDispatcher.getConfig();
 
         Instant called = Instant.now();
         if (Objects.nonNull(this.lastRun) && Duration.between(this.lastRun, called).getSeconds() < (observerConfig.sentinelsCheckingPeriodInMin * 60 - 1)) {
@@ -74,7 +81,7 @@ public class SentinelChecker {
         this.lastRun = called;
 
         try {
-            this.doRun();
+            this.doRun(observerConfig);
             this.consecutiveFailure = 0;
         } catch (Throwable t) {
             if (MAX_CONSECUTIVE_ERROR <= ++this.consecutiveFailure) {
@@ -88,7 +95,7 @@ public class SentinelChecker {
         }
     }
 
-    private void doRun() throws Throwable {
+    private void doRun(ObserverConfig observerConfig) throws Throwable {
         boolean inboundIsMonitored = false;
         if (Objects.nonNull(observerConfig) && Objects.nonNull(observerConfig.inboundRtpMonitor) && Objects.nonNull(observerConfig.inboundRtpMonitor.enabled)) {
             inboundIsMonitored = observerConfig.inboundRtpMonitor.enabled;
@@ -105,7 +112,12 @@ public class SentinelChecker {
         }
         Set<String> touchedRTPKeys = new HashSet<>();
         Map<UUID, CallEntity> callEntities = this.callsRepository.fetchLocallyStoredCalls();
-        Map<String, SentinelEntity> sentinelEntities = this.sentinelsRepository.fetchAllEntities();
+        Set<String> sentinelNames = this.sentinelsStore.findAll().keySet();
+        var task = sentinelEntitiesTaskProvider.get();
+        if (!task.whereSentinelNames(sentinelNames).execute().succeeded()) {
+            return;
+        }
+        Map<String, SentinelEntity> sentinelEntities = task.getResult();
         Set<String> mediaUnits = new HashSet<>();
         Set<String> browserIds = new HashSet<>();
         Set<String> userNames = new HashSet<>();

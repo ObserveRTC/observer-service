@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
-import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
+import org.observertc.webrtc.observer.configs.PeerConnectionFilterConfig;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Prototype
-public class PeerConnectionFilterBuilder extends AbstractBuilder implements Function<PeerConnectionFilterDTO, Predicate<PeerConnectionEntity>> {
+public class PeerConnectionFilterBuilder extends AbstractBuilder implements Function<PeerConnectionFilterConfig, Predicate<PeerConnectionEntity>> {
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionFilterBuilder.class);
 
     @Inject
@@ -30,7 +30,7 @@ public class PeerConnectionFilterBuilder extends AbstractBuilder implements Func
     IPAddressConverterProvider ipAddressConverterProvider;
 
     @Override
-    public Predicate<PeerConnectionEntity> apply(PeerConnectionFilterDTO pcFilterDTO) throws Throwable {
+    public Predicate<PeerConnectionEntity> apply(PeerConnectionFilterConfig pcFilterDTO) throws Throwable {
         final List<Predicate<PeerConnectionEntity>> filters = this.makeFilters(pcFilterDTO);
         if (filters.size() < 1) {
             logger.warn("There is no filter condition given for filter {}. Hence it will be always false", pcFilterDTO);
@@ -47,11 +47,11 @@ public class PeerConnectionFilterBuilder extends AbstractBuilder implements Func
     }
 
     public Predicate<PeerConnectionEntity> build() throws Throwable {
-        PeerConnectionFilterDTO config = this.convertAndValidate(PeerConnectionFilterDTO.class);
+        PeerConnectionFilterConfig config = this.convertAndValidate(PeerConnectionFilterConfig.class);
         return this.apply(config);
     }
 
-    private List<Predicate<PeerConnectionEntity>> makeFilters(PeerConnectionFilterDTO filterConfig) {
+    private List<Predicate<PeerConnectionEntity>> makeFilters(PeerConnectionFilterConfig filterConfig) {
         List<Predicate<PeerConnectionEntity>> result = new LinkedList<>();
         if (Objects.nonNull(filterConfig.serviceName)) {
             Predicate<PeerConnectionEntity> filter = pcEntity ->

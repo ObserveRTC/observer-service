@@ -1,10 +1,10 @@
 package org.observertc.webrtc.observer.repositories.resolvers;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.entities.ServiceMapEntity;
-import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
+import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class ServiceNameResolver implements Function<UUID, String> {
     private static final Logger logger = LoggerFactory.getLogger(ServiceNameResolver.class);
 
     @Inject
-    ServiceMapsRepository serviceMapsRepository;
+    ServiceMapsStore serviceMapsStore;
 
     private Map<UUID, String> dictionary;
     private String defaultServiceName;
@@ -51,7 +51,7 @@ public class ServiceNameResolver implements Function<UUID, String> {
 
     private Map<UUID, String> fetch() {
         Map<UUID, String> result = new HashMap<>();
-        Map<String, ServiceMapEntity> entries = this.serviceMapsRepository.findAll();
+        Map<String, ServiceMapEntity> entries = this.serviceMapsStore.findAll();
         Iterator<ServiceMapEntity> it = entries.values().iterator();
         while (it.hasNext()) {
             ServiceMapEntity entity = it.next();

@@ -2,7 +2,11 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
+import org.observertc.webrtc.observer.configs.CallFilterConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.configs.PeerConnectionFilterConfig;
+import org.observertc.webrtc.observer.configs.SentinelConfig;
 import org.observertc.webrtc.observer.dto.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +20,9 @@ public class HazelcastMaps {
     @Inject
     ObserverHazelcast observerHazelcast;
 
+    @Inject
+    ObserverConfigDispatcher observerConfigDispatcher;
+
     private IMap<UUID, CallDTO> callDTOs;
 
     private IMap<UUID, PeerConnectionDTO> pcDTOs;
@@ -23,14 +30,15 @@ public class HazelcastMaps {
     private MultiMap<UUID, String> pcToRemoteIPs;
     private MultiMap<UUID, UUID> callToPCUUIDs;
     private IMap<String, WeakLockDTO> weakLocks;
-    private IMap<String, SentinelDTO> sentinelDTOs;
-    private IMap<String, CallFilterDTO> callFilterDTOs;
-    private IMap<String, PeerConnectionFilterDTO> pcFilterDTOs;
+    private IMap<String, SentinelConfig> sentinelDTOs;
+    private IMap<String, CallFilterConfig> callFilterDTOs;
+    private IMap<String, PeerConnectionFilterConfig> pcFilterDTOs;
     private MultiMap<String, UUID> serviceToUUIDs;
     private IMap<UUID, String> uuidToService;
     private IMap<String, InboundRtpTrafficDTO> inboundRtpTrafficDTOs;
     private IMap<String, OutboundRtpTrafficDTO> outboundRtpTrafficDTOs;
     private IMap<String, RemoteInboundRtpTrafficDTO> remoteInboundRtpTrafficDTOs;
+    private IMap<String, ConfigDTO> configurations;
 
     @PostConstruct
     void setup() {
@@ -49,6 +57,8 @@ public class HazelcastMaps {
         this.inboundRtpTrafficDTOs = observerHazelcast.getInstance().getMap("observertc-inbound-rtp-traffics");
         this.outboundRtpTrafficDTOs = observerHazelcast.getInstance().getMap("observertc-outbound-rtp-traffics");
         this.remoteInboundRtpTrafficDTOs = observerHazelcast.getInstance().getMap("observertc-remote-inbound-rtp-traffics");
+
+        this.configurations = observerHazelcast.getInstance().getMap("observertc-configurations");
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {
@@ -83,11 +93,11 @@ public class HazelcastMaps {
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
 
-    public IMap<String, CallFilterDTO> getCallFilterDTOs() {return this.callFilterDTOs;}
+    public IMap<String, CallFilterConfig> getCallFilterDTOs() {return this.callFilterDTOs;}
 
-    public IMap<String, PeerConnectionFilterDTO> getPeerConnectionFilterDTOs() { return this.pcFilterDTOs; }
+    public IMap<String, PeerConnectionFilterConfig> getPeerConnectionFilterDTOs() { return this.pcFilterDTOs; }
 
-    public IMap<String, SentinelDTO> getSentinelDTOs() {return this.sentinelDTOs;}
+    public IMap<String, SentinelConfig> getSentinelDTOs() {return this.sentinelDTOs;}
 
     public IMap<UUID, String> getUuidToService() {return this.uuidToService;}
 
@@ -106,4 +116,6 @@ public class HazelcastMaps {
     public IMap<String, OutboundRtpTrafficDTO> getOutboundRtpDTOs() { return this.outboundRtpTrafficDTOs; }
 
     public IMap<String, RemoteInboundRtpTrafficDTO> getRemoteInboundTrafficDTOs() { return this.remoteInboundRtpTrafficDTOs; }
+
+    public IMap<String, ConfigDTO> getConfigurations() { return this.configurations; }
 }

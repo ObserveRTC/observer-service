@@ -1,6 +1,9 @@
 package org.observertc.webrtc.observer.dto;
 
 import org.jeasy.random.EasyRandom;
+import org.observertc.webrtc.observer.configs.CallFilterConfig;
+import org.observertc.webrtc.observer.configs.CollectionFilterConfig;
+import org.observertc.webrtc.observer.configs.SentinelConfig;
 
 import javax.inject.Singleton;
 import java.util.*;
@@ -30,21 +33,21 @@ public class DTOTestUtils {
         return result;
     }
 
-    public SentinelDTO generateSentinelDTO() {
-        return generator.nextObject(SentinelDTO.class);
+    public SentinelConfig generateSentinelDTO() {
+        return generator.nextObject(SentinelConfig.class);
     }
 
-    public CallFilterDTO generateSentinelFilterDTO() {
-        return generator.nextObject(CallFilterDTO.class);
+    public CallFilterConfig generateSentinelFilterDTO() {
+        return generator.nextObject(CallFilterConfig.class);
     }
 
-    public CollectionFilterDTO generateCollectionFilter() {
-        return generator.nextObject(CollectionFilterDTO.class);
+    public CollectionFilterConfig generateCollectionFilter() {
+        return generator.nextObject(CollectionFilterConfig.class);
     }
 
-    public CollectionFilterDTO generateSSRCCollectionFilter() {
+    public CollectionFilterConfig generateSSRCCollectionFilter() {
         Random random = new Random();
-        CollectionFilterDTO result = generator.nextObject(CollectionFilterDTO.class);
+        CollectionFilterConfig result = generator.nextObject(CollectionFilterConfig.class);
         List<String> SSRCsList = new LinkedList<>();
         for (int i = 0; i < random.nextInt(10); ++i)
             SSRCsList.add(Long.toString(random.nextLong()));

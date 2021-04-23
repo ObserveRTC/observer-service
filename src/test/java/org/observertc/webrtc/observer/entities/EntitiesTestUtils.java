@@ -1,10 +1,10 @@
 package org.observertc.webrtc.observer.entities;
 
 import org.jeasy.random.EasyRandom;
+import org.observertc.webrtc.observer.configs.SentinelConfig;
 import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.dto.DTOTestUtils;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
-import org.observertc.webrtc.observer.dto.SentinelDTO;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,9 +33,9 @@ public class EntitiesTestUtils {
     }
 
     public SentinelEntity generateSentinelEntityWithoutFilter() {
-        SentinelDTO sentinelDTO = dtoTestUtils.generateSentinelDTO();
+        SentinelConfig sentinelConfig = dtoTestUtils.generateSentinelDTO();
         return SentinelEntity.builder()
-                .withSentinelDTO(sentinelDTO)
+                .withSentinelDTO(sentinelConfig)
                 .build();
     }
     public CallEntity generateCallEntity() {
@@ -55,5 +55,4 @@ public class EntitiesTestUtils {
                 .withPeerConnections(pcs)
                 .build();
     }
-
 }

@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Utils {
-
 //    public static final String UNKOWN_TAG_VALUE;
 
     public static<T> T ifExpectedThenAlternative(T subject, T expected, T alternative) {
@@ -27,5 +26,10 @@ public class Utils {
     public static boolean anyNull(Object... objects) {
         Objects.requireNonNull(objects, "To determine if any object is null, we need objects");
         return Arrays.stream(objects).anyMatch(Objects::isNull);
+    }
+
+    public static boolean allNull(Object... objects) {
+        Objects.requireNonNull(objects, "To determine if all object is null, we need objects");
+        return Arrays.stream(objects).allMatch(Objects::isNull);
     }
 }

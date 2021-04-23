@@ -14,36 +14,43 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.configs;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
-import org.observertc.webrtc.observer.dto.PeerConnectionFilterDTO;
-import org.observertc.webrtc.observer.dto.SentinelDTO;
-import org.observertc.webrtc.observer.dto.CallFilterDTO;
+import org.observertc.webrtc.observer.configbuilders.ConfigAssent;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
 
 	// Connectors Config
-	public List<Map<String, Object>> connectors = new LinkedList<>();
+	@ConfigAssent(keyField = "name")
+	public List<Map<String, Object>> connectors = new ArrayList<>();
 
 	@Min(1)
 	@Max(60)
 	public int sentinelsCheckingPeriodInMin = 1;
 
 	// Sentinels Config
-	public List<SentinelDTO> sentinels = new ArrayList<>();
+	@Valid
+	@ConfigAssent(keyField = "name")
+	public List<SentinelConfig> sentinels = new ArrayList<>();
 
 	// CallFilters Config
-	public List<CallFilterDTO> callFilters = new ArrayList<>();
+	@Valid
+	@ConfigAssent(keyField = "name")
+	public List<CallFilterConfig> callFilters = new ArrayList<>();
 
 	// PC Filters Config
-	public List<PeerConnectionFilterDTO> pcFilters = new ArrayList<>();
+	@Valid
+	@ConfigAssent(keyField = "name")
+	public List<PeerConnectionFilterConfig> pcFilters = new ArrayList<>();
 
 	// Security Configurations
 	public SecurityConfig security;
@@ -68,6 +75,7 @@ public class ObserverConfig {
 	// Evaluators Config
 	public EvaluatorsConfig evaluators;
 
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
@@ -86,6 +94,7 @@ public class ObserverConfig {
 	// Hazelcast Config
 	public HazelcastConfig hazelcast;
 
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
@@ -95,6 +104,7 @@ public class ObserverConfig {
 	// Outbound Reports Config
 	public OutboundReportsConfig outboundReports;
 
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
 		public boolean enabled = true;
@@ -120,10 +130,14 @@ public class ObserverConfig {
 	}
 
 	// Service Mappings Config
+	@Valid
+	@ConfigAssent(keyField = "name")
 	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
 
 	@EachProperty("servicemappings")
 	public static class ServiceMapConfiguration {
+
+		@NotNull
 		public String name;
 		public List<UUID> uuids = new ArrayList<>();
 	}
@@ -189,6 +203,7 @@ public class ObserverConfig {
 		public int retentionTimeInS = 300;
 	}
 
+	@ConfigAssent(mutable = false)
 	public static class ReportCounterMonitorConfig {
 		public boolean enabled = false;
 		public boolean tagByType = false;

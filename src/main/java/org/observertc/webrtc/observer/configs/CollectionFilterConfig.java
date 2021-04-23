@@ -1,20 +1,12 @@
-package org.observertc.webrtc.observer.dto;
+package org.observertc.webrtc.observer.configs;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hazelcast.nio.serialization.PortableReader;
-import com.hazelcast.nio.serialization.PortableWriter;
-import com.hazelcast.nio.serialization.VersionedPortable;
 import org.observertc.webrtc.observer.common.ObjectToString;
 
 import javax.validation.constraints.Min;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
-@JsonIgnoreProperties(value = { "classId", "factoryId", "classVersion" })
-public class CollectionFilterDTO implements VersionedPortable {
-
-    private static final int CLASS_VERSION = 1;
+public class CollectionFilterConfig {
 
     public static Builder builder() { return new Builder();}
 
@@ -31,8 +23,6 @@ public class CollectionFilterDTO implements VersionedPortable {
     public String[] anyMatch = new String[0];
     public String[] allMatch = new String[0];
 
-
-
     @Override
     public String toString() {
         return ObjectToString.toString(this);
@@ -43,7 +33,7 @@ public class CollectionFilterDTO implements VersionedPortable {
         if (Objects.isNull(other) || !this.getClass().getName().equals(other.getClass().getName())) {
             return false;
         }
-        CollectionFilterDTO otherDTO = (CollectionFilterDTO) other;
+        CollectionFilterConfig otherDTO = (CollectionFilterConfig) other;
         if (this.gt != otherDTO.gt) return false;
         if (this.eq != otherDTO.eq) return false;
         if (this.lt != otherDTO.lt) return false;
@@ -53,41 +43,8 @@ public class CollectionFilterDTO implements VersionedPortable {
     }
 
 
-    @Override
-    public int getClassVersion() {
-        return CLASS_VERSION;
-    }
-
-    @Override
-    public int getFactoryId() {
-        return PortableDTOFactory.FACTORY_ID;
-    }
-
-    @Override
-    public int getClassId() {
-        return PortableDTOFactory.COLLECTION_FILTER_DTO_CLASS_ID;
-    }
-
-    @Override
-    public void writePortable(PortableWriter writer) throws IOException {
-        writer.writeInt("gt", this.gt);
-        writer.writeInt("eq", this.eq);
-        writer.writeInt("lt", this.lt);
-        writer.writeUTFArray("anyMatch", this.anyMatch);
-        writer.writeUTFArray("allMatch", this.allMatch);
-    }
-
-    @Override
-    public void readPortable(PortableReader reader) throws IOException {
-        this.gt = reader.readInt("gt");
-        this.eq = reader.readInt("eq");
-        this.lt = reader.readInt("lt");
-        this.anyMatch = reader.readUTFArray("anyMatch");
-        this.allMatch = reader.readUTFArray("allMatch");
-    }
-
     public static class Builder {
-        private CollectionFilterDTO result = new CollectionFilterDTO();
+        private CollectionFilterConfig result = new CollectionFilterConfig();
 
         public Builder numOfElementsIsGreaterThan(int value) {
             this.result.gt = value;
@@ -116,7 +73,7 @@ public class CollectionFilterDTO implements VersionedPortable {
             return this;
         }
 
-        public CollectionFilterDTO build() {
+        public CollectionFilterConfig build() {
             return this.result;
         }
     }

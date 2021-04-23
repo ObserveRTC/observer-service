@@ -28,14 +28,17 @@ public class Connector implements Observer<Report> {
     private BufferConfig bufferConfig = null;
     private final Logger logger;
     private RestartPolicy restartPolicy = RestartPolicy.Never;
+    private Disposable upstream = null;
 
 
     public Connector(String name) {
+        this.name = name;
         this.logger = LoggerFactory.getLogger(name);
     }
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
+        this.upstream = d;
         Observable<Report> observableReport = this.input;
 
         for (Transformation transformation : this.transformations) {
@@ -55,8 +58,17 @@ public class Connector implements Observer<Report> {
             observableRecords = observableRecord.map(List::of);
         }
 
+
         observableRecords
                 .subscribe(this.sink);
+    }
+
+    public void unSubscribe() {
+        this.input.onComplete();
+        this.sink.onComplete();
+        if (Objects.nonNull(this.upstream) && !this.upstream.isDisposed()) {
+            this.upstream.dispose();
+        }
     }
 
     @Override
@@ -73,12 +85,14 @@ public class Connector implements Observer<Report> {
 
     @Override
     public void onError(@NonNull Throwable e) {
+        this.unSubscribe();
         logger.error("Unexpected error occurred.", e);
     }
 
     @Override
     public void onComplete() {
-        logger.info("The pipeline is done");
+        this.unSubscribe();
+        logger.info("The Connector is finished");
     }
 
     public String getName() {

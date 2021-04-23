@@ -16,11 +16,13 @@
 
 package org.observertc.webrtc.observer.configbuilders;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -44,6 +46,24 @@ public class ConfigConverter<T> implements Function<Map<String, Object>, T>{
 	public static<R> R convert(Class<R> klass, Map<String, Object> config) {
 		return new ConfigConverter<R>(klass).apply(config);
 	}
+
+	public static Map<String, Object> convertToMap(Object source) {
+        byte[] bytes;
+        try {
+            bytes = OBJECT_MAPPER.writeValueAsBytes(source);
+        } catch (JsonProcessingException e) {
+            logger.warn("{} Cannot convert to bytes", source.toString());
+            return Collections.emptyMap();
+        }
+        Map<String, Object> result;
+        try {
+            result = OBJECT_MAPPER.readValue(bytes, Map.class);
+        } catch (IOException e) {
+            logger.warn("{} Cannot convert to map", source.toString());
+            return Collections.emptyMap();
+        }
+        return result;
+    }
 	/**
 	 * @param original the original map the merge place to
 	 * @param newMap   the newmap we merge to the original one
@@ -165,8 +185,7 @@ public class ConfigConverter<T> implements Function<Map<String, Object>, T>{
 		if (violations != null && !violations.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			for (ConstraintViolation<T> constraintViolation : violations) {
-				sb.append(constraintViolation.getMessage())
-						.append(" ");
+				sb.append(constraintViolation.getMessage()).append(" ");
 			}
 
 			String errorMessage = sb.toString();

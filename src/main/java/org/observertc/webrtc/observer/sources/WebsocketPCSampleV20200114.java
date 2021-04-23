@@ -30,14 +30,14 @@ import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.entities.ServiceMapEntity;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.repositories.ServiceMapsRepository;
-import org.observertc.webrtc.observer.repositories.resolvers.ServiceNameResolver;
+import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
 import org.observertc.webrtc.observer.samples.ObservedPCS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,23 +62,21 @@ public class WebsocketPCSampleV20200114 extends Observable<ObservedPCS> {
 	MeterRegistry meterRegistry;
 
 	@Inject
-	ServiceMapsRepository serviceMapsRepository;
+	ServiceMapsStore serviceMapsStore;
 
-	@Inject
-	ServiceNameResolver serviceNameResolver;
-
-	@Inject
-	ObserverConfig observerConfig;
 
 	private Map<String, String> serviceNameMapper = new HashMap<>();
 	private Observer<? super ObservedPCS> observer = null;
+	private ObserverConfig observerConfig;
 
 	public WebsocketPCSampleV20200114(
 			ObjectMapper objectMapper,
-			MonitorProvider monitorProvider
+			MonitorProvider monitorProvider,
+			ObserverConfigDispatcher configDispatcher
 	) {
 		this.objectReader = objectMapper.reader();
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+		this.observerConfig = configDispatcher.getConfig();
 	}
 
 	@Override
@@ -349,7 +347,7 @@ public class WebsocketPCSampleV20200114 extends Observable<ObservedPCS> {
 	}
 
 	private String resolveServiceName(UUID serviceUUID) {
-		Optional<ServiceMapEntity> found = this.serviceMapsRepository.findByUUID(serviceUUID);
+		Optional<ServiceMapEntity> found = this.serviceMapsStore.findByUUID(serviceUUID);
 		if (!found.isPresent()) {
 			return null;
 		}
