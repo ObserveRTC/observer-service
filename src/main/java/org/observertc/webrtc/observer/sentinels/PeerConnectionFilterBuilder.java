@@ -33,7 +33,7 @@ public class PeerConnectionFilterBuilder extends AbstractBuilder implements Func
     public Predicate<PeerConnectionEntity> apply(PeerConnectionFilterDTO pcFilterDTO) throws Throwable {
         final List<Predicate<PeerConnectionEntity>> filters = this.makeFilters(pcFilterDTO);
         if (filters.size() < 1) {
-            logger.warn("There is no filter condition gven for filter {}. Hence it will be always false", pcFilterDTO);
+            logger.warn("There is no filter condition given for filter {}. Hence it will be always false", pcFilterDTO);
             return pcEntity -> false;
         }
         return pcEntity -> {

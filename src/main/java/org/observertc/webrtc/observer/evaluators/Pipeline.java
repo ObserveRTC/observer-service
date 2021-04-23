@@ -111,7 +111,7 @@ public class Pipeline {
         this.sources
                 .subscribe(this.observedPCSEvaluator);
 
-        // InboundRTP -> ReportSunk
+        // InboundRTP -> ReportSink
         this.observedPCSEvaluator
                 .getInboundRTPReports()
                 .map(this.inboundRTPMonitor)
