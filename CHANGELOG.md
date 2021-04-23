@@ -1,6 +1,34 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
+## 0.8.1 (H)
+ * Make `/config` endpoint to rule all possible runtime configuration changes
+ * Add AsciiArt logo to print at startup (most important!)
+
+### Added
+ * New endpoint: `/config` to change any configuration
+ * ObserverConfigDispatcher to dispatch config changes runtime
+ * ConfigEntriesDispatcher to listen config repository changes in Hazelcast
+ * ConfigDTO to store configurations in hazelcast repository
+ * `configs` package to bundle all config structures, stores and dispatchers
+ * `ConfigOperations` to detect changes in a config map
+ * `ConfigNode` to help identifying Config map nodes
+ * `ConfigHolder` to hold configurations and renew it accordingly
+
+### Removed
+ * `/pcFilters` endpoint is removed due to `/config` endpoint
+ * `/callFilters` endpoint is removed due to `/config` endpoint
+ * `/sentinels` endpoint is removed due to `/config` endpoint
+ * `/servicemappings` endpoint is removed due to `/config` endpoint
+ 
+### Changed
+ * SentinelsDTO to SentinelConfig as it become part of the config
+ * CallFilterDTO is removed from Hazelcast repository, and become CallFilterConfig as it is part of a config object
+ * PeerConnectionFilterDTO from Hazelcast repository, and become PeerConnectionFilterConfig as it is part of a config object
+ * ServiceMappings from Hazelcast repository, and become part of the config object
+ * CollectionFilterDTO from Hazelcast repository, and become CollectionFilterConfig as it is part of a config object
+ * Connectors Can be changed dynamically through `/config` endpoint in runtime
+
 ## 0.8.0 (H)
  * Add `framewidth`, and `frameHeight` fields to tracks.
  * Change Report schema

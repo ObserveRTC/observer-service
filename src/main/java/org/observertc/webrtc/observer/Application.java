@@ -29,7 +29,11 @@ import org.observertc.webrtc.observer.evaluators.Pipeline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 
 
@@ -67,8 +71,20 @@ public class Application {
         deployCheck(observerHazelcast);
         logger.info("ServicesRepository config");
         context.getBean(ServiceMapsStore.class);
+        renderLogo();
     }
 
+    private static void renderLogo() {
+        URL url = ClassLoader.getSystemResource("logo.txt");
+        try {
+            var path = Path.of(url.getPath());
+            List<String> lines = Files.readAllLines(path);
+            var text = String.join("\n", lines);
+            System.out.println(text);
+        } catch (Throwable t) {
+            logger.error("Error rendering logo", t);
+        }
+    }
 
     /**
      * Check if the hazelcast contains a value previously
