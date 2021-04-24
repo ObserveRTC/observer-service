@@ -10,6 +10,26 @@ micronaut:
         step: PT1M
   security:
     enabled: false
+    authentication: idtoken
+      endpoints:
+        login:
+          enabled: true
+      redirect:
+        login-success: /secure/anonymous
+      token:
+        jwt:
+          enabled: true
+          signatures.jwks.keycloak:
+            url: http://localhost:8888/auth/realms/master/protocol/openid-connect/certs
+      oauth2.clients.keycloak:
+        grant-type: password
+        client-id: micronaut
+        client-secret: 7dd4d516-e06d-4d81-b5e7-3a15debacebf
+        authorization:
+          url: http://localhost:8888/auth/realms/master/protocol/openid-connect/auth
+        token:
+          url: http://localhost:8888/auth/realms/master/protocol/openid-connect/token
+          auth-method: client-secret-post
 #    authentication: idtoken
 #    endpoints:
 #      logout:

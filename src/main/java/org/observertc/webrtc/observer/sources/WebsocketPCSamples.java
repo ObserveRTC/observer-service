@@ -32,7 +32,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
-import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
@@ -51,7 +50,8 @@ import java.util.UUID;
  * Service should be UUId, because currently mysql stores it as
  * binary and with that type the search is fast for activestreams. thats why.
  */
-@Secured(SecurityRule.IS_ANONYMOUS)
+//@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 @ServerWebSocket("/pcsamples/{serviceUUIDStr}/{mediaUnitID}/")
 public class WebsocketPCSamples extends Observable<SourceSample> {
 
