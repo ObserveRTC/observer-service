@@ -130,7 +130,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     }
 
     public Observable<Report> getClientDetailsReports() {
-        return this.extensionReports;
+        return this.clientDetailsReports;
     }
 
     @Override
