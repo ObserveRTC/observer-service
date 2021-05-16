@@ -14,4 +14,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Around
 @Type(WebsocketSessionValidatorInterceptor.class)
 public @interface ValidateWebsocketSession {
+
 }

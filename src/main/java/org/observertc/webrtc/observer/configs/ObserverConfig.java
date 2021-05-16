@@ -24,7 +24,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
@@ -62,14 +65,13 @@ public class ObserverConfig {
 		@Deprecated(since = "0.7.2") // because it is moved to sources config
 		public boolean dropUnknownServices = false;
 
-		public WebsocketsSecurityConfig websockets = new WebsocketsSecurityConfig();
+		public WebsocketSecurityConfig websockets = new WebsocketSecurityConfig();
 
 		@ConfigurationProperties("websockets")
-		public static class WebsocketsSecurityConfig {
-			@Min(1)
-			public int invalidAccessTokensCacheExpirationInS = 3600;
-			@Min(1)
-			public int accessTokensRevalidationPeriodInS = 3600;
+		public static class WebsocketSecurityConfig {
+
+			@Min(0)
+			public int maxValidatedSessionsForOneAccessToken = 0;
 		}
 
 		// IP Address Converter Config

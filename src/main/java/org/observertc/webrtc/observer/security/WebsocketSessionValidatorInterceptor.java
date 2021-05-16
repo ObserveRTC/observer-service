@@ -3,11 +3,10 @@ package org.observertc.webrtc.observer.security;
 import io.micronaut.aop.MethodInterceptor;
 import io.micronaut.aop.MethodInvocationContext;
 import io.micronaut.scheduling.annotation.Scheduled;
+import io.micronaut.security.token.jwt.generator.claims.JwtClaims;
 import io.micronaut.security.token.validator.TokenValidator;
-import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
-import org.observertc.webrtc.observer.common.TimeLimitedMap;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.slf4j.Logger;
@@ -16,88 +15,70 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton //indicates that only one instance of annotated class will exist in the application runtime
 public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<Object, Object> {
     private static final Logger logger = LoggerFactory.getLogger(WebsocketSessionValidatorInterceptor.class);
     private static final String ACCESS_TOKEN_HOLDER_PARAMETER_NAME = "accessToken";
 
-    private TimeLimitedMap<String, CloseReason> invalidAccessTokens;
     private final Collection<TokenValidator> tokenValidators;
-    private final boolean authenticate;
+    private final boolean doValidate;
+    private ConcurrentHashMap<String, ValidatedAccessToken> validatedAccessTokens;
+    private PriorityBlockingQueue<ValidatedAccessToken> expiringSessions;
+    private ObserverConfig.SecurityConfig.WebsocketSecurityConfig config;
 
-    private Map<String, ValidatedSession> validatedSessions;
-    private ObserverConfig.SecurityConfig.WebsocketsSecurityConfig config;
-
-    public WebsocketSessionValidatorInterceptor(Collection<TokenValidator> tokenValidators) {
+    public WebsocketSessionValidatorInterceptor(
+            Collection<TokenValidator> tokenValidators,
+            ObserverConfigDispatcher configDispatcher
+    ) {
+        this.config = configDispatcher.getConfig().security.websockets;
         this.tokenValidators = tokenValidators;
-        this.authenticate = Objects.nonNull(this.tokenValidators) && 0 < this.tokenValidators.size();
-        this.validatedSessions = new ConcurrentHashMap<>();
+        this.doValidate = Objects.nonNull(this.tokenValidators) && 0 < this.tokenValidators.size();
+        this.validatedAccessTokens = new ConcurrentHashMap<>();
+        this.expiringSessions = new PriorityBlockingQueue<>();
     }
-
-    @Inject
-    ObserverConfigDispatcher configDispatcher;
 
     @Inject
     WebsocketSecurityCustomCloseReasons closeReasons;
 
     @PostConstruct
     void setup() {
-        var observerConfig = configDispatcher.getConfig();
-        var config = observerConfig.security.websockets;
-        this.config = config;
-
-        var invalidCacheExpiration = Duration.ofSeconds(config.invalidAccessTokensCacheExpirationInS);
-        this.invalidAccessTokens = new TimeLimitedMap<>(invalidCacheExpiration);
-
-        var revalidationPeriod = Duration.ofSeconds(config.accessTokensRevalidationPeriodInS);
-        this.validatedSessions = new TimeLimitedMap(revalidationPeriod);
 
     }
 
     @Scheduled(initialDelay = "1m", fixedDelay = "1m")
-    void revalidate() {
-        final Instant now = Instant.now();
-        final int thresholdInS = this.config.accessTokensRevalidationPeriodInS;
-        Collection<String> keys = this.validatedSessions.keySet();
-        for (String accessToken : keys) {
-            ValidatedSession validatedSession = this.validatedSessions.get(accessToken);
-            if (Duration.between(validatedSession.validated, now).getSeconds() < thresholdInS) {
-                continue;
+    void invalidateSessions() {
+        Instant now = Instant.now();
+        while (!this.expiringSessions.isEmpty()) {
+            ValidatedAccessToken validatedAccessToken = this.expiringSessions.peek();
+            if (0 < validatedAccessToken.expires.compareTo(now)) {
+                break;
             }
-            WebSocketSession session = validatedSession.session;
-            boolean accessTokenIsValid;
-            try {
-                accessTokenIsValid = this.isValid(accessToken);
-            } catch (Exception ex) {
-                var closeReason = closeReasons.getValidationServerError(ex.getMessage());
-                session.close(closeReason);
-                this.validatedSessions.remove(accessToken);
-                continue;
-            }
-
-            if (accessTokenIsValid) {
-                validatedSession.prolong();
-                continue;
-            }
-
-            CloseReason closeReason = closeReasons.getAccessTokenExpired();
-            session.close(closeReason);
-            this.invalidAccessTokens.put(accessToken, closeReason);
-            this.validatedSessions.remove(accessToken);
+            this.expiringSessions.poll();
+            Collection<WebSocketSession> sessions = validatedAccessToken.sessions.values();
+            this.validatedAccessTokens.remove(validatedAccessToken.accessToken);
+            var closeReason = closeReasons.getAccessTokenExpired();
+            sessions.stream().forEach(session -> {
+                try {
+                    if (!session.isOpen()) {
+                        return;
+                    }
+                    session.close(closeReason);
+                } catch (Exception ex) {
+                    logger.warn("Exception occurred while closing session", ex);
+                }
+            });
         }
     }
 
     @Override
     public Object intercept(MethodInvocationContext<Object, Object> context) {
-        if (!this.authenticate) {
+        if (!this.doValidate) {
             return context.proceed();
         }
         // validate method
@@ -107,6 +88,8 @@ public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<O
                     context.getMethodName(), ValidateWebsocketSession.class.getSimpleName());
             throw new RuntimeException(message);
         }
+
+        var annotationValue = context.getAnnotation(ValidateWebsocketSession.class);
         var arguments = context.getArguments();
         var websocketParameterNameHolder = Arrays.stream(arguments)
                 .filter(argument -> argument.getType().isAssignableFrom(WebSocketSession.class))
@@ -119,50 +102,74 @@ public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<O
         }
         String parameterName = websocketParameterNameHolder.get();
         WebSocketSession session = (WebSocketSession) context.getParameterValueMap().get(parameterName);
-        String accessToken = getAccessToken(session);
-        if (this.hadReasonToClose(session, accessToken)) {
-            return null;
+        if (this.doValidate) {
+            boolean valid = false;
+            try {
+                valid = this.isValid(session);
+            } catch (Exception ex) {
+                if (session.isOpen()) {
+                    var closeReason = closeReasons.getInternalServerError(ex.getMessage());
+                    session.close(closeReason);
+                }
+                return null;
+            }
+            if (!valid) {
+                return null;
+            }
         }
-        this.validatedSessions.put(accessToken, new ValidatedSession(session));
         Object result = context.proceed();
         return result;
     }
 
-    private boolean hadReasonToClose(WebSocketSession session, String accessToken) {
-        CloseReason closeReason;
+    private boolean isValid(WebSocketSession session) {
+        String accessToken = getAccessToken(session);
         if (Objects.isNull(accessToken)) {
-            closeReason = closeReasons.getNoAccessTokenProvided();
+            var closeReason = closeReasons.getNoAccessTokenProvided();
             session.close(closeReason);
+            return false;
+        }
+        ValidatedAccessToken validatedAccessToken = this.validatedAccessTokens.get(accessToken);
+        if (Objects.nonNull(validatedAccessToken)) {
+            if (0 < this.config.maxValidatedSessionsForOneAccessToken) {
+                if (this.config.maxValidatedSessionsForOneAccessToken <= validatedAccessToken.sessions.size()) {
+                    var closeReason = closeReasons.getTooManyWebsocketRegisteredForTheSameAccessToken();
+                    session.close(closeReason);
+                    return false;
+                }
+            }
+            validatedAccessToken.addSession(session);
             return true;
         }
-        closeReason = this.invalidAccessTokens.get(accessToken);
-        if (Objects.nonNull(closeReason)) {
-            session.close(closeReason);
-            return true;
-        }
-        boolean accessTokenIsValid;
+        AtomicReference<ValidatedAccessToken> validatedAccessTokenRef =  new AtomicReference<>(null);
         try {
-            accessTokenIsValid = this.isValid(accessToken);
+            Flowable.fromIterable(this.tokenValidators)
+                    .flatMap(tokenValidator -> tokenValidator.validateToken(accessToken, null))
+                    .subscribe(auth -> {
+                        var attributes = auth.getAttributes();
+                        Date expirationDate = (Date) attributes.get(JwtClaims.EXPIRATION_TIME);
+                        if (Objects.isNull(expirationDate)) {
+                            return;
+                        }
+                        Instant expires = expirationDate.toInstant();
+                        ValidatedAccessToken newValidatedAccessToken = new ValidatedAccessToken(accessToken, expires).addSession(session);
+                        validatedAccessTokenRef.set(newValidatedAccessToken);
+                        return;
+                    });
         } catch (Exception ex) {
-            closeReason = closeReasons.getValidationServerError(ex.getMessage());
+            var closeReason = closeReasons.getInternalServerError(ex.getMessage());
             session.close(closeReason);
             return false;
         }
 
-        if (!accessTokenIsValid) {
-            closeReason = closeReasons.getInvalidAccessToken();
-            this.invalidAccessTokens.put(accessToken, closeReason);
+        validatedAccessToken = validatedAccessTokenRef.get();
+        if (Objects.isNull(validatedAccessToken)) {
+            var closeReason = closeReasons.getInvalidAccessToken();
             session.close(closeReason);
-            return true;
+            return false;
         }
-        return false;
-    }
-
-    private boolean isValid(String accessToken) throws Exception {
-        var authenticated = Flowable.fromIterable(this.tokenValidators)
-                .flatMap(tokenValidator -> tokenValidator.validateToken(accessToken, null));
-        boolean result = 0 < authenticated.count().blockingGet();
-        return result;
+        this.validatedAccessTokens.put(accessToken, validatedAccessToken);
+        this.expiringSessions.add(validatedAccessToken);
+        return true;
     }
 
     private static String getAccessToken(WebSocketSession session) {
@@ -171,17 +178,24 @@ public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<O
         return result;
     }
 
-    private class ValidatedSession {
-        final WebSocketSession session;
-        Instant validated;
+    private class ValidatedAccessToken implements Comparable<ValidatedAccessToken>{
+        final String accessToken;
+        final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+        final Instant expires;
 
-        ValidatedSession(WebSocketSession session) {
-            this.session = session;
-            this.validated = Instant.now();
+        ValidatedAccessToken(String accessToken, Instant expires) {
+            this.accessToken = accessToken;
+            this.expires = expires;
         }
 
-        void prolong() {
-            this.validated = Instant.now();
+        ValidatedAccessToken addSession(WebSocketSession session) {
+            this.sessions.put(session.getId(), session);
+            return this;
+        }
+
+        @Override
+        public int compareTo(ValidatedAccessToken o) {
+            return this.expires.compareTo(o.expires);
         }
     }
 }
