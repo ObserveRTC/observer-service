@@ -9,7 +9,7 @@ plugins {
 //version = "hydrogen:deuterium"
 // latest version
 //version = "latest"
-version = "0.8.1"
+version = "0.8.2-exp"
 group = "org.observertc.webrtc.observer"
 
 repositories {
@@ -27,8 +27,6 @@ micronaut {
 }
 
 dependencies {
-
-
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     annotationProcessor("io.dekorate:prometheus-annotations:${dekorateVersion}")
@@ -51,24 +49,6 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security-jwt")
 
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-datadog")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-elastic")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-appoptics")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-atlas")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-azure-monitor")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-cloudwatch")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-dynatrace")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-ganglia")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-graphite")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-humio")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-influx")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-jmx")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-kairos")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-signalfx")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-stackdriver")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-statsd")
-//    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-wavefront")
-
 
     compile group: 'org.apache.avro', name: 'avro', version: '1.10.0'
     testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
@@ -81,7 +61,6 @@ dependencies {
 
     // ------- Render Views --------
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
-
 
     // --------- Authentication provider -----
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")

@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.sentinels;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
-import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
+import org.observertc.webrtc.observer.security.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configs.PeerConnectionFilterConfig;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
@@ -80,7 +80,7 @@ public class PeerConnectionFilterBuilder extends AbstractBuilder implements Func
 
         if (Objects.nonNull(filterConfig.remoteIPs) && !CollectionFilterBuilder.isEmpty(filterConfig.remoteIPs)) {
             CollectionFilterBuilder collectionFilterBuilder = collectionFilterBuilderProvider.get();
-            Function<String, String> ipAddressResolver = ipAddressConverterProvider.provideReactiveX();
+            Function<String, String> ipAddressResolver = ipAddressConverterProvider.makeReactiveXConverter();
             Predicate<Collection<String>> filter = collectionFilterBuilder.build(filterConfig.remoteIPs, ipAddressResolver);
             if (collectionFilterBuilder.isWarned()) {
                 logger.warn("While building filter {} a warning is emerged. please check the configuration for the filter", filterConfig.name);

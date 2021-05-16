@@ -1,4 +1,8 @@
 micronaut:
+  server:
+    port: ${APPLICATION_SERVER_PORT:7080}
+    application:
+      name: "webrtc-observer"
   heartbeat:
     enabled: true
   metrics:
@@ -9,64 +13,18 @@ micronaut:
         descriptions: true
         step: PT1M
   security:
-    enabled: false
+    enabled: true
     authentication: idtoken
-      endpoints:
-        login:
-          enabled: true
-      redirect:
-        login-success: /secure/anonymous
-      token:
-        jwt:
-          enabled: true
-          signatures.jwks.keycloak:
-            url: http://localhost:8888/auth/realms/master/protocol/openid-connect/certs
-      oauth2.clients.keycloak:
-        grant-type: password
-        client-id: micronaut
-        client-secret: 7dd4d516-e06d-4d81-b5e7-3a15debacebf
-        authorization:
-          url: http://localhost:8888/auth/realms/master/protocol/openid-connect/auth
-        token:
-          url: http://localhost:8888/auth/realms/master/protocol/openid-connect/token
-          auth-method: client-secret-post
-#    authentication: idtoken
-#    endpoints:
-#      logout:
-#        get-allowed: true
-#    redirect:
-#      login-success: /whoiam
-#    oauth2:
-#      clients:
-#        google:
-#          client-id: '${OAUTH_CLIENT_ID}'
-#          client-secret: '${OAUTH_CLIENT_SECRET}'
-#          openid:
-#            issuer: 'https://accounts.google.com'
-#        cognito:
-#          client-id: '${OAUTH_CLIENT_ID}'
-#          client-secret: '${OAUTH_CLIENT_SECRET}'
-#          openid:
-#            issuer: 'https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_POOL_ID}/'
-#         okta:
-#           client-secret: '${OAUTH_CLIENT_SECRET}'
-#           client-id: '${OAUTH_CLIENT_ID}'
-#            openid:
-#              issuer: '${OIDC_ISSUER_DOMAIN}/oauth2/${OIDC_ISSUER_AUTHSERVERID}'
-#    authentication: bearer
-#    token:
-#      jwt:
-#        signatures:
-#          secret:
-#            generator:
-#              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
-  server:
-    port: ${APPLICATION_SERVER_PORT:7080}
-  application:
-    name: "webrtc-observer"
-#  ssl:
-#    enabled: true
-#    buildSelfSigned: true
+    token:
+      jwt:
+        enabled: true
+        signatures.jwks.keycloak:
+          url: http://localhost:8080/auth/realms/master/protocol/openid-connect/certs
+    oauth2.clients.keycloak:
+      client-id: client
+      client-secret: 4f0b4210-a183-460f-875b-4f949b1fb44b
+      openid:
+        issuer: http://localhost:8080/auth/realms/master
 ---
 endpoints:
   all:
@@ -86,10 +44,16 @@ observer:
       enabled: true
       defaultServiceName: "defaultServiceName"
       security:
-        dropUnknownServices: False
+        dropUnknownServices: false
 
   security:
-    dropUnknownServices: False
+    websockets:
+      invalidAccessTokensCacheExpirationInS: 3600
+      accessTokensRevalidationPeriodInS: 3600
+    ipAddressConverter:
+      enabled: False
+      algorithm: SHA-256
+      salt: "MySalt"
 
   sentinelsCheckingPeriodInMin: 1
   connectors:
@@ -97,20 +61,10 @@ observer:
       buffer:
         maxItems: 100
         maxWaitingTimeInS: 10
-#      sink:
-#        type: LoggerSink
-#        config:
-#          printReports: False
       sink:
-        type: KafkaSink
+        type: LoggerSink
         config:
-          topic: reports
-          properties:
-            bootstrap.servers: "loca
-  ipAddressConverter:
-    enabled: False
-    algorithm: SHA-256
-    salt: "MySalt"
+          printReports: false
 
   reportMonitor:
     enabled: true
@@ -130,14 +84,14 @@ observer:
     peerConnectionMaxIdleTimeInS: 60
 
   outboundReports:
-    reportOutboundRTPs: True
-    reportInboundRTPs: True
-    reportRemoteInboundRTPs: True
-    reportTracks: True
-    reportMediaSources: True
-    reportCandidatePairs: True
-    reportLocalCandidates: True
-    reportRemoteCandidates: True
-    reportUserMediaErrors: True
+    reportOutboundRTPs: true
+    reportInboundRTPs: true
+    reportRemoteInboundRTPs: true
+    reportTracks: true
+    reportMediaSources: true
+    reportCandidatePairs: true
+    reportLocalCandidates: true
+    reportRemoteCandidates: true
+    reportUserMediaErrors: true
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
