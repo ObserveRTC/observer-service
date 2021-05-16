@@ -38,8 +38,7 @@ observer:
 
   security:
     websockets:
-      invalidAccessTokensCacheExpirationInS: 3600
-      accessTokensRevalidationPeriodInS: 3600
+      maxValidatedSessionsForOneAccessToken: 0
     ipAddressConverter:
       enabled: False
       algorithm: SHA-256
