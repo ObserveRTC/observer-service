@@ -36,7 +36,6 @@ import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.samples.SourceSample;
 import org.observertc.webrtc.observer.security.ValidateWebsocketSession;
-import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -53,7 +52,6 @@ import java.util.UUID;
  * binary and with that type the search is fast for activestreams. thats why.
  */
 @Secured(SecurityRule.IS_ANONYMOUS)
-//@Secured(SecurityRule.IS_AUTHENTICATED)
 @ServerWebSocket("/pcsamples/{serviceUUIDStr}/{mediaUnitID}")
 public class WebsocketPCSamples extends Observable<SourceSample> {
 

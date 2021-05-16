@@ -72,11 +72,22 @@ public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<O
             if (Duration.between(validatedSession.validated, now).getSeconds() < thresholdInS) {
                 continue;
             }
-            if (this.isValid(accessToken)) {
+            WebSocketSession session = validatedSession.session;
+            boolean accessTokenIsValid;
+            try {
+                accessTokenIsValid = this.isValid(accessToken);
+            } catch (Exception ex) {
+                var closeReason = closeReasons.getValidationServerError(ex.getMessage());
+                session.close(closeReason);
+                this.validatedSessions.remove(accessToken);
+                continue;
+            }
+
+            if (accessTokenIsValid) {
                 validatedSession.prolong();
                 continue;
             }
-            WebSocketSession session = validatedSession.session;
+
             CloseReason closeReason = closeReasons.getAccessTokenExpired();
             session.close(closeReason);
             this.invalidAccessTokens.put(accessToken, closeReason);
@@ -129,8 +140,16 @@ public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<O
             session.close(closeReason);
             return true;
         }
+        boolean accessTokenIsValid;
+        try {
+            accessTokenIsValid = this.isValid(accessToken);
+        } catch (Exception ex) {
+            closeReason = closeReasons.getValidationServerError(ex.getMessage());
+            session.close(closeReason);
+            return false;
+        }
 
-        if (!this.isValid(accessToken)) {
+        if (!accessTokenIsValid) {
             closeReason = closeReasons.getInvalidAccessToken();
             this.invalidAccessTokens.put(accessToken, closeReason);
             session.close(closeReason);
@@ -139,7 +158,7 @@ public class WebsocketSessionValidatorInterceptor implements MethodInterceptor<O
         return false;
     }
 
-    private boolean isValid(String accessToken) {
+    private boolean isValid(String accessToken) throws Exception {
         var authenticated = Flowable.fromIterable(this.tokenValidators)
                 .flatMap(tokenValidator -> tokenValidator.validateToken(accessToken, null));
         boolean result = 0 < authenticated.count().blockingGet();

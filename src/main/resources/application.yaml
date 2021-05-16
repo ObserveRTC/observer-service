@@ -13,18 +13,8 @@ micronaut:
         descriptions: true
         step: PT1M
   security:
-    enabled: true
-    authentication: idtoken
-    token:
-      jwt:
-        enabled: true
-        signatures.jwks.keycloak:
-          url: http://localhost:8080/auth/realms/master/protocol/openid-connect/certs
-    oauth2.clients.keycloak:
-      client-id: client
-      client-secret: 4f0b4210-a183-460f-875b-4f949b1fb44b
-      openid:
-        issuer: http://localhost:8080/auth/realms/master
+    enabled: false
+
 ---
 endpoints:
   all:
