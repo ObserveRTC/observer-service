@@ -55,21 +55,32 @@ public class ObserverConfig {
 	// Security Configurations
 	public SecurityConfig security;
 
-	// IP Address Converter Config
-	public IPAddressConverterConfig ipAddressConverter;
-
-	@ConfigurationProperties("ipAddressConverter")
-	public static class IPAddressConverterConfig {
-		public boolean enabled = false;
-		public String algorithm = "SHA-256";
-		public String salt = "mySalt";
-	}
-
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
 
-		@Deprecated(since = "0.7.2")
+		@Deprecated(since = "0.7.2") // because it is moved to sources config
 		public boolean dropUnknownServices = false;
+
+		public WebsocketsSecurityConfig websockets = new WebsocketsSecurityConfig();
+
+		@ConfigurationProperties("websockets")
+		public static class WebsocketsSecurityConfig {
+			@Min(1)
+			public int invalidAccessTokensCacheExpirationInS = 3600;
+			@Min(1)
+			public int accessTokensRevalidationPeriodInS = 3600;
+		}
+
+		// IP Address Converter Config
+		public IPAddressConverterConfig ipAddressConverter;
+
+		@ConfigurationProperties("ipAddressConverter")
+		public static class IPAddressConverterConfig {
+			public boolean enabled = false;
+			public String algorithm = "SHA-256";
+			public String salt = "mySalt";
+		}
 	}
 
 	// Evaluators Config

@@ -22,7 +22,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
@@ -36,10 +35,13 @@ import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSamp
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.samples.SourceSample;
+import org.observertc.webrtc.observer.security.ValidateWebsocketSession;
+import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
@@ -50,9 +52,9 @@ import java.util.UUID;
  * Service should be UUId, because currently mysql stores it as
  * binary and with that type the search is fast for activestreams. thats why.
  */
-//@Secured(SecurityRule.IS_ANONYMOUS)
-@Secured(SecurityRule.IS_AUTHENTICATED)
-@ServerWebSocket("/pcsamples/{serviceUUIDStr}/{mediaUnitID}/")
+@Secured(SecurityRule.IS_ANONYMOUS)
+//@Secured(SecurityRule.IS_AUTHENTICATED)
+@ServerWebSocket("/pcsamples/{serviceUUIDStr}/{mediaUnitID}")
 public class WebsocketPCSamples extends Observable<SourceSample> {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSamples.class);
@@ -70,6 +72,10 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	) {
 		this.objectReader = objectMapper.reader();
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+	}
+
+	@PostConstruct
+	void setup() {
 
 	}
 
@@ -79,17 +85,13 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	}
 
 	@OnOpen
+	@ValidateWebsocketSession
 	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
 		try {
-			if (Objects.isNull(this.observer)) {
-				// This observer is not ready
-				session.close(CloseReason.TRY_AGAIN_LATER);
-				return;
-			}
 			this.meterRegistry.counter(
 					"observertc_pcsamples_opened_websockets"
 			).increment();
-
+			return ;
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}

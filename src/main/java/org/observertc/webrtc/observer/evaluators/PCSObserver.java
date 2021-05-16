@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
+import org.observertc.webrtc.observer.security.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.dto.AbstractPeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
@@ -54,7 +54,7 @@ public class PCSObserver implements Consumer<List<ObservedPCS>> {
     public PCSObserver(
             IPAddressConverterProvider ipAddressConverterProvider
     ) {
-        this.ipAddressConverter = ipAddressConverterProvider.provide();
+        this.ipAddressConverter = ipAddressConverterProvider.makeConverter();
         this.pcStateProcessor = this.makeSSRCExtractor();
     }
 

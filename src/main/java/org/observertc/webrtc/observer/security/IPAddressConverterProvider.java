@@ -1,6 +1,7 @@
-package org.observertc.webrtc.observer.common;
+package org.observertc.webrtc.observer.security;
 
 import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,19 +19,22 @@ public class IPAddressConverterProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(IPAddressConverterProvider.class);
 
+    private ObserverConfig.SecurityConfig.IPAddressConverterConfig config;
+
     @Inject
-    ObserverConfig.IPAddressConverterConfig config;
+    ObserverConfigDispatcher configDispatcher;
 
     @PostConstruct
     void setup() {
-
+        var observerConfig = configDispatcher.getConfig();
+        this.config = observerConfig.security.ipAddressConverter;
     }
 
-    public io.reactivex.rxjava3.functions.Function<String, String> provideReactiveX() {
+    public io.reactivex.rxjava3.functions.Function<String, String> makeReactiveXConverter() {
         if (!config.enabled) {
             return v -> v;
         }
-        Function<String, String> resolver = provide();
+        Function<String, String> resolver = makeConverter();
         return new io.reactivex.rxjava3.functions.Function<String, String>() {
             @Override
             public String apply(String s) throws Throwable {
@@ -39,7 +43,7 @@ public class IPAddressConverterProvider {
         };
     }
 
-    public Function<String, String> provide() {
+    public Function<String, String> makeConverter() {
         if (!this.config.enabled) {
             return Function.identity();
         }
