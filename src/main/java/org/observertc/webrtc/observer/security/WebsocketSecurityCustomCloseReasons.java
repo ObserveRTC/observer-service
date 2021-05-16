@@ -12,6 +12,7 @@ public class WebsocketSecurityCustomCloseReasons {
     private static final int ACCESS_TOKEN_EXPIRED_CODE = 4224;
     private static final int NO_ACCESS_TOKEN_PROVIDED_CODE = 4225;
     private static final int INVALID_ACCESS_TOKEN_CODE = 4226;
+    private static final int VALIDATION_SERVER_ERROR_CODE = 4227;
 
     private final Map<Integer, CloseReason> reasons;
 
@@ -40,6 +41,11 @@ public class WebsocketSecurityCustomCloseReasons {
 
     public CloseReason getAccessTokenExpired() {
         var result = this.reasons.get(ACCESS_TOKEN_EXPIRED_CODE);
+        return result;
+    }
+
+    public CloseReason getValidationServerError(String message) {
+        var result = new CloseReason(VALIDATION_SERVER_ERROR_CODE, message);
         return result;
     }
 
