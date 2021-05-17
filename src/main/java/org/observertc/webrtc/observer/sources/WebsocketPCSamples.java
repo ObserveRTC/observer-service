@@ -35,6 +35,7 @@ import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSamp
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.samples.SourceSample;
+import org.observertc.webrtc.observer.security.InvalidateWebsocketSession;
 import org.observertc.webrtc.observer.security.ValidateWebsocketSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,10 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 
 	@OnOpen
 	@ValidateWebsocketSession
-	public void onOpen(String serviceUUIDStr, String mediaUnitID, WebSocketSession session) {
+	public void onOpen(
+			String serviceUUIDStr,
+			String mediaUnitID,
+			WebSocketSession session) {
 		try {
 			this.meterRegistry.counter(
 					"observertc_pcsamples_opened_websockets"
@@ -96,6 +100,7 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	}
 
 	@OnClose
+	@InvalidateWebsocketSession
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
