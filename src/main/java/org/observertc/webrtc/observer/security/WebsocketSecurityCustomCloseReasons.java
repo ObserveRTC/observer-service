@@ -28,7 +28,7 @@ public class WebsocketSecurityCustomCloseReasons {
                 .set(NO_ACCESS_TOKEN_PROVIDED_CODE, "Access token is required to provide")
                 .set(INVALID_ACCESS_TOKEN_CODE, "The provided access token is invalid")
                 .set(TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS, "There are too many websocket registered for the same access token")
-                ;
+        ;
     }
 
     public CloseReason getInvalidAccessToken() {

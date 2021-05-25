@@ -72,6 +72,9 @@ public class ObserverConfig {
 
 			@Min(0)
 			public int maxValidatedSessionsForOneAccessToken = 0; // 0 means infinity
+
+			@Min(0)
+			public int expirationInMin = 0; // 0 means the access token provided is used
 		}
 
 		// IP Address Converter Config
