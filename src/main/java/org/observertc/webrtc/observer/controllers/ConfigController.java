@@ -39,6 +39,7 @@ public class ConfigController {
 		this.configOperations = new ConfigOperations(map).withConfigNode(ConfigNode.make(ObserverConfig.class));
 	}
 
+	@Secured({"admin"})
 	@Get("/{?path}")
 	public HttpResponse<Object> read(Optional<String> path) throws IOException {
 		try {
@@ -57,6 +58,7 @@ public class ConfigController {
 		}
 	}
 
+	@Secured({"admin"})
 	@Put("/")
 	public HttpResponse<Object> update(Map<String, Object> config) throws IOException {
 		try {
@@ -80,6 +82,7 @@ public class ConfigController {
 		}
 	}
 
+	@Secured({"admin"})
 	@Delete("/")
 	public HttpResponse<Object> remove(String path) throws IOException {
 		try {

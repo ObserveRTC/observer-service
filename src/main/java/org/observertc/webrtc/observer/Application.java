@@ -58,7 +58,6 @@ import java.util.Random;
 public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private static final String INITIAL_WAIT_IN_S = "INITIAL_WAITING_TIME_IN_S";
-    private static final String CONNECTOR_CONFIG_FILES_SYSTEM_ENV = "CONNECTOR_CONFIG_FILES";
     public static ApplicationContext context;
 
     public static void main(String[] args) {

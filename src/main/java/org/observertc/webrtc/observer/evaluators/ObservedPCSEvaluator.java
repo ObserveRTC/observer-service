@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.common.IPAddressConverterProvider;
+import org.observertc.webrtc.observer.security.IPAddressConverterProvider;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.dto.PeerConnectionSampleVisitor;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.observertc.webrtc.observer.evaluators.Pipeline.REPORT_VERSION_NUMBER;
@@ -68,7 +67,7 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
     private final Function<String, String> ipAddressConverter;
 
     public ObservedPCSEvaluator(IPAddressConverterProvider ipAddressConverterProvider) {
-        this.ipAddressConverter = ipAddressConverterProvider.provide();
+        this.ipAddressConverter = ipAddressConverterProvider.makeConverter();
     }
 
 
