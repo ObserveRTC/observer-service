@@ -9,7 +9,7 @@ plugins {
 //version = "hydrogen:deuterium"
 // latest version
 //version = "latest"
-version = "0.8.2-exp"
+version = "0.8.2"
 group = "org.observertc.webrtc.observer"
 
 repositories {
