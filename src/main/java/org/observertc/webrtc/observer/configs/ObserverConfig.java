@@ -24,7 +24,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
@@ -55,21 +58,31 @@ public class ObserverConfig {
 	// Security Configurations
 	public SecurityConfig security;
 
-	// IP Address Converter Config
-	public IPAddressConverterConfig ipAddressConverter;
-
-	@ConfigurationProperties("ipAddressConverter")
-	public static class IPAddressConverterConfig {
-		public boolean enabled = false;
-		public String algorithm = "SHA-256";
-		public String salt = "mySalt";
-	}
-
+	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
 
-		@Deprecated(since = "0.7.2")
+		@Deprecated(since = "0.7.2") // because it is moved to sources config
 		public boolean dropUnknownServices = false;
+
+		public WebsocketSecurityConfig websockets = new WebsocketSecurityConfig();
+
+		@ConfigurationProperties("websockets")
+		public static class WebsocketSecurityConfig {
+
+			@Min(0)
+			public int maxValidatedSessionsForOneAccessToken = 0; // 0 means infinity
+		}
+
+		// IP Address Converter Config
+		public IPAddressConverterConfig ipAddressConverter;
+
+		@ConfigurationProperties("ipAddressConverter")
+		public static class IPAddressConverterConfig {
+			public boolean enabled = false;
+			public String algorithm = "SHA-256";
+			public String salt = "mySalt";
+		}
 	}
 
 	// Evaluators Config
