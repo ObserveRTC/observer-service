@@ -35,18 +35,18 @@ import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSamp
 import org.observertc.webrtc.observer.monitors.FlawMonitor;
 import org.observertc.webrtc.observer.monitors.MonitorProvider;
 import org.observertc.webrtc.observer.samples.SourceSample;
-import org.observertc.webrtc.observer.security.InvalidateWebsocketSession;
-import org.observertc.webrtc.observer.security.ValidateWebsocketSession;
+import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
+import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Service should be UUId, because currently mysql stores it as
@@ -59,9 +59,16 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSamples.class);
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
+	private Map<String, Instant> expirations;
 
 	@Inject
 	MeterRegistry meterRegistry;
+
+	@Inject
+	WebsocketSecurityCustomCloseReasons securityCustomCloseReasons;
+
+	@Inject
+	WebsocketAccessTokenValidator websocketAccessTokenValidator;
 
 	private Observer<? super SourceSample> observer = null;
 
@@ -71,6 +78,7 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	) {
 		this.objectReader = objectMapper.reader();
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+		this.expirations = new ConcurrentHashMap<>();
 	}
 
 	@PostConstruct
@@ -84,12 +92,22 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	}
 
 	@OnOpen
-	@ValidateWebsocketSession
 	public void onOpen(
 			String serviceUUIDStr,
 			String mediaUnitID,
 			WebSocketSession session) {
 		try {
+			// validated access token from websocket
+			if (websocketAccessTokenValidator.isEnabled()) {
+				var expiration = new AtomicReference<Instant>(null);
+				String accessToken = WebsocketAccessTokenValidator.getAccessToken(session);
+				boolean isValid = websocketAccessTokenValidator.isValid(accessToken, expiration);
+				if (!isValid) {
+					session.close(securityCustomCloseReasons.getInvalidAccessToken());
+					return;
+				}
+				this.expirations.put(session.getId(), expiration.get());
+			}
 			this.meterRegistry.counter(
 					"observertc_pcsamples_opened_websockets"
 			).increment();
@@ -106,7 +124,7 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 			String mediaUnitID,
 			WebSocketSession session) {
 		try {
-
+			this.expirations.remove(session.getId());
 			this.meterRegistry.counter(
 					"observertc_pcsamples_closed_websockets"
 			).increment();
@@ -134,6 +152,15 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 		}
 		UUID serviceUUID = serviceUUIDHolder.get();
 
+		// check expiration of validated tokens
+		if (this.websocketAccessTokenValidator.isEnabled()) {
+			Instant now = Instant.now();
+			Instant expires = this.expirations.get(session.getId());
+			if (expires.compareTo(now) < 0) {
+				session.close(securityCustomCloseReasons.getAccessTokenExpired());
+				return;
+			}
+		}
 		try {
 			this.meterRegistry.counter(
 					"observertc_pcsamples",

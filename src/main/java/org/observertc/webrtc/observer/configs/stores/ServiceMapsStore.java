@@ -16,6 +16,9 @@
 
 package org.observertc.webrtc.observer.configs.stores;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.entities.ServiceMapEntity;
@@ -26,6 +29,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -33,10 +37,12 @@ import java.util.stream.Collectors;
 public class ServiceMapsStore extends StoreAbstract<String, ServiceMapEntity> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceMapsStore.class);
 
+	private final AtomicReference<Map<UUID, ServiceMapEntity>> serviceMapEntitiesHolder = new AtomicReference<>(Collections.EMPTY_MAP);
+
+	private Subject<ServiceMapsStore> onUpdatedSubject = PublishSubject.create();
+
 	@Inject
 	ObserverConfigDispatcher configDispatcher;
-
-	private final AtomicReference<Map<UUID, ServiceMapEntity>> serviceMapEntitiesHolder = new AtomicReference<>(Collections.EMPTY_MAP);
 
 	@PostConstruct
 	void setup() {
@@ -45,6 +51,13 @@ public class ServiceMapsStore extends StoreAbstract<String, ServiceMapEntity> {
 		this.configDispatcher.onServiceMappingsChanged()
 				.map(event -> event.config)
 				.subscribe(this::process);
+	}
+
+	public Observable<ServiceMapsStore> observableOnUpdated() {
+		return this.onUpdatedSubject
+				.debounce(1000, TimeUnit.MILLISECONDS)
+				.firstElement()
+				.toObservable();
 	}
 
 	private void process(ObserverConfig observerConfig) {
@@ -67,6 +80,7 @@ public class ServiceMapsStore extends StoreAbstract<String, ServiceMapEntity> {
 					});
 				});
 		this.serviceMapEntitiesHolder.set(serviceMapEntities);
+		this.onUpdatedSubject.onNext(this);
 	}
 
 	public Optional<ServiceMapEntity> findByUUID(UUID uuid) {
