@@ -97,7 +97,6 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 			String mediaUnitID,
 			WebSocketSession session) {
 		try {
-
 			// validated access token from websocket
 			if (websocketAccessTokenValidator.isEnabled()) {
 				var expiration = new AtomicReference<Instant>(null);
@@ -119,6 +118,7 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	}
 
 	@OnClose
+	@InvalidateWebsocketSession
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
