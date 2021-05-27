@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -304,19 +305,26 @@ public class ObservedPCSEvaluator implements Observer<ObservedPCS> {
 
         return (observedPCS, subject) -> {
             PeerConnectionSample peerConnectionSample = observedPCS.peerConnectionSample;
-            MediaDevice mediaDeviceInfo = MediaDevice.newBuilder()
-                    .setMediaUnitId(observedPCS.mediaUnitId)
-                    .setCallName(peerConnectionSample.callId)
-                    .setUserId(peerConnectionSample.userId)
-                    .setBrowserId(peerConnectionSample.browserId)
-                    .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
-                    .setDeviceId(subject.deviceId)
-                    .setGroupId(subject.groupId)
-                    .setKind(enumConverter.toMediaDeviceKind(subject.kind))
-                    .setLabel(subject.label)
-                    .build();
-            Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.MEDIA_DEVICE, mediaDeviceInfo);
-            this.extensionReports.onNext(reportRecord);
+            PeerConnectionSample.ExtensionStat[] extensionStats = peerConnectionSample.extensionStats;
+            if (Objects.isNull(extensionStats)) {
+                return;
+            }
+            Arrays.stream(extensionStats).forEach(extensionStat -> {
+                if (Objects.isNull(extensionStat)) {
+                    return;
+                }
+                ExtensionReport extensionReport = ExtensionReport.newBuilder()
+                        .setMediaUnitId(observedPCS.mediaUnitId)
+                        .setCallName(peerConnectionSample.callId)
+                        .setUserId(peerConnectionSample.userId)
+                        .setBrowserId(peerConnectionSample.browserId)
+                        .setPeerConnectionUUID(peerConnectionSample.peerConnectionId)
+                        .setExtensionType(extensionStat.extensionType)
+                        .setPayload(extensionStat.payload)
+                        .build();
+                Report reportRecord = makeReportRecord(observedPCS, observedPCS.serviceUUID, ReportType.EXTENSION, extensionReport);
+                this.extensionReports.onNext(reportRecord);
+            });
         };
     }
 
