@@ -118,7 +118,6 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	}
 
 	@OnClose
-	@InvalidateWebsocketSession
 	public void onClose(
 			String serviceUUIDStr,
 			String mediaUnitID,
