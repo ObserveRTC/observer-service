@@ -8,7 +8,9 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
  * Added `security` package targeting security concerns for observer
  * Added Websocket security through accessToken part of the request the websocket sending.
  * Added configuration `observer.security.websockets.expirationInMin` for explicit expiration of websocket access tokens
- 
+
+### Bugfix
+ * ExtensionStats Report was not made. It is fixed now.
 
 ## 0.8.1 (H)
  * Make `/config` endpoint to rule all possible runtime configuration changes
