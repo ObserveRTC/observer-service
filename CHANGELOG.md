@@ -1,6 +1,15 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
+## 0.8.2 (H)
+* Secure websocket connections
+
+### Added
+ * Added `security` package targeting security concerns for observer
+ * Added Websocket security through accessToken part of the request the websocket sending.
+ * Added configuration `observer.security.websockets.expirationInMin` for explicit expiration of websocket access tokens
+ 
+
 ## 0.8.1 (H)
  * Make `/config` endpoint to rule all possible runtime configuration changes
  * Add AsciiArt logo to print at startup (most important!)

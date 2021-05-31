@@ -38,7 +38,7 @@ observer:
 
   security:
     websockets:
-      maxValidatedSessionsForOneAccessToken: 0
+      expirationInMin: 0
     ipAddressConverter:
       enabled: False
       algorithm: SHA-256
