@@ -1,6 +1,7 @@
 plugins {
     id("io.micronaut.application") version "1.2.0"
     id("com.google.cloud.tools.jib") version "2.6.0"
+    id "com.commercehub.gradle.plugin.avro" version "0.99.99"
 }
 
 // target version:
@@ -15,6 +16,18 @@ group = "org.observertc.webrtc.observer"
 repositories {
     mavenCentral()
     jcenter()
+}
+
+avro {
+    createSetters = false
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+}
+
+def generateAvro = tasks.register("generateAvro", com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
+    source("src/avro-schemas")
+    outputDir = file("src/avro-out/")
+//    outputDir = file("src/dest")
 }
 
 micronaut {
