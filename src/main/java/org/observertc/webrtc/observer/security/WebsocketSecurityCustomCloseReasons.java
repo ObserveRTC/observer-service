@@ -14,6 +14,7 @@ public class WebsocketSecurityCustomCloseReasons {
     private static final int INVALID_ACCESS_TOKEN_CODE = 4226;
     private static final int INTERNAL_SERVER_ERROR_CODE = 4227;
     private static final int TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS = 4228;
+    private static final int WEBSOCKET_IS_DISABLED = 4229;
 
     private final Map<Integer, CloseReason> reasons;
 
@@ -28,6 +29,7 @@ public class WebsocketSecurityCustomCloseReasons {
                 .set(NO_ACCESS_TOKEN_PROVIDED_CODE, "Access token is required to provide")
                 .set(INVALID_ACCESS_TOKEN_CODE, "The provided access token is invalid")
                 .set(TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS, "There are too many websocket registered for the same access token")
+                .set(WEBSOCKET_IS_DISABLED, "The websocket is disabled")
         ;
     }
 
@@ -53,6 +55,11 @@ public class WebsocketSecurityCustomCloseReasons {
 
     public CloseReason getTooManyWebsocketRegisteredForTheSameAccessToken() {
         var result = this.reasons.get(TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS);
+        return result;
+    }
+
+    public CloseReason getWebsocketIsDisabled() {
+        var result = this.reasons.get(WEBSOCKET_IS_DISABLED);
         return result;
     }
 

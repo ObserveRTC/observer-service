@@ -3,11 +3,9 @@ package org.observertc.webrtc.observer;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.connectors.Connector;
 import org.observertc.webrtc.observer.connectors.ConnectorBuilder;
-import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

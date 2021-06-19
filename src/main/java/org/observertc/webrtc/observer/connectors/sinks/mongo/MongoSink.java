@@ -7,7 +7,6 @@ import org.bson.Document;
 import org.observertc.webrtc.observer.common.Utils;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.observer.connectors.sinks.Sink;
-import org.observertc.webrtc.schemas.reports.ReportType;
 
 import java.util.*;
 

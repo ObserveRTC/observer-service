@@ -7,7 +7,6 @@ import org.observertc.webrtc.observer.configbuilders.Builder;
 import org.observertc.webrtc.observer.connectors.encoders.Encoder;
 import org.observertc.webrtc.observer.connectors.encoders.ReportKeyMaker;
 import org.observertc.webrtc.observer.connectors.encoders.ReportMapperAbstract;
-import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

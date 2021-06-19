@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.connectors.encoders.bson;
 
 import org.bson.Document;
 import org.observertc.webrtc.observer.connectors.encoders.SchemaMapperAbstract;
-import org.observertc.webrtc.schemas.reports.ReportType;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;

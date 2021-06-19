@@ -6,7 +6,7 @@ import io.micronaut.security.token.jwt.generator.claims.JwtClaims;
 import io.micronaut.security.token.validator.TokenValidator;
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

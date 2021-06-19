@@ -11,7 +11,7 @@ import org.observertc.webrtc.observer.configbuilders.ConfigConverter;
 import org.observertc.webrtc.observer.configbuilders.ConfigHolder;
 import org.observertc.webrtc.observer.configbuilders.ConfigNode;
 import org.observertc.webrtc.observer.configbuilders.ConfigOperations;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.repositories.ConfigRepository;
 

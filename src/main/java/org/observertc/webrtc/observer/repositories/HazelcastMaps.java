@@ -2,11 +2,7 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
-import org.observertc.webrtc.observer.configs.CallFilterConfig;
-import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.configs.PeerConnectionFilterConfig;
-import org.observertc.webrtc.observer.configs.SentinelConfig;
 import org.observertc.webrtc.observer.dto.*;
 
 import javax.annotation.PostConstruct;
@@ -17,48 +13,67 @@ import java.util.UUID;
 @Singleton
 public class HazelcastMaps {
 
+    private static final String HAZELCAST_CALLS_MAP_NAME = "observertc-calls";
+    private static final String HAZELCAST_CALL_TO_CLIENT_IDS_MAP_NAME = "observertc-call-to-clients";
+    private static final String HAZELCAST_SERVICE_ROOM_TO_CALL_ID_MAP_NAME = "observertc-service-room-to-call";
+
+    // client related
+    // public, because observer configure the map with expiration
+    public static final String HAZELCAST_CLIENTS_MAP_NAME = "observertc-clients";
+    private static final String HAZELCAST_CLIENT_TO_PEER_CONNECTION_IDS_MAP_NAME = "observertc-client-to-peerconnections";
+
+    // pc related
+    private static final String HAZELCAST_PEER_CONNECTIONS_MAP_NAME = "observertc-peerconnections";
+    private static final String HAZELCAST_PEER_CONNECTIONS_INBOUND_TRACK_IDS_MAP_NAME = "observertc-peerconnections-to-inbound-tracks";
+    private static final String HAZELCAST_PEER_CONNECTIONS_OUTBOUND_TRACK_IDS_MAP_NAME = "observertc-peerconnections-to-outbound-tracks";
+
+    // MediaTrack
+    private static final String HAZELCAST_PEER_CONNECTION_MEDIA_TRACKS_MAP_NAME = "observertc-peerconnection-media-tracks";
+
+    public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
+    public static final String HAZELCAST_CONFIGURATIONS_MAP_NAME = "observertc-configurations";
+
     @Inject
     ObserverHazelcast observerHazelcast;
 
-    @Inject
-    ObserverConfigDispatcher observerConfigDispatcher;
+    // calls
+    private IMap<UUID, CallDTO> calls;
+    private MultiMap<UUID, UUID> callToClientIds;
+    private IMap<String, UUID> serviceRoomToCallIds;
 
-    private IMap<UUID, CallDTO> callDTOs;
+    // clients
+    private IMap<UUID, ClientDTO> clients;
+    private MultiMap<UUID, UUID> clientToPeerConnectionIds;
 
-    private IMap<UUID, PeerConnectionDTO> pcDTOs;
-    private MultiMap<String, UUID> remoteIPToPCs;
-    private MultiMap<UUID, String> pcToRemoteIPs;
-    private MultiMap<UUID, UUID> callToPCUUIDs;
+    // peer connections
+    private IMap<UUID, PeerConnectionDTO> peerConnections;
+    private MultiMap<UUID, String> peerConnectionToInboundMediaTrackIds;
+    private MultiMap<UUID, String> peerConnectionToOutboundMediaTrackIds;
+
+    // media tracks
+    private IMap<String, MediaTrackDTO> mediaTracks;
+
+    // other necessary maps
     private IMap<String, WeakLockDTO> weakLocks;
-    private IMap<String, SentinelConfig> sentinelDTOs;
-    private IMap<String, CallFilterConfig> callFilterDTOs;
-    private IMap<String, PeerConnectionFilterConfig> pcFilterDTOs;
-    private MultiMap<String, UUID> serviceToUUIDs;
-    private IMap<UUID, String> uuidToService;
-    private IMap<String, InboundRtpTrafficDTO> inboundRtpTrafficDTOs;
-    private IMap<String, OutboundRtpTrafficDTO> outboundRtpTrafficDTOs;
-    private IMap<String, RemoteInboundRtpTrafficDTO> remoteInboundRtpTrafficDTOs;
     private IMap<String, ConfigDTO> configurations;
 
     @PostConstruct
     void setup() {
-        this.pcDTOs = observerHazelcast.getInstance().getMap("observertc-pcdtos");
-        this.remoteIPToPCs = observerHazelcast.getInstance().getMultiMap("observertc-ip-to-pc");
-        this.pcToRemoteIPs = observerHazelcast.getInstance().getMultiMap("observertc-pc-to-ip");
+        this.calls = observerHazelcast.getInstance().getMap(HAZELCAST_CALLS_MAP_NAME);
+        this.callToClientIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_CALL_TO_CLIENT_IDS_MAP_NAME);
+        this.serviceRoomToCallIds = observerHazelcast.getInstance().getMap(HAZELCAST_SERVICE_ROOM_TO_CALL_ID_MAP_NAME);
 
-        this.callDTOs = observerHazelcast.getInstance().getMap("observertc-calldtos");
-        this.callToPCUUIDs = observerHazelcast.getInstance().getMultiMap("observertc-call-to-pcuuids");
-        this.weakLocks = observerHazelcast.getInstance().getMap("observertc-weaklocks");
-        this.sentinelDTOs = observerHazelcast.getInstance().getMap("observertc-sentinels");
-        this.callFilterDTOs = observerHazelcast.getInstance().getMap("observertc-call-filters");
-        this.pcFilterDTOs = observerHazelcast.getInstance().getMap("observertc-pc-filters");
-        this.uuidToService = observerHazelcast.getInstance().getMap("observertc-uuid-to-service");
-        this.serviceToUUIDs = observerHazelcast.getInstance().getMultiMap("observertc-service-to-uuid");
-        this.inboundRtpTrafficDTOs = observerHazelcast.getInstance().getMap("observertc-inbound-rtp-traffics");
-        this.outboundRtpTrafficDTOs = observerHazelcast.getInstance().getMap("observertc-outbound-rtp-traffics");
-        this.remoteInboundRtpTrafficDTOs = observerHazelcast.getInstance().getMap("observertc-remote-inbound-rtp-traffics");
+        this.clients = observerHazelcast.getInstance().getMap(HAZELCAST_CLIENTS_MAP_NAME);
+        this.clientToPeerConnectionIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_CLIENT_TO_PEER_CONNECTION_IDS_MAP_NAME);
 
-        this.configurations = observerHazelcast.getInstance().getMap("observertc-configurations");
+        this.peerConnections = observerHazelcast.getInstance().getMap(HAZELCAST_PEER_CONNECTIONS_MAP_NAME);
+        this.peerConnectionToInboundMediaTrackIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_PEER_CONNECTIONS_INBOUND_TRACK_IDS_MAP_NAME);
+        this.peerConnectionToOutboundMediaTrackIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_PEER_CONNECTIONS_OUTBOUND_TRACK_IDS_MAP_NAME);
+
+        this.mediaTracks = observerHazelcast.getInstance().getMap(HAZELCAST_PEER_CONNECTION_MEDIA_TRACKS_MAP_NAME);
+        this.weakLocks = observerHazelcast.getInstance().getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
+
+        this.configurations = observerHazelcast.getInstance().getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {
@@ -67,55 +82,24 @@ public class HazelcastMaps {
         return result;
     }
 
-    public MultiMap<UUID, Long> getPCsToSSRCMap(UUID serviceUUID) {
-        String mapName = String.format("observertc-pcs-to-ssrcs-%s", serviceUUID.toString());
-        MultiMap<UUID, Long> result = observerHazelcast.getInstance().getMultiMap(mapName);
-        return result;
+    public IMap<UUID, CallDTO> getCalls(){
+        return this.calls;
     }
+    public MultiMap<UUID, UUID> getCallToClientIds() { return this.callToClientIds; }
+    public IMap<String, UUID> getServiceRoomToCallIds() { return this.serviceRoomToCallIds; }
 
-    public MultiMap<Long, UUID> getSSRCsToPCMap(UUID serviceUUID) {
-        String mapName = String.format("observertc-ssrc-to-pc-%s", serviceUUID.toString());
-        MultiMap<Long, UUID> result = observerHazelcast.getInstance().getMultiMap(mapName);
-        return result;
-    }
+    public IMap<UUID, ClientDTO> getClients() { return this.clients; }
+    public MultiMap<UUID, UUID> getClientToPeerConnectionIds() { return this.clientToPeerConnectionIds; }
 
-    public IMap<UUID, CallDTO> getCallDTOs(){
-        return this.callDTOs;
-    }
+    public IMap<UUID, PeerConnectionDTO> getPeerConnections() { return this.peerConnections; }
+    public MultiMap<UUID, String> getPeerConnectionToInboundTrackIds() { return this.peerConnectionToInboundMediaTrackIds; }
+    public MultiMap<UUID, String> getPeerConnectionToOutboundTrackIds() { return this.peerConnectionToOutboundMediaTrackIds; }
 
-    public IMap<UUID, PeerConnectionDTO> getPcDTOs(){
-        return this.pcDTOs;
-    }
-
-    public MultiMap<UUID, UUID> getCallToPCUUIDs() {
-        return this.callToPCUUIDs;
+    public IMap<String, MediaTrackDTO> getMediaTracks() {
+        return this.mediaTracks;
     }
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
-
-    public IMap<String, CallFilterConfig> getCallFilterDTOs() {return this.callFilterDTOs;}
-
-    public IMap<String, PeerConnectionFilterConfig> getPeerConnectionFilterDTOs() { return this.pcFilterDTOs; }
-
-    public IMap<String, SentinelConfig> getSentinelDTOs() {return this.sentinelDTOs;}
-
-    public IMap<UUID, String> getUuidToService() {return this.uuidToService;}
-
-    public MultiMap<String, UUID> getServiceToUUIDs() {return this.serviceToUUIDs;}
-
-    public MultiMap<UUID, String> getPCsToRemoteIP() {
-        return this.pcToRemoteIPs;
-    }
-
-    public MultiMap<String, UUID> getRemoteIPToPCs() {
-        return this.remoteIPToPCs;
-    }
-
-    public IMap<String, InboundRtpTrafficDTO> getInboundRtpDTOs() { return this.inboundRtpTrafficDTOs; }
-
-    public IMap<String, OutboundRtpTrafficDTO> getOutboundRtpDTOs() { return this.outboundRtpTrafficDTOs; }
-
-    public IMap<String, RemoteInboundRtpTrafficDTO> getRemoteInboundTrafficDTOs() { return this.remoteInboundRtpTrafficDTOs; }
 
     public IMap<String, ConfigDTO> getConfigurations() { return this.configurations; }
 }

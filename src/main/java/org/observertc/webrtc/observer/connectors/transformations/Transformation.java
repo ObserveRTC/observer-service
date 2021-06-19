@@ -6,7 +6,6 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.exceptions.ProtocolViolationException;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
-import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

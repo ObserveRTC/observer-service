@@ -30,40 +30,34 @@ import java.util.UUID;
 // To avoid exposing hazelcast serialization specific fields
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
 public class CallDTO implements VersionedPortable {
-	public static final UUID DEFAULT_UUID = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
-	public static final byte[] DEFAULT_UUID_BYTES = UUIDAdapter.toBytes(DEFAULT_UUID);
+	public static final int CLASS_VERSION = 2;
 
-	public static final int CLASS_VERSION = 1;
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
-	private static final String SERVICE_NAME_FIELD_NAME = "serviceName";
-	private static final String INITIATED_FIELD_NAME = "initiated";
-	private static final String CALL_NAME_FIELD_NAME = "callName";
-	private static final String MARKER_FIELD_NAME = "marker";
+	private static final String SERVICE_ID_FIELD_NAME = "serviceId";
+	private static final String ROOM_ID_FIELD_NAME = "roomId";
+	private static final String CALL_ID_FIELD_NAME = "callId";
+	private static final String STARTED_FIELD_NAME = "started"; // ended
 
-	public static CallDTO of(
-			UUID callUUID,
-			UUID serviceUUID,
-			String serviceName,
-			Long initiated,
-			String callName,
-			String marker) {
-		CallDTO result = new CallDTO();
-		result.callUUID = callUUID;
-		result.initiated = initiated;
-		result.serviceUUID = serviceUUID;
-		result.serviceName = serviceName;
-		result.callName = callName;
-		result.marker = marker;
-		return result;
+	public static Builder builder() {
+		return new Builder();
 	}
 
-	public UUID serviceUUID;
-	public String serviceName;
-	public Long initiated;
-	public UUID callUUID;
-	public String callName;
-	public String marker;
+//	public static CallDTO of(
+//			String serviceId,
+//			String roomId,
+//			UUID callId,
+//			Long initiated) {
+//		CallDTO result = new CallDTO();
+//		result.serviceId = serviceId;
+//		result.roomId = roomId;
+//		result.callId = callId;
+//		result.started = initiated;
+//		return result;
+//	}
+
+	public String serviceId;
+	public String roomId;
+	public UUID callId;
+	public Long started;
 
 	@Override
 	public int getFactoryId() {
@@ -77,24 +71,19 @@ public class CallDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
-
-		writer.writeByteArray(CALL_UUID_FIELD_NAME, UUIDAdapter.toBytesOrDefault(this.callUUID, DEFAULT_UUID_BYTES));
-		writer.writeByteArray(SERVICE_UUID_FIELD_NAME, UUIDAdapter.toBytesOrDefault(this.serviceUUID, DEFAULT_UUID_BYTES));
-		writer.writeUTF(SERVICE_NAME_FIELD_NAME, this.serviceName);
-		writer.writeUTF(CALL_NAME_FIELD_NAME, this.callName);
-		writer.writeLong(INITIATED_FIELD_NAME, this.initiated);
-		writer.writeUTF(MARKER_FIELD_NAME, this.marker);
+		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeUTF(ROOM_ID_FIELD_NAME, this.roomId);
+		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
+		writer.writeLong(STARTED_FIELD_NAME, this.started);
 
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.callUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(CALL_UUID_FIELD_NAME), null);
-		this.serviceUUID = UUIDAdapter.toUUIDOrDefault(reader.readByteArray(SERVICE_UUID_FIELD_NAME), null);
-		this.serviceName = reader.readUTF(SERVICE_NAME_FIELD_NAME);
-		this.callName = reader.readUTF(CALL_NAME_FIELD_NAME);
-		this.initiated = reader.readLong(INITIATED_FIELD_NAME);
-		this.marker = reader.readUTF(MARKER_FIELD_NAME);
+		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
+		this.roomId = reader.readUTF(ROOM_ID_FIELD_NAME);
+		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
+		this.started = reader.readLong(STARTED_FIELD_NAME);
 	}
 
 	@Override
@@ -113,15 +102,59 @@ public class CallDTO implements VersionedPortable {
 			return false;
 		}
 		CallDTO otherDTO = (CallDTO) other;
-		if (!Objects.equals(this.callName, otherDTO.callName) ||
-			!Objects.equals(this.callUUID, otherDTO.callUUID) ||
-			!Objects.equals(this.serviceUUID, otherDTO.serviceUUID) ||
-			!Objects.equals(this.marker, otherDTO.marker) ||
-			!Objects.equals(this.initiated, otherDTO.initiated) ||
-			!Objects.equals(this.serviceName, otherDTO.serviceName)
+		if (!Objects.equals(this.serviceId, otherDTO.serviceId) ||
+			!Objects.equals(this.roomId, otherDTO.roomId) ||
+			!Objects.equals(this.callId, otherDTO.callId) ||
+			!Objects.equals(this.started, otherDTO.started)
 		) {
 			return false;
 		}
 		return true;
+	}
+
+	public static class Builder {
+		private final CallDTO result = new CallDTO();
+
+		public Builder withServiceId(String value) {
+			Objects.requireNonNull(value);
+			this.result.serviceId = value;
+			return this;
+		}
+
+		public Builder withRoomId(String value) {
+			Objects.requireNonNull(value);
+			this.result.roomId = value;
+			return this;
+		}
+
+		public Builder withCallId(UUID value) {
+			Objects.requireNonNull(value);
+			this.result.callId = value;
+			return this;
+		}
+
+		public Builder withStartedTimestamp(Long value) {
+			Objects.requireNonNull(value);
+			this.result.started = value;
+			return this;
+		}
+
+
+		public Builder copyFrom(Builder callDTOBuilder) {
+			return this
+					.withServiceId(callDTOBuilder.result.serviceId)
+					.withRoomId(callDTOBuilder.result.roomId)
+					.withCallId(callDTOBuilder.result.callId)
+					.withStartedTimestamp(callDTOBuilder.result.started)
+			;
+
+		}
+
+		public CallDTO build() {
+			Objects.requireNonNull(this.result.serviceId);
+			Objects.requireNonNull(this.result.roomId);
+			Objects.requireNonNull(this.result.callId);
+			return this.result;
+		}
 	}
 }

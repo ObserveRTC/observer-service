@@ -20,13 +20,13 @@ public class CallsRepository {
 
 
     @Inject
-    Provider<AddCallsTask> addCallsTaskProvider;
+    Provider<AddCallTask> addCallsTaskProvider;
 
     @Inject
-    Provider<AddPCsTask> addPCsTaskProvider;
+    Provider<AddPeerConnectionsTask> addPCsTaskProvider;
 
     @Inject
-    Provider<RemovePCsTask> removePCsTaskProvider;
+    Provider<RemovePeerConnectionsTask> removePCsTaskProvider;
 
     @Inject
     Provider<RemoveCallsTask> removeCallsTaskProvider;
@@ -35,7 +35,7 @@ public class CallsRepository {
     Provider<FetchCallsTask> fetchCallsTaskProvider;
 
     @Inject
-    Provider<FetchPCsTask> fetchPCsTaskProvider;
+    Provider<FetchPeerConnectionsTask> fetchPCsTaskProvider;
 
     @Inject
     HazelcastMaps hazelcastMaps;
@@ -94,7 +94,7 @@ public class CallsRepository {
 
     public <U extends UUID> Optional<PeerConnectionEntity> findPeerConnection(@NotNull U pcUUID) {
         var task = this.fetchPCsTaskProvider.get()
-                .wherePCUuid(pcUUID)
+                .wherePeerConnectionIds(pcUUID)
                 ;
 
         if (!task.execute().succeeded()) {
@@ -137,7 +137,7 @@ public class CallsRepository {
 
     public <U extends UUID> Map<UUID, PeerConnectionEntity> findPeerConnections(@NotNull U... pcUUIDs) {
         var task = this.fetchPCsTaskProvider.get()
-                .wherePCUuid(pcUUIDs)
+                .wherePeerConnectionIds(pcUUIDs)
                 ;
 
         if (!task.execute().succeeded()) {
@@ -149,7 +149,7 @@ public class CallsRepository {
 
     public <U extends UUID> Map<UUID, PeerConnectionEntity> findPeerConnections(@NotNull Set<U> pcUUIDs) {
         var task = this.fetchPCsTaskProvider.get()
-                .wherePCUuid(pcUUIDs.stream().collect(Collectors.toSet()))
+                .wherePeerConnectionIds(pcUUIDs.stream().collect(Collectors.toSet()))
                 ;
 
         if (!task.execute().succeeded()) {
@@ -195,7 +195,7 @@ public class CallsRepository {
 
     public <U extends UUID> PeerConnectionEntity removePeerConnection(@NotNull U pcUUID) {
         var task = this.removePCsTaskProvider.get()
-                .wherePCUUIDs(pcUUID)
+                .wherePeerConnectionId(pcUUID)
                 .withMeterRegistry(meterRegistry)
         ;
 
@@ -225,7 +225,7 @@ public class CallsRepository {
     public Map<UUID, CallEntity> fetchLocallyStoredCalls() {
         Set<UUID> keys = this.hazelcastMaps.getCallDTOs().localKeySet();
         var task = this.fetchCallsTaskProvider.get()
-                .whereCallUUIDs(keys)
+                .whereCallIds(keys)
                 .withMeterRegistry(meterRegistry)
                 ;
 

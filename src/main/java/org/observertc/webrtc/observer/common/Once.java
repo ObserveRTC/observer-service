@@ -28,7 +28,7 @@ public final class Once<T> {
 	}
 
 	public T get() {
-		if (null == this.value) throw new IllegalStateException("Illegal attempt to access unitialized Once value.");
+		if (null == this.value) throw new IllegalStateException("Illegal attempt to access Once value.");
 		return this.value;
 	}
 }

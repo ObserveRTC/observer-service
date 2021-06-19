@@ -159,7 +159,7 @@ public class ChainedTask<T> extends TaskAbstract<T> {
 
         /**
          * Adds a predicate evaluated after the last added stage is executed.
-         * This Break Condition assumes that the last executed stage has an output, and taht is passed
+         * This Break Condition assumes that the last executed stage has an output, and that is passed
          * as part of the predicate to be evaluate.
          * If the breaking condition is true than the execution flow of the chained task breaks.
          * The resultHolder of the task is passed as a second parameter of the evaluated predicate.
@@ -177,7 +177,7 @@ public class ChainedTask<T> extends TaskAbstract<T> {
 
         /**
          * Adds a predicate evaluated after the last added stage is executed.
-         * This Break Condition assumes that the last executed stage has an output, and taht is passed
+         * This Break Condition assumes that the last executed stage has an output, and that is passed
          * as part of the predicate to be evaluate.
          * If the breaking condition is true than the execution flow of the chained task breaks.
          * The resultHolder of the task is passed as a parameter of the evaluated predicate.

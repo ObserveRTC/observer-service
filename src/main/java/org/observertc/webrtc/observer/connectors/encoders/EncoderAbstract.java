@@ -4,7 +4,6 @@ import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.connectors.EncodedRecord;
 import org.observertc.webrtc.observer.connectors.MessageFormat;
 import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
-import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

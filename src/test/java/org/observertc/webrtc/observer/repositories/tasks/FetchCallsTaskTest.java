@@ -46,7 +46,7 @@ class FetchCallsTaskTest {
         hazelcastMapTestUtils.insertCallEntity(callEntity);
 
         Map<UUID, CallEntity> callEntities = callEntitiesFetcherTaskProvider.get()
-                .whereCallUUIDs(Set.of(callEntity.call.callUUID))
+                .whereCallIds(Set.of(callEntity.call.callUUID))
                 .execute()
                 .getResult();
         CallEntity retrievedCallEntity = callEntities.get(callEntity.call.callUUID);

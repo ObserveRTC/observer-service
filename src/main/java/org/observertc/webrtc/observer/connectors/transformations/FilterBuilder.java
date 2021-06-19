@@ -4,8 +4,6 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Predicate;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configbuilders.Builder;
-import org.observertc.webrtc.schemas.reports.Report;
-import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

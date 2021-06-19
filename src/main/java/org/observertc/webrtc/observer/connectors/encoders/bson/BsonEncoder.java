@@ -4,8 +4,6 @@ import org.bson.Document;
 import org.observertc.webrtc.observer.connectors.encoders.EncoderAbstract;
 import org.observertc.webrtc.observer.connectors.encoders.ReportMapperAbstract;
 import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
-import org.observertc.webrtc.schemas.reports.Report;
-import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

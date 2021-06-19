@@ -22,7 +22,6 @@ import com.hazelcast.config.YamlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.PortableDTOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +103,6 @@ public class ObserverHazelcast {
 				result = new XmlConfigBuilder().build();
 			}
 		}
-
 
 //		result.getSerializationConfig().getSerializerConfigs().add(
 //				new SerializerConfig().

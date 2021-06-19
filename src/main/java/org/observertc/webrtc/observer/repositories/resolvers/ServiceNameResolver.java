@@ -2,9 +2,8 @@ package org.observertc.webrtc.observer.repositories.resolvers;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
-import org.observertc.webrtc.observer.entities.ServiceMapEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

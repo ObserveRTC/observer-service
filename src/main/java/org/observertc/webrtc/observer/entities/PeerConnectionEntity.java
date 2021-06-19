@@ -17,11 +17,15 @@
 package org.observertc.webrtc.observer.entities;
 
 import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class PeerConnectionEntity {
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionEntity.class);
@@ -30,20 +34,16 @@ public class PeerConnectionEntity {
 	    return new Builder();
     }
 
-    public final UUID callUUID;
-    public final UUID pcUUID;
-    public final UUID serviceUUID;
-	public final PeerConnectionDTO peerConnection;
-	public final Set<Long> SSRCs;
-	public final Set<String> remoteIPs;
+    private PeerConnectionDTO peerConnectionDTO;
+	private Map<Long, MediaTrackDTO> outboundTracks = new HashMap<>();
+	private Map<Long, MediaTrackDTO> inboundTracks = new HashMap<>();
 
-    private PeerConnectionEntity(PeerConnectionDTO pcDTO, Set<Long> SSRCs, Set<String> remoteIPs) {
-        this.callUUID = pcDTO.callUUID;
-        this.pcUUID = pcDTO.peerConnectionUUID;
-        this.serviceUUID = pcDTO.serviceUUID;
-        this.peerConnection = pcDTO;
-        this.SSRCs = SSRCs;
-        this.remoteIPs = remoteIPs;
+	PeerConnectionEntity() {
+
+	}
+
+	public UUID getPeerConnectionId() {
+	    return this.peerConnectionDTO.peerConnectionId;
     }
 
     @Override
@@ -52,17 +52,16 @@ public class PeerConnectionEntity {
             return false;
         }
         PeerConnectionEntity otherPC = (PeerConnectionEntity) other;
-        return this.callUUID.equals(otherPC.callUUID) &&
-                this.SSRCs.stream().allMatch(otherPC.SSRCs::contains) &&
-                otherPC.SSRCs.stream().allMatch(this.SSRCs::contains) &&
-                this.pcUUID.equals(otherPC.pcUUID) &&
-                this.serviceUUID.equals(otherPC.serviceUUID) &&
-                this.peerConnection.equals(otherPC.peerConnection);
+        return this.peerConnectionDTO.equals(otherPC.peerConnectionDTO);
+    }
+
+    public PeerConnectionDTO getPeerConnectionDTO() {
+        return this.peerConnectionDTO;
     }
 
     @Override
     public int hashCode() {
-        return this.callUUID.hashCode();
+        return this.peerConnectionDTO.hashCode();
     }
 
     @Override
@@ -70,33 +69,45 @@ public class PeerConnectionEntity {
         return ObjectToString.toString(this);
     }
 
+    public Map<Long, MediaTrackDTO> getInboundMediaTrackDTOs() {
+        return this.inboundTracks;
+    }
+
+    public Map<Long, MediaTrackDTO> getOutboundMediaTrackDTOs() {
+	    return this.outboundTracks;
+    }
+
     public static class Builder {
 
-        public PeerConnectionDTO pcDTO = null;
-        public Set<Long> SSRCs = new HashSet<>();
-        public Set<String> remoteIPs = new HashSet<>();
+        private final PeerConnectionEntity result = new PeerConnectionEntity();
 
         public PeerConnectionEntity build() {
-            Objects.requireNonNull(this.pcDTO);
-            Objects.requireNonNull(this.SSRCs);
-            return new PeerConnectionEntity(this.pcDTO,
-                    Collections.unmodifiableSet(this.SSRCs),
-                    Collections.unmodifiableSet(this.remoteIPs)
-            );
+            Objects.requireNonNull(this.result.peerConnectionDTO);
+            return this.result;
         }
 
-        public PeerConnectionEntity.Builder withPCDTO(PeerConnectionDTO pcDTO) {
-            this.pcDTO = pcDTO;
+        public PeerConnectionEntity.Builder withPeerConnectionDTO(PeerConnectionDTO peerConnectionDTO) {
+            this.result.peerConnectionDTO = peerConnectionDTO;
             return this;
         }
 
-        public PeerConnectionEntity.Builder withSSRCs(Set<Long> ssrCs) {
-            this.SSRCs.addAll(ssrCs);
+        public PeerConnectionEntity.Builder withOutboundMediaTrackDTOs(Map<Long, MediaTrackDTO> mediaTrackDTOs) {
+            this.result.outboundTracks.putAll(mediaTrackDTOs);
             return this;
         }
 
-        public PeerConnectionEntity.Builder withRemoteIPs(Collection<String> remoteIPs) {
-            this.remoteIPs.addAll(remoteIPs);
+        public PeerConnectionEntity.Builder withInboundMediaTrackDTOs(Map<Long, MediaTrackDTO> mediaTrackDTOs) {
+            this.result.inboundTracks.putAll(mediaTrackDTOs);
+            return this;
+        }
+
+        public PeerConnectionEntity.Builder withInboundMediaTrackDTO(MediaTrackDTO mediaTrackDTO) {
+            this.result.inboundTracks.put(mediaTrackDTO.ssrc, mediaTrackDTO);
+            return this;
+        }
+
+        public PeerConnectionEntity.Builder withOutboundMediaTrackDTO(MediaTrackDTO mediaTrackDTO) {
+            this.result.outboundTracks.put(mediaTrackDTO.ssrc, mediaTrackDTO);
             return this;
         }
     }

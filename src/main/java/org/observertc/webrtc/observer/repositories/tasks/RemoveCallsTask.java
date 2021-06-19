@@ -1,12 +1,12 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ChainedTask;
+import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.CallsRepository;
+import org.observertc.webrtc.observer.entities.ClientEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,68 +18,96 @@ import java.util.stream.Collectors;
 @Prototype
 public class RemoveCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(CallsRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoveCallsTask.class);
 
     private static final String LOCK_NAME = "observertc-call-remover-lock";
 
-    private Set<UUID> callUUIDs = new HashSet<>();
-    private Map<UUID, CallEntity> callEntities = new HashMap<>();
-    private boolean removePeerConnections = true;
+    private Set<UUID> callIds = new HashSet<>();
+    private Map<UUID, CallDTO> removedCallDTOs = new HashMap<>();
+    private Map<UUID, Collection<UUID>> removedClientIds = new HashMap<>();
 
     @Inject
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    FetchCallsTask fetchCallsTask;
-
-    @Inject
-    RemovePCsTask removePCsTask;
+    RemoveClientsTask removeClientsTask;
 
     @Inject
     WeakLockProvider weakLockProvider;
 
     @PostConstruct
     void setup() {
-        Function<Set<UUID>, Map<UUID, CallEntity>> fetchCallEntities = callUUIDs -> {
-            if (Objects.nonNull(callUUIDs)) {
-                this.callUUIDs.addAll(callUUIDs);
-            }
-            this.callUUIDs.addAll(this.callEntities.keySet());
-            Set<UUID> missingUUIDs = this.callUUIDs.stream()
-                    .filter(callUUID -> !this.callEntities.containsKey(callUUID))
-                    .collect(Collectors.toSet());
-            if (0 < missingUUIDs.size()) {
-                Map<UUID, CallEntity> map = this.fetchCallsTask.execute(missingUUIDs).getResult();
-                this.callEntities.putAll(map);
-            }
-            return this.callEntities;
-        };
         new ChainedTask.Builder<Map<UUID, CallEntity>>(this)
                 .withLockProvider(() -> weakLockProvider.autoLock(LOCK_NAME))
-                .<Set<UUID>, Map<UUID, CallEntity>>addSupplierEntry("Fetch CallEntity",
-                        () -> fetchCallEntities.apply(this.callUUIDs),
-                        fetchCallEntities
+                .<Set<UUID>, Set<UUID>>addSupplierEntry("Fetch CallIds",
+                        () -> this.callIds,
+                        receivedCallIds -> {
+                            this.callIds.addAll(receivedCallIds);
+                            return this.callIds;
+                        }
                 )
-                .<Map<UUID, CallEntity>>addBreakCondition((callEntities, resultHolder) -> {
-                    if (Objects.isNull(callEntities)) {
+                .<Set<UUID>>addBreakCondition((callIds, resultHolder) -> {
+                    if (Objects.isNull(callIds)) {
                         this.getLogger().warn("No Entities have been passed");
                         resultHolder.set(Collections.EMPTY_MAP);
                         return true;
                     }
-                    if (callEntities.size() < 1) {
-                        resultHolder.set(callEntities);
+                    if (callIds.size() < 1) {
+                        resultHolder.set(Collections.EMPTY_MAP);
                         return true;
                     }
-                    this.callUUIDs.stream().filter(c -> !callEntities.containsKey(c)).forEach(callUUID -> {
-                        getLogger().warn("Cannot find CallEntity for callUUID {}, it cannot be removed", callUUID);
-                    });
                     return false;
                 })
-                .<Map<UUID, CallEntity>, Map<UUID, CallEntity>> addFunctionalStage("Remove Call",
+                .<Set<UUID>, Map<UUID, CallDTO>> addFunctionalStage("Remove Call DTOs",
                         // action
-                        callEntities -> {
-                            callEntities.keySet().stream().forEach(hazelcastMaps.getCallDTOs()::remove);
-                            return callEntities;
+                        callIds -> {
+                            callIds.forEach(callId -> {
+                                CallDTO callDTO = this.hazelcastMaps.getCalls().remove(callId);
+                                this.removedCallDTOs.put(callId, callDTO);
+                            });
+                            return this.removedCallDTOs;
+                        },
+                        // rollback
+                        (callEntitiesHolder, thrownException) -> {
+                            if (Objects.isNull(callEntitiesHolder) || Objects.isNull(callEntitiesHolder.get())) {
+                                this.getLogger().warn("Unexpected condition at rollback.");
+                                return;
+                            }
+                            this.hazelcastMaps.getCalls().putAll(this.removedCallDTOs);
+                        })
+                .<Map<UUID, CallDTO>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Remove Room relation",
+                        removedCallDTOs -> {
+                            Map<UUID, CallEntity.Builder> callEntityBuilders = new HashMap<>();
+                            removedCallDTOs.forEach((callId, callDTO) -> {
+                                var serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
+                                var serviceRoomKey = ServiceRoomId.createKey(serviceRoomId);
+                                this.hazelcastMaps.getServiceRoomToCallIds().remove(serviceRoomKey);
+                                var callEntityBuilder = CallEntity.builder().withCallDTO(callDTO);
+                                callEntityBuilders.put(callId, callEntityBuilder);
+                            });
+
+                            return callEntityBuilders;
+                        },
+                        // rollback
+                        (callDTOsHolder, thrownException) -> {
+                            if (Objects.isNull(callDTOsHolder) || Objects.isNull(callDTOsHolder.get())) {
+                                this.getLogger().warn("Unexpected condition at rollback. callEntities are null");
+                                return;
+                            }
+                            this.removedCallDTOs.forEach((callId, callDTO) -> {
+                                var serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
+                                var serviceRoomKey = ServiceRoomId.createKey(serviceRoomId);
+                                this.hazelcastMaps.getServiceRoomToCallIds().put(serviceRoomKey, callId);
+                            });
+                        })
+                .<Map<UUID, CallEntity.Builder>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Remove Call Client Relations",
+                        // action
+                        callEntityBuilders -> {
+                            callEntityBuilders.forEach((callId, cellEntityBuilder) -> {
+                                Collection<UUID> clientIds = this.hazelcastMaps.getCallToClientIds().remove(callId);
+                                this.removedClientIds.put(callId, clientIds);
+                            });
+                            return callEntityBuilders;
                         },
                         // rollback
                         (callEntitiesHolder, thrownException) -> {
@@ -87,79 +115,55 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                                 this.getLogger().warn("Unexpected condition at rollback. callEntities are null");
                                 return;
                             }
-                            Map<UUID, CallEntity> callEntities = (Map<UUID, CallEntity>) callEntitiesHolder.get();
-                            for (CallEntity callEntity : callEntities.values()) {
-                                hazelcastMaps.getCallDTOs().put(callEntity.call.callUUID, callEntity.call);
-                            }
+                            this.removedClientIds.forEach((callId, clientIds) -> {
+                                for (UUID clientId : clientIds) {
+                                    this.hazelcastMaps.getCallToClientIds().put(callId, clientId);
+                                }
+                            });
                         })
-                .<Map<UUID, CallEntity>, Map<UUID, CallEntity>> addFunctionalStage("Remove Call Name",
+                .<Map<UUID, CallEntity.Builder>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Remove Call Client Relations",
                         // action
-                        callEntities -> {
-                            for (CallEntity callEntity : callEntities.values()) {
-                                if (Objects.nonNull(callEntity.call.callName)) {
-                                    hazelcastMaps.getCallNames(callEntity.call.serviceUUID).remove(callEntity.call.callName, callEntity.call.callUUID);
+                        callEntityBuilders -> {
+                            Set<UUID> clientIds = this.removedClientIds
+                                    .values()
+                                    .stream()
+                                    .flatMap(c -> c.stream())
+                                    .collect(Collectors.toSet());
+                            this.removeClientsTask.whereClientIds(clientIds);
+                            if (!this.removeClientsTask.execute().succeeded()) {
+                                throw new RuntimeException("Cannot remove call due to error occrred removing related clients");
+                            }
+                            Map<UUID, ClientEntity> clientEntities = this.removeClientsTask.getResult();
+                            clientEntities.forEach((clientId, clientEntity) -> {
+                                var callId = clientEntity.getCallId();
+                                var callEntityBuilder = callEntityBuilders.get(callId);
+                                if (Objects.isNull(callEntityBuilder)) {
+                                    logger.warn("Cannot retrieve callEntityBuilder");
+                                    return;
                                 }
-                            }
-                            return callEntities;
-                        },
-                        // rollback
-                        (callEntitiesHolder, thrownException) -> {
-                            if (Objects.isNull(callEntitiesHolder) || Objects.isNull(callEntitiesHolder.get())) {
-                                this.getLogger().warn("Unexpected condition at rollback. callEntities are null");
-                                return;
-                            }
-                            Map<UUID, CallEntity> callEntities = (Map<UUID, CallEntity>) callEntitiesHolder.get();
-                            for (CallEntity callEntity : callEntities.values()) {
-                                if (Objects.nonNull(callEntity.call.callName)) {
-                                    hazelcastMaps.getCallNames(callEntity.call.serviceUUID).put(callEntity.call.callName, callEntity.call.callUUID);
-                                }
-                            }
+                                callEntityBuilder.withClientEntity(clientEntity);
+                            });
+                            return callEntityBuilders;
                         })
-                .<Map<UUID, CallEntity>, Map<UUID, CallEntity>> addFunctionalStage("Remove Peer Connections", callEntities -> {
-                    if (!this.removePeerConnections) {
-                        Optional<Integer> hangingPCHolder = callEntities.values().stream().map(e -> e.peerConnections.values().size()).reduce(Integer::sum);
-                        if (hangingPCHolder.isPresent() && 0 < hangingPCHolder.get()) {
-                            List<PeerConnectionEntity> hangingPcs = callEntities.values().stream().flatMap(e -> e.peerConnections.values().stream()).collect(Collectors.toList());
-                            this.getLogger().warn("Peer Connections will be hanged, du to deleted calls {}", hangingPcs);
-                        }
-                        return callEntities;
-                    }
-                    Set<UUID> pcUUIDs = callEntities.values().stream().flatMap(callEntity -> callEntity.peerConnections.keySet().stream()).collect(Collectors.toSet());
-                    this.removePCsTask
-                            .withLogger(this.getLogger())
-                            .withRethrowingExceptions(true)
-                    ;
-                    this.removePCsTask.execute(pcUUIDs);
-                    return callEntities;
+                .<Map<UUID, CallEntity.Builder>> addTerminalFunction("Creating Call Entities", callEntityBuilders -> {
+                    return callEntityBuilders.entrySet().stream().collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> {
+                                CallEntity.Builder callEntityBuilder = entry.getValue();
+                                return callEntityBuilder.build();
+                            })
+                    );
                 })
                 .addTerminalPassingStage("Completed")
                 .build();
     }
 
-    public RemoveCallsTask whereCallUUID(UUID... callUUIDs) {
-        if (Objects.isNull(callUUIDs) && callUUIDs.length < 1) {
+    public RemoveCallsTask whereCallIds(UUID... callIds) {
+        if (Objects.isNull(callIds) && callIds.length < 1) {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
-        this.callUUIDs.addAll(Arrays.asList(callUUIDs));
-        return this;
-    }
-
-    public RemoveCallsTask whereCallEntities(CallEntity... callEntities) {
-        if (Objects.isNull(callEntities) && callEntities.length < 1) {
-            this.getLogger().info("call uuid was not given to be removed");
-            return this;
-        }
-        for (int i = 0; i < callEntities.length; ++i) {
-            CallEntity callEntity = callEntities[i];
-            UUID callUUID = callEntity.call.callUUID;
-            this.callEntities.put(callUUID, callEntity);
-        }
-        return this;
-    }
-
-    public RemoveCallsTask dontRemovePeerConnections() {
-        this.removePeerConnections = false;
+        this.callIds.addAll(Arrays.asList(callIds));
         return this;
     }
 

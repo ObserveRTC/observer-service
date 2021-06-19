@@ -12,8 +12,6 @@ import org.observertc.webrtc.observer.connectors.MessageFormat;
 import org.observertc.webrtc.observer.connectors.encoders.avro.AvroEncoder;
 import org.observertc.webrtc.observer.connectors.encoders.bson.BsonEncoder;
 import org.observertc.webrtc.observer.connectors.encoders.json.JsonEncoder;
-import org.observertc.webrtc.schemas.reports.Report;
-import org.observertc.webrtc.schemas.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;

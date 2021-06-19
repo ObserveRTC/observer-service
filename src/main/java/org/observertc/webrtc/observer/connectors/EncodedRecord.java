@@ -1,7 +1,6 @@
 package org.observertc.webrtc.observer.connectors;
 
 import org.observertc.webrtc.observer.common.Utils;
-import org.observertc.webrtc.schemas.reports.ReportType;
 
 import java.util.HashMap;
 import java.util.Map;

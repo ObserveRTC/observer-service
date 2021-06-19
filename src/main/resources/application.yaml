@@ -35,6 +35,9 @@ observer:
       defaultServiceName: "defaultServiceName"
       security:
         dropUnknownServices: false
+  sinks:
+    MyKafkaSink: # and this is the name
+
 
   security:
     websockets:
@@ -73,14 +76,16 @@ observer:
     peerConnectionMaxIdleTimeInS: 60
 
   outboundReports:
-    reportOutboundRTPs: true
-    reportInboundRTPs: true
-    reportRemoteInboundRTPs: true
-    reportTracks: true
-    reportMediaSources: true
-    reportCandidatePairs: true
-    reportLocalCandidates: true
-    reportRemoteCandidates: true
-    reportUserMediaErrors: true
+    reportCallMeta: true
+    reportCallEvents: true
+    reportOutboundAudioTracks: true
+    reportOutboundVideoTracks: true
+    reportInboundAudioTracks: true
+    reportInboundVideoTracks: true
+    reportPcTransports: true
+    reportPcDataChannels: true
+    reportObservedExtensions: true
+
+
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

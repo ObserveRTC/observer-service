@@ -65,7 +65,7 @@ public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
 
             if (Duration.between(entry.getValue(), now).compareTo(this.threshold) < 0) {
                 // the first item, accessed less than threshold, then we stop the check because
-                // we know all consecutive itmes are accessed less than this.
+                // we know all consecutive items are accessed less than this.
                 return;
             }
             // no hard feelings

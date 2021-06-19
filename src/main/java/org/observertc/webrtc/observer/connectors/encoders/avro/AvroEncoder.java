@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.connectors.encoders.avro;
 
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.observertc.webrtc.observer.connectors.encoders.EncoderAbstract;
-import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

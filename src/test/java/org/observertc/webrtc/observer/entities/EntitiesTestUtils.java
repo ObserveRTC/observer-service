@@ -3,7 +3,6 @@ package org.observertc.webrtc.observer.entities;
 import org.jeasy.random.EasyRandom;
 import org.observertc.webrtc.observer.configs.SentinelConfig;
 import org.observertc.webrtc.observer.dto.CallDTO;
-import org.observertc.webrtc.observer.dto.DTOTestUtils;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 
 import javax.inject.Inject;

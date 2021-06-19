@@ -1,7 +1,6 @@
 package org.observertc.webrtc.observer.connectors.transformations;
 
 import io.reactivex.rxjava3.functions.Predicate;
-import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

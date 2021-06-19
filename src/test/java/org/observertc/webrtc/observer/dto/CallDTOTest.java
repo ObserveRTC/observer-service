@@ -4,27 +4,30 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import java.time.Instant;
 import java.util.UUID;
 
 @MicronautTest
 class CallDTOTest {
 
-    @Inject
-    DTOTestUtils testUtils;
-
     @Test
     void shouldBuild_1() {
-        UUID callUUID = UUID.randomUUID();
-        UUID serviceUUID = UUID.randomUUID();
-        CallDTO callDTO = CallDTO.of(callUUID, serviceUUID, "serviceName", 1L, "callName", "marker");
+        UUID callId = UUID.randomUUID();
+        UUID peerConnectionId = UUID.randomUUID();
+        Long initiated = Instant.now().toEpochMilli();
 
-        Assertions.assertEquals(callUUID, callDTO.callUUID);
-        Assertions.assertEquals(serviceUUID, callDTO.serviceUUID);
-        Assertions.assertEquals("serviceName", callDTO.serviceName);
-        Assertions.assertEquals(1L, callDTO.initiated);
-        Assertions.assertEquals("callName", callDTO.callName);
-        Assertions.assertEquals("marker", callDTO.marker);
+        // TODO: write the test
+        Assertions.assertTrue(false);
+    }
+
+    @Test
+    void shouldThrowException_1() {
+        UUID callUUID = UUID.randomUUID();
+        UUID serviceUUID = null;
+        Long initiated = Instant.now().toEpochMilli();
+
+        // TODO: write the test
+        Assertions.assertTrue(false);
     }
 
 }

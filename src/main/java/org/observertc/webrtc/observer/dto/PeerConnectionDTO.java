@@ -33,65 +33,33 @@ import java.util.UUID;
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
 public class PeerConnectionDTO implements VersionedPortable {
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionDTO.class);
-	public static final int CLASS_VERSION = 6;
+	public static final int CLASS_VERSION = 7;
 
-	private static final String SERVICE_UUID_FIELD_NAME = "serviceUUID";
-	private static final String SERVICE_NAME_FIELD_NAME = "serviceName";
-	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
-	private static final String CALL_UUID_FIELD_NAME = "callUUID";
-	private static final String CALL_NAME_FIELD_NAME = "callName";
-	private static final String PEER_CONNECTION_UUID_FIELD_NAME = "peerConnectionUUID";
-
-	private static final String PROVIDED_USER_NAME_FIELD_NAME = "providedUserName";
-	private static final String BROWSERID_FIELD_NAME = "browserId";
-	private static final String TIMEZONE_FIELD_NAME = "timeZone";
-	private static final String JOINED_FIELD_NAME = "joined";
-	private static final String MARKER_FIELD_NAME = "marker";
+	private static final String CLIENT_ID_FIELD_NAME = "clientId";
+	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
+	private static final String ADDED_FIELD_NAME = "added";
 
 
 	public static PeerConnectionDTO of(
-			UUID serviceUUID,
-			String serviceName,
-			String mediaUnitId,
-			UUID callUUID,
-			String callName,
-			UUID peerConnectionUUID,
-			String providedUserName,
-			String browserId,
-			String timeZone,
-			Long joined,
-			String marker
+			UUID clientId,
+			UUID peerConnectionId,
+			Long added
 	) {
-		Objects.requireNonNull(peerConnectionUUID);
-		Objects.requireNonNull(callUUID);
-		Objects.requireNonNull(serviceUUID);
+		Objects.requireNonNull(clientId);
+		Objects.requireNonNull(peerConnectionId);
+		Objects.requireNonNull(added);
 
 		PeerConnectionDTO result = new PeerConnectionDTO();
-		result.serviceUUID = serviceUUID;
-		result.serviceName = serviceName;
-		result.mediaUnitId = mediaUnitId;
-		result.callUUID = callUUID;
-		result.callName = callName;
-		result.peerConnectionUUID = peerConnectionUUID;
-		result.providedUserName = providedUserName;
-		result.browserId = browserId;
-		result.timeZone = timeZone;
-		result.joined = joined;
-		result.marker = marker;
+		result.clientId = clientId;
+		result.peerConnectionId = peerConnectionId;
+		result.added = added;
 		return result;
 	}
 
-	public UUID serviceUUID;
-	public String serviceName;
-	public String mediaUnitId;
-	public UUID callUUID;
-	public String callName;
-	public UUID peerConnectionUUID;
-	public String providedUserName;
-	public String browserId;
-	public String timeZone;
-	public Long joined;
-	public String marker;
+	public UUID clientId;
+	public UUID peerConnectionId;
+	public Long added;
+
 
 //	@Deprecated
 //	public Set<Long> SSRCs = new HashSet<>();
@@ -108,36 +76,18 @@ public class PeerConnectionDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
-		writer.writeByteArray(PEER_CONNECTION_UUID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionUUID));
-		writer.writeByteArray(CALL_UUID_FIELD_NAME, UUIDAdapter.toBytes(this.callUUID));
-		writer.writeByteArray(SERVICE_UUID_FIELD_NAME, UUIDAdapter.toBytes(this.serviceUUID));
-		writer.writeUTF(SERVICE_NAME_FIELD_NAME, this.serviceName);
-		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
-		writer.writeUTF(CALL_NAME_FIELD_NAME, this.callName);
-		writer.writeUTF(PROVIDED_USER_NAME_FIELD_NAME, this.providedUserName);
-		writer.writeUTF(BROWSERID_FIELD_NAME, this.browserId);
-		writer.writeUTF(TIMEZONE_FIELD_NAME, this.timeZone);
-		writer.writeLong(JOINED_FIELD_NAME, this.joined);
-		writer.writeUTF(MARKER_FIELD_NAME,this.marker);
+		writer.writeByteArray(CLIENT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.clientId));
+		writer.writeByteArray(PEER_CONNECTION_ID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionId));
+		writer.writeLong(ADDED_FIELD_NAME, this.added);
 
 //		SerDeUtils.writeLongArray(writer, SSRC_FIELD_NAME, this.SSRCs, -1);
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.peerConnectionUUID = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_UUID_FIELD_NAME));
-		this.callUUID = UUIDAdapter.toUUID(reader.readByteArray(CALL_UUID_FIELD_NAME));
-		this.serviceUUID = UUIDAdapter.toUUID(reader.readByteArray(SERVICE_UUID_FIELD_NAME));
-		this.serviceName = reader.readUTF(SERVICE_NAME_FIELD_NAME);
-		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
-		this.callName = reader.readUTF(CALL_NAME_FIELD_NAME);
-		this.providedUserName = reader.readUTF(PROVIDED_USER_NAME_FIELD_NAME);
-		this.browserId = reader.readUTF(BROWSERID_FIELD_NAME);
-		this.timeZone = reader.readUTF(TIMEZONE_FIELD_NAME);
-		this.joined = reader.readLong(JOINED_FIELD_NAME);
-		this.marker = reader.readUTF(MARKER_FIELD_NAME);
-
-//		SerDeUtils.readLongArray(reader, SSRC_FIELD_NAME, this.SSRCs, -1);
+		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));
+		this.peerConnectionId = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_ID_FIELD_NAME));
+		this.added = reader.readLong(ADDED_FIELD_NAME);
 	}
 
 	@Override
@@ -156,14 +106,9 @@ public class PeerConnectionDTO implements VersionedPortable {
 			return false;
 		}
 		PeerConnectionDTO otherDTO = (PeerConnectionDTO) other;
-		if (!Objects.equals(this.callName, otherDTO.callName)) return false;
-		if (!Objects.equals(this.callUUID, otherDTO.callUUID)) return false;
-		if (!Objects.equals(this.serviceUUID, otherDTO.serviceUUID)) return false;
-		if (!Objects.equals(this.marker, otherDTO.marker)) return false;
-		if (!Objects.equals(this.joined, otherDTO.joined)) return false;
-		if (!Objects.equals(this.serviceName, otherDTO.serviceName)) return false;
-		if (!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId)) return false;
-		if (!Objects.equals(this.providedUserName, otherDTO.providedUserName)) return false;
+		if (!Objects.equals(this.clientId, otherDTO.clientId)) return false;
+		if (!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId)) return false;
+		if (!Objects.equals(this.added, otherDTO.added)) return false;
 		return true;
 	}
 }

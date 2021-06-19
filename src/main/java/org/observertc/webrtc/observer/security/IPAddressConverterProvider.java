@@ -1,6 +1,6 @@
 package org.observertc.webrtc.observer.security;
 
-import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.connectors.encoders.Encoder;
 import org.observertc.webrtc.observer.connectors.sinks.Sink;
 import org.observertc.webrtc.observer.connectors.transformations.Transformation;
-import org.observertc.webrtc.schemas.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

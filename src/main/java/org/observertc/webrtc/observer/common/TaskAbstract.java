@@ -18,7 +18,7 @@ package org.observertc.webrtc.observer.common;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
-import org.observertc.webrtc.observer.monitors.FlawMonitor;
+import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;

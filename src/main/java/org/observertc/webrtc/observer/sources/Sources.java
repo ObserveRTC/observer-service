@@ -5,7 +5,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.samples.ObservedPCS;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -16,19 +15,6 @@ import java.util.Objects;
 public class Sources extends Observable<ObservedPCS> {
 
     private final Subject<ObservedPCS> subject = PublishSubject.create();
-
-    // legacy reason
-
-    @Deprecated(since = "0.7.2")
-    public void inputUserMediaError(ObservedPCS observedPCS) {
-        this.subject.onNext(observedPCS);
-    }
-
-    // legacy reason
-    @Deprecated(since = "0.7.2")
-    public Observer<ObservedPCS> getObservedPCSObserver() {
-        return this.subject;
-    }
 
     @Override
     protected void subscribeActual(@NonNull Observer<? super ObservedPCS> observer) {

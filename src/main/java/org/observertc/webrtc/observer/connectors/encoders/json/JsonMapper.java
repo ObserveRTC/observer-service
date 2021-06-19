@@ -3,7 +3,6 @@ package org.observertc.webrtc.observer.connectors.encoders.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.observertc.webrtc.observer.connectors.encoders.SchemaMapperAbstract;
-import org.observertc.webrtc.schemas.reports.ReportType;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;

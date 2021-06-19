@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.observertc.webrtc.observer.common.Sleeper;
 import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
-import org.observertc.webrtc.observer.evaluators.Pipeline;
+import org.observertc.webrtc.observer.evaluatorsPurgatory.pcSampleToReportsV2.Pipeline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
