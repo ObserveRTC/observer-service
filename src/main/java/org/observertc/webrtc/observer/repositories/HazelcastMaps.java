@@ -2,8 +2,10 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
+import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.*;
+import org.observertc.webrtc.observer.evaluators.RemoveClientEntities;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -35,6 +37,12 @@ public class HazelcastMaps {
 
     @Inject
     ObserverHazelcast observerHazelcast;
+
+    @Inject
+    RemoveClientEntities removeClientEntities;
+
+    @Inject
+    ObserverConfig observerConfig;
 
     // calls
     private IMap<UUID, CallDTO> calls;
@@ -74,6 +82,10 @@ public class HazelcastMaps {
         this.weakLocks = observerHazelcast.getInstance().getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
 
         this.configurations = observerHazelcast.getInstance().getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
+
+        // setup expirations
+        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_CLIENTS_MAP_NAME).setMaxIdleSeconds(300);
+        this.getClients().addEntryListener(this.removeClientEntities, true);
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {

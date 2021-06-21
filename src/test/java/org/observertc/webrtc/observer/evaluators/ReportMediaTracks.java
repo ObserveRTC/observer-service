@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.evaluators;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class InboundAudioTrackReportsMaker {
+class ReportMediaTracks {
 
     @Test
     void shouldMatchField_SSRC() {

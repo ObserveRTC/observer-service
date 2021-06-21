@@ -5,7 +5,7 @@ import org.observertc.webrtc.schemas.reports.CallEventReport;
 import javax.inject.Singleton;
 
 @Singleton
-public class CallEventsBuilders {
+public class CallEventsBuildersFactory {
 
     enum Types {
         CALL_STARTED,

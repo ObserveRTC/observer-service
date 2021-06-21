@@ -4,7 +4,6 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
-import org.observertc.webrtc.observer.entities.ClientEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.samples.MediaTrackId;
@@ -71,7 +70,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnection
                                 Map<Long, MediaTrackDTO> mediaTrackDTOs = peerConnectionEntity.getInboundMediaTrackDTOs();
                                 mediaTrackDTOs.forEach((SSRC, mediaTrackDTO) -> {
                                     MediaTrackId mediaTrackId = MediaTrackId.make(mediaTrackDTO.peerConnectionId, SSRC);
-                                    String mediaTrackKey = MediaTrackId.getKey(mediaTrackId);
+                                    String mediaTrackKey = MediaTrackId.generateKey(mediaTrackId);
                                     mediaTrackDTOMap.put(mediaTrackKey, mediaTrackDTO);
                                     this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(peerConnectionId, mediaTrackKey);
                                 });
@@ -84,7 +83,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnection
                                 Map<Long, MediaTrackDTO> mediaTrackDTOs = peerConnectionEntity.getInboundMediaTrackDTOs();
                                 mediaTrackDTOs.forEach((SSRC, mediaTrackDTO) -> {
                                     MediaTrackId mediaTrackId = MediaTrackId.make(mediaTrackDTO.peerConnectionId, SSRC);
-                                    String mediaTrackKey = MediaTrackId.getKey(mediaTrackId);
+                                    String mediaTrackKey = MediaTrackId.generateKey(mediaTrackId);
                                     this.hazelcastMaps.getPeerConnectionToInboundTrackIds().remove(peerConnectionId, mediaTrackKey);
                                     this.hazelcastMaps.getMediaTracks().remove(mediaTrackKey);
                                 });
@@ -98,7 +97,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnection
                                 Map<Long, MediaTrackDTO> mediaTrackDTOs = peerConnectionEntity.getOutboundMediaTrackDTOs();
                                 mediaTrackDTOs.forEach((SSRC, mediaTrackDTO) -> {
                                     MediaTrackId mediaTrackId = MediaTrackId.make(mediaTrackDTO.peerConnectionId, SSRC);
-                                    String mediaTrackKey = MediaTrackId.getKey(mediaTrackId);
+                                    String mediaTrackKey = MediaTrackId.generateKey(mediaTrackId);
                                     mediaTrackDTOMap.put(mediaTrackKey, mediaTrackDTO);
                                     this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(peerConnectionId, mediaTrackKey);
                                 });
@@ -111,7 +110,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnection
                                 Map<Long, MediaTrackDTO> mediaTrackDTOs = peerConnectionEntity.getOutboundMediaTrackDTOs();
                                 mediaTrackDTOs.forEach((SSRC, mediaTrackDTO) -> {
                                     MediaTrackId mediaTrackId = MediaTrackId.make(mediaTrackDTO.peerConnectionId, SSRC);
-                                    String mediaTrackKey = MediaTrackId.getKey(mediaTrackId);
+                                    String mediaTrackKey = MediaTrackId.generateKey(mediaTrackId);
                                     this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(peerConnectionId, mediaTrackKey);
                                     this.hazelcastMaps.getMediaTracks().remove(mediaTrackKey);
                                 });

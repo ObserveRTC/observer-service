@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class MediaTrackId {
     private static final String DELIMITER = "##/##";
-    public static String getKey(MediaTrackId mediaTrackId) {
+    public static String generateKey(MediaTrackId mediaTrackId) {
         return String.join(DELIMITER, mediaTrackId.peerConnectionId.toString(), mediaTrackId.ssrc.toString());
     }
 
@@ -15,6 +15,7 @@ public class MediaTrackId {
         Long ssrc = Long.parseLong(parts[1]);
         return new MediaTrackId(peerConnectionId, ssrc);
     }
+
     public static MediaTrackId make(UUID peerConnectionId, Long ssrc) {
         return new MediaTrackId(peerConnectionId, ssrc);
     }
@@ -25,6 +26,10 @@ public class MediaTrackId {
     public MediaTrackId(UUID peerConnectionId, Long ssrc) {
         this.peerConnectionId = peerConnectionId;
         this.ssrc = ssrc;
+    }
+
+    public String getKey() {
+        return MediaTrackId.generateKey(this);
     }
 
     @Override

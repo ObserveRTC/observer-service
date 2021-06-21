@@ -25,13 +25,14 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.evaluators.Pipeline;
+import org.observertc.webrtc.observer.evaluators.ProcessingPipeline;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
 import org.observertc.webrtc.observer.micrometer.ServiceMetrics;
 import org.observertc.webrtc.observer.samples.ClientSample;
-import org.observertc.webrtc.observer.samples.ObservedSampleBuilder;
+import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
 import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class WebsocketClientSamples {
 	ObserverConfig.SourcesConfig.ClientSamplesConfig config;
 
 	@Inject
-	Pipeline pipeline;
+	ProcessingPipeline processingPipeline;
 
 	public WebsocketClientSamples(
 			ObjectMapper objectMapper,
@@ -161,13 +162,11 @@ public class WebsocketClientSamples {
 					.complete();
 			return;
 		}
-
-		ObservedSampleBuilder observedSampleBuilder = ObservedSampleBuilder.from(
-				sample,
-				serviceId,
-				mediaUnitId
-		);
-
-		this.pipeline.getInput().onNext(observedSampleBuilder);
+		var observedClientSample = ObservedClientSampleBuilder.from(sample)
+				.withServiceId(serviceId)
+				.withMediaUnitId(mediaUnitId)
+				.build();
+		Observable.just(observedClientSample)
+				.subscribe(this.processingPipeline);
 	}
 }

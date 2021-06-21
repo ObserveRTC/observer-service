@@ -7,7 +7,6 @@ import io.micronaut.security.token.validator.TokenValidator;
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +31,9 @@ public class WebsocketAccessTokenValidator {
 
     public WebsocketAccessTokenValidator(
             Collection<TokenValidator> tokenValidators,
-            ObserverConfigDispatcher configDispatcher
+            ObserverConfig observerConfig
     ) {
-        this.config = configDispatcher.getConfig().security.websockets;
+        this.config = observerConfig.security.websockets;
         this.tokenValidators = tokenValidators;
         this.enabled = Objects.nonNull(this.tokenValidators) && 0 < this.tokenValidators.size();
     }

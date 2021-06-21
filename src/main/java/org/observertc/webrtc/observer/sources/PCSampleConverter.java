@@ -6,10 +6,11 @@ import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.MinuteToTimeZoneId;
 import org.observertc.webrtc.observer.common.TimeLimitedMap;
 import org.observertc.webrtc.observer.common.Utils;
+import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
-import org.observertc.webrtc.observer.configs.stores.ServiceMapsStore;
+import org.observertc.webrtc.observer.samples.ClientSample;
 import org.observertc.webrtc.observer.samples.SourceSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Prototype
-class PCSampleConverter implements Function<SourceSample, ObservedPCS> {
+class PCSampleConverter implements Function<SourceSample, ClientSample> {
 
     private static final Logger logger = LoggerFactory.getLogger(PCSampleConverter.class);
 

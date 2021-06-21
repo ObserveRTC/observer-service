@@ -1,12 +1,10 @@
 package org.observertc.webrtc.observer.security;
 
 import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.configs.ObserverConfigDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -19,15 +17,15 @@ public class IPAddressConverterProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(IPAddressConverterProvider.class);
 
-    private ObserverConfig.SecurityConfig.IPAddressConverterConfig config;
+    private ObserverConfig.SecurityConfig config;
 
-    @Inject
-    ObserverConfigDispatcher configDispatcher;
+    public IPAddressConverterProvider(ObserverConfig observerConfig) {
+        this.config = observerConfig.security;
+    }
 
     @PostConstruct
     void setup() {
-        var observerConfig = configDispatcher.getConfig();
-        this.config = observerConfig.security.ipAddressConverter;
+
     }
 
     public io.reactivex.rxjava3.functions.Function<String, String> makeReactiveXConverter() {

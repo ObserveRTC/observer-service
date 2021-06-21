@@ -2,8 +2,8 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.observertc.webrtc.observer.configs.ConfigEntriesDispatcher;
 import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ConfigEntriesDispatcher;
 import org.observertc.webrtc.observer.dto.ConfigDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
