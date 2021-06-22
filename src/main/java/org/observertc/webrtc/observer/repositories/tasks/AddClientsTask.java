@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Prototype
-public class AddClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
+public class AddClientsTask extends ChainedTask<Boolean> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddClientsTask.class);
 
@@ -30,23 +30,23 @@ public class AddClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
     FetchClientsTask fetchClientsTask;
 
     private boolean fetchEntitiesBack = true;
-    private Map<UUID, ClientEntity> clientEntities = new HashMap<>();
+    private Map<UUID, ClientDTO> clientDTOs = new HashMap<>();
 
 
     @PostConstruct
     void setup() {
-        new Builder<Map<UUID, ClientEntity>>(this)
-                .<Map<UUID, ClientEntity>>addConsumerEntry("Merge all inputs",
+        new Builder<Boolean>(this)
+                .<Map<UUID, ClientDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
-                        receivedClientEntities -> {
-                            if (Objects.nonNull(receivedClientEntities)) {
-                                this.clientEntities.putAll(receivedClientEntities);
+                        receivedClientDTOs -> {
+                            if (Objects.nonNull(receivedClientDTOs)) {
+                                this.clientDTOs.putAll(receivedClientDTOs);
                             }
                         }
                 )
                 .<Map<UUID, ClientEntity>> addBreakCondition((resultHolder) -> {
-                    if (this.clientEntities.size() < 1) {
-                        resultHolder.set(Collections.EMPTY_MAP);
+                    if (this.clientDTOs.size() < 1) {
+                        resultHolder.set(false);
                         return true;
                     }
                     return false;
@@ -54,99 +54,58 @@ public class AddClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
                 .addActionStage("Add Client DTOs",
                 // action
                 () -> {
-                    Map<UUID, ClientDTO> clientDTOs = new HashMap<>();
-                    this.clientEntities.forEach((clientId, clientEntity) -> {
-                        clientDTOs.put(clientId, clientEntity.getClientDTO());
-                    });
-                    hazelcastMaps.getClients().putAll(clientDTOs);
+                    hazelcastMaps.getClients().putAll(this.clientDTOs);
                 },
                 // rollback
                 (inputHolder, thrownException) -> {
-                    for (UUID clientId : this.clientEntities.keySet()) {
-                        hazelcastMaps.getClients().remove(clientId);
+                    for (UUID clientId : this.clientDTOs.keySet()) {
+                        this.hazelcastMaps.getClients().remove(clientId);
                     }
                 })
-                .addActionStage("Add Peer Connections",
+                .addActionStage("Bind CallIds",
                 // action
                 () -> {
-
-                    this.clientEntities.values()
-                            .stream()
-                            .flatMap(clientEntity -> clientEntity.getPeerConnections().values().stream())
-                            .forEach(this.addPeerConnectionsTask::withPeerConnectionEntities);
-
-                    if (!this.addPeerConnectionsTask.execute().succeeded()) {
-                        throw new RuntimeException("Task cannot be executed due to problem while executing peer connection entities");
-                    }
+                    this.clientDTOs.forEach((clientId, clientDTO) -> {
+                        this.hazelcastMaps.getCallToClientIds().put(clientDTO.callId, clientId);
+                    });
                 },
                 // rollback
                 (inputHolder, thrownException) -> {
-                    this.clientEntities.values()
-                            .stream()
-                            .flatMap(clientEntity -> clientEntity.getPeerConnections().values().stream())
-                            .forEach(pcEntity -> {
-                                var peerConnectionId = pcEntity.getPeerConnectionId();
-                                this.removePeerConnectionsTask.wherePeerConnectionIds(peerConnectionId);
-                            });
-                    this.removePeerConnectionsTask.execute();
+                    this.clientDTOs.forEach((clientId, clientDTO) -> {
+                        this.hazelcastMaps.getCallToClientIds().remove(clientDTO.callId, clientId);
+                    });
                 })
-                .addActionStage("Bind Clients to Peer Connections", () -> {
-                    this.clientEntities.values()
-                            .stream()
-                            .forEach(clientEntity -> {
-                                var clientId = clientEntity.getClientId();
-                                var peerConnections = clientEntity.getPeerConnections().values();
-                                peerConnections.forEach(peerConnectionEntity -> {
-                                    var peerConnectionId = peerConnectionEntity.getPeerConnectionId();
-                                    this.hazelcastMaps.getClientToPeerConnectionIds().put(clientId, peerConnectionId);
-                                });
-                            });
-                },
-                // rollback
-                (inputHolder, thrownException) -> {
-                    this.clientEntities.values()
-                            .stream()
-                            .forEach(clientEntity -> {
-                                var clientId = clientEntity.getClientId();
-                                var peerConnections = clientEntity.getPeerConnections().values();
-                                peerConnections.forEach(peerConnectionEntity -> {
-                                    var peerConnectionId = peerConnectionEntity.getPeerConnectionId();
-                                    this.hazelcastMaps.getClientToPeerConnectionIds().remove(clientId, peerConnectionId);
-                                });
-                            });
-                })
-                .<Map<UUID, ClientEntity>>addSupplierStage("Fetch Result Entities", () -> {
-                    if (!this.fetchEntitiesBack) {
-                        return Collections.unmodifiableMap(this.clientEntities);
-                    }
-                    Set<UUID> clientIds = this.clientEntities.keySet();
-                    if (!this.fetchClientsTask.whereClientIds(clientIds).execute().succeeded()) {
-                        throw new RuntimeException("Error occurred during fetching entities back");
-                    }
-                    return this.fetchClientsTask.getResult();
-                })
-                .addTerminalPassingStage("Completed")
+                .addTerminalSupplier("Completed", () -> true)
                 .build();
     }
 
-    public AddClientsTask withClientEntities(ClientEntity... entities) {
-        if (Objects.isNull(entities) && entities.length < 1) {
+    public AddClientsTask withClientDTO(ClientDTO clientDTO) {
+        if (Objects.isNull(clientDTO)) {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
-        Arrays.stream(entities).forEach(clientEntity -> {
-            this.clientEntities.put(clientEntity.getClientId(), clientEntity);
+        this.clientDTOs.put(clientDTO.clientId, clientDTO);
+        return this;
+    }
+
+    public AddClientsTask withClientDTOs(ClientDTO... clientDTOs) {
+        if (Objects.isNull(clientDTOs) || clientDTOs.length < 1) {
+            this.getLogger().info("call uuid was not given to be removed");
+            return this;
+        }
+        Arrays.stream(clientDTOs).forEach(clientDTO -> {
+            this.clientDTOs.put(clientDTO.clientId, clientDTO);
         });
         return this;
     }
 
-    public AddClientsTask withClientEntities(Map<UUID, ClientEntity> entities) {
-        this.clientEntities.putAll(entities);
+    public AddClientsTask withClientDTOs(Map<UUID, ClientDTO> clientDTOs) {
+        if (Objects.isNull(clientDTOs) || clientDTOs.size() < 1) {
+            this.getLogger().info("call uuid was not given to be removed");
+            return this;
+        }
+        this.clientDTOs.putAll(clientDTOs);
         return this;
     }
 
-    public AddClientsTask withFetchingBackTheResult(boolean value) {
-        this.fetchEntitiesBack = value;
-        return this;
-    }
 }

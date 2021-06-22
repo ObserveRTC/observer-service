@@ -131,7 +131,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnection
     }
 
     public AddPeerConnectionsTask withPeerConnectionEntities(PeerConnectionEntity... entities) {
-        if (Objects.isNull(entities) && entities.length < 1) {
+        if (Objects.isNull(entities) || entities.length < 1) {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }

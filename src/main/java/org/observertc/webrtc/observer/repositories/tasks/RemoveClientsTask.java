@@ -148,7 +148,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
     }
 
     public RemoveClientsTask whereClientIds(UUID... clientIds) {
-        if (Objects.isNull(clientIds) && clientIds.length < 1) {
+        if (Objects.isNull(clientIds) || clientIds.length < 1) {
             return this;
         }
         this.clientIds.addAll(Arrays.asList(clientIds));
@@ -156,7 +156,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
     }
 
     public RemoveClientsTask whereClientIds(Set<UUID> clientIds) {
-        if (Objects.isNull(clientIds) && clientIds.size() < 1) {
+        if (Objects.isNull(clientIds) || clientIds.size() < 1) {
             return this;
         }
         this.clientIds.addAll(clientIds);

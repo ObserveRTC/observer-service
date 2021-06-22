@@ -32,6 +32,10 @@ import java.util.UUID;
 public class ClientDTO implements VersionedPortable {
 	public static final int CLASS_VERSION = 1;
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
 	private static final String USER_ID_FIELD_NAME = "userId";
@@ -62,6 +66,10 @@ public class ClientDTO implements VersionedPortable {
 	public UUID clientId;
 	public Long connected;
 	public String timeZoneId;
+
+	ClientDTO() {
+
+	}
 
 	@Override
 	public int getFactoryId() {
@@ -112,6 +120,7 @@ public class ClientDTO implements VersionedPortable {
 		ClientDTO otherDTO = (ClientDTO) other;
 		if (!Objects.equals(this.callId, otherDTO.callId) ||
 			!Objects.equals(this.userId, otherDTO.userId) ||
+			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.clientId, otherDTO.clientId) ||
 			!Objects.equals(this.connected, otherDTO.connected) ||
 			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId)
@@ -120,4 +129,45 @@ public class ClientDTO implements VersionedPortable {
 		}
 		return true;
 	}
+
+	public static class Builder {
+		private final ClientDTO result = new ClientDTO();
+
+		public Builder withCallId(UUID value) {
+			this.result.callId = value;
+			return this;
+		}
+
+		public Builder withMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+
+		public Builder withClientId(UUID value) {
+			this.result.clientId = value;
+			return this;
+		}
+
+		public Builder withUserId(String value) {
+			this.result.userId = value;
+			return this;
+		}
+
+		public Builder withConnectedTimestamp(Long value) {
+			this.result.connected = value;
+			return this;
+		}
+
+		public Builder withTimeZoneId(String value) {
+			this.result.timeZoneId = value;
+			return this;
+		}
+
+		public ClientDTO build() {
+			Objects.requireNonNull(this.result.callId);
+			Objects.requireNonNull(this.result.clientId);
+			Objects.requireNonNull(this.result.connected);
+			return this.result;
+		}
+    }
 }

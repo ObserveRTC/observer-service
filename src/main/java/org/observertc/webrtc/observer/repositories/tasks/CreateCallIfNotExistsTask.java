@@ -36,9 +36,6 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
     FetchCallsTask fetchCallsTask;
 
     @Inject
-    AddClientsTask addClientsTask;
-
-    @Inject
     Provider<RemoveClientsTask> removeClientsTaskProvider;
 
     @Inject

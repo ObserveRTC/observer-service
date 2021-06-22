@@ -39,6 +39,9 @@ public class PeerConnectionDTO implements VersionedPortable {
 	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
 	private static final String ADDED_FIELD_NAME = "added";
 
+	public static Builder builder() {
+		return new Builder();
+	}
 
 	public static PeerConnectionDTO of(
 			UUID clientId,
@@ -110,5 +113,31 @@ public class PeerConnectionDTO implements VersionedPortable {
 		if (!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId)) return false;
 		if (!Objects.equals(this.added, otherDTO.added)) return false;
 		return true;
+	}
+
+	public static class Builder {
+		private final PeerConnectionDTO result = new PeerConnectionDTO();
+
+		public PeerConnectionDTO.Builder withPeerConnectionId(UUID value) {
+			this.result.peerConnectionId = value;
+			return this;
+		}
+
+		public PeerConnectionDTO.Builder withClientId(UUID value) {
+			this.result.clientId = value;
+			return this;
+		}
+
+		public PeerConnectionDTO.Builder withAddedTimestamp(Long value) {
+			this.result.added = value;
+			return this;
+		}
+
+		public PeerConnectionDTO build() {
+			Objects.requireNonNull(this.result.peerConnectionId);
+			Objects.requireNonNull(this.result.clientId);
+			Objects.requireNonNull(this.result.added);
+			return this.result;
+		}
 	}
 }

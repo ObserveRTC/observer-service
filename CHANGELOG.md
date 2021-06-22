@@ -1,7 +1,12 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
-## 0.9.0 (H)
+## 1.0.0 (H)
+
+Breaking Changes:
+ * Using new Schema for reporting (Reports v3)
+ * Using new Schema to accepting samples (ClientSample)
+ * 
 
 Plan:
  * Remove KeyMaker from configholds
@@ -15,6 +20,7 @@ Plan:
  * Lambda function supports for GCP, AWS, Azure, etc.
  * Making a module handles inconsistency (like not existing media track for peer connections)
  * Task to handle inconsistency
+ * Rename serviceId to organizationId, and mediaUnitId to appId
 
 My notes:
  * No UserMediaError monitors
@@ -26,9 +32,16 @@ Noticable features:
  * Call matching to all reports: you do not need to join tables to know which call it belongs to
  * Matching pcs to tracks inside reports, so you instantly know from a report which track belongs to which client
 
+Config features (can be configured dynamically):
+ * obfuscations
+
+Missing from schema:
+ * timeZoneId
+ * marker
+
  
  
- 
+## 0.8.3 (H)
 
 ### Added
 
@@ -150,3 +163,30 @@ Noticable features:
 ### Refactored
  * `repositories` package to use `ChainedTasks` newly created object performing tasks in a transactional manner.
  * All DTO objects used to store in hazelcast in-memory data grid
+
+### 0.6.x
+
+This version added a so called `Sentinel` concept to the Observer, so Calls and Peer Connections 
+can be filtered and exposed metrics through prometheus can be observed
+
+### 0.5.x
+
+This version removed MySQL dependency completely and used Hazelcast as distributed database.
+This gives a possibility to scale observer without scaling the underlying database.
+Since Hazelcast can only be embedded in java this also bounds the project to Java.
+
+### 0.3.x
+
+This version was the first version with the 
+new schema (Reports v2, and PeerConnectionSample from the observer-js endpoint).
+
+
+### 0.2.x
+
+This version started matching calls based on SSRC of reported peer connections.
+
+### 0.1.x
+
+This version was build as a proof of concept to accept samples from javascript endpoint and 
+using kafka streams to process them and forward generated reports to kafka.
+The underlying database was MySQL.

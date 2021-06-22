@@ -18,6 +18,9 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     private final Subject<ObservedClientSample> input = PublishSubject.create();
 
     @Inject
+    Obfuscator obfuscator;
+
+    @Inject
     BuildCallSamples buildCallSamples;
 
     @Inject
@@ -39,6 +42,8 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .share();
 
         var observableCollectedCallSamples = samplesBuffer
+                // TODO: measure a start time
+                .map(this.obfuscator)
                 .map(this.collectClientSamples)
                 .lift(this.buildCallSamples)
                 .filter(Objects::nonNull)
@@ -50,7 +55,7 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
         observableCollectedCallSamples
                 .subscribe(this.addNewEntities);
 
-
+        // TODO: measure the end time somehow
     }
 
     @Override

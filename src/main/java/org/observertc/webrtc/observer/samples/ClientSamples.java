@@ -10,6 +10,8 @@ import java.util.stream.Stream;
  */
 public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
 
+
+
     public static ClientSamples.Builder builderFrom(ObservedSample observedSample) {
         var result = new ClientSamples.Builder()
                 .withObservedSample(observedSample);
@@ -18,8 +20,11 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
     private ObservedSample observedSample;
     private ServiceRoomId serviceRoomId;
     private List<ClientSample> samples = new LinkedList<>();
+    private Set<UUID> peerConnectionIds = new HashSet<>();
     private Set<MediaTrackId> inboundMediaTrackIds = new HashSet<>();
+    private Set<MediaTrackId> outboundMediaTrackIds = new HashSet<>();
     private Long minTimestamp = null;
+
     private ClientSamples() {
 
     }
@@ -45,6 +50,22 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
                 .filter(track -> Objects.nonNull(track.ssrc) && UUIDAdapter.tryParse(track.peerConnectionId).isPresent())
                 .map(track -> MediaTrackId.make(UUID.fromString(track.peerConnectionId), track.ssrc))
                 .forEach(this.inboundMediaTrackIds::add);
+
+        ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
+                .filter(track -> Objects.nonNull(track.ssrc) && UUIDAdapter.tryParse(track.peerConnectionId).isPresent())
+                .map(track -> MediaTrackId.make(UUID.fromString(track.peerConnectionId), track.ssrc))
+                .forEach(this.outboundMediaTrackIds::add);
+
+        ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
+                .filter(track -> Objects.nonNull(track.ssrc) && UUIDAdapter.tryParse(track.peerConnectionId).isPresent())
+                .map(track -> MediaTrackId.make(UUID.fromString(track.peerConnectionId), track.ssrc))
+                .forEach(this.outboundMediaTrackIds::add);
+
+        Arrays.asList(this.inboundMediaTrackIds, this.outboundMediaTrackIds)
+                .stream()
+                .flatMap(Set::stream)
+                .map(mediaTrackId -> mediaTrackId.peerConnectionId)
+                .forEach(this.peerConnectionIds::add);
     }
 
     void addAll(ClientSamples clientSamples) {
@@ -58,6 +79,14 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
 
     public Set<MediaTrackId> getInboundMediaTrackIds() {
         return this.inboundMediaTrackIds;
+    }
+
+    public Set<MediaTrackId> getOutboundMediaTrackIds() {
+        return this.outboundMediaTrackIds;
+    }
+
+    public Set<UUID> getPeerConnectionIds() {
+        return this.peerConnectionIds;
     }
 
     public Long getMinTimestamp() {
@@ -115,6 +144,8 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
         // TODO: add marker to ClientSample
         return "NOT IMPLEMENTED";
     }
+
+
 
     public static class Builder {
         private ClientSamples result;

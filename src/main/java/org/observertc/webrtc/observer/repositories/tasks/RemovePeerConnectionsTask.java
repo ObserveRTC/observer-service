@@ -134,7 +134,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
     }
 
     public RemovePeerConnectionsTask wherePeerConnectionIds(UUID... peerConnectionIds) {
-        if (Objects.isNull(peerConnectionIds) && peerConnectionIds.length < 1) {
+        if (Objects.isNull(peerConnectionIds) || peerConnectionIds.length < 1) {
             return this;
         }
         this.peerConnectionIds.addAll(Arrays.asList(peerConnectionIds));
@@ -142,7 +142,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
     }
 
     public RemovePeerConnectionsTask wherePeerConnectionIds(Set<UUID> peerConnectionIds) {
-        if (Objects.isNull(peerConnectionIds) && peerConnectionIds.size() < 1) {
+        if (Objects.isNull(peerConnectionIds) || peerConnectionIds.size() < 1) {
             return this;
         }
         this.peerConnectionIds.addAll(peerConnectionIds);

@@ -159,7 +159,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
     }
 
     public RemoveCallsTask whereCallIds(UUID... callIds) {
-        if (Objects.isNull(callIds) && callIds.length < 1) {
+        if (Objects.isNull(callIds) || callIds.length < 1) {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
