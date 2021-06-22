@@ -129,7 +129,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                                     .stream()
                                     .flatMap(c -> c.stream())
                                     .collect(Collectors.toSet());
-                            this.removeClientsTask.whereClientIds(clientIds);
+                            this.removeClientsTask.whereClientDTOs(clientIds);
                             if (!this.removeClientsTask.execute().succeeded()) {
                                 throw new RuntimeException("Cannot remove call due to error occrred removing related clients");
                             }

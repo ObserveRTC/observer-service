@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Consumer;
-import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.repositories.tasks.RefreshTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.slf4j.Logger;
@@ -85,6 +84,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                 }
             }
         }
+
         if (0 < newClients.size()) {
             this.addNewClients(newClients);
         }
@@ -96,15 +96,15 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
         }
     }
 
-    private void addNewMediaTracks(Map<MediaTrackId, NewMediaTrack> newMediaTracks) {
+    private boolean addNewMediaTracks(Map<MediaTrackId, NewMediaTrack> newMediaTracks) {
 
     }
 
-    private void addNewPeerConnections(Map<UUID, NewPeerConnection> newPeerConnections) {
+    private boolean addNewPeerConnections(Map<UUID, NewPeerConnection> newPeerConnections) {
 
     }
 
-    private void addNewClients(Map<UUID, NewClient> newClients) {
+    private boolean addNewClients(Map<UUID, NewClient> newClients) {
 
     }
 }

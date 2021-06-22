@@ -147,7 +147,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
                 .build();
     }
 
-    public RemoveClientsTask whereClientIds(UUID... clientIds) {
+    public RemoveClientsTask whereClientDTOs(UUID... clientIds) {
         if (Objects.isNull(clientIds) || clientIds.length < 1) {
             return this;
         }
@@ -155,11 +155,20 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
         return this;
     }
 
-    public RemoveClientsTask whereClientIds(Set<UUID> clientIds) {
+    public RemoveClientsTask whereClientDTOs(Set<UUID> clientIds) {
         if (Objects.isNull(clientIds) || clientIds.size() < 1) {
             return this;
         }
         this.clientIds.addAll(clientIds);
+        return this;
+    }
+
+    public RemoveClientsTask whereClientDTOs(Map<UUID, ClientDTO> clientDTOs) {
+        if (Objects.isNull(clientDTOs) || clientDTOs.size() < 1) {
+            return this;
+        }
+        this.clientIds.addAll(clientDTOs.keySet());
+        this.removedClientDTOs.putAll(clientDTOs);
         return this;
     }
 }

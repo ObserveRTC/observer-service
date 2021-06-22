@@ -7,11 +7,16 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.dto.ClientDTO;
+import org.observertc.webrtc.observer.entities.ClientEntity;
+import org.observertc.webrtc.observer.repositories.tasks.RemoveClientsTask;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -27,6 +32,9 @@ public class RemoveClientEntities implements EntryListener<UUID, ClientDTO> {
         return this.callEventReportSubject;
     }
 
+    @Inject
+    Provider<RemoveClientsTask> removeClientsTaskProvider;
+
     @Override
     public void entryAdded(EntryEvent<UUID, ClientDTO> event) {
 
@@ -39,7 +47,10 @@ public class RemoveClientEntities implements EntryListener<UUID, ClientDTO> {
 
     @Override
     public void entryExpired(EntryEvent<UUID, ClientDTO> event) {
-
+        var clientDTO = event.getValue();
+        CallEventReport
+                .newBuilder()
+                .setRoomId()
     }
 
     @Override
@@ -60,5 +71,19 @@ public class RemoveClientEntities implements EntryListener<UUID, ClientDTO> {
     @Override
     public void mapEvicted(MapEvent event) {
 
+    }
+
+    private void removeClientDTOs(Map<UUID, ClientDTO> removedClientDTOs) {
+        var task = removeClientsTaskProvider.get();
+        task.whereClientDTOs(removedClientDTOs);
+
+        if (!task.execute().succeeded()) {
+            return;
+        }
+
+        Map<UUID, ClientEntity> removedEntities = task.getResult();
+        removedEntities.forEach((clientId, clientEntity) -> {
+            clientEntity.getPeerConnections()
+        });
     }
 }
