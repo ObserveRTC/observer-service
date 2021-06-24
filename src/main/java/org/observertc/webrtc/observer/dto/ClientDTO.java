@@ -40,7 +40,7 @@ public class ClientDTO implements VersionedPortable {
 	private static final String CALL_ID_FIELD_NAME = "callId";
 	private static final String USER_ID_FIELD_NAME = "userId";
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
-	private static final String CONNECTED_FIELD_NAME = "connected"; // antonym: disconnected
+	private static final String JOINED_FIELD_NAME = "joined";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
 
 	public static ClientDTO of(
@@ -55,7 +55,7 @@ public class ClientDTO implements VersionedPortable {
 		result.callId = callId;
 		result.userId = userId;
 		result.clientId = clientId;
-		result.connected = connected;
+		result.joined = connected;
 		result.timeZoneId = timeZoneId;
 		return result;
 	}
@@ -64,7 +64,7 @@ public class ClientDTO implements VersionedPortable {
 	public UUID callId;
 	public String userId;
 	public UUID clientId;
-	public Long connected;
+	public Long joined;
 	public String timeZoneId;
 
 	ClientDTO() {
@@ -87,7 +87,7 @@ public class ClientDTO implements VersionedPortable {
 		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
 		writer.writeUTF(USER_ID_FIELD_NAME, this.userId);
 		writer.writeByteArray(CLIENT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.clientId));
-		writer.writeLong(CONNECTED_FIELD_NAME, this.connected);
+		writer.writeLong(JOINED_FIELD_NAME, this.joined);
 		writer.writeUTF(TIMEZONE_FIELD_NAME, this.timeZoneId);
 
 	}
@@ -98,7 +98,7 @@ public class ClientDTO implements VersionedPortable {
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
 		this.userId = reader.readUTF(USER_ID_FIELD_NAME);
 		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));
-		this.connected = reader.readLong(CONNECTED_FIELD_NAME);
+		this.joined = reader.readLong(JOINED_FIELD_NAME);
 		this.timeZoneId = reader.readUTF(TIMEZONE_FIELD_NAME);
 	}
 
@@ -122,7 +122,7 @@ public class ClientDTO implements VersionedPortable {
 			!Objects.equals(this.userId, otherDTO.userId) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.clientId, otherDTO.clientId) ||
-			!Objects.equals(this.connected, otherDTO.connected) ||
+			!Objects.equals(this.joined, otherDTO.joined) ||
 			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId)
 		) {
 			return false;
@@ -154,7 +154,7 @@ public class ClientDTO implements VersionedPortable {
 		}
 
 		public Builder withConnectedTimestamp(Long value) {
-			this.result.connected = value;
+			this.result.joined = value;
 			return this;
 		}
 
@@ -166,7 +166,7 @@ public class ClientDTO implements VersionedPortable {
 		public ClientDTO build() {
 			Objects.requireNonNull(this.result.callId);
 			Objects.requireNonNull(this.result.clientId);
-			Objects.requireNonNull(this.result.connected);
+			Objects.requireNonNull(this.result.joined);
 			return this.result;
 		}
     }

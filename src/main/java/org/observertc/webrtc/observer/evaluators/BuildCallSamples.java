@@ -2,16 +2,12 @@ package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableOperator;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.repositories.tasks.CreateCallIfNotExistsTask;
 import org.observertc.webrtc.observer.repositories.tasks.FindCallIdsByServiceRoomIds;
 import org.observertc.webrtc.observer.samples.*;
-import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +28,6 @@ public class BuildCallSamples implements ObservableOperator<CollectedCallSamples
 
     private static final Logger logger = LoggerFactory.getLogger(BuildCallSamples.class);
 
-    private Subject<CallEventReport> callEventSubject = PublishSubject.create();
-
-    @Inject
-    CallEventsBuildersFactory callEventsBuildersFactory;
-
     @Inject
     Provider<CreateCallIfNotExistsTask> createCallIfNotExistsTaskProvider;
 
@@ -52,10 +43,6 @@ public class BuildCallSamples implements ObservableOperator<CollectedCallSamples
     @Override
     public @NonNull Observer<? super CollectedClientSamples> apply(@NonNull Observer<? super CollectedCallSamples> observer) throws Throwable {
         return new Op(observer);
-    }
-
-    public Observable<CallEventReport> getObservableCallEvent() {
-        return this.callEventSubject;
     }
 
     private class Op implements Observer<CollectedClientSamples>{
@@ -139,21 +126,6 @@ public class BuildCallSamples implements ObservableOperator<CollectedCallSamples
                 return null;
             }
             var result = task.getResult();
-            var callEvent = callEventsBuildersFactory.makeStartedCallEventReportBuilder()
-                    .setServiceId(firstClientSample.getServiceId())
-                    .setMediaUnitId(firstClientSample.getMediaUnitId())
-                    .setMarker(firstClientSample.getMarker())
-                    .setTimestamp(firstClientSample.getTimestamp())
-                    .setCallId(result.toString())
-                    .setRoomId(firstClientSample.getRoomId())
-                    .setUserId(firstClientSample.getUserId())
-                    .setPeerConnectionId(null) // it does not matter
-                    .setSampleTimestamp(startedTimestamp)
-                    .setMessage("Call is started")
-                    .setValue(null)
-                    .setAttachments(null)
-                    .build();
-            callEventSubject.onNext(callEvent);
             return result;
         }
     }

@@ -37,7 +37,7 @@ public class PeerConnectionDTO implements VersionedPortable {
 
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
-	private static final String ADDED_FIELD_NAME = "added";
+	private static final String CREATED_FIELD_NAME = "created";
 
 	public static Builder builder() {
 		return new Builder();
@@ -55,13 +55,13 @@ public class PeerConnectionDTO implements VersionedPortable {
 		PeerConnectionDTO result = new PeerConnectionDTO();
 		result.clientId = clientId;
 		result.peerConnectionId = peerConnectionId;
-		result.added = added;
+		result.created = added;
 		return result;
 	}
 
 	public UUID clientId;
 	public UUID peerConnectionId;
-	public Long added;
+	public Long created;
 
 
 //	@Deprecated
@@ -81,7 +81,7 @@ public class PeerConnectionDTO implements VersionedPortable {
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeByteArray(CLIENT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.clientId));
 		writer.writeByteArray(PEER_CONNECTION_ID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionId));
-		writer.writeLong(ADDED_FIELD_NAME, this.added);
+		writer.writeLong(CREATED_FIELD_NAME, this.created);
 
 //		SerDeUtils.writeLongArray(writer, SSRC_FIELD_NAME, this.SSRCs, -1);
 	}
@@ -90,7 +90,7 @@ public class PeerConnectionDTO implements VersionedPortable {
 	public void readPortable(PortableReader reader) throws IOException {
 		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));
 		this.peerConnectionId = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_ID_FIELD_NAME));
-		this.added = reader.readLong(ADDED_FIELD_NAME);
+		this.created = reader.readLong(CREATED_FIELD_NAME);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class PeerConnectionDTO implements VersionedPortable {
 		PeerConnectionDTO otherDTO = (PeerConnectionDTO) other;
 		if (!Objects.equals(this.clientId, otherDTO.clientId)) return false;
 		if (!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId)) return false;
-		if (!Objects.equals(this.added, otherDTO.added)) return false;
+		if (!Objects.equals(this.created, otherDTO.created)) return false;
 		return true;
 	}
 
@@ -128,15 +128,15 @@ public class PeerConnectionDTO implements VersionedPortable {
 			return this;
 		}
 
-		public PeerConnectionDTO.Builder withAddedTimestamp(Long value) {
-			this.result.added = value;
+		public PeerConnectionDTO.Builder withCreatedTimestamp(Long value) {
+			this.result.created = value;
 			return this;
 		}
 
 		public PeerConnectionDTO build() {
 			Objects.requireNonNull(this.result.peerConnectionId);
 			Objects.requireNonNull(this.result.clientId);
-			Objects.requireNonNull(this.result.added);
+			Objects.requireNonNull(this.result.created);
 			return this.result;
 		}
 	}

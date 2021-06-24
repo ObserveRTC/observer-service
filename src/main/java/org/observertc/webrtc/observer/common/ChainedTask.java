@@ -183,10 +183,9 @@ public class ChainedTask<T> extends TaskAbstract<T> {
          * The resultHolder of the task is passed as a parameter of the evaluated predicate.
          * If the breaking condition is false than the {@link ChainedTask} executes the successor stage
          * @param terminalCondition
-         * @param <U>
          * @return {@link Builder} this builder object
          */
-        public<U> Builder<R> addBreakCondition(Function<AtomicReference<R>, Boolean> terminalCondition) {
+        public Builder<R> addBreakCondition(Function<AtomicReference<R>, Boolean> terminalCondition) {
             this.result.addBreakCondition(null,terminalCondition);
             return this;
         }
@@ -386,7 +385,5 @@ public class ChainedTask<T> extends TaskAbstract<T> {
                 throw new IllegalStateException("The operation requires to not having any added stage before");
             }
         }
-
-
     }
 }

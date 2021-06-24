@@ -68,7 +68,11 @@ public class CallEntity {
 		return true;
 	}
 
-	public static class Builder {
+	public CallDTO getCallDTO() {
+		return this.callDTO;
+	}
+
+    public static class Builder {
 
 		private final CallEntity result = new CallEntity();
 

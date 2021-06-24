@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.controllers;///*
 
-import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -31,11 +30,6 @@ public class IndexController {
 		return new HashMap<>();
 	}
 
-	@Secured(SecurityRule.IS_AUTHENTICATED)
-	@Get("/whoiam")
-	public HttpResponse whoiam() {
-		return HttpResponse.ok("something");
-	}
 
 	@Secured(SecurityRule.IS_ANONYMOUS)
 	@Get("/about")

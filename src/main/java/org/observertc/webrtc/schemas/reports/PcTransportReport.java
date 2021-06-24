@@ -11,161 +11,159 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates */
 @org.apache.avro.specific.AvroGenerated
 public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 9059750238807025483L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PcTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"serviceName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The resolved service name configured for the service Id\",\"default\":null},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is marked with\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets sent on the corresponded transport\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets received on the corresponded transport\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total amount of bytes sent on the corresponded transport\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total amount of bytes received on the corresponded transport\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current role of ICE under DTLS Transport\",\"default\":null},{\"name\":\"iceLocalUsernameFragment\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current state of DTLS for the peer connection transport layer\",\"default\":null},{\"name\":\"iceTransportState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer\",\"default\":null},{\"name\":\"tlsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the version number of the TLS used in the corresponded transport\",\"default\":null},{\"name\":\"dtlsCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the DTLS cipher used in the corresponded transport\",\"default\":null},{\"name\":\"srtpCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the SRTP cipher used in the corresponded transport\",\"default\":null},{\"name\":\"tlsGroup\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the IANA TLS Supported Groups used in the corresponded transport\",\"default\":null},{\"name\":\"selectedCandidatePairChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of candidate pair changes over the peer connection\",\"default\":null},{\"name\":\"localFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the local endpoint corresponded to the transport\",\"default\":null},{\"name\":\"remoteFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the remote endpoint corresponded to the transport\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The locally used port to communicate with the remote peer\",\"default\":null},{\"name\":\"localProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the local endpoint for the corresponded transport\",\"default\":null},{\"name\":\"localCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remotely used port to communicate with the remote peer\",\"default\":null},{\"name\":\"remoteProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the remote endpoint for the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent using the last sele","cted candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairLastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastPacketReceivedTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairFirstRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastResponseTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"stunProvidedTotalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"stunProvidedCurrentRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"availableOutgoingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"availableIncomingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"circuitBreakerTriggerCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair\",\"default\":null},{\"name\":\"candidatePairRequestsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentExpiredTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponseBytesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. \",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd.\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd.\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu.\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.\",\"default\":null}]}");
+  private static final long serialVersionUID = -6642779846627690850L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PcTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is marked with\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets sent on the corresponded transport\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets received on the corresponded transport\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total amount of bytes sent on the corresponded transport\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total amount of bytes received on the corresponded transport\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current role of ICE under DTLS Transport\",\"default\":null},{\"name\":\"iceLocalUsernameFragment\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current state of DTLS for the peer connection transport layer\",\"default\":null},{\"name\":\"iceTransportState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer\",\"default\":null},{\"name\":\"tlsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the version number of the TLS used in the corresponded transport\",\"default\":null},{\"name\":\"dtlsCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the DTLS cipher used in the corresponded transport\",\"default\":null},{\"name\":\"srtpCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the SRTP cipher used in the corresponded transport\",\"default\":null},{\"name\":\"tlsGroup\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the IANA TLS Supported Groups used in the corresponded transport\",\"default\":null},{\"name\":\"selectedCandidatePairChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of candidate pair changes over the peer connection\",\"default\":null},{\"name\":\"localFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the local endpoint corresponded to the transport\",\"default\":null},{\"name\":\"remoteFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the remote endpoint corresponded to the transport\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The locally used port to communicate with the remote peer\",\"default\":null},{\"name\":\"localProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the local endpoint for the corresponded transport\",\"default\":null},{\"name\":\"localCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remotely used port to communicate with the remote peer\",\"default\":null},{\"name\":\"remoteProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the remote endpoint for the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of pack","ets received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairLastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastPacketReceivedTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairFirstRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastResponseTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"stunProvidedTotalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"stunProvidedCurrentRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"availableOutgoingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"availableIncomingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"circuitBreakerTriggerCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair\",\"default\":null},{\"name\":\"candidatePairRequestsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentExpiredTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponseBytesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. \",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd.\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd.\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu.\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
-   private String serviceId;
-  /** The resolved service name configured for the service Id */
-   private String serviceName;
+   private java.lang.String serviceId;
   /** The media unit id the report belongs to */
-   private String mediaUnitId;
+   private java.lang.String mediaUnitId;
   /** The marker the originated sample is reported with */
-   private String marker;
+   private java.lang.String marker;
   /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
    private long timestamp;
   /** The generated unique identifier of the call */
-   private String callId;
+   private java.lang.String callId;
   /** webrtc app provided room id */
-   private String roomId;
+   private java.lang.String roomId;
   /** The generated unique identifier of the client */
-   private String clientId;
+   private java.lang.String clientId;
   /** webrtc app provided user identifier */
-   private String userId;
+   private java.lang.String userId;
   /** The unique identifier of the peer connection */
-   private String peerConnectionId;
+   private java.lang.String peerConnectionId;
   /** The webrtc app provided label the peer connection is marked with */
-   private String label;
+   private java.lang.String label;
   /** Represents the total number of packets sent on the corresponded transport */
-   private Integer packetsSent;
+   private java.lang.Integer packetsSent;
   /** Represents the total number of packets received on the corresponded transport */
-   private Integer packetsReceived;
+   private java.lang.Integer packetsReceived;
   /** Represents the total amount of bytes sent on the corresponded transport */
-   private Integer bytesSent;
+   private java.lang.Integer bytesSent;
   /** Represents the total amount of bytes received on the corresponded transport */
-   private Integer bytesReceived;
+   private java.lang.Integer bytesReceived;
   /** Represent the current role of ICE under DTLS Transport */
-   private String iceRole;
+   private java.lang.String iceRole;
   /** Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport */
-   private String iceLocalUsernameFragment;
+   private java.lang.String iceLocalUsernameFragment;
   /** Represents the current state of DTLS for the peer connection transport layer */
-   private String dtlsState;
+   private java.lang.String dtlsState;
   /** Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer */
-   private String iceTransportState;
+   private java.lang.String iceTransportState;
   /** Represents the version number of the TLS used in the corresponded transport */
-   private String tlsVersion;
+   private java.lang.String tlsVersion;
   /** Represents the name of the DTLS cipher used in the corresponded transport */
-   private String dtlsCipher;
+   private java.lang.String dtlsCipher;
   /** Represents the name of the SRTP cipher used in the corresponded transport */
-   private String srtpCipher;
+   private java.lang.String srtpCipher;
   /** Represents the name of the IANA TLS Supported Groups used in the corresponded transport */
-   private String tlsGroup;
+   private java.lang.String tlsGroup;
   /** The total number of candidate pair changes over the peer connection */
-   private Integer selectedCandidatePairChanges;
+   private java.lang.Integer selectedCandidatePairChanges;
   /** The fingerprint of the certificate certifies the local endpoint of the transport */
-   private String localFingerprint;
+   private java.lang.String localFingerprint;
   /** The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport */
-   private String localFingerprintAlgorithm;
+   private java.lang.String localFingerprintAlgorithm;
   /** The base64 encoded certificate for the local endpoint corresponded to the transport */
-   private String localBase64Certificate;
+   private java.lang.String localBase64Certificate;
   /** The fingerprint of the certificate certifies the remote endpoint of the transport */
-   private String remoteFingerprint;
+   private java.lang.String remoteFingerprint;
   /** The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport */
-   private String remoteFingerprintAlgorithm;
+   private java.lang.String remoteFingerprintAlgorithm;
   /** The base64 encoded certificate for the remote endpoint corresponded to the transport */
-   private String remoteBase64Certificate;
+   private java.lang.String remoteBase64Certificate;
   /** The address of the candidate (IPv4, IPv6, FQDN) */
-   private String localAddress;
+   private java.lang.String localAddress;
   /** The locally used port to communicate with the remote peer */
-   private Integer localPort;
+   private java.lang.Integer localPort;
   /** The protocol used by the local endpoint for the corresponded transport */
-   private String localProtocol;
+   private java.lang.String localProtocol;
   /** The type of the ICE candidate used at the local endpoint on the corresponded transport */
-   private String localCandidateType;
+   private java.lang.String localCandidateType;
   /** The priority of the ICE candidate used at the local endpoint on the corresponded transport */
-   private Integer localCandidatePriority;
+   private java.lang.Integer localCandidatePriority;
   /** The url of the ICE server used by the local endpoint on the corresponded transport */
-   private String localCandidateICEServerUrl;
+   private java.lang.String localCandidateICEServerUrl;
   /** The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport */
-   private String localCandidateRelayProtocol;
+   private java.lang.String localCandidateRelayProtocol;
   /** The address of the candidate (IPv4, IPv6, FQDN) */
-   private String remoteAddress;
+   private java.lang.String remoteAddress;
   /** The remotely used port to communicate with the remote peer */
-   private Integer remotePort;
+   private java.lang.Integer remotePort;
   /** The protocol used by the remote endpoint for the corresponded transport */
-   private String remoteProtocol;
+   private java.lang.String remoteProtocol;
   /** The type of the ICE candidate used at the remote endpoint on the corresponded transport */
-   private String remoteCandidateType;
+   private java.lang.String remoteCandidateType;
   /** The priority of the ICE candidate used at the remote endpoint on the corresponded transport */
-   private Integer remoteCandidatePriority;
+   private java.lang.Integer remoteCandidatePriority;
   /** The url of the ICE server used by the remote endpoint on the corresponded transport */
-   private String remoteCandidateICEServerUrl;
+   private java.lang.String remoteCandidateICEServerUrl;
   /** The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport */
-   private String remoteCandidateRelayProtocol;
+   private java.lang.String remoteCandidateRelayProtocol;
   /** The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport */
-   private String iceCandidatePairState;
+   private java.lang.String iceCandidatePairState;
   /** The total number of packets sent using the last selected candidate pair over the corresponded transport */
-   private Integer iceCandidatePairPacketsSent;
+   private java.lang.Integer iceCandidatePairPacketsSent;
   /** The total number of packets received using the last selected candidate pair over the corresponded transport */
-   private Integer iceCandidatePairPacketsReceived;
+   private java.lang.Integer iceCandidatePairPacketsReceived;
   /** The total number of bytes sent using the last selected candidate pair over the corresponded transport */
-   private Long iceCandidatePairBytesSent;
+   private java.lang.Long iceCandidatePairBytesSent;
   /** The total number of bytes received using the last selected candidate pair over the corresponded transport */
-   private Long iceCandidatePairBytesReceived;
+   private java.lang.Long iceCandidatePairBytesReceived;
   /** Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-   private Long iceCandidatePairLastPacketSentTimestamp;
+   private java.lang.Long iceCandidatePairLastPacketSentTimestamp;
   /** Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-   private Long iceCandidatePairLastPacketReceivedTimestamp;
+   private java.lang.Long iceCandidatePairLastPacketReceivedTimestamp;
   /** Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-   private Long iceCandidatePairFirstRequestTimestamp;
+   private java.lang.Long iceCandidatePairFirstRequestTimestamp;
   /** Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-   private Long iceCandidatePairLastRequestTimestamp;
+   private java.lang.Long iceCandidatePairLastRequestTimestamp;
   /** Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-   private Long iceCandidatePairLastResponseTimestamp;
+   private java.lang.Long iceCandidatePairLastResponseTimestamp;
   /** Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport */
-   private Double stunProvidedTotalRoundTripTime;
+   private java.lang.Double stunProvidedTotalRoundTripTime;
   /** Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport */
-   private Double stunProvidedCurrentRoundTripTime;
+   private java.lang.Double stunProvidedCurrentRoundTripTime;
   /** The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport */
-   private Double availableOutgoingBitrate;
+   private java.lang.Double availableOutgoingBitrate;
   /** The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport */
-   private Double availableIncomingBitrate;
+   private java.lang.Double availableIncomingBitrate;
   /** The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair */
-   private Integer circuitBreakerTriggerCount;
+   private java.lang.Integer circuitBreakerTriggerCount;
   /** Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairRequestsReceived;
+   private java.lang.Integer candidatePairRequestsReceived;
   /** Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairRequestsSent;
+   private java.lang.Integer candidatePairRequestsSent;
   /** Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairResponsesReceived;
+   private java.lang.Integer candidatePairResponsesReceived;
   /** Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairResponsesSent;
+   private java.lang.Integer candidatePairResponsesSent;
   /** Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairRetransmissionReceived;
+   private java.lang.Integer candidatePairRetransmissionReceived;
   /** Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairRetransmissionSent;
+   private java.lang.Integer candidatePairRetransmissionSent;
   /** Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairConsentRequestsSent;
+   private java.lang.Integer candidatePairConsentRequestsSent;
   /** Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport */
-   private Long candidatePairConsentExpiredTimestamp;
+   private java.lang.Long candidatePairConsentExpiredTimestamp;
   /** Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport */
-   private Long candidatePairBytesDiscardedOnSend;
+   private java.lang.Long candidatePairBytesDiscardedOnSend;
   /** Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport */
-   private Long candidatePairRequestBytesSent;
+   private java.lang.Long candidatePairRequestBytesSent;
   /** Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport */
-   private Long candidatePairConsentRequestBytesSent;
+   private java.lang.Long candidatePairConsentRequestBytesSent;
   /** Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport */
-   private Integer candidatePairResponseBytesSent;
+   private java.lang.Integer candidatePairResponseBytesSent;
   /** The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds.  */
-   private Double sctpSmoothedRoundTripTime;
+   private java.lang.Double sctpSmoothedRoundTripTime;
   /** The latest congestion window, corresponding to spinfo_cwnd. */
-   private Double sctpCongestionWindow;
+   private java.lang.Double sctpCongestionWindow;
   /** The latest receiver window, corresponding to sstat_rwnd. */
-   private Double sctpReceiverWindow;
+   private java.lang.Double sctpReceiverWindow;
   /** The latest maximum transmission unit, corresponding to spinfo_mtu. */
-   private Integer sctpMtu;
+   private java.lang.Integer sctpMtu;
   /** The number of unacknowledged DATA chunks, corresponding to sstat_unackdata. */
-   private Integer sctpUnackData;
+   private java.lang.Integer sctpUnackData;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -177,7 +175,6 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
   /**
    * All-args constructor.
    * @param serviceId The unique identifier of the service
-   * @param serviceName The resolved service name configured for the service Id
    * @param mediaUnitId The media unit id the report belongs to
    * @param marker The marker the originated sample is reported with
    * @param timestamp The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
@@ -253,9 +250,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * @param sctpMtu The latest maximum transmission unit, corresponding to spinfo_mtu.
    * @param sctpUnackData The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
    */
-  public PcTransportReport(String serviceId, String serviceName, String mediaUnitId, String marker, Long timestamp, String callId, String roomId, String clientId, String userId, String peerConnectionId, String label, Integer packetsSent, Integer packetsReceived, Integer bytesSent, Integer bytesReceived, String iceRole, String iceLocalUsernameFragment, String dtlsState, String iceTransportState, String tlsVersion, String dtlsCipher, String srtpCipher, String tlsGroup, Integer selectedCandidatePairChanges, String localFingerprint, String localFingerprintAlgorithm, String localBase64Certificate, String remoteFingerprint, String remoteFingerprintAlgorithm, String remoteBase64Certificate, String localAddress, Integer localPort, String localProtocol, String localCandidateType, Integer localCandidatePriority, String localCandidateICEServerUrl, String localCandidateRelayProtocol, String remoteAddress, Integer remotePort, String remoteProtocol, String remoteCandidateType, Integer remoteCandidatePriority, String remoteCandidateICEServerUrl, String remoteCandidateRelayProtocol, String iceCandidatePairState, Integer iceCandidatePairPacketsSent, Integer iceCandidatePairPacketsReceived, Long iceCandidatePairBytesSent, Long iceCandidatePairBytesReceived, Long iceCandidatePairLastPacketSentTimestamp, Long iceCandidatePairLastPacketReceivedTimestamp, Long iceCandidatePairFirstRequestTimestamp, Long iceCandidatePairLastRequestTimestamp, Long iceCandidatePairLastResponseTimestamp, Double stunProvidedTotalRoundTripTime, Double stunProvidedCurrentRoundTripTime, Double availableOutgoingBitrate, Double availableIncomingBitrate, Integer circuitBreakerTriggerCount, Integer candidatePairRequestsReceived, Integer candidatePairRequestsSent, Integer candidatePairResponsesReceived, Integer candidatePairResponsesSent, Integer candidatePairRetransmissionReceived, Integer candidatePairRetransmissionSent, Integer candidatePairConsentRequestsSent, Long candidatePairConsentExpiredTimestamp, Long candidatePairBytesDiscardedOnSend, Long candidatePairRequestBytesSent, Long candidatePairConsentRequestBytesSent, Integer candidatePairResponseBytesSent, Double sctpSmoothedRoundTripTime, Double sctpCongestionWindow, Double sctpReceiverWindow, Integer sctpMtu, Integer sctpUnackData) {
+  public PcTransportReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.Integer packetsSent, java.lang.Integer packetsReceived, java.lang.Integer bytesSent, java.lang.Integer bytesReceived, java.lang.String iceRole, java.lang.String iceLocalUsernameFragment, java.lang.String dtlsState, java.lang.String iceTransportState, java.lang.String tlsVersion, java.lang.String dtlsCipher, java.lang.String srtpCipher, java.lang.String tlsGroup, java.lang.Integer selectedCandidatePairChanges, java.lang.String localFingerprint, java.lang.String localFingerprintAlgorithm, java.lang.String localBase64Certificate, java.lang.String remoteFingerprint, java.lang.String remoteFingerprintAlgorithm, java.lang.String remoteBase64Certificate, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String localProtocol, java.lang.String localCandidateType, java.lang.Integer localCandidatePriority, java.lang.String localCandidateICEServerUrl, java.lang.String localCandidateRelayProtocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.String remoteProtocol, java.lang.String remoteCandidateType, java.lang.Integer remoteCandidatePriority, java.lang.String remoteCandidateICEServerUrl, java.lang.String remoteCandidateRelayProtocol, java.lang.String iceCandidatePairState, java.lang.Integer iceCandidatePairPacketsSent, java.lang.Integer iceCandidatePairPacketsReceived, java.lang.Long iceCandidatePairBytesSent, java.lang.Long iceCandidatePairBytesReceived, java.lang.Long iceCandidatePairLastPacketSentTimestamp, java.lang.Long iceCandidatePairLastPacketReceivedTimestamp, java.lang.Long iceCandidatePairFirstRequestTimestamp, java.lang.Long iceCandidatePairLastRequestTimestamp, java.lang.Long iceCandidatePairLastResponseTimestamp, java.lang.Double stunProvidedTotalRoundTripTime, java.lang.Double stunProvidedCurrentRoundTripTime, java.lang.Double availableOutgoingBitrate, java.lang.Double availableIncomingBitrate, java.lang.Integer circuitBreakerTriggerCount, java.lang.Integer candidatePairRequestsReceived, java.lang.Integer candidatePairRequestsSent, java.lang.Integer candidatePairResponsesReceived, java.lang.Integer candidatePairResponsesSent, java.lang.Integer candidatePairRetransmissionReceived, java.lang.Integer candidatePairRetransmissionSent, java.lang.Integer candidatePairConsentRequestsSent, java.lang.Long candidatePairConsentExpiredTimestamp, java.lang.Long candidatePairBytesDiscardedOnSend, java.lang.Long candidatePairRequestBytesSent, java.lang.Long candidatePairConsentRequestBytesSent, java.lang.Integer candidatePairResponseBytesSent, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData) {
     this.serviceId = serviceId;
-    this.serviceName = serviceName;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
     this.timestamp = timestamp;
@@ -334,168 +330,166 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
-  public Object get(int field$) {
+  public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return serviceId;
-    case 1: return serviceName;
-    case 2: return mediaUnitId;
-    case 3: return marker;
-    case 4: return timestamp;
-    case 5: return callId;
-    case 6: return roomId;
-    case 7: return clientId;
-    case 8: return userId;
-    case 9: return peerConnectionId;
-    case 10: return label;
-    case 11: return packetsSent;
-    case 12: return packetsReceived;
-    case 13: return bytesSent;
-    case 14: return bytesReceived;
-    case 15: return iceRole;
-    case 16: return iceLocalUsernameFragment;
-    case 17: return dtlsState;
-    case 18: return iceTransportState;
-    case 19: return tlsVersion;
-    case 20: return dtlsCipher;
-    case 21: return srtpCipher;
-    case 22: return tlsGroup;
-    case 23: return selectedCandidatePairChanges;
-    case 24: return localFingerprint;
-    case 25: return localFingerprintAlgorithm;
-    case 26: return localBase64Certificate;
-    case 27: return remoteFingerprint;
-    case 28: return remoteFingerprintAlgorithm;
-    case 29: return remoteBase64Certificate;
-    case 30: return localAddress;
-    case 31: return localPort;
-    case 32: return localProtocol;
-    case 33: return localCandidateType;
-    case 34: return localCandidatePriority;
-    case 35: return localCandidateICEServerUrl;
-    case 36: return localCandidateRelayProtocol;
-    case 37: return remoteAddress;
-    case 38: return remotePort;
-    case 39: return remoteProtocol;
-    case 40: return remoteCandidateType;
-    case 41: return remoteCandidatePriority;
-    case 42: return remoteCandidateICEServerUrl;
-    case 43: return remoteCandidateRelayProtocol;
-    case 44: return iceCandidatePairState;
-    case 45: return iceCandidatePairPacketsSent;
-    case 46: return iceCandidatePairPacketsReceived;
-    case 47: return iceCandidatePairBytesSent;
-    case 48: return iceCandidatePairBytesReceived;
-    case 49: return iceCandidatePairLastPacketSentTimestamp;
-    case 50: return iceCandidatePairLastPacketReceivedTimestamp;
-    case 51: return iceCandidatePairFirstRequestTimestamp;
-    case 52: return iceCandidatePairLastRequestTimestamp;
-    case 53: return iceCandidatePairLastResponseTimestamp;
-    case 54: return stunProvidedTotalRoundTripTime;
-    case 55: return stunProvidedCurrentRoundTripTime;
-    case 56: return availableOutgoingBitrate;
-    case 57: return availableIncomingBitrate;
-    case 58: return circuitBreakerTriggerCount;
-    case 59: return candidatePairRequestsReceived;
-    case 60: return candidatePairRequestsSent;
-    case 61: return candidatePairResponsesReceived;
-    case 62: return candidatePairResponsesSent;
-    case 63: return candidatePairRetransmissionReceived;
-    case 64: return candidatePairRetransmissionSent;
-    case 65: return candidatePairConsentRequestsSent;
-    case 66: return candidatePairConsentExpiredTimestamp;
-    case 67: return candidatePairBytesDiscardedOnSend;
-    case 68: return candidatePairRequestBytesSent;
-    case 69: return candidatePairConsentRequestBytesSent;
-    case 70: return candidatePairResponseBytesSent;
-    case 71: return sctpSmoothedRoundTripTime;
-    case 72: return sctpCongestionWindow;
-    case 73: return sctpReceiverWindow;
-    case 74: return sctpMtu;
-    case 75: return sctpUnackData;
+    case 1: return mediaUnitId;
+    case 2: return marker;
+    case 3: return timestamp;
+    case 4: return callId;
+    case 5: return roomId;
+    case 6: return clientId;
+    case 7: return userId;
+    case 8: return peerConnectionId;
+    case 9: return label;
+    case 10: return packetsSent;
+    case 11: return packetsReceived;
+    case 12: return bytesSent;
+    case 13: return bytesReceived;
+    case 14: return iceRole;
+    case 15: return iceLocalUsernameFragment;
+    case 16: return dtlsState;
+    case 17: return iceTransportState;
+    case 18: return tlsVersion;
+    case 19: return dtlsCipher;
+    case 20: return srtpCipher;
+    case 21: return tlsGroup;
+    case 22: return selectedCandidatePairChanges;
+    case 23: return localFingerprint;
+    case 24: return localFingerprintAlgorithm;
+    case 25: return localBase64Certificate;
+    case 26: return remoteFingerprint;
+    case 27: return remoteFingerprintAlgorithm;
+    case 28: return remoteBase64Certificate;
+    case 29: return localAddress;
+    case 30: return localPort;
+    case 31: return localProtocol;
+    case 32: return localCandidateType;
+    case 33: return localCandidatePriority;
+    case 34: return localCandidateICEServerUrl;
+    case 35: return localCandidateRelayProtocol;
+    case 36: return remoteAddress;
+    case 37: return remotePort;
+    case 38: return remoteProtocol;
+    case 39: return remoteCandidateType;
+    case 40: return remoteCandidatePriority;
+    case 41: return remoteCandidateICEServerUrl;
+    case 42: return remoteCandidateRelayProtocol;
+    case 43: return iceCandidatePairState;
+    case 44: return iceCandidatePairPacketsSent;
+    case 45: return iceCandidatePairPacketsReceived;
+    case 46: return iceCandidatePairBytesSent;
+    case 47: return iceCandidatePairBytesReceived;
+    case 48: return iceCandidatePairLastPacketSentTimestamp;
+    case 49: return iceCandidatePairLastPacketReceivedTimestamp;
+    case 50: return iceCandidatePairFirstRequestTimestamp;
+    case 51: return iceCandidatePairLastRequestTimestamp;
+    case 52: return iceCandidatePairLastResponseTimestamp;
+    case 53: return stunProvidedTotalRoundTripTime;
+    case 54: return stunProvidedCurrentRoundTripTime;
+    case 55: return availableOutgoingBitrate;
+    case 56: return availableIncomingBitrate;
+    case 57: return circuitBreakerTriggerCount;
+    case 58: return candidatePairRequestsReceived;
+    case 59: return candidatePairRequestsSent;
+    case 60: return candidatePairResponsesReceived;
+    case 61: return candidatePairResponsesSent;
+    case 62: return candidatePairRetransmissionReceived;
+    case 63: return candidatePairRetransmissionSent;
+    case 64: return candidatePairConsentRequestsSent;
+    case 65: return candidatePairConsentExpiredTimestamp;
+    case 66: return candidatePairBytesDiscardedOnSend;
+    case 67: return candidatePairRequestBytesSent;
+    case 68: return candidatePairConsentRequestBytesSent;
+    case 69: return candidatePairResponseBytesSent;
+    case 70: return sctpSmoothedRoundTripTime;
+    case 71: return sctpCongestionWindow;
+    case 72: return sctpReceiverWindow;
+    case 73: return sctpMtu;
+    case 74: return sctpUnackData;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
   @SuppressWarnings(value="unchecked")
-  public void put(int field$, Object value$) {
+  public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (String)value$; break;
-    case 1: serviceName = (String)value$; break;
-    case 2: mediaUnitId = (String)value$; break;
-    case 3: marker = (String)value$; break;
-    case 4: timestamp = (Long)value$; break;
-    case 5: callId = (String)value$; break;
-    case 6: roomId = (String)value$; break;
-    case 7: clientId = (String)value$; break;
-    case 8: userId = (String)value$; break;
-    case 9: peerConnectionId = (String)value$; break;
-    case 10: label = (String)value$; break;
-    case 11: packetsSent = (Integer)value$; break;
-    case 12: packetsReceived = (Integer)value$; break;
-    case 13: bytesSent = (Integer)value$; break;
-    case 14: bytesReceived = (Integer)value$; break;
-    case 15: iceRole = (String)value$; break;
-    case 16: iceLocalUsernameFragment = (String)value$; break;
-    case 17: dtlsState = (String)value$; break;
-    case 18: iceTransportState = (String)value$; break;
-    case 19: tlsVersion = (String)value$; break;
-    case 20: dtlsCipher = (String)value$; break;
-    case 21: srtpCipher = (String)value$; break;
-    case 22: tlsGroup = (String)value$; break;
-    case 23: selectedCandidatePairChanges = (Integer)value$; break;
-    case 24: localFingerprint = (String)value$; break;
-    case 25: localFingerprintAlgorithm = (String)value$; break;
-    case 26: localBase64Certificate = (String)value$; break;
-    case 27: remoteFingerprint = (String)value$; break;
-    case 28: remoteFingerprintAlgorithm = (String)value$; break;
-    case 29: remoteBase64Certificate = (String)value$; break;
-    case 30: localAddress = (String)value$; break;
-    case 31: localPort = (Integer)value$; break;
-    case 32: localProtocol = (String)value$; break;
-    case 33: localCandidateType = (String)value$; break;
-    case 34: localCandidatePriority = (Integer)value$; break;
-    case 35: localCandidateICEServerUrl = (String)value$; break;
-    case 36: localCandidateRelayProtocol = (String)value$; break;
-    case 37: remoteAddress = (String)value$; break;
-    case 38: remotePort = (Integer)value$; break;
-    case 39: remoteProtocol = (String)value$; break;
-    case 40: remoteCandidateType = (String)value$; break;
-    case 41: remoteCandidatePriority = (Integer)value$; break;
-    case 42: remoteCandidateICEServerUrl = (String)value$; break;
-    case 43: remoteCandidateRelayProtocol = (String)value$; break;
-    case 44: iceCandidatePairState = (String)value$; break;
-    case 45: iceCandidatePairPacketsSent = (Integer)value$; break;
-    case 46: iceCandidatePairPacketsReceived = (Integer)value$; break;
-    case 47: iceCandidatePairBytesSent = (Long)value$; break;
-    case 48: iceCandidatePairBytesReceived = (Long)value$; break;
-    case 49: iceCandidatePairLastPacketSentTimestamp = (Long)value$; break;
-    case 50: iceCandidatePairLastPacketReceivedTimestamp = (Long)value$; break;
-    case 51: iceCandidatePairFirstRequestTimestamp = (Long)value$; break;
-    case 52: iceCandidatePairLastRequestTimestamp = (Long)value$; break;
-    case 53: iceCandidatePairLastResponseTimestamp = (Long)value$; break;
-    case 54: stunProvidedTotalRoundTripTime = (Double)value$; break;
-    case 55: stunProvidedCurrentRoundTripTime = (Double)value$; break;
-    case 56: availableOutgoingBitrate = (Double)value$; break;
-    case 57: availableIncomingBitrate = (Double)value$; break;
-    case 58: circuitBreakerTriggerCount = (Integer)value$; break;
-    case 59: candidatePairRequestsReceived = (Integer)value$; break;
-    case 60: candidatePairRequestsSent = (Integer)value$; break;
-    case 61: candidatePairResponsesReceived = (Integer)value$; break;
-    case 62: candidatePairResponsesSent = (Integer)value$; break;
-    case 63: candidatePairRetransmissionReceived = (Integer)value$; break;
-    case 64: candidatePairRetransmissionSent = (Integer)value$; break;
-    case 65: candidatePairConsentRequestsSent = (Integer)value$; break;
-    case 66: candidatePairConsentExpiredTimestamp = (Long)value$; break;
-    case 67: candidatePairBytesDiscardedOnSend = (Long)value$; break;
-    case 68: candidatePairRequestBytesSent = (Long)value$; break;
-    case 69: candidatePairConsentRequestBytesSent = (Long)value$; break;
-    case 70: candidatePairResponseBytesSent = (Integer)value$; break;
-    case 71: sctpSmoothedRoundTripTime = (Double)value$; break;
-    case 72: sctpCongestionWindow = (Double)value$; break;
-    case 73: sctpReceiverWindow = (Double)value$; break;
-    case 74: sctpMtu = (Integer)value$; break;
-    case 75: sctpUnackData = (Integer)value$; break;
+    case 0: serviceId = (java.lang.String)value$; break;
+    case 1: mediaUnitId = (java.lang.String)value$; break;
+    case 2: marker = (java.lang.String)value$; break;
+    case 3: timestamp = (java.lang.Long)value$; break;
+    case 4: callId = (java.lang.String)value$; break;
+    case 5: roomId = (java.lang.String)value$; break;
+    case 6: clientId = (java.lang.String)value$; break;
+    case 7: userId = (java.lang.String)value$; break;
+    case 8: peerConnectionId = (java.lang.String)value$; break;
+    case 9: label = (java.lang.String)value$; break;
+    case 10: packetsSent = (java.lang.Integer)value$; break;
+    case 11: packetsReceived = (java.lang.Integer)value$; break;
+    case 12: bytesSent = (java.lang.Integer)value$; break;
+    case 13: bytesReceived = (java.lang.Integer)value$; break;
+    case 14: iceRole = (java.lang.String)value$; break;
+    case 15: iceLocalUsernameFragment = (java.lang.String)value$; break;
+    case 16: dtlsState = (java.lang.String)value$; break;
+    case 17: iceTransportState = (java.lang.String)value$; break;
+    case 18: tlsVersion = (java.lang.String)value$; break;
+    case 19: dtlsCipher = (java.lang.String)value$; break;
+    case 20: srtpCipher = (java.lang.String)value$; break;
+    case 21: tlsGroup = (java.lang.String)value$; break;
+    case 22: selectedCandidatePairChanges = (java.lang.Integer)value$; break;
+    case 23: localFingerprint = (java.lang.String)value$; break;
+    case 24: localFingerprintAlgorithm = (java.lang.String)value$; break;
+    case 25: localBase64Certificate = (java.lang.String)value$; break;
+    case 26: remoteFingerprint = (java.lang.String)value$; break;
+    case 27: remoteFingerprintAlgorithm = (java.lang.String)value$; break;
+    case 28: remoteBase64Certificate = (java.lang.String)value$; break;
+    case 29: localAddress = (java.lang.String)value$; break;
+    case 30: localPort = (java.lang.Integer)value$; break;
+    case 31: localProtocol = (java.lang.String)value$; break;
+    case 32: localCandidateType = (java.lang.String)value$; break;
+    case 33: localCandidatePriority = (java.lang.Integer)value$; break;
+    case 34: localCandidateICEServerUrl = (java.lang.String)value$; break;
+    case 35: localCandidateRelayProtocol = (java.lang.String)value$; break;
+    case 36: remoteAddress = (java.lang.String)value$; break;
+    case 37: remotePort = (java.lang.Integer)value$; break;
+    case 38: remoteProtocol = (java.lang.String)value$; break;
+    case 39: remoteCandidateType = (java.lang.String)value$; break;
+    case 40: remoteCandidatePriority = (java.lang.Integer)value$; break;
+    case 41: remoteCandidateICEServerUrl = (java.lang.String)value$; break;
+    case 42: remoteCandidateRelayProtocol = (java.lang.String)value$; break;
+    case 43: iceCandidatePairState = (java.lang.String)value$; break;
+    case 44: iceCandidatePairPacketsSent = (java.lang.Integer)value$; break;
+    case 45: iceCandidatePairPacketsReceived = (java.lang.Integer)value$; break;
+    case 46: iceCandidatePairBytesSent = (java.lang.Long)value$; break;
+    case 47: iceCandidatePairBytesReceived = (java.lang.Long)value$; break;
+    case 48: iceCandidatePairLastPacketSentTimestamp = (java.lang.Long)value$; break;
+    case 49: iceCandidatePairLastPacketReceivedTimestamp = (java.lang.Long)value$; break;
+    case 50: iceCandidatePairFirstRequestTimestamp = (java.lang.Long)value$; break;
+    case 51: iceCandidatePairLastRequestTimestamp = (java.lang.Long)value$; break;
+    case 52: iceCandidatePairLastResponseTimestamp = (java.lang.Long)value$; break;
+    case 53: stunProvidedTotalRoundTripTime = (java.lang.Double)value$; break;
+    case 54: stunProvidedCurrentRoundTripTime = (java.lang.Double)value$; break;
+    case 55: availableOutgoingBitrate = (java.lang.Double)value$; break;
+    case 56: availableIncomingBitrate = (java.lang.Double)value$; break;
+    case 57: circuitBreakerTriggerCount = (java.lang.Integer)value$; break;
+    case 58: candidatePairRequestsReceived = (java.lang.Integer)value$; break;
+    case 59: candidatePairRequestsSent = (java.lang.Integer)value$; break;
+    case 60: candidatePairResponsesReceived = (java.lang.Integer)value$; break;
+    case 61: candidatePairResponsesSent = (java.lang.Integer)value$; break;
+    case 62: candidatePairRetransmissionReceived = (java.lang.Integer)value$; break;
+    case 63: candidatePairRetransmissionSent = (java.lang.Integer)value$; break;
+    case 64: candidatePairConsentRequestsSent = (java.lang.Integer)value$; break;
+    case 65: candidatePairConsentExpiredTimestamp = (java.lang.Long)value$; break;
+    case 66: candidatePairBytesDiscardedOnSend = (java.lang.Long)value$; break;
+    case 67: candidatePairRequestBytesSent = (java.lang.Long)value$; break;
+    case 68: candidatePairConsentRequestBytesSent = (java.lang.Long)value$; break;
+    case 69: candidatePairResponseBytesSent = (java.lang.Integer)value$; break;
+    case 70: sctpSmoothedRoundTripTime = (java.lang.Double)value$; break;
+    case 71: sctpCongestionWindow = (java.lang.Double)value$; break;
+    case 72: sctpReceiverWindow = (java.lang.Double)value$; break;
+    case 73: sctpMtu = (java.lang.Integer)value$; break;
+    case 74: sctpUnackData = (java.lang.Integer)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -504,17 +498,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'serviceId' field.
    * @return The unique identifier of the service
    */
-  public String getServiceId() {
+  public java.lang.String getServiceId() {
     return serviceId;
-  }
-
-
-  /**
-   * Gets the value of the 'serviceName' field.
-   * @return The resolved service name configured for the service Id
-   */
-  public String getServiceName() {
-    return serviceName;
   }
 
 
@@ -522,7 +507,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'mediaUnitId' field.
    * @return The media unit id the report belongs to
    */
-  public String getMediaUnitId() {
+  public java.lang.String getMediaUnitId() {
     return mediaUnitId;
   }
 
@@ -531,7 +516,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'marker' field.
    * @return The marker the originated sample is reported with
    */
-  public String getMarker() {
+  public java.lang.String getMarker() {
     return marker;
   }
 
@@ -540,7 +525,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'timestamp' field.
    * @return The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    */
-  public Long getTimestamp() {
+  public java.lang.Long getTimestamp() {
     return timestamp;
   }
 
@@ -549,7 +534,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'callId' field.
    * @return The generated unique identifier of the call
    */
-  public String getCallId() {
+  public java.lang.String getCallId() {
     return callId;
   }
 
@@ -558,7 +543,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'roomId' field.
    * @return webrtc app provided room id
    */
-  public String getRoomId() {
+  public java.lang.String getRoomId() {
     return roomId;
   }
 
@@ -567,7 +552,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'clientId' field.
    * @return The generated unique identifier of the client
    */
-  public String getClientId() {
+  public java.lang.String getClientId() {
     return clientId;
   }
 
@@ -576,7 +561,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'userId' field.
    * @return webrtc app provided user identifier
    */
-  public String getUserId() {
+  public java.lang.String getUserId() {
     return userId;
   }
 
@@ -585,7 +570,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'peerConnectionId' field.
    * @return The unique identifier of the peer connection
    */
-  public String getPeerConnectionId() {
+  public java.lang.String getPeerConnectionId() {
     return peerConnectionId;
   }
 
@@ -594,7 +579,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'label' field.
    * @return The webrtc app provided label the peer connection is marked with
    */
-  public String getLabel() {
+  public java.lang.String getLabel() {
     return label;
   }
 
@@ -603,7 +588,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'packetsSent' field.
    * @return Represents the total number of packets sent on the corresponded transport
    */
-  public Integer getPacketsSent() {
+  public java.lang.Integer getPacketsSent() {
     return packetsSent;
   }
 
@@ -612,7 +597,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'packetsReceived' field.
    * @return Represents the total number of packets received on the corresponded transport
    */
-  public Integer getPacketsReceived() {
+  public java.lang.Integer getPacketsReceived() {
     return packetsReceived;
   }
 
@@ -621,7 +606,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'bytesSent' field.
    * @return Represents the total amount of bytes sent on the corresponded transport
    */
-  public Integer getBytesSent() {
+  public java.lang.Integer getBytesSent() {
     return bytesSent;
   }
 
@@ -630,7 +615,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'bytesReceived' field.
    * @return Represents the total amount of bytes received on the corresponded transport
    */
-  public Integer getBytesReceived() {
+  public java.lang.Integer getBytesReceived() {
     return bytesReceived;
   }
 
@@ -639,7 +624,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceRole' field.
    * @return Represent the current role of ICE under DTLS Transport
    */
-  public String getIceRole() {
+  public java.lang.String getIceRole() {
     return iceRole;
   }
 
@@ -648,7 +633,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceLocalUsernameFragment' field.
    * @return Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport
    */
-  public String getIceLocalUsernameFragment() {
+  public java.lang.String getIceLocalUsernameFragment() {
     return iceLocalUsernameFragment;
   }
 
@@ -657,7 +642,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'dtlsState' field.
    * @return Represents the current state of DTLS for the peer connection transport layer
    */
-  public String getDtlsState() {
+  public java.lang.String getDtlsState() {
     return dtlsState;
   }
 
@@ -666,7 +651,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceTransportState' field.
    * @return Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer
    */
-  public String getIceTransportState() {
+  public java.lang.String getIceTransportState() {
     return iceTransportState;
   }
 
@@ -675,7 +660,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'tlsVersion' field.
    * @return Represents the version number of the TLS used in the corresponded transport
    */
-  public String getTlsVersion() {
+  public java.lang.String getTlsVersion() {
     return tlsVersion;
   }
 
@@ -684,7 +669,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'dtlsCipher' field.
    * @return Represents the name of the DTLS cipher used in the corresponded transport
    */
-  public String getDtlsCipher() {
+  public java.lang.String getDtlsCipher() {
     return dtlsCipher;
   }
 
@@ -693,7 +678,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'srtpCipher' field.
    * @return Represents the name of the SRTP cipher used in the corresponded transport
    */
-  public String getSrtpCipher() {
+  public java.lang.String getSrtpCipher() {
     return srtpCipher;
   }
 
@@ -702,7 +687,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'tlsGroup' field.
    * @return Represents the name of the IANA TLS Supported Groups used in the corresponded transport
    */
-  public String getTlsGroup() {
+  public java.lang.String getTlsGroup() {
     return tlsGroup;
   }
 
@@ -711,7 +696,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'selectedCandidatePairChanges' field.
    * @return The total number of candidate pair changes over the peer connection
    */
-  public Integer getSelectedCandidatePairChanges() {
+  public java.lang.Integer getSelectedCandidatePairChanges() {
     return selectedCandidatePairChanges;
   }
 
@@ -720,7 +705,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localFingerprint' field.
    * @return The fingerprint of the certificate certifies the local endpoint of the transport
    */
-  public String getLocalFingerprint() {
+  public java.lang.String getLocalFingerprint() {
     return localFingerprint;
   }
 
@@ -729,7 +714,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localFingerprintAlgorithm' field.
    * @return The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport
    */
-  public String getLocalFingerprintAlgorithm() {
+  public java.lang.String getLocalFingerprintAlgorithm() {
     return localFingerprintAlgorithm;
   }
 
@@ -738,7 +723,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localBase64Certificate' field.
    * @return The base64 encoded certificate for the local endpoint corresponded to the transport
    */
-  public String getLocalBase64Certificate() {
+  public java.lang.String getLocalBase64Certificate() {
     return localBase64Certificate;
   }
 
@@ -747,7 +732,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteFingerprint' field.
    * @return The fingerprint of the certificate certifies the remote endpoint of the transport
    */
-  public String getRemoteFingerprint() {
+  public java.lang.String getRemoteFingerprint() {
     return remoteFingerprint;
   }
 
@@ -756,7 +741,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteFingerprintAlgorithm' field.
    * @return The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport
    */
-  public String getRemoteFingerprintAlgorithm() {
+  public java.lang.String getRemoteFingerprintAlgorithm() {
     return remoteFingerprintAlgorithm;
   }
 
@@ -765,7 +750,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteBase64Certificate' field.
    * @return The base64 encoded certificate for the remote endpoint corresponded to the transport
    */
-  public String getRemoteBase64Certificate() {
+  public java.lang.String getRemoteBase64Certificate() {
     return remoteBase64Certificate;
   }
 
@@ -774,7 +759,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localAddress' field.
    * @return The address of the candidate (IPv4, IPv6, FQDN)
    */
-  public String getLocalAddress() {
+  public java.lang.String getLocalAddress() {
     return localAddress;
   }
 
@@ -783,7 +768,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localPort' field.
    * @return The locally used port to communicate with the remote peer
    */
-  public Integer getLocalPort() {
+  public java.lang.Integer getLocalPort() {
     return localPort;
   }
 
@@ -792,7 +777,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localProtocol' field.
    * @return The protocol used by the local endpoint for the corresponded transport
    */
-  public String getLocalProtocol() {
+  public java.lang.String getLocalProtocol() {
     return localProtocol;
   }
 
@@ -801,7 +786,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localCandidateType' field.
    * @return The type of the ICE candidate used at the local endpoint on the corresponded transport
    */
-  public String getLocalCandidateType() {
+  public java.lang.String getLocalCandidateType() {
     return localCandidateType;
   }
 
@@ -810,7 +795,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localCandidatePriority' field.
    * @return The priority of the ICE candidate used at the local endpoint on the corresponded transport
    */
-  public Integer getLocalCandidatePriority() {
+  public java.lang.Integer getLocalCandidatePriority() {
     return localCandidatePriority;
   }
 
@@ -819,7 +804,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localCandidateICEServerUrl' field.
    * @return The url of the ICE server used by the local endpoint on the corresponded transport
    */
-  public String getLocalCandidateICEServerUrl() {
+  public java.lang.String getLocalCandidateICEServerUrl() {
     return localCandidateICEServerUrl;
   }
 
@@ -828,7 +813,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'localCandidateRelayProtocol' field.
    * @return The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport
    */
-  public String getLocalCandidateRelayProtocol() {
+  public java.lang.String getLocalCandidateRelayProtocol() {
     return localCandidateRelayProtocol;
   }
 
@@ -837,7 +822,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteAddress' field.
    * @return The address of the candidate (IPv4, IPv6, FQDN)
    */
-  public String getRemoteAddress() {
+  public java.lang.String getRemoteAddress() {
     return remoteAddress;
   }
 
@@ -846,7 +831,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remotePort' field.
    * @return The remotely used port to communicate with the remote peer
    */
-  public Integer getRemotePort() {
+  public java.lang.Integer getRemotePort() {
     return remotePort;
   }
 
@@ -855,7 +840,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteProtocol' field.
    * @return The protocol used by the remote endpoint for the corresponded transport
    */
-  public String getRemoteProtocol() {
+  public java.lang.String getRemoteProtocol() {
     return remoteProtocol;
   }
 
@@ -864,7 +849,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteCandidateType' field.
    * @return The type of the ICE candidate used at the remote endpoint on the corresponded transport
    */
-  public String getRemoteCandidateType() {
+  public java.lang.String getRemoteCandidateType() {
     return remoteCandidateType;
   }
 
@@ -873,7 +858,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteCandidatePriority' field.
    * @return The priority of the ICE candidate used at the remote endpoint on the corresponded transport
    */
-  public Integer getRemoteCandidatePriority() {
+  public java.lang.Integer getRemoteCandidatePriority() {
     return remoteCandidatePriority;
   }
 
@@ -882,7 +867,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteCandidateICEServerUrl' field.
    * @return The url of the ICE server used by the remote endpoint on the corresponded transport
    */
-  public String getRemoteCandidateICEServerUrl() {
+  public java.lang.String getRemoteCandidateICEServerUrl() {
     return remoteCandidateICEServerUrl;
   }
 
@@ -891,7 +876,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'remoteCandidateRelayProtocol' field.
    * @return The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport
    */
-  public String getRemoteCandidateRelayProtocol() {
+  public java.lang.String getRemoteCandidateRelayProtocol() {
     return remoteCandidateRelayProtocol;
   }
 
@@ -900,7 +885,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairState' field.
    * @return The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
    */
-  public String getIceCandidatePairState() {
+  public java.lang.String getIceCandidatePairState() {
     return iceCandidatePairState;
   }
 
@@ -909,7 +894,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairPacketsSent' field.
    * @return The total number of packets sent using the last selected candidate pair over the corresponded transport
    */
-  public Integer getIceCandidatePairPacketsSent() {
+  public java.lang.Integer getIceCandidatePairPacketsSent() {
     return iceCandidatePairPacketsSent;
   }
 
@@ -918,7 +903,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairPacketsReceived' field.
    * @return The total number of packets received using the last selected candidate pair over the corresponded transport
    */
-  public Integer getIceCandidatePairPacketsReceived() {
+  public java.lang.Integer getIceCandidatePairPacketsReceived() {
     return iceCandidatePairPacketsReceived;
   }
 
@@ -927,7 +912,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairBytesSent' field.
    * @return The total number of bytes sent using the last selected candidate pair over the corresponded transport
    */
-  public Long getIceCandidatePairBytesSent() {
+  public java.lang.Long getIceCandidatePairBytesSent() {
     return iceCandidatePairBytesSent;
   }
 
@@ -936,7 +921,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairBytesReceived' field.
    * @return The total number of bytes received using the last selected candidate pair over the corresponded transport
    */
-  public Long getIceCandidatePairBytesReceived() {
+  public java.lang.Long getIceCandidatePairBytesReceived() {
     return iceCandidatePairBytesReceived;
   }
 
@@ -945,7 +930,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairLastPacketSentTimestamp' field.
    * @return Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
    */
-  public Long getIceCandidatePairLastPacketSentTimestamp() {
+  public java.lang.Long getIceCandidatePairLastPacketSentTimestamp() {
     return iceCandidatePairLastPacketSentTimestamp;
   }
 
@@ -954,7 +939,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairLastPacketReceivedTimestamp' field.
    * @return Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
    */
-  public Long getIceCandidatePairLastPacketReceivedTimestamp() {
+  public java.lang.Long getIceCandidatePairLastPacketReceivedTimestamp() {
     return iceCandidatePairLastPacketReceivedTimestamp;
   }
 
@@ -963,7 +948,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairFirstRequestTimestamp' field.
    * @return Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
    */
-  public Long getIceCandidatePairFirstRequestTimestamp() {
+  public java.lang.Long getIceCandidatePairFirstRequestTimestamp() {
     return iceCandidatePairFirstRequestTimestamp;
   }
 
@@ -972,7 +957,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairLastRequestTimestamp' field.
    * @return Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
    */
-  public Long getIceCandidatePairLastRequestTimestamp() {
+  public java.lang.Long getIceCandidatePairLastRequestTimestamp() {
     return iceCandidatePairLastRequestTimestamp;
   }
 
@@ -981,7 +966,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'iceCandidatePairLastResponseTimestamp' field.
    * @return Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
    */
-  public Long getIceCandidatePairLastResponseTimestamp() {
+  public java.lang.Long getIceCandidatePairLastResponseTimestamp() {
     return iceCandidatePairLastResponseTimestamp;
   }
 
@@ -990,7 +975,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'stunProvidedTotalRoundTripTime' field.
    * @return Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
    */
-  public Double getStunProvidedTotalRoundTripTime() {
+  public java.lang.Double getStunProvidedTotalRoundTripTime() {
     return stunProvidedTotalRoundTripTime;
   }
 
@@ -999,7 +984,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'stunProvidedCurrentRoundTripTime' field.
    * @return Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
    */
-  public Double getStunProvidedCurrentRoundTripTime() {
+  public java.lang.Double getStunProvidedCurrentRoundTripTime() {
     return stunProvidedCurrentRoundTripTime;
   }
 
@@ -1008,7 +993,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'availableOutgoingBitrate' field.
    * @return The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
    */
-  public Double getAvailableOutgoingBitrate() {
+  public java.lang.Double getAvailableOutgoingBitrate() {
     return availableOutgoingBitrate;
   }
 
@@ -1017,7 +1002,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'availableIncomingBitrate' field.
    * @return The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
    */
-  public Double getAvailableIncomingBitrate() {
+  public java.lang.Double getAvailableIncomingBitrate() {
     return availableIncomingBitrate;
   }
 
@@ -1026,7 +1011,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'circuitBreakerTriggerCount' field.
    * @return The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
    */
-  public Integer getCircuitBreakerTriggerCount() {
+  public java.lang.Integer getCircuitBreakerTriggerCount() {
     return circuitBreakerTriggerCount;
   }
 
@@ -1035,7 +1020,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairRequestsReceived' field.
    * @return Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairRequestsReceived() {
+  public java.lang.Integer getCandidatePairRequestsReceived() {
     return candidatePairRequestsReceived;
   }
 
@@ -1044,7 +1029,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairRequestsSent' field.
    * @return Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairRequestsSent() {
+  public java.lang.Integer getCandidatePairRequestsSent() {
     return candidatePairRequestsSent;
   }
 
@@ -1053,7 +1038,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairResponsesReceived' field.
    * @return Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairResponsesReceived() {
+  public java.lang.Integer getCandidatePairResponsesReceived() {
     return candidatePairResponsesReceived;
   }
 
@@ -1062,7 +1047,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairResponsesSent' field.
    * @return Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairResponsesSent() {
+  public java.lang.Integer getCandidatePairResponsesSent() {
     return candidatePairResponsesSent;
   }
 
@@ -1071,7 +1056,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairRetransmissionReceived' field.
    * @return Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairRetransmissionReceived() {
+  public java.lang.Integer getCandidatePairRetransmissionReceived() {
     return candidatePairRetransmissionReceived;
   }
 
@@ -1080,7 +1065,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairRetransmissionSent' field.
    * @return Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairRetransmissionSent() {
+  public java.lang.Integer getCandidatePairRetransmissionSent() {
     return candidatePairRetransmissionSent;
   }
 
@@ -1089,7 +1074,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairConsentRequestsSent' field.
    * @return Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairConsentRequestsSent() {
+  public java.lang.Integer getCandidatePairConsentRequestsSent() {
     return candidatePairConsentRequestsSent;
   }
 
@@ -1098,7 +1083,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairConsentExpiredTimestamp' field.
    * @return Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport
    */
-  public Long getCandidatePairConsentExpiredTimestamp() {
+  public java.lang.Long getCandidatePairConsentExpiredTimestamp() {
     return candidatePairConsentExpiredTimestamp;
   }
 
@@ -1107,7 +1092,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairBytesDiscardedOnSend' field.
    * @return Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
    */
-  public Long getCandidatePairBytesDiscardedOnSend() {
+  public java.lang.Long getCandidatePairBytesDiscardedOnSend() {
     return candidatePairBytesDiscardedOnSend;
   }
 
@@ -1116,7 +1101,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairRequestBytesSent' field.
    * @return Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport
    */
-  public Long getCandidatePairRequestBytesSent() {
+  public java.lang.Long getCandidatePairRequestBytesSent() {
     return candidatePairRequestBytesSent;
   }
 
@@ -1125,7 +1110,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairConsentRequestBytesSent' field.
    * @return Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport
    */
-  public Long getCandidatePairConsentRequestBytesSent() {
+  public java.lang.Long getCandidatePairConsentRequestBytesSent() {
     return candidatePairConsentRequestBytesSent;
   }
 
@@ -1134,7 +1119,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairResponseBytesSent' field.
    * @return Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport
    */
-  public Integer getCandidatePairResponseBytesSent() {
+  public java.lang.Integer getCandidatePairResponseBytesSent() {
     return candidatePairResponseBytesSent;
   }
 
@@ -1143,7 +1128,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'sctpSmoothedRoundTripTime' field.
    * @return The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. 
    */
-  public Double getSctpSmoothedRoundTripTime() {
+  public java.lang.Double getSctpSmoothedRoundTripTime() {
     return sctpSmoothedRoundTripTime;
   }
 
@@ -1152,7 +1137,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'sctpCongestionWindow' field.
    * @return The latest congestion window, corresponding to spinfo_cwnd.
    */
-  public Double getSctpCongestionWindow() {
+  public java.lang.Double getSctpCongestionWindow() {
     return sctpCongestionWindow;
   }
 
@@ -1161,7 +1146,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'sctpReceiverWindow' field.
    * @return The latest receiver window, corresponding to sstat_rwnd.
    */
-  public Double getSctpReceiverWindow() {
+  public java.lang.Double getSctpReceiverWindow() {
     return sctpReceiverWindow;
   }
 
@@ -1170,7 +1155,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'sctpMtu' field.
    * @return The latest maximum transmission unit, corresponding to spinfo_mtu.
    */
-  public Integer getSctpMtu() {
+  public java.lang.Integer getSctpMtu() {
     return sctpMtu;
   }
 
@@ -1179,7 +1164,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'sctpUnackData' field.
    * @return The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
    */
-  public Integer getSctpUnackData() {
+  public java.lang.Integer getSctpUnackData() {
     return sctpUnackData;
   }
 
@@ -1188,8 +1173,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Creates a new PcTransportReport RecordBuilder.
    * @return A new PcTransportReport RecordBuilder
    */
-  public static Builder newBuilder() {
-    return new Builder();
+  public static org.observertc.webrtc.schemas.reports.PcTransportReport.Builder newBuilder() {
+    return new org.observertc.webrtc.schemas.reports.PcTransportReport.Builder();
   }
 
   /**
@@ -1197,8 +1182,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * @param other The existing builder to copy.
    * @return A new PcTransportReport RecordBuilder
    */
-  public static Builder newBuilder(Builder other) {
-    return new Builder(other);
+  public static org.observertc.webrtc.schemas.reports.PcTransportReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.PcTransportReport.Builder other) {
+    return new org.observertc.webrtc.schemas.reports.PcTransportReport.Builder(other);
   }
 
   /**
@@ -1206,8 +1191,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * @param other The existing instance to copy.
    * @return A new PcTransportReport RecordBuilder
    */
-  public static Builder newBuilder(PcTransportReport other) {
-    return new Builder(other);
+  public static org.observertc.webrtc.schemas.reports.PcTransportReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.PcTransportReport other) {
+    return new org.observertc.webrtc.schemas.reports.PcTransportReport.Builder(other);
   }
 
   /**
@@ -1217,157 +1202,155 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     implements org.apache.avro.data.RecordBuilder<PcTransportReport> {
 
     /** The unique identifier of the service */
-    private String serviceId;
-    /** The resolved service name configured for the service Id */
-    private String serviceName;
+    private java.lang.String serviceId;
     /** The media unit id the report belongs to */
-    private String mediaUnitId;
+    private java.lang.String mediaUnitId;
     /** The marker the originated sample is reported with */
-    private String marker;
+    private java.lang.String marker;
     /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
     private long timestamp;
     /** The generated unique identifier of the call */
-    private String callId;
+    private java.lang.String callId;
     /** webrtc app provided room id */
-    private String roomId;
+    private java.lang.String roomId;
     /** The generated unique identifier of the client */
-    private String clientId;
+    private java.lang.String clientId;
     /** webrtc app provided user identifier */
-    private String userId;
+    private java.lang.String userId;
     /** The unique identifier of the peer connection */
-    private String peerConnectionId;
+    private java.lang.String peerConnectionId;
     /** The webrtc app provided label the peer connection is marked with */
-    private String label;
+    private java.lang.String label;
     /** Represents the total number of packets sent on the corresponded transport */
-    private Integer packetsSent;
+    private java.lang.Integer packetsSent;
     /** Represents the total number of packets received on the corresponded transport */
-    private Integer packetsReceived;
+    private java.lang.Integer packetsReceived;
     /** Represents the total amount of bytes sent on the corresponded transport */
-    private Integer bytesSent;
+    private java.lang.Integer bytesSent;
     /** Represents the total amount of bytes received on the corresponded transport */
-    private Integer bytesReceived;
+    private java.lang.Integer bytesReceived;
     /** Represent the current role of ICE under DTLS Transport */
-    private String iceRole;
+    private java.lang.String iceRole;
     /** Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport */
-    private String iceLocalUsernameFragment;
+    private java.lang.String iceLocalUsernameFragment;
     /** Represents the current state of DTLS for the peer connection transport layer */
-    private String dtlsState;
+    private java.lang.String dtlsState;
     /** Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer */
-    private String iceTransportState;
+    private java.lang.String iceTransportState;
     /** Represents the version number of the TLS used in the corresponded transport */
-    private String tlsVersion;
+    private java.lang.String tlsVersion;
     /** Represents the name of the DTLS cipher used in the corresponded transport */
-    private String dtlsCipher;
+    private java.lang.String dtlsCipher;
     /** Represents the name of the SRTP cipher used in the corresponded transport */
-    private String srtpCipher;
+    private java.lang.String srtpCipher;
     /** Represents the name of the IANA TLS Supported Groups used in the corresponded transport */
-    private String tlsGroup;
+    private java.lang.String tlsGroup;
     /** The total number of candidate pair changes over the peer connection */
-    private Integer selectedCandidatePairChanges;
+    private java.lang.Integer selectedCandidatePairChanges;
     /** The fingerprint of the certificate certifies the local endpoint of the transport */
-    private String localFingerprint;
+    private java.lang.String localFingerprint;
     /** The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport */
-    private String localFingerprintAlgorithm;
+    private java.lang.String localFingerprintAlgorithm;
     /** The base64 encoded certificate for the local endpoint corresponded to the transport */
-    private String localBase64Certificate;
+    private java.lang.String localBase64Certificate;
     /** The fingerprint of the certificate certifies the remote endpoint of the transport */
-    private String remoteFingerprint;
+    private java.lang.String remoteFingerprint;
     /** The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport */
-    private String remoteFingerprintAlgorithm;
+    private java.lang.String remoteFingerprintAlgorithm;
     /** The base64 encoded certificate for the remote endpoint corresponded to the transport */
-    private String remoteBase64Certificate;
+    private java.lang.String remoteBase64Certificate;
     /** The address of the candidate (IPv4, IPv6, FQDN) */
-    private String localAddress;
+    private java.lang.String localAddress;
     /** The locally used port to communicate with the remote peer */
-    private Integer localPort;
+    private java.lang.Integer localPort;
     /** The protocol used by the local endpoint for the corresponded transport */
-    private String localProtocol;
+    private java.lang.String localProtocol;
     /** The type of the ICE candidate used at the local endpoint on the corresponded transport */
-    private String localCandidateType;
+    private java.lang.String localCandidateType;
     /** The priority of the ICE candidate used at the local endpoint on the corresponded transport */
-    private Integer localCandidatePriority;
+    private java.lang.Integer localCandidatePriority;
     /** The url of the ICE server used by the local endpoint on the corresponded transport */
-    private String localCandidateICEServerUrl;
+    private java.lang.String localCandidateICEServerUrl;
     /** The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport */
-    private String localCandidateRelayProtocol;
+    private java.lang.String localCandidateRelayProtocol;
     /** The address of the candidate (IPv4, IPv6, FQDN) */
-    private String remoteAddress;
+    private java.lang.String remoteAddress;
     /** The remotely used port to communicate with the remote peer */
-    private Integer remotePort;
+    private java.lang.Integer remotePort;
     /** The protocol used by the remote endpoint for the corresponded transport */
-    private String remoteProtocol;
+    private java.lang.String remoteProtocol;
     /** The type of the ICE candidate used at the remote endpoint on the corresponded transport */
-    private String remoteCandidateType;
+    private java.lang.String remoteCandidateType;
     /** The priority of the ICE candidate used at the remote endpoint on the corresponded transport */
-    private Integer remoteCandidatePriority;
+    private java.lang.Integer remoteCandidatePriority;
     /** The url of the ICE server used by the remote endpoint on the corresponded transport */
-    private String remoteCandidateICEServerUrl;
+    private java.lang.String remoteCandidateICEServerUrl;
     /** The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport */
-    private String remoteCandidateRelayProtocol;
+    private java.lang.String remoteCandidateRelayProtocol;
     /** The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport */
-    private String iceCandidatePairState;
+    private java.lang.String iceCandidatePairState;
     /** The total number of packets sent using the last selected candidate pair over the corresponded transport */
-    private Integer iceCandidatePairPacketsSent;
+    private java.lang.Integer iceCandidatePairPacketsSent;
     /** The total number of packets received using the last selected candidate pair over the corresponded transport */
-    private Integer iceCandidatePairPacketsReceived;
+    private java.lang.Integer iceCandidatePairPacketsReceived;
     /** The total number of bytes sent using the last selected candidate pair over the corresponded transport */
-    private Long iceCandidatePairBytesSent;
+    private java.lang.Long iceCandidatePairBytesSent;
     /** The total number of bytes received using the last selected candidate pair over the corresponded transport */
-    private Long iceCandidatePairBytesReceived;
+    private java.lang.Long iceCandidatePairBytesReceived;
     /** Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-    private Long iceCandidatePairLastPacketSentTimestamp;
+    private java.lang.Long iceCandidatePairLastPacketSentTimestamp;
     /** Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-    private Long iceCandidatePairLastPacketReceivedTimestamp;
+    private java.lang.Long iceCandidatePairLastPacketReceivedTimestamp;
     /** Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-    private Long iceCandidatePairFirstRequestTimestamp;
+    private java.lang.Long iceCandidatePairFirstRequestTimestamp;
     /** Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-    private Long iceCandidatePairLastRequestTimestamp;
+    private java.lang.Long iceCandidatePairLastRequestTimestamp;
     /** Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-    private Long iceCandidatePairLastResponseTimestamp;
+    private java.lang.Long iceCandidatePairLastResponseTimestamp;
     /** Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport */
-    private Double stunProvidedTotalRoundTripTime;
+    private java.lang.Double stunProvidedTotalRoundTripTime;
     /** Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport */
-    private Double stunProvidedCurrentRoundTripTime;
+    private java.lang.Double stunProvidedCurrentRoundTripTime;
     /** The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport */
-    private Double availableOutgoingBitrate;
+    private java.lang.Double availableOutgoingBitrate;
     /** The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport */
-    private Double availableIncomingBitrate;
+    private java.lang.Double availableIncomingBitrate;
     /** The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair */
-    private Integer circuitBreakerTriggerCount;
+    private java.lang.Integer circuitBreakerTriggerCount;
     /** Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairRequestsReceived;
+    private java.lang.Integer candidatePairRequestsReceived;
     /** Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairRequestsSent;
+    private java.lang.Integer candidatePairRequestsSent;
     /** Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairResponsesReceived;
+    private java.lang.Integer candidatePairResponsesReceived;
     /** Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairResponsesSent;
+    private java.lang.Integer candidatePairResponsesSent;
     /** Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairRetransmissionReceived;
+    private java.lang.Integer candidatePairRetransmissionReceived;
     /** Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairRetransmissionSent;
+    private java.lang.Integer candidatePairRetransmissionSent;
     /** Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairConsentRequestsSent;
+    private java.lang.Integer candidatePairConsentRequestsSent;
     /** Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport */
-    private Long candidatePairConsentExpiredTimestamp;
+    private java.lang.Long candidatePairConsentExpiredTimestamp;
     /** Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport */
-    private Long candidatePairBytesDiscardedOnSend;
+    private java.lang.Long candidatePairBytesDiscardedOnSend;
     /** Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport */
-    private Long candidatePairRequestBytesSent;
+    private java.lang.Long candidatePairRequestBytesSent;
     /** Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport */
-    private Long candidatePairConsentRequestBytesSent;
+    private java.lang.Long candidatePairConsentRequestBytesSent;
     /** Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport */
-    private Integer candidatePairResponseBytesSent;
+    private java.lang.Integer candidatePairResponseBytesSent;
     /** The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds.  */
-    private Double sctpSmoothedRoundTripTime;
+    private java.lang.Double sctpSmoothedRoundTripTime;
     /** The latest congestion window, corresponding to spinfo_cwnd. */
-    private Double sctpCongestionWindow;
+    private java.lang.Double sctpCongestionWindow;
     /** The latest receiver window, corresponding to sstat_rwnd. */
-    private Double sctpReceiverWindow;
+    private java.lang.Double sctpReceiverWindow;
     /** The latest maximum transmission unit, corresponding to spinfo_mtu. */
-    private Integer sctpMtu;
+    private java.lang.Integer sctpMtu;
     /** The number of unacknowledged DATA chunks, corresponding to sstat_unackdata. */
-    private Integer sctpUnackData;
+    private java.lang.Integer sctpUnackData;
 
     /** Creates a new Builder */
     private Builder() {
@@ -1378,311 +1361,307 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(Builder other) {
+    private Builder(org.observertc.webrtc.schemas.reports.PcTransportReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.serviceName)) {
-        this.serviceName = data().deepCopy(fields()[1].schema(), other.serviceName);
+      if (isValidValue(fields()[1], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[2].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[2], other.marker)) {
+        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.marker)) {
-        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
+      if (isValidValue(fields()[3], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.roomId)) {
+        this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.roomId)) {
-        this.roomId = data().deepCopy(fields()[6].schema(), other.roomId);
+      if (isValidValue(fields()[6], other.clientId)) {
+        this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[7].schema(), other.clientId);
+      if (isValidValue(fields()[7], other.userId)) {
+        this.userId = data().deepCopy(fields()[7].schema(), other.userId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.userId)) {
-        this.userId = data().deepCopy(fields()[8].schema(), other.userId);
+      if (isValidValue(fields()[8], other.peerConnectionId)) {
+        this.peerConnectionId = data().deepCopy(fields()[8].schema(), other.peerConnectionId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.peerConnectionId)) {
-        this.peerConnectionId = data().deepCopy(fields()[9].schema(), other.peerConnectionId);
+      if (isValidValue(fields()[9], other.label)) {
+        this.label = data().deepCopy(fields()[9].schema(), other.label);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.label)) {
-        this.label = data().deepCopy(fields()[10].schema(), other.label);
+      if (isValidValue(fields()[10], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[10].schema(), other.packetsSent);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[11].schema(), other.packetsSent);
+      if (isValidValue(fields()[11], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[11].schema(), other.packetsReceived);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[12].schema(), other.packetsReceived);
+      if (isValidValue(fields()[12], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[12].schema(), other.bytesSent);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[13].schema(), other.bytesSent);
+      if (isValidValue(fields()[13], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[13].schema(), other.bytesReceived);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[14].schema(), other.bytesReceived);
+      if (isValidValue(fields()[14], other.iceRole)) {
+        this.iceRole = data().deepCopy(fields()[14].schema(), other.iceRole);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.iceRole)) {
-        this.iceRole = data().deepCopy(fields()[15].schema(), other.iceRole);
+      if (isValidValue(fields()[15], other.iceLocalUsernameFragment)) {
+        this.iceLocalUsernameFragment = data().deepCopy(fields()[15].schema(), other.iceLocalUsernameFragment);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.iceLocalUsernameFragment)) {
-        this.iceLocalUsernameFragment = data().deepCopy(fields()[16].schema(), other.iceLocalUsernameFragment);
+      if (isValidValue(fields()[16], other.dtlsState)) {
+        this.dtlsState = data().deepCopy(fields()[16].schema(), other.dtlsState);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.dtlsState)) {
-        this.dtlsState = data().deepCopy(fields()[17].schema(), other.dtlsState);
+      if (isValidValue(fields()[17], other.iceTransportState)) {
+        this.iceTransportState = data().deepCopy(fields()[17].schema(), other.iceTransportState);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.iceTransportState)) {
-        this.iceTransportState = data().deepCopy(fields()[18].schema(), other.iceTransportState);
+      if (isValidValue(fields()[18], other.tlsVersion)) {
+        this.tlsVersion = data().deepCopy(fields()[18].schema(), other.tlsVersion);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.tlsVersion)) {
-        this.tlsVersion = data().deepCopy(fields()[19].schema(), other.tlsVersion);
+      if (isValidValue(fields()[19], other.dtlsCipher)) {
+        this.dtlsCipher = data().deepCopy(fields()[19].schema(), other.dtlsCipher);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.dtlsCipher)) {
-        this.dtlsCipher = data().deepCopy(fields()[20].schema(), other.dtlsCipher);
+      if (isValidValue(fields()[20], other.srtpCipher)) {
+        this.srtpCipher = data().deepCopy(fields()[20].schema(), other.srtpCipher);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.srtpCipher)) {
-        this.srtpCipher = data().deepCopy(fields()[21].schema(), other.srtpCipher);
+      if (isValidValue(fields()[21], other.tlsGroup)) {
+        this.tlsGroup = data().deepCopy(fields()[21].schema(), other.tlsGroup);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.tlsGroup)) {
-        this.tlsGroup = data().deepCopy(fields()[22].schema(), other.tlsGroup);
+      if (isValidValue(fields()[22], other.selectedCandidatePairChanges)) {
+        this.selectedCandidatePairChanges = data().deepCopy(fields()[22].schema(), other.selectedCandidatePairChanges);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.selectedCandidatePairChanges)) {
-        this.selectedCandidatePairChanges = data().deepCopy(fields()[23].schema(), other.selectedCandidatePairChanges);
+      if (isValidValue(fields()[23], other.localFingerprint)) {
+        this.localFingerprint = data().deepCopy(fields()[23].schema(), other.localFingerprint);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.localFingerprint)) {
-        this.localFingerprint = data().deepCopy(fields()[24].schema(), other.localFingerprint);
+      if (isValidValue(fields()[24], other.localFingerprintAlgorithm)) {
+        this.localFingerprintAlgorithm = data().deepCopy(fields()[24].schema(), other.localFingerprintAlgorithm);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.localFingerprintAlgorithm)) {
-        this.localFingerprintAlgorithm = data().deepCopy(fields()[25].schema(), other.localFingerprintAlgorithm);
+      if (isValidValue(fields()[25], other.localBase64Certificate)) {
+        this.localBase64Certificate = data().deepCopy(fields()[25].schema(), other.localBase64Certificate);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.localBase64Certificate)) {
-        this.localBase64Certificate = data().deepCopy(fields()[26].schema(), other.localBase64Certificate);
+      if (isValidValue(fields()[26], other.remoteFingerprint)) {
+        this.remoteFingerprint = data().deepCopy(fields()[26].schema(), other.remoteFingerprint);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.remoteFingerprint)) {
-        this.remoteFingerprint = data().deepCopy(fields()[27].schema(), other.remoteFingerprint);
+      if (isValidValue(fields()[27], other.remoteFingerprintAlgorithm)) {
+        this.remoteFingerprintAlgorithm = data().deepCopy(fields()[27].schema(), other.remoteFingerprintAlgorithm);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.remoteFingerprintAlgorithm)) {
-        this.remoteFingerprintAlgorithm = data().deepCopy(fields()[28].schema(), other.remoteFingerprintAlgorithm);
+      if (isValidValue(fields()[28], other.remoteBase64Certificate)) {
+        this.remoteBase64Certificate = data().deepCopy(fields()[28].schema(), other.remoteBase64Certificate);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.remoteBase64Certificate)) {
-        this.remoteBase64Certificate = data().deepCopy(fields()[29].schema(), other.remoteBase64Certificate);
+      if (isValidValue(fields()[29], other.localAddress)) {
+        this.localAddress = data().deepCopy(fields()[29].schema(), other.localAddress);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.localAddress)) {
-        this.localAddress = data().deepCopy(fields()[30].schema(), other.localAddress);
+      if (isValidValue(fields()[30], other.localPort)) {
+        this.localPort = data().deepCopy(fields()[30].schema(), other.localPort);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.localPort)) {
-        this.localPort = data().deepCopy(fields()[31].schema(), other.localPort);
+      if (isValidValue(fields()[31], other.localProtocol)) {
+        this.localProtocol = data().deepCopy(fields()[31].schema(), other.localProtocol);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.localProtocol)) {
-        this.localProtocol = data().deepCopy(fields()[32].schema(), other.localProtocol);
+      if (isValidValue(fields()[32], other.localCandidateType)) {
+        this.localCandidateType = data().deepCopy(fields()[32].schema(), other.localCandidateType);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.localCandidateType)) {
-        this.localCandidateType = data().deepCopy(fields()[33].schema(), other.localCandidateType);
+      if (isValidValue(fields()[33], other.localCandidatePriority)) {
+        this.localCandidatePriority = data().deepCopy(fields()[33].schema(), other.localCandidatePriority);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.localCandidatePriority)) {
-        this.localCandidatePriority = data().deepCopy(fields()[34].schema(), other.localCandidatePriority);
+      if (isValidValue(fields()[34], other.localCandidateICEServerUrl)) {
+        this.localCandidateICEServerUrl = data().deepCopy(fields()[34].schema(), other.localCandidateICEServerUrl);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.localCandidateICEServerUrl)) {
-        this.localCandidateICEServerUrl = data().deepCopy(fields()[35].schema(), other.localCandidateICEServerUrl);
+      if (isValidValue(fields()[35], other.localCandidateRelayProtocol)) {
+        this.localCandidateRelayProtocol = data().deepCopy(fields()[35].schema(), other.localCandidateRelayProtocol);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.localCandidateRelayProtocol)) {
-        this.localCandidateRelayProtocol = data().deepCopy(fields()[36].schema(), other.localCandidateRelayProtocol);
+      if (isValidValue(fields()[36], other.remoteAddress)) {
+        this.remoteAddress = data().deepCopy(fields()[36].schema(), other.remoteAddress);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.remoteAddress)) {
-        this.remoteAddress = data().deepCopy(fields()[37].schema(), other.remoteAddress);
+      if (isValidValue(fields()[37], other.remotePort)) {
+        this.remotePort = data().deepCopy(fields()[37].schema(), other.remotePort);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.remotePort)) {
-        this.remotePort = data().deepCopy(fields()[38].schema(), other.remotePort);
+      if (isValidValue(fields()[38], other.remoteProtocol)) {
+        this.remoteProtocol = data().deepCopy(fields()[38].schema(), other.remoteProtocol);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.remoteProtocol)) {
-        this.remoteProtocol = data().deepCopy(fields()[39].schema(), other.remoteProtocol);
+      if (isValidValue(fields()[39], other.remoteCandidateType)) {
+        this.remoteCandidateType = data().deepCopy(fields()[39].schema(), other.remoteCandidateType);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.remoteCandidateType)) {
-        this.remoteCandidateType = data().deepCopy(fields()[40].schema(), other.remoteCandidateType);
+      if (isValidValue(fields()[40], other.remoteCandidatePriority)) {
+        this.remoteCandidatePriority = data().deepCopy(fields()[40].schema(), other.remoteCandidatePriority);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.remoteCandidatePriority)) {
-        this.remoteCandidatePriority = data().deepCopy(fields()[41].schema(), other.remoteCandidatePriority);
+      if (isValidValue(fields()[41], other.remoteCandidateICEServerUrl)) {
+        this.remoteCandidateICEServerUrl = data().deepCopy(fields()[41].schema(), other.remoteCandidateICEServerUrl);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.remoteCandidateICEServerUrl)) {
-        this.remoteCandidateICEServerUrl = data().deepCopy(fields()[42].schema(), other.remoteCandidateICEServerUrl);
+      if (isValidValue(fields()[42], other.remoteCandidateRelayProtocol)) {
+        this.remoteCandidateRelayProtocol = data().deepCopy(fields()[42].schema(), other.remoteCandidateRelayProtocol);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.remoteCandidateRelayProtocol)) {
-        this.remoteCandidateRelayProtocol = data().deepCopy(fields()[43].schema(), other.remoteCandidateRelayProtocol);
+      if (isValidValue(fields()[43], other.iceCandidatePairState)) {
+        this.iceCandidatePairState = data().deepCopy(fields()[43].schema(), other.iceCandidatePairState);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.iceCandidatePairState)) {
-        this.iceCandidatePairState = data().deepCopy(fields()[44].schema(), other.iceCandidatePairState);
+      if (isValidValue(fields()[44], other.iceCandidatePairPacketsSent)) {
+        this.iceCandidatePairPacketsSent = data().deepCopy(fields()[44].schema(), other.iceCandidatePairPacketsSent);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.iceCandidatePairPacketsSent)) {
-        this.iceCandidatePairPacketsSent = data().deepCopy(fields()[45].schema(), other.iceCandidatePairPacketsSent);
+      if (isValidValue(fields()[45], other.iceCandidatePairPacketsReceived)) {
+        this.iceCandidatePairPacketsReceived = data().deepCopy(fields()[45].schema(), other.iceCandidatePairPacketsReceived);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.iceCandidatePairPacketsReceived)) {
-        this.iceCandidatePairPacketsReceived = data().deepCopy(fields()[46].schema(), other.iceCandidatePairPacketsReceived);
+      if (isValidValue(fields()[46], other.iceCandidatePairBytesSent)) {
+        this.iceCandidatePairBytesSent = data().deepCopy(fields()[46].schema(), other.iceCandidatePairBytesSent);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.iceCandidatePairBytesSent)) {
-        this.iceCandidatePairBytesSent = data().deepCopy(fields()[47].schema(), other.iceCandidatePairBytesSent);
+      if (isValidValue(fields()[47], other.iceCandidatePairBytesReceived)) {
+        this.iceCandidatePairBytesReceived = data().deepCopy(fields()[47].schema(), other.iceCandidatePairBytesReceived);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.iceCandidatePairBytesReceived)) {
-        this.iceCandidatePairBytesReceived = data().deepCopy(fields()[48].schema(), other.iceCandidatePairBytesReceived);
+      if (isValidValue(fields()[48], other.iceCandidatePairLastPacketSentTimestamp)) {
+        this.iceCandidatePairLastPacketSentTimestamp = data().deepCopy(fields()[48].schema(), other.iceCandidatePairLastPacketSentTimestamp);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.iceCandidatePairLastPacketSentTimestamp)) {
-        this.iceCandidatePairLastPacketSentTimestamp = data().deepCopy(fields()[49].schema(), other.iceCandidatePairLastPacketSentTimestamp);
+      if (isValidValue(fields()[49], other.iceCandidatePairLastPacketReceivedTimestamp)) {
+        this.iceCandidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[49].schema(), other.iceCandidatePairLastPacketReceivedTimestamp);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.iceCandidatePairLastPacketReceivedTimestamp)) {
-        this.iceCandidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[50].schema(), other.iceCandidatePairLastPacketReceivedTimestamp);
+      if (isValidValue(fields()[50], other.iceCandidatePairFirstRequestTimestamp)) {
+        this.iceCandidatePairFirstRequestTimestamp = data().deepCopy(fields()[50].schema(), other.iceCandidatePairFirstRequestTimestamp);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.iceCandidatePairFirstRequestTimestamp)) {
-        this.iceCandidatePairFirstRequestTimestamp = data().deepCopy(fields()[51].schema(), other.iceCandidatePairFirstRequestTimestamp);
+      if (isValidValue(fields()[51], other.iceCandidatePairLastRequestTimestamp)) {
+        this.iceCandidatePairLastRequestTimestamp = data().deepCopy(fields()[51].schema(), other.iceCandidatePairLastRequestTimestamp);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.iceCandidatePairLastRequestTimestamp)) {
-        this.iceCandidatePairLastRequestTimestamp = data().deepCopy(fields()[52].schema(), other.iceCandidatePairLastRequestTimestamp);
+      if (isValidValue(fields()[52], other.iceCandidatePairLastResponseTimestamp)) {
+        this.iceCandidatePairLastResponseTimestamp = data().deepCopy(fields()[52].schema(), other.iceCandidatePairLastResponseTimestamp);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.iceCandidatePairLastResponseTimestamp)) {
-        this.iceCandidatePairLastResponseTimestamp = data().deepCopy(fields()[53].schema(), other.iceCandidatePairLastResponseTimestamp);
+      if (isValidValue(fields()[53], other.stunProvidedTotalRoundTripTime)) {
+        this.stunProvidedTotalRoundTripTime = data().deepCopy(fields()[53].schema(), other.stunProvidedTotalRoundTripTime);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.stunProvidedTotalRoundTripTime)) {
-        this.stunProvidedTotalRoundTripTime = data().deepCopy(fields()[54].schema(), other.stunProvidedTotalRoundTripTime);
+      if (isValidValue(fields()[54], other.stunProvidedCurrentRoundTripTime)) {
+        this.stunProvidedCurrentRoundTripTime = data().deepCopy(fields()[54].schema(), other.stunProvidedCurrentRoundTripTime);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.stunProvidedCurrentRoundTripTime)) {
-        this.stunProvidedCurrentRoundTripTime = data().deepCopy(fields()[55].schema(), other.stunProvidedCurrentRoundTripTime);
+      if (isValidValue(fields()[55], other.availableOutgoingBitrate)) {
+        this.availableOutgoingBitrate = data().deepCopy(fields()[55].schema(), other.availableOutgoingBitrate);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.availableOutgoingBitrate)) {
-        this.availableOutgoingBitrate = data().deepCopy(fields()[56].schema(), other.availableOutgoingBitrate);
+      if (isValidValue(fields()[56], other.availableIncomingBitrate)) {
+        this.availableIncomingBitrate = data().deepCopy(fields()[56].schema(), other.availableIncomingBitrate);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.availableIncomingBitrate)) {
-        this.availableIncomingBitrate = data().deepCopy(fields()[57].schema(), other.availableIncomingBitrate);
+      if (isValidValue(fields()[57], other.circuitBreakerTriggerCount)) {
+        this.circuitBreakerTriggerCount = data().deepCopy(fields()[57].schema(), other.circuitBreakerTriggerCount);
         fieldSetFlags()[57] = true;
       }
-      if (isValidValue(fields()[58], other.circuitBreakerTriggerCount)) {
-        this.circuitBreakerTriggerCount = data().deepCopy(fields()[58].schema(), other.circuitBreakerTriggerCount);
+      if (isValidValue(fields()[58], other.candidatePairRequestsReceived)) {
+        this.candidatePairRequestsReceived = data().deepCopy(fields()[58].schema(), other.candidatePairRequestsReceived);
         fieldSetFlags()[58] = true;
       }
-      if (isValidValue(fields()[59], other.candidatePairRequestsReceived)) {
-        this.candidatePairRequestsReceived = data().deepCopy(fields()[59].schema(), other.candidatePairRequestsReceived);
+      if (isValidValue(fields()[59], other.candidatePairRequestsSent)) {
+        this.candidatePairRequestsSent = data().deepCopy(fields()[59].schema(), other.candidatePairRequestsSent);
         fieldSetFlags()[59] = true;
       }
-      if (isValidValue(fields()[60], other.candidatePairRequestsSent)) {
-        this.candidatePairRequestsSent = data().deepCopy(fields()[60].schema(), other.candidatePairRequestsSent);
+      if (isValidValue(fields()[60], other.candidatePairResponsesReceived)) {
+        this.candidatePairResponsesReceived = data().deepCopy(fields()[60].schema(), other.candidatePairResponsesReceived);
         fieldSetFlags()[60] = true;
       }
-      if (isValidValue(fields()[61], other.candidatePairResponsesReceived)) {
-        this.candidatePairResponsesReceived = data().deepCopy(fields()[61].schema(), other.candidatePairResponsesReceived);
+      if (isValidValue(fields()[61], other.candidatePairResponsesSent)) {
+        this.candidatePairResponsesSent = data().deepCopy(fields()[61].schema(), other.candidatePairResponsesSent);
         fieldSetFlags()[61] = true;
       }
-      if (isValidValue(fields()[62], other.candidatePairResponsesSent)) {
-        this.candidatePairResponsesSent = data().deepCopy(fields()[62].schema(), other.candidatePairResponsesSent);
+      if (isValidValue(fields()[62], other.candidatePairRetransmissionReceived)) {
+        this.candidatePairRetransmissionReceived = data().deepCopy(fields()[62].schema(), other.candidatePairRetransmissionReceived);
         fieldSetFlags()[62] = true;
       }
-      if (isValidValue(fields()[63], other.candidatePairRetransmissionReceived)) {
-        this.candidatePairRetransmissionReceived = data().deepCopy(fields()[63].schema(), other.candidatePairRetransmissionReceived);
+      if (isValidValue(fields()[63], other.candidatePairRetransmissionSent)) {
+        this.candidatePairRetransmissionSent = data().deepCopy(fields()[63].schema(), other.candidatePairRetransmissionSent);
         fieldSetFlags()[63] = true;
       }
-      if (isValidValue(fields()[64], other.candidatePairRetransmissionSent)) {
-        this.candidatePairRetransmissionSent = data().deepCopy(fields()[64].schema(), other.candidatePairRetransmissionSent);
+      if (isValidValue(fields()[64], other.candidatePairConsentRequestsSent)) {
+        this.candidatePairConsentRequestsSent = data().deepCopy(fields()[64].schema(), other.candidatePairConsentRequestsSent);
         fieldSetFlags()[64] = true;
       }
-      if (isValidValue(fields()[65], other.candidatePairConsentRequestsSent)) {
-        this.candidatePairConsentRequestsSent = data().deepCopy(fields()[65].schema(), other.candidatePairConsentRequestsSent);
+      if (isValidValue(fields()[65], other.candidatePairConsentExpiredTimestamp)) {
+        this.candidatePairConsentExpiredTimestamp = data().deepCopy(fields()[65].schema(), other.candidatePairConsentExpiredTimestamp);
         fieldSetFlags()[65] = true;
       }
-      if (isValidValue(fields()[66], other.candidatePairConsentExpiredTimestamp)) {
-        this.candidatePairConsentExpiredTimestamp = data().deepCopy(fields()[66].schema(), other.candidatePairConsentExpiredTimestamp);
+      if (isValidValue(fields()[66], other.candidatePairBytesDiscardedOnSend)) {
+        this.candidatePairBytesDiscardedOnSend = data().deepCopy(fields()[66].schema(), other.candidatePairBytesDiscardedOnSend);
         fieldSetFlags()[66] = true;
       }
-      if (isValidValue(fields()[67], other.candidatePairBytesDiscardedOnSend)) {
-        this.candidatePairBytesDiscardedOnSend = data().deepCopy(fields()[67].schema(), other.candidatePairBytesDiscardedOnSend);
+      if (isValidValue(fields()[67], other.candidatePairRequestBytesSent)) {
+        this.candidatePairRequestBytesSent = data().deepCopy(fields()[67].schema(), other.candidatePairRequestBytesSent);
         fieldSetFlags()[67] = true;
       }
-      if (isValidValue(fields()[68], other.candidatePairRequestBytesSent)) {
-        this.candidatePairRequestBytesSent = data().deepCopy(fields()[68].schema(), other.candidatePairRequestBytesSent);
+      if (isValidValue(fields()[68], other.candidatePairConsentRequestBytesSent)) {
+        this.candidatePairConsentRequestBytesSent = data().deepCopy(fields()[68].schema(), other.candidatePairConsentRequestBytesSent);
         fieldSetFlags()[68] = true;
       }
-      if (isValidValue(fields()[69], other.candidatePairConsentRequestBytesSent)) {
-        this.candidatePairConsentRequestBytesSent = data().deepCopy(fields()[69].schema(), other.candidatePairConsentRequestBytesSent);
+      if (isValidValue(fields()[69], other.candidatePairResponseBytesSent)) {
+        this.candidatePairResponseBytesSent = data().deepCopy(fields()[69].schema(), other.candidatePairResponseBytesSent);
         fieldSetFlags()[69] = true;
       }
-      if (isValidValue(fields()[70], other.candidatePairResponseBytesSent)) {
-        this.candidatePairResponseBytesSent = data().deepCopy(fields()[70].schema(), other.candidatePairResponseBytesSent);
+      if (isValidValue(fields()[70], other.sctpSmoothedRoundTripTime)) {
+        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[70].schema(), other.sctpSmoothedRoundTripTime);
         fieldSetFlags()[70] = true;
       }
-      if (isValidValue(fields()[71], other.sctpSmoothedRoundTripTime)) {
-        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[71].schema(), other.sctpSmoothedRoundTripTime);
+      if (isValidValue(fields()[71], other.sctpCongestionWindow)) {
+        this.sctpCongestionWindow = data().deepCopy(fields()[71].schema(), other.sctpCongestionWindow);
         fieldSetFlags()[71] = true;
       }
-      if (isValidValue(fields()[72], other.sctpCongestionWindow)) {
-        this.sctpCongestionWindow = data().deepCopy(fields()[72].schema(), other.sctpCongestionWindow);
+      if (isValidValue(fields()[72], other.sctpReceiverWindow)) {
+        this.sctpReceiverWindow = data().deepCopy(fields()[72].schema(), other.sctpReceiverWindow);
         fieldSetFlags()[72] = true;
       }
-      if (isValidValue(fields()[73], other.sctpReceiverWindow)) {
-        this.sctpReceiverWindow = data().deepCopy(fields()[73].schema(), other.sctpReceiverWindow);
+      if (isValidValue(fields()[73], other.sctpMtu)) {
+        this.sctpMtu = data().deepCopy(fields()[73].schema(), other.sctpMtu);
         fieldSetFlags()[73] = true;
       }
-      if (isValidValue(fields()[74], other.sctpMtu)) {
-        this.sctpMtu = data().deepCopy(fields()[74].schema(), other.sctpMtu);
+      if (isValidValue(fields()[74], other.sctpUnackData)) {
+        this.sctpUnackData = data().deepCopy(fields()[74].schema(), other.sctpUnackData);
         fieldSetFlags()[74] = true;
-      }
-      if (isValidValue(fields()[75], other.sctpUnackData)) {
-        this.sctpUnackData = data().deepCopy(fields()[75].schema(), other.sctpUnackData);
-        fieldSetFlags()[75] = true;
       }
     }
 
@@ -1690,311 +1669,307 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
      * Creates a Builder by copying an existing PcTransportReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(PcTransportReport other) {
+    private Builder(org.observertc.webrtc.schemas.reports.PcTransportReport other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.serviceName)) {
-        this.serviceName = data().deepCopy(fields()[1].schema(), other.serviceName);
+      if (isValidValue(fields()[1], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[2].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[2], other.marker)) {
+        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.marker)) {
-        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
+      if (isValidValue(fields()[3], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.roomId)) {
+        this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.roomId)) {
-        this.roomId = data().deepCopy(fields()[6].schema(), other.roomId);
+      if (isValidValue(fields()[6], other.clientId)) {
+        this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[7].schema(), other.clientId);
+      if (isValidValue(fields()[7], other.userId)) {
+        this.userId = data().deepCopy(fields()[7].schema(), other.userId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.userId)) {
-        this.userId = data().deepCopy(fields()[8].schema(), other.userId);
+      if (isValidValue(fields()[8], other.peerConnectionId)) {
+        this.peerConnectionId = data().deepCopy(fields()[8].schema(), other.peerConnectionId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.peerConnectionId)) {
-        this.peerConnectionId = data().deepCopy(fields()[9].schema(), other.peerConnectionId);
+      if (isValidValue(fields()[9], other.label)) {
+        this.label = data().deepCopy(fields()[9].schema(), other.label);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.label)) {
-        this.label = data().deepCopy(fields()[10].schema(), other.label);
+      if (isValidValue(fields()[10], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[10].schema(), other.packetsSent);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[11].schema(), other.packetsSent);
+      if (isValidValue(fields()[11], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[11].schema(), other.packetsReceived);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[12].schema(), other.packetsReceived);
+      if (isValidValue(fields()[12], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[12].schema(), other.bytesSent);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[13].schema(), other.bytesSent);
+      if (isValidValue(fields()[13], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[13].schema(), other.bytesReceived);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[14].schema(), other.bytesReceived);
+      if (isValidValue(fields()[14], other.iceRole)) {
+        this.iceRole = data().deepCopy(fields()[14].schema(), other.iceRole);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.iceRole)) {
-        this.iceRole = data().deepCopy(fields()[15].schema(), other.iceRole);
+      if (isValidValue(fields()[15], other.iceLocalUsernameFragment)) {
+        this.iceLocalUsernameFragment = data().deepCopy(fields()[15].schema(), other.iceLocalUsernameFragment);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.iceLocalUsernameFragment)) {
-        this.iceLocalUsernameFragment = data().deepCopy(fields()[16].schema(), other.iceLocalUsernameFragment);
+      if (isValidValue(fields()[16], other.dtlsState)) {
+        this.dtlsState = data().deepCopy(fields()[16].schema(), other.dtlsState);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.dtlsState)) {
-        this.dtlsState = data().deepCopy(fields()[17].schema(), other.dtlsState);
+      if (isValidValue(fields()[17], other.iceTransportState)) {
+        this.iceTransportState = data().deepCopy(fields()[17].schema(), other.iceTransportState);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.iceTransportState)) {
-        this.iceTransportState = data().deepCopy(fields()[18].schema(), other.iceTransportState);
+      if (isValidValue(fields()[18], other.tlsVersion)) {
+        this.tlsVersion = data().deepCopy(fields()[18].schema(), other.tlsVersion);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.tlsVersion)) {
-        this.tlsVersion = data().deepCopy(fields()[19].schema(), other.tlsVersion);
+      if (isValidValue(fields()[19], other.dtlsCipher)) {
+        this.dtlsCipher = data().deepCopy(fields()[19].schema(), other.dtlsCipher);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.dtlsCipher)) {
-        this.dtlsCipher = data().deepCopy(fields()[20].schema(), other.dtlsCipher);
+      if (isValidValue(fields()[20], other.srtpCipher)) {
+        this.srtpCipher = data().deepCopy(fields()[20].schema(), other.srtpCipher);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.srtpCipher)) {
-        this.srtpCipher = data().deepCopy(fields()[21].schema(), other.srtpCipher);
+      if (isValidValue(fields()[21], other.tlsGroup)) {
+        this.tlsGroup = data().deepCopy(fields()[21].schema(), other.tlsGroup);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.tlsGroup)) {
-        this.tlsGroup = data().deepCopy(fields()[22].schema(), other.tlsGroup);
+      if (isValidValue(fields()[22], other.selectedCandidatePairChanges)) {
+        this.selectedCandidatePairChanges = data().deepCopy(fields()[22].schema(), other.selectedCandidatePairChanges);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.selectedCandidatePairChanges)) {
-        this.selectedCandidatePairChanges = data().deepCopy(fields()[23].schema(), other.selectedCandidatePairChanges);
+      if (isValidValue(fields()[23], other.localFingerprint)) {
+        this.localFingerprint = data().deepCopy(fields()[23].schema(), other.localFingerprint);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.localFingerprint)) {
-        this.localFingerprint = data().deepCopy(fields()[24].schema(), other.localFingerprint);
+      if (isValidValue(fields()[24], other.localFingerprintAlgorithm)) {
+        this.localFingerprintAlgorithm = data().deepCopy(fields()[24].schema(), other.localFingerprintAlgorithm);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.localFingerprintAlgorithm)) {
-        this.localFingerprintAlgorithm = data().deepCopy(fields()[25].schema(), other.localFingerprintAlgorithm);
+      if (isValidValue(fields()[25], other.localBase64Certificate)) {
+        this.localBase64Certificate = data().deepCopy(fields()[25].schema(), other.localBase64Certificate);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.localBase64Certificate)) {
-        this.localBase64Certificate = data().deepCopy(fields()[26].schema(), other.localBase64Certificate);
+      if (isValidValue(fields()[26], other.remoteFingerprint)) {
+        this.remoteFingerprint = data().deepCopy(fields()[26].schema(), other.remoteFingerprint);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.remoteFingerprint)) {
-        this.remoteFingerprint = data().deepCopy(fields()[27].schema(), other.remoteFingerprint);
+      if (isValidValue(fields()[27], other.remoteFingerprintAlgorithm)) {
+        this.remoteFingerprintAlgorithm = data().deepCopy(fields()[27].schema(), other.remoteFingerprintAlgorithm);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.remoteFingerprintAlgorithm)) {
-        this.remoteFingerprintAlgorithm = data().deepCopy(fields()[28].schema(), other.remoteFingerprintAlgorithm);
+      if (isValidValue(fields()[28], other.remoteBase64Certificate)) {
+        this.remoteBase64Certificate = data().deepCopy(fields()[28].schema(), other.remoteBase64Certificate);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.remoteBase64Certificate)) {
-        this.remoteBase64Certificate = data().deepCopy(fields()[29].schema(), other.remoteBase64Certificate);
+      if (isValidValue(fields()[29], other.localAddress)) {
+        this.localAddress = data().deepCopy(fields()[29].schema(), other.localAddress);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.localAddress)) {
-        this.localAddress = data().deepCopy(fields()[30].schema(), other.localAddress);
+      if (isValidValue(fields()[30], other.localPort)) {
+        this.localPort = data().deepCopy(fields()[30].schema(), other.localPort);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.localPort)) {
-        this.localPort = data().deepCopy(fields()[31].schema(), other.localPort);
+      if (isValidValue(fields()[31], other.localProtocol)) {
+        this.localProtocol = data().deepCopy(fields()[31].schema(), other.localProtocol);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.localProtocol)) {
-        this.localProtocol = data().deepCopy(fields()[32].schema(), other.localProtocol);
+      if (isValidValue(fields()[32], other.localCandidateType)) {
+        this.localCandidateType = data().deepCopy(fields()[32].schema(), other.localCandidateType);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.localCandidateType)) {
-        this.localCandidateType = data().deepCopy(fields()[33].schema(), other.localCandidateType);
+      if (isValidValue(fields()[33], other.localCandidatePriority)) {
+        this.localCandidatePriority = data().deepCopy(fields()[33].schema(), other.localCandidatePriority);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.localCandidatePriority)) {
-        this.localCandidatePriority = data().deepCopy(fields()[34].schema(), other.localCandidatePriority);
+      if (isValidValue(fields()[34], other.localCandidateICEServerUrl)) {
+        this.localCandidateICEServerUrl = data().deepCopy(fields()[34].schema(), other.localCandidateICEServerUrl);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.localCandidateICEServerUrl)) {
-        this.localCandidateICEServerUrl = data().deepCopy(fields()[35].schema(), other.localCandidateICEServerUrl);
+      if (isValidValue(fields()[35], other.localCandidateRelayProtocol)) {
+        this.localCandidateRelayProtocol = data().deepCopy(fields()[35].schema(), other.localCandidateRelayProtocol);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.localCandidateRelayProtocol)) {
-        this.localCandidateRelayProtocol = data().deepCopy(fields()[36].schema(), other.localCandidateRelayProtocol);
+      if (isValidValue(fields()[36], other.remoteAddress)) {
+        this.remoteAddress = data().deepCopy(fields()[36].schema(), other.remoteAddress);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.remoteAddress)) {
-        this.remoteAddress = data().deepCopy(fields()[37].schema(), other.remoteAddress);
+      if (isValidValue(fields()[37], other.remotePort)) {
+        this.remotePort = data().deepCopy(fields()[37].schema(), other.remotePort);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.remotePort)) {
-        this.remotePort = data().deepCopy(fields()[38].schema(), other.remotePort);
+      if (isValidValue(fields()[38], other.remoteProtocol)) {
+        this.remoteProtocol = data().deepCopy(fields()[38].schema(), other.remoteProtocol);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.remoteProtocol)) {
-        this.remoteProtocol = data().deepCopy(fields()[39].schema(), other.remoteProtocol);
+      if (isValidValue(fields()[39], other.remoteCandidateType)) {
+        this.remoteCandidateType = data().deepCopy(fields()[39].schema(), other.remoteCandidateType);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.remoteCandidateType)) {
-        this.remoteCandidateType = data().deepCopy(fields()[40].schema(), other.remoteCandidateType);
+      if (isValidValue(fields()[40], other.remoteCandidatePriority)) {
+        this.remoteCandidatePriority = data().deepCopy(fields()[40].schema(), other.remoteCandidatePriority);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.remoteCandidatePriority)) {
-        this.remoteCandidatePriority = data().deepCopy(fields()[41].schema(), other.remoteCandidatePriority);
+      if (isValidValue(fields()[41], other.remoteCandidateICEServerUrl)) {
+        this.remoteCandidateICEServerUrl = data().deepCopy(fields()[41].schema(), other.remoteCandidateICEServerUrl);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.remoteCandidateICEServerUrl)) {
-        this.remoteCandidateICEServerUrl = data().deepCopy(fields()[42].schema(), other.remoteCandidateICEServerUrl);
+      if (isValidValue(fields()[42], other.remoteCandidateRelayProtocol)) {
+        this.remoteCandidateRelayProtocol = data().deepCopy(fields()[42].schema(), other.remoteCandidateRelayProtocol);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.remoteCandidateRelayProtocol)) {
-        this.remoteCandidateRelayProtocol = data().deepCopy(fields()[43].schema(), other.remoteCandidateRelayProtocol);
+      if (isValidValue(fields()[43], other.iceCandidatePairState)) {
+        this.iceCandidatePairState = data().deepCopy(fields()[43].schema(), other.iceCandidatePairState);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.iceCandidatePairState)) {
-        this.iceCandidatePairState = data().deepCopy(fields()[44].schema(), other.iceCandidatePairState);
+      if (isValidValue(fields()[44], other.iceCandidatePairPacketsSent)) {
+        this.iceCandidatePairPacketsSent = data().deepCopy(fields()[44].schema(), other.iceCandidatePairPacketsSent);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.iceCandidatePairPacketsSent)) {
-        this.iceCandidatePairPacketsSent = data().deepCopy(fields()[45].schema(), other.iceCandidatePairPacketsSent);
+      if (isValidValue(fields()[45], other.iceCandidatePairPacketsReceived)) {
+        this.iceCandidatePairPacketsReceived = data().deepCopy(fields()[45].schema(), other.iceCandidatePairPacketsReceived);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.iceCandidatePairPacketsReceived)) {
-        this.iceCandidatePairPacketsReceived = data().deepCopy(fields()[46].schema(), other.iceCandidatePairPacketsReceived);
+      if (isValidValue(fields()[46], other.iceCandidatePairBytesSent)) {
+        this.iceCandidatePairBytesSent = data().deepCopy(fields()[46].schema(), other.iceCandidatePairBytesSent);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.iceCandidatePairBytesSent)) {
-        this.iceCandidatePairBytesSent = data().deepCopy(fields()[47].schema(), other.iceCandidatePairBytesSent);
+      if (isValidValue(fields()[47], other.iceCandidatePairBytesReceived)) {
+        this.iceCandidatePairBytesReceived = data().deepCopy(fields()[47].schema(), other.iceCandidatePairBytesReceived);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.iceCandidatePairBytesReceived)) {
-        this.iceCandidatePairBytesReceived = data().deepCopy(fields()[48].schema(), other.iceCandidatePairBytesReceived);
+      if (isValidValue(fields()[48], other.iceCandidatePairLastPacketSentTimestamp)) {
+        this.iceCandidatePairLastPacketSentTimestamp = data().deepCopy(fields()[48].schema(), other.iceCandidatePairLastPacketSentTimestamp);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.iceCandidatePairLastPacketSentTimestamp)) {
-        this.iceCandidatePairLastPacketSentTimestamp = data().deepCopy(fields()[49].schema(), other.iceCandidatePairLastPacketSentTimestamp);
+      if (isValidValue(fields()[49], other.iceCandidatePairLastPacketReceivedTimestamp)) {
+        this.iceCandidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[49].schema(), other.iceCandidatePairLastPacketReceivedTimestamp);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.iceCandidatePairLastPacketReceivedTimestamp)) {
-        this.iceCandidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[50].schema(), other.iceCandidatePairLastPacketReceivedTimestamp);
+      if (isValidValue(fields()[50], other.iceCandidatePairFirstRequestTimestamp)) {
+        this.iceCandidatePairFirstRequestTimestamp = data().deepCopy(fields()[50].schema(), other.iceCandidatePairFirstRequestTimestamp);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.iceCandidatePairFirstRequestTimestamp)) {
-        this.iceCandidatePairFirstRequestTimestamp = data().deepCopy(fields()[51].schema(), other.iceCandidatePairFirstRequestTimestamp);
+      if (isValidValue(fields()[51], other.iceCandidatePairLastRequestTimestamp)) {
+        this.iceCandidatePairLastRequestTimestamp = data().deepCopy(fields()[51].schema(), other.iceCandidatePairLastRequestTimestamp);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.iceCandidatePairLastRequestTimestamp)) {
-        this.iceCandidatePairLastRequestTimestamp = data().deepCopy(fields()[52].schema(), other.iceCandidatePairLastRequestTimestamp);
+      if (isValidValue(fields()[52], other.iceCandidatePairLastResponseTimestamp)) {
+        this.iceCandidatePairLastResponseTimestamp = data().deepCopy(fields()[52].schema(), other.iceCandidatePairLastResponseTimestamp);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.iceCandidatePairLastResponseTimestamp)) {
-        this.iceCandidatePairLastResponseTimestamp = data().deepCopy(fields()[53].schema(), other.iceCandidatePairLastResponseTimestamp);
+      if (isValidValue(fields()[53], other.stunProvidedTotalRoundTripTime)) {
+        this.stunProvidedTotalRoundTripTime = data().deepCopy(fields()[53].schema(), other.stunProvidedTotalRoundTripTime);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.stunProvidedTotalRoundTripTime)) {
-        this.stunProvidedTotalRoundTripTime = data().deepCopy(fields()[54].schema(), other.stunProvidedTotalRoundTripTime);
+      if (isValidValue(fields()[54], other.stunProvidedCurrentRoundTripTime)) {
+        this.stunProvidedCurrentRoundTripTime = data().deepCopy(fields()[54].schema(), other.stunProvidedCurrentRoundTripTime);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.stunProvidedCurrentRoundTripTime)) {
-        this.stunProvidedCurrentRoundTripTime = data().deepCopy(fields()[55].schema(), other.stunProvidedCurrentRoundTripTime);
+      if (isValidValue(fields()[55], other.availableOutgoingBitrate)) {
+        this.availableOutgoingBitrate = data().deepCopy(fields()[55].schema(), other.availableOutgoingBitrate);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.availableOutgoingBitrate)) {
-        this.availableOutgoingBitrate = data().deepCopy(fields()[56].schema(), other.availableOutgoingBitrate);
+      if (isValidValue(fields()[56], other.availableIncomingBitrate)) {
+        this.availableIncomingBitrate = data().deepCopy(fields()[56].schema(), other.availableIncomingBitrate);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.availableIncomingBitrate)) {
-        this.availableIncomingBitrate = data().deepCopy(fields()[57].schema(), other.availableIncomingBitrate);
+      if (isValidValue(fields()[57], other.circuitBreakerTriggerCount)) {
+        this.circuitBreakerTriggerCount = data().deepCopy(fields()[57].schema(), other.circuitBreakerTriggerCount);
         fieldSetFlags()[57] = true;
       }
-      if (isValidValue(fields()[58], other.circuitBreakerTriggerCount)) {
-        this.circuitBreakerTriggerCount = data().deepCopy(fields()[58].schema(), other.circuitBreakerTriggerCount);
+      if (isValidValue(fields()[58], other.candidatePairRequestsReceived)) {
+        this.candidatePairRequestsReceived = data().deepCopy(fields()[58].schema(), other.candidatePairRequestsReceived);
         fieldSetFlags()[58] = true;
       }
-      if (isValidValue(fields()[59], other.candidatePairRequestsReceived)) {
-        this.candidatePairRequestsReceived = data().deepCopy(fields()[59].schema(), other.candidatePairRequestsReceived);
+      if (isValidValue(fields()[59], other.candidatePairRequestsSent)) {
+        this.candidatePairRequestsSent = data().deepCopy(fields()[59].schema(), other.candidatePairRequestsSent);
         fieldSetFlags()[59] = true;
       }
-      if (isValidValue(fields()[60], other.candidatePairRequestsSent)) {
-        this.candidatePairRequestsSent = data().deepCopy(fields()[60].schema(), other.candidatePairRequestsSent);
+      if (isValidValue(fields()[60], other.candidatePairResponsesReceived)) {
+        this.candidatePairResponsesReceived = data().deepCopy(fields()[60].schema(), other.candidatePairResponsesReceived);
         fieldSetFlags()[60] = true;
       }
-      if (isValidValue(fields()[61], other.candidatePairResponsesReceived)) {
-        this.candidatePairResponsesReceived = data().deepCopy(fields()[61].schema(), other.candidatePairResponsesReceived);
+      if (isValidValue(fields()[61], other.candidatePairResponsesSent)) {
+        this.candidatePairResponsesSent = data().deepCopy(fields()[61].schema(), other.candidatePairResponsesSent);
         fieldSetFlags()[61] = true;
       }
-      if (isValidValue(fields()[62], other.candidatePairResponsesSent)) {
-        this.candidatePairResponsesSent = data().deepCopy(fields()[62].schema(), other.candidatePairResponsesSent);
+      if (isValidValue(fields()[62], other.candidatePairRetransmissionReceived)) {
+        this.candidatePairRetransmissionReceived = data().deepCopy(fields()[62].schema(), other.candidatePairRetransmissionReceived);
         fieldSetFlags()[62] = true;
       }
-      if (isValidValue(fields()[63], other.candidatePairRetransmissionReceived)) {
-        this.candidatePairRetransmissionReceived = data().deepCopy(fields()[63].schema(), other.candidatePairRetransmissionReceived);
+      if (isValidValue(fields()[63], other.candidatePairRetransmissionSent)) {
+        this.candidatePairRetransmissionSent = data().deepCopy(fields()[63].schema(), other.candidatePairRetransmissionSent);
         fieldSetFlags()[63] = true;
       }
-      if (isValidValue(fields()[64], other.candidatePairRetransmissionSent)) {
-        this.candidatePairRetransmissionSent = data().deepCopy(fields()[64].schema(), other.candidatePairRetransmissionSent);
+      if (isValidValue(fields()[64], other.candidatePairConsentRequestsSent)) {
+        this.candidatePairConsentRequestsSent = data().deepCopy(fields()[64].schema(), other.candidatePairConsentRequestsSent);
         fieldSetFlags()[64] = true;
       }
-      if (isValidValue(fields()[65], other.candidatePairConsentRequestsSent)) {
-        this.candidatePairConsentRequestsSent = data().deepCopy(fields()[65].schema(), other.candidatePairConsentRequestsSent);
+      if (isValidValue(fields()[65], other.candidatePairConsentExpiredTimestamp)) {
+        this.candidatePairConsentExpiredTimestamp = data().deepCopy(fields()[65].schema(), other.candidatePairConsentExpiredTimestamp);
         fieldSetFlags()[65] = true;
       }
-      if (isValidValue(fields()[66], other.candidatePairConsentExpiredTimestamp)) {
-        this.candidatePairConsentExpiredTimestamp = data().deepCopy(fields()[66].schema(), other.candidatePairConsentExpiredTimestamp);
+      if (isValidValue(fields()[66], other.candidatePairBytesDiscardedOnSend)) {
+        this.candidatePairBytesDiscardedOnSend = data().deepCopy(fields()[66].schema(), other.candidatePairBytesDiscardedOnSend);
         fieldSetFlags()[66] = true;
       }
-      if (isValidValue(fields()[67], other.candidatePairBytesDiscardedOnSend)) {
-        this.candidatePairBytesDiscardedOnSend = data().deepCopy(fields()[67].schema(), other.candidatePairBytesDiscardedOnSend);
+      if (isValidValue(fields()[67], other.candidatePairRequestBytesSent)) {
+        this.candidatePairRequestBytesSent = data().deepCopy(fields()[67].schema(), other.candidatePairRequestBytesSent);
         fieldSetFlags()[67] = true;
       }
-      if (isValidValue(fields()[68], other.candidatePairRequestBytesSent)) {
-        this.candidatePairRequestBytesSent = data().deepCopy(fields()[68].schema(), other.candidatePairRequestBytesSent);
+      if (isValidValue(fields()[68], other.candidatePairConsentRequestBytesSent)) {
+        this.candidatePairConsentRequestBytesSent = data().deepCopy(fields()[68].schema(), other.candidatePairConsentRequestBytesSent);
         fieldSetFlags()[68] = true;
       }
-      if (isValidValue(fields()[69], other.candidatePairConsentRequestBytesSent)) {
-        this.candidatePairConsentRequestBytesSent = data().deepCopy(fields()[69].schema(), other.candidatePairConsentRequestBytesSent);
+      if (isValidValue(fields()[69], other.candidatePairResponseBytesSent)) {
+        this.candidatePairResponseBytesSent = data().deepCopy(fields()[69].schema(), other.candidatePairResponseBytesSent);
         fieldSetFlags()[69] = true;
       }
-      if (isValidValue(fields()[70], other.candidatePairResponseBytesSent)) {
-        this.candidatePairResponseBytesSent = data().deepCopy(fields()[70].schema(), other.candidatePairResponseBytesSent);
+      if (isValidValue(fields()[70], other.sctpSmoothedRoundTripTime)) {
+        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[70].schema(), other.sctpSmoothedRoundTripTime);
         fieldSetFlags()[70] = true;
       }
-      if (isValidValue(fields()[71], other.sctpSmoothedRoundTripTime)) {
-        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[71].schema(), other.sctpSmoothedRoundTripTime);
+      if (isValidValue(fields()[71], other.sctpCongestionWindow)) {
+        this.sctpCongestionWindow = data().deepCopy(fields()[71].schema(), other.sctpCongestionWindow);
         fieldSetFlags()[71] = true;
       }
-      if (isValidValue(fields()[72], other.sctpCongestionWindow)) {
-        this.sctpCongestionWindow = data().deepCopy(fields()[72].schema(), other.sctpCongestionWindow);
+      if (isValidValue(fields()[72], other.sctpReceiverWindow)) {
+        this.sctpReceiverWindow = data().deepCopy(fields()[72].schema(), other.sctpReceiverWindow);
         fieldSetFlags()[72] = true;
       }
-      if (isValidValue(fields()[73], other.sctpReceiverWindow)) {
-        this.sctpReceiverWindow = data().deepCopy(fields()[73].schema(), other.sctpReceiverWindow);
+      if (isValidValue(fields()[73], other.sctpMtu)) {
+        this.sctpMtu = data().deepCopy(fields()[73].schema(), other.sctpMtu);
         fieldSetFlags()[73] = true;
       }
-      if (isValidValue(fields()[74], other.sctpMtu)) {
-        this.sctpMtu = data().deepCopy(fields()[74].schema(), other.sctpMtu);
+      if (isValidValue(fields()[74], other.sctpUnackData)) {
+        this.sctpUnackData = data().deepCopy(fields()[74].schema(), other.sctpUnackData);
         fieldSetFlags()[74] = true;
-      }
-      if (isValidValue(fields()[75], other.sctpUnackData)) {
-        this.sctpUnackData = data().deepCopy(fields()[75].schema(), other.sctpUnackData);
-        fieldSetFlags()[75] = true;
       }
     }
 
@@ -2003,7 +1978,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The unique identifier of the service
       * @return The value.
       */
-    public String getServiceId() {
+    public java.lang.String getServiceId() {
       return serviceId;
     }
 
@@ -2013,7 +1988,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public Builder setServiceId(String value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -2035,52 +2010,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The unique identifier of the service
       * @return This builder.
       */
-    public Builder clearServiceId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'serviceName' field.
-      * The resolved service name configured for the service Id
-      * @return The value.
-      */
-    public String getServiceName() {
-      return serviceName;
-    }
-
-    /**
-      * Sets the value of the 'serviceName' field.
-      * The resolved service name configured for the service Id
-      * @param value The value of 'serviceName'.
-      * @return This builder.
-      */
-    public Builder setServiceName(String value) {
-      validate(fields()[1], value);
-      this.serviceName = value;
-      fieldSetFlags()[1] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'serviceName' field has been set.
-      * The resolved service name configured for the service Id
-      * @return True if the 'serviceName' field has been set, false otherwise.
-      */
-    public boolean hasServiceName() {
-      return fieldSetFlags()[1];
-    }
-
-
-    /**
-      * Clears the value of the 'serviceName' field.
-      * The resolved service name configured for the service Id
-      * @return This builder.
-      */
-    public Builder clearServiceName() {
-      serviceName = null;
-      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -2089,7 +2021,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The media unit id the report belongs to
       * @return The value.
       */
-    public String getMediaUnitId() {
+    public java.lang.String getMediaUnitId() {
       return mediaUnitId;
     }
 
@@ -2099,10 +2031,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public Builder setMediaUnitId(String value) {
-      validate(fields()[2], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setMediaUnitId(java.lang.String value) {
+      validate(fields()[1], value);
       this.mediaUnitId = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -2112,7 +2044,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'mediaUnitId' field has been set, false otherwise.
       */
     public boolean hasMediaUnitId() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[1];
     }
 
 
@@ -2121,9 +2053,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public Builder clearMediaUnitId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -2132,7 +2064,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The marker the originated sample is reported with
       * @return The value.
       */
-    public String getMarker() {
+    public java.lang.String getMarker() {
       return marker;
     }
 
@@ -2142,10 +2074,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public Builder setMarker(String value) {
-      validate(fields()[3], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setMarker(java.lang.String value) {
+      validate(fields()[2], value);
       this.marker = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -2155,7 +2087,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'marker' field has been set, false otherwise.
       */
     public boolean hasMarker() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[2];
     }
 
 
@@ -2164,9 +2096,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public Builder clearMarker() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearMarker() {
       marker = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -2175,7 +2107,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return The value.
       */
-    public Long getTimestamp() {
+    public java.lang.Long getTimestamp() {
       return timestamp;
     }
 
@@ -2185,10 +2117,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public Builder setTimestamp(long value) {
-      validate(fields()[4], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setTimestamp(long value) {
+      validate(fields()[3], value);
       this.timestamp = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -2198,7 +2130,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[3];
     }
 
 
@@ -2207,8 +2139,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public Builder clearTimestamp() {
-      fieldSetFlags()[4] = false;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearTimestamp() {
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -2217,7 +2149,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The generated unique identifier of the call
       * @return The value.
       */
-    public String getCallId() {
+    public java.lang.String getCallId() {
       return callId;
     }
 
@@ -2227,10 +2159,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public Builder setCallId(String value) {
-      validate(fields()[5], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCallId(java.lang.String value) {
+      validate(fields()[4], value);
       this.callId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -2240,7 +2172,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'callId' field has been set, false otherwise.
       */
     public boolean hasCallId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -2249,9 +2181,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The generated unique identifier of the call
       * @return This builder.
       */
-    public Builder clearCallId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCallId() {
       callId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -2260,7 +2192,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * webrtc app provided room id
       * @return The value.
       */
-    public String getRoomId() {
+    public java.lang.String getRoomId() {
       return roomId;
     }
 
@@ -2270,10 +2202,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'roomId'.
       * @return This builder.
       */
-    public Builder setRoomId(String value) {
-      validate(fields()[6], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRoomId(java.lang.String value) {
+      validate(fields()[5], value);
       this.roomId = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -2283,7 +2215,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'roomId' field has been set, false otherwise.
       */
     public boolean hasRoomId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
 
 
@@ -2292,9 +2224,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * webrtc app provided room id
       * @return This builder.
       */
-    public Builder clearRoomId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRoomId() {
       roomId = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -2303,7 +2235,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The generated unique identifier of the client
       * @return The value.
       */
-    public String getClientId() {
+    public java.lang.String getClientId() {
       return clientId;
     }
 
@@ -2313,10 +2245,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'clientId'.
       * @return This builder.
       */
-    public Builder setClientId(String value) {
-      validate(fields()[7], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setClientId(java.lang.String value) {
+      validate(fields()[6], value);
       this.clientId = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -2326,7 +2258,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'clientId' field has been set, false otherwise.
       */
     public boolean hasClientId() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[6];
     }
 
 
@@ -2335,9 +2267,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The generated unique identifier of the client
       * @return This builder.
       */
-    public Builder clearClientId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearClientId() {
       clientId = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -2346,7 +2278,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * webrtc app provided user identifier
       * @return The value.
       */
-    public String getUserId() {
+    public java.lang.String getUserId() {
       return userId;
     }
 
@@ -2356,10 +2288,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public Builder setUserId(String value) {
-      validate(fields()[8], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setUserId(java.lang.String value) {
+      validate(fields()[7], value);
       this.userId = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -2369,7 +2301,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'userId' field has been set, false otherwise.
       */
     public boolean hasUserId() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[7];
     }
 
 
@@ -2378,9 +2310,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * webrtc app provided user identifier
       * @return This builder.
       */
-    public Builder clearUserId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearUserId() {
       userId = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -2389,7 +2321,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The unique identifier of the peer connection
       * @return The value.
       */
-    public String getPeerConnectionId() {
+    public java.lang.String getPeerConnectionId() {
       return peerConnectionId;
     }
 
@@ -2399,10 +2331,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'peerConnectionId'.
       * @return This builder.
       */
-    public Builder setPeerConnectionId(String value) {
-      validate(fields()[9], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setPeerConnectionId(java.lang.String value) {
+      validate(fields()[8], value);
       this.peerConnectionId = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -2412,7 +2344,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'peerConnectionId' field has been set, false otherwise.
       */
     public boolean hasPeerConnectionId() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[8];
     }
 
 
@@ -2421,9 +2353,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The unique identifier of the peer connection
       * @return This builder.
       */
-    public Builder clearPeerConnectionId() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -2432,7 +2364,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The webrtc app provided label the peer connection is marked with
       * @return The value.
       */
-    public String getLabel() {
+    public java.lang.String getLabel() {
       return label;
     }
 
@@ -2442,10 +2374,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'label'.
       * @return This builder.
       */
-    public Builder setLabel(String value) {
-      validate(fields()[10], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLabel(java.lang.String value) {
+      validate(fields()[9], value);
       this.label = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -2455,7 +2387,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'label' field has been set, false otherwise.
       */
     public boolean hasLabel() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[9];
     }
 
 
@@ -2464,9 +2396,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The webrtc app provided label the peer connection is marked with
       * @return This builder.
       */
-    public Builder clearLabel() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLabel() {
       label = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -2475,7 +2407,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of packets sent on the corresponded transport
       * @return The value.
       */
-    public Integer getPacketsSent() {
+    public java.lang.Integer getPacketsSent() {
       return packetsSent;
     }
 
@@ -2485,10 +2417,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'packetsSent'.
       * @return This builder.
       */
-    public Builder setPacketsSent(Integer value) {
-      validate(fields()[11], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setPacketsSent(java.lang.Integer value) {
+      validate(fields()[10], value);
       this.packetsSent = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -2498,7 +2430,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'packetsSent' field has been set, false otherwise.
       */
     public boolean hasPacketsSent() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[10];
     }
 
 
@@ -2507,9 +2439,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of packets sent on the corresponded transport
       * @return This builder.
       */
-    public Builder clearPacketsSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearPacketsSent() {
       packetsSent = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -2518,7 +2450,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of packets received on the corresponded transport
       * @return The value.
       */
-    public Integer getPacketsReceived() {
+    public java.lang.Integer getPacketsReceived() {
       return packetsReceived;
     }
 
@@ -2528,10 +2460,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'packetsReceived'.
       * @return This builder.
       */
-    public Builder setPacketsReceived(Integer value) {
-      validate(fields()[12], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setPacketsReceived(java.lang.Integer value) {
+      validate(fields()[11], value);
       this.packetsReceived = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -2541,7 +2473,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'packetsReceived' field has been set, false otherwise.
       */
     public boolean hasPacketsReceived() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[11];
     }
 
 
@@ -2550,9 +2482,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of packets received on the corresponded transport
       * @return This builder.
       */
-    public Builder clearPacketsReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearPacketsReceived() {
       packetsReceived = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -2561,7 +2493,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes sent on the corresponded transport
       * @return The value.
       */
-    public Integer getBytesSent() {
+    public java.lang.Integer getBytesSent() {
       return bytesSent;
     }
 
@@ -2571,10 +2503,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'bytesSent'.
       * @return This builder.
       */
-    public Builder setBytesSent(Integer value) {
-      validate(fields()[13], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesSent(java.lang.Integer value) {
+      validate(fields()[12], value);
       this.bytesSent = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -2584,7 +2516,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'bytesSent' field has been set, false otherwise.
       */
     public boolean hasBytesSent() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[12];
     }
 
 
@@ -2593,9 +2525,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes sent on the corresponded transport
       * @return This builder.
       */
-    public Builder clearBytesSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearBytesSent() {
       bytesSent = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -2604,7 +2536,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes received on the corresponded transport
       * @return The value.
       */
-    public Integer getBytesReceived() {
+    public java.lang.Integer getBytesReceived() {
       return bytesReceived;
     }
 
@@ -2614,10 +2546,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'bytesReceived'.
       * @return This builder.
       */
-    public Builder setBytesReceived(Integer value) {
-      validate(fields()[14], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesReceived(java.lang.Integer value) {
+      validate(fields()[13], value);
       this.bytesReceived = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -2627,7 +2559,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[13];
     }
 
 
@@ -2636,9 +2568,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes received on the corresponded transport
       * @return This builder.
       */
-    public Builder clearBytesReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -2647,7 +2579,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represent the current role of ICE under DTLS Transport
       * @return The value.
       */
-    public String getIceRole() {
+    public java.lang.String getIceRole() {
       return iceRole;
     }
 
@@ -2657,10 +2589,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceRole'.
       * @return This builder.
       */
-    public Builder setIceRole(String value) {
-      validate(fields()[15], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceRole(java.lang.String value) {
+      validate(fields()[14], value);
       this.iceRole = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -2670,7 +2602,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceRole' field has been set, false otherwise.
       */
     public boolean hasIceRole() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[14];
     }
 
 
@@ -2679,9 +2611,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represent the current role of ICE under DTLS Transport
       * @return This builder.
       */
-    public Builder clearIceRole() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceRole() {
       iceRole = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -2690,7 +2622,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport
       * @return The value.
       */
-    public String getIceLocalUsernameFragment() {
+    public java.lang.String getIceLocalUsernameFragment() {
       return iceLocalUsernameFragment;
     }
 
@@ -2700,10 +2632,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceLocalUsernameFragment'.
       * @return This builder.
       */
-    public Builder setIceLocalUsernameFragment(String value) {
-      validate(fields()[16], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceLocalUsernameFragment(java.lang.String value) {
+      validate(fields()[15], value);
       this.iceLocalUsernameFragment = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -2713,7 +2645,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceLocalUsernameFragment' field has been set, false otherwise.
       */
     public boolean hasIceLocalUsernameFragment() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[15];
     }
 
 
@@ -2722,9 +2654,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport
       * @return This builder.
       */
-    public Builder clearIceLocalUsernameFragment() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceLocalUsernameFragment() {
       iceLocalUsernameFragment = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -2733,7 +2665,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the current state of DTLS for the peer connection transport layer
       * @return The value.
       */
-    public String getDtlsState() {
+    public java.lang.String getDtlsState() {
       return dtlsState;
     }
 
@@ -2743,10 +2675,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'dtlsState'.
       * @return This builder.
       */
-    public Builder setDtlsState(String value) {
-      validate(fields()[17], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setDtlsState(java.lang.String value) {
+      validate(fields()[16], value);
       this.dtlsState = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -2756,7 +2688,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'dtlsState' field has been set, false otherwise.
       */
     public boolean hasDtlsState() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[16];
     }
 
 
@@ -2765,9 +2697,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the current state of DTLS for the peer connection transport layer
       * @return This builder.
       */
-    public Builder clearDtlsState() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearDtlsState() {
       dtlsState = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -2776,7 +2708,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer
       * @return The value.
       */
-    public String getIceTransportState() {
+    public java.lang.String getIceTransportState() {
       return iceTransportState;
     }
 
@@ -2786,10 +2718,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceTransportState'.
       * @return This builder.
       */
-    public Builder setIceTransportState(String value) {
-      validate(fields()[18], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceTransportState(java.lang.String value) {
+      validate(fields()[17], value);
       this.iceTransportState = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -2799,7 +2731,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceTransportState' field has been set, false otherwise.
       */
     public boolean hasIceTransportState() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[17];
     }
 
 
@@ -2808,9 +2740,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer
       * @return This builder.
       */
-    public Builder clearIceTransportState() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceTransportState() {
       iceTransportState = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -2819,7 +2751,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the version number of the TLS used in the corresponded transport
       * @return The value.
       */
-    public String getTlsVersion() {
+    public java.lang.String getTlsVersion() {
       return tlsVersion;
     }
 
@@ -2829,10 +2761,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'tlsVersion'.
       * @return This builder.
       */
-    public Builder setTlsVersion(String value) {
-      validate(fields()[19], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setTlsVersion(java.lang.String value) {
+      validate(fields()[18], value);
       this.tlsVersion = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -2842,7 +2774,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'tlsVersion' field has been set, false otherwise.
       */
     public boolean hasTlsVersion() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[18];
     }
 
 
@@ -2851,9 +2783,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the version number of the TLS used in the corresponded transport
       * @return This builder.
       */
-    public Builder clearTlsVersion() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearTlsVersion() {
       tlsVersion = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -2862,7 +2794,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the DTLS cipher used in the corresponded transport
       * @return The value.
       */
-    public String getDtlsCipher() {
+    public java.lang.String getDtlsCipher() {
       return dtlsCipher;
     }
 
@@ -2872,10 +2804,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'dtlsCipher'.
       * @return This builder.
       */
-    public Builder setDtlsCipher(String value) {
-      validate(fields()[20], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setDtlsCipher(java.lang.String value) {
+      validate(fields()[19], value);
       this.dtlsCipher = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -2885,7 +2817,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'dtlsCipher' field has been set, false otherwise.
       */
     public boolean hasDtlsCipher() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[19];
     }
 
 
@@ -2894,9 +2826,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the DTLS cipher used in the corresponded transport
       * @return This builder.
       */
-    public Builder clearDtlsCipher() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearDtlsCipher() {
       dtlsCipher = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -2905,7 +2837,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the SRTP cipher used in the corresponded transport
       * @return The value.
       */
-    public String getSrtpCipher() {
+    public java.lang.String getSrtpCipher() {
       return srtpCipher;
     }
 
@@ -2915,10 +2847,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'srtpCipher'.
       * @return This builder.
       */
-    public Builder setSrtpCipher(String value) {
-      validate(fields()[21], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSrtpCipher(java.lang.String value) {
+      validate(fields()[20], value);
       this.srtpCipher = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -2928,7 +2860,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'srtpCipher' field has been set, false otherwise.
       */
     public boolean hasSrtpCipher() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[20];
     }
 
 
@@ -2937,9 +2869,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the SRTP cipher used in the corresponded transport
       * @return This builder.
       */
-    public Builder clearSrtpCipher() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSrtpCipher() {
       srtpCipher = null;
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -2948,7 +2880,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the IANA TLS Supported Groups used in the corresponded transport
       * @return The value.
       */
-    public String getTlsGroup() {
+    public java.lang.String getTlsGroup() {
       return tlsGroup;
     }
 
@@ -2958,10 +2890,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'tlsGroup'.
       * @return This builder.
       */
-    public Builder setTlsGroup(String value) {
-      validate(fields()[22], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setTlsGroup(java.lang.String value) {
+      validate(fields()[21], value);
       this.tlsGroup = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -2971,7 +2903,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'tlsGroup' field has been set, false otherwise.
       */
     public boolean hasTlsGroup() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[21];
     }
 
 
@@ -2980,9 +2912,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the IANA TLS Supported Groups used in the corresponded transport
       * @return This builder.
       */
-    public Builder clearTlsGroup() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearTlsGroup() {
       tlsGroup = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -2991,7 +2923,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of candidate pair changes over the peer connection
       * @return The value.
       */
-    public Integer getSelectedCandidatePairChanges() {
+    public java.lang.Integer getSelectedCandidatePairChanges() {
       return selectedCandidatePairChanges;
     }
 
@@ -3001,10 +2933,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'selectedCandidatePairChanges'.
       * @return This builder.
       */
-    public Builder setSelectedCandidatePairChanges(Integer value) {
-      validate(fields()[23], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSelectedCandidatePairChanges(java.lang.Integer value) {
+      validate(fields()[22], value);
       this.selectedCandidatePairChanges = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -3014,7 +2946,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'selectedCandidatePairChanges' field has been set, false otherwise.
       */
     public boolean hasSelectedCandidatePairChanges() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[22];
     }
 
 
@@ -3023,9 +2955,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of candidate pair changes over the peer connection
       * @return This builder.
       */
-    public Builder clearSelectedCandidatePairChanges() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSelectedCandidatePairChanges() {
       selectedCandidatePairChanges = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -3034,7 +2966,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The fingerprint of the certificate certifies the local endpoint of the transport
       * @return The value.
       */
-    public String getLocalFingerprint() {
+    public java.lang.String getLocalFingerprint() {
       return localFingerprint;
     }
 
@@ -3044,10 +2976,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localFingerprint'.
       * @return This builder.
       */
-    public Builder setLocalFingerprint(String value) {
-      validate(fields()[24], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalFingerprint(java.lang.String value) {
+      validate(fields()[23], value);
       this.localFingerprint = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -3057,7 +2989,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localFingerprint' field has been set, false otherwise.
       */
     public boolean hasLocalFingerprint() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[23];
     }
 
 
@@ -3066,9 +2998,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The fingerprint of the certificate certifies the local endpoint of the transport
       * @return This builder.
       */
-    public Builder clearLocalFingerprint() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalFingerprint() {
       localFingerprint = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -3077,7 +3009,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport
       * @return The value.
       */
-    public String getLocalFingerprintAlgorithm() {
+    public java.lang.String getLocalFingerprintAlgorithm() {
       return localFingerprintAlgorithm;
     }
 
@@ -3087,10 +3019,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localFingerprintAlgorithm'.
       * @return This builder.
       */
-    public Builder setLocalFingerprintAlgorithm(String value) {
-      validate(fields()[25], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalFingerprintAlgorithm(java.lang.String value) {
+      validate(fields()[24], value);
       this.localFingerprintAlgorithm = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -3100,7 +3032,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localFingerprintAlgorithm' field has been set, false otherwise.
       */
     public boolean hasLocalFingerprintAlgorithm() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[24];
     }
 
 
@@ -3109,9 +3041,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport
       * @return This builder.
       */
-    public Builder clearLocalFingerprintAlgorithm() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalFingerprintAlgorithm() {
       localFingerprintAlgorithm = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -3120,7 +3052,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The base64 encoded certificate for the local endpoint corresponded to the transport
       * @return The value.
       */
-    public String getLocalBase64Certificate() {
+    public java.lang.String getLocalBase64Certificate() {
       return localBase64Certificate;
     }
 
@@ -3130,10 +3062,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localBase64Certificate'.
       * @return This builder.
       */
-    public Builder setLocalBase64Certificate(String value) {
-      validate(fields()[26], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalBase64Certificate(java.lang.String value) {
+      validate(fields()[25], value);
       this.localBase64Certificate = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -3143,7 +3075,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localBase64Certificate' field has been set, false otherwise.
       */
     public boolean hasLocalBase64Certificate() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[25];
     }
 
 
@@ -3152,9 +3084,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The base64 encoded certificate for the local endpoint corresponded to the transport
       * @return This builder.
       */
-    public Builder clearLocalBase64Certificate() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalBase64Certificate() {
       localBase64Certificate = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -3163,7 +3095,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The fingerprint of the certificate certifies the remote endpoint of the transport
       * @return The value.
       */
-    public String getRemoteFingerprint() {
+    public java.lang.String getRemoteFingerprint() {
       return remoteFingerprint;
     }
 
@@ -3173,10 +3105,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteFingerprint'.
       * @return This builder.
       */
-    public Builder setRemoteFingerprint(String value) {
-      validate(fields()[27], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteFingerprint(java.lang.String value) {
+      validate(fields()[26], value);
       this.remoteFingerprint = value;
-      fieldSetFlags()[27] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -3186,7 +3118,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteFingerprint' field has been set, false otherwise.
       */
     public boolean hasRemoteFingerprint() {
-      return fieldSetFlags()[27];
+      return fieldSetFlags()[26];
     }
 
 
@@ -3195,9 +3127,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The fingerprint of the certificate certifies the remote endpoint of the transport
       * @return This builder.
       */
-    public Builder clearRemoteFingerprint() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteFingerprint() {
       remoteFingerprint = null;
-      fieldSetFlags()[27] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -3206,7 +3138,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport
       * @return The value.
       */
-    public String getRemoteFingerprintAlgorithm() {
+    public java.lang.String getRemoteFingerprintAlgorithm() {
       return remoteFingerprintAlgorithm;
     }
 
@@ -3216,10 +3148,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteFingerprintAlgorithm'.
       * @return This builder.
       */
-    public Builder setRemoteFingerprintAlgorithm(String value) {
-      validate(fields()[28], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteFingerprintAlgorithm(java.lang.String value) {
+      validate(fields()[27], value);
       this.remoteFingerprintAlgorithm = value;
-      fieldSetFlags()[28] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -3229,7 +3161,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteFingerprintAlgorithm' field has been set, false otherwise.
       */
     public boolean hasRemoteFingerprintAlgorithm() {
-      return fieldSetFlags()[28];
+      return fieldSetFlags()[27];
     }
 
 
@@ -3238,9 +3170,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport
       * @return This builder.
       */
-    public Builder clearRemoteFingerprintAlgorithm() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteFingerprintAlgorithm() {
       remoteFingerprintAlgorithm = null;
-      fieldSetFlags()[28] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -3249,7 +3181,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The base64 encoded certificate for the remote endpoint corresponded to the transport
       * @return The value.
       */
-    public String getRemoteBase64Certificate() {
+    public java.lang.String getRemoteBase64Certificate() {
       return remoteBase64Certificate;
     }
 
@@ -3259,10 +3191,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteBase64Certificate'.
       * @return This builder.
       */
-    public Builder setRemoteBase64Certificate(String value) {
-      validate(fields()[29], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteBase64Certificate(java.lang.String value) {
+      validate(fields()[28], value);
       this.remoteBase64Certificate = value;
-      fieldSetFlags()[29] = true;
+      fieldSetFlags()[28] = true;
       return this;
     }
 
@@ -3272,7 +3204,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteBase64Certificate' field has been set, false otherwise.
       */
     public boolean hasRemoteBase64Certificate() {
-      return fieldSetFlags()[29];
+      return fieldSetFlags()[28];
     }
 
 
@@ -3281,9 +3213,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The base64 encoded certificate for the remote endpoint corresponded to the transport
       * @return This builder.
       */
-    public Builder clearRemoteBase64Certificate() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteBase64Certificate() {
       remoteBase64Certificate = null;
-      fieldSetFlags()[29] = false;
+      fieldSetFlags()[28] = false;
       return this;
     }
 
@@ -3292,7 +3224,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The address of the candidate (IPv4, IPv6, FQDN)
       * @return The value.
       */
-    public String getLocalAddress() {
+    public java.lang.String getLocalAddress() {
       return localAddress;
     }
 
@@ -3302,10 +3234,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localAddress'.
       * @return This builder.
       */
-    public Builder setLocalAddress(String value) {
-      validate(fields()[30], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalAddress(java.lang.String value) {
+      validate(fields()[29], value);
       this.localAddress = value;
-      fieldSetFlags()[30] = true;
+      fieldSetFlags()[29] = true;
       return this;
     }
 
@@ -3315,7 +3247,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localAddress' field has been set, false otherwise.
       */
     public boolean hasLocalAddress() {
-      return fieldSetFlags()[30];
+      return fieldSetFlags()[29];
     }
 
 
@@ -3324,9 +3256,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The address of the candidate (IPv4, IPv6, FQDN)
       * @return This builder.
       */
-    public Builder clearLocalAddress() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalAddress() {
       localAddress = null;
-      fieldSetFlags()[30] = false;
+      fieldSetFlags()[29] = false;
       return this;
     }
 
@@ -3335,7 +3267,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The locally used port to communicate with the remote peer
       * @return The value.
       */
-    public Integer getLocalPort() {
+    public java.lang.Integer getLocalPort() {
       return localPort;
     }
 
@@ -3345,10 +3277,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localPort'.
       * @return This builder.
       */
-    public Builder setLocalPort(Integer value) {
-      validate(fields()[31], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalPort(java.lang.Integer value) {
+      validate(fields()[30], value);
       this.localPort = value;
-      fieldSetFlags()[31] = true;
+      fieldSetFlags()[30] = true;
       return this;
     }
 
@@ -3358,7 +3290,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localPort' field has been set, false otherwise.
       */
     public boolean hasLocalPort() {
-      return fieldSetFlags()[31];
+      return fieldSetFlags()[30];
     }
 
 
@@ -3367,9 +3299,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The locally used port to communicate with the remote peer
       * @return This builder.
       */
-    public Builder clearLocalPort() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalPort() {
       localPort = null;
-      fieldSetFlags()[31] = false;
+      fieldSetFlags()[30] = false;
       return this;
     }
 
@@ -3378,7 +3310,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The protocol used by the local endpoint for the corresponded transport
       * @return The value.
       */
-    public String getLocalProtocol() {
+    public java.lang.String getLocalProtocol() {
       return localProtocol;
     }
 
@@ -3388,10 +3320,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localProtocol'.
       * @return This builder.
       */
-    public Builder setLocalProtocol(String value) {
-      validate(fields()[32], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalProtocol(java.lang.String value) {
+      validate(fields()[31], value);
       this.localProtocol = value;
-      fieldSetFlags()[32] = true;
+      fieldSetFlags()[31] = true;
       return this;
     }
 
@@ -3401,7 +3333,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localProtocol' field has been set, false otherwise.
       */
     public boolean hasLocalProtocol() {
-      return fieldSetFlags()[32];
+      return fieldSetFlags()[31];
     }
 
 
@@ -3410,9 +3342,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The protocol used by the local endpoint for the corresponded transport
       * @return This builder.
       */
-    public Builder clearLocalProtocol() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalProtocol() {
       localProtocol = null;
-      fieldSetFlags()[32] = false;
+      fieldSetFlags()[31] = false;
       return this;
     }
 
@@ -3421,7 +3353,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The type of the ICE candidate used at the local endpoint on the corresponded transport
       * @return The value.
       */
-    public String getLocalCandidateType() {
+    public java.lang.String getLocalCandidateType() {
       return localCandidateType;
     }
 
@@ -3431,10 +3363,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidateType'.
       * @return This builder.
       */
-    public Builder setLocalCandidateType(String value) {
-      validate(fields()[33], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidateType(java.lang.String value) {
+      validate(fields()[32], value);
       this.localCandidateType = value;
-      fieldSetFlags()[33] = true;
+      fieldSetFlags()[32] = true;
       return this;
     }
 
@@ -3444,7 +3376,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localCandidateType' field has been set, false otherwise.
       */
     public boolean hasLocalCandidateType() {
-      return fieldSetFlags()[33];
+      return fieldSetFlags()[32];
     }
 
 
@@ -3453,9 +3385,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The type of the ICE candidate used at the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearLocalCandidateType() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidateType() {
       localCandidateType = null;
-      fieldSetFlags()[33] = false;
+      fieldSetFlags()[32] = false;
       return this;
     }
 
@@ -3464,7 +3396,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The priority of the ICE candidate used at the local endpoint on the corresponded transport
       * @return The value.
       */
-    public Integer getLocalCandidatePriority() {
+    public java.lang.Integer getLocalCandidatePriority() {
       return localCandidatePriority;
     }
 
@@ -3474,10 +3406,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidatePriority'.
       * @return This builder.
       */
-    public Builder setLocalCandidatePriority(Integer value) {
-      validate(fields()[34], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidatePriority(java.lang.Integer value) {
+      validate(fields()[33], value);
       this.localCandidatePriority = value;
-      fieldSetFlags()[34] = true;
+      fieldSetFlags()[33] = true;
       return this;
     }
 
@@ -3487,7 +3419,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localCandidatePriority' field has been set, false otherwise.
       */
     public boolean hasLocalCandidatePriority() {
-      return fieldSetFlags()[34];
+      return fieldSetFlags()[33];
     }
 
 
@@ -3496,9 +3428,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The priority of the ICE candidate used at the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearLocalCandidatePriority() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidatePriority() {
       localCandidatePriority = null;
-      fieldSetFlags()[34] = false;
+      fieldSetFlags()[33] = false;
       return this;
     }
 
@@ -3507,7 +3439,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The url of the ICE server used by the local endpoint on the corresponded transport
       * @return The value.
       */
-    public String getLocalCandidateICEServerUrl() {
+    public java.lang.String getLocalCandidateICEServerUrl() {
       return localCandidateICEServerUrl;
     }
 
@@ -3517,10 +3449,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidateICEServerUrl'.
       * @return This builder.
       */
-    public Builder setLocalCandidateICEServerUrl(String value) {
-      validate(fields()[35], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidateICEServerUrl(java.lang.String value) {
+      validate(fields()[34], value);
       this.localCandidateICEServerUrl = value;
-      fieldSetFlags()[35] = true;
+      fieldSetFlags()[34] = true;
       return this;
     }
 
@@ -3530,7 +3462,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localCandidateICEServerUrl' field has been set, false otherwise.
       */
     public boolean hasLocalCandidateICEServerUrl() {
-      return fieldSetFlags()[35];
+      return fieldSetFlags()[34];
     }
 
 
@@ -3539,9 +3471,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The url of the ICE server used by the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearLocalCandidateICEServerUrl() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidateICEServerUrl() {
       localCandidateICEServerUrl = null;
-      fieldSetFlags()[35] = false;
+      fieldSetFlags()[34] = false;
       return this;
     }
 
@@ -3550,7 +3482,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport
       * @return The value.
       */
-    public String getLocalCandidateRelayProtocol() {
+    public java.lang.String getLocalCandidateRelayProtocol() {
       return localCandidateRelayProtocol;
     }
 
@@ -3560,10 +3492,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidateRelayProtocol'.
       * @return This builder.
       */
-    public Builder setLocalCandidateRelayProtocol(String value) {
-      validate(fields()[36], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidateRelayProtocol(java.lang.String value) {
+      validate(fields()[35], value);
       this.localCandidateRelayProtocol = value;
-      fieldSetFlags()[36] = true;
+      fieldSetFlags()[35] = true;
       return this;
     }
 
@@ -3573,7 +3505,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'localCandidateRelayProtocol' field has been set, false otherwise.
       */
     public boolean hasLocalCandidateRelayProtocol() {
-      return fieldSetFlags()[36];
+      return fieldSetFlags()[35];
     }
 
 
@@ -3582,9 +3514,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearLocalCandidateRelayProtocol() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidateRelayProtocol() {
       localCandidateRelayProtocol = null;
-      fieldSetFlags()[36] = false;
+      fieldSetFlags()[35] = false;
       return this;
     }
 
@@ -3593,7 +3525,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The address of the candidate (IPv4, IPv6, FQDN)
       * @return The value.
       */
-    public String getRemoteAddress() {
+    public java.lang.String getRemoteAddress() {
       return remoteAddress;
     }
 
@@ -3603,10 +3535,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteAddress'.
       * @return This builder.
       */
-    public Builder setRemoteAddress(String value) {
-      validate(fields()[37], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteAddress(java.lang.String value) {
+      validate(fields()[36], value);
       this.remoteAddress = value;
-      fieldSetFlags()[37] = true;
+      fieldSetFlags()[36] = true;
       return this;
     }
 
@@ -3616,7 +3548,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteAddress' field has been set, false otherwise.
       */
     public boolean hasRemoteAddress() {
-      return fieldSetFlags()[37];
+      return fieldSetFlags()[36];
     }
 
 
@@ -3625,9 +3557,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The address of the candidate (IPv4, IPv6, FQDN)
       * @return This builder.
       */
-    public Builder clearRemoteAddress() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteAddress() {
       remoteAddress = null;
-      fieldSetFlags()[37] = false;
+      fieldSetFlags()[36] = false;
       return this;
     }
 
@@ -3636,7 +3568,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The remotely used port to communicate with the remote peer
       * @return The value.
       */
-    public Integer getRemotePort() {
+    public java.lang.Integer getRemotePort() {
       return remotePort;
     }
 
@@ -3646,10 +3578,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remotePort'.
       * @return This builder.
       */
-    public Builder setRemotePort(Integer value) {
-      validate(fields()[38], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemotePort(java.lang.Integer value) {
+      validate(fields()[37], value);
       this.remotePort = value;
-      fieldSetFlags()[38] = true;
+      fieldSetFlags()[37] = true;
       return this;
     }
 
@@ -3659,7 +3591,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remotePort' field has been set, false otherwise.
       */
     public boolean hasRemotePort() {
-      return fieldSetFlags()[38];
+      return fieldSetFlags()[37];
     }
 
 
@@ -3668,9 +3600,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The remotely used port to communicate with the remote peer
       * @return This builder.
       */
-    public Builder clearRemotePort() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemotePort() {
       remotePort = null;
-      fieldSetFlags()[38] = false;
+      fieldSetFlags()[37] = false;
       return this;
     }
 
@@ -3679,7 +3611,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The protocol used by the remote endpoint for the corresponded transport
       * @return The value.
       */
-    public String getRemoteProtocol() {
+    public java.lang.String getRemoteProtocol() {
       return remoteProtocol;
     }
 
@@ -3689,10 +3621,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteProtocol'.
       * @return This builder.
       */
-    public Builder setRemoteProtocol(String value) {
-      validate(fields()[39], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteProtocol(java.lang.String value) {
+      validate(fields()[38], value);
       this.remoteProtocol = value;
-      fieldSetFlags()[39] = true;
+      fieldSetFlags()[38] = true;
       return this;
     }
 
@@ -3702,7 +3634,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteProtocol' field has been set, false otherwise.
       */
     public boolean hasRemoteProtocol() {
-      return fieldSetFlags()[39];
+      return fieldSetFlags()[38];
     }
 
 
@@ -3711,9 +3643,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The protocol used by the remote endpoint for the corresponded transport
       * @return This builder.
       */
-    public Builder clearRemoteProtocol() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteProtocol() {
       remoteProtocol = null;
-      fieldSetFlags()[39] = false;
+      fieldSetFlags()[38] = false;
       return this;
     }
 
@@ -3722,7 +3654,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The type of the ICE candidate used at the remote endpoint on the corresponded transport
       * @return The value.
       */
-    public String getRemoteCandidateType() {
+    public java.lang.String getRemoteCandidateType() {
       return remoteCandidateType;
     }
 
@@ -3732,10 +3664,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidateType'.
       * @return This builder.
       */
-    public Builder setRemoteCandidateType(String value) {
-      validate(fields()[40], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidateType(java.lang.String value) {
+      validate(fields()[39], value);
       this.remoteCandidateType = value;
-      fieldSetFlags()[40] = true;
+      fieldSetFlags()[39] = true;
       return this;
     }
 
@@ -3745,7 +3677,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteCandidateType' field has been set, false otherwise.
       */
     public boolean hasRemoteCandidateType() {
-      return fieldSetFlags()[40];
+      return fieldSetFlags()[39];
     }
 
 
@@ -3754,9 +3686,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The type of the ICE candidate used at the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearRemoteCandidateType() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidateType() {
       remoteCandidateType = null;
-      fieldSetFlags()[40] = false;
+      fieldSetFlags()[39] = false;
       return this;
     }
 
@@ -3765,7 +3697,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The priority of the ICE candidate used at the remote endpoint on the corresponded transport
       * @return The value.
       */
-    public Integer getRemoteCandidatePriority() {
+    public java.lang.Integer getRemoteCandidatePriority() {
       return remoteCandidatePriority;
     }
 
@@ -3775,10 +3707,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidatePriority'.
       * @return This builder.
       */
-    public Builder setRemoteCandidatePriority(Integer value) {
-      validate(fields()[41], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidatePriority(java.lang.Integer value) {
+      validate(fields()[40], value);
       this.remoteCandidatePriority = value;
-      fieldSetFlags()[41] = true;
+      fieldSetFlags()[40] = true;
       return this;
     }
 
@@ -3788,7 +3720,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteCandidatePriority' field has been set, false otherwise.
       */
     public boolean hasRemoteCandidatePriority() {
-      return fieldSetFlags()[41];
+      return fieldSetFlags()[40];
     }
 
 
@@ -3797,9 +3729,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The priority of the ICE candidate used at the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearRemoteCandidatePriority() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidatePriority() {
       remoteCandidatePriority = null;
-      fieldSetFlags()[41] = false;
+      fieldSetFlags()[40] = false;
       return this;
     }
 
@@ -3808,7 +3740,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The url of the ICE server used by the remote endpoint on the corresponded transport
       * @return The value.
       */
-    public String getRemoteCandidateICEServerUrl() {
+    public java.lang.String getRemoteCandidateICEServerUrl() {
       return remoteCandidateICEServerUrl;
     }
 
@@ -3818,10 +3750,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidateICEServerUrl'.
       * @return This builder.
       */
-    public Builder setRemoteCandidateICEServerUrl(String value) {
-      validate(fields()[42], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidateICEServerUrl(java.lang.String value) {
+      validate(fields()[41], value);
       this.remoteCandidateICEServerUrl = value;
-      fieldSetFlags()[42] = true;
+      fieldSetFlags()[41] = true;
       return this;
     }
 
@@ -3831,7 +3763,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteCandidateICEServerUrl' field has been set, false otherwise.
       */
     public boolean hasRemoteCandidateICEServerUrl() {
-      return fieldSetFlags()[42];
+      return fieldSetFlags()[41];
     }
 
 
@@ -3840,9 +3772,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The url of the ICE server used by the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearRemoteCandidateICEServerUrl() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidateICEServerUrl() {
       remoteCandidateICEServerUrl = null;
-      fieldSetFlags()[42] = false;
+      fieldSetFlags()[41] = false;
       return this;
     }
 
@@ -3851,7 +3783,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport
       * @return The value.
       */
-    public String getRemoteCandidateRelayProtocol() {
+    public java.lang.String getRemoteCandidateRelayProtocol() {
       return remoteCandidateRelayProtocol;
     }
 
@@ -3861,10 +3793,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidateRelayProtocol'.
       * @return This builder.
       */
-    public Builder setRemoteCandidateRelayProtocol(String value) {
-      validate(fields()[43], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidateRelayProtocol(java.lang.String value) {
+      validate(fields()[42], value);
       this.remoteCandidateRelayProtocol = value;
-      fieldSetFlags()[43] = true;
+      fieldSetFlags()[42] = true;
       return this;
     }
 
@@ -3874,7 +3806,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'remoteCandidateRelayProtocol' field has been set, false otherwise.
       */
     public boolean hasRemoteCandidateRelayProtocol() {
-      return fieldSetFlags()[43];
+      return fieldSetFlags()[42];
     }
 
 
@@ -3883,9 +3815,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public Builder clearRemoteCandidateRelayProtocol() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidateRelayProtocol() {
       remoteCandidateRelayProtocol = null;
-      fieldSetFlags()[43] = false;
+      fieldSetFlags()[42] = false;
       return this;
     }
 
@@ -3894,7 +3826,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
       * @return The value.
       */
-    public String getIceCandidatePairState() {
+    public java.lang.String getIceCandidatePairState() {
       return iceCandidatePairState;
     }
 
@@ -3904,10 +3836,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairState'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairState(String value) {
-      validate(fields()[44], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairState(java.lang.String value) {
+      validate(fields()[43], value);
       this.iceCandidatePairState = value;
-      fieldSetFlags()[44] = true;
+      fieldSetFlags()[43] = true;
       return this;
     }
 
@@ -3917,7 +3849,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairState' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairState() {
-      return fieldSetFlags()[44];
+      return fieldSetFlags()[43];
     }
 
 
@@ -3926,9 +3858,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
       * @return This builder.
       */
-    public Builder clearIceCandidatePairState() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairState() {
       iceCandidatePairState = null;
-      fieldSetFlags()[44] = false;
+      fieldSetFlags()[43] = false;
       return this;
     }
 
@@ -3937,7 +3869,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public Integer getIceCandidatePairPacketsSent() {
+    public java.lang.Integer getIceCandidatePairPacketsSent() {
       return iceCandidatePairPacketsSent;
     }
 
@@ -3947,10 +3879,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairPacketsSent'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairPacketsSent(Integer value) {
-      validate(fields()[45], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairPacketsSent(java.lang.Integer value) {
+      validate(fields()[44], value);
       this.iceCandidatePairPacketsSent = value;
-      fieldSetFlags()[45] = true;
+      fieldSetFlags()[44] = true;
       return this;
     }
 
@@ -3960,7 +3892,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairPacketsSent' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairPacketsSent() {
-      return fieldSetFlags()[45];
+      return fieldSetFlags()[44];
     }
 
 
@@ -3969,9 +3901,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public Builder clearIceCandidatePairPacketsSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairPacketsSent() {
       iceCandidatePairPacketsSent = null;
-      fieldSetFlags()[45] = false;
+      fieldSetFlags()[44] = false;
       return this;
     }
 
@@ -3980,7 +3912,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of packets received using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public Integer getIceCandidatePairPacketsReceived() {
+    public java.lang.Integer getIceCandidatePairPacketsReceived() {
       return iceCandidatePairPacketsReceived;
     }
 
@@ -3990,10 +3922,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairPacketsReceived'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairPacketsReceived(Integer value) {
-      validate(fields()[46], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairPacketsReceived(java.lang.Integer value) {
+      validate(fields()[45], value);
       this.iceCandidatePairPacketsReceived = value;
-      fieldSetFlags()[46] = true;
+      fieldSetFlags()[45] = true;
       return this;
     }
 
@@ -4003,7 +3935,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairPacketsReceived() {
-      return fieldSetFlags()[46];
+      return fieldSetFlags()[45];
     }
 
 
@@ -4012,9 +3944,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of packets received using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public Builder clearIceCandidatePairPacketsReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairPacketsReceived() {
       iceCandidatePairPacketsReceived = null;
-      fieldSetFlags()[46] = false;
+      fieldSetFlags()[45] = false;
       return this;
     }
 
@@ -4023,7 +3955,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public Long getIceCandidatePairBytesSent() {
+    public java.lang.Long getIceCandidatePairBytesSent() {
       return iceCandidatePairBytesSent;
     }
 
@@ -4033,10 +3965,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairBytesSent'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairBytesSent(Long value) {
-      validate(fields()[47], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairBytesSent(java.lang.Long value) {
+      validate(fields()[46], value);
       this.iceCandidatePairBytesSent = value;
-      fieldSetFlags()[47] = true;
+      fieldSetFlags()[46] = true;
       return this;
     }
 
@@ -4046,7 +3978,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairBytesSent' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairBytesSent() {
-      return fieldSetFlags()[47];
+      return fieldSetFlags()[46];
     }
 
 
@@ -4055,9 +3987,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public Builder clearIceCandidatePairBytesSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairBytesSent() {
       iceCandidatePairBytesSent = null;
-      fieldSetFlags()[47] = false;
+      fieldSetFlags()[46] = false;
       return this;
     }
 
@@ -4066,7 +3998,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public Long getIceCandidatePairBytesReceived() {
+    public java.lang.Long getIceCandidatePairBytesReceived() {
       return iceCandidatePairBytesReceived;
     }
 
@@ -4076,10 +4008,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairBytesReceived'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairBytesReceived(Long value) {
-      validate(fields()[48], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairBytesReceived(java.lang.Long value) {
+      validate(fields()[47], value);
       this.iceCandidatePairBytesReceived = value;
-      fieldSetFlags()[48] = true;
+      fieldSetFlags()[47] = true;
       return this;
     }
 
@@ -4089,7 +4021,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairBytesReceived' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairBytesReceived() {
-      return fieldSetFlags()[48];
+      return fieldSetFlags()[47];
     }
 
 
@@ -4098,9 +4030,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public Builder clearIceCandidatePairBytesReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairBytesReceived() {
       iceCandidatePairBytesReceived = null;
-      fieldSetFlags()[48] = false;
+      fieldSetFlags()[47] = false;
       return this;
     }
 
@@ -4109,7 +4041,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public Long getIceCandidatePairLastPacketSentTimestamp() {
+    public java.lang.Long getIceCandidatePairLastPacketSentTimestamp() {
       return iceCandidatePairLastPacketSentTimestamp;
     }
 
@@ -4119,10 +4051,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairLastPacketSentTimestamp'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairLastPacketSentTimestamp(Long value) {
-      validate(fields()[49], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastPacketSentTimestamp(java.lang.Long value) {
+      validate(fields()[48], value);
       this.iceCandidatePairLastPacketSentTimestamp = value;
-      fieldSetFlags()[49] = true;
+      fieldSetFlags()[48] = true;
       return this;
     }
 
@@ -4132,7 +4064,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairLastPacketSentTimestamp' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairLastPacketSentTimestamp() {
-      return fieldSetFlags()[49];
+      return fieldSetFlags()[48];
     }
 
 
@@ -4141,9 +4073,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public Builder clearIceCandidatePairLastPacketSentTimestamp() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastPacketSentTimestamp() {
       iceCandidatePairLastPacketSentTimestamp = null;
-      fieldSetFlags()[49] = false;
+      fieldSetFlags()[48] = false;
       return this;
     }
 
@@ -4152,7 +4084,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public Long getIceCandidatePairLastPacketReceivedTimestamp() {
+    public java.lang.Long getIceCandidatePairLastPacketReceivedTimestamp() {
       return iceCandidatePairLastPacketReceivedTimestamp;
     }
 
@@ -4162,10 +4094,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairLastPacketReceivedTimestamp'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairLastPacketReceivedTimestamp(Long value) {
-      validate(fields()[50], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastPacketReceivedTimestamp(java.lang.Long value) {
+      validate(fields()[49], value);
       this.iceCandidatePairLastPacketReceivedTimestamp = value;
-      fieldSetFlags()[50] = true;
+      fieldSetFlags()[49] = true;
       return this;
     }
 
@@ -4175,7 +4107,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairLastPacketReceivedTimestamp' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairLastPacketReceivedTimestamp() {
-      return fieldSetFlags()[50];
+      return fieldSetFlags()[49];
     }
 
 
@@ -4184,9 +4116,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public Builder clearIceCandidatePairLastPacketReceivedTimestamp() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastPacketReceivedTimestamp() {
       iceCandidatePairLastPacketReceivedTimestamp = null;
-      fieldSetFlags()[50] = false;
+      fieldSetFlags()[49] = false;
       return this;
     }
 
@@ -4195,7 +4127,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public Long getIceCandidatePairFirstRequestTimestamp() {
+    public java.lang.Long getIceCandidatePairFirstRequestTimestamp() {
       return iceCandidatePairFirstRequestTimestamp;
     }
 
@@ -4205,10 +4137,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairFirstRequestTimestamp'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairFirstRequestTimestamp(Long value) {
-      validate(fields()[51], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairFirstRequestTimestamp(java.lang.Long value) {
+      validate(fields()[50], value);
       this.iceCandidatePairFirstRequestTimestamp = value;
-      fieldSetFlags()[51] = true;
+      fieldSetFlags()[50] = true;
       return this;
     }
 
@@ -4218,7 +4150,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairFirstRequestTimestamp' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairFirstRequestTimestamp() {
-      return fieldSetFlags()[51];
+      return fieldSetFlags()[50];
     }
 
 
@@ -4227,9 +4159,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public Builder clearIceCandidatePairFirstRequestTimestamp() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairFirstRequestTimestamp() {
       iceCandidatePairFirstRequestTimestamp = null;
-      fieldSetFlags()[51] = false;
+      fieldSetFlags()[50] = false;
       return this;
     }
 
@@ -4238,7 +4170,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public Long getIceCandidatePairLastRequestTimestamp() {
+    public java.lang.Long getIceCandidatePairLastRequestTimestamp() {
       return iceCandidatePairLastRequestTimestamp;
     }
 
@@ -4248,10 +4180,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairLastRequestTimestamp'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairLastRequestTimestamp(Long value) {
-      validate(fields()[52], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastRequestTimestamp(java.lang.Long value) {
+      validate(fields()[51], value);
       this.iceCandidatePairLastRequestTimestamp = value;
-      fieldSetFlags()[52] = true;
+      fieldSetFlags()[51] = true;
       return this;
     }
 
@@ -4261,7 +4193,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairLastRequestTimestamp' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairLastRequestTimestamp() {
-      return fieldSetFlags()[52];
+      return fieldSetFlags()[51];
     }
 
 
@@ -4270,9 +4202,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public Builder clearIceCandidatePairLastRequestTimestamp() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastRequestTimestamp() {
       iceCandidatePairLastRequestTimestamp = null;
-      fieldSetFlags()[52] = false;
+      fieldSetFlags()[51] = false;
       return this;
     }
 
@@ -4281,7 +4213,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public Long getIceCandidatePairLastResponseTimestamp() {
+    public java.lang.Long getIceCandidatePairLastResponseTimestamp() {
       return iceCandidatePairLastResponseTimestamp;
     }
 
@@ -4291,10 +4223,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceCandidatePairLastResponseTimestamp'.
       * @return This builder.
       */
-    public Builder setIceCandidatePairLastResponseTimestamp(Long value) {
-      validate(fields()[53], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastResponseTimestamp(java.lang.Long value) {
+      validate(fields()[52], value);
       this.iceCandidatePairLastResponseTimestamp = value;
-      fieldSetFlags()[53] = true;
+      fieldSetFlags()[52] = true;
       return this;
     }
 
@@ -4304,7 +4236,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'iceCandidatePairLastResponseTimestamp' field has been set, false otherwise.
       */
     public boolean hasIceCandidatePairLastResponseTimestamp() {
-      return fieldSetFlags()[53];
+      return fieldSetFlags()[52];
     }
 
 
@@ -4313,9 +4245,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public Builder clearIceCandidatePairLastResponseTimestamp() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastResponseTimestamp() {
       iceCandidatePairLastResponseTimestamp = null;
-      fieldSetFlags()[53] = false;
+      fieldSetFlags()[52] = false;
       return this;
     }
 
@@ -4324,7 +4256,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
       * @return The value.
       */
-    public Double getStunProvidedTotalRoundTripTime() {
+    public java.lang.Double getStunProvidedTotalRoundTripTime() {
       return stunProvidedTotalRoundTripTime;
     }
 
@@ -4334,10 +4266,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'stunProvidedTotalRoundTripTime'.
       * @return This builder.
       */
-    public Builder setStunProvidedTotalRoundTripTime(Double value) {
-      validate(fields()[54], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setStunProvidedTotalRoundTripTime(java.lang.Double value) {
+      validate(fields()[53], value);
       this.stunProvidedTotalRoundTripTime = value;
-      fieldSetFlags()[54] = true;
+      fieldSetFlags()[53] = true;
       return this;
     }
 
@@ -4347,7 +4279,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'stunProvidedTotalRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasStunProvidedTotalRoundTripTime() {
-      return fieldSetFlags()[54];
+      return fieldSetFlags()[53];
     }
 
 
@@ -4356,9 +4288,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
       * @return This builder.
       */
-    public Builder clearStunProvidedTotalRoundTripTime() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearStunProvidedTotalRoundTripTime() {
       stunProvidedTotalRoundTripTime = null;
-      fieldSetFlags()[54] = false;
+      fieldSetFlags()[53] = false;
       return this;
     }
 
@@ -4367,7 +4299,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
       * @return The value.
       */
-    public Double getStunProvidedCurrentRoundTripTime() {
+    public java.lang.Double getStunProvidedCurrentRoundTripTime() {
       return stunProvidedCurrentRoundTripTime;
     }
 
@@ -4377,10 +4309,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'stunProvidedCurrentRoundTripTime'.
       * @return This builder.
       */
-    public Builder setStunProvidedCurrentRoundTripTime(Double value) {
-      validate(fields()[55], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setStunProvidedCurrentRoundTripTime(java.lang.Double value) {
+      validate(fields()[54], value);
       this.stunProvidedCurrentRoundTripTime = value;
-      fieldSetFlags()[55] = true;
+      fieldSetFlags()[54] = true;
       return this;
     }
 
@@ -4390,7 +4322,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'stunProvidedCurrentRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasStunProvidedCurrentRoundTripTime() {
-      return fieldSetFlags()[55];
+      return fieldSetFlags()[54];
     }
 
 
@@ -4399,9 +4331,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
       * @return This builder.
       */
-    public Builder clearStunProvidedCurrentRoundTripTime() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearStunProvidedCurrentRoundTripTime() {
       stunProvidedCurrentRoundTripTime = null;
-      fieldSetFlags()[55] = false;
+      fieldSetFlags()[54] = false;
       return this;
     }
 
@@ -4410,7 +4342,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
       * @return The value.
       */
-    public Double getAvailableOutgoingBitrate() {
+    public java.lang.Double getAvailableOutgoingBitrate() {
       return availableOutgoingBitrate;
     }
 
@@ -4420,10 +4352,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'availableOutgoingBitrate'.
       * @return This builder.
       */
-    public Builder setAvailableOutgoingBitrate(Double value) {
-      validate(fields()[56], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setAvailableOutgoingBitrate(java.lang.Double value) {
+      validate(fields()[55], value);
       this.availableOutgoingBitrate = value;
-      fieldSetFlags()[56] = true;
+      fieldSetFlags()[55] = true;
       return this;
     }
 
@@ -4433,7 +4365,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'availableOutgoingBitrate' field has been set, false otherwise.
       */
     public boolean hasAvailableOutgoingBitrate() {
-      return fieldSetFlags()[56];
+      return fieldSetFlags()[55];
     }
 
 
@@ -4442,9 +4374,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
       * @return This builder.
       */
-    public Builder clearAvailableOutgoingBitrate() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearAvailableOutgoingBitrate() {
       availableOutgoingBitrate = null;
-      fieldSetFlags()[56] = false;
+      fieldSetFlags()[55] = false;
       return this;
     }
 
@@ -4453,7 +4385,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
       * @return The value.
       */
-    public Double getAvailableIncomingBitrate() {
+    public java.lang.Double getAvailableIncomingBitrate() {
       return availableIncomingBitrate;
     }
 
@@ -4463,10 +4395,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'availableIncomingBitrate'.
       * @return This builder.
       */
-    public Builder setAvailableIncomingBitrate(Double value) {
-      validate(fields()[57], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setAvailableIncomingBitrate(java.lang.Double value) {
+      validate(fields()[56], value);
       this.availableIncomingBitrate = value;
-      fieldSetFlags()[57] = true;
+      fieldSetFlags()[56] = true;
       return this;
     }
 
@@ -4476,7 +4408,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'availableIncomingBitrate' field has been set, false otherwise.
       */
     public boolean hasAvailableIncomingBitrate() {
-      return fieldSetFlags()[57];
+      return fieldSetFlags()[56];
     }
 
 
@@ -4485,9 +4417,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
       * @return This builder.
       */
-    public Builder clearAvailableIncomingBitrate() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearAvailableIncomingBitrate() {
       availableIncomingBitrate = null;
-      fieldSetFlags()[57] = false;
+      fieldSetFlags()[56] = false;
       return this;
     }
 
@@ -4496,7 +4428,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
       * @return The value.
       */
-    public Integer getCircuitBreakerTriggerCount() {
+    public java.lang.Integer getCircuitBreakerTriggerCount() {
       return circuitBreakerTriggerCount;
     }
 
@@ -4506,10 +4438,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'circuitBreakerTriggerCount'.
       * @return This builder.
       */
-    public Builder setCircuitBreakerTriggerCount(Integer value) {
-      validate(fields()[58], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCircuitBreakerTriggerCount(java.lang.Integer value) {
+      validate(fields()[57], value);
       this.circuitBreakerTriggerCount = value;
-      fieldSetFlags()[58] = true;
+      fieldSetFlags()[57] = true;
       return this;
     }
 
@@ -4519,7 +4451,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'circuitBreakerTriggerCount' field has been set, false otherwise.
       */
     public boolean hasCircuitBreakerTriggerCount() {
-      return fieldSetFlags()[58];
+      return fieldSetFlags()[57];
     }
 
 
@@ -4528,9 +4460,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
       * @return This builder.
       */
-    public Builder clearCircuitBreakerTriggerCount() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCircuitBreakerTriggerCount() {
       circuitBreakerTriggerCount = null;
-      fieldSetFlags()[58] = false;
+      fieldSetFlags()[57] = false;
       return this;
     }
 
@@ -4539,7 +4471,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairRequestsReceived() {
+    public java.lang.Integer getCandidatePairRequestsReceived() {
       return candidatePairRequestsReceived;
     }
 
@@ -4549,10 +4481,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRequestsReceived'.
       * @return This builder.
       */
-    public Builder setCandidatePairRequestsReceived(Integer value) {
-      validate(fields()[59], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRequestsReceived(java.lang.Integer value) {
+      validate(fields()[58], value);
       this.candidatePairRequestsReceived = value;
-      fieldSetFlags()[59] = true;
+      fieldSetFlags()[58] = true;
       return this;
     }
 
@@ -4562,7 +4494,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairRequestsReceived' field has been set, false otherwise.
       */
     public boolean hasCandidatePairRequestsReceived() {
-      return fieldSetFlags()[59];
+      return fieldSetFlags()[58];
     }
 
 
@@ -4571,9 +4503,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairRequestsReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRequestsReceived() {
       candidatePairRequestsReceived = null;
-      fieldSetFlags()[59] = false;
+      fieldSetFlags()[58] = false;
       return this;
     }
 
@@ -4582,7 +4514,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairRequestsSent() {
+    public java.lang.Integer getCandidatePairRequestsSent() {
       return candidatePairRequestsSent;
     }
 
@@ -4592,10 +4524,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRequestsSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairRequestsSent(Integer value) {
-      validate(fields()[60], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRequestsSent(java.lang.Integer value) {
+      validate(fields()[59], value);
       this.candidatePairRequestsSent = value;
-      fieldSetFlags()[60] = true;
+      fieldSetFlags()[59] = true;
       return this;
     }
 
@@ -4605,7 +4537,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairRequestsSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairRequestsSent() {
-      return fieldSetFlags()[60];
+      return fieldSetFlags()[59];
     }
 
 
@@ -4614,9 +4546,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairRequestsSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRequestsSent() {
       candidatePairRequestsSent = null;
-      fieldSetFlags()[60] = false;
+      fieldSetFlags()[59] = false;
       return this;
     }
 
@@ -4625,7 +4557,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairResponsesReceived() {
+    public java.lang.Integer getCandidatePairResponsesReceived() {
       return candidatePairResponsesReceived;
     }
 
@@ -4635,10 +4567,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponsesReceived'.
       * @return This builder.
       */
-    public Builder setCandidatePairResponsesReceived(Integer value) {
-      validate(fields()[61], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponsesReceived(java.lang.Integer value) {
+      validate(fields()[60], value);
       this.candidatePairResponsesReceived = value;
-      fieldSetFlags()[61] = true;
+      fieldSetFlags()[60] = true;
       return this;
     }
 
@@ -4648,7 +4580,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairResponsesReceived' field has been set, false otherwise.
       */
     public boolean hasCandidatePairResponsesReceived() {
-      return fieldSetFlags()[61];
+      return fieldSetFlags()[60];
     }
 
 
@@ -4657,9 +4589,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairResponsesReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairResponsesReceived() {
       candidatePairResponsesReceived = null;
-      fieldSetFlags()[61] = false;
+      fieldSetFlags()[60] = false;
       return this;
     }
 
@@ -4668,7 +4600,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairResponsesSent() {
+    public java.lang.Integer getCandidatePairResponsesSent() {
       return candidatePairResponsesSent;
     }
 
@@ -4678,10 +4610,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponsesSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairResponsesSent(Integer value) {
-      validate(fields()[62], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponsesSent(java.lang.Integer value) {
+      validate(fields()[61], value);
       this.candidatePairResponsesSent = value;
-      fieldSetFlags()[62] = true;
+      fieldSetFlags()[61] = true;
       return this;
     }
 
@@ -4691,7 +4623,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairResponsesSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairResponsesSent() {
-      return fieldSetFlags()[62];
+      return fieldSetFlags()[61];
     }
 
 
@@ -4700,9 +4632,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairResponsesSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairResponsesSent() {
       candidatePairResponsesSent = null;
-      fieldSetFlags()[62] = false;
+      fieldSetFlags()[61] = false;
       return this;
     }
 
@@ -4711,7 +4643,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairRetransmissionReceived() {
+    public java.lang.Integer getCandidatePairRetransmissionReceived() {
       return candidatePairRetransmissionReceived;
     }
 
@@ -4721,10 +4653,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRetransmissionReceived'.
       * @return This builder.
       */
-    public Builder setCandidatePairRetransmissionReceived(Integer value) {
-      validate(fields()[63], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRetransmissionReceived(java.lang.Integer value) {
+      validate(fields()[62], value);
       this.candidatePairRetransmissionReceived = value;
-      fieldSetFlags()[63] = true;
+      fieldSetFlags()[62] = true;
       return this;
     }
 
@@ -4734,7 +4666,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairRetransmissionReceived' field has been set, false otherwise.
       */
     public boolean hasCandidatePairRetransmissionReceived() {
-      return fieldSetFlags()[63];
+      return fieldSetFlags()[62];
     }
 
 
@@ -4743,9 +4675,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairRetransmissionReceived() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRetransmissionReceived() {
       candidatePairRetransmissionReceived = null;
-      fieldSetFlags()[63] = false;
+      fieldSetFlags()[62] = false;
       return this;
     }
 
@@ -4754,7 +4686,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairRetransmissionSent() {
+    public java.lang.Integer getCandidatePairRetransmissionSent() {
       return candidatePairRetransmissionSent;
     }
 
@@ -4764,10 +4696,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRetransmissionSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairRetransmissionSent(Integer value) {
-      validate(fields()[64], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRetransmissionSent(java.lang.Integer value) {
+      validate(fields()[63], value);
       this.candidatePairRetransmissionSent = value;
-      fieldSetFlags()[64] = true;
+      fieldSetFlags()[63] = true;
       return this;
     }
 
@@ -4777,7 +4709,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairRetransmissionSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairRetransmissionSent() {
-      return fieldSetFlags()[64];
+      return fieldSetFlags()[63];
     }
 
 
@@ -4786,9 +4718,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairRetransmissionSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRetransmissionSent() {
       candidatePairRetransmissionSent = null;
-      fieldSetFlags()[64] = false;
+      fieldSetFlags()[63] = false;
       return this;
     }
 
@@ -4797,7 +4729,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairConsentRequestsSent() {
+    public java.lang.Integer getCandidatePairConsentRequestsSent() {
       return candidatePairConsentRequestsSent;
     }
 
@@ -4807,10 +4739,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairConsentRequestsSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairConsentRequestsSent(Integer value) {
-      validate(fields()[65], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairConsentRequestsSent(java.lang.Integer value) {
+      validate(fields()[64], value);
       this.candidatePairConsentRequestsSent = value;
-      fieldSetFlags()[65] = true;
+      fieldSetFlags()[64] = true;
       return this;
     }
 
@@ -4820,7 +4752,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairConsentRequestsSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairConsentRequestsSent() {
-      return fieldSetFlags()[65];
+      return fieldSetFlags()[64];
     }
 
 
@@ -4829,9 +4761,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairConsentRequestsSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairConsentRequestsSent() {
       candidatePairConsentRequestsSent = null;
-      fieldSetFlags()[65] = false;
+      fieldSetFlags()[64] = false;
       return this;
     }
 
@@ -4840,7 +4772,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Long getCandidatePairConsentExpiredTimestamp() {
+    public java.lang.Long getCandidatePairConsentExpiredTimestamp() {
       return candidatePairConsentExpiredTimestamp;
     }
 
@@ -4850,10 +4782,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairConsentExpiredTimestamp'.
       * @return This builder.
       */
-    public Builder setCandidatePairConsentExpiredTimestamp(Long value) {
-      validate(fields()[66], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairConsentExpiredTimestamp(java.lang.Long value) {
+      validate(fields()[65], value);
       this.candidatePairConsentExpiredTimestamp = value;
-      fieldSetFlags()[66] = true;
+      fieldSetFlags()[65] = true;
       return this;
     }
 
@@ -4863,7 +4795,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairConsentExpiredTimestamp' field has been set, false otherwise.
       */
     public boolean hasCandidatePairConsentExpiredTimestamp() {
-      return fieldSetFlags()[66];
+      return fieldSetFlags()[65];
     }
 
 
@@ -4872,9 +4804,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairConsentExpiredTimestamp() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairConsentExpiredTimestamp() {
       candidatePairConsentExpiredTimestamp = null;
-      fieldSetFlags()[66] = false;
+      fieldSetFlags()[65] = false;
       return this;
     }
 
@@ -4883,7 +4815,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Long getCandidatePairBytesDiscardedOnSend() {
+    public java.lang.Long getCandidatePairBytesDiscardedOnSend() {
       return candidatePairBytesDiscardedOnSend;
     }
 
@@ -4893,10 +4825,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairBytesDiscardedOnSend'.
       * @return This builder.
       */
-    public Builder setCandidatePairBytesDiscardedOnSend(Long value) {
-      validate(fields()[67], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairBytesDiscardedOnSend(java.lang.Long value) {
+      validate(fields()[66], value);
       this.candidatePairBytesDiscardedOnSend = value;
-      fieldSetFlags()[67] = true;
+      fieldSetFlags()[66] = true;
       return this;
     }
 
@@ -4906,7 +4838,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairBytesDiscardedOnSend' field has been set, false otherwise.
       */
     public boolean hasCandidatePairBytesDiscardedOnSend() {
-      return fieldSetFlags()[67];
+      return fieldSetFlags()[66];
     }
 
 
@@ -4915,9 +4847,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairBytesDiscardedOnSend() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairBytesDiscardedOnSend() {
       candidatePairBytesDiscardedOnSend = null;
-      fieldSetFlags()[67] = false;
+      fieldSetFlags()[66] = false;
       return this;
     }
 
@@ -4926,7 +4858,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Long getCandidatePairRequestBytesSent() {
+    public java.lang.Long getCandidatePairRequestBytesSent() {
       return candidatePairRequestBytesSent;
     }
 
@@ -4936,10 +4868,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRequestBytesSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairRequestBytesSent(Long value) {
-      validate(fields()[68], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRequestBytesSent(java.lang.Long value) {
+      validate(fields()[67], value);
       this.candidatePairRequestBytesSent = value;
-      fieldSetFlags()[68] = true;
+      fieldSetFlags()[67] = true;
       return this;
     }
 
@@ -4949,7 +4881,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairRequestBytesSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairRequestBytesSent() {
-      return fieldSetFlags()[68];
+      return fieldSetFlags()[67];
     }
 
 
@@ -4958,9 +4890,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairRequestBytesSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRequestBytesSent() {
       candidatePairRequestBytesSent = null;
-      fieldSetFlags()[68] = false;
+      fieldSetFlags()[67] = false;
       return this;
     }
 
@@ -4969,7 +4901,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Long getCandidatePairConsentRequestBytesSent() {
+    public java.lang.Long getCandidatePairConsentRequestBytesSent() {
       return candidatePairConsentRequestBytesSent;
     }
 
@@ -4979,10 +4911,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairConsentRequestBytesSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairConsentRequestBytesSent(Long value) {
-      validate(fields()[69], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairConsentRequestBytesSent(java.lang.Long value) {
+      validate(fields()[68], value);
       this.candidatePairConsentRequestBytesSent = value;
-      fieldSetFlags()[69] = true;
+      fieldSetFlags()[68] = true;
       return this;
     }
 
@@ -4992,7 +4924,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairConsentRequestBytesSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairConsentRequestBytesSent() {
-      return fieldSetFlags()[69];
+      return fieldSetFlags()[68];
     }
 
 
@@ -5001,9 +4933,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairConsentRequestBytesSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairConsentRequestBytesSent() {
       candidatePairConsentRequestBytesSent = null;
-      fieldSetFlags()[69] = false;
+      fieldSetFlags()[68] = false;
       return this;
     }
 
@@ -5012,7 +4944,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public Integer getCandidatePairResponseBytesSent() {
+    public java.lang.Integer getCandidatePairResponseBytesSent() {
       return candidatePairResponseBytesSent;
     }
 
@@ -5022,10 +4954,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponseBytesSent'.
       * @return This builder.
       */
-    public Builder setCandidatePairResponseBytesSent(Integer value) {
-      validate(fields()[70], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponseBytesSent(java.lang.Integer value) {
+      validate(fields()[69], value);
       this.candidatePairResponseBytesSent = value;
-      fieldSetFlags()[70] = true;
+      fieldSetFlags()[69] = true;
       return this;
     }
 
@@ -5035,7 +4967,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'candidatePairResponseBytesSent' field has been set, false otherwise.
       */
     public boolean hasCandidatePairResponseBytesSent() {
-      return fieldSetFlags()[70];
+      return fieldSetFlags()[69];
     }
 
 
@@ -5044,9 +4976,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public Builder clearCandidatePairResponseBytesSent() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairResponseBytesSent() {
       candidatePairResponseBytesSent = null;
-      fieldSetFlags()[70] = false;
+      fieldSetFlags()[69] = false;
       return this;
     }
 
@@ -5055,7 +4987,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. 
       * @return The value.
       */
-    public Double getSctpSmoothedRoundTripTime() {
+    public java.lang.Double getSctpSmoothedRoundTripTime() {
       return sctpSmoothedRoundTripTime;
     }
 
@@ -5065,10 +4997,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpSmoothedRoundTripTime'.
       * @return This builder.
       */
-    public Builder setSctpSmoothedRoundTripTime(Double value) {
-      validate(fields()[71], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpSmoothedRoundTripTime(java.lang.Double value) {
+      validate(fields()[70], value);
       this.sctpSmoothedRoundTripTime = value;
-      fieldSetFlags()[71] = true;
+      fieldSetFlags()[70] = true;
       return this;
     }
 
@@ -5078,7 +5010,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'sctpSmoothedRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasSctpSmoothedRoundTripTime() {
-      return fieldSetFlags()[71];
+      return fieldSetFlags()[70];
     }
 
 
@@ -5087,9 +5019,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. 
       * @return This builder.
       */
-    public Builder clearSctpSmoothedRoundTripTime() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpSmoothedRoundTripTime() {
       sctpSmoothedRoundTripTime = null;
-      fieldSetFlags()[71] = false;
+      fieldSetFlags()[70] = false;
       return this;
     }
 
@@ -5098,7 +5030,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest congestion window, corresponding to spinfo_cwnd.
       * @return The value.
       */
-    public Double getSctpCongestionWindow() {
+    public java.lang.Double getSctpCongestionWindow() {
       return sctpCongestionWindow;
     }
 
@@ -5108,10 +5040,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpCongestionWindow'.
       * @return This builder.
       */
-    public Builder setSctpCongestionWindow(Double value) {
-      validate(fields()[72], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpCongestionWindow(java.lang.Double value) {
+      validate(fields()[71], value);
       this.sctpCongestionWindow = value;
-      fieldSetFlags()[72] = true;
+      fieldSetFlags()[71] = true;
       return this;
     }
 
@@ -5121,7 +5053,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'sctpCongestionWindow' field has been set, false otherwise.
       */
     public boolean hasSctpCongestionWindow() {
-      return fieldSetFlags()[72];
+      return fieldSetFlags()[71];
     }
 
 
@@ -5130,9 +5062,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest congestion window, corresponding to spinfo_cwnd.
       * @return This builder.
       */
-    public Builder clearSctpCongestionWindow() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpCongestionWindow() {
       sctpCongestionWindow = null;
-      fieldSetFlags()[72] = false;
+      fieldSetFlags()[71] = false;
       return this;
     }
 
@@ -5141,7 +5073,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest receiver window, corresponding to sstat_rwnd.
       * @return The value.
       */
-    public Double getSctpReceiverWindow() {
+    public java.lang.Double getSctpReceiverWindow() {
       return sctpReceiverWindow;
     }
 
@@ -5151,10 +5083,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpReceiverWindow'.
       * @return This builder.
       */
-    public Builder setSctpReceiverWindow(Double value) {
-      validate(fields()[73], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpReceiverWindow(java.lang.Double value) {
+      validate(fields()[72], value);
       this.sctpReceiverWindow = value;
-      fieldSetFlags()[73] = true;
+      fieldSetFlags()[72] = true;
       return this;
     }
 
@@ -5164,7 +5096,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'sctpReceiverWindow' field has been set, false otherwise.
       */
     public boolean hasSctpReceiverWindow() {
-      return fieldSetFlags()[73];
+      return fieldSetFlags()[72];
     }
 
 
@@ -5173,9 +5105,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest receiver window, corresponding to sstat_rwnd.
       * @return This builder.
       */
-    public Builder clearSctpReceiverWindow() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpReceiverWindow() {
       sctpReceiverWindow = null;
-      fieldSetFlags()[73] = false;
+      fieldSetFlags()[72] = false;
       return this;
     }
 
@@ -5184,7 +5116,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest maximum transmission unit, corresponding to spinfo_mtu.
       * @return The value.
       */
-    public Integer getSctpMtu() {
+    public java.lang.Integer getSctpMtu() {
       return sctpMtu;
     }
 
@@ -5194,10 +5126,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpMtu'.
       * @return This builder.
       */
-    public Builder setSctpMtu(Integer value) {
-      validate(fields()[74], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpMtu(java.lang.Integer value) {
+      validate(fields()[73], value);
       this.sctpMtu = value;
-      fieldSetFlags()[74] = true;
+      fieldSetFlags()[73] = true;
       return this;
     }
 
@@ -5207,7 +5139,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'sctpMtu' field has been set, false otherwise.
       */
     public boolean hasSctpMtu() {
-      return fieldSetFlags()[74];
+      return fieldSetFlags()[73];
     }
 
 
@@ -5216,9 +5148,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest maximum transmission unit, corresponding to spinfo_mtu.
       * @return This builder.
       */
-    public Builder clearSctpMtu() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpMtu() {
       sctpMtu = null;
-      fieldSetFlags()[74] = false;
+      fieldSetFlags()[73] = false;
       return this;
     }
 
@@ -5227,7 +5159,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
       * @return The value.
       */
-    public Integer getSctpUnackData() {
+    public java.lang.Integer getSctpUnackData() {
       return sctpUnackData;
     }
 
@@ -5237,10 +5169,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpUnackData'.
       * @return This builder.
       */
-    public Builder setSctpUnackData(Integer value) {
-      validate(fields()[75], value);
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpUnackData(java.lang.Integer value) {
+      validate(fields()[74], value);
       this.sctpUnackData = value;
-      fieldSetFlags()[75] = true;
+      fieldSetFlags()[74] = true;
       return this;
     }
 
@@ -5250,7 +5182,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'sctpUnackData' field has been set, false otherwise.
       */
     public boolean hasSctpUnackData() {
-      return fieldSetFlags()[75];
+      return fieldSetFlags()[74];
     }
 
 
@@ -5259,9 +5191,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
       * @return This builder.
       */
-    public Builder clearSctpUnackData() {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpUnackData() {
       sctpUnackData = null;
-      fieldSetFlags()[75] = false;
+      fieldSetFlags()[74] = false;
       return this;
     }
 
@@ -5269,82 +5201,81 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     public PcTransportReport build() {
       try {
         PcTransportReport record = new PcTransportReport();
-        record.serviceId = fieldSetFlags()[0] ? this.serviceId : (String) defaultValue(fields()[0]);
-        record.serviceName = fieldSetFlags()[1] ? this.serviceName : (String) defaultValue(fields()[1]);
-        record.mediaUnitId = fieldSetFlags()[2] ? this.mediaUnitId : (String) defaultValue(fields()[2]);
-        record.marker = fieldSetFlags()[3] ? this.marker : (String) defaultValue(fields()[3]);
-        record.timestamp = fieldSetFlags()[4] ? this.timestamp : (Long) defaultValue(fields()[4]);
-        record.callId = fieldSetFlags()[5] ? this.callId : (String) defaultValue(fields()[5]);
-        record.roomId = fieldSetFlags()[6] ? this.roomId : (String) defaultValue(fields()[6]);
-        record.clientId = fieldSetFlags()[7] ? this.clientId : (String) defaultValue(fields()[7]);
-        record.userId = fieldSetFlags()[8] ? this.userId : (String) defaultValue(fields()[8]);
-        record.peerConnectionId = fieldSetFlags()[9] ? this.peerConnectionId : (String) defaultValue(fields()[9]);
-        record.label = fieldSetFlags()[10] ? this.label : (String) defaultValue(fields()[10]);
-        record.packetsSent = fieldSetFlags()[11] ? this.packetsSent : (Integer) defaultValue(fields()[11]);
-        record.packetsReceived = fieldSetFlags()[12] ? this.packetsReceived : (Integer) defaultValue(fields()[12]);
-        record.bytesSent = fieldSetFlags()[13] ? this.bytesSent : (Integer) defaultValue(fields()[13]);
-        record.bytesReceived = fieldSetFlags()[14] ? this.bytesReceived : (Integer) defaultValue(fields()[14]);
-        record.iceRole = fieldSetFlags()[15] ? this.iceRole : (String) defaultValue(fields()[15]);
-        record.iceLocalUsernameFragment = fieldSetFlags()[16] ? this.iceLocalUsernameFragment : (String) defaultValue(fields()[16]);
-        record.dtlsState = fieldSetFlags()[17] ? this.dtlsState : (String) defaultValue(fields()[17]);
-        record.iceTransportState = fieldSetFlags()[18] ? this.iceTransportState : (String) defaultValue(fields()[18]);
-        record.tlsVersion = fieldSetFlags()[19] ? this.tlsVersion : (String) defaultValue(fields()[19]);
-        record.dtlsCipher = fieldSetFlags()[20] ? this.dtlsCipher : (String) defaultValue(fields()[20]);
-        record.srtpCipher = fieldSetFlags()[21] ? this.srtpCipher : (String) defaultValue(fields()[21]);
-        record.tlsGroup = fieldSetFlags()[22] ? this.tlsGroup : (String) defaultValue(fields()[22]);
-        record.selectedCandidatePairChanges = fieldSetFlags()[23] ? this.selectedCandidatePairChanges : (Integer) defaultValue(fields()[23]);
-        record.localFingerprint = fieldSetFlags()[24] ? this.localFingerprint : (String) defaultValue(fields()[24]);
-        record.localFingerprintAlgorithm = fieldSetFlags()[25] ? this.localFingerprintAlgorithm : (String) defaultValue(fields()[25]);
-        record.localBase64Certificate = fieldSetFlags()[26] ? this.localBase64Certificate : (String) defaultValue(fields()[26]);
-        record.remoteFingerprint = fieldSetFlags()[27] ? this.remoteFingerprint : (String) defaultValue(fields()[27]);
-        record.remoteFingerprintAlgorithm = fieldSetFlags()[28] ? this.remoteFingerprintAlgorithm : (String) defaultValue(fields()[28]);
-        record.remoteBase64Certificate = fieldSetFlags()[29] ? this.remoteBase64Certificate : (String) defaultValue(fields()[29]);
-        record.localAddress = fieldSetFlags()[30] ? this.localAddress : (String) defaultValue(fields()[30]);
-        record.localPort = fieldSetFlags()[31] ? this.localPort : (Integer) defaultValue(fields()[31]);
-        record.localProtocol = fieldSetFlags()[32] ? this.localProtocol : (String) defaultValue(fields()[32]);
-        record.localCandidateType = fieldSetFlags()[33] ? this.localCandidateType : (String) defaultValue(fields()[33]);
-        record.localCandidatePriority = fieldSetFlags()[34] ? this.localCandidatePriority : (Integer) defaultValue(fields()[34]);
-        record.localCandidateICEServerUrl = fieldSetFlags()[35] ? this.localCandidateICEServerUrl : (String) defaultValue(fields()[35]);
-        record.localCandidateRelayProtocol = fieldSetFlags()[36] ? this.localCandidateRelayProtocol : (String) defaultValue(fields()[36]);
-        record.remoteAddress = fieldSetFlags()[37] ? this.remoteAddress : (String) defaultValue(fields()[37]);
-        record.remotePort = fieldSetFlags()[38] ? this.remotePort : (Integer) defaultValue(fields()[38]);
-        record.remoteProtocol = fieldSetFlags()[39] ? this.remoteProtocol : (String) defaultValue(fields()[39]);
-        record.remoteCandidateType = fieldSetFlags()[40] ? this.remoteCandidateType : (String) defaultValue(fields()[40]);
-        record.remoteCandidatePriority = fieldSetFlags()[41] ? this.remoteCandidatePriority : (Integer) defaultValue(fields()[41]);
-        record.remoteCandidateICEServerUrl = fieldSetFlags()[42] ? this.remoteCandidateICEServerUrl : (String) defaultValue(fields()[42]);
-        record.remoteCandidateRelayProtocol = fieldSetFlags()[43] ? this.remoteCandidateRelayProtocol : (String) defaultValue(fields()[43]);
-        record.iceCandidatePairState = fieldSetFlags()[44] ? this.iceCandidatePairState : (String) defaultValue(fields()[44]);
-        record.iceCandidatePairPacketsSent = fieldSetFlags()[45] ? this.iceCandidatePairPacketsSent : (Integer) defaultValue(fields()[45]);
-        record.iceCandidatePairPacketsReceived = fieldSetFlags()[46] ? this.iceCandidatePairPacketsReceived : (Integer) defaultValue(fields()[46]);
-        record.iceCandidatePairBytesSent = fieldSetFlags()[47] ? this.iceCandidatePairBytesSent : (Long) defaultValue(fields()[47]);
-        record.iceCandidatePairBytesReceived = fieldSetFlags()[48] ? this.iceCandidatePairBytesReceived : (Long) defaultValue(fields()[48]);
-        record.iceCandidatePairLastPacketSentTimestamp = fieldSetFlags()[49] ? this.iceCandidatePairLastPacketSentTimestamp : (Long) defaultValue(fields()[49]);
-        record.iceCandidatePairLastPacketReceivedTimestamp = fieldSetFlags()[50] ? this.iceCandidatePairLastPacketReceivedTimestamp : (Long) defaultValue(fields()[50]);
-        record.iceCandidatePairFirstRequestTimestamp = fieldSetFlags()[51] ? this.iceCandidatePairFirstRequestTimestamp : (Long) defaultValue(fields()[51]);
-        record.iceCandidatePairLastRequestTimestamp = fieldSetFlags()[52] ? this.iceCandidatePairLastRequestTimestamp : (Long) defaultValue(fields()[52]);
-        record.iceCandidatePairLastResponseTimestamp = fieldSetFlags()[53] ? this.iceCandidatePairLastResponseTimestamp : (Long) defaultValue(fields()[53]);
-        record.stunProvidedTotalRoundTripTime = fieldSetFlags()[54] ? this.stunProvidedTotalRoundTripTime : (Double) defaultValue(fields()[54]);
-        record.stunProvidedCurrentRoundTripTime = fieldSetFlags()[55] ? this.stunProvidedCurrentRoundTripTime : (Double) defaultValue(fields()[55]);
-        record.availableOutgoingBitrate = fieldSetFlags()[56] ? this.availableOutgoingBitrate : (Double) defaultValue(fields()[56]);
-        record.availableIncomingBitrate = fieldSetFlags()[57] ? this.availableIncomingBitrate : (Double) defaultValue(fields()[57]);
-        record.circuitBreakerTriggerCount = fieldSetFlags()[58] ? this.circuitBreakerTriggerCount : (Integer) defaultValue(fields()[58]);
-        record.candidatePairRequestsReceived = fieldSetFlags()[59] ? this.candidatePairRequestsReceived : (Integer) defaultValue(fields()[59]);
-        record.candidatePairRequestsSent = fieldSetFlags()[60] ? this.candidatePairRequestsSent : (Integer) defaultValue(fields()[60]);
-        record.candidatePairResponsesReceived = fieldSetFlags()[61] ? this.candidatePairResponsesReceived : (Integer) defaultValue(fields()[61]);
-        record.candidatePairResponsesSent = fieldSetFlags()[62] ? this.candidatePairResponsesSent : (Integer) defaultValue(fields()[62]);
-        record.candidatePairRetransmissionReceived = fieldSetFlags()[63] ? this.candidatePairRetransmissionReceived : (Integer) defaultValue(fields()[63]);
-        record.candidatePairRetransmissionSent = fieldSetFlags()[64] ? this.candidatePairRetransmissionSent : (Integer) defaultValue(fields()[64]);
-        record.candidatePairConsentRequestsSent = fieldSetFlags()[65] ? this.candidatePairConsentRequestsSent : (Integer) defaultValue(fields()[65]);
-        record.candidatePairConsentExpiredTimestamp = fieldSetFlags()[66] ? this.candidatePairConsentExpiredTimestamp : (Long) defaultValue(fields()[66]);
-        record.candidatePairBytesDiscardedOnSend = fieldSetFlags()[67] ? this.candidatePairBytesDiscardedOnSend : (Long) defaultValue(fields()[67]);
-        record.candidatePairRequestBytesSent = fieldSetFlags()[68] ? this.candidatePairRequestBytesSent : (Long) defaultValue(fields()[68]);
-        record.candidatePairConsentRequestBytesSent = fieldSetFlags()[69] ? this.candidatePairConsentRequestBytesSent : (Long) defaultValue(fields()[69]);
-        record.candidatePairResponseBytesSent = fieldSetFlags()[70] ? this.candidatePairResponseBytesSent : (Integer) defaultValue(fields()[70]);
-        record.sctpSmoothedRoundTripTime = fieldSetFlags()[71] ? this.sctpSmoothedRoundTripTime : (Double) defaultValue(fields()[71]);
-        record.sctpCongestionWindow = fieldSetFlags()[72] ? this.sctpCongestionWindow : (Double) defaultValue(fields()[72]);
-        record.sctpReceiverWindow = fieldSetFlags()[73] ? this.sctpReceiverWindow : (Double) defaultValue(fields()[73]);
-        record.sctpMtu = fieldSetFlags()[74] ? this.sctpMtu : (Integer) defaultValue(fields()[74]);
-        record.sctpUnackData = fieldSetFlags()[75] ? this.sctpUnackData : (Integer) defaultValue(fields()[75]);
+        record.serviceId = fieldSetFlags()[0] ? this.serviceId : (java.lang.String) defaultValue(fields()[0]);
+        record.mediaUnitId = fieldSetFlags()[1] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[1]);
+        record.marker = fieldSetFlags()[2] ? this.marker : (java.lang.String) defaultValue(fields()[2]);
+        record.timestamp = fieldSetFlags()[3] ? this.timestamp : (java.lang.Long) defaultValue(fields()[3]);
+        record.callId = fieldSetFlags()[4] ? this.callId : (java.lang.String) defaultValue(fields()[4]);
+        record.roomId = fieldSetFlags()[5] ? this.roomId : (java.lang.String) defaultValue(fields()[5]);
+        record.clientId = fieldSetFlags()[6] ? this.clientId : (java.lang.String) defaultValue(fields()[6]);
+        record.userId = fieldSetFlags()[7] ? this.userId : (java.lang.String) defaultValue(fields()[7]);
+        record.peerConnectionId = fieldSetFlags()[8] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[8]);
+        record.label = fieldSetFlags()[9] ? this.label : (java.lang.String) defaultValue(fields()[9]);
+        record.packetsSent = fieldSetFlags()[10] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[10]);
+        record.packetsReceived = fieldSetFlags()[11] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[11]);
+        record.bytesSent = fieldSetFlags()[12] ? this.bytesSent : (java.lang.Integer) defaultValue(fields()[12]);
+        record.bytesReceived = fieldSetFlags()[13] ? this.bytesReceived : (java.lang.Integer) defaultValue(fields()[13]);
+        record.iceRole = fieldSetFlags()[14] ? this.iceRole : (java.lang.String) defaultValue(fields()[14]);
+        record.iceLocalUsernameFragment = fieldSetFlags()[15] ? this.iceLocalUsernameFragment : (java.lang.String) defaultValue(fields()[15]);
+        record.dtlsState = fieldSetFlags()[16] ? this.dtlsState : (java.lang.String) defaultValue(fields()[16]);
+        record.iceTransportState = fieldSetFlags()[17] ? this.iceTransportState : (java.lang.String) defaultValue(fields()[17]);
+        record.tlsVersion = fieldSetFlags()[18] ? this.tlsVersion : (java.lang.String) defaultValue(fields()[18]);
+        record.dtlsCipher = fieldSetFlags()[19] ? this.dtlsCipher : (java.lang.String) defaultValue(fields()[19]);
+        record.srtpCipher = fieldSetFlags()[20] ? this.srtpCipher : (java.lang.String) defaultValue(fields()[20]);
+        record.tlsGroup = fieldSetFlags()[21] ? this.tlsGroup : (java.lang.String) defaultValue(fields()[21]);
+        record.selectedCandidatePairChanges = fieldSetFlags()[22] ? this.selectedCandidatePairChanges : (java.lang.Integer) defaultValue(fields()[22]);
+        record.localFingerprint = fieldSetFlags()[23] ? this.localFingerprint : (java.lang.String) defaultValue(fields()[23]);
+        record.localFingerprintAlgorithm = fieldSetFlags()[24] ? this.localFingerprintAlgorithm : (java.lang.String) defaultValue(fields()[24]);
+        record.localBase64Certificate = fieldSetFlags()[25] ? this.localBase64Certificate : (java.lang.String) defaultValue(fields()[25]);
+        record.remoteFingerprint = fieldSetFlags()[26] ? this.remoteFingerprint : (java.lang.String) defaultValue(fields()[26]);
+        record.remoteFingerprintAlgorithm = fieldSetFlags()[27] ? this.remoteFingerprintAlgorithm : (java.lang.String) defaultValue(fields()[27]);
+        record.remoteBase64Certificate = fieldSetFlags()[28] ? this.remoteBase64Certificate : (java.lang.String) defaultValue(fields()[28]);
+        record.localAddress = fieldSetFlags()[29] ? this.localAddress : (java.lang.String) defaultValue(fields()[29]);
+        record.localPort = fieldSetFlags()[30] ? this.localPort : (java.lang.Integer) defaultValue(fields()[30]);
+        record.localProtocol = fieldSetFlags()[31] ? this.localProtocol : (java.lang.String) defaultValue(fields()[31]);
+        record.localCandidateType = fieldSetFlags()[32] ? this.localCandidateType : (java.lang.String) defaultValue(fields()[32]);
+        record.localCandidatePriority = fieldSetFlags()[33] ? this.localCandidatePriority : (java.lang.Integer) defaultValue(fields()[33]);
+        record.localCandidateICEServerUrl = fieldSetFlags()[34] ? this.localCandidateICEServerUrl : (java.lang.String) defaultValue(fields()[34]);
+        record.localCandidateRelayProtocol = fieldSetFlags()[35] ? this.localCandidateRelayProtocol : (java.lang.String) defaultValue(fields()[35]);
+        record.remoteAddress = fieldSetFlags()[36] ? this.remoteAddress : (java.lang.String) defaultValue(fields()[36]);
+        record.remotePort = fieldSetFlags()[37] ? this.remotePort : (java.lang.Integer) defaultValue(fields()[37]);
+        record.remoteProtocol = fieldSetFlags()[38] ? this.remoteProtocol : (java.lang.String) defaultValue(fields()[38]);
+        record.remoteCandidateType = fieldSetFlags()[39] ? this.remoteCandidateType : (java.lang.String) defaultValue(fields()[39]);
+        record.remoteCandidatePriority = fieldSetFlags()[40] ? this.remoteCandidatePriority : (java.lang.Integer) defaultValue(fields()[40]);
+        record.remoteCandidateICEServerUrl = fieldSetFlags()[41] ? this.remoteCandidateICEServerUrl : (java.lang.String) defaultValue(fields()[41]);
+        record.remoteCandidateRelayProtocol = fieldSetFlags()[42] ? this.remoteCandidateRelayProtocol : (java.lang.String) defaultValue(fields()[42]);
+        record.iceCandidatePairState = fieldSetFlags()[43] ? this.iceCandidatePairState : (java.lang.String) defaultValue(fields()[43]);
+        record.iceCandidatePairPacketsSent = fieldSetFlags()[44] ? this.iceCandidatePairPacketsSent : (java.lang.Integer) defaultValue(fields()[44]);
+        record.iceCandidatePairPacketsReceived = fieldSetFlags()[45] ? this.iceCandidatePairPacketsReceived : (java.lang.Integer) defaultValue(fields()[45]);
+        record.iceCandidatePairBytesSent = fieldSetFlags()[46] ? this.iceCandidatePairBytesSent : (java.lang.Long) defaultValue(fields()[46]);
+        record.iceCandidatePairBytesReceived = fieldSetFlags()[47] ? this.iceCandidatePairBytesReceived : (java.lang.Long) defaultValue(fields()[47]);
+        record.iceCandidatePairLastPacketSentTimestamp = fieldSetFlags()[48] ? this.iceCandidatePairLastPacketSentTimestamp : (java.lang.Long) defaultValue(fields()[48]);
+        record.iceCandidatePairLastPacketReceivedTimestamp = fieldSetFlags()[49] ? this.iceCandidatePairLastPacketReceivedTimestamp : (java.lang.Long) defaultValue(fields()[49]);
+        record.iceCandidatePairFirstRequestTimestamp = fieldSetFlags()[50] ? this.iceCandidatePairFirstRequestTimestamp : (java.lang.Long) defaultValue(fields()[50]);
+        record.iceCandidatePairLastRequestTimestamp = fieldSetFlags()[51] ? this.iceCandidatePairLastRequestTimestamp : (java.lang.Long) defaultValue(fields()[51]);
+        record.iceCandidatePairLastResponseTimestamp = fieldSetFlags()[52] ? this.iceCandidatePairLastResponseTimestamp : (java.lang.Long) defaultValue(fields()[52]);
+        record.stunProvidedTotalRoundTripTime = fieldSetFlags()[53] ? this.stunProvidedTotalRoundTripTime : (java.lang.Double) defaultValue(fields()[53]);
+        record.stunProvidedCurrentRoundTripTime = fieldSetFlags()[54] ? this.stunProvidedCurrentRoundTripTime : (java.lang.Double) defaultValue(fields()[54]);
+        record.availableOutgoingBitrate = fieldSetFlags()[55] ? this.availableOutgoingBitrate : (java.lang.Double) defaultValue(fields()[55]);
+        record.availableIncomingBitrate = fieldSetFlags()[56] ? this.availableIncomingBitrate : (java.lang.Double) defaultValue(fields()[56]);
+        record.circuitBreakerTriggerCount = fieldSetFlags()[57] ? this.circuitBreakerTriggerCount : (java.lang.Integer) defaultValue(fields()[57]);
+        record.candidatePairRequestsReceived = fieldSetFlags()[58] ? this.candidatePairRequestsReceived : (java.lang.Integer) defaultValue(fields()[58]);
+        record.candidatePairRequestsSent = fieldSetFlags()[59] ? this.candidatePairRequestsSent : (java.lang.Integer) defaultValue(fields()[59]);
+        record.candidatePairResponsesReceived = fieldSetFlags()[60] ? this.candidatePairResponsesReceived : (java.lang.Integer) defaultValue(fields()[60]);
+        record.candidatePairResponsesSent = fieldSetFlags()[61] ? this.candidatePairResponsesSent : (java.lang.Integer) defaultValue(fields()[61]);
+        record.candidatePairRetransmissionReceived = fieldSetFlags()[62] ? this.candidatePairRetransmissionReceived : (java.lang.Integer) defaultValue(fields()[62]);
+        record.candidatePairRetransmissionSent = fieldSetFlags()[63] ? this.candidatePairRetransmissionSent : (java.lang.Integer) defaultValue(fields()[63]);
+        record.candidatePairConsentRequestsSent = fieldSetFlags()[64] ? this.candidatePairConsentRequestsSent : (java.lang.Integer) defaultValue(fields()[64]);
+        record.candidatePairConsentExpiredTimestamp = fieldSetFlags()[65] ? this.candidatePairConsentExpiredTimestamp : (java.lang.Long) defaultValue(fields()[65]);
+        record.candidatePairBytesDiscardedOnSend = fieldSetFlags()[66] ? this.candidatePairBytesDiscardedOnSend : (java.lang.Long) defaultValue(fields()[66]);
+        record.candidatePairRequestBytesSent = fieldSetFlags()[67] ? this.candidatePairRequestBytesSent : (java.lang.Long) defaultValue(fields()[67]);
+        record.candidatePairConsentRequestBytesSent = fieldSetFlags()[68] ? this.candidatePairConsentRequestBytesSent : (java.lang.Long) defaultValue(fields()[68]);
+        record.candidatePairResponseBytesSent = fieldSetFlags()[69] ? this.candidatePairResponseBytesSent : (java.lang.Integer) defaultValue(fields()[69]);
+        record.sctpSmoothedRoundTripTime = fieldSetFlags()[70] ? this.sctpSmoothedRoundTripTime : (java.lang.Double) defaultValue(fields()[70]);
+        record.sctpCongestionWindow = fieldSetFlags()[71] ? this.sctpCongestionWindow : (java.lang.Double) defaultValue(fields()[71]);
+        record.sctpReceiverWindow = fieldSetFlags()[72] ? this.sctpReceiverWindow : (java.lang.Double) defaultValue(fields()[72]);
+        record.sctpMtu = fieldSetFlags()[73] ? this.sctpMtu : (java.lang.Integer) defaultValue(fields()[73]);
+        record.sctpUnackData = fieldSetFlags()[74] ? this.sctpUnackData : (java.lang.Integer) defaultValue(fields()[74]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

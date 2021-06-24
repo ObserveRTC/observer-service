@@ -5,7 +5,6 @@ import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.CallsRepository;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +60,9 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                         peerConnectionIds -> {
                             Map<UUID, PeerConnectionEntity.Builder> peerConnectionEntityBuilders = new HashMap<>();
                             for (UUID peerConnectionId : peerConnectionIds) {
+                                if (this.removedPeerConnectionDTOs.containsKey(peerConnectionId)) {
+                                    continue;
+                                }
                                 PeerConnectionDTO peerConnectionDTO = this.hazelcastMaps.getPeerConnections().remove(peerConnectionId);
                                 if (Objects.isNull(peerConnectionDTO)) {
                                     logger.warn("Cannot retrieve PeerConnectionDTO for peerConnectionId: {}", peerConnectionId);
@@ -146,6 +148,14 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
             return this;
         }
         this.peerConnectionIds.addAll(peerConnectionIds);
+        return this;
+    }
+
+    public RemovePeerConnectionsTask withRemovedPeerConnectionDTO(Map<UUID, PeerConnectionDTO> peerConnectionDTOs) {
+        if (Objects.isNull(peerConnectionDTOs) || peerConnectionDTOs.size() < 1) {
+            return this;
+        }
+        this.removedPeerConnectionDTOs.putAll(peerConnectionDTOs);
         return this;
     }
 

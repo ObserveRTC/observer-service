@@ -5,7 +5,6 @@ import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.entities.ClientEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
-import org.observertc.webrtc.observer.repositories.CallsRepository;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,16 +57,21 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
                     }
                     return false;
                 })
-                .<Set<UUID>, Map<UUID, ClientEntity.Builder>> addFunctionalStage("Remove Call DTOs",
+                .<Set<UUID>, Map<UUID, ClientEntity.Builder>> addFunctionalStage("Remove Client DTOs and Call bindings",
                         clientIds -> {
                             Map<UUID, ClientEntity.Builder> clientEntityBuilders = new HashMap<>();
                             for (UUID clientId : clientIds) {
+                                // only those, which has not been already removed
+                                if (this.removedClientDTOs.containsKey(clientId)) {
+                                    continue;
+                                }
                                 ClientDTO clientDTO = this.hazelcastMaps.getClients().remove(clientId);
                                 if (Objects.isNull(clientDTO)) {
                                     logger.warn("Cannot retrieve clientDTO for clientId: {}", clientId);
                                     continue;
                                 }
                                 this.removedClientDTOs.put(clientId, clientDTO);
+                                this.hazelcastMaps.getCallToClientIds().remove(clientDTO.callId, clientId);
                                 var clientEntityBuilder = ClientEntity.builder().withClientDTO(clientDTO);
                                 clientEntityBuilders.put(clientId, clientEntityBuilder);
                             }
@@ -79,9 +83,11 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
                                 return;
                             }
                             this.hazelcastMaps.getClients().putAll(this.removedClientDTOs);
+                            this.removedClientDTOs.forEach((clientId, clientDTO) -> {
+                                this.hazelcastMaps.getCallToClientIds().put(clientDTO.callId, clientId);
+                            });
                         })
-
-                .<Map<UUID, ClientEntity.Builder>, Map<UUID, ClientEntity.Builder>> addFunctionalStage("Remove Client Peer Connections",
+                .<Map<UUID, ClientEntity.Builder>, Map<UUID, ClientEntity.Builder>> addFunctionalStage("Fetch Client Peer Connection Ids",
                         // action
                         clientEntityBuilders -> {
                             Set<UUID> peerConnectionIds = clientEntityBuilders.keySet();
@@ -147,7 +153,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
                 .build();
     }
 
-    public RemoveClientsTask whereClientDTOs(UUID... clientIds) {
+    public RemoveClientsTask whereClientIds(UUID... clientIds) {
         if (Objects.isNull(clientIds) || clientIds.length < 1) {
             return this;
         }
@@ -155,7 +161,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
         return this;
     }
 
-    public RemoveClientsTask whereClientDTOs(Set<UUID> clientIds) {
+    public RemoveClientsTask whereClientIds(Set<UUID> clientIds) {
         if (Objects.isNull(clientIds) || clientIds.size() < 1) {
             return this;
         }
@@ -163,7 +169,16 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
         return this;
     }
 
-    public RemoveClientsTask whereClientDTOs(Map<UUID, ClientDTO> clientDTOs) {
+    public RemoveClientsTask addRemovedClientDTO(ClientDTO clientDTO) {
+        if (Objects.isNull(clientDTO)) {
+            return this;
+        }
+        this.clientIds.add(clientDTO.clientId);
+        this.removedClientDTOs.put(clientDTO.clientId, clientDTO);
+        return this;
+    }
+
+    public RemoveClientsTask addRemovedClientDTOs(Map<UUID, ClientDTO> clientDTOs) {
         if (Objects.isNull(clientDTOs) || clientDTOs.size() < 1) {
             return this;
         }

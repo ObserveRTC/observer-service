@@ -5,7 +5,7 @@ import com.hazelcast.multimap.MultiMap;
 import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.dto.*;
-import org.observertc.webrtc.observer.evaluators.RemoveClientEntities;
+import org.observertc.webrtc.observer.evaluators.ReportClientChanges;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ public class HazelcastMaps {
     private static final String HAZELCAST_PEER_CONNECTIONS_OUTBOUND_TRACK_IDS_MAP_NAME = "observertc-peerconnections-to-outbound-tracks";
 
     // MediaTrack
-    private static final String HAZELCAST_PEER_CONNECTION_MEDIA_TRACKS_MAP_NAME = "observertc-peerconnection-media-tracks";
+    private static final String HAZELCAST_MEDIA_TRACKS_MAP_NAME = "observertc-peerconnection-media-tracks";
 
     public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
     public static final String HAZELCAST_CONFIGURATIONS_MAP_NAME = "observertc-configurations";
@@ -39,7 +39,13 @@ public class HazelcastMaps {
     ObserverHazelcast observerHazelcast;
 
     @Inject
-    RemoveClientEntities removeClientEntities;
+    ReportClientChanges reportClientChanges;
+
+    @Inject
+    RemovePeerConnectionEntities removePeerConnectionEntities;
+
+    @Inject
+    RemoveMediaTrackEntities removeMediaTrackEntities;
 
     @Inject
     ObserverConfig observerConfig;
@@ -78,14 +84,20 @@ public class HazelcastMaps {
         this.peerConnectionToInboundMediaTrackIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_PEER_CONNECTIONS_INBOUND_TRACK_IDS_MAP_NAME);
         this.peerConnectionToOutboundMediaTrackIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_PEER_CONNECTIONS_OUTBOUND_TRACK_IDS_MAP_NAME);
 
-        this.mediaTracks = observerHazelcast.getInstance().getMap(HAZELCAST_PEER_CONNECTION_MEDIA_TRACKS_MAP_NAME);
+        this.mediaTracks = observerHazelcast.getInstance().getMap(HAZELCAST_MEDIA_TRACKS_MAP_NAME);
         this.weakLocks = observerHazelcast.getInstance().getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
 
         this.configurations = observerHazelcast.getInstance().getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
 
         // setup expirations
-        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_CLIENTS_MAP_NAME).setMaxIdleSeconds(300);
-        this.getClients().addEntryListener(this.removeClientEntities, true);
+        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_CLIENTS_MAP_NAME).setMaxIdleSeconds(observerConfig.evaluators.clientMaxIdleTime);
+        this.getClients().addLocalEntryListener(this.reportClientChanges);
+
+        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_PEER_CONNECTIONS_MAP_NAME).setMaxIdleSeconds(observerConfig.evaluators.peerConnectionsMaxIdleTime);
+        this.getPeerConnections().addLocalEntryListener(this.removePeerConnectionEntities);
+
+        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME).setMaxIdleSeconds(observerConfig.evaluators.mediaTracksMaxIdleTime);
+        this.getPeerConnections().addLocalEntryListener(this.removeMediaTrackEntities);
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {

@@ -17,17 +17,9 @@
 package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.context.annotation.EachProperty;
-import org.observertc.webrtc.observer.configbuilders.ConfigAssent;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
@@ -52,13 +44,13 @@ public class ObserverConfig {
 	@ConfigurationProperties("sources")
 	public static class SourcesConfig {
 
-		@Deprecated(since = "0.9.0")
+		@Deprecated(since = "1.0.0")
 		public SourcesConfig.PCSamplesConfig pcSamples;
 
 		@ConfigurationProperties("pcSamples")
 		public static class PCSamplesConfig {
 			public boolean enabled = true;
-			public String defaultServiceId = "defaultServiceName";
+			public String defaultServiceId = "defaultServiceId";
 		}
 
 		public SourcesConfig.ClientSamplesConfig clientSamples;
@@ -66,7 +58,6 @@ public class ObserverConfig {
 		@ConfigurationProperties("clientSamples")
 		public static class ClientSamplesConfig {
 			public boolean enabled = true;
-			public String defaultServiceId = "defaultServiceName";
 		}
 	}
 
@@ -81,6 +72,21 @@ public class ObserverConfig {
 
 		@Min(1)
 		public int clientSamplesBufferMaxItems = 10000;
+
+		@Min(60)
+		public int mediaTracksMaxIdleTime = 300;
+
+		@Min(60)
+		public int peerConnectionsMaxIdleTime = 300;
+
+		@Min(60)
+		public int clientMaxIdleTime = 300;
+
+		@Min(1)
+		public long reportsBufferMaxItems = 10000;
+
+		@Min(1)
+		public int reportsBufferMaxRetainInS = 30;
 	}
 
 	public Map<String, Object> sinks;

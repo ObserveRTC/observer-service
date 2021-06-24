@@ -21,7 +21,7 @@ public class ReportPeerConnectionTransports implements Consumer<CollectedCallSam
                     this.createPeerConnectionTransportReport(
                             callSamples.getCallId(),
                             observedSample,
-                            clientSample,
+                            clientSample
                     );
 
 
@@ -32,7 +32,7 @@ public class ReportPeerConnectionTransports implements Consumer<CollectedCallSam
 
     private void createPeerConnectionTransportReport(
         UUID callId,
-        ObservedClientSample observedSample,
+        ObservedSample observedSample,
         ClientSample clientSample
     ) {
         ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
@@ -40,7 +40,7 @@ public class ReportPeerConnectionTransports implements Consumer<CollectedCallSam
                     PcTransportReport.newBuilder()
                             .setServiceId(observedSample.getServiceId())
                             .setMediaUnitId(observedSample.getMediaUnitId())
-                            .setAvailableIncomingBitrate(peerConnectionTransport.candidatePairAvailableIncomingBitrate)
+//                            .setAvailableIncomingBitrate(peerConnectionTransport.candidatePairAvailableIncomingBitrate)
 
                         .build()
                 );

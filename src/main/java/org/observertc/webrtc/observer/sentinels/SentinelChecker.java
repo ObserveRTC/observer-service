@@ -10,7 +10,6 @@ import org.observertc.webrtc.observer.configs.stores.SentinelsStore;
 import org.observertc.webrtc.observer.entities.CallEntity;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.evaluatorsPurgatory.pcSampleToReportsV2.monitors.RtpMonitorAbstract;
-import org.observertc.webrtc.observer.repositories.CallsRepository;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
