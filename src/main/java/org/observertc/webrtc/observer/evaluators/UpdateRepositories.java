@@ -4,7 +4,10 @@ import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.repositories.tasks.AddClientsTask;
+import org.observertc.webrtc.observer.repositories.tasks.AddMediaTrackTask;
+import org.observertc.webrtc.observer.repositories.tasks.AddPeerConnectionsTask;
 import org.observertc.webrtc.observer.repositories.tasks.RefreshTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.slf4j.Logger;
@@ -48,19 +51,22 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
         }
         Map<UUID, ClientDTO> newClients = new HashMap<>();
         Map<UUID, PeerConnectionDTO> newPeerConnections = new HashMap<>();
-        Map<MediaTrackId, MediaTrackDTO> newMediaTracks = new HashMap<>();
+        Map<String, MediaTrackDTO> newMediaTracks = new HashMap<>();
         RefreshTask.Report report = refreshTask.getResult();
         for (CallSamples callSamples : collectedCallSamples) {
             var callId = callSamples.getCallId();
             for (ClientSamples clientSamples : callSamples) {
                 var clientId = clientSamples.getClientId();
-                var observedSample = clientSamples;
                 if (!report.foundClientIds.contains(clientId)) {
-                    var newClient = ClientDTO.builder()
+                    var clientDTO = ClientDTO.builder()
+                            .withCallId(callId)
                             .withUserId(clientSamples.getUserId())
-                            .build()
+                            .withClientId(clientId)
+                            .withConnectedTimestamp(clientSamples.getMinTimestamp())
+                            .withTimeZoneId(clientSamples.getTimeZoneId())
+                            .build();
 
-                    newClients.put(clientId, newClient);
+                    newClients.put(clientId, clientDTO);
                 }
                 for (ClientSample clientSample : clientSamples) {
                     ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
@@ -81,8 +87,16 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
                             .forEach(track -> {
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
                                 Long SSRC = track.ssrc;
-                                var newMediaTrack = MediaTrackDTO.builder()
-                                newMediaTracks.put(mediaTrackId, newMediaTrack);
+                                var mediaTrackDTO = MediaTrackDTO.builder()
+                                        .withDirection(StreamDirection.INBOUND)
+                                        .withPeerConnectionId(peerConnectionId)
+                                        .withSSRC(SSRC)
+                                        .withAddedTimestamp(clientSamples.getMinTimestamp())
+                                        .build();
+
+                                var mediaTrackId = MediaTrackId.make(peerConnectionId, SSRC);
+                                var mediaTrackKey = mediaTrackId.getKey();
+                                newMediaTracks.put(mediaTrackKey, mediaTrackDTO);
                             });
                 }
             }
@@ -99,12 +113,36 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
         }
     }
 
-    private boolean addNewMediaTracks(Map<MediaTrackId, MediaTrackDTO> newMediaTracks) {
+    private boolean addNewMediaTracks(Map<String, MediaTrackDTO> newMediaTracks) {
+        var task = addMediaTrackTaskProvider.get()
+                .withMediaTrackDTOs(newMediaTracks)
+                ;
 
+        if (!task.execute().succeeded()) {
+            logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
+            return false;
+        }
+
+        return task.getResult();
     }
 
-    private boolean addNewPeerConnections(Map<UUID, PeerConnectionDTO> newPeerConnections) {
+    @Inject
+    Provider<AddMediaTrackTask> addMediaTrackTaskProvider;
 
+    @Inject
+    Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
+
+    private boolean addNewPeerConnections(Map<UUID, PeerConnectionDTO> newPeerConnections) {
+        var task = peerConnectionsTaskProvider.get()
+                .withPeerConnectionDTOs(newPeerConnections)
+                ;
+
+        if (!task.execute().succeeded()) {
+            logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
+            return false;
+        }
+
+        return task.getResult();
     }
 
     private boolean addNewClients(Map<UUID, ClientDTO> newClients) {
@@ -113,7 +151,7 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
         ;
 
         if (!task.execute().succeeded()) {
-            logger.warn("Add new clients task execution failed, repository may become inconsistent!");
+            logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return false;
         }
 

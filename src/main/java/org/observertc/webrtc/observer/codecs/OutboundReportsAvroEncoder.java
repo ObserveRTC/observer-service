@@ -1,18 +1,14 @@
 package org.observertc.webrtc.observer.codecs;
 
-import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observer;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageEncoder;
-import org.observertc.webrtc.observer.ObserverConfig;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.evaluators.OutboundReportEncoder;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.PostConstruct;
 
 public class OutboundReportsAvroEncoder {
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);

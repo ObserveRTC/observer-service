@@ -2,8 +2,10 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.ObserverHazelcast;
+import org.observertc.webrtc.observer.configs.ConfigEntryDispatcher;
+import org.observertc.webrtc.observer.configs.ConfigType;
 import org.observertc.webrtc.observer.dto.*;
 import org.observertc.webrtc.observer.evaluators.ReportClientChanges;
 
@@ -41,11 +43,14 @@ public class HazelcastMaps {
     @Inject
     ReportClientChanges reportClientChanges;
 
-    @Inject
-    RemovePeerConnectionEntities removePeerConnectionEntities;
+//    @Inject
+//    RemovePeerConnectionEntities removePeerConnectionEntities;
+//
+//    @Inject
+//    RemoveMediaTrackEntities removeMediaTrackEntities;
 
     @Inject
-    RemoveMediaTrackEntities removeMediaTrackEntities;
+    ConfigEntryDispatcher configEntryDispatcher;
 
     @Inject
     ObserverConfig observerConfig;
@@ -69,7 +74,7 @@ public class HazelcastMaps {
 
     // other necessary maps
     private IMap<String, WeakLockDTO> weakLocks;
-    private IMap<String, ConfigDTO> configurations;
+    private IMap<ConfigType, ConfigDTO> configurations;
 
     @PostConstruct
     void setup() {
@@ -90,14 +95,31 @@ public class HazelcastMaps {
         this.configurations = observerHazelcast.getInstance().getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
 
         // setup expirations
-        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_CLIENTS_MAP_NAME).setMaxIdleSeconds(observerConfig.evaluators.clientMaxIdleTime);
+        observerHazelcast.getInstance()
+                .getConfig()
+                .getMapConfig(HAZELCAST_CLIENTS_MAP_NAME)
+                .setMaxIdleSeconds(observerConfig.evaluators.clientMaxIdleTime);
+
+        observerHazelcast.getInstance()
+                .getConfig()
+                .getMapConfig(HAZELCAST_PEER_CONNECTIONS_MAP_NAME)
+                .setMaxIdleSeconds(observerConfig.evaluators.peerConnectionsMaxIdleTime);
+
+        observerHazelcast.getInstance()
+                .getConfig()
+                .getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME)
+                .setMaxIdleSeconds(observerConfig.evaluators.mediaTracksMaxIdleTime);
+
+        // set entry listeners
+        this.getConfigurations().addEntryListener(this.configEntryDispatcher, true);
         this.getClients().addLocalEntryListener(this.reportClientChanges);
 
-        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_PEER_CONNECTIONS_MAP_NAME).setMaxIdleSeconds(observerConfig.evaluators.peerConnectionsMaxIdleTime);
-        this.getPeerConnections().addLocalEntryListener(this.removePeerConnectionEntities);
+//        this.getPeerConnections().addLocalEntryListener(this.removePeerConnectionEntities);
 
-        observerHazelcast.getInstance().getConfig().getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME).setMaxIdleSeconds(observerConfig.evaluators.mediaTracksMaxIdleTime);
-        this.getPeerConnections().addLocalEntryListener(this.removeMediaTrackEntities);
+
+//        this.getPeerConnections().addLocalEntryListener(this.removeMediaTrackEntities);
+
+        //
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {
@@ -125,5 +147,5 @@ public class HazelcastMaps {
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
 
-    public IMap<String, ConfigDTO> getConfigurations() { return this.configurations; }
+    public IMap<ConfigType, ConfigDTO> getConfigurations() { return this.configurations; }
 }

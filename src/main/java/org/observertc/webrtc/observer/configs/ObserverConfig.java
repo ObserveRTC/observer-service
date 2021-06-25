@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.configs;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
@@ -35,6 +35,28 @@ public class ObserverConfig {
 		@ConfigurationProperties("websockets")
 		public static class WebsocketSecurityConfig {
 			public int expirationInMin = 0; // 0 means the access token provided is used
+		}
+	}
+
+	public ObfuscationsConfig obfuscations;
+
+	@ConfigurationProperties("obfuscations")
+	public static class ObfuscationsConfig {
+		public enum ObfuscationType {
+			ANONYMIZATION,
+			NONE,
+		}
+		public boolean enabled = false;
+		public ObfuscationsAnonymizationConfig anonymization;
+
+		public ObfuscationType obfuscateIceAddresses = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType obfuscateUserId = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType obfuscateRoomId = ObfuscationType.ANONYMIZATION;
+
+		@ConfigurationProperties("anonymization")
+		public static class ObfuscationsAnonymizationConfig {
+			public String hashAlgorithm;
+			public String salt;
 		}
 	}
 
@@ -97,6 +119,7 @@ public class ObserverConfig {
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
 		public boolean reportInboundAudioTracks = true;
+		public String defaultServiceName = "defaultServiceName";
 	}
 
 	// Hazelcast Config

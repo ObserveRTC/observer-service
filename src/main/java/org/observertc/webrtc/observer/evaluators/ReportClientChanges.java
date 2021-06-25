@@ -6,7 +6,7 @@ import com.hazelcast.map.MapEvent;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.ClientDTO;
@@ -177,7 +177,7 @@ public class ReportClientChanges implements EntryListener<UUID, ClientDTO> {
         if (Objects.isNull(leftClients) || leftClients.size() < 1) {
             return Collections.EMPTY_LIST;
         }
-        var task = ChainedTask.<List<CallEventReport>>builder()
+        ChainedTask<List<CallEventReport>> task = ChainedTask.<List<CallEventReport>>builder()
                 .<Map<UUID, ClientEntity>>addSupplierStage("Remove Client Entities from repositories", () -> {
                     var removeClientsTask = removeClientsTaskProvider.get();
                     leftClients.values().stream().map(i -> i.clientDTO).forEach(removeClientsTask::addRemovedClientDTO);
@@ -186,7 +186,8 @@ public class ReportClientChanges implements EntryListener<UUID, ClientDTO> {
                     }
                     return removeClientsTask.getResult();
                 })
-                .<Map<UUID, ClientEntity>>addBreakCondition((clientEntities, resultHolder) -> {
+                .<Map<UUID, ClientEntity>>addBreakCondition((clientEntitiesObj, resultHolder) -> {
+                    Map<UUID, ClientEntity> clientEntities = (Map<UUID, ClientEntity>) clientEntitiesObj;
                     if (Objects.isNull(clientEntities) || clientEntities.size() < 1) {
                         // if we were not able to remove the clients
                         return true;
@@ -194,7 +195,8 @@ public class ReportClientChanges implements EntryListener<UUID, ClientDTO> {
                     return false;
                 })
                 .<Map<UUID, ClientEntity>, List<CallEventReport>>addFunctionalStage("Make reports about the clients removed",
-                        removedClientEntities -> {
+                        removedClientEntitiesObj -> {
+                            Map<UUID, ClientEntity> removedClientEntities = (Map<UUID, ClientEntity>)removedClientEntitiesObj;
                             var makeReportsTask = createCallEventReportsProvider.get()
                                     .withCallEventType(CallEventType.CLIENT_LEFT)
                                     .withCallEventMessage("Client has left the room")
@@ -247,7 +249,7 @@ public class ReportClientChanges implements EntryListener<UUID, ClientDTO> {
         if (Objects.isNull(abandonedCallIds) || abandonedCallIds.size() < 1) {
             return Collections.EMPTY_LIST;
         }
-        var task = ChainedTask.<List<CallEventReport>>builder()
+        ChainedTask<List<CallEventReport>> task = ChainedTask.<List<CallEventReport>>builder()
                 .<Map<UUID, CallEntity>>addSupplierStage("Remove Call Entities from repositories", () -> {
                     var removeCallsTask = removeCallsTaskProvider.get()
                             .whereCallIds(abandonedCallIds);
@@ -256,7 +258,8 @@ public class ReportClientChanges implements EntryListener<UUID, ClientDTO> {
                     }
                     return removeCallsTask.getResult();
                 })
-                .<Map<UUID, CallEntity>>addBreakCondition((callEntities, resultHolder) -> {
+                .<Map<UUID, CallEntity>>addBreakCondition((callEntitiesObj, resultHolder) -> {
+                    Map<UUID, CallEntity> callEntities = (Map<UUID, CallEntity>)callEntitiesObj;
                     if (Objects.isNull(callEntities) || callEntities.size() < 1) {
                         // if we were not able to remove the clients
                         return true;
@@ -264,8 +267,8 @@ public class ReportClientChanges implements EntryListener<UUID, ClientDTO> {
                     return false;
                 })
                 .<Map<UUID, CallEntity>, List<CallEventReport>>addFunctionalStage("Make reports about the ended calls",
-                        removedCallEntities -> {
-
+                        removedCallEntitiesInput -> {
+                            Map<UUID, CallEntity> removedCallEntities = (Map<UUID, CallEntity>) removedCallEntitiesInput;
                             var makeReportsTask = createCallEventReportsProvider.get()
                                     .withCallEventType(CallEventType.CALL_ENDED)
                                     .withCallEventMessage("Call has been ended")

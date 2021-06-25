@@ -22,8 +22,8 @@ import com.hazelcast.config.YamlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.PortableDTOFactory;
-import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,12 +105,6 @@ public class ObserverHazelcast {
 			}
 		}
 
-//		result.getSerializationConfig().getSerializerConfigs().add(
-//				new SerializerConfig().
-//						setTypeClass(CallEntity.class).
-//						setImplementation(new CallEntitySerializer()));
-//		result.getSerializationConfig().addPortableFactory(EntityFactory.FACTORY_ID, new EntityFactory());
-		result.getMapConfig(HazelcastMaps.HAZELCAST_CLIENTS_MAP_NAME).setMaxIdleSeconds()
 		result.getSerializationConfig().addPortableFactory(PortableDTOFactory.FACTORY_ID, new PortableDTOFactory());
 		return result;
 	}

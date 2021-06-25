@@ -26,7 +26,7 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.core.Observable;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.evaluators.ProcessingPipeline;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
@@ -37,6 +37,7 @@ import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
 import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -166,7 +167,17 @@ public class WebsocketClientSamples {
 				.withServiceId(serviceId)
 				.withMediaUnitId(mediaUnitId)
 				.build();
-		Observable.just(observedClientSample)
-				.subscribe(this.processingPipeline);
+
+		try {
+			Observable.just(observedClientSample)
+					.subscribe(this.processingPipeline);
+		} catch (Exception ex) {
+			this.flawMonitor.makeLogEntry()
+					.withLogger(logger)
+					.withException(ex)
+					.withLogLevel(Level.WARN)
+					.withMessage("Error occured processing message by {} ", this.getClass().getSimpleName())
+					.complete();
+		}
 	}
 }

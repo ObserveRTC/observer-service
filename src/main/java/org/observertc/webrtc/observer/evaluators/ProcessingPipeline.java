@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.evaluators;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.ObserverConfig;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.samples.ObservedClientSample;
 import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;

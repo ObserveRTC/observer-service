@@ -37,32 +37,19 @@ public class MediaTrackDTO implements VersionedPortable {
 
 	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
 	private static final String SSRC_FIELD_NAME = "ssrc";
-	private static final String ATTACHED_FIELD_NAME = "attached"; // antonym: detached
+	private static final String ADDED_FIELD_NAME = "added";
+	private static final String DIRECTION_FIELD_NAME = "direction";
 
-
-	public static MediaTrackDTO of(
-			UUID peerConnectionId,
-			Long ssrc,
-			Long attached
-	) {
-		Objects.requireNonNull(peerConnectionId);
-		Objects.requireNonNull(ssrc);
-		Objects.requireNonNull(attached);
-
-		MediaTrackDTO result = new MediaTrackDTO();
-		result.peerConnectionId = peerConnectionId;
-		result.ssrc = ssrc;
-		result.attached = attached;
-		return result;
-	}
 
 	public UUID peerConnectionId;
 	public Long ssrc;
-	public Long attached;
+	public Long added;
+	public StreamDirection direction;
 
+	public static Builder builder() {
+		return new Builder();
+	}
 
-//	@Deprecated
-//	public Set<Long> SSRCs = new HashSet<>();
 
 	@Override
 	public int getFactoryId() {
@@ -78,16 +65,18 @@ public class MediaTrackDTO implements VersionedPortable {
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeByteArray(PEER_CONNECTION_ID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionId));
 		writer.writeLong(SSRC_FIELD_NAME, this.ssrc);
-		writer.writeLong(ATTACHED_FIELD_NAME, this.attached);
+		writer.writeLong(ADDED_FIELD_NAME, this.added);
+		writer.writeUTF(DIRECTION_FIELD_NAME, this.direction.name());
 
-//		SerDeUtils.writeLongArray(writer, SSRC_FIELD_NAME, this.SSRCs, -1);
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
 		this.peerConnectionId = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_ID_FIELD_NAME));
 		this.ssrc = reader.readLong(SSRC_FIELD_NAME);
-		this.attached = reader.readLong(ATTACHED_FIELD_NAME);
+		this.added = reader.readLong(ADDED_FIELD_NAME);
+		var direction = reader.readUTF(DIRECTION_FIELD_NAME);
+		this.direction = StreamDirection.valueOf(direction);
 	}
 
 	@Override
@@ -108,7 +97,46 @@ public class MediaTrackDTO implements VersionedPortable {
 		MediaTrackDTO otherDTO = (MediaTrackDTO) other;
 		if (!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId)) return false;
 		if (!Objects.equals(this.ssrc, otherDTO.ssrc)) return false;
-		if (!Objects.equals(this.attached, otherDTO.attached)) return false;
+		if (!Objects.equals(this.added, otherDTO.added)) return false;
+		if (!Objects.equals(this.direction, otherDTO.direction)) return false;
 		return true;
+	}
+
+	public static class Builder {
+		private final MediaTrackDTO result = new MediaTrackDTO();
+
+		private Builder() {
+
+		}
+
+		public Builder withSSRC(Long value) {
+			Objects.requireNonNull(value);
+			this.result.ssrc = value;
+			return this;
+		}
+
+		public Builder withPeerConnectionId(UUID value) {
+			Objects.requireNonNull(value);
+			this.result.peerConnectionId = value;
+			return this;
+		}
+
+		public Builder withAddedTimestamp(Long value) {
+			this.result.added = value;
+			return this;
+		}
+
+		public MediaTrackDTO build() {
+			Objects.requireNonNull(this.result.peerConnectionId);
+			Objects.requireNonNull(this.result.ssrc);
+			Objects.requireNonNull(this.result.added);
+			Objects.requireNonNull(this.result.direction);
+			return this.result;
+		}
+
+		public Builder withDirection(StreamDirection value) {
+			this.result.direction = value;
+			return this;
+		}
 	}
 }

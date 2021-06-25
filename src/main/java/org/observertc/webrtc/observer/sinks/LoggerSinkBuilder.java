@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.sinks;
 
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configbuilders.Builder;
-import org.observertc.webrtc.observer.connectors.sinks.Sink;
 import org.slf4j.event.Level;
 
 public class LoggerSinkBuilder extends AbstractBuilder implements Builder<Sink> {

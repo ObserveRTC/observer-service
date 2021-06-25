@@ -6,8 +6,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import org.observertc.webrtc.observer.ObserverConfig;
-import org.observertc.webrtc.observer.repositories.ConfigRepository;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -19,9 +18,6 @@ public class ConfigController {
 
 	@Inject
 	ObserverConfig baseConfig;
-
-	@Inject
-	ConfigRepository configRepository;
 
 	@Secured({"admin"})
 	@Get("/base")

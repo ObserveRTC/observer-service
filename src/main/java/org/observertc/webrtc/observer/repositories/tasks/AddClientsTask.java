@@ -46,7 +46,7 @@ public class AddClientsTask extends ChainedTask<Boolean> {
                 )
                 .<Map<UUID, ClientEntity>> addBreakCondition((resultHolder) -> {
                     if (this.clientDTOs.size() < 1) {
-                        resultHolder.set(false);
+                        resultHolder.set(true);
                         return true;
                     }
                     return false;

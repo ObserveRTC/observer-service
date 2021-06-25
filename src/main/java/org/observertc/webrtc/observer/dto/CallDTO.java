@@ -41,19 +41,6 @@ public class CallDTO implements VersionedPortable {
 		return new Builder();
 	}
 
-//	public static CallDTO of(
-//			String serviceId,
-//			String roomId,
-//			UUID callId,
-//			Long initiated) {
-//		CallDTO result = new CallDTO();
-//		result.serviceId = serviceId;
-//		result.roomId = roomId;
-//		result.callId = callId;
-//		result.started = initiated;
-//		return result;
-//	}
-
 	public String serviceId;
 	public String roomId;
 	public UUID callId;
