@@ -20,6 +20,11 @@ public class MediaTrackId {
         return new MediaTrackId(peerConnectionId, ssrc);
     }
 
+    public static MediaTrackId make(String peerConnectionIdStr, Long ssrc) {
+        UUID peerConnectionId = UUID.fromString(peerConnectionIdStr);
+        return new MediaTrackId(peerConnectionId, ssrc);
+    }
+
     public final UUID peerConnectionId;
     public final Long ssrc;
 

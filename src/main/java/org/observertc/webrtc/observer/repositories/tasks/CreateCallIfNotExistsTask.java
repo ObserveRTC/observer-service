@@ -49,7 +49,8 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
             .<UUID> addConsumerEntry("Merge All Inputs",
                 () -> {
                     UUID callId = UUID.randomUUID();
-                    this.callDTOBuilder.withCallId(callId).build();
+                    this.callDTOBuilder
+                            .withCallId(callId);
                 },
                 callId -> {
                     this.callDTOBuilder.withCallId(callId);
@@ -98,6 +99,8 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
 
     public CreateCallIfNotExistsTask withServiceRoomId(ServiceRoomId value) {
         this.serviceRoomId = value;
+        this.callDTOBuilder.withRoomId(this.serviceRoomId.roomId)
+                .withServiceId(this.serviceRoomId.serviceId);
         return this;
     }
 

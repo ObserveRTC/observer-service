@@ -10,8 +10,6 @@ import java.util.stream.Stream;
  */
 public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
 
-
-
     public static ClientSamples.Builder builderFrom(ObservedSample observedSample) {
         var result = new ClientSamples.Builder()
                 .withObservedSample(observedSample);
@@ -148,7 +146,7 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
 
 
     public static class Builder {
-        private ClientSamples result;
+        private final ClientSamples result = new ClientSamples();
 
         public Builder withClientSample(ClientSample clientSample) {
             Objects.requireNonNull(clientSample);

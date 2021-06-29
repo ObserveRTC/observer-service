@@ -29,10 +29,12 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
     public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
         List<CallMetaReport.Builder> reportBuilders = new LinkedList<>();
         for (CallSamples callSamples : collectedCallSamples) {
+            var callId = callSamples.getCallId();
             for (ClientSamples clientSamples : callSamples) {
+                var clientId = clientSamples.getClientId();
                 for (ClientSample clientSample : clientSamples) {
                     Function<CallMetaType, CallMetaReport.Builder> callMetaReport = type -> {
-                        return prepareReport(callSamples.getCallId(), clientSamples, clientSample)
+                        return prepareReport(callId, clientSamples, clientSample)
                                 .setType(type.name());
                     };
                     ClientSampleVisitor.streamUserMediaErrors(clientSample)

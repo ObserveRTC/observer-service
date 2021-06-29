@@ -29,7 +29,7 @@ public class ObservedClientSampleBuilder {
         return this;
     }
 
-    public ObservedClientSampleBuilder withClientSample(ClientSample value) {
+    private ObservedClientSampleBuilder withClientSample(ClientSample value) {
         this.clientSample = value;
         this.clientId = UUID.fromString(value.clientId);
         return this;

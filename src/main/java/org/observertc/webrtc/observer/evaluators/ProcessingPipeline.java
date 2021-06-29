@@ -3,8 +3,8 @@ package org.observertc.webrtc.observer.evaluators;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.OutboundReports;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.samples.ObservedClientSample;
 import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;
 
@@ -26,9 +26,6 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     Obfuscator obfuscator;
 
     @Inject
-    BuildCallSamples buildCallSamples;
-
-    @Inject
     ReportMediaTracks reportMediaTracks;
 
     @Inject
@@ -41,7 +38,7 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     ReportClientChanges reportClientChanges;
 
     @Inject
-    CollectClientSamples collectClientSamples;
+    CollectCallSamples collectCallSamples;
 
     @Inject
     OutboundReportEncoder outboundReportEncoder;
@@ -58,8 +55,7 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
         var observableCollectedCallSamples = samplesBuffer
                 // TODO: measure a start time
                 .map(this.obfuscator)
-                .map(this.collectClientSamples)
-                .lift(this.buildCallSamples)
+                .map(this.collectCallSamples)
                 .filter(Objects::nonNull)
                 .share();
 

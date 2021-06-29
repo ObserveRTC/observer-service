@@ -16,8 +16,8 @@ import java.util.stream.Stream;
  */
 public class CallSamples implements Iterable<ClientSamples>, ObservedCall {
 
-    public static CallSamplesBuilder builderFrom(UUID callId) {
-        return new CallSamplesBuilder().withCallId(callId);
+    public static CallSamplesBuilder builderFrom(UUID callId, ServiceRoomId serviceRoomId) {
+        return new CallSamplesBuilder().withCallId(callId).withServiceRoomId(serviceRoomId);
     }
 
     UUID callId;

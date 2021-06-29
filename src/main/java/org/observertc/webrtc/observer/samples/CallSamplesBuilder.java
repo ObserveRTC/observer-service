@@ -44,7 +44,7 @@ public class CallSamplesBuilder {
         Objects.requireNonNull(clientSamples);
         UUID clientId = clientSamples.getClientId();
         ClientSamples prevClientSamples = this.result.clientSamples.get(clientId);
-        if (Objects.isNull(prevClientSamples)) {
+        if (Objects.nonNull(prevClientSamples)) {
             prevClientSamples.addAll(clientSamples);
         } else {
             this.result.clientSamples.put(clientId, clientSamples);
