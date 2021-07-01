@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 
+@Prototype
 public class OutboundReportsAvroDecoder {
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 

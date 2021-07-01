@@ -18,7 +18,7 @@ import java.util.*;
  * so the successor components can work by a batch of samples groupped by clients
  */
 @Prototype
-public class CollectCallSamples implements Function<List<ObservedClientSample>, CollectedCallSamples> {
+public class CollectCallSamples implements Function<List<ObservedClientSample>, Optional<CollectedCallSamples>> {
 
     private static final Logger logger = LoggerFactory.getLogger(CollectCallSamples.class);
 
@@ -36,9 +36,9 @@ public class CollectCallSamples implements Function<List<ObservedClientSample>, 
 
 
     @Override
-    public CollectedCallSamples apply(List<ObservedClientSample> observedClientSamples) throws Throwable {
+    public Optional<CollectedCallSamples> apply(List<ObservedClientSample> observedClientSamples) throws Throwable {
         if (Objects.isNull(observedClientSamples) || observedClientSamples.size() < 1) {
-            return null;
+            return Optional.empty();
         }
         Map<ServiceRoomId, RoomSamples.Builder> roomSampleBuilders = new HashMap<>();
         for (ObservedClientSample observedClientSample : observedClientSamples) {
@@ -73,9 +73,14 @@ public class CollectCallSamples implements Function<List<ObservedClientSample>, 
             roomSamples
                     .stream()
                     .forEach(callSamplesBuilder::withClientSamples);
+
+            var callSamples = callSamplesBuilder.build();
+            collectedCallSamples.withCallSamples(callSamples);
         }));
 
-        return collectedCallSamples.build();
+        return Optional.of(
+                collectedCallSamples.build()
+        );
     }
 
     private Map<ServiceRoomId, UUID> findCallIds(Set<ServiceRoomId> serviceRoomIds) {

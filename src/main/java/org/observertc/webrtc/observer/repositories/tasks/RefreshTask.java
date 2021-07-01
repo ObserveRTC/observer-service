@@ -21,13 +21,13 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
     public static class Report {
         public Set<UUID> foundClientIds = new HashSet<>();
         public Map<UUID, UUID> foundPeerConnectionIdsToClientIds = new HashMap<>();
-        public Map<String, UUID> foundMediaTrackKeysToPeerConnectionIds = new HashMap<>();
+        public Map<UUID, UUID> foundMediaTrackIdsToPeerConnectionIds = new HashMap<>();
     }
 
 
     private Set<UUID> clientIds = new HashSet<>();
     private Set<UUID> peerConnectionIds = new HashSet<>();
-    private Set<String> mediaTrackKeys = new HashSet<>();
+    private Set<UUID> mediaTrackIds = new HashSet<>();
     private final Report report = new Report();
 
     @Inject
@@ -59,12 +59,12 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
                 .addActionStage("Check Media Tracks",
                         // action
                         () -> {
-                            if (this.mediaTrackKeys.size() < 1) {
+                            if (this.mediaTrackIds.size() < 1) {
                                 return;
                             }
-                            Map<String, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(this.mediaTrackKeys);
-                            mediaTrackDTOs.forEach((mediaTrackKey, mediaTrackDTO) -> {
-                                this.report.foundMediaTrackKeysToPeerConnectionIds.put(mediaTrackKey, mediaTrackDTO.peerConnectionId);
+                            Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(this.mediaTrackIds);
+                            mediaTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
+                                this.report.foundMediaTrackIdsToPeerConnectionIds.put(trackId, mediaTrackDTO.peerConnectionId);
                             });
                         })
                 .<Report> addTerminalSupplier("Provide the composed report", () -> {
@@ -109,20 +109,20 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
         return this;
     }
 
-    public RefreshTask withMediaTrackKeys(String... mediaTrackKeys) {
-        if (Objects.isNull(mediaTrackKeys)) {
+    public RefreshTask withMediaTrackIds(UUID... mediaTrackIds) {
+        if (Objects.isNull(mediaTrackIds)) {
             return this;
         }
-        var mediaTrackKeysArray = Arrays.asList(mediaTrackKeys);
-        this.mediaTrackKeys.addAll(mediaTrackKeysArray);
+        var mediaTrackIdsArray = Arrays.asList(mediaTrackIds);
+        this.mediaTrackIds.addAll(mediaTrackIdsArray);
         return this;
     }
 
-    public RefreshTask withMediaTrackKeys(Set<String> mediaTrackKeys) {
-        if (Objects.isNull(mediaTrackKeys)) {
+    public RefreshTask withMediaTrackIds(Set<UUID> mediaTrackIds) {
+        if (Objects.isNull(mediaTrackIds)) {
             return this;
         }
-        this.mediaTrackKeys.addAll(mediaTrackKeys);
+        this.mediaTrackIds.addAll(mediaTrackIds);
         return this;
     }
 

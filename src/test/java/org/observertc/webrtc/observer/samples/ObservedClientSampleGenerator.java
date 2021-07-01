@@ -4,6 +4,8 @@ import io.micronaut.context.annotation.Prototype;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -12,12 +14,11 @@ import java.util.function.Supplier;
 public class ObservedClientSampleGenerator implements Supplier<ObservedClientSample> {
 
     @Inject
-    ClientSampleGenerator clientSampleGenerator;
+    ClientSampleGenerator generator;
 
-    private UUID clientId = null;
-    private String serviceId = null;
-    private String roomId = null;
-    private String mediaUnitId = null;
+    private String serviceId = "serviceId";
+    private String mediaUnitId = "mediaUnitId";
+    private String timeZoneId = ZoneOffset.UTC.getId();
 
     public ObservedClientSampleGenerator() {
 
@@ -30,26 +31,38 @@ public class ObservedClientSampleGenerator implements Supplier<ObservedClientSam
 
     @Override
     public ObservedClientSample get() {
-        var clientSample = this.clientSampleGenerator.get();
-        if (Objects.nonNull(this.clientId)) {
-            clientSample.clientId = this.clientId.toString();
-        }
+        var clientSample = this.generator.get();
+
         var result = ObservedClientSampleBuilder.from(clientSample)
-                .withTimeZoneId("UTC")
                 .withServiceId(this.serviceId)
                 .withMediaUnitId(this.mediaUnitId)
+                .withTimeZoneId(this.timeZoneId)
                 .build();
         return result;
     }
 
-    public ObservedClientSampleGenerator withClientId(UUID clientId) {
-        this.clientId = clientId;
-        return this;
+    public String getServiceId() {
+        return this.serviceId;
     }
 
-    public ObservedClientSampleGenerator reset() {
-        this.clientId = null;
-        return this;
+    public String getMediaUnitId() {
+        return this.mediaUnitId;
+    }
+
+    public String getUserId() {
+        return this.generator.getUserId();
+    }
+
+    public String getRoomId() {
+        return this.generator.getRoomId();
+    }
+
+    public UUID getClientId() {
+        return this.generator.getClientId();
+    }
+
+    public String getTimeZoneId() {
+        return this.timeZoneId;
     }
 
     public ObservedClientSampleGenerator withServiceId(String serviceId) {
@@ -62,8 +75,23 @@ public class ObservedClientSampleGenerator implements Supplier<ObservedClientSam
         return this;
     }
 
-    public ObservedClientSampleGenerator withRoomId(String roomId) {
-        this.roomId = roomId;
+    public ObservedClientSampleGenerator withRoomId(String value) {
+        this.generator.withRoomId(value);
+        return this;
+    }
+
+    public ObservedClientSampleGenerator withUserId(String value) {
+        this.generator.withUserId(value);
+        return this;
+    }
+
+    public ObservedClientSampleGenerator withClientId(UUID value) {
+        this.generator.withClientId(value);
+        return this;
+    }
+
+    public ObservedClientSampleGenerator withTimeZoneId(String timeZoneId) {
+        this.timeZoneId = timeZoneId;
         return this;
     }
 }

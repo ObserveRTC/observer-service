@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class CollectedCallSamples implements Iterable<CallSamples>{
 
     private final Map<UUID, CallSamples> samples = new HashMap<>();
-    private final Set<MediaTrackId> inboundMediaTrackIds = new HashSet<>();
+    private final Set<UUID> inboundMediaTrackIds = new HashSet<>();
 
     public static Builder builder() {
         return new Builder();
@@ -33,7 +33,7 @@ public class CollectedCallSamples implements Iterable<CallSamples>{
         return this.samples.keySet();
     }
 
-    public Set<MediaTrackId> getInboundMediaTrackIds() {
+    public Set<UUID> getInboundMediaTrackIds() {
         return this.inboundMediaTrackIds;
     }
 
@@ -48,18 +48,17 @@ public class CollectedCallSamples implements Iterable<CallSamples>{
                 .collect(Collectors.toSet());
     }
 
-    public Set<String> getMediaTrackKeys() {
+    public Set<UUID> getMediaTrackIds() {
         return this.samples.values()
                 .stream()
                 .map(clientSamples -> Arrays.asList(
-                        clientSamples.getInboundAudioTrackKeys(),
-                        clientSamples.getInboundVideoTrackKeys(),
-                        clientSamples.getOutboundAudioTrackKeys(),
-                        clientSamples.getOutboundVideoTrackKeys()
+                        clientSamples.getInboundAudioTrackIds(),
+                        clientSamples.getInboundVideoTrackIds(),
+                        clientSamples.getOutboundAudioTrackIds(),
+                        clientSamples.getOutboundVideoTrackIds()
                 ))
                 .flatMap(array -> array.stream())
                 .flatMap(Set::stream)
-                .map(mediaTrackId -> mediaTrackId.getKey())
                 .collect(Collectors.toSet());
     }
 
@@ -69,12 +68,8 @@ public class CollectedCallSamples implements Iterable<CallSamples>{
         public CollectedCallSamples.Builder withCallSamples(CallSamples callSamples) {
             this.result.samples.put(callSamples.getCallId(), callSamples);
             for (ClientSamples clientSamples : callSamples) {
-                Set<MediaTrackId> inboundMediaTrackIds = clientSamples.getInboundMediaTrackIds();
+                Set<UUID> inboundMediaTrackIds = clientSamples.getInboundMediaTrackIds();
                 this.result.inboundMediaTrackIds.addAll(inboundMediaTrackIds);
-                Set<MediaTrackId> outboundMediaTrackIds = clientSamples.getOutboundMediaTrackIds();
-                var clientId = clientSamples.getClientId();
-                var peerConnectionIds = clientSamples.getPeerConnectionIds();
-
             }
             return this;
         }

@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** Events happened in calls. */
 @org.apache.avro.specific.AvroGenerated
 public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 8777861833996272215L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CallEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"mediaTrackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the media track\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
+  private static final long serialVersionUID = 8847379005174371924L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CallEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"mediaTrackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the media track\",\"default\":null},{\"name\":\"SSRC\",\"type\":[\"null\",\"long\"],\"doc\":\"The SSRC identifier of the RTP stream a trackId belongs to\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -34,6 +34,8 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
    private java.lang.String peerConnectionId;
   /** The unique identifier of the media track */
    private java.lang.String mediaTrackId;
+  /** The SSRC identifier of the RTP stream a trackId belongs to */
+   private java.lang.Long SSRC;
   /** The timestamp of the sample the event related to */
    private java.lang.Long sampleTimestamp;
   /** The sequence number of the sample the event may related to */
@@ -66,6 +68,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
    * @param userId webrtc app provided user identifier
    * @param peerConnectionId The unique identifier of the peer connection
    * @param mediaTrackId The unique identifier of the media track
+   * @param SSRC The SSRC identifier of the RTP stream a trackId belongs to
    * @param sampleTimestamp The timestamp of the sample the event related to
    * @param sampleSeq The sequence number of the sample the event may related to
    * @param name The name of the event
@@ -73,7 +76,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
    * @param value the value of the event
    * @param attachments attachment the event may created with
    */
-  public CallEventReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String mediaTrackId, java.lang.Long sampleTimestamp, java.lang.Integer sampleSeq, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
+  public CallEventReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String mediaTrackId, java.lang.Long SSRC, java.lang.Long sampleTimestamp, java.lang.Integer sampleSeq, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -84,6 +87,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
     this.userId = userId;
     this.peerConnectionId = peerConnectionId;
     this.mediaTrackId = mediaTrackId;
+    this.SSRC = SSRC;
     this.sampleTimestamp = sampleTimestamp;
     this.sampleSeq = sampleSeq;
     this.name = name;
@@ -106,12 +110,13 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
     case 7: return userId;
     case 8: return peerConnectionId;
     case 9: return mediaTrackId;
-    case 10: return sampleTimestamp;
-    case 11: return sampleSeq;
-    case 12: return name;
-    case 13: return message;
-    case 14: return value;
-    case 15: return attachments;
+    case 10: return SSRC;
+    case 11: return sampleTimestamp;
+    case 12: return sampleSeq;
+    case 13: return name;
+    case 14: return message;
+    case 15: return value;
+    case 16: return attachments;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -130,12 +135,13 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
     case 7: userId = (java.lang.String)value$; break;
     case 8: peerConnectionId = (java.lang.String)value$; break;
     case 9: mediaTrackId = (java.lang.String)value$; break;
-    case 10: sampleTimestamp = (java.lang.Long)value$; break;
-    case 11: sampleSeq = (java.lang.Integer)value$; break;
-    case 12: name = (java.lang.String)value$; break;
-    case 13: message = (java.lang.String)value$; break;
-    case 14: value = (java.lang.String)value$; break;
-    case 15: attachments = (java.lang.String)value$; break;
+    case 10: SSRC = (java.lang.Long)value$; break;
+    case 11: sampleTimestamp = (java.lang.Long)value$; break;
+    case 12: sampleSeq = (java.lang.Integer)value$; break;
+    case 13: name = (java.lang.String)value$; break;
+    case 14: message = (java.lang.String)value$; break;
+    case 15: value = (java.lang.String)value$; break;
+    case 16: attachments = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -227,6 +233,15 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
    */
   public java.lang.String getMediaTrackId() {
     return mediaTrackId;
+  }
+
+
+  /**
+   * Gets the value of the 'SSRC' field.
+   * @return The SSRC identifier of the RTP stream a trackId belongs to
+   */
+  public java.lang.Long getSSRC() {
+    return SSRC;
   }
 
 
@@ -336,6 +351,8 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
     private java.lang.String peerConnectionId;
     /** The unique identifier of the media track */
     private java.lang.String mediaTrackId;
+    /** The SSRC identifier of the RTP stream a trackId belongs to */
+    private java.lang.Long SSRC;
     /** The timestamp of the sample the event related to */
     private java.lang.Long sampleTimestamp;
     /** The sequence number of the sample the event may related to */
@@ -400,29 +417,33 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
         this.mediaTrackId = data().deepCopy(fields()[9].schema(), other.mediaTrackId);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.sampleTimestamp)) {
-        this.sampleTimestamp = data().deepCopy(fields()[10].schema(), other.sampleTimestamp);
+      if (isValidValue(fields()[10], other.SSRC)) {
+        this.SSRC = data().deepCopy(fields()[10].schema(), other.SSRC);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.sampleSeq)) {
-        this.sampleSeq = data().deepCopy(fields()[11].schema(), other.sampleSeq);
+      if (isValidValue(fields()[11], other.sampleTimestamp)) {
+        this.sampleTimestamp = data().deepCopy(fields()[11].schema(), other.sampleTimestamp);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.name)) {
-        this.name = data().deepCopy(fields()[12].schema(), other.name);
+      if (isValidValue(fields()[12], other.sampleSeq)) {
+        this.sampleSeq = data().deepCopy(fields()[12].schema(), other.sampleSeq);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.message)) {
-        this.message = data().deepCopy(fields()[13].schema(), other.message);
+      if (isValidValue(fields()[13], other.name)) {
+        this.name = data().deepCopy(fields()[13].schema(), other.name);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.value)) {
-        this.value = data().deepCopy(fields()[14].schema(), other.value);
+      if (isValidValue(fields()[14], other.message)) {
+        this.message = data().deepCopy(fields()[14].schema(), other.message);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[15].schema(), other.attachments);
+      if (isValidValue(fields()[15], other.value)) {
+        this.value = data().deepCopy(fields()[15].schema(), other.value);
         fieldSetFlags()[15] = true;
+      }
+      if (isValidValue(fields()[16], other.attachments)) {
+        this.attachments = data().deepCopy(fields()[16].schema(), other.attachments);
+        fieldSetFlags()[16] = true;
       }
     }
 
@@ -472,29 +493,33 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
         this.mediaTrackId = data().deepCopy(fields()[9].schema(), other.mediaTrackId);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.sampleTimestamp)) {
-        this.sampleTimestamp = data().deepCopy(fields()[10].schema(), other.sampleTimestamp);
+      if (isValidValue(fields()[10], other.SSRC)) {
+        this.SSRC = data().deepCopy(fields()[10].schema(), other.SSRC);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.sampleSeq)) {
-        this.sampleSeq = data().deepCopy(fields()[11].schema(), other.sampleSeq);
+      if (isValidValue(fields()[11], other.sampleTimestamp)) {
+        this.sampleTimestamp = data().deepCopy(fields()[11].schema(), other.sampleTimestamp);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.name)) {
-        this.name = data().deepCopy(fields()[12].schema(), other.name);
+      if (isValidValue(fields()[12], other.sampleSeq)) {
+        this.sampleSeq = data().deepCopy(fields()[12].schema(), other.sampleSeq);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.message)) {
-        this.message = data().deepCopy(fields()[13].schema(), other.message);
+      if (isValidValue(fields()[13], other.name)) {
+        this.name = data().deepCopy(fields()[13].schema(), other.name);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.value)) {
-        this.value = data().deepCopy(fields()[14].schema(), other.value);
+      if (isValidValue(fields()[14], other.message)) {
+        this.message = data().deepCopy(fields()[14].schema(), other.message);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[15].schema(), other.attachments);
+      if (isValidValue(fields()[15], other.value)) {
+        this.value = data().deepCopy(fields()[15].schema(), other.value);
         fieldSetFlags()[15] = true;
+      }
+      if (isValidValue(fields()[16], other.attachments)) {
+        this.attachments = data().deepCopy(fields()[16].schema(), other.attachments);
+        fieldSetFlags()[16] = true;
       }
     }
 
@@ -928,6 +953,49 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
     }
 
     /**
+      * Gets the value of the 'SSRC' field.
+      * The SSRC identifier of the RTP stream a trackId belongs to
+      * @return The value.
+      */
+    public java.lang.Long getSSRC() {
+      return SSRC;
+    }
+
+    /**
+      * Sets the value of the 'SSRC' field.
+      * The SSRC identifier of the RTP stream a trackId belongs to
+      * @param value The value of 'SSRC'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setSSRC(java.lang.Long value) {
+      validate(fields()[10], value);
+      this.SSRC = value;
+      fieldSetFlags()[10] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'SSRC' field has been set.
+      * The SSRC identifier of the RTP stream a trackId belongs to
+      * @return True if the 'SSRC' field has been set, false otherwise.
+      */
+    public boolean hasSSRC() {
+      return fieldSetFlags()[10];
+    }
+
+
+    /**
+      * Clears the value of the 'SSRC' field.
+      * The SSRC identifier of the RTP stream a trackId belongs to
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearSSRC() {
+      SSRC = null;
+      fieldSetFlags()[10] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'sampleTimestamp' field.
       * The timestamp of the sample the event related to
       * @return The value.
@@ -943,9 +1011,9 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setSampleTimestamp(java.lang.Long value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.sampleTimestamp = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -955,7 +1023,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'sampleTimestamp' field has been set, false otherwise.
       */
     public boolean hasSampleTimestamp() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -966,7 +1034,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearSampleTimestamp() {
       sampleTimestamp = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -986,9 +1054,9 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setSampleSeq(java.lang.Integer value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.sampleSeq = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -998,7 +1066,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'sampleSeq' field has been set, false otherwise.
       */
     public boolean hasSampleSeq() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1009,7 +1077,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearSampleSeq() {
       sampleSeq = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1029,9 +1097,9 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setName(java.lang.String value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.name = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1041,7 +1109,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'name' field has been set, false otherwise.
       */
     public boolean hasName() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1052,7 +1120,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearName() {
       name = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1072,9 +1140,9 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setMessage(java.lang.String value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.message = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1084,7 +1152,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'message' field has been set, false otherwise.
       */
     public boolean hasMessage() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1095,7 +1163,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearMessage() {
       message = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1115,9 +1183,9 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setValue(java.lang.String value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.value = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1127,7 +1195,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'value' field has been set, false otherwise.
       */
     public boolean hasValue() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1138,7 +1206,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearValue() {
       value = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1158,9 +1226,9 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder setAttachments(java.lang.String value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.attachments = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1170,7 +1238,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'attachments' field has been set, false otherwise.
       */
     public boolean hasAttachments() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1181,7 +1249,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearAttachments() {
       attachments = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1199,12 +1267,13 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
         record.userId = fieldSetFlags()[7] ? this.userId : (java.lang.String) defaultValue(fields()[7]);
         record.peerConnectionId = fieldSetFlags()[8] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[8]);
         record.mediaTrackId = fieldSetFlags()[9] ? this.mediaTrackId : (java.lang.String) defaultValue(fields()[9]);
-        record.sampleTimestamp = fieldSetFlags()[10] ? this.sampleTimestamp : (java.lang.Long) defaultValue(fields()[10]);
-        record.sampleSeq = fieldSetFlags()[11] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[11]);
-        record.name = fieldSetFlags()[12] ? this.name : (java.lang.String) defaultValue(fields()[12]);
-        record.message = fieldSetFlags()[13] ? this.message : (java.lang.String) defaultValue(fields()[13]);
-        record.value = fieldSetFlags()[14] ? this.value : (java.lang.String) defaultValue(fields()[14]);
-        record.attachments = fieldSetFlags()[15] ? this.attachments : (java.lang.String) defaultValue(fields()[15]);
+        record.SSRC = fieldSetFlags()[10] ? this.SSRC : (java.lang.Long) defaultValue(fields()[10]);
+        record.sampleTimestamp = fieldSetFlags()[11] ? this.sampleTimestamp : (java.lang.Long) defaultValue(fields()[11]);
+        record.sampleSeq = fieldSetFlags()[12] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[12]);
+        record.name = fieldSetFlags()[13] ? this.name : (java.lang.String) defaultValue(fields()[13]);
+        record.message = fieldSetFlags()[14] ? this.message : (java.lang.String) defaultValue(fields()[14]);
+        record.value = fieldSetFlags()[15] ? this.value : (java.lang.String) defaultValue(fields()[15]);
+        record.attachments = fieldSetFlags()[16] ? this.attachments : (java.lang.String) defaultValue(fields()[16]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

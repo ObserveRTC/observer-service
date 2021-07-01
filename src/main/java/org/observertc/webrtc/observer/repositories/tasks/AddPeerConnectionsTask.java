@@ -21,9 +21,6 @@ public class AddPeerConnectionsTask extends ChainedTask<Boolean> {
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    FetchPeerConnectionsTask fetchPeerConnectionsTask;
-
     private Map<UUID, PeerConnectionDTO> peerConnectionDTOs = new HashMap<>();
 
 

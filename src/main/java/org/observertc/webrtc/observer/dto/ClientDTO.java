@@ -94,7 +94,7 @@ public class ClientDTO implements VersionedPortable {
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.userId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
+		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
 		this.userId = reader.readUTF(USER_ID_FIELD_NAME);
 		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));

@@ -8,7 +8,9 @@ import org.jeasy.random.api.Randomizer;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
@@ -34,10 +36,9 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
     private final AtomicInteger sampleSeqHolder = new AtomicInteger(0);
     private EasyRandom generator;
     private UUID clientId = UUID.randomUUID();
-
-    public ClientSampleGenerator() {
-
-    }
+    private String roomId = null;
+    private String userId = null;
+    private Set<UUID> peerConnectionIds = new HashSet<>();
 
     @PostConstruct
     void setup() {
@@ -47,11 +48,46 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
     @Override
     public ClientSample get() {
         var result = this.generator.nextObject(ClientSample.class);
+        if (Objects.nonNull(this.clientId)) {
+            result.clientId = this.clientId.toString();
+        }
+        if (Objects.nonNull(this.userId)) {
+            result.userId = this.userId;
+        }
+        if (Objects.nonNull(this.roomId)) {
+            result.roomId = this.roomId;
+        }
         return result;
+    }
+
+    public UUID getClientId() {
+        return this.clientId;
+    }
+
+    public String getRoomId() {
+        return this.roomId;
+    }
+
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public Set<UUID> getPeerConnectionIds() {
+        return this.peerConnectionIds;
     }
 
     public ClientSampleGenerator withClientId(UUID value) {
         this.clientId = value;
+        return this;
+    }
+
+    public ClientSampleGenerator withRoomId(String value) {
+        this.roomId = value;
+        return this;
+    }
+
+    public ClientSampleGenerator withUserId(String value) {
+        this.userId = value;
         return this;
     }
 
@@ -66,6 +102,7 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
                 .withPeerConnectionId(value);
         this.pcTransportGenerator
                 .withPeerConnectionId(value);
+
         return this;
     }
 
@@ -99,4 +136,6 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
         }
         return null;
     }
+
+
 }

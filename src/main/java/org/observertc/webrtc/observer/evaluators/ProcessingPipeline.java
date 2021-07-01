@@ -11,7 +11,7 @@ import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
@@ -23,10 +23,13 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     ObserverConfig observerConfig;
 
     @Inject
-    Obfuscator obfuscator;
+    HazelcastEventSubscriber hazelcastEventSubscriber;
 
     @Inject
-    ReportMediaTracks reportMediaTracks;
+    Obfuscator obfuscator;
+
+//    @Inject
+//    ReportMediaTracks reportMediaTracks;
 
     @Inject
     ReportCallMetaData reportCallMetaData;
@@ -35,7 +38,16 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     UpdateRepositories updateRepositories;
 
     @Inject
-    ReportClientChanges reportClientChanges;
+    ListenClientEntryChanges listenClientEntryChanges;
+
+    @Inject
+    ListenCallEntryChanges listenCallEntryChanges;
+
+    @Inject
+    ListenPeerConnectionEntryChanges listenPeerConnectionEntryChanges;
+
+    @Inject
+    ListenMediaTrackEntryChanges listenMediaTrackEntryChanges;
 
     @Inject
     CollectCallSamples collectCallSamples;
@@ -48,20 +60,31 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
 
     @PostConstruct
     void setup() {
+        var clientSamplesBufferMaxTimeInS = this.observerConfig.evaluators.clientSamplesBufferMaxTimeInS;
+        var clientSamplesBufferMaxItems = this.observerConfig.evaluators.clientSamplesBufferMaxItems;
+        this.hazelcastEventSubscriber
+                .withCallEntriesLocalListener(this.listenCallEntryChanges)
+                .withClientEntriesLocalListener(this.listenClientEntryChanges)
+                .withPeerConnectionEntriesLocalListener(this.listenPeerConnectionEntryChanges)
+                .withMediaTrackEntriesLocalListener(this.listenMediaTrackEntryChanges)
+        ;
+
         var samplesBuffer = this.input
-                .buffer(1000, TimeUnit.SECONDS, 30)
+                .buffer(clientSamplesBufferMaxTimeInS, TimeUnit.SECONDS, clientSamplesBufferMaxItems)
                 .share();
 
         var observableCollectedCallSamples = samplesBuffer
+//                .map(List::of)
                 // TODO: measure a start time
                 .map(this.obfuscator)
                 .map(this.collectCallSamples)
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .share();
 
-        observableCollectedCallSamples
-                .subscribe(this.reportMediaTracks);
-
+//        observableCollectedCallSamples
+//                .subscribe(this.reportMediaTracks);
+//
         observableCollectedCallSamples
                 .subscribe(this.reportCallMetaData);
 
@@ -71,16 +94,33 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
         // TODO: measure the end time somehow
         this.reportCallMetaData
                 .observableCallMetaReports()
-                .buffer(1000, TimeUnit.SECONDS, 30)
+                .buffer(30, TimeUnit.SECONDS, 1000)
                 .subscribe(this.outboundReportEncoder::encodeCallMetaReports);
 
-        this.reportClientChanges
+        this.listenCallEntryChanges
                 .getObservableCallEventReports()
-                .buffer(1000, TimeUnit.SECONDS, 30)
+                .buffer(30, TimeUnit.SECONDS, 1000)
                 .subscribe(this.outboundReportEncoder::encodeCallEventReports);
 
+        this.listenClientEntryChanges
+                .getObservableCallEventReports()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
+
+        this.listenPeerConnectionEntryChanges
+                .getObservableCallEventReports()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
+
+        this.listenMediaTrackEntryChanges
+                .getObservableCallEventReports()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
+
+        var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
+        var reportsBufferMaxRetainInS = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
         this.outboundReportEncoder
-                .buffer(observerConfig.evaluators.reportsBufferMaxItems, TimeUnit.SECONDS, observerConfig.evaluators.reportsBufferMaxRetainInS)
+                .buffer(reportsBufferMaxRetainInS, TimeUnit.SECONDS, reportsBufferMaxItems)
                 .map(OutboundReports::fromList)
                 .subscribe(this.outboundReportsObserver);
     }

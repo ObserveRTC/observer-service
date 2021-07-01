@@ -20,16 +20,6 @@ public class AddClientsTask extends ChainedTask<Boolean> {
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    AddPeerConnectionsTask addPeerConnectionsTask;
-
-    @Inject
-    RemovePeerConnectionsTask removePeerConnectionsTask;
-
-    @Inject
-    FetchClientsTask fetchClientsTask;
-
-    private boolean fetchEntitiesBack = true;
     private Map<UUID, ClientDTO> clientDTOs = new HashMap<>();
 
 
@@ -75,7 +65,9 @@ public class AddClientsTask extends ChainedTask<Boolean> {
                         this.hazelcastMaps.getCallToClientIds().remove(clientDTO.callId, clientId);
                     });
                 })
-                .addTerminalSupplier("Completed", () -> true)
+                .addTerminalSupplier("Completed", () -> {
+                    return true;
+                })
                 .build();
     }
 

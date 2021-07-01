@@ -7,7 +7,7 @@ import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.configs.ConfigEntryDispatcher;
 import org.observertc.webrtc.observer.configs.ConfigType;
 import org.observertc.webrtc.observer.dto.*;
-import org.observertc.webrtc.observer.evaluators.ReportClientChanges;
+import org.observertc.webrtc.observer.evaluators.ListenClientEntryChanges;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -41,7 +41,7 @@ public class HazelcastMaps {
     ObserverHazelcast observerHazelcast;
 
     @Inject
-    ReportClientChanges reportClientChanges;
+    ListenClientEntryChanges listenClientEntryChanges;
 
 //    @Inject
 //    RemovePeerConnectionEntities removePeerConnectionEntities;
@@ -66,11 +66,11 @@ public class HazelcastMaps {
 
     // peer connections
     private IMap<UUID, PeerConnectionDTO> peerConnections;
-    private MultiMap<UUID, String> peerConnectionToInboundMediaTrackIds;
-    private MultiMap<UUID, String> peerConnectionToOutboundMediaTrackIds;
+    private MultiMap<UUID, UUID> peerConnectionToInboundMediaTrackIds;
+    private MultiMap<UUID, UUID> peerConnectionToOutboundMediaTrackIds;
 
     // media tracks
-    private IMap<String, MediaTrackDTO> mediaTracks;
+    private IMap<UUID, MediaTrackDTO> mediaTracks;
 
     // other necessary maps
     private IMap<String, WeakLockDTO> weakLocks;
@@ -110,16 +110,6 @@ public class HazelcastMaps {
                 .getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME)
                 .setMaxIdleSeconds(observerConfig.evaluators.mediaTracksMaxIdleTime);
 
-        // set entry listeners
-        this.getConfigurations().addEntryListener(this.configEntryDispatcher, true);
-        this.getClients().addLocalEntryListener(this.reportClientChanges);
-
-//        this.getPeerConnections().addLocalEntryListener(this.removePeerConnectionEntities);
-
-
-//        this.getPeerConnections().addLocalEntryListener(this.removeMediaTrackEntities);
-
-        //
     }
 
     public MultiMap<String, UUID> getCallNames(UUID serviceUUID) {
@@ -138,10 +128,10 @@ public class HazelcastMaps {
     public MultiMap<UUID, UUID> getClientToPeerConnectionIds() { return this.clientToPeerConnectionIds; }
 
     public IMap<UUID, PeerConnectionDTO> getPeerConnections() { return this.peerConnections; }
-    public MultiMap<UUID, String> getPeerConnectionToInboundTrackIds() { return this.peerConnectionToInboundMediaTrackIds; }
-    public MultiMap<UUID, String> getPeerConnectionToOutboundTrackIds() { return this.peerConnectionToOutboundMediaTrackIds; }
+    public MultiMap<UUID, UUID> getPeerConnectionToInboundTrackIds() { return this.peerConnectionToInboundMediaTrackIds; }
+    public MultiMap<UUID, UUID> getPeerConnectionToOutboundTrackIds() { return this.peerConnectionToOutboundMediaTrackIds; }
 
-    public IMap<String, MediaTrackDTO> getMediaTracks() {
+    public IMap<UUID, MediaTrackDTO> getMediaTracks() {
         return this.mediaTracks;
     }
 

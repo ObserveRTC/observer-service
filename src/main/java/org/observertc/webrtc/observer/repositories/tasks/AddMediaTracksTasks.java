@@ -16,23 +16,20 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Prototype
-public class AddMediaTrackTask extends ChainedTask<Boolean> {
+public class AddMediaTracksTasks extends ChainedTask<Boolean> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AddMediaTrackTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddMediaTracksTasks.class);
 
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    FetchPeerConnectionsTask fetchPeerConnectionsTask;
-
-    private Map<String, MediaTrackDTO> mediaTrackDTOs = new HashMap<>();
+    private Map<UUID, MediaTrackDTO> mediaTrackDTOs = new HashMap<>();
 
 
     @PostConstruct
     void setup() {
         new Builder<Boolean>(this)
-                .<Map<String, MediaTrackDTO>>addConsumerEntry("Merge all inputs",
+                .<Map<UUID, MediaTrackDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
                         receivedPeerConnectionEntities -> {
                             if (Objects.nonNull(receivedPeerConnectionEntities)) {
@@ -54,8 +51,8 @@ public class AddMediaTrackTask extends ChainedTask<Boolean> {
                         },
                         // rollback
                         (inputHolder, thrownException) -> {
-                            for (String mediaTrackKey : this.mediaTrackDTOs.keySet()) {
-                                hazelcastMaps.getMediaTracks().remove(mediaTrackKey);
+                            for (UUID mediaTrackId : this.mediaTrackDTOs.keySet()) {
+                                hazelcastMaps.getMediaTracks().remove(mediaTrackId);
                             }
                         })
                 .addActionStage("Bind Inbound Media Tracks to Peer Connections",
@@ -90,7 +87,7 @@ public class AddMediaTrackTask extends ChainedTask<Boolean> {
     }
 
 
-    public AddMediaTrackTask withMediaTrackDTOs(Map<String, MediaTrackDTO> mediaTrackDTOs) {
+    public AddMediaTracksTasks withMediaTrackDTOs(Map<UUID, MediaTrackDTO> mediaTrackDTOs) {
         if (Objects.isNull(mediaTrackDTOs) || mediaTrackDTOs.size() < 1) {
             this.getLogger().info("mediaTrackDTOs was not given");
             return this;

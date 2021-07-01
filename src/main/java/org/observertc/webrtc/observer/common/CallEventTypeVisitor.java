@@ -42,7 +42,7 @@ public interface CallEventTypeVisitor<TIn, TOut> extends BiFunction<TIn, CallEve
             }
 
             @Override
-            public ROut visitPeerConnectionCreated(RIn obj) {
+            public ROut visitPeerConnectionOpened(RIn obj) {
                 return peerConnectionOpenedProcess.apply(obj);
             }
 
@@ -99,7 +99,7 @@ public interface CallEventTypeVisitor<TIn, TOut> extends BiFunction<TIn, CallEve
             }
 
             @Override
-            public Void visitPeerConnectionCreated(RIn obj) {
+            public Void visitPeerConnectionOpened(RIn obj) {
                 peerConnectionOpenedProcess.accept(obj);
                 return null;
             }
@@ -160,7 +160,7 @@ public interface CallEventTypeVisitor<TIn, TOut> extends BiFunction<TIn, CallEve
             }
 
             @Override
-            public Void visitPeerConnectionCreated(Void obj) {
+            public Void visitPeerConnectionOpened(Void obj) {
                 peerConnectionOpenedProcess.run();
                 return null;
             }
@@ -197,7 +197,7 @@ public interface CallEventTypeVisitor<TIn, TOut> extends BiFunction<TIn, CallEve
             case CLIENT_LEFT:
                 return this.visitClientLeft(obj);
             case PEER_CONNECTION_OPENED:
-                return this.visitPeerConnectionCreated(obj);
+                return this.visitPeerConnectionOpened(obj);
             case PEER_CONNECTION_CLOSED:
                 return this.visitPeerConnectionClosed(obj);
             case MEDIA_TRACK_ADDED:
@@ -217,7 +217,7 @@ public interface CallEventTypeVisitor<TIn, TOut> extends BiFunction<TIn, CallEve
     TOut visitClientJoined(TIn obj);
     TOut visitClientLeft(TIn obj);
 
-    TOut visitPeerConnectionCreated(TIn obj);
+    TOut visitPeerConnectionOpened(TIn obj);
     TOut visitPeerConnectionClosed(TIn obj);
 
     TOut visitMediaTrackAdded(TIn obj);

@@ -89,7 +89,7 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
-		@Min(0)
+		@Min(30)
 		public int clientSamplesBufferMaxTimeInS = 30;
 
 		@Min(1)

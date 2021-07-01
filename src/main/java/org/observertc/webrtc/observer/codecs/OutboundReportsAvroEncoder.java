@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.codecs;
 
+import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observer;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -10,6 +11,7 @@ import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Prototype
 public class OutboundReportsAvroEncoder {
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 
@@ -45,7 +47,7 @@ public class OutboundReportsAvroEncoder {
         return () -> encodeOrNull(this.observerEventEncoder, observerEventReport);
     }
 
-    public OutboundReport.CallEventOutboundReport encodeCallMetaReport(CallMetaReport callMetaReport) {
+    public OutboundReport.CallMetaOutboundReport encodeCallMetaReport(CallMetaReport callMetaReport) {
         return () -> encodeOrNull(this.callMetaEncoder, callMetaReport);
     }
 

@@ -1,0 +1,10 @@
+observer:
+
+  evaluators:
+    clientSamplesBufferMaxTimeInS: 30
+    clientSamplesBufferMaxItems: 10000
+    mediaTracksMaxIdleTime: 80
+    peerConnectionsMaxIdleTime: 70
+    clientMaxIdleTime: 60
+    reportsBufferMaxItems: 100
+    reportsBufferMaxRetainInS: 60

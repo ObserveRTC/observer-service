@@ -93,6 +93,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.mediaConstraints);
     }
 
+
     static Stream<String> streamMediaDevices(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.mediaDevices)) {
             return Stream.empty();

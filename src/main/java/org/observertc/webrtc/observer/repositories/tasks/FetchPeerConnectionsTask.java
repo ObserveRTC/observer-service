@@ -59,12 +59,12 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
             .<Map<UUID, PeerConnectionEntity.Builder>, Map<UUID, PeerConnectionEntity.Builder>> addFunctionalStage("Add Inbound Media Tracks",
                     pcEntityBuilders -> {
                         Set<UUID> peerConnectionIds = pcEntityBuilders.keySet();
-                        Map<String, UUID> inboundTrackToPcIds = new HashMap<>();
+                        Map<UUID, UUID> inboundTrackToPcIds = new HashMap<>();
                         for (UUID peerConnectionId : peerConnectionIds) {
-                            Collection<String> mediaTrackIds = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().get(peerConnectionId);
+                            Collection<UUID> mediaTrackIds = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().get(peerConnectionId);
                             mediaTrackIds.forEach(mediaTrackId -> inboundTrackToPcIds.put(mediaTrackId, peerConnectionId));
                         }
-                        Map<String, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(inboundTrackToPcIds.keySet());
+                        Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(inboundTrackToPcIds.keySet());
                         inboundTrackToPcIds.forEach((mediaTrackId, peerConnectionId) -> {
                             MediaTrackDTO mediaTrackDTO = mediaTrackDTOs.get(mediaTrackId);
                             if (Objects.isNull(mediaTrackDTO)) {
@@ -85,12 +85,12 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
             .<Map<UUID, PeerConnectionEntity.Builder>, Map<UUID, PeerConnectionEntity.Builder>> addFunctionalStage("Add Outbound Media Tracks",
                     pcEntityBuilders -> {
                         Set<UUID> peerConnectionIds = pcEntityBuilders.keySet();
-                        Map<String, UUID> outboundTrackToPcIds = new HashMap<>();
+                        Map<UUID, UUID> outboundTrackToPcIds = new HashMap<>();
                         for (UUID peerConnectionId : peerConnectionIds) {
-                            Collection<String> mediaTrackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(peerConnectionId);
+                            Collection<UUID> mediaTrackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(peerConnectionId);
                             mediaTrackIds.forEach(mediaTrackId -> outboundTrackToPcIds.put(mediaTrackId, peerConnectionId));
                         }
-                        Map<String, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(outboundTrackToPcIds.keySet());
+                        Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(outboundTrackToPcIds.keySet());
                         outboundTrackToPcIds.forEach((mediaTrackId, peerConnectionId) -> {
                             MediaTrackDTO mediaTrackDTO = mediaTrackDTOs.get(mediaTrackId);
                             if (Objects.isNull(mediaTrackDTO)) {

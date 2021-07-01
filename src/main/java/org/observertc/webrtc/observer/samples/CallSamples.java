@@ -24,10 +24,10 @@ public class CallSamples implements Iterable<ClientSamples>, ObservedCall {
     ServiceRoomId serviceRoomId;
     final Map<UUID, ClientSamples> clientSamples = new HashMap<>();
     final Map<UUID, UUID> peerConnectionIdsToClientIds = new HashMap<>();
-    final Map<MediaTrackId, UUID> inboundAudioTrackKeysToPeerConnectionIds = new HashMap<>();
-    final Map<MediaTrackId, UUID> inboundVideoTrackKeysToPeerConnectionIds = new HashMap<>();
-    final Map<MediaTrackId, UUID> outboundAudioTrackKeysToPeerConnectionIds = new HashMap<>();
-    final Map<MediaTrackId, UUID> outboundVideoTrackKeysToPeerConnectionIds = new HashMap<>();
+    final Map<UUID, UUID> inboundAudioTrackIdsToPeerConnectionIds = new HashMap<>();
+    final Map<UUID, UUID> inboundVideoTrackIdsToPeerConnectionIds = new HashMap<>();
+    final Map<UUID, UUID> outboundAudioTrackIdsToPeerConnectionIds = new HashMap<>();
+    final Map<UUID, UUID> outboundVideoTrackIdsToPeerConnectionIds = new HashMap<>();
 
 
     CallSamples() {
@@ -59,20 +59,20 @@ public class CallSamples implements Iterable<ClientSamples>, ObservedCall {
         return this.peerConnectionIdsToClientIds.keySet();
     }
 
-    public Set<MediaTrackId> getInboundAudioTrackKeys() {
-        return this.inboundAudioTrackKeysToPeerConnectionIds.keySet();
+    public Set<UUID> getInboundAudioTrackIds() {
+        return this.inboundAudioTrackIdsToPeerConnectionIds.keySet();
     }
 
-    public Set<MediaTrackId> getInboundVideoTrackKeys() {
-        return this.inboundVideoTrackKeysToPeerConnectionIds.keySet();
+    public Set<UUID> getInboundVideoTrackIds() {
+        return this.inboundVideoTrackIdsToPeerConnectionIds.keySet();
     }
 
-    public Set<MediaTrackId> getOutboundAudioTrackKeys() {
-        return this.outboundAudioTrackKeysToPeerConnectionIds.keySet();
+    public Set<UUID> getOutboundAudioTrackIds() {
+        return this.outboundAudioTrackIdsToPeerConnectionIds.keySet();
     }
 
-    public Set<MediaTrackId> getOutboundVideoTrackKeys() {
-        return this.outboundVideoTrackKeysToPeerConnectionIds.keySet();
+    public Set<UUID> getOutboundVideoTrackIds() {
+        return this.outboundVideoTrackIdsToPeerConnectionIds.keySet();
     }
 
 

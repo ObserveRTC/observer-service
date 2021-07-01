@@ -5,6 +5,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.message.BinaryMessageEncoder;
+import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.codecs.OutboundReportsAvroEncoder;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -26,31 +29,6 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 
     private Observer<? super OutboundReport> observer;
-    private final BinaryMessageEncoder<ObserverEventReport> observerEventEncoder;
-    private final BinaryMessageEncoder<CallEventReport> callEventEncoder;
-    private final BinaryMessageEncoder<CallMetaReport> callMetaEncoder;
-    private final BinaryMessageEncoder<ClientExtensionReport> clientExtensionEncoder;
-    private final BinaryMessageEncoder<PcTransportReport> pcTransportEncoder;
-    private final BinaryMessageEncoder<PcDataChannelReport> pcDataChannelEncoder;
-    private final BinaryMessageEncoder<InboundAudioTrackReport> inboundAudioTrackEncoder;
-    private final BinaryMessageEncoder<InboundVideoTrackReport> inboundVideoTrackEncoder;
-    private final BinaryMessageEncoder<OutboundAudioTrackReport> outboundAudioTrackEncoder;
-    private final BinaryMessageEncoder<OutboundVideoTrackReport> outboundVideoTrackEncoder;
-    private final BinaryMessageEncoder<MediaTrackReport> mediaTrackEncoder;
-
-    public OutboundReportEncoder(ObserverConfig config) {
-        this.observerEventEncoder = new BinaryMessageEncoder<ObserverEventReport>(GenericData.get(), ObserverEventReport.getClassSchema());
-        this.callEventEncoder = new BinaryMessageEncoder<CallEventReport>(GenericData.get(), CallEventReport.getClassSchema());
-        this.callMetaEncoder = new BinaryMessageEncoder<CallMetaReport>(GenericData.get(), CallMetaReport.getClassSchema());
-        this.clientExtensionEncoder = new BinaryMessageEncoder<ClientExtensionReport>(GenericData.get(), ClientExtensionReport.getClassSchema());
-        this.pcTransportEncoder = new BinaryMessageEncoder<PcTransportReport>(GenericData.get(), PcTransportReport.getClassSchema());
-        this.pcDataChannelEncoder = new BinaryMessageEncoder<PcDataChannelReport>(GenericData.get(), PcDataChannelReport.getClassSchema());
-        this.inboundAudioTrackEncoder = new BinaryMessageEncoder<InboundAudioTrackReport>(GenericData.get(), InboundAudioTrackReport.getClassSchema());
-        this.inboundVideoTrackEncoder = new BinaryMessageEncoder<InboundVideoTrackReport>(GenericData.get(), InboundVideoTrackReport.getClassSchema());
-        this.outboundAudioTrackEncoder = new BinaryMessageEncoder<OutboundAudioTrackReport>(GenericData.get(), OutboundAudioTrackReport.getClassSchema());
-        this.outboundVideoTrackEncoder = new BinaryMessageEncoder<OutboundVideoTrackReport>(GenericData.get(), OutboundVideoTrackReport.getClassSchema());
-        this.mediaTrackEncoder = new BinaryMessageEncoder<MediaTrackReport>(GenericData.get(), MediaTrackReport.getClassSchema());
-    }
 
     @Inject
     OutboundReportsAvroEncoder encoder;
@@ -59,6 +37,11 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
     void setup() {
 
     }
+
+    public OutboundReportEncoder(ObserverConfig config) {
+
+    }
+
 
     public void encodeObserverEventReports(List<ObserverEventReport> observerEventReports) {
         if (Objects.isNull(observerEventReports) || observerEventReports.size() < 1) {
@@ -151,12 +134,21 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
     }
 
     private<T> void convertAndForward(Function<T, OutboundReport> converter, List<T> reports) {
-        List<OutboundReport> outboundReports = reports
-                .stream()
-                .map(converter)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
+        List<OutboundReport> outboundReports = new LinkedList<>();
+        for (T report : reports) {
+            OutboundReport outboundReport;
+            try {
+                outboundReport = converter.apply(report);
+            } catch (Exception ex) {
+                logger.warn("Converting report {} is failed", ObjectToString.toString(report), ex);
+                continue;
+            }
+            if (Objects.isNull(report)) {
+                logger.warn("Converted report is null");
+                continue;
+            }
+            outboundReports.add(outboundReport);
+        }
         synchronized (this) {
             outboundReports.stream().forEach(this::forward);
         }

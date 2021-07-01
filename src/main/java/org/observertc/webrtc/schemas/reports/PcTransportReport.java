@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates */
 @org.apache.avro.specific.AvroGenerated
 public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -6642779846627690850L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PcTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is marked with\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets sent on the corresponded transport\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets received on the corresponded transport\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total amount of bytes sent on the corresponded transport\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total amount of bytes received on the corresponded transport\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current role of ICE under DTLS Transport\",\"default\":null},{\"name\":\"iceLocalUsernameFragment\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current state of DTLS for the peer connection transport layer\",\"default\":null},{\"name\":\"iceTransportState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer\",\"default\":null},{\"name\":\"tlsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the version number of the TLS used in the corresponded transport\",\"default\":null},{\"name\":\"dtlsCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the DTLS cipher used in the corresponded transport\",\"default\":null},{\"name\":\"srtpCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the SRTP cipher used in the corresponded transport\",\"default\":null},{\"name\":\"tlsGroup\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the IANA TLS Supported Groups used in the corresponded transport\",\"default\":null},{\"name\":\"selectedCandidatePairChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of candidate pair changes over the peer connection\",\"default\":null},{\"name\":\"localFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the local endpoint corresponded to the transport\",\"default\":null},{\"name\":\"remoteFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the remote endpoint corresponded to the transport\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The locally used port to communicate with the remote peer\",\"default\":null},{\"name\":\"localProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the local endpoint for the corresponded transport\",\"default\":null},{\"name\":\"localCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remotely used port to communicate with the remote peer\",\"default\":null},{\"name\":\"remoteProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the remote endpoint for the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of pack","ets received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"iceCandidatePairLastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastPacketReceivedTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairFirstRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"iceCandidatePairLastResponseTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"stunProvidedTotalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"stunProvidedCurrentRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"availableOutgoingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"availableIncomingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"circuitBreakerTriggerCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair\",\"default\":null},{\"name\":\"candidatePairRequestsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentExpiredTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponseBytesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. \",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd.\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd.\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu.\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.\",\"default\":null}]}");
+  private static final long serialVersionUID = -8133816536898281366L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PcTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is marked with\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets sent on the corresponded transport\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets received on the corresponded transport\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total amount of bytes sent on the corresponded transport\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total amount of bytes received on the corresponded transport\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current role of ICE under DTLS Transport\",\"default\":null},{\"name\":\"iceLocalUsernameFragment\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current state of DTLS for the peer connection transport layer\",\"default\":null},{\"name\":\"iceTransportState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer\",\"default\":null},{\"name\":\"tlsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the version number of the TLS used in the corresponded transport\",\"default\":null},{\"name\":\"dtlsCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the DTLS cipher used in the corresponded transport\",\"default\":null},{\"name\":\"srtpCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the SRTP cipher used in the corresponded transport\",\"default\":null},{\"name\":\"tlsGroup\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the IANA TLS Supported Groups used in the corresponded transport\",\"default\":null},{\"name\":\"selectedCandidatePairChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of candidate pair changes over the peer connection\",\"default\":null},{\"name\":\"localFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the local endpoint of the transport\",\"default\":null},{\"name\":\"localBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the local endpoint corresponded to the transport\",\"default\":null},{\"name\":\"remoteFingerprint\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteFingerprintAlgorithm\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The algorithm generate the fingerprint of the certificate certifies the remote endpoint of the transport\",\"default\":null},{\"name\":\"remoteBase64Certificate\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The base64 encoded certificate for the remote endpoint corresponded to the transport\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The locally used port to communicate with the remote peer\",\"default\":null},{\"name\":\"localProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the local endpoint for the corresponded transport\",\"default\":null},{\"name\":\"localCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remotely used port to communicate with the remote peer\",\"default\":null},{\"name\":\"remoteProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the remote endpoint for the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidatePriority\",\"type\":[\"null\",\"int\"],\"doc\":\"The priority of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"cndidatePairState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets rece","ived using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairLastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastPacketReceivedTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairFirstRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastResponseTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairTotalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairCurrentRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairAvailableOutgoingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairAvailableIncomingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairCircuitBreakerTriggerCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair\",\"default\":null},{\"name\":\"candidatePairRequestsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentExpiredTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponseBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. \",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd.\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd.\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu.\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -39,9 +39,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
   /** Represents the total number of packets received on the corresponded transport */
    private java.lang.Integer packetsReceived;
   /** Represents the total amount of bytes sent on the corresponded transport */
-   private java.lang.Integer bytesSent;
+   private java.lang.Long bytesSent;
   /** Represents the total amount of bytes received on the corresponded transport */
-   private java.lang.Integer bytesReceived;
+   private java.lang.Long bytesReceived;
   /** Represent the current role of ICE under DTLS Transport */
    private java.lang.String iceRole;
   /** Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport */
@@ -101,35 +101,35 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
   /** The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport */
    private java.lang.String remoteCandidateRelayProtocol;
   /** The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport */
-   private java.lang.String iceCandidatePairState;
+   private java.lang.String cndidatePairState;
   /** The total number of packets sent using the last selected candidate pair over the corresponded transport */
-   private java.lang.Integer iceCandidatePairPacketsSent;
+   private java.lang.Integer candidatePairPacketsSent;
   /** The total number of packets received using the last selected candidate pair over the corresponded transport */
-   private java.lang.Integer iceCandidatePairPacketsReceived;
+   private java.lang.Integer candidatePairPacketsReceived;
   /** The total number of bytes sent using the last selected candidate pair over the corresponded transport */
-   private java.lang.Long iceCandidatePairBytesSent;
+   private java.lang.Long candidatePairBytesSent;
   /** The total number of bytes received using the last selected candidate pair over the corresponded transport */
-   private java.lang.Long iceCandidatePairBytesReceived;
+   private java.lang.Long candidatePairBytesReceived;
   /** Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-   private java.lang.Long iceCandidatePairLastPacketSentTimestamp;
+   private java.lang.Long candidatePairLastPacketSentTimestamp;
   /** Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-   private java.lang.Long iceCandidatePairLastPacketReceivedTimestamp;
+   private java.lang.Long candidatePairLastPacketReceivedTimestamp;
   /** Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-   private java.lang.Long iceCandidatePairFirstRequestTimestamp;
+   private java.lang.Long candidatePairFirstRequestTimestamp;
   /** Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-   private java.lang.Long iceCandidatePairLastRequestTimestamp;
+   private java.lang.Long candidatePairLastRequestTimestamp;
   /** Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-   private java.lang.Long iceCandidatePairLastResponseTimestamp;
+   private java.lang.Long candidatePairLastResponseTimestamp;
   /** Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport */
-   private java.lang.Double stunProvidedTotalRoundTripTime;
+   private java.lang.Double candidatePairTotalRoundTripTime;
   /** Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport */
-   private java.lang.Double stunProvidedCurrentRoundTripTime;
+   private java.lang.Double candidatePairCurrentRoundTripTime;
   /** The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport */
-   private java.lang.Double availableOutgoingBitrate;
+   private java.lang.Double candidatePairAvailableOutgoingBitrate;
   /** The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport */
-   private java.lang.Double availableIncomingBitrate;
+   private java.lang.Double candidatePairAvailableIncomingBitrate;
   /** The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair */
-   private java.lang.Integer circuitBreakerTriggerCount;
+   private java.lang.Integer candidatePairCircuitBreakerTriggerCount;
   /** Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport */
    private java.lang.Integer candidatePairRequestsReceived;
   /** Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport */
@@ -153,7 +153,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
   /** Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport */
    private java.lang.Long candidatePairConsentRequestBytesSent;
   /** Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport */
-   private java.lang.Integer candidatePairResponseBytesSent;
+   private java.lang.Long candidatePairResponseBytesSent;
   /** The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds.  */
    private java.lang.Double sctpSmoothedRoundTripTime;
   /** The latest congestion window, corresponding to spinfo_cwnd. */
@@ -217,21 +217,21 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * @param remoteCandidatePriority The priority of the ICE candidate used at the remote endpoint on the corresponded transport
    * @param remoteCandidateICEServerUrl The url of the ICE server used by the remote endpoint on the corresponded transport
    * @param remoteCandidateRelayProtocol The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport
-   * @param iceCandidatePairState The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
-   * @param iceCandidatePairPacketsSent The total number of packets sent using the last selected candidate pair over the corresponded transport
-   * @param iceCandidatePairPacketsReceived The total number of packets received using the last selected candidate pair over the corresponded transport
-   * @param iceCandidatePairBytesSent The total number of bytes sent using the last selected candidate pair over the corresponded transport
-   * @param iceCandidatePairBytesReceived The total number of bytes received using the last selected candidate pair over the corresponded transport
-   * @param iceCandidatePairLastPacketSentTimestamp Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
-   * @param iceCandidatePairLastPacketReceivedTimestamp Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
-   * @param iceCandidatePairFirstRequestTimestamp Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-   * @param iceCandidatePairLastRequestTimestamp Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-   * @param iceCandidatePairLastResponseTimestamp Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-   * @param stunProvidedTotalRoundTripTime Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
-   * @param stunProvidedCurrentRoundTripTime Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
-   * @param availableOutgoingBitrate The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
-   * @param availableIncomingBitrate The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
-   * @param circuitBreakerTriggerCount The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
+   * @param cndidatePairState The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
+   * @param candidatePairPacketsSent The total number of packets sent using the last selected candidate pair over the corresponded transport
+   * @param candidatePairPacketsReceived The total number of packets received using the last selected candidate pair over the corresponded transport
+   * @param candidatePairBytesSent The total number of bytes sent using the last selected candidate pair over the corresponded transport
+   * @param candidatePairBytesReceived The total number of bytes received using the last selected candidate pair over the corresponded transport
+   * @param candidatePairLastPacketSentTimestamp Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
+   * @param candidatePairLastPacketReceivedTimestamp Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
+   * @param candidatePairFirstRequestTimestamp Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
+   * @param candidatePairLastRequestTimestamp Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
+   * @param candidatePairLastResponseTimestamp Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
+   * @param candidatePairTotalRoundTripTime Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
+   * @param candidatePairCurrentRoundTripTime Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
+   * @param candidatePairAvailableOutgoingBitrate The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
+   * @param candidatePairAvailableIncomingBitrate The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
+   * @param candidatePairCircuitBreakerTriggerCount The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
    * @param candidatePairRequestsReceived Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport
    * @param candidatePairRequestsSent Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport
    * @param candidatePairResponsesReceived Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport
@@ -250,7 +250,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * @param sctpMtu The latest maximum transmission unit, corresponding to spinfo_mtu.
    * @param sctpUnackData The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
    */
-  public PcTransportReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.Integer packetsSent, java.lang.Integer packetsReceived, java.lang.Integer bytesSent, java.lang.Integer bytesReceived, java.lang.String iceRole, java.lang.String iceLocalUsernameFragment, java.lang.String dtlsState, java.lang.String iceTransportState, java.lang.String tlsVersion, java.lang.String dtlsCipher, java.lang.String srtpCipher, java.lang.String tlsGroup, java.lang.Integer selectedCandidatePairChanges, java.lang.String localFingerprint, java.lang.String localFingerprintAlgorithm, java.lang.String localBase64Certificate, java.lang.String remoteFingerprint, java.lang.String remoteFingerprintAlgorithm, java.lang.String remoteBase64Certificate, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String localProtocol, java.lang.String localCandidateType, java.lang.Integer localCandidatePriority, java.lang.String localCandidateICEServerUrl, java.lang.String localCandidateRelayProtocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.String remoteProtocol, java.lang.String remoteCandidateType, java.lang.Integer remoteCandidatePriority, java.lang.String remoteCandidateICEServerUrl, java.lang.String remoteCandidateRelayProtocol, java.lang.String iceCandidatePairState, java.lang.Integer iceCandidatePairPacketsSent, java.lang.Integer iceCandidatePairPacketsReceived, java.lang.Long iceCandidatePairBytesSent, java.lang.Long iceCandidatePairBytesReceived, java.lang.Long iceCandidatePairLastPacketSentTimestamp, java.lang.Long iceCandidatePairLastPacketReceivedTimestamp, java.lang.Long iceCandidatePairFirstRequestTimestamp, java.lang.Long iceCandidatePairLastRequestTimestamp, java.lang.Long iceCandidatePairLastResponseTimestamp, java.lang.Double stunProvidedTotalRoundTripTime, java.lang.Double stunProvidedCurrentRoundTripTime, java.lang.Double availableOutgoingBitrate, java.lang.Double availableIncomingBitrate, java.lang.Integer circuitBreakerTriggerCount, java.lang.Integer candidatePairRequestsReceived, java.lang.Integer candidatePairRequestsSent, java.lang.Integer candidatePairResponsesReceived, java.lang.Integer candidatePairResponsesSent, java.lang.Integer candidatePairRetransmissionReceived, java.lang.Integer candidatePairRetransmissionSent, java.lang.Integer candidatePairConsentRequestsSent, java.lang.Long candidatePairConsentExpiredTimestamp, java.lang.Long candidatePairBytesDiscardedOnSend, java.lang.Long candidatePairRequestBytesSent, java.lang.Long candidatePairConsentRequestBytesSent, java.lang.Integer candidatePairResponseBytesSent, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData) {
+  public PcTransportReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.Integer packetsSent, java.lang.Integer packetsReceived, java.lang.Long bytesSent, java.lang.Long bytesReceived, java.lang.String iceRole, java.lang.String iceLocalUsernameFragment, java.lang.String dtlsState, java.lang.String iceTransportState, java.lang.String tlsVersion, java.lang.String dtlsCipher, java.lang.String srtpCipher, java.lang.String tlsGroup, java.lang.Integer selectedCandidatePairChanges, java.lang.String localFingerprint, java.lang.String localFingerprintAlgorithm, java.lang.String localBase64Certificate, java.lang.String remoteFingerprint, java.lang.String remoteFingerprintAlgorithm, java.lang.String remoteBase64Certificate, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String localProtocol, java.lang.String localCandidateType, java.lang.Integer localCandidatePriority, java.lang.String localCandidateICEServerUrl, java.lang.String localCandidateRelayProtocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.String remoteProtocol, java.lang.String remoteCandidateType, java.lang.Integer remoteCandidatePriority, java.lang.String remoteCandidateICEServerUrl, java.lang.String remoteCandidateRelayProtocol, java.lang.String cndidatePairState, java.lang.Integer candidatePairPacketsSent, java.lang.Integer candidatePairPacketsReceived, java.lang.Long candidatePairBytesSent, java.lang.Long candidatePairBytesReceived, java.lang.Long candidatePairLastPacketSentTimestamp, java.lang.Long candidatePairLastPacketReceivedTimestamp, java.lang.Long candidatePairFirstRequestTimestamp, java.lang.Long candidatePairLastRequestTimestamp, java.lang.Long candidatePairLastResponseTimestamp, java.lang.Double candidatePairTotalRoundTripTime, java.lang.Double candidatePairCurrentRoundTripTime, java.lang.Double candidatePairAvailableOutgoingBitrate, java.lang.Double candidatePairAvailableIncomingBitrate, java.lang.Integer candidatePairCircuitBreakerTriggerCount, java.lang.Integer candidatePairRequestsReceived, java.lang.Integer candidatePairRequestsSent, java.lang.Integer candidatePairResponsesReceived, java.lang.Integer candidatePairResponsesSent, java.lang.Integer candidatePairRetransmissionReceived, java.lang.Integer candidatePairRetransmissionSent, java.lang.Integer candidatePairConsentRequestsSent, java.lang.Long candidatePairConsentExpiredTimestamp, java.lang.Long candidatePairBytesDiscardedOnSend, java.lang.Long candidatePairRequestBytesSent, java.lang.Long candidatePairConsentRequestBytesSent, java.lang.Long candidatePairResponseBytesSent, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -294,21 +294,21 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     this.remoteCandidatePriority = remoteCandidatePriority;
     this.remoteCandidateICEServerUrl = remoteCandidateICEServerUrl;
     this.remoteCandidateRelayProtocol = remoteCandidateRelayProtocol;
-    this.iceCandidatePairState = iceCandidatePairState;
-    this.iceCandidatePairPacketsSent = iceCandidatePairPacketsSent;
-    this.iceCandidatePairPacketsReceived = iceCandidatePairPacketsReceived;
-    this.iceCandidatePairBytesSent = iceCandidatePairBytesSent;
-    this.iceCandidatePairBytesReceived = iceCandidatePairBytesReceived;
-    this.iceCandidatePairLastPacketSentTimestamp = iceCandidatePairLastPacketSentTimestamp;
-    this.iceCandidatePairLastPacketReceivedTimestamp = iceCandidatePairLastPacketReceivedTimestamp;
-    this.iceCandidatePairFirstRequestTimestamp = iceCandidatePairFirstRequestTimestamp;
-    this.iceCandidatePairLastRequestTimestamp = iceCandidatePairLastRequestTimestamp;
-    this.iceCandidatePairLastResponseTimestamp = iceCandidatePairLastResponseTimestamp;
-    this.stunProvidedTotalRoundTripTime = stunProvidedTotalRoundTripTime;
-    this.stunProvidedCurrentRoundTripTime = stunProvidedCurrentRoundTripTime;
-    this.availableOutgoingBitrate = availableOutgoingBitrate;
-    this.availableIncomingBitrate = availableIncomingBitrate;
-    this.circuitBreakerTriggerCount = circuitBreakerTriggerCount;
+    this.cndidatePairState = cndidatePairState;
+    this.candidatePairPacketsSent = candidatePairPacketsSent;
+    this.candidatePairPacketsReceived = candidatePairPacketsReceived;
+    this.candidatePairBytesSent = candidatePairBytesSent;
+    this.candidatePairBytesReceived = candidatePairBytesReceived;
+    this.candidatePairLastPacketSentTimestamp = candidatePairLastPacketSentTimestamp;
+    this.candidatePairLastPacketReceivedTimestamp = candidatePairLastPacketReceivedTimestamp;
+    this.candidatePairFirstRequestTimestamp = candidatePairFirstRequestTimestamp;
+    this.candidatePairLastRequestTimestamp = candidatePairLastRequestTimestamp;
+    this.candidatePairLastResponseTimestamp = candidatePairLastResponseTimestamp;
+    this.candidatePairTotalRoundTripTime = candidatePairTotalRoundTripTime;
+    this.candidatePairCurrentRoundTripTime = candidatePairCurrentRoundTripTime;
+    this.candidatePairAvailableOutgoingBitrate = candidatePairAvailableOutgoingBitrate;
+    this.candidatePairAvailableIncomingBitrate = candidatePairAvailableIncomingBitrate;
+    this.candidatePairCircuitBreakerTriggerCount = candidatePairCircuitBreakerTriggerCount;
     this.candidatePairRequestsReceived = candidatePairRequestsReceived;
     this.candidatePairRequestsSent = candidatePairRequestsSent;
     this.candidatePairResponsesReceived = candidatePairResponsesReceived;
@@ -375,21 +375,21 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     case 40: return remoteCandidatePriority;
     case 41: return remoteCandidateICEServerUrl;
     case 42: return remoteCandidateRelayProtocol;
-    case 43: return iceCandidatePairState;
-    case 44: return iceCandidatePairPacketsSent;
-    case 45: return iceCandidatePairPacketsReceived;
-    case 46: return iceCandidatePairBytesSent;
-    case 47: return iceCandidatePairBytesReceived;
-    case 48: return iceCandidatePairLastPacketSentTimestamp;
-    case 49: return iceCandidatePairLastPacketReceivedTimestamp;
-    case 50: return iceCandidatePairFirstRequestTimestamp;
-    case 51: return iceCandidatePairLastRequestTimestamp;
-    case 52: return iceCandidatePairLastResponseTimestamp;
-    case 53: return stunProvidedTotalRoundTripTime;
-    case 54: return stunProvidedCurrentRoundTripTime;
-    case 55: return availableOutgoingBitrate;
-    case 56: return availableIncomingBitrate;
-    case 57: return circuitBreakerTriggerCount;
+    case 43: return cndidatePairState;
+    case 44: return candidatePairPacketsSent;
+    case 45: return candidatePairPacketsReceived;
+    case 46: return candidatePairBytesSent;
+    case 47: return candidatePairBytesReceived;
+    case 48: return candidatePairLastPacketSentTimestamp;
+    case 49: return candidatePairLastPacketReceivedTimestamp;
+    case 50: return candidatePairFirstRequestTimestamp;
+    case 51: return candidatePairLastRequestTimestamp;
+    case 52: return candidatePairLastResponseTimestamp;
+    case 53: return candidatePairTotalRoundTripTime;
+    case 54: return candidatePairCurrentRoundTripTime;
+    case 55: return candidatePairAvailableOutgoingBitrate;
+    case 56: return candidatePairAvailableIncomingBitrate;
+    case 57: return candidatePairCircuitBreakerTriggerCount;
     case 58: return candidatePairRequestsReceived;
     case 59: return candidatePairRequestsSent;
     case 60: return candidatePairResponsesReceived;
@@ -427,8 +427,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     case 9: label = (java.lang.String)value$; break;
     case 10: packetsSent = (java.lang.Integer)value$; break;
     case 11: packetsReceived = (java.lang.Integer)value$; break;
-    case 12: bytesSent = (java.lang.Integer)value$; break;
-    case 13: bytesReceived = (java.lang.Integer)value$; break;
+    case 12: bytesSent = (java.lang.Long)value$; break;
+    case 13: bytesReceived = (java.lang.Long)value$; break;
     case 14: iceRole = (java.lang.String)value$; break;
     case 15: iceLocalUsernameFragment = (java.lang.String)value$; break;
     case 16: dtlsState = (java.lang.String)value$; break;
@@ -458,21 +458,21 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     case 40: remoteCandidatePriority = (java.lang.Integer)value$; break;
     case 41: remoteCandidateICEServerUrl = (java.lang.String)value$; break;
     case 42: remoteCandidateRelayProtocol = (java.lang.String)value$; break;
-    case 43: iceCandidatePairState = (java.lang.String)value$; break;
-    case 44: iceCandidatePairPacketsSent = (java.lang.Integer)value$; break;
-    case 45: iceCandidatePairPacketsReceived = (java.lang.Integer)value$; break;
-    case 46: iceCandidatePairBytesSent = (java.lang.Long)value$; break;
-    case 47: iceCandidatePairBytesReceived = (java.lang.Long)value$; break;
-    case 48: iceCandidatePairLastPacketSentTimestamp = (java.lang.Long)value$; break;
-    case 49: iceCandidatePairLastPacketReceivedTimestamp = (java.lang.Long)value$; break;
-    case 50: iceCandidatePairFirstRequestTimestamp = (java.lang.Long)value$; break;
-    case 51: iceCandidatePairLastRequestTimestamp = (java.lang.Long)value$; break;
-    case 52: iceCandidatePairLastResponseTimestamp = (java.lang.Long)value$; break;
-    case 53: stunProvidedTotalRoundTripTime = (java.lang.Double)value$; break;
-    case 54: stunProvidedCurrentRoundTripTime = (java.lang.Double)value$; break;
-    case 55: availableOutgoingBitrate = (java.lang.Double)value$; break;
-    case 56: availableIncomingBitrate = (java.lang.Double)value$; break;
-    case 57: circuitBreakerTriggerCount = (java.lang.Integer)value$; break;
+    case 43: cndidatePairState = (java.lang.String)value$; break;
+    case 44: candidatePairPacketsSent = (java.lang.Integer)value$; break;
+    case 45: candidatePairPacketsReceived = (java.lang.Integer)value$; break;
+    case 46: candidatePairBytesSent = (java.lang.Long)value$; break;
+    case 47: candidatePairBytesReceived = (java.lang.Long)value$; break;
+    case 48: candidatePairLastPacketSentTimestamp = (java.lang.Long)value$; break;
+    case 49: candidatePairLastPacketReceivedTimestamp = (java.lang.Long)value$; break;
+    case 50: candidatePairFirstRequestTimestamp = (java.lang.Long)value$; break;
+    case 51: candidatePairLastRequestTimestamp = (java.lang.Long)value$; break;
+    case 52: candidatePairLastResponseTimestamp = (java.lang.Long)value$; break;
+    case 53: candidatePairTotalRoundTripTime = (java.lang.Double)value$; break;
+    case 54: candidatePairCurrentRoundTripTime = (java.lang.Double)value$; break;
+    case 55: candidatePairAvailableOutgoingBitrate = (java.lang.Double)value$; break;
+    case 56: candidatePairAvailableIncomingBitrate = (java.lang.Double)value$; break;
+    case 57: candidatePairCircuitBreakerTriggerCount = (java.lang.Integer)value$; break;
     case 58: candidatePairRequestsReceived = (java.lang.Integer)value$; break;
     case 59: candidatePairRequestsSent = (java.lang.Integer)value$; break;
     case 60: candidatePairResponsesReceived = (java.lang.Integer)value$; break;
@@ -484,7 +484,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     case 66: candidatePairBytesDiscardedOnSend = (java.lang.Long)value$; break;
     case 67: candidatePairRequestBytesSent = (java.lang.Long)value$; break;
     case 68: candidatePairConsentRequestBytesSent = (java.lang.Long)value$; break;
-    case 69: candidatePairResponseBytesSent = (java.lang.Integer)value$; break;
+    case 69: candidatePairResponseBytesSent = (java.lang.Long)value$; break;
     case 70: sctpSmoothedRoundTripTime = (java.lang.Double)value$; break;
     case 71: sctpCongestionWindow = (java.lang.Double)value$; break;
     case 72: sctpReceiverWindow = (java.lang.Double)value$; break;
@@ -606,7 +606,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'bytesSent' field.
    * @return Represents the total amount of bytes sent on the corresponded transport
    */
-  public java.lang.Integer getBytesSent() {
+  public java.lang.Long getBytesSent() {
     return bytesSent;
   }
 
@@ -615,7 +615,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'bytesReceived' field.
    * @return Represents the total amount of bytes received on the corresponded transport
    */
-  public java.lang.Integer getBytesReceived() {
+  public java.lang.Long getBytesReceived() {
     return bytesReceived;
   }
 
@@ -882,137 +882,137 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
 
 
   /**
-   * Gets the value of the 'iceCandidatePairState' field.
+   * Gets the value of the 'cndidatePairState' field.
    * @return The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
    */
-  public java.lang.String getIceCandidatePairState() {
-    return iceCandidatePairState;
+  public java.lang.String getCndidatePairState() {
+    return cndidatePairState;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairPacketsSent' field.
+   * Gets the value of the 'candidatePairPacketsSent' field.
    * @return The total number of packets sent using the last selected candidate pair over the corresponded transport
    */
-  public java.lang.Integer getIceCandidatePairPacketsSent() {
-    return iceCandidatePairPacketsSent;
+  public java.lang.Integer getCandidatePairPacketsSent() {
+    return candidatePairPacketsSent;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairPacketsReceived' field.
+   * Gets the value of the 'candidatePairPacketsReceived' field.
    * @return The total number of packets received using the last selected candidate pair over the corresponded transport
    */
-  public java.lang.Integer getIceCandidatePairPacketsReceived() {
-    return iceCandidatePairPacketsReceived;
+  public java.lang.Integer getCandidatePairPacketsReceived() {
+    return candidatePairPacketsReceived;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairBytesSent' field.
+   * Gets the value of the 'candidatePairBytesSent' field.
    * @return The total number of bytes sent using the last selected candidate pair over the corresponded transport
    */
-  public java.lang.Long getIceCandidatePairBytesSent() {
-    return iceCandidatePairBytesSent;
+  public java.lang.Long getCandidatePairBytesSent() {
+    return candidatePairBytesSent;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairBytesReceived' field.
+   * Gets the value of the 'candidatePairBytesReceived' field.
    * @return The total number of bytes received using the last selected candidate pair over the corresponded transport
    */
-  public java.lang.Long getIceCandidatePairBytesReceived() {
-    return iceCandidatePairBytesReceived;
+  public java.lang.Long getCandidatePairBytesReceived() {
+    return candidatePairBytesReceived;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairLastPacketSentTimestamp' field.
+   * Gets the value of the 'candidatePairLastPacketSentTimestamp' field.
    * @return Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
    */
-  public java.lang.Long getIceCandidatePairLastPacketSentTimestamp() {
-    return iceCandidatePairLastPacketSentTimestamp;
+  public java.lang.Long getCandidatePairLastPacketSentTimestamp() {
+    return candidatePairLastPacketSentTimestamp;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairLastPacketReceivedTimestamp' field.
+   * Gets the value of the 'candidatePairLastPacketReceivedTimestamp' field.
    * @return Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
    */
-  public java.lang.Long getIceCandidatePairLastPacketReceivedTimestamp() {
-    return iceCandidatePairLastPacketReceivedTimestamp;
+  public java.lang.Long getCandidatePairLastPacketReceivedTimestamp() {
+    return candidatePairLastPacketReceivedTimestamp;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairFirstRequestTimestamp' field.
+   * Gets the value of the 'candidatePairFirstRequestTimestamp' field.
    * @return Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
    */
-  public java.lang.Long getIceCandidatePairFirstRequestTimestamp() {
-    return iceCandidatePairFirstRequestTimestamp;
+  public java.lang.Long getCandidatePairFirstRequestTimestamp() {
+    return candidatePairFirstRequestTimestamp;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairLastRequestTimestamp' field.
+   * Gets the value of the 'candidatePairLastRequestTimestamp' field.
    * @return Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
    */
-  public java.lang.Long getIceCandidatePairLastRequestTimestamp() {
-    return iceCandidatePairLastRequestTimestamp;
+  public java.lang.Long getCandidatePairLastRequestTimestamp() {
+    return candidatePairLastRequestTimestamp;
   }
 
 
   /**
-   * Gets the value of the 'iceCandidatePairLastResponseTimestamp' field.
+   * Gets the value of the 'candidatePairLastResponseTimestamp' field.
    * @return Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
    */
-  public java.lang.Long getIceCandidatePairLastResponseTimestamp() {
-    return iceCandidatePairLastResponseTimestamp;
+  public java.lang.Long getCandidatePairLastResponseTimestamp() {
+    return candidatePairLastResponseTimestamp;
   }
 
 
   /**
-   * Gets the value of the 'stunProvidedTotalRoundTripTime' field.
+   * Gets the value of the 'candidatePairTotalRoundTripTime' field.
    * @return Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
    */
-  public java.lang.Double getStunProvidedTotalRoundTripTime() {
-    return stunProvidedTotalRoundTripTime;
+  public java.lang.Double getCandidatePairTotalRoundTripTime() {
+    return candidatePairTotalRoundTripTime;
   }
 
 
   /**
-   * Gets the value of the 'stunProvidedCurrentRoundTripTime' field.
+   * Gets the value of the 'candidatePairCurrentRoundTripTime' field.
    * @return Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
    */
-  public java.lang.Double getStunProvidedCurrentRoundTripTime() {
-    return stunProvidedCurrentRoundTripTime;
+  public java.lang.Double getCandidatePairCurrentRoundTripTime() {
+    return candidatePairCurrentRoundTripTime;
   }
 
 
   /**
-   * Gets the value of the 'availableOutgoingBitrate' field.
+   * Gets the value of the 'candidatePairAvailableOutgoingBitrate' field.
    * @return The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
    */
-  public java.lang.Double getAvailableOutgoingBitrate() {
-    return availableOutgoingBitrate;
+  public java.lang.Double getCandidatePairAvailableOutgoingBitrate() {
+    return candidatePairAvailableOutgoingBitrate;
   }
 
 
   /**
-   * Gets the value of the 'availableIncomingBitrate' field.
+   * Gets the value of the 'candidatePairAvailableIncomingBitrate' field.
    * @return The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
    */
-  public java.lang.Double getAvailableIncomingBitrate() {
-    return availableIncomingBitrate;
+  public java.lang.Double getCandidatePairAvailableIncomingBitrate() {
+    return candidatePairAvailableIncomingBitrate;
   }
 
 
   /**
-   * Gets the value of the 'circuitBreakerTriggerCount' field.
+   * Gets the value of the 'candidatePairCircuitBreakerTriggerCount' field.
    * @return The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
    */
-  public java.lang.Integer getCircuitBreakerTriggerCount() {
-    return circuitBreakerTriggerCount;
+  public java.lang.Integer getCandidatePairCircuitBreakerTriggerCount() {
+    return candidatePairCircuitBreakerTriggerCount;
   }
 
 
@@ -1119,7 +1119,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'candidatePairResponseBytesSent' field.
    * @return Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport
    */
-  public java.lang.Integer getCandidatePairResponseBytesSent() {
+  public java.lang.Long getCandidatePairResponseBytesSent() {
     return candidatePairResponseBytesSent;
   }
 
@@ -1226,9 +1226,9 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     /** Represents the total number of packets received on the corresponded transport */
     private java.lang.Integer packetsReceived;
     /** Represents the total amount of bytes sent on the corresponded transport */
-    private java.lang.Integer bytesSent;
+    private java.lang.Long bytesSent;
     /** Represents the total amount of bytes received on the corresponded transport */
-    private java.lang.Integer bytesReceived;
+    private java.lang.Long bytesReceived;
     /** Represent the current role of ICE under DTLS Transport */
     private java.lang.String iceRole;
     /** Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport */
@@ -1288,35 +1288,35 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     /** The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport */
     private java.lang.String remoteCandidateRelayProtocol;
     /** The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport */
-    private java.lang.String iceCandidatePairState;
+    private java.lang.String cndidatePairState;
     /** The total number of packets sent using the last selected candidate pair over the corresponded transport */
-    private java.lang.Integer iceCandidatePairPacketsSent;
+    private java.lang.Integer candidatePairPacketsSent;
     /** The total number of packets received using the last selected candidate pair over the corresponded transport */
-    private java.lang.Integer iceCandidatePairPacketsReceived;
+    private java.lang.Integer candidatePairPacketsReceived;
     /** The total number of bytes sent using the last selected candidate pair over the corresponded transport */
-    private java.lang.Long iceCandidatePairBytesSent;
+    private java.lang.Long candidatePairBytesSent;
     /** The total number of bytes received using the last selected candidate pair over the corresponded transport */
-    private java.lang.Long iceCandidatePairBytesReceived;
+    private java.lang.Long candidatePairBytesReceived;
     /** Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-    private java.lang.Long iceCandidatePairLastPacketSentTimestamp;
+    private java.lang.Long candidatePairLastPacketSentTimestamp;
     /** Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms) */
-    private java.lang.Long iceCandidatePairLastPacketReceivedTimestamp;
+    private java.lang.Long candidatePairLastPacketReceivedTimestamp;
     /** Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-    private java.lang.Long iceCandidatePairFirstRequestTimestamp;
+    private java.lang.Long candidatePairFirstRequestTimestamp;
     /** Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-    private java.lang.Long iceCandidatePairLastRequestTimestamp;
+    private java.lang.Long candidatePairLastRequestTimestamp;
     /** Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms) */
-    private java.lang.Long iceCandidatePairLastResponseTimestamp;
+    private java.lang.Long candidatePairLastResponseTimestamp;
     /** Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport */
-    private java.lang.Double stunProvidedTotalRoundTripTime;
+    private java.lang.Double candidatePairTotalRoundTripTime;
     /** Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport */
-    private java.lang.Double stunProvidedCurrentRoundTripTime;
+    private java.lang.Double candidatePairCurrentRoundTripTime;
     /** The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport */
-    private java.lang.Double availableOutgoingBitrate;
+    private java.lang.Double candidatePairAvailableOutgoingBitrate;
     /** The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport */
-    private java.lang.Double availableIncomingBitrate;
+    private java.lang.Double candidatePairAvailableIncomingBitrate;
     /** The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair */
-    private java.lang.Integer circuitBreakerTriggerCount;
+    private java.lang.Integer candidatePairCircuitBreakerTriggerCount;
     /** Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport */
     private java.lang.Integer candidatePairRequestsReceived;
     /** Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport */
@@ -1340,7 +1340,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     /** Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport */
     private java.lang.Long candidatePairConsentRequestBytesSent;
     /** Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport */
-    private java.lang.Integer candidatePairResponseBytesSent;
+    private java.lang.Long candidatePairResponseBytesSent;
     /** The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds.  */
     private java.lang.Double sctpSmoothedRoundTripTime;
     /** The latest congestion window, corresponding to spinfo_cwnd. */
@@ -1535,64 +1535,64 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
         this.remoteCandidateRelayProtocol = data().deepCopy(fields()[42].schema(), other.remoteCandidateRelayProtocol);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.iceCandidatePairState)) {
-        this.iceCandidatePairState = data().deepCopy(fields()[43].schema(), other.iceCandidatePairState);
+      if (isValidValue(fields()[43], other.cndidatePairState)) {
+        this.cndidatePairState = data().deepCopy(fields()[43].schema(), other.cndidatePairState);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.iceCandidatePairPacketsSent)) {
-        this.iceCandidatePairPacketsSent = data().deepCopy(fields()[44].schema(), other.iceCandidatePairPacketsSent);
+      if (isValidValue(fields()[44], other.candidatePairPacketsSent)) {
+        this.candidatePairPacketsSent = data().deepCopy(fields()[44].schema(), other.candidatePairPacketsSent);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.iceCandidatePairPacketsReceived)) {
-        this.iceCandidatePairPacketsReceived = data().deepCopy(fields()[45].schema(), other.iceCandidatePairPacketsReceived);
+      if (isValidValue(fields()[45], other.candidatePairPacketsReceived)) {
+        this.candidatePairPacketsReceived = data().deepCopy(fields()[45].schema(), other.candidatePairPacketsReceived);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.iceCandidatePairBytesSent)) {
-        this.iceCandidatePairBytesSent = data().deepCopy(fields()[46].schema(), other.iceCandidatePairBytesSent);
+      if (isValidValue(fields()[46], other.candidatePairBytesSent)) {
+        this.candidatePairBytesSent = data().deepCopy(fields()[46].schema(), other.candidatePairBytesSent);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.iceCandidatePairBytesReceived)) {
-        this.iceCandidatePairBytesReceived = data().deepCopy(fields()[47].schema(), other.iceCandidatePairBytesReceived);
+      if (isValidValue(fields()[47], other.candidatePairBytesReceived)) {
+        this.candidatePairBytesReceived = data().deepCopy(fields()[47].schema(), other.candidatePairBytesReceived);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.iceCandidatePairLastPacketSentTimestamp)) {
-        this.iceCandidatePairLastPacketSentTimestamp = data().deepCopy(fields()[48].schema(), other.iceCandidatePairLastPacketSentTimestamp);
+      if (isValidValue(fields()[48], other.candidatePairLastPacketSentTimestamp)) {
+        this.candidatePairLastPacketSentTimestamp = data().deepCopy(fields()[48].schema(), other.candidatePairLastPacketSentTimestamp);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.iceCandidatePairLastPacketReceivedTimestamp)) {
-        this.iceCandidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[49].schema(), other.iceCandidatePairLastPacketReceivedTimestamp);
+      if (isValidValue(fields()[49], other.candidatePairLastPacketReceivedTimestamp)) {
+        this.candidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[49].schema(), other.candidatePairLastPacketReceivedTimestamp);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.iceCandidatePairFirstRequestTimestamp)) {
-        this.iceCandidatePairFirstRequestTimestamp = data().deepCopy(fields()[50].schema(), other.iceCandidatePairFirstRequestTimestamp);
+      if (isValidValue(fields()[50], other.candidatePairFirstRequestTimestamp)) {
+        this.candidatePairFirstRequestTimestamp = data().deepCopy(fields()[50].schema(), other.candidatePairFirstRequestTimestamp);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.iceCandidatePairLastRequestTimestamp)) {
-        this.iceCandidatePairLastRequestTimestamp = data().deepCopy(fields()[51].schema(), other.iceCandidatePairLastRequestTimestamp);
+      if (isValidValue(fields()[51], other.candidatePairLastRequestTimestamp)) {
+        this.candidatePairLastRequestTimestamp = data().deepCopy(fields()[51].schema(), other.candidatePairLastRequestTimestamp);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.iceCandidatePairLastResponseTimestamp)) {
-        this.iceCandidatePairLastResponseTimestamp = data().deepCopy(fields()[52].schema(), other.iceCandidatePairLastResponseTimestamp);
+      if (isValidValue(fields()[52], other.candidatePairLastResponseTimestamp)) {
+        this.candidatePairLastResponseTimestamp = data().deepCopy(fields()[52].schema(), other.candidatePairLastResponseTimestamp);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.stunProvidedTotalRoundTripTime)) {
-        this.stunProvidedTotalRoundTripTime = data().deepCopy(fields()[53].schema(), other.stunProvidedTotalRoundTripTime);
+      if (isValidValue(fields()[53], other.candidatePairTotalRoundTripTime)) {
+        this.candidatePairTotalRoundTripTime = data().deepCopy(fields()[53].schema(), other.candidatePairTotalRoundTripTime);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.stunProvidedCurrentRoundTripTime)) {
-        this.stunProvidedCurrentRoundTripTime = data().deepCopy(fields()[54].schema(), other.stunProvidedCurrentRoundTripTime);
+      if (isValidValue(fields()[54], other.candidatePairCurrentRoundTripTime)) {
+        this.candidatePairCurrentRoundTripTime = data().deepCopy(fields()[54].schema(), other.candidatePairCurrentRoundTripTime);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.availableOutgoingBitrate)) {
-        this.availableOutgoingBitrate = data().deepCopy(fields()[55].schema(), other.availableOutgoingBitrate);
+      if (isValidValue(fields()[55], other.candidatePairAvailableOutgoingBitrate)) {
+        this.candidatePairAvailableOutgoingBitrate = data().deepCopy(fields()[55].schema(), other.candidatePairAvailableOutgoingBitrate);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.availableIncomingBitrate)) {
-        this.availableIncomingBitrate = data().deepCopy(fields()[56].schema(), other.availableIncomingBitrate);
+      if (isValidValue(fields()[56], other.candidatePairAvailableIncomingBitrate)) {
+        this.candidatePairAvailableIncomingBitrate = data().deepCopy(fields()[56].schema(), other.candidatePairAvailableIncomingBitrate);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.circuitBreakerTriggerCount)) {
-        this.circuitBreakerTriggerCount = data().deepCopy(fields()[57].schema(), other.circuitBreakerTriggerCount);
+      if (isValidValue(fields()[57], other.candidatePairCircuitBreakerTriggerCount)) {
+        this.candidatePairCircuitBreakerTriggerCount = data().deepCopy(fields()[57].schema(), other.candidatePairCircuitBreakerTriggerCount);
         fieldSetFlags()[57] = true;
       }
       if (isValidValue(fields()[58], other.candidatePairRequestsReceived)) {
@@ -1843,64 +1843,64 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
         this.remoteCandidateRelayProtocol = data().deepCopy(fields()[42].schema(), other.remoteCandidateRelayProtocol);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.iceCandidatePairState)) {
-        this.iceCandidatePairState = data().deepCopy(fields()[43].schema(), other.iceCandidatePairState);
+      if (isValidValue(fields()[43], other.cndidatePairState)) {
+        this.cndidatePairState = data().deepCopy(fields()[43].schema(), other.cndidatePairState);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.iceCandidatePairPacketsSent)) {
-        this.iceCandidatePairPacketsSent = data().deepCopy(fields()[44].schema(), other.iceCandidatePairPacketsSent);
+      if (isValidValue(fields()[44], other.candidatePairPacketsSent)) {
+        this.candidatePairPacketsSent = data().deepCopy(fields()[44].schema(), other.candidatePairPacketsSent);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.iceCandidatePairPacketsReceived)) {
-        this.iceCandidatePairPacketsReceived = data().deepCopy(fields()[45].schema(), other.iceCandidatePairPacketsReceived);
+      if (isValidValue(fields()[45], other.candidatePairPacketsReceived)) {
+        this.candidatePairPacketsReceived = data().deepCopy(fields()[45].schema(), other.candidatePairPacketsReceived);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.iceCandidatePairBytesSent)) {
-        this.iceCandidatePairBytesSent = data().deepCopy(fields()[46].schema(), other.iceCandidatePairBytesSent);
+      if (isValidValue(fields()[46], other.candidatePairBytesSent)) {
+        this.candidatePairBytesSent = data().deepCopy(fields()[46].schema(), other.candidatePairBytesSent);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.iceCandidatePairBytesReceived)) {
-        this.iceCandidatePairBytesReceived = data().deepCopy(fields()[47].schema(), other.iceCandidatePairBytesReceived);
+      if (isValidValue(fields()[47], other.candidatePairBytesReceived)) {
+        this.candidatePairBytesReceived = data().deepCopy(fields()[47].schema(), other.candidatePairBytesReceived);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.iceCandidatePairLastPacketSentTimestamp)) {
-        this.iceCandidatePairLastPacketSentTimestamp = data().deepCopy(fields()[48].schema(), other.iceCandidatePairLastPacketSentTimestamp);
+      if (isValidValue(fields()[48], other.candidatePairLastPacketSentTimestamp)) {
+        this.candidatePairLastPacketSentTimestamp = data().deepCopy(fields()[48].schema(), other.candidatePairLastPacketSentTimestamp);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.iceCandidatePairLastPacketReceivedTimestamp)) {
-        this.iceCandidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[49].schema(), other.iceCandidatePairLastPacketReceivedTimestamp);
+      if (isValidValue(fields()[49], other.candidatePairLastPacketReceivedTimestamp)) {
+        this.candidatePairLastPacketReceivedTimestamp = data().deepCopy(fields()[49].schema(), other.candidatePairLastPacketReceivedTimestamp);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.iceCandidatePairFirstRequestTimestamp)) {
-        this.iceCandidatePairFirstRequestTimestamp = data().deepCopy(fields()[50].schema(), other.iceCandidatePairFirstRequestTimestamp);
+      if (isValidValue(fields()[50], other.candidatePairFirstRequestTimestamp)) {
+        this.candidatePairFirstRequestTimestamp = data().deepCopy(fields()[50].schema(), other.candidatePairFirstRequestTimestamp);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.iceCandidatePairLastRequestTimestamp)) {
-        this.iceCandidatePairLastRequestTimestamp = data().deepCopy(fields()[51].schema(), other.iceCandidatePairLastRequestTimestamp);
+      if (isValidValue(fields()[51], other.candidatePairLastRequestTimestamp)) {
+        this.candidatePairLastRequestTimestamp = data().deepCopy(fields()[51].schema(), other.candidatePairLastRequestTimestamp);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.iceCandidatePairLastResponseTimestamp)) {
-        this.iceCandidatePairLastResponseTimestamp = data().deepCopy(fields()[52].schema(), other.iceCandidatePairLastResponseTimestamp);
+      if (isValidValue(fields()[52], other.candidatePairLastResponseTimestamp)) {
+        this.candidatePairLastResponseTimestamp = data().deepCopy(fields()[52].schema(), other.candidatePairLastResponseTimestamp);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.stunProvidedTotalRoundTripTime)) {
-        this.stunProvidedTotalRoundTripTime = data().deepCopy(fields()[53].schema(), other.stunProvidedTotalRoundTripTime);
+      if (isValidValue(fields()[53], other.candidatePairTotalRoundTripTime)) {
+        this.candidatePairTotalRoundTripTime = data().deepCopy(fields()[53].schema(), other.candidatePairTotalRoundTripTime);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.stunProvidedCurrentRoundTripTime)) {
-        this.stunProvidedCurrentRoundTripTime = data().deepCopy(fields()[54].schema(), other.stunProvidedCurrentRoundTripTime);
+      if (isValidValue(fields()[54], other.candidatePairCurrentRoundTripTime)) {
+        this.candidatePairCurrentRoundTripTime = data().deepCopy(fields()[54].schema(), other.candidatePairCurrentRoundTripTime);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.availableOutgoingBitrate)) {
-        this.availableOutgoingBitrate = data().deepCopy(fields()[55].schema(), other.availableOutgoingBitrate);
+      if (isValidValue(fields()[55], other.candidatePairAvailableOutgoingBitrate)) {
+        this.candidatePairAvailableOutgoingBitrate = data().deepCopy(fields()[55].schema(), other.candidatePairAvailableOutgoingBitrate);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.availableIncomingBitrate)) {
-        this.availableIncomingBitrate = data().deepCopy(fields()[56].schema(), other.availableIncomingBitrate);
+      if (isValidValue(fields()[56], other.candidatePairAvailableIncomingBitrate)) {
+        this.candidatePairAvailableIncomingBitrate = data().deepCopy(fields()[56].schema(), other.candidatePairAvailableIncomingBitrate);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.circuitBreakerTriggerCount)) {
-        this.circuitBreakerTriggerCount = data().deepCopy(fields()[57].schema(), other.circuitBreakerTriggerCount);
+      if (isValidValue(fields()[57], other.candidatePairCircuitBreakerTriggerCount)) {
+        this.candidatePairCircuitBreakerTriggerCount = data().deepCopy(fields()[57].schema(), other.candidatePairCircuitBreakerTriggerCount);
         fieldSetFlags()[57] = true;
       }
       if (isValidValue(fields()[58], other.candidatePairRequestsReceived)) {
@@ -2493,7 +2493,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes sent on the corresponded transport
       * @return The value.
       */
-    public java.lang.Integer getBytesSent() {
+    public java.lang.Long getBytesSent() {
       return bytesSent;
     }
 
@@ -2503,7 +2503,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'bytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesSent(java.lang.Long value) {
       validate(fields()[12], value);
       this.bytesSent = value;
       fieldSetFlags()[12] = true;
@@ -2536,7 +2536,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes received on the corresponded transport
       * @return The value.
       */
-    public java.lang.Integer getBytesReceived() {
+    public java.lang.Long getBytesReceived() {
       return bytesReceived;
     }
 
@@ -2546,7 +2546,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'bytesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesReceived(java.lang.Long value) {
       validate(fields()[13], value);
       this.bytesReceived = value;
       fieldSetFlags()[13] = true;
@@ -3822,646 +3822,646 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairState' field.
+      * Gets the value of the 'cndidatePairState' field.
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
       * @return The value.
       */
-    public java.lang.String getIceCandidatePairState() {
-      return iceCandidatePairState;
+    public java.lang.String getCndidatePairState() {
+      return cndidatePairState;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairState' field.
+      * Sets the value of the 'cndidatePairState' field.
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
-      * @param value The value of 'iceCandidatePairState'.
+      * @param value The value of 'cndidatePairState'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairState(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCndidatePairState(java.lang.String value) {
       validate(fields()[43], value);
-      this.iceCandidatePairState = value;
+      this.cndidatePairState = value;
       fieldSetFlags()[43] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairState' field has been set.
+      * Checks whether the 'cndidatePairState' field has been set.
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
-      * @return True if the 'iceCandidatePairState' field has been set, false otherwise.
+      * @return True if the 'cndidatePairState' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairState() {
+    public boolean hasCndidatePairState() {
       return fieldSetFlags()[43];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairState' field.
+      * Clears the value of the 'cndidatePairState' field.
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairState() {
-      iceCandidatePairState = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCndidatePairState() {
+      cndidatePairState = null;
       fieldSetFlags()[43] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairPacketsSent' field.
+      * Gets the value of the 'candidatePairPacketsSent' field.
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public java.lang.Integer getIceCandidatePairPacketsSent() {
-      return iceCandidatePairPacketsSent;
+    public java.lang.Integer getCandidatePairPacketsSent() {
+      return candidatePairPacketsSent;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairPacketsSent' field.
+      * Sets the value of the 'candidatePairPacketsSent' field.
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
-      * @param value The value of 'iceCandidatePairPacketsSent'.
+      * @param value The value of 'candidatePairPacketsSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairPacketsSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairPacketsSent(java.lang.Integer value) {
       validate(fields()[44], value);
-      this.iceCandidatePairPacketsSent = value;
+      this.candidatePairPacketsSent = value;
       fieldSetFlags()[44] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairPacketsSent' field has been set.
+      * Checks whether the 'candidatePairPacketsSent' field has been set.
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
-      * @return True if the 'iceCandidatePairPacketsSent' field has been set, false otherwise.
+      * @return True if the 'candidatePairPacketsSent' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairPacketsSent() {
+    public boolean hasCandidatePairPacketsSent() {
       return fieldSetFlags()[44];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairPacketsSent' field.
+      * Clears the value of the 'candidatePairPacketsSent' field.
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairPacketsSent() {
-      iceCandidatePairPacketsSent = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairPacketsSent() {
+      candidatePairPacketsSent = null;
       fieldSetFlags()[44] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairPacketsReceived' field.
+      * Gets the value of the 'candidatePairPacketsReceived' field.
       * The total number of packets received using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public java.lang.Integer getIceCandidatePairPacketsReceived() {
-      return iceCandidatePairPacketsReceived;
+    public java.lang.Integer getCandidatePairPacketsReceived() {
+      return candidatePairPacketsReceived;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairPacketsReceived' field.
+      * Sets the value of the 'candidatePairPacketsReceived' field.
       * The total number of packets received using the last selected candidate pair over the corresponded transport
-      * @param value The value of 'iceCandidatePairPacketsReceived'.
+      * @param value The value of 'candidatePairPacketsReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairPacketsReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairPacketsReceived(java.lang.Integer value) {
       validate(fields()[45], value);
-      this.iceCandidatePairPacketsReceived = value;
+      this.candidatePairPacketsReceived = value;
       fieldSetFlags()[45] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairPacketsReceived' field has been set.
+      * Checks whether the 'candidatePairPacketsReceived' field has been set.
       * The total number of packets received using the last selected candidate pair over the corresponded transport
-      * @return True if the 'iceCandidatePairPacketsReceived' field has been set, false otherwise.
+      * @return True if the 'candidatePairPacketsReceived' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairPacketsReceived() {
+    public boolean hasCandidatePairPacketsReceived() {
       return fieldSetFlags()[45];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairPacketsReceived' field.
+      * Clears the value of the 'candidatePairPacketsReceived' field.
       * The total number of packets received using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairPacketsReceived() {
-      iceCandidatePairPacketsReceived = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairPacketsReceived() {
+      candidatePairPacketsReceived = null;
       fieldSetFlags()[45] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairBytesSent' field.
+      * Gets the value of the 'candidatePairBytesSent' field.
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairBytesSent() {
-      return iceCandidatePairBytesSent;
+    public java.lang.Long getCandidatePairBytesSent() {
+      return candidatePairBytesSent;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairBytesSent' field.
+      * Sets the value of the 'candidatePairBytesSent' field.
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
-      * @param value The value of 'iceCandidatePairBytesSent'.
+      * @param value The value of 'candidatePairBytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairBytesSent(java.lang.Long value) {
       validate(fields()[46], value);
-      this.iceCandidatePairBytesSent = value;
+      this.candidatePairBytesSent = value;
       fieldSetFlags()[46] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairBytesSent' field has been set.
+      * Checks whether the 'candidatePairBytesSent' field has been set.
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
-      * @return True if the 'iceCandidatePairBytesSent' field has been set, false otherwise.
+      * @return True if the 'candidatePairBytesSent' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairBytesSent() {
+    public boolean hasCandidatePairBytesSent() {
       return fieldSetFlags()[46];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairBytesSent' field.
+      * Clears the value of the 'candidatePairBytesSent' field.
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairBytesSent() {
-      iceCandidatePairBytesSent = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairBytesSent() {
+      candidatePairBytesSent = null;
       fieldSetFlags()[46] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairBytesReceived' field.
+      * Gets the value of the 'candidatePairBytesReceived' field.
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairBytesReceived() {
-      return iceCandidatePairBytesReceived;
+    public java.lang.Long getCandidatePairBytesReceived() {
+      return candidatePairBytesReceived;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairBytesReceived' field.
+      * Sets the value of the 'candidatePairBytesReceived' field.
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
-      * @param value The value of 'iceCandidatePairBytesReceived'.
+      * @param value The value of 'candidatePairBytesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairBytesReceived(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairBytesReceived(java.lang.Long value) {
       validate(fields()[47], value);
-      this.iceCandidatePairBytesReceived = value;
+      this.candidatePairBytesReceived = value;
       fieldSetFlags()[47] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairBytesReceived' field has been set.
+      * Checks whether the 'candidatePairBytesReceived' field has been set.
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
-      * @return True if the 'iceCandidatePairBytesReceived' field has been set, false otherwise.
+      * @return True if the 'candidatePairBytesReceived' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairBytesReceived() {
+    public boolean hasCandidatePairBytesReceived() {
       return fieldSetFlags()[47];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairBytesReceived' field.
+      * Clears the value of the 'candidatePairBytesReceived' field.
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairBytesReceived() {
-      iceCandidatePairBytesReceived = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairBytesReceived() {
+      candidatePairBytesReceived = null;
       fieldSetFlags()[47] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairLastPacketSentTimestamp' field.
+      * Gets the value of the 'candidatePairLastPacketSentTimestamp' field.
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairLastPacketSentTimestamp() {
-      return iceCandidatePairLastPacketSentTimestamp;
+    public java.lang.Long getCandidatePairLastPacketSentTimestamp() {
+      return candidatePairLastPacketSentTimestamp;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairLastPacketSentTimestamp' field.
+      * Sets the value of the 'candidatePairLastPacketSentTimestamp' field.
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
-      * @param value The value of 'iceCandidatePairLastPacketSentTimestamp'.
+      * @param value The value of 'candidatePairLastPacketSentTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastPacketSentTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastPacketSentTimestamp(java.lang.Long value) {
       validate(fields()[48], value);
-      this.iceCandidatePairLastPacketSentTimestamp = value;
+      this.candidatePairLastPacketSentTimestamp = value;
       fieldSetFlags()[48] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairLastPacketSentTimestamp' field has been set.
+      * Checks whether the 'candidatePairLastPacketSentTimestamp' field has been set.
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
-      * @return True if the 'iceCandidatePairLastPacketSentTimestamp' field has been set, false otherwise.
+      * @return True if the 'candidatePairLastPacketSentTimestamp' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairLastPacketSentTimestamp() {
+    public boolean hasCandidatePairLastPacketSentTimestamp() {
       return fieldSetFlags()[48];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairLastPacketSentTimestamp' field.
+      * Clears the value of the 'candidatePairLastPacketSentTimestamp' field.
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastPacketSentTimestamp() {
-      iceCandidatePairLastPacketSentTimestamp = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastPacketSentTimestamp() {
+      candidatePairLastPacketSentTimestamp = null;
       fieldSetFlags()[48] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairLastPacketReceivedTimestamp' field.
+      * Gets the value of the 'candidatePairLastPacketReceivedTimestamp' field.
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairLastPacketReceivedTimestamp() {
-      return iceCandidatePairLastPacketReceivedTimestamp;
+    public java.lang.Long getCandidatePairLastPacketReceivedTimestamp() {
+      return candidatePairLastPacketReceivedTimestamp;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairLastPacketReceivedTimestamp' field.
+      * Sets the value of the 'candidatePairLastPacketReceivedTimestamp' field.
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
-      * @param value The value of 'iceCandidatePairLastPacketReceivedTimestamp'.
+      * @param value The value of 'candidatePairLastPacketReceivedTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastPacketReceivedTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastPacketReceivedTimestamp(java.lang.Long value) {
       validate(fields()[49], value);
-      this.iceCandidatePairLastPacketReceivedTimestamp = value;
+      this.candidatePairLastPacketReceivedTimestamp = value;
       fieldSetFlags()[49] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairLastPacketReceivedTimestamp' field has been set.
+      * Checks whether the 'candidatePairLastPacketReceivedTimestamp' field has been set.
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
-      * @return True if the 'iceCandidatePairLastPacketReceivedTimestamp' field has been set, false otherwise.
+      * @return True if the 'candidatePairLastPacketReceivedTimestamp' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairLastPacketReceivedTimestamp() {
+    public boolean hasCandidatePairLastPacketReceivedTimestamp() {
       return fieldSetFlags()[49];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairLastPacketReceivedTimestamp' field.
+      * Clears the value of the 'candidatePairLastPacketReceivedTimestamp' field.
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastPacketReceivedTimestamp() {
-      iceCandidatePairLastPacketReceivedTimestamp = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastPacketReceivedTimestamp() {
+      candidatePairLastPacketReceivedTimestamp = null;
       fieldSetFlags()[49] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairFirstRequestTimestamp' field.
+      * Gets the value of the 'candidatePairFirstRequestTimestamp' field.
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairFirstRequestTimestamp() {
-      return iceCandidatePairFirstRequestTimestamp;
+    public java.lang.Long getCandidatePairFirstRequestTimestamp() {
+      return candidatePairFirstRequestTimestamp;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairFirstRequestTimestamp' field.
+      * Sets the value of the 'candidatePairFirstRequestTimestamp' field.
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-      * @param value The value of 'iceCandidatePairFirstRequestTimestamp'.
+      * @param value The value of 'candidatePairFirstRequestTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairFirstRequestTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairFirstRequestTimestamp(java.lang.Long value) {
       validate(fields()[50], value);
-      this.iceCandidatePairFirstRequestTimestamp = value;
+      this.candidatePairFirstRequestTimestamp = value;
       fieldSetFlags()[50] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairFirstRequestTimestamp' field has been set.
+      * Checks whether the 'candidatePairFirstRequestTimestamp' field has been set.
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-      * @return True if the 'iceCandidatePairFirstRequestTimestamp' field has been set, false otherwise.
+      * @return True if the 'candidatePairFirstRequestTimestamp' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairFirstRequestTimestamp() {
+    public boolean hasCandidatePairFirstRequestTimestamp() {
       return fieldSetFlags()[50];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairFirstRequestTimestamp' field.
+      * Clears the value of the 'candidatePairFirstRequestTimestamp' field.
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairFirstRequestTimestamp() {
-      iceCandidatePairFirstRequestTimestamp = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairFirstRequestTimestamp() {
+      candidatePairFirstRequestTimestamp = null;
       fieldSetFlags()[50] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairLastRequestTimestamp' field.
+      * Gets the value of the 'candidatePairLastRequestTimestamp' field.
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairLastRequestTimestamp() {
-      return iceCandidatePairLastRequestTimestamp;
+    public java.lang.Long getCandidatePairLastRequestTimestamp() {
+      return candidatePairLastRequestTimestamp;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairLastRequestTimestamp' field.
+      * Sets the value of the 'candidatePairLastRequestTimestamp' field.
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-      * @param value The value of 'iceCandidatePairLastRequestTimestamp'.
+      * @param value The value of 'candidatePairLastRequestTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastRequestTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastRequestTimestamp(java.lang.Long value) {
       validate(fields()[51], value);
-      this.iceCandidatePairLastRequestTimestamp = value;
+      this.candidatePairLastRequestTimestamp = value;
       fieldSetFlags()[51] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairLastRequestTimestamp' field has been set.
+      * Checks whether the 'candidatePairLastRequestTimestamp' field has been set.
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-      * @return True if the 'iceCandidatePairLastRequestTimestamp' field has been set, false otherwise.
+      * @return True if the 'candidatePairLastRequestTimestamp' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairLastRequestTimestamp() {
+    public boolean hasCandidatePairLastRequestTimestamp() {
       return fieldSetFlags()[51];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairLastRequestTimestamp' field.
+      * Clears the value of the 'candidatePairLastRequestTimestamp' field.
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastRequestTimestamp() {
-      iceCandidatePairLastRequestTimestamp = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastRequestTimestamp() {
+      candidatePairLastRequestTimestamp = null;
       fieldSetFlags()[51] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'iceCandidatePairLastResponseTimestamp' field.
+      * Gets the value of the 'candidatePairLastResponseTimestamp' field.
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getIceCandidatePairLastResponseTimestamp() {
-      return iceCandidatePairLastResponseTimestamp;
+    public java.lang.Long getCandidatePairLastResponseTimestamp() {
+      return candidatePairLastResponseTimestamp;
     }
 
     /**
-      * Sets the value of the 'iceCandidatePairLastResponseTimestamp' field.
+      * Sets the value of the 'candidatePairLastResponseTimestamp' field.
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-      * @param value The value of 'iceCandidatePairLastResponseTimestamp'.
+      * @param value The value of 'candidatePairLastResponseTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceCandidatePairLastResponseTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastResponseTimestamp(java.lang.Long value) {
       validate(fields()[52], value);
-      this.iceCandidatePairLastResponseTimestamp = value;
+      this.candidatePairLastResponseTimestamp = value;
       fieldSetFlags()[52] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'iceCandidatePairLastResponseTimestamp' field has been set.
+      * Checks whether the 'candidatePairLastResponseTimestamp' field has been set.
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
-      * @return True if the 'iceCandidatePairLastResponseTimestamp' field has been set, false otherwise.
+      * @return True if the 'candidatePairLastResponseTimestamp' field has been set, false otherwise.
       */
-    public boolean hasIceCandidatePairLastResponseTimestamp() {
+    public boolean hasCandidatePairLastResponseTimestamp() {
       return fieldSetFlags()[52];
     }
 
 
     /**
-      * Clears the value of the 'iceCandidatePairLastResponseTimestamp' field.
+      * Clears the value of the 'candidatePairLastResponseTimestamp' field.
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceCandidatePairLastResponseTimestamp() {
-      iceCandidatePairLastResponseTimestamp = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastResponseTimestamp() {
+      candidatePairLastResponseTimestamp = null;
       fieldSetFlags()[52] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'stunProvidedTotalRoundTripTime' field.
+      * Gets the value of the 'candidatePairTotalRoundTripTime' field.
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
       * @return The value.
       */
-    public java.lang.Double getStunProvidedTotalRoundTripTime() {
-      return stunProvidedTotalRoundTripTime;
+    public java.lang.Double getCandidatePairTotalRoundTripTime() {
+      return candidatePairTotalRoundTripTime;
     }
 
     /**
-      * Sets the value of the 'stunProvidedTotalRoundTripTime' field.
+      * Sets the value of the 'candidatePairTotalRoundTripTime' field.
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
-      * @param value The value of 'stunProvidedTotalRoundTripTime'.
+      * @param value The value of 'candidatePairTotalRoundTripTime'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setStunProvidedTotalRoundTripTime(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairTotalRoundTripTime(java.lang.Double value) {
       validate(fields()[53], value);
-      this.stunProvidedTotalRoundTripTime = value;
+      this.candidatePairTotalRoundTripTime = value;
       fieldSetFlags()[53] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'stunProvidedTotalRoundTripTime' field has been set.
+      * Checks whether the 'candidatePairTotalRoundTripTime' field has been set.
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
-      * @return True if the 'stunProvidedTotalRoundTripTime' field has been set, false otherwise.
+      * @return True if the 'candidatePairTotalRoundTripTime' field has been set, false otherwise.
       */
-    public boolean hasStunProvidedTotalRoundTripTime() {
+    public boolean hasCandidatePairTotalRoundTripTime() {
       return fieldSetFlags()[53];
     }
 
 
     /**
-      * Clears the value of the 'stunProvidedTotalRoundTripTime' field.
+      * Clears the value of the 'candidatePairTotalRoundTripTime' field.
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearStunProvidedTotalRoundTripTime() {
-      stunProvidedTotalRoundTripTime = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairTotalRoundTripTime() {
+      candidatePairTotalRoundTripTime = null;
       fieldSetFlags()[53] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'stunProvidedCurrentRoundTripTime' field.
+      * Gets the value of the 'candidatePairCurrentRoundTripTime' field.
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
       * @return The value.
       */
-    public java.lang.Double getStunProvidedCurrentRoundTripTime() {
-      return stunProvidedCurrentRoundTripTime;
+    public java.lang.Double getCandidatePairCurrentRoundTripTime() {
+      return candidatePairCurrentRoundTripTime;
     }
 
     /**
-      * Sets the value of the 'stunProvidedCurrentRoundTripTime' field.
+      * Sets the value of the 'candidatePairCurrentRoundTripTime' field.
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
-      * @param value The value of 'stunProvidedCurrentRoundTripTime'.
+      * @param value The value of 'candidatePairCurrentRoundTripTime'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setStunProvidedCurrentRoundTripTime(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairCurrentRoundTripTime(java.lang.Double value) {
       validate(fields()[54], value);
-      this.stunProvidedCurrentRoundTripTime = value;
+      this.candidatePairCurrentRoundTripTime = value;
       fieldSetFlags()[54] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'stunProvidedCurrentRoundTripTime' field has been set.
+      * Checks whether the 'candidatePairCurrentRoundTripTime' field has been set.
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
-      * @return True if the 'stunProvidedCurrentRoundTripTime' field has been set, false otherwise.
+      * @return True if the 'candidatePairCurrentRoundTripTime' field has been set, false otherwise.
       */
-    public boolean hasStunProvidedCurrentRoundTripTime() {
+    public boolean hasCandidatePairCurrentRoundTripTime() {
       return fieldSetFlags()[54];
     }
 
 
     /**
-      * Clears the value of the 'stunProvidedCurrentRoundTripTime' field.
+      * Clears the value of the 'candidatePairCurrentRoundTripTime' field.
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearStunProvidedCurrentRoundTripTime() {
-      stunProvidedCurrentRoundTripTime = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairCurrentRoundTripTime() {
+      candidatePairCurrentRoundTripTime = null;
       fieldSetFlags()[54] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'availableOutgoingBitrate' field.
+      * Gets the value of the 'candidatePairAvailableOutgoingBitrate' field.
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
       * @return The value.
       */
-    public java.lang.Double getAvailableOutgoingBitrate() {
-      return availableOutgoingBitrate;
+    public java.lang.Double getCandidatePairAvailableOutgoingBitrate() {
+      return candidatePairAvailableOutgoingBitrate;
     }
 
     /**
-      * Sets the value of the 'availableOutgoingBitrate' field.
+      * Sets the value of the 'candidatePairAvailableOutgoingBitrate' field.
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
-      * @param value The value of 'availableOutgoingBitrate'.
+      * @param value The value of 'candidatePairAvailableOutgoingBitrate'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setAvailableOutgoingBitrate(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairAvailableOutgoingBitrate(java.lang.Double value) {
       validate(fields()[55], value);
-      this.availableOutgoingBitrate = value;
+      this.candidatePairAvailableOutgoingBitrate = value;
       fieldSetFlags()[55] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'availableOutgoingBitrate' field has been set.
+      * Checks whether the 'candidatePairAvailableOutgoingBitrate' field has been set.
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
-      * @return True if the 'availableOutgoingBitrate' field has been set, false otherwise.
+      * @return True if the 'candidatePairAvailableOutgoingBitrate' field has been set, false otherwise.
       */
-    public boolean hasAvailableOutgoingBitrate() {
+    public boolean hasCandidatePairAvailableOutgoingBitrate() {
       return fieldSetFlags()[55];
     }
 
 
     /**
-      * Clears the value of the 'availableOutgoingBitrate' field.
+      * Clears the value of the 'candidatePairAvailableOutgoingBitrate' field.
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearAvailableOutgoingBitrate() {
-      availableOutgoingBitrate = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairAvailableOutgoingBitrate() {
+      candidatePairAvailableOutgoingBitrate = null;
       fieldSetFlags()[55] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'availableIncomingBitrate' field.
+      * Gets the value of the 'candidatePairAvailableIncomingBitrate' field.
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
       * @return The value.
       */
-    public java.lang.Double getAvailableIncomingBitrate() {
-      return availableIncomingBitrate;
+    public java.lang.Double getCandidatePairAvailableIncomingBitrate() {
+      return candidatePairAvailableIncomingBitrate;
     }
 
     /**
-      * Sets the value of the 'availableIncomingBitrate' field.
+      * Sets the value of the 'candidatePairAvailableIncomingBitrate' field.
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
-      * @param value The value of 'availableIncomingBitrate'.
+      * @param value The value of 'candidatePairAvailableIncomingBitrate'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setAvailableIncomingBitrate(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairAvailableIncomingBitrate(java.lang.Double value) {
       validate(fields()[56], value);
-      this.availableIncomingBitrate = value;
+      this.candidatePairAvailableIncomingBitrate = value;
       fieldSetFlags()[56] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'availableIncomingBitrate' field has been set.
+      * Checks whether the 'candidatePairAvailableIncomingBitrate' field has been set.
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
-      * @return True if the 'availableIncomingBitrate' field has been set, false otherwise.
+      * @return True if the 'candidatePairAvailableIncomingBitrate' field has been set, false otherwise.
       */
-    public boolean hasAvailableIncomingBitrate() {
+    public boolean hasCandidatePairAvailableIncomingBitrate() {
       return fieldSetFlags()[56];
     }
 
 
     /**
-      * Clears the value of the 'availableIncomingBitrate' field.
+      * Clears the value of the 'candidatePairAvailableIncomingBitrate' field.
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearAvailableIncomingBitrate() {
-      availableIncomingBitrate = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairAvailableIncomingBitrate() {
+      candidatePairAvailableIncomingBitrate = null;
       fieldSetFlags()[56] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'circuitBreakerTriggerCount' field.
+      * Gets the value of the 'candidatePairCircuitBreakerTriggerCount' field.
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
       * @return The value.
       */
-    public java.lang.Integer getCircuitBreakerTriggerCount() {
-      return circuitBreakerTriggerCount;
+    public java.lang.Integer getCandidatePairCircuitBreakerTriggerCount() {
+      return candidatePairCircuitBreakerTriggerCount;
     }
 
     /**
-      * Sets the value of the 'circuitBreakerTriggerCount' field.
+      * Sets the value of the 'candidatePairCircuitBreakerTriggerCount' field.
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
-      * @param value The value of 'circuitBreakerTriggerCount'.
+      * @param value The value of 'candidatePairCircuitBreakerTriggerCount'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCircuitBreakerTriggerCount(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairCircuitBreakerTriggerCount(java.lang.Integer value) {
       validate(fields()[57], value);
-      this.circuitBreakerTriggerCount = value;
+      this.candidatePairCircuitBreakerTriggerCount = value;
       fieldSetFlags()[57] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'circuitBreakerTriggerCount' field has been set.
+      * Checks whether the 'candidatePairCircuitBreakerTriggerCount' field has been set.
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
-      * @return True if the 'circuitBreakerTriggerCount' field has been set, false otherwise.
+      * @return True if the 'candidatePairCircuitBreakerTriggerCount' field has been set, false otherwise.
       */
-    public boolean hasCircuitBreakerTriggerCount() {
+    public boolean hasCandidatePairCircuitBreakerTriggerCount() {
       return fieldSetFlags()[57];
     }
 
 
     /**
-      * Clears the value of the 'circuitBreakerTriggerCount' field.
+      * Clears the value of the 'candidatePairCircuitBreakerTriggerCount' field.
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCircuitBreakerTriggerCount() {
-      circuitBreakerTriggerCount = null;
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairCircuitBreakerTriggerCount() {
+      candidatePairCircuitBreakerTriggerCount = null;
       fieldSetFlags()[57] = false;
       return this;
     }
@@ -4944,7 +4944,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport
       * @return The value.
       */
-    public java.lang.Integer getCandidatePairResponseBytesSent() {
+    public java.lang.Long getCandidatePairResponseBytesSent() {
       return candidatePairResponseBytesSent;
     }
 
@@ -4954,7 +4954,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponseBytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponseBytesSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponseBytesSent(java.lang.Long value) {
       validate(fields()[69], value);
       this.candidatePairResponseBytesSent = value;
       fieldSetFlags()[69] = true;
@@ -5213,8 +5213,8 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
         record.label = fieldSetFlags()[9] ? this.label : (java.lang.String) defaultValue(fields()[9]);
         record.packetsSent = fieldSetFlags()[10] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[10]);
         record.packetsReceived = fieldSetFlags()[11] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[11]);
-        record.bytesSent = fieldSetFlags()[12] ? this.bytesSent : (java.lang.Integer) defaultValue(fields()[12]);
-        record.bytesReceived = fieldSetFlags()[13] ? this.bytesReceived : (java.lang.Integer) defaultValue(fields()[13]);
+        record.bytesSent = fieldSetFlags()[12] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[12]);
+        record.bytesReceived = fieldSetFlags()[13] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[13]);
         record.iceRole = fieldSetFlags()[14] ? this.iceRole : (java.lang.String) defaultValue(fields()[14]);
         record.iceLocalUsernameFragment = fieldSetFlags()[15] ? this.iceLocalUsernameFragment : (java.lang.String) defaultValue(fields()[15]);
         record.dtlsState = fieldSetFlags()[16] ? this.dtlsState : (java.lang.String) defaultValue(fields()[16]);
@@ -5244,21 +5244,21 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
         record.remoteCandidatePriority = fieldSetFlags()[40] ? this.remoteCandidatePriority : (java.lang.Integer) defaultValue(fields()[40]);
         record.remoteCandidateICEServerUrl = fieldSetFlags()[41] ? this.remoteCandidateICEServerUrl : (java.lang.String) defaultValue(fields()[41]);
         record.remoteCandidateRelayProtocol = fieldSetFlags()[42] ? this.remoteCandidateRelayProtocol : (java.lang.String) defaultValue(fields()[42]);
-        record.iceCandidatePairState = fieldSetFlags()[43] ? this.iceCandidatePairState : (java.lang.String) defaultValue(fields()[43]);
-        record.iceCandidatePairPacketsSent = fieldSetFlags()[44] ? this.iceCandidatePairPacketsSent : (java.lang.Integer) defaultValue(fields()[44]);
-        record.iceCandidatePairPacketsReceived = fieldSetFlags()[45] ? this.iceCandidatePairPacketsReceived : (java.lang.Integer) defaultValue(fields()[45]);
-        record.iceCandidatePairBytesSent = fieldSetFlags()[46] ? this.iceCandidatePairBytesSent : (java.lang.Long) defaultValue(fields()[46]);
-        record.iceCandidatePairBytesReceived = fieldSetFlags()[47] ? this.iceCandidatePairBytesReceived : (java.lang.Long) defaultValue(fields()[47]);
-        record.iceCandidatePairLastPacketSentTimestamp = fieldSetFlags()[48] ? this.iceCandidatePairLastPacketSentTimestamp : (java.lang.Long) defaultValue(fields()[48]);
-        record.iceCandidatePairLastPacketReceivedTimestamp = fieldSetFlags()[49] ? this.iceCandidatePairLastPacketReceivedTimestamp : (java.lang.Long) defaultValue(fields()[49]);
-        record.iceCandidatePairFirstRequestTimestamp = fieldSetFlags()[50] ? this.iceCandidatePairFirstRequestTimestamp : (java.lang.Long) defaultValue(fields()[50]);
-        record.iceCandidatePairLastRequestTimestamp = fieldSetFlags()[51] ? this.iceCandidatePairLastRequestTimestamp : (java.lang.Long) defaultValue(fields()[51]);
-        record.iceCandidatePairLastResponseTimestamp = fieldSetFlags()[52] ? this.iceCandidatePairLastResponseTimestamp : (java.lang.Long) defaultValue(fields()[52]);
-        record.stunProvidedTotalRoundTripTime = fieldSetFlags()[53] ? this.stunProvidedTotalRoundTripTime : (java.lang.Double) defaultValue(fields()[53]);
-        record.stunProvidedCurrentRoundTripTime = fieldSetFlags()[54] ? this.stunProvidedCurrentRoundTripTime : (java.lang.Double) defaultValue(fields()[54]);
-        record.availableOutgoingBitrate = fieldSetFlags()[55] ? this.availableOutgoingBitrate : (java.lang.Double) defaultValue(fields()[55]);
-        record.availableIncomingBitrate = fieldSetFlags()[56] ? this.availableIncomingBitrate : (java.lang.Double) defaultValue(fields()[56]);
-        record.circuitBreakerTriggerCount = fieldSetFlags()[57] ? this.circuitBreakerTriggerCount : (java.lang.Integer) defaultValue(fields()[57]);
+        record.cndidatePairState = fieldSetFlags()[43] ? this.cndidatePairState : (java.lang.String) defaultValue(fields()[43]);
+        record.candidatePairPacketsSent = fieldSetFlags()[44] ? this.candidatePairPacketsSent : (java.lang.Integer) defaultValue(fields()[44]);
+        record.candidatePairPacketsReceived = fieldSetFlags()[45] ? this.candidatePairPacketsReceived : (java.lang.Integer) defaultValue(fields()[45]);
+        record.candidatePairBytesSent = fieldSetFlags()[46] ? this.candidatePairBytesSent : (java.lang.Long) defaultValue(fields()[46]);
+        record.candidatePairBytesReceived = fieldSetFlags()[47] ? this.candidatePairBytesReceived : (java.lang.Long) defaultValue(fields()[47]);
+        record.candidatePairLastPacketSentTimestamp = fieldSetFlags()[48] ? this.candidatePairLastPacketSentTimestamp : (java.lang.Long) defaultValue(fields()[48]);
+        record.candidatePairLastPacketReceivedTimestamp = fieldSetFlags()[49] ? this.candidatePairLastPacketReceivedTimestamp : (java.lang.Long) defaultValue(fields()[49]);
+        record.candidatePairFirstRequestTimestamp = fieldSetFlags()[50] ? this.candidatePairFirstRequestTimestamp : (java.lang.Long) defaultValue(fields()[50]);
+        record.candidatePairLastRequestTimestamp = fieldSetFlags()[51] ? this.candidatePairLastRequestTimestamp : (java.lang.Long) defaultValue(fields()[51]);
+        record.candidatePairLastResponseTimestamp = fieldSetFlags()[52] ? this.candidatePairLastResponseTimestamp : (java.lang.Long) defaultValue(fields()[52]);
+        record.candidatePairTotalRoundTripTime = fieldSetFlags()[53] ? this.candidatePairTotalRoundTripTime : (java.lang.Double) defaultValue(fields()[53]);
+        record.candidatePairCurrentRoundTripTime = fieldSetFlags()[54] ? this.candidatePairCurrentRoundTripTime : (java.lang.Double) defaultValue(fields()[54]);
+        record.candidatePairAvailableOutgoingBitrate = fieldSetFlags()[55] ? this.candidatePairAvailableOutgoingBitrate : (java.lang.Double) defaultValue(fields()[55]);
+        record.candidatePairAvailableIncomingBitrate = fieldSetFlags()[56] ? this.candidatePairAvailableIncomingBitrate : (java.lang.Double) defaultValue(fields()[56]);
+        record.candidatePairCircuitBreakerTriggerCount = fieldSetFlags()[57] ? this.candidatePairCircuitBreakerTriggerCount : (java.lang.Integer) defaultValue(fields()[57]);
         record.candidatePairRequestsReceived = fieldSetFlags()[58] ? this.candidatePairRequestsReceived : (java.lang.Integer) defaultValue(fields()[58]);
         record.candidatePairRequestsSent = fieldSetFlags()[59] ? this.candidatePairRequestsSent : (java.lang.Integer) defaultValue(fields()[59]);
         record.candidatePairResponsesReceived = fieldSetFlags()[60] ? this.candidatePairResponsesReceived : (java.lang.Integer) defaultValue(fields()[60]);
@@ -5270,7 +5270,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
         record.candidatePairBytesDiscardedOnSend = fieldSetFlags()[66] ? this.candidatePairBytesDiscardedOnSend : (java.lang.Long) defaultValue(fields()[66]);
         record.candidatePairRequestBytesSent = fieldSetFlags()[67] ? this.candidatePairRequestBytesSent : (java.lang.Long) defaultValue(fields()[67]);
         record.candidatePairConsentRequestBytesSent = fieldSetFlags()[68] ? this.candidatePairConsentRequestBytesSent : (java.lang.Long) defaultValue(fields()[68]);
-        record.candidatePairResponseBytesSent = fieldSetFlags()[69] ? this.candidatePairResponseBytesSent : (java.lang.Integer) defaultValue(fields()[69]);
+        record.candidatePairResponseBytesSent = fieldSetFlags()[69] ? this.candidatePairResponseBytesSent : (java.lang.Long) defaultValue(fields()[69]);
         record.sctpSmoothedRoundTripTime = fieldSetFlags()[70] ? this.sctpSmoothedRoundTripTime : (java.lang.Double) defaultValue(fields()[70]);
         record.sctpCongestionWindow = fieldSetFlags()[71] ? this.sctpCongestionWindow : (java.lang.Double) defaultValue(fields()[71]);
         record.sctpReceiverWindow = fieldSetFlags()[72] ? this.sctpReceiverWindow : (java.lang.Double) defaultValue(fields()[72]);

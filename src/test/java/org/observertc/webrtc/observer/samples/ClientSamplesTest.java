@@ -129,7 +129,7 @@ class ClientSamplesTest {
         var trackIds = clientSamples.getInboundMediaTrackIds();
 
         ClientSampleVisitor.streamInboundAudioTracks(clientSample)
-                .map(t -> MediaTrackId.make(t.peerConnectionId, t.ssrc))
+                .map(t -> UUID.fromString(t.trackId))
                 .map(trackIds::contains)
                 .forEach(Assertions::assertTrue);
     }
@@ -146,7 +146,7 @@ class ClientSamplesTest {
         var trackIds = clientSamples.getInboundMediaTrackIds();
 
         ClientSampleVisitor.streamInboundVideoTracks(clientSample)
-                .map(t -> MediaTrackId.make(t.peerConnectionId, t.ssrc))
+                .map(t -> UUID.fromString(t.trackId))
                 .map(trackIds::contains)
                 .forEach(Assertions::assertTrue);
     }
@@ -163,7 +163,7 @@ class ClientSamplesTest {
         var trackIds = clientSamples.getOutboundMediaTrackIds();
 
         ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
-                .map(t -> MediaTrackId.make(t.peerConnectionId, t.ssrc))
+                .map(t -> UUID.fromString(t.trackId))
                 .map(trackIds::contains)
                 .forEach(Assertions::assertTrue);
     }
@@ -180,7 +180,7 @@ class ClientSamplesTest {
         var trackIds = clientSamples.getOutboundMediaTrackIds();
 
         ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
-                .map(t -> MediaTrackId.make(t.peerConnectionId, t.ssrc))
+                .map(t -> UUID.fromString(t.trackId))
                 .map(trackIds::contains)
                 .forEach(Assertions::assertTrue);
     }

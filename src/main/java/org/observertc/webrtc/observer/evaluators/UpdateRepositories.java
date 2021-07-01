@@ -6,7 +6,7 @@ import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.repositories.tasks.AddClientsTask;
-import org.observertc.webrtc.observer.repositories.tasks.AddMediaTrackTask;
+import org.observertc.webrtc.observer.repositories.tasks.AddMediaTracksTasks;
 import org.observertc.webrtc.observer.repositories.tasks.AddPeerConnectionsTask;
 import org.observertc.webrtc.observer.repositories.tasks.RefreshTask;
 import org.observertc.webrtc.observer.samples.*;
@@ -34,16 +34,21 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
     @Inject
     Provider<AddClientsTask> addClientsTaskProvider;
 
+    @Inject
+    Provider<AddMediaTracksTasks> addMediaTrackTaskProvider;
+
+    @Inject
+    Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
 
     @Override
     public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
         Set<UUID> clientIds = collectedCallSamples.getClientIds();
         Set<UUID> peerConnectionIds = collectedCallSamples.getPeerConnectionIds();
-        Set<String> mediaTrackKeys = collectedCallSamples.getMediaTrackKeys();
+        Set<UUID> mediaTrackIds = collectedCallSamples.getMediaTrackIds();
         RefreshTask refreshTask = refreshTaskProvider.get()
                 .withClientIds(clientIds)
                 .withPeerConnectionIds(peerConnectionIds)
-                .withMediaTrackKeys(mediaTrackKeys);
+                .withMediaTrackIds(mediaTrackIds);
 
         if (!refreshTask.execute().succeeded()) {
             logger.warn("Unsuccessful execution of {}. Entities are not refreshed, new entities are not identified!", RefreshTask.class.getSimpleName());
@@ -51,7 +56,7 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
         }
         Map<UUID, ClientDTO> newClients = new HashMap<>();
         Map<UUID, PeerConnectionDTO> newPeerConnections = new HashMap<>();
-        Map<String, MediaTrackDTO> newMediaTracks = new HashMap<>();
+        Map<UUID, MediaTrackDTO> newMediaTracks = new HashMap<>();
         RefreshTask.Report report = refreshTask.getResult();
         for (CallSamples callSamples : collectedCallSamples) {
             var callId = callSamples.getCallId();
@@ -64,6 +69,7 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
                             .withClientId(clientId)
                             .withConnectedTimestamp(clientSamples.getMinTimestamp())
                             .withTimeZoneId(clientSamples.getTimeZoneId())
+                            .withMediaUnitId(clientSamples.getMediaUnitId())
                             .build();
 
                     newClients.put(clientId, clientDTO);
@@ -85,18 +91,21 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
 
                     ClientSampleVisitor.streamInboundVideoTracks(clientSample)
                             .forEach(track -> {
+                                UUID trackId = UUID.fromString(track.trackId);
+                                if (report.foundMediaTrackIdsToPeerConnectionIds.containsKey(trackId)) {
+                                    return;
+                                }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
+                                        .withTrackId(trackId)
                                         .withDirection(StreamDirection.INBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())
                                         .build();
 
-                                var mediaTrackId = MediaTrackId.make(peerConnectionId, SSRC);
-                                var mediaTrackKey = mediaTrackId.getKey();
-                                newMediaTracks.put(mediaTrackKey, mediaTrackDTO);
+                                newMediaTracks.put(mediaTrackDTO.trackId, mediaTrackDTO);
                             });
                 }
             }
@@ -113,7 +122,7 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
         }
     }
 
-    private boolean addNewMediaTracks(Map<String, MediaTrackDTO> newMediaTracks) {
+    private boolean addNewMediaTracks(Map<UUID, MediaTrackDTO> newMediaTracks) {
         var task = addMediaTrackTaskProvider.get()
                 .withMediaTrackDTOs(newMediaTracks)
                 ;
@@ -125,12 +134,6 @@ public class UpdateRepositories implements Consumer<CollectedCallSamples> {
 
         return task.getResult();
     }
-
-    @Inject
-    Provider<AddMediaTrackTask> addMediaTrackTaskProvider;
-
-    @Inject
-    Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
 
     private boolean addNewPeerConnections(Map<UUID, PeerConnectionDTO> newPeerConnections) {
         var task = peerConnectionsTaskProvider.get()
