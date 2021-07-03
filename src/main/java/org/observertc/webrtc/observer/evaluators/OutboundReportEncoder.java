@@ -54,6 +54,9 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
         if (Objects.isNull(callEventReports) || callEventReports.size() < 1) {
             return;
         }
+        callEventReports.forEach(callEventReport -> {
+            logger.info("Call Event Report {} is being encoded", callEventReport.getName());
+        });
         this.convertAndForward(this.encoder::encodeCallEventReport, callEventReports);
     }
 

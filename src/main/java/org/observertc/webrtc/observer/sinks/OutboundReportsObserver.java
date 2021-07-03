@@ -3,14 +3,15 @@ package org.observertc.webrtc.observer.sinks;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.OutboundReports;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -54,7 +55,23 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
 
     @Override
     public void onNext(@NonNull OutboundReports outboundReports) {
-
+        Iterator<Map.Entry<String, Sink>> it = this.sinks.entrySet().iterator();
+        while(it.hasNext()) {
+            var entry = it.next();
+            var sinkId = entry.getKey();
+            var sink = entry.getValue();
+            try {
+                sink.onNext(outboundReports);
+            } catch (Exception ex) {
+                logger.error("Unexpected error occurred on sink {}. Sink will be closed", sinkId);
+                try {
+                    sink.close();
+                } catch (Exception ex2) {
+                    logger.error("Error occurred while shutting down sink {}", sinkId, ex2);
+                }
+                it.remove();
+            }
+        }
     }
 
     @Override

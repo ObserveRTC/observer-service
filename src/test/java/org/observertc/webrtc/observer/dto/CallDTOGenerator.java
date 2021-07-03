@@ -5,6 +5,7 @@ import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 
 import javax.annotation.PostConstruct;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 @Prototype
@@ -15,6 +16,7 @@ public class CallDTOGenerator implements Supplier<CallDTO> {
     @PostConstruct
     void setup() {
         EasyRandomParameters parameters = new EasyRandomParameters();
+        parameters.randomize(UUID.class, () -> UUID.randomUUID());
         this.generator = new EasyRandom(parameters);
     }
 

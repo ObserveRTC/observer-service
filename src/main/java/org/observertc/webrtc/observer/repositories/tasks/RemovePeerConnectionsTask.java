@@ -1,9 +1,11 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +15,7 @@ import javax.inject.Provider;
 import java.util.*;
 
 @Prototype
-public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnectionDTO>> {
+public class RemovePeerConnectionsTask extends ChainedTask<List<CallEventReport.Builder>> {
 
     private static final Logger logger = LoggerFactory.getLogger(RemovePeerConnectionsTask.class);
     private Set<UUID> peerConnectionIds = new HashSet<>();
@@ -28,7 +30,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
 
     @PostConstruct
     void setup() {
-        new Builder<Map<UUID, PeerConnectionDTO>>(this)
+        new Builder<List<CallEventReport.Builder>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Merge Inputs",
                         () -> this.peerConnectionIds,
                         receivedClientIds -> {
@@ -44,7 +46,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                                 }
                                 PeerConnectionDTO peerConnectionDTO = this.hazelcastMaps.getPeerConnections().remove(peerConnectionId);
                                 if (Objects.isNull(peerConnectionDTO)) {
-                                    logger.warn("Cannot retrieve PeerConnectionDTO for peerConnectionId: {}", peerConnectionId);
+                                    logger.debug("Cannot retrieve PeerConnectionDTO for peerConnectionId: {}.", peerConnectionId);
                                     continue;
                                 }
                                 this.removedPeerConnectionDTOs.put(peerConnectionId, peerConnectionDTO);
@@ -67,7 +69,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                                 this.hazelcastMaps.getClientToPeerConnectionIds().put(removedPeerConnectionDTO.clientId, peerConnectionId);
                             });
                         })
-                .addActionStage("Remove Media Tracks", () -> {
+                .<List<CallEventReport.Builder>> addSupplierStage("Remove Media Tracks", () -> {
                     Set<UUID> trackIds = new HashSet<>();
                     this.removedPeerConnectionDTOs.keySet().forEach(peerConnectionId -> {
                         Set<UUID> peerConnectionIdMediaTrackIds = new HashSet<>();
@@ -79,18 +81,28 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                         peerConnectionIdMediaTrackIds.forEach(trackIds::add);
                     });
                     if (trackIds.size() < 1) {
-                        return;
+                        return Collections.EMPTY_LIST;
                     }
                     var task = this.removeMediaTracksTaskProvider.get()
                             .whereMediaTrackIds(trackIds);
 
                     if (!task.execute().succeeded()) {
                         logger.warn("Media Track removal has been failed");
-                        return;
+                        return Collections.EMPTY_LIST;
                     }
+                    return task.getResult();
                 })
-                .addTerminalSupplier("Creating PeerConnection Entities", () -> {
-                    return this.removedPeerConnectionDTOs;
+                .<List<CallEventReport.Builder>> addTerminalFunction("Creating PeerConnection Entities", callEventBuildersObj -> {
+                    var callEventBuilders = (List<CallEventReport.Builder>) callEventBuildersObj;
+                    List<CallEventReport.Builder> result = new LinkedList<>();
+                    this.removedPeerConnectionDTOs.values().stream()
+                            .map(this::makeReportBuilder)
+                            .filter(Objects::nonNull)
+                            .forEach(result::add);
+                    if (Objects.nonNull(callEventBuilders)) {
+                        callEventBuilders.stream().forEach(result::add);
+                    }
+                    return result;
                 })
                 .build();
     }
@@ -111,4 +123,23 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
         return this;
     }
 
+    private CallEventReport.Builder makeReportBuilder(PeerConnectionDTO peerConnectionDTO) {
+        try {
+            return CallEventReport.newBuilder()
+                    .setName(CallEventType.PEER_CONNECTION_CLOSED.name())
+                    .setCallId(peerConnectionDTO.callId.toString())
+                    .setServiceId(peerConnectionDTO.serviceId)
+                    .setRoomId(peerConnectionDTO.roomId)
+
+                    .setMediaUnitId(peerConnectionDTO.mediaUnitId)
+                    .setUserId(peerConnectionDTO.userId)
+
+                    .setPeerConnectionId(peerConnectionDTO.peerConnectionId.toString())
+                    .setClientId(peerConnectionDTO.clientId.toString())
+                    .setTimestamp(peerConnectionDTO.created);
+        } catch (Exception ex) {
+            this.getLogger().error("Cannot make report for client DTO", ex);
+            return null;
+        }
+    }
 }

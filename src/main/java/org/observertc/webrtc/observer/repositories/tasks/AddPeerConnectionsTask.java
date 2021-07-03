@@ -1,20 +1,23 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
 @Prototype
-public class AddPeerConnectionsTask extends ChainedTask<Boolean> {
+public class AddPeerConnectionsTask extends ChainedTask<List<CallEventReport.Builder>> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddPeerConnectionsTask.class);
 
@@ -26,7 +29,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Boolean> {
 
     @PostConstruct
     void setup() {
-        new Builder<Boolean>(this)
+        new Builder<List<CallEventReport.Builder>>(this)
                 .<Map<UUID, PeerConnectionDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
                         receivedPeerConnectionEntities -> {
@@ -37,7 +40,7 @@ public class AddPeerConnectionsTask extends ChainedTask<Boolean> {
                 )
                 .<Map<UUID, PeerConnectionDTO>> addBreakCondition((resultHolder) -> {
                     if (this.peerConnectionDTOs.size() < 1) {
-                        resultHolder.set(true);
+                        resultHolder.set(Collections.EMPTY_LIST);
                         return true;
                     }
                     return false;
@@ -72,7 +75,13 @@ public class AddPeerConnectionsTask extends ChainedTask<Boolean> {
                                 this.hazelcastMaps.getClientToPeerConnectionIds().remove(peerConnectionDTO.clientId, peerConnectionId);
                             });
                         })
-                .addTerminalSupplier("Completed", () -> true)
+                .addTerminalSupplier("Completed", () -> {
+                    List<CallEventReport.Builder> result = this.peerConnectionDTOs.values().stream()
+                            .map(this::makeReportBuilder)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                    return result;
+                })
                 .build();
     }
 
@@ -84,5 +93,25 @@ public class AddPeerConnectionsTask extends ChainedTask<Boolean> {
         }
         this.peerConnectionDTOs.putAll(peerConnectionDTOs);
         return this;
+    }
+
+    private CallEventReport.Builder makeReportBuilder(PeerConnectionDTO peerConnectionDTO) {
+        try {
+            return CallEventReport.newBuilder()
+                    .setCallId(peerConnectionDTO.callId.toString())
+                    .setServiceId(peerConnectionDTO.serviceId)
+                    .setRoomId(peerConnectionDTO.roomId)
+
+                    .setMediaUnitId(peerConnectionDTO.mediaUnitId)
+                    .setUserId(peerConnectionDTO.userId)
+
+                    .setName(CallEventType.PEER_CONNECTION_OPENED.name())
+                    .setPeerConnectionId(peerConnectionDTO.peerConnectionId.toString())
+                    .setClientId(peerConnectionDTO.clientId.toString())
+                    .setTimestamp(peerConnectionDTO.created);
+        } catch (Exception ex) {
+            this.getLogger().error("Cannot make report for client DTO", ex);
+            return null;
+        }
     }
 }

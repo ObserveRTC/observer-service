@@ -49,7 +49,7 @@ class PeerToPeerCallTest {
     @Test
     public void checkReports() throws ExecutionException, InterruptedException, TimeoutException {
         this.testCallProcessor.start();
-        new Sleeper(() -> 500000).run();
+        new Sleeper(() -> 200000).run();
         return;
     }
 }

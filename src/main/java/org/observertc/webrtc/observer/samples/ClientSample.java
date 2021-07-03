@@ -86,7 +86,7 @@ public  class ClientSample {
 	 * List of the extension stats added by the webrtc app
 	 */
 	@JsonProperty("extensionStats")
-	public String[] extensionStats;
+	public ExtensionStat[] extensionStats;
 
 	/**
 	 * List of ICE server the client has
@@ -277,6 +277,25 @@ public  class ClientSample {
 		 */
 		@JsonProperty("versionName")
 		public String versionName;
+
+	}
+	/**
+	 * The ExtensionStat class is a custom defined payload, and type pair, which sent to the endpoint with the intention of landing in the backend database without any transformation
+	 */
+
+	public static class ExtensionStat {
+
+		/**
+		 * The custom defined type of the extension
+		 */
+		@JsonProperty("extensionType")
+		public String extensionType;
+
+		/**
+		 * The payload of the extension
+		 */
+		@JsonProperty("payload")
+		public String payload;
 
 	}
 	/**
@@ -596,7 +615,7 @@ public  class ClientSample {
 		 * The total number packet discarded before sending on the peer connection using the selected candidate pair
 		 */
 		@JsonProperty("candidatePairPacketsDiscardedOnSend")
-		public Integer candidatePairPacketsDiscardedOnSend;
+		public Long candidatePairPacketsDiscardedOnSend;
 
 		/**
 		 * The total number bytes discarded before sending on the peer connection using the selected candidate pair
@@ -659,6 +678,13 @@ public  class ClientSample {
 		public String localRelayProtocol;
 
 		/**
+		 * The url of the ICE server used by the
+		 local endpoint on the corresponded transport
+		 */
+		@JsonProperty("localCandidateICEServerUrl")
+		public String localCandidateICEServerUrl;
+
+		/**
 		 * The local address of the ICE candidate at the remote endpoint (IPv4, IPv6, FQDN)
 		 */
 		@JsonProperty("remoteAddress")
@@ -685,6 +711,13 @@ public  class ClientSample {
 		 */
 		@JsonProperty("remoteCandidateType")
 		public String remoteCandidateType;
+
+		/**
+		 * The url of the ICE server used by the
+		 remote endpoint on the corresponded transport
+		 */
+		@JsonProperty("remoteCandidateICEServerUrl")
+		public String remoteCandidateICEServerUrl;
 
 		/**
 		 * It is the protocol used by the remote endpoint to communicate with the TURN server.
@@ -1350,7 +1383,7 @@ public  class ClientSample {
 		 * The total number of frames dropped on the corresponded RTP stream
 		 */
 		@JsonProperty("framesDropped")
-		public Double framesDropped;
+		public Integer framesDropped;
 
 		/**
 		 * The total number of frames partially lost on the corresponded RTP stream
@@ -1696,6 +1729,12 @@ public  class ClientSample {
 		 */
 		@JsonProperty("targetBitrate")
 		public Long targetBitrate;
+
+		/**
+		 * The total encoded bytes targeted by the media encoder. this is the sum of the encoded frames
+		 */
+		@JsonProperty("totalEncodedBytesTarget")
+		public Long totalEncodedBytesTarget;
 
 		/**
 		 * The total number of samples the media source sent
@@ -2259,7 +2298,7 @@ public  class ClientSample {
 		 * The total number of frames reported to be lost by the remote endpoit on the corresponded RTP stream
 		 */
 		@JsonProperty("framesDropped")
-		public Double framesDropped;
+		public Integer framesDropped;
 
 		/**
 		 * The total number of partial frames reported to be lost by the remote endpoint on the corresponded RTP stream.
@@ -2577,6 +2616,12 @@ public  class ClientSample {
 		 */
 		@JsonProperty("bytesReceived")
 		public Long bytesReceived;
+
+		/**
+		 * The unique generated identifier of the peer connection the data channel belongs to
+		 */
+		@JsonProperty("peerConnectionId")
+		public String peerConnectionId;
 
 	}
 }

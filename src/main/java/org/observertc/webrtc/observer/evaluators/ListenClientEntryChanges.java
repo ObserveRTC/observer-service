@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.ClientDTO;
-import org.observertc.webrtc.observer.repositories.tasks.CreateCallEventReportsTaskProvider;
 import org.observertc.webrtc.observer.repositories.tasks.FetchCallClientsTask;
 import org.observertc.webrtc.observer.repositories.tasks.RemoveCallsTask;
 import org.observertc.webrtc.observer.repositories.tasks.RemoveClientsTask;
@@ -34,7 +33,6 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
 
     private Subject<CallEventReport> callEventReportSubject = PublishSubject.create();
 
-    private Subject<ClientDTO> addedClients = PublishSubject.create();
     private Subject<ClientLeft> removedClients = PublishSubject.create();
 
     public Observable<CallEventReport> getObservableCallEventReports() {
@@ -43,9 +41,6 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
 
     @Inject
     Provider<RemoveClientsTask> removeClientsTaskProvider;
-
-    @Inject
-    CreateCallEventReportsTaskProvider createCallEventReportsTaskProvider;
 
     @Inject
     Provider<FetchCallClientsTask> fetchCallClientsTaskProvider;
@@ -58,21 +53,14 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
 
     @PostConstruct
     void setup() {
-        this.addedClients
-                .buffer(25, TimeUnit.SECONDS)
-                .subscribe(this::addClients);
-
         this.removedClients
-                .buffer(55, TimeUnit.SECONDS)
+                .buffer(35, TimeUnit.SECONDS)
                 .subscribe(this::removeClients);
     }
 
     @Override
     public void entryAdded(EntryEvent<UUID, ClientDTO> event) {
         ClientDTO addedClientDTO = event.getValue();
-        synchronized (this) {
-            this.addedClients.onNext(addedClientDTO);
-        }
         logger.info("Client with id \"{}\" (userId: {}) is registered and bound to call id\"{}\"",
                 addedClientDTO.clientId, addedClientDTO.userId, addedClientDTO.callId);
     }
@@ -117,23 +105,6 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
         logger.info("Source map has been evicted, {} items are removed", event.getNumberOfEntriesAffected());
     }
 
-    private void addClients(List<ClientDTO> addedClientDTOs) {
-        if (Objects.isNull(addedClientDTOs) || addedClientDTOs.size() < 1) {
-            return;
-        }
-        var task = this.createCallEventReportsTaskProvider.getCreateClientJoinedReportsTask();
-        addedClientDTOs.forEach(task::withDTO);
-
-        if (!task.execute().succeeded()) {
-            logger.warn("Making add client report has been failed");
-            return;
-        }
-
-        this.forwardCallReports(
-                task.getResult()
-        );
-    }
-
     private void removeClients(List<ClientLeft> input) {
         if (Objects.isNull(input) || input.size() < 1) {
             return;
@@ -145,17 +116,9 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
             logger.warn("Remove Client Entities are failed");
             return;
         }
-
-        var createReportsTask = this.createCallEventReportsTaskProvider.getCreateClientLeftReportsTask();
-        input.stream().filter(Objects::nonNull).forEach(callEnded -> createReportsTask.withDTOAndTimestamp(callEnded.clientDTO, callEnded.estimatedLeave));
-
-        if (!createReportsTask.execute().succeeded()) {
-            logger.warn("Making add client report has been failed");
-            return;
-        }
-        this.forwardCallReports(
-                createReportsTask.getResult()
-        );
+        var builders = removeClientsTask.getResult();
+        var reports = builders.stream().map(CallEventReport.Builder::build).collect(Collectors.toList());
+        this.forwardCallReports(reports);
 
         Set<UUID> affectedCallIds = input.stream()
                 .map(clientLeft -> clientLeft.clientDTO)
@@ -195,6 +158,12 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
         if (!removeCallsTask.execute().succeeded()) {
             logger.warn("Remove calls task has failed");
         }
+
+        var reports = removeCallsTask.getResult().stream()
+                .map(CallEventReport.Builder::build)
+                .collect(Collectors.toList());
+
+        this.forwardCallReports(reports);
     }
 
     private void forwardCallReports(List<CallEventReport> callEventReports) {

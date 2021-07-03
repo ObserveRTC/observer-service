@@ -35,7 +35,7 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     ReportCallMetaData reportCallMetaData;
 
     @Inject
-    UpdateRepositories updateRepositories;
+    AddNewEntities addNewEntities;
 
     @Inject
     ListenClientEntryChanges listenClientEntryChanges;
@@ -57,6 +57,9 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
 
     @Inject
     OutboundReportsObserver outboundReportsObserver;
+
+    @Inject
+    DemuxCollectedCallSamples demuxCollectedCallSamples;
 
     @PostConstruct
     void setup() {
@@ -89,9 +92,17 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .subscribe(this.reportCallMetaData);
 
         observableCollectedCallSamples
-                .subscribe(this.updateRepositories);
+                .subscribe(this.addNewEntities);
+
+        observableCollectedCallSamples
+                .subscribe(this.demuxCollectedCallSamples);
 
         // TODO: measure the end time somehow
+        this.addNewEntities
+                .getObservableCallEventReports()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
+
         this.reportCallMetaData
                 .observableCallMetaReports()
                 .buffer(30, TimeUnit.SECONDS, 1000)
@@ -116,6 +127,48 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .getObservableCallEventReports()
                 .buffer(30, TimeUnit.SECONDS, 1000)
                 .subscribe(this.outboundReportEncoder::encodeCallEventReports);
+
+        this.demuxCollectedCallSamples
+                .getObservablePcTransportReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodePcTransportReport);
+
+        this.demuxCollectedCallSamples
+                .getObservablePcDataChannelReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodePcDataChannelReport);
+
+        this.demuxCollectedCallSamples
+                .getObservableClientExtensionReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeClientExtensionReport);
+
+        this.demuxCollectedCallSamples
+                .getObservableInboundAudioTrackReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeInboundAudioTrackReport);
+
+        this.demuxCollectedCallSamples
+                .getObservableInboundVideoTrackReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeInboundVideoTrackReport);
+
+        this.demuxCollectedCallSamples
+                .getObservableOutboundAudioTrackReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeOutboundAudioTrackReport);
+
+        this.demuxCollectedCallSamples
+                .getObservableOutboundVideoTrackReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeOutboundVideoTrackReport);
+
+        this.demuxCollectedCallSamples
+                .getObservableMediaTrackReport()
+                .buffer(30, TimeUnit.SECONDS, 1000)
+                .subscribe(this.outboundReportEncoder::encodeMediaTrackReport);
+
+
 
         var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
         var reportsBufferMaxRetainInS = this.observerConfig.evaluators.reportsBufferMaxRetainInS;

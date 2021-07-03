@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for Extended provided arbitrary data. */
 @org.apache.avro.specific.AvroGenerated
 public class ClientExtensionReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 946703555990659967L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientExtensionReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for Extended provided arbitrary data.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"serviceName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The resolved service name configured for the service Id\",\"default\":null},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
+  private static final long serialVersionUID = -2002626728981083656L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientExtensionReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for Extended provided arbitrary data.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"serviceName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The resolved service name configured for the service Id\",\"default\":null},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"extensionType\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -37,13 +37,9 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
   /** The sequence number of the sample the event may related to */
    private java.lang.Integer sampleSeq;
   /** The name of the event */
-   private java.lang.String name;
+   private java.lang.String extensionType;
   /** the human readable message of the event */
-   private java.lang.String message;
-  /** the value of the event */
-   private java.lang.String value;
-  /** attachment the event may created with */
-   private java.lang.String attachments;
+   private java.lang.String payload;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -65,12 +61,10 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
    * @param userId webrtc app provided user identifier
    * @param peerConnectionId The unique identifier of the peer connection
    * @param sampleSeq The sequence number of the sample the event may related to
-   * @param name The name of the event
-   * @param message the human readable message of the event
-   * @param value the value of the event
-   * @param attachments attachment the event may created with
+   * @param extensionType The name of the event
+   * @param payload the human readable message of the event
    */
-  public ClientExtensionReport(java.lang.String serviceId, java.lang.String serviceName, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.Integer sampleSeq, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
+  public ClientExtensionReport(java.lang.String serviceId, java.lang.String serviceName, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.Integer sampleSeq, java.lang.String extensionType, java.lang.String payload) {
     this.serviceId = serviceId;
     this.serviceName = serviceName;
     this.mediaUnitId = mediaUnitId;
@@ -82,10 +76,8 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
     this.userId = userId;
     this.peerConnectionId = peerConnectionId;
     this.sampleSeq = sampleSeq;
-    this.name = name;
-    this.message = message;
-    this.value = value;
-    this.attachments = attachments;
+    this.extensionType = extensionType;
+    this.payload = payload;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -103,10 +95,8 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
     case 8: return userId;
     case 9: return peerConnectionId;
     case 10: return sampleSeq;
-    case 11: return name;
-    case 12: return message;
-    case 13: return value;
-    case 14: return attachments;
+    case 11: return extensionType;
+    case 12: return payload;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -126,10 +116,8 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
     case 8: userId = (java.lang.String)value$; break;
     case 9: peerConnectionId = (java.lang.String)value$; break;
     case 10: sampleSeq = (java.lang.Integer)value$; break;
-    case 11: name = (java.lang.String)value$; break;
-    case 12: message = (java.lang.String)value$; break;
-    case 13: value = (java.lang.String)value$; break;
-    case 14: attachments = (java.lang.String)value$; break;
+    case 11: extensionType = (java.lang.String)value$; break;
+    case 12: payload = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -234,38 +222,20 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
 
 
   /**
-   * Gets the value of the 'name' field.
+   * Gets the value of the 'extensionType' field.
    * @return The name of the event
    */
-  public java.lang.String getName() {
-    return name;
+  public java.lang.String getExtensionType() {
+    return extensionType;
   }
 
 
   /**
-   * Gets the value of the 'message' field.
+   * Gets the value of the 'payload' field.
    * @return the human readable message of the event
    */
-  public java.lang.String getMessage() {
-    return message;
-  }
-
-
-  /**
-   * Gets the value of the 'value' field.
-   * @return the value of the event
-   */
-  public java.lang.String getValue() {
-    return value;
-  }
-
-
-  /**
-   * Gets the value of the 'attachments' field.
-   * @return attachment the event may created with
-   */
-  public java.lang.String getAttachments() {
-    return attachments;
+  public java.lang.String getPayload() {
+    return payload;
   }
 
 
@@ -324,13 +294,9 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
     /** The sequence number of the sample the event may related to */
     private java.lang.Integer sampleSeq;
     /** The name of the event */
-    private java.lang.String name;
+    private java.lang.String extensionType;
     /** the human readable message of the event */
-    private java.lang.String message;
-    /** the value of the event */
-    private java.lang.String value;
-    /** attachment the event may created with */
-    private java.lang.String attachments;
+    private java.lang.String payload;
 
     /** Creates a new Builder */
     private Builder() {
@@ -387,21 +353,13 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
         this.sampleSeq = data().deepCopy(fields()[10].schema(), other.sampleSeq);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.name)) {
-        this.name = data().deepCopy(fields()[11].schema(), other.name);
+      if (isValidValue(fields()[11], other.extensionType)) {
+        this.extensionType = data().deepCopy(fields()[11].schema(), other.extensionType);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.message)) {
-        this.message = data().deepCopy(fields()[12].schema(), other.message);
+      if (isValidValue(fields()[12], other.payload)) {
+        this.payload = data().deepCopy(fields()[12].schema(), other.payload);
         fieldSetFlags()[12] = true;
-      }
-      if (isValidValue(fields()[13], other.value)) {
-        this.value = data().deepCopy(fields()[13].schema(), other.value);
-        fieldSetFlags()[13] = true;
-      }
-      if (isValidValue(fields()[14], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[14].schema(), other.attachments);
-        fieldSetFlags()[14] = true;
       }
     }
 
@@ -455,21 +413,13 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
         this.sampleSeq = data().deepCopy(fields()[10].schema(), other.sampleSeq);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.name)) {
-        this.name = data().deepCopy(fields()[11].schema(), other.name);
+      if (isValidValue(fields()[11], other.extensionType)) {
+        this.extensionType = data().deepCopy(fields()[11].schema(), other.extensionType);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.message)) {
-        this.message = data().deepCopy(fields()[12].schema(), other.message);
+      if (isValidValue(fields()[12], other.payload)) {
+        this.payload = data().deepCopy(fields()[12].schema(), other.payload);
         fieldSetFlags()[12] = true;
-      }
-      if (isValidValue(fields()[13], other.value)) {
-        this.value = data().deepCopy(fields()[13].schema(), other.value);
-        fieldSetFlags()[13] = true;
-      }
-      if (isValidValue(fields()[14], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[14].schema(), other.attachments);
-        fieldSetFlags()[14] = true;
       }
     }
 
@@ -946,174 +896,88 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
     }
 
     /**
-      * Gets the value of the 'name' field.
+      * Gets the value of the 'extensionType' field.
       * The name of the event
       * @return The value.
       */
-    public java.lang.String getName() {
-      return name;
+    public java.lang.String getExtensionType() {
+      return extensionType;
     }
 
     /**
-      * Sets the value of the 'name' field.
+      * Sets the value of the 'extensionType' field.
       * The name of the event
-      * @param value The value of 'name'.
+      * @param value The value of 'extensionType'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder setName(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder setExtensionType(java.lang.String value) {
       validate(fields()[11], value);
-      this.name = value;
+      this.extensionType = value;
       fieldSetFlags()[11] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'name' field has been set.
+      * Checks whether the 'extensionType' field has been set.
       * The name of the event
-      * @return True if the 'name' field has been set, false otherwise.
+      * @return True if the 'extensionType' field has been set, false otherwise.
       */
-    public boolean hasName() {
+    public boolean hasExtensionType() {
       return fieldSetFlags()[11];
     }
 
 
     /**
-      * Clears the value of the 'name' field.
+      * Clears the value of the 'extensionType' field.
       * The name of the event
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder clearName() {
-      name = null;
+    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder clearExtensionType() {
+      extensionType = null;
       fieldSetFlags()[11] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'message' field.
+      * Gets the value of the 'payload' field.
       * the human readable message of the event
       * @return The value.
       */
-    public java.lang.String getMessage() {
-      return message;
+    public java.lang.String getPayload() {
+      return payload;
     }
 
     /**
-      * Sets the value of the 'message' field.
+      * Sets the value of the 'payload' field.
       * the human readable message of the event
-      * @param value The value of 'message'.
+      * @param value The value of 'payload'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder setMessage(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder setPayload(java.lang.String value) {
       validate(fields()[12], value);
-      this.message = value;
+      this.payload = value;
       fieldSetFlags()[12] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'message' field has been set.
+      * Checks whether the 'payload' field has been set.
       * the human readable message of the event
-      * @return True if the 'message' field has been set, false otherwise.
+      * @return True if the 'payload' field has been set, false otherwise.
       */
-    public boolean hasMessage() {
+    public boolean hasPayload() {
       return fieldSetFlags()[12];
     }
 
 
     /**
-      * Clears the value of the 'message' field.
+      * Clears the value of the 'payload' field.
       * the human readable message of the event
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder clearMessage() {
-      message = null;
+    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder clearPayload() {
+      payload = null;
       fieldSetFlags()[12] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'value' field.
-      * the value of the event
-      * @return The value.
-      */
-    public java.lang.String getValue() {
-      return value;
-    }
-
-    /**
-      * Sets the value of the 'value' field.
-      * the value of the event
-      * @param value The value of 'value'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder setValue(java.lang.String value) {
-      validate(fields()[13], value);
-      this.value = value;
-      fieldSetFlags()[13] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'value' field has been set.
-      * the value of the event
-      * @return True if the 'value' field has been set, false otherwise.
-      */
-    public boolean hasValue() {
-      return fieldSetFlags()[13];
-    }
-
-
-    /**
-      * Clears the value of the 'value' field.
-      * the value of the event
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder clearValue() {
-      value = null;
-      fieldSetFlags()[13] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'attachments' field.
-      * attachment the event may created with
-      * @return The value.
-      */
-    public java.lang.String getAttachments() {
-      return attachments;
-    }
-
-    /**
-      * Sets the value of the 'attachments' field.
-      * attachment the event may created with
-      * @param value The value of 'attachments'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder setAttachments(java.lang.String value) {
-      validate(fields()[14], value);
-      this.attachments = value;
-      fieldSetFlags()[14] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'attachments' field has been set.
-      * attachment the event may created with
-      * @return True if the 'attachments' field has been set, false otherwise.
-      */
-    public boolean hasAttachments() {
-      return fieldSetFlags()[14];
-    }
-
-
-    /**
-      * Clears the value of the 'attachments' field.
-      * attachment the event may created with
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.ClientExtensionReport.Builder clearAttachments() {
-      attachments = null;
-      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1132,10 +996,8 @@ public class ClientExtensionReport extends org.apache.avro.specific.SpecificReco
         record.userId = fieldSetFlags()[8] ? this.userId : (java.lang.String) defaultValue(fields()[8]);
         record.peerConnectionId = fieldSetFlags()[9] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[9]);
         record.sampleSeq = fieldSetFlags()[10] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[10]);
-        record.name = fieldSetFlags()[11] ? this.name : (java.lang.String) defaultValue(fields()[11]);
-        record.message = fieldSetFlags()[12] ? this.message : (java.lang.String) defaultValue(fields()[12]);
-        record.value = fieldSetFlags()[13] ? this.value : (java.lang.String) defaultValue(fields()[13]);
-        record.attachments = fieldSetFlags()[14] ? this.attachments : (java.lang.String) defaultValue(fields()[14]);
+        record.extensionType = fieldSetFlags()[11] ? this.extensionType : (java.lang.String) defaultValue(fields()[11]);
+        record.payload = fieldSetFlags()[12] ? this.payload : (java.lang.String) defaultValue(fields()[12]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

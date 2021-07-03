@@ -74,6 +74,11 @@ public class ObservedClientSampleBuilder {
             }
 
             @Override
+            public int getSampleSeq() {
+                return clientSample.sampleSeq;
+            }
+
+            @Override
             public String getMarker() {
                 // TODO: add marker to ClientSample
                 return "NOT IMPLEMENTED";
@@ -93,6 +98,8 @@ public class ObservedClientSampleBuilder {
             public String getRoomId() {
                 return clientSample.roomId;
             }
+
+
         };
     }
 }

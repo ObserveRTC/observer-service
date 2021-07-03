@@ -1,12 +1,14 @@
 package org.observertc.webrtc.observer.common;
 
-import org.observertc.webrtc.schemas.reports.ReportType;
+import org.apache.avro.Schema;
+import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType, TOut> {
     static Logger logger = LoggerFactory.getLogger(OutboundReportTypeVisitor.class);
@@ -161,6 +163,78 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             public Void visitMediaTrackReport(RIn obj) {
                 mediaTrackConsumer.accept(obj);
                 return null;
+            }
+        };
+    }
+
+    static <ROut> OutboundReportTypeVisitor<Void, ROut> createSupplierVisitor(
+            Supplier<ROut> observerEventSupplier,
+            Supplier<ROut> callEventSupplier,
+            Supplier<ROut> callMetaDataSupplier,
+            Supplier<ROut> clientExtensionDataSupplier,
+            Supplier<ROut> peerConnectionTransportSupplier,
+            Supplier<ROut> peerConnectionDataChannelSupplier,
+            Supplier<ROut> inboundAudioTrackSupplier,
+            Supplier<ROut> inboundVideoTrackSupplier,
+            Supplier<ROut> outboundAudioTrackSupplier,
+            Supplier<ROut> outboundVideoTrackSupplier,
+            Supplier<ROut> mediaTrackSupplier
+    ) {
+        return new OutboundReportTypeVisitor<Void, ROut>() {
+            @Override
+            public ROut visitObserverEventReport(Void obj) {
+                return observerEventSupplier.get();
+
+            }
+
+            @Override
+            public ROut visitCallEventReport(Void obj) {
+                return callEventSupplier.get();
+            }
+
+            @Override
+            public ROut visitCallMetaDataReport(Void obj) {
+                return callMetaDataSupplier.get();
+            }
+
+            @Override
+            public ROut visitClientExtensionDataReport(Void obj) {
+                return clientExtensionDataSupplier.get();
+            }
+
+            @Override
+            public ROut visitPeerConnectionTransportReport(Void obj) {
+                return peerConnectionTransportSupplier.get();
+            }
+
+            @Override
+            public ROut visitPeerConnectionDataChannelReport(Void obj) {
+                return peerConnectionDataChannelSupplier.get();
+            }
+
+            @Override
+            public ROut visitInboundAudioTrackReport(Void obj) {
+                return inboundAudioTrackSupplier.get();
+            }
+
+            @Override
+            public ROut visitInboundVideoTrackReport(Void obj) {
+                return inboundVideoTrackSupplier.get();
+            }
+
+            @Override
+            public ROut visitOutboundAudioTrackReport(Void obj) {
+                return outboundAudioTrackSupplier.get();
+            }
+
+            @Override
+            public ROut visitOutboundVideoTrackReport(Void obj) {
+                return outboundVideoTrackSupplier.get();
+            }
+
+            @Override
+            public ROut visitMediaTrackReport(Void obj) {
+                return mediaTrackSupplier.get();
             }
         };
     }

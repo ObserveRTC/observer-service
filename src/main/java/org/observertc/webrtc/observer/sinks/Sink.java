@@ -44,4 +44,10 @@ public abstract class Sink implements Observer<OutboundReports> {
         this.logger = logger;
         return this;
     }
+
+    public void close() {
+
+    }
+
+
 }

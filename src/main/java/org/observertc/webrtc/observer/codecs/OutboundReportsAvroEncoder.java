@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 public class OutboundReportsAvroEncoder {
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 
-    private Observer<? super OutboundReport> observer;
     private final BinaryMessageEncoder<ObserverEventReport> observerEventEncoder;
     private final BinaryMessageEncoder<CallEventReport> callEventEncoder;
     private final BinaryMessageEncoder<CallMetaReport> callMetaEncoder;

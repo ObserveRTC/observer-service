@@ -197,7 +197,7 @@ class TaskStageTest {
         stage.rollback(null);
 
         Assertions.assertTrue(stage.isExecuted());
-        Assertions.assertTrue(stage.isRolledbacked());
+        Assertions.assertTrue(stage.isRolledback());
     }
 
     @Test
@@ -215,7 +215,7 @@ class TaskStageTest {
         stage.rollback(null);
 
         Assertions.assertTrue(stage.isExecuted());
-        Assertions.assertTrue(stage.isRolledbacked());
+        Assertions.assertTrue(stage.isRolledback());
     }
 
     @Test
@@ -235,7 +235,7 @@ class TaskStageTest {
         stage.rollback(null);
 
         Assertions.assertTrue(stage.isExecuted());
-        Assertions.assertTrue(stage.isRolledbacked());
+        Assertions.assertTrue(stage.isRolledback());
     }
 
     @Test
@@ -255,7 +255,7 @@ class TaskStageTest {
         stage.rollback(null);
 
         Assertions.assertTrue(stage.isExecuted());
-        Assertions.assertTrue(stage.isRolledbacked());
+        Assertions.assertTrue(stage.isRolledback());
     }
 
     @Test
@@ -273,7 +273,7 @@ class TaskStageTest {
             stage.rollback(t);
         }
 
-        Assertions.assertFalse(stage.isRolledbacked());
+        Assertions.assertFalse(stage.isRolledback());
     }
 
     @Test

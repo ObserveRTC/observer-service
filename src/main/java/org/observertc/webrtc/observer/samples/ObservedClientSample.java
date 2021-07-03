@@ -11,4 +11,6 @@ public interface ObservedClientSample extends ObservedSample {
     String getMarker();
 
     String getUserId();
+
+    int getSampleSeq();
 }

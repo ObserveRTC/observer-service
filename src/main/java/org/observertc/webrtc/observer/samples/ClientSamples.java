@@ -8,14 +8,14 @@ import java.util.stream.Stream;
 /**
  * Call assigned and organized ObservedSamples
  */
-public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
+public class ClientSamples implements ObservedClientSample, Iterable<ClientSample> {
 
-    public static ClientSamples.Builder builderFrom(ObservedSample observedSample) {
+    public static ClientSamples.Builder builderFrom(ObservedClientSample observedSample) {
         var result = new ClientSamples.Builder()
                 .withObservedSample(observedSample);
         return result;
     }
-    private ObservedSample observedSample;
+    private ObservedClientSample observedClientSample;
     private ServiceRoomId serviceRoomId;
     private List<ClientSample> samples = new LinkedList<>();
     private Set<UUID> peerConnectionIds = new HashSet<>();
@@ -103,32 +103,37 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
 
     @Override
     public String getServiceId() {
-        return this.observedSample.getServiceId();
+        return this.observedClientSample.getServiceId();
     }
 
     @Override
     public String getMediaUnitId() {
-        return this.observedSample.getMediaUnitId();
+        return this.observedClientSample.getMediaUnitId();
     }
 
     @Override
     public UUID getClientId() {
-        return this.observedSample.getClientId();
+        return this.observedClientSample.getClientId();
+    }
+
+    @Override
+    public ClientSample getClientSample() {
+        return this.observedClientSample.getClientSample();
     }
 
     @Override
     public String getTimeZoneId() {
-        return this.observedSample.getTimeZoneId();
+        return this.observedClientSample.getTimeZoneId();
     }
 
     @Override
     public Long getTimestamp() {
-        return this.observedSample.getTimestamp();
+        return this.observedClientSample.getTimestamp();
     }
 
     @Override
     public String getRoomId() {
-        return this.observedSample.getRoomId();
+        return this.observedClientSample.getRoomId();
     }
 
     @Override
@@ -137,20 +142,16 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
     }
 
     public String getUserId() {
-        if (this.samples.size() < 1) {
-            return null;
-        }
-        var firstSample = this.samples.get(0);
-        return firstSample.userId;
+        return this.observedClientSample.getUserId();
+    }
+
+    @Override
+    public int getSampleSeq() {
+        return this.observedClientSample.getSampleSeq();
     }
 
     public String getMarker() {
-        if (this.samples.size() < 1) {
-            return null;
-        }
-        var firstSample = this.samples.get(0);
-        // TODO: add marker to ClientSample
-        return "NOT IMPLEMENTED";
+        return this.observedClientSample.getMarker();
     }
 
 
@@ -164,11 +165,11 @@ public class ClientSamples implements ObservedSample, Iterable<ClientSample> {
             return this;
         }
 
-        Builder withObservedSample(ObservedSample observedSample) {
-            this.result.observedSample = observedSample;
+        Builder withObservedSample(ObservedClientSample observedClientSample) {
+            this.result.observedClientSample = observedClientSample;
             this.result.serviceRoomId = ServiceRoomId.make(
-                    observedSample.getServiceId(),
-                    observedSample.getRoomId()
+                    observedClientSample.getServiceId(),
+                    observedClientSample.getRoomId()
             );
             return this;
         }

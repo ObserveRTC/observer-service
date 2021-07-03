@@ -93,7 +93,7 @@ public class TaskStage {
         return this.executed;
     }
 
-    public boolean isRolledbacked() {
+    public boolean isRolledback() {
         return this.rolledbacked;
     }
 

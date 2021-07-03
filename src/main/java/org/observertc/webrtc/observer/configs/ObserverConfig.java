@@ -118,7 +118,17 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
-		public boolean reportInboundAudioTracks = true;
+		public boolean reportObserverEvents = true;
+		public boolean reportCallEvents = true;
+		public boolean reportCallMeta = true;
+		public boolean reportClientExtensions = true;
+		public boolean reportInboundAudioTracks = false;
+		public boolean reportInboundVideoTracks = false;
+		public boolean reportOutboundAudioTracks = false;
+		public boolean reportOutboundVideoTracks = false;
+		public boolean reportPeerConnectionTransport = true;
+		public boolean reportPeerConnectionDataChannel = true;
+		public boolean reportMediaTracks = true;
 		public String defaultServiceName = "defaultServiceName";
 	}
 

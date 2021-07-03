@@ -18,6 +18,7 @@ public class ClientDTOGenerator implements Supplier<ClientDTO> {
     @PostConstruct
     void setup() {
         EasyRandomParameters parameters = new EasyRandomParameters();
+        parameters.randomize(UUID.class, () -> UUID.randomUUID());
         this.generator = new EasyRandom(parameters);
     }
 

@@ -35,6 +35,8 @@ public class ClientDTO implements VersionedPortable {
 	public static Builder builder() {
 		return new Builder();
 	}
+	private static final String SERVICE_ID_FIELD_NAME = "serviceId";
+	private static final String ROOM_ID_FIELD_NAME = "roomId";
 
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
@@ -43,22 +45,8 @@ public class ClientDTO implements VersionedPortable {
 	private static final String JOINED_FIELD_NAME = "joined";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
 
-	public static ClientDTO of(
-			String mediaUnitId,
-			UUID callId,
-			String userId,
-			UUID clientId,
-			Long connected,
-			String timeZoneId) {
-		ClientDTO result = new ClientDTO();
-		result.mediaUnitId = mediaUnitId;
-		result.callId = callId;
-		result.userId = userId;
-		result.clientId = clientId;
-		result.joined = connected;
-		result.timeZoneId = timeZoneId;
-		return result;
-	}
+	public String serviceId;
+	public String roomId;
 
 	public String mediaUnitId;
 	public UUID callId;
@@ -83,6 +71,9 @@ public class ClientDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
+		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeUTF(ROOM_ID_FIELD_NAME, this.roomId);
+
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
 		writer.writeUTF(USER_ID_FIELD_NAME, this.userId);
@@ -94,6 +85,9 @@ public class ClientDTO implements VersionedPortable {
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
+		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
+		this.roomId = reader.readUTF(ROOM_ID_FIELD_NAME);
+
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
 		this.userId = reader.readUTF(USER_ID_FIELD_NAME);
@@ -118,6 +112,9 @@ public class ClientDTO implements VersionedPortable {
 			return false;
 		}
 		ClientDTO otherDTO = (ClientDTO) other;
+		if (!Objects.equals(this.serviceId, otherDTO.serviceId)) return false;
+		if (!Objects.equals(this.roomId, otherDTO.roomId)) return false;
+
 		if (!Objects.equals(this.callId, otherDTO.callId) ||
 			!Objects.equals(this.userId, otherDTO.userId) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
@@ -133,6 +130,17 @@ public class ClientDTO implements VersionedPortable {
 	public static class Builder {
 		private final ClientDTO result = new ClientDTO();
 
+		public Builder withServiceId(String value) {
+			Objects.requireNonNull(value);
+			this.result.serviceId = value;
+			return this;
+		}
+
+		public Builder withRoomId(String value) {
+			Objects.requireNonNull(value);
+			this.result.roomId = value;
+			return this;
+		}
 		public Builder withCallId(UUID value) {
 			this.result.callId = value;
 			return this;

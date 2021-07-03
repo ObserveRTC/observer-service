@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
-import org.observertc.webrtc.observer.repositories.tasks.CreateCallEventReportsTaskProvider;
 import org.observertc.webrtc.observer.repositories.tasks.RemoveMediaTracksTask;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Responsible to Order appropriate updates on new calls, clients, peer connections
@@ -33,7 +33,6 @@ public class ListenMediaTrackEntryChanges implements EntryListener<UUID, MediaTr
 
     private Subject<CallEventReport> callEventReportSubject = PublishSubject.create();
 
-    private Subject<MediaTrackDTO> addedMediaTracls = PublishSubject.create();
     private Subject<RemovedMediaTrack> removedMediaTracks = PublishSubject.create();
 
     public Observable<CallEventReport> getObservableCallEventReports() {
@@ -44,28 +43,18 @@ public class ListenMediaTrackEntryChanges implements EntryListener<UUID, MediaTr
     Provider<RemoveMediaTracksTask> removeMediaTracksTaskProvider;
 
     @Inject
-    CreateCallEventReportsTaskProvider createCallEventReportsTaskProvider;
-
-    @Inject
     ObserverConfig observerConfig;
 
     @PostConstruct
     void setup() {
-        this.addedMediaTracls
-                .buffer(115, TimeUnit.SECONDS)
-                .subscribe(this::addMediaTracks);
-
         this.removedMediaTracks
-                .buffer(10, TimeUnit.SECONDS)
+                .buffer(5, TimeUnit.SECONDS)
                 .subscribe(this::removeMediaTracks);
     }
 
     @Override
     public void entryAdded(EntryEvent<UUID, MediaTrackDTO> event) {
-        MediaTrackDTO addedMediaTrackDTO = event.getValue();
-        synchronized (this) {
-            this.addedMediaTracls.onNext(addedMediaTrackDTO);
-        }
+        logger.debug("MediaTrackDTO {} has been added", event.getValue());
     }
 
     @Override
@@ -85,11 +74,12 @@ public class ListenMediaTrackEntryChanges implements EntryListener<UUID, MediaTr
         synchronized (this) {
             this.removedMediaTracks.onNext(closedPeerConnection);
         }
+        logger.debug("MediaTrackDTO {} has been expired", event.getValue());
     }
 
     @Override
     public void entryRemoved(EntryEvent<UUID, MediaTrackDTO> event) {
-        logger.info("ClientDTO {} has been removed", event.getValue());
+        logger.debug("MediaTrackDTO {} has been removed", event.getValue());
     }
 
     @Override
@@ -99,29 +89,12 @@ public class ListenMediaTrackEntryChanges implements EntryListener<UUID, MediaTr
 
     @Override
     public void mapCleared(MapEvent event) {
-        logger.info("Source map has been cleared, {} items are removed", event.getNumberOfEntriesAffected());
+        logger.info("MediaTracks map has been cleared, {} items are removed", event.getNumberOfEntriesAffected());
     }
 
     @Override
     public void mapEvicted(MapEvent event) {
-        logger.info("Source map has been evicted, {} items are removed", event.getNumberOfEntriesAffected());
-    }
-
-    private void addMediaTracks(List<MediaTrackDTO> addedMediaTrackDTOs) {
-        if (Objects.isNull(addedMediaTrackDTOs) || addedMediaTrackDTOs.size() < 1) {
-            return;
-        }
-        var task = this.createCallEventReportsTaskProvider.getCreateMediaTrackAddedReportsTask();
-        addedMediaTrackDTOs.forEach(task::withDTO);
-
-        if (!task.execute().succeeded()) {
-            logger.warn("Making add client report has been failed");
-            return;
-        }
-
-        this.forwardCallReports(
-                task.getResult()
-        );
+        logger.info("MediaTracks map has been evicted, {} items are removed", event.getNumberOfEntriesAffected());
     }
 
     private void removeMediaTracks(List<RemovedMediaTrack> input) {
@@ -135,16 +108,10 @@ public class ListenMediaTrackEntryChanges implements EntryListener<UUID, MediaTr
             return;
         }
 
-        var reportingTask = this.createCallEventReportsTaskProvider.getCreateMediaTrackRemovedReportsTask();
-        input.stream().filter(Objects::nonNull).forEach(removedMediaTrack -> reportingTask.withDTOAndTimestamp(removedMediaTrack.mediaTrackDTO, removedMediaTrack.estimatedLeave));
+        var builders = removeMediaTracksTask.getResult();
+        var reports = builders.stream().map(CallEventReport.Builder::build).collect(Collectors.toList());
 
-        if (!reportingTask.execute().succeeded()) {
-            logger.warn("Making add client report has been failed");
-            return;
-        }
-        this.forwardCallReports(
-                reportingTask.getResult()
-        );
+        this.forwardCallReports(reports);
     }
 
     private void forwardCallReports(List<CallEventReport> callEventReports) {

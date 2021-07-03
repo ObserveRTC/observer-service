@@ -18,6 +18,7 @@ public class PeerConnectionDTOGenerator implements Supplier<PeerConnectionDTO> {
     @PostConstruct
     void setup() {
         EasyRandomParameters parameters = new EasyRandomParameters();
+        parameters.randomize(UUID.class, () -> UUID.randomUUID());
         this.generator = new EasyRandom(parameters);
     }
 

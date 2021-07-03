@@ -41,7 +41,7 @@ public class ChainedTask<T> extends TaskAbstract<T> {
             TaskStage stage = it.next();
             nextInput = stage.execute(nextInput);
             if (!stage.isExecuted()) {
-                throw new IllegalStateException("Execution of stage "+stage.toString()+" is interrupted du to not executed stage");
+                throw new IllegalStateException("Execution of stage "+stage.toString()+" is interrupted due to not executed stage");
             }
             if (this.doTerminate(stage, nextInput)) {
                 return this.resultHolder.get();
@@ -231,7 +231,8 @@ public class ChainedTask<T> extends TaskAbstract<T> {
         public<U> Builder<R> addTerminalFunction(String stageName, Function<U, R> function) {
             this.requireNotTerminated();
             TaskStage stage = TaskStage.builder(stageName).withConsumer(inputObj -> {
-                R output = function.apply((U) inputObj);
+                U passed = (U) inputObj;
+                R output = function.apply(passed);
                 this.result.resultHolder.set(output);
             }).build();
             this.result.stages.add(stage);

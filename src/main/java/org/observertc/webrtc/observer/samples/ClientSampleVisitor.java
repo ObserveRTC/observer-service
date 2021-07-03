@@ -30,7 +30,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.dataChannels);
     }
 
-    static Stream<String> streamExtensionStats(@NotNull ClientSample clientSample) {
+    static Stream<ClientSample.ExtensionStat> streamExtensionStats(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.extensionStats)) {
             return Stream.empty();
         }
@@ -158,7 +158,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
 
     void visitDataChannel(T obj, UUID clientId, ClientSample.DataChannel dataChannel);
 
-    void visitExtensionStat(T obj, UUID clientId, String extensionStat);
+    void visitExtensionStat(T obj, UUID clientId, ClientSample.ExtensionStat extensionStat);
 
     void visitIceLocalCandidate(T obj, UUID clientId, ClientSample.ICELocalCandidate iceLocalCandidate);
 

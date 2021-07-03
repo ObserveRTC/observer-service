@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
-import org.observertc.webrtc.observer.repositories.tasks.CreateCallEventReportsTaskProvider;
 import org.observertc.webrtc.observer.repositories.tasks.RemovePeerConnectionsTask;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Responsible to Order appropriate updates on new calls, clients, peer connections
@@ -33,15 +33,11 @@ public class ListenPeerConnectionEntryChanges implements EntryListener<UUID, Pee
 
     private Subject<CallEventReport> callEventReportSubject = PublishSubject.create();
 
-    private Subject<PeerConnectionDTO> addedPeerConnections = PublishSubject.create();
     private Subject<ClosedPeerConnection> removedPeerConnections = PublishSubject.create();
 
     public Observable<CallEventReport> getObservableCallEventReports() {
         return this.callEventReportSubject;
     }
-
-    @Inject
-    CreateCallEventReportsTaskProvider createCallEventReportsTaskProvider;
 
     @Inject
     Provider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
@@ -51,21 +47,14 @@ public class ListenPeerConnectionEntryChanges implements EntryListener<UUID, Pee
 
     @PostConstruct
     void setup() {
-        this.addedPeerConnections
-                .buffer(55, TimeUnit.SECONDS)
-                .subscribe(this::addPeerConnections);
-
         this.removedPeerConnections
-                .buffer(25, TimeUnit.SECONDS)
+                .buffer(15, TimeUnit.SECONDS)
                 .subscribe(this::removePeerConnections);
     }
 
     @Override
     public void entryAdded(EntryEvent<UUID, PeerConnectionDTO> event) {
-        PeerConnectionDTO addedPeerConnectionDTO = event.getValue();
-        synchronized (this) {
-            this.addedPeerConnections.onNext(addedPeerConnectionDTO);
-        }
+        logger.debug("PeerConnectionDTO {} has been added", event.getValue());
     }
 
     @Override
@@ -90,16 +79,6 @@ public class ListenPeerConnectionEntryChanges implements EntryListener<UUID, Pee
 
     @Override
     public void entryRemoved(EntryEvent<UUID, PeerConnectionDTO> event) {
-        PeerConnectionDTO removedPeerConnectionDTO = event.getValue();
-        if (Objects.isNull(removedPeerConnectionDTO)) {
-            logger.warn("PeerConnection DTO is removed, but the value is null {}", event.toString());
-            return;
-        }
-        Long estimatedLeave = Instant.now().toEpochMilli();
-        ClosedPeerConnection closedPeerConnection = new ClosedPeerConnection(removedPeerConnectionDTO, estimatedLeave);
-        synchronized (this) {
-            this.removedPeerConnections.onNext(closedPeerConnection);
-        }
         logger.debug("PeerConnectionDTO {} has been removed", event.getValue());
     }
 
@@ -118,23 +97,6 @@ public class ListenPeerConnectionEntryChanges implements EntryListener<UUID, Pee
         logger.info("Source map has been evicted, {} items are removed", event.getNumberOfEntriesAffected());
     }
 
-    private void addPeerConnections(List<PeerConnectionDTO> addedPeerConnectionDTOs) {
-        if (Objects.isNull(addedPeerConnectionDTOs) || addedPeerConnectionDTOs.size() < 1) {
-            return;
-        }
-        var task = this.createCallEventReportsTaskProvider.getCreatePeerConnectionOpenedReportsTask();
-        addedPeerConnectionDTOs.forEach(task::withDTO);
-
-        if (!task.execute().succeeded()) {
-            logger.warn("Making add client report has been failed");
-            return;
-        }
-
-        this.forwardCallReports(
-                task.getResult()
-        );
-    }
-
     private void removePeerConnections(List<ClosedPeerConnection> input) {
         if (Objects.isNull(input) || input.size() < 1) {
             return;
@@ -146,16 +108,10 @@ public class ListenPeerConnectionEntryChanges implements EntryListener<UUID, Pee
             return;
         }
 
-        var task = this.createCallEventReportsTaskProvider.getCreatePeerConnectionClosedReportsTask();
-        input.stream().filter(Objects::nonNull).forEach(closedPeerConnection -> task.withDTOAndTimestamp(closedPeerConnection.peerConnectionDTO, closedPeerConnection.estimatedLeave));
+        var builders = removePeerConnectionsTask.getResult();
+        var reports = builders.stream().map(CallEventReport.Builder::build).collect(Collectors.toList());
 
-        if (!task.execute().succeeded()) {
-            logger.warn("Making add client report has been failed");
-            return;
-        }
-        this.forwardCallReports(
-                task.getResult()
-        );
+        this.forwardCallReports(reports);
     }
 
     private void forwardCallReports(List<CallEventReport> callEventReports) {
