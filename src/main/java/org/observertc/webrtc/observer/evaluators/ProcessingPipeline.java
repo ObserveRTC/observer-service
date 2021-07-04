@@ -28,9 +28,6 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     @Inject
     Obfuscator obfuscator;
 
-//    @Inject
-//    ReportMediaTracks reportMediaTracks;
-
     @Inject
     ReportCallMetaData reportCallMetaData;
 
@@ -77,17 +74,12 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .share();
 
         var observableCollectedCallSamples = samplesBuffer
-//                .map(List::of)
-                // TODO: measure a start time
                 .map(this.obfuscator)
                 .map(this.collectCallSamples)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .share();
 
-//        observableCollectedCallSamples
-//                .subscribe(this.reportMediaTracks);
-//
         observableCollectedCallSamples
                 .subscribe(this.reportCallMetaData);
 
@@ -97,7 +89,6 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
         observableCollectedCallSamples
                 .subscribe(this.demuxCollectedCallSamples);
 
-        // TODO: measure the end time somehow
         this.addNewEntities
                 .getObservableCallEventReports()
                 .buffer(30, TimeUnit.SECONDS, 1000)
@@ -170,9 +161,10 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
 
 
 
-        var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
+        var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxItems;
         var reportsBufferMaxRetainInS = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
         this.outboundReportEncoder
+                .getObservableOutboundReport()
                 .buffer(reportsBufferMaxRetainInS, TimeUnit.SECONDS, reportsBufferMaxItems)
                 .map(OutboundReports::fromList)
                 .subscribe(this.outboundReportsObserver);

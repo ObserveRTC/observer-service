@@ -5,7 +5,7 @@ import org.observertc.webrtc.observer.common.ObjectToString;
 import java.util.Objects;
 
 public class ServiceRoomId {
-    private static final String DELIMITER = "##/##";
+    private static final String DELIMITER = "##://:##";
     public static String createKey(ServiceRoomId serviceRoomId) {
         return String.join(DELIMITER, serviceRoomId.serviceId, serviceRoomId.roomId);
     }

@@ -39,6 +39,10 @@ public class ClientSamples implements ObservedClientSample, Iterable<ClientSampl
                 this.minTimestamp = clientSample.timestamp;
             }
         }
+        ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
+                .map(t -> UUID.fromString(t.peerConnectionId))
+                .forEach(this.peerConnectionIds::add);
+
         ClientSampleVisitor.streamInboundAudioTracks(clientSample)
                 .filter(track -> Objects.nonNull(track.ssrc) && UUIDAdapter.tryParse(track.peerConnectionId).isPresent())
                 .map(track -> {

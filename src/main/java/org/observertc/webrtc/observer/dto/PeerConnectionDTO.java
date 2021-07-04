@@ -162,7 +162,6 @@ public class PeerConnectionDTO implements VersionedPortable {
 		}
 
 		public PeerConnectionDTO.Builder withUserId(String value) {
-			Objects.requireNonNull(value);
 			this.result.userId = value;
 			return this;
 		}

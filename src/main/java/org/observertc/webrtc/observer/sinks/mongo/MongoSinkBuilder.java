@@ -40,7 +40,7 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         Config config = this.convertAndValidate(Config.class);
         MongoClient mongoClient;
         try {
-            mongoClient = MongoClients.create(config.URI);
+            mongoClient = MongoClients.create(config.uri);
         } catch (Throwable t) {
             logger.error("cannot make mongo client", t);
             return null;
@@ -72,7 +72,7 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
     public static class Config {
 
         @NotNull
-        public String URI;
+        public String uri;
 
         @NotNull
         public String database;

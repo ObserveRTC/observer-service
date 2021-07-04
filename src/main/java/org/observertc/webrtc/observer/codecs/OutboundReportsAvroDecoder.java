@@ -2,8 +2,10 @@ package org.observertc.webrtc.observer.codecs;
 
 import io.micronaut.context.annotation.Prototype;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.MessageDecoder;
+import org.apache.avro.specific.SpecificData;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.evaluators.OutboundReportEncoder;
 import org.observertc.webrtc.schemas.reports.*;
@@ -30,17 +32,18 @@ public class OutboundReportsAvroDecoder {
     private final BinaryMessageDecoder<MediaTrackReport> mediaTrackDecoder;
 
     public OutboundReportsAvroDecoder() {
-        this.observerEventDecoder = new BinaryMessageDecoder<ObserverEventReport>(GenericData.get(), ObserverEventReport.getClassSchema());
-        this.callEventDecoder = new BinaryMessageDecoder<CallEventReport>(GenericData.get(), CallEventReport.getClassSchema());
-        this.callMetaDecoder = new BinaryMessageDecoder<CallMetaReport>(GenericData.get(), CallMetaReport.getClassSchema());
-        this.clientExtensionDecoder = new BinaryMessageDecoder<ClientExtensionReport>(GenericData.get(), ClientExtensionReport.getClassSchema());
-        this.pcTransportDecoder = new BinaryMessageDecoder<PcTransportReport>(GenericData.get(), PcTransportReport.getClassSchema());
-        this.pcDataChannelDecoder = new BinaryMessageDecoder<PcDataChannelReport>(GenericData.get(), PcDataChannelReport.getClassSchema());
-        this.inboundAudioTrackDecoder = new BinaryMessageDecoder<InboundAudioTrackReport>(GenericData.get(), InboundAudioTrackReport.getClassSchema());
-        this.inboundVideoTrackDecoder = new BinaryMessageDecoder<InboundVideoTrackReport>(GenericData.get(), InboundVideoTrackReport.getClassSchema());
-        this.outboundAudioTrackDecoder = new BinaryMessageDecoder<OutboundAudioTrackReport>(GenericData.get(), OutboundAudioTrackReport.getClassSchema());
-        this.outboundVideoTrackDecoder = new BinaryMessageDecoder<OutboundVideoTrackReport>(GenericData.get(), OutboundVideoTrackReport.getClassSchema());
-        this.mediaTrackDecoder = new BinaryMessageDecoder<MediaTrackReport>(GenericData.get(), MediaTrackReport.getClassSchema());
+
+        this.observerEventDecoder = new BinaryMessageDecoder<ObserverEventReport>(SpecificData.get(), ObserverEventReport.getClassSchema());
+        this.callEventDecoder = new BinaryMessageDecoder<CallEventReport>(SpecificData.get(), CallEventReport.getClassSchema());
+        this.callMetaDecoder = new BinaryMessageDecoder<CallMetaReport>(SpecificData.get(), CallMetaReport.getClassSchema());
+        this.clientExtensionDecoder = new BinaryMessageDecoder<ClientExtensionReport>(SpecificData.get(), ClientExtensionReport.getClassSchema());
+        this.pcTransportDecoder = new BinaryMessageDecoder<PcTransportReport>(SpecificData.get(), PcTransportReport.getClassSchema());
+        this.pcDataChannelDecoder = new BinaryMessageDecoder<PcDataChannelReport>(SpecificData.get(), PcDataChannelReport.getClassSchema());
+        this.inboundAudioTrackDecoder = new BinaryMessageDecoder<InboundAudioTrackReport>(SpecificData.get(), InboundAudioTrackReport.getClassSchema());
+        this.inboundVideoTrackDecoder = new BinaryMessageDecoder<InboundVideoTrackReport>(SpecificData.get(), InboundVideoTrackReport.getClassSchema());
+        this.outboundAudioTrackDecoder = new BinaryMessageDecoder<OutboundAudioTrackReport>(SpecificData.get(), OutboundAudioTrackReport.getClassSchema());
+        this.outboundVideoTrackDecoder = new BinaryMessageDecoder<OutboundVideoTrackReport>(SpecificData.get(), OutboundVideoTrackReport.getClassSchema());
+        this.mediaTrackDecoder = new BinaryMessageDecoder<MediaTrackReport>(SpecificData.get(), MediaTrackReport.getClassSchema());
     }
 
     public ObserverEventReport decodeObserverEventReports(OutboundReport outboundReport) {

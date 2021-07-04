@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.io.InvalidObjectException;
 
 @MicronautTest
 class ObservedClientSampleBuilderTest {
@@ -95,7 +96,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getClientSample() {
+    public void getClientSample() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
 
         var observedClientSample = ObservedClientSampleBuilder
@@ -108,7 +109,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getRoomId() {
+    public void getRoomId() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
 
         var observedClientSample = ObservedClientSampleBuilder
@@ -121,7 +122,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getServiceId() {
+    public void getServiceId() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
         var serviceId = "serviceId";
 
@@ -135,7 +136,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getMediaUnitId() {
+    public void getMediaUnitId() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
         var mediaUnitId = "mediaUnitId";
 
@@ -149,7 +150,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getTimestamp() {
+    public void getTimestamp() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
 
         var observedClientSample = ObservedClientSampleBuilder
@@ -162,7 +163,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getUserId() {
+    public void getUserId() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
 
         var observedClientSample = ObservedClientSampleBuilder
@@ -175,7 +176,7 @@ class ObservedClientSampleBuilderTest {
     }
 
     @Test
-    public void getTimeZoneId() {
+    public void getTimeZoneId() throws InvalidObjectException {
         var clientSample = this.clientSampleGenerator.get();
         var timeZoneId = "timeZoneId";
 

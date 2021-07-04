@@ -1,4 +1,4 @@
-package org.observertc.webrtc.observer.security;
+package org.observertc.webrtc.observer.sources;
 
 import io.micronaut.websocket.CloseReason;
 
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public class WebsocketSecurityCustomCloseReasons {
+public class WebsocketCustomCloseReasons {
     private static final int ACCESS_TOKEN_EXPIRED_CODE = 4224;
     private static final int NO_ACCESS_TOKEN_PROVIDED_CODE = 4225;
     private static final int INVALID_ACCESS_TOKEN_CODE = 4226;
@@ -16,9 +16,11 @@ public class WebsocketSecurityCustomCloseReasons {
     private static final int TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS = 4228;
     private static final int WEBSOCKET_IS_DISABLED = 4229;
 
+    private static final int INVALID_INPUT = 4230;
+
     private final Map<Integer, CloseReason> reasons;
 
-    public WebsocketSecurityCustomCloseReasons() {
+    public WebsocketCustomCloseReasons() {
         this.reasons = new HashMap<>();
     }
 
@@ -53,6 +55,11 @@ public class WebsocketSecurityCustomCloseReasons {
         return result;
     }
 
+    public CloseReason getInvalidInput(String message) {
+        var result = new CloseReason(INVALID_INPUT, message);
+        return result;
+    }
+
     public CloseReason getTooManyWebsocketRegisteredForTheSameAccessToken() {
         var result = this.reasons.get(TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS);
         return result;
@@ -63,7 +70,7 @@ public class WebsocketSecurityCustomCloseReasons {
         return result;
     }
 
-    private WebsocketSecurityCustomCloseReasons set(int code, String text) {
+    private WebsocketCustomCloseReasons set(int code, String text) {
         CloseReason reason = new CloseReason(code, text);
         this.reasons.put(code, reason);
         return this;

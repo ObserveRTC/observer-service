@@ -36,7 +36,13 @@ observer:
       security:
         dropUnknownServices: false
   sinks:
-    MyKafkaSink: # and this is the name
+    MyLogger:
+      type: LoggerSink
+#    MyMongo:
+#      type: MongoSink
+#      config:
+#        uri: "mongodb://root:password@localhost:27017"
+#        database: "reports"
 
 
   security:
@@ -48,15 +54,6 @@ observer:
       salt: "MySalt"
 
   sentinelsCheckingPeriodInMin: 1
-  connectors:
-    - name: "ReportSinkLogger"
-      buffer:
-        maxItems: 100
-        maxWaitingTimeInS: 10
-      sink:
-        type: LoggerSink
-        config:
-          printReports: false
 
   reportMonitor:
     enabled: true

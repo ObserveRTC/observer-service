@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.evaluators;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.EntryListener;
 import com.hazelcast.map.MapEvent;
+import io.micrometer.core.annotation.Timed;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
@@ -105,6 +106,7 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
         logger.info("Source map has been evicted, {} items are removed", event.getNumberOfEntriesAffected());
     }
 
+    @Timed(value = "observertc-evaluators-remove-clients")
     private void removeClients(List<ClientLeft> input) {
         if (Objects.isNull(input) || input.size() < 1) {
             return;

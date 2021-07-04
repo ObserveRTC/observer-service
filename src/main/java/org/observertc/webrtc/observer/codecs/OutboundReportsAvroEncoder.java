@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Observer;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageEncoder;
+import org.apache.avro.specific.SpecificData;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.evaluators.OutboundReportEncoder;
 import org.observertc.webrtc.schemas.reports.*;
@@ -28,17 +29,17 @@ public class OutboundReportsAvroEncoder {
     private final BinaryMessageEncoder<MediaTrackReport> mediaTrackEncoder;
 
     public OutboundReportsAvroEncoder() {
-        this.observerEventEncoder = new BinaryMessageEncoder<ObserverEventReport>(GenericData.get(), ObserverEventReport.getClassSchema());
-        this.callEventEncoder = new BinaryMessageEncoder<CallEventReport>(GenericData.get(), CallEventReport.getClassSchema());
-        this.callMetaEncoder = new BinaryMessageEncoder<CallMetaReport>(GenericData.get(), CallMetaReport.getClassSchema());
-        this.clientExtensionEncoder = new BinaryMessageEncoder<ClientExtensionReport>(GenericData.get(), ClientExtensionReport.getClassSchema());
-        this.pcTransportEncoder = new BinaryMessageEncoder<PcTransportReport>(GenericData.get(), PcTransportReport.getClassSchema());
-        this.pcDataChannelEncoder = new BinaryMessageEncoder<PcDataChannelReport>(GenericData.get(), PcDataChannelReport.getClassSchema());
-        this.inboundAudioTrackEncoder = new BinaryMessageEncoder<InboundAudioTrackReport>(GenericData.get(), InboundAudioTrackReport.getClassSchema());
-        this.inboundVideoTrackEncoder = new BinaryMessageEncoder<InboundVideoTrackReport>(GenericData.get(), InboundVideoTrackReport.getClassSchema());
-        this.outboundAudioTrackEncoder = new BinaryMessageEncoder<OutboundAudioTrackReport>(GenericData.get(), OutboundAudioTrackReport.getClassSchema());
-        this.outboundVideoTrackEncoder = new BinaryMessageEncoder<OutboundVideoTrackReport>(GenericData.get(), OutboundVideoTrackReport.getClassSchema());
-        this.mediaTrackEncoder = new BinaryMessageEncoder<MediaTrackReport>(GenericData.get(), MediaTrackReport.getClassSchema());
+        this.observerEventEncoder = new BinaryMessageEncoder<ObserverEventReport>(SpecificData.get(), ObserverEventReport.getClassSchema());
+        this.callEventEncoder = new BinaryMessageEncoder<CallEventReport>(SpecificData.get(), CallEventReport.getClassSchema());
+        this.callMetaEncoder = new BinaryMessageEncoder<CallMetaReport>(SpecificData.get(), CallMetaReport.getClassSchema());
+        this.clientExtensionEncoder = new BinaryMessageEncoder<ClientExtensionReport>(SpecificData.get(), ClientExtensionReport.getClassSchema());
+        this.pcTransportEncoder = new BinaryMessageEncoder<PcTransportReport>(SpecificData.get(), PcTransportReport.getClassSchema());
+        this.pcDataChannelEncoder = new BinaryMessageEncoder<PcDataChannelReport>(SpecificData.get(), PcDataChannelReport.getClassSchema());
+        this.inboundAudioTrackEncoder = new BinaryMessageEncoder<InboundAudioTrackReport>(SpecificData.get(), InboundAudioTrackReport.getClassSchema());
+        this.inboundVideoTrackEncoder = new BinaryMessageEncoder<InboundVideoTrackReport>(SpecificData.get(), InboundVideoTrackReport.getClassSchema());
+        this.outboundAudioTrackEncoder = new BinaryMessageEncoder<OutboundAudioTrackReport>(SpecificData.get(), OutboundAudioTrackReport.getClassSchema());
+        this.outboundVideoTrackEncoder = new BinaryMessageEncoder<OutboundVideoTrackReport>(SpecificData.get(), OutboundVideoTrackReport.getClassSchema());
+        this.mediaTrackEncoder = new BinaryMessageEncoder<MediaTrackReport>(SpecificData.get(), MediaTrackReport.getClassSchema());
     }
 
 

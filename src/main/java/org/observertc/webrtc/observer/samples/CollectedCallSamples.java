@@ -38,7 +38,7 @@ public class CollectedCallSamples implements Iterable<CallSamples>{
     }
 
     public Set<UUID> getClientIds() {
-        return this.samples.keySet();
+        return this.samples.values().stream().flatMap(clientSamples -> clientSamples.getClientIds().stream()).collect(Collectors.toSet());
     }
 
     public Set<UUID> getPeerConnectionIds() {

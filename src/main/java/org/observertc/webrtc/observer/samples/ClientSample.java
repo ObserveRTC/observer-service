@@ -1680,7 +1680,7 @@ public  class ClientSample {
 		 * The rid parameter of the corresponded RTP stream
 		 */
 		@JsonProperty("rid")
-		public Long rid;
+		public String rid;
 
 		/**
 		 * The last RTP packet sent timestamp
@@ -2028,7 +2028,7 @@ public  class ClientSample {
 		 * The rid parameter of the corresponded RTP stream
 		 */
 		@JsonProperty("rid")
-		public Long rid;
+		public String rid;
 
 		/**
 		 * The last RTP packet sent timestamp

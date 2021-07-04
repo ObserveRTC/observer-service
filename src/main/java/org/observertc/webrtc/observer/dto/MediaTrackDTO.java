@@ -184,7 +184,6 @@ public class MediaTrackDTO implements VersionedPortable {
 		}
 
 		public Builder withUserId(String value) {
-			Objects.requireNonNull(value);
 			this.result.userId = value;
 			return this;
 		}

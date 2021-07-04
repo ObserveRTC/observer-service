@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.micrometer.core.annotation.Timed;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.repositories.tasks.CreateCallIfNotExistsTask;
@@ -36,6 +37,7 @@ public class CollectCallSamples implements Function<List<ObservedClientSample>, 
 
 
     @Override
+    @Timed(value = "observertc-evaluators-collect-call-samples")
     public Optional<CollectedCallSamples> apply(List<ObservedClientSample> observedClientSamples) throws Throwable {
         if (Objects.isNull(observedClientSamples) || observedClientSamples.size() < 1) {
             return Optional.empty();

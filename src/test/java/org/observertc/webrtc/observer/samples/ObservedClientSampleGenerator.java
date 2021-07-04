@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.io.InvalidObjectException;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Objects;
@@ -33,11 +34,16 @@ public class ObservedClientSampleGenerator implements Supplier<ObservedClientSam
     public ObservedClientSample get() {
         var clientSample = this.generator.get();
 
-        var result = ObservedClientSampleBuilder.from(clientSample)
-                .withServiceId(this.serviceId)
-                .withMediaUnitId(this.mediaUnitId)
-                .withTimeZoneId(this.timeZoneId)
-                .build();
+        ObservedClientSample result = null;
+        try {
+            result = ObservedClientSampleBuilder.from(clientSample)
+                    .withServiceId(this.serviceId)
+                    .withMediaUnitId(this.mediaUnitId)
+                    .withTimeZoneId(this.timeZoneId)
+                    .build();
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 

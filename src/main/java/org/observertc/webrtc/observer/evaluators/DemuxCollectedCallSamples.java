@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.micrometer.core.annotation.Timed;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -35,7 +36,6 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     private Subject<PcDataChannelReport> pcDataChannelReportSubject = PublishSubject.create();
     private Subject<ClientExtensionReport> clientExtensionReportSubject = PublishSubject.create();
 
-
     public Observable<PcTransportReport> getObservablePcTransportReport() {
         return this.pcTransportReportSubject;
     }
@@ -61,7 +61,9 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     void setup() {
 
     }
+
     @Override
+    @Timed(value = "observertc-evaluators-demux-collected-call-samples")
     public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
         try {
             this.doAccept(collectedCallSamples);
@@ -210,14 +212,14 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                 outboundVideoTrackReports.stream().forEach(this.outboundVideoTrackReportSubject::onNext);
             }
             if (observerConfig.outboundReports.reportMediaTracks) {
-                inboundAudioTrackReports.stream().map(this::createMediaTrackReportFromInboundAudio)
-                        .forEach(this.mediaTrackReportSubject::onNext);
-                inboundVideoTrackReports.stream().map(this::createMediaTrackReportFromInboundVideo)
-                        .forEach(this.mediaTrackReportSubject::onNext);
-                outboundAudioTrackReports.stream().map(this::createMediaTrackReportFromOutboundAudio)
-                        .forEach(this.mediaTrackReportSubject::onNext);
-                outboundVideoTrackReports.stream().map(this::createMediaTrackReportFromOutboundVideo)
-                        .forEach(this.mediaTrackReportSubject::onNext);
+//                inboundAudioTrackReports.stream().map(this::createMediaTrackReportFromInboundAudio)
+//                        .forEach(this.mediaTrackReportSubject::onNext);
+//                inboundVideoTrackReports.stream().map(this::createMediaTrackReportFromInboundVideo)
+//                        .forEach(this.mediaTrackReportSubject::onNext);
+//                outboundAudioTrackReports.stream().map(this::createMediaTrackReportFromOutboundAudio)
+//                        .forEach(this.mediaTrackReportSubject::onNext);
+//                outboundVideoTrackReports.stream().map(this::createMediaTrackReportFromOutboundVideo)
+//                        .forEach(this.mediaTrackReportSubject::onNext);
 
             }
 
@@ -867,7 +869,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         }
 
         Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> result = new HashMap<>();
-        task.getResult().forEach(matchedIds -> {
+        var mappings = task.getResult();
+        mappings.forEach(matchedIds -> {
             Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>> ssrcMatches = result.get(matchedIds.callId);
             if (Objects.isNull(ssrcMatches)) {
                 ssrcMatches = new HashMap<>();

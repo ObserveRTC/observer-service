@@ -62,7 +62,7 @@ public class OutboundVideoTrackGenerator implements Supplier<ClientSample.Outbou
                 return this.randomGenerators::getRandomPositiveLong;
             case "rtxSsrc":
                 return this.randomGenerators::getRandomPositiveInteger;
-            case "rid":
+//            case "rid":
             case "lastPacketSentTimestamp":
             case "headerBytesSent":
                 return this.randomGenerators::getRandomPositiveLong;

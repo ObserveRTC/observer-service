@@ -34,7 +34,6 @@ import org.observertc.webrtc.observer.micrometer.ServiceMetrics;
 import org.observertc.webrtc.observer.samples.ClientSample;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
-import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -64,7 +63,7 @@ public class WebsocketClientSamples {
 	ServiceMetrics serviceMetrics;
 
 	@Inject
-	WebsocketSecurityCustomCloseReasons securityCustomCloseReasons;
+	WebsocketCustomCloseReasons customCloseReasons;
 
 	@Inject
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
@@ -80,7 +79,7 @@ public class WebsocketClientSamples {
 			MonitorProvider monitorProvider
 	) {
 		this.objectReader = objectMapper.reader();
-		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
+		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass()).withDefaultLogger(logger).withDefaultLogLevel(Level.WARN);
 		this.expirations = new ConcurrentHashMap<>();
 	}
 
@@ -96,7 +95,7 @@ public class WebsocketClientSamples {
 			WebSocketSession session) {
 		try {
 			if (!this.config.enabled) {
-				session.close(securityCustomCloseReasons.getWebsocketIsDisabled());
+				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
 			// validated access token from websocket
@@ -105,7 +104,7 @@ public class WebsocketClientSamples {
 				String accessToken = WebsocketAccessTokenValidator.getAccessToken(session);
 				boolean isValid = websocketAccessTokenValidator.isValid(accessToken, expiration);
 				if (!isValid) {
-					session.close(securityCustomCloseReasons.getInvalidAccessToken());
+					session.close(customCloseReasons.getInvalidAccessToken());
 					return;
 				}
 				this.expirations.put(session.getId(), expiration.get());
@@ -144,7 +143,7 @@ public class WebsocketClientSamples {
 			Instant now = Instant.now();
 			Instant expires = this.expirations.get(session.getId());
 			if (expires.compareTo(now) < 0) {
-				session.close(securityCustomCloseReasons.getAccessTokenExpired());
+				session.close(customCloseReasons.getAccessTokenExpired());
 				return;
 			}
 		}
@@ -163,20 +162,18 @@ public class WebsocketClientSamples {
 					.complete();
 			return;
 		}
-		var observedClientSample = ObservedClientSampleBuilder.from(sample)
+		var observedClientSampleBuilder = ObservedClientSampleBuilder.from(sample)
 				.withServiceId(serviceId)
-				.withMediaUnitId(mediaUnitId)
-				.build();
+				.withMediaUnitId(mediaUnitId);
 
 		try {
+			var observedClientSample = observedClientSampleBuilder.build();
 			Observable.just(observedClientSample)
 					.subscribe(this.processingPipeline);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
 					.withException(ex)
-					.withLogLevel(Level.WARN)
-					.withMessage("Error occured processing message by {} ", this.getClass().getSimpleName())
+					.withMessage("Error occured processing sample {} ", sample)
 					.complete();
 		}
 	}

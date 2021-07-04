@@ -3,6 +3,8 @@ package org.observertc.webrtc.observer.evaluators;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.observertc.webrtc.observer.common.ObjectToString;
@@ -24,11 +26,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
-public class OutboundReportEncoder extends Observable<OutboundReport> {
+public class OutboundReportEncoder {
 
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 
-    private Observer<? super OutboundReport> observer;
+    private Subject<OutboundReport> outboundReportSubject = PublishSubject.create();
 
     @Inject
     OutboundReportsAvroEncoder encoder;
@@ -40,6 +42,10 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
 
     public OutboundReportEncoder(ObserverConfig config) {
 
+    }
+
+    public Observable<OutboundReport> getObservableOutboundReport() {
+        return this.outboundReportSubject;
     }
 
 
@@ -54,9 +60,6 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
         if (Objects.isNull(callEventReports) || callEventReports.size() < 1) {
             return;
         }
-        callEventReports.forEach(callEventReport -> {
-            logger.info("Call Event Report {} is being encoded", callEventReport.getName());
-        });
         this.convertAndForward(this.encoder::encodeCallEventReport, callEventReports);
     }
 
@@ -123,18 +126,6 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
         this.convertAndForward(this.encoder::encodeMediaTrackReport, mediaTrackReports);
     }
 
-    @Override
-    protected void subscribeActual(@NonNull Observer<? super OutboundReport> observer) {
-        if (Objects.nonNull(this.observer)) {
-            throw new RuntimeException(this.getClass().getSimpleName() + " cannot connected to more than one observer");
-        }
-        this.observer = observer;
-    }
-
-    private void forward(OutboundReport outboundReport) {
-        Objects.requireNonNull(this.observer);
-        this.observer.onNext(outboundReport);
-    }
 
     private<T> void convertAndForward(Function<T, OutboundReport> converter, List<T> reports) {
         List<OutboundReport> outboundReports = new LinkedList<>();
@@ -153,7 +144,7 @@ public class OutboundReportEncoder extends Observable<OutboundReport> {
             outboundReports.add(outboundReport);
         }
         synchronized (this) {
-            outboundReports.stream().forEach(this::forward);
+            outboundReports.stream().forEach(this.outboundReportSubject::onNext);
         }
     }
 }

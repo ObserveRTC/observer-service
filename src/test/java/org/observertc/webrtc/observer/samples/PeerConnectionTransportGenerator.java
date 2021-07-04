@@ -124,7 +124,7 @@ public class PeerConnectionTransportGenerator implements Supplier<ClientSample.P
             case "candidatePairConsentExpiredTimestamp":
                 return this.randomGenerators::getRandomTimestamp;
             case "candidatePairPacketsDiscardedOnSend":
-                return this.randomGenerators::getRandomPositiveInteger;
+                return this.randomGenerators::getRandomPositiveLong;
             case "candidatePairBytesDiscardedOnSend":
             case "candidatePairRequestBytesSent":
             case "candidatePairConsentRequestBytesSent":

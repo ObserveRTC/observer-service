@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.controllers;///*
 
+import io.micrometer.core.annotation.Timed;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;

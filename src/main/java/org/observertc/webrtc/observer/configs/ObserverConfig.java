@@ -105,7 +105,7 @@ public class ObserverConfig {
 		public int clientMaxIdleTime = 300;
 
 		@Min(1)
-		public long reportsBufferMaxItems = 10000;
+		public int reportsBufferMaxItems = 10000;
 
 		@Min(1)
 		public int reportsBufferMaxRetainInS = 30;

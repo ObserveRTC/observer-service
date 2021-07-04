@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.sinks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.webrtc.observer.codecs.OutboundReportsAvroDecoder;
 import org.observertc.webrtc.observer.common.ObjectToString;
@@ -27,39 +26,14 @@ public class LoggerSink extends Sink {
     private Level level = Level.INFO;
     private boolean typeSummary = false;
 
-    private java.util.function.Consumer<OutboundReport> printer = null;
+    private java.util.function.Consumer<OutboundReport> printer;
 
-    @Override
-    public void onSubscribe(@NonNull Disposable d) {
-        super.onSubscribe(d);
-        switch (this.level) {
-            case WARN:
-                this.sink = this.logger::warn;
-                break;
-            case DEBUG:
-                this.sink = this.logger::debug;
-                break;
-            case ERROR:
-                this.sink = this.logger::error;
-                break;
-            case TRACE:
-                this.sink = this.logger::trace;
-                break;
-            default:
-            case INFO:
-                this.sink = this.logger::info;
-                break;
-        }
-
-        if (this.printReports) {
-            this.printer = this.makePrinter();
-        } else {
-            this.printer = report -> {};
-        }
+    LoggerSink() {
+        this.printer = report -> {};
     }
 
     @Override
-    public void onNext(@NonNull OutboundReports outboundReports) {
+    public void accept(@NonNull OutboundReports outboundReports) {
         logger.info("Number of reports are: {}", outboundReports.getReportsNum());
         Map<ReportType, Integer> receivedTypes = new HashMap<>();
         for (OutboundReport outboundReport : outboundReports) {
@@ -78,6 +52,43 @@ public class LoggerSink extends Sink {
                 }
             });
         }
+    }
+
+    LoggerSink withPrintTypeSummary(boolean value) {
+        this.typeSummary = value;
+        return this;
+    }
+
+    LoggerSink withPrintReports(boolean value) {
+        this.printReports = value;
+        if (this.printReports) {
+            this.printer = this.makePrinter();
+        }
+        return this;
+    }
+
+    LoggerSink witLogLevel(Level level) {
+        Objects.requireNonNull(level);
+        this.level = level;
+        switch (this.level) {
+            case WARN:
+                this.sink = this.logger::warn;
+                break;
+            case DEBUG:
+                this.sink = this.logger::debug;
+                break;
+            case ERROR:
+                this.sink = this.logger::error;
+                break;
+            case TRACE:
+                this.sink = this.logger::trace;
+                break;
+            default:
+            case INFO:
+                this.sink = this.logger::info;
+                break;
+        }
+        return this;
     }
 
     private java.util.function.Consumer<OutboundReport> makePrinter() {
@@ -115,21 +126,5 @@ public class LoggerSink extends Sink {
             }
             logger.info("Decoded Report type {}, value: {}", outboundReport.getType(), recordBase.toString());
         };
-    }
-
-    LoggerSink withPrintTypeSummary(boolean value) {
-        this.typeSummary = value;
-        return this;
-    }
-
-    LoggerSink withPrintReports(boolean value) {
-        this.printReports = value;
-        return this;
-    }
-
-    LoggerSink witLogLevel(Level level) {
-        Objects.requireNonNull(level);
-        this.level = level;
-        return this;
     }
 }

@@ -1,9 +1,11 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.micrometer.core.annotation.Timed;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
@@ -50,6 +52,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
     Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
 
     @Override
+    @Timed(value = "observertc-evaluators-add-new-entities")
     public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
         Set<UUID> clientIds = collectedCallSamples.getClientIds();
         Set<UUID> peerConnectionIds = collectedCallSamples.getPeerConnectionIds();
@@ -58,11 +61,11 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                 .withClientIds(clientIds)
                 .withPeerConnectionIds(peerConnectionIds)
                 .withMediaTrackIds(mediaTrackIds);
-
         if (!refreshTask.execute().succeeded()) {
             logger.warn("Unsuccessful execution of {}. Entities are not refreshed, new entities are not identified!", RefreshTask.class.getSimpleName());
             return;
         }
+
         Map<UUID, ObservedNewEntity<ClientDTO>> newClients = new HashMap<>();
         Map<UUID, ObservedNewEntity<PeerConnectionDTO>> newPeerConnections = new HashMap<>();
         Map<UUID, ObservedNewEntity<MediaTrackDTO>> newMediaTracks = new HashMap<>();
@@ -103,7 +106,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
 
                                         .withPeerConnectionId(peerConnectionId)
                                         .withCreatedTimestamp(clientSamples.getMinTimestamp())
-                                        .withClientId(clientSamples.getClientId())
+                                        .withClientId(clientId)
                                         .build();
                                 var observedNewEntity = new ObservedNewEntity<PeerConnectionDTO>(newPeerConnection, observedSample, callSamples.getCallId());
                                 newPeerConnections.put(peerConnectionId, observedNewEntity);
@@ -207,7 +210,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
-                                        .withDirection(StreamDirection.INBOUND)
+                                        .withDirection(StreamDirection.OUTBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())
@@ -218,7 +221,6 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                 }
             }
         }
-
         if (0 < newClients.size()) {
             this.addNewClients(newClients);
         }
@@ -267,7 +269,6 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
         var task = peerConnectionsTaskProvider.get()
                 .withPeerConnectionDTOs(DTOs)
                 ;
-
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return;

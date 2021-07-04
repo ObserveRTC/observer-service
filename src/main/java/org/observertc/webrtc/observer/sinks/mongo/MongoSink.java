@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.sinks.mongo;
 
 import com.mongodb.client.MongoClient;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.disposables.Disposable;
 import org.bson.Document;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReports;
@@ -25,13 +24,9 @@ public class MongoSink extends Sink {
         this.mongoClient = mongoClient;
     }
 
-    @Override
-    public void onSubscribe(@NonNull Disposable d) {
-
-    }
 
     @Override
-    public void onNext(@NonNull OutboundReports outboundReports) {
+    public void accept(@NonNull OutboundReports outboundReports) {
         if (outboundReports.getReportsNum() < 1) {
             if (3 < ++this.consecutiveEmptyLists) {
                 // keep the connection alive

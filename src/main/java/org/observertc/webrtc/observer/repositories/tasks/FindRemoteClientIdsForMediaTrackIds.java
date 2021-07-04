@@ -2,6 +2,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
@@ -65,6 +66,19 @@ public class FindRemoteClientIdsForMediaTrackIds extends ChainedTask<List<FindRe
                     mappingIdsList.add(mediaTrackDTO);
                     callIds.add(mediaTrackDTO.callId);
                 });
+                // TODO: sometime when we are in the beta, remove this.
+//                this.hazelcastMaps.getMediaTracks().getAll(this.hazelcastMaps.getMediaTracks().keySet()).forEach((trackId, mediaTrackDTO) -> {
+//                    logger.info("trackId {}, direction: {} SSRC: {}", trackId, mediaTrackDTO.direction, mediaTrackDTO.ssrc);
+//                });
+//                this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().keySet().forEach(pcId -> {
+//                    var trackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(pcId);
+//                    logger.info("pcId: {} outbtrackids: {}", pcId, ObjectToString.toString(trackIds));
+//                });
+//                this.hazelcastMaps.getPeerConnectionToInboundTrackIds().keySet().forEach(pcId -> {
+//                    var trackIds = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().get(pcId);
+//                    logger.info("pcId: {} inbtrackids: {}", pcId, ObjectToString.toString(trackIds));
+//                });
+
                 return callIds;
             })
             .<Set<UUID>>addTerminalFunction("Gathering outbound track parental ids (Climbing down for Ids)",

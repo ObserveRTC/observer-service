@@ -20,7 +20,9 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
 
     private static Logger logger = LoggerFactory.getLogger(OutboundReportsObserver.class);
 
+    private Disposable upstream;
     private final Map<String, Sink> sinks = new HashMap<>();
+
     public OutboundReportsObserver(ObserverConfig config) {
         if (Objects.nonNull(config.sinks)) {
             config.sinks.forEach((sinkId, sinkConfig) -> {
@@ -49,11 +51,6 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
     }
 
     @Override
-    public void onSubscribe(@NonNull Disposable d) {
-
-    }
-
-    @Override
     public void onNext(@NonNull OutboundReports outboundReports) {
         Iterator<Map.Entry<String, Sink>> it = this.sinks.entrySet().iterator();
         while(it.hasNext()) {
@@ -61,9 +58,9 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
             var sinkId = entry.getKey();
             var sink = entry.getValue();
             try {
-                sink.onNext(outboundReports);
-            } catch (Exception ex) {
-                logger.error("Unexpected error occurred on sink {}. Sink will be closed", sinkId);
+                sink.accept(outboundReports);
+            } catch (Throwable ex) {
+                logger.error("Unexpected error occurred on sink {}. Sink will be closed", sinkId, ex);
                 try {
                     sink.close();
                 } catch (Exception ex2) {
@@ -75,12 +72,27 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
     }
 
     @Override
-    public void onError(@NonNull Throwable e) {
+    public void onSubscribe(@NonNull Disposable d) {
+        this.upstream = d;
+    }
 
+    @Override
+    public void onError(@NonNull Throwable e) {
+        if (Objects.nonNull(this.upstream)) {
+            if (!upstream.isDisposed()) {
+                this.upstream.dispose();
+            }
+        }
+        logger.warn("Error occurred in pipeline ", e);
     }
 
     @Override
     public void onComplete() {
-
+        if (Objects.nonNull(this.upstream)) {
+            if (!upstream.isDisposed()) {
+                this.upstream.dispose();
+            }
+        }
+        logger.info("Pipeline is completed");
     }
 }

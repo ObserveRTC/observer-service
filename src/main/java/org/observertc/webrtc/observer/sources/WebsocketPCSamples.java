@@ -36,7 +36,6 @@ import org.observertc.webrtc.observer.micrometer.MonitorProvider;
 import org.observertc.webrtc.observer.samples.ClientSample;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
-import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -74,7 +73,7 @@ public class WebsocketPCSamples {
 	MeterRegistry meterRegistry;
 
 	@Inject
-	WebsocketSecurityCustomCloseReasons securityCustomCloseReasons;
+	WebsocketCustomCloseReasons securityCustomCloseReasons;
 
 	@Inject
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
@@ -184,21 +183,19 @@ public class WebsocketPCSamples {
 					.complete();
 			return;
 		}
-		ClientSample clientSample = pcSampleConverter.apply(sample);
-		var observedClientSample = ObservedClientSampleBuilder.from(clientSample)
-				.withServiceId(serviceUUID.toString())
-				.withMediaUnitId(mediaUnitID)
-				.build();
 
 
 		try {
+			ClientSample clientSample = pcSampleConverter.apply(sample);
+			var observedClientSample = ObservedClientSampleBuilder.from(clientSample)
+					.withServiceId(serviceUUID.toString())
+					.withMediaUnitId(mediaUnitID)
+					.build();
 			Observable.just(observedClientSample)
 					.subscribe(this.processingPipeline);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
 					.withException(ex)
-					.withLogLevel(Level.WARN)
 					.withMessage("Error occured processing message by {} ", this.getClass().getSimpleName())
 					.complete();
 		}
