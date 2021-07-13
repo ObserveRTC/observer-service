@@ -39,7 +39,7 @@ public interface OutboundReport {
     }
 
     @FunctionalInterface
-    interface PcTransportReport extends OutboundReport {
+    interface ClientTransportReport extends OutboundReport {
         @Override
         default ReportType getType() {
             return ReportType.PEER_CONNECTION_TRANPORT;
@@ -47,7 +47,7 @@ public interface OutboundReport {
     }
 
     @FunctionalInterface
-    interface PcDataChannelReport extends OutboundReport {
+    interface ClientDataChannelReport extends OutboundReport {
         @Override
         default ReportType getType() {
             return ReportType.PEER_CONNECTION_DATA_CHANNEL;

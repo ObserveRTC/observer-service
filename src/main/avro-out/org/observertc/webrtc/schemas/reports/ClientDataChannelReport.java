@@ -10,9 +10,9 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 /** A Report created for PeerConnection Data Channel. */
 @org.apache.avro.specific.AvroGenerated
-public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -1022931605602296274L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PcDataChannelReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Data Channel.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"peerConnectionLabel\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label for the peer connection\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The label of the data channel\",\"default\":null},{\"name\":\"protocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used for the data channel\",\"default\":null},{\"name\":\"state\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of the data channel\",\"default\":null},{\"name\":\"messagesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of API message events sent\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total number of payload bytes sent on the corresponded data channel\",\"default\":null},{\"name\":\"messagesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of API message events received on the corresponded data channel\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total number of payload bytes received on the corresponded data channel\",\"default\":null}]}");
+public class ClientDataChannelReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -3251917471686801100L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientDataChannelReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Data Channel.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"peerConnectionLabel\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label for the peer connection\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The label of the data channel\",\"default\":null},{\"name\":\"protocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used for the data channel\",\"default\":null},{\"name\":\"state\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of the data channel\",\"default\":null},{\"name\":\"messagesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of API message events sent\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total number of payload bytes sent on the corresponded data channel\",\"default\":null},{\"name\":\"messagesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of API message events received on the corresponded data channel\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total number of payload bytes received on the corresponded data channel\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -56,7 +56,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public PcDataChannelReport() {}
+  public ClientDataChannelReport() {}
 
   /**
    * All-args constructor.
@@ -79,7 +79,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
    * @param messagesReceived Represents the total number of API message events received on the corresponded data channel
    * @param bytesReceived Represents the total number of payload bytes received on the corresponded data channel
    */
-  public PcDataChannelReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String peerConnectionLabel, java.lang.Integer sampleSeq, java.lang.String label, java.lang.String protocol, java.lang.String state, java.lang.Integer messagesSent, java.lang.Long bytesSent, java.lang.Integer messagesReceived, java.lang.Long bytesReceived) {
+  public ClientDataChannelReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String peerConnectionLabel, java.lang.Integer sampleSeq, java.lang.String label, java.lang.String protocol, java.lang.String state, java.lang.Integer messagesSent, java.lang.Long bytesSent, java.lang.Integer messagesReceived, java.lang.Long bytesReceived) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -315,36 +315,36 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
 
 
   /**
-   * Creates a new PcDataChannelReport RecordBuilder.
-   * @return A new PcDataChannelReport RecordBuilder
+   * Creates a new ClientDataChannelReport RecordBuilder.
+   * @return A new ClientDataChannelReport RecordBuilder
    */
-  public static org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder newBuilder() {
-    return new org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder();
+  public static org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder newBuilder() {
+    return new org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder();
   }
 
   /**
-   * Creates a new PcDataChannelReport RecordBuilder by copying an existing Builder.
+   * Creates a new ClientDataChannelReport RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new PcDataChannelReport RecordBuilder
+   * @return A new ClientDataChannelReport RecordBuilder
    */
-  public static org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder other) {
-    return new org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder(other);
+  public static org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder other) {
+    return new org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder(other);
   }
 
   /**
-   * Creates a new PcDataChannelReport RecordBuilder by copying an existing PcDataChannelReport instance.
+   * Creates a new ClientDataChannelReport RecordBuilder by copying an existing ClientDataChannelReport instance.
    * @param other The existing instance to copy.
-   * @return A new PcDataChannelReport RecordBuilder
+   * @return A new ClientDataChannelReport RecordBuilder
    */
-  public static org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.PcDataChannelReport other) {
-    return new org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder(other);
+  public static org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.ClientDataChannelReport other) {
+    return new org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder(other);
   }
 
   /**
-   * RecordBuilder for PcDataChannelReport instances.
+   * RecordBuilder for ClientDataChannelReport instances.
    */
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PcDataChannelReport>
-    implements org.apache.avro.data.RecordBuilder<PcDataChannelReport> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ClientDataChannelReport>
+    implements org.apache.avro.data.RecordBuilder<ClientDataChannelReport> {
 
     /** The unique identifier of the service */
     private java.lang.String serviceId;
@@ -392,7 +392,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder other) {
+    private Builder(org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
@@ -469,10 +469,10 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
     }
 
     /**
-     * Creates a Builder by copying an existing PcDataChannelReport instance
+     * Creates a Builder by copying an existing ClientDataChannelReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(org.observertc.webrtc.schemas.reports.PcDataChannelReport other) {
+    private Builder(org.observertc.webrtc.schemas.reports.ClientDataChannelReport other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
@@ -563,7 +563,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -585,7 +585,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The unique identifier of the service
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearServiceId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -606,7 +606,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -628,7 +628,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearMediaUnitId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -649,7 +649,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -671,7 +671,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearMarker() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -692,7 +692,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setTimestamp(long value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -714,7 +714,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -734,7 +734,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setCallId(java.lang.String value) {
       validate(fields()[4], value);
       this.callId = value;
       fieldSetFlags()[4] = true;
@@ -756,7 +756,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The generated unique identifier of the call
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearCallId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -777,7 +777,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'roomId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setRoomId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setRoomId(java.lang.String value) {
       validate(fields()[5], value);
       this.roomId = value;
       fieldSetFlags()[5] = true;
@@ -799,7 +799,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * webrtc app provided room id
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearRoomId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearRoomId() {
       roomId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -820,7 +820,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'clientId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setClientId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setClientId(java.lang.String value) {
       validate(fields()[6], value);
       this.clientId = value;
       fieldSetFlags()[6] = true;
@@ -842,7 +842,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The generated unique identifier of the client
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearClientId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearClientId() {
       clientId = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -863,7 +863,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setUserId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setUserId(java.lang.String value) {
       validate(fields()[7], value);
       this.userId = value;
       fieldSetFlags()[7] = true;
@@ -885,7 +885,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * webrtc app provided user identifier
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearUserId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearUserId() {
       userId = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -906,7 +906,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'peerConnectionId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setPeerConnectionId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setPeerConnectionId(java.lang.String value) {
       validate(fields()[8], value);
       this.peerConnectionId = value;
       fieldSetFlags()[8] = true;
@@ -928,7 +928,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The unique identifier of the peer connection
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearPeerConnectionId() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
       fieldSetFlags()[8] = false;
       return this;
@@ -949,7 +949,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'peerConnectionLabel'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setPeerConnectionLabel(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setPeerConnectionLabel(java.lang.String value) {
       validate(fields()[9], value);
       this.peerConnectionLabel = value;
       fieldSetFlags()[9] = true;
@@ -971,7 +971,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The webrtc app provided label for the peer connection
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearPeerConnectionLabel() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearPeerConnectionLabel() {
       peerConnectionLabel = null;
       fieldSetFlags()[9] = false;
       return this;
@@ -992,7 +992,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'sampleSeq'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setSampleSeq(int value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setSampleSeq(int value) {
       validate(fields()[10], value);
       this.sampleSeq = value;
       fieldSetFlags()[10] = true;
@@ -1014,7 +1014,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The sequence number of the sample the report is generated from
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearSampleSeq() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearSampleSeq() {
       fieldSetFlags()[10] = false;
       return this;
     }
@@ -1034,7 +1034,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'label'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setLabel(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setLabel(java.lang.String value) {
       validate(fields()[11], value);
       this.label = value;
       fieldSetFlags()[11] = true;
@@ -1056,7 +1056,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The label of the data channel
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearLabel() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearLabel() {
       label = null;
       fieldSetFlags()[11] = false;
       return this;
@@ -1077,7 +1077,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'protocol'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setProtocol(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setProtocol(java.lang.String value) {
       validate(fields()[12], value);
       this.protocol = value;
       fieldSetFlags()[12] = true;
@@ -1099,7 +1099,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The protocol used for the data channel
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearProtocol() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearProtocol() {
       protocol = null;
       fieldSetFlags()[12] = false;
       return this;
@@ -1120,7 +1120,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'state'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setState(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setState(java.lang.String value) {
       validate(fields()[13], value);
       this.state = value;
       fieldSetFlags()[13] = true;
@@ -1142,7 +1142,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * The state of the data channel
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearState() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearState() {
       state = null;
       fieldSetFlags()[13] = false;
       return this;
@@ -1163,7 +1163,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'messagesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setMessagesSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setMessagesSent(java.lang.Integer value) {
       validate(fields()[14], value);
       this.messagesSent = value;
       fieldSetFlags()[14] = true;
@@ -1185,7 +1185,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * Represents the total number of API message events sent
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearMessagesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearMessagesSent() {
       messagesSent = null;
       fieldSetFlags()[14] = false;
       return this;
@@ -1206,7 +1206,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'bytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setBytesSent(java.lang.Long value) {
       validate(fields()[15], value);
       this.bytesSent = value;
       fieldSetFlags()[15] = true;
@@ -1228,7 +1228,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * Represents the total number of payload bytes sent on the corresponded data channel
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearBytesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearBytesSent() {
       bytesSent = null;
       fieldSetFlags()[15] = false;
       return this;
@@ -1249,7 +1249,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'messagesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setMessagesReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setMessagesReceived(java.lang.Integer value) {
       validate(fields()[16], value);
       this.messagesReceived = value;
       fieldSetFlags()[16] = true;
@@ -1271,7 +1271,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * Represents the total number of API message events received on the corresponded data channel
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearMessagesReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearMessagesReceived() {
       messagesReceived = null;
       fieldSetFlags()[16] = false;
       return this;
@@ -1292,7 +1292,7 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'bytesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder setBytesReceived(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder setBytesReceived(java.lang.Long value) {
       validate(fields()[17], value);
       this.bytesReceived = value;
       fieldSetFlags()[17] = true;
@@ -1314,16 +1314,16 @@ public class PcDataChannelReport extends org.apache.avro.specific.SpecificRecord
       * Represents the total number of payload bytes received on the corresponded data channel
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcDataChannelReport.Builder clearBytesReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientDataChannelReport.Builder clearBytesReceived() {
       bytesReceived = null;
       fieldSetFlags()[17] = false;
       return this;
     }
 
     @Override
-    public PcDataChannelReport build() {
+    public ClientDataChannelReport build() {
       try {
-        PcDataChannelReport record = new PcDataChannelReport();
+        ClientDataChannelReport record = new ClientDataChannelReport();
         record.serviceId = fieldSetFlags()[0] ? this.serviceId : (java.lang.String) defaultValue(fields()[0]);
         record.mediaUnitId = fieldSetFlags()[1] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[1]);
         record.marker = fieldSetFlags()[2] ? this.marker : (java.lang.String) defaultValue(fields()[2]);

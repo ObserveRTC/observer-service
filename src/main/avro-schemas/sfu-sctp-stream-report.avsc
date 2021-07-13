@@ -1,0 +1,160 @@
+{
+  "type": "record",
+  "name": "SfuSctpStreamReport",
+  "namespace": "org.observertc.webrtc.schemas.reports",
+  "doc": "A Report created for SCTP streams going through the SFU",
+  "fields": [
+    {
+      "name": "serviceId",
+      "doc": "The unique identifier of the service",
+      "type": "string"
+    },
+    {
+      "name": "mediaUnitId",
+      "doc": "The media unit id the report belongs to",
+      "type": "string"
+    },
+    {
+      "name": "sfuId",
+      "doc": "The provided unique identifier of the SFU",
+      "type": "string"
+    },
+    {
+      "name": "marker",
+      "doc": "The marker the originated sample is reported with",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "doc": "The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)",
+      "type": "long"
+    },
+    {
+      "name": "callId",
+      "doc": "The generated unique identifier of the call",
+      "type": "string"
+    },
+    {
+      "name": "roomId",
+      "doc": "webrtc app provided room id",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "transportId",
+      "doc": "The id of the transport the RTP stream uses.",
+      "type": "string"
+    },
+    {
+      "name": "streamId",
+      "doc": "The id of the sctp stream",
+      "type": "string"
+    },
+    {
+      "name": "label",
+      "doc": "The label of the sctp stream",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "protocol",
+      "doc": "The protocol used to establish an sctp stream",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpSmoothedRoundTripTime",
+      "doc": "The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. If there has been no round-trip time measurements yet, this value is undefined.",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpCongestionWindow",
+      "doc": "The latest congestion window, corresponding to spinfo_cwnd defined in [RFC6458].",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpReceiverWindow",
+      "doc": "The latest receiver window, corresponding to sstat_rwnd defined in [RFC6458].",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpMtu",
+      "doc": "The latest maximum transmission unit, corresponding to spinfo_mtu defined in [RFC6458].",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpUnackData",
+      "doc": "The number of unacknowledged DATA chunks, corresponding to sstat_unackdata defined in [RFC6458].",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "messageReceived",
+      "doc": "The number of message received on the corresponded SCTP stream.",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "messageSent",
+      "doc": "The number of message sent on the corresponded SCTP stream.",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "bytesReceived",
+      "doc": "The number of bytes received on the corresponded SCTP stream.",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "bytesSent",
+      "doc": "The number of bytes sent on the corresponded SCTP stream.",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    }
+  ]
+}

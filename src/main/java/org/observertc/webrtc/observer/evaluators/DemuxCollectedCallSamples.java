@@ -19,27 +19,25 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Prototype
 public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples> {
     private static final Logger logger = LoggerFactory.getLogger(DemuxCollectedCallSamples.class);
 //    private static final String _____missingFromSample____ = "I did not find it in the ClientSample";
 //    private static final String _____missingByBound____ = "I did not find it in to be bound from the observed sample?";
-    private Subject<PcTransportReport> pcTransportReportSubject = PublishSubject.create();
+    private Subject<ClientTransportReport> clientTransportReportSubject = PublishSubject.create();
     private Subject<InboundAudioTrackReport> inboundAudioTrackReportSubject = PublishSubject.create();
     private Subject<InboundVideoTrackReport> inboundVideoTrackReportSubject = PublishSubject.create();
     private Subject<OutboundAudioTrackReport> outboundAudioTrackReportSubject = PublishSubject.create();
     private Subject<OutboundVideoTrackReport> outboundVideoTrackReportSubject = PublishSubject.create();
     private Subject<MediaTrackReport> mediaTrackReportSubject = PublishSubject.create();
-    private Subject<PcDataChannelReport> pcDataChannelReportSubject = PublishSubject.create();
+    private Subject<ClientDataChannelReport> clientDataChannelReportSubject = PublishSubject.create();
     private Subject<ClientExtensionReport> clientExtensionReportSubject = PublishSubject.create();
 
-    public Observable<PcTransportReport> getObservablePcTransportReport() {
-        return this.pcTransportReportSubject;
+    public Observable<ClientTransportReport> getObservableClientTransportReport() {
+        return this.clientTransportReportSubject;
     }
-    public Observable<PcDataChannelReport> getObservablePcDataChannelReport() {return this.pcDataChannelReportSubject; }
+    public Observable<ClientDataChannelReport> getObservableClientDataChannelReport() {return this.clientDataChannelReportSubject; }
     public Observable<ClientExtensionReport> getObservableClientExtensionReport() {return this.clientExtensionReportSubject; }
 
     public Observable<InboundAudioTrackReport> getObservableInboundAudioTrackReport() {return this.inboundAudioTrackReportSubject; }
@@ -76,12 +74,12 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> callsMatchedIds = this.makeCallsMatchedIds(collectedCallSamples);
         List<FindRemoteClientIdsForMediaTrackIds.MatchedIds> emptyMatchedIds = Collections.EMPTY_LIST;
 
-        List<PcTransportReport> pcTransportReports = new LinkedList<>();
+        List<ClientTransportReport> clientTransportReports = new LinkedList<>();
         List<InboundAudioTrackReport> inboundAudioTrackReports = new LinkedList<>();
         List<InboundVideoTrackReport> inboundVideoTrackReports = new LinkedList<>();
         List<OutboundAudioTrackReport> outboundAudioTrackReports = new LinkedList<>();
         List<OutboundVideoTrackReport> outboundVideoTrackReports = new LinkedList<>();
-        List<PcDataChannelReport> pcDataChannelReports = new LinkedList<>();
+        List<ClientDataChannelReport> clientDataChannelReports = new LinkedList<>();
         List<ClientExtensionReport> clientExtensionReports = new LinkedList<>();
         Map<String, String> peerConnectionLabels = new HashMap<>();
         for (CallSamples callSamples : collectedCallSamples) {
@@ -101,12 +99,12 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
 
                                 })
                                 .filter(Objects::nonNull)
-                                .forEach(pcTransportReports::add);
+                                .forEach(clientTransportReports::add);
 
                     ClientSampleVisitor.streamDataChannels(clientSample)
                             .map(dataChannel -> {
                                 String peerConnectionLabel = peerConnectionLabels.get(dataChannel.peerConnectionId);
-                                return this.createPcDataChannelReport(
+                                return this.createClientDataChannelReport(
                                         callId,
                                         observedClientSample,
                                         peerConnectionLabel,
@@ -114,7 +112,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                 );
                             })
                             .filter(Objects::nonNull)
-                            .forEach(pcDataChannelReports::add);
+                            .forEach(clientDataChannelReports::add);
 
                     ClientSampleVisitor.streamExtensionStats(clientSample)
                             .map(extensionStat -> {
@@ -189,10 +187,10 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         }
         synchronized (this) {
             if (observerConfig.outboundReports.reportPeerConnectionTransport) {
-                pcTransportReports.stream().forEach(this.pcTransportReportSubject::onNext);
+                clientTransportReports.stream().forEach(this.clientTransportReportSubject::onNext);
             }
             if (observerConfig.outboundReports.reportPeerConnectionDataChannel) {
-                pcDataChannelReports.stream().forEach(this.pcDataChannelReportSubject::onNext);
+                clientDataChannelReports.stream().forEach(this.clientDataChannelReportSubject::onNext);
             }
 
             if (observerConfig.outboundReports.reportClientExtensions) {
@@ -666,14 +664,14 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         return null;
     }
 
-    private PcTransportReport createPeerConnectionTransportReport(
+    private ClientTransportReport createPeerConnectionTransportReport(
         UUID callId,
         ObservedClientSample observedClientSample,
         ClientSample.PeerConnectionTransport peerConnectionTransport
     ) {
 
         try {
-            var result = PcTransportReport.newBuilder()
+            var result = ClientTransportReport.newBuilder()
 
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -765,14 +763,14 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     }
 
 
-    private PcDataChannelReport createPcDataChannelReport(
+    private ClientDataChannelReport createClientDataChannelReport(
             UUID callId,
             ObservedClientSample observedClientSample,
             String peerConnectionLabel,
             ClientSample.DataChannel dataChannel
     ) {
         try {
-            var result = PcDataChannelReport.newBuilder()
+            var result = ClientDataChannelReport.newBuilder()
 
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -802,7 +800,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .build();
             return result;
         } catch (Exception ex) {
-            logger.error("Unexpected error occurred while building PcDataChannelReport", ex);
+            logger.error("Unexpected error occurred while building ClientDataChannelReport", ex);
             return null;
         }
     }
@@ -837,7 +835,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .build();
             return result;
         } catch (Exception ex) {
-            logger.error("Unexpected error occurred while building PcDataChannelReport", ex);
+            logger.error("Unexpected error occurred while building ClientDataChannelReport", ex);
             return null;
         }
     }

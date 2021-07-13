@@ -31,8 +31,8 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         result.put(ReportType.MEDIA_TRACK, MediaTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.OUTBOUND_AUDIO_TRACK, OutboundAudioTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.OUTBOUND_VIDEO_TRACK, OutboundVideoTrackReport.class.getSimpleName() + "s");
-        result.put(ReportType.PEER_CONNECTION_DATA_CHANNEL, PcDataChannelReport.class.getSimpleName() + "s");
-        result.put(ReportType.PEER_CONNECTION_TRANPORT, PcTransportReport.class.getSimpleName() + "s");
+        result.put(ReportType.PEER_CONNECTION_DATA_CHANNEL, ClientDataChannelReport.class.getSimpleName() + "s");
+        result.put(ReportType.PEER_CONNECTION_TRANPORT, ClientTransportReport.class.getSimpleName() + "s");
         return result;
     }
 

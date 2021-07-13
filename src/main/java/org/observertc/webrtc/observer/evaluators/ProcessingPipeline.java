@@ -120,14 +120,14 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .subscribe(this.outboundReportEncoder::encodeCallEventReports);
 
         this.demuxCollectedCallSamples
-                .getObservablePcTransportReport()
+                .getObservableClientTransportReport()
                 .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodePcTransportReport);
+                .subscribe(this.outboundReportEncoder::encodeClientTransportReport);
 
         this.demuxCollectedCallSamples
-                .getObservablePcDataChannelReport()
+                .getObservableClientDataChannelReport()
                 .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodePcDataChannelReport);
+                .subscribe(this.outboundReportEncoder::encodeClientDataChannelReport);
 
         this.demuxCollectedCallSamples
                 .getObservableClientExtensionReport()

@@ -1,0 +1,267 @@
+{
+  "type": "record",
+  "name": "SFUTransportReport",
+  "namespace": "org.observertc.webrtc.schemas.reports",
+  "doc": "A Report created for SFU Transport layer typically created to transfer RTP/SCTP/RTX streams to another client, SFU, MCU, or processing module.",
+  "fields": [
+    {
+      "name": "serviceId",
+      "doc": "The unique identifier of the service",
+      "type": "string"
+    },
+    {
+      "name": "mediaUnitId",
+      "doc": "The media unit id the report belongs to",
+      "type": "string"
+    },
+    {
+      "name": "sfuId",
+      "doc": "The provided unique identifier of the SFU",
+      "type": "string"
+    },
+    {
+      "name": "marker",
+      "doc": "The marker the originated sample is reported with",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "doc": "The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)",
+      "type": "long"
+    },
+    {
+      "name": "callId",
+      "doc": "The generated unique identifier of the call",
+      "type": "string"
+    },
+    {
+      "name": "roomId",
+      "doc": "webrtc app provided room id",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "dtlsState",
+      "doc": "Represent the current value of the state attribute of the underlying RTCDtlsTransport.",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "iceState",
+      "doc": "Represent the current value of the state attribute of the underlying RTCIceTransport",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpState",
+      "doc": "Represents the the current value of the SCTP state of the transport of the SFU",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "iceRole",
+      "doc": "Represent the current value of the role SFU takes place in ICE",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "localAddress",
+      "doc": "The local address of the ICE candidate selected for the transport (IPv4, IPv6, FQDN)",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "localPort",
+      "doc": "The local port number",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "protocol",
+      "doc": "The protocol used by the transport",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "remoteAddress",
+      "doc": "The remote address of the ICE candidate selected for the transport (IPv4, IPv6, FQDN)",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "remotePort",
+      "doc": "The remote port number",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtpBytesReceived",
+      "doc": "The total amount of RTP bytes received on this transport",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtpBytesSent",
+      "doc": "The total amount of RTP bytes sent on this transport",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtpPacketsReceived",
+      "doc": "The total amount of RTP packets received on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtpPacketsSent",
+      "doc": "The total amount of RTP packets sent on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtpPacketsLost",
+      "doc": "The total amount of RTP packets lost on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtxBytesReceived",
+      "doc": "The total amount of RTX bytes received on this transport",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtxBytesSent",
+      "doc": "The total amount of RTX bytes sent on this transport",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtxPacketsReceived",
+      "doc": "The total amount of RTX packets received on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtxPacketsSent",
+      "doc": "The total amount of RTX packets sent on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtxPacketsLost",
+      "doc": "The total amount of RTX packets lost on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtxPacketsDiscarded",
+      "doc": "The total amount of RTX packets discarded on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpBytesReceived",
+      "doc": "The total amount of SCTP bytes received on this transport",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpBytesSent",
+      "doc": "The total amount of SCTP bytes sent on this transport",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpPacketsReceived",
+      "doc": "The total amount of SCTP packets received on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpPacketsSent",
+      "doc": "The total amount of SCTP packets sent on this transport",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    }
+  ]
+}

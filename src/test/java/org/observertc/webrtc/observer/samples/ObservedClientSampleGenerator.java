@@ -33,7 +33,7 @@ public class ObservedClientSampleGenerator implements Supplier<ObservedClientSam
     @Override
     public ObservedClientSample get() {
         var clientSample = this.generator.get();
-
+        
         ObservedClientSample result = null;
         try {
             result = ObservedClientSampleBuilder.from(clientSample)

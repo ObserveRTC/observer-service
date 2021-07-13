@@ -1,8 +1,6 @@
 package org.observertc.webrtc.observer.codecs;
 
 import io.micronaut.context.annotation.Prototype;
-import io.reactivex.rxjava3.core.Observer;
-import org.apache.avro.generic.GenericData;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageEncoder;
 import org.apache.avro.specific.SpecificData;
@@ -20,8 +18,8 @@ public class OutboundReportsAvroEncoder {
     private final BinaryMessageEncoder<CallEventReport> callEventEncoder;
     private final BinaryMessageEncoder<CallMetaReport> callMetaEncoder;
     private final BinaryMessageEncoder<ClientExtensionReport> clientExtensionEncoder;
-    private final BinaryMessageEncoder<PcTransportReport> pcTransportEncoder;
-    private final BinaryMessageEncoder<PcDataChannelReport> pcDataChannelEncoder;
+    private final BinaryMessageEncoder<ClientTransportReport> clientTransportEncoder;
+    private final BinaryMessageEncoder<ClientDataChannelReport> clientDataChannelEncoder;
     private final BinaryMessageEncoder<InboundAudioTrackReport> inboundAudioTrackEncoder;
     private final BinaryMessageEncoder<InboundVideoTrackReport> inboundVideoTrackEncoder;
     private final BinaryMessageEncoder<OutboundAudioTrackReport> outboundAudioTrackEncoder;
@@ -33,8 +31,8 @@ public class OutboundReportsAvroEncoder {
         this.callEventEncoder = new BinaryMessageEncoder<CallEventReport>(SpecificData.get(), CallEventReport.getClassSchema());
         this.callMetaEncoder = new BinaryMessageEncoder<CallMetaReport>(SpecificData.get(), CallMetaReport.getClassSchema());
         this.clientExtensionEncoder = new BinaryMessageEncoder<ClientExtensionReport>(SpecificData.get(), ClientExtensionReport.getClassSchema());
-        this.pcTransportEncoder = new BinaryMessageEncoder<PcTransportReport>(SpecificData.get(), PcTransportReport.getClassSchema());
-        this.pcDataChannelEncoder = new BinaryMessageEncoder<PcDataChannelReport>(SpecificData.get(), PcDataChannelReport.getClassSchema());
+        this.clientTransportEncoder = new BinaryMessageEncoder<ClientTransportReport>(SpecificData.get(), ClientTransportReport.getClassSchema());
+        this.clientDataChannelEncoder = new BinaryMessageEncoder<ClientDataChannelReport>(SpecificData.get(), ClientDataChannelReport.getClassSchema());
         this.inboundAudioTrackEncoder = new BinaryMessageEncoder<InboundAudioTrackReport>(SpecificData.get(), InboundAudioTrackReport.getClassSchema());
         this.inboundVideoTrackEncoder = new BinaryMessageEncoder<InboundVideoTrackReport>(SpecificData.get(), InboundVideoTrackReport.getClassSchema());
         this.outboundAudioTrackEncoder = new BinaryMessageEncoder<OutboundAudioTrackReport>(SpecificData.get(), OutboundAudioTrackReport.getClassSchema());
@@ -59,12 +57,12 @@ public class OutboundReportsAvroEncoder {
         return () -> encodeOrNull(this.clientExtensionEncoder, clientExtensionEncoder);
     }
 
-    public OutboundReport.PcTransportReport encodePcTransportReport(PcTransportReport pcTransportReport) {
-        return () -> encodeOrNull(this.pcTransportEncoder, pcTransportReport);
+    public OutboundReport.ClientTransportReport encodeClientTransportReport(ClientTransportReport clientTransportReport) {
+        return () -> encodeOrNull(this.clientTransportEncoder, clientTransportReport);
     }
 
-    public OutboundReport.PcDataChannelReport encodePcDataChannelReport(PcDataChannelReport pcDataChannelReport) {
-        return () -> encodeOrNull(this.pcDataChannelEncoder, pcDataChannelReport);
+    public OutboundReport.ClientDataChannelReport encodeClientDataChannelReport(ClientDataChannelReport clientDataChannelReport) {
+        return () -> encodeOrNull(this.clientDataChannelEncoder, clientDataChannelReport);
     }
 
     public OutboundReport.InboundAudioTrackReport encodeInboundAudioTrackReport(InboundAudioTrackReport inboundAudioTrackReport) {

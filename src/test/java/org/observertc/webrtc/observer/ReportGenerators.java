@@ -25,8 +25,8 @@ public class ReportGenerators {
     private final EasyRandom callEventReportGenerator;
     private final EasyRandom callMetaReportGenerator;
     private final EasyRandom clientExtensionReportGenerator;
-    private final EasyRandom pcTransportReportGenerator;
-    private final EasyRandom pcDataChannelReportGenerator;
+    private final EasyRandom clientTransportReportGenerator;
+    private final EasyRandom ClientDataChannelReportGenerator;
     private final EasyRandom inboundAudioTrackGenerator;
     private final EasyRandom inboundVideoTrackGenerator;
     private final EasyRandom outboundAudioTrackGenerator;
@@ -36,8 +36,8 @@ public class ReportGenerators {
         this.callEventReportGenerator = this.makeCallEventReportGenerator();
         this.callMetaReportGenerator = this.makeCallMetaReportGenerator();
         this.clientExtensionReportGenerator = this.makeClientExtensionReportGenerator();
-        this.pcTransportReportGenerator = this.makePcTransportReportGenerator();
-        this.pcDataChannelReportGenerator = this.makePcDataChannelReportGenerator();
+        this.clientTransportReportGenerator = this.makeClientTransportReportGenerator();
+        this.ClientDataChannelReportGenerator = this.makeClientDataChannelReportGenerator();
         this.inboundAudioTrackGenerator = this.makeInboundAudioTrackReportGenerator();
         this.inboundVideoTrackGenerator = this.makeInboundVideoTrackReportGenerator();
         this.outboundAudioTrackGenerator = this.makeOutboundAudioTrackReportGenerator();
@@ -59,13 +59,13 @@ public class ReportGenerators {
         return result;
     }
 
-    public PcTransportReport getPcTransportReport() {
-        var result = this.pcTransportReportGenerator.nextObject(PcTransportReport.class);
+    public ClientTransportReport getClientTransportReport() {
+        var result = this.clientTransportReportGenerator.nextObject(ClientTransportReport.class);
         return result;
     }
 
-    public PcDataChannelReport getPcDataChannelReport() {
-        var result = this.pcDataChannelReportGenerator.nextObject(PcDataChannelReport.class);
+    public ClientDataChannelReport getClientDataChannelReport() {
+        var result = this.ClientDataChannelReportGenerator.nextObject(ClientDataChannelReport.class);
         return result;
     }
 
@@ -75,7 +75,7 @@ public class ReportGenerators {
     }
 
     public InboundVideoTrackReport getInboundVideoTrackReport() {
-        var result = this.inboundAudioTrackGenerator.nextObject(InboundVideoTrackReport.class);
+        var result = this.inboundVideoTrackGenerator.nextObject(InboundVideoTrackReport.class);
         return result;
     }
 
@@ -110,12 +110,12 @@ public class ReportGenerators {
         return new EasyRandom(parameters);
     }
 
-    private EasyRandom makePcTransportReportGenerator() {
+    private EasyRandom makeClientTransportReportGenerator() {
         var parameters = this.getBaseParameters();
         return new EasyRandom(parameters);
     }
 
-    private EasyRandom makePcDataChannelReportGenerator() {
+    private EasyRandom makeClientDataChannelReportGenerator() {
         var parameters = this.getBaseParameters();
         return new EasyRandom(parameters);
     }

@@ -1,0 +1,34 @@
+{
+  "type": "record",
+  "name": "Report",
+  "namespace": "org.observertc.webrtc.schemas.reports",
+  "doc": "A multiplexed Report object wraps an encoded report in bytes format",
+  "fields": [
+    {
+      "name": "type",
+      "doc": "The type of the report",
+      "type": {
+        "type": "enum",
+        "name": "ReportType",
+        "symbols": [
+          "OBSERVER_EVENT",
+          "CALL_EVENT",
+          "CALL_META_DATA",
+          "CLIENT_EXTENSION_DATA",
+          "PEER_CONNECTION_TRANPORT",
+          "PEER_CONNECTION_DATA_CHANNEL",
+          "INBOUND_AUDIO_TRACK",
+          "INBOUND_VIDEO_TRACK",
+          "OUTBOUND_AUDIO_TRACK",
+          "OUTBOUND_VIDEO_TRACK",
+          "MEDIA_TRACK"
+        ]
+      }
+    },
+    {
+      "name": "payload",
+      "doc": "The payload of contans the actual report",
+      "type": "bytes"
+    }
+  ]
+}

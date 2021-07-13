@@ -1,8 +1,6 @@
 package org.observertc.webrtc.observer.codecs;
 
 import io.micronaut.context.annotation.Prototype;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.MessageDecoder;
 import org.apache.avro.specific.SpecificData;
@@ -12,7 +10,6 @@ import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @Prototype
@@ -23,8 +20,8 @@ public class OutboundReportsAvroDecoder {
     private final BinaryMessageDecoder<CallEventReport> callEventDecoder;
     private final BinaryMessageDecoder<CallMetaReport> callMetaDecoder;
     private final BinaryMessageDecoder<ClientExtensionReport> clientExtensionDecoder;
-    private final BinaryMessageDecoder<PcTransportReport> pcTransportDecoder;
-    private final BinaryMessageDecoder<PcDataChannelReport> pcDataChannelDecoder;
+    private final BinaryMessageDecoder<ClientTransportReport> clientTransportDecoder;
+    private final BinaryMessageDecoder<ClientDataChannelReport> clientDataChannelDecoder;
     private final BinaryMessageDecoder<InboundAudioTrackReport> inboundAudioTrackDecoder;
     private final BinaryMessageDecoder<InboundVideoTrackReport> inboundVideoTrackDecoder;
     private final BinaryMessageDecoder<OutboundAudioTrackReport> outboundAudioTrackDecoder;
@@ -37,8 +34,8 @@ public class OutboundReportsAvroDecoder {
         this.callEventDecoder = new BinaryMessageDecoder<CallEventReport>(SpecificData.get(), CallEventReport.getClassSchema());
         this.callMetaDecoder = new BinaryMessageDecoder<CallMetaReport>(SpecificData.get(), CallMetaReport.getClassSchema());
         this.clientExtensionDecoder = new BinaryMessageDecoder<ClientExtensionReport>(SpecificData.get(), ClientExtensionReport.getClassSchema());
-        this.pcTransportDecoder = new BinaryMessageDecoder<PcTransportReport>(SpecificData.get(), PcTransportReport.getClassSchema());
-        this.pcDataChannelDecoder = new BinaryMessageDecoder<PcDataChannelReport>(SpecificData.get(), PcDataChannelReport.getClassSchema());
+        this.clientTransportDecoder = new BinaryMessageDecoder<ClientTransportReport>(SpecificData.get(), ClientTransportReport.getClassSchema());
+        this.clientDataChannelDecoder = new BinaryMessageDecoder<ClientDataChannelReport>(SpecificData.get(), ClientDataChannelReport.getClassSchema());
         this.inboundAudioTrackDecoder = new BinaryMessageDecoder<InboundAudioTrackReport>(SpecificData.get(), InboundAudioTrackReport.getClassSchema());
         this.inboundVideoTrackDecoder = new BinaryMessageDecoder<InboundVideoTrackReport>(SpecificData.get(), InboundVideoTrackReport.getClassSchema());
         this.outboundAudioTrackDecoder = new BinaryMessageDecoder<OutboundAudioTrackReport>(SpecificData.get(), OutboundAudioTrackReport.getClassSchema());
@@ -74,18 +71,18 @@ public class OutboundReportsAvroDecoder {
         return this.decodeOrNull(this.clientExtensionDecoder, outboundReport);
     }
 
-    public PcTransportReport decodePcTransportReport(OutboundReport outboundReport) {
+    public ClientTransportReport decodeClientTransportReport(OutboundReport outboundReport) {
         if (Objects.isNull(outboundReport)) {
             return null;
         }
-        return this.decodeOrNull(this.pcTransportDecoder, outboundReport);
+        return this.decodeOrNull(this.clientTransportDecoder, outboundReport);
     }
 
-    public PcDataChannelReport decodePcDataChannelReport(OutboundReport outboundReport) {
+    public ClientDataChannelReport decodeClientDataChannelReport(OutboundReport outboundReport) {
         if (Objects.isNull(outboundReport)) {
             return null;
         }
-        return this.decodeOrNull(this.pcDataChannelDecoder, outboundReport);
+        return this.decodeOrNull(this.clientDataChannelDecoder, outboundReport);
     }
 
     public InboundAudioTrackReport decodeInboundAudioTrackReport(OutboundReport outboundReport) {

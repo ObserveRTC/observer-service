@@ -8,11 +8,11 @@ package org.observertc.webrtc.schemas.reports;
 import org.apache.avro.specific.SpecificData;
 
 @SuppressWarnings("all")
-/** A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates */
+/** A Report created for Client PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates */
 @org.apache.avro.specific.AvroGenerated
-public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 1248392752691660087L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PcTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is marked with\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets sent on the corresponded transport\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets received on the corresponded transport\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total amount of bytes sent on the corresponded transport\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total amount of bytes received on the corresponded transport\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current role of ICE under DTLS Transport\",\"default\":null},{\"name\":\"iceLocalUsernameFragment\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current state of DTLS for the peer connection transport layer\",\"default\":null},{\"name\":\"iceTransportState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer\",\"default\":null},{\"name\":\"tlsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the version number of the TLS used in the corresponded transport\",\"default\":null},{\"name\":\"dtlsCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the DTLS cipher used in the corresponded transport\",\"default\":null},{\"name\":\"srtpCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the SRTP cipher used in the corresponded transport\",\"default\":null},{\"name\":\"tlsGroup\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the IANA TLS Supported Groups used in the corresponded transport\",\"default\":null},{\"name\":\"selectedCandidatePairChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of candidate pair changes over the peer connection\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The locally used port to communicate with the remote peer\",\"default\":null},{\"name\":\"localProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the local endpoint for the corresponded transport\",\"default\":null},{\"name\":\"localCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remotely used port to communicate with the remote peer\",\"default\":null},{\"name\":\"remoteProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the remote endpoint for the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"candidatePairState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairLastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastPacketReceivedTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairFirstRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastResponseTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN"," response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairTotalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairCurrentRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairAvailableOutgoingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairAvailableIncomingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairCircuitBreakerTriggerCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair\",\"default\":null},{\"name\":\"candidatePairRequestsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentExpiredTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of packets for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponseBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. \",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd.\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd.\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu.\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.\",\"default\":null}]}");
+public class ClientTransportReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -1547608873098825235L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for Client PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is marked with\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets sent on the corresponded transport\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of packets received on the corresponded transport\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total amount of bytes sent on the corresponded transport\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the total amount of bytes received on the corresponded transport\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current role of ICE under DTLS Transport\",\"default\":null},{\"name\":\"iceLocalUsernameFragment\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current state of DTLS for the peer connection transport layer\",\"default\":null},{\"name\":\"iceTransportState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer\",\"default\":null},{\"name\":\"tlsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the version number of the TLS used in the corresponded transport\",\"default\":null},{\"name\":\"dtlsCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the DTLS cipher used in the corresponded transport\",\"default\":null},{\"name\":\"srtpCipher\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the SRTP cipher used in the corresponded transport\",\"default\":null},{\"name\":\"tlsGroup\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the name of the IANA TLS Supported Groups used in the corresponded transport\",\"default\":null},{\"name\":\"selectedCandidatePairChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of candidate pair changes over the peer connection\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The locally used port to communicate with the remote peer\",\"default\":null},{\"name\":\"localProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the local endpoint for the corresponded transport\",\"default\":null},{\"name\":\"localCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"localCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The address of the candidate (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remotely used port to communicate with the remote peer\",\"default\":null},{\"name\":\"remoteProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the remote endpoint for the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the ICE candidate used at the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateICEServerUrl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The url of the ICE server used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"remoteCandidateRelayProtocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport\",\"default\":null},{\"name\":\"candidatePairState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes received using the last selected candidate pair over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairLastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastPacketReceivedTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairFirstRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastRequestTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairLastResponseTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which th","e last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)\",\"default\":null},{\"name\":\"candidatePairTotalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairCurrentRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairAvailableOutgoingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairAvailableIncomingBitrate\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport\",\"default\":null},{\"name\":\"candidatePairCircuitBreakerTriggerCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair\",\"default\":null},{\"name\":\"candidatePairRequestsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponsesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRetransmissionSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentExpiredTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairBytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairPacketsDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total amount of packets for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairConsentRequestBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"candidatePairResponseBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. \",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd.\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd.\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu.\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -156,7 +156,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public PcTransportReport() {}
+  public ClientTransportReport() {}
 
   /**
    * All-args constructor.
@@ -229,7 +229,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
    * @param sctpMtu The latest maximum transmission unit, corresponding to spinfo_mtu.
    * @param sctpUnackData The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
    */
-  public PcTransportReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.Integer packetsSent, java.lang.Integer packetsReceived, java.lang.Long bytesSent, java.lang.Long bytesReceived, java.lang.String iceRole, java.lang.String iceLocalUsernameFragment, java.lang.String dtlsState, java.lang.String iceTransportState, java.lang.String tlsVersion, java.lang.String dtlsCipher, java.lang.String srtpCipher, java.lang.String tlsGroup, java.lang.Integer selectedCandidatePairChanges, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String localProtocol, java.lang.String localCandidateType, java.lang.String localCandidateICEServerUrl, java.lang.String localCandidateRelayProtocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.String remoteProtocol, java.lang.String remoteCandidateType, java.lang.String remoteCandidateICEServerUrl, java.lang.String remoteCandidateRelayProtocol, java.lang.String candidatePairState, java.lang.Integer candidatePairPacketsSent, java.lang.Integer candidatePairPacketsReceived, java.lang.Long candidatePairBytesSent, java.lang.Long candidatePairBytesReceived, java.lang.Long candidatePairLastPacketSentTimestamp, java.lang.Long candidatePairLastPacketReceivedTimestamp, java.lang.Long candidatePairFirstRequestTimestamp, java.lang.Long candidatePairLastRequestTimestamp, java.lang.Long candidatePairLastResponseTimestamp, java.lang.Double candidatePairTotalRoundTripTime, java.lang.Double candidatePairCurrentRoundTripTime, java.lang.Double candidatePairAvailableOutgoingBitrate, java.lang.Double candidatePairAvailableIncomingBitrate, java.lang.Integer candidatePairCircuitBreakerTriggerCount, java.lang.Integer candidatePairRequestsReceived, java.lang.Integer candidatePairRequestsSent, java.lang.Integer candidatePairResponsesReceived, java.lang.Integer candidatePairResponsesSent, java.lang.Integer candidatePairRetransmissionReceived, java.lang.Integer candidatePairRetransmissionSent, java.lang.Integer candidatePairConsentRequestsSent, java.lang.Long candidatePairConsentExpiredTimestamp, java.lang.Long candidatePairBytesDiscardedOnSend, java.lang.Long candidatePairPacketsDiscardedOnSend, java.lang.Long candidatePairRequestBytesSent, java.lang.Long candidatePairConsentRequestBytesSent, java.lang.Long candidatePairResponseBytesSent, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData) {
+  public ClientTransportReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.Integer packetsSent, java.lang.Integer packetsReceived, java.lang.Long bytesSent, java.lang.Long bytesReceived, java.lang.String iceRole, java.lang.String iceLocalUsernameFragment, java.lang.String dtlsState, java.lang.String iceTransportState, java.lang.String tlsVersion, java.lang.String dtlsCipher, java.lang.String srtpCipher, java.lang.String tlsGroup, java.lang.Integer selectedCandidatePairChanges, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String localProtocol, java.lang.String localCandidateType, java.lang.String localCandidateICEServerUrl, java.lang.String localCandidateRelayProtocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.String remoteProtocol, java.lang.String remoteCandidateType, java.lang.String remoteCandidateICEServerUrl, java.lang.String remoteCandidateRelayProtocol, java.lang.String candidatePairState, java.lang.Integer candidatePairPacketsSent, java.lang.Integer candidatePairPacketsReceived, java.lang.Long candidatePairBytesSent, java.lang.Long candidatePairBytesReceived, java.lang.Long candidatePairLastPacketSentTimestamp, java.lang.Long candidatePairLastPacketReceivedTimestamp, java.lang.Long candidatePairFirstRequestTimestamp, java.lang.Long candidatePairLastRequestTimestamp, java.lang.Long candidatePairLastResponseTimestamp, java.lang.Double candidatePairTotalRoundTripTime, java.lang.Double candidatePairCurrentRoundTripTime, java.lang.Double candidatePairAvailableOutgoingBitrate, java.lang.Double candidatePairAvailableIncomingBitrate, java.lang.Integer candidatePairCircuitBreakerTriggerCount, java.lang.Integer candidatePairRequestsReceived, java.lang.Integer candidatePairRequestsSent, java.lang.Integer candidatePairResponsesReceived, java.lang.Integer candidatePairResponsesSent, java.lang.Integer candidatePairRetransmissionReceived, java.lang.Integer candidatePairRetransmissionSent, java.lang.Integer candidatePairConsentRequestsSent, java.lang.Long candidatePairConsentExpiredTimestamp, java.lang.Long candidatePairBytesDiscardedOnSend, java.lang.Long candidatePairPacketsDiscardedOnSend, java.lang.Long candidatePairRequestBytesSent, java.lang.Long candidatePairConsentRequestBytesSent, java.lang.Long candidatePairResponseBytesSent, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -1065,36 +1065,36 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
 
 
   /**
-   * Creates a new PcTransportReport RecordBuilder.
-   * @return A new PcTransportReport RecordBuilder
+   * Creates a new ClientTransportReport RecordBuilder.
+   * @return A new ClientTransportReport RecordBuilder
    */
-  public static org.observertc.webrtc.schemas.reports.PcTransportReport.Builder newBuilder() {
-    return new org.observertc.webrtc.schemas.reports.PcTransportReport.Builder();
+  public static org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder newBuilder() {
+    return new org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder();
   }
 
   /**
-   * Creates a new PcTransportReport RecordBuilder by copying an existing Builder.
+   * Creates a new ClientTransportReport RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new PcTransportReport RecordBuilder
+   * @return A new ClientTransportReport RecordBuilder
    */
-  public static org.observertc.webrtc.schemas.reports.PcTransportReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.PcTransportReport.Builder other) {
-    return new org.observertc.webrtc.schemas.reports.PcTransportReport.Builder(other);
+  public static org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder other) {
+    return new org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder(other);
   }
 
   /**
-   * Creates a new PcTransportReport RecordBuilder by copying an existing PcTransportReport instance.
+   * Creates a new ClientTransportReport RecordBuilder by copying an existing ClientTransportReport instance.
    * @param other The existing instance to copy.
-   * @return A new PcTransportReport RecordBuilder
+   * @return A new ClientTransportReport RecordBuilder
    */
-  public static org.observertc.webrtc.schemas.reports.PcTransportReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.PcTransportReport other) {
-    return new org.observertc.webrtc.schemas.reports.PcTransportReport.Builder(other);
+  public static org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder newBuilder(org.observertc.webrtc.schemas.reports.ClientTransportReport other) {
+    return new org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder(other);
   }
 
   /**
-   * RecordBuilder for PcTransportReport instances.
+   * RecordBuilder for ClientTransportReport instances.
    */
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PcTransportReport>
-    implements org.apache.avro.data.RecordBuilder<PcTransportReport> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ClientTransportReport>
+    implements org.apache.avro.data.RecordBuilder<ClientTransportReport> {
 
     /** The unique identifier of the service */
     private java.lang.String serviceId;
@@ -1242,7 +1242,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(org.observertc.webrtc.schemas.reports.PcTransportReport.Builder other) {
+    private Builder(org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
@@ -1519,10 +1519,10 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Creates a Builder by copying an existing PcTransportReport instance
+     * Creates a Builder by copying an existing ClientTransportReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(org.observertc.webrtc.schemas.reports.PcTransportReport other) {
+    private Builder(org.observertc.webrtc.schemas.reports.ClientTransportReport other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
@@ -1813,7 +1813,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -1835,7 +1835,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The unique identifier of the service
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearServiceId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -1856,7 +1856,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -1878,7 +1878,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearMediaUnitId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -1899,7 +1899,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -1921,7 +1921,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearMarker() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -1942,7 +1942,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setTimestamp(long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -1964,7 +1964,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -1984,7 +1984,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCallId(java.lang.String value) {
       validate(fields()[4], value);
       this.callId = value;
       fieldSetFlags()[4] = true;
@@ -2006,7 +2006,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The generated unique identifier of the call
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCallId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -2027,7 +2027,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'roomId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRoomId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRoomId(java.lang.String value) {
       validate(fields()[5], value);
       this.roomId = value;
       fieldSetFlags()[5] = true;
@@ -2049,7 +2049,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * webrtc app provided room id
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRoomId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRoomId() {
       roomId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -2070,7 +2070,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'clientId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setClientId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setClientId(java.lang.String value) {
       validate(fields()[6], value);
       this.clientId = value;
       fieldSetFlags()[6] = true;
@@ -2092,7 +2092,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The generated unique identifier of the client
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearClientId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearClientId() {
       clientId = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -2113,7 +2113,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setUserId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setUserId(java.lang.String value) {
       validate(fields()[7], value);
       this.userId = value;
       fieldSetFlags()[7] = true;
@@ -2135,7 +2135,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * webrtc app provided user identifier
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearUserId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearUserId() {
       userId = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -2156,7 +2156,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'peerConnectionId'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setPeerConnectionId(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setPeerConnectionId(java.lang.String value) {
       validate(fields()[8], value);
       this.peerConnectionId = value;
       fieldSetFlags()[8] = true;
@@ -2178,7 +2178,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The unique identifier of the peer connection
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearPeerConnectionId() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
       fieldSetFlags()[8] = false;
       return this;
@@ -2199,7 +2199,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'label'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLabel(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLabel(java.lang.String value) {
       validate(fields()[9], value);
       this.label = value;
       fieldSetFlags()[9] = true;
@@ -2221,7 +2221,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The webrtc app provided label the peer connection is marked with
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLabel() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLabel() {
       label = null;
       fieldSetFlags()[9] = false;
       return this;
@@ -2242,7 +2242,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'packetsSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setPacketsSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setPacketsSent(java.lang.Integer value) {
       validate(fields()[10], value);
       this.packetsSent = value;
       fieldSetFlags()[10] = true;
@@ -2264,7 +2264,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of packets sent on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearPacketsSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearPacketsSent() {
       packetsSent = null;
       fieldSetFlags()[10] = false;
       return this;
@@ -2285,7 +2285,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'packetsReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setPacketsReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setPacketsReceived(java.lang.Integer value) {
       validate(fields()[11], value);
       this.packetsReceived = value;
       fieldSetFlags()[11] = true;
@@ -2307,7 +2307,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of packets received on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearPacketsReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearPacketsReceived() {
       packetsReceived = null;
       fieldSetFlags()[11] = false;
       return this;
@@ -2328,7 +2328,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'bytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setBytesSent(java.lang.Long value) {
       validate(fields()[12], value);
       this.bytesSent = value;
       fieldSetFlags()[12] = true;
@@ -2350,7 +2350,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes sent on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearBytesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearBytesSent() {
       bytesSent = null;
       fieldSetFlags()[12] = false;
       return this;
@@ -2371,7 +2371,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'bytesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setBytesReceived(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setBytesReceived(java.lang.Long value) {
       validate(fields()[13], value);
       this.bytesReceived = value;
       fieldSetFlags()[13] = true;
@@ -2393,7 +2393,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total amount of bytes received on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearBytesReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearBytesReceived() {
       bytesReceived = null;
       fieldSetFlags()[13] = false;
       return this;
@@ -2414,7 +2414,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceRole'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceRole(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setIceRole(java.lang.String value) {
       validate(fields()[14], value);
       this.iceRole = value;
       fieldSetFlags()[14] = true;
@@ -2436,7 +2436,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represent the current role of ICE under DTLS Transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceRole() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearIceRole() {
       iceRole = null;
       fieldSetFlags()[14] = false;
       return this;
@@ -2457,7 +2457,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceLocalUsernameFragment'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceLocalUsernameFragment(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setIceLocalUsernameFragment(java.lang.String value) {
       validate(fields()[15], value);
       this.iceLocalUsernameFragment = value;
       fieldSetFlags()[15] = true;
@@ -2479,7 +2479,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represent the current local username fragment used in message validation procedures for ICE under DTLS Transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceLocalUsernameFragment() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearIceLocalUsernameFragment() {
       iceLocalUsernameFragment = null;
       fieldSetFlags()[15] = false;
       return this;
@@ -2500,7 +2500,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'dtlsState'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setDtlsState(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setDtlsState(java.lang.String value) {
       validate(fields()[16], value);
       this.dtlsState = value;
       fieldSetFlags()[16] = true;
@@ -2522,7 +2522,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the current state of DTLS for the peer connection transport layer
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearDtlsState() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearDtlsState() {
       dtlsState = null;
       fieldSetFlags()[16] = false;
       return this;
@@ -2543,7 +2543,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'iceTransportState'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setIceTransportState(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setIceTransportState(java.lang.String value) {
       validate(fields()[17], value);
       this.iceTransportState = value;
       fieldSetFlags()[17] = true;
@@ -2565,7 +2565,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the current transport state (RTCIceTransportState) of ICE for the peer connection transport layer
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearIceTransportState() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearIceTransportState() {
       iceTransportState = null;
       fieldSetFlags()[17] = false;
       return this;
@@ -2586,7 +2586,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'tlsVersion'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setTlsVersion(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setTlsVersion(java.lang.String value) {
       validate(fields()[18], value);
       this.tlsVersion = value;
       fieldSetFlags()[18] = true;
@@ -2608,7 +2608,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the version number of the TLS used in the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearTlsVersion() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearTlsVersion() {
       tlsVersion = null;
       fieldSetFlags()[18] = false;
       return this;
@@ -2629,7 +2629,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'dtlsCipher'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setDtlsCipher(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setDtlsCipher(java.lang.String value) {
       validate(fields()[19], value);
       this.dtlsCipher = value;
       fieldSetFlags()[19] = true;
@@ -2651,7 +2651,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the DTLS cipher used in the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearDtlsCipher() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearDtlsCipher() {
       dtlsCipher = null;
       fieldSetFlags()[19] = false;
       return this;
@@ -2672,7 +2672,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'srtpCipher'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSrtpCipher(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSrtpCipher(java.lang.String value) {
       validate(fields()[20], value);
       this.srtpCipher = value;
       fieldSetFlags()[20] = true;
@@ -2694,7 +2694,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the SRTP cipher used in the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSrtpCipher() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSrtpCipher() {
       srtpCipher = null;
       fieldSetFlags()[20] = false;
       return this;
@@ -2715,7 +2715,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'tlsGroup'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setTlsGroup(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setTlsGroup(java.lang.String value) {
       validate(fields()[21], value);
       this.tlsGroup = value;
       fieldSetFlags()[21] = true;
@@ -2737,7 +2737,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the name of the IANA TLS Supported Groups used in the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearTlsGroup() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearTlsGroup() {
       tlsGroup = null;
       fieldSetFlags()[21] = false;
       return this;
@@ -2758,7 +2758,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'selectedCandidatePairChanges'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSelectedCandidatePairChanges(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSelectedCandidatePairChanges(java.lang.Integer value) {
       validate(fields()[22], value);
       this.selectedCandidatePairChanges = value;
       fieldSetFlags()[22] = true;
@@ -2780,7 +2780,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of candidate pair changes over the peer connection
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSelectedCandidatePairChanges() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSelectedCandidatePairChanges() {
       selectedCandidatePairChanges = null;
       fieldSetFlags()[22] = false;
       return this;
@@ -2801,7 +2801,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localAddress'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalAddress(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLocalAddress(java.lang.String value) {
       validate(fields()[23], value);
       this.localAddress = value;
       fieldSetFlags()[23] = true;
@@ -2823,7 +2823,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The address of the candidate (IPv4, IPv6, FQDN)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalAddress() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLocalAddress() {
       localAddress = null;
       fieldSetFlags()[23] = false;
       return this;
@@ -2844,7 +2844,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localPort'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalPort(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLocalPort(java.lang.Integer value) {
       validate(fields()[24], value);
       this.localPort = value;
       fieldSetFlags()[24] = true;
@@ -2866,7 +2866,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The locally used port to communicate with the remote peer
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalPort() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLocalPort() {
       localPort = null;
       fieldSetFlags()[24] = false;
       return this;
@@ -2887,7 +2887,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localProtocol'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalProtocol(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLocalProtocol(java.lang.String value) {
       validate(fields()[25], value);
       this.localProtocol = value;
       fieldSetFlags()[25] = true;
@@ -2909,7 +2909,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The protocol used by the local endpoint for the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalProtocol() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLocalProtocol() {
       localProtocol = null;
       fieldSetFlags()[25] = false;
       return this;
@@ -2930,7 +2930,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidateType'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidateType(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLocalCandidateType(java.lang.String value) {
       validate(fields()[26], value);
       this.localCandidateType = value;
       fieldSetFlags()[26] = true;
@@ -2952,7 +2952,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The type of the ICE candidate used at the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidateType() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLocalCandidateType() {
       localCandidateType = null;
       fieldSetFlags()[26] = false;
       return this;
@@ -2973,7 +2973,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidateICEServerUrl'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidateICEServerUrl(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLocalCandidateICEServerUrl(java.lang.String value) {
       validate(fields()[27], value);
       this.localCandidateICEServerUrl = value;
       fieldSetFlags()[27] = true;
@@ -2995,7 +2995,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The url of the ICE server used by the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidateICEServerUrl() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLocalCandidateICEServerUrl() {
       localCandidateICEServerUrl = null;
       fieldSetFlags()[27] = false;
       return this;
@@ -3016,7 +3016,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'localCandidateRelayProtocol'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setLocalCandidateRelayProtocol(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setLocalCandidateRelayProtocol(java.lang.String value) {
       validate(fields()[28], value);
       this.localCandidateRelayProtocol = value;
       fieldSetFlags()[28] = true;
@@ -3038,7 +3038,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The relay protocol of the ICE candidate used by the local endpoint on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearLocalCandidateRelayProtocol() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearLocalCandidateRelayProtocol() {
       localCandidateRelayProtocol = null;
       fieldSetFlags()[28] = false;
       return this;
@@ -3059,7 +3059,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteAddress'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteAddress(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRemoteAddress(java.lang.String value) {
       validate(fields()[29], value);
       this.remoteAddress = value;
       fieldSetFlags()[29] = true;
@@ -3081,7 +3081,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The address of the candidate (IPv4, IPv6, FQDN)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteAddress() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRemoteAddress() {
       remoteAddress = null;
       fieldSetFlags()[29] = false;
       return this;
@@ -3102,7 +3102,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remotePort'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemotePort(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRemotePort(java.lang.Integer value) {
       validate(fields()[30], value);
       this.remotePort = value;
       fieldSetFlags()[30] = true;
@@ -3124,7 +3124,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The remotely used port to communicate with the remote peer
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemotePort() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRemotePort() {
       remotePort = null;
       fieldSetFlags()[30] = false;
       return this;
@@ -3145,7 +3145,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteProtocol'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteProtocol(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRemoteProtocol(java.lang.String value) {
       validate(fields()[31], value);
       this.remoteProtocol = value;
       fieldSetFlags()[31] = true;
@@ -3167,7 +3167,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The protocol used by the remote endpoint for the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteProtocol() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRemoteProtocol() {
       remoteProtocol = null;
       fieldSetFlags()[31] = false;
       return this;
@@ -3188,7 +3188,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidateType'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidateType(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRemoteCandidateType(java.lang.String value) {
       validate(fields()[32], value);
       this.remoteCandidateType = value;
       fieldSetFlags()[32] = true;
@@ -3210,7 +3210,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The type of the ICE candidate used at the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidateType() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRemoteCandidateType() {
       remoteCandidateType = null;
       fieldSetFlags()[32] = false;
       return this;
@@ -3231,7 +3231,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidateICEServerUrl'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidateICEServerUrl(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRemoteCandidateICEServerUrl(java.lang.String value) {
       validate(fields()[33], value);
       this.remoteCandidateICEServerUrl = value;
       fieldSetFlags()[33] = true;
@@ -3253,7 +3253,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The url of the ICE server used by the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidateICEServerUrl() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRemoteCandidateICEServerUrl() {
       remoteCandidateICEServerUrl = null;
       fieldSetFlags()[33] = false;
       return this;
@@ -3274,7 +3274,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'remoteCandidateRelayProtocol'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setRemoteCandidateRelayProtocol(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setRemoteCandidateRelayProtocol(java.lang.String value) {
       validate(fields()[34], value);
       this.remoteCandidateRelayProtocol = value;
       fieldSetFlags()[34] = true;
@@ -3296,7 +3296,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The relay protocol of the ICE candidate used by the remote endpoint on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearRemoteCandidateRelayProtocol() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearRemoteCandidateRelayProtocol() {
       remoteCandidateRelayProtocol = null;
       fieldSetFlags()[34] = false;
       return this;
@@ -3317,7 +3317,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairState'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairState(java.lang.String value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairState(java.lang.String value) {
       validate(fields()[35], value);
       this.candidatePairState = value;
       fieldSetFlags()[35] = true;
@@ -3339,7 +3339,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The state of ICE Candidate Pairs (RTCStatsIceCandidatePairState) on the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairState() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairState() {
       candidatePairState = null;
       fieldSetFlags()[35] = false;
       return this;
@@ -3360,7 +3360,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairPacketsSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairPacketsSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairPacketsSent(java.lang.Integer value) {
       validate(fields()[36], value);
       this.candidatePairPacketsSent = value;
       fieldSetFlags()[36] = true;
@@ -3382,7 +3382,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of packets sent using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairPacketsSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairPacketsSent() {
       candidatePairPacketsSent = null;
       fieldSetFlags()[36] = false;
       return this;
@@ -3403,7 +3403,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairPacketsReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairPacketsReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairPacketsReceived(java.lang.Integer value) {
       validate(fields()[37], value);
       this.candidatePairPacketsReceived = value;
       fieldSetFlags()[37] = true;
@@ -3425,7 +3425,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of packets received using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairPacketsReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairPacketsReceived() {
       candidatePairPacketsReceived = null;
       fieldSetFlags()[37] = false;
       return this;
@@ -3446,7 +3446,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairBytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairBytesSent(java.lang.Long value) {
       validate(fields()[38], value);
       this.candidatePairBytesSent = value;
       fieldSetFlags()[38] = true;
@@ -3468,7 +3468,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of bytes sent using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairBytesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairBytesSent() {
       candidatePairBytesSent = null;
       fieldSetFlags()[38] = false;
       return this;
@@ -3489,7 +3489,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairBytesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairBytesReceived(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairBytesReceived(java.lang.Long value) {
       validate(fields()[39], value);
       this.candidatePairBytesReceived = value;
       fieldSetFlags()[39] = true;
@@ -3511,7 +3511,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of bytes received using the last selected candidate pair over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairBytesReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairBytesReceived() {
       candidatePairBytesReceived = null;
       fieldSetFlags()[39] = false;
       return this;
@@ -3532,7 +3532,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairLastPacketSentTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastPacketSentTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairLastPacketSentTimestamp(java.lang.Long value) {
       validate(fields()[40], value);
       this.candidatePairLastPacketSentTimestamp = value;
       fieldSetFlags()[40] = true;
@@ -3554,7 +3554,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last packet was sent on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastPacketSentTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairLastPacketSentTimestamp() {
       candidatePairLastPacketSentTimestamp = null;
       fieldSetFlags()[40] = false;
       return this;
@@ -3575,7 +3575,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairLastPacketReceivedTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastPacketReceivedTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairLastPacketReceivedTimestamp(java.lang.Long value) {
       validate(fields()[41], value);
       this.candidatePairLastPacketReceivedTimestamp = value;
       fieldSetFlags()[41] = true;
@@ -3597,7 +3597,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last packet was received on the selected candidate pair, excluding STUN packets over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastPacketReceivedTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairLastPacketReceivedTimestamp() {
       candidatePairLastPacketReceivedTimestamp = null;
       fieldSetFlags()[41] = false;
       return this;
@@ -3618,7 +3618,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairFirstRequestTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairFirstRequestTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairFirstRequestTimestamp(java.lang.Long value) {
       validate(fields()[42], value);
       this.candidatePairFirstRequestTimestamp = value;
       fieldSetFlags()[42] = true;
@@ -3640,7 +3640,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the first STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairFirstRequestTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairFirstRequestTimestamp() {
       candidatePairFirstRequestTimestamp = null;
       fieldSetFlags()[42] = false;
       return this;
@@ -3661,7 +3661,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairLastRequestTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastRequestTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairLastRequestTimestamp(java.lang.Long value) {
       validate(fields()[43], value);
       this.candidatePairLastRequestTimestamp = value;
       fieldSetFlags()[43] = true;
@@ -3683,7 +3683,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last STUN request was sent on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastRequestTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairLastRequestTimestamp() {
       candidatePairLastRequestTimestamp = null;
       fieldSetFlags()[43] = false;
       return this;
@@ -3704,7 +3704,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairLastResponseTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairLastResponseTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairLastResponseTimestamp(java.lang.Long value) {
       validate(fields()[44], value);
       this.candidatePairLastResponseTimestamp = value;
       fieldSetFlags()[44] = true;
@@ -3726,7 +3726,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the last STUN response was received on this particular candidate pair over the corresponded transport (UTC Epoch in ms)
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairLastResponseTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairLastResponseTimestamp() {
       candidatePairLastResponseTimestamp = null;
       fieldSetFlags()[44] = false;
       return this;
@@ -3747,7 +3747,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairTotalRoundTripTime'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairTotalRoundTripTime(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairTotalRoundTripTime(java.lang.Double value) {
       validate(fields()[45], value);
       this.candidatePairTotalRoundTripTime = value;
       fieldSetFlags()[45] = true;
@@ -3769,7 +3769,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the sum of all round trip time measurements in seconds since the beginning of the session, based on STUN connectivity check over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairTotalRoundTripTime() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairTotalRoundTripTime() {
       candidatePairTotalRoundTripTime = null;
       fieldSetFlags()[45] = false;
       return this;
@@ -3790,7 +3790,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairCurrentRoundTripTime'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairCurrentRoundTripTime(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairCurrentRoundTripTime(java.lang.Double value) {
       validate(fields()[46], value);
       this.candidatePairCurrentRoundTripTime = value;
       fieldSetFlags()[46] = true;
@@ -3812,7 +3812,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the last round trip time measurements in seconds based on STUN connectivity check over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairCurrentRoundTripTime() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairCurrentRoundTripTime() {
       candidatePairCurrentRoundTripTime = null;
       fieldSetFlags()[46] = false;
       return this;
@@ -3833,7 +3833,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairAvailableOutgoingBitrate'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairAvailableOutgoingBitrate(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairAvailableOutgoingBitrate(java.lang.Double value) {
       validate(fields()[47], value);
       this.candidatePairAvailableOutgoingBitrate = value;
       fieldSetFlags()[47] = true;
@@ -3855,7 +3855,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The sum of the underlying cc algorithm provided outgoing bitrate for the RTP streams over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairAvailableOutgoingBitrate() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairAvailableOutgoingBitrate() {
       candidatePairAvailableOutgoingBitrate = null;
       fieldSetFlags()[47] = false;
       return this;
@@ -3876,7 +3876,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairAvailableIncomingBitrate'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairAvailableIncomingBitrate(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairAvailableIncomingBitrate(java.lang.Double value) {
       validate(fields()[48], value);
       this.candidatePairAvailableIncomingBitrate = value;
       fieldSetFlags()[48] = true;
@@ -3898,7 +3898,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The sum of the underlying cc algorithm provided incoming bitrate for the RTP streams over the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairAvailableIncomingBitrate() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairAvailableIncomingBitrate() {
       candidatePairAvailableIncomingBitrate = null;
       fieldSetFlags()[48] = false;
       return this;
@@ -3919,7 +3919,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairCircuitBreakerTriggerCount'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairCircuitBreakerTriggerCount(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairCircuitBreakerTriggerCount(java.lang.Integer value) {
       validate(fields()[49], value);
       this.candidatePairCircuitBreakerTriggerCount = value;
       fieldSetFlags()[49] = true;
@@ -3941,7 +3941,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The total number of circuit breaker triggered over the corresponded transport using the selected candidate pair
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairCircuitBreakerTriggerCount() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairCircuitBreakerTriggerCount() {
       candidatePairCircuitBreakerTriggerCount = null;
       fieldSetFlags()[49] = false;
       return this;
@@ -3962,7 +3962,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRequestsReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRequestsReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairRequestsReceived(java.lang.Integer value) {
       validate(fields()[50], value);
       this.candidatePairRequestsReceived = value;
       fieldSetFlags()[50] = true;
@@ -3984,7 +3984,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check requests received on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRequestsReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairRequestsReceived() {
       candidatePairRequestsReceived = null;
       fieldSetFlags()[50] = false;
       return this;
@@ -4005,7 +4005,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRequestsSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRequestsSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairRequestsSent(java.lang.Integer value) {
       validate(fields()[51], value);
       this.candidatePairRequestsSent = value;
       fieldSetFlags()[51] = true;
@@ -4027,7 +4027,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check requests sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRequestsSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairRequestsSent() {
       candidatePairRequestsSent = null;
       fieldSetFlags()[51] = false;
       return this;
@@ -4048,7 +4048,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponsesReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponsesReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairResponsesReceived(java.lang.Integer value) {
       validate(fields()[52], value);
       this.candidatePairResponsesReceived = value;
       fieldSetFlags()[52] = true;
@@ -4070,7 +4070,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check responses received on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairResponsesReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairResponsesReceived() {
       candidatePairResponsesReceived = null;
       fieldSetFlags()[52] = false;
       return this;
@@ -4091,7 +4091,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponsesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponsesSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairResponsesSent(java.lang.Integer value) {
       validate(fields()[53], value);
       this.candidatePairResponsesSent = value;
       fieldSetFlags()[53] = true;
@@ -4113,7 +4113,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check responses sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairResponsesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairResponsesSent() {
       candidatePairResponsesSent = null;
       fieldSetFlags()[53] = false;
       return this;
@@ -4134,7 +4134,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRetransmissionReceived'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRetransmissionReceived(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairRetransmissionReceived(java.lang.Integer value) {
       validate(fields()[54], value);
       this.candidatePairRetransmissionReceived = value;
       fieldSetFlags()[54] = true;
@@ -4156,7 +4156,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check retransmission received on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRetransmissionReceived() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairRetransmissionReceived() {
       candidatePairRetransmissionReceived = null;
       fieldSetFlags()[54] = false;
       return this;
@@ -4177,7 +4177,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRetransmissionSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRetransmissionSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairRetransmissionSent(java.lang.Integer value) {
       validate(fields()[55], value);
       this.candidatePairRetransmissionSent = value;
       fieldSetFlags()[55] = true;
@@ -4199,7 +4199,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of connectivity check retransmission sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRetransmissionSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairRetransmissionSent() {
       candidatePairRetransmissionSent = null;
       fieldSetFlags()[55] = false;
       return this;
@@ -4220,7 +4220,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairConsentRequestsSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairConsentRequestsSent(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairConsentRequestsSent(java.lang.Integer value) {
       validate(fields()[56], value);
       this.candidatePairConsentRequestsSent = value;
       fieldSetFlags()[56] = true;
@@ -4242,7 +4242,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the total number of consent requests sent on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairConsentRequestsSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairConsentRequestsSent() {
       candidatePairConsentRequestsSent = null;
       fieldSetFlags()[56] = false;
       return this;
@@ -4263,7 +4263,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairConsentExpiredTimestamp'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairConsentExpiredTimestamp(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairConsentExpiredTimestamp(java.lang.Long value) {
       validate(fields()[57], value);
       this.candidatePairConsentExpiredTimestamp = value;
       fieldSetFlags()[57] = true;
@@ -4285,7 +4285,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Represents the timestamp at which the latest valid STUN binding response expired on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairConsentExpiredTimestamp() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairConsentExpiredTimestamp() {
       candidatePairConsentExpiredTimestamp = null;
       fieldSetFlags()[57] = false;
       return this;
@@ -4306,7 +4306,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairBytesDiscardedOnSend'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairBytesDiscardedOnSend(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairBytesDiscardedOnSend(java.lang.Long value) {
       validate(fields()[58], value);
       this.candidatePairBytesDiscardedOnSend = value;
       fieldSetFlags()[58] = true;
@@ -4328,7 +4328,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total amount of bytes for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairBytesDiscardedOnSend() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairBytesDiscardedOnSend() {
       candidatePairBytesDiscardedOnSend = null;
       fieldSetFlags()[58] = false;
       return this;
@@ -4349,7 +4349,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairPacketsDiscardedOnSend'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairPacketsDiscardedOnSend(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairPacketsDiscardedOnSend(java.lang.Long value) {
       validate(fields()[59], value);
       this.candidatePairPacketsDiscardedOnSend = value;
       fieldSetFlags()[59] = true;
@@ -4371,7 +4371,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total amount of packets for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairPacketsDiscardedOnSend() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairPacketsDiscardedOnSend() {
       candidatePairPacketsDiscardedOnSend = null;
       fieldSetFlags()[59] = false;
       return this;
@@ -4392,7 +4392,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairRequestBytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairRequestBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairRequestBytesSent(java.lang.Long value) {
       validate(fields()[60], value);
       this.candidatePairRequestBytesSent = value;
       fieldSetFlags()[60] = true;
@@ -4414,7 +4414,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairRequestBytesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairRequestBytesSent() {
       candidatePairRequestBytesSent = null;
       fieldSetFlags()[60] = false;
       return this;
@@ -4435,7 +4435,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairConsentRequestBytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairConsentRequestBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairConsentRequestBytesSent(java.lang.Long value) {
       validate(fields()[61], value);
       this.candidatePairConsentRequestBytesSent = value;
       fieldSetFlags()[61] = true;
@@ -4457,7 +4457,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for consent requests on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairConsentRequestBytesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairConsentRequestBytesSent() {
       candidatePairConsentRequestBytesSent = null;
       fieldSetFlags()[61] = false;
       return this;
@@ -4478,7 +4478,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'candidatePairResponseBytesSent'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setCandidatePairResponseBytesSent(java.lang.Long value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setCandidatePairResponseBytesSent(java.lang.Long value) {
       validate(fields()[62], value);
       this.candidatePairResponseBytesSent = value;
       fieldSetFlags()[62] = true;
@@ -4500,7 +4500,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * Total number of bytes sent for connectivity check responses on the selected candidate pair using the corresponded transport
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearCandidatePairResponseBytesSent() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearCandidatePairResponseBytesSent() {
       candidatePairResponseBytesSent = null;
       fieldSetFlags()[62] = false;
       return this;
@@ -4521,7 +4521,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpSmoothedRoundTripTime'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpSmoothedRoundTripTime(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSctpSmoothedRoundTripTime(java.lang.Double value) {
       validate(fields()[63], value);
       this.sctpSmoothedRoundTripTime = value;
       fieldSetFlags()[63] = true;
@@ -4543,7 +4543,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. 
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpSmoothedRoundTripTime() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSctpSmoothedRoundTripTime() {
       sctpSmoothedRoundTripTime = null;
       fieldSetFlags()[63] = false;
       return this;
@@ -4564,7 +4564,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpCongestionWindow'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpCongestionWindow(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSctpCongestionWindow(java.lang.Double value) {
       validate(fields()[64], value);
       this.sctpCongestionWindow = value;
       fieldSetFlags()[64] = true;
@@ -4586,7 +4586,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest congestion window, corresponding to spinfo_cwnd.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpCongestionWindow() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSctpCongestionWindow() {
       sctpCongestionWindow = null;
       fieldSetFlags()[64] = false;
       return this;
@@ -4607,7 +4607,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpReceiverWindow'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpReceiverWindow(java.lang.Double value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSctpReceiverWindow(java.lang.Double value) {
       validate(fields()[65], value);
       this.sctpReceiverWindow = value;
       fieldSetFlags()[65] = true;
@@ -4629,7 +4629,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest receiver window, corresponding to sstat_rwnd.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpReceiverWindow() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSctpReceiverWindow() {
       sctpReceiverWindow = null;
       fieldSetFlags()[65] = false;
       return this;
@@ -4650,7 +4650,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpMtu'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpMtu(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSctpMtu(java.lang.Integer value) {
       validate(fields()[66], value);
       this.sctpMtu = value;
       fieldSetFlags()[66] = true;
@@ -4672,7 +4672,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The latest maximum transmission unit, corresponding to spinfo_mtu.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpMtu() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSctpMtu() {
       sctpMtu = null;
       fieldSetFlags()[66] = false;
       return this;
@@ -4693,7 +4693,7 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'sctpUnackData'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder setSctpUnackData(java.lang.Integer value) {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder setSctpUnackData(java.lang.Integer value) {
       validate(fields()[67], value);
       this.sctpUnackData = value;
       fieldSetFlags()[67] = true;
@@ -4715,16 +4715,16 @@ public class PcTransportReport extends org.apache.avro.specific.SpecificRecordBa
       * The number of unacknowledged DATA chunks, corresponding to sstat_unackdata.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.PcTransportReport.Builder clearSctpUnackData() {
+    public org.observertc.webrtc.schemas.reports.ClientTransportReport.Builder clearSctpUnackData() {
       sctpUnackData = null;
       fieldSetFlags()[67] = false;
       return this;
     }
 
     @Override
-    public PcTransportReport build() {
+    public ClientTransportReport build() {
       try {
-        PcTransportReport record = new PcTransportReport();
+        ClientTransportReport record = new ClientTransportReport();
         record.serviceId = fieldSetFlags()[0] ? this.serviceId : (java.lang.String) defaultValue(fields()[0]);
         record.mediaUnitId = fieldSetFlags()[1] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[1]);
         record.marker = fieldSetFlags()[2] ? this.marker : (java.lang.String) defaultValue(fields()[2]);

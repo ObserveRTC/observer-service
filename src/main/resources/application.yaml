@@ -80,7 +80,7 @@ observer:
     reportInboundAudioTracks: true
     reportInboundVideoTracks: true
     reportPcTransports: true
-    reportPcDataChannels: true
+    reportClientDataChannels: true
     reportObservedExtensions: true
 
 

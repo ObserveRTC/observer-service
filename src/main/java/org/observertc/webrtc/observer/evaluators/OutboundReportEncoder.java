@@ -1,17 +1,12 @@
 package org.observertc.webrtc.observer.evaluators;
 
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.message.BinaryMessageEncoder;
-import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.common.OutboundReports;
-import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.codecs.OutboundReportsAvroEncoder;
+import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.OutboundReport;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Singleton
 public class OutboundReportEncoder {
@@ -77,18 +71,18 @@ public class OutboundReportEncoder {
         this.convertAndForward(this.encoder::encodeCallMetaReport, callMetaReports);
     }
 
-    public void encodePcTransportReport(List<PcTransportReport> pcTransportReports) {
-        if (Objects.isNull(pcTransportReports) || pcTransportReports.size() < 1) {
+    public void encodeClientTransportReport(List<ClientTransportReport> clientTransportReports) {
+        if (Objects.isNull(clientTransportReports) || clientTransportReports.size() < 1) {
             return;
         }
-        this.convertAndForward(this.encoder::encodePcTransportReport, pcTransportReports);
+        this.convertAndForward(this.encoder::encodeClientTransportReport, clientTransportReports);
     }
 
-    public void encodePcDataChannelReport(List<PcDataChannelReport> pcDataChannelReports) {
-        if (Objects.isNull(pcDataChannelReports) || pcDataChannelReports.size() < 1) {
+    public void encodeClientDataChannelReport(List<ClientDataChannelReport> clientDataChannelReports) {
+        if (Objects.isNull(clientDataChannelReports) || clientDataChannelReports.size() < 1) {
             return;
         }
-        this.convertAndForward(this.encoder::encodePcDataChannelReport, pcDataChannelReports);
+        this.convertAndForward(this.encoder::encodeClientDataChannelReport, clientDataChannelReports);
     }
 
     public void encodeInboundAudioTrackReport(List<InboundAudioTrackReport> inboundAudioTrackReports) {

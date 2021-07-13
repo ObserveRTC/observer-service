@@ -1,0 +1,117 @@
+{
+  "type": "record",
+  "name": "SfuEventReport",
+  "namespace": "org.observertc.webrtc.schemas.reports",
+  "doc": "Events happened in calls.",
+  "fields": [
+    {
+      "name": "serviceId",
+      "doc": "The unique identifier of the service",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "mediaUnitId",
+      "doc": "The media unit id the report belongs to",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "marker",
+      "doc": "The marker the originated sample is reported with",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "doc": "The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)",
+      "type": "long"
+    },
+    {
+      "name": "sfuId",
+      "doc": "The generated unique identifier of the SFU",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "transportId",
+      "doc": "SFU provided transport identifier",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "rtpStreamId",
+      "doc": "Unique identifier of the RTP stream the event is related to",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "sctpStreamId",
+      "doc": "Unique identifier of the SCTP stream the event is related to",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "SSRC",
+      "doc": "The SSRC identifier of the RTP stream realted to",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "name",
+      "doc": "The name of the event",
+      "type": "string"
+    },
+    {
+      "name": "message",
+      "doc": "the human readable message of the event",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "value",
+      "doc": "the value of the event",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "attachments",
+      "doc": "attachment the event may created with",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.Sleeper;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleGenerator;
 import org.observertc.webrtc.schemas.reports.ReportType;
@@ -46,7 +45,7 @@ class TestCallProcessor {
         this.mockedOutboundReportEncoder = mockedOutboundReportEncoder;
         this.receivedReports.clear();
         this.endedTest = new CompletableFuture<>();
-        this.mockedOutboundReportEncoder.subscribeTest(this.reportCollector);
+        this.mockedOutboundReportEncoder.getTestObservableOutboundReport().subscribe(this.reportCollector);
         this.reportCollector.map(report -> {
             List<OutboundReport> reports = this.receivedReports.get(report.getType());
             if (Objects.isNull(reports)) {
@@ -120,12 +119,12 @@ class TestCallProcessor {
         }
 
         @Override
-        protected void subscribeActual(@NonNull Observer<? super OutboundReport> observer) {
-
+        public Observable<OutboundReport> getObservableOutboundReport() {
+            return PublishSubject.create();
         }
 
-        private void subscribeTest(@NonNull Observer<? super OutboundReport> observer) {
-            super.subscribeActual(observer);
+        public Observable<OutboundReport> getTestObservableOutboundReport() {
+            return super.getObservableOutboundReport();
         }
     }
 }

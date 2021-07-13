@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.common;
 
-import org.apache.avro.Schema;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +17,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Function<RIn, ROut> callEventFuncProcess,
             Function<RIn, ROut> callMetaDataFuncProcess,
             Function<RIn, ROut> clientExtensionDataFuncProcess,
-            Function<RIn, ROut> peerConnectionTransportFuncProcess,
-            Function<RIn, ROut> peerConnectionDataChannelFuncProcess,
+            Function<RIn, ROut> clientTransportFuncProcess,
+            Function<RIn, ROut> clientDataChannelFuncProcess,
             Function<RIn, ROut> inboundAudioTrackFuncProcess,
             Function<RIn, ROut> inboundVideoTrackFuncProcess,
             Function<RIn, ROut> outboundAudioTrackFuncProcess,
@@ -48,13 +47,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public ROut visitPeerConnectionTransportReport(RIn obj) {
-                return peerConnectionTransportFuncProcess.apply(obj);
+            public ROut visitClientTransportReport(RIn obj) {
+                return clientTransportFuncProcess.apply(obj);
             }
 
             @Override
-            public ROut visitPeerConnectionDataChannelReport(RIn obj) {
-                return peerConnectionDataChannelFuncProcess.apply(obj);
+            public ROut visitClientDataChannelReport(RIn obj) {
+                return clientDataChannelFuncProcess.apply(obj);
             }
 
             @Override
@@ -90,8 +89,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Consumer<RIn> callEventConsumer,
             Consumer<RIn> callMetaDataConsumer,
             Consumer<RIn> clientExtensionDataConsumer,
-            Consumer<RIn> peerConnectionTransportConsumer,
-            Consumer<RIn> peerConnectionDataChannelConsumer,
+            Consumer<RIn> clientTransportConsumer,
+            Consumer<RIn> clientDataChannelConsumer,
             Consumer<RIn> inboundAudioTrackConsumer,
             Consumer<RIn> inboundVideoTrackConsumer,
             Consumer<RIn> outboundAudioTrackConsumer,
@@ -124,14 +123,14 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public Void visitPeerConnectionTransportReport(RIn obj) {
-                peerConnectionTransportConsumer.accept(obj);
+            public Void visitClientTransportReport(RIn obj) {
+                clientTransportConsumer.accept(obj);
                 return null;
             }
 
             @Override
-            public Void visitPeerConnectionDataChannelReport(RIn obj) {
-                peerConnectionDataChannelConsumer.accept(obj);
+            public Void visitClientDataChannelReport(RIn obj) {
+                clientDataChannelConsumer.accept(obj);
                 return null;
             }
 
@@ -172,8 +171,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Supplier<ROut> callEventSupplier,
             Supplier<ROut> callMetaDataSupplier,
             Supplier<ROut> clientExtensionDataSupplier,
-            Supplier<ROut> peerConnectionTransportSupplier,
-            Supplier<ROut> peerConnectionDataChannelSupplier,
+            Supplier<ROut> clientTransportSupplier,
+            Supplier<ROut> clientDataChannelSupplier,
             Supplier<ROut> inboundAudioTrackSupplier,
             Supplier<ROut> inboundVideoTrackSupplier,
             Supplier<ROut> outboundAudioTrackSupplier,
@@ -203,13 +202,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public ROut visitPeerConnectionTransportReport(Void obj) {
-                return peerConnectionTransportSupplier.get();
+            public ROut visitClientTransportReport(Void obj) {
+                return clientTransportSupplier.get();
             }
 
             @Override
-            public ROut visitPeerConnectionDataChannelReport(Void obj) {
-                return peerConnectionDataChannelSupplier.get();
+            public ROut visitClientDataChannelReport(Void obj) {
+                return clientDataChannelSupplier.get();
             }
 
             @Override
@@ -244,8 +243,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Runnable callEventCallback,
             Runnable callMetaDataCallback,
             Runnable clientExtensionDataCallback,
-            Runnable peerConnectionTransportCallback,
-            Runnable peerConnectionDataChannelCallback,
+            Runnable clientTransportCallback,
+            Runnable clientDataChannelCallback,
             Runnable inboundAudioTrackCallback,
             Runnable inboundVideoTrackCallback,
             Runnable outboundAudioTrackCallback,
@@ -278,14 +277,14 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public Void visitPeerConnectionTransportReport(Void obj) {
-                peerConnectionTransportCallback.run();
+            public Void visitClientTransportReport(Void obj) {
+                clientTransportCallback.run();
                 return null;
             }
 
             @Override
-            public Void visitPeerConnectionDataChannelReport(Void obj) {
-                peerConnectionDataChannelCallback.run();
+            public Void visitClientDataChannelReport(Void obj) {
+                clientDataChannelCallback.run();
                 return null;
             }
 
@@ -333,9 +332,9 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             case CLIENT_EXTENSION_DATA:
                 return this.visitClientExtensionDataReport(obj);
             case PEER_CONNECTION_TRANPORT:
-                return this.visitPeerConnectionTransportReport(obj);
+                return this.visitClientTransportReport(obj);
             case PEER_CONNECTION_DATA_CHANNEL:
-                return this.visitPeerConnectionDataChannelReport(obj);
+                return this.visitClientDataChannelReport(obj);
             case INBOUND_AUDIO_TRACK:
                 return this.visitInboundAudioTrackReport(obj);
             case INBOUND_VIDEO_TRACK:
@@ -356,8 +355,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
     TOut visitCallEventReport(TIn obj);
     TOut visitCallMetaDataReport(TIn obj);
     TOut visitClientExtensionDataReport(TIn obj);
-    TOut visitPeerConnectionTransportReport(TIn obj);
-    TOut visitPeerConnectionDataChannelReport(TIn obj);
+    TOut visitClientTransportReport(TIn obj);
+    TOut visitClientDataChannelReport(TIn obj);
     TOut visitInboundAudioTrackReport(TIn obj);
     TOut visitInboundVideoTrackReport(TIn obj);
     TOut visitOutboundAudioTrackReport(TIn obj);
