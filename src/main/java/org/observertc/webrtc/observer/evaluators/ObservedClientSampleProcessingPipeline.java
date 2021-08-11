@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.samples.ObservedClientSample;
+import org.observertc.webrtc.observer.samples.ObservedSfuSample;
 import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;
 
 import javax.annotation.PostConstruct;
@@ -15,9 +16,10 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
-public class ProcessingPipeline implements Consumer<ObservedClientSample> {
+public class ObservedClientSampleProcessingPipeline implements Consumer<ObservedClientSample> {
 
-    private final Subject<ObservedClientSample> input = PublishSubject.create();
+    private final Subject<ObservedClientSample> clientSampleSubject = PublishSubject.create();
+    private final Subject<ObservedSfuSample> sfuSampleSubject = PublishSubject.create();
 
     @Inject
     ObserverConfig observerConfig;
@@ -26,13 +28,13 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
     HazelcastEventSubscriber hazelcastEventSubscriber;
 
     @Inject
-    Obfuscator obfuscator;
+    ObservedClientSampleObfuscator obfuscator;
 
     @Inject
     ReportCallMetaData reportCallMetaData;
 
     @Inject
-    AddNewEntities addNewEntities;
+    AddNewCallEntities addNewCallEntities;
 
     @Inject
     ListenClientEntryChanges listenClientEntryChanges;
@@ -69,7 +71,7 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .withMediaTrackEntriesLocalListener(this.listenMediaTrackEntryChanges)
         ;
 
-        var samplesBuffer = this.input
+        var samplesBuffer = this.clientSampleSubject
                 .buffer(clientSamplesBufferMaxTimeInS, TimeUnit.SECONDS, clientSamplesBufferMaxItems)
                 .share();
 
@@ -84,12 +86,12 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
                 .subscribe(this.reportCallMetaData);
 
         observableCollectedCallSamples
-                .subscribe(this.addNewEntities);
+                .subscribe(this.addNewCallEntities);
 
         observableCollectedCallSamples
                 .subscribe(this.demuxCollectedCallSamples);
 
-        this.addNewEntities
+        this.addNewCallEntities
                 .getObservableCallEventReports()
                 .buffer(30, TimeUnit.SECONDS, 1000)
                 .subscribe(this.outboundReportEncoder::encodeCallEventReports);
@@ -172,6 +174,6 @@ public class ProcessingPipeline implements Consumer<ObservedClientSample> {
 
     @Override
     public void accept(ObservedClientSample observedClientSample) throws Throwable {
-        this.input.onNext(observedClientSample);
+        this.clientSampleSubject.onNext(observedClientSample);
     }
 }

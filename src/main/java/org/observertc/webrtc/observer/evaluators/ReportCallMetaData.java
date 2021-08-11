@@ -164,7 +164,7 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
                 ;
     }
 
-    private CallMetaReport.Builder prepareReport(UUID callId, ObservedSample observedSample, ClientSample clientSample) {
+    private CallMetaReport.Builder prepareReport(UUID callId, ObservedClientSample observedSample, ClientSample clientSample) {
         Long now = Instant.now().toEpochMilli();
         return CallMetaReport.newBuilder()
                 .setServiceId(observedSample.getServiceId())

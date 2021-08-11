@@ -57,6 +57,23 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                             }
                             this.hazelcastMaps.getMediaTracks().putAll(this.removedTrackDTOs);
                         })
+                .addActionStage("Remove bindings to sfuStreams",
+                    () -> {
+                        this.removedTrackDTOs.values().stream()
+                                .filter(dto -> Objects.nonNull(dto.sfuStreamId))
+                                .forEach(dto -> {
+                                    this.hazelcastMaps.getSfuStreamsToMediaTracks().remove(dto.sfuStreamId);
+                                });
+
+                  },
+                    // rollback
+                    (inputHolder, thrown) -> {
+                        this.removedTrackDTOs.values().stream()
+                            .filter(dto -> Objects.nonNull(dto.sfuStreamId))
+                            .forEach(dto -> {
+                                this.hazelcastMaps.getSfuStreamsToMediaTracks().put(dto.sfuStreamId, dto.trackId);
+                            });
+                    })
                 .addActionStage("Remove Inbound Media Tracks",
                         () -> {
                             this.removedTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
@@ -64,6 +81,9 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
+                                if (Objects.nonNull(mediaTrackDTO.sfuStreamId)) {
+                                    this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().delete(mediaTrackDTO.trackId);
+                                }
                             });
                         },
                         (inputHolder, thrownException) -> {
@@ -72,6 +92,9 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
+                                if (Objects.nonNull(mediaTrackDTO.sfuStreamId)) {
+                                    this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().put(mediaTrackDTO.trackId, mediaTrackDTO.sfuStreamId);
+                                }
                             });
                         })
                 .addActionStage("Remove Outbound Media Tracks",
@@ -82,6 +105,7 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                 }
                                 this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
                             });
+
                         },
                         (inputHolder, thrownException) -> {
                             this.removedTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
@@ -89,9 +113,10 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
+
                             });
                         })
-                . addTerminalSupplier("Creating PeerConnection Entities", () -> {
+                .addTerminalSupplier("Creating PeerConnection Entities", () -> {
                     List<CallEventReport.Builder> result = this.removedTrackDTOs.values().stream()
                             .map(this::makeReportBuilder)
                             .filter(Objects::nonNull)

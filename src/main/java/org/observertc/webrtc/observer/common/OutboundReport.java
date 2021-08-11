@@ -93,5 +93,53 @@ public interface OutboundReport {
             return ReportType.MEDIA_TRACK;
         }
     }
+
+    @FunctionalInterface
+    interface SfuEventReport extends OutboundReport {
+        @Override
+        default ReportType getType() {
+            return ReportType.SFU_EVENT;
+        }
+    }
+
+    @FunctionalInterface
+    interface SfuMetaReport extends OutboundReport {
+        @Override
+        default ReportType getType() {
+            return ReportType.SFU_META_DATA;
+        }
+    }
+
+    @FunctionalInterface
+    interface SfuTransportReport extends OutboundReport {
+        @Override
+        default ReportType getType() {
+            return ReportType.SFU_TRANSPORT;
+        }
+    }
+
+    @FunctionalInterface
+    interface SfuInboundRtpStreamReport extends OutboundReport {
+        @Override
+        default ReportType getType() {
+            return ReportType.SFU_INBOUND_RTP_STREAM;
+        }
+    }
+
+    @FunctionalInterface
+    interface SfuOutboundRtpStreamReport extends OutboundReport {
+        @Override
+        default ReportType getType() {
+            return ReportType.SFU_OUTBOUND_RTP_STREAM;
+        }
+    }
+
+    @FunctionalInterface
+    interface SfuSctpStreamReport extends OutboundReport {
+        @Override
+        default ReportType getType() {
+            return ReportType.SFU_SCTP_STREAM;
+        }
+    }
 }
 

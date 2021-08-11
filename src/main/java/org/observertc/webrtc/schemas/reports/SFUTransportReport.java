@@ -11,11 +11,9 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for SFU Transport layer typically created to transfer RTP/SCTP/RTX streams to another client, SFU, MCU, or processing module. */
 @org.apache.avro.specific.AvroGenerated
 public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8633611148109801912L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SFUTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for SFU Transport layer typically created to transfer RTP/SCTP/RTX streams to another client, SFU, MCU, or processing module.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"sfuId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The provided unique identifier of the SFU\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current value of the state attribute of the underlying RTCDtlsTransport.\",\"default\":null},{\"name\":\"iceState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current value of the state attribute of the underlying RTCIceTransport\",\"default\":null},{\"name\":\"sctpState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the the current value of the SCTP state of the transport of the SFU\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current value of the role SFU takes place in ICE\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The local address of the ICE candidate selected for the transport (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The local port number\",\"default\":null},{\"name\":\"protocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The remote address of the ICE candidate selected for the transport (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remote port number\",\"default\":null},{\"name\":\"rtpBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTP bytes received on this transport\",\"default\":null},{\"name\":\"rtpBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTP bytes sent on this transport\",\"default\":null},{\"name\":\"rtpPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTP packets received on this transport\",\"default\":null},{\"name\":\"rtpPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTP packets sent on this transport\",\"default\":null},{\"name\":\"rtpPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTP packets lost on this transport\",\"default\":null},{\"name\":\"rtxBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTX bytes received on this transport\",\"default\":null},{\"name\":\"rtxBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTX bytes sent on this transport\",\"default\":null},{\"name\":\"rtxPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets received on this transport\",\"default\":null},{\"name\":\"rtxPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets sent on this transport\",\"default\":null},{\"name\":\"rtxPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets lost on this transport\",\"default\":null},{\"name\":\"rtxPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets discarded on this transport\",\"default\":null},{\"name\":\"sctpBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of SCTP bytes received on this transport\",\"default\":null},{\"name\":\"sctpBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of SCTP bytes sent on this transport\",\"default\":null},{\"name\":\"sctpPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of SCTP packets received on this transport\",\"default\":null},{\"name\":\"sctpPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of SCTP packets sent on this transport\",\"default\":null}]}");
+  private static final long serialVersionUID = 9168201567850687900L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SFUTransportReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for SFU Transport layer typically created to transfer RTP/SCTP/RTX streams to another client, SFU, MCU, or processing module.\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"sfuId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The provided unique identifier of the SFU\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"transportId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the transport\"},{\"name\":\"dtlsState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current value of the state attribute of the underlying RTCDtlsTransport.\",\"default\":null},{\"name\":\"iceState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current value of the state attribute of the underlying RTCIceTransport\",\"default\":null},{\"name\":\"sctpState\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represents the the current value of the SCTP state of the transport of the SFU\",\"default\":null},{\"name\":\"iceRole\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Represent the current value of the role SFU takes place in ICE\",\"default\":null},{\"name\":\"localAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The local address of the ICE candidate selected for the transport (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"localPort\",\"type\":[\"null\",\"int\"],\"doc\":\"The local port number\",\"default\":null},{\"name\":\"protocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used by the transport\",\"default\":null},{\"name\":\"remoteAddress\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The remote address of the ICE candidate selected for the transport (IPv4, IPv6, FQDN)\",\"default\":null},{\"name\":\"remotePort\",\"type\":[\"null\",\"int\"],\"doc\":\"The remote port number\",\"default\":null},{\"name\":\"rtpBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTP bytes received on this transport\",\"default\":null},{\"name\":\"rtpBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTP bytes sent on this transport\",\"default\":null},{\"name\":\"rtpPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTP packets received on this transport\",\"default\":null},{\"name\":\"rtpPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTP packets sent on this transport\",\"default\":null},{\"name\":\"rtpPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTP packets lost on this transport\",\"default\":null},{\"name\":\"rtxBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTX bytes received on this transport\",\"default\":null},{\"name\":\"rtxBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of RTX bytes sent on this transport\",\"default\":null},{\"name\":\"rtxPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets received on this transport\",\"default\":null},{\"name\":\"rtxPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets sent on this transport\",\"default\":null},{\"name\":\"rtxPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets lost on this transport\",\"default\":null},{\"name\":\"rtxPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of RTX packets discarded on this transport\",\"default\":null},{\"name\":\"sctpBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of SCTP bytes received on this transport\",\"default\":null},{\"name\":\"sctpBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of SCTP bytes sent on this transport\",\"default\":null},{\"name\":\"sctpPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of SCTP packets received on this transport\",\"default\":null},{\"name\":\"sctpPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total amount of SCTP packets sent on this transport\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The unique identifier of the service */
-   private java.lang.String serviceId;
   /** The media unit id the report belongs to */
    private java.lang.String mediaUnitId;
   /** The provided unique identifier of the SFU */
@@ -28,6 +26,8 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
    private java.lang.String callId;
   /** webrtc app provided room id */
    private java.lang.String roomId;
+  /** The generated unique identifier of the transport */
+   private java.lang.String transportId;
   /** Represent the current value of the state attribute of the underlying RTCDtlsTransport. */
    private java.lang.String dtlsState;
   /** Represent the current value of the state attribute of the underlying RTCIceTransport */
@@ -86,13 +86,13 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
 
   /**
    * All-args constructor.
-   * @param serviceId The unique identifier of the service
    * @param mediaUnitId The media unit id the report belongs to
    * @param sfuId The provided unique identifier of the SFU
    * @param marker The marker the originated sample is reported with
    * @param timestamp The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    * @param callId The generated unique identifier of the call
    * @param roomId webrtc app provided room id
+   * @param transportId The generated unique identifier of the transport
    * @param dtlsState Represent the current value of the state attribute of the underlying RTCDtlsTransport.
    * @param iceState Represent the current value of the state attribute of the underlying RTCIceTransport
    * @param sctpState Represents the the current value of the SCTP state of the transport of the SFU
@@ -118,14 +118,14 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
    * @param sctpPacketsReceived The total amount of SCTP packets received on this transport
    * @param sctpPacketsSent The total amount of SCTP packets sent on this transport
    */
-  public SFUTransportReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String sfuId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String dtlsState, java.lang.String iceState, java.lang.String sctpState, java.lang.String iceRole, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String protocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.Long rtpBytesReceived, java.lang.Long rtpBytesSent, java.lang.Integer rtpPacketsReceived, java.lang.Integer rtpPacketsSent, java.lang.Integer rtpPacketsLost, java.lang.Long rtxBytesReceived, java.lang.Long rtxBytesSent, java.lang.Integer rtxPacketsReceived, java.lang.Integer rtxPacketsSent, java.lang.Integer rtxPacketsLost, java.lang.Integer rtxPacketsDiscarded, java.lang.Long sctpBytesReceived, java.lang.Long sctpBytesSent, java.lang.Integer sctpPacketsReceived, java.lang.Integer sctpPacketsSent) {
-    this.serviceId = serviceId;
+  public SFUTransportReport(java.lang.String mediaUnitId, java.lang.String sfuId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String transportId, java.lang.String dtlsState, java.lang.String iceState, java.lang.String sctpState, java.lang.String iceRole, java.lang.String localAddress, java.lang.Integer localPort, java.lang.String protocol, java.lang.String remoteAddress, java.lang.Integer remotePort, java.lang.Long rtpBytesReceived, java.lang.Long rtpBytesSent, java.lang.Integer rtpPacketsReceived, java.lang.Integer rtpPacketsSent, java.lang.Integer rtpPacketsLost, java.lang.Long rtxBytesReceived, java.lang.Long rtxBytesSent, java.lang.Integer rtxPacketsReceived, java.lang.Integer rtxPacketsSent, java.lang.Integer rtxPacketsLost, java.lang.Integer rtxPacketsDiscarded, java.lang.Long sctpBytesReceived, java.lang.Long sctpBytesSent, java.lang.Integer sctpPacketsReceived, java.lang.Integer sctpPacketsSent) {
     this.mediaUnitId = mediaUnitId;
     this.sfuId = sfuId;
     this.marker = marker;
     this.timestamp = timestamp;
     this.callId = callId;
     this.roomId = roomId;
+    this.transportId = transportId;
     this.dtlsState = dtlsState;
     this.iceState = iceState;
     this.sctpState = sctpState;
@@ -156,13 +156,13 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return serviceId;
-    case 1: return mediaUnitId;
-    case 2: return sfuId;
-    case 3: return marker;
-    case 4: return timestamp;
-    case 5: return callId;
-    case 6: return roomId;
+    case 0: return mediaUnitId;
+    case 1: return sfuId;
+    case 2: return marker;
+    case 3: return timestamp;
+    case 4: return callId;
+    case 5: return roomId;
+    case 6: return transportId;
     case 7: return dtlsState;
     case 8: return iceState;
     case 9: return sctpState;
@@ -195,13 +195,13 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (java.lang.String)value$; break;
-    case 1: mediaUnitId = (java.lang.String)value$; break;
-    case 2: sfuId = (java.lang.String)value$; break;
-    case 3: marker = (java.lang.String)value$; break;
-    case 4: timestamp = (java.lang.Long)value$; break;
-    case 5: callId = (java.lang.String)value$; break;
-    case 6: roomId = (java.lang.String)value$; break;
+    case 0: mediaUnitId = (java.lang.String)value$; break;
+    case 1: sfuId = (java.lang.String)value$; break;
+    case 2: marker = (java.lang.String)value$; break;
+    case 3: timestamp = (java.lang.Long)value$; break;
+    case 4: callId = (java.lang.String)value$; break;
+    case 5: roomId = (java.lang.String)value$; break;
+    case 6: transportId = (java.lang.String)value$; break;
     case 7: dtlsState = (java.lang.String)value$; break;
     case 8: iceState = (java.lang.String)value$; break;
     case 9: sctpState = (java.lang.String)value$; break;
@@ -229,15 +229,6 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
-
-  /**
-   * Gets the value of the 'serviceId' field.
-   * @return The unique identifier of the service
-   */
-  public java.lang.String getServiceId() {
-    return serviceId;
-  }
-
 
   /**
    * Gets the value of the 'mediaUnitId' field.
@@ -290,6 +281,15 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
    */
   public java.lang.String getRoomId() {
     return roomId;
+  }
+
+
+  /**
+   * Gets the value of the 'transportId' field.
+   * @return The generated unique identifier of the transport
+   */
+  public java.lang.String getTransportId() {
+    return transportId;
   }
 
 
@@ -541,8 +541,6 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<SFUTransportReport>
     implements org.apache.avro.data.RecordBuilder<SFUTransportReport> {
 
-    /** The unique identifier of the service */
-    private java.lang.String serviceId;
     /** The media unit id the report belongs to */
     private java.lang.String mediaUnitId;
     /** The provided unique identifier of the SFU */
@@ -555,6 +553,8 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
     private java.lang.String callId;
     /** webrtc app provided room id */
     private java.lang.String roomId;
+    /** The generated unique identifier of the transport */
+    private java.lang.String transportId;
     /** Represent the current value of the state attribute of the underlying RTCDtlsTransport. */
     private java.lang.String dtlsState;
     /** Represent the current value of the state attribute of the underlying RTCIceTransport */
@@ -615,32 +615,32 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
      */
     private Builder(org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.serviceId)) {
-        this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
+      if (isValidValue(fields()[0], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[1], other.sfuId)) {
+        this.sfuId = data().deepCopy(fields()[1].schema(), other.sfuId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.sfuId)) {
-        this.sfuId = data().deepCopy(fields()[2].schema(), other.sfuId);
+      if (isValidValue(fields()[2], other.marker)) {
+        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.marker)) {
-        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
+      if (isValidValue(fields()[3], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.roomId)) {
+        this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.roomId)) {
-        this.roomId = data().deepCopy(fields()[6].schema(), other.roomId);
+      if (isValidValue(fields()[6], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
         fieldSetFlags()[6] = true;
       }
       if (isValidValue(fields()[7], other.dtlsState)) {
@@ -747,32 +747,32 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
      */
     private Builder(org.observertc.webrtc.schemas.reports.SFUTransportReport other) {
             super(SCHEMA$);
-      if (isValidValue(fields()[0], other.serviceId)) {
-        this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
+      if (isValidValue(fields()[0], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[1], other.sfuId)) {
+        this.sfuId = data().deepCopy(fields()[1].schema(), other.sfuId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.sfuId)) {
-        this.sfuId = data().deepCopy(fields()[2].schema(), other.sfuId);
+      if (isValidValue(fields()[2], other.marker)) {
+        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.marker)) {
-        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
+      if (isValidValue(fields()[3], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.roomId)) {
+        this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.roomId)) {
-        this.roomId = data().deepCopy(fields()[6].schema(), other.roomId);
+      if (isValidValue(fields()[6], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
         fieldSetFlags()[6] = true;
       }
       if (isValidValue(fields()[7], other.dtlsState)) {
@@ -874,49 +874,6 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
     }
 
     /**
-      * Gets the value of the 'serviceId' field.
-      * The unique identifier of the service
-      * @return The value.
-      */
-    public java.lang.String getServiceId() {
-      return serviceId;
-    }
-
-    /**
-      * Sets the value of the 'serviceId' field.
-      * The unique identifier of the service
-      * @param value The value of 'serviceId'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setServiceId(java.lang.String value) {
-      validate(fields()[0], value);
-      this.serviceId = value;
-      fieldSetFlags()[0] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'serviceId' field has been set.
-      * The unique identifier of the service
-      * @return True if the 'serviceId' field has been set, false otherwise.
-      */
-    public boolean hasServiceId() {
-      return fieldSetFlags()[0];
-    }
-
-
-    /**
-      * Clears the value of the 'serviceId' field.
-      * The unique identifier of the service
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearServiceId() {
-      serviceId = null;
-      fieldSetFlags()[0] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'mediaUnitId' field.
       * The media unit id the report belongs to
       * @return The value.
@@ -932,9 +889,9 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setMediaUnitId(java.lang.String value) {
-      validate(fields()[1], value);
+      validate(fields()[0], value);
       this.mediaUnitId = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[0] = true;
       return this;
     }
 
@@ -944,7 +901,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return True if the 'mediaUnitId' field has been set, false otherwise.
       */
     public boolean hasMediaUnitId() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[0];
     }
 
 
@@ -955,7 +912,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[0] = false;
       return this;
     }
 
@@ -975,9 +932,9 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setSfuId(java.lang.String value) {
-      validate(fields()[2], value);
+      validate(fields()[1], value);
       this.sfuId = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -987,7 +944,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return True if the 'sfuId' field has been set, false otherwise.
       */
     public boolean hasSfuId() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[1];
     }
 
 
@@ -998,7 +955,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearSfuId() {
       sfuId = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -1018,9 +975,9 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setMarker(java.lang.String value) {
-      validate(fields()[3], value);
+      validate(fields()[2], value);
       this.marker = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -1030,7 +987,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return True if the 'marker' field has been set, false otherwise.
       */
     public boolean hasMarker() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[2];
     }
 
 
@@ -1041,7 +998,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearMarker() {
       marker = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -1061,9 +1018,9 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setTimestamp(long value) {
-      validate(fields()[4], value);
+      validate(fields()[3], value);
       this.timestamp = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -1073,7 +1030,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[3];
     }
 
 
@@ -1083,7 +1040,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearTimestamp() {
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -1103,9 +1060,9 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setCallId(java.lang.String value) {
-      validate(fields()[5], value);
+      validate(fields()[4], value);
       this.callId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -1115,7 +1072,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return True if the 'callId' field has been set, false otherwise.
       */
     public boolean hasCallId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -1126,7 +1083,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearCallId() {
       callId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -1146,9 +1103,9 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setRoomId(java.lang.String value) {
-      validate(fields()[6], value);
+      validate(fields()[5], value);
       this.roomId = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -1158,7 +1115,7 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       * @return True if the 'roomId' field has been set, false otherwise.
       */
     public boolean hasRoomId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
 
 
@@ -1169,6 +1126,49 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
       */
     public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearRoomId() {
       roomId = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'transportId' field.
+      * The generated unique identifier of the transport
+      * @return The value.
+      */
+    public java.lang.String getTransportId() {
+      return transportId;
+    }
+
+    /**
+      * Sets the value of the 'transportId' field.
+      * The generated unique identifier of the transport
+      * @param value The value of 'transportId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder setTransportId(java.lang.String value) {
+      validate(fields()[6], value);
+      this.transportId = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'transportId' field has been set.
+      * The generated unique identifier of the transport
+      * @return True if the 'transportId' field has been set, false otherwise.
+      */
+    public boolean hasTransportId() {
+      return fieldSetFlags()[6];
+    }
+
+
+    /**
+      * Clears the value of the 'transportId' field.
+      * The generated unique identifier of the transport
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SFUTransportReport.Builder clearTransportId() {
+      transportId = null;
       fieldSetFlags()[6] = false;
       return this;
     }
@@ -2209,13 +2209,13 @@ public class SFUTransportReport extends org.apache.avro.specific.SpecificRecordB
     public SFUTransportReport build() {
       try {
         SFUTransportReport record = new SFUTransportReport();
-        record.serviceId = fieldSetFlags()[0] ? this.serviceId : (java.lang.String) defaultValue(fields()[0]);
-        record.mediaUnitId = fieldSetFlags()[1] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[1]);
-        record.sfuId = fieldSetFlags()[2] ? this.sfuId : (java.lang.String) defaultValue(fields()[2]);
-        record.marker = fieldSetFlags()[3] ? this.marker : (java.lang.String) defaultValue(fields()[3]);
-        record.timestamp = fieldSetFlags()[4] ? this.timestamp : (java.lang.Long) defaultValue(fields()[4]);
-        record.callId = fieldSetFlags()[5] ? this.callId : (java.lang.String) defaultValue(fields()[5]);
-        record.roomId = fieldSetFlags()[6] ? this.roomId : (java.lang.String) defaultValue(fields()[6]);
+        record.mediaUnitId = fieldSetFlags()[0] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[0]);
+        record.sfuId = fieldSetFlags()[1] ? this.sfuId : (java.lang.String) defaultValue(fields()[1]);
+        record.marker = fieldSetFlags()[2] ? this.marker : (java.lang.String) defaultValue(fields()[2]);
+        record.timestamp = fieldSetFlags()[3] ? this.timestamp : (java.lang.Long) defaultValue(fields()[3]);
+        record.callId = fieldSetFlags()[4] ? this.callId : (java.lang.String) defaultValue(fields()[4]);
+        record.roomId = fieldSetFlags()[5] ? this.roomId : (java.lang.String) defaultValue(fields()[5]);
+        record.transportId = fieldSetFlags()[6] ? this.transportId : (java.lang.String) defaultValue(fields()[6]);
         record.dtlsState = fieldSetFlags()[7] ? this.dtlsState : (java.lang.String) defaultValue(fields()[7]);
         record.iceState = fieldSetFlags()[8] ? this.iceState : (java.lang.String) defaultValue(fields()[8]);
         record.sctpState = fieldSetFlags()[9] ? this.sctpState : (java.lang.String) defaultValue(fields()[9]);

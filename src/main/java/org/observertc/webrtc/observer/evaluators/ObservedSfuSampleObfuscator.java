@@ -3,9 +3,9 @@ package org.observertc.webrtc.observer.evaluators;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.samples.ClientSample;
-import org.observertc.webrtc.observer.samples.ClientSampleVisitor;
-import org.observertc.webrtc.observer.samples.ObservedClientSample;
+import org.observertc.webrtc.observer.samples.ObservedSfuSample;
+import org.observertc.webrtc.observer.samples.SfuSample;
+import org.observertc.webrtc.observer.samples.SfuSampleVisitor;
 import org.observertc.webrtc.observer.security.ObfuscationMethods;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Prototype
-public class Obfuscator implements Function<List<ObservedClientSample>, List<ObservedClientSample>> {
-    private static final Logger logger = LoggerFactory.getLogger(Obfuscator.class);
+public class ObservedSfuSampleObfuscator implements Function<List<ObservedSfuSample>, List<ObservedSfuSample>> {
+    private static final Logger logger = LoggerFactory.getLogger(ObservedSfuSampleObfuscator.class);
 
     private boolean enabled = false; // change if config enables it
     private java.util.function.Function<String, String> obfuscateUserId;
     private java.util.function.Function<String, String> obfuscateRoomId;
     private java.util.function.Function<String, String> obfuscateIceAddresses;
 
-    public Obfuscator(ObserverConfig observerConfig, ObfuscationMethods obfuscationMethods) {
+    public ObservedSfuSampleObfuscator(ObserverConfig observerConfig, ObfuscationMethods obfuscationMethods) {
         var config = observerConfig.obfuscations;
         if (Objects.nonNull(config)) {
             this.enabled = config.enabled;
@@ -40,25 +40,23 @@ public class Obfuscator implements Function<List<ObservedClientSample>, List<Obs
     }
 
     @Override
-    public List<ObservedClientSample> apply(List<ObservedClientSample> observedClientSampleList) throws Exception{
+    public List<ObservedSfuSample> apply(List<ObservedSfuSample> ObservedSfuSampleList) throws Exception{
         if (!this.enabled) {
-            return observedClientSampleList;
+            return ObservedSfuSampleList;
         }
-        for (ObservedClientSample observedClientSample : observedClientSampleList) {
-            ClientSample clientSample = observedClientSample.getClientSample();
-            clientSample.userId = this.obfuscateUserId.apply(clientSample.userId);
-            clientSample.roomId = this.obfuscateRoomId.apply(clientSample.roomId);
-            ClientSampleVisitor
-                    .streamPeerConnectionTransports(clientSample)
-                    .forEach(pcTransport -> {
+        for (ObservedSfuSample observedSfuSample : ObservedSfuSampleList) {
+            SfuSample sfuSample = observedSfuSample.getSfuSample();
+            SfuSampleVisitor
+                    .streamTransports(sfuSample)
+                    .forEach(sfuTransport -> {
                         try {
-                            pcTransport.localAddress = this.obfuscateIceAddresses.apply(pcTransport.localAddress);
-                            pcTransport.remoteAddress = this.obfuscateIceAddresses.apply(pcTransport.remoteAddress);
+                            sfuTransport.localAddress = this.obfuscateIceAddresses.apply(sfuTransport.localAddress);
+                            sfuTransport.remoteAddress = this.obfuscateIceAddresses.apply(sfuTransport.remoteAddress);
                         } catch (Throwable t) {
                             logger.error("Error occurred by obfuscating ice addresses", t);
                         }
                     });
         }
-        return observedClientSampleList;
+        return ObservedSfuSampleList;
     }
 }

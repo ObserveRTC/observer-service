@@ -1,11 +1,7 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import com.hazelcast.core.EntryListener;
-import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.dto.CallDTO;
-import org.observertc.webrtc.observer.dto.ClientDTO;
-import org.observertc.webrtc.observer.dto.MediaTrackDTO;
-import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.dto.*;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +9,13 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
-@Prototype
+@Singleton
 public class HazelcastEventSubscriber {
 
     private static final Logger logger = LoggerFactory.getLogger(HazelcastEventSubscriber.class);
@@ -27,6 +24,9 @@ public class HazelcastEventSubscriber {
     private final Set<UUID> subscribedCallEntryListener = new HashSet();
     private final Set<UUID> subscribedPeerConnectionEntryListener = new HashSet();
     private final Set<UUID> subscribedMediaTrackEntryListener = new HashSet();
+    private final Set<UUID> subscribedSfuEntryListeners = new HashSet();
+    private final Set<UUID> subscribedSfuTransportEntryListeners = new HashSet();
+    private final Set<UUID> subscribedSfuRtpStreamEntryListeners = new HashSet();
 
     @Inject
     HazelcastMaps hazelcastMaps;
@@ -61,12 +61,33 @@ public class HazelcastEventSubscriber {
         return this;
     }
 
+    public HazelcastEventSubscriber withSfuEntriesLocalListener(EntryListener<UUID, SfuDTO> entryListener) {
+        UUID listenerId = this.hazelcastMaps.getSFUs().addLocalEntryListener(entryListener);
+        this.subscribedSfuEntryListeners.add(listenerId);
+        return this;
+    }
+
+    public HazelcastEventSubscriber withSfuTransportEntriesLocalListener(EntryListener<UUID, SfuTransportDTO> entryListener) {
+        UUID listenerId = this.hazelcastMaps.getSFUTransports().addLocalEntryListener(entryListener);
+        this.subscribedSfuTransportEntryListeners.add(listenerId);
+        return this;
+    }
+
+    public HazelcastEventSubscriber withSfuRtpStreamEntriesLocalListener(EntryListener<UUID, SfuRtpStreamDTO> entryListener) {
+        UUID listenerId = this.hazelcastMaps.getSFURtpStreams().addLocalEntryListener(entryListener);
+        this.subscribedSfuRtpStreamEntryListeners.add(listenerId);
+        return this;
+    }
+
     @PreDestroy
     void teardown() {
         this.doUnsubscribe(this.subscribedCallEntryListener, this.hazelcastMaps.getCalls()::removeEntryListener);
         this.doUnsubscribe(this.subscribedClientEntryListeners, this.hazelcastMaps.getClients()::removeEntryListener);
         this.doUnsubscribe(this.subscribedPeerConnectionEntryListener, this.hazelcastMaps.getPeerConnections()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedMediaTrackEntryListener, this.hazelcastMaps.getPeerConnections()::removeEntryListener);
+        this.doUnsubscribe(this.subscribedMediaTrackEntryListener, this.hazelcastMaps.getMediaTracks()::removeEntryListener);
+        this.doUnsubscribe(this.subscribedSfuEntryListeners, this.hazelcastMaps.getSFUs()::removeEntryListener);
+        this.doUnsubscribe(this.subscribedSfuTransportEntryListeners, this.hazelcastMaps.getSFUTransports()::removeEntryListener);
+        this.doUnsubscribe(this.subscribedSfuRtpStreamEntryListeners, this.hazelcastMaps.getSFURtpStreams()::removeEntryListener);
     }
 
     private void doUnsubscribe(Set<UUID> listenerIds, Function<UUID, Boolean> unsubscribe) {

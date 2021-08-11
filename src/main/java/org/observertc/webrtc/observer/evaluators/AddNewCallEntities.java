@@ -5,14 +5,16 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.dto.StreamDirection;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.tasks.AddClientsTask;
 import org.observertc.webrtc.observer.repositories.tasks.AddMediaTracksTasks;
 import org.observertc.webrtc.observer.repositories.tasks.AddPeerConnectionsTask;
-import org.observertc.webrtc.observer.repositories.tasks.RefreshTask;
+import org.observertc.webrtc.observer.repositories.tasks.RefreshCallsTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -29,8 +31,8 @@ import java.util.stream.Collectors;
  * Responsible to Order appropriate updates on new calls, clients, peer connections
  */
 @Singleton
-public class AddNewEntities implements Consumer<CollectedCallSamples> {
-    private static final Logger logger = LoggerFactory.getLogger(AddNewEntities.class);
+public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
+    private static final Logger logger = LoggerFactory.getLogger(AddNewCallEntities.class);
 
     private Subject<CallEventReport> callEventReportSubject = PublishSubject.create();
 
@@ -39,36 +41,37 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
     }
 
     @Inject
-    Provider<RefreshTask> refreshTaskProvider;
+    Provider<RefreshCallsTask> refreshTaskProvider;
 
     @Inject
     Provider<AddClientsTask> addClientsTaskProvider;
 
     @Inject
-    Provider<AddMediaTracksTasks> addMediaTrackTaskProvider;
-
-    @Inject
     Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
 
+    @Inject
+    Provider<AddMediaTracksTasks> addMediaTrackTaskProvider;
+
+
     @Override
-    @Timed(value = "observertc-evaluators-add-new-entities")
+    @Timed(value = ExposedMetrics.OBSERVERTC_EVALUATORS_ADD_NEW_CALL_ENTITIES_EXECUTION_TIME)
     public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
         Set<UUID> clientIds = collectedCallSamples.getClientIds();
         Set<UUID> peerConnectionIds = collectedCallSamples.getPeerConnectionIds();
         Set<UUID> mediaTrackIds = collectedCallSamples.getMediaTrackIds();
-        RefreshTask refreshTask = refreshTaskProvider.get()
+        RefreshCallsTask refreshCallsTask = refreshTaskProvider.get()
                 .withClientIds(clientIds)
                 .withPeerConnectionIds(peerConnectionIds)
                 .withMediaTrackIds(mediaTrackIds);
-        if (!refreshTask.execute().succeeded()) {
-            logger.warn("Unsuccessful execution of {}. Entities are not refreshed, new entities are not identified!", RefreshTask.class.getSimpleName());
+        if (!refreshCallsTask.execute().succeeded()) {
+            logger.warn("Unsuccessful execution of {}. Entities are not refreshed, new entities are not identified!", RefreshCallsTask.class.getSimpleName());
             return;
         }
 
         Map<UUID, ObservedNewEntity<ClientDTO>> newClients = new HashMap<>();
         Map<UUID, ObservedNewEntity<PeerConnectionDTO>> newPeerConnections = new HashMap<>();
         Map<UUID, ObservedNewEntity<MediaTrackDTO>> newMediaTracks = new HashMap<>();
-        RefreshTask.Report report = refreshTask.getResult();
+        RefreshCallsTask.Report report = refreshCallsTask.getResult();
         for (CallSamples callSamples : collectedCallSamples) {
             var callId = callSamples.getCallId();
             for (ClientSamples clientSamples : callSamples) {
@@ -118,6 +121,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
+                                UUID sfuStreamId = UUIDAdapter.tryParseOrNull(track.sfuStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -129,12 +133,13 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
+                                        .withSfuStreamId(sfuStreamId)
                                         .withDirection(StreamDirection.INBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())
                                         .build();
-                                var observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
+                                ObservedNewEntity<MediaTrackDTO> observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
                                 newMediaTracks.put(trackId, observedNewEntity);
                             });
 
@@ -145,6 +150,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
+                                UUID sfuStreamId = UUIDAdapter.tryParseOrNull(track.sfuStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -156,12 +162,13 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
+                                        .withSfuStreamId(sfuStreamId)
                                         .withDirection(StreamDirection.INBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())
                                         .build();
-                                var observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
+                                ObservedNewEntity<MediaTrackDTO> observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
                                 newMediaTracks.put(trackId, observedNewEntity);
                             });
                     ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
@@ -171,6 +178,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
+                                UUID sfuStreamId = UUIDAdapter.tryParseOrNull(track.sfuStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -182,12 +190,13 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
+                                        .withSfuStreamId(sfuStreamId)
                                         .withDirection(StreamDirection.INBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())
                                         .build();
-                                var observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
+                                ObservedNewEntity<MediaTrackDTO> observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
                                 newMediaTracks.put(trackId, observedNewEntity);
                             });
 
@@ -198,6 +207,7 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
+                                UUID sfuStreamId = UUIDAdapter.tryParseOrNull(track.sfuStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -209,12 +219,13 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
+                                        .withSfuStreamId(sfuStreamId)
                                         .withDirection(StreamDirection.OUTBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())
                                         .build();
-                                var observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
+                                ObservedNewEntity<MediaTrackDTO> observedNewEntity = new ObservedNewEntity<MediaTrackDTO>(mediaTrackDTO, observedSample, callSamples.getCallId());
                                 newMediaTracks.put(trackId, observedNewEntity);
                             });
                 }
@@ -249,15 +260,6 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         this.forwardReports(reports);
-    }
-
-    private CallEventReport buildReport(CallEventReport.Builder builder) {
-        try {
-            return builder.build();
-        } catch (Exception ex) {
-            logger.warn("Cannot build report due to exception", ex);
-            return null;
-        }
     }
 
     private void addNewPeerConnections(Map<UUID, ObservedNewEntity<PeerConnectionDTO>> newPeerConnections) {
@@ -311,14 +313,23 @@ public class AddNewEntities implements Consumer<CollectedCallSamples> {
         }
     }
 
+    private CallEventReport buildReport(CallEventReport.Builder builder) {
+        try {
+            return builder.build();
+        } catch (Exception ex) {
+            logger.warn("Cannot build report due to exception", ex);
+            return null;
+        }
+    }
+
     private class ObservedNewEntity<T> {
         final T dto;
-        final ObservedSample observedSample;
+//        final ObservedSample observedSample;
         final UUID callId;
 
-        private ObservedNewEntity(T dto, ObservedSample observedSample, UUID callId) {
+        private ObservedNewEntity(T dto, ObservedClientSample observedSample, UUID callId) {
             this.dto = dto;
-            this.observedSample = observedSample;
+//            this.observedSample = observedSample;
             this.callId = callId;
         }
     }

@@ -2,7 +2,17 @@ package org.observertc.webrtc.observer.samples;
 
 import java.util.UUID;
 
-public interface ObservedClientSample extends ObservedSample {
+public interface ObservedClientSample {
+
+    String getServiceId();
+
+    String getMediaUnitId();
+
+    String getTimeZoneId();
+
+    Long getTimestamp();
+
+    String getRoomId();
 
     UUID getClientId();
 

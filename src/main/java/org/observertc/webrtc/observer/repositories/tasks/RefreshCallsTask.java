@@ -14,14 +14,15 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Prototype
-public class RefreshTask extends ChainedTask<RefreshTask.Report> {
+public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RefreshTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(RefreshCallsTask.class);
 
     public static class Report {
         public Set<UUID> foundClientIds = new HashSet<>();
         public Map<UUID, UUID> foundPeerConnectionIdsToClientIds = new HashMap<>();
         public Map<UUID, UUID> foundMediaTrackIdsToPeerConnectionIds = new HashMap<>();
+        public Map<UUID, UUID> foundInboundTrackIdToOutboundTrackIds = new HashMap<>();
     }
 
 
@@ -65,8 +66,20 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
                             Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(this.mediaTrackIds);
                             mediaTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
                                 this.report.foundMediaTrackIdsToPeerConnectionIds.put(trackId, mediaTrackDTO.peerConnectionId);
+//                                if (StreamDirection.INBOUND.equals(mediaTrackDTO.direction)) {
+//                                    this.inboundTrackIds.add(trackId);
+//                                }
                             });
                         })
+//                .addActionStage("Check Inbound TrackIds to Outbound TrackIds",
+//                        // action
+//                        () -> {
+//                            if (this.inboundTrackIds.size() < 1) {
+//                                return;
+//                            }
+//                            Map<UUID, UUID> inboundTrackIdsToOutboundTrackIds = this.hazelcastMaps.getInboundTrackToOutboundTracks().getAll(this.inboundTrackIds);
+//                            this.report.foundInboundTrackIdToOutboundTrackIds.putAll(inboundTrackIdsToOutboundTrackIds);
+//                        })
                 .<Report> addTerminalSupplier("Provide the composed report", () -> {
                     return this.report;
                 })
@@ -75,7 +88,7 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
 
 
 
-    public RefreshTask withClientIds(UUID... clientIds) {
+    public RefreshCallsTask withClientIds(UUID... clientIds) {
         if (Objects.isNull(clientIds)) {
             return this;
         }
@@ -84,7 +97,7 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
         return this;
     }
 
-    public RefreshTask withClientIds(Set<UUID> clientIds) {
+    public RefreshCallsTask withClientIds(Set<UUID> clientIds) {
         if (Objects.isNull(clientIds)) {
             return this;
         }
@@ -92,7 +105,7 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
         return this;
     }
 
-    public RefreshTask withPeerConnectionIds(UUID... peerConnectionIds) {
+    public RefreshCallsTask withPeerConnectionIds(UUID... peerConnectionIds) {
         if (Objects.isNull(peerConnectionIds)) {
             return this;
         }
@@ -101,7 +114,7 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
         return this;
     }
 
-    public RefreshTask withPeerConnectionIds(Set<UUID> peerConnectionIds) {
+    public RefreshCallsTask withPeerConnectionIds(Set<UUID> peerConnectionIds) {
         if (Objects.isNull(peerConnectionIds)) {
             return this;
         }
@@ -109,7 +122,7 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
         return this;
     }
 
-    public RefreshTask withMediaTrackIds(UUID... mediaTrackIds) {
+    public RefreshCallsTask withMediaTrackIds(UUID... mediaTrackIds) {
         if (Objects.isNull(mediaTrackIds)) {
             return this;
         }
@@ -118,7 +131,7 @@ public class RefreshTask extends ChainedTask<RefreshTask.Report> {
         return this;
     }
 
-    public RefreshTask withMediaTrackIds(Set<UUID> mediaTrackIds) {
+    public RefreshCallsTask withMediaTrackIds(Set<UUID> mediaTrackIds) {
         if (Objects.isNull(mediaTrackIds)) {
             return this;
         }

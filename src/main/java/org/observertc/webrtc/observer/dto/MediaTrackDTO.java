@@ -45,6 +45,7 @@ public class MediaTrackDTO implements VersionedPortable {
 
 	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
 	private static final String MEDIA_TRACK_ID_FIELD_NAME = "trackId";
+	private static final String SFU_STREAM_TRACK_ID_FIELD_NAME = "sfuStreamId";
 	private static final String SSRC_FIELD_NAME = "ssrc";
 	private static final String ADDED_FIELD_NAME = "added";
 	private static final String DIRECTION_FIELD_NAME = "direction";
@@ -59,6 +60,7 @@ public class MediaTrackDTO implements VersionedPortable {
 
 	public UUID peerConnectionId;
 	public UUID trackId;
+	public UUID sfuStreamId;
 	public Long ssrc;
 	public Long added;
 	public StreamDirection direction;
@@ -90,6 +92,7 @@ public class MediaTrackDTO implements VersionedPortable {
 
 		writer.writeByteArray(PEER_CONNECTION_ID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionId));
 		writer.writeByteArray(MEDIA_TRACK_ID_FIELD_NAME, UUIDAdapter.toBytes(this.trackId));
+		SerDeUtils.writeNullableUUID(writer, SFU_STREAM_TRACK_ID_FIELD_NAME, this.sfuStreamId);
 		writer.writeLong(SSRC_FIELD_NAME, this.ssrc);
 		writer.writeLong(ADDED_FIELD_NAME, this.added);
 		writer.writeUTF(DIRECTION_FIELD_NAME, this.direction.name());
@@ -108,6 +111,7 @@ public class MediaTrackDTO implements VersionedPortable {
 
 		this.peerConnectionId = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_ID_FIELD_NAME));
 		this.trackId = UUIDAdapter.toUUID(reader.readByteArray(MEDIA_TRACK_ID_FIELD_NAME));
+		this.sfuStreamId = SerDeUtils.readNullableUUID(reader, SFU_STREAM_TRACK_ID_FIELD_NAME);
 		this.ssrc = reader.readLong(SSRC_FIELD_NAME);
 		this.added = reader.readLong(ADDED_FIELD_NAME);
 		var direction = reader.readUTF(DIRECTION_FIELD_NAME);
@@ -140,6 +144,7 @@ public class MediaTrackDTO implements VersionedPortable {
 
 		if (!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId)) return false;
 		if (!Objects.equals(this.trackId, otherDTO.trackId)) return false;
+		if (!Objects.equals(this.sfuStreamId, otherDTO.sfuStreamId)) return false;
 		if (!Objects.equals(this.ssrc, otherDTO.ssrc)) return false;
 		if (!Objects.equals(this.added, otherDTO.added)) return false;
 		if (!Objects.equals(this.direction, otherDTO.direction)) return false;
@@ -183,6 +188,7 @@ public class MediaTrackDTO implements VersionedPortable {
 			return this;
 		}
 
+
 		public Builder withUserId(String value) {
 			this.result.userId = value;
 			return this;
@@ -204,6 +210,11 @@ public class MediaTrackDTO implements VersionedPortable {
 		public Builder withTrackId(UUID value) {
 			Objects.requireNonNull(value);
 			this.result.trackId = value;
+			return this;
+		}
+
+		public Builder withSfuStreamId(UUID value) {
+			this.result.sfuStreamId = value;
 			return this;
 		}
 

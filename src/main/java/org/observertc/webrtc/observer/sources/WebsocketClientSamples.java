@@ -27,10 +27,10 @@ import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.evaluators.ProcessingPipeline;
+import org.observertc.webrtc.observer.evaluators.ObservedClientSampleProcessingPipeline;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
-import org.observertc.webrtc.observer.micrometer.ServiceMetrics;
 import org.observertc.webrtc.observer.samples.ClientSample;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
@@ -60,7 +60,7 @@ public class WebsocketClientSamples {
 	private Map<String, Instant> expirations;
 
 	@Inject
-	ServiceMetrics serviceMetrics;
+	ExposedMetrics exposedMetrics;
 
 	@Inject
 	WebsocketCustomCloseReasons customCloseReasons;
@@ -72,7 +72,7 @@ public class WebsocketClientSamples {
 	ObserverConfig.SourcesConfig.ClientSamplesConfig config;
 
 	@Inject
-	ProcessingPipeline processingPipeline;
+	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
 
 	public WebsocketClientSamples(
 			ObjectMapper objectMapper,
@@ -109,7 +109,7 @@ public class WebsocketClientSamples {
 				}
 				this.expirations.put(session.getId(), expiration.get());
 			}
-			this.serviceMetrics.incrementClientSamplesOpenedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementClientSamplesOpenedWebsockets(serviceId, mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -123,7 +123,7 @@ public class WebsocketClientSamples {
 			WebSocketSession session) {
 		try {
 			this.expirations.remove(session.getId());
-			this.serviceMetrics.incrementClientSamplesClosedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementClientSamplesClosedWebsockets(serviceId, mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -148,7 +148,7 @@ public class WebsocketClientSamples {
 			}
 		}
 		try {
-			this.serviceMetrics.incrementClientSamplesReceived(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementClientSamplesReceived(serviceId, mediaUnitId);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -157,19 +157,19 @@ public class WebsocketClientSamples {
 			sample = this.objectReader.readValue(messageBytes, ClientSample.class);
 		} catch (IOException e) {
 			this.flawMonitor.makeLogEntry()
-					.withMessage("Exception during parsing")
+					.withMessage("Exception while parsing {}", ClientSample.class.getSimpleName())
 					.withException(e)
 					.complete();
 			return;
 		}
-		var observedClientSampleBuilder = ObservedClientSampleBuilder.from(sample)
-				.withServiceId(serviceId)
-				.withMediaUnitId(mediaUnitId);
 
 		try {
-			var observedClientSample = observedClientSampleBuilder.build();
+			var observedClientSample = ObservedClientSampleBuilder.from(sample)
+					.withServiceId(serviceId)
+					.withMediaUnitId(mediaUnitId)
+					.build();
 			Observable.just(observedClientSample)
-					.subscribe(this.processingPipeline);
+					.subscribe(this.observedClientSampleProcessingPipeline);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withException(ex)

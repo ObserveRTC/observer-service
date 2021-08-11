@@ -69,7 +69,7 @@ public class ListenMediaTrackEntryChanges implements EntryListener<UUID, MediaTr
             logger.warn("MediaTrack DTO is expired, but the removed value is null {}", event.toString());
             return;
         }
-        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.evaluators.mediaTracksMaxIdleTime).toEpochMilli();
+        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositoryConfig.mediaTracksMaxIdleTime).toEpochMilli();
         RemovedMediaTrack closedPeerConnection = new RemovedMediaTrack(removedMediaTrackDTO, estimatedLeave);
         synchronized (this) {
             this.removedMediaTracks.onNext(closedPeerConnection);

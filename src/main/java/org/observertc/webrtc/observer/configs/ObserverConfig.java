@@ -81,6 +81,38 @@ public class ObserverConfig {
 		public static class ClientSamplesConfig {
 			public boolean enabled = true;
 		}
+
+		public SourcesConfig.SfuSamplesConfig sfuSamples;
+
+		@ConfigurationProperties("sfuSamples")
+		public static class SfuSamplesConfig {
+			public boolean enabled = true;
+		}
+	}
+
+	// Repository config
+	public RepositoryConfig repositoryConfig;
+
+	@ConfigurationProperties("repositories")
+	public static class RepositoryConfig {
+
+		@Min(60)
+		public int mediaTracksMaxIdleTime = 300;
+
+		@Min(60)
+		public int peerConnectionsMaxIdleTime = 300;
+
+		@Min(60)
+		public int clientMaxIdleTime = 300;
+
+		@Min(60)
+		public int sfuMaxIdleTime = 600;
+
+		@Min(60)
+		public int sfuTransportMaxIdleTime = 600;
+
+		@Min(60)
+		public int sfuRtpStreamMaxIdleTime = 600;
 	}
 
 	// Evaluators Config
@@ -95,14 +127,11 @@ public class ObserverConfig {
 		@Min(1)
 		public int clientSamplesBufferMaxItems = 10000;
 
-		@Min(60)
-		public int mediaTracksMaxIdleTime = 300;
+		@Min(30)
+		public int sfuSamplesBufferMaxTimeInS = 30;
 
-		@Min(60)
-		public int peerConnectionsMaxIdleTime = 300;
-
-		@Min(60)
-		public int clientMaxIdleTime = 300;
+		@Min(1)
+		public int sfuSamplesBufferMaxItems = 10000;
 
 		@Min(1)
 		public int reportsBufferMaxItems = 10000;
@@ -122,15 +151,23 @@ public class ObserverConfig {
 		public boolean reportCallEvents = true;
 		public boolean reportCallMeta = true;
 		public boolean reportClientExtensions = true;
-		public boolean reportInboundAudioTracks = false;
-		public boolean reportInboundVideoTracks = false;
-		public boolean reportOutboundAudioTracks = false;
-		public boolean reportOutboundVideoTracks = false;
+		public boolean reportInboundAudioTracks = true;
+		public boolean reportInboundVideoTracks = true;
+		public boolean reportOutboundAudioTracks = true;
+		public boolean reportOutboundVideoTracks = true;
 		public boolean reportPeerConnectionTransport = true;
 		public boolean reportPeerConnectionDataChannel = true;
-		public boolean reportMediaTracks = true;
+		public boolean reportMediaTracks = false;
+
+		public boolean reportSFUEvents = true;
+		public boolean reportSFUMeta = true;
+		public boolean reportSfuTransports = true;
+		public boolean reportSfuInboundRtpStreams = true;
+		public boolean reportSfuOutboundRtpStreams = true;
+		public boolean reportSfuSctpStreams = true;
 		public String defaultServiceName = "defaultServiceName";
-	}
+
+    }
 
 	// Hazelcast Config
 	public HazelcastConfig hazelcast;

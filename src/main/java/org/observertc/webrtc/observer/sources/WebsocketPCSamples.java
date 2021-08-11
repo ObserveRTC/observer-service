@@ -30,7 +30,7 @@ import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.evaluators.ProcessingPipeline;
+import org.observertc.webrtc.observer.evaluators.ObservedClientSampleProcessingPipeline;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
 import org.observertc.webrtc.observer.samples.ClientSample;
@@ -67,7 +67,7 @@ public class WebsocketPCSamples {
 	PCSampleToClientSampleConverter pcSampleConverter;
 
 	@Inject
-	ProcessingPipeline processingPipeline;
+	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
 
 	@Inject
 	MeterRegistry meterRegistry;
@@ -192,7 +192,7 @@ public class WebsocketPCSamples {
 					.withMediaUnitId(mediaUnitID)
 					.build();
 			Observable.just(observedClientSample)
-					.subscribe(this.processingPipeline);
+					.subscribe(this.observedClientSampleProcessingPipeline);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withException(ex)

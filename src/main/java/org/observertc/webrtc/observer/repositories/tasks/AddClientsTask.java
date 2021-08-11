@@ -36,7 +36,7 @@ public class AddClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
                             }
                         }
                 )
-                .<Map<UUID, ClientEntity>> addBreakCondition((resultHolder) -> {
+                .<Map<UUID, ClientDTO>> addBreakCondition((resultHolder) -> {
                     if (this.clientDTOs.size() < 1) {
                         resultHolder.set(Collections.EMPTY_LIST);
                         return true;

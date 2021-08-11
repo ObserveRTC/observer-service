@@ -78,7 +78,7 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
             logger.warn("Client DTO is expired, but the value is null {}", event.toString());
             return;
         }
-        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.evaluators.clientMaxIdleTime).toEpochMilli();
+        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositoryConfig.clientMaxIdleTime).toEpochMilli();
         ClientLeft clientLeft = new ClientLeft(removedClientDTO, estimatedLeave);
         synchronized (this) {
             this.removedClients.onNext(clientLeft);

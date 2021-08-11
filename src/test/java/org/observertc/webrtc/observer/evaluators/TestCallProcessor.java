@@ -2,9 +2,7 @@ package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Replaces;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -30,7 +28,7 @@ class TestCallProcessor {
     private List<ClientSurrogate> clientSurrogates = new LinkedList<>();
 
     @Inject
-    ProcessingPipeline pipeline;
+    ObservedClientSampleProcessingPipeline pipeline;
 
     @Inject
     ObservedClientSampleGenerator alice;

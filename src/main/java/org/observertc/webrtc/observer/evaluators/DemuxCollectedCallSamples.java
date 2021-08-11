@@ -10,6 +10,7 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.repositories.tasks.FindRemoteClientIdsForMediaTrackIds;
+import org.observertc.webrtc.observer.repositories.tasks.MatchCallTracksTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.*;
+
+import static org.observertc.webrtc.observer.micrometer.ExposedMetrics.OBSERVERTC_EVALUATORS_DEMUX_COLLECTED_CALL_SAMPLES_TIME;
 
 @Prototype
 public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples> {
@@ -52,8 +55,11 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     @Inject
     ObserverConfig observerConfig;
 
+//    @Inject
+//    Provider<FindRemoteClientIdsForMediaTrackIds> findRemoteClientIdsForMediaTrackIdsProvider;
+
     @Inject
-    Provider<FindRemoteClientIdsForMediaTrackIds> findRemoteClientIdsForMediaTrackIdsProvider;
+    Provider<MatchCallTracksTask> matchCallTracksTaskProvider;
 
     @PostConstruct
     void setup() {
@@ -61,7 +67,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     }
 
     @Override
-    @Timed(value = "observertc-evaluators-demux-collected-call-samples")
+    @Timed(value = OBSERVERTC_EVALUATORS_DEMUX_COLLECTED_CALL_SAMPLES_TIME)
     public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
         try {
             this.doAccept(collectedCallSamples);
@@ -71,7 +77,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     }
 
     public void doAccept(CollectedCallSamples collectedCallSamples) throws Throwable {
-        Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> callsMatchedIds = this.makeCallsMatchedIds(collectedCallSamples);
+//        Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> callsMatchedIds = this.makeCallsMatchedIds(collectedCallSamples);
+        Map<UUID, MatchCallTracksTask.MatchedIds> inboundTrackMatchIds = this.makeInboundTrackMatchIds(collectedCallSamples);
         List<FindRemoteClientIdsForMediaTrackIds.MatchedIds> emptyMatchedIds = Collections.EMPTY_LIST;
 
         List<ClientTransportReport> clientTransportReports = new LinkedList<>();
@@ -84,7 +91,6 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         Map<String, String> peerConnectionLabels = new HashMap<>();
         for (CallSamples callSamples : collectedCallSamples) {
             var callId = callSamples.getCallId();
-            Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>> ssrcMatches = callsMatchedIds.getOrDefault(callId, Collections.EMPTY_MAP);
             for (ClientSamples clientSamples: callSamples) {
                 ObservedClientSample observedClientSample = clientSamples;
                 for (ClientSample clientSample : clientSamples) {
@@ -127,12 +133,13 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
 
                     ClientSampleVisitor.streamInboundAudioTracks(clientSample)
                                 .map(inboundAudioTrack -> {
-                                    var matchedIdsList = ssrcMatches.getOrDefault(inboundAudioTrack.ssrc, emptyMatchedIds);
+                                    UUID trackId = UUIDAdapter.tryParseOrNull(inboundAudioTrack.trackId);
+                                    MatchCallTracksTask.MatchedIds matchedIds = Objects.nonNull(trackId) ? inboundTrackMatchIds.get(trackId) : null;
                                     String peerConnectionLabel = peerConnectionLabels.get(inboundAudioTrack.peerConnectionId);
                                     return this.createInboundAudioTrackReport(
                                             callId,
                                             observedClientSample,
-                                            matchedIdsList,
+                                            matchedIds,
                                             peerConnectionLabel,
                                             inboundAudioTrack
                                     );
@@ -142,12 +149,13 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
 
                         ClientSampleVisitor.streamInboundVideoTracks(clientSample)
                             .map(inboundVideoTrack -> {
-                                var matchedIdsList = ssrcMatches.getOrDefault(inboundVideoTrack.ssrc, emptyMatchedIds);
+                                UUID trackId = UUIDAdapter.tryParseOrNull(inboundVideoTrack.trackId);
+                                MatchCallTracksTask.MatchedIds matchedIds = Objects.nonNull(trackId) ? inboundTrackMatchIds.get(trackId) : null;
                                 String peerConnectionLabel = peerConnectionLabels.get(inboundVideoTrack.peerConnectionId);
                                 return this.createInboundVideoTrackReport(
                                         callId,
                                         observedClientSample,
-                                        matchedIdsList,
+                                        matchedIds,
                                         peerConnectionLabel,
                                         inboundVideoTrack
                                 );
@@ -227,7 +235,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     private InboundAudioTrackReport createInboundAudioTrackReport(
             UUID callId,
             ObservedClientSample observedClientSample,
-            List<FindRemoteClientIdsForMediaTrackIds.MatchedIds> matchedIdsList,
+            MatchCallTracksTask.MatchedIds matchedIds,
             String peerConnectionLabel,
             ClientSample.InboundAudioTrack inboundAudioTrack
     ) {
@@ -235,11 +243,11 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
             String remoteClientId = null;
             String remoteUserId = null;
             String remotePeerConnectionId = null;
-            if (Objects.nonNull(matchedIdsList) && matchedIdsList.size() == 1) {
-                var matchedIds = matchedIdsList.get(0);
-                remoteClientId = matchedIds.outboundClientId.toString();
+
+            if (Objects.nonNull(matchedIds)) {
+                remoteClientId = UUIDAdapter.toStringOrNull(matchedIds.outboundClientId);
                 remoteUserId = matchedIds.outboundUserId;
-                remotePeerConnectionId = matchedIds.outboundPeerConnectionId.toString();
+                remotePeerConnectionId = UUIDAdapter.toStringOrNull(matchedIds.outboundPeerConnectionId);
             }
             var result = InboundAudioTrackReport.newBuilder()
 
@@ -328,7 +336,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     private InboundVideoTrackReport createInboundVideoTrackReport(
             UUID callId,
             ObservedClientSample observedClientSample,
-            List<FindRemoteClientIdsForMediaTrackIds.MatchedIds> matchedIdsList,
+            MatchCallTracksTask.MatchedIds matchedIds,
             String peerConnectionLabel,
             ClientSample.InboundVideoTrack inboundVideoTrack
     ) {
@@ -336,11 +344,10 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
             String remoteClientId = null;
             String remoteUserId = null;
             String remotePeerConnectionId = null;
-            if (Objects.nonNull(matchedIdsList) && matchedIdsList.size() == 1) {
-                var matchedIds = matchedIdsList.get(0);
-                remoteClientId = matchedIds.outboundClientId.toString();
+            if (Objects.nonNull(matchedIds)) {
+                remoteClientId = UUIDAdapter.toStringOrNull(matchedIds.outboundClientId);
                 remoteUserId = matchedIds.outboundUserId;
-                remotePeerConnectionId = matchedIds.outboundPeerConnectionId.toString();
+                remotePeerConnectionId = UUIDAdapter.toStringOrNull(matchedIds.outboundPeerConnectionId);
             }
             var result = InboundVideoTrackReport.newBuilder()
 
@@ -840,7 +847,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         }
     }
 
-    private Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> makeCallsMatchedIds(CollectedCallSamples collectedCallSamples) {
+
+    private Map<UUID, MatchCallTracksTask.MatchedIds> makeInboundTrackMatchIds(CollectedCallSamples collectedCallSamples) {
         Set<UUID> inboundTrackIds = new HashSet<>();
         collectedCallSamples.stream()
                 .flatMap(CallSamples::stream)
@@ -858,7 +866,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                             .map(Optional::get)
                             .forEach(inboundTrackIds::add);
                 });
-        var task = findRemoteClientIdsForMediaTrackIdsProvider.get()
+        var task = matchCallTracksTaskProvider.get()
                 .whereMediaTrackIds(inboundTrackIds);
 
         if (!task.execute().succeeded()) {
@@ -866,21 +874,56 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
             return Collections.EMPTY_MAP;
         }
 
-        Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> result = new HashMap<>();
+        Map<UUID, MatchCallTracksTask.MatchedIds> result = new HashMap<>();
         var mappings = task.getResult();
         mappings.forEach(matchedIds -> {
-            Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>> ssrcMatches = result.get(matchedIds.callId);
-            if (Objects.isNull(ssrcMatches)) {
-                ssrcMatches = new HashMap<>();
-                result.put(matchedIds.callId, ssrcMatches);
-            }
-            var matchedIdsList = ssrcMatches.get(matchedIds.SSRC);
-            if (Objects.isNull(matchedIdsList)) {
-                matchedIdsList = new LinkedList<>();
-                ssrcMatches.put(matchedIds.SSRC, matchedIdsList);
-            }
-            matchedIdsList.add(matchedIds);
+            result.put(matchedIds.inboundTrackId, matchedIds);
         });
         return result;
     }
+
+
+//    private Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> makeCallsMatchedIds(CollectedCallSamples collectedCallSamples) {
+//        Set<UUID> inboundTrackIds = new HashSet<>();
+//        collectedCallSamples.stream()
+//                .flatMap(CallSamples::stream)
+//                .flatMap(ClientSamples::stream)
+//                .forEach(clientSample -> {
+//                    ClientSampleVisitor.streamInboundAudioTracks(clientSample)
+//                            .map(t -> UUIDAdapter.tryParse(t.trackId))
+//                            .filter(Optional::isPresent)
+//                            .map(Optional::get)
+//                            .forEach(inboundTrackIds::add);
+//
+//                    ClientSampleVisitor.streamInboundVideoTracks(clientSample)
+//                            .map(t -> UUIDAdapter.tryParse(t.trackId))
+//                            .filter(Optional::isPresent)
+//                            .map(Optional::get)
+//                            .forEach(inboundTrackIds::add);
+//                });
+//        var task = findRemoteClientIdsForMediaTrackIdsProvider.get()
+//                .whereMediaTrackIds(inboundTrackIds);
+//
+//        if (!task.execute().succeeded()) {
+//            logger.warn("Cannot match inbound tracks to outbound tracks, because the task execution is failed");
+//            return Collections.EMPTY_MAP;
+//        }
+//
+//        Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> result = new HashMap<>();
+//        var mappings = task.getResult();
+//        mappings.forEach(matchedIds -> {
+//            Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>> ssrcMatches = result.get(matchedIds.callId);
+//            if (Objects.isNull(ssrcMatches)) {
+//                ssrcMatches = new HashMap<>();
+//                result.put(matchedIds.callId, ssrcMatches);
+//            }
+//            var matchedIdsList = ssrcMatches.get(matchedIds.SSRC);
+//            if (Objects.isNull(matchedIdsList)) {
+//                matchedIdsList = new LinkedList<>();
+//                ssrcMatches.put(matchedIds.SSRC, matchedIdsList);
+//            }
+//            matchedIdsList.add(matchedIds);
+//        });
+//        return result;
+//    }
 }

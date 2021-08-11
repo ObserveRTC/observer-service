@@ -26,6 +26,13 @@ public class OutboundReportsAvroEncoder {
     private final BinaryMessageEncoder<OutboundVideoTrackReport> outboundVideoTrackEncoder;
     private final BinaryMessageEncoder<MediaTrackReport> mediaTrackEncoder;
 
+    private final BinaryMessageEncoder<SfuEventReport> sfuEventEncoder;
+    private final BinaryMessageEncoder<SfuMetaReport> sfuMetaEncoder;
+    private final BinaryMessageEncoder<SFUTransportReport> sfuTransportEncoder;
+    private final BinaryMessageEncoder<SfuInboundRTPStreamReport> sfuInboundRTPStreamEncoder;
+    private final BinaryMessageEncoder<SfuOutboundRTPStreamReport> sfuOutboundRTPStreamEncoder;
+    private final BinaryMessageEncoder<SfuSctpStreamReport> sfuSctpStreamReportEncoder;
+
     public OutboundReportsAvroEncoder() {
         this.observerEventEncoder = new BinaryMessageEncoder<ObserverEventReport>(SpecificData.get(), ObserverEventReport.getClassSchema());
         this.callEventEncoder = new BinaryMessageEncoder<CallEventReport>(SpecificData.get(), CallEventReport.getClassSchema());
@@ -38,6 +45,13 @@ public class OutboundReportsAvroEncoder {
         this.outboundAudioTrackEncoder = new BinaryMessageEncoder<OutboundAudioTrackReport>(SpecificData.get(), OutboundAudioTrackReport.getClassSchema());
         this.outboundVideoTrackEncoder = new BinaryMessageEncoder<OutboundVideoTrackReport>(SpecificData.get(), OutboundVideoTrackReport.getClassSchema());
         this.mediaTrackEncoder = new BinaryMessageEncoder<MediaTrackReport>(SpecificData.get(), MediaTrackReport.getClassSchema());
+
+        this.sfuEventEncoder = new BinaryMessageEncoder<SfuEventReport>(SpecificData.get(), SfuEventReport.getClassSchema());
+        this.sfuMetaEncoder = new BinaryMessageEncoder<SfuMetaReport>(SpecificData.get(), SfuMetaReport.getClassSchema());
+        this.sfuTransportEncoder = new BinaryMessageEncoder<SFUTransportReport>(SpecificData.get(), SFUTransportReport.getClassSchema());
+        this.sfuInboundRTPStreamEncoder = new BinaryMessageEncoder<SfuInboundRTPStreamReport>(SpecificData.get(), SfuInboundRTPStreamReport.getClassSchema());
+        this.sfuOutboundRTPStreamEncoder = new BinaryMessageEncoder<SfuOutboundRTPStreamReport>(SpecificData.get(), SfuOutboundRTPStreamReport.getClassSchema());
+        this.sfuSctpStreamReportEncoder = new BinaryMessageEncoder<SfuSctpStreamReport>(SpecificData.get(), SfuSctpStreamReport.getClassSchema());
     }
 
 
@@ -83,6 +97,30 @@ public class OutboundReportsAvroEncoder {
 
     public OutboundReport.MediaTrackReport encodeMediaTrackReport(MediaTrackReport mediaTrackReport) {
         return () -> encodeOrNull(this.mediaTrackEncoder, mediaTrackReport);
+    }
+
+    public OutboundReport.SfuEventReport encodeSfuEventReport(SfuEventReport sfuEventReport) {
+        return () -> encodeOrNull(this.sfuEventEncoder, sfuEventReport);
+    }
+
+    public OutboundReport.SfuMetaReport encodeSfuMetaReport(SfuMetaReport sfuMetaReport) {
+        return () -> encodeOrNull(this.sfuMetaEncoder, sfuMetaReport);
+    }
+
+    public OutboundReport.SfuTransportReport encodeSfuTransportReport(SFUTransportReport sfuTransportReport) {
+        return () -> encodeOrNull(this.sfuTransportEncoder, sfuTransportReport);
+    }
+
+    public OutboundReport.SfuInboundRtpStreamReport encodeSfuInboundRtpStreamReport(SfuInboundRTPStreamReport sfuInboundRTPStreamReport) {
+        return () -> encodeOrNull(this.sfuInboundRTPStreamEncoder, sfuInboundRTPStreamReport);
+    }
+
+    public OutboundReport.SfuOutboundRtpStreamReport encodeSfuOutboundRtpStreamReport(SfuOutboundRTPStreamReport sfuOutboundRTPStreamReport) {
+        return () -> encodeOrNull(this.sfuOutboundRTPStreamEncoder, sfuOutboundRTPStreamReport);
+    }
+
+    public OutboundReport.SfuSctpStreamReport encodeSfuSctpStreamReport(SfuSctpStreamReport sfuSctpStreamReport) {
+        return () -> encodeOrNull(this.sfuSctpStreamReportEncoder, sfuSctpStreamReport);
     }
 
     private<T> byte[] encodeOrNull(MessageEncoder<T> messageEncoder, T datum) {

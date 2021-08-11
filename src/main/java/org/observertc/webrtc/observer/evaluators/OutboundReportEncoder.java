@@ -120,6 +120,48 @@ public class OutboundReportEncoder {
         this.convertAndForward(this.encoder::encodeMediaTrackReport, mediaTrackReports);
     }
 
+    public void encodeSfuEventReport(List<SfuEventReport> sfuEventReports) {
+        if (Objects.isNull(sfuEventReports) || sfuEventReports.size() < 1) {
+            return;
+        }
+        this.convertAndForward(this.encoder::encodeSfuEventReport, sfuEventReports);
+    }
+
+    public void encodeSfuMetaReport(List<SfuMetaReport> sfuMetaReports) {
+        if (Objects.isNull(sfuMetaReports) || sfuMetaReports.size() < 1) {
+            return;
+        }
+        this.convertAndForward(this.encoder::encodeSfuMetaReport, sfuMetaReports);
+    }
+
+    public void encodeSfuTransportReport(List<SFUTransportReport> sfuTransportReports) {
+        if (Objects.isNull(sfuTransportReports) || sfuTransportReports.size() < 1) {
+            return;
+        }
+        this.convertAndForward(this.encoder::encodeSfuTransportReport, sfuTransportReports);
+    }
+
+    public void encodeSfuInboundRtpStreamReport(List<SfuInboundRTPStreamReport> sfuInboundRTPStreamReports) {
+        if (Objects.isNull(sfuInboundRTPStreamReports) || sfuInboundRTPStreamReports.size() < 1) {
+            return;
+        }
+        this.convertAndForward(this.encoder::encodeSfuInboundRtpStreamReport, sfuInboundRTPStreamReports);
+    }
+
+    public void encodeSfuOutboundRtpStreamReport(List<SfuOutboundRTPStreamReport> sfuOutboundRTPStreamReports) {
+        if (Objects.isNull(sfuOutboundRTPStreamReports) || sfuOutboundRTPStreamReports.size() < 1) {
+            return;
+        }
+        this.convertAndForward(this.encoder::encodeSfuOutboundRtpStreamReport, sfuOutboundRTPStreamReports);
+    }
+
+    public void encodeSfuSctpStreamReport(List<SfuSctpStreamReport> sfuSctpStreamReports) {
+        if (Objects.isNull(sfuSctpStreamReports) || sfuSctpStreamReports.size() < 1) {
+            return;
+        }
+        this.convertAndForward(this.encoder::encodeSfuSctpStreamReport, sfuSctpStreamReports);
+    }
+
 
     private<T> void convertAndForward(Function<T, OutboundReport> converter, List<T> reports) {
         List<OutboundReport> outboundReports = new LinkedList<>();

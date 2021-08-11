@@ -2,6 +2,7 @@ package org.observertc.webrtc.observer.common;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class Utils {

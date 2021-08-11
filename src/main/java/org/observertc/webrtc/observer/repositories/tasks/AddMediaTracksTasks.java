@@ -58,14 +58,18 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                 .addActionStage("Bind Inbound Media Tracks to Peer Connections",
                         // action
                         () -> {
-                            this.mediaTrackDTOs.forEach(((mediaTrackKey, mediaTrackDTO) -> {
+                            this.mediaTrackDTOs.forEach(((mediaTrackId, mediaTrackDTO) -> {
                                 switch (mediaTrackDTO.direction) {
                                     case INBOUND:
-                                        this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackKey);
+                                        this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackId);
                                         break;
                                     case OUTBOUND:
-                                        this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackKey);
+                                        this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackId);
                                         break;
+                                }
+                                UUID sfuStreamId = mediaTrackDTO.sfuStreamId;
+                                if (Objects.nonNull(sfuStreamId)) {
+                                    this.hazelcastMaps.getSfuStreamsToMediaTracks().put(sfuStreamId, mediaTrackId);
                                 }
                             }));
                         },
@@ -79,6 +83,10 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                                     case OUTBOUND:
                                         this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackKey);
                                         break;
+                                }
+                                UUID sfuStreamId = mediaTrackDTO.sfuStreamId;
+                                if (Objects.nonNull(sfuStreamId)) {
+                                    this.hazelcastMaps.getSfuStreamsToMediaTracks().delete(sfuStreamId);
                                 }
                             }));
                         })

@@ -25,9 +25,14 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import io.reactivex.rxjava3.core.Observable;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.evaluators.ObservedSfuSampleProcessingPipeline;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
-import org.observertc.webrtc.observer.micrometer.ServiceMetrics;
+import org.observertc.webrtc.observer.samples.ObservedSfuSampleBuilder;
+import org.observertc.webrtc.observer.samples.SfuSample;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +40,7 @@ import org.slf4j.event.Level;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,13 +60,19 @@ public class WebsocketSfuSamples {
 	private Map<String, Instant> expirations;
 
 	@Inject
-	ServiceMetrics serviceMetrics;
+    ExposedMetrics exposedMetrics;
 
 	@Inject
 	WebsocketCustomCloseReasons customCloseReasons;
 
 	@Inject
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
+
+	@Inject
+	ObserverConfig.SourcesConfig.SfuSamplesConfig config;
+
+	@Inject
+	ObservedSfuSampleProcessingPipeline observedSfuSampleProcessingPipeline;
 
 	public WebsocketSfuSamples(
 			ObjectMapper objectMapper,
@@ -78,7 +90,6 @@ public class WebsocketSfuSamples {
 
 	@OnOpen
 	public void onOpen(
-			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
 		try {
@@ -97,7 +108,7 @@ public class WebsocketSfuSamples {
 				}
 				this.expirations.put(session.getId(), expiration.get());
 			}
-			this.serviceMetrics.incrementClientSamplesOpenedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementSfuSamplesOpenedWebsockets(mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -106,12 +117,11 @@ public class WebsocketSfuSamples {
 
 	@OnClose
 	public void onClose(
-			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
 		try {
 			this.expirations.remove(session.getId());
-			this.serviceMetrics.incrementClientSamplesClosedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementSfuSamplesClosedWebsockets(mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -120,7 +130,6 @@ public class WebsocketSfuSamples {
 
 	@OnMessage
 	public void onMessage(
-			String serviceId,
 			String mediaUnitId,
 			byte[] messageBytes,
 			WebSocketSession session) {
@@ -135,9 +144,33 @@ public class WebsocketSfuSamples {
 			}
 		}
 		try {
-			this.serviceMetrics.incrementClientSamplesReceived(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementSfuSamplesReceived(mediaUnitId);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
+		SfuSample sample;
+		try {
+			sample = this.objectReader.readValue(messageBytes, SfuSample.class);
+		} catch (IOException e) {
+			this.flawMonitor.makeLogEntry()
+					.withMessage("Exception while parsing {}", SfuSample.class.getSimpleName())
+					.withException(e)
+					.complete();
+			return;
+		}
+
+
+		try {
+			var observedSfuSample = ObservedSfuSampleBuilder.from(sample)
+					.withMediaUnitId(mediaUnitId)
+					.build();
+			Observable.just(observedSfuSample)
+					.subscribe(this.observedSfuSampleProcessingPipeline);
+		} catch (Exception ex) {
+			this.flawMonitor.makeLogEntry()
+					.withException(ex)
+					.withMessage("Error occured processing sample {} ", sample)
+					.complete();
 		}
 
 	}

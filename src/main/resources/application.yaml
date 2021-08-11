@@ -29,22 +29,6 @@ endpoints:
     get-allowed: true
 ---
 observer:
-  sources:
-    pcSamples:
-      enabled: true
-      defaultServiceName: "defaultServiceName"
-      security:
-        dropUnknownServices: false
-  sinks:
-    MyLogger:
-      type: LoggerSink
-#    MyMongo:
-#      type: MongoSink
-#      config:
-#        uri: "mongodb://root:password@localhost:27017"
-#        database: "reports"
-
-
   security:
     websockets:
       expirationInMin: 0
@@ -53,24 +37,40 @@ observer:
       algorithm: SHA-256
       salt: "MySalt"
 
-  sentinelsCheckingPeriodInMin: 1
+#  obfuscations:
 
-  reportMonitor:
-    enabled: true
-    tagByServiceName: true
-    tagByServiceUUID: false
-    tagByType: false
+  repositories:
+    hazelcastConfigFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+    mediaTracksMaxIdleTime: 300
+    peerConnectionsMaxIdleTime: 300
+    clientMaxIdleTime: 300
+    sfuMaxIdleTime: 600
+    sfuTransportMaxIdleTime: 600
+    sfuRtpStreamMaxIdleTime: 600
 
-  userMediaErrorsMonitor:
-    enabled: true
-    tagByServiceName: true
-    tagByServiceUUID: false
+
+  sources:
+    pcSamples:
+      enabled: true
+      defaultServiceName: "defaultServiceName"
+      security:
+        dropUnknownServices: false
 
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
-    observedPCSBufferMaxTimeInS: 10
-    observedPCSBufferMaxItemNums: 10000
-    peerConnectionMaxIdleTimeInS: 60
+    clientSamplesBufferMaxTimeInS: 30
+    clientSamplesBufferMaxItems: 1000
+    sfuSamplesBufferMaxTimeInS: 30
+    sfuSamplesBufferMaxItems: 1000
+
+  sinks:
+    MyLogger:
+      type: LoggerSink
+  #    MyMongo:
+  #      type: MongoSink
+  #      config:
+  #        uri: "mongodb://root:password@localhost:27017"
+  #        database: "reports"
 
   outboundReports:
     reportCallMeta: true

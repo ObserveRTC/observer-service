@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.*;
 
+import static org.observertc.webrtc.observer.micrometer.ExposedMetrics.OBSERVERTC_EVALUATORS_COLLECT_CALL_SAMPLES_TIME;
+
 /**
  * Responsible to map the received client sample into an organized map of ClientSamples,
  * so the successor components can work by a batch of samples groupped by clients
@@ -37,7 +39,7 @@ public class CollectCallSamples implements Function<List<ObservedClientSample>, 
 
 
     @Override
-    @Timed(value = "observertc-evaluators-collect-call-samples")
+    @Timed(value = OBSERVERTC_EVALUATORS_COLLECT_CALL_SAMPLES_TIME)
     public Optional<CollectedCallSamples> apply(List<ObservedClientSample> observedClientSamples) throws Throwable {
         if (Objects.isNull(observedClientSamples) || observedClientSamples.size() < 1) {
             return Optional.empty();

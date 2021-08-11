@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.samples;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 /**
- * undefined
+ * A compound object holds a set of measurements belonging to a aspecific time
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public  class ClientSample {
@@ -1232,6 +1232,24 @@ public  class ClientSample {
 		public Integer reportsSent;
 
 		/**
+		 * Estimated round trip time for the SR reports based on DLRR reports on the corresponded RTP stream
+		 */
+		@JsonProperty("roundTripTime")
+		public Double roundTripTime;
+
+		/**
+		 * Represents the cumulative sum of all round trip time measurements performed on the corresponded RTP stream
+		 */
+		@JsonProperty("totalRoundTripTime")
+		public Double totalRoundTripTime;
+
+		/**
+		 * Represents the total number of SR reports received with DLRR reports to be able to calculate the round trip time on the corresponded RTP stream
+		 */
+		@JsonProperty("roundTripTimeMeasurements")
+		public Integer roundTripTimeMeasurements;
+
+		/**
 		 * Flag indicate if the MediaTrack has been eded or not
 		 */
 		@JsonProperty("ended")
@@ -1286,6 +1304,18 @@ public  class ClientSample {
 		 */
 		@JsonProperty("peerConnectionId")
 		public String peerConnectionId;
+
+		/**
+		 * The remote clientId the source outbound track belongs to
+		 */
+		@JsonProperty("remoteClientId")
+		public String remoteClientId;
+
+		/**
+		 * The sfuStreamId if the stream is consumed from a SFU
+		 */
+		@JsonProperty("sfuStreamId")
+		public String sfuStreamId;
 
 	}
 	/**
@@ -1596,6 +1626,24 @@ public  class ClientSample {
 		public Integer reportsSent;
 
 		/**
+		 * Estimated round trip time for the SR reports based on DLRR reports on the corresponded RTP stream
+		 */
+		@JsonProperty("roundTripTime")
+		public Double roundTripTime;
+
+		/**
+		 * Represents the cumulative sum of all round trip time measurements performed on the corresponded RTP stream
+		 */
+		@JsonProperty("totalRoundTripTime")
+		public Double totalRoundTripTime;
+
+		/**
+		 * Represents the total number of SR reports received with DLRR reports to be able to calculate the round trip time on the corresponded RTP stream
+		 */
+		@JsonProperty("roundTripTimeMeasurements")
+		public Integer roundTripTimeMeasurements;
+
+		/**
 		 * Flag indicate if the MediaTrack has been eded or not
 		 */
 		@JsonProperty("ended")
@@ -1645,6 +1693,18 @@ public  class ClientSample {
 		@JsonProperty("peerConnectionId")
 		public String peerConnectionId;
 
+		/**
+		 * The remote clientId the source outbound track belongs to
+		 */
+		@JsonProperty("remoteClientId")
+		public String remoteClientId;
+
+		/**
+		 * The sfuStreamId if the stream is consumed from a SFU
+		 */
+		@JsonProperty("sfuStreamId")
+		public String sfuStreamId;
+
 	}
 	/**
 	 * A compound object giving information about the audio track the client uses
@@ -1674,7 +1734,7 @@ public  class ClientSample {
 		 * If RTX is negotiated as a separate stream, this is the SSRC of the RTX stream that is associated with this stream's ssrc.
 		 */
 		@JsonProperty("rtxSsrc")
-		public Integer rtxSsrc;
+		public Long rtxSsrc;
 
 		/**
 		 * The rid parameter of the corresponded RTP stream
@@ -1993,6 +2053,12 @@ public  class ClientSample {
 		@JsonProperty("peerConnectionId")
 		public String peerConnectionId;
 
+		/**
+		 * The sfuStreamId if the track is produced to a SFU
+		 */
+		@JsonProperty("sfuStreamId")
+		public String sfuStreamId;
+
 	}
 	/**
 	 * undefined
@@ -2022,7 +2088,7 @@ public  class ClientSample {
 		 * If RTX is negotiated as a separate stream, this is the SSRC of the RTX stream that is associated with this stream's ssrc.
 		 */
 		@JsonProperty("rtxSsrc")
-		public Integer rtxSsrc;
+		public Long rtxSsrc;
 
 		/**
 		 * The rid parameter of the corresponded RTP stream
@@ -2427,6 +2493,12 @@ public  class ClientSample {
 		 */
 		@JsonProperty("peerConnectionId")
 		public String peerConnectionId;
+
+		/**
+		 * The sfuStreamId if the track is produced to a SFU
+		 */
+		@JsonProperty("sfuStreamId")
+		public String sfuStreamId;
 
 	}
 	/**
