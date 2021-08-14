@@ -47,7 +47,7 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
                     }
                     return false;
                 })
-                .<Set<UUID>, Map<UUID, SfuDTO>> addFunctionalStage("Remove Sfu DTOs",
+                .<Set<UUID>> addConsumerStage("Remove Sfu DTOs",
                         // action
                         sfuIds -> {
                             sfuIds.forEach(sfuId -> {
@@ -57,7 +57,6 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
                                 SfuDTO sfuDTO = this.hazelcastMaps.getSFUs().remove(sfuId);
                                 this.removedSfuDTOs.put(sfuId, sfuDTO);
                             });
-                            return this.removedSfuDTOs;
                         },
                         // rollback
                         (callEntitiesHolder, thrownException) -> {
@@ -67,16 +66,12 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
                             }
                             this.hazelcastMaps.getSFUs().putAll(this.removedSfuDTOs);
                         })
-                .<List<SfuEventReport.Builder>> addTerminalFunction("Completed", sfuEventBuildersObj -> {
-                    var sfuEventBuilders = (List<SfuEventReport.Builder>) sfuEventBuildersObj;
+                .addTerminalSupplier("Completed", () -> {
                     List<SfuEventReport.Builder> result = new LinkedList<>();
                     this.removedSfuDTOs.values().stream()
                             .map(this::makeReportBuilder)
                             .filter(Objects::nonNull)
                             .forEach(result::add);
-                    if (Objects.nonNull(sfuEventBuilders)) {
-                        sfuEventBuilders.stream().forEach(result::add);
-                    }
                     return result;
                 })
                 .build();

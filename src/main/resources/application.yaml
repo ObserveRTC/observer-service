@@ -39,8 +39,14 @@ observer:
 
 #  obfuscations:
 
+  sources:
+    pcSamples:
+      enabled: true
+      defaultServiceName: "defaultServiceName"
+      security:
+        dropUnknownServices: false
+
   repositories:
-    hazelcastConfigFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
     mediaTracksMaxIdleTime: 300
     peerConnectionsMaxIdleTime: 300
     clientMaxIdleTime: 300
@@ -48,13 +54,6 @@ observer:
     sfuTransportMaxIdleTime: 600
     sfuRtpStreamMaxIdleTime: 600
 
-
-  sources:
-    pcSamples:
-      enabled: true
-      defaultServiceName: "defaultServiceName"
-      security:
-        dropUnknownServices: false
 
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"

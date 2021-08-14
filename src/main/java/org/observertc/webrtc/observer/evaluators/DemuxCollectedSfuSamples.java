@@ -97,7 +97,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                             UUID callId = null;
                             UUID sfuStreamId = UUIDAdapter.tryParseOrNull(inboundRtpStream.streamId);
                             FetchSfuRelationsTask.SfuStreamRelations relations = report.sfuStreamRelations.get(sfuStreamId);
-                            if (Objects.isNull(relations)) {
+                            if (Objects.nonNull(relations)) {
                                 trackId = relations.trackId;
                                 clientId = relations.clientId;
                                 callId = relations.callId;
@@ -122,7 +122,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                             UUID callId = null;
                             UUID sfuStreamId = UUIDAdapter.tryParseOrNull(outboundRtpStream.streamId);
                             FetchSfuRelationsTask.SfuStreamRelations relations = report.sfuStreamRelations.get(sfuStreamId);
-                            if (Objects.isNull(relations)) {
+                            if (Objects.nonNull(relations)) {
                                 trackId = relations.trackId;
                                 clientId = relations.clientId;
                                 callId = relations.callId;

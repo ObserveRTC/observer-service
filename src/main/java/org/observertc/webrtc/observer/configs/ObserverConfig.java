@@ -91,7 +91,7 @@ public class ObserverConfig {
 	}
 
 	// Repository config
-	public RepositoryConfig repositoryConfig;
+	public RepositoryConfig repositories;
 
 	@ConfigurationProperties("repositories")
 	public static class RepositoryConfig {

@@ -59,8 +59,6 @@ public class HazelcastMaps {
 //    @Inject
 //    RemoveMediaTrackEntities removeMediaTrackEntities;
 
-    @Inject
-    ConfigEntryDispatcher configEntryDispatcher;
 
     // calls
     private IMap<UUID, CallDTO> calls;
@@ -103,8 +101,8 @@ public class HazelcastMaps {
 
     private ObserverConfig.RepositoryConfig config;
 
-    HazelcastMaps(ObserverConfig observerConfig) {
-        this.config = observerConfig.repositoryConfig;
+    public HazelcastMaps(ObserverConfig observerConfig) {
+        this.config = observerConfig.repositories;
     }
 
     @PostConstruct

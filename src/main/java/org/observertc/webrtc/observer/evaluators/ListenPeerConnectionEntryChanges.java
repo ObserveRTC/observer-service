@@ -69,7 +69,7 @@ public class ListenPeerConnectionEntryChanges implements EntryListener<UUID, Pee
             logger.warn("PeerConnection DTO is expired, but the value is null {}", event.toString());
             return;
         }
-        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositoryConfig.peerConnectionsMaxIdleTime).toEpochMilli();
+        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositories.peerConnectionsMaxIdleTime).toEpochMilli();
         ClosedPeerConnection closedPeerConnection = new ClosedPeerConnection(removedPeerConnectionDTO, estimatedLeave);
         synchronized (this) {
             this.removedPeerConnections.onNext(closedPeerConnection);

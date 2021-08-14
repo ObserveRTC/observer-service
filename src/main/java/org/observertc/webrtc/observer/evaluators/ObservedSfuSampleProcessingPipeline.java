@@ -54,8 +54,8 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<ObservedSfu
 
     @PostConstruct
     void setup() {
-        var clientSamplesBufferMaxTimeInS = this.observerConfig.evaluators.clientSamplesBufferMaxTimeInS;
-        var clientSamplesBufferMaxItems = this.observerConfig.evaluators.clientSamplesBufferMaxItems;
+        var clientSamplesBufferMaxTimeInS = this.observerConfig.evaluators.sfuSamplesBufferMaxTimeInS;
+        var clientSamplesBufferMaxItems = this.observerConfig.evaluators.sfuSamplesBufferMaxItems;
         this.hazelcastEventSubscriber
                 .withSfuEntriesLocalListener(this.listenSfuEntryChanges)
                 .withSfuTransportEntriesLocalListener(this.listenSfuTransportEntryChanges)

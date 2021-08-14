@@ -152,10 +152,6 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             Map<UUID, SfuTransportDTO> sfuTransportDTOs = this.hazelcastMaps.getSFUTransports().getAll(this.transportIds);
                             this.report.foundSfuTransportIds.addAll(sfuTransportDTOs.keySet());
                         })
-
-                .<Report> addTerminalSupplier("Provide the composed report", () -> {
-                    return this.report;
-                })
                 .addActionStage("Check Sfus",
                         // action
                         () -> {
@@ -165,6 +161,9 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             Map<UUID, SfuDTO> sfuDTOs = this.hazelcastMaps.getSFUs().getAll(this.sfuIds);
                             this.report.foundSfuIds.addAll(sfuDTOs.keySet());
                         })
+                .<Report> addTerminalSupplier("Provide the composed report", () -> {
+                    return this.report;
+                })
                 .build();
     }
 

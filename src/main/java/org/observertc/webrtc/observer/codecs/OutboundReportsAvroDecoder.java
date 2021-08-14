@@ -2,6 +2,7 @@ package org.observertc.webrtc.observer.codecs;
 
 import io.micronaut.context.annotation.Prototype;
 import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageDecoder;
 import org.apache.avro.specific.SpecificData;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -28,6 +29,14 @@ public class OutboundReportsAvroDecoder {
     private final BinaryMessageDecoder<OutboundVideoTrackReport> outboundVideoTrackDecoder;
     private final BinaryMessageDecoder<MediaTrackReport> mediaTrackDecoder;
 
+    private final BinaryMessageDecoder<SfuEventReport> sfuEventDecoder;
+    private final BinaryMessageDecoder<SfuMetaReport> sfuMetaDecoder;
+    private final BinaryMessageDecoder<SFUTransportReport> sfuTransportDecoder;
+    private final BinaryMessageDecoder<SfuInboundRTPStreamReport> sfuInboundRTPStreamDecoder;
+    private final BinaryMessageDecoder<SfuOutboundRTPStreamReport> sfuOutboundRTPStreamDecoder;
+    private final BinaryMessageDecoder<SfuSctpStreamReport> sfuSctpStreamReportDecoder;
+
+
     public OutboundReportsAvroDecoder() {
 
         this.observerEventDecoder = new BinaryMessageDecoder<ObserverEventReport>(SpecificData.get(), ObserverEventReport.getClassSchema());
@@ -41,6 +50,14 @@ public class OutboundReportsAvroDecoder {
         this.outboundAudioTrackDecoder = new BinaryMessageDecoder<OutboundAudioTrackReport>(SpecificData.get(), OutboundAudioTrackReport.getClassSchema());
         this.outboundVideoTrackDecoder = new BinaryMessageDecoder<OutboundVideoTrackReport>(SpecificData.get(), OutboundVideoTrackReport.getClassSchema());
         this.mediaTrackDecoder = new BinaryMessageDecoder<MediaTrackReport>(SpecificData.get(), MediaTrackReport.getClassSchema());
+
+        this.sfuEventDecoder = new BinaryMessageDecoder<SfuEventReport>(SpecificData.get(), SfuEventReport.getClassSchema());
+        this.sfuMetaDecoder = new BinaryMessageDecoder<SfuMetaReport>(SpecificData.get(), SfuMetaReport.getClassSchema());
+        this.sfuTransportDecoder = new BinaryMessageDecoder<SFUTransportReport>(SpecificData.get(), SFUTransportReport.getClassSchema());
+        this.sfuInboundRTPStreamDecoder = new BinaryMessageDecoder<SfuInboundRTPStreamReport>(SpecificData.get(), SfuInboundRTPStreamReport.getClassSchema());
+        this.sfuOutboundRTPStreamDecoder = new BinaryMessageDecoder<SfuOutboundRTPStreamReport>(SpecificData.get(), SfuOutboundRTPStreamReport.getClassSchema());
+        this.sfuSctpStreamReportDecoder = new BinaryMessageDecoder<SfuSctpStreamReport>(SpecificData.get(), SfuSctpStreamReport.getClassSchema());
+
     }
 
     public ObserverEventReport decodeObserverEventReports(OutboundReport outboundReport) {
@@ -118,6 +135,48 @@ public class OutboundReportsAvroDecoder {
             return null;
         }
         return this.decodeOrNull(this.mediaTrackDecoder, outboundReport);
+    }
+
+    public SfuEventReport decodeSfuEventReport(OutboundReport outboundReport) {
+        if (Objects.isNull(outboundReport)) {
+            return null;
+        }
+        return this.decodeOrNull(this.sfuEventDecoder, outboundReport);
+    }
+
+    public SfuMetaReport decodeSfuMetaReport(OutboundReport outboundReport) {
+        if (Objects.isNull(outboundReport)) {
+            return null;
+        }
+        return this.decodeOrNull(this.sfuMetaDecoder, outboundReport);
+    }
+
+    public SFUTransportReport decodeSfuTransportReport(OutboundReport outboundReport) {
+        if (Objects.isNull(outboundReport)) {
+            return null;
+        }
+        return this.decodeOrNull(this.sfuTransportDecoder, outboundReport);
+    }
+
+    public SfuInboundRTPStreamReport decodeSfuInboundRtpStreamReport(OutboundReport outboundReport) {
+        if (Objects.isNull(outboundReport)) {
+            return null;
+        }
+        return this.decodeOrNull(this.sfuInboundRTPStreamDecoder, outboundReport);
+    }
+
+    public SfuOutboundRTPStreamReport decodeSfuOutboundRtpStreamReport(OutboundReport outboundReport) {
+        if (Objects.isNull(outboundReport)) {
+            return null;
+        }
+        return this.decodeOrNull(this.sfuOutboundRTPStreamDecoder, outboundReport);
+    }
+
+    public SfuSctpStreamReport decodeSfuSctpStreamReport(OutboundReport outboundReport) {
+        if (Objects.isNull(outboundReport)) {
+            return null;
+        }
+        return this.decodeOrNull(this.sfuSctpStreamReportDecoder, outboundReport);
     }
 
     private<T> T decodeOrNull(MessageDecoder<T> messageDecoder, OutboundReport outboundReport) {

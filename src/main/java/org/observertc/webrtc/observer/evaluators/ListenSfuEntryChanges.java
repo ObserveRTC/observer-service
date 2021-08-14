@@ -69,7 +69,7 @@ public class ListenSfuEntryChanges implements EntryListener<UUID, SfuDTO> {
             logger.warn("SfuDTO is expired, but the removed value is null {}", event.toString());
             return;
         }
-        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositoryConfig.sfuMaxIdleTime).toEpochMilli();
+        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositories.sfuMaxIdleTime).toEpochMilli();
         RemovedDTO removedDTO = new RemovedDTO(DTO, estimatedLeave);
         synchronized (this) {
             this.removedDTOSubject.onNext(removedDTO);

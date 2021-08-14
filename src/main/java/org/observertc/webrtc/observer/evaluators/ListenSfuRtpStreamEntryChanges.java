@@ -69,7 +69,7 @@ public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRt
             logger.warn("SfuRtpStreamDTO is expired, but the removed value is null {}", event.toString());
             return;
         }
-        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositoryConfig.sfuTransportMaxIdleTime).toEpochMilli();
+        Long estimatedLeave = Instant.now().minusSeconds(this.observerConfig.repositories.sfuTransportMaxIdleTime).toEpochMilli();
         RemovedDTO removedDTO = new RemovedDTO(DTO, estimatedLeave);
         synchronized (this) {
             this.removedDTOSubject.onNext(removedDTO);
