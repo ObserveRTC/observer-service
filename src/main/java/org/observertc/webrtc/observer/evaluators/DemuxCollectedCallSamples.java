@@ -55,9 +55,6 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     @Inject
     ObserverConfig observerConfig;
 
-//    @Inject
-//    Provider<FindRemoteClientIdsForMediaTrackIds> findRemoteClientIdsForMediaTrackIdsProvider;
-
     @Inject
     Provider<MatchCallTracksTask> matchCallTracksTaskProvider;
 
@@ -77,9 +74,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     }
 
     public void doAccept(CollectedCallSamples collectedCallSamples) throws Throwable {
-//        Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> callsMatchedIds = this.makeCallsMatchedIds(collectedCallSamples);
         Map<UUID, MatchCallTracksTask.MatchedIds> inboundTrackMatchIds = this.makeInboundTrackMatchIds(collectedCallSamples);
-        List<FindRemoteClientIdsForMediaTrackIds.MatchedIds> emptyMatchedIds = Collections.EMPTY_LIST;
 
         List<ClientTransportReport> clientTransportReports = new LinkedList<>();
         List<InboundAudioTrackReport> inboundAudioTrackReports = new LinkedList<>();
@@ -264,6 +259,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setUserId(observedClientSample.getUserId())
                     .setPeerConnectionId(inboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
+                    .setTrackId(inboundAudioTrack.trackId)
 
                     /* Remote Identifier */
                     .setRemoteClientId(remoteClientId)
@@ -364,6 +360,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setUserId(observedClientSample.getUserId())
                     .setPeerConnectionId(inboundVideoTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
+                    .setTrackId(inboundVideoTrack.trackId)
 
                     /* Remote Identifier */
                     .setRemoteClientId(remoteClientId)
@@ -469,6 +466,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setUserId(observedClientSample.getUserId())
                     .setPeerConnectionId(outboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
+                    .setTrackId(outboundAudioTrack.trackId)
 
                     /* Sample Based Report Fields */
                     .setSampleSeq(observedClientSample.getSampleSeq())
@@ -565,6 +563,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setUserId(observedClientSample.getUserId())
                     .setPeerConnectionId(outboundVideoTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
+                    .setTrackId(outboundVideoTrack.trackId)
 
                     /* Sample Based Report Fields */
                     .setSampleSeq(observedClientSample.getSampleSeq())

@@ -41,6 +41,7 @@ import org.slf4j.event.Level;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -170,11 +171,17 @@ public class WebsocketClientSamples {
 					.build();
 			Observable.just(observedClientSample)
 					.subscribe(this.observedClientSampleProcessingPipeline);
+		} catch (InvalidObjectException invalidEx) {
+			final String message = invalidEx.getMessage();
+			session.close(
+					this.customCloseReasons.getInvalidInput(message)
+			);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withException(ex)
 					.withMessage("Error occured processing sample {} ", sample)
 					.complete();
+
 		}
 	}
 }

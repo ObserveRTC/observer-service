@@ -191,7 +191,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
 
                                         .withTrackId(trackId)
                                         .withSfuStreamId(sfuStreamId)
-                                        .withDirection(StreamDirection.INBOUND)
+                                        .withDirection(StreamDirection.OUTBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
                                         .withAddedTimestamp(clientSamples.getMinTimestamp())

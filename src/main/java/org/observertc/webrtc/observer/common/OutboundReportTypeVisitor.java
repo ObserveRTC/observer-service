@@ -23,7 +23,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Function<RIn, ROut> inboundVideoTrackFuncProcess,
             Function<RIn, ROut> outboundAudioTrackFuncProcess,
             Function<RIn, ROut> outboundVideoTrackFuncProcess,
-            Function<RIn, ROut> mediaTrackFuncProcess
+            Function<RIn, ROut> mediaTrackFuncProcess,
+            Function<RIn, ROut> sfuEventFuncProcess,
+            Function<RIn, ROut> sfuMetaFuncProcess,
+            Function<RIn, ROut> sfuTransportFuncProcess,
+            Function<RIn, ROut> sfuInboundRtpStreamFuncProcess,
+            Function<RIn, ROut> sfuOutboundRtpStreamFuncProcess,
+            Function<RIn, ROut> sfuSctpStreamFuncProcess
     ) {
         return new OutboundReportTypeVisitor<RIn, ROut>() {
             @Override
@@ -80,6 +86,36 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             public ROut visitMediaTrackReport(RIn obj) {
                 return mediaTrackFuncProcess.apply(obj);
             }
+
+            @Override
+            public ROut visitSfuEventReport(RIn obj) {
+                return sfuEventFuncProcess.apply(obj);
+            }
+
+            @Override
+            public ROut visitSfuMetaReport(RIn obj) {
+                return sfuMetaFuncProcess.apply(obj);
+            }
+
+            @Override
+            public ROut visitSfuTransportReport(RIn obj) {
+                return sfuTransportFuncProcess.apply(obj);
+            }
+
+            @Override
+            public ROut visitSfuInboundRtpStream(RIn obj) {
+                return sfuInboundRtpStreamFuncProcess.apply(obj);
+            }
+
+            @Override
+            public ROut visitSfuOutboundRtpStream(RIn obj) {
+                return sfuOutboundRtpStreamFuncProcess.apply(obj);
+            }
+
+            @Override
+            public ROut visitSctpStream(RIn obj) {
+                return sfuSctpStreamFuncProcess.apply(obj);
+            }
         };
     }
 
@@ -95,7 +131,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Consumer<RIn> inboundVideoTrackConsumer,
             Consumer<RIn> outboundAudioTrackConsumer,
             Consumer<RIn> outboundVideoTrackConsumer,
-            Consumer<RIn> mediaTrackConsumer
+            Consumer<RIn> mediaTrackConsumer,
+            Consumer<RIn> sfuEventConsumer,
+            Consumer<RIn> sfuMetaConsumer,
+            Consumer<RIn> sfuTransportConsumer,
+            Consumer<RIn> sfuInboundRtpStreamConsumer,
+            Consumer<RIn> sfuOutboundRtpStreamConsumer,
+            Consumer<RIn> sfuSctpStreamConsumer
     ) {
         return new OutboundReportTypeVisitor<RIn, Void>() {
             @Override
@@ -163,6 +205,42 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
                 mediaTrackConsumer.accept(obj);
                 return null;
             }
+
+            @Override
+            public Void visitSfuEventReport(RIn obj) {
+                sfuEventConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
+            public Void visitSfuMetaReport(RIn obj) {
+                sfuMetaConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
+            public Void visitSfuTransportReport(RIn obj) {
+                sfuTransportConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
+            public Void visitSfuInboundRtpStream(RIn obj) {
+                sfuInboundRtpStreamConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
+            public Void visitSfuOutboundRtpStream(RIn obj) {
+                sfuOutboundRtpStreamConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
+            public Void visitSctpStream(RIn obj) {
+                sfuSctpStreamConsumer.accept(obj);
+                return null;
+            }
         };
     }
 
@@ -177,7 +255,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Supplier<ROut> inboundVideoTrackSupplier,
             Supplier<ROut> outboundAudioTrackSupplier,
             Supplier<ROut> outboundVideoTrackSupplier,
-            Supplier<ROut> mediaTrackSupplier
+            Supplier<ROut> mediaTrackSupplier,
+            Supplier<ROut> sfuEventSupplier,
+            Supplier<ROut> sfuMetaSupplier,
+            Supplier<ROut> sfuTransportSupplier,
+            Supplier<ROut> sfuInboundRtpStreamSupplier,
+            Supplier<ROut> sfuOutboundRtpStreamSupplier,
+            Supplier<ROut> sfuSctpStreamSupplier
     ) {
         return new OutboundReportTypeVisitor<Void, ROut>() {
             @Override
@@ -235,6 +319,36 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             public ROut visitMediaTrackReport(Void obj) {
                 return mediaTrackSupplier.get();
             }
+
+            @Override
+            public ROut visitSfuEventReport(Void obj) {
+                return sfuEventSupplier.get();
+            }
+
+            @Override
+            public ROut visitSfuMetaReport(Void obj) {
+                return sfuMetaSupplier.get();
+            }
+
+            @Override
+            public ROut visitSfuTransportReport(Void obj) {
+                return sfuTransportSupplier.get();
+            }
+
+            @Override
+            public ROut visitSfuInboundRtpStream(Void obj) {
+                return sfuInboundRtpStreamSupplier.get();
+            }
+
+            @Override
+            public ROut visitSfuOutboundRtpStream(Void obj) {
+                return sfuOutboundRtpStreamSupplier.get();
+            }
+
+            @Override
+            public ROut visitSctpStream(Void obj) {
+                return sfuSctpStreamSupplier.get();
+            }
         };
     }
 
@@ -249,7 +363,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Runnable inboundVideoTrackCallback,
             Runnable outboundAudioTrackCallback,
             Runnable outboundVideoTrackCallback,
-            Runnable mediaTrackCallback
+            Runnable mediaTrackCallback,
+            Runnable sfuEventCallback,
+            Runnable sfuMetaCallback,
+            Runnable sfuTransportCallback,
+            Runnable sfuInboundRtpStreamCallback,
+            Runnable sfuOutboundRtpStreamCallback,
+            Runnable sfuSctpStreamCallback
     ) {
         return new OutboundReportTypeVisitor<Void, Void>() {
             @Override
@@ -317,6 +437,42 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
                 mediaTrackCallback.run();
                 return null;
             }
+
+            @Override
+            public Void visitSfuEventReport(Void obj) {
+                sfuEventCallback.run();
+                return null;
+            }
+
+            @Override
+            public Void visitSfuMetaReport(Void obj) {
+                sfuMetaCallback.run();
+                return null;
+            }
+
+            @Override
+            public Void visitSfuTransportReport(Void obj) {
+                sfuTransportCallback.run();
+                return null;
+            }
+
+            @Override
+            public Void visitSfuInboundRtpStream(Void obj) {
+                sfuInboundRtpStreamCallback.run();
+                return null;
+            }
+
+            @Override
+            public Void visitSfuOutboundRtpStream(Void obj) {
+                sfuOutboundRtpStreamCallback.run();
+                return null;
+            }
+
+            @Override
+            public Void visitSctpStream(Void obj) {
+                sfuSctpStreamCallback.run();
+                return null;
+            }
         };
     }
 
@@ -345,6 +501,19 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
                 return this.visitOutboundVideoTrackReport(obj);
             case MEDIA_TRACK:
                 return this.visitMediaTrackReport(obj);
+
+            case SFU_EVENT:
+                return this.visitSfuEventReport(obj);
+            case SFU_META_DATA:
+                return this.visitSfuMetaReport(obj);
+            case SFU_TRANSPORT:
+                return this.visitSfuTransportReport(obj);
+            case SFU_INBOUND_RTP_STREAM:
+                return this.visitSfuInboundRtpStream(obj);
+            case SFU_OUTBOUND_RTP_STREAM:
+                return this.visitSfuOutboundRtpStream(obj);
+            case SFU_SCTP_STREAM:
+                return this.visitSctpStream(obj);
             default:
                 logger.warn("Unrecognized report type {}", reportType);
         }
@@ -362,5 +531,13 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
     TOut visitOutboundAudioTrackReport(TIn obj);
     TOut visitOutboundVideoTrackReport(TIn obj);
     TOut visitMediaTrackReport(TIn obj);
+
+    TOut visitSfuEventReport(TIn obj);
+    TOut visitSfuMetaReport(TIn obj);
+    TOut visitSfuTransportReport(TIn obj);
+    TOut visitSfuInboundRtpStream(TIn obj);
+    TOut visitSfuOutboundRtpStream(TIn obj);
+    TOut visitSctpStream(TIn obj);
+
 }
 

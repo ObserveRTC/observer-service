@@ -75,20 +75,20 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             return;
                         }
 
-                        this.completedSfuStreamDTOs.put(streamId,
-                                SfuRtpStreamDTO.builderFrom(streamDTO)
-                                        .withTrackId(mediaTrackDTO.trackId)
-                                        .withClientId(mediaTrackDTO.clientId)
-                                        .withCallId(mediaTrackDTO.callId)
-                                        .build()
-                        );
+                        var completedStreamDTO = SfuRtpStreamDTO.builderFrom(streamDTO)
+                                .withTrackId(mediaTrackDTO.trackId)
+                                .withClientId(mediaTrackDTO.clientId)
+                                .withCallId(mediaTrackDTO.callId)
+                                .build();
+                        this.completedSfuStreamDTOs.put(streamId, completedStreamDTO);
+                        logger.info("SFU streamId ({}) in direction {} is bound to track {} for client {} on call {}", streamId, completedStreamDTO.direction, completedStreamDTO.trackId, completedStreamDTO.clientId, completedStreamDTO.callId);
                     });
                 },
                 // rollback: yeah.... no hard feelings about the completed StreamDTOs
                 (inputHolder, thrown) -> {
 
                 })
-                .addActionStage("Traverse completed sfu streams they are piped", () -> {
+                .addActionStage("Traverse to complete", () -> {
                     Queue<SfuRtpStreamDTO> sfuStreams = this.completedSfuStreamDTOs.values().stream()
                             .collect(Collectors.toCollection(LinkedList::new));
                     while(!sfuStreams.isEmpty()) {

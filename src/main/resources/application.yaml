@@ -65,11 +65,11 @@ observer:
   sinks:
     MyLogger:
       type: LoggerSink
-  #    MyMongo:
-  #      type: MongoSink
-  #      config:
-  #        uri: "mongodb://root:password@localhost:27017"
-  #        database: "reports"
+    MyMongo:
+      type: MongoSink
+      config:
+        uri: "mongodb://root:password@localhost:27017"
+        database: "reports"
 
   outboundReports:
     reportCallMeta: true

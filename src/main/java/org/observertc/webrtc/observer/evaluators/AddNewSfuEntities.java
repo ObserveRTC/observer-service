@@ -106,7 +106,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                                 .withDirection(StreamDirection.INBOUND)
                                 .withPipedStreamId(pipedStreamId)
                                 .build();
-                        newRtpStreams.put(transportId, sfuRtpStreamDTO);
+                        newRtpStreams.put(streamId, sfuRtpStreamDTO);
                     }
                 });
                 SfuSampleVisitor.streamOutboundRtpStreams(sfuSample).forEach(sfuOutboundRtpStream -> {
@@ -123,7 +123,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                                 .withDirection(StreamDirection.OUTBOUND)
                                 .withPipedStreamId(pipedStreamId)
                                 .build();
-                        newRtpStreams.put(transportId, sfuRtpStreamDTO);
+                        newRtpStreams.put(streamId, sfuRtpStreamDTO);
                     }
                 });
             }

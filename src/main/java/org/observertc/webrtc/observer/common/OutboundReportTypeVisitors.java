@@ -24,7 +24,13 @@ public final class OutboundReportTypeVisitors {
                 () -> InboundVideoTrackReport.getClassSchema(),
                 () -> OutboundAudioTrackReport.getClassSchema(),
                 () -> OutboundVideoTrackReport.getClassSchema(),
-                () -> MediaTrackReport.getClassSchema()
+                () -> MediaTrackReport.getClassSchema(),
+                () -> SfuEventReport.getClassSchema(),
+                () -> SfuMetaReport.getClassSchema(),
+                () -> SFUTransportReport.getClassSchema(),
+                () -> SfuInboundRTPStreamReport.getClassSchema(),
+                () -> SfuOutboundRTPStreamReport.getClassSchema(),
+                () -> SfuSctpStreamReport.getClassSchema()
         );
     }
 
@@ -41,7 +47,13 @@ public final class OutboundReportTypeVisitors {
                 () -> decoder::decodeInboundVideoTrackReport,
                 () -> decoder::decodeOutboundAudioTrackReport,
                 () -> decoder::decodeOutboundVideoTrackReport,
-                () -> decoder::decodeMediaTrackReport
+                () -> decoder::decodeMediaTrackReport,
+                () -> decoder::decodeSfuEventReport,
+                () -> decoder::decodeSfuMetaReport,
+                () -> decoder::decodeSfuTransportReport,
+                () -> decoder::decodeSfuInboundRtpStreamReport,
+                () -> decoder::decodeSfuOutboundRtpStreamReport,
+                () -> decoder::decodeSfuSctpStreamReport
         );
     }
 

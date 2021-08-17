@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class LoggerSink extends Sink {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(LoggerSink.class);
     private boolean printReports = true;
     private Consumer<String> sink = logger::info;
@@ -104,7 +103,13 @@ public class LoggerSink extends Sink {
                 this.makeDecodeAndPrintConsumer(decoder::decodeInboundVideoTrackReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeOutboundAudioTrackReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeOutboundVideoTrackReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeMediaTrackReport)
+                this.makeDecodeAndPrintConsumer(decoder::decodeMediaTrackReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuEventReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuMetaReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuTransportReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuInboundRtpStreamReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuOutboundRtpStreamReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuSctpStreamReport)
         );
         return outboundReport -> {
             if (Objects.isNull(outboundReport)) {

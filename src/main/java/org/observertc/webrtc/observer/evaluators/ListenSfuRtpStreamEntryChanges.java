@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * Responsible to Order appropriate updates on new calls, clients, peer connections
+ * Responsible to Order appropriate updates
  */
 @Singleton
 public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRtpStreamDTO> {

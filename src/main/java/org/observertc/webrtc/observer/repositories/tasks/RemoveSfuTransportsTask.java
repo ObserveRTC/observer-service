@@ -47,7 +47,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
                     }
                     return false;
                 })
-                .<Set<UUID>, Map<UUID, SfuTransportDTO>> addFunctionalStage("Remove Sfu Transport DTOs",
+                .<Set<UUID>> addConsumerStage("Remove Sfu Transport DTOs",
                         // action
                         identifiers -> {
                             identifiers.forEach(id -> {
@@ -57,7 +57,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
                                 SfuTransportDTO DTO = this.hazelcastMaps.getSFUTransports().remove(id);
                                 this.removedSfuTransportDTOs.put(DTO.transportId, DTO);
                             });
-                            return this.removedSfuTransportDTOs;
+                            return;
                         },
                         // rollback
                         (callEntitiesHolder, thrownException) -> {
@@ -67,16 +67,12 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
                             }
                             this.hazelcastMaps.getSFUTransports().putAll(this.removedSfuTransportDTOs);
                         })
-                .<List<SfuEventReport.Builder>> addTerminalFunction("Completed", sfuEventBuildersObj -> {
-                    var sfuEventBuilders = (List<SfuEventReport.Builder>) sfuEventBuildersObj;
+                .addTerminalSupplier("Completed", () -> {
                     List<SfuEventReport.Builder> result = new LinkedList<>();
                     this.removedSfuTransportDTOs.values().stream()
                             .map(this::makeReportBuilder)
                             .filter(Objects::nonNull)
                             .forEach(result::add);
-                    if (Objects.nonNull(sfuEventBuilders)) {
-                        sfuEventBuilders.stream().forEach(result::add);
-                    }
                     return result;
                 })
                 .build();

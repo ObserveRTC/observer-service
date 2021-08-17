@@ -116,10 +116,10 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                         logger.warn("Inconsistent in matchings! reported inbound track id does not belong to a SFU stream, which is inbound type. inboundTrack: {} outboundSfuStream: {} falsely matched inbound SFU: {}", inboundMediaTrackDTO, outboundSfuStreamDTO, inboundSfuStreamDTO);
                     }
                     if (Objects.isNull(inboundSfuStreamDTO.trackId)) {
-                        logger.info("Matched inbound SFu Stream {} for inbound track {} is not complete, the trackId has not been assigned", inboundSfuStreamDTO, inboundMediaTrackDTO);
+                        logger.debug("Matched inbound SFu Stream {} for inbound track {} is not complete, the trackId has not been assigned", inboundSfuStreamDTO, inboundMediaTrackDTO);
                         return;
                     }
-                    var outboundMediaTrackDTO = this.hazelcastMaps.getMediaTracks().get(inboundMediaTrackDTO.trackId);
+                    var outboundMediaTrackDTO = this.hazelcastMaps.getMediaTracks().get(inboundSfuStreamDTO.trackId);
                     if (Objects.isNull(outboundMediaTrackDTO)) {
                         logger.warn("Outbound track ({}) does not exists referenced by sfuStream {} for inbound track {} ", inboundSfuStreamDTO.trackId, inboundSfuStreamDTO, inboundMediaTrackDTO);
                         return;

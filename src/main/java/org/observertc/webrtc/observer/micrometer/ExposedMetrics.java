@@ -16,7 +16,7 @@ public class ExposedMetrics {
     private static final String SFU_SAMPLES_PREFIX = "sfusamples";
     private static final String OBSERVERTC_SFU_SAMPLES_OPENED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "opened_websockets");
     private static final String OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "closed_websockets");
-    private static final String OBSERVERTC_SFU_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, CLIENT_SAMPLES_PREFIX, "received");
+    private static final String OBSERVERTC_SFU_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "received");
 
     private static final String SERVICE_TAG_NAME = "service";
     private static final String MEDIA_UNIT_TAG_NAME = "mediaunit";
