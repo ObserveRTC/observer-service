@@ -16,18 +16,18 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
         return Arrays.stream(sfuSample.sfuTransports);
     }
 
-    static Stream<SfuSample.SfuInboundRtpStream> streamInboundRtpStreams(@NotNull SfuSample sfuSample) {
-        if (Objects.isNull(sfuSample.inboundRtpStreams)) {
+    static Stream<SfuSample.SfuRtpSource> streamRtpSources(@NotNull SfuSample sfuSample) {
+        if (Objects.isNull(sfuSample.rtpSources)) {
             return Stream.empty();
         }
-        return Arrays.stream(sfuSample.inboundRtpStreams);
+        return Arrays.stream(sfuSample.rtpSources);
     }
 
-    static Stream<SfuSample.SfuOutboundRtpStream> streamOutboundRtpStreams(@NotNull SfuSample sfuSample) {
-        if (Objects.isNull(sfuSample.outboundRtpStreams)) {
+    static Stream<SfuSample.SfuRtpSink> streamRtpSinks(@NotNull SfuSample sfuSample) {
+        if (Objects.isNull(sfuSample.rtpSinks)) {
             return Stream.empty();
         }
-        return Arrays.stream(sfuSample.outboundRtpStreams);
+        return Arrays.stream(sfuSample.rtpSinks);
     }
 
     static Stream<SfuSample.SctpStream> streamSctpStreams(@NotNull SfuSample sfuSample) {
@@ -45,17 +45,17 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
         }
         UUID sfuId = UUID.fromString(sfuSample.sfuId);
         streamTransports(sfuSample).forEach(transport -> this.visitSfuTransport(obj, sfuId, transport));
-        streamInboundRtpStreams(sfuSample).forEach(inboundRtpStream -> this.visitSfuInboundRtpStream(obj, sfuId, inboundRtpStream));
-        streamOutboundRtpStreams(sfuSample).forEach(outboundRtpStream -> this.visitSfuOutboundRtpStream(obj, sfuId, outboundRtpStream));
+        streamRtpSources(sfuSample).forEach(sfuRtpSource -> this.visitSfuRtpSource(obj, sfuId, sfuRtpSource));
+        streamRtpSinks(sfuSample).forEach(sfuRtpSink -> this.visitSfuRtpSink(obj, sfuId, sfuRtpSink));
         streamSctpStreams(sfuSample).forEach(sctpStream -> this.visitSctpStream(obj, sfuId, sctpStream));
     }
 
 
     void visitSfuTransport(T obj, UUID sfuId, SfuSample.SfuTransport sfuTransport);
 
-    void visitSfuInboundRtpStream(T obj, UUID sfuId, SfuSample.SfuInboundRtpStream sfuInboundRtpStream);
+    void visitSfuRtpSource(T obj, UUID sfuId, SfuSample.SfuRtpSource sfuRtpSource);
 
-    void visitSfuOutboundRtpStream(T obj, UUID sfuId, SfuSample.SfuOutboundRtpStream sfuOutboundRtpStream);
+    void visitSfuRtpSink(T obj, UUID sfuId, SfuSample.SfuRtpSink sfuRtpSink);
 
     void visitSctpStream(T obj, UUID sfuId, SfuSample.SctpStream sctpStream);
 

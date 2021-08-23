@@ -67,9 +67,9 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                                         this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackId);
                                         break;
                                 }
-                                UUID sfuStreamId = mediaTrackDTO.sfuStreamId;
-                                if (Objects.nonNull(sfuStreamId)) {
-                                    this.hazelcastMaps.getSfuStreamsToMediaTracks().put(sfuStreamId, mediaTrackId);
+                                UUID sfuPodId = mediaTrackDTO.sfuPodId;
+                                if (Objects.nonNull(sfuPodId)) {
+                                    this.hazelcastMaps.getSfuPodToMediaTracks().put(sfuPodId, mediaTrackId);
                                 }
                             }));
                         },
@@ -84,9 +84,9 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                                         this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackKey);
                                         break;
                                 }
-                                UUID sfuStreamId = mediaTrackDTO.sfuStreamId;
-                                if (Objects.nonNull(sfuStreamId)) {
-                                    this.hazelcastMaps.getSfuStreamsToMediaTracks().delete(sfuStreamId);
+                                UUID sfuPodId = mediaTrackDTO.sfuPodId;
+                                if (Objects.nonNull(sfuPodId)) {
+                                    this.hazelcastMaps.getSfuPodToMediaTracks().delete(sfuPodId);
                                 }
                             }));
                         })

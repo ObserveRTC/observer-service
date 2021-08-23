@@ -5,11 +5,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.common.UUIDAdapter;
-import org.observertc.webrtc.observer.dto.SfuDTO;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamDTO;
-import org.observertc.webrtc.observer.dto.SfuTransportDTO;
-import org.observertc.webrtc.observer.dto.StreamDirection;
+import org.observertc.webrtc.observer.dto.*;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.tasks.*;
 import org.observertc.webrtc.observer.samples.*;
@@ -46,18 +42,20 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
     Provider<AddSfuTransportsTask> addSfuTransportsTaskProvider;
 
     @Inject
-    Provider<AddSfuRtpStreamTask> addSfuRtpStreamTaskProvider;
+    Provider<AddSfuRtpStreamPodsTask> addSfuRtpStreamPodsTaskProvider;
 
     @Override
     @Timed(value = ExposedMetrics.OBSERVERTC_EVALUATORS_ADD_NEW_SFU_ENTITIES_EXECUTION_TIME)
     public void accept(CollectedSfuSamples collectedSfuSamples) throws Throwable {
         Set<UUID> sfuIds = collectedSfuSamples.getSfuIds();
         Set<UUID> transportIds = collectedSfuSamples.getTransportIds();
-        Set<UUID> rtpStreamIds = collectedSfuSamples.getRtpStreamIds();
+        Set<UUID> rtpPodIds = new HashSet<>();
+        rtpPodIds.addAll(collectedSfuSamples.getRtpSourceIds());
+        rtpPodIds.addAll(collectedSfuSamples.getRtpSinkIds());
         RefreshSfusTask refreshCallsTask = refreshTaskProvider.get()
                 .withSfuIds(sfuIds)
                 .withSfuTransportIds(transportIds)
-                .withSfuRtpStreamIds(rtpStreamIds);
+                .withSfuRtpPodIds(rtpPodIds);
         if (!refreshCallsTask.execute().succeeded()) {
             logger.warn("Unsuccessful execution of {}. Entities are not refreshed, new entities are not identified!", RefreshCallsTask.class.getSimpleName());
             return;
@@ -65,7 +63,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
 
         Map<UUID, SfuDTO> newSFUs = new HashMap<>();
         Map<UUID, SfuTransportDTO> newTransports = new HashMap<>();
-        Map<UUID, SfuRtpStreamDTO> newRtpStreams = new HashMap<>();
+        Map<UUID, SfuRtpStreamPodDTO> newRtpPods = new HashMap<>();
         RefreshSfusTask.Report report = refreshCallsTask.getResult();
         for (SfuSamples sfuSamples : collectedSfuSamples) {
             var sfuId = sfuSamples.getSfuId();
@@ -92,38 +90,38 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         newTransports.put(transportId, sfuTransportDTO);
                     }
                 });
-                SfuSampleVisitor.streamInboundRtpStreams(sfuSample).forEach(sfuInboundRtpStream -> {
-                    UUID streamId = UUID.fromString(sfuInboundRtpStream.streamId);
-                    if (!report.foundRtpStreamIds.contains(streamId) && !newRtpStreams.containsKey(streamId)) {
-                        UUID transportId = UUID.fromString(sfuInboundRtpStream.transportId);
-                        UUID pipedStreamId = UUIDAdapter.tryParseOrNull(sfuInboundRtpStream.pipedStreamId);
-                        var sfuRtpStreamDTO = SfuRtpStreamDTO.builder()
+                SfuSampleVisitor.streamRtpSources(sfuSample).forEach(sfuRtpSource -> {
+                    UUID streamId = UUID.fromString(sfuRtpSource.streamId);
+                    UUID sourceId = UUID.fromString(sfuRtpSource.sourceId);
+                    if (!report.foundRtpPodIds.contains(sourceId) && !newRtpPods.containsKey(sourceId)) {
+                        UUID transportId = UUID.fromString(sfuRtpSource.transportId);
+                        var sfuRtpStreamDTO = SfuRtpStreamPodDTO.builder()
                                 .withSfuId(sfuId)
-                                .withTransportId(transportId)
-                                .withStreamId(streamId)
+                                .withSfuTransportId(transportId)
+                                .withSfuStreamId(streamId)
+                                .withSfuPodId(sourceId)
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
-                                .withDirection(StreamDirection.INBOUND)
-                                .withPipedStreamId(pipedStreamId)
+                                .withSfuPodRole(SfuPodRole.SOURCE)
                                 .build();
-                        newRtpStreams.put(streamId, sfuRtpStreamDTO);
+                        newRtpPods.put(sourceId, sfuRtpStreamDTO);
                     }
                 });
-                SfuSampleVisitor.streamOutboundRtpStreams(sfuSample).forEach(sfuOutboundRtpStream -> {
-                    UUID streamId = UUID.fromString(sfuOutboundRtpStream.streamId);
-                    if (!report.foundRtpStreamIds.contains(streamId) && !newRtpStreams.containsKey(streamId)) {
-                        UUID transportId = UUID.fromString(sfuOutboundRtpStream.transportId);
-                        UUID pipedStreamId = UUIDAdapter.tryParseOrNull(sfuOutboundRtpStream.pipedStreamId);
-                        var sfuRtpStreamDTO = SfuRtpStreamDTO.builder()
+                SfuSampleVisitor.streamRtpSinks(sfuSample).forEach(sfuRtpSink -> {
+                    UUID streamId = UUID.fromString(sfuRtpSink.streamId);
+                    UUID sinkId = UUID.fromString(sfuRtpSink.sinkId);
+                    if (!report.foundRtpPodIds.contains(streamId) && !newRtpPods.containsKey(sinkId)) {
+                        UUID transportId = UUID.fromString(sfuRtpSink.transportId);
+                        var sfuRtpStreamDTO = SfuRtpStreamPodDTO.builder()
                                 .withSfuId(sfuId)
-                                .withTransportId(transportId)
-                                .withStreamId(streamId)
+                                .withSfuTransportId(transportId)
+                                .withSfuStreamId(streamId)
+                                .withSfuPodId(sinkId)
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
-                                .withDirection(StreamDirection.OUTBOUND)
-                                .withPipedStreamId(pipedStreamId)
+                                .withSfuPodRole(SfuPodRole.SINK)
                                 .build();
-                        newRtpStreams.put(streamId, sfuRtpStreamDTO);
+                        newRtpPods.put(sinkId, sfuRtpStreamDTO);
                     }
                 });
             }
@@ -134,13 +132,13 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
         if (0 < newTransports.size()) {
             this.addNewTransports(newTransports);
         }
-        if (0 < newRtpStreams.size()) {
-            this.addNewRtpStreams(newRtpStreams);
+        if (0 < newRtpPods.size()) {
+            this.addNewRtpStreamPods(newRtpPods);
         }
     }
 
-    private void addNewRtpStreams(Map<UUID, SfuRtpStreamDTO> DTOs) {
-        var task = addSfuRtpStreamTaskProvider.get()
+    private void addNewRtpStreamPods(Map<UUID, SfuRtpStreamPodDTO> DTOs) {
+        var task = addSfuRtpStreamPodsTaskProvider.get()
                 .withSfuRtpStreamDTOs(DTOs);
 
         if (!task.execute().succeeded()) {

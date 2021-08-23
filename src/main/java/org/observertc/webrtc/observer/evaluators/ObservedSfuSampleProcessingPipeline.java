@@ -105,14 +105,14 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<ObservedSfu
                 .subscribe(this.outboundReportEncoder::encodeSfuTransportReport);
 
         this.demuxCollectedSfuSamples
-                .getSfuInboundRtpStreamReport()
+                .getSfuRtpSourceReport()
                 .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeSfuInboundRtpStreamReport);
+                .subscribe(this.outboundReportEncoder::encodeSfuRtpSourceReport);
 
         this.demuxCollectedSfuSamples
-                .getSfuOutboundRtpStreamReport()
+                .getSfuRtpSinkReport()
                 .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeSfuOutboundRtpStreamReport);
+                .subscribe(this.outboundReportEncoder::encodeSfuRtpSinkReport);
 
         this.demuxCollectedSfuSamples
                 .getSctpStreamReport()

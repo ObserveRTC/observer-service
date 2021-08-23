@@ -141,18 +141,18 @@ public class OutboundReportEncoder {
         this.convertAndForward(this.encoder::encodeSfuTransportReport, sfuTransportReports);
     }
 
-    public void encodeSfuInboundRtpStreamReport(List<SfuInboundRTPStreamReport> sfuInboundRTPStreamReports) {
-        if (Objects.isNull(sfuInboundRTPStreamReports) || sfuInboundRTPStreamReports.size() < 1) {
+    public void encodeSfuRtpSourceReport(List<SfuRTPSourceReport> sfuRTPSourceReports) {
+        if (Objects.isNull(sfuRTPSourceReports) || sfuRTPSourceReports.size() < 1) {
             return;
         }
-        this.convertAndForward(this.encoder::encodeSfuInboundRtpStreamReport, sfuInboundRTPStreamReports);
+        this.convertAndForward(this.encoder::encodeSfuRtpSourceReport, sfuRTPSourceReports);
     }
 
-    public void encodeSfuOutboundRtpStreamReport(List<SfuOutboundRTPStreamReport> sfuOutboundRTPStreamReports) {
-        if (Objects.isNull(sfuOutboundRTPStreamReports) || sfuOutboundRTPStreamReports.size() < 1) {
+    public void encodeSfuRtpSinkReport(List<SfuRTPSinkReport> sfuRTPSinkReports) {
+        if (Objects.isNull(sfuRTPSinkReports) || sfuRTPSinkReports.size() < 1) {
             return;
         }
-        this.convertAndForward(this.encoder::encodeSfuOutboundRtpStreamReport, sfuOutboundRTPStreamReports);
+        this.convertAndForward(this.encoder::encodeSfuRtpSinkReport, sfuRTPSinkReports);
     }
 
     public void encodeSfuSctpStreamReport(List<SfuSctpStreamReport> sfuSctpStreamReports) {

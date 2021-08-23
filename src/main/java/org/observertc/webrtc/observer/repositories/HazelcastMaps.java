@@ -3,7 +3,6 @@ package org.observertc.webrtc.observer.repositories;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
 import org.observertc.webrtc.observer.ObserverHazelcast;
-import org.observertc.webrtc.observer.configs.ConfigEntryDispatcher;
 import org.observertc.webrtc.observer.configs.ConfigType;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.*;
@@ -37,11 +36,12 @@ public class HazelcastMaps {
     // SFU Transports
     private static final String HAZELCAST_SFUS_MAP_NAME = "observertc-sfus";
     private static final String HAZELCAST_SFU_TRANSPORTS_MAP_NAME = "observertc-sfu-transports";
-    private static final String HAZELCAST_SFU_RTP_STREAMS_MAP_NAME = "observertc-sfu-rtp-streams";
+    private static final String HAZELCAST_SFU_RTP_PODS_MAP_NAME = "observertc-sfu-rtp-pods";
+    private static final String HAZELCAST_SFU_STREAM_TO_RTP_POD_IDS_MAP_NAME = "observertc-sfu-stream-to-rtp-pods";
 
     private static final String HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME = "observertc-inbound-track-ids-to-outbound-track-ids";
 
-    private static final String HAZELCAST_SFU_STREAM_TO_MEDIA_TRACK_ID_MAP_NAME = "observertc-sfu-stream-to-media-tracks";
+    private static final String HAZELCAST_SFU_POD_TO_MEDIA_TRACK_ID_MAP_NAME = "observertc-sfu-rtp-pod-to-media-tracks";
 
     public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
     public static final String HAZELCAST_CONFIGURATIONS_MAP_NAME = "observertc-configurations";
@@ -80,7 +80,8 @@ public class HazelcastMaps {
     // SFU
     private IMap<UUID, SfuDTO> SFUs;
     private IMap<UUID, SfuTransportDTO> sfuTransports;
-    private IMap<UUID, SfuRtpStreamDTO> sfuRtpStreams;
+    private IMap<UUID, SfuRtpStreamPodDTO> sfuRtpPods;
+    private MultiMap<UUID, UUID> sfuStreamToRtpPodIds;
 
     // track bindings
     private IMap<UUID, UUID> inboundTrackIdsToOutboundTrackIds;
@@ -93,7 +94,7 @@ public class HazelcastMaps {
     private IMap<UUID, UUID> sfuTransportToCalls;
     private MultiMap<UUID, UUID> callToSfuTransports;
 
-    private IMap<UUID, UUID> sfuStreamsToMediaTracks;
+    private IMap<UUID, UUID> sfuRtpPodToMediaTracks;
 
     // other necessary maps
     private IMap<String, WeakLockDTO> weakLocks;
@@ -122,11 +123,12 @@ public class HazelcastMaps {
 
         this.SFUs = observerHazelcast.getInstance().getMap(HAZELCAST_SFUS_MAP_NAME);
         this.sfuTransports = observerHazelcast.getInstance().getMap(HAZELCAST_SFU_TRANSPORTS_MAP_NAME);
-        this.sfuRtpStreams = observerHazelcast.getInstance().getMap(HAZELCAST_SFU_RTP_STREAMS_MAP_NAME);
+        this.sfuRtpPods = observerHazelcast.getInstance().getMap(HAZELCAST_SFU_RTP_PODS_MAP_NAME);
+        this.sfuStreamToRtpPodIds = observerHazelcast.getInstance().getMultiMap(HAZELCAST_SFU_STREAM_TO_RTP_POD_IDS_MAP_NAME);
 
         this.inboundTrackIdsToOutboundTrackIds = observerHazelcast.getInstance().getMap(HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME);
 
-        this.sfuStreamsToMediaTracks = observerHazelcast.getInstance().getMap(HAZELCAST_SFU_STREAM_TO_MEDIA_TRACK_ID_MAP_NAME);
+        this.sfuRtpPodToMediaTracks = observerHazelcast.getInstance().getMap(HAZELCAST_SFU_POD_TO_MEDIA_TRACK_ID_MAP_NAME);
 
         this.configurations = observerHazelcast.getInstance().getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
         this.weakLocks = observerHazelcast.getInstance().getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
@@ -158,10 +160,8 @@ public class HazelcastMaps {
 
         observerHazelcast.getInstance()
                 .getConfig()
-                .getMapConfig(HAZELCAST_SFU_RTP_STREAMS_MAP_NAME)
+                .getMapConfig(HAZELCAST_SFU_RTP_PODS_MAP_NAME)
                 .setMaxIdleSeconds(this.config.sfuRtpStreamMaxIdleTime);
-
-
     }
 
     public IMap<UUID, CallDTO> getCalls(){
@@ -187,14 +187,18 @@ public class HazelcastMaps {
     public IMap<UUID, SfuTransportDTO> getSFUTransports() {
         return this.sfuTransports;
     }
-    public IMap<UUID, SfuRtpStreamDTO> getSFURtpStreams() {
-        return this.sfuRtpStreams;
+//    public IMap<UUID, SfuRtpStreamDTO> getSFURtpStreams() {
+//        return this.sfuRtpStreams;
+//    }
+    public IMap<UUID, SfuRtpStreamPodDTO> getSFURtpPods() {
+        return this.sfuRtpPods;
     }
-
+    public MultiMap<UUID, UUID> getSfuStreamToRtpPodIds() { return this.sfuStreamToRtpPodIds; }
 //    public IMap<UUID, TrackLinkDTO> getInboundLinkedTracks() { return this.l; }
     public IMap<UUID, UUID> getInboundTrackIdsToOutboundTrackIds() { return this.inboundTrackIdsToOutboundTrackIds; }
 
-    public IMap<UUID, UUID> getSfuStreamsToMediaTracks() { return this.sfuStreamsToMediaTracks; }
+    public IMap<UUID, UUID> getSfuPodToMediaTracks() { return this.sfuRtpPodToMediaTracks; }
+
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
 

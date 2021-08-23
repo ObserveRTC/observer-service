@@ -11,8 +11,8 @@ import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.repositories.tasks.FetchSfuRelationsTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.observertc.webrtc.schemas.reports.SFUTransportReport;
-import org.observertc.webrtc.schemas.reports.SfuInboundRTPStreamReport;
-import org.observertc.webrtc.schemas.reports.SfuOutboundRTPStreamReport;
+import org.observertc.webrtc.schemas.reports.SfuRTPSinkReport;
+import org.observertc.webrtc.schemas.reports.SfuRTPSourceReport;
 import org.observertc.webrtc.schemas.reports.SfuSctpStreamReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +30,15 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 //    private static final String _____missingFromSample____ = "I did not find it in the ClientSample";
 //    private static final String _____missingByBound____ = "I did not find it in to be bound from the observed sample?";
     private Subject<SFUTransportReport> sfuTransportReportSubject = PublishSubject.create();
-    private Subject<SfuInboundRTPStreamReport> sfuInboundRtpStreamReportSubject = PublishSubject.create();
-    private Subject<SfuOutboundRTPStreamReport> sfuOutboundRtpStreamReportSubject = PublishSubject.create();
+    private Subject<SfuRTPSourceReport> sfuRtpSourceReportSubject = PublishSubject.create();
+    private Subject<SfuRTPSinkReport> sfuRtpSinkReportSubject = PublishSubject.create();
     private Subject<SfuSctpStreamReport> sfuSctpStreamSubject = PublishSubject.create();
 
     public Observable<SFUTransportReport> getSfuTransportReport() {
         return this.sfuTransportReportSubject;
     }
-    public Observable<SfuInboundRTPStreamReport> getSfuInboundRtpStreamReport() {return this.sfuInboundRtpStreamReportSubject; }
-    public Observable<SfuOutboundRTPStreamReport> getSfuOutboundRtpStreamReport() {return this.sfuOutboundRtpStreamReportSubject; }
+    public Observable<SfuRTPSourceReport> getSfuRtpSourceReport() {return this.sfuRtpSourceReportSubject; }
+    public Observable<SfuRTPSinkReport> getSfuRtpSinkReport() {return this.sfuRtpSinkReportSubject; }
 
     public Observable<SfuSctpStreamReport> getSctpStreamReport() {return this.sfuSctpStreamSubject; }
 
@@ -68,8 +68,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
         FetchSfuRelationsTask.Report report = this.fetchSfuRelations(collectedSfuSamples);
 
         List<SFUTransportReport> transportReports = new LinkedList<>();
-        List<SfuInboundRTPStreamReport> inboundRTPStreamReports = new LinkedList<>();
-        List<SfuOutboundRTPStreamReport> outboundRTPStreamReports = new LinkedList<>();
+        List<SfuRTPSourceReport> rtpSourceReports = new LinkedList<>();
+        List<SfuRTPSinkReport> rtpSinkReports = new LinkedList<>();
         List<SfuSctpStreamReport> sctpStreamReports = new LinkedList<>();
         for (SfuSamples sfuSamples : collectedSfuSamples) {
             UUID sfuId = sfuSamples.getSfuId();
@@ -90,7 +90,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                         .filter(Objects::nonNull)
                         .forEach(transportReports::add);
 
-                SfuSampleVisitor.streamInboundRtpStreams(sfuSample)
+                SfuSampleVisitor.streamRtpSources(sfuSample)
                         .map(inboundRtpStream -> {
                             UUID trackId = null;
                             UUID clientId = null;
@@ -102,7 +102,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                                 clientId = relations.clientId;
                                 callId = relations.callId;
                             }
-                            return this.createSfuInboundRtpStreamReport(
+                            return this.createSfuRtpSourceReport(
                                     sfuId,
                                     observedSfuSample,
                                     inboundRtpStream,
@@ -113,9 +113,9 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(inboundRTPStreamReports::add);
+                        .forEach(rtpSourceReports::add);
 
-                SfuSampleVisitor.streamOutboundRtpStreams(sfuSample)
+                SfuSampleVisitor.streamRtpSinks(sfuSample)
                         .map(outboundRtpStream -> {
                             UUID trackId = null;
                             UUID clientId = null;
@@ -127,7 +127,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                                 clientId = relations.clientId;
                                 callId = relations.callId;
                             }
-                            return this.createSfuOutboundRtpStreamReport(
+                            return this.createSfuRtpSinkReport(
                                     sfuId,
                                     observedSfuSample,
                                     outboundRtpStream,
@@ -138,7 +138,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(outboundRTPStreamReports::add);
+                        .forEach(rtpSinkReports::add);
 
                 SfuSampleVisitor.streamSctpStreams(sfuSample)
                         .map(sctpStream -> {
@@ -157,11 +157,11 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
             if (observerConfig.outboundReports.reportSfuTransports) {
                 transportReports.stream().forEach(this.sfuTransportReportSubject::onNext);
             }
-            if (observerConfig.outboundReports.reportSfuInboundRtpStreams) {
-                inboundRTPStreamReports.stream().forEach(this.sfuInboundRtpStreamReportSubject::onNext);
+            if (observerConfig.outboundReports.reportSfuRtpSources) {
+                rtpSourceReports.stream().forEach(this.sfuRtpSourceReportSubject::onNext);
             }
-            if (observerConfig.outboundReports.reportSfuOutboundRtpStreams) {
-                outboundRTPStreamReports.stream().forEach(this.sfuOutboundRtpStreamReportSubject::onNext);
+            if (observerConfig.outboundReports.reportSfuRtpSinks) {
+                rtpSinkReports.stream().forEach(this.sfuRtpSinkReportSubject::onNext);
             }
             if (observerConfig.outboundReports.reportSfuSctpStreams) {
                 sctpStreamReports.stream().forEach(this.sfuSctpStreamSubject::onNext);
@@ -233,10 +233,10 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
     }
 
-    private SfuInboundRTPStreamReport createSfuInboundRtpStreamReport(
+    private SfuRTPSourceReport createSfuRtpSourceReport(
             UUID sfuId,
             ObservedSfuSample observedSfuSample,
-            SfuSample.SfuInboundRtpStream sfuInboundRtpStream,
+            SfuSample.SfuRtpSource sfuRtpSource,
             UUID trackId,
             UUID clientId,
             UUID callId
@@ -245,7 +245,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
         String clientIdStr = UUIDAdapter.toStringOrNull(clientId);
         String callIdStr = UUIDAdapter.toStringOrNull(callId);
         try {
-            var result = SfuInboundRTPStreamReport.newBuilder()
+            var result = SfuRTPSourceReport.newBuilder()
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
@@ -254,46 +254,47 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     .setTimestamp(observedSfuSample.getTimestamp())
 
                     /* Report Fields */
-                    .setTransportId(sfuInboundRtpStream.transportId)
-                    .setStreamId(sfuInboundRtpStream.streamId)
-                    .setSsrc(sfuInboundRtpStream.ssrc)
+                    .setTransportId(sfuRtpSource.transportId)
+                    .setStreamId(sfuRtpSource.streamId)
+                    .setSourceId(sfuRtpSource.sourceId)
+                    .setSsrc(sfuRtpSource.ssrc)
                     .setTrackId(trackIdStr)
                     .setClientId(clientIdStr)
                     .setCallId(callIdStr)
 
                     /* RTP Stats */
-                    .setMediaType(sfuInboundRtpStream.mediaType)
-                    .setPayloadType(sfuInboundRtpStream.payloadType)
-                    .setMimeType(sfuInboundRtpStream.mimeType)
-                    .setClockRate(sfuInboundRtpStream.clockRate)
-                    .setSdpFmtpLine(sfuInboundRtpStream.sdpFmtpLine)
-                    .setRid(sfuInboundRtpStream.rid)
-                    .setRtxSsrc(sfuInboundRtpStream.rtxSsrc)
-                    .setTargetBitrate(sfuInboundRtpStream.targetBitrate)
-                    .setVoiceActivityFlag(sfuInboundRtpStream.voiceActivityFlag)
-                    .setFirCount(sfuInboundRtpStream.firCount)
-                    .setPliCount(sfuInboundRtpStream.pliCount)
-                    .setNackCount(sfuInboundRtpStream.nackCount)
-                    .setSliCount(sfuInboundRtpStream.sliCount)
-                    .setPacketsLost(sfuInboundRtpStream.packetsLost)
-                    .setPacketsReceived(sfuInboundRtpStream.packetsReceived)
-                    .setPacketsDiscarded(sfuInboundRtpStream.packetsDiscarded)
-                    .setPacketsRepaired(sfuInboundRtpStream.packetsRepaired)
-                    .setPacketsFailedDecryption(sfuInboundRtpStream.packetsFailedDecryption)
-                    .setFecPacketsReceived(sfuInboundRtpStream.fecPacketsReceived)
-                    .setFecPacketsDiscarded(sfuInboundRtpStream.fecPacketsDiscarded)
-                    .setBytesReceived(sfuInboundRtpStream.bytesReceived)
-                    .setRtcpSrReceived(sfuInboundRtpStream.rtcpSrReceived)
-                    .setRtcpRrSent(sfuInboundRtpStream.rtcpRrSent)
-                    .setRtxPacketsReceived(sfuInboundRtpStream.rtxPacketsReceived)
-                    .setRtxPacketsDiscarded(sfuInboundRtpStream.rtxPacketsDiscarded)
-                    .setFramesReceived(sfuInboundRtpStream.framesReceived)
-                    .setFramesDecoded(sfuInboundRtpStream.framesDecoded)
-                    .setKeyFramesDecoded(sfuInboundRtpStream.keyFramesDecoded)
-                    .setFractionLost(sfuInboundRtpStream.fractionLost)
-                    .setJitter(sfuInboundRtpStream.jitter)
-                    .setRoundTripTime(sfuInboundRtpStream.roundTripTime)
-                    .setAttachments(sfuInboundRtpStream.attachments)
+                    .setMediaType(sfuRtpSource.mediaType)
+                    .setPayloadType(sfuRtpSource.payloadType)
+                    .setMimeType(sfuRtpSource.mimeType)
+                    .setClockRate(sfuRtpSource.clockRate)
+                    .setSdpFmtpLine(sfuRtpSource.sdpFmtpLine)
+                    .setRid(sfuRtpSource.rid)
+                    .setRtxSsrc(sfuRtpSource.rtxSsrc)
+                    .setTargetBitrate(sfuRtpSource.targetBitrate)
+                    .setVoiceActivityFlag(sfuRtpSource.voiceActivityFlag)
+                    .setFirCount(sfuRtpSource.firCount)
+                    .setPliCount(sfuRtpSource.pliCount)
+                    .setNackCount(sfuRtpSource.nackCount)
+                    .setSliCount(sfuRtpSource.sliCount)
+                    .setPacketsLost(sfuRtpSource.packetsLost)
+                    .setPacketsReceived(sfuRtpSource.packetsReceived)
+                    .setPacketsDiscarded(sfuRtpSource.packetsDiscarded)
+                    .setPacketsRepaired(sfuRtpSource.packetsRepaired)
+                    .setPacketsFailedDecryption(sfuRtpSource.packetsFailedDecryption)
+                    .setFecPacketsReceived(sfuRtpSource.fecPacketsReceived)
+                    .setFecPacketsDiscarded(sfuRtpSource.fecPacketsDiscarded)
+                    .setBytesReceived(sfuRtpSource.bytesReceived)
+                    .setRtcpSrReceived(sfuRtpSource.rtcpSrReceived)
+                    .setRtcpRrSent(sfuRtpSource.rtcpRrSent)
+                    .setRtxPacketsReceived(sfuRtpSource.rtxPacketsReceived)
+                    .setRtxPacketsDiscarded(sfuRtpSource.rtxPacketsDiscarded)
+                    .setFramesReceived(sfuRtpSource.framesReceived)
+                    .setFramesDecoded(sfuRtpSource.framesDecoded)
+                    .setKeyFramesDecoded(sfuRtpSource.keyFramesDecoded)
+                    .setFractionLost(sfuRtpSource.fractionLost)
+                    .setJitter(sfuRtpSource.jitter)
+                    .setRoundTripTime(sfuRtpSource.roundTripTime)
+                    .setAttachments(sfuRtpSource.attachments)
 
                     .build();
             return result;
@@ -304,10 +305,10 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
     }
 
-    private SfuOutboundRTPStreamReport createSfuOutboundRtpStreamReport(
+    private SfuRTPSinkReport createSfuRtpSinkReport(
             UUID sfuId,
             ObservedSfuSample observedSfuSample,
-            SfuSample.SfuOutboundRtpStream sfuOutboundRtpStream,
+            SfuSample.SfuRtpSink sfuRtpSink,
             UUID trackId,
             UUID clientId,
             UUID callId
@@ -316,7 +317,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
         String clientIdStr = UUIDAdapter.toStringOrNull(clientId);
         String callIdStr = UUIDAdapter.toStringOrNull(callId);
         try {
-            var result = SfuOutboundRTPStreamReport.newBuilder()
+            var result = SfuRTPSinkReport.newBuilder()
 
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
@@ -326,44 +327,45 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     .setTimestamp(observedSfuSample.getTimestamp())
 
                     /* Report Fields */
-                    .setTransportId(sfuOutboundRtpStream.transportId)
-                    .setStreamId(sfuOutboundRtpStream.streamId)
-                    .setSsrc(sfuOutboundRtpStream.ssrc)
+                    .setTransportId(sfuRtpSink.transportId)
+                    .setStreamId(sfuRtpSink.streamId)
+                    .setSinkId(sfuRtpSink.sinkId)
+                    .setSsrc(sfuRtpSink.ssrc)
                     .setTrackId(trackIdStr)
                     .setClientId(clientIdStr)
                     .setCallId(callIdStr)
 
                     /* RTP Stats */
-                    .setMediaType(sfuOutboundRtpStream.mediaType)
-                    .setPayloadType(sfuOutboundRtpStream.payloadType)
-                    .setMimeType(sfuOutboundRtpStream.mimeType)
-                    .setClockRate(sfuOutboundRtpStream.clockRate)
-                    .setSdpFmtpLine(sfuOutboundRtpStream.sdpFmtpLine)
-                    .setRid(sfuOutboundRtpStream.rid)
-                    .setRtxSsrc(sfuOutboundRtpStream.rtxSsrc)
-                    .setTargetBitrate(sfuOutboundRtpStream.targetBitrate)
-                    .setVoiceActivityFlag(sfuOutboundRtpStream.voiceActivityFlag)
-                    .setFirCount(sfuOutboundRtpStream.firCount)
-                    .setPliCount(sfuOutboundRtpStream.pliCount)
-                    .setNackCount(sfuOutboundRtpStream.nackCount)
-                    .setSliCount(sfuOutboundRtpStream.sliCount)
+                    .setMediaType(sfuRtpSink.mediaType)
+                    .setPayloadType(sfuRtpSink.payloadType)
+                    .setMimeType(sfuRtpSink.mimeType)
+                    .setClockRate(sfuRtpSink.clockRate)
+                    .setSdpFmtpLine(sfuRtpSink.sdpFmtpLine)
+                    .setRid(sfuRtpSink.rid)
+                    .setRtxSsrc(sfuRtpSink.rtxSsrc)
+                    .setTargetBitrate(sfuRtpSink.targetBitrate)
+                    .setVoiceActivityFlag(sfuRtpSink.voiceActivityFlag)
+                    .setFirCount(sfuRtpSink.firCount)
+                    .setPliCount(sfuRtpSink.pliCount)
+                    .setNackCount(sfuRtpSink.nackCount)
+                    .setSliCount(sfuRtpSink.sliCount)
                     .setPacketsLost(null)
-                    .setPacketsSent(sfuOutboundRtpStream.packetsSent)
-                    .setPacketsDiscarded(sfuOutboundRtpStream.packetsDiscarded)
-                    .setPacketsRetransmitted(sfuOutboundRtpStream.packetsRetransmitted)
-                    .setPacketsFailedEncryption(sfuOutboundRtpStream.packetsFailedEncryption)
-                    .setPacketsDuplicated(sfuOutboundRtpStream.packetsDuplicated)
-                    .setFecPacketsSent(sfuOutboundRtpStream.fecPacketsSent)
-                    .setFecPacketsDiscarded(sfuOutboundRtpStream.fecPacketsDiscarded)
-                    .setBytesSent(sfuOutboundRtpStream.bytesSent)
-                    .setRtcpSrSent(sfuOutboundRtpStream.rtcpSrSent)
-                    .setRtcpRrReceived(sfuOutboundRtpStream.rtcpRrReceived)
-                    .setRtxPacketsSent(sfuOutboundRtpStream.rtxPacketsSent)
-                    .setRtxPacketsDiscarded(sfuOutboundRtpStream.rtxPacketsDiscarded)
-                    .setFramesSent(sfuOutboundRtpStream.framesSent)
-                    .setFramesEncoded(sfuOutboundRtpStream.framesEncoded)
-                    .setKeyFramesEncoded(sfuOutboundRtpStream.keyFramesEncoded)
-                    .setAttachments(sfuOutboundRtpStream.attachments)
+                    .setPacketsSent(sfuRtpSink.packetsSent)
+                    .setPacketsDiscarded(sfuRtpSink.packetsDiscarded)
+                    .setPacketsRetransmitted(sfuRtpSink.packetsRetransmitted)
+                    .setPacketsFailedEncryption(sfuRtpSink.packetsFailedEncryption)
+                    .setPacketsDuplicated(sfuRtpSink.packetsDuplicated)
+                    .setFecPacketsSent(sfuRtpSink.fecPacketsSent)
+                    .setFecPacketsDiscarded(sfuRtpSink.fecPacketsDiscarded)
+                    .setBytesSent(sfuRtpSink.bytesSent)
+                    .setRtcpSrSent(sfuRtpSink.rtcpSrSent)
+                    .setRtcpRrReceived(sfuRtpSink.rtcpRrReceived)
+                    .setRtxPacketsSent(sfuRtpSink.rtxPacketsSent)
+                    .setRtxPacketsDiscarded(sfuRtpSink.rtxPacketsDiscarded)
+                    .setFramesSent(sfuRtpSink.framesSent)
+                    .setFramesEncoded(sfuRtpSink.framesEncoded)
+                    .setKeyFramesEncoded(sfuRtpSink.keyFramesEncoded)
+                    .setAttachments(sfuRtpSink.attachments)
 
                     .build();
             return result;
@@ -422,14 +424,14 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
         collectedSfuSamples.stream()
                 .flatMap(SfuSamples::stream)
                 .forEach(observedSfuSample -> {
-                    SfuSampleVisitor.streamInboundRtpStreams(observedSfuSample.getSfuSample())
+                    SfuSampleVisitor.streamRtpSources(observedSfuSample.getSfuSample())
                             .map(t -> UUIDAdapter.tryParse(t.streamId))
                             .filter(Optional::isPresent)
                             .map(Optional::get)
                             .forEach(sfuStreamIds::add);
 
 
-                    SfuSampleVisitor.streamOutboundRtpStreams(observedSfuSample.getSfuSample())
+                    SfuSampleVisitor.streamRtpSinks(observedSfuSample.getSfuSample())
                             .map(t -> UUIDAdapter.tryParse(t.streamId))
                             .filter(Optional::isPresent)
                             .map(Optional::get)

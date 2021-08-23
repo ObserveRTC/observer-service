@@ -17,14 +17,14 @@ public  class SfuSample {
 	/**
 	 * array of measurements related to inbound RTP streams
 	 */
-	@JsonProperty("inboundRtpStreams")
-	public SfuInboundRtpStream[] inboundRtpStreams;
+	@JsonProperty("rtpSources")
+	public SfuRtpSource[] rtpSources;
 
 	/**
 	 * array of measurements related to outbound RTP streams
 	 */
-	@JsonProperty("outboundRtpStreams")
-	public SfuOutboundRtpStream[] outboundRtpStreams;
+	@JsonProperty("rtpSinks")
+	public SfuRtpSink[] rtpSinks;
 
 	/**
 	 * array of measurements of SCTP streams
@@ -60,7 +60,7 @@ public  class SfuSample {
 	 * undefined
 	 */
 
-	public static class SfuInboundRtpStream {
+	public static class SfuRtpSource {
 
 		/**
 		 * The id of the transport the stream belongs to
@@ -69,16 +69,16 @@ public  class SfuSample {
 		public String transportId;
 
 		/**
-		 * id of the outbound rtp stream mapped inside SFU
-		 */
-		@JsonProperty("pipedStreamId")
-		public String pipedStreamId;
-
-		/**
 		 * unique identifier for the stream
 		 */
 		@JsonProperty("streamId")
 		public String streamId;
+
+		/**
+		 * id of the source pod
+		 */
+		@JsonProperty("sourceId")
+		public String sourceId;
 
 		/**
 		 * The SSRC identifier of the corresponded RTP stream
@@ -289,7 +289,7 @@ public  class SfuSample {
 	 * undefined
 	 */
 
-	public static class SfuOutboundRtpStream {
+	public static class SfuRtpSink {
 
 		/**
 		 * The id of the transport the stream belongs to
@@ -298,16 +298,16 @@ public  class SfuSample {
 		public String transportId;
 
 		/**
-		 * id of the inbound rtp stream mapped inside SFU
-		 */
-		@JsonProperty("pipedStreamId")
-		public String pipedStreamId;
-
-		/**
 		 * unique identifier of the stream
 		 */
 		@JsonProperty("streamId")
 		public String streamId;
+
+		/**
+		 * id of the sink pod
+		 */
+		@JsonProperty("sinkId")
+		public String sinkId;
 
 		/**
 		 * The SSRC identifier of the corresponded RTP stream

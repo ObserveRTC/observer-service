@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.SfuDTO;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamDTO;
+import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Prototype
@@ -23,17 +24,17 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
     public static class Report {
         public Set<UUID> foundSfuIds = new HashSet<>();
         public Set<UUID> foundSfuTransportIds = new HashSet<>();
-        public Set<UUID> foundRtpStreamIds = new HashSet<>();
+        public Set<UUID> foundRtpPodIds = new HashSet<>();
     }
 
 
     private Set<UUID> sfuIds = new HashSet<>();
     private Set<UUID> transportIds = new HashSet<>();
-    private Set<UUID> rtpStreamIds = new HashSet<>();
+    private Set<UUID> rtpPodIds = new HashSet<>();
     private final Report report = new Report();
 
-    private Map<UUID, SfuRtpStreamDTO> incompleteSfuStreamDTOs = new HashMap<>();
-    private Map<UUID, SfuRtpStreamDTO> completedSfuStreamDTOs = new HashMap<>();
+    private Map<UUID, SfuRtpStreamPodDTO> incompleteSfuPodDTOs = new HashMap<>();
+    private Map<UUID, SfuRtpStreamPodDTO> completedSfuPodDTOs = new HashMap<>();
     @Inject
     HazelcastMaps hazelcastMaps;
 
@@ -43,101 +44,104 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                 .addActionStage("Check Sfu Rtp Streams",
                         // action
                         () -> {
-                            if (this.rtpStreamIds.size() < 1) {
+                            if (this.rtpPodIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, SfuRtpStreamDTO> rtpStreamDTOs = this.hazelcastMaps.getSFURtpStreams().getAll(this.rtpStreamIds);
-                            this.report.foundRtpStreamIds.addAll(rtpStreamDTOs.keySet());
-                            rtpStreamDTOs.values().stream()
+                            Map<UUID, SfuRtpStreamPodDTO> rtpPodDTOs = this.hazelcastMaps.getSFURtpPods().getAll(this.rtpPodIds);
+                            this.report.foundRtpPodIds.addAll(rtpPodDTOs.keySet());
+                            rtpPodDTOs.values().stream()
                                     .filter(dto -> Objects.isNull(dto.callId))
-                                    .forEach(dto -> incompleteSfuStreamDTOs.put(dto.streamId, dto));
+                                    .forEach(dto -> incompleteSfuPodDTOs.put(dto.sfuPodId, dto));
                         })
-                .addActionStage("Try complete SfuStreams",
+                .addActionStage("Try complete SfuPods",
                 // action
                 () -> {
-                    if (this.incompleteSfuStreamDTOs.size() < 1) {
+                    if (this.incompleteSfuPodDTOs.size() < 1) {
                         return;
                     }
-                    Set<UUID> sfuStreamIds = this.incompleteSfuStreamDTOs.keySet();
-                    Map<UUID, UUID> streamToTracks = this.hazelcastMaps.getSfuStreamsToMediaTracks().getAll(sfuStreamIds);
-                    if (streamToTracks.size() < 1) {
+                    Set<UUID> sfuPodIds = this.incompleteSfuPodDTOs.keySet();
+                    logger.info("sfuPodIds: {}", sfuPodIds);
+                    this.hazelcastMaps.getSfuPodToMediaTracks().entrySet().forEach(entry -> {
+                        logger.info("{} -> {}", entry.getKey(), entry.getValue());
+                    });
+                    Map<UUID, UUID> podIdToTrackIds = this.hazelcastMaps.getSfuPodToMediaTracks().getAll(sfuPodIds);
+                    if (podIdToTrackIds.size() < 1) {
                         return;
                     }
-                    Set<UUID> trackIds = new HashSet<>(streamToTracks.values());
+                    Set<UUID> trackIds = new HashSet<>(podIdToTrackIds.values());
                     Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(trackIds);
                     mediaTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
-                        UUID streamId = mediaTrackDTO.sfuStreamId;
-                        if (Objects.isNull(streamId)) {
+                        UUID rtpPodId = mediaTrackDTO.sfuPodId;
+                        if (Objects.isNull(rtpPodId)) {
                             return;
                         }
-                        SfuRtpStreamDTO streamDTO = this.incompleteSfuStreamDTOs.remove(streamId);
-                        if (Objects.isNull(streamDTO)) {
+                        SfuRtpStreamPodDTO rtpPodDTO = this.incompleteSfuPodDTOs.remove(rtpPodId);
+                        if (Objects.isNull(rtpPodDTO)) {
                             return;
                         }
 
-                        var completedStreamDTO = SfuRtpStreamDTO.builderFrom(streamDTO)
+                        var completedStreamDTO = SfuRtpStreamPodDTO.builderFrom(rtpPodDTO)
                                 .withTrackId(mediaTrackDTO.trackId)
                                 .withClientId(mediaTrackDTO.clientId)
                                 .withCallId(mediaTrackDTO.callId)
                                 .build();
-                        this.completedSfuStreamDTOs.put(streamId, completedStreamDTO);
-                        logger.info("SFU streamId ({}) in direction {} is bound to track {} for client {} on call {}", streamId, completedStreamDTO.direction, completedStreamDTO.trackId, completedStreamDTO.clientId, completedStreamDTO.callId);
+                        this.completedSfuPodDTOs.put(rtpPodId, completedStreamDTO);
+                        logger.info("SFU Stream Pod ({}) in role {} is bound to track {} for client {} on call {}", rtpPodId, completedStreamDTO.sfuPodRole, completedStreamDTO.trackId, completedStreamDTO.clientId, completedStreamDTO.callId);
                     });
-                },
-                // rollback: yeah.... no hard feelings about the completed StreamDTOs
-                (inputHolder, thrown) -> {
-
+                    if (0 < this.completedSfuPodDTOs.size()) {
+                        this.hazelcastMaps.getSFURtpPods().putAll(this.completedSfuPodDTOs);
+                    }
                 })
-                .addActionStage("Traverse to complete", () -> {
-                    Queue<SfuRtpStreamDTO> sfuStreams = this.completedSfuStreamDTOs.values().stream()
-                            .collect(Collectors.toCollection(LinkedList::new));
-                    while(!sfuStreams.isEmpty()) {
-                        SfuRtpStreamDTO sfuRtpStreamDTO = sfuStreams.poll();
-                        UUID pipedStreamId = sfuRtpStreamDTO.pipedStreamId;
-                        if (Objects.isNull(pipedStreamId)) {
-                            continue;
+                .addActionStage("Complete related RTRP Pods", () -> {
+                    List<SfuRtpStreamPodDTO> completedPods = this.completedSfuPodDTOs.values().stream().collect(Collectors.toList());
+                    completedPods.forEach(completedRtpPod -> {
+                        UUID streamId = completedRtpPod.sfuStreamId;
+                        if (Objects.isNull(streamId)) {
+                            return;
                         }
-                        SfuRtpStreamDTO pipedSfuStreamDTO = this.hazelcastMaps.getSFURtpStreams().get(pipedStreamId);
-                        if (Objects.isNull(pipedSfuStreamDTO)) {
-                            continue;
+                        var podIds = hazelcastMaps.getSfuStreamToRtpPodIds().get(streamId).stream().collect(Collectors.toSet());
+                        if (podIds.size() < 1) {
+                            return;
                         }
-                        var newPipedStreamDTO = SfuRtpStreamDTO.builderFrom(pipedSfuStreamDTO)
-                                .withCallId(sfuRtpStreamDTO.callId)
-                                .build();
-                        if (!this.completedSfuStreamDTOs.containsKey(pipedStreamId)) {
-                            this.completedSfuStreamDTOs.put(pipedSfuStreamDTO.streamId, newPipedStreamDTO);
-                            sfuStreams.add(newPipedStreamDTO);
+                        var completedRelatedRtpPods = this.hazelcastMaps.getSFURtpPods()
+                                .getAll(podIds)
+                                .values()
+                                .stream()
+                                .filter(dto -> Objects.isNull(dto.callId))
+                                .map(incompleteRelatedPodDTO -> SfuRtpStreamPodDTO.builderFrom(incompleteRelatedPodDTO)
+                                        .withCallId(completedRtpPod.callId)
+                                        .build()
+                                ).collect(Collectors.toMap(
+                                        dto -> dto.sfuPodId,
+                                        Function.identity()
+                                ));
+                        if (0 < completedRelatedRtpPods.size()) {
+                            hazelcastMaps.getSFURtpPods().putAll(completedRelatedRtpPods);
                         }
-                    }
-                    if (0 < this.completedSfuStreamDTOs.size()) {
-                        this.hazelcastMaps.getSFURtpStreams().putAll(this.completedSfuStreamDTOs);
-                    }
+                    });
                 })
                 .addActionStage("Try complete Transports",
                 // action
                 () -> {
-                    if (this.completedSfuStreamDTOs.size() < 1) {
+                    if (this.completedSfuPodDTOs.size() < 1) {
                         return;
                     }
                     Map<UUID, SfuTransportDTO> completedSfuTransports = new HashMap<>();
-                    this.completedSfuStreamDTOs.forEach((sfuStreamId, sfuStreamDTO) -> {
-                        UUID transportId = sfuStreamDTO.transportId;
+                    this.completedSfuPodDTOs.forEach((sfuPodId, sfuRtpStreamPodDTO) -> {
+                        UUID transportId = sfuRtpStreamPodDTO.sfuTransportId;
                         if (Objects.isNull(transportId)) {
                             return;
                         }
                         SfuTransportDTO sfuTransportDTO = this.hazelcastMaps.getSFUTransports().get(transportId);
-                        if (Objects.isNull(sfuTransportDTO) || Objects.nonNull(sfuStreamDTO.callId)) {
+                        if (Objects.isNull(sfuTransportDTO) || Objects.nonNull(sfuRtpStreamPodDTO.callId)) {
                             return;
                         }
                         completedSfuTransports.put(transportId, SfuTransportDTO
                                 .builderFrom(sfuTransportDTO)
-                                .withCallId(sfuStreamDTO.callId)
+                                .withCallId(sfuRtpStreamPodDTO.callId)
                                 .build()
                         );
                     });
-                    if (0 < completedSfuStreamDTOs.size()) {
-                        this.hazelcastMaps.getSFUTransports().putAll(completedSfuTransports);
-                    }
                 },
                 // rollback: yeah.... no hard feelings about the completed transports
                 (inputHolder, thrown) -> {
@@ -203,20 +207,20 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         return this;
     }
 
-    public RefreshSfusTask withSfuRtpStreamIds(UUID... rtpStreamIds) {
+    public RefreshSfusTask withSfuRtpPodIds(UUID... rtpStreamIds) {
         if (Objects.isNull(rtpStreamIds)) {
             return this;
         }
         var rtpStreamIdsList = Arrays.asList(rtpStreamIds);
-        this.rtpStreamIds.addAll(rtpStreamIdsList);
+        this.rtpPodIds.addAll(rtpStreamIdsList);
         return this;
     }
 
-    public RefreshSfusTask withSfuRtpStreamIds(Set<UUID> rtpStreamIds) {
-        if (Objects.isNull(rtpStreamIds)) {
+    public RefreshSfusTask withSfuRtpPodIds(Set<UUID> rtpPodIds) {
+        if (Objects.isNull(rtpPodIds)) {
             return this;
         }
-        this.rtpStreamIds.addAll(rtpStreamIds);
+        this.rtpPodIds.addAll(rtpPodIds);
         return this;
     }
 

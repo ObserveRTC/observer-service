@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.codecs;
 
 import io.micronaut.context.annotation.Prototype;
 import org.apache.avro.message.BinaryMessageDecoder;
-import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageDecoder;
 import org.apache.avro.specific.SpecificData;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -32,8 +31,8 @@ public class OutboundReportsAvroDecoder {
     private final BinaryMessageDecoder<SfuEventReport> sfuEventDecoder;
     private final BinaryMessageDecoder<SfuMetaReport> sfuMetaDecoder;
     private final BinaryMessageDecoder<SFUTransportReport> sfuTransportDecoder;
-    private final BinaryMessageDecoder<SfuInboundRTPStreamReport> sfuInboundRTPStreamDecoder;
-    private final BinaryMessageDecoder<SfuOutboundRTPStreamReport> sfuOutboundRTPStreamDecoder;
+    private final BinaryMessageDecoder<SfuRTPSourceReport> sfuRtpSourceDecoder;
+    private final BinaryMessageDecoder<SfuRTPSinkReport> sfuRtpSinkDecoder;
     private final BinaryMessageDecoder<SfuSctpStreamReport> sfuSctpStreamReportDecoder;
 
 
@@ -54,8 +53,8 @@ public class OutboundReportsAvroDecoder {
         this.sfuEventDecoder = new BinaryMessageDecoder<SfuEventReport>(SpecificData.get(), SfuEventReport.getClassSchema());
         this.sfuMetaDecoder = new BinaryMessageDecoder<SfuMetaReport>(SpecificData.get(), SfuMetaReport.getClassSchema());
         this.sfuTransportDecoder = new BinaryMessageDecoder<SFUTransportReport>(SpecificData.get(), SFUTransportReport.getClassSchema());
-        this.sfuInboundRTPStreamDecoder = new BinaryMessageDecoder<SfuInboundRTPStreamReport>(SpecificData.get(), SfuInboundRTPStreamReport.getClassSchema());
-        this.sfuOutboundRTPStreamDecoder = new BinaryMessageDecoder<SfuOutboundRTPStreamReport>(SpecificData.get(), SfuOutboundRTPStreamReport.getClassSchema());
+        this.sfuRtpSourceDecoder = new BinaryMessageDecoder<SfuRTPSourceReport>(SpecificData.get(), SfuRTPSourceReport.getClassSchema());
+        this.sfuRtpSinkDecoder = new BinaryMessageDecoder<SfuRTPSinkReport>(SpecificData.get(), SfuRTPSinkReport.getClassSchema());
         this.sfuSctpStreamReportDecoder = new BinaryMessageDecoder<SfuSctpStreamReport>(SpecificData.get(), SfuSctpStreamReport.getClassSchema());
 
     }
@@ -158,18 +157,18 @@ public class OutboundReportsAvroDecoder {
         return this.decodeOrNull(this.sfuTransportDecoder, outboundReport);
     }
 
-    public SfuInboundRTPStreamReport decodeSfuInboundRtpStreamReport(OutboundReport outboundReport) {
+    public SfuRTPSourceReport decodeSfuRtpSourceReport(OutboundReport outboundReport) {
         if (Objects.isNull(outboundReport)) {
             return null;
         }
-        return this.decodeOrNull(this.sfuInboundRTPStreamDecoder, outboundReport);
+        return this.decodeOrNull(this.sfuRtpSourceDecoder, outboundReport);
     }
 
-    public SfuOutboundRTPStreamReport decodeSfuOutboundRtpStreamReport(OutboundReport outboundReport) {
+    public SfuRTPSinkReport decodeSfuRtpSinkReport(OutboundReport outboundReport) {
         if (Objects.isNull(outboundReport)) {
             return null;
         }
-        return this.decodeOrNull(this.sfuOutboundRTPStreamDecoder, outboundReport);
+        return this.decodeOrNull(this.sfuRtpSinkDecoder, outboundReport);
     }
 
     public SfuSctpStreamReport decodeSfuSctpStreamReport(OutboundReport outboundReport) {

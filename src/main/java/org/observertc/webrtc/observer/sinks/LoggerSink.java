@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.sinks;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.webrtc.observer.codecs.OutboundReportsAvroDecoder;
@@ -107,8 +106,8 @@ public class LoggerSink extends Sink {
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuEventReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuMetaReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuTransportReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuInboundRtpStreamReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuOutboundRtpStreamReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuRtpSourceReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuRtpSinkReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuSctpStreamReport)
         );
         return outboundReport -> {

@@ -10,7 +10,8 @@ public class CollectedSfuSamples implements Iterable<SfuSamples>{
 
     private final Map<UUID, SfuSamples> samples = new HashMap<>();
     private final Set<UUID> transportIds = new HashSet<>();
-    private final Set<UUID> rtpStreamIds = new HashSet<>();
+    private final Set<UUID> rtpSinkIds = new HashSet<>();
+    private final Set<UUID> rtpSourceIds = new HashSet<>();
 
     public static Builder builder() {
         return new Builder();
@@ -37,8 +38,12 @@ public class CollectedSfuSamples implements Iterable<SfuSamples>{
         return Collections.unmodifiableSet(this.transportIds);
     }
 
-    public Set<UUID> getRtpStreamIds() {
-        return Collections.unmodifiableSet(this.rtpStreamIds);
+    public Set<UUID> getRtpSourceIds() {
+        return Collections.unmodifiableSet(this.rtpSourceIds);
+    }
+
+    public Set<UUID> getRtpSinkIds() {
+        return Collections.unmodifiableSet(this.rtpSourceIds);
     }
 
     public static class Builder {
@@ -49,12 +54,12 @@ public class CollectedSfuSamples implements Iterable<SfuSamples>{
             sfuSamples.stream().flatMap(sample -> SfuSampleVisitor.streamTransports(sample.getSfuSample()))
                     .map(sfuTransport -> UUID.fromString(sfuTransport.transportId))
                     .forEach(this.result.transportIds::add);
-            sfuSamples.stream().flatMap(sample -> SfuSampleVisitor.streamInboundRtpStreams(sample.getSfuSample()))
-                    .map(rtpStream -> UUID.fromString(rtpStream.streamId))
-                    .forEach(this.result.rtpStreamIds::add);
-            sfuSamples.stream().flatMap(sample -> SfuSampleVisitor.streamOutboundRtpStreams(sample.getSfuSample()))
-                    .map(rtpStream -> UUID.fromString(rtpStream.streamId))
-                    .forEach(this.result.rtpStreamIds::add);
+            sfuSamples.stream().flatMap(sample -> SfuSampleVisitor.streamRtpSources(sample.getSfuSample()))
+                    .map(rtpStream -> UUID.fromString(rtpStream.sourceId))
+                    .forEach(this.result.rtpSourceIds::add);
+            sfuSamples.stream().flatMap(sample -> SfuSampleVisitor.streamRtpSinks(sample.getSfuSample()))
+                    .map(rtpStream -> UUID.fromString(rtpStream.sinkId))
+                    .forEach(this.result.rtpSinkIds::add);
             return this;
         }
 

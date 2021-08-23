@@ -35,7 +35,7 @@ class RemoveSfuRtpStreamTaskTest {
     @Test
     public void removeSfuTransport_1() {
         var task = removeSfuRtpStreamsTaskProvider.get()
-                .whereSfuRtpStreamIds(Set.of(this.createdDTO.streamId))
+                .whereSfuRtpStreamPodIds(Set.of(this.createdDTO.streamId))
                 .execute()
                 ;
 
@@ -46,7 +46,7 @@ class RemoveSfuRtpStreamTaskTest {
     @Test
     public void removeSfuTransport_2() {
         var task = removeSfuRtpStreamsTaskProvider.get()
-                .addRemovedSfuRtpStreamDTO(this.createdDTO)
+                .addRemovedSfuRtpStreamPodDTO(this.createdDTO)
                 .execute()
                 ;
 

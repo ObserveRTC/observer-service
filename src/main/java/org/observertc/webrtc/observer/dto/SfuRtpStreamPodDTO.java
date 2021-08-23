@@ -29,51 +29,51 @@ import java.util.UUID;
 
 // To avoid exposing hazelcast serialization specific fields
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
-public class SfuRtpStreamDTO implements VersionedPortable {
+public class SfuRtpStreamPodDTO implements VersionedPortable {
 	public static final int CLASS_VERSION = 1;
 
 	public static Builder builder() {
 		return new Builder();
 	}
-	public static Builder builderFrom(SfuRtpStreamDTO source) {
+	public static Builder builderFrom(SfuRtpStreamPodDTO source) {
 		return new Builder()
 				.withMediaUnitId(source.mediaUnitId)
 				.withSfuId(source.sfuId)
-				.withTransportId(source.transportId)
-				.withStreamId(source.streamId)
+				.withSfuTransportId(source.sfuTransportId)
+				.withSfuStreamId(source.sfuStreamId)
+				.withSfuPodId(source.sfuPodId)
+				.withSfuPodRole(source.sfuPodRole)
 				.withAddedTimestamp(source.added)
-				.withDirection(source.direction)
 				.withTrackId(source.trackId)
 				.withClientId(source.clientId)
 				.withCallId(source.callId)
-				.withPipedStreamId(source.pipedStreamId)
 				;
 	}
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
-	private static final String TRANSPORT_ID_FIELD_NAME = "transportId";
-	private static final String STREAM_ID_FIELD_NAME = "streamId";
+	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "transportId";
+	private static final String SFU_STREAM_ID_FIELD_NAME = "sfuStreamId";
+	private static final String SFU_POD_ID_FIELD_NAME = "sfuPodId";
+	private static final String SFU_POD_ROLE_FIELD_NAME = "sfuPodRole";
 	private static final String ADDED_FIELD_NAME = "added";
-	private static final String DIRECTION_ID_FIELD_NAME = "direction";
 
 	private static final String TRACK_ID_FIELD_NAME = "trackId";
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
-	private static final String PIPED_STREAM_ID_FIELD_NAME = "pipedStreamId";
 
 	public String mediaUnitId;
 	public UUID sfuId;
-	public UUID transportId;
-	public UUID streamId;
+	public UUID sfuTransportId;
+	public UUID sfuStreamId;
+	public UUID sfuPodId;
+	public SfuPodRole sfuPodRole;
 	public Long added;
-	public StreamDirection direction;
 
 	public UUID trackId;
 	public UUID clientId;
 	public UUID callId;
-	public UUID pipedStreamId;
 
-	SfuRtpStreamDTO() {
+	SfuRtpStreamPodDTO() {
 
 	}
 
@@ -84,40 +84,57 @@ public class SfuRtpStreamDTO implements VersionedPortable {
 
 	@Override
 	public int getClassId() {
-		return PortableDTOFactory.SFU_RTP_STREAM_DTO_CLASS_ID;
+		return PortableDTOFactory.SFU_RTP_STREAM_POD_DTO_CLASS_ID;
 	}
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
-		writer.writeByteArray(TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.transportId));
-		writer.writeByteArray(STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.streamId));
+		writer.writeByteArray(SFU_TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuTransportId));
+		writer.writeByteArray(SFU_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuStreamId));
+		writer.writeByteArray(SFU_POD_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuPodId));
+		writer.writeUTF(SFU_POD_ROLE_FIELD_NAME, this.sfuPodRole.name());
+
 		SerDeUtils.writeNullableUUID(writer, TRACK_ID_FIELD_NAME, this.trackId);
 		SerDeUtils.writeNullableUUID(writer, CLIENT_ID_FIELD_NAME, this.clientId);
 		SerDeUtils.writeNullableUUID(writer, CALL_ID_FIELD_NAME, this.callId);
-		SerDeUtils.writeNullableUUID(writer, PIPED_STREAM_ID_FIELD_NAME, this.pipedStreamId);
 		writer.writeLong(ADDED_FIELD_NAME, this.added);
-		writer.writeUTF(DIRECTION_ID_FIELD_NAME, this.direction.name());
+
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
-		this.transportId = UUIDAdapter.toUUID(reader.readByteArray(TRANSPORT_ID_FIELD_NAME));
-		this.streamId = UUIDAdapter.toUUID(reader.readByteArray(STREAM_ID_FIELD_NAME));
+		this.sfuTransportId = UUIDAdapter.toUUID(reader.readByteArray(SFU_TRANSPORT_ID_FIELD_NAME));
+		this.sfuStreamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_STREAM_ID_FIELD_NAME));
+		this.sfuPodId =  UUIDAdapter.toUUID(reader.readByteArray(SFU_POD_ID_FIELD_NAME));
+		this.sfuPodRole =  SfuPodRole.valueOf(reader.readUTF(SFU_POD_ROLE_FIELD_NAME));
+
 		this.trackId = SerDeUtils.readNullableUUID(reader, TRACK_ID_FIELD_NAME);
 		this.clientId = SerDeUtils.readNullableUUID(reader, CLIENT_ID_FIELD_NAME);
 		this.callId = SerDeUtils.readNullableUUID(reader, CALL_ID_FIELD_NAME);
-		this.pipedStreamId = SerDeUtils.readNullableUUID(reader, PIPED_STREAM_ID_FIELD_NAME);
 		this.added = reader.readLong(ADDED_FIELD_NAME);
-		this.direction = StreamDirection.valueOf(reader.readUTF(DIRECTION_ID_FIELD_NAME));
 	}
 
 	@Override
 	public String toString() {
 		return ObjectToString.toString(this);
+	}
+
+	public String getSourceId() {
+		if (!SfuPodRole.SOURCE.equals(this.sfuPodRole)) {
+			return null;
+		}
+		return this.sfuPodId.toString();
+	}
+
+	public String getSinkId() {
+		if (!SfuPodRole.SINK.equals(this.sfuPodRole)) {
+			return null;
+		}
+		return this.sfuPodId.toString();
 	}
 
 	@Override
@@ -130,17 +147,17 @@ public class SfuRtpStreamDTO implements VersionedPortable {
 		if (Objects.isNull(other) || !this.getClass().getName().equals(other.getClass().getName())) {
 			return false;
 		}
-		SfuRtpStreamDTO otherDTO = (SfuRtpStreamDTO) other;
+		SfuRtpStreamPodDTO otherDTO = (SfuRtpStreamPodDTO) other;
 		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
-			!Objects.equals(this.transportId, otherDTO.transportId) ||
-			!Objects.equals(this.streamId, otherDTO.streamId) ||
+			!Objects.equals(this.sfuTransportId, otherDTO.sfuTransportId) ||
+			!Objects.equals(this.sfuStreamId, otherDTO.sfuStreamId) ||
+			!Objects.equals(this.sfuPodId, otherDTO.sfuPodId) ||
+			!Objects.equals(this.sfuPodRole, otherDTO.sfuPodRole) ||
 			!Objects.equals(this.trackId, otherDTO.trackId) ||
 			!Objects.equals(this.clientId, otherDTO.clientId) ||
 			!Objects.equals(this.callId, otherDTO.callId) ||
-			!Objects.equals(this.pipedStreamId, otherDTO.pipedStreamId) ||
-			!Objects.equals(this.added, otherDTO.added) ||
-			!Objects.equals(this.direction, otherDTO.direction)
+			!Objects.equals(this.added, otherDTO.added)
 		) {
 			return false;
 		}
@@ -148,7 +165,7 @@ public class SfuRtpStreamDTO implements VersionedPortable {
 	}
 
 	public static class Builder {
-		private final SfuRtpStreamDTO result = new SfuRtpStreamDTO();
+		private final SfuRtpStreamPodDTO result = new SfuRtpStreamPodDTO();
 
 		public Builder withMediaUnitId(String value) {
 			this.result.mediaUnitId = value;
@@ -160,18 +177,23 @@ public class SfuRtpStreamDTO implements VersionedPortable {
 			return this;
 		}
 
-		public Builder withTransportId(UUID value) {
-			this.result.transportId = value;
+		public Builder withSfuTransportId(UUID value) {
+			this.result.sfuTransportId = value;
 			return this;
 		}
 
-		public Builder withStreamId(UUID value) {
-			this.result.streamId = value;
+		public Builder withSfuStreamId(UUID value) {
+			this.result.sfuStreamId = value;
 			return this;
 		}
 
-		public Builder withDirection(StreamDirection value) {
-			this.result.direction = value;
+		public Builder withSfuPodId(UUID value) {
+			this.result.sfuPodId = value;
+			return this;
+		}
+
+		public Builder withSfuPodRole(SfuPodRole value) {
+			this.result.sfuPodRole = value;
 			return this;
 		}
 
@@ -190,22 +212,17 @@ public class SfuRtpStreamDTO implements VersionedPortable {
 			return this;
 		}
 
-		public Builder withPipedStreamId(UUID value) {
-			this.result.pipedStreamId = value;
-			return this;
-		}
-
 		public Builder withAddedTimestamp(Long value) {
 			this.result.added = value;
 			return this;
 		}
 
-		public SfuRtpStreamDTO build() {
+		public SfuRtpStreamPodDTO build() {
 			Objects.requireNonNull(this.result.sfuId);
-			Objects.requireNonNull(this.result.transportId);
-			Objects.requireNonNull(this.result.streamId);
+			Objects.requireNonNull(this.result.sfuTransportId);
+			Objects.requireNonNull(this.result.sfuStreamId);
+			Objects.requireNonNull(this.result.sfuPodId);
 			Objects.requireNonNull(this.result.added);
-			Objects.requireNonNull(this.result.direction);
 			return this.result;
 		}
     }

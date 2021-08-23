@@ -73,8 +73,8 @@ public class HazelcastEventSubscriber {
         return this;
     }
 
-    public HazelcastEventSubscriber withSfuRtpStreamEntriesLocalListener(EntryListener<UUID, SfuRtpStreamDTO> entryListener) {
-        UUID listenerId = this.hazelcastMaps.getSFURtpStreams().addLocalEntryListener(entryListener);
+    public HazelcastEventSubscriber withSfuRtpStreamEntriesLocalListener(EntryListener<UUID, SfuRtpStreamPodDTO> entryListener) {
+        UUID listenerId = this.hazelcastMaps.getSFURtpPods().addLocalEntryListener(entryListener);
         this.subscribedSfuRtpStreamEntryListeners.add(listenerId);
         return this;
     }
@@ -87,7 +87,7 @@ public class HazelcastEventSubscriber {
         this.doUnsubscribe(this.subscribedMediaTrackEntryListener, this.hazelcastMaps.getMediaTracks()::removeEntryListener);
         this.doUnsubscribe(this.subscribedSfuEntryListeners, this.hazelcastMaps.getSFUs()::removeEntryListener);
         this.doUnsubscribe(this.subscribedSfuTransportEntryListeners, this.hazelcastMaps.getSFUTransports()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedSfuRtpStreamEntryListeners, this.hazelcastMaps.getSFURtpStreams()::removeEntryListener);
+        this.doUnsubscribe(this.subscribedSfuRtpStreamEntryListeners, this.hazelcastMaps.getSFURtpPods()::removeEntryListener);
     }
 
     private void doUnsubscribe(Set<UUID> listenerIds, Function<UUID, Boolean> unsubscribe) {

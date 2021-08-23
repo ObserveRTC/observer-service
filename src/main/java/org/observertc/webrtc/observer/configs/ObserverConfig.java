@@ -162,8 +162,8 @@ public class ObserverConfig {
 		public boolean reportSFUEvents = true;
 		public boolean reportSFUMeta = true;
 		public boolean reportSfuTransports = true;
-		public boolean reportSfuInboundRtpStreams = true;
-		public boolean reportSfuOutboundRtpStreams = true;
+		public boolean reportSfuRtpSources = true;
+		public boolean reportSfuRtpSinks = true;
 		public boolean reportSfuSctpStreams = true;
 		public String defaultServiceName = "defaultServiceName";
 

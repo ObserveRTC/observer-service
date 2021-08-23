@@ -27,8 +27,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Function<RIn, ROut> sfuEventFuncProcess,
             Function<RIn, ROut> sfuMetaFuncProcess,
             Function<RIn, ROut> sfuTransportFuncProcess,
-            Function<RIn, ROut> sfuInboundRtpStreamFuncProcess,
-            Function<RIn, ROut> sfuOutboundRtpStreamFuncProcess,
+            Function<RIn, ROut> sfuRtpSourceFuncProcess,
+            Function<RIn, ROut> sfuRtpSinkFuncProcess,
             Function<RIn, ROut> sfuSctpStreamFuncProcess
     ) {
         return new OutboundReportTypeVisitor<RIn, ROut>() {
@@ -103,17 +103,17 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public ROut visitSfuInboundRtpStream(RIn obj) {
-                return sfuInboundRtpStreamFuncProcess.apply(obj);
+            public ROut visitSfuRtpSourceReport(RIn obj) {
+                return sfuRtpSourceFuncProcess.apply(obj);
             }
 
             @Override
-            public ROut visitSfuOutboundRtpStream(RIn obj) {
-                return sfuOutboundRtpStreamFuncProcess.apply(obj);
+            public ROut visitSfuRtpSinkReport(RIn obj) {
+                return sfuRtpSinkFuncProcess.apply(obj);
             }
 
             @Override
-            public ROut visitSctpStream(RIn obj) {
+            public ROut visitSctpStreamReport(RIn obj) {
                 return sfuSctpStreamFuncProcess.apply(obj);
             }
         };
@@ -135,8 +135,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Consumer<RIn> sfuEventConsumer,
             Consumer<RIn> sfuMetaConsumer,
             Consumer<RIn> sfuTransportConsumer,
-            Consumer<RIn> sfuInboundRtpStreamConsumer,
-            Consumer<RIn> sfuOutboundRtpStreamConsumer,
+            Consumer<RIn> sfuRtpSourceConsumer,
+            Consumer<RIn> sfuRtpSinkConsumer,
             Consumer<RIn> sfuSctpStreamConsumer
     ) {
         return new OutboundReportTypeVisitor<RIn, Void>() {
@@ -225,19 +225,19 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public Void visitSfuInboundRtpStream(RIn obj) {
-                sfuInboundRtpStreamConsumer.accept(obj);
+            public Void visitSfuRtpSourceReport(RIn obj) {
+                sfuRtpSourceConsumer.accept(obj);
                 return null;
             }
 
             @Override
-            public Void visitSfuOutboundRtpStream(RIn obj) {
-                sfuOutboundRtpStreamConsumer.accept(obj);
+            public Void visitSfuRtpSinkReport(RIn obj) {
+                sfuRtpSinkConsumer.accept(obj);
                 return null;
             }
 
             @Override
-            public Void visitSctpStream(RIn obj) {
+            public Void visitSctpStreamReport(RIn obj) {
                 sfuSctpStreamConsumer.accept(obj);
                 return null;
             }
@@ -259,8 +259,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Supplier<ROut> sfuEventSupplier,
             Supplier<ROut> sfuMetaSupplier,
             Supplier<ROut> sfuTransportSupplier,
-            Supplier<ROut> sfuInboundRtpStreamSupplier,
-            Supplier<ROut> sfuOutboundRtpStreamSupplier,
+            Supplier<ROut> sfuRtpSourceSupplier,
+            Supplier<ROut> sfuRtpSinkSupplier,
             Supplier<ROut> sfuSctpStreamSupplier
     ) {
         return new OutboundReportTypeVisitor<Void, ROut>() {
@@ -336,17 +336,17 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public ROut visitSfuInboundRtpStream(Void obj) {
-                return sfuInboundRtpStreamSupplier.get();
+            public ROut visitSfuRtpSourceReport(Void obj) {
+                return sfuRtpSourceSupplier.get();
             }
 
             @Override
-            public ROut visitSfuOutboundRtpStream(Void obj) {
-                return sfuOutboundRtpStreamSupplier.get();
+            public ROut visitSfuRtpSinkReport(Void obj) {
+                return sfuRtpSinkSupplier.get();
             }
 
             @Override
-            public ROut visitSctpStream(Void obj) {
+            public ROut visitSctpStreamReport(Void obj) {
                 return sfuSctpStreamSupplier.get();
             }
         };
@@ -367,8 +367,8 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             Runnable sfuEventCallback,
             Runnable sfuMetaCallback,
             Runnable sfuTransportCallback,
-            Runnable sfuInboundRtpStreamCallback,
-            Runnable sfuOutboundRtpStreamCallback,
+            Runnable sfuRtpSourceCallback,
+            Runnable sfuRtpSinkCallback,
             Runnable sfuSctpStreamCallback
     ) {
         return new OutboundReportTypeVisitor<Void, Void>() {
@@ -457,19 +457,19 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
             }
 
             @Override
-            public Void visitSfuInboundRtpStream(Void obj) {
-                sfuInboundRtpStreamCallback.run();
+            public Void visitSfuRtpSourceReport(Void obj) {
+                sfuRtpSourceCallback.run();
                 return null;
             }
 
             @Override
-            public Void visitSfuOutboundRtpStream(Void obj) {
-                sfuOutboundRtpStreamCallback.run();
+            public Void visitSfuRtpSinkReport(Void obj) {
+                sfuRtpSinkCallback.run();
                 return null;
             }
 
             @Override
-            public Void visitSctpStream(Void obj) {
+            public Void visitSctpStreamReport(Void obj) {
                 sfuSctpStreamCallback.run();
                 return null;
             }
@@ -508,12 +508,12 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
                 return this.visitSfuMetaReport(obj);
             case SFU_TRANSPORT:
                 return this.visitSfuTransportReport(obj);
-            case SFU_INBOUND_RTP_STREAM:
-                return this.visitSfuInboundRtpStream(obj);
-            case SFU_OUTBOUND_RTP_STREAM:
-                return this.visitSfuOutboundRtpStream(obj);
+            case SFU_RTP_SOURCE_STREAM:
+                return this.visitSfuRtpSourceReport(obj);
+            case SFU_RTP_SINK_STREAM:
+                return this.visitSfuRtpSinkReport(obj);
             case SFU_SCTP_STREAM:
-                return this.visitSctpStream(obj);
+                return this.visitSctpStreamReport(obj);
             default:
                 logger.warn("Unrecognized report type {}", reportType);
         }
@@ -535,9 +535,9 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
     TOut visitSfuEventReport(TIn obj);
     TOut visitSfuMetaReport(TIn obj);
     TOut visitSfuTransportReport(TIn obj);
-    TOut visitSfuInboundRtpStream(TIn obj);
-    TOut visitSfuOutboundRtpStream(TIn obj);
-    TOut visitSctpStream(TIn obj);
+    TOut visitSfuRtpSourceReport(TIn obj);
+    TOut visitSfuRtpSinkReport(TIn obj);
+    TOut visitSctpStreamReport(TIn obj);
 
 }
 

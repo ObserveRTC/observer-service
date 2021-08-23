@@ -28,8 +28,8 @@ public final class OutboundReportTypeVisitors {
                 () -> SfuEventReport.getClassSchema(),
                 () -> SfuMetaReport.getClassSchema(),
                 () -> SFUTransportReport.getClassSchema(),
-                () -> SfuInboundRTPStreamReport.getClassSchema(),
-                () -> SfuOutboundRTPStreamReport.getClassSchema(),
+                () -> SfuRTPSourceReport.getClassSchema(),
+                () -> SfuRTPSinkReport.getClassSchema(),
                 () -> SfuSctpStreamReport.getClassSchema()
         );
     }
@@ -51,8 +51,8 @@ public final class OutboundReportTypeVisitors {
                 () -> decoder::decodeSfuEventReport,
                 () -> decoder::decodeSfuMetaReport,
                 () -> decoder::decodeSfuTransportReport,
-                () -> decoder::decodeSfuInboundRtpStreamReport,
-                () -> decoder::decodeSfuOutboundRtpStreamReport,
+                () -> decoder::decodeSfuRtpSourceReport,
+                () -> decoder::decodeSfuRtpSinkReport,
                 () -> decoder::decodeSfuSctpStreamReport
         );
     }

@@ -1312,10 +1312,10 @@ public  class ClientSample {
 		public String remoteClientId;
 
 		/**
-		 * The sfuStreamId if the stream is consumed from a SFU
+		 * The sink id of the pod from SFU streaming the media
 		 */
-		@JsonProperty("sfuStreamId")
-		public String sfuStreamId;
+		@JsonProperty("sfuSinkId")
+		public String sfuSinkId;
 
 	}
 	/**
@@ -1700,10 +1700,10 @@ public  class ClientSample {
 		public String remoteClientId;
 
 		/**
-		 * The sfuStreamId if the stream is consumed from a SFU
+		 * The sink id of the pod from SFU streaming the media
 		 */
-		@JsonProperty("sfuStreamId")
-		public String sfuStreamId;
+		@JsonProperty("sfuSinkId")
+		public String sfuSinkId;
 
 	}
 	/**
@@ -2054,10 +2054,10 @@ public  class ClientSample {
 		public String peerConnectionId;
 
 		/**
-		 * The sfuStreamId if the track is produced to a SFU
+		 * The source id of the pod from SFU streaming the media
 		 */
-		@JsonProperty("sfuStreamId")
-		public String sfuStreamId;
+		@JsonProperty("sfuSourceId")
+		public String sfuSourceId;
 
 	}
 	/**
@@ -2495,10 +2495,10 @@ public  class ClientSample {
 		public String peerConnectionId;
 
 		/**
-		 * The sfuStreamId if the track is produced to a SFU
+		 * The sfuSourceId if the track is produced to a SFU
 		 */
-		@JsonProperty("sfuStreamId")
-		public String sfuStreamId;
+		@JsonProperty("sfuSourceId")
+		public String sfuSourceId;
 
 	}
 	/**

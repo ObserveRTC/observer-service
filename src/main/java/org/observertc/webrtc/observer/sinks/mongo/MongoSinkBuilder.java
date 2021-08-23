@@ -37,8 +37,8 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         result.put(ReportType.SFU_EVENT, SfuEventReport.class.getSimpleName() + "s");
         result.put(ReportType.SFU_META_DATA, SfuMetaReport.class.getSimpleName() + "s");
         result.put(ReportType.SFU_TRANSPORT, SFUTransportReport.class.getSimpleName() + "s");
-        result.put(ReportType.SFU_INBOUND_RTP_STREAM, SfuInboundRTPStreamReport.class.getSimpleName() + "s");
-        result.put(ReportType.SFU_OUTBOUND_RTP_STREAM, SfuOutboundRTPStreamReport.class.getSimpleName() + "s");
+        result.put(ReportType.SFU_RTP_SOURCE_STREAM, SfuRTPSourceReport.class.getSimpleName() + "s");
+        result.put(ReportType.SFU_RTP_SINK_STREAM, SfuRTPSinkReport.class.getSimpleName() + "s");
         result.put(ReportType.SFU_SCTP_STREAM, SfuSctpStreamReport.class.getSimpleName() + "s");
         return result;
     }

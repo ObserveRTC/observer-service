@@ -51,7 +51,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
                         return;
                     }
                     this.hazelcastMaps
-                            .getSFURtpStreams()
+                            .getSFURtpPods()
                             .getAll(this.sfuStreamIds)
                             .forEach((sfuStreamId, sfuStreamDTO) -> {
                                 this.result.sfuStreamRelations.put(sfuStreamId, new SfuStreamRelations(

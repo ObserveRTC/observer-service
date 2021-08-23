@@ -161,6 +161,7 @@ public class WebsocketClientSamples {
 					.withMessage("Exception while parsing {}", ClientSample.class.getSimpleName())
 					.withException(e)
 					.complete();
+			session.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
 			return;
 		}
 

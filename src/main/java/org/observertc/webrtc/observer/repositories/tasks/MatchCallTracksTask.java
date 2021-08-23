@@ -3,7 +3,8 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamDTO;
+import org.observertc.webrtc.observer.dto.SfuPodRole;
+import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
 import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
     private Set<UUID> callIds = new HashSet<>();
     private Map<Long, List<MediaTrackDTO>> ssrcToInboundTracks = new HashMap<>();
 
-    private Map<UUID, MediaTrackDTO> sfuStreamIdsToInboundTracks = new HashMap<>();
+    private Map<UUID, MediaTrackDTO> sfuRtpSinkIdsToInboundTrackDTOs = new HashMap<>();
 
     @PostConstruct
     void setup() {
@@ -71,9 +72,9 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                             return;
                         }
                     }
-                    UUID sfuStreamId = inboundMediaTrackDTO.sfuStreamId;
-                    if (Objects.nonNull(sfuStreamId)) { // track is streamed to an SFU
-                        this.sfuStreamIdsToInboundTracks.put(sfuStreamId, inboundMediaTrackDTO);
+                    UUID sfuSinkId = inboundMediaTrackDTO.sfuPodId;
+                    if (Objects.nonNull(sfuSinkId)) { // track is streamed to an SFU
+                        this.sfuRtpSinkIdsToInboundTrackDTOs.put(sfuSinkId, inboundMediaTrackDTO);
                         return;
                     }
                     // track belongs to a p2p call
@@ -87,60 +88,57 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                 });
             })
             .addActionStage("Matching SFU Calls", () -> {
-                if (this.sfuStreamIdsToInboundTracks.size() < 1) {
+                if (this.sfuRtpSinkIdsToInboundTrackDTOs.size() < 1) {
                     return;
                 }
-                var outboundSfuStreamDTOs = this.hazelcastMaps.getSFURtpStreams().getAll(this.sfuStreamIdsToInboundTracks.keySet());
-                if (outboundSfuStreamDTOs.size() < 1) {
+                var sfuRtpStreamPods = this.hazelcastMaps.getSFURtpPods().getAll(this.sfuRtpSinkIdsToInboundTrackDTOs.keySet());
+                if (sfuRtpStreamPods.size() < 1) {
                     return;
                 }
-                outboundSfuStreamDTOs.forEach((sfuStreamId, outboundSfuStreamDTO) -> {
-                    var inboundMediaTrackDTO = this.sfuStreamIdsToInboundTracks.get(sfuStreamId);
-                    if (!StreamDirection.OUTBOUND.equals(outboundSfuStreamDTO.direction)) {
-                        logger.warn("Inconsistent in matchings! reported inbound track id does not belong to a SFU stream, which is outbound type. inboundTrack: {} sfuStream: {} ", inboundMediaTrackDTO, outboundSfuStreamDTO);
+                sfuRtpStreamPods.forEach((sfuStreamId, sfuSink) -> {
+                    var inboundMediaTrack = this.sfuRtpSinkIdsToInboundTrackDTOs.get(sfuStreamId);
+                    if (!SfuPodRole.SINK.equals(sfuSink.sfuPodRole)) {
+                        logger.warn("Inconsistent in matchings! reported inbound track id does not belong to a SFU stream, which is outbound type. inboundTrack: {} sfuStream: {} ", inboundMediaTrack, sfuSink);
                         return;
                     }
-                    SfuRtpStreamDTO inboundSfuStreamDTO = null;
-                    for (UUID pipedStreamId = outboundSfuStreamDTO.pipedStreamId; Objects.nonNull(pipedStreamId); ) {
-                        inboundSfuStreamDTO = this.hazelcastMaps.getSFURtpStreams().get(pipedStreamId);
-                        if (Objects.isNull(inboundSfuStreamDTO)) {
-                            break;
+                    SfuRtpStreamPodDTO sfuSource = null;
+                    var relatedPodIds = this.hazelcastMaps.getSfuStreamToRtpPodIds().get(sfuSink.sfuStreamId);
+                    for (Iterator<UUID> it = relatedPodIds.iterator(); it.hasNext(); ) {
+                        UUID relatedPodId = it.next();
+                        sfuSource = this.hazelcastMaps.getSFURtpPods().get(relatedPodId);
+                        if (!SfuPodRole.SOURCE.equals(sfuSource.sfuPodRole) ||
+                            !inboundMediaTrack.callId.equals(sfuSource.callId) ||
+                            Objects.isNull(sfuSource.trackId)) {
+                            sfuSource = null;
+                            continue;
                         }
-                        pipedStreamId = inboundSfuStreamDTO.pipedStreamId;
                     }
-                    if (Objects.isNull(inboundSfuStreamDTO)) {
-                        logger.warn("Cannot find matching sfuStream to inboundTrack: {} sfuStream: {} ", inboundMediaTrackDTO, outboundSfuStreamDTO);
+                    if (Objects.isNull(sfuSource)) {
+                        logger.info("Cannot find matching sfuSource to inboundTrack: {} sfuStream: {} ", inboundMediaTrack, sfuSink);
                         return;
                     }
-                    if (!StreamDirection.INBOUND.equals(inboundSfuStreamDTO.direction)) {
-                        logger.warn("Inconsistent in matchings! reported inbound track id does not belong to a SFU stream, which is inbound type. inboundTrack: {} outboundSfuStream: {} falsely matched inbound SFU: {}", inboundMediaTrackDTO, outboundSfuStreamDTO, inboundSfuStreamDTO);
-                    }
-                    if (Objects.isNull(inboundSfuStreamDTO.trackId)) {
-                        logger.debug("Matched inbound SFu Stream {} for inbound track {} is not complete, the trackId has not been assigned", inboundSfuStreamDTO, inboundMediaTrackDTO);
+                    var outboundMediaTrack = this.hazelcastMaps.getMediaTracks().get(sfuSource.trackId);
+                    if (Objects.isNull(outboundMediaTrack)) {
+                        logger.warn("Outbound track does not exists referenced by sfuSource {} for inbound track {}, sfuSink {} ", sfuSource, inboundMediaTrack, sfuSink);
                         return;
                     }
-                    var outboundMediaTrackDTO = this.hazelcastMaps.getMediaTracks().get(inboundSfuStreamDTO.trackId);
-                    if (Objects.isNull(outboundMediaTrackDTO)) {
-                        logger.warn("Outbound track ({}) does not exists referenced by sfuStream {} for inbound track {} ", inboundSfuStreamDTO.trackId, inboundSfuStreamDTO, inboundMediaTrackDTO);
-                        return;
-                    }
-                    if (!StreamDirection.OUTBOUND.equals(outboundMediaTrackDTO.direction) || !inboundMediaTrackDTO.callId.equals(outboundMediaTrackDTO.callId)) {
-                        logger.warn("Matched outbound Track {} is either not an outbound track, or the callId is different than the inbound Track {}", outboundMediaTrackDTO, inboundMediaTrackDTO);
+                    if (!StreamDirection.OUTBOUND.equals(outboundMediaTrack.direction) || !inboundMediaTrack.callId.equals(outboundMediaTrack.callId)) {
+                        logger.warn("Matched outbound Track {} is either not an outbound track, or the callId is different than the inbound Track {}", outboundMediaTrack, inboundMediaTrack);
                         return;
                     }
                     this.result.add(new MatchedIds(
-                            inboundMediaTrackDTO.trackId,
-                            inboundMediaTrackDTO.peerConnectionId,
-                            inboundMediaTrackDTO.clientId,
-                            inboundMediaTrackDTO.callId,
-                            outboundMediaTrackDTO.clientId,
-                            outboundMediaTrackDTO.userId,
-                            outboundMediaTrackDTO.peerConnectionId,
-                            outboundMediaTrackDTO.trackId
+                            inboundMediaTrack.trackId,
+                            inboundMediaTrack.peerConnectionId,
+                            inboundMediaTrack.clientId,
+                            inboundMediaTrack.callId,
+                            outboundMediaTrack.clientId,
+                            outboundMediaTrack.userId,
+                            outboundMediaTrack.peerConnectionId,
+                            outboundMediaTrack.trackId
                     ));
                     this.hazelcastMaps
                             .getInboundTrackIdsToOutboundTrackIds()
-                            .put(inboundMediaTrackDTO.trackId, outboundMediaTrackDTO.trackId);
+                            .put(inboundMediaTrack.trackId, outboundMediaTrack.trackId);
                 });
 
             })

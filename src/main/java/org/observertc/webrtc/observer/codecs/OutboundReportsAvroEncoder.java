@@ -29,8 +29,8 @@ public class OutboundReportsAvroEncoder {
     private final BinaryMessageEncoder<SfuEventReport> sfuEventEncoder;
     private final BinaryMessageEncoder<SfuMetaReport> sfuMetaEncoder;
     private final BinaryMessageEncoder<SFUTransportReport> sfuTransportEncoder;
-    private final BinaryMessageEncoder<SfuInboundRTPStreamReport> sfuInboundRTPStreamEncoder;
-    private final BinaryMessageEncoder<SfuOutboundRTPStreamReport> sfuOutboundRTPStreamEncoder;
+    private final BinaryMessageEncoder<SfuRTPSourceReport> sfuRtpSourceEncoder;
+    private final BinaryMessageEncoder<SfuRTPSinkReport> sfuRtpSinkEncoder;
     private final BinaryMessageEncoder<SfuSctpStreamReport> sfuSctpStreamReportEncoder;
 
     public OutboundReportsAvroEncoder() {
@@ -49,8 +49,8 @@ public class OutboundReportsAvroEncoder {
         this.sfuEventEncoder = new BinaryMessageEncoder<SfuEventReport>(SpecificData.get(), SfuEventReport.getClassSchema());
         this.sfuMetaEncoder = new BinaryMessageEncoder<SfuMetaReport>(SpecificData.get(), SfuMetaReport.getClassSchema());
         this.sfuTransportEncoder = new BinaryMessageEncoder<SFUTransportReport>(SpecificData.get(), SFUTransportReport.getClassSchema());
-        this.sfuInboundRTPStreamEncoder = new BinaryMessageEncoder<SfuInboundRTPStreamReport>(SpecificData.get(), SfuInboundRTPStreamReport.getClassSchema());
-        this.sfuOutboundRTPStreamEncoder = new BinaryMessageEncoder<SfuOutboundRTPStreamReport>(SpecificData.get(), SfuOutboundRTPStreamReport.getClassSchema());
+        this.sfuRtpSourceEncoder = new BinaryMessageEncoder<SfuRTPSourceReport>(SpecificData.get(), SfuRTPSourceReport.getClassSchema());
+        this.sfuRtpSinkEncoder = new BinaryMessageEncoder<SfuRTPSinkReport>(SpecificData.get(), SfuRTPSinkReport.getClassSchema());
         this.sfuSctpStreamReportEncoder = new BinaryMessageEncoder<SfuSctpStreamReport>(SpecificData.get(), SfuSctpStreamReport.getClassSchema());
     }
 
@@ -111,12 +111,12 @@ public class OutboundReportsAvroEncoder {
         return () -> encodeOrNull(this.sfuTransportEncoder, sfuTransportReport);
     }
 
-    public OutboundReport.SfuInboundRtpStreamReport encodeSfuInboundRtpStreamReport(SfuInboundRTPStreamReport sfuInboundRTPStreamReport) {
-        return () -> encodeOrNull(this.sfuInboundRTPStreamEncoder, sfuInboundRTPStreamReport);
+    public OutboundReport.SfuRtpSourceReport encodeSfuRtpSourceReport(SfuRTPSourceReport sfuRtpSourceReport) {
+        return () -> encodeOrNull(this.sfuRtpSourceEncoder, sfuRtpSourceReport);
     }
 
-    public OutboundReport.SfuOutboundRtpStreamReport encodeSfuOutboundRtpStreamReport(SfuOutboundRTPStreamReport sfuOutboundRTPStreamReport) {
-        return () -> encodeOrNull(this.sfuOutboundRTPStreamEncoder, sfuOutboundRTPStreamReport);
+    public OutboundReport.SfuRtpSinkReport encodeSfuRtpSinkReport(SfuRTPSinkReport sfuRtpSinkReport) {
+        return () -> encodeOrNull(this.sfuRtpSinkEncoder, sfuRtpSinkReport);
     }
 
     public OutboundReport.SfuSctpStreamReport encodeSfuSctpStreamReport(SfuSctpStreamReport sfuSctpStreamReport) {

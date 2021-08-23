@@ -119,18 +119,18 @@ public interface OutboundReport {
     }
 
     @FunctionalInterface
-    interface SfuInboundRtpStreamReport extends OutboundReport {
+    interface SfuRtpSourceReport extends OutboundReport {
         @Override
         default ReportType getType() {
-            return ReportType.SFU_INBOUND_RTP_STREAM;
+            return ReportType.SFU_RTP_SOURCE_STREAM;
         }
     }
 
     @FunctionalInterface
-    interface SfuOutboundRtpStreamReport extends OutboundReport {
+    interface SfuRtpSinkReport extends OutboundReport {
         @Override
         default ReportType getType() {
-            return ReportType.SFU_OUTBOUND_RTP_STREAM;
+            return ReportType.SFU_RTP_SINK_STREAM;
         }
     }
 
