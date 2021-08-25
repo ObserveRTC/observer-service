@@ -154,18 +154,10 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
             }
         }
         synchronized (this) {
-            if (observerConfig.outboundReports.reportSfuTransports) {
-                transportReports.stream().forEach(this.sfuTransportReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportSfuRtpSources) {
-                rtpSourceReports.stream().forEach(this.sfuRtpSourceReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportSfuRtpSinks) {
-                rtpSinkReports.stream().forEach(this.sfuRtpSinkReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportSfuSctpStreams) {
-                sctpStreamReports.stream().forEach(this.sfuSctpStreamSubject::onNext);
-            }
+            transportReports.stream().forEach(this.sfuTransportReportSubject::onNext);
+            rtpSourceReports.stream().forEach(this.sfuRtpSourceReportSubject::onNext);
+            rtpSinkReports.stream().forEach(this.sfuRtpSinkReportSubject::onNext);
+            sctpStreamReports.stream().forEach(this.sfuSctpStreamSubject::onNext);
         }
     }
 
@@ -190,6 +182,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     /* Report Fields */
                     .setTransportId(sfuTransport.transportId)
                     .setSfuId(sfuIdStr)
+                    .setSfuName(observedSfuSample.getSfuName())
                     .setCallId(callIdStr)
 
                     /* Transport stats */
@@ -250,6 +243,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     /* .setServiceId() // not given */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
+                    .setSfuName(observedSfuSample.getSfuName())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
 
@@ -323,6 +317,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     /* .setServiceId() // not given */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
+                    .setSfuName(observedSfuSample.getSfuName())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
 
@@ -388,6 +383,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     /* Report MetaFields */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
+                    .setSfuName(observedSfuSample.getSfuName())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
 

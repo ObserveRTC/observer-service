@@ -7,7 +7,7 @@ import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReportTypeVisitor;
 import org.observertc.webrtc.observer.common.OutboundReports;
-import org.observertc.webrtc.schemas.reports.ReportType;
+import org.observertc.webrtc.observer.common.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;

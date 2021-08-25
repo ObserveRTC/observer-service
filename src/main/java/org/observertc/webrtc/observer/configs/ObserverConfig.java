@@ -140,6 +140,8 @@ public class ObserverConfig {
 		public int reportsBufferMaxRetainInS = 30;
 	}
 
+	public ReportCodec reportCodec = ReportCodec.JSON;
+
 	public Map<String, Object> sinks;
 
 	// Outbound Reports Config
@@ -155,12 +157,12 @@ public class ObserverConfig {
 		public boolean reportInboundVideoTracks = true;
 		public boolean reportOutboundAudioTracks = true;
 		public boolean reportOutboundVideoTracks = true;
-		public boolean reportPeerConnectionTransport = true;
-		public boolean reportPeerConnectionDataChannel = true;
+		public boolean reportClientTransports = true;
+		public boolean reportClientDataChannels = true;
 		public boolean reportMediaTracks = false;
 
-		public boolean reportSFUEvents = true;
-		public boolean reportSFUMeta = true;
+		public boolean reportSfuEvents = true;
+		public boolean reportSfuMeta = true;
 		public boolean reportSfuTransports = true;
 		public boolean reportSfuRtpSources = true;
 		public boolean reportSfuRtpSinks = true;

@@ -3,9 +3,10 @@ package org.observertc.webrtc.observer.sinks.mongo;
 import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.bson.Document;
+import org.observertc.webrtc.observer.codecs.Decoder;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReportTypeVisitors;
-import org.observertc.webrtc.schemas.reports.ReportType;
+import org.observertc.webrtc.observer.common.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +20,9 @@ import java.util.stream.Collectors;
 class DocumentMapper implements Function<OutboundReport, Document> {
     private static final Logger logger = LoggerFactory.getLogger(DocumentMapper.class);
 
-    static Map<ReportType, DocumentMapper> getDocumentMappers() {
+    static Map<ReportType, DocumentMapper> getDocumentMappers(Decoder decoders) {
         Map<ReportType, DocumentMapper> result = new HashMap<>();
-        var decoderProvider = OutboundReportTypeVisitors.decoderProvider();
+        var decoderProvider = OutboundReportTypeVisitors.decoderProvider(decoders);
         var schemaProvider = OutboundReportTypeVisitors.avroSchemaResolver();
         Arrays.stream(ReportType.values()).forEach(reportType -> {
             Schema schema = schemaProvider.apply(null, reportType);

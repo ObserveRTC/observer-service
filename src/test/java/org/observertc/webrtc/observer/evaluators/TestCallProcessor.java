@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleGenerator;
-import org.observertc.webrtc.schemas.reports.ReportType;
+import org.observertc.webrtc.observer.common.ReportType;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

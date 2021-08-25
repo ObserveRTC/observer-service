@@ -63,24 +63,40 @@ observer:
     sfuSamplesBufferMaxItems: 1000
 
   sinks:
-    MyLogger:
-      type: LoggerSink
-    MyMongo:
-      type: MongoSink
+#    MyLogger:
+#      type: LoggerSink
+    MyKafka:
+      type: KafkaSink
       config:
-        uri: "mongodb://root:password@localhost:27017"
-        database: "reports"
+        muxReports: true
+        muxTopic: "ortc_reports"
+        demuxTopicPrefix: "ortc_"
+        properties:
+          bootstrap.servers: localhost:9092
+#    MyMongo:
+#      type: MongoSink
+#      config:
+#        uri: "mongodb://root:password@localhost:27017"
+#        database: "reports"
 
   outboundReports:
-    reportCallMeta: true
+    reportObserverEvents: true
     reportCallEvents: true
-    reportOutboundAudioTracks: true
-    reportOutboundVideoTracks: true
+    reportCallMeta: true
+    reportClientExtensions: true
     reportInboundAudioTracks: true
     reportInboundVideoTracks: true
-    reportPcTransports: true
+    reportOutboundAudioTracks: true
+    reportOutboundVideoTracks: true
+    reportClientTransports: true
     reportClientDataChannels: true
-    reportObservedExtensions: true
+    reportMediaTracks: true
+    reportSfuEvents: true
+    reportSfuMeta: true
+    reportSfuTransports: true
+    reportSfuRtpSources: true
+    reportSfuRtpSinks: true
+    reportSfuSctpStreams: true
 
 
   hazelcast:

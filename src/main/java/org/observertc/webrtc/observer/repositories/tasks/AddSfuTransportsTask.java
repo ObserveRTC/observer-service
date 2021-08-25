@@ -96,6 +96,7 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
         try {
             return SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_TRANSPORT_OPENED.name())
+                    .setSfuName(sfuTransportDTO.sfuName)
                     .setSfuId(sfuTransportDTO.sfuId.toString())
                     .setTransportId(sfuTransportDTO.transportId.toString())
                     .setMediaUnitId(sfuTransportDTO.mediaUnitId)

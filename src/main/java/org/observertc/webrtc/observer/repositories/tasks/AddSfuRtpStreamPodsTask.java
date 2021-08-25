@@ -114,6 +114,7 @@ public class AddSfuRtpStreamPodsTask extends ChainedTask<List<SfuEventReport.Bui
             return SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_RTP_STREAM_ADDED.name())
                     .setSfuId(sfuRtpStreamPodDTO.sfuId.toString())
+                    .setSfuName(sfuRtpStreamPodDTO.sfuName)
                     .setTransportId(sfuRtpStreamPodDTO.sfuTransportId.toString())
                     .setStreamId(sfuRtpStreamPodDTO.sfuStreamId.toString())
                     .setSourceId(sourceId)

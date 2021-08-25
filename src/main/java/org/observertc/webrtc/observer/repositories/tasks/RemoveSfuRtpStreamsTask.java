@@ -124,6 +124,7 @@ public class RemoveSfuRtpStreamsTask extends ChainedTask<List<SfuEventReport.Bui
             return builder
                     .setMediaUnitId(sfuRtpStreamPodDTO.mediaUnitId)
                     .setSfuId(sfuRtpStreamPodDTO.sfuId.toString())
+                    .setSfuName(sfuRtpStreamPodDTO.sfuName)
                     .setTransportId(sfuRtpStreamPodDTO.sfuTransportId.toString())
                     .setStreamId(sfuRtpStreamPodDTO.sfuStreamId.toString())
                     .setSourceId(sourceId)

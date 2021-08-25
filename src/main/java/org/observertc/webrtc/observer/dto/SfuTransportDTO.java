@@ -49,6 +49,7 @@ public class SfuTransportDTO implements VersionedPortable {
 
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
+	private static final String SFU_NAME_FIELD_NAME = "sfuName";
 	private static final String TRANSPORT_ID_FIELD_NAME = "transportId";
 	private static final String OPENED_FIELD_NAME = "opened";
 
@@ -56,6 +57,7 @@ public class SfuTransportDTO implements VersionedPortable {
 
 	public String mediaUnitId;
 	public UUID sfuId;
+	public String sfuName;
 	public UUID transportId;
 	public Long opened;
 
@@ -80,6 +82,7 @@ public class SfuTransportDTO implements VersionedPortable {
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
+		writer.writeUTF(SFU_NAME_FIELD_NAME, this.sfuName);
 		writer.writeByteArray(TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.transportId));
 		writer.writeLong(OPENED_FIELD_NAME, this.opened);
 
@@ -90,6 +93,7 @@ public class SfuTransportDTO implements VersionedPortable {
 	public void readPortable(PortableReader reader) throws IOException {
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
+		this.sfuName = reader.readUTF(SFU_NAME_FIELD_NAME);
 		this.transportId = UUIDAdapter.toUUID(reader.readByteArray(TRANSPORT_ID_FIELD_NAME));
 		this.opened = reader.readLong(OPENED_FIELD_NAME);
 
@@ -113,6 +117,7 @@ public class SfuTransportDTO implements VersionedPortable {
 		}
 		SfuTransportDTO otherDTO = (SfuTransportDTO) other;
 		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
+			!Objects.equals(this.sfuName, otherDTO.sfuName) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.transportId, otherDTO.transportId) ||
 			!Objects.equals(this.opened, otherDTO.opened) ||
@@ -129,6 +134,11 @@ public class SfuTransportDTO implements VersionedPortable {
 
 		public Builder withSfuId(UUID value) {
 			this.result.sfuId = value;
+			return this;
+		}
+
+		public Builder withSfuName(String value) {
+			this.result.sfuName = value;
 			return this;
 		}
 

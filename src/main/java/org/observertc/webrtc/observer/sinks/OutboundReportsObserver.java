@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.sinks;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import org.observertc.webrtc.observer.codecs.OutboundReportsCodec;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
@@ -22,13 +23,15 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
 
     private Disposable upstream;
     private final Map<String, Sink> sinks = new HashMap<>();
-
-    public OutboundReportsObserver(ObserverConfig config) {
+    private OutboundReportsCodec outboundReportsCodec;
+    public OutboundReportsObserver(ObserverConfig config, OutboundReportsCodec outboundReportsCodec) {
+        this.outboundReportsCodec = outboundReportsCodec;
         if (Objects.nonNull(config.sinks)) {
             config.sinks.forEach((sinkId, sinkConfig) -> {
                 try {
                     Map<String, Object> sinkConfigValue = (Map<String, Object>) sinkConfig;
                     var sink = this.buildSink(sinkId, sinkConfigValue);
+                    sink.open();
                     this.sinks.put(sinkId, sink);
                 } catch (Exception ex) {
                     logger.error("Error occurred while setting up a Sink {} with config {}",
@@ -43,6 +46,8 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
     private Sink buildSink(String sinkId, Map<String, Object> config) {
         SinkBuilder sinkBuilder = new SinkBuilder();
         sinkBuilder.withConfiguration(config);
+        var decoder = this.outboundReportsCodec.getDecoder();
+        sinkBuilder.setDecoder(decoder);
         Sink result = sinkBuilder.build();
         String sinkLoggerName = String.format("Sink-%s:", sinkId);
         var logger = LoggerFactory.getLogger(sinkLoggerName);

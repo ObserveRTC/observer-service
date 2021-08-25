@@ -1,7 +1,5 @@
 package org.observertc.webrtc.observer.common;
 
-import org.observertc.webrtc.schemas.reports.ReportType;
-
 import java.util.*;
 import java.util.stream.Stream;
 

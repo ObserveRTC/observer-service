@@ -15,6 +15,7 @@ public class ObservedSfuSampleBuilder {
     private String mediaUnitId;
     private SfuSample sfuSample;
     private UUID sfuId;
+    private String sfuName;
     private String timeZoneId;
 
     private ObservedSfuSampleBuilder() {
@@ -29,6 +30,7 @@ public class ObservedSfuSampleBuilder {
     private ObservedSfuSampleBuilder withSfuSample(SfuSample value) {
         this.sfuSample = value;
         this.sfuId = UUID.fromString(value.sfuId);
+        this.sfuName = value.sfuName;
         return this;
     }
 
@@ -66,6 +68,11 @@ public class ObservedSfuSampleBuilder {
             @Override
             public UUID getSfuId() {
                 return sfuId;
+            }
+
+            @Override
+            public String getSfuName() {
+                return sfuName;
             }
 
             @Override

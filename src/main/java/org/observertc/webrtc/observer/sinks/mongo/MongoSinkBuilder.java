@@ -3,6 +3,8 @@ package org.observertc.webrtc.observer.sinks.mongo;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.webrtc.observer.codecs.Decoder;
+import org.observertc.webrtc.observer.common.ReportType;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configbuilders.Builder;
 import org.observertc.webrtc.observer.sinks.Sink;
@@ -32,7 +34,7 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         result.put(ReportType.OUTBOUND_AUDIO_TRACK, OutboundAudioTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.OUTBOUND_VIDEO_TRACK, OutboundVideoTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.PEER_CONNECTION_DATA_CHANNEL, ClientDataChannelReport.class.getSimpleName() + "s");
-        result.put(ReportType.PEER_CONNECTION_TRANPORT, ClientTransportReport.class.getSimpleName() + "s");
+        result.put(ReportType.PEER_CONNECTION_TRANSPORT, ClientTransportReport.class.getSimpleName() + "s");
 
         result.put(ReportType.SFU_EVENT, SfuEventReport.class.getSimpleName() + "s");
         result.put(ReportType.SFU_META_DATA, SfuMetaReport.class.getSimpleName() + "s");
@@ -41,6 +43,17 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         result.put(ReportType.SFU_RTP_SINK_STREAM, SfuRTPSinkReport.class.getSimpleName() + "s");
         result.put(ReportType.SFU_SCTP_STREAM, SfuSctpStreamReport.class.getSimpleName() + "s");
         return result;
+    }
+
+    private Decoder decoder;
+
+    @Override
+    public void set(Object subject) {
+        if (subject instanceof Decoder) {
+            this.decoder = (Decoder) subject;
+        } else {
+            logger.warn("Unrecognized subject {}", subject.getClass().getSimpleName());
+        }
     }
 
     public Sink build() {
@@ -61,7 +74,7 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
             return null;
         }
 
-        var documentMappers = DocumentMapper.getDocumentMappers();
+        var documentMappers = DocumentMapper.getDocumentMappers(this.decoder);
         Map<ReportType, String> customCollectionNames = config.collectionNames != null ? config.collectionNames : Collections.EMPTY_MAP;
         getDefaultCollectionNames().forEach((reportType, defaultCollectionName) -> {
             String collectionName = customCollectionNames.getOrDefault(reportType, defaultCollectionName);

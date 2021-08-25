@@ -3,7 +3,9 @@ package org.observertc.webrtc.observer.evaluators;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.codecs.Encoder;
 import org.observertc.webrtc.observer.codecs.OutboundReportsAvroEncoder;
+import org.observertc.webrtc.observer.codecs.OutboundReportsCodec;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
@@ -25,13 +27,14 @@ public class OutboundReportEncoder {
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 
     private Subject<OutboundReport> outboundReportSubject = PublishSubject.create();
+    private Encoder encoder;
 
     @Inject
-    OutboundReportsAvroEncoder encoder;
+    OutboundReportsCodec outboundReportsCodec;
 
     @PostConstruct
     void setup() {
-
+        this.encoder = outboundReportsCodec.getEncoder();
     }
 
     public OutboundReportEncoder(ObserverConfig config) {

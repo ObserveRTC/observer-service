@@ -11,11 +11,11 @@ import org.apache.avro.specific.SpecificData;
 /** A multiplexed Report object wraps an encoded report in bytes format */
 @org.apache.avro.specific.AvroGenerated
 public class Report extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 7227510166937317096L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Report\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A multiplexed Report object wraps an encoded report in bytes format\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"ReportType\",\"symbols\":[\"OBSERVER_EVENT\",\"CALL_EVENT\",\"CALL_META_DATA\",\"CLIENT_EXTENSION_DATA\",\"PEER_CONNECTION_TRANPORT\",\"PEER_CONNECTION_DATA_CHANNEL\",\"INBOUND_AUDIO_TRACK\",\"INBOUND_VIDEO_TRACK\",\"OUTBOUND_AUDIO_TRACK\",\"OUTBOUND_VIDEO_TRACK\",\"MEDIA_TRACK\",\"SFU_EVENT\",\"SFU_META_DATA\",\"SFU_TRANSPORT\",\"SFU_RTP_SOURCE_STREAM\",\"SFU_RTP_SINK_STREAM\",\"SFU_SCTP_STREAM\"]},\"doc\":\"The type of the report\"},{\"name\":\"payload\",\"type\":\"bytes\",\"doc\":\"The payload of contans the actual report\"}]}");
+  private static final long serialVersionUID = 3498214851812190228L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Report\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A multiplexed Report object wraps an encoded report in bytes format\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The type of the report\"},{\"name\":\"payload\",\"type\":\"bytes\",\"doc\":\"The payload of contans the actual report\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The type of the report */
-   private org.observertc.webrtc.schemas.reports.ReportType type;
+   private java.lang.String type;
   /** The payload of contans the actual report */
    private java.nio.ByteBuffer payload;
 
@@ -31,7 +31,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
    * @param type The type of the report
    * @param payload The payload of contans the actual report
    */
-  public Report(org.observertc.webrtc.schemas.reports.ReportType type, java.nio.ByteBuffer payload) {
+  public Report(java.lang.String type, java.nio.ByteBuffer payload) {
     this.type = type;
     this.payload = payload;
   }
@@ -50,7 +50,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: type = (org.observertc.webrtc.schemas.reports.ReportType)value$; break;
+    case 0: type = (java.lang.String)value$; break;
     case 1: payload = (java.nio.ByteBuffer)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -60,7 +60,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
    * Gets the value of the 'type' field.
    * @return The type of the report
    */
-  public org.observertc.webrtc.schemas.reports.ReportType getType() {
+  public java.lang.String getType() {
     return type;
   }
 
@@ -107,7 +107,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
     implements org.apache.avro.data.RecordBuilder<Report> {
 
     /** The type of the report */
-    private org.observertc.webrtc.schemas.reports.ReportType type;
+    private java.lang.String type;
     /** The payload of contans the actual report */
     private java.nio.ByteBuffer payload;
 
@@ -153,7 +153,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
       * The type of the report
       * @return The value.
       */
-    public org.observertc.webrtc.schemas.reports.ReportType getType() {
+    public java.lang.String getType() {
       return type;
     }
 
@@ -163,7 +163,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public org.observertc.webrtc.schemas.reports.Report.Builder setType(org.observertc.webrtc.schemas.reports.ReportType value) {
+    public org.observertc.webrtc.schemas.reports.Report.Builder setType(java.lang.String value) {
       validate(fields()[0], value);
       this.type = value;
       fieldSetFlags()[0] = true;
@@ -238,7 +238,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
     public Report build() {
       try {
         Report record = new Report();
-        record.type = fieldSetFlags()[0] ? this.type : (org.observertc.webrtc.schemas.reports.ReportType) defaultValue(fields()[0]);
+        record.type = fieldSetFlags()[0] ? this.type : (java.lang.String) defaultValue(fields()[0]);
         record.payload = fieldSetFlags()[1] ? this.payload : (java.nio.ByteBuffer) defaultValue(fields()[1]);
         return record;
       } catch (Exception e) {

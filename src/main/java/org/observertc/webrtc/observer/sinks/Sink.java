@@ -17,8 +17,11 @@ public abstract class Sink implements Consumer<OutboundReports> {
     }
 
     public void close() {
-
+        logger.info("Closed");
     }
 
+    public void open() {
+        logger.info("Opened");
+    }
 
 }

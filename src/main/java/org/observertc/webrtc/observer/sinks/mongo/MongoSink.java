@@ -7,7 +7,7 @@ import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.common.Utils;
 import org.observertc.webrtc.observer.sinks.Sink;
-import org.observertc.webrtc.schemas.reports.ReportType;
+import org.observertc.webrtc.observer.common.ReportType;
 
 import java.util.*;
 

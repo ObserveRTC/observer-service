@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 @Prototype
-public class OutboundReportsAvroDecoder {
-    private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
+public class OutboundReportsAvroDecoder implements Decoder{
+    private static final Logger logger = LoggerFactory.getLogger(OutboundReportsAvroDecoder.class);
 
     private final BinaryMessageDecoder<ObserverEventReport> observerEventDecoder;
     private final BinaryMessageDecoder<CallEventReport> callEventDecoder;

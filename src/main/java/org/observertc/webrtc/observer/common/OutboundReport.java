@@ -1,7 +1,5 @@
 package org.observertc.webrtc.observer.common;
 
-import org.observertc.webrtc.schemas.reports.ReportType;
-
 public interface OutboundReport {
     ReportType getType();
     byte[] getBytes();
@@ -42,7 +40,7 @@ public interface OutboundReport {
     interface ClientTransportReport extends OutboundReport {
         @Override
         default ReportType getType() {
-            return ReportType.PEER_CONNECTION_TRANPORT;
+            return ReportType.PEER_CONNECTION_TRANSPORT;
         }
     }
 

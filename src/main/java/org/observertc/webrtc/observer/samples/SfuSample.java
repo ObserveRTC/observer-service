@@ -15,6 +15,12 @@ public  class SfuSample {
 	public String sfuId;
 
 	/**
+	 * A given name for a certain SFU
+	 */
+	@JsonProperty("sfuName")
+	public String sfuName;
+
+	/**
 	 * array of measurements related to inbound RTP streams
 	 */
 	@JsonProperty("rtpSources")
@@ -398,6 +404,12 @@ public  class SfuSample {
 		 */
 		@JsonProperty("packetsSent")
 		public Integer packetsSent;
+
+		/**
+		 * The total number of packets lost on the corresponded RTP stream
+		 */
+		@JsonProperty("packetsLost")
+		public Integer packetsLost;
 
 		/**
 		 * The total number of discarded packets on the corresponded RTP stream.

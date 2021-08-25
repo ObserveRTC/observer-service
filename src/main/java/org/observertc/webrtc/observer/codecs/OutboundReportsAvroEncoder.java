@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.codecs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Prototype;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageEncoder;
@@ -11,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Prototype
-public class OutboundReportsAvroEncoder {
-    private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
+public class OutboundReportsAvroEncoder implements Encoder{
+    private static final Logger logger = LoggerFactory.getLogger(OutboundReportsAvroEncoder.class);
 
     private final BinaryMessageEncoder<ObserverEventReport> observerEventEncoder;
     private final BinaryMessageEncoder<CallEventReport> callEventEncoder;

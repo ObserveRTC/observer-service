@@ -51,6 +51,7 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 	}
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
+	private static final String SFU_NAME_FIELD_NAME = "sfuName";
 	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "transportId";
 	private static final String SFU_STREAM_ID_FIELD_NAME = "sfuStreamId";
 	private static final String SFU_POD_ID_FIELD_NAME = "sfuPodId";
@@ -63,6 +64,7 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 
 	public String mediaUnitId;
 	public UUID sfuId;
+	public String sfuName;
 	public UUID sfuTransportId;
 	public UUID sfuStreamId;
 	public UUID sfuPodId;
@@ -91,6 +93,7 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
+		writer.writeUTF(SFU_NAME_FIELD_NAME, this.sfuName);
 		writer.writeByteArray(SFU_TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuTransportId));
 		writer.writeByteArray(SFU_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuStreamId));
 		writer.writeByteArray(SFU_POD_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuPodId));
@@ -107,6 +110,7 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 	public void readPortable(PortableReader reader) throws IOException {
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
+		this.sfuName = reader.readUTF(SFU_NAME_FIELD_NAME);
 		this.sfuTransportId = UUIDAdapter.toUUID(reader.readByteArray(SFU_TRANSPORT_ID_FIELD_NAME));
 		this.sfuStreamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_STREAM_ID_FIELD_NAME));
 		this.sfuPodId =  UUIDAdapter.toUUID(reader.readByteArray(SFU_POD_ID_FIELD_NAME));
@@ -149,6 +153,7 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 		}
 		SfuRtpStreamPodDTO otherDTO = (SfuRtpStreamPodDTO) other;
 		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
+			!Objects.equals(this.sfuName, otherDTO.sfuName) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.sfuTransportId, otherDTO.sfuTransportId) ||
 			!Objects.equals(this.sfuStreamId, otherDTO.sfuStreamId) ||
@@ -174,6 +179,11 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 
 		public Builder withSfuId(UUID value) {
 			this.result.sfuId = value;
+			return this;
+		}
+
+		public Builder withSfuName(String value) {
+			this.result.sfuName = value;
 			return this;
 		}
 

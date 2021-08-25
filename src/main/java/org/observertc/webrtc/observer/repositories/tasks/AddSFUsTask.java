@@ -96,6 +96,7 @@ public class AddSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
         try {
             return SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_JOINED.name())
+                    .setSfuName(sfuDTO.sfuName)
                     .setSfuId(sfuDTO.sfuId.toString())
                     .setMediaUnitId(sfuDTO.mediaUnitId)
                     .setTimestamp(sfuDTO.joined);

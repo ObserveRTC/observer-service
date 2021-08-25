@@ -112,6 +112,7 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
             return builder
                     .setMediaUnitId(sfuDTO.mediaUnitId)
                     .setSfuId(sfuDTO.sfuId.toString())
+                    .setSfuName(sfuDTO.sfuName)
                     ;
         } catch (Exception ex) {
             this.getLogger().error("Cannot make report for SFU DTO", ex);

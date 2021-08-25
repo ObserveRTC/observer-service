@@ -2,7 +2,8 @@ package org.observertc.webrtc.observer.common;
 
 import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.observertc.webrtc.observer.codecs.OutboundReportsAvroDecoder;
+import org.observertc.webrtc.observer.codecs.Decoder;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.schemas.reports.*;
 
 import java.util.function.Function;
@@ -34,8 +35,7 @@ public final class OutboundReportTypeVisitors {
         );
     }
 
-    public static OutboundReportTypeVisitor<Void, Function<OutboundReport, SpecificRecordBase>> decoderProvider() {
-        final OutboundReportsAvroDecoder decoder = new OutboundReportsAvroDecoder();
+    public static OutboundReportTypeVisitor<Void, Function<OutboundReport, SpecificRecordBase>> decoderProvider(Decoder decoder) {
         return OutboundReportTypeVisitor.<Function<OutboundReport, SpecificRecordBase>>createSupplierVisitor(
                 () -> decoder::decodeObserverEventReports,
                 () -> decoder::decodeCallEventReports,
@@ -54,6 +54,28 @@ public final class OutboundReportTypeVisitors {
                 () -> decoder::decodeSfuRtpSourceReport,
                 () -> decoder::decodeSfuRtpSinkReport,
                 () -> decoder::decodeSfuSctpStreamReport
+        );
+    }
+
+    public static OutboundReportTypeVisitor<Void, Boolean> makeTypeFilter(ObserverConfig.OutboundReportsConfig config) {
+        return OutboundReportTypeVisitor.<Boolean>createSupplierVisitor(
+                () -> config.reportObserverEvents,
+                () -> config.reportCallEvents,
+                () -> config.reportCallMeta,
+                () -> config.reportClientExtensions,
+                () -> config.reportClientTransports,
+                () -> config.reportClientDataChannels,
+                () -> config.reportInboundAudioTracks,
+                () -> config.reportInboundVideoTracks,
+                () -> config.reportOutboundAudioTracks,
+                () -> config.reportOutboundVideoTracks,
+                () -> config.reportMediaTracks,
+                () -> config.reportSfuEvents,
+                () -> config.reportSfuMeta,
+                () -> config.reportSfuTransports,
+                () -> config.reportSfuRtpSources,
+                () -> config.reportSfuRtpSinks,
+                () -> config.reportSfuSctpStreams
         );
     }
 

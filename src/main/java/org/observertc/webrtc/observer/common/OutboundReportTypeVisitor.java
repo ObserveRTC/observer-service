@@ -1,6 +1,5 @@
 package org.observertc.webrtc.observer.common;
 
-import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -487,7 +486,7 @@ public interface OutboundReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, Re
                 return this.visitCallMetaDataReport(obj);
             case CLIENT_EXTENSION_DATA:
                 return this.visitClientExtensionDataReport(obj);
-            case PEER_CONNECTION_TRANPORT:
+            case PEER_CONNECTION_TRANSPORT:
                 return this.visitClientTransportReport(obj);
             case PEER_CONNECTION_DATA_CHANNEL:
                 return this.visitClientDataChannelReport(obj);

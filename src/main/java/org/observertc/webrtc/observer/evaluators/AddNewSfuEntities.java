@@ -5,7 +5,10 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.webrtc.observer.dto.*;
+import org.observertc.webrtc.observer.dto.SfuDTO;
+import org.observertc.webrtc.observer.dto.SfuPodRole;
+import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
+import org.observertc.webrtc.observer.dto.SfuTransportDTO;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.tasks.*;
 import org.observertc.webrtc.observer.samples.*;
@@ -72,6 +75,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                 if (!report.foundSfuIds.contains(sfuId) && !newSFUs.containsKey(sfuId)) {
                     var sfuDTO = SfuDTO.builder()
                             .withSfuId(sfuId)
+                            .withSfuName(observedSfuSample.getSfuName())
                             .withConnectedTimestamp(observedSfuSample.getTimestamp())
                             .withTimeZoneId(observedSfuSample.getTimeZoneId())
                             .withMediaUnitId(observedSfuSample.getMediaUnitId())
@@ -83,6 +87,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                     if (!report.foundSfuTransportIds.contains(transportId) && !newTransports.containsKey(transportId)) {
                         var sfuTransportDTO = SfuTransportDTO.builder()
                                 .withSfuId(sfuId)
+                                .withSfuName(observedSfuSample.getSfuName())
                                 .withTransportId(transportId)
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withOpenedTimestamp(observedSfuSample.getTimestamp())
@@ -97,6 +102,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         UUID transportId = UUID.fromString(sfuRtpSource.transportId);
                         var sfuRtpStreamDTO = SfuRtpStreamPodDTO.builder()
                                 .withSfuId(sfuId)
+                                .withSfuName(observedSfuSample.getSfuName())
                                 .withSfuTransportId(transportId)
                                 .withSfuStreamId(streamId)
                                 .withSfuPodId(sourceId)
@@ -114,6 +120,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         UUID transportId = UUID.fromString(sfuRtpSink.transportId);
                         var sfuRtpStreamDTO = SfuRtpStreamPodDTO.builder()
                                 .withSfuId(sfuId)
+                                .withSfuName(observedSfuSample.getSfuName())
                                 .withSfuTransportId(transportId)
                                 .withSfuStreamId(streamId)
                                 .withSfuPodId(sinkId)

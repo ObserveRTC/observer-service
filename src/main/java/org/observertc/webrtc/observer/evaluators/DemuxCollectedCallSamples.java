@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.repositories.tasks.FindRemoteClientIdsForMediaTrackIds;
 import org.observertc.webrtc.observer.repositories.tasks.MatchCallTracksTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.observertc.webrtc.schemas.reports.*;
@@ -189,29 +188,13 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
             }
         }
         synchronized (this) {
-            if (observerConfig.outboundReports.reportPeerConnectionTransport) {
-                clientTransportReports.stream().forEach(this.clientTransportReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportPeerConnectionDataChannel) {
-                clientDataChannelReports.stream().forEach(this.clientDataChannelReportSubject::onNext);
-            }
-
-            if (observerConfig.outboundReports.reportClientExtensions) {
-                clientExtensionReports.stream().forEach(this.clientExtensionReportSubject::onNext);
-            }
-
-            if (observerConfig.outboundReports.reportInboundAudioTracks) {
-                inboundAudioTrackReports.stream().forEach(this.inboundAudioTrackReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportInboundVideoTracks) {
-                inboundVideoTrackReports.stream().forEach(this.inboundVideoTrackReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportOutboundVideoTracks) {
-                outboundAudioTrackReports.stream().forEach(this.outboundAudioTrackReportSubject::onNext);
-            }
-            if (observerConfig.outboundReports.reportOutboundVideoTracks) {
-                outboundVideoTrackReports.stream().forEach(this.outboundVideoTrackReportSubject::onNext);
-            }
+            clientTransportReports.stream().forEach(this.clientTransportReportSubject::onNext);
+            clientDataChannelReports.stream().forEach(this.clientDataChannelReportSubject::onNext);
+            clientExtensionReports.stream().forEach(this.clientExtensionReportSubject::onNext);
+            inboundAudioTrackReports.stream().forEach(this.inboundAudioTrackReportSubject::onNext);
+            inboundVideoTrackReports.stream().forEach(this.inboundVideoTrackReportSubject::onNext);
+            outboundAudioTrackReports.stream().forEach(this.outboundAudioTrackReportSubject::onNext);
+            outboundVideoTrackReports.stream().forEach(this.outboundVideoTrackReportSubject::onNext);
             if (observerConfig.outboundReports.reportMediaTracks) {
 //                inboundAudioTrackReports.stream().map(this::createMediaTrackReportFromInboundAudio)
 //                        .forEach(this.mediaTrackReportSubject::onNext);
