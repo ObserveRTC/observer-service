@@ -97,37 +97,6 @@ public class KafkaSink extends Sink {
         };
     }
 
-//    private Function<OutboundReport, ProducerRecord<UUID, Bytes>> createMuxedRecordFunc() {
-////        SpecificData specificData = SpecificData.getForSchema(Report.getClassSchema());
-//        GenericData genericData = GenericData.get();
-//        BinaryMessageEncoder<Report> encoder = new BinaryMessageEncoder<Report>(genericData, Report.getClassSchema());
-//        return inputReport -> {
-//            Report muxedReport;
-//            try {
-//                ByteBuffer bytes = ByteBuffer.wrap(inputReport.getBytes());
-//                ReportType reportType = inputReport.getType();
-//                muxedReport = Report.newBuilder()
-//                        .setType(reportType.toString())
-//                        .setPayload(bytes)
-//                        .build();
-//            } catch (Exception ex) {
-//                logger.warn("Exception while creating mux report", ex);
-//                return null;
-//            }
-//            ProducerRecord<UUID, Bytes> result;
-//            try {
-//                var encodedReport = encoder.encode(muxedReport);
-//                var message = Bytes.wrap(encodedReport.array());
-//                result = new ProducerRecord<UUID, Bytes>(this.muxTopic, this.key, message);
-//            } catch (IOException ex) {
-//                logger.warn("Exception while creating mux message", ex);
-//                return null;
-//            }
-//            return result;
-//        };
-//
-//    }
-
     private Function<OutboundReport, ProducerRecord<UUID, Bytes>> createMuxedRecordFunc() {
 //        SpecificData specificData = SpecificData.getForSchema(Report.getClassSchema());
         ObjectMapper mapper = new ObjectMapper();

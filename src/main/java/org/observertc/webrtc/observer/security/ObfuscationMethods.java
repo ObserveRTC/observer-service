@@ -25,8 +25,8 @@ public class ObfuscationMethods {
 
     public ObfuscationMethods(ObserverConfig observerConfig) {
         var config = observerConfig.obfuscations;
-        if (Objects.nonNull(observerConfig.obfuscations) && Objects.nonNull(observerConfig.obfuscations.anonymization)) {
-            this.hashSupplier = makeHashDigesterSupplier(observerConfig.obfuscations.anonymization);
+        if (Objects.nonNull(observerConfig.obfuscations) && Objects.nonNull(observerConfig.obfuscations.maskConfig)) {
+            this.hashSupplier = makeHashDigesterSupplier(observerConfig.obfuscations.maskConfig);
         } else {
             this.hashSupplier = () -> Function.identity();
         }
@@ -67,7 +67,7 @@ public class ObfuscationMethods {
         return resultProvider.apply(null, obfuscationType);
     }
 
-    private static Supplier<Function<byte[], byte[]>> makeHashDigesterSupplier(ObserverConfig.ObfuscationsConfig.ObfuscationsAnonymizationConfig config) {
+    private static Supplier<Function<byte[], byte[]>> makeHashDigesterSupplier(ObserverConfig.ObfuscationsConfig.ObfuscationsMaskConfig config) {
         try {
             Objects.requireNonNull(config.salt);
             Objects.requireNonNull(config.hashAlgorithm);

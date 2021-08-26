@@ -47,14 +47,14 @@ public class ObserverConfig {
 			NONE,
 		}
 		public boolean enabled = false;
-		public ObfuscationsAnonymizationConfig anonymization;
+		public ObfuscationsMaskConfig maskConfig;
 
-		public ObfuscationType obfuscateIceAddresses = ObfuscationType.ANONYMIZATION;
-		public ObfuscationType obfuscateUserId = ObfuscationType.ANONYMIZATION;
-		public ObfuscationType obfuscateRoomId = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType maskedIceAddresses = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType maskedUserId = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType maskedRoomId = ObfuscationType.ANONYMIZATION;
 
 		@ConfigurationProperties("anonymization")
-		public static class ObfuscationsAnonymizationConfig {
+		public static class ObfuscationsMaskConfig {
 			public String hashAlgorithm;
 			public String salt;
 		}

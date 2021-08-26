@@ -27,9 +27,9 @@ public class ObservedClientSampleObfuscator implements Function<List<ObservedCli
         var config = observerConfig.obfuscations;
         if (Objects.nonNull(config)) {
             this.enabled = config.enabled;
-            this.obfuscateUserId = obfuscationMethods.makeMethodForString(config.obfuscateUserId);
-            this.obfuscateRoomId = obfuscationMethods.makeMethodForString(config.obfuscateRoomId);
-            this.obfuscateIceAddresses = obfuscationMethods.makeMethodForString(config.obfuscateIceAddresses);
+            this.obfuscateUserId = obfuscationMethods.makeMethodForString(config.maskedUserId);
+            this.obfuscateRoomId = obfuscationMethods.makeMethodForString(config.maskedRoomId);
+            this.obfuscateIceAddresses = obfuscationMethods.makeMethodForString(config.maskedIceAddresses);
         }
     }
 

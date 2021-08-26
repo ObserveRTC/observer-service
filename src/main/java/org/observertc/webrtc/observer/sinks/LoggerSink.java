@@ -2,12 +2,8 @@ package org.observertc.webrtc.observer.sinks;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.functions.Consumer;
-import org.observertc.webrtc.observer.codecs.OutboundReportsAvroDecoder;
-import org.observertc.webrtc.observer.common.ObjectToString;
-import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.OutboundReportTypeVisitor;
-import org.observertc.webrtc.observer.common.OutboundReports;
-import org.observertc.webrtc.observer.common.ReportType;
+import org.observertc.webrtc.observer.codecs.Decoder;
+import org.observertc.webrtc.observer.common.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -24,6 +20,7 @@ public class LoggerSink extends Sink {
     private Level level = Level.INFO;
     private boolean typeSummary = false;
 
+    private Decoder decoder;
     private java.util.function.Consumer<OutboundReport> printer;
 
     LoggerSink() {
@@ -50,6 +47,12 @@ public class LoggerSink extends Sink {
                 }
             });
         }
+    }
+
+    LoggerSink withDecoder(Decoder decoder) {
+        logger.info("Set decoder to {}", decoder.getClass().getSimpleName());
+        this.decoder = decoder;
+        return this;
     }
 
     LoggerSink withPrintTypeSummary(boolean value) {
@@ -90,7 +93,7 @@ public class LoggerSink extends Sink {
     }
 
     private java.util.function.Consumer<OutboundReport> makePrinter() {
-        final OutboundReportsAvroDecoder decoder = new OutboundReportsAvroDecoder();
+        var decoder = this.decoder;
         var decodeAndPrint = OutboundReportTypeVisitor.createConsumerVisitor(
                 this.makeDecodeAndPrintConsumer(decoder::decodeObserverEventReports),
                 this.makeDecodeAndPrintConsumer(decoder::decodeCallEventReports),

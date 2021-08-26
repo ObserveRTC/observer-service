@@ -1,10 +1,15 @@
 package org.observertc.webrtc.observer.sinks;
 
+import org.observertc.webrtc.observer.codecs.Decoder;
 import org.observertc.webrtc.observer.configbuilders.AbstractBuilder;
 import org.observertc.webrtc.observer.configbuilders.Builder;
 import org.slf4j.event.Level;
 
+import java.util.Objects;
+
 public class LoggerSinkBuilder extends AbstractBuilder implements Builder<Sink> {
+
+    private Decoder decoder = null;
 
     @Override
     public Sink build() {
@@ -12,10 +17,23 @@ public class LoggerSinkBuilder extends AbstractBuilder implements Builder<Sink> 
         LoggerSink result = new LoggerSink();
         Level level = Level.valueOf(config.logLevel);
 
+        if (Objects.nonNull(this.decoder)) {
+            result.withDecoder(this.decoder);
+        }
+
         return result
                 .witLogLevel(level)
                 .withPrintTypeSummary(config.printTypeSummary)
                 .withPrintReports(config.printReports);
+    }
+
+    @Override
+    public void set(Object subject) {
+        if (subject instanceof Decoder) {
+            this.decoder = (Decoder) subject;
+        } else {
+            logger.warn("Unrecognized subject {}", subject.getClass().getSimpleName());
+        }
     }
 
     public static class Config {

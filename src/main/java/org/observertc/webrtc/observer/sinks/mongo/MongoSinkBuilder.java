@@ -21,6 +21,7 @@ import java.util.Objects;
 @Prototype
 public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
     private final static Logger logger = LoggerFactory.getLogger(MongoSinkBuilder.class);
+    private Decoder decoder;
 
     private static Map<ReportType, String> getDefaultCollectionNames() {
         final Map<ReportType, String> result = new HashMap<>();
@@ -44,8 +45,6 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         result.put(ReportType.SFU_SCTP_STREAM, SfuSctpStreamReport.class.getSimpleName() + "s");
         return result;
     }
-
-    private Decoder decoder;
 
     @Override
     public void set(Object subject) {
