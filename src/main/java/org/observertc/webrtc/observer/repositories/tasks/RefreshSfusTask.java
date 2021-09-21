@@ -136,8 +136,8 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                         if (Objects.isNull(sfuTransportDTO) || Objects.nonNull(sfuRtpStreamPodDTO.callId)) {
                             return;
                         }
-                        completedSfuTransports.put(transportId, SfuTransportDTO
-                                .builderFrom(sfuTransportDTO)
+                        completedSfuTransports.put(transportId, SfuTransportDTO.builder()
+                                .from(sfuTransportDTO)
                                 .withCallId(sfuRtpStreamPodDTO.callId)
                                 .build()
                         );

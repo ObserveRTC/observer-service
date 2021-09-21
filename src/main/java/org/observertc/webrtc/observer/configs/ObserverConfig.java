@@ -140,8 +140,6 @@ public class ObserverConfig {
 		public int reportsBufferMaxRetainInS = 30;
 	}
 
-	public ReportCodec reportCodec = ReportCodec.JSON;
-
 	public Map<String, Object> sinks;
 
 	// Outbound Reports Config
@@ -149,6 +147,7 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("outboundReports")
 	public static class OutboundReportsConfig {
+		public ReportFormat reportFormat = ReportFormat.JSON;
 		public boolean reportObserverEvents = true;
 		public boolean reportCallEvents = true;
 		public boolean reportCallMeta = true;

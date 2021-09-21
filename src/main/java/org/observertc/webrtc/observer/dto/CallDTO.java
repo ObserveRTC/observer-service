@@ -102,6 +102,16 @@ public class CallDTO implements VersionedPortable {
 	public static class Builder {
 		private final CallDTO result = new CallDTO();
 
+		public Builder from(CallDTO source) {
+			Objects.requireNonNull(source);
+			return this.withServiceId(source.serviceId)
+					.withRoomId(source.roomId)
+					.withCallId(source.callId)
+					.withRoomId(source.roomId)
+					.withStartedTimestamp(source.started)
+					;
+		}
+
 		public Builder withServiceId(String value) {
 			Objects.requireNonNull(value);
 			this.result.serviceId = value;

@@ -10,11 +10,10 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 @Prototype
-public class SfuRtpStreamDTOGenerator implements Supplier<SfuRtpStreamDTO> {
+public class SfuRtpStreamPodDTOGenerator implements Supplier<SfuRtpStreamPodDTO> {
 
     private EasyRandom generator;
     private UUID sfuId;
-    private UUID transportId;
     private UUID streamId;
 
     @PostConstruct
@@ -25,31 +24,23 @@ public class SfuRtpStreamDTOGenerator implements Supplier<SfuRtpStreamDTO> {
     }
 
     @Override
-    public SfuRtpStreamDTO get() {
-        var result = this.generator.nextObject(SfuRtpStreamDTO.class);
+    public SfuRtpStreamPodDTO get() {
+        var result = this.generator.nextObject(SfuRtpStreamPodDTO.class);
         if (Objects.nonNull(this.sfuId)) {
             result.sfuId = this.sfuId;
         }
-        if (Objects.nonNull(this.transportId)) {
-            result.transportId = this.transportId;
-        }
         if (Objects.nonNull(this.streamId)) {
-            result.streamId = this.streamId;
+            result.sfuStreamId = this.streamId;
         }
         return result;
     }
 
-    public SfuRtpStreamDTOGenerator withSfuId(UUID value) {
+    public SfuRtpStreamPodDTOGenerator withSfuId(UUID value) {
         this.sfuId = value;
         return this;
     }
 
-    public SfuRtpStreamDTOGenerator withTransportId(UUID value) {
-        this.transportId = value;
-        return this;
-    }
-
-    public SfuRtpStreamDTOGenerator withStreamId(UUID value) {
+    public SfuRtpStreamPodDTOGenerator withStreamId(UUID value) {
         this.streamId = value;
         return this;
     }

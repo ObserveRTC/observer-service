@@ -67,8 +67,8 @@ public class CallMapGenerator {
                             .withCallId(this.callDTO.callId)
                             .withClientId(clientDTO.clientId)
                             .withPeerConnectionId(peerConnectionDTO.peerConnectionId).get();
-                    this.hazelcastMaps.getMediaTracks().put(mediaTrackDTO.trackId, mediaTrackDTO);
                     mediaTrackDTO.direction =  k % 2 == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
+                    this.hazelcastMaps.getMediaTracks().put(mediaTrackDTO.trackId, mediaTrackDTO);
                     switch (mediaTrackDTO.direction) {
                         case OUTBOUND:
                             this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId,mediaTrackDTO.trackId);

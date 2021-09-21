@@ -110,6 +110,15 @@ public class SfuDTO implements VersionedPortable {
 	public static class Builder {
 		private final SfuDTO result = new SfuDTO();
 
+		public Builder from(SfuDTO source) {
+			Objects.requireNonNull(source);
+			return this.withSfuId(source.sfuId)
+					.withMediaUnitId(source.mediaUnitId)
+					.withConnectedTimestamp(source.joined)
+					.withTimeZoneId(source.timeZoneId)
+				;
+		}
+
 		public Builder withSfuId(UUID value) {
 			this.result.sfuId = value;
 			return this;

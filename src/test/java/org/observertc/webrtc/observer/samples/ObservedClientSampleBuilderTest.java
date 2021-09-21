@@ -41,7 +41,7 @@ class ObservedClientSampleBuilderTest {
 
         clientSample.timestamp = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(InvalidObjectException.class, () -> {
             ObservedClientSampleBuilder
                     .from(clientSample)
                     .withServiceId("serviceId")
@@ -56,7 +56,7 @@ class ObservedClientSampleBuilderTest {
 
         clientSample.roomId = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(InvalidObjectException.class, () -> {
             ObservedClientSampleBuilder
                     .from(clientSample)
                     .withServiceId("serviceId")
@@ -71,7 +71,7 @@ class ObservedClientSampleBuilderTest {
 
         clientSample.roomId = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(InvalidObjectException.class, () -> {
             ObservedClientSampleBuilder
                     .from(clientSample)
                     .withServiceId("serviceId")
@@ -86,7 +86,7 @@ class ObservedClientSampleBuilderTest {
 
         clientSample.roomId = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(InvalidObjectException.class, () -> {
             ObservedClientSampleBuilder
                     .from(clientSample)
 //                    .withServiceId("serviceId")

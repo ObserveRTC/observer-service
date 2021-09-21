@@ -55,7 +55,7 @@ public class PeerConnectionTransportGenerator implements Supplier<ClientSample.P
     private Randomizer getRandomizerForField(String fieldName) {
         switch (fieldName) {
             case "peerConnectionId":
-                return this.peerConnectionId::toString;
+                return () -> this.peerConnectionId.toString();
             case "label":
                 return () -> this.randomGenerators.getRandomFromList(TestUtils.getLabels());
             case "dataChannelsOpened":

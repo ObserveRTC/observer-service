@@ -68,4 +68,65 @@ public class RandomGenerators {
                 this.rand.nextInt(256);
         return result;
     }
+
+    public String getRandomTestUserIds() {
+        List<String> list = TestUtils.getTestUserIds();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomTestRoomIds() {
+        List<String> list = TestUtils.getTestRoomIds();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomLabels() {
+        List<String> list = TestUtils.getLabels();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomIceRole() {
+        List<String> list = TestUtils.getIceRole();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomDtlsState() {
+        List<String> list = TestUtils.getDtlsState();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomIceState() {
+        List<String> list = TestUtils.getIceState();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomDtlsCipher() {
+        List<String> list = TestUtils.getDtlsCipher();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomSrtpCipher() {
+        List<String> list = TestUtils.getSrtpCipher();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomCandidatePairState() {
+        List<String> list = TestUtils.getCandidatePairState();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomNetworkTransportProtocols() {
+        List<String> list = TestUtils.getNetworkTransportProtocols();
+        return this.getRandomFromList(list);
+    }
+
+    public String getRandomICECandidateTypes() {
+        List<String> list = TestUtils.getICECandidateTypes();
+        return this.getRandomFromList(list);
+    }
+
+
+    public String getRandomRelayProtocols() {
+        List<String> list = TestUtils.getRelayProtocols();
+        return this.getRandomFromList(list);
+    }
 }

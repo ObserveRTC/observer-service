@@ -31,6 +31,14 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
                 try {
                     Map<String, Object> sinkConfigValue = (Map<String, Object>) sinkConfig;
                     var sink = this.buildSink(sinkId, sinkConfigValue);
+                    if (Objects.isNull(sink)) {
+                        logger.warn("{} : {} has not been built");
+                        return;
+                    }
+                    if (!sink.isEnabled()) {
+                        logger.info("{} is disabled", sinkId);
+                        return;
+                    }
                     sink.open();
                     this.sinks.put(sinkId, sink);
                 } catch (Exception ex) {
@@ -41,6 +49,15 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
                     );
                 }
             });
+        }
+        if (this.sinks.size() < 1) {
+            logger.info("No sink has been set, the default (loggerSink) will be added");
+            var decoder = this.outboundReportsCodec.getDecoder();
+            var sink = new LoggerSink()
+                    .withDecoder(decoder)
+                    .withPrintReports(true)
+                    .withPrintTypeSummary(true);
+            this.sinks.put("defaultLogger", sink);
         }
     }
     private Sink buildSink(String sinkId, Map<String, Object> config) {

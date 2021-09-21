@@ -37,7 +37,15 @@ observer:
       algorithm: SHA-256
       salt: "MySalt"
 
-#  obfuscations:
+  obfuscations:
+    enabled: false
+    obfuscate-ice-addresses: ANONYMIZATION
+    obfuscate-user-id: ANONYMIZATION
+    obfuscate-room-id: NONE
+    anonymization:
+      hash-algorithm: "SHA-512"
+      salt: "mySuperSalt"
+
 
   sources:
     pcSamples:
@@ -45,6 +53,10 @@ observer:
       defaultServiceName: "defaultServiceName"
       security:
         dropUnknownServices: false
+    clientSamples:
+      enabled: true
+    sfuSamples:
+      enabled: true
 
   repositories:
     mediaTracksMaxIdleTime: 300
@@ -63,13 +75,16 @@ observer:
     sfuSamplesBufferMaxItems: 1000
 
   sinks:
-#    MyLogger:
-#      type: LoggerSink
+    MyLogger:
+      type: LoggerSink
+      config:
+        printReports: true
+        printTypeSummary: true
     MyKafka:
       type: KafkaSink
       config:
         muxReports: true
-        muxTopic: "ortc_reports"
+        muxTopic: "ortc_demo_2_reports"
         demuxTopicPrefix: "ortc_"
         properties:
           bootstrap.servers: localhost:9092
@@ -80,6 +95,7 @@ observer:
 #        database: "reports"
 
   outboundReports:
+    reportFormat: JSON
     reportObserverEvents: true
     reportCallEvents: true
     reportCallMeta: true

@@ -95,7 +95,8 @@ public class MediaTrackDTO implements VersionedPortable {
 		SerDeUtils.writeNullableUUID(writer, SFU_POD_ID_FIELD_NAME, this.sfuPodId);
 		writer.writeLong(SSRC_FIELD_NAME, this.ssrc);
 		writer.writeLong(ADDED_FIELD_NAME, this.added);
-		writer.writeUTF(DIRECTION_FIELD_NAME, this.direction.name());
+		var direction = this.direction.name();
+		writer.writeUTF(DIRECTION_FIELD_NAME, direction);
 
 	}
 
@@ -156,6 +157,24 @@ public class MediaTrackDTO implements VersionedPortable {
 
 		private Builder() {
 
+		}
+
+		public Builder from(MediaTrackDTO source) {
+			Objects.requireNonNull(source);
+			return this
+					.withCallId(source.callId)
+					.withServiceId(source.serviceId)
+					.withRoomId(source.roomId)
+					.withClientId(source.clientId)
+					.withMediaUnitId(source.mediaUnitId)
+					.withUserId(source.userId)
+					.withSSRC(source.ssrc)
+					.withPeerConnectionId(source.peerConnectionId)
+					.withTrackId(source.trackId)
+					.withSfuPodId(source.sfuPodId)
+					.withAddedTimestamp(source.added)
+					.withDirection(source.direction)
+					;
 		}
 
 		public Builder withCallId(UUID value) {
@@ -223,6 +242,11 @@ public class MediaTrackDTO implements VersionedPortable {
 			return this;
 		}
 
+		public Builder withDirection(StreamDirection value) {
+			this.result.direction = value;
+			return this;
+		}
+
 		public MediaTrackDTO build() {
 			Objects.requireNonNull(this.result.callId);
 			Objects.requireNonNull(this.result.clientId);
@@ -232,11 +256,6 @@ public class MediaTrackDTO implements VersionedPortable {
 			Objects.requireNonNull(this.result.added);
 			Objects.requireNonNull(this.result.direction);
 			return this.result;
-		}
-
-		public Builder withDirection(StreamDirection value) {
-			this.result.direction = value;
-			return this;
 		}
 	}
 }

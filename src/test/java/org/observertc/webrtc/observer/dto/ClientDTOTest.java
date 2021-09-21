@@ -4,30 +4,30 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
-import java.util.UUID;
+import javax.inject.Inject;
 
 @MicronautTest
 class ClientDTOTest {
 
+    @Inject
+    ClientDTOGenerator generator;
+
+
     @Test
     void shouldBuild_1() {
-        UUID callId = UUID.randomUUID();
-        UUID peerConnectionId = UUID.randomUUID();
-        Long initiated = Instant.now().toEpochMilli();
+        ClientDTO source = this.generator.get();
+        ClientDTO target = ClientDTO.builder()
+                .from(source)
+                .build();
 
-        // TODO: write the test
-        Assertions.assertTrue(false);
+        Assertions.assertEquals(source, target);
     }
 
     @Test
     void shouldThrowException_1() {
-        UUID callUUID = UUID.randomUUID();
-        UUID serviceUUID = null;
-        Long initiated = Instant.now().toEpochMilli();
-
-        // TODO: write the test
-        Assertions.assertTrue(false);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            ClientDTO.builder().build();
+        });
     }
 
 }

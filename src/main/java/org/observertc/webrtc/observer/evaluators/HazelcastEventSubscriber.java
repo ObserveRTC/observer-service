@@ -11,9 +11,11 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Singleton
 public class HazelcastEventSubscriber {
@@ -81,24 +83,40 @@ public class HazelcastEventSubscriber {
 
     @PreDestroy
     void teardown() {
-        this.doUnsubscribe(this.subscribedCallEntryListener, this.hazelcastMaps.getCalls()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedClientEntryListeners, this.hazelcastMaps.getClients()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedPeerConnectionEntryListener, this.hazelcastMaps.getPeerConnections()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedMediaTrackEntryListener, this.hazelcastMaps.getMediaTracks()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedSfuEntryListeners, this.hazelcastMaps.getSFUs()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedSfuTransportEntryListeners, this.hazelcastMaps.getSFUTransports()::removeEntryListener);
-        this.doUnsubscribe(this.subscribedSfuRtpStreamEntryListeners, this.hazelcastMaps.getSFURtpPods()::removeEntryListener);
+        this.doUnsubscribe(this.subscribedCallEntryListener,
+                this.hazelcastMaps.getCalls()::removeEntryListener,
+                () -> "Call Entries");
+        this.doUnsubscribe(this.subscribedClientEntryListeners,
+                this.hazelcastMaps.getClients()::removeEntryListener,
+                () -> "Client Entries");
+        this.doUnsubscribe(this.subscribedPeerConnectionEntryListener,
+                this.hazelcastMaps.getPeerConnections()::removeEntryListener,
+                () -> "Peer Connection Entries");
+        this.doUnsubscribe(this.subscribedMediaTrackEntryListener,
+                this.hazelcastMaps.getMediaTracks()::removeEntryListener,
+                () -> "Media Track Entries");
+        this.doUnsubscribe(this.subscribedSfuEntryListeners,
+                this.hazelcastMaps.getSFUs()::removeEntryListener,
+                () -> "SFU Entries");
+        this.doUnsubscribe(this.subscribedSfuTransportEntryListeners,
+                this.hazelcastMaps.getSFUTransports()::removeEntryListener,
+                () -> "SFU Transport Entries");
+        this.doUnsubscribe(this.subscribedSfuRtpStreamEntryListeners,
+                this.hazelcastMaps.getSFURtpPods()::removeEntryListener,
+                () -> "SFU RTP Pod Entries");
     }
 
-    private void doUnsubscribe(Set<UUID> listenerIds, Function<UUID, Boolean> unsubscribe) {
+    private void doUnsubscribe(Set<UUID> listenerIds, Function<UUID, Boolean> unsubscribe, Supplier<String> contextSupplier) {
         listenerIds.forEach(listenerId -> {
             try {
                 boolean success = unsubscribe.apply(listenerId);
                 if (!success) {
-                    logger.warn("Unsubscription was unsuccessful");
+                    String context = Objects.nonNull(contextSupplier) ? contextSupplier.get() : "No Context is given";
+                    logger.warn("Unsubscription was unsuccessful. Context: {}", context);
                 }
             } catch (Exception ex) {
-                logger.error("Error occured while unsubscribing listener", ex);
+                String context = Objects.nonNull(contextSupplier) ? contextSupplier.get() : "No Context is given";
+                logger.error("Error occured while unsubscribing listener. Context: {}", context, ex);
             }
         });
     }

@@ -14,8 +14,10 @@ class ClientEntityTest {
 
     @Test
     void shouldBuild() {
+        ClientEntity source = this.entitiesTestUtils.getClientEntity();
 
-        // TODO: write test
-        Assertions.assertTrue(false);
+        ClientEntity target = ClientEntity.builder().from(source).build();
+
+        Assertions.assertEquals(source, target);
     }
 }

@@ -14,8 +14,10 @@ class PeerConnectionEntityTest {
 
     @Test
     void shouldBuild() {
+        PeerConnectionEntity source = this.entitiesTestUtils.getPeerConnectionEntity();
 
-        // TODO: write test
-        Assertions.assertTrue(false);
+        PeerConnectionEntity target = PeerConnectionEntity.builder().from(source).build();
+
+        Assertions.assertEquals(source, target);
     }
 }

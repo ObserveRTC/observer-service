@@ -4,9 +4,9 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 ## 1.0.0 (H)
 
 Breaking Changes:
- * Using new Schema for reporting (Reports v3)
- * Using new Schema to accepting samples (ClientSample)
- * 
+ * New Schema for reporting (Reports v3)
+ * New Schema to accept client samples (ClientSample)
+ * New Schema to accept sfu samples (SfuSample)
 
 Plan:
  * Remove KeyMaker from configholds

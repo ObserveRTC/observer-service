@@ -14,8 +14,10 @@ class CallEntityTest {
 
     @Test
     void shouldBuild() {
+        CallEntity source = this.entitiesTestUtils.getCallEntity();
 
-        // TODO: write test
-        Assertions.assertTrue(false);
+        CallEntity target = CallEntity.builder().from(source).build();
+
+        Assertions.assertEquals(source, target);
     }
 }

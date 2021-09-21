@@ -75,6 +75,13 @@ public class ClientEntity {
 
 	public static class Builder {
 		private final ClientEntity result = new ClientEntity();
+
+		public ClientEntity.Builder from(ClientEntity source) {
+			return this.withClientDTO(source.getClientDTO())
+					.withPeerConnectionEntities(source.peerConnections)
+					;
+		}
+
 		public ClientEntity build() {
 			Objects.requireNonNull(this.result.clientDTO);
 			return this.result;

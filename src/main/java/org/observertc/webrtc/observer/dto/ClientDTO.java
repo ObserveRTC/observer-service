@@ -130,6 +130,20 @@ public class ClientDTO implements VersionedPortable {
 	public static class Builder {
 		private final ClientDTO result = new ClientDTO();
 
+		public Builder from(ClientDTO source) {
+			Objects.requireNonNull(source);
+			return this
+					.withServiceId(source.serviceId)
+					.withRoomId(source.roomId)
+					.withCallId(source.callId)
+					.withMediaUnitId(source.mediaUnitId)
+					.withClientId(source.clientId)
+					.withUserId(source.userId)
+					.withConnectedTimestamp(source.joined)
+					.withTimeZoneId(source.timeZoneId)
+					;
+		}
+
 		public Builder withServiceId(String value) {
 			Objects.requireNonNull(value);
 			this.result.serviceId = value;

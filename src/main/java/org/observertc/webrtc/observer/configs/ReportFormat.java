@@ -1,6 +1,6 @@
 package org.observertc.webrtc.observer.configs;
 
-public enum ReportCodec {
+public enum ReportFormat {
     JSON,
     AVRO
 }

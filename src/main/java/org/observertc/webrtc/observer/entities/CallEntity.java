@@ -76,6 +76,12 @@ public class CallEntity {
 
 		private final CallEntity result = new CallEntity();
 
+		public Builder from(CallEntity source) {
+			return this.withCallDTO(source.getCallDTO())
+					.withClientEntities(source.clients)
+					;
+		}
+
 		public CallEntity build() {
 			Objects.requireNonNull(this.result.callDTO);
 			return this.result;
@@ -95,5 +101,7 @@ public class CallEntity {
 			this.result.clients.put(clientEntity.getClientId(), clientEntity);
 			return this;
 		}
+
+
 	}
 }

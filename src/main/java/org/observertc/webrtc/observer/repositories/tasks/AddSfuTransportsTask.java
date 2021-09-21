@@ -63,12 +63,12 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
                 .build();
     }
 
-    public AddSfuTransportsTask withSfuTransportDTO(SfuTransportDTO sfuDTO) {
-        if (Objects.isNull(sfuDTO)) {
+    public AddSfuTransportsTask withSfuTransportDTO(SfuTransportDTO sfuTransportDTO) {
+        if (Objects.isNull(sfuTransportDTO)) {
             this.getLogger().info("sfu transport DTO was not given to be added");
             return this;
         }
-        this.sfuTransports.put(sfuDTO.sfuId, sfuDTO);
+        this.sfuTransports.put(sfuTransportDTO.transportId, sfuTransportDTO);
         return this;
     }
 
@@ -78,7 +78,7 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
             return this;
         }
         Arrays.stream(sfuTransportDTOs).forEach(sfuTransportDTO -> {
-            this.sfuTransports.put(sfuTransportDTO.sfuId, sfuTransportDTO);
+            this.sfuTransports.put(sfuTransportDTO.transportId, sfuTransportDTO);
         });
         return this;
     }

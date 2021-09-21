@@ -45,13 +45,18 @@ public class SinkBuilder extends AbstractBuilder {
             Object subject = this.subjects.poll();
             sinkBuilder.set(subject);
         }
-        return sinkBuilder.build();
+
+        var result = sinkBuilder.build();
+        result.setEnabled(config.enabled);
+        return result;
     }
 
     public static class Config {
 
         @NotNull
         public String type;
+
+        public boolean enabled = true;
 
         public Map<String, Object> config;
 

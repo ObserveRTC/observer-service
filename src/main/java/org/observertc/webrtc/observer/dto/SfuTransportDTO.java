@@ -36,16 +36,6 @@ public class SfuTransportDTO implements VersionedPortable {
 		return new Builder();
 	}
 
-	public static Builder builderFrom(SfuTransportDTO sfuTransportDTO) {
-		return new Builder()
-				.withMediaUnitId(sfuTransportDTO.mediaUnitId)
-				.withSfuId(sfuTransportDTO.sfuId)
-				.withTransportId(sfuTransportDTO.transportId)
-				.withOpenedTimestamp(sfuTransportDTO.opened)
-				.withCallId(sfuTransportDTO.callId)
-				;
-	}
-
 
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
@@ -54,6 +44,7 @@ public class SfuTransportDTO implements VersionedPortable {
 	private static final String OPENED_FIELD_NAME = "opened";
 
 	private static final String CALL_ID_FIELD_NAME = "callId";
+	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 
 	public String mediaUnitId;
 	public UUID sfuId;
@@ -87,6 +78,7 @@ public class SfuTransportDTO implements VersionedPortable {
 		writer.writeLong(OPENED_FIELD_NAME, this.opened);
 
 		SerDeUtils.writeNullableUUID(writer, CALL_ID_FIELD_NAME, this.callId);
+		SerDeUtils.writeNullableUUID(writer, CLIENT_ID_FIELD_NAME, this.clientId);
 	}
 
 	@Override
@@ -98,6 +90,7 @@ public class SfuTransportDTO implements VersionedPortable {
 		this.opened = reader.readLong(OPENED_FIELD_NAME);
 
 		this.callId = SerDeUtils.readNullableUUID(reader, CALL_ID_FIELD_NAME);
+		this.clientId = SerDeUtils.readNullableUUID(reader, CLIENT_ID_FIELD_NAME);
 	}
 
 	@Override
@@ -132,6 +125,17 @@ public class SfuTransportDTO implements VersionedPortable {
 	public static class Builder {
 		private final SfuTransportDTO result = new SfuTransportDTO();
 
+		public Builder from(SfuTransportDTO source) {
+			Objects.requireNonNull(source);
+			return this.withSfuId(source.sfuId)
+					.withSfuName(source.sfuName)
+					.withTransportId(source.transportId)
+					.withCallId(source.callId)
+					.withMediaUnitId(source.mediaUnitId)
+					.withOpenedTimestamp(source.opened)
+					;
+		}
+
 		public Builder withSfuId(UUID value) {
 			this.result.sfuId = value;
 			return this;
@@ -149,6 +153,11 @@ public class SfuTransportDTO implements VersionedPortable {
 
 		public Builder withCallId(UUID value) {
 			this.result.callId = value;
+			return this;
+		}
+
+		public Builder withClientId(UUID value) {
+			this.result.clientId = value;
 			return this;
 		}
 

@@ -81,6 +81,13 @@ public class PeerConnectionEntity {
 
         private final PeerConnectionEntity result = new PeerConnectionEntity();
 
+        public PeerConnectionEntity.Builder from(PeerConnectionEntity source) {
+            return this.withPeerConnectionDTO(source.getPeerConnectionDTO())
+                    .withInboundMediaTrackDTOs(source.inboundTracks)
+                    .withOutboundMediaTrackDTOs(source.outboundTracks)
+                    ;
+        }
+
         public PeerConnectionEntity build() {
             Objects.requireNonNull(this.result.peerConnectionDTO);
             return this.result;

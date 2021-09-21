@@ -142,7 +142,7 @@ public class InboundVideoTrackGenerator implements Supplier<ClientSample.Inbound
             case "trackId":
                 return UUID.randomUUID()::toString;
             case "peerConnectionId":
-                return this.peerConnectionId::toString;
+                return () -> this.peerConnectionId.toString();
         }
         return null;
     }

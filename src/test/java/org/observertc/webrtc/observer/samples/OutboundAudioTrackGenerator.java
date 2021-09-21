@@ -61,7 +61,7 @@ public class OutboundAudioTrackGenerator implements Supplier<ClientSample.Outbou
             case "bytesSent":
                 return this.randomGenerators::getRandomPositiveLong;
             case "rtxSsrc":
-                return this.randomGenerators::getRandomPositiveInteger;
+                return this.randomGenerators::getRandomPositiveLong;
 //            case "rid":
             case "lastPacketSentTimestamp":
             case "headerBytesSent":
@@ -103,7 +103,9 @@ public class OutboundAudioTrackGenerator implements Supplier<ClientSample.Outbou
             case "burstDiscardRate":
             case "gapLossRate":
             case "gapDiscardRate":
+                return this.randomGenerators::getRandomPositiveDouble;
             case "framesDropped":
+                return this.randomGenerators::getRandomPositiveInteger;
             case "roundTripTime":
             case "totalRoundTripTime":
             case "fractionLost":
@@ -134,7 +136,7 @@ public class OutboundAudioTrackGenerator implements Supplier<ClientSample.Outbou
             case "trackId":
                 return UUID.randomUUID()::toString;
             case "peerConnectionId":
-                return this.peerConnectionId::toString;
+                return () -> this.peerConnectionId.toString();
         }
         return null;
     }

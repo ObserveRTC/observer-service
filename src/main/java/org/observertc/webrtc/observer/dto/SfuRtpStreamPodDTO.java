@@ -172,6 +172,22 @@ public class SfuRtpStreamPodDTO implements VersionedPortable {
 	public static class Builder {
 		private final SfuRtpStreamPodDTO result = new SfuRtpStreamPodDTO();
 
+		public Builder from(SfuRtpStreamPodDTO source) {
+			Objects.requireNonNull(source);
+			return this.withMediaUnitId(source.mediaUnitId)
+					.withSfuId(source.sfuId)
+					.withSfuName(source.sfuName)
+					.withSfuTransportId(source.sfuTransportId)
+					.withSfuPodId(source.sfuPodId)
+					.withSfuPodRole(source.sfuPodRole)
+					.withTrackId(source.trackId)
+					.withClientId(source.clientId)
+					.withCallId(source.callId)
+					.withAddedTimestamp(source.added)
+					;
+
+		}
+
 		public Builder withMediaUnitId(String value) {
 			this.result.mediaUnitId = value;
 			return this;

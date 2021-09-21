@@ -4,8 +4,8 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamDTO;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamDTOGenerator;
+import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
+import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTOGenerator;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.inject.Inject;
@@ -19,27 +19,27 @@ class RemoveSfuRtpStreamTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    SfuRtpStreamDTOGenerator generator;
+    SfuRtpStreamPodDTOGenerator generator;
 
     @Inject
     Provider<RemoveSfuRtpStreamsTask> removeSfuRtpStreamsTaskProvider;
 
-    private SfuRtpStreamDTO createdDTO;
+    private SfuRtpStreamPodDTO createdDTO;
 
     @BeforeEach
     void setup() {
         this.createdDTO = this.generator.get();
-        this.hazelcastMaps.getSFURtpStreams().put(this.createdDTO.transportId, this.createdDTO);
+        this.hazelcastMaps.getSFURtpPods().put(this.createdDTO.sfuPodId, this.createdDTO);
     }
 
     @Test
     public void removeSfuTransport_1() {
         var task = removeSfuRtpStreamsTaskProvider.get()
-                .whereSfuRtpStreamPodIds(Set.of(this.createdDTO.streamId))
+                .whereSfuRtpStreamPodIds(Set.of(this.createdDTO.sfuPodId))
                 .execute()
                 ;
 
-        var hasId = this.hazelcastMaps.getSFURtpStreams().containsKey(this.createdDTO.transportId);
+        var hasId = this.hazelcastMaps.getSFURtpPods().containsKey(this.createdDTO.sfuPodId);
         Assertions.assertFalse(hasId);
     }
 
@@ -50,7 +50,7 @@ class RemoveSfuRtpStreamTaskTest {
                 .execute()
                 ;
 
-        var hasId = this.hazelcastMaps.getSFURtpStreams().containsKey(this.createdDTO.transportId);
+        var hasId = this.hazelcastMaps.getSFURtpPods().containsKey(this.createdDTO.sfuPodId);
         Assertions.assertTrue(hasId);
     }
 }
