@@ -107,7 +107,7 @@ public class ListenClientEntryChanges implements EntryListener<UUID, ClientDTO> 
     }
 
     @Timed(value = "observertc-evaluators-remove-clients")
-    private void removeClients(List<ClientLeft> input) {
+    void removeClients(List<ClientLeft> input) {
         if (Objects.isNull(input) || input.size() < 1) {
             return;
         }

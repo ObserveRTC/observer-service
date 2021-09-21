@@ -5,7 +5,7 @@ import com.nimbusds.jwt.SignedJWT;
 import io.micronaut.security.token.jwt.generator.claims.JwtClaims;
 import io.micronaut.security.token.validator.TokenValidator;
 import io.micronaut.websocket.WebSocketSession;
-import io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Flowable;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

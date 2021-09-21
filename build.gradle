@@ -10,7 +10,7 @@ plugins {
 //version = "hydrogen:deuterium"
 // latest version
 //version = "latest"
-version = "1.0.0-alpha"
+version = "1.0.0-beta"
 group = "org.observertc.webrtc.observer"
 
 repositories {
@@ -40,6 +40,7 @@ micronaut {
 }
 
 dependencies {
+    implementation 'javax.inject:javax.inject:1'
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     annotationProcessor("io.dekorate:prometheus-annotations:${dekorateVersion}")
