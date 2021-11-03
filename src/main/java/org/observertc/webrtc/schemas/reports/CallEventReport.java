@@ -8,11 +8,11 @@ package org.observertc.webrtc.schemas.reports;
 import org.apache.avro.specific.SpecificData;
 
 @SuppressWarnings("all")
-/** Events happened in calls. */
+/** Events happened in calls.  */
 @org.apache.avro.specific.AvroGenerated
 public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 8847379005174371924L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CallEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"mediaTrackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the media track\",\"default\":null},{\"name\":\"SSRC\",\"type\":[\"null\",\"long\"],\"doc\":\"The SSRC identifier of the RTP stream a trackId belongs to\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CallEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls. \",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"mediaTrackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the media track\",\"default\":null},{\"name\":\"SSRC\",\"type\":[\"null\",\"long\"],\"doc\":\"The SSRC identifier of the RTP stream a trackId belongs to\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -40,7 +40,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
    private java.lang.Long sampleTimestamp;
   /** The sequence number of the sample the event may related to */
    private java.lang.Integer sampleSeq;
-  /** The name of the event */
+  /** The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED */
    private java.lang.String name;
   /** the human readable message of the event */
    private java.lang.String message;
@@ -71,7 +71,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
    * @param SSRC The SSRC identifier of the RTP stream a trackId belongs to
    * @param sampleTimestamp The timestamp of the sample the event related to
    * @param sampleSeq The sequence number of the sample the event may related to
-   * @param name The name of the event
+   * @param name The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
    * @param message the human readable message of the event
    * @param value the value of the event
    * @param attachments attachment the event may created with
@@ -265,7 +265,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
 
   /**
    * Gets the value of the 'name' field.
-   * @return The name of the event
+   * @return The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
    */
   public java.lang.String getName() {
     return name;
@@ -357,7 +357,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
     private java.lang.Long sampleTimestamp;
     /** The sequence number of the sample the event may related to */
     private java.lang.Integer sampleSeq;
-    /** The name of the event */
+    /** The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED */
     private java.lang.String name;
     /** the human readable message of the event */
     private java.lang.String message;
@@ -1083,7 +1083,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
 
     /**
       * Gets the value of the 'name' field.
-      * The name of the event
+      * The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
       * @return The value.
       */
     public java.lang.String getName() {
@@ -1092,7 +1092,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
 
     /**
       * Sets the value of the 'name' field.
-      * The name of the event
+      * The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
       * @param value The value of 'name'.
       * @return This builder.
       */
@@ -1105,7 +1105,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
 
     /**
       * Checks whether the 'name' field has been set.
-      * The name of the event
+      * The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
       * @return True if the 'name' field has been set, false otherwise.
       */
     public boolean hasName() {
@@ -1115,7 +1115,7 @@ public class CallEventReport extends org.apache.avro.specific.SpecificRecordBase
 
     /**
       * Clears the value of the 'name' field.
-      * The name of the event
+      * The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.CallEventReport.Builder clearName() {

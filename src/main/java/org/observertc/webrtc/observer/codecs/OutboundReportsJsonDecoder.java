@@ -33,8 +33,8 @@ public class OutboundReportsJsonDecoder implements Decoder{
             module.addDeserializer(SfuEventReport.Builder.class, new JsonToAvroBuilder<>(SfuEventReport.Builder.class, SfuEventReport.getClassSchema(), SfuEventReport::newBuilder));
             module.addDeserializer(SfuMetaReport.Builder.class, new JsonToAvroBuilder<>(SfuMetaReport.Builder.class, SfuMetaReport.getClassSchema(), SfuMetaReport::newBuilder));
             module.addDeserializer(SFUTransportReport.Builder.class, new JsonToAvroBuilder<>(SFUTransportReport.Builder.class, SFUTransportReport.getClassSchema(), SFUTransportReport::newBuilder));
-            module.addDeserializer(SfuRTPSourceReport.Builder.class, new JsonToAvroBuilder<>(SfuRTPSourceReport.Builder.class, SfuRTPSourceReport.getClassSchema(), SfuRTPSourceReport::newBuilder));
-            module.addDeserializer(SfuRTPSinkReport.Builder.class, new JsonToAvroBuilder<>(SfuRTPSinkReport.Builder.class, SfuRTPSinkReport.getClassSchema(), SfuRTPSinkReport::newBuilder));
+            module.addDeserializer(SfuInboundRtpPadReport.Builder.class, new JsonToAvroBuilder<>(SfuInboundRtpPadReport.Builder.class, SfuInboundRtpPadReport.getClassSchema(), SfuInboundRtpPadReport::newBuilder));
+            module.addDeserializer(SfuOutboundRtpPadReport.Builder.class, new JsonToAvroBuilder<>(SfuOutboundRtpPadReport.Builder.class, SfuOutboundRtpPadReport.getClassSchema(), SfuOutboundRtpPadReport::newBuilder));
             module.addDeserializer(SfuSctpStreamReport.Builder.class, new JsonToAvroBuilder<>(SfuSctpStreamReport.Builder.class, SfuSctpStreamReport.getClassSchema(), SfuSctpStreamReport::newBuilder));
         } catch (Exception ex) {
             logger.error("Error occurred during initialization", ex);
@@ -196,22 +196,22 @@ public class OutboundReportsJsonDecoder implements Decoder{
         return builder.build();
     }
 
-    public SfuRTPSourceReport decodeSfuRtpSourceReport(OutboundReport outboundReport) {
+    public SfuInboundRtpPadReport decodeSfuInboundRtpPadReport(OutboundReport outboundReport) {
         if (Objects.isNull(outboundReport)) {
             return null;
         }
-        var builder = this.decodeOrNull(SfuRTPSourceReport.Builder.class, outboundReport);
+        var builder = this.decodeOrNull(SfuInboundRtpPadReport.Builder.class, outboundReport);
         if (Objects.isNull(builder)) {
             return null;
         }
         return builder.build();
     }
 
-    public SfuRTPSinkReport decodeSfuRtpSinkReport(OutboundReport outboundReport) {
+    public SfuOutboundRtpPadReport decodeSfuOutboundRtpPadReport(OutboundReport outboundReport) {
         if (Objects.isNull(outboundReport)) {
             return null;
         }
-        var builder = this.decodeOrNull(SfuRTPSinkReport.Builder.class, outboundReport);
+        var builder = this.decodeOrNull(SfuOutboundRtpPadReport.Builder.class, outboundReport);
         if (Objects.isNull(builder)) {
             return null;
         }

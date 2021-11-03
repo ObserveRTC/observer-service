@@ -75,8 +75,8 @@ public class HazelcastEventSubscriber {
         return this;
     }
 
-    public HazelcastEventSubscriber withSfuRtpStreamEntriesLocalListener(EntryListener<UUID, SfuRtpStreamPodDTO> entryListener) {
-        UUID listenerId = this.hazelcastMaps.getSFURtpPods().addLocalEntryListener(entryListener);
+    public HazelcastEventSubscriber withSfuRtpStreamEntriesLocalListener(EntryListener<UUID, SfuRtpPadDTO> entryListener) {
+        UUID listenerId = this.hazelcastMaps.getSFURtpPads().addLocalEntryListener(entryListener);
         this.subscribedSfuRtpStreamEntryListeners.add(listenerId);
         return this;
     }
@@ -102,7 +102,7 @@ public class HazelcastEventSubscriber {
                 this.hazelcastMaps.getSFUTransports()::removeEntryListener,
                 () -> "SFU Transport Entries");
         this.doUnsubscribe(this.subscribedSfuRtpStreamEntryListeners,
-                this.hazelcastMaps.getSFURtpPods()::removeEntryListener,
+                this.hazelcastMaps.getSFURtpPads()::removeEntryListener,
                 () -> "SFU RTP Pod Entries");
     }
 

@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 @Prototype
-public class SfuRtpStreamPodDTOGenerator implements Supplier<SfuRtpStreamPodDTO> {
+public class SfuRtpStreamPodDTOGenerator implements Supplier<SfuRtpPadDTO> {
 
     private EasyRandom generator;
     private UUID sfuId;
@@ -24,13 +24,13 @@ public class SfuRtpStreamPodDTOGenerator implements Supplier<SfuRtpStreamPodDTO>
     }
 
     @Override
-    public SfuRtpStreamPodDTO get() {
-        var result = this.generator.nextObject(SfuRtpStreamPodDTO.class);
+    public SfuRtpPadDTO get() {
+        var result = this.generator.nextObject(SfuRtpPadDTO.class);
         if (Objects.nonNull(this.sfuId)) {
             result.sfuId = this.sfuId;
         }
         if (Objects.nonNull(this.streamId)) {
-            result.sfuStreamId = this.streamId;
+            result.rtpStreamId = this.streamId;
         }
         return result;
     }

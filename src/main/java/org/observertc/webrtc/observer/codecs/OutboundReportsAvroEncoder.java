@@ -1,12 +1,10 @@
 package org.observertc.webrtc.observer.codecs;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Prototype;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.MessageEncoder;
 import org.apache.avro.specific.SpecificData;
 import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.evaluators.OutboundReportEncoder;
 import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +28,8 @@ public class OutboundReportsAvroEncoder implements Encoder{
     private final BinaryMessageEncoder<SfuEventReport> sfuEventEncoder;
     private final BinaryMessageEncoder<SfuMetaReport> sfuMetaEncoder;
     private final BinaryMessageEncoder<SFUTransportReport> sfuTransportEncoder;
-    private final BinaryMessageEncoder<SfuRTPSourceReport> sfuRtpSourceEncoder;
-    private final BinaryMessageEncoder<SfuRTPSinkReport> sfuRtpSinkEncoder;
+    private final BinaryMessageEncoder<SfuInboundRtpPadReport> sfuInboundRtpPadEncoder;
+    private final BinaryMessageEncoder<SfuOutboundRtpPadReport> sfuOutboundRtpPadEncoder;
     private final BinaryMessageEncoder<SfuSctpStreamReport> sfuSctpStreamReportEncoder;
 
     public OutboundReportsAvroEncoder() {
@@ -50,8 +48,8 @@ public class OutboundReportsAvroEncoder implements Encoder{
         this.sfuEventEncoder = new BinaryMessageEncoder<SfuEventReport>(SpecificData.get(), SfuEventReport.getClassSchema());
         this.sfuMetaEncoder = new BinaryMessageEncoder<SfuMetaReport>(SpecificData.get(), SfuMetaReport.getClassSchema());
         this.sfuTransportEncoder = new BinaryMessageEncoder<SFUTransportReport>(SpecificData.get(), SFUTransportReport.getClassSchema());
-        this.sfuRtpSourceEncoder = new BinaryMessageEncoder<SfuRTPSourceReport>(SpecificData.get(), SfuRTPSourceReport.getClassSchema());
-        this.sfuRtpSinkEncoder = new BinaryMessageEncoder<SfuRTPSinkReport>(SpecificData.get(), SfuRTPSinkReport.getClassSchema());
+        this.sfuInboundRtpPadEncoder = new BinaryMessageEncoder<SfuInboundRtpPadReport>(SpecificData.get(), org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.getClassSchema());
+        this.sfuOutboundRtpPadEncoder = new BinaryMessageEncoder<SfuOutboundRtpPadReport>(SpecificData.get(), org.observertc.webrtc.schemas.reports.SfuOutboundRtpPadReport.getClassSchema());
         this.sfuSctpStreamReportEncoder = new BinaryMessageEncoder<SfuSctpStreamReport>(SpecificData.get(), SfuSctpStreamReport.getClassSchema());
     }
 
@@ -112,12 +110,12 @@ public class OutboundReportsAvroEncoder implements Encoder{
         return () -> encodeOrNull(this.sfuTransportEncoder, sfuTransportReport);
     }
 
-    public OutboundReport.SfuRtpSourceReport encodeSfuRtpSourceReport(SfuRTPSourceReport sfuRtpSourceReport) {
-        return () -> encodeOrNull(this.sfuRtpSourceEncoder, sfuRtpSourceReport);
+    public OutboundReport.SfuInboundRtpPadReport encodeSfuInboundRtpPadReport(SfuInboundRtpPadReport sfuInboundRtpPadReport) {
+        return () -> encodeOrNull(this.sfuInboundRtpPadEncoder, sfuInboundRtpPadReport);
     }
 
-    public OutboundReport.SfuRtpSinkReport encodeSfuRtpSinkReport(SfuRTPSinkReport sfuRtpSinkReport) {
-        return () -> encodeOrNull(this.sfuRtpSinkEncoder, sfuRtpSinkReport);
+    public OutboundReport.SfuOutboundRtpPadReport encodeSfuOutboundRtpPadReport(SfuOutboundRtpPadReport sfuOutboundRtpPadReport) {
+        return () -> encodeOrNull(this.sfuOutboundRtpPadEncoder, sfuOutboundRtpPadReport);
     }
 
     public OutboundReport.SfuSctpStreamReport encodeSfuSctpStreamReport(SfuSctpStreamReport sfuSctpStreamReport) {

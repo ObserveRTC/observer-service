@@ -5,10 +5,11 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.SfuDTO;
-import org.observertc.webrtc.observer.dto.SfuPodRole;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
+import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
+import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.tasks.*;
 import org.observertc.webrtc.observer.samples.*;
@@ -36,6 +37,9 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
     }
 
     @Inject
+    ObserverConfig observerConfig;
+
+    @Inject
     Provider<RefreshSfusTask> refreshTaskProvider;
 
     @Inject
@@ -45,7 +49,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
     Provider<AddSfuTransportsTask> addSfuTransportsTaskProvider;
 
     @Inject
-    Provider<AddSfuRtpStreamPodsTask> addSfuRtpStreamPodsTaskProvider;
+    Provider<AddSfuRtpPadsTask> addSfuRtpPadsTaskProvider;
 
     @Override
     @Timed(value = ExposedMetrics.OBSERVERTC_EVALUATORS_ADD_NEW_SFU_ENTITIES_EXECUTION_TIME)
@@ -53,8 +57,8 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
         Set<UUID> sfuIds = collectedSfuSamples.getSfuIds();
         Set<UUID> transportIds = collectedSfuSamples.getTransportIds();
         Set<UUID> rtpPodIds = new HashSet<>();
-        rtpPodIds.addAll(collectedSfuSamples.getRtpSourceIds());
-        rtpPodIds.addAll(collectedSfuSamples.getRtpSinkIds());
+        rtpPodIds.addAll(collectedSfuSamples.getOutboundRtpPadIds());
+        rtpPodIds.addAll(collectedSfuSamples.getInboundRtpPadIds());
         RefreshSfusTask refreshCallsTask = refreshTaskProvider.get()
                 .withSfuIds(sfuIds)
                 .withSfuTransportIds(transportIds)
@@ -66,7 +70,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
 
         Map<UUID, SfuDTO> newSFUs = new HashMap<>();
         Map<UUID, SfuTransportDTO> newTransports = new HashMap<>();
-        Map<UUID, SfuRtpStreamPodDTO> newRtpPods = new HashMap<>();
+        Map<UUID, SfuRtpPadDTO> newRtpPads = new HashMap<>();
         RefreshSfusTask.Report report = refreshCallsTask.getResult();
         for (SfuSamples sfuSamples : collectedSfuSamples) {
             var sfuId = sfuSamples.getSfuId();
@@ -75,7 +79,6 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                 if (!report.foundSfuIds.contains(sfuId) && !newSFUs.containsKey(sfuId)) {
                     var sfuDTO = SfuDTO.builder()
                             .withSfuId(sfuId)
-                            .withSfuName(observedSfuSample.getSfuName())
                             .withConnectedTimestamp(observedSfuSample.getTimestamp())
                             .withTimeZoneId(observedSfuSample.getTimeZoneId())
                             .withMediaUnitId(observedSfuSample.getMediaUnitId())
@@ -87,7 +90,6 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                     if (!report.foundSfuTransportIds.contains(transportId) && !newTransports.containsKey(transportId)) {
                         var sfuTransportDTO = SfuTransportDTO.builder()
                                 .withSfuId(sfuId)
-                                .withSfuName(observedSfuSample.getSfuName())
                                 .withTransportId(transportId)
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withOpenedTimestamp(observedSfuSample.getTimestamp())
@@ -95,40 +97,42 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         newTransports.put(transportId, sfuTransportDTO);
                     }
                 });
-                SfuSampleVisitor.streamRtpSources(sfuSample).forEach(sfuRtpSource -> {
-                    UUID streamId = UUID.fromString(sfuRtpSource.streamId);
-                    UUID sourceId = UUID.fromString(sfuRtpSource.sourceId);
-                    if (!report.foundRtpPodIds.contains(sourceId) && !newRtpPods.containsKey(sourceId)) {
+                SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuRtpSource -> {
+                    UUID streamId = UUID.fromString(sfuRtpSource.rtpStreamId);
+                    UUID padId = UUID.fromString(sfuRtpSource.padId);
+                    boolean internalPad = Objects.nonNull(sfuRtpSource.piped);
+                    if (!report.foundRtpPadIds.contains(padId) && !newRtpPads.containsKey(padId)) {
                         UUID transportId = UUID.fromString(sfuRtpSource.transportId);
-                        var sfuRtpStreamDTO = SfuRtpStreamPodDTO.builder()
+                        var sfuRtpPadDTO = SfuRtpPadDTO.builder()
                                 .withSfuId(sfuId)
-                                .withSfuName(observedSfuSample.getSfuName())
                                 .withSfuTransportId(transportId)
-                                .withSfuStreamId(streamId)
-                                .withSfuPodId(sourceId)
+                                .withRtpStreamId(streamId)
+                                .withSfuRtpPadId(padId)
+                                .withInternalPad(internalPad)
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
-                                .withSfuPodRole(SfuPodRole.SOURCE)
+                                .withStreamDirection(StreamDirection.OUTBOUND)
                                 .build();
-                        newRtpPods.put(sourceId, sfuRtpStreamDTO);
+                        newRtpPads.put(padId, sfuRtpPadDTO);
                     }
                 });
-                SfuSampleVisitor.streamRtpSinks(sfuSample).forEach(sfuRtpSink -> {
-                    UUID streamId = UUID.fromString(sfuRtpSink.streamId);
-                    UUID sinkId = UUID.fromString(sfuRtpSink.sinkId);
-                    if (!report.foundRtpPodIds.contains(streamId) && !newRtpPods.containsKey(sinkId)) {
+                SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuRtpSink -> {
+                    UUID streamId = UUID.fromString(sfuRtpSink.rtpStreamId);
+                    UUID padId = UUID.fromString(sfuRtpSink.padId);
+                    if (!report.foundRtpPadIds.contains(padId) && !newRtpPads.containsKey(padId)) {
                         UUID transportId = UUID.fromString(sfuRtpSink.transportId);
-                        var sfuRtpStreamDTO = SfuRtpStreamPodDTO.builder()
+                        boolean internalPad = Objects.nonNull(sfuRtpSink.outboundPadId);
+                        var sfuRtpPadDTO = SfuRtpPadDTO.builder()
                                 .withSfuId(sfuId)
-                                .withSfuName(observedSfuSample.getSfuName())
                                 .withSfuTransportId(transportId)
-                                .withSfuStreamId(streamId)
-                                .withSfuPodId(sinkId)
+                                .withRtpStreamId(streamId)
+                                .withSfuRtpPadId(padId)
+                                .withInternalPad(internalPad)
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
-                                .withSfuPodRole(SfuPodRole.SINK)
+                                .withStreamDirection(StreamDirection.INBOUND)
                                 .build();
-                        newRtpPods.put(sinkId, sfuRtpStreamDTO);
+                        newRtpPads.put(padId, sfuRtpPadDTO);
                     }
                 });
             }
@@ -139,22 +143,22 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
         if (0 < newTransports.size()) {
             this.addNewTransports(newTransports);
         }
-        if (0 < newRtpPods.size()) {
-            this.addNewRtpStreamPods(newRtpPods);
+        if (0 < newRtpPads.size()) {
+            this.addNewRtpPads(newRtpPads);
         }
     }
 
-    private void addNewRtpStreamPods(Map<UUID, SfuRtpStreamPodDTO> DTOs) {
-        var task = addSfuRtpStreamPodsTaskProvider.get()
-                .withSfuRtpStreamDTOs(DTOs);
+    private void addNewSfus(Map<UUID, SfuDTO> DTOs) {
+        var task = addSFUsTaskProvider.get()
+                .withSfuDTOs(DTOs)
+                ;
 
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return;
         }
-
         List<SfuEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("Sfu RTP stream is added"))
+                .map(builder -> builder.setMessage("New SFU is started"))
                 .map(this::buildReport)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -178,19 +182,22 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
         this.forwardReports(reports);
     }
 
-    private void addNewSfus(Map<UUID, SfuDTO> DTOs) {
-        var task = addSFUsTaskProvider.get()
-                .withSfuDTOs(DTOs)
-        ;
+    private void addNewRtpPads(Map<UUID, SfuRtpPadDTO> DTOs) {
+        var task = addSfuRtpPadsTaskProvider.get()
+                .withSfuRtpPadDTOs(DTOs);
 
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return;
         }
         List<SfuEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("New SFU is started"))
+                .filter(builder -> {
+                    if (Objects.isNull(builder)) {
+                        return false;
+                    }
+                    return true;
+                })
                 .map(this::buildReport)
-                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         this.forwardReports(reports);
     }

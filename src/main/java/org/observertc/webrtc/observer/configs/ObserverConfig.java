@@ -113,6 +113,9 @@ public class ObserverConfig {
 
 		@Min(60)
 		public int sfuRtpStreamMaxIdleTime = 600;
+
+		@Min(0)
+		public int eventsCollectingTimeInS = 0;
 	}
 
 	// Evaluators Config
@@ -166,6 +169,11 @@ public class ObserverConfig {
 		public boolean reportSfuRtpSources = true;
 		public boolean reportSfuRtpSinks = true;
 		public boolean reportSfuSctpStreams = true;
+
+		public boolean reportSfuInboundRtpStreams = true;
+		public boolean reportSfuOutboundRtpStreams = true;
+		public boolean reportSfuRtpPadAddedWithoutCallId = false;
+
 		public String defaultServiceName = "defaultServiceName";
 
     }

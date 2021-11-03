@@ -35,9 +35,9 @@ public interface Decoder {
 
     SFUTransportReport decodeSfuTransportReport(OutboundReport outboundReport);
 
-    SfuRTPSourceReport decodeSfuRtpSourceReport(OutboundReport outboundReport);
+    SfuInboundRtpPadReport decodeSfuInboundRtpPadReport(OutboundReport outboundReport);
 
-    SfuRTPSinkReport decodeSfuRtpSinkReport(OutboundReport outboundReport);
+    SfuOutboundRtpPadReport decodeSfuOutboundRtpPadReport(OutboundReport outboundReport);
 
     SfuSctpStreamReport decodeSfuSctpStreamReport(OutboundReport outboundReport);
 

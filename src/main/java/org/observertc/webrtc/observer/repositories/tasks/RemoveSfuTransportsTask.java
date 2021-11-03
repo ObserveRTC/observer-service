@@ -113,7 +113,6 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
             return builder
                     .setMediaUnitId(sfuTransportDTO.mediaUnitId)
                     .setSfuId(sfuTransportDTO.sfuId.toString())
-                    .setSfuName(sfuTransportDTO.sfuName)
                     .setTransportId(sfuTransportDTO.transportId.toString())
                     ;
         } catch (Exception ex) {

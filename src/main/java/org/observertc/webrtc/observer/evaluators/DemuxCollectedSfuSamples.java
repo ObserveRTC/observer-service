@@ -11,8 +11,8 @@ import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.repositories.tasks.FetchSfuRelationsTask;
 import org.observertc.webrtc.observer.samples.*;
 import org.observertc.webrtc.schemas.reports.SFUTransportReport;
-import org.observertc.webrtc.schemas.reports.SfuRTPSinkReport;
-import org.observertc.webrtc.schemas.reports.SfuRTPSourceReport;
+import org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport;
+import org.observertc.webrtc.schemas.reports.SfuOutboundRtpPadReport;
 import org.observertc.webrtc.schemas.reports.SfuSctpStreamReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,18 +27,18 @@ import static org.observertc.webrtc.observer.micrometer.ExposedMetrics.OBSERVERT
 @Prototype
 public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(DemuxCollectedSfuSamples.class);
-//    private static final String _____missingFromSample____ = "I did not find it in the ClientSample";
+//    private static final String _____missingFromSample____ = "I did not find it in the SfuSample";
 //    private static final String _____missingByBound____ = "I did not find it in to be bound from the observed sample?";
     private Subject<SFUTransportReport> sfuTransportReportSubject = PublishSubject.create();
-    private Subject<SfuRTPSourceReport> sfuRtpSourceReportSubject = PublishSubject.create();
-    private Subject<SfuRTPSinkReport> sfuRtpSinkReportSubject = PublishSubject.create();
+    private Subject<SfuInboundRtpPadReport> sfuRtpSourceReportSubject = PublishSubject.create();
+    private Subject<SfuOutboundRtpPadReport> sfuRtpSinkReportSubject = PublishSubject.create();
     private Subject<SfuSctpStreamReport> sfuSctpStreamSubject = PublishSubject.create();
 
     public Observable<SFUTransportReport> getSfuTransportReport() {
         return this.sfuTransportReportSubject;
     }
-    public Observable<SfuRTPSourceReport> getSfuRtpSourceReport() {return this.sfuRtpSourceReportSubject; }
-    public Observable<SfuRTPSinkReport> getSfuRtpSinkReport() {return this.sfuRtpSinkReportSubject; }
+    public Observable<SfuInboundRtpPadReport> getSfuRtpSourceReport() {return this.sfuRtpSourceReportSubject; }
+    public Observable<SfuOutboundRtpPadReport> getSfuRtpSinkReport() {return this.sfuRtpSinkReportSubject; }
 
     public Observable<SfuSctpStreamReport> getSctpStreamReport() {return this.sfuSctpStreamSubject; }
 
@@ -68,8 +68,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
         FetchSfuRelationsTask.Report report = this.fetchSfuRelations(collectedSfuSamples);
 
         List<SFUTransportReport> transportReports = new LinkedList<>();
-        List<SfuRTPSourceReport> rtpSourceReports = new LinkedList<>();
-        List<SfuRTPSinkReport> rtpSinkReports = new LinkedList<>();
+        List<SfuInboundRtpPadReport> inboundRtpPadReports = new LinkedList<>();
+        List<SfuOutboundRtpPadReport> outboundRtpPadReports = new LinkedList<>();
         List<SfuSctpStreamReport> sctpStreamReports = new LinkedList<>();
         for (SfuSamples sfuSamples : collectedSfuSamples) {
             UUID sfuId = sfuSamples.getSfuId();
@@ -78,67 +78,47 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                 SfuSampleVisitor.streamTransports(sfuSample)
                         .map(sfuTransport -> {
                             UUID transportId = UUIDAdapter.tryParseOrNull(sfuTransport.transportId);
-                            UUID callId = report.transportToCallIds.get(transportId);
                             return this.createSfuTransportReport(
                                     sfuId,
                                     observedSfuSample,
-                                    sfuTransport,
-                                    callId
+                                    sfuTransport
                             );
 
                         })
                         .filter(Objects::nonNull)
                         .forEach(transportReports::add);
 
-                SfuSampleVisitor.streamRtpSources(sfuSample)
+                SfuSampleVisitor.streamInboundRtpPads(sfuSample)
                         .map(inboundRtpStream -> {
-                            UUID trackId = null;
-                            UUID clientId = null;
-                            UUID callId = null;
-                            UUID sfuStreamId = UUIDAdapter.tryParseOrNull(inboundRtpStream.streamId);
-                            FetchSfuRelationsTask.SfuStreamRelations relations = report.sfuStreamRelations.get(sfuStreamId);
-                            if (Objects.nonNull(relations)) {
-                                trackId = relations.trackId;
-                                clientId = relations.clientId;
-                                callId = relations.callId;
-                            }
-                            return this.createSfuRtpSourceReport(
+//                            UUID trackId = null;
+//                            UUID clientId = null;
+                            UUID rtpStreamId = UUIDAdapter.tryParseOrNull(inboundRtpStream.rtpStreamId);
+                            UUID callId = report.rtpStreamIdToCallIds.get(rtpStreamId);
+                            return this.createSfuInboundRtpPadReport(
                                     sfuId,
                                     observedSfuSample,
                                     inboundRtpStream,
-                                    trackId,
-                                    clientId,
                                     callId
                             );
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(rtpSourceReports::add);
+                        .forEach(inboundRtpPadReports::add);
 
-                SfuSampleVisitor.streamRtpSinks(sfuSample)
+                SfuSampleVisitor.streamOutboundRtpPads(sfuSample)
                         .map(outboundRtpStream -> {
-                            UUID trackId = null;
-                            UUID clientId = null;
-                            UUID callId = null;
-                            UUID sfuStreamId = UUIDAdapter.tryParseOrNull(outboundRtpStream.streamId);
-                            FetchSfuRelationsTask.SfuStreamRelations relations = report.sfuStreamRelations.get(sfuStreamId);
-                            if (Objects.nonNull(relations)) {
-                                trackId = relations.trackId;
-                                clientId = relations.clientId;
-                                callId = relations.callId;
-                            }
-                            return this.createSfuRtpSinkReport(
+                            UUID rtpStreamId = UUIDAdapter.tryParseOrNull(outboundRtpStream.rtpStreamId);
+                            UUID callId = report.rtpStreamIdToCallIds.get(rtpStreamId);
+                            return this.createSfuOutboundRtpPadReport(
                                     sfuId,
                                     observedSfuSample,
                                     outboundRtpStream,
-                                    trackId,
-                                    clientId,
                                     callId
                             );
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(rtpSinkReports::add);
+                        .forEach(outboundRtpPadReports::add);
 
                 SfuSampleVisitor.streamSctpStreams(sfuSample)
                         .map(sctpStream -> {
@@ -155,8 +135,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
         }
         synchronized (this) {
             transportReports.stream().forEach(this.sfuTransportReportSubject::onNext);
-            rtpSourceReports.stream().forEach(this.sfuRtpSourceReportSubject::onNext);
-            rtpSinkReports.stream().forEach(this.sfuRtpSinkReportSubject::onNext);
+            inboundRtpPadReports.stream().forEach(this.sfuRtpSourceReportSubject::onNext);
+            outboundRtpPadReports.stream().forEach(this.sfuRtpSinkReportSubject::onNext);
             sctpStreamReports.stream().forEach(this.sfuSctpStreamSubject::onNext);
         }
     }
@@ -164,12 +144,9 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
     private SFUTransportReport createSfuTransportReport(
             UUID sfuId,
             ObservedSfuSample observedSfuSample,
-            SfuSample.SfuTransport sfuTransport,
-            UUID callId
+            SfuSample.SfuTransport sfuTransport
     ) {
         String sfuIdStr = UUIDAdapter.toStringOrNull(sfuId);
-        String callIdStr = UUIDAdapter.toStringOrNull(callId);
-
         try {
             var result = SFUTransportReport.newBuilder()
 
@@ -182,8 +159,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     /* Report Fields */
                     .setTransportId(sfuTransport.transportId)
                     .setSfuId(sfuIdStr)
-                    .setSfuName(observedSfuSample.getSfuName())
-                    .setCallId(callIdStr)
+                    .setCallId(null)
 
                     /* Transport stats */
                     .setDtlsState(sfuTransport.dtlsState)
@@ -226,34 +202,28 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
     }
 
-    private SfuRTPSourceReport createSfuRtpSourceReport(
+    private SfuInboundRtpPadReport createSfuInboundRtpPadReport(
             UUID sfuId,
             ObservedSfuSample observedSfuSample,
-            SfuSample.SfuRtpSource sfuRtpSource,
-            UUID trackId,
-            UUID clientId,
+            SfuSample.SfuInboundRtpPad sfuRtpSource,
             UUID callId
     ) {
-        String trackIdStr = UUIDAdapter.toStringOrNull(trackId);
-        String clientIdStr = UUIDAdapter.toStringOrNull(clientId);
         String callIdStr = UUIDAdapter.toStringOrNull(callId);
         try {
-            var result = SfuRTPSourceReport.newBuilder()
+            var result = SfuInboundRtpPadReport.newBuilder()
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
-                    .setSfuName(observedSfuSample.getSfuName())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
 
                     /* Report Fields */
                     .setTransportId(sfuRtpSource.transportId)
-                    .setStreamId(sfuRtpSource.streamId)
-                    .setSourceId(sfuRtpSource.sourceId)
+                    .setRtpStreamId(sfuRtpSource.rtpStreamId)
                     .setSsrc(sfuRtpSource.ssrc)
-                    .setTrackId(trackIdStr)
-                    .setClientId(clientIdStr)
+                    .setTrackId(null) // not implemented yet
+                    .setClientId(null) // not implemented yet
                     .setCallId(callIdStr)
 
                     /* RTP Stats */
@@ -299,35 +269,29 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
     }
 
-    private SfuRTPSinkReport createSfuRtpSinkReport(
+    private SfuOutboundRtpPadReport createSfuOutboundRtpPadReport(
             UUID sfuId,
             ObservedSfuSample observedSfuSample,
-            SfuSample.SfuRtpSink sfuRtpSink,
-            UUID trackId,
-            UUID clientId,
+            SfuSample.SfuOutboundRtpPad sfuRtpSink,
             UUID callId
     ) {
-        String trackIdStr = UUIDAdapter.toStringOrNull(trackId);
-        String clientIdStr = UUIDAdapter.toStringOrNull(clientId);
         String callIdStr = UUIDAdapter.toStringOrNull(callId);
         try {
-            var result = SfuRTPSinkReport.newBuilder()
+            var result = SfuOutboundRtpPadReport.newBuilder()
 
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
-                    .setSfuName(observedSfuSample.getSfuName())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
 
                     /* Report Fields */
                     .setTransportId(sfuRtpSink.transportId)
-                    .setStreamId(sfuRtpSink.streamId)
-                    .setSinkId(sfuRtpSink.sinkId)
+                    .setRtpStreamId(sfuRtpSink.rtpStreamId)
                     .setSsrc(sfuRtpSink.ssrc)
-                    .setTrackId(trackIdStr)
-                    .setClientId(clientIdStr)
+                    .setTrackId(null) // not implemented yet
+                    .setClientId(null) // not implemented yet
                     .setCallId(callIdStr)
 
                     /* RTP Stats */
@@ -344,7 +308,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     .setPliCount(sfuRtpSink.pliCount)
                     .setNackCount(sfuRtpSink.nackCount)
                     .setSliCount(sfuRtpSink.sliCount)
-                    .setPacketsLost(null)
+                    .setPacketsLost(sfuRtpSink.packetsLost)
                     .setPacketsSent(sfuRtpSink.packetsSent)
                     .setPacketsDiscarded(sfuRtpSink.packetsDiscarded)
                     .setPacketsRetransmitted(sfuRtpSink.packetsRetransmitted)
@@ -383,7 +347,6 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     /* Report MetaFields */
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
-                    .setSfuName(observedSfuSample.getSfuName())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
 
@@ -416,32 +379,24 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
     private FetchSfuRelationsTask.Report fetchSfuRelations(CollectedSfuSamples collectedSfuSamples) {
         Set<UUID> sfuStreamIds = new HashSet<>();
-        Set<UUID> sfuTransportIds = new HashSet<>();
         collectedSfuSamples.stream()
                 .flatMap(SfuSamples::stream)
                 .forEach(observedSfuSample -> {
-                    SfuSampleVisitor.streamRtpSources(observedSfuSample.getSfuSample())
-                            .map(t -> UUIDAdapter.tryParse(t.streamId))
+                    SfuSampleVisitor.streamOutboundRtpPads(observedSfuSample.getSfuSample())
+                            .map(t -> UUIDAdapter.tryParse(t.rtpStreamId))
                             .filter(Optional::isPresent)
                             .map(Optional::get)
                             .forEach(sfuStreamIds::add);
 
 
-                    SfuSampleVisitor.streamRtpSinks(observedSfuSample.getSfuSample())
-                            .map(t -> UUIDAdapter.tryParse(t.streamId))
+                    SfuSampleVisitor.streamInboundRtpPads(observedSfuSample.getSfuSample())
+                            .map(t -> UUIDAdapter.tryParse(t.rtpStreamId))
                             .filter(Optional::isPresent)
                             .map(Optional::get)
                             .forEach(sfuStreamIds::add);
-
-                    SfuSampleVisitor.streamTransports(observedSfuSample.getSfuSample())
-                            .map(t -> UUIDAdapter.tryParse(t.transportId))
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .forEach(sfuTransportIds::add);
                 });
         var task = fetchSfuRelationsTaskProvider.get()
-                .whereSfuStreamIds(sfuStreamIds)
-                .whereSfuTransportIds(sfuTransportIds)
+                .whereSfuRtpPadIds(sfuStreamIds)
                 ;
 
         if (!task.execute().succeeded()) {

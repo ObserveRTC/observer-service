@@ -37,15 +37,6 @@
       "default": null
     },
     {
-      "name": "sfuName",
-      "doc": "The provided name of the SFU",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": null
-    },
-    {
       "name": "callId",
       "doc": "The callId the event belongs to",
       "type": [
@@ -64,25 +55,7 @@
       "default": null
     },
     {
-      "name": "streamId",
-      "doc": "Unique identifier of the RTP stream the event is related to",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": null
-    },
-    {
-      "name": "sourceId",
-      "doc": "Unique identifier of the RTP stream the event is related to",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": null
-    },
-    {
-      "name": "sinkId",
+      "name": "rtpStreamId",
       "doc": "Unique identifier of the RTP stream the event is related to",
       "type": [
         "null",
@@ -100,8 +73,17 @@
       "default": null
     },
     {
+      "name": "sfuPadId",
+      "doc": "Unique identifier of the Sfu Pad the event is related to",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "SSRC",
-      "doc": "The SSRC identifier of the RTP stream realted to",
+      "doc": "The SSRC identifier of the RTP stream related to",
       "type": [
         "null",
         "long"
@@ -110,7 +92,7 @@
     },
     {
       "name": "name",
-      "doc": "The name of the event",
+      "doc": "The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED",
       "type": "string"
     },
     {

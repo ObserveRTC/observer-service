@@ -22,6 +22,7 @@ public class ChainedTask<T> extends TaskAbstract<T> {
 
     }
 
+    private ChainedTask nextTask = null;
     private AtomicReference<T> resultHolder = new AtomicReference<>();
     private LinkedList<TaskStage> stages = new LinkedList<>();
     private Map<Integer, BreakCondition> terminals = new HashMap<>();
@@ -31,6 +32,15 @@ public class ChainedTask<T> extends TaskAbstract<T> {
     public TaskAbstract<T> execute(Object input) {
         this.lastInput = new AtomicReference(input);
         return this.execute();
+    }
+
+    public<R> ChainedTask<T> andThen(ChainedTask<R> nextTask) {
+        ChainedTask actual = this;
+        while (Objects.nonNull(actual.nextTask)) {
+            actual = actual.nextTask;
+        }
+        actual.nextTask = nextTask;
+        return this;
     }
 
     @Override
@@ -48,7 +58,15 @@ public class ChainedTask<T> extends TaskAbstract<T> {
             }
             this.lastInput = nextInput;
         }
-        return this.resultHolder.get();
+        var result = this.resultHolder.get();
+        if (Objects.nonNull(this.nextTask)) {
+            if (Objects.nonNull(result)) {
+                this.nextTask.execute(result);
+            } else {
+                this.nextTask.execute();
+            }
+        }
+        return result;
     }
 
     private boolean doTerminate(TaskStage stage, AtomicReference nextInput) throws Throwable {

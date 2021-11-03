@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** Events happened in calls. */
 @org.apache.avro.specific.AvroGenerated
 public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 916885073368251524L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the SFU\",\"default\":null},{\"name\":\"sfuName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The provided name of the SFU\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"SFU provided transport identifier\",\"default\":null},{\"name\":\"streamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the RTP stream the event is related to\",\"default\":null},{\"name\":\"sourceId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the RTP stream the event is related to\",\"default\":null},{\"name\":\"sinkId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the RTP stream the event is related to\",\"default\":null},{\"name\":\"sctpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SCTP stream the event is related to\",\"default\":null},{\"name\":\"SSRC\",\"type\":[\"null\",\"long\"],\"doc\":\"The SSRC identifier of the RTP stream realted to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
+  private static final long serialVersionUID = -8088543518841857446L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the SFU\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"SFU provided transport identifier\",\"default\":null},{\"name\":\"rtpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the RTP stream the event is related to\",\"default\":null},{\"name\":\"sctpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SCTP stream the event is related to\",\"default\":null},{\"name\":\"sfuPadId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the Sfu Pad the event is related to\",\"default\":null},{\"name\":\"SSRC\",\"type\":[\"null\",\"long\"],\"doc\":\"The SSRC identifier of the RTP stream related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The media unit id the report belongs to */
    private java.lang.String mediaUnitId;
@@ -22,23 +22,19 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
    private long timestamp;
   /** The generated unique identifier of the SFU */
    private java.lang.String sfuId;
-  /** The provided name of the SFU */
-   private java.lang.String sfuName;
   /** The callId the event belongs to */
    private java.lang.String callId;
   /** SFU provided transport identifier */
    private java.lang.String transportId;
   /** Unique identifier of the RTP stream the event is related to */
-   private java.lang.String streamId;
-  /** Unique identifier of the RTP stream the event is related to */
-   private java.lang.String sourceId;
-  /** Unique identifier of the RTP stream the event is related to */
-   private java.lang.String sinkId;
+   private java.lang.String rtpStreamId;
   /** Unique identifier of the SCTP stream the event is related to */
    private java.lang.String sctpStreamId;
-  /** The SSRC identifier of the RTP stream realted to */
+  /** Unique identifier of the Sfu Pad the event is related to */
+   private java.lang.String sfuPadId;
+  /** The SSRC identifier of the RTP stream related to */
    private java.lang.Long SSRC;
-  /** The name of the event */
+  /** The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED */
    private java.lang.String name;
   /** the human readable message of the event */
    private java.lang.String message;
@@ -60,31 +56,27 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param marker The marker the originated sample is reported with
    * @param timestamp The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    * @param sfuId The generated unique identifier of the SFU
-   * @param sfuName The provided name of the SFU
    * @param callId The callId the event belongs to
    * @param transportId SFU provided transport identifier
-   * @param streamId Unique identifier of the RTP stream the event is related to
-   * @param sourceId Unique identifier of the RTP stream the event is related to
-   * @param sinkId Unique identifier of the RTP stream the event is related to
+   * @param rtpStreamId Unique identifier of the RTP stream the event is related to
    * @param sctpStreamId Unique identifier of the SCTP stream the event is related to
-   * @param SSRC The SSRC identifier of the RTP stream realted to
-   * @param name The name of the event
+   * @param sfuPadId Unique identifier of the Sfu Pad the event is related to
+   * @param SSRC The SSRC identifier of the RTP stream related to
+   * @param name The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
    * @param message the human readable message of the event
    * @param value the value of the event
    * @param attachments attachment the event may created with
    */
-  public SfuEventReport(java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String sfuName, java.lang.String callId, java.lang.String transportId, java.lang.String streamId, java.lang.String sourceId, java.lang.String sinkId, java.lang.String sctpStreamId, java.lang.Long SSRC, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
+  public SfuEventReport(java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String callId, java.lang.String transportId, java.lang.String rtpStreamId, java.lang.String sctpStreamId, java.lang.String sfuPadId, java.lang.Long SSRC, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
     this.timestamp = timestamp;
     this.sfuId = sfuId;
-    this.sfuName = sfuName;
     this.callId = callId;
     this.transportId = transportId;
-    this.streamId = streamId;
-    this.sourceId = sourceId;
-    this.sinkId = sinkId;
+    this.rtpStreamId = rtpStreamId;
     this.sctpStreamId = sctpStreamId;
+    this.sfuPadId = sfuPadId;
     this.SSRC = SSRC;
     this.name = name;
     this.message = message;
@@ -100,18 +92,16 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     case 1: return marker;
     case 2: return timestamp;
     case 3: return sfuId;
-    case 4: return sfuName;
-    case 5: return callId;
-    case 6: return transportId;
-    case 7: return streamId;
-    case 8: return sourceId;
-    case 9: return sinkId;
-    case 10: return sctpStreamId;
-    case 11: return SSRC;
-    case 12: return name;
-    case 13: return message;
-    case 14: return value;
-    case 15: return attachments;
+    case 4: return callId;
+    case 5: return transportId;
+    case 6: return rtpStreamId;
+    case 7: return sctpStreamId;
+    case 8: return sfuPadId;
+    case 9: return SSRC;
+    case 10: return name;
+    case 11: return message;
+    case 12: return value;
+    case 13: return attachments;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -124,18 +114,16 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     case 1: marker = (java.lang.String)value$; break;
     case 2: timestamp = (java.lang.Long)value$; break;
     case 3: sfuId = (java.lang.String)value$; break;
-    case 4: sfuName = (java.lang.String)value$; break;
-    case 5: callId = (java.lang.String)value$; break;
-    case 6: transportId = (java.lang.String)value$; break;
-    case 7: streamId = (java.lang.String)value$; break;
-    case 8: sourceId = (java.lang.String)value$; break;
-    case 9: sinkId = (java.lang.String)value$; break;
-    case 10: sctpStreamId = (java.lang.String)value$; break;
-    case 11: SSRC = (java.lang.Long)value$; break;
-    case 12: name = (java.lang.String)value$; break;
-    case 13: message = (java.lang.String)value$; break;
-    case 14: value = (java.lang.String)value$; break;
-    case 15: attachments = (java.lang.String)value$; break;
+    case 4: callId = (java.lang.String)value$; break;
+    case 5: transportId = (java.lang.String)value$; break;
+    case 6: rtpStreamId = (java.lang.String)value$; break;
+    case 7: sctpStreamId = (java.lang.String)value$; break;
+    case 8: sfuPadId = (java.lang.String)value$; break;
+    case 9: SSRC = (java.lang.Long)value$; break;
+    case 10: name = (java.lang.String)value$; break;
+    case 11: message = (java.lang.String)value$; break;
+    case 12: value = (java.lang.String)value$; break;
+    case 13: attachments = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -177,15 +165,6 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
 
   /**
-   * Gets the value of the 'sfuName' field.
-   * @return The provided name of the SFU
-   */
-  public java.lang.String getSfuName() {
-    return sfuName;
-  }
-
-
-  /**
    * Gets the value of the 'callId' field.
    * @return The callId the event belongs to
    */
@@ -204,29 +183,11 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
 
   /**
-   * Gets the value of the 'streamId' field.
+   * Gets the value of the 'rtpStreamId' field.
    * @return Unique identifier of the RTP stream the event is related to
    */
-  public java.lang.String getStreamId() {
-    return streamId;
-  }
-
-
-  /**
-   * Gets the value of the 'sourceId' field.
-   * @return Unique identifier of the RTP stream the event is related to
-   */
-  public java.lang.String getSourceId() {
-    return sourceId;
-  }
-
-
-  /**
-   * Gets the value of the 'sinkId' field.
-   * @return Unique identifier of the RTP stream the event is related to
-   */
-  public java.lang.String getSinkId() {
-    return sinkId;
+  public java.lang.String getRtpStreamId() {
+    return rtpStreamId;
   }
 
 
@@ -240,8 +201,17 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
 
   /**
+   * Gets the value of the 'sfuPadId' field.
+   * @return Unique identifier of the Sfu Pad the event is related to
+   */
+  public java.lang.String getSfuPadId() {
+    return sfuPadId;
+  }
+
+
+  /**
    * Gets the value of the 'SSRC' field.
-   * @return The SSRC identifier of the RTP stream realted to
+   * @return The SSRC identifier of the RTP stream related to
    */
   public java.lang.Long getSSRC() {
     return SSRC;
@@ -250,7 +220,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
   /**
    * Gets the value of the 'name' field.
-   * @return The name of the event
+   * @return The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
    */
   public java.lang.String getName() {
     return name;
@@ -324,23 +294,19 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     private long timestamp;
     /** The generated unique identifier of the SFU */
     private java.lang.String sfuId;
-    /** The provided name of the SFU */
-    private java.lang.String sfuName;
     /** The callId the event belongs to */
     private java.lang.String callId;
     /** SFU provided transport identifier */
     private java.lang.String transportId;
     /** Unique identifier of the RTP stream the event is related to */
-    private java.lang.String streamId;
-    /** Unique identifier of the RTP stream the event is related to */
-    private java.lang.String sourceId;
-    /** Unique identifier of the RTP stream the event is related to */
-    private java.lang.String sinkId;
+    private java.lang.String rtpStreamId;
     /** Unique identifier of the SCTP stream the event is related to */
     private java.lang.String sctpStreamId;
-    /** The SSRC identifier of the RTP stream realted to */
+    /** Unique identifier of the Sfu Pad the event is related to */
+    private java.lang.String sfuPadId;
+    /** The SSRC identifier of the RTP stream related to */
     private java.lang.Long SSRC;
-    /** The name of the event */
+    /** The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED */
     private java.lang.String name;
     /** the human readable message of the event */
     private java.lang.String message;
@@ -376,53 +342,45 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
         this.sfuId = data().deepCopy(fields()[3].schema(), other.sfuId);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.sfuName)) {
-        this.sfuName = data().deepCopy(fields()[4].schema(), other.sfuName);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[5].schema(), other.transportId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
+      if (isValidValue(fields()[6], other.rtpStreamId)) {
+        this.rtpStreamId = data().deepCopy(fields()[6].schema(), other.rtpStreamId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.streamId)) {
-        this.streamId = data().deepCopy(fields()[7].schema(), other.streamId);
+      if (isValidValue(fields()[7], other.sctpStreamId)) {
+        this.sctpStreamId = data().deepCopy(fields()[7].schema(), other.sctpStreamId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.sourceId)) {
-        this.sourceId = data().deepCopy(fields()[8].schema(), other.sourceId);
+      if (isValidValue(fields()[8], other.sfuPadId)) {
+        this.sfuPadId = data().deepCopy(fields()[8].schema(), other.sfuPadId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.sinkId)) {
-        this.sinkId = data().deepCopy(fields()[9].schema(), other.sinkId);
+      if (isValidValue(fields()[9], other.SSRC)) {
+        this.SSRC = data().deepCopy(fields()[9].schema(), other.SSRC);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.sctpStreamId)) {
-        this.sctpStreamId = data().deepCopy(fields()[10].schema(), other.sctpStreamId);
+      if (isValidValue(fields()[10], other.name)) {
+        this.name = data().deepCopy(fields()[10].schema(), other.name);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.SSRC)) {
-        this.SSRC = data().deepCopy(fields()[11].schema(), other.SSRC);
+      if (isValidValue(fields()[11], other.message)) {
+        this.message = data().deepCopy(fields()[11].schema(), other.message);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.name)) {
-        this.name = data().deepCopy(fields()[12].schema(), other.name);
+      if (isValidValue(fields()[12], other.value)) {
+        this.value = data().deepCopy(fields()[12].schema(), other.value);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.message)) {
-        this.message = data().deepCopy(fields()[13].schema(), other.message);
+      if (isValidValue(fields()[13], other.attachments)) {
+        this.attachments = data().deepCopy(fields()[13].schema(), other.attachments);
         fieldSetFlags()[13] = true;
-      }
-      if (isValidValue(fields()[14], other.value)) {
-        this.value = data().deepCopy(fields()[14].schema(), other.value);
-        fieldSetFlags()[14] = true;
-      }
-      if (isValidValue(fields()[15], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[15].schema(), other.attachments);
-        fieldSetFlags()[15] = true;
       }
     }
 
@@ -448,53 +406,45 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
         this.sfuId = data().deepCopy(fields()[3].schema(), other.sfuId);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.sfuName)) {
-        this.sfuName = data().deepCopy(fields()[4].schema(), other.sfuName);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[5].schema(), other.transportId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
+      if (isValidValue(fields()[6], other.rtpStreamId)) {
+        this.rtpStreamId = data().deepCopy(fields()[6].schema(), other.rtpStreamId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.streamId)) {
-        this.streamId = data().deepCopy(fields()[7].schema(), other.streamId);
+      if (isValidValue(fields()[7], other.sctpStreamId)) {
+        this.sctpStreamId = data().deepCopy(fields()[7].schema(), other.sctpStreamId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.sourceId)) {
-        this.sourceId = data().deepCopy(fields()[8].schema(), other.sourceId);
+      if (isValidValue(fields()[8], other.sfuPadId)) {
+        this.sfuPadId = data().deepCopy(fields()[8].schema(), other.sfuPadId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.sinkId)) {
-        this.sinkId = data().deepCopy(fields()[9].schema(), other.sinkId);
+      if (isValidValue(fields()[9], other.SSRC)) {
+        this.SSRC = data().deepCopy(fields()[9].schema(), other.SSRC);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.sctpStreamId)) {
-        this.sctpStreamId = data().deepCopy(fields()[10].schema(), other.sctpStreamId);
+      if (isValidValue(fields()[10], other.name)) {
+        this.name = data().deepCopy(fields()[10].schema(), other.name);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.SSRC)) {
-        this.SSRC = data().deepCopy(fields()[11].schema(), other.SSRC);
+      if (isValidValue(fields()[11], other.message)) {
+        this.message = data().deepCopy(fields()[11].schema(), other.message);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.name)) {
-        this.name = data().deepCopy(fields()[12].schema(), other.name);
+      if (isValidValue(fields()[12], other.value)) {
+        this.value = data().deepCopy(fields()[12].schema(), other.value);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.message)) {
-        this.message = data().deepCopy(fields()[13].schema(), other.message);
+      if (isValidValue(fields()[13], other.attachments)) {
+        this.attachments = data().deepCopy(fields()[13].schema(), other.attachments);
         fieldSetFlags()[13] = true;
-      }
-      if (isValidValue(fields()[14], other.value)) {
-        this.value = data().deepCopy(fields()[14].schema(), other.value);
-        fieldSetFlags()[14] = true;
-      }
-      if (isValidValue(fields()[15], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[15].schema(), other.attachments);
-        fieldSetFlags()[15] = true;
       }
     }
 
@@ -670,49 +620,6 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     }
 
     /**
-      * Gets the value of the 'sfuName' field.
-      * The provided name of the SFU
-      * @return The value.
-      */
-    public java.lang.String getSfuName() {
-      return sfuName;
-    }
-
-    /**
-      * Sets the value of the 'sfuName' field.
-      * The provided name of the SFU
-      * @param value The value of 'sfuName'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setSfuName(java.lang.String value) {
-      validate(fields()[4], value);
-      this.sfuName = value;
-      fieldSetFlags()[4] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sfuName' field has been set.
-      * The provided name of the SFU
-      * @return True if the 'sfuName' field has been set, false otherwise.
-      */
-    public boolean hasSfuName() {
-      return fieldSetFlags()[4];
-    }
-
-
-    /**
-      * Clears the value of the 'sfuName' field.
-      * The provided name of the SFU
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearSfuName() {
-      sfuName = null;
-      fieldSetFlags()[4] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'callId' field.
       * The callId the event belongs to
       * @return The value.
@@ -728,9 +635,9 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setCallId(java.lang.String value) {
-      validate(fields()[5], value);
+      validate(fields()[4], value);
       this.callId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -740,7 +647,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'callId' field has been set, false otherwise.
       */
     public boolean hasCallId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -751,7 +658,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearCallId() {
       callId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -771,9 +678,9 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setTransportId(java.lang.String value) {
-      validate(fields()[6], value);
+      validate(fields()[5], value);
       this.transportId = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -783,7 +690,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'transportId' field has been set, false otherwise.
       */
     public boolean hasTransportId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
 
 
@@ -794,136 +701,50 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearTransportId() {
       transportId = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'rtpStreamId' field.
+      * Unique identifier of the RTP stream the event is related to
+      * @return The value.
+      */
+    public java.lang.String getRtpStreamId() {
+      return rtpStreamId;
+    }
+
+    /**
+      * Sets the value of the 'rtpStreamId' field.
+      * Unique identifier of the RTP stream the event is related to
+      * @param value The value of 'rtpStreamId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setRtpStreamId(java.lang.String value) {
+      validate(fields()[6], value);
+      this.rtpStreamId = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'rtpStreamId' field has been set.
+      * Unique identifier of the RTP stream the event is related to
+      * @return True if the 'rtpStreamId' field has been set, false otherwise.
+      */
+    public boolean hasRtpStreamId() {
+      return fieldSetFlags()[6];
+    }
+
+
+    /**
+      * Clears the value of the 'rtpStreamId' field.
+      * Unique identifier of the RTP stream the event is related to
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearRtpStreamId() {
+      rtpStreamId = null;
       fieldSetFlags()[6] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'streamId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @return The value.
-      */
-    public java.lang.String getStreamId() {
-      return streamId;
-    }
-
-    /**
-      * Sets the value of the 'streamId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @param value The value of 'streamId'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setStreamId(java.lang.String value) {
-      validate(fields()[7], value);
-      this.streamId = value;
-      fieldSetFlags()[7] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'streamId' field has been set.
-      * Unique identifier of the RTP stream the event is related to
-      * @return True if the 'streamId' field has been set, false otherwise.
-      */
-    public boolean hasStreamId() {
-      return fieldSetFlags()[7];
-    }
-
-
-    /**
-      * Clears the value of the 'streamId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearStreamId() {
-      streamId = null;
-      fieldSetFlags()[7] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sourceId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @return The value.
-      */
-    public java.lang.String getSourceId() {
-      return sourceId;
-    }
-
-    /**
-      * Sets the value of the 'sourceId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @param value The value of 'sourceId'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setSourceId(java.lang.String value) {
-      validate(fields()[8], value);
-      this.sourceId = value;
-      fieldSetFlags()[8] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sourceId' field has been set.
-      * Unique identifier of the RTP stream the event is related to
-      * @return True if the 'sourceId' field has been set, false otherwise.
-      */
-    public boolean hasSourceId() {
-      return fieldSetFlags()[8];
-    }
-
-
-    /**
-      * Clears the value of the 'sourceId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearSourceId() {
-      sourceId = null;
-      fieldSetFlags()[8] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sinkId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @return The value.
-      */
-    public java.lang.String getSinkId() {
-      return sinkId;
-    }
-
-    /**
-      * Sets the value of the 'sinkId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @param value The value of 'sinkId'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setSinkId(java.lang.String value) {
-      validate(fields()[9], value);
-      this.sinkId = value;
-      fieldSetFlags()[9] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sinkId' field has been set.
-      * Unique identifier of the RTP stream the event is related to
-      * @return True if the 'sinkId' field has been set, false otherwise.
-      */
-    public boolean hasSinkId() {
-      return fieldSetFlags()[9];
-    }
-
-
-    /**
-      * Clears the value of the 'sinkId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearSinkId() {
-      sinkId = null;
-      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -943,9 +764,9 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setSctpStreamId(java.lang.String value) {
-      validate(fields()[10], value);
+      validate(fields()[7], value);
       this.sctpStreamId = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -955,7 +776,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'sctpStreamId' field has been set, false otherwise.
       */
     public boolean hasSctpStreamId() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[7];
     }
 
 
@@ -966,13 +787,56 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearSctpStreamId() {
       sctpStreamId = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[7] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sfuPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return The value.
+      */
+    public java.lang.String getSfuPadId() {
+      return sfuPadId;
+    }
+
+    /**
+      * Sets the value of the 'sfuPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @param value The value of 'sfuPadId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setSfuPadId(java.lang.String value) {
+      validate(fields()[8], value);
+      this.sfuPadId = value;
+      fieldSetFlags()[8] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sfuPadId' field has been set.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return True if the 'sfuPadId' field has been set, false otherwise.
+      */
+    public boolean hasSfuPadId() {
+      return fieldSetFlags()[8];
+    }
+
+
+    /**
+      * Clears the value of the 'sfuPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearSfuPadId() {
+      sfuPadId = null;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
     /**
       * Gets the value of the 'SSRC' field.
-      * The SSRC identifier of the RTP stream realted to
+      * The SSRC identifier of the RTP stream related to
       * @return The value.
       */
     public java.lang.Long getSSRC() {
@@ -981,41 +845,41 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
     /**
       * Sets the value of the 'SSRC' field.
-      * The SSRC identifier of the RTP stream realted to
+      * The SSRC identifier of the RTP stream related to
       * @param value The value of 'SSRC'.
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setSSRC(java.lang.Long value) {
-      validate(fields()[11], value);
+      validate(fields()[9], value);
       this.SSRC = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
     /**
       * Checks whether the 'SSRC' field has been set.
-      * The SSRC identifier of the RTP stream realted to
+      * The SSRC identifier of the RTP stream related to
       * @return True if the 'SSRC' field has been set, false otherwise.
       */
     public boolean hasSSRC() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[9];
     }
 
 
     /**
       * Clears the value of the 'SSRC' field.
-      * The SSRC identifier of the RTP stream realted to
+      * The SSRC identifier of the RTP stream related to
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearSSRC() {
       SSRC = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
     /**
       * Gets the value of the 'name' field.
-      * The name of the event
+      * The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
       * @return The value.
       */
     public java.lang.String getName() {
@@ -1024,35 +888,35 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
     /**
       * Sets the value of the 'name' field.
-      * The name of the event
+      * The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
       * @param value The value of 'name'.
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setName(java.lang.String value) {
-      validate(fields()[12], value);
+      validate(fields()[10], value);
       this.name = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
     /**
       * Checks whether the 'name' field has been set.
-      * The name of the event
+      * The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
       * @return True if the 'name' field has been set, false otherwise.
       */
     public boolean hasName() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[10];
     }
 
 
     /**
       * Clears the value of the 'name' field.
-      * The name of the event
+      * The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearName() {
       name = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1072,9 +936,9 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setMessage(java.lang.String value) {
-      validate(fields()[13], value);
+      validate(fields()[11], value);
       this.message = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1084,7 +948,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'message' field has been set, false otherwise.
       */
     public boolean hasMessage() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1095,7 +959,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearMessage() {
       message = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1115,9 +979,9 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setValue(java.lang.String value) {
-      validate(fields()[14], value);
+      validate(fields()[12], value);
       this.value = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1127,7 +991,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'value' field has been set, false otherwise.
       */
     public boolean hasValue() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1138,7 +1002,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearValue() {
       value = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1158,9 +1022,9 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder setAttachments(java.lang.String value) {
-      validate(fields()[15], value);
+      validate(fields()[13], value);
       this.attachments = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1170,7 +1034,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'attachments' field has been set, false otherwise.
       */
     public boolean hasAttachments() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1181,7 +1045,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       */
     public org.observertc.webrtc.schemas.reports.SfuEventReport.Builder clearAttachments() {
       attachments = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1193,18 +1057,16 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
         record.marker = fieldSetFlags()[1] ? this.marker : (java.lang.String) defaultValue(fields()[1]);
         record.timestamp = fieldSetFlags()[2] ? this.timestamp : (java.lang.Long) defaultValue(fields()[2]);
         record.sfuId = fieldSetFlags()[3] ? this.sfuId : (java.lang.String) defaultValue(fields()[3]);
-        record.sfuName = fieldSetFlags()[4] ? this.sfuName : (java.lang.String) defaultValue(fields()[4]);
-        record.callId = fieldSetFlags()[5] ? this.callId : (java.lang.String) defaultValue(fields()[5]);
-        record.transportId = fieldSetFlags()[6] ? this.transportId : (java.lang.String) defaultValue(fields()[6]);
-        record.streamId = fieldSetFlags()[7] ? this.streamId : (java.lang.String) defaultValue(fields()[7]);
-        record.sourceId = fieldSetFlags()[8] ? this.sourceId : (java.lang.String) defaultValue(fields()[8]);
-        record.sinkId = fieldSetFlags()[9] ? this.sinkId : (java.lang.String) defaultValue(fields()[9]);
-        record.sctpStreamId = fieldSetFlags()[10] ? this.sctpStreamId : (java.lang.String) defaultValue(fields()[10]);
-        record.SSRC = fieldSetFlags()[11] ? this.SSRC : (java.lang.Long) defaultValue(fields()[11]);
-        record.name = fieldSetFlags()[12] ? this.name : (java.lang.String) defaultValue(fields()[12]);
-        record.message = fieldSetFlags()[13] ? this.message : (java.lang.String) defaultValue(fields()[13]);
-        record.value = fieldSetFlags()[14] ? this.value : (java.lang.String) defaultValue(fields()[14]);
-        record.attachments = fieldSetFlags()[15] ? this.attachments : (java.lang.String) defaultValue(fields()[15]);
+        record.callId = fieldSetFlags()[4] ? this.callId : (java.lang.String) defaultValue(fields()[4]);
+        record.transportId = fieldSetFlags()[5] ? this.transportId : (java.lang.String) defaultValue(fields()[5]);
+        record.rtpStreamId = fieldSetFlags()[6] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[6]);
+        record.sctpStreamId = fieldSetFlags()[7] ? this.sctpStreamId : (java.lang.String) defaultValue(fields()[7]);
+        record.sfuPadId = fieldSetFlags()[8] ? this.sfuPadId : (java.lang.String) defaultValue(fields()[8]);
+        record.SSRC = fieldSetFlags()[9] ? this.SSRC : (java.lang.Long) defaultValue(fields()[9]);
+        record.name = fieldSetFlags()[10] ? this.name : (java.lang.String) defaultValue(fields()[10]);
+        record.message = fieldSetFlags()[11] ? this.message : (java.lang.String) defaultValue(fields()[11]);
+        record.value = fieldSetFlags()[12] ? this.value : (java.lang.String) defaultValue(fields()[12]);
+        record.attachments = fieldSetFlags()[13] ? this.attachments : (java.lang.String) defaultValue(fields()[13]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

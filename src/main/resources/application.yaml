@@ -65,7 +65,7 @@ observer:
     sfuMaxIdleTime: 600
     sfuTransportMaxIdleTime: 600
     sfuRtpStreamMaxIdleTime: 600
-
+    eventsCollectingTimeInS: 3
 
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
@@ -74,20 +74,34 @@ observer:
     sfuSamplesBufferMaxTimeInS: 30
     sfuSamplesBufferMaxItems: 1000
 
-  sinks:
-    MyLogger:
-      type: LoggerSink
-      config:
-        printReports: true
-        printTypeSummary: true
-    MyKafka:
-      type: KafkaSink
-      config:
-        muxReports: true
-        muxTopic: "ortc_demo_2_reports"
-        demuxTopicPrefix: "ortc_"
-        properties:
-          bootstrap.servers: localhost:9092
+#  sinks:
+#    MyLogger:
+#      type: LoggerSink
+#      config:
+#        printReports: true
+#        printTypeSummary: true
+
+#    MySocket:
+#      type: SocketSink
+#      config:
+#        host: "http://localhost"
+#        port: 8080
+#        maxRetry: 3
+
+#    MyWebsocket:
+#      type: WebsocketSink
+#      config:
+#        uri: "ws://localhost:1880/ws/samples"
+
+#    MyKafka:
+#      type: KafkaSink
+#      config:
+#        muxReports: true
+#        muxTopic: "ortc_demo_2_reports"
+#        demuxTopicPrefix: "ortc_"
+#        properties:
+#          bootstrap.servers: localhost:9092
+
 #    MyMongo:
 #      type: MongoSink
 #      config:
@@ -110,10 +124,15 @@ observer:
     reportSfuEvents: true
     reportSfuMeta: true
     reportSfuTransports: true
-    reportSfuRtpSources: true
-    reportSfuRtpSinks: true
+
     reportSfuSctpStreams: true
 
+#    reportSfuRtpSources: true
+#    reportSfuRtpSinks: true
+
+    reportSfuOutboundRtpStreams: true
+    reportSfuInboundRtpStreams: true
+    reportSfuRtpPadAddedWithoutCallId: true
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

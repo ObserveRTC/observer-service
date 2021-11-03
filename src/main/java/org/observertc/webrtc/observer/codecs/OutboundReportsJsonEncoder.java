@@ -31,8 +31,8 @@ public class OutboundReportsJsonEncoder implements Encoder{
             module.addSerializer(SfuEventReport.class, new AvroBuilderToJson<SfuEventReport>(SfuEventReport.class, SfuEventReport.getClassSchema()));
             module.addSerializer(SfuMetaReport.class, new AvroBuilderToJson<SfuMetaReport>(SfuMetaReport.class, SfuMetaReport.getClassSchema()));
             module.addSerializer(SFUTransportReport.class, new AvroBuilderToJson<SFUTransportReport>(SFUTransportReport.class, SFUTransportReport.getClassSchema()));
-            module.addSerializer(SfuRTPSourceReport.class, new AvroBuilderToJson<SfuRTPSourceReport>(SfuRTPSourceReport.class, SfuRTPSourceReport.getClassSchema()));
-            module.addSerializer(SfuRTPSinkReport.class, new AvroBuilderToJson<SfuRTPSinkReport>(SfuRTPSinkReport.class, SfuRTPSinkReport.getClassSchema()));
+            module.addSerializer(SfuInboundRtpPadReport.class, new AvroBuilderToJson<SfuInboundRtpPadReport>(SfuInboundRtpPadReport.class, SfuInboundRtpPadReport.getClassSchema()));
+            module.addSerializer(SfuOutboundRtpPadReport.class, new AvroBuilderToJson<SfuOutboundRtpPadReport>(SfuOutboundRtpPadReport.class, SfuOutboundRtpPadReport.getClassSchema()));
             module.addSerializer(SfuSctpStreamReport.class, new AvroBuilderToJson<SfuSctpStreamReport>(SfuSctpStreamReport.class, SfuSctpStreamReport.getClassSchema()));
         } catch (Exception ex) {
             logger.error("Error occurred during initialization", ex);
@@ -97,11 +97,11 @@ public class OutboundReportsJsonEncoder implements Encoder{
         return () -> encodeOrNull(sfuTransportReport);
     }
 
-    public OutboundReport.SfuRtpSourceReport encodeSfuRtpSourceReport(SfuRTPSourceReport sfuRtpSourceReport) {
+    public OutboundReport.SfuInboundRtpPadReport encodeSfuInboundRtpPadReport(SfuInboundRtpPadReport sfuRtpSourceReport) {
         return () -> encodeOrNull(sfuRtpSourceReport);
     }
 
-    public OutboundReport.SfuRtpSinkReport encodeSfuRtpSinkReport(SfuRTPSinkReport sfuRtpSinkReport) {
+    public OutboundReport.SfuOutboundRtpPadReport encodeSfuOutboundRtpPadReport(SfuOutboundRtpPadReport sfuRtpSinkReport) {
         return () -> encodeOrNull(sfuRtpSinkReport);
     }
 

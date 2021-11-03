@@ -7,8 +7,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
-import org.observertc.webrtc.observer.repositories.tasks.RemoveSfuRtpStreamsTask;
+import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
+import org.observertc.webrtc.observer.repositories.tasks.RemoveSfuRtpPadsTask;
 import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
  * Responsible to Order appropriate updates
  */
 @Singleton
-public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRtpStreamPodDTO> {
-    private static final Logger logger = LoggerFactory.getLogger(ListenSfuRtpStreamEntryChanges.class);
+public class ListenSfuRtpPadEntryChanges implements EntryListener<UUID, SfuRtpPadDTO> {
+    private static final Logger logger = LoggerFactory.getLogger(ListenSfuRtpPadEntryChanges.class);
 
     private Subject<SfuEventReport> sfuEventReportSubject = PublishSubject.create();
 
@@ -40,7 +40,7 @@ public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRt
     }
 
     @Inject
-    Provider<RemoveSfuRtpStreamsTask> removeSfuRtpStreamsTaskProvider;
+    Provider<RemoveSfuRtpPadsTask> removeSfuRtpStreamsTaskProvider;
 
     @Inject
     ObserverConfig observerConfig;
@@ -53,18 +53,18 @@ public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRt
     }
 
     @Override
-    public void entryAdded(EntryEvent<UUID, SfuRtpStreamPodDTO> event) {
+    public void entryAdded(EntryEvent<UUID, SfuRtpPadDTO> event) {
         logger.debug("SfuRtpStreamDTO {} has been added", event.getValue());
     }
 
     @Override
-    public void entryEvicted(EntryEvent<UUID, SfuRtpStreamPodDTO> event) {
+    public void entryEvicted(EntryEvent<UUID, SfuRtpPadDTO> event) {
         // ignore this, as we are interested in expired
     }
 
     @Override
-    public void entryExpired(EntryEvent<UUID, SfuRtpStreamPodDTO> event) {
-        SfuRtpStreamPodDTO DTO = event.getOldValue();
+    public void entryExpired(EntryEvent<UUID, SfuRtpPadDTO> event) {
+        SfuRtpPadDTO DTO = event.getOldValue();
         if (Objects.isNull(DTO)) {
             logger.warn("SfuRtpStreamDTO is expired, but the removed value is null {}", event.toString());
             return;
@@ -78,12 +78,12 @@ public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRt
     }
 
     @Override
-    public void entryRemoved(EntryEvent<UUID, SfuRtpStreamPodDTO> event) {
+    public void entryRemoved(EntryEvent<UUID, SfuRtpPadDTO> event) {
         logger.debug("SfuRtpStreamDTO {} has been removed", event.getValue());
     }
 
     @Override
-    public void entryUpdated(EntryEvent<UUID, SfuRtpStreamPodDTO> event) {
+    public void entryUpdated(EntryEvent<UUID, SfuRtpPadDTO> event) {
         // ignore this event
     }
 
@@ -124,10 +124,10 @@ public class ListenSfuRtpStreamEntryChanges implements EntryListener<UUID, SfuRt
     }
 
     private class RemovedDTO {
-        private final SfuRtpStreamPodDTO DTO;
+        private final SfuRtpPadDTO DTO;
         private final Long estimatedLeave;
 
-        private RemovedDTO(SfuRtpStreamPodDTO DTO, Long estimatedLeave) {
+        private RemovedDTO(SfuRtpPadDTO DTO, Long estimatedLeave) {
             this.DTO = DTO;
             this.estimatedLeave = estimatedLeave;
         }

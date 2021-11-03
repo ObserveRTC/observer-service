@@ -4,7 +4,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.codecs.Encoder;
-import org.observertc.webrtc.observer.codecs.OutboundReportsAvroEncoder;
 import org.observertc.webrtc.observer.codecs.OutboundReportsCodec;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -144,18 +143,18 @@ public class OutboundReportEncoder {
         this.convertAndForward(this.encoder::encodeSfuTransportReport, sfuTransportReports);
     }
 
-    public void encodeSfuRtpSourceReport(List<SfuRTPSourceReport> sfuRTPSourceReports) {
+    public void encodeSfuInboundRtpPadReport(List<SfuInboundRtpPadReport> sfuRTPSourceReports) {
         if (Objects.isNull(sfuRTPSourceReports) || sfuRTPSourceReports.size() < 1) {
             return;
         }
-        this.convertAndForward(this.encoder::encodeSfuRtpSourceReport, sfuRTPSourceReports);
+        this.convertAndForward(this.encoder::encodeSfuInboundRtpPadReport, sfuRTPSourceReports);
     }
 
-    public void encodeSfuRtpSinkReport(List<SfuRTPSinkReport> sfuRTPSinkReports) {
+    public void encodeSfuOutboundRtpPadReport(List<SfuOutboundRtpPadReport> sfuRTPSinkReports) {
         if (Objects.isNull(sfuRTPSinkReports) || sfuRTPSinkReports.size() < 1) {
             return;
         }
-        this.convertAndForward(this.encoder::encodeSfuRtpSinkReport, sfuRTPSinkReports);
+        this.convertAndForward(this.encoder::encodeSfuOutboundRtpPadReport, sfuRTPSinkReports);
     }
 
     public void encodeSfuSctpStreamReport(List<SfuSctpStreamReport> sfuSctpStreamReports) {

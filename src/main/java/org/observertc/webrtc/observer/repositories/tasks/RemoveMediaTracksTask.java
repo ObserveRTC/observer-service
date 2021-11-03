@@ -57,23 +57,6 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                             }
                             this.hazelcastMaps.getMediaTracks().putAll(this.removedTrackDTOs);
                         })
-                .addActionStage("Remove bindings to sfuStreams",
-                    () -> {
-                        this.removedTrackDTOs.values().stream()
-                                .filter(dto -> Objects.nonNull(dto.sfuPodId))
-                                .forEach(dto -> {
-                                    this.hazelcastMaps.getSfuPodToMediaTracks().remove(dto.sfuPodId);
-                                });
-
-                  },
-                    // rollback
-                    (inputHolder, thrown) -> {
-                        this.removedTrackDTOs.values().stream()
-                            .filter(dto -> Objects.nonNull(dto.sfuPodId))
-                            .forEach(dto -> {
-                                this.hazelcastMaps.getSfuPodToMediaTracks().put(dto.sfuPodId, dto.trackId);
-                            });
-                    })
                 .addActionStage("Remove Inbound Media Tracks",
                         () -> {
                             this.removedTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
@@ -81,9 +64,7 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
-                                if (Objects.nonNull(mediaTrackDTO.sfuPodId)) {
-                                    this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().delete(mediaTrackDTO.trackId);
-                                }
+                                this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().delete(mediaTrackDTO.trackId);
                             });
                         },
                         (inputHolder, thrownException) -> {
@@ -92,9 +73,7 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
-                                if (Objects.nonNull(mediaTrackDTO.sfuPodId)) {
-                                    this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().put(mediaTrackDTO.trackId, mediaTrackDTO.sfuPodId);
-                                }
+                                this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().put(mediaTrackDTO.trackId, mediaTrackDTO.rtpStreamId);
                             });
                         })
                 .addActionStage("Remove Outbound Media Tracks",
@@ -104,6 +83,9 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
+                                if (Objects.nonNull(mediaTrackDTO.rtpStreamId)) {
+                                    this.hazelcastMaps.getRtpStreamIdsToOutboundTrackIds().remove(mediaTrackDTO.rtpStreamId);
+                                }
                             });
 
                         },
@@ -113,6 +95,9 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                                     return;
                                 }
                                 this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
+                                if (Objects.nonNull(mediaTrackDTO.rtpStreamId)) {
+                                    this.hazelcastMaps.getRtpStreamIdsToOutboundTrackIds().put(mediaTrackDTO.rtpStreamId, mediaTrackDTO.trackId);
+                                }
 
                             });
                         })

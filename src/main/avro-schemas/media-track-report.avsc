@@ -80,6 +80,15 @@
       "default": null
     },
     {
+      "name": "rtpStreamId",
+      "doc": "The id of the RTP stream connected to a remote media unit (such as an SFU)",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "remoteUserId",
       "doc": "Only For Inbound Media Track Reports\nThe webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it",
       "type": [
@@ -918,20 +927,47 @@
       "default": null
     },
     {
-      "name": "qualityLimitationReason",
-      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nThe reason behind the last a quality limitation changes happened for the corresponding synchronization source (ssrc)",
+      "name": "qualityLimitationDurationCPU",
+      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU",
       "type": [
         "null",
-        "string"
+        "double"
       ],
       "default": null
     },
     {
-      "name": "qualityLimitationDurations",
-      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nThe total duration of the quality limitations happened for the corresponding synchronization source (ssrc)",
+      "name": "qualityLimitationDurationNone",
+      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state",
       "type": [
         "null",
         "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "qualityLimitationDurationBandwidth",
+      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "qualityLimitationDurationOther",
+      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "qualityLimitationReason",
+      "doc": "Only For Video Reports\nOnly For Outbound Media Track Reports\nIndicate a reason for the corresponding synchronization source (ssrc) quality is limited",
+      "type": [
+        "null",
+        "string"
       ],
       "default": null
     },

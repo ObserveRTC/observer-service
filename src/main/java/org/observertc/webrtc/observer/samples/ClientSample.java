@@ -1312,10 +1312,10 @@ public  class ClientSample {
 		public String remoteClientId;
 
 		/**
-		 * The sink id of the pod from SFU streaming the media
+		 * A unique identifier (UUID) for the RTP stream the media content is sent. Typically if a client is joined to an SFU this can be identical to the id the SFU uses to (publish/subscribe, produce/consume, ...) media
 		 */
-		@JsonProperty("sfuSinkId")
-		public String sfuSinkId;
+		@JsonProperty("rtpStreamId")
+		public String rtpStreamId;
 
 	}
 	/**
@@ -1700,10 +1700,10 @@ public  class ClientSample {
 		public String remoteClientId;
 
 		/**
-		 * The sink id of the pod from SFU streaming the media
+		 * A unique identifier (UUID) for the RTP stream the media content is sent. Typically if a client is joined to an SFU this can be identical to the id the SFU uses to (publish/subscribe, produce/consume, ...) media
 		 */
-		@JsonProperty("sfuSinkId")
-		public String sfuSinkId;
+		@JsonProperty("rtpStreamId")
+		public String rtpStreamId;
 
 	}
 	/**
@@ -2054,10 +2054,10 @@ public  class ClientSample {
 		public String peerConnectionId;
 
 		/**
-		 * The source id of the pod from SFU streaming the media
+		 * A unique identifier (UUID) for the RTP stream the media content is sent. Typically if a client is joined to an SFU this can be identical to the id the SFU uses to (publish/subscribe, produce/consume, ...) media
 		 */
-		@JsonProperty("sfuSourceId")
-		public String sfuSourceId;
+		@JsonProperty("rtpStreamId")
+		public String rtpStreamId;
 
 	}
 	/**
@@ -2229,16 +2229,34 @@ public  class ClientSample {
 		public Double averageRtcpInterval;
 
 		/**
-		 * The reason for quality limitation happeened on the corresponded RTP stream
+		 * Time elapsed in seconds when the RTC connection has not limited the quality
+		 */
+		@JsonProperty("qualityLimitationDurationNone")
+		public Double qualityLimitationDurationNone;
+
+		/**
+		 * Time elapsed in seconds the RTC connection had a limitation because of CPU
+		 */
+		@JsonProperty("qualityLimitationDurationCPU")
+		public Double qualityLimitationDurationCPU;
+
+		/**
+		 * Time elapsed in seconds the RTC connection had a limitation because of Bandwidth
+		 */
+		@JsonProperty("qualityLimitationDurationBandwidth")
+		public Double qualityLimitationDurationBandwidth;
+
+		/**
+		 * Time elapsed in seconds the RTC connection had a limitation because of Other factor
+		 */
+		@JsonProperty("qualityLimitationDurationOther")
+		public Double qualityLimitationDurationOther;
+
+		/**
+		 * Indicate a reason for the quality limitation of the corresponded synchronization source
 		 */
 		@JsonProperty("qualityLimitationReason")
 		public String qualityLimitationReason;
-
-		/**
-		 * the total sum of duration of the quality limitation happened on the corresponded RTP stream
-		 */
-		@JsonProperty("qualityLimitationDurations")
-		public Double qualityLimitationDurations;
 
 		/**
 		 * The total number of resolution changes occured ont he corresponded RTP stream due to quality changes
@@ -2495,10 +2513,10 @@ public  class ClientSample {
 		public String peerConnectionId;
 
 		/**
-		 * The sfuSourceId if the track is produced to a SFU
+		 * A unique identifier (UUID) for the RTP stream the media content is sent. Typically if a client is joined to an SFU this can be identical to the id the SFU uses to (publish/subscribe, produce/consume, ...) media
 		 */
-		@JsonProperty("sfuSourceId")
-		public String sfuSourceId;
+		@JsonProperty("rtpStreamId")
+		public String rtpStreamId;
 
 	}
 	/**

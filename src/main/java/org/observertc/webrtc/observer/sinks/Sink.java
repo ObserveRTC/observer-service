@@ -5,7 +5,6 @@ import org.observertc.webrtc.observer.common.OutboundReports;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public abstract class Sink implements Consumer<OutboundReports> {
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(Sink.class);
     protected Logger logger = DEFAULT_LOGGER;

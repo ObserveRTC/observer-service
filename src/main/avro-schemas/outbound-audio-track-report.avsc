@@ -80,6 +80,15 @@
       "default": null
     },
     {
+      "name": "rtpStreamId",
+      "doc": "The id of the RTP stream connected to a remote media unit (such as an SFU)",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "sampleSeq",
       "doc": "The sequence number of the sample the report is generated from",
       "type": "int"

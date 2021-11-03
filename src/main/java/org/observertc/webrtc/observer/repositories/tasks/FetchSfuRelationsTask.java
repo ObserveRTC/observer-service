@@ -2,6 +2,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
+import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,58 +21,31 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    public static class SfuStreamRelations {
-        public final UUID trackId;
-        public final UUID callId;
-        public final UUID clientId;
-
-        public SfuStreamRelations(UUID trackId, UUID callId, UUID clientId) {
-            this.trackId = trackId;
-            this.callId = callId;
-            this.clientId = clientId;
-        }
-    }
-
     public static class Report {
-        public final Map<UUID, SfuStreamRelations> sfuStreamRelations = new HashMap<>();
-        public final Map<UUID, UUID> transportToCallIds = new HashMap<>();
+        public final Map<UUID, UUID> rtpStreamIdToCallIds = new HashMap<>();
     }
 
     private Report result = new Report();
 
-    private Set<UUID> sfuStreamIds = new HashSet<>();
+    private Set<UUID> rtpStreamIds = new HashSet<>();
     private Set<UUID> sfuTransportIds = new HashSet<>();
 
     @PostConstruct
     void setup() {
-
         new Builder<>(this)
                 .addActionStage("Collect Sfu Stream relations", () -> {
-                    if (this.sfuStreamIds.size() < 1) {
+                    if (this.rtpStreamIds.size() < 1) {
                         return;
                     }
-                    this.hazelcastMaps
-                            .getSFURtpPods()
-                            .getAll(this.sfuStreamIds)
-                            .forEach((sfuStreamId, sfuStreamDTO) -> {
-                                this.result.sfuStreamRelations.put(sfuStreamId, new SfuStreamRelations(
-                                        sfuStreamDTO.trackId,
-                                        sfuStreamDTO.callId,
-                                        sfuStreamDTO.clientId
-                                ));
-                            });
-                })
-                .addActionStage("Collect Sfu Transport relations",
-                () -> {
-                    if (sfuTransportIds.size() < 1) {
+                    Map<UUID, UUID> rtpStreamIdToTrackIds = this.hazelcastMaps.getRtpStreamIdsToOutboundTrackIds().getAll(this.rtpStreamIds);
+                    if (rtpStreamIdToTrackIds.size() < 1) {
                         return;
                     }
-                    this.hazelcastMaps
-                            .getSFUTransports()
-                            .getAll(this.sfuTransportIds)
-                            .forEach((sfuTransportId, sfuTransportDTO) -> {
-                                this.result.transportToCallIds.put(sfuTransportId, sfuTransportDTO.callId);
-                            });
+                    Set<UUID> trackIds = new HashSet<>(rtpStreamIdToTrackIds.values());
+                    Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(trackIds);
+                    mediaTrackDTOs.values().forEach(mediaTrackDTO -> {
+                        this.result.rtpStreamIdToCallIds.put(mediaTrackDTO.rtpStreamId, mediaTrackDTO.callId);
+                    });
                 })
                 .addTerminalSupplier("Completed", () -> {
                     return this.result;
@@ -79,16 +53,10 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
         .build();
     }
 
-    public FetchSfuRelationsTask whereSfuStreamIds(Set<UUID> sfuStreamIds) {
-        this.sfuStreamIds.addAll(sfuStreamIds);
+    public FetchSfuRelationsTask whereSfuRtpPadIds(Set<UUID> sfuRtpPadIds) {
+        this.rtpStreamIds.addAll(sfuRtpPadIds);
         return this;
     }
-
-    public FetchSfuRelationsTask whereSfuTransportIds(Set<UUID> sfuTransportIds) {
-        this.sfuTransportIds.addAll(sfuTransportIds);
-        return this;
-    }
-
 
     @Override
     protected void validate() {

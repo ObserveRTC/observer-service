@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** Metadata belongs to SFUs */
 @org.apache.avro.specific.AvroGenerated
 public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2225122073581367424L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuMetaReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Metadata belongs to SFUs\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the Sfu\",\"default\":null},{\"name\":\"sfuName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The provided name of the SFU\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the meta data reported for the peer connection\",\"default\":null},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The payload for the metadata reported for the peeer connection\",\"default\":null}]}");
+  private static final long serialVersionUID = 8030471361038550478L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuMetaReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Metadata belongs to SFUs\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the Sfu\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the meta data reported for the peer connection\",\"default\":null},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The payload for the metadata reported for the peeer connection\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The media unit id the report belongs to */
    private java.lang.String mediaUnitId;
@@ -22,8 +22,6 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
    private long timestamp;
   /** The id of the Sfu */
    private java.lang.String sfuId;
-  /** The provided name of the SFU */
-   private java.lang.String sfuName;
   /** The callId the event belongs to */
    private java.lang.String callId;
   /** The generated unique identifier of the client */
@@ -48,19 +46,17 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
    * @param marker The marker the originated sample is reported with
    * @param timestamp The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    * @param sfuId The id of the Sfu
-   * @param sfuName The provided name of the SFU
    * @param callId The callId the event belongs to
    * @param clientId The generated unique identifier of the client
    * @param peerConnectionId The unique identifier of the peer connection
    * @param type The type of the meta data reported for the peer connection
    * @param payload The payload for the metadata reported for the peeer connection
    */
-  public SfuMetaReport(java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String sfuName, java.lang.String callId, java.lang.String clientId, java.lang.String peerConnectionId, java.lang.String type, java.lang.String payload) {
+  public SfuMetaReport(java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String callId, java.lang.String clientId, java.lang.String peerConnectionId, java.lang.String type, java.lang.String payload) {
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
     this.timestamp = timestamp;
     this.sfuId = sfuId;
-    this.sfuName = sfuName;
     this.callId = callId;
     this.clientId = clientId;
     this.peerConnectionId = peerConnectionId;
@@ -76,12 +72,11 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
     case 1: return marker;
     case 2: return timestamp;
     case 3: return sfuId;
-    case 4: return sfuName;
-    case 5: return callId;
-    case 6: return clientId;
-    case 7: return peerConnectionId;
-    case 8: return type;
-    case 9: return payload;
+    case 4: return callId;
+    case 5: return clientId;
+    case 6: return peerConnectionId;
+    case 7: return type;
+    case 8: return payload;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -94,12 +89,11 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
     case 1: marker = (java.lang.String)value$; break;
     case 2: timestamp = (java.lang.Long)value$; break;
     case 3: sfuId = (java.lang.String)value$; break;
-    case 4: sfuName = (java.lang.String)value$; break;
-    case 5: callId = (java.lang.String)value$; break;
-    case 6: clientId = (java.lang.String)value$; break;
-    case 7: peerConnectionId = (java.lang.String)value$; break;
-    case 8: type = (java.lang.String)value$; break;
-    case 9: payload = (java.lang.String)value$; break;
+    case 4: callId = (java.lang.String)value$; break;
+    case 5: clientId = (java.lang.String)value$; break;
+    case 6: peerConnectionId = (java.lang.String)value$; break;
+    case 7: type = (java.lang.String)value$; break;
+    case 8: payload = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -137,15 +131,6 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
    */
   public java.lang.String getSfuId() {
     return sfuId;
-  }
-
-
-  /**
-   * Gets the value of the 'sfuName' field.
-   * @return The provided name of the SFU
-   */
-  public java.lang.String getSfuName() {
-    return sfuName;
   }
 
 
@@ -234,8 +219,6 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
     private long timestamp;
     /** The id of the Sfu */
     private java.lang.String sfuId;
-    /** The provided name of the SFU */
-    private java.lang.String sfuName;
     /** The callId the event belongs to */
     private java.lang.String callId;
     /** The generated unique identifier of the client */
@@ -274,29 +257,25 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
         this.sfuId = data().deepCopy(fields()[3].schema(), other.sfuId);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.sfuName)) {
-        this.sfuName = data().deepCopy(fields()[4].schema(), other.sfuName);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.clientId)) {
+        this.clientId = data().deepCopy(fields()[5].schema(), other.clientId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
+      if (isValidValue(fields()[6], other.peerConnectionId)) {
+        this.peerConnectionId = data().deepCopy(fields()[6].schema(), other.peerConnectionId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.peerConnectionId)) {
-        this.peerConnectionId = data().deepCopy(fields()[7].schema(), other.peerConnectionId);
+      if (isValidValue(fields()[7], other.type)) {
+        this.type = data().deepCopy(fields()[7].schema(), other.type);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.type)) {
-        this.type = data().deepCopy(fields()[8].schema(), other.type);
+      if (isValidValue(fields()[8], other.payload)) {
+        this.payload = data().deepCopy(fields()[8].schema(), other.payload);
         fieldSetFlags()[8] = true;
-      }
-      if (isValidValue(fields()[9], other.payload)) {
-        this.payload = data().deepCopy(fields()[9].schema(), other.payload);
-        fieldSetFlags()[9] = true;
       }
     }
 
@@ -322,29 +301,25 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
         this.sfuId = data().deepCopy(fields()[3].schema(), other.sfuId);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.sfuName)) {
-        this.sfuName = data().deepCopy(fields()[4].schema(), other.sfuName);
+      if (isValidValue(fields()[4], other.callId)) {
+        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.callId)) {
-        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
+      if (isValidValue(fields()[5], other.clientId)) {
+        this.clientId = data().deepCopy(fields()[5].schema(), other.clientId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
+      if (isValidValue(fields()[6], other.peerConnectionId)) {
+        this.peerConnectionId = data().deepCopy(fields()[6].schema(), other.peerConnectionId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.peerConnectionId)) {
-        this.peerConnectionId = data().deepCopy(fields()[7].schema(), other.peerConnectionId);
+      if (isValidValue(fields()[7], other.type)) {
+        this.type = data().deepCopy(fields()[7].schema(), other.type);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.type)) {
-        this.type = data().deepCopy(fields()[8].schema(), other.type);
+      if (isValidValue(fields()[8], other.payload)) {
+        this.payload = data().deepCopy(fields()[8].schema(), other.payload);
         fieldSetFlags()[8] = true;
-      }
-      if (isValidValue(fields()[9], other.payload)) {
-        this.payload = data().deepCopy(fields()[9].schema(), other.payload);
-        fieldSetFlags()[9] = true;
       }
     }
 
@@ -520,49 +495,6 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
     }
 
     /**
-      * Gets the value of the 'sfuName' field.
-      * The provided name of the SFU
-      * @return The value.
-      */
-    public java.lang.String getSfuName() {
-      return sfuName;
-    }
-
-    /**
-      * Sets the value of the 'sfuName' field.
-      * The provided name of the SFU
-      * @param value The value of 'sfuName'.
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder setSfuName(java.lang.String value) {
-      validate(fields()[4], value);
-      this.sfuName = value;
-      fieldSetFlags()[4] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sfuName' field has been set.
-      * The provided name of the SFU
-      * @return True if the 'sfuName' field has been set, false otherwise.
-      */
-    public boolean hasSfuName() {
-      return fieldSetFlags()[4];
-    }
-
-
-    /**
-      * Clears the value of the 'sfuName' field.
-      * The provided name of the SFU
-      * @return This builder.
-      */
-    public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder clearSfuName() {
-      sfuName = null;
-      fieldSetFlags()[4] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'callId' field.
       * The callId the event belongs to
       * @return The value.
@@ -578,9 +510,9 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder setCallId(java.lang.String value) {
-      validate(fields()[5], value);
+      validate(fields()[4], value);
       this.callId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -590,7 +522,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'callId' field has been set, false otherwise.
       */
     public boolean hasCallId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -601,7 +533,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder clearCallId() {
       callId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -621,9 +553,9 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder setClientId(java.lang.String value) {
-      validate(fields()[6], value);
+      validate(fields()[5], value);
       this.clientId = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -633,7 +565,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'clientId' field has been set, false otherwise.
       */
     public boolean hasClientId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
 
 
@@ -644,7 +576,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder clearClientId() {
       clientId = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -664,9 +596,9 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder setPeerConnectionId(java.lang.String value) {
-      validate(fields()[7], value);
+      validate(fields()[6], value);
       this.peerConnectionId = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -676,7 +608,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'peerConnectionId' field has been set, false otherwise.
       */
     public boolean hasPeerConnectionId() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[6];
     }
 
 
@@ -687,7 +619,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -707,9 +639,9 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder setType(java.lang.String value) {
-      validate(fields()[8], value);
+      validate(fields()[7], value);
       this.type = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -719,7 +651,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'type' field has been set, false otherwise.
       */
     public boolean hasType() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[7];
     }
 
 
@@ -730,7 +662,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder clearType() {
       type = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -750,9 +682,9 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder setPayload(java.lang.String value) {
-      validate(fields()[9], value);
+      validate(fields()[8], value);
       this.payload = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -762,7 +694,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'payload' field has been set, false otherwise.
       */
     public boolean hasPayload() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[8];
     }
 
 
@@ -773,7 +705,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       */
     public org.observertc.webrtc.schemas.reports.SfuMetaReport.Builder clearPayload() {
       payload = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -785,12 +717,11 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
         record.marker = fieldSetFlags()[1] ? this.marker : (java.lang.String) defaultValue(fields()[1]);
         record.timestamp = fieldSetFlags()[2] ? this.timestamp : (java.lang.Long) defaultValue(fields()[2]);
         record.sfuId = fieldSetFlags()[3] ? this.sfuId : (java.lang.String) defaultValue(fields()[3]);
-        record.sfuName = fieldSetFlags()[4] ? this.sfuName : (java.lang.String) defaultValue(fields()[4]);
-        record.callId = fieldSetFlags()[5] ? this.callId : (java.lang.String) defaultValue(fields()[5]);
-        record.clientId = fieldSetFlags()[6] ? this.clientId : (java.lang.String) defaultValue(fields()[6]);
-        record.peerConnectionId = fieldSetFlags()[7] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[7]);
-        record.type = fieldSetFlags()[8] ? this.type : (java.lang.String) defaultValue(fields()[8]);
-        record.payload = fieldSetFlags()[9] ? this.payload : (java.lang.String) defaultValue(fields()[9]);
+        record.callId = fieldSetFlags()[4] ? this.callId : (java.lang.String) defaultValue(fields()[4]);
+        record.clientId = fieldSetFlags()[5] ? this.clientId : (java.lang.String) defaultValue(fields()[5]);
+        record.peerConnectionId = fieldSetFlags()[6] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[6]);
+        record.type = fieldSetFlags()[7] ? this.type : (java.lang.String) defaultValue(fields()[7]);
+        record.payload = fieldSetFlags()[8] ? this.payload : (java.lang.String) defaultValue(fields()[8]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

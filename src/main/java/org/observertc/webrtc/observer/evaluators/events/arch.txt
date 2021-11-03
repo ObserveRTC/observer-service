@@ -1,0 +1,9 @@
+
+Fence
+ - have consumer methods listening
+event_1 -> (add data to a specific target) check_1
+event_2 -> check_1
+
+check_1 -> trigger
+
+trigger -> task

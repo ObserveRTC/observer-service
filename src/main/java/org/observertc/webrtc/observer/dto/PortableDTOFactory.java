@@ -31,6 +31,7 @@ public class PortableDTOFactory implements PortableFactory {
 	public static final int SFU_DTO_CLASS_ID                = 108000;
 	public static final int SFU_TRANSPORT_DTO_CLASS_ID      = 109000;
 	public static final int SFU_RTP_STREAM_POD_DTO_CLASS_ID = 110000;
+	public static final int GENERAL_ENTRY_DTO_CLASS_ID      = 120000;
 
 
     @Override
@@ -54,7 +55,10 @@ public class PortableDTOFactory implements PortableFactory {
 			case SFU_TRANSPORT_DTO_CLASS_ID:
 				return new SfuTransportDTO();
 			case SFU_RTP_STREAM_POD_DTO_CLASS_ID:
-				return new SfuRtpStreamPodDTO();
+				return new SfuRtpPadDTO();
+
+			case GENERAL_ENTRY_DTO_CLASS_ID:
+				return new GeneralEntryDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

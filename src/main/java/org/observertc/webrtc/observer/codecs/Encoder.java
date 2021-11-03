@@ -34,9 +34,9 @@ public interface Encoder {
 
     OutboundReport.SfuTransportReport encodeSfuTransportReport(SFUTransportReport sfuTransportReport);
 
-    OutboundReport.SfuRtpSourceReport encodeSfuRtpSourceReport(SfuRTPSourceReport sfuRtpSourceReport);
+    OutboundReport.SfuInboundRtpPadReport encodeSfuInboundRtpPadReport(SfuInboundRtpPadReport sfuInboundRtpPadReport);
 
-    OutboundReport.SfuRtpSinkReport encodeSfuRtpSinkReport(SfuRTPSinkReport sfuRtpSinkReport);
+    OutboundReport.SfuOutboundRtpPadReport encodeSfuOutboundRtpPadReport(SfuOutboundRtpPadReport sfuOutboundRtpPadReport);
 
     OutboundReport.SfuSctpStreamReport encodeSfuSctpStreamReport(SfuSctpStreamReport sfuSctpStreamReport);
 

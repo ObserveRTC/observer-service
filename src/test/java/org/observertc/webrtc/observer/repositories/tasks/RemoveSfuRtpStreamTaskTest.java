@@ -4,7 +4,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTO;
+import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.dto.SfuRtpStreamPodDTOGenerator;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
@@ -22,24 +22,24 @@ class RemoveSfuRtpStreamTaskTest {
     SfuRtpStreamPodDTOGenerator generator;
 
     @Inject
-    Provider<RemoveSfuRtpStreamsTask> removeSfuRtpStreamsTaskProvider;
+    Provider<RemoveSfuRtpPadsTask> removeSfuRtpStreamsTaskProvider;
 
-    private SfuRtpStreamPodDTO createdDTO;
+    private SfuRtpPadDTO createdDTO;
 
     @BeforeEach
     void setup() {
         this.createdDTO = this.generator.get();
-        this.hazelcastMaps.getSFURtpPods().put(this.createdDTO.sfuPodId, this.createdDTO);
+        this.hazelcastMaps.getSFURtpPads().put(this.createdDTO.sfuPadId, this.createdDTO);
     }
 
     @Test
     public void removeSfuTransport_1() {
         var task = removeSfuRtpStreamsTaskProvider.get()
-                .whereSfuRtpStreamPodIds(Set.of(this.createdDTO.sfuPodId))
+                .whereSfuRtpStreamPodIds(Set.of(this.createdDTO.sfuPadId))
                 .execute()
                 ;
 
-        var hasId = this.hazelcastMaps.getSFURtpPods().containsKey(this.createdDTO.sfuPodId);
+        var hasId = this.hazelcastMaps.getSFURtpPads().containsKey(this.createdDTO.sfuPadId);
         Assertions.assertFalse(hasId);
     }
 
@@ -50,7 +50,7 @@ class RemoveSfuRtpStreamTaskTest {
                 .execute()
                 ;
 
-        var hasId = this.hazelcastMaps.getSFURtpPods().containsKey(this.createdDTO.sfuPodId);
+        var hasId = this.hazelcastMaps.getSFURtpPads().containsKey(this.createdDTO.sfuPadId);
         Assertions.assertTrue(hasId);
     }
 }

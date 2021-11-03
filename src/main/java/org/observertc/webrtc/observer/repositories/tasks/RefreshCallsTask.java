@@ -66,9 +66,6 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
                             Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(this.mediaTrackIds);
                             mediaTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
                                 this.report.foundMediaTrackIdsToPeerConnectionIds.put(trackId, mediaTrackDTO.peerConnectionId);
-//                                if (StreamDirection.INBOUND.equals(mediaTrackDTO.direction)) {
-//                                    this.inboundTrackIds.add(trackId);
-//                                }
                             });
                         })
 //                .addActionStage("Check Inbound TrackIds to Outbound TrackIds",

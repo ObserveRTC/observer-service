@@ -2,7 +2,7 @@
   "type": "record",
   "name": "CallEventReport",
   "namespace": "org.observertc.webrtc.schemas.reports",
-  "doc": "Events happened in calls.",
+  "doc": "Events happened in calls. ",
   "fields": [
     {
       "name": "serviceId",
@@ -115,7 +115,7 @@
     },
     {
       "name": "name",
-      "doc": "The name of the event",
+      "doc": "The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED",
       "type": "string"
     },
     {

@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "SfuRTPSinkReport",
+  "name": "SfuOutboundRtpPadReport",
   "namespace": "org.observertc.webrtc.schemas.reports",
   "doc": "A Report created for RTP streams going through the SFU",
   "fields": [
@@ -13,15 +13,6 @@
       "name": "sfuId",
       "doc": "The provided unique identifier of the SFU",
       "type": "string"
-    },
-    {
-      "name": "sfuName",
-      "doc": "The provided name of the SFU",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": null
     },
     {
       "name": "marker",
@@ -43,8 +34,13 @@
       "type": "string"
     },
     {
-      "name": "streamId",
+      "name": "rtpStreamId",
       "doc": "The id of the RTP stream.",
+      "type": "string"
+    },
+    {
+      "name": "padId",
+      "doc": "The id of Sfu pad.",
       "type": "string"
     },
     {
@@ -53,18 +49,13 @@
       "type": "long"
     },
     {
-      "name": "trackId",
-      "doc": "The id of the track the RTP stream related to at the client side",
+      "name": "callId",
+      "doc": "The callId the event belongs to",
       "type": [
         "null",
         "string"
       ],
       "default": null
-    },
-    {
-      "name": "sinkId",
-      "doc": "The id of the sink component of the RTP stream.",
-      "type": "string"
     },
     {
       "name": "clientId",
@@ -76,8 +67,8 @@
       "default": null
     },
     {
-      "name": "callId",
-      "doc": "The callId the event belongs to",
+      "name": "trackId",
+      "doc": "The id of the track the RTP stream related to at the client side",
       "type": [
         "null",
         "string"

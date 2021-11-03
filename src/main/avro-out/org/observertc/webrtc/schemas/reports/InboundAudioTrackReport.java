@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for Inbound Audio Tracks. A combination of Codec metadata carrying inbound and remote outbound RTP stats measurements */
 @org.apache.avro.specific.AvroGenerated
 public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -1660337936353140062L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InboundAudioTrackReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for Inbound Audio Tracks. A combination of Codec metadata carrying inbound and remote outbound RTP stats measurements\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is labeled with\",\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track\",\"default\":null},{\"name\":\"remoteUserId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it\",\"default\":null},{\"name\":\"remoteClientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The observer matched remote client Id\",\"default\":null},{\"name\":\"remotePeerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The observer matched remote Peer Connection Id\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The RTP SSRC field\"},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded synchronization source\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of bytes received on the corresponded synchronization source\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The corresponded synchronization source reported jitter\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets missed the playout point and therefore discarded by the jitterbuffer\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source\",\"default\":null},{\"name\":\"burstPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost in burst (RFC6958)\",\"default\":null},{\"name\":\"burstPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets discarded in burst (RFC6958)\",\"default\":null},{\"name\":\"burstLossCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsLost on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"voiceActivityFlag\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Indicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header\",\"default\":null},{\"name\":\"lastPacketReceivedTimestamp\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"averageRtcpInterval\",\"type\":[\"null\",\"double\"],\"doc\":\"The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"headerBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of FEC packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of FEC packets discarded over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes received over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsFailedDecryption\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of packets received and failed to decrypt over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsDuplicated\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of packets identified as duplicated over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"perDscpPacketsReceived\",\"type\":[\"null\",\"double\"],\"doc\":\"The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalProcessingDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"The total processing delay in seconds spend on buffering RTP packets from received up until packets are decoded\",\"default\":null},{\"name\":\"estimatedPlayoutTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"The estimated playout time of the corresponded synchronization source\",\"default\":null},{\"name\":\"jitterBufferDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"The total time of RTP packets spent in jitterbuffer waiting for frame completion due to network uncertenity.\",\"default\":null},{\"name\":\"jitterBufferEmittedCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of audio samples or video frames that have come out of the jitter buffer on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"decoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Indicate the name of the decoder implementation library\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of RTP packets sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"","doc\":\"Total number of payload bytes sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"remoteTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)\",\"default\":null},{\"name\":\"reportsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to\",\"default\":null},{\"name\":\"ended\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Flag represents if the receiver ended the media stream track or not.\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The type of the payload the RTP packet SSRC belongs to\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the MIME type of the codec (e.g.: video/vp8)\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The negotiated clock rate the RTP timestamp is generated of\",\"default\":null},{\"name\":\"channels\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The a=fmtp line in the SDP corresponding to the codec\",\"default\":null}]}");
+  private static final long serialVersionUID = -1405111898424363255L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InboundAudioTrackReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for Inbound Audio Tracks. A combination of Codec metadata carrying inbound and remote outbound RTP stats measurements\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is labeled with\",\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track\",\"default\":null},{\"name\":\"rtpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the RTP stream connected to a remote media unit (such as an SFU)\",\"default\":null},{\"name\":\"remoteUserId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it\",\"default\":null},{\"name\":\"remoteClientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The observer matched remote client Id\",\"default\":null},{\"name\":\"remotePeerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The observer matched remote Peer Connection Id\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The RTP SSRC field\"},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded synchronization source\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of bytes received on the corresponded synchronization source\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The corresponded synchronization source reported jitter\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets missed the playout point and therefore discarded by the jitterbuffer\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source\",\"default\":null},{\"name\":\"burstPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost in burst (RFC6958)\",\"default\":null},{\"name\":\"burstPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets discarded in burst (RFC6958)\",\"default\":null},{\"name\":\"burstLossCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsLost on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"voiceActivityFlag\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Indicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header\",\"default\":null},{\"name\":\"lastPacketReceivedTimestamp\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"averageRtcpInterval\",\"type\":[\"null\",\"double\"],\"doc\":\"The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"headerBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of FEC packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of FEC packets discarded over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of bytes received over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsFailedDecryption\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of packets received and failed to decrypt over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsDuplicated\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of packets identified as duplicated over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"perDscpPacketsReceived\",\"type\":[\"null\",\"double\"],\"doc\":\"The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalProcessingDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"The total processing delay in seconds spend on buffering RTP packets from received up until packets are decoded\",\"default\":null},{\"name\":\"estimatedPlayoutTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"The estimated playout time of the corresponded synchronization source\",\"default\":null},{\"name\":\"jitterBufferDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"The total time of RTP packets spent in jitterbuffer waiting for frame completion due to network uncertenity.\",\"default\":null},{\"name\":\"jitterBufferEmittedCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of audio samples or video frames that have come out of the jitter buffer on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"decoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Indicate the name of the decoder implementation library\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"nu","ll\",\"int\"],\"doc\":\"Total number of RTP packets sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of payload bytes sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"remoteTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)\",\"default\":null},{\"name\":\"reportsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to\",\"default\":null},{\"name\":\"ended\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Flag represents if the receiver ended the media stream track or not.\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The type of the payload the RTP packet SSRC belongs to\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the MIME type of the codec (e.g.: video/vp8)\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The negotiated clock rate the RTP timestamp is generated of\",\"default\":null},{\"name\":\"channels\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The a=fmtp line in the SDP corresponding to the codec\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -36,6 +36,8 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
    private java.lang.String label;
   /** The id of the track */
    private java.lang.String trackId;
+  /** The id of the RTP stream connected to a remote media unit (such as an SFU) */
+   private java.lang.String rtpStreamId;
   /** The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it */
    private java.lang.String remoteUserId;
   /** The observer matched remote client Id */
@@ -145,6 +147,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
    * @param peerConnectionId The unique identifier of the peer connection
    * @param label The webrtc app provided label the peer connection is labeled with
    * @param trackId The id of the track
+   * @param rtpStreamId The id of the RTP stream connected to a remote media unit (such as an SFU)
    * @param remoteUserId The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it
    * @param remoteClientId The observer matched remote client Id
    * @param remotePeerConnectionId The observer matched remote Peer Connection Id
@@ -190,7 +193,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
    * @param channels The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
    * @param sdpFmtpLine The a=fmtp line in the SDP corresponding to the codec
    */
-  public InboundAudioTrackReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.String trackId, java.lang.String remoteUserId, java.lang.String remoteClientId, java.lang.String remotePeerConnectionId, java.lang.Integer sampleSeq, java.lang.Long ssrc, java.lang.Integer packetsReceived, java.lang.Integer packetsLost, java.lang.Double jitter, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer burstPacketsLost, java.lang.Integer burstPacketsDiscarded, java.lang.Integer burstLossCount, java.lang.Integer burstDiscardCount, java.lang.Double burstLossRate, java.lang.Double burstDiscardRate, java.lang.Double gapLossRate, java.lang.Double gapDiscardRate, java.lang.Boolean voiceActivityFlag, java.lang.Boolean lastPacketReceivedTimestamp, java.lang.Double averageRtcpInterval, java.lang.Long headerBytesReceived, java.lang.Integer fecPacketsReceived, java.lang.Integer fecPacketsDiscarded, java.lang.Long bytesReceived, java.lang.Integer packetsFailedDecryption, java.lang.Integer packetsDuplicated, java.lang.Double perDscpPacketsReceived, java.lang.Integer nackCount, java.lang.Double totalProcessingDelay, java.lang.Double estimatedPlayoutTimestamp, java.lang.Double jitterBufferDelay, java.lang.Integer jitterBufferEmittedCount, java.lang.String decoderImplementation, java.lang.Integer packetsSent, java.lang.Long bytesSent, java.lang.Double remoteTimestamp, java.lang.Integer reportsSent, java.lang.Boolean ended, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.Integer channels, java.lang.String sdpFmtpLine) {
+  public InboundAudioTrackReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.String trackId, java.lang.String rtpStreamId, java.lang.String remoteUserId, java.lang.String remoteClientId, java.lang.String remotePeerConnectionId, java.lang.Integer sampleSeq, java.lang.Long ssrc, java.lang.Integer packetsReceived, java.lang.Integer packetsLost, java.lang.Double jitter, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer burstPacketsLost, java.lang.Integer burstPacketsDiscarded, java.lang.Integer burstLossCount, java.lang.Integer burstDiscardCount, java.lang.Double burstLossRate, java.lang.Double burstDiscardRate, java.lang.Double gapLossRate, java.lang.Double gapDiscardRate, java.lang.Boolean voiceActivityFlag, java.lang.Boolean lastPacketReceivedTimestamp, java.lang.Double averageRtcpInterval, java.lang.Long headerBytesReceived, java.lang.Integer fecPacketsReceived, java.lang.Integer fecPacketsDiscarded, java.lang.Long bytesReceived, java.lang.Integer packetsFailedDecryption, java.lang.Integer packetsDuplicated, java.lang.Double perDscpPacketsReceived, java.lang.Integer nackCount, java.lang.Double totalProcessingDelay, java.lang.Double estimatedPlayoutTimestamp, java.lang.Double jitterBufferDelay, java.lang.Integer jitterBufferEmittedCount, java.lang.String decoderImplementation, java.lang.Integer packetsSent, java.lang.Long bytesSent, java.lang.Double remoteTimestamp, java.lang.Integer reportsSent, java.lang.Boolean ended, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.Integer channels, java.lang.String sdpFmtpLine) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -202,6 +205,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
     this.peerConnectionId = peerConnectionId;
     this.label = label;
     this.trackId = trackId;
+    this.rtpStreamId = rtpStreamId;
     this.remoteUserId = remoteUserId;
     this.remoteClientId = remoteClientId;
     this.remotePeerConnectionId = remotePeerConnectionId;
@@ -263,50 +267,51 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
     case 8: return peerConnectionId;
     case 9: return label;
     case 10: return trackId;
-    case 11: return remoteUserId;
-    case 12: return remoteClientId;
-    case 13: return remotePeerConnectionId;
-    case 14: return sampleSeq;
-    case 15: return ssrc;
-    case 16: return packetsReceived;
-    case 17: return packetsLost;
-    case 18: return jitter;
-    case 19: return packetsDiscarded;
-    case 20: return packetsRepaired;
-    case 21: return burstPacketsLost;
-    case 22: return burstPacketsDiscarded;
-    case 23: return burstLossCount;
-    case 24: return burstDiscardCount;
-    case 25: return burstLossRate;
-    case 26: return burstDiscardRate;
-    case 27: return gapLossRate;
-    case 28: return gapDiscardRate;
-    case 29: return voiceActivityFlag;
-    case 30: return lastPacketReceivedTimestamp;
-    case 31: return averageRtcpInterval;
-    case 32: return headerBytesReceived;
-    case 33: return fecPacketsReceived;
-    case 34: return fecPacketsDiscarded;
-    case 35: return bytesReceived;
-    case 36: return packetsFailedDecryption;
-    case 37: return packetsDuplicated;
-    case 38: return perDscpPacketsReceived;
-    case 39: return nackCount;
-    case 40: return totalProcessingDelay;
-    case 41: return estimatedPlayoutTimestamp;
-    case 42: return jitterBufferDelay;
-    case 43: return jitterBufferEmittedCount;
-    case 44: return decoderImplementation;
-    case 45: return packetsSent;
-    case 46: return bytesSent;
-    case 47: return remoteTimestamp;
-    case 48: return reportsSent;
-    case 49: return ended;
-    case 50: return payloadType;
-    case 51: return mimeType;
-    case 52: return clockRate;
-    case 53: return channels;
-    case 54: return sdpFmtpLine;
+    case 11: return rtpStreamId;
+    case 12: return remoteUserId;
+    case 13: return remoteClientId;
+    case 14: return remotePeerConnectionId;
+    case 15: return sampleSeq;
+    case 16: return ssrc;
+    case 17: return packetsReceived;
+    case 18: return packetsLost;
+    case 19: return jitter;
+    case 20: return packetsDiscarded;
+    case 21: return packetsRepaired;
+    case 22: return burstPacketsLost;
+    case 23: return burstPacketsDiscarded;
+    case 24: return burstLossCount;
+    case 25: return burstDiscardCount;
+    case 26: return burstLossRate;
+    case 27: return burstDiscardRate;
+    case 28: return gapLossRate;
+    case 29: return gapDiscardRate;
+    case 30: return voiceActivityFlag;
+    case 31: return lastPacketReceivedTimestamp;
+    case 32: return averageRtcpInterval;
+    case 33: return headerBytesReceived;
+    case 34: return fecPacketsReceived;
+    case 35: return fecPacketsDiscarded;
+    case 36: return bytesReceived;
+    case 37: return packetsFailedDecryption;
+    case 38: return packetsDuplicated;
+    case 39: return perDscpPacketsReceived;
+    case 40: return nackCount;
+    case 41: return totalProcessingDelay;
+    case 42: return estimatedPlayoutTimestamp;
+    case 43: return jitterBufferDelay;
+    case 44: return jitterBufferEmittedCount;
+    case 45: return decoderImplementation;
+    case 46: return packetsSent;
+    case 47: return bytesSent;
+    case 48: return remoteTimestamp;
+    case 49: return reportsSent;
+    case 50: return ended;
+    case 51: return payloadType;
+    case 52: return mimeType;
+    case 53: return clockRate;
+    case 54: return channels;
+    case 55: return sdpFmtpLine;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -326,50 +331,51 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
     case 8: peerConnectionId = (java.lang.String)value$; break;
     case 9: label = (java.lang.String)value$; break;
     case 10: trackId = (java.lang.String)value$; break;
-    case 11: remoteUserId = (java.lang.String)value$; break;
-    case 12: remoteClientId = (java.lang.String)value$; break;
-    case 13: remotePeerConnectionId = (java.lang.String)value$; break;
-    case 14: sampleSeq = (java.lang.Integer)value$; break;
-    case 15: ssrc = (java.lang.Long)value$; break;
-    case 16: packetsReceived = (java.lang.Integer)value$; break;
-    case 17: packetsLost = (java.lang.Integer)value$; break;
-    case 18: jitter = (java.lang.Double)value$; break;
-    case 19: packetsDiscarded = (java.lang.Integer)value$; break;
-    case 20: packetsRepaired = (java.lang.Integer)value$; break;
-    case 21: burstPacketsLost = (java.lang.Integer)value$; break;
-    case 22: burstPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 23: burstLossCount = (java.lang.Integer)value$; break;
-    case 24: burstDiscardCount = (java.lang.Integer)value$; break;
-    case 25: burstLossRate = (java.lang.Double)value$; break;
-    case 26: burstDiscardRate = (java.lang.Double)value$; break;
-    case 27: gapLossRate = (java.lang.Double)value$; break;
-    case 28: gapDiscardRate = (java.lang.Double)value$; break;
-    case 29: voiceActivityFlag = (java.lang.Boolean)value$; break;
-    case 30: lastPacketReceivedTimestamp = (java.lang.Boolean)value$; break;
-    case 31: averageRtcpInterval = (java.lang.Double)value$; break;
-    case 32: headerBytesReceived = (java.lang.Long)value$; break;
-    case 33: fecPacketsReceived = (java.lang.Integer)value$; break;
-    case 34: fecPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 35: bytesReceived = (java.lang.Long)value$; break;
-    case 36: packetsFailedDecryption = (java.lang.Integer)value$; break;
-    case 37: packetsDuplicated = (java.lang.Integer)value$; break;
-    case 38: perDscpPacketsReceived = (java.lang.Double)value$; break;
-    case 39: nackCount = (java.lang.Integer)value$; break;
-    case 40: totalProcessingDelay = (java.lang.Double)value$; break;
-    case 41: estimatedPlayoutTimestamp = (java.lang.Double)value$; break;
-    case 42: jitterBufferDelay = (java.lang.Double)value$; break;
-    case 43: jitterBufferEmittedCount = (java.lang.Integer)value$; break;
-    case 44: decoderImplementation = (java.lang.String)value$; break;
-    case 45: packetsSent = (java.lang.Integer)value$; break;
-    case 46: bytesSent = (java.lang.Long)value$; break;
-    case 47: remoteTimestamp = (java.lang.Double)value$; break;
-    case 48: reportsSent = (java.lang.Integer)value$; break;
-    case 49: ended = (java.lang.Boolean)value$; break;
-    case 50: payloadType = (java.lang.Integer)value$; break;
-    case 51: mimeType = (java.lang.String)value$; break;
-    case 52: clockRate = (java.lang.Long)value$; break;
-    case 53: channels = (java.lang.Integer)value$; break;
-    case 54: sdpFmtpLine = (java.lang.String)value$; break;
+    case 11: rtpStreamId = (java.lang.String)value$; break;
+    case 12: remoteUserId = (java.lang.String)value$; break;
+    case 13: remoteClientId = (java.lang.String)value$; break;
+    case 14: remotePeerConnectionId = (java.lang.String)value$; break;
+    case 15: sampleSeq = (java.lang.Integer)value$; break;
+    case 16: ssrc = (java.lang.Long)value$; break;
+    case 17: packetsReceived = (java.lang.Integer)value$; break;
+    case 18: packetsLost = (java.lang.Integer)value$; break;
+    case 19: jitter = (java.lang.Double)value$; break;
+    case 20: packetsDiscarded = (java.lang.Integer)value$; break;
+    case 21: packetsRepaired = (java.lang.Integer)value$; break;
+    case 22: burstPacketsLost = (java.lang.Integer)value$; break;
+    case 23: burstPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 24: burstLossCount = (java.lang.Integer)value$; break;
+    case 25: burstDiscardCount = (java.lang.Integer)value$; break;
+    case 26: burstLossRate = (java.lang.Double)value$; break;
+    case 27: burstDiscardRate = (java.lang.Double)value$; break;
+    case 28: gapLossRate = (java.lang.Double)value$; break;
+    case 29: gapDiscardRate = (java.lang.Double)value$; break;
+    case 30: voiceActivityFlag = (java.lang.Boolean)value$; break;
+    case 31: lastPacketReceivedTimestamp = (java.lang.Boolean)value$; break;
+    case 32: averageRtcpInterval = (java.lang.Double)value$; break;
+    case 33: headerBytesReceived = (java.lang.Long)value$; break;
+    case 34: fecPacketsReceived = (java.lang.Integer)value$; break;
+    case 35: fecPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 36: bytesReceived = (java.lang.Long)value$; break;
+    case 37: packetsFailedDecryption = (java.lang.Integer)value$; break;
+    case 38: packetsDuplicated = (java.lang.Integer)value$; break;
+    case 39: perDscpPacketsReceived = (java.lang.Double)value$; break;
+    case 40: nackCount = (java.lang.Integer)value$; break;
+    case 41: totalProcessingDelay = (java.lang.Double)value$; break;
+    case 42: estimatedPlayoutTimestamp = (java.lang.Double)value$; break;
+    case 43: jitterBufferDelay = (java.lang.Double)value$; break;
+    case 44: jitterBufferEmittedCount = (java.lang.Integer)value$; break;
+    case 45: decoderImplementation = (java.lang.String)value$; break;
+    case 46: packetsSent = (java.lang.Integer)value$; break;
+    case 47: bytesSent = (java.lang.Long)value$; break;
+    case 48: remoteTimestamp = (java.lang.Double)value$; break;
+    case 49: reportsSent = (java.lang.Integer)value$; break;
+    case 50: ended = (java.lang.Boolean)value$; break;
+    case 51: payloadType = (java.lang.Integer)value$; break;
+    case 52: mimeType = (java.lang.String)value$; break;
+    case 53: clockRate = (java.lang.Long)value$; break;
+    case 54: channels = (java.lang.Integer)value$; break;
+    case 55: sdpFmtpLine = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -470,6 +476,15 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
    */
   public java.lang.String getTrackId() {
     return trackId;
+  }
+
+
+  /**
+   * Gets the value of the 'rtpStreamId' field.
+   * @return The id of the RTP stream connected to a remote media unit (such as an SFU)
+   */
+  public java.lang.String getRtpStreamId() {
+    return rtpStreamId;
   }
 
 
@@ -923,6 +938,8 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
     private java.lang.String label;
     /** The id of the track */
     private java.lang.String trackId;
+    /** The id of the RTP stream connected to a remote media unit (such as an SFU) */
+    private java.lang.String rtpStreamId;
     /** The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it */
     private java.lang.String remoteUserId;
     /** The observer matched remote client Id */
@@ -1067,181 +1084,185 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
         this.trackId = data().deepCopy(fields()[10].schema(), other.trackId);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.remoteUserId)) {
-        this.remoteUserId = data().deepCopy(fields()[11].schema(), other.remoteUserId);
+      if (isValidValue(fields()[11], other.rtpStreamId)) {
+        this.rtpStreamId = data().deepCopy(fields()[11].schema(), other.rtpStreamId);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.remoteClientId)) {
-        this.remoteClientId = data().deepCopy(fields()[12].schema(), other.remoteClientId);
+      if (isValidValue(fields()[12], other.remoteUserId)) {
+        this.remoteUserId = data().deepCopy(fields()[12].schema(), other.remoteUserId);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.remotePeerConnectionId)) {
-        this.remotePeerConnectionId = data().deepCopy(fields()[13].schema(), other.remotePeerConnectionId);
+      if (isValidValue(fields()[13], other.remoteClientId)) {
+        this.remoteClientId = data().deepCopy(fields()[13].schema(), other.remoteClientId);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.sampleSeq)) {
-        this.sampleSeq = data().deepCopy(fields()[14].schema(), other.sampleSeq);
+      if (isValidValue(fields()[14], other.remotePeerConnectionId)) {
+        this.remotePeerConnectionId = data().deepCopy(fields()[14].schema(), other.remotePeerConnectionId);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[15].schema(), other.ssrc);
+      if (isValidValue(fields()[15], other.sampleSeq)) {
+        this.sampleSeq = data().deepCopy(fields()[15].schema(), other.sampleSeq);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[16].schema(), other.packetsReceived);
+      if (isValidValue(fields()[16], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[16].schema(), other.ssrc);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[17].schema(), other.packetsLost);
+      if (isValidValue(fields()[17], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[17].schema(), other.packetsReceived);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[18].schema(), other.jitter);
+      if (isValidValue(fields()[18], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[18].schema(), other.packetsLost);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.packetsDiscarded)) {
-        this.packetsDiscarded = data().deepCopy(fields()[19].schema(), other.packetsDiscarded);
+      if (isValidValue(fields()[19], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[19].schema(), other.jitter);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.packetsRepaired)) {
-        this.packetsRepaired = data().deepCopy(fields()[20].schema(), other.packetsRepaired);
+      if (isValidValue(fields()[20], other.packetsDiscarded)) {
+        this.packetsDiscarded = data().deepCopy(fields()[20].schema(), other.packetsDiscarded);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.burstPacketsLost)) {
-        this.burstPacketsLost = data().deepCopy(fields()[21].schema(), other.burstPacketsLost);
+      if (isValidValue(fields()[21], other.packetsRepaired)) {
+        this.packetsRepaired = data().deepCopy(fields()[21].schema(), other.packetsRepaired);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.burstPacketsDiscarded)) {
-        this.burstPacketsDiscarded = data().deepCopy(fields()[22].schema(), other.burstPacketsDiscarded);
+      if (isValidValue(fields()[22], other.burstPacketsLost)) {
+        this.burstPacketsLost = data().deepCopy(fields()[22].schema(), other.burstPacketsLost);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.burstLossCount)) {
-        this.burstLossCount = data().deepCopy(fields()[23].schema(), other.burstLossCount);
+      if (isValidValue(fields()[23], other.burstPacketsDiscarded)) {
+        this.burstPacketsDiscarded = data().deepCopy(fields()[23].schema(), other.burstPacketsDiscarded);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.burstDiscardCount)) {
-        this.burstDiscardCount = data().deepCopy(fields()[24].schema(), other.burstDiscardCount);
+      if (isValidValue(fields()[24], other.burstLossCount)) {
+        this.burstLossCount = data().deepCopy(fields()[24].schema(), other.burstLossCount);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.burstLossRate)) {
-        this.burstLossRate = data().deepCopy(fields()[25].schema(), other.burstLossRate);
+      if (isValidValue(fields()[25], other.burstDiscardCount)) {
+        this.burstDiscardCount = data().deepCopy(fields()[25].schema(), other.burstDiscardCount);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.burstDiscardRate)) {
-        this.burstDiscardRate = data().deepCopy(fields()[26].schema(), other.burstDiscardRate);
+      if (isValidValue(fields()[26], other.burstLossRate)) {
+        this.burstLossRate = data().deepCopy(fields()[26].schema(), other.burstLossRate);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.gapLossRate)) {
-        this.gapLossRate = data().deepCopy(fields()[27].schema(), other.gapLossRate);
+      if (isValidValue(fields()[27], other.burstDiscardRate)) {
+        this.burstDiscardRate = data().deepCopy(fields()[27].schema(), other.burstDiscardRate);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.gapDiscardRate)) {
-        this.gapDiscardRate = data().deepCopy(fields()[28].schema(), other.gapDiscardRate);
+      if (isValidValue(fields()[28], other.gapLossRate)) {
+        this.gapLossRate = data().deepCopy(fields()[28].schema(), other.gapLossRate);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.voiceActivityFlag)) {
-        this.voiceActivityFlag = data().deepCopy(fields()[29].schema(), other.voiceActivityFlag);
+      if (isValidValue(fields()[29], other.gapDiscardRate)) {
+        this.gapDiscardRate = data().deepCopy(fields()[29].schema(), other.gapDiscardRate);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.lastPacketReceivedTimestamp)) {
-        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[30].schema(), other.lastPacketReceivedTimestamp);
+      if (isValidValue(fields()[30], other.voiceActivityFlag)) {
+        this.voiceActivityFlag = data().deepCopy(fields()[30].schema(), other.voiceActivityFlag);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.averageRtcpInterval)) {
-        this.averageRtcpInterval = data().deepCopy(fields()[31].schema(), other.averageRtcpInterval);
+      if (isValidValue(fields()[31], other.lastPacketReceivedTimestamp)) {
+        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[31].schema(), other.lastPacketReceivedTimestamp);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.headerBytesReceived)) {
-        this.headerBytesReceived = data().deepCopy(fields()[32].schema(), other.headerBytesReceived);
+      if (isValidValue(fields()[32], other.averageRtcpInterval)) {
+        this.averageRtcpInterval = data().deepCopy(fields()[32].schema(), other.averageRtcpInterval);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[33].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[33], other.headerBytesReceived)) {
+        this.headerBytesReceived = data().deepCopy(fields()[33].schema(), other.headerBytesReceived);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[34].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[34], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[34].schema(), other.fecPacketsReceived);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[35].schema(), other.bytesReceived);
+      if (isValidValue(fields()[35], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[35].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.packetsFailedDecryption)) {
-        this.packetsFailedDecryption = data().deepCopy(fields()[36].schema(), other.packetsFailedDecryption);
+      if (isValidValue(fields()[36], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[36].schema(), other.bytesReceived);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.packetsDuplicated)) {
-        this.packetsDuplicated = data().deepCopy(fields()[37].schema(), other.packetsDuplicated);
+      if (isValidValue(fields()[37], other.packetsFailedDecryption)) {
+        this.packetsFailedDecryption = data().deepCopy(fields()[37].schema(), other.packetsFailedDecryption);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.perDscpPacketsReceived)) {
-        this.perDscpPacketsReceived = data().deepCopy(fields()[38].schema(), other.perDscpPacketsReceived);
+      if (isValidValue(fields()[38], other.packetsDuplicated)) {
+        this.packetsDuplicated = data().deepCopy(fields()[38].schema(), other.packetsDuplicated);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[39].schema(), other.nackCount);
+      if (isValidValue(fields()[39], other.perDscpPacketsReceived)) {
+        this.perDscpPacketsReceived = data().deepCopy(fields()[39].schema(), other.perDscpPacketsReceived);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.totalProcessingDelay)) {
-        this.totalProcessingDelay = data().deepCopy(fields()[40].schema(), other.totalProcessingDelay);
+      if (isValidValue(fields()[40], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[40].schema(), other.nackCount);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.estimatedPlayoutTimestamp)) {
-        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[41].schema(), other.estimatedPlayoutTimestamp);
+      if (isValidValue(fields()[41], other.totalProcessingDelay)) {
+        this.totalProcessingDelay = data().deepCopy(fields()[41].schema(), other.totalProcessingDelay);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.jitterBufferDelay)) {
-        this.jitterBufferDelay = data().deepCopy(fields()[42].schema(), other.jitterBufferDelay);
+      if (isValidValue(fields()[42], other.estimatedPlayoutTimestamp)) {
+        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[42].schema(), other.estimatedPlayoutTimestamp);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.jitterBufferEmittedCount)) {
-        this.jitterBufferEmittedCount = data().deepCopy(fields()[43].schema(), other.jitterBufferEmittedCount);
+      if (isValidValue(fields()[43], other.jitterBufferDelay)) {
+        this.jitterBufferDelay = data().deepCopy(fields()[43].schema(), other.jitterBufferDelay);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.decoderImplementation)) {
-        this.decoderImplementation = data().deepCopy(fields()[44].schema(), other.decoderImplementation);
+      if (isValidValue(fields()[44], other.jitterBufferEmittedCount)) {
+        this.jitterBufferEmittedCount = data().deepCopy(fields()[44].schema(), other.jitterBufferEmittedCount);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[45].schema(), other.packetsSent);
+      if (isValidValue(fields()[45], other.decoderImplementation)) {
+        this.decoderImplementation = data().deepCopy(fields()[45].schema(), other.decoderImplementation);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[46].schema(), other.bytesSent);
+      if (isValidValue(fields()[46], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[46].schema(), other.packetsSent);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.remoteTimestamp)) {
-        this.remoteTimestamp = data().deepCopy(fields()[47].schema(), other.remoteTimestamp);
+      if (isValidValue(fields()[47], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[47].schema(), other.bytesSent);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.reportsSent)) {
-        this.reportsSent = data().deepCopy(fields()[48].schema(), other.reportsSent);
+      if (isValidValue(fields()[48], other.remoteTimestamp)) {
+        this.remoteTimestamp = data().deepCopy(fields()[48].schema(), other.remoteTimestamp);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.ended)) {
-        this.ended = data().deepCopy(fields()[49].schema(), other.ended);
+      if (isValidValue(fields()[49], other.reportsSent)) {
+        this.reportsSent = data().deepCopy(fields()[49].schema(), other.reportsSent);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.payloadType)) {
-        this.payloadType = data().deepCopy(fields()[50].schema(), other.payloadType);
+      if (isValidValue(fields()[50], other.ended)) {
+        this.ended = data().deepCopy(fields()[50].schema(), other.ended);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.mimeType)) {
-        this.mimeType = data().deepCopy(fields()[51].schema(), other.mimeType);
+      if (isValidValue(fields()[51], other.payloadType)) {
+        this.payloadType = data().deepCopy(fields()[51].schema(), other.payloadType);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.clockRate)) {
-        this.clockRate = data().deepCopy(fields()[52].schema(), other.clockRate);
+      if (isValidValue(fields()[52], other.mimeType)) {
+        this.mimeType = data().deepCopy(fields()[52].schema(), other.mimeType);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.channels)) {
-        this.channels = data().deepCopy(fields()[53].schema(), other.channels);
+      if (isValidValue(fields()[53], other.clockRate)) {
+        this.clockRate = data().deepCopy(fields()[53].schema(), other.clockRate);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.sdpFmtpLine)) {
-        this.sdpFmtpLine = data().deepCopy(fields()[54].schema(), other.sdpFmtpLine);
+      if (isValidValue(fields()[54], other.channels)) {
+        this.channels = data().deepCopy(fields()[54].schema(), other.channels);
         fieldSetFlags()[54] = true;
+      }
+      if (isValidValue(fields()[55], other.sdpFmtpLine)) {
+        this.sdpFmtpLine = data().deepCopy(fields()[55].schema(), other.sdpFmtpLine);
+        fieldSetFlags()[55] = true;
       }
     }
 
@@ -1295,181 +1316,185 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
         this.trackId = data().deepCopy(fields()[10].schema(), other.trackId);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.remoteUserId)) {
-        this.remoteUserId = data().deepCopy(fields()[11].schema(), other.remoteUserId);
+      if (isValidValue(fields()[11], other.rtpStreamId)) {
+        this.rtpStreamId = data().deepCopy(fields()[11].schema(), other.rtpStreamId);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.remoteClientId)) {
-        this.remoteClientId = data().deepCopy(fields()[12].schema(), other.remoteClientId);
+      if (isValidValue(fields()[12], other.remoteUserId)) {
+        this.remoteUserId = data().deepCopy(fields()[12].schema(), other.remoteUserId);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.remotePeerConnectionId)) {
-        this.remotePeerConnectionId = data().deepCopy(fields()[13].schema(), other.remotePeerConnectionId);
+      if (isValidValue(fields()[13], other.remoteClientId)) {
+        this.remoteClientId = data().deepCopy(fields()[13].schema(), other.remoteClientId);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.sampleSeq)) {
-        this.sampleSeq = data().deepCopy(fields()[14].schema(), other.sampleSeq);
+      if (isValidValue(fields()[14], other.remotePeerConnectionId)) {
+        this.remotePeerConnectionId = data().deepCopy(fields()[14].schema(), other.remotePeerConnectionId);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[15].schema(), other.ssrc);
+      if (isValidValue(fields()[15], other.sampleSeq)) {
+        this.sampleSeq = data().deepCopy(fields()[15].schema(), other.sampleSeq);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[16].schema(), other.packetsReceived);
+      if (isValidValue(fields()[16], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[16].schema(), other.ssrc);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[17].schema(), other.packetsLost);
+      if (isValidValue(fields()[17], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[17].schema(), other.packetsReceived);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[18].schema(), other.jitter);
+      if (isValidValue(fields()[18], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[18].schema(), other.packetsLost);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.packetsDiscarded)) {
-        this.packetsDiscarded = data().deepCopy(fields()[19].schema(), other.packetsDiscarded);
+      if (isValidValue(fields()[19], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[19].schema(), other.jitter);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.packetsRepaired)) {
-        this.packetsRepaired = data().deepCopy(fields()[20].schema(), other.packetsRepaired);
+      if (isValidValue(fields()[20], other.packetsDiscarded)) {
+        this.packetsDiscarded = data().deepCopy(fields()[20].schema(), other.packetsDiscarded);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.burstPacketsLost)) {
-        this.burstPacketsLost = data().deepCopy(fields()[21].schema(), other.burstPacketsLost);
+      if (isValidValue(fields()[21], other.packetsRepaired)) {
+        this.packetsRepaired = data().deepCopy(fields()[21].schema(), other.packetsRepaired);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.burstPacketsDiscarded)) {
-        this.burstPacketsDiscarded = data().deepCopy(fields()[22].schema(), other.burstPacketsDiscarded);
+      if (isValidValue(fields()[22], other.burstPacketsLost)) {
+        this.burstPacketsLost = data().deepCopy(fields()[22].schema(), other.burstPacketsLost);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.burstLossCount)) {
-        this.burstLossCount = data().deepCopy(fields()[23].schema(), other.burstLossCount);
+      if (isValidValue(fields()[23], other.burstPacketsDiscarded)) {
+        this.burstPacketsDiscarded = data().deepCopy(fields()[23].schema(), other.burstPacketsDiscarded);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.burstDiscardCount)) {
-        this.burstDiscardCount = data().deepCopy(fields()[24].schema(), other.burstDiscardCount);
+      if (isValidValue(fields()[24], other.burstLossCount)) {
+        this.burstLossCount = data().deepCopy(fields()[24].schema(), other.burstLossCount);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.burstLossRate)) {
-        this.burstLossRate = data().deepCopy(fields()[25].schema(), other.burstLossRate);
+      if (isValidValue(fields()[25], other.burstDiscardCount)) {
+        this.burstDiscardCount = data().deepCopy(fields()[25].schema(), other.burstDiscardCount);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.burstDiscardRate)) {
-        this.burstDiscardRate = data().deepCopy(fields()[26].schema(), other.burstDiscardRate);
+      if (isValidValue(fields()[26], other.burstLossRate)) {
+        this.burstLossRate = data().deepCopy(fields()[26].schema(), other.burstLossRate);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.gapLossRate)) {
-        this.gapLossRate = data().deepCopy(fields()[27].schema(), other.gapLossRate);
+      if (isValidValue(fields()[27], other.burstDiscardRate)) {
+        this.burstDiscardRate = data().deepCopy(fields()[27].schema(), other.burstDiscardRate);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.gapDiscardRate)) {
-        this.gapDiscardRate = data().deepCopy(fields()[28].schema(), other.gapDiscardRate);
+      if (isValidValue(fields()[28], other.gapLossRate)) {
+        this.gapLossRate = data().deepCopy(fields()[28].schema(), other.gapLossRate);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.voiceActivityFlag)) {
-        this.voiceActivityFlag = data().deepCopy(fields()[29].schema(), other.voiceActivityFlag);
+      if (isValidValue(fields()[29], other.gapDiscardRate)) {
+        this.gapDiscardRate = data().deepCopy(fields()[29].schema(), other.gapDiscardRate);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.lastPacketReceivedTimestamp)) {
-        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[30].schema(), other.lastPacketReceivedTimestamp);
+      if (isValidValue(fields()[30], other.voiceActivityFlag)) {
+        this.voiceActivityFlag = data().deepCopy(fields()[30].schema(), other.voiceActivityFlag);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.averageRtcpInterval)) {
-        this.averageRtcpInterval = data().deepCopy(fields()[31].schema(), other.averageRtcpInterval);
+      if (isValidValue(fields()[31], other.lastPacketReceivedTimestamp)) {
+        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[31].schema(), other.lastPacketReceivedTimestamp);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.headerBytesReceived)) {
-        this.headerBytesReceived = data().deepCopy(fields()[32].schema(), other.headerBytesReceived);
+      if (isValidValue(fields()[32], other.averageRtcpInterval)) {
+        this.averageRtcpInterval = data().deepCopy(fields()[32].schema(), other.averageRtcpInterval);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[33].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[33], other.headerBytesReceived)) {
+        this.headerBytesReceived = data().deepCopy(fields()[33].schema(), other.headerBytesReceived);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[34].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[34], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[34].schema(), other.fecPacketsReceived);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[35].schema(), other.bytesReceived);
+      if (isValidValue(fields()[35], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[35].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.packetsFailedDecryption)) {
-        this.packetsFailedDecryption = data().deepCopy(fields()[36].schema(), other.packetsFailedDecryption);
+      if (isValidValue(fields()[36], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[36].schema(), other.bytesReceived);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.packetsDuplicated)) {
-        this.packetsDuplicated = data().deepCopy(fields()[37].schema(), other.packetsDuplicated);
+      if (isValidValue(fields()[37], other.packetsFailedDecryption)) {
+        this.packetsFailedDecryption = data().deepCopy(fields()[37].schema(), other.packetsFailedDecryption);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.perDscpPacketsReceived)) {
-        this.perDscpPacketsReceived = data().deepCopy(fields()[38].schema(), other.perDscpPacketsReceived);
+      if (isValidValue(fields()[38], other.packetsDuplicated)) {
+        this.packetsDuplicated = data().deepCopy(fields()[38].schema(), other.packetsDuplicated);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[39].schema(), other.nackCount);
+      if (isValidValue(fields()[39], other.perDscpPacketsReceived)) {
+        this.perDscpPacketsReceived = data().deepCopy(fields()[39].schema(), other.perDscpPacketsReceived);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.totalProcessingDelay)) {
-        this.totalProcessingDelay = data().deepCopy(fields()[40].schema(), other.totalProcessingDelay);
+      if (isValidValue(fields()[40], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[40].schema(), other.nackCount);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.estimatedPlayoutTimestamp)) {
-        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[41].schema(), other.estimatedPlayoutTimestamp);
+      if (isValidValue(fields()[41], other.totalProcessingDelay)) {
+        this.totalProcessingDelay = data().deepCopy(fields()[41].schema(), other.totalProcessingDelay);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.jitterBufferDelay)) {
-        this.jitterBufferDelay = data().deepCopy(fields()[42].schema(), other.jitterBufferDelay);
+      if (isValidValue(fields()[42], other.estimatedPlayoutTimestamp)) {
+        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[42].schema(), other.estimatedPlayoutTimestamp);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.jitterBufferEmittedCount)) {
-        this.jitterBufferEmittedCount = data().deepCopy(fields()[43].schema(), other.jitterBufferEmittedCount);
+      if (isValidValue(fields()[43], other.jitterBufferDelay)) {
+        this.jitterBufferDelay = data().deepCopy(fields()[43].schema(), other.jitterBufferDelay);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.decoderImplementation)) {
-        this.decoderImplementation = data().deepCopy(fields()[44].schema(), other.decoderImplementation);
+      if (isValidValue(fields()[44], other.jitterBufferEmittedCount)) {
+        this.jitterBufferEmittedCount = data().deepCopy(fields()[44].schema(), other.jitterBufferEmittedCount);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[45].schema(), other.packetsSent);
+      if (isValidValue(fields()[45], other.decoderImplementation)) {
+        this.decoderImplementation = data().deepCopy(fields()[45].schema(), other.decoderImplementation);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[46].schema(), other.bytesSent);
+      if (isValidValue(fields()[46], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[46].schema(), other.packetsSent);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.remoteTimestamp)) {
-        this.remoteTimestamp = data().deepCopy(fields()[47].schema(), other.remoteTimestamp);
+      if (isValidValue(fields()[47], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[47].schema(), other.bytesSent);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.reportsSent)) {
-        this.reportsSent = data().deepCopy(fields()[48].schema(), other.reportsSent);
+      if (isValidValue(fields()[48], other.remoteTimestamp)) {
+        this.remoteTimestamp = data().deepCopy(fields()[48].schema(), other.remoteTimestamp);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.ended)) {
-        this.ended = data().deepCopy(fields()[49].schema(), other.ended);
+      if (isValidValue(fields()[49], other.reportsSent)) {
+        this.reportsSent = data().deepCopy(fields()[49].schema(), other.reportsSent);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.payloadType)) {
-        this.payloadType = data().deepCopy(fields()[50].schema(), other.payloadType);
+      if (isValidValue(fields()[50], other.ended)) {
+        this.ended = data().deepCopy(fields()[50].schema(), other.ended);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.mimeType)) {
-        this.mimeType = data().deepCopy(fields()[51].schema(), other.mimeType);
+      if (isValidValue(fields()[51], other.payloadType)) {
+        this.payloadType = data().deepCopy(fields()[51].schema(), other.payloadType);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.clockRate)) {
-        this.clockRate = data().deepCopy(fields()[52].schema(), other.clockRate);
+      if (isValidValue(fields()[52], other.mimeType)) {
+        this.mimeType = data().deepCopy(fields()[52].schema(), other.mimeType);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.channels)) {
-        this.channels = data().deepCopy(fields()[53].schema(), other.channels);
+      if (isValidValue(fields()[53], other.clockRate)) {
+        this.clockRate = data().deepCopy(fields()[53].schema(), other.clockRate);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.sdpFmtpLine)) {
-        this.sdpFmtpLine = data().deepCopy(fields()[54].schema(), other.sdpFmtpLine);
+      if (isValidValue(fields()[54], other.channels)) {
+        this.channels = data().deepCopy(fields()[54].schema(), other.channels);
         fieldSetFlags()[54] = true;
+      }
+      if (isValidValue(fields()[55], other.sdpFmtpLine)) {
+        this.sdpFmtpLine = data().deepCopy(fields()[55].schema(), other.sdpFmtpLine);
+        fieldSetFlags()[55] = true;
       }
     }
 
@@ -1946,6 +1971,49 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
     }
 
     /**
+      * Gets the value of the 'rtpStreamId' field.
+      * The id of the RTP stream connected to a remote media unit (such as an SFU)
+      * @return The value.
+      */
+    public java.lang.String getRtpStreamId() {
+      return rtpStreamId;
+    }
+
+    /**
+      * Sets the value of the 'rtpStreamId' field.
+      * The id of the RTP stream connected to a remote media unit (such as an SFU)
+      * @param value The value of 'rtpStreamId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setRtpStreamId(java.lang.String value) {
+      validate(fields()[11], value);
+      this.rtpStreamId = value;
+      fieldSetFlags()[11] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'rtpStreamId' field has been set.
+      * The id of the RTP stream connected to a remote media unit (such as an SFU)
+      * @return True if the 'rtpStreamId' field has been set, false otherwise.
+      */
+    public boolean hasRtpStreamId() {
+      return fieldSetFlags()[11];
+    }
+
+
+    /**
+      * Clears the value of the 'rtpStreamId' field.
+      * The id of the RTP stream connected to a remote media unit (such as an SFU)
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearRtpStreamId() {
+      rtpStreamId = null;
+      fieldSetFlags()[11] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'remoteUserId' field.
       * The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it
       * @return The value.
@@ -1961,9 +2029,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setRemoteUserId(java.lang.String value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.remoteUserId = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1973,7 +2041,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'remoteUserId' field has been set, false otherwise.
       */
     public boolean hasRemoteUserId() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1984,7 +2052,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearRemoteUserId() {
       remoteUserId = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -2004,9 +2072,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setRemoteClientId(java.lang.String value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.remoteClientId = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -2016,7 +2084,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'remoteClientId' field has been set, false otherwise.
       */
     public boolean hasRemoteClientId() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -2027,7 +2095,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearRemoteClientId() {
       remoteClientId = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -2047,9 +2115,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setRemotePeerConnectionId(java.lang.String value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.remotePeerConnectionId = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -2059,7 +2127,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'remotePeerConnectionId' field has been set, false otherwise.
       */
     public boolean hasRemotePeerConnectionId() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -2070,7 +2138,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearRemotePeerConnectionId() {
       remotePeerConnectionId = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -2090,9 +2158,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setSampleSeq(int value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.sampleSeq = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -2102,7 +2170,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'sampleSeq' field has been set, false otherwise.
       */
     public boolean hasSampleSeq() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -2112,7 +2180,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearSampleSeq() {
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -2132,9 +2200,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setSsrc(long value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.ssrc = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -2144,7 +2212,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'ssrc' field has been set, false otherwise.
       */
     public boolean hasSsrc() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -2154,7 +2222,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearSsrc() {
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -2174,9 +2242,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsReceived(java.lang.Integer value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.packetsReceived = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -2186,7 +2254,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsReceived' field has been set, false otherwise.
       */
     public boolean hasPacketsReceived() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -2197,7 +2265,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsReceived() {
       packetsReceived = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -2217,9 +2285,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsLost(java.lang.Integer value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.packetsLost = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -2229,7 +2297,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsLost' field has been set, false otherwise.
       */
     public boolean hasPacketsLost() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -2240,7 +2308,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsLost() {
       packetsLost = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -2260,9 +2328,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setJitter(java.lang.Double value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.jitter = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -2272,7 +2340,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'jitter' field has been set, false otherwise.
       */
     public boolean hasJitter() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -2283,7 +2351,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearJitter() {
       jitter = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -2303,9 +2371,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.packetsDiscarded = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -2315,7 +2383,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsDiscarded' field has been set, false otherwise.
       */
     public boolean hasPacketsDiscarded() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -2326,7 +2394,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsDiscarded() {
       packetsDiscarded = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -2346,9 +2414,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsRepaired(java.lang.Integer value) {
-      validate(fields()[20], value);
+      validate(fields()[21], value);
       this.packetsRepaired = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -2358,7 +2426,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsRepaired' field has been set, false otherwise.
       */
     public boolean hasPacketsRepaired() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -2369,7 +2437,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsRepaired() {
       packetsRepaired = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -2389,9 +2457,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBurstPacketsLost(java.lang.Integer value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.burstPacketsLost = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -2401,7 +2469,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'burstPacketsLost' field has been set, false otherwise.
       */
     public boolean hasBurstPacketsLost() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -2412,7 +2480,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBurstPacketsLost() {
       burstPacketsLost = null;
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -2432,9 +2500,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBurstPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[22], value);
+      validate(fields()[23], value);
       this.burstPacketsDiscarded = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -2444,7 +2512,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'burstPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasBurstPacketsDiscarded() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[23];
     }
 
 
@@ -2455,7 +2523,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBurstPacketsDiscarded() {
       burstPacketsDiscarded = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -2475,9 +2543,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBurstLossCount(java.lang.Integer value) {
-      validate(fields()[23], value);
+      validate(fields()[24], value);
       this.burstLossCount = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -2487,7 +2555,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'burstLossCount' field has been set, false otherwise.
       */
     public boolean hasBurstLossCount() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[24];
     }
 
 
@@ -2498,7 +2566,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBurstLossCount() {
       burstLossCount = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -2518,9 +2586,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBurstDiscardCount(java.lang.Integer value) {
-      validate(fields()[24], value);
+      validate(fields()[25], value);
       this.burstDiscardCount = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -2530,7 +2598,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'burstDiscardCount' field has been set, false otherwise.
       */
     public boolean hasBurstDiscardCount() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[25];
     }
 
 
@@ -2541,7 +2609,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBurstDiscardCount() {
       burstDiscardCount = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -2561,9 +2629,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBurstLossRate(java.lang.Double value) {
-      validate(fields()[25], value);
+      validate(fields()[26], value);
       this.burstLossRate = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -2573,7 +2641,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'burstLossRate' field has been set, false otherwise.
       */
     public boolean hasBurstLossRate() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[26];
     }
 
 
@@ -2584,7 +2652,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBurstLossRate() {
       burstLossRate = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -2604,9 +2672,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBurstDiscardRate(java.lang.Double value) {
-      validate(fields()[26], value);
+      validate(fields()[27], value);
       this.burstDiscardRate = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -2616,7 +2684,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'burstDiscardRate' field has been set, false otherwise.
       */
     public boolean hasBurstDiscardRate() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[27];
     }
 
 
@@ -2627,7 +2695,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBurstDiscardRate() {
       burstDiscardRate = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -2647,9 +2715,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setGapLossRate(java.lang.Double value) {
-      validate(fields()[27], value);
+      validate(fields()[28], value);
       this.gapLossRate = value;
-      fieldSetFlags()[27] = true;
+      fieldSetFlags()[28] = true;
       return this;
     }
 
@@ -2659,7 +2727,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'gapLossRate' field has been set, false otherwise.
       */
     public boolean hasGapLossRate() {
-      return fieldSetFlags()[27];
+      return fieldSetFlags()[28];
     }
 
 
@@ -2670,7 +2738,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearGapLossRate() {
       gapLossRate = null;
-      fieldSetFlags()[27] = false;
+      fieldSetFlags()[28] = false;
       return this;
     }
 
@@ -2690,9 +2758,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setGapDiscardRate(java.lang.Double value) {
-      validate(fields()[28], value);
+      validate(fields()[29], value);
       this.gapDiscardRate = value;
-      fieldSetFlags()[28] = true;
+      fieldSetFlags()[29] = true;
       return this;
     }
 
@@ -2702,7 +2770,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'gapDiscardRate' field has been set, false otherwise.
       */
     public boolean hasGapDiscardRate() {
-      return fieldSetFlags()[28];
+      return fieldSetFlags()[29];
     }
 
 
@@ -2713,7 +2781,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearGapDiscardRate() {
       gapDiscardRate = null;
-      fieldSetFlags()[28] = false;
+      fieldSetFlags()[29] = false;
       return this;
     }
 
@@ -2733,9 +2801,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setVoiceActivityFlag(java.lang.Boolean value) {
-      validate(fields()[29], value);
+      validate(fields()[30], value);
       this.voiceActivityFlag = value;
-      fieldSetFlags()[29] = true;
+      fieldSetFlags()[30] = true;
       return this;
     }
 
@@ -2745,7 +2813,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'voiceActivityFlag' field has been set, false otherwise.
       */
     public boolean hasVoiceActivityFlag() {
-      return fieldSetFlags()[29];
+      return fieldSetFlags()[30];
     }
 
 
@@ -2756,7 +2824,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearVoiceActivityFlag() {
       voiceActivityFlag = null;
-      fieldSetFlags()[29] = false;
+      fieldSetFlags()[30] = false;
       return this;
     }
 
@@ -2776,9 +2844,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setLastPacketReceivedTimestamp(java.lang.Boolean value) {
-      validate(fields()[30], value);
+      validate(fields()[31], value);
       this.lastPacketReceivedTimestamp = value;
-      fieldSetFlags()[30] = true;
+      fieldSetFlags()[31] = true;
       return this;
     }
 
@@ -2788,7 +2856,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'lastPacketReceivedTimestamp' field has been set, false otherwise.
       */
     public boolean hasLastPacketReceivedTimestamp() {
-      return fieldSetFlags()[30];
+      return fieldSetFlags()[31];
     }
 
 
@@ -2799,7 +2867,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearLastPacketReceivedTimestamp() {
       lastPacketReceivedTimestamp = null;
-      fieldSetFlags()[30] = false;
+      fieldSetFlags()[31] = false;
       return this;
     }
 
@@ -2819,9 +2887,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setAverageRtcpInterval(java.lang.Double value) {
-      validate(fields()[31], value);
+      validate(fields()[32], value);
       this.averageRtcpInterval = value;
-      fieldSetFlags()[31] = true;
+      fieldSetFlags()[32] = true;
       return this;
     }
 
@@ -2831,7 +2899,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'averageRtcpInterval' field has been set, false otherwise.
       */
     public boolean hasAverageRtcpInterval() {
-      return fieldSetFlags()[31];
+      return fieldSetFlags()[32];
     }
 
 
@@ -2842,7 +2910,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearAverageRtcpInterval() {
       averageRtcpInterval = null;
-      fieldSetFlags()[31] = false;
+      fieldSetFlags()[32] = false;
       return this;
     }
 
@@ -2862,9 +2930,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setHeaderBytesReceived(java.lang.Long value) {
-      validate(fields()[32], value);
+      validate(fields()[33], value);
       this.headerBytesReceived = value;
-      fieldSetFlags()[32] = true;
+      fieldSetFlags()[33] = true;
       return this;
     }
 
@@ -2874,7 +2942,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'headerBytesReceived' field has been set, false otherwise.
       */
     public boolean hasHeaderBytesReceived() {
-      return fieldSetFlags()[32];
+      return fieldSetFlags()[33];
     }
 
 
@@ -2885,7 +2953,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearHeaderBytesReceived() {
       headerBytesReceived = null;
-      fieldSetFlags()[32] = false;
+      fieldSetFlags()[33] = false;
       return this;
     }
 
@@ -2905,9 +2973,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setFecPacketsReceived(java.lang.Integer value) {
-      validate(fields()[33], value);
+      validate(fields()[34], value);
       this.fecPacketsReceived = value;
-      fieldSetFlags()[33] = true;
+      fieldSetFlags()[34] = true;
       return this;
     }
 
@@ -2917,7 +2985,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'fecPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasFecPacketsReceived() {
-      return fieldSetFlags()[33];
+      return fieldSetFlags()[34];
     }
 
 
@@ -2928,7 +2996,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearFecPacketsReceived() {
       fecPacketsReceived = null;
-      fieldSetFlags()[33] = false;
+      fieldSetFlags()[34] = false;
       return this;
     }
 
@@ -2948,9 +3016,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setFecPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[34], value);
+      validate(fields()[35], value);
       this.fecPacketsDiscarded = value;
-      fieldSetFlags()[34] = true;
+      fieldSetFlags()[35] = true;
       return this;
     }
 
@@ -2960,7 +3028,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'fecPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasFecPacketsDiscarded() {
-      return fieldSetFlags()[34];
+      return fieldSetFlags()[35];
     }
 
 
@@ -2971,7 +3039,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearFecPacketsDiscarded() {
       fecPacketsDiscarded = null;
-      fieldSetFlags()[34] = false;
+      fieldSetFlags()[35] = false;
       return this;
     }
 
@@ -2991,9 +3059,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBytesReceived(java.lang.Long value) {
-      validate(fields()[35], value);
+      validate(fields()[36], value);
       this.bytesReceived = value;
-      fieldSetFlags()[35] = true;
+      fieldSetFlags()[36] = true;
       return this;
     }
 
@@ -3003,7 +3071,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[35];
+      return fieldSetFlags()[36];
     }
 
 
@@ -3014,7 +3082,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[35] = false;
+      fieldSetFlags()[36] = false;
       return this;
     }
 
@@ -3034,9 +3102,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsFailedDecryption(java.lang.Integer value) {
-      validate(fields()[36], value);
+      validate(fields()[37], value);
       this.packetsFailedDecryption = value;
-      fieldSetFlags()[36] = true;
+      fieldSetFlags()[37] = true;
       return this;
     }
 
@@ -3046,7 +3114,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsFailedDecryption' field has been set, false otherwise.
       */
     public boolean hasPacketsFailedDecryption() {
-      return fieldSetFlags()[36];
+      return fieldSetFlags()[37];
     }
 
 
@@ -3057,7 +3125,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsFailedDecryption() {
       packetsFailedDecryption = null;
-      fieldSetFlags()[36] = false;
+      fieldSetFlags()[37] = false;
       return this;
     }
 
@@ -3077,9 +3145,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsDuplicated(java.lang.Integer value) {
-      validate(fields()[37], value);
+      validate(fields()[38], value);
       this.packetsDuplicated = value;
-      fieldSetFlags()[37] = true;
+      fieldSetFlags()[38] = true;
       return this;
     }
 
@@ -3089,7 +3157,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsDuplicated' field has been set, false otherwise.
       */
     public boolean hasPacketsDuplicated() {
-      return fieldSetFlags()[37];
+      return fieldSetFlags()[38];
     }
 
 
@@ -3100,7 +3168,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsDuplicated() {
       packetsDuplicated = null;
-      fieldSetFlags()[37] = false;
+      fieldSetFlags()[38] = false;
       return this;
     }
 
@@ -3120,9 +3188,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPerDscpPacketsReceived(java.lang.Double value) {
-      validate(fields()[38], value);
+      validate(fields()[39], value);
       this.perDscpPacketsReceived = value;
-      fieldSetFlags()[38] = true;
+      fieldSetFlags()[39] = true;
       return this;
     }
 
@@ -3132,7 +3200,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'perDscpPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasPerDscpPacketsReceived() {
-      return fieldSetFlags()[38];
+      return fieldSetFlags()[39];
     }
 
 
@@ -3143,7 +3211,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPerDscpPacketsReceived() {
       perDscpPacketsReceived = null;
-      fieldSetFlags()[38] = false;
+      fieldSetFlags()[39] = false;
       return this;
     }
 
@@ -3163,9 +3231,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setNackCount(java.lang.Integer value) {
-      validate(fields()[39], value);
+      validate(fields()[40], value);
       this.nackCount = value;
-      fieldSetFlags()[39] = true;
+      fieldSetFlags()[40] = true;
       return this;
     }
 
@@ -3175,7 +3243,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'nackCount' field has been set, false otherwise.
       */
     public boolean hasNackCount() {
-      return fieldSetFlags()[39];
+      return fieldSetFlags()[40];
     }
 
 
@@ -3186,7 +3254,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearNackCount() {
       nackCount = null;
-      fieldSetFlags()[39] = false;
+      fieldSetFlags()[40] = false;
       return this;
     }
 
@@ -3206,9 +3274,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setTotalProcessingDelay(java.lang.Double value) {
-      validate(fields()[40], value);
+      validate(fields()[41], value);
       this.totalProcessingDelay = value;
-      fieldSetFlags()[40] = true;
+      fieldSetFlags()[41] = true;
       return this;
     }
 
@@ -3218,7 +3286,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'totalProcessingDelay' field has been set, false otherwise.
       */
     public boolean hasTotalProcessingDelay() {
-      return fieldSetFlags()[40];
+      return fieldSetFlags()[41];
     }
 
 
@@ -3229,7 +3297,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearTotalProcessingDelay() {
       totalProcessingDelay = null;
-      fieldSetFlags()[40] = false;
+      fieldSetFlags()[41] = false;
       return this;
     }
 
@@ -3249,9 +3317,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setEstimatedPlayoutTimestamp(java.lang.Double value) {
-      validate(fields()[41], value);
+      validate(fields()[42], value);
       this.estimatedPlayoutTimestamp = value;
-      fieldSetFlags()[41] = true;
+      fieldSetFlags()[42] = true;
       return this;
     }
 
@@ -3261,7 +3329,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'estimatedPlayoutTimestamp' field has been set, false otherwise.
       */
     public boolean hasEstimatedPlayoutTimestamp() {
-      return fieldSetFlags()[41];
+      return fieldSetFlags()[42];
     }
 
 
@@ -3272,7 +3340,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearEstimatedPlayoutTimestamp() {
       estimatedPlayoutTimestamp = null;
-      fieldSetFlags()[41] = false;
+      fieldSetFlags()[42] = false;
       return this;
     }
 
@@ -3292,9 +3360,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setJitterBufferDelay(java.lang.Double value) {
-      validate(fields()[42], value);
+      validate(fields()[43], value);
       this.jitterBufferDelay = value;
-      fieldSetFlags()[42] = true;
+      fieldSetFlags()[43] = true;
       return this;
     }
 
@@ -3304,7 +3372,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'jitterBufferDelay' field has been set, false otherwise.
       */
     public boolean hasJitterBufferDelay() {
-      return fieldSetFlags()[42];
+      return fieldSetFlags()[43];
     }
 
 
@@ -3315,7 +3383,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearJitterBufferDelay() {
       jitterBufferDelay = null;
-      fieldSetFlags()[42] = false;
+      fieldSetFlags()[43] = false;
       return this;
     }
 
@@ -3335,9 +3403,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setJitterBufferEmittedCount(java.lang.Integer value) {
-      validate(fields()[43], value);
+      validate(fields()[44], value);
       this.jitterBufferEmittedCount = value;
-      fieldSetFlags()[43] = true;
+      fieldSetFlags()[44] = true;
       return this;
     }
 
@@ -3347,7 +3415,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'jitterBufferEmittedCount' field has been set, false otherwise.
       */
     public boolean hasJitterBufferEmittedCount() {
-      return fieldSetFlags()[43];
+      return fieldSetFlags()[44];
     }
 
 
@@ -3358,7 +3426,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearJitterBufferEmittedCount() {
       jitterBufferEmittedCount = null;
-      fieldSetFlags()[43] = false;
+      fieldSetFlags()[44] = false;
       return this;
     }
 
@@ -3378,9 +3446,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setDecoderImplementation(java.lang.String value) {
-      validate(fields()[44], value);
+      validate(fields()[45], value);
       this.decoderImplementation = value;
-      fieldSetFlags()[44] = true;
+      fieldSetFlags()[45] = true;
       return this;
     }
 
@@ -3390,7 +3458,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'decoderImplementation' field has been set, false otherwise.
       */
     public boolean hasDecoderImplementation() {
-      return fieldSetFlags()[44];
+      return fieldSetFlags()[45];
     }
 
 
@@ -3401,7 +3469,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearDecoderImplementation() {
       decoderImplementation = null;
-      fieldSetFlags()[44] = false;
+      fieldSetFlags()[45] = false;
       return this;
     }
 
@@ -3421,9 +3489,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPacketsSent(java.lang.Integer value) {
-      validate(fields()[45], value);
+      validate(fields()[46], value);
       this.packetsSent = value;
-      fieldSetFlags()[45] = true;
+      fieldSetFlags()[46] = true;
       return this;
     }
 
@@ -3433,7 +3501,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'packetsSent' field has been set, false otherwise.
       */
     public boolean hasPacketsSent() {
-      return fieldSetFlags()[45];
+      return fieldSetFlags()[46];
     }
 
 
@@ -3444,7 +3512,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPacketsSent() {
       packetsSent = null;
-      fieldSetFlags()[45] = false;
+      fieldSetFlags()[46] = false;
       return this;
     }
 
@@ -3464,9 +3532,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setBytesSent(java.lang.Long value) {
-      validate(fields()[46], value);
+      validate(fields()[47], value);
       this.bytesSent = value;
-      fieldSetFlags()[46] = true;
+      fieldSetFlags()[47] = true;
       return this;
     }
 
@@ -3476,7 +3544,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'bytesSent' field has been set, false otherwise.
       */
     public boolean hasBytesSent() {
-      return fieldSetFlags()[46];
+      return fieldSetFlags()[47];
     }
 
 
@@ -3487,7 +3555,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearBytesSent() {
       bytesSent = null;
-      fieldSetFlags()[46] = false;
+      fieldSetFlags()[47] = false;
       return this;
     }
 
@@ -3507,9 +3575,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setRemoteTimestamp(java.lang.Double value) {
-      validate(fields()[47], value);
+      validate(fields()[48], value);
       this.remoteTimestamp = value;
-      fieldSetFlags()[47] = true;
+      fieldSetFlags()[48] = true;
       return this;
     }
 
@@ -3519,7 +3587,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'remoteTimestamp' field has been set, false otherwise.
       */
     public boolean hasRemoteTimestamp() {
-      return fieldSetFlags()[47];
+      return fieldSetFlags()[48];
     }
 
 
@@ -3530,7 +3598,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearRemoteTimestamp() {
       remoteTimestamp = null;
-      fieldSetFlags()[47] = false;
+      fieldSetFlags()[48] = false;
       return this;
     }
 
@@ -3550,9 +3618,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setReportsSent(java.lang.Integer value) {
-      validate(fields()[48], value);
+      validate(fields()[49], value);
       this.reportsSent = value;
-      fieldSetFlags()[48] = true;
+      fieldSetFlags()[49] = true;
       return this;
     }
 
@@ -3562,7 +3630,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'reportsSent' field has been set, false otherwise.
       */
     public boolean hasReportsSent() {
-      return fieldSetFlags()[48];
+      return fieldSetFlags()[49];
     }
 
 
@@ -3573,7 +3641,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearReportsSent() {
       reportsSent = null;
-      fieldSetFlags()[48] = false;
+      fieldSetFlags()[49] = false;
       return this;
     }
 
@@ -3593,9 +3661,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setEnded(java.lang.Boolean value) {
-      validate(fields()[49], value);
+      validate(fields()[50], value);
       this.ended = value;
-      fieldSetFlags()[49] = true;
+      fieldSetFlags()[50] = true;
       return this;
     }
 
@@ -3605,7 +3673,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'ended' field has been set, false otherwise.
       */
     public boolean hasEnded() {
-      return fieldSetFlags()[49];
+      return fieldSetFlags()[50];
     }
 
 
@@ -3616,7 +3684,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearEnded() {
       ended = null;
-      fieldSetFlags()[49] = false;
+      fieldSetFlags()[50] = false;
       return this;
     }
 
@@ -3636,9 +3704,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setPayloadType(java.lang.Integer value) {
-      validate(fields()[50], value);
+      validate(fields()[51], value);
       this.payloadType = value;
-      fieldSetFlags()[50] = true;
+      fieldSetFlags()[51] = true;
       return this;
     }
 
@@ -3648,7 +3716,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'payloadType' field has been set, false otherwise.
       */
     public boolean hasPayloadType() {
-      return fieldSetFlags()[50];
+      return fieldSetFlags()[51];
     }
 
 
@@ -3659,7 +3727,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearPayloadType() {
       payloadType = null;
-      fieldSetFlags()[50] = false;
+      fieldSetFlags()[51] = false;
       return this;
     }
 
@@ -3679,9 +3747,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setMimeType(java.lang.String value) {
-      validate(fields()[51], value);
+      validate(fields()[52], value);
       this.mimeType = value;
-      fieldSetFlags()[51] = true;
+      fieldSetFlags()[52] = true;
       return this;
     }
 
@@ -3691,7 +3759,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'mimeType' field has been set, false otherwise.
       */
     public boolean hasMimeType() {
-      return fieldSetFlags()[51];
+      return fieldSetFlags()[52];
     }
 
 
@@ -3702,7 +3770,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearMimeType() {
       mimeType = null;
-      fieldSetFlags()[51] = false;
+      fieldSetFlags()[52] = false;
       return this;
     }
 
@@ -3722,9 +3790,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setClockRate(java.lang.Long value) {
-      validate(fields()[52], value);
+      validate(fields()[53], value);
       this.clockRate = value;
-      fieldSetFlags()[52] = true;
+      fieldSetFlags()[53] = true;
       return this;
     }
 
@@ -3734,7 +3802,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'clockRate' field has been set, false otherwise.
       */
     public boolean hasClockRate() {
-      return fieldSetFlags()[52];
+      return fieldSetFlags()[53];
     }
 
 
@@ -3745,7 +3813,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearClockRate() {
       clockRate = null;
-      fieldSetFlags()[52] = false;
+      fieldSetFlags()[53] = false;
       return this;
     }
 
@@ -3765,9 +3833,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setChannels(java.lang.Integer value) {
-      validate(fields()[53], value);
+      validate(fields()[54], value);
       this.channels = value;
-      fieldSetFlags()[53] = true;
+      fieldSetFlags()[54] = true;
       return this;
     }
 
@@ -3777,7 +3845,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'channels' field has been set, false otherwise.
       */
     public boolean hasChannels() {
-      return fieldSetFlags()[53];
+      return fieldSetFlags()[54];
     }
 
 
@@ -3788,7 +3856,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearChannels() {
       channels = null;
-      fieldSetFlags()[53] = false;
+      fieldSetFlags()[54] = false;
       return this;
     }
 
@@ -3808,9 +3876,9 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder setSdpFmtpLine(java.lang.String value) {
-      validate(fields()[54], value);
+      validate(fields()[55], value);
       this.sdpFmtpLine = value;
-      fieldSetFlags()[54] = true;
+      fieldSetFlags()[55] = true;
       return this;
     }
 
@@ -3820,7 +3888,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       * @return True if the 'sdpFmtpLine' field has been set, false otherwise.
       */
     public boolean hasSdpFmtpLine() {
-      return fieldSetFlags()[54];
+      return fieldSetFlags()[55];
     }
 
 
@@ -3831,7 +3899,7 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
       */
     public org.observertc.webrtc.schemas.reports.InboundAudioTrackReport.Builder clearSdpFmtpLine() {
       sdpFmtpLine = null;
-      fieldSetFlags()[54] = false;
+      fieldSetFlags()[55] = false;
       return this;
     }
 
@@ -3850,50 +3918,51 @@ public class InboundAudioTrackReport extends org.apache.avro.specific.SpecificRe
         record.peerConnectionId = fieldSetFlags()[8] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[8]);
         record.label = fieldSetFlags()[9] ? this.label : (java.lang.String) defaultValue(fields()[9]);
         record.trackId = fieldSetFlags()[10] ? this.trackId : (java.lang.String) defaultValue(fields()[10]);
-        record.remoteUserId = fieldSetFlags()[11] ? this.remoteUserId : (java.lang.String) defaultValue(fields()[11]);
-        record.remoteClientId = fieldSetFlags()[12] ? this.remoteClientId : (java.lang.String) defaultValue(fields()[12]);
-        record.remotePeerConnectionId = fieldSetFlags()[13] ? this.remotePeerConnectionId : (java.lang.String) defaultValue(fields()[13]);
-        record.sampleSeq = fieldSetFlags()[14] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[14]);
-        record.ssrc = fieldSetFlags()[15] ? this.ssrc : (java.lang.Long) defaultValue(fields()[15]);
-        record.packetsReceived = fieldSetFlags()[16] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[16]);
-        record.packetsLost = fieldSetFlags()[17] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[17]);
-        record.jitter = fieldSetFlags()[18] ? this.jitter : (java.lang.Double) defaultValue(fields()[18]);
-        record.packetsDiscarded = fieldSetFlags()[19] ? this.packetsDiscarded : (java.lang.Integer) defaultValue(fields()[19]);
-        record.packetsRepaired = fieldSetFlags()[20] ? this.packetsRepaired : (java.lang.Integer) defaultValue(fields()[20]);
-        record.burstPacketsLost = fieldSetFlags()[21] ? this.burstPacketsLost : (java.lang.Integer) defaultValue(fields()[21]);
-        record.burstPacketsDiscarded = fieldSetFlags()[22] ? this.burstPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[22]);
-        record.burstLossCount = fieldSetFlags()[23] ? this.burstLossCount : (java.lang.Integer) defaultValue(fields()[23]);
-        record.burstDiscardCount = fieldSetFlags()[24] ? this.burstDiscardCount : (java.lang.Integer) defaultValue(fields()[24]);
-        record.burstLossRate = fieldSetFlags()[25] ? this.burstLossRate : (java.lang.Double) defaultValue(fields()[25]);
-        record.burstDiscardRate = fieldSetFlags()[26] ? this.burstDiscardRate : (java.lang.Double) defaultValue(fields()[26]);
-        record.gapLossRate = fieldSetFlags()[27] ? this.gapLossRate : (java.lang.Double) defaultValue(fields()[27]);
-        record.gapDiscardRate = fieldSetFlags()[28] ? this.gapDiscardRate : (java.lang.Double) defaultValue(fields()[28]);
-        record.voiceActivityFlag = fieldSetFlags()[29] ? this.voiceActivityFlag : (java.lang.Boolean) defaultValue(fields()[29]);
-        record.lastPacketReceivedTimestamp = fieldSetFlags()[30] ? this.lastPacketReceivedTimestamp : (java.lang.Boolean) defaultValue(fields()[30]);
-        record.averageRtcpInterval = fieldSetFlags()[31] ? this.averageRtcpInterval : (java.lang.Double) defaultValue(fields()[31]);
-        record.headerBytesReceived = fieldSetFlags()[32] ? this.headerBytesReceived : (java.lang.Long) defaultValue(fields()[32]);
-        record.fecPacketsReceived = fieldSetFlags()[33] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[33]);
-        record.fecPacketsDiscarded = fieldSetFlags()[34] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[34]);
-        record.bytesReceived = fieldSetFlags()[35] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[35]);
-        record.packetsFailedDecryption = fieldSetFlags()[36] ? this.packetsFailedDecryption : (java.lang.Integer) defaultValue(fields()[36]);
-        record.packetsDuplicated = fieldSetFlags()[37] ? this.packetsDuplicated : (java.lang.Integer) defaultValue(fields()[37]);
-        record.perDscpPacketsReceived = fieldSetFlags()[38] ? this.perDscpPacketsReceived : (java.lang.Double) defaultValue(fields()[38]);
-        record.nackCount = fieldSetFlags()[39] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[39]);
-        record.totalProcessingDelay = fieldSetFlags()[40] ? this.totalProcessingDelay : (java.lang.Double) defaultValue(fields()[40]);
-        record.estimatedPlayoutTimestamp = fieldSetFlags()[41] ? this.estimatedPlayoutTimestamp : (java.lang.Double) defaultValue(fields()[41]);
-        record.jitterBufferDelay = fieldSetFlags()[42] ? this.jitterBufferDelay : (java.lang.Double) defaultValue(fields()[42]);
-        record.jitterBufferEmittedCount = fieldSetFlags()[43] ? this.jitterBufferEmittedCount : (java.lang.Integer) defaultValue(fields()[43]);
-        record.decoderImplementation = fieldSetFlags()[44] ? this.decoderImplementation : (java.lang.String) defaultValue(fields()[44]);
-        record.packetsSent = fieldSetFlags()[45] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[45]);
-        record.bytesSent = fieldSetFlags()[46] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[46]);
-        record.remoteTimestamp = fieldSetFlags()[47] ? this.remoteTimestamp : (java.lang.Double) defaultValue(fields()[47]);
-        record.reportsSent = fieldSetFlags()[48] ? this.reportsSent : (java.lang.Integer) defaultValue(fields()[48]);
-        record.ended = fieldSetFlags()[49] ? this.ended : (java.lang.Boolean) defaultValue(fields()[49]);
-        record.payloadType = fieldSetFlags()[50] ? this.payloadType : (java.lang.Integer) defaultValue(fields()[50]);
-        record.mimeType = fieldSetFlags()[51] ? this.mimeType : (java.lang.String) defaultValue(fields()[51]);
-        record.clockRate = fieldSetFlags()[52] ? this.clockRate : (java.lang.Long) defaultValue(fields()[52]);
-        record.channels = fieldSetFlags()[53] ? this.channels : (java.lang.Integer) defaultValue(fields()[53]);
-        record.sdpFmtpLine = fieldSetFlags()[54] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[54]);
+        record.rtpStreamId = fieldSetFlags()[11] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[11]);
+        record.remoteUserId = fieldSetFlags()[12] ? this.remoteUserId : (java.lang.String) defaultValue(fields()[12]);
+        record.remoteClientId = fieldSetFlags()[13] ? this.remoteClientId : (java.lang.String) defaultValue(fields()[13]);
+        record.remotePeerConnectionId = fieldSetFlags()[14] ? this.remotePeerConnectionId : (java.lang.String) defaultValue(fields()[14]);
+        record.sampleSeq = fieldSetFlags()[15] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[15]);
+        record.ssrc = fieldSetFlags()[16] ? this.ssrc : (java.lang.Long) defaultValue(fields()[16]);
+        record.packetsReceived = fieldSetFlags()[17] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[17]);
+        record.packetsLost = fieldSetFlags()[18] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[18]);
+        record.jitter = fieldSetFlags()[19] ? this.jitter : (java.lang.Double) defaultValue(fields()[19]);
+        record.packetsDiscarded = fieldSetFlags()[20] ? this.packetsDiscarded : (java.lang.Integer) defaultValue(fields()[20]);
+        record.packetsRepaired = fieldSetFlags()[21] ? this.packetsRepaired : (java.lang.Integer) defaultValue(fields()[21]);
+        record.burstPacketsLost = fieldSetFlags()[22] ? this.burstPacketsLost : (java.lang.Integer) defaultValue(fields()[22]);
+        record.burstPacketsDiscarded = fieldSetFlags()[23] ? this.burstPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[23]);
+        record.burstLossCount = fieldSetFlags()[24] ? this.burstLossCount : (java.lang.Integer) defaultValue(fields()[24]);
+        record.burstDiscardCount = fieldSetFlags()[25] ? this.burstDiscardCount : (java.lang.Integer) defaultValue(fields()[25]);
+        record.burstLossRate = fieldSetFlags()[26] ? this.burstLossRate : (java.lang.Double) defaultValue(fields()[26]);
+        record.burstDiscardRate = fieldSetFlags()[27] ? this.burstDiscardRate : (java.lang.Double) defaultValue(fields()[27]);
+        record.gapLossRate = fieldSetFlags()[28] ? this.gapLossRate : (java.lang.Double) defaultValue(fields()[28]);
+        record.gapDiscardRate = fieldSetFlags()[29] ? this.gapDiscardRate : (java.lang.Double) defaultValue(fields()[29]);
+        record.voiceActivityFlag = fieldSetFlags()[30] ? this.voiceActivityFlag : (java.lang.Boolean) defaultValue(fields()[30]);
+        record.lastPacketReceivedTimestamp = fieldSetFlags()[31] ? this.lastPacketReceivedTimestamp : (java.lang.Boolean) defaultValue(fields()[31]);
+        record.averageRtcpInterval = fieldSetFlags()[32] ? this.averageRtcpInterval : (java.lang.Double) defaultValue(fields()[32]);
+        record.headerBytesReceived = fieldSetFlags()[33] ? this.headerBytesReceived : (java.lang.Long) defaultValue(fields()[33]);
+        record.fecPacketsReceived = fieldSetFlags()[34] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[34]);
+        record.fecPacketsDiscarded = fieldSetFlags()[35] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[35]);
+        record.bytesReceived = fieldSetFlags()[36] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[36]);
+        record.packetsFailedDecryption = fieldSetFlags()[37] ? this.packetsFailedDecryption : (java.lang.Integer) defaultValue(fields()[37]);
+        record.packetsDuplicated = fieldSetFlags()[38] ? this.packetsDuplicated : (java.lang.Integer) defaultValue(fields()[38]);
+        record.perDscpPacketsReceived = fieldSetFlags()[39] ? this.perDscpPacketsReceived : (java.lang.Double) defaultValue(fields()[39]);
+        record.nackCount = fieldSetFlags()[40] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[40]);
+        record.totalProcessingDelay = fieldSetFlags()[41] ? this.totalProcessingDelay : (java.lang.Double) defaultValue(fields()[41]);
+        record.estimatedPlayoutTimestamp = fieldSetFlags()[42] ? this.estimatedPlayoutTimestamp : (java.lang.Double) defaultValue(fields()[42]);
+        record.jitterBufferDelay = fieldSetFlags()[43] ? this.jitterBufferDelay : (java.lang.Double) defaultValue(fields()[43]);
+        record.jitterBufferEmittedCount = fieldSetFlags()[44] ? this.jitterBufferEmittedCount : (java.lang.Integer) defaultValue(fields()[44]);
+        record.decoderImplementation = fieldSetFlags()[45] ? this.decoderImplementation : (java.lang.String) defaultValue(fields()[45]);
+        record.packetsSent = fieldSetFlags()[46] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[46]);
+        record.bytesSent = fieldSetFlags()[47] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[47]);
+        record.remoteTimestamp = fieldSetFlags()[48] ? this.remoteTimestamp : (java.lang.Double) defaultValue(fields()[48]);
+        record.reportsSent = fieldSetFlags()[49] ? this.reportsSent : (java.lang.Integer) defaultValue(fields()[49]);
+        record.ended = fieldSetFlags()[50] ? this.ended : (java.lang.Boolean) defaultValue(fields()[50]);
+        record.payloadType = fieldSetFlags()[51] ? this.payloadType : (java.lang.Integer) defaultValue(fields()[51]);
+        record.mimeType = fieldSetFlags()[52] ? this.mimeType : (java.lang.String) defaultValue(fields()[52]);
+        record.clockRate = fieldSetFlags()[53] ? this.clockRate : (java.lang.Long) defaultValue(fields()[53]);
+        record.channels = fieldSetFlags()[54] ? this.channels : (java.lang.Integer) defaultValue(fields()[54]);
+        record.sdpFmtpLine = fieldSetFlags()[55] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[55]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

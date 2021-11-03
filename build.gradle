@@ -55,6 +55,10 @@ dependencies {
 
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
+//    implementation 'javax.websocket:javax.websocket-api:1.1'
+    implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
+// https://mvnrepository.com/artifact/org.glassfish.tyrus.bundles/tyrus-standalone-client
+    implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '2.0.1'
 
 
     // Exposed Metrics Client Libraries

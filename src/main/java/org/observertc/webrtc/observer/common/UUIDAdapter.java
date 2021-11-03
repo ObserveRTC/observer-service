@@ -67,6 +67,23 @@ public class UUIDAdapter {
 	}
 
 	/**
+	 * Make bytes from UUID, but returns defaultValue if UUID is null instead of throwing NullPointerExceptoin
+	 *
+	 * @param uuid
+	 * @return
+	 */
+	public static String toStringOrDefault(UUID uuid, String defaultString) {
+		if (uuid == null) {
+			return defaultString;
+		}
+		try {
+			return uuid.toString();
+		} catch (Exception ex) {
+			return defaultString;
+		}
+	}
+
+	/**
 	 * Make UUID from bytes
 	 *
 	 * @param bytes

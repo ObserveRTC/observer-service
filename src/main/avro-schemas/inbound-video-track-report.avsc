@@ -80,6 +80,15 @@
       "default": null
     },
     {
+      "name": "rtpStreamId",
+      "doc": "The id of the RTP stream connected to a remote media unit (such as an SFU)",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "remoteUserId",
       "doc": "The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it",
       "type": [

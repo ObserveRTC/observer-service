@@ -5,7 +5,9 @@ import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.repositories.StoredRequests;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,8 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+
 @Prototype
 public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builder>> {
 
@@ -22,6 +26,9 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
 
     @Inject
     HazelcastMaps hazelcastMaps;
+
+    @Inject
+    StoredRequests storedRequests;
 
     private Map<UUID, MediaTrackDTO> mediaTrackDTOs = new HashMap<>();
 
@@ -55,7 +62,7 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                                 hazelcastMaps.getMediaTracks().remove(mediaTrackId);
                             }
                         })
-                .addActionStage("Bind Inbound Media Tracks to Peer Connections",
+                .addActionStage("Bind Media Tracks to Peer Connections and Rtp Streams",
                         // action
                         () -> {
                             this.mediaTrackDTOs.forEach(((mediaTrackId, mediaTrackDTO) -> {
@@ -65,11 +72,10 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                                         break;
                                     case OUTBOUND:
                                         this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackId);
+                                        if (Objects.nonNull(mediaTrackDTO.rtpStreamId)) {
+                                            this.hazelcastMaps.getRtpStreamIdsToOutboundTrackIds().put(mediaTrackDTO.rtpStreamId, mediaTrackId);
+                                        }
                                         break;
-                                }
-                                UUID sfuPodId = mediaTrackDTO.sfuPodId;
-                                if (Objects.nonNull(sfuPodId)) {
-                                    this.hazelcastMaps.getSfuPodToMediaTracks().put(sfuPodId, mediaTrackId);
                                 }
                             }));
                         },
@@ -82,14 +88,41 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
                                         break;
                                     case OUTBOUND:
                                         this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackKey);
+                                        if (Objects.nonNull(mediaTrackDTO.rtpStreamId)) {
+                                            this.hazelcastMaps.getRtpStreamIdsToOutboundTrackIds().remove(mediaTrackDTO.rtpStreamId);
+                                        }
                                         break;
-                                }
-                                UUID sfuPodId = mediaTrackDTO.sfuPodId;
-                                if (Objects.nonNull(sfuPodId)) {
-                                    this.hazelcastMaps.getSfuPodToMediaTracks().delete(sfuPodId);
                                 }
                             }));
                         })
+                .addActionStage("Try complete SfuRtpPads if has requests", () -> {
+                    Map<UUID, List<MediaTrackDTO>> rtpStreamMediaTracks = this.mediaTrackDTOs.values().stream().collect(groupingBy(dto -> dto.rtpStreamId));
+                    Set<UUID> incompleteSfuRtpPadRtpStreamIds = this.storedRequests.removeCompleteRtpStreamSfuRtpPadsRequests(rtpStreamMediaTracks.keySet());
+                    if (incompleteSfuRtpPadRtpStreamIds.size() < 1) {
+                        return;
+                    }
+                    Set<UUID> incompleteSfuRtpPads = new HashSet<>();
+                    rtpStreamMediaTracks.keySet().stream().forEach(rtpStreamId -> {
+                        Collection<UUID> sfuRtpPadIds = this.hazelcastMaps.getRtpStreamIdToSfuPadIds().get(rtpStreamId);
+                        incompleteSfuRtpPads.addAll(sfuRtpPadIds);
+                    });
+                    Map<UUID, SfuRtpPadDTO> loadedSfuRtpPadDTOs = this.hazelcastMaps.getSFURtpPads().getAll(incompleteSfuRtpPads);
+                    Map<UUID, SfuRtpPadDTO> completedSfuRtpPadDTOs = new HashMap<>();
+                    loadedSfuRtpPadDTOs.forEach((rtpPadId, loadedSfuRtpPad) -> {
+                        List<MediaTrackDTO> mediaTrackDTOs = rtpStreamMediaTracks.get(loadedSfuRtpPad.rtpStreamId);
+                        if (Objects.isNull(mediaTrackDTOs) || mediaTrackDTOs.size() < 1) {
+                            return;
+                        }
+                        // TODO: this can be refined a bit, or perform a check here
+                        UUID callId = mediaTrackDTOs.get(0).callId;
+                        var completedSfuRtpPad = SfuRtpPadDTO.builderFrom(loadedSfuRtpPad).withCallId(callId).build();
+                        completedSfuRtpPadDTOs.put(completedSfuRtpPad.sfuPadId, completedSfuRtpPad);
+                        logger.info("SfuRtpPad {} is assigned with CallId {}", completedSfuRtpPad.sfuPadId, callId);
+                    });
+                    if (0 < completedSfuRtpPadDTOs.size()) {
+                        this.hazelcastMaps.getSFURtpPads().putAll(completedSfuRtpPadDTOs);
+                    }
+                })
                 .addTerminalSupplier("Completed", () -> {
                     List<CallEventReport.Builder> result = this.mediaTrackDTOs.values().stream()
                             .map(this::makeReportBuilder)
@@ -125,7 +158,7 @@ public class AddMediaTracksTasks extends ChainedTask<List<CallEventReport.Builde
 
                     .setMediaTrackId(mediaTrackDTO.trackId.toString())
                     .setPeerConnectionId(mediaTrackDTO.peerConnectionId.toString())
-                    .setAttachments("Direction of media track" + mediaTrackDTO.direction.name())
+                    .setAttachments("Direction of the media track: " + mediaTrackDTO.direction.name())
                     .setTimestamp(mediaTrackDTO.added);
         } catch (Exception ex) {
             this.getLogger().error("Cannot make report for client DTO", ex);

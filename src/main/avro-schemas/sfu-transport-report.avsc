@@ -10,15 +10,6 @@
       "type": "string"
     },
     {
-      "name": "sfuName",
-      "doc": "The provided name of the SFU",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": null
-    },
-    {
       "name": "sfuId",
       "doc": "The provided unique identifier of the SFU",
       "type": "string"

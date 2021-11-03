@@ -23,14 +23,14 @@ public  class SfuSample {
 	/**
 	 * array of measurements related to inbound RTP streams
 	 */
-	@JsonProperty("rtpSources")
-	public SfuRtpSource[] rtpSources;
+	@JsonProperty("inboundRtpStreams")
+	public SfuInboundRtpPad[] inboundRtpStreams;
 
 	/**
 	 * array of measurements related to outbound RTP streams
 	 */
-	@JsonProperty("rtpSinks")
-	public SfuRtpSink[] rtpSinks;
+	@JsonProperty("outboundRtpStreams")
+	public SfuOutboundRtpPad[] outboundRtpStreams;
 
 	/**
 	 * array of measurements of SCTP streams
@@ -66,7 +66,7 @@ public  class SfuSample {
 	 * undefined
 	 */
 
-	public static class SfuRtpSource {
+	public static class SfuInboundRtpPad {
 
 		/**
 		 * The id of the transport the stream belongs to
@@ -77,14 +77,20 @@ public  class SfuSample {
 		/**
 		 * unique identifier for the stream
 		 */
-		@JsonProperty("streamId")
-		public String streamId;
+		@JsonProperty("rtpStreamId")
+		public String rtpStreamId;
 
 		/**
 		 * id of the source pod
 		 */
-		@JsonProperty("sourceId")
-		public String sourceId;
+		@JsonProperty("padId")
+		public String padId;
+
+		/**
+		 * if the sink is internally piped between the SFUs, this id represents the remote SFU outbound pad id
+		 */
+		@JsonProperty("outboundPadId")
+		public String outboundPadId;
 
 		/**
 		 * The SSRC identifier of the corresponded RTP stream
@@ -295,7 +301,7 @@ public  class SfuSample {
 	 * undefined
 	 */
 
-	public static class SfuRtpSink {
+	public static class SfuOutboundRtpPad {
 
 		/**
 		 * The id of the transport the stream belongs to
@@ -306,14 +312,20 @@ public  class SfuSample {
 		/**
 		 * unique identifier of the stream
 		 */
-		@JsonProperty("streamId")
-		public String streamId;
+		@JsonProperty("rtpStreamId")
+		public String rtpStreamId;
 
 		/**
 		 * id of the sink pod
 		 */
-		@JsonProperty("sinkId")
-		public String sinkId;
+		@JsonProperty("padId")
+		public String padId;
+
+		/**
+		 * Indicate if the oubtound pad is internally piped to another SFU or directed to a client (default: false)
+		 */
+		@JsonProperty("piped")
+		public boolean piped;
 
 		/**
 		 * The SSRC identifier of the corresponded RTP stream

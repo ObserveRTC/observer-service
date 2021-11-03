@@ -109,8 +109,8 @@ public class LoggerSink extends Sink {
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuEventReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuMetaReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuTransportReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuRtpSourceReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuRtpSinkReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuInboundRtpPadReport),
+                this.makeDecodeAndPrintConsumer(decoder::decodeSfuOutboundRtpPadReport),
                 this.makeDecodeAndPrintConsumer(decoder::decodeSfuSctpStreamReport)
         );
         return outboundReport -> {

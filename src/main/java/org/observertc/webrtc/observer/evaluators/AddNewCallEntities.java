@@ -121,7 +121,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
-                                UUID sfuSinkId = UUIDAdapter.tryParseOrNull(track.sfuSinkId);
+                                UUID rtpStreamId = UUIDAdapter.tryParseOrNull(track.rtpStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -133,7 +133,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
-                                        .withSfuPodId(sfuSinkId)
+                                        .withRtpStreamId(rtpStreamId)
                                         .withDirection(StreamDirection.INBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
@@ -150,7 +150,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
-                                UUID sfuSinkId = UUIDAdapter.tryParseOrNull(track.sfuSinkId);
+                                UUID rtpStreamId = UUIDAdapter.tryParseOrNull(track.rtpStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -162,7 +162,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
-                                        .withSfuPodId(sfuSinkId)
+                                        .withRtpStreamId(rtpStreamId)
                                         .withDirection(StreamDirection.INBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
@@ -178,7 +178,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
-                                UUID sfuSourceId = UUIDAdapter.tryParseOrNull(track.sfuSourceId);
+                                UUID rtpStreamId = UUIDAdapter.tryParseOrNull(track.rtpStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -190,7 +190,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
-                                        .withSfuPodId(sfuSourceId)
+                                        .withRtpStreamId(rtpStreamId)
                                         .withDirection(StreamDirection.OUTBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)
@@ -207,7 +207,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                     return;
                                 }
                                 UUID peerConnectionId = UUID.fromString(track.peerConnectionId);
-                                UUID sfuSourceId = UUIDAdapter.tryParseOrNull(track.sfuSourceId);
+                                UUID rtpStreamId = UUIDAdapter.tryParseOrNull(track.rtpStreamId);
                                 Long SSRC = track.ssrc;
                                 var mediaTrackDTO = MediaTrackDTO.builder()
                                         .withCallId(callId)
@@ -219,7 +219,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                                         .withMediaUnitId(clientSamples.getMediaUnitId())
 
                                         .withTrackId(trackId)
-                                        .withSfuPodId(sfuSourceId)
+                                        .withRtpStreamId(rtpStreamId)
                                         .withDirection(StreamDirection.OUTBOUND)
                                         .withPeerConnectionId(peerConnectionId)
                                         .withSSRC(SSRC)

@@ -37,13 +37,11 @@ public class SfuDTO implements VersionedPortable {
 	}
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
-	private static final String SFU_NAME_FIELD_NAME = "sfuName";
 	private static final String JOINED_FIELD_NAME = "joined";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
 
 	public String mediaUnitId;
 	public UUID sfuId;
-	public String sfuName;
 	public Long joined;
 	public String timeZoneId;
 
@@ -65,7 +63,6 @@ public class SfuDTO implements VersionedPortable {
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
-		writer.writeUTF(SFU_NAME_FIELD_NAME, this.sfuName);
 		writer.writeLong(JOINED_FIELD_NAME, this.joined);
 		writer.writeUTF(TIMEZONE_FIELD_NAME, this.timeZoneId);
 
@@ -75,7 +72,6 @@ public class SfuDTO implements VersionedPortable {
 	public void readPortable(PortableReader reader) throws IOException {
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
-		this.sfuName = reader.readUTF(SFU_NAME_FIELD_NAME);
 		this.joined = reader.readLong(JOINED_FIELD_NAME);
 		this.timeZoneId = reader.readUTF(TIMEZONE_FIELD_NAME);
 	}
@@ -97,7 +93,6 @@ public class SfuDTO implements VersionedPortable {
 		}
 		SfuDTO otherDTO = (SfuDTO) other;
 		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
-			!Objects.equals(this.sfuName, otherDTO.sfuName) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.joined, otherDTO.joined) ||
 			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId)
@@ -121,11 +116,6 @@ public class SfuDTO implements VersionedPortable {
 
 		public Builder withSfuId(UUID value) {
 			this.result.sfuId = value;
-			return this;
-		}
-
-		public Builder withSfuName(String value) {
-			this.result.sfuName = value;
 			return this;
 		}
 
