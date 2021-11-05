@@ -1,22 +1,18 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.ClientDTO;
-import org.observertc.webrtc.observer.entities.ClientEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Prototype
-public class AddClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
+public class AddClientsTask extends ChainedTask<Void> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddClientsTask.class);
 
@@ -27,7 +23,7 @@ public class AddClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
 
     @PostConstruct
     void setup() {
-        new Builder<List<CallEventReport.Builder>>(this)
+        new Builder<Void>(this)
                 .<Map<UUID, ClientDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
                         receivedClientDTOs -> {
@@ -38,7 +34,7 @@ public class AddClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
                 )
                 .<Map<UUID, ClientDTO>> addBreakCondition((resultHolder) -> {
                     if (this.clientDTOs.size() < 1) {
-                        resultHolder.set(Collections.EMPTY_LIST);
+                        resultHolder.set(null);
                         return true;
                     }
                     return false;
@@ -67,13 +63,7 @@ public class AddClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
                         this.hazelcastMaps.getCallToClientIds().remove(clientDTO.callId, clientId);
                     });
                 })
-                .addTerminalSupplier("Completed", () -> {
-                    List<CallEventReport.Builder> result = this.clientDTOs.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                    return result;
-                })
+                .addTerminalPassingStage("Completed")
                 .build();
     }
 
@@ -106,22 +96,4 @@ public class AddClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
         return this;
     }
 
-    private CallEventReport.Builder makeReportBuilder(ClientDTO clientDTO) {
-        try {
-            return CallEventReport.newBuilder()
-                    .setName(CallEventType.CLIENT_JOINED.name())
-
-                    .setServiceId(clientDTO.serviceId)
-                    .setRoomId(clientDTO.roomId)
-
-                    .setMediaUnitId(clientDTO.mediaUnitId)
-                    .setUserId(clientDTO.userId)
-                    .setCallId(clientDTO.callId.toString())
-                    .setClientId(clientDTO.clientId.toString())
-                    .setTimestamp(clientDTO.joined);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for client DTO", ex);
-            return null;
-        }
-    }
 }

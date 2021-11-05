@@ -48,19 +48,25 @@ public class ExposedMetrics {
     }
 
     public void incrementClientSamplesReceived(String serviceId, String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
+        this.incrementClientSamplesReceived(serviceId, mediaUnitId, 1);
+    }
+
+    public void incrementClientSamplesReceived(String serviceId, String mediaUnitId, int value) {
+        this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
     }
 
     // TODO: Sfu Samples Related Metrics
-    public void incrementSfuSamplesOpenedWebsockets( String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_OPENED_WEBSOCKETS, MEDIA_UNIT_TAG_NAME, mediaUnitId);
+    public void incrementSfuSamplesOpenedWebsockets(String serviceId,  String mediaUnitId) {
+        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_OPENED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
     }
 
-    public void incrementSfuSamplesClosedWebsockets(String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS, MEDIA_UNIT_TAG_NAME, mediaUnitId);
+    public void incrementSfuSamplesClosedWebsockets(String serviceId, String mediaUnitId) {
+        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
     }
-
-    public void incrementSfuSamplesReceived(String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_RECEIVED, MEDIA_UNIT_TAG_NAME, mediaUnitId);
+    public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId) {
+        this.incrementSfuSamplesReceived(serviceId, mediaUnitId, 1);
+    }
+    public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId, int value) {
+        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
     }
 }

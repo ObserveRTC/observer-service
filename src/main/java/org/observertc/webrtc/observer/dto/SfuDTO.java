@@ -35,11 +35,14 @@ public class SfuDTO implements VersionedPortable {
 	public static Builder builder() {
 		return new Builder();
 	}
+
+	private static final String SERVICE_ID_FIELD_NAME = "serviceId";
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
 	private static final String JOINED_FIELD_NAME = "joined";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
 
+	public String serviceId;
 	public String mediaUnitId;
 	public UUID sfuId;
 	public Long joined;
@@ -61,6 +64,7 @@ public class SfuDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
+		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
 		writer.writeLong(JOINED_FIELD_NAME, this.joined);
@@ -70,6 +74,7 @@ public class SfuDTO implements VersionedPortable {
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
+		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
 		this.joined = reader.readLong(JOINED_FIELD_NAME);
@@ -93,6 +98,7 @@ public class SfuDTO implements VersionedPortable {
 		}
 		SfuDTO otherDTO = (SfuDTO) other;
 		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
+			!Objects.equals(this.serviceId, otherDTO.serviceId) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.joined, otherDTO.joined) ||
 			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId)
@@ -108,6 +114,7 @@ public class SfuDTO implements VersionedPortable {
 		public Builder from(SfuDTO source) {
 			Objects.requireNonNull(source);
 			return this.withSfuId(source.sfuId)
+					.withServiceId(source.serviceId)
 					.withMediaUnitId(source.mediaUnitId)
 					.withConnectedTimestamp(source.joined)
 					.withTimeZoneId(source.timeZoneId)
@@ -116,6 +123,11 @@ public class SfuDTO implements VersionedPortable {
 
 		public Builder withSfuId(UUID value) {
 			this.result.sfuId = value;
+			return this;
+		}
+
+		public Builder withServiceId(String value) {
+			this.result.serviceId = value;
 			return this;
 		}
 

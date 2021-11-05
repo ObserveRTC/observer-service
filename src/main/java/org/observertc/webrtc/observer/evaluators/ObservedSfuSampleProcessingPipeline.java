@@ -1,14 +1,14 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReportTypeVisitors;
-import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.evaluators.events.SfuEvents;
+import org.observertc.webrtc.observer.evaluators.listeners.SfuEvents;
 import org.observertc.webrtc.observer.samples.ObservedSfuSample;
 import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;
 
@@ -30,22 +30,10 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<ObservedSfu
     SfuEvents sfuEvents;
 
     @Inject
-    HazelcastEventSubscriber hazelcastEventSubscriber;
-
-    @Inject
     ObservedSfuSampleObfuscator obfuscator;
 
     @Inject
     AddNewSfuEntities addNewSfuEntities;
-
-    @Inject
-    ListenSfuEntryChanges listenSfuEntryChanges;
-
-    @Inject
-    ListenSfuTransportEntryChanges listenSfuTransportEntryChanges;
-
-    @Inject
-    ListenSfuRtpPadEntryChanges listenSfuRtpPadEntryChanges;
 
     @Inject
     CollectSfuSamples collectSfuSamples;
@@ -61,16 +49,13 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<ObservedSfu
 
     @PostConstruct
     void setup() {
-        var clientSamplesBufferMaxTimeInS = this.observerConfig.evaluators.sfuSamplesBufferMaxTimeInS;
-        var clientSamplesBufferMaxItems = this.observerConfig.evaluators.sfuSamplesBufferMaxItems;
-        this.hazelcastEventSubscriber
-                .withSfuEntriesLocalListener(this.listenSfuEntryChanges)
-                .withSfuTransportEntriesLocalListener(this.listenSfuTransportEntryChanges)
-                .withSfuRtpStreamEntriesLocalListener(this.listenSfuRtpPadEntryChanges)
-        ;
+        var sfuSamplesBufferMaxTimeInS = this.observerConfig.evaluators.sfuSamplesBufferMaxTimeInS;
+        var sfuSamplesBufferMaxItems = this.observerConfig.evaluators.sfuSamplesBufferMaxItems;
+        var sfuReportsPreCollectingMaxTimeInS = this.observerConfig.evaluators.sfuReportsPreCollectingTimeInS;
+        var sfuReportsPreCollectingMaxItems = this.observerConfig.evaluators.sfuReportsPreCollectingMaxItems;
 
         var samplesBuffer = this.sfuSampleSubject
-                .buffer(clientSamplesBufferMaxTimeInS, TimeUnit.SECONDS, clientSamplesBufferMaxItems)
+                .buffer(sfuSamplesBufferMaxTimeInS, TimeUnit.SECONDS, sfuSamplesBufferMaxItems)
                 .share();
 
         var observableCollectedSfuSamples = samplesBuffer
@@ -86,60 +71,30 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<ObservedSfu
         observableCollectedSfuSamples
                 .subscribe(this.demuxCollectedSfuSamples);
 
-        this.addNewSfuEntities
-                .getObservableCallEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeSfuEventReport);
-
-        this.listenSfuEntryChanges
-                .getObservableSfuEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeSfuEventReport);
-
-        this.listenSfuTransportEntryChanges
-                .getObservableSfuEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeSfuEventReport);
-
-        this.listenSfuRtpPadEntryChanges
-                .getObservableSfuEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeSfuEventReport);
-
         this.demuxCollectedSfuSamples
                 .getSfuTransportReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(sfuReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, sfuReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeSfuTransportReport);
 
         this.demuxCollectedSfuSamples
                 .getSfuRtpSourceReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(sfuReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, sfuReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeSfuInboundRtpPadReport);
 
         this.demuxCollectedSfuSamples
                 .getSfuRtpSinkReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(sfuReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, sfuReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeSfuOutboundRtpPadReport);
 
         this.demuxCollectedSfuSamples
                 .getSctpStreamReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(sfuReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, sfuReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeSfuSctpStreamReport);
 
         this.sfuEvents
-                .getReports()
-                .buffer(5, TimeUnit.SECONDS, 1000)
+                .getObservableSfuEventReports()
+                .buffer(sfuReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, sfuReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeSfuEventReport);
-
-        var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxItems;
-        var reportsBufferMaxRetainInS = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
-        var typeFilter = this.makeOutboundReportPredicate();
-        this.outboundReportEncoder
-                .getObservableOutboundReport()
-                .filter(typeFilter)
-                .buffer(reportsBufferMaxRetainInS, TimeUnit.SECONDS, reportsBufferMaxItems)
-                .map(OutboundReports::fromList)
-                .subscribe(this.outboundReportsObserver);
     }
 
     private Predicate<OutboundReport> makeOutboundReportPredicate() {
@@ -153,5 +108,12 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<ObservedSfu
     @Override
     public void accept(ObservedSfuSample observedSfuSample) throws Throwable {
         this.sfuSampleSubject.onNext(observedSfuSample);
+    }
+
+    public Observable<OutboundReport> getObservableOutboundReport() {
+        var typeFilter = this.makeOutboundReportPredicate();
+        return this.outboundReportEncoder
+                .getObservableOutboundReport()
+                .filter(typeFilter);
     }
 }

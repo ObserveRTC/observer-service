@@ -13,7 +13,7 @@ public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
 
     private final Map<K, Instant> accessedKeys;
     private Duration threshold;
-    private Consumer<V> removedCb = v -> {};
+    private Consumer<V> removedCb = null;
 
     public TimeLimitedMap(Duration threshold) {
         this.accessedKeys = new LinkedHashMap<>(16, .75f, true);
@@ -36,7 +36,9 @@ public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
         if (Objects.isNull(removed)) {
             return null;
         }
-        this.removedCb.accept(removed);
+        if (Objects.nonNull(this.removedCb)) {
+            this.removedCb.accept(removed);
+        }
         return removed;
     }
 

@@ -46,7 +46,7 @@ class RemoveSfuTransportsTaskTest {
     @Test
     public void removeSfuTransport_2() {
         var task = removeSfuTransportsTaskProvider.get()
-                .addRemovedSfuDTO(this.createdDTO)
+                .addRemovedSfuTransportDTO(this.createdDTO)
                 .execute()
                 ;
 

@@ -14,21 +14,21 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Prototype
-public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Builder>> {
+public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>> {
 
     private static final Logger logger = LoggerFactory.getLogger(RemoveMediaTracksTask.class);
     private Set<UUID> mediaTrackIds = new HashSet<>();
     private Map<UUID, MediaTrackDTO> removedTrackDTOs = new HashMap<>();
+    private boolean unmodifiableResult = false;
 
     @Inject
     HazelcastMaps hazelcastMaps;
 
     @PostConstruct
     void setup() {
-        new Builder<List<CallEventReport.Builder>>(this)
+        new Builder<Map<UUID, MediaTrackDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Merge Inputs",
                         () -> this.mediaTrackIds,
                         receivedTrackIds -> {
@@ -102,11 +102,11 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
                             });
                         })
                 .addTerminalSupplier("Creating PeerConnection Entities", () -> {
-                    List<CallEventReport.Builder> result = this.removedTrackDTOs.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                    return result;
+                    if (this.unmodifiableResult) {
+                        return Collections.unmodifiableMap(this.removedTrackDTOs);
+                    } else {
+                        return this.removedTrackDTOs;
+                    }
                 })
                 .build();
     }
@@ -127,26 +127,8 @@ public class RemoveMediaTracksTask extends ChainedTask<List<CallEventReport.Buil
         return this;
     }
 
-    private CallEventReport.Builder makeReportBuilder(MediaTrackDTO mediaTrackDTO) {
-        Long now = Instant.now().toEpochMilli();
-        try {
-            return CallEventReport.newBuilder()
-                    .setName(CallEventType.MEDIA_TRACK_REMOVED.name())
-                    .setCallId(mediaTrackDTO.callId.toString())
-                    .setServiceId(mediaTrackDTO.serviceId)
-                    .setRoomId(mediaTrackDTO.roomId)
-
-                    .setClientId(mediaTrackDTO.clientId.toString())
-                    .setMediaUnitId(mediaTrackDTO.mediaUnitId)
-                    .setUserId(mediaTrackDTO.userId)
-
-                    .setMediaTrackId(mediaTrackDTO.trackId.toString())
-                    .setPeerConnectionId(mediaTrackDTO.peerConnectionId.toString())
-                    .setAttachments("Direction of media track" + mediaTrackDTO.direction.name())
-                    .setTimestamp(now);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for client DTO", ex);
-            return null;
-        }
+    public RemoveMediaTracksTask withUnmodifiableResult(boolean value) {
+        this.unmodifiableResult = value;
+        return this;
     }
 }

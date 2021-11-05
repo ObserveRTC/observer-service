@@ -1,8 +1,10 @@
 package org.observertc.webrtc.observer.common;
 
+import io.reactivex.rxjava3.functions.Function;
+
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 public class Utils {
@@ -32,5 +34,25 @@ public class Utils {
     public static boolean allNull(Object... objects) {
         Objects.requireNonNull(objects, "To determine if all object is null, we need objects");
         return Arrays.stream(objects).allMatch(Objects::isNull);
+    }
+
+    public static<T> boolean isListNotEmpty(List<T> list) {
+        return Objects.nonNull(list) && 0 < list.size();
+    }
+
+    public static<T> boolean isListEmptyOrNull(List<T> list) {
+        return Objects.isNull(list) || list.size() < 1;
+    }
+
+    public static boolean nullOrFalse(Boolean value) {
+        return Objects.isNull(value) || value == false;
+    }
+
+    public static<T> Function<T, T> createPrintingMapper(String context) {
+        return input -> {
+            String message = String.format("[%s]: %s", context, input.toString());
+            System.out.println(message);
+            return input;
+        };
     }
 }

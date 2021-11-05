@@ -2,20 +2,18 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
-public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builder>> {
+public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> {
 
     private static final Logger logger = LoggerFactory.getLogger(RemoveSfuTransportsTask.class);
 
@@ -27,7 +25,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
 
     @PostConstruct
     void setup() {
-        new Builder<List<SfuEventReport.Builder>>(this)
+        new Builder<List<SfuTransportDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Fetch SfuTransport Ids",
                         () -> this.sfuTransportIds,
                         receivedIds -> {
@@ -68,12 +66,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
                             this.hazelcastMaps.getSFUTransports().putAll(this.removedSfuTransportDTOs);
                         })
                 .addTerminalSupplier("Completed", () -> {
-                    List<SfuEventReport.Builder> result = new LinkedList<>();
-                    this.removedSfuTransportDTOs.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .forEach(result::add);
-                    return result;
+                    return this.removedSfuTransportDTOs.values().stream().collect(Collectors.toList());
                 })
                 .build();
     }
@@ -86,38 +79,12 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuEventReport.Bui
         return this;
     }
 
-    public RemoveSfuTransportsTask addRemovedSfuDTO(SfuTransportDTO DTO) {
+    public RemoveSfuTransportsTask addRemovedSfuTransportDTO(SfuTransportDTO DTO) {
         if (Objects.isNull(DTO)) {
             return this;
         }
         this.sfuTransportIds.add(DTO.transportId);
         this.removedSfuTransportDTOs.put(DTO.transportId, DTO);
         return this;
-    }
-
-    private SfuEventReport.Builder makeReportBuilder(SfuTransportDTO sfuTransportDTO) {
-        Long now = Instant.now().toEpochMilli();
-        try {
-            var builder = SfuEventReport.newBuilder()
-                    .setName(SfuEventType.SFU_TRANSPORT_CLOSED.name())
-                    .setTimestamp(now);
-            return setupBuilder(builder, sfuTransportDTO);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for SFU DTO", ex);
-            return null;
-        }
-    }
-
-    private SfuEventReport.Builder setupBuilder(SfuEventReport.Builder builder, SfuTransportDTO sfuTransportDTO) {
-        try {
-            return builder
-                    .setMediaUnitId(sfuTransportDTO.mediaUnitId)
-                    .setSfuId(sfuTransportDTO.sfuId.toString())
-                    .setTransportId(sfuTransportDTO.transportId.toString())
-                    ;
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for SFU DTO", ex);
-            return null;
-        }
     }
 }

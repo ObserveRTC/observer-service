@@ -5,6 +5,11 @@
   "doc": "A Report created for SFU Transport layer typically created to transfer RTP/SCTP/RTX streams to another client, SFU, MCU, or processing module.",
   "fields": [
     {
+      "name": "serviceId",
+      "doc": "The service id the report belongs to",
+      "type": "string"
+    },
+    {
       "name": "mediaUnitId",
       "doc": "The media unit id the report belongs to",
       "type": "string"

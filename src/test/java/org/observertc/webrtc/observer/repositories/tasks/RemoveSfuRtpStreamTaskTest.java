@@ -46,7 +46,7 @@ class RemoveSfuRtpStreamTaskTest {
     @Test
     public void removeSfuTransport_2() {
         var task = removeSfuRtpStreamsTaskProvider.get()
-                .addRemovedSfuRtpStreamPodDTO(this.createdDTO)
+                .addRemovedSfuRtpStreamPadDTO(this.createdDTO)
                 .execute()
                 ;
 

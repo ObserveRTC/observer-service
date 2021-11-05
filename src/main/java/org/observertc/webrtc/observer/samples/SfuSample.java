@@ -15,12 +15,6 @@ public  class SfuSample {
 	public String sfuId;
 
 	/**
-	 * A given name for a certain SFU
-	 */
-	@JsonProperty("sfuName")
-	public String sfuName;
-
-	/**
 	 * array of measurements related to inbound RTP streams
 	 */
 	@JsonProperty("inboundRtpStreams")
@@ -85,6 +79,18 @@ public  class SfuSample {
 		 */
 		@JsonProperty("padId")
 		public String padId;
+
+		/**
+		 * Indicates if this transport is not receive or send traffic outside of the SFU mesh.
+		 */
+		@JsonProperty("internal")
+		public boolean internal;
+
+		/**
+		 * Indicate if this message measurements should be kept and oly used as keep alive message for the transports
+		 */
+		@JsonProperty("skipMeasurements")
+		public boolean skipMeasurements;
 
 		/**
 		 * if the sink is internally piped between the SFUs, this id represents the remote SFU outbound pad id
@@ -322,10 +328,16 @@ public  class SfuSample {
 		public String padId;
 
 		/**
-		 * Indicate if the oubtound pad is internally piped to another SFU or directed to a client (default: false)
+		 * Indicates if this transport is not receive or send traffic outside of the SFU mesh.
 		 */
-		@JsonProperty("piped")
-		public boolean piped;
+		@JsonProperty("internal")
+		public boolean internal;
+
+		/**
+		 * Indicate if this message measurements should be kept and oly used as keep alive message for the transports
+		 */
+		@JsonProperty("skipMeasurements")
+		public boolean skipMeasurements;
 
 		/**
 		 * The SSRC identifier of the corresponded RTP stream
@@ -612,12 +624,16 @@ public  class SfuSample {
 		public String transportId;
 
 		/**
-		 * The id of the service the transport belongs to
-
-		 NOTE: As one SFU may used by many service by one organization, this is an additional information should/can be provided to the Sfu transport
+		 * Indicates if this transport is not receive or send traffic outside of the SFU mesh.
 		 */
-		@JsonProperty("serviceId")
-		public String serviceId;
+		@JsonProperty("internal")
+		public boolean internal;
+
+		/**
+		 * Indicate if this message measurements should be kept and oly used as keep alive message for the transports
+		 */
+		@JsonProperty("skipMeasurements")
+		public boolean skipMeasurements;
 
 		/**
 		 * Set to the current value of the state attribute of the underlying RTCDtlsTransport.

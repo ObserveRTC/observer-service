@@ -2,20 +2,17 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.dto.SfuDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Prototype
-public class AddSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
+public class AddSFUsTask extends ChainedTask<Void> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddSFUsTask.class);
 
@@ -26,7 +23,7 @@ public class AddSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
 
     @PostConstruct
     void setup() {
-        new Builder<List<SfuEventReport.Builder>>(this)
+        new Builder<Void>(this)
                 .<Map<UUID, SfuDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
                         receivedSfuDTOs -> {
@@ -37,7 +34,7 @@ public class AddSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
                 )
                 .<Map<UUID, SfuDTO>> addBreakCondition((resultHolder) -> {
                     if (this.sfuDTOs.size() < 1) {
-                        resultHolder.set(Collections.EMPTY_LIST);
+                        resultHolder.set(null);
                         return true;
                     }
                     return false;
@@ -53,13 +50,7 @@ public class AddSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
                         this.hazelcastMaps.getSFUs().remove(sfuId);
                     }
                 })
-                .addTerminalSupplier("Completed", () -> {
-                    List<SfuEventReport.Builder> result = this.sfuDTOs.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                    return result;
-                })
+                .addTerminalPassingStage("Completed")
                 .build();
     }
 
@@ -90,18 +81,5 @@ public class AddSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
         }
         this.sfuDTOs.putAll(sfuDTOs);
         return this;
-    }
-
-    private SfuEventReport.Builder makeReportBuilder(SfuDTO sfuDTO) {
-        try {
-            return SfuEventReport.newBuilder()
-                    .setName(SfuEventType.SFU_JOINED.name())
-                    .setSfuId(sfuDTO.sfuId.toString())
-                    .setMediaUnitId(sfuDTO.mediaUnitId)
-                    .setTimestamp(sfuDTO.joined);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for Sfu DTO", ex);
-            return null;
-        }
     }
 }

@@ -13,9 +13,10 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
-public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>> {
+public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
 
     private static final Logger logger = LoggerFactory.getLogger(RemoveSfuRtpPadsTask.class);
 
@@ -27,7 +28,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builde
 
     @PostConstruct
     void setup() {
-        new Builder<List<SfuEventReport.Builder>>(this)
+        new Builder<List<SfuRtpPadDTO>>(this)
                 .<Set<UUID>>addConsumerEntry("Fetch SfuTransport Ids",
                         () -> {},
                         receivedIds -> {
@@ -76,12 +77,13 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builde
                             });
                         })
                 .addTerminalSupplier("Completed", () -> {
-                    List<SfuEventReport.Builder> result = new LinkedList<>();
-                    this.removedRtpPads.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .forEach(result::add);
-                    return result;
+                    return this.removedRtpPads.values().stream().collect(Collectors.toList());
+//                    List<SfuEventReport.Builder> result = new LinkedList<>();
+//                    this.removedRtpPads.values().stream()
+//                            .map(this::makeReportBuilder)
+//                            .filter(Objects::nonNull)
+//                            .forEach(result::add);
+//                    return result;
                 })
                 .build();
     }
@@ -94,7 +96,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builde
         return this;
     }
 
-    public RemoveSfuRtpPadsTask addRemovedSfuRtpStreamPodDTO(SfuRtpPadDTO DTO) {
+    public RemoveSfuRtpPadsTask addRemovedSfuRtpStreamPadDTO(SfuRtpPadDTO DTO) {
         if (Objects.isNull(DTO)) {
             return this;
         }

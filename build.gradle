@@ -102,19 +102,31 @@ java {
     targetCompatibility = JavaVersion.toVersion("11")
 }
 
-task createProperties {
+//task createProperties {
 //    doLast {
-//        new File("$buildDir/resources/main/version.properties").withWriter { w ->
-//            Properties p = new Properties()
-//            p['version'] = project.version.toString()
-//            p.store w, null
-//        }
+//            new File("$buildDir/resources/main/version.properties").withWriter { w ->
+//                Properties p = new Properties()
+//                p['version'] = project.version.toString()
+//                p.store w, null
+//            }
 //    }
+//}
+
+task createVersion {
+    File outputDir = file("$buildDir/resources/main")
+    outputs.dir outputDir
+    doFirst {
+        outputDir.exists() || outputDir.mkdirs()
+        new File(outputDir, "service.properties").withWriter { w ->
+                Properties p = new Properties()
+                p['version'] = project.version.toString()
+                p.store w, null
+            }
+    }
 }
 
-classes {
-    dependsOn createProperties
-}
+compileJava.dependsOn createVersion
+
 tasks {
     dockerBuild{
         images = ["observertc/observer:$project.version"]

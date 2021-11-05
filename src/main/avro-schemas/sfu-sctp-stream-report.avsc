@@ -5,6 +5,11 @@
   "doc": "A Report created for SCTP streams going through the SFU",
   "fields": [
     {
+      "name": "serviceId",
+      "doc": "The service id the report belongs to",
+      "type": "string"
+    },
+    {
       "name": "mediaUnitId",
       "doc": "The media unit id the report belongs to",
       "type": "string"

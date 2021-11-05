@@ -2,7 +2,6 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.SfuDTO;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
@@ -23,13 +22,12 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         public Set<UUID> foundSfuIds = new HashSet<>();
         public Set<UUID> foundSfuTransportIds = new HashSet<>();
         public Set<UUID> foundRtpPadIds = new HashSet<>();
-        public Map<UUID, SfuRtpPadDTO> completedSfuRtpPadDTOs = new HashMap<>();
     }
 
 
     private Set<UUID> sfuIds = new HashSet<>();
     private Set<UUID> transportIds = new HashSet<>();
-    private Set<UUID> rtpPodIds = new HashSet<>();
+    private Set<UUID> rtpPadIds = new HashSet<>();
     private final Report report = new Report();
 
     private Map<UUID, List<SfuRtpPadDTO>> incompleteSfuPadDTOByRtpStreamIds = new HashMap<>();
@@ -46,57 +44,12 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                 .addActionStage("Check Sfu Rtp Pads",
                         // action
                         () -> {
-                            if (this.rtpPodIds.size() < 1) {
+                            if (this.rtpPadIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, SfuRtpPadDTO> rtpPadDTOs = this.hazelcastMaps.getSFURtpPads().getAll(this.rtpPodIds);
+                            Map<UUID, SfuRtpPadDTO> rtpPadDTOs = this.hazelcastMaps.getSFURtpPads().getAll(this.rtpPadIds);
                             this.report.foundRtpPadIds.addAll(rtpPadDTOs.keySet());
-                            rtpPadDTOs.values().stream()
-                                    .filter(dto -> Objects.isNull(dto.callId) && Objects.nonNull(dto.rtpStreamId))
-                                    .forEach(dto -> {
-                                        List<SfuRtpPadDTO> sfuRtpPadDTOs = incompleteSfuPadDTOByRtpStreamIds.get(dto.rtpStreamId);
-                                        if (Objects.isNull(sfuRtpPadDTOs)) {
-                                            sfuRtpPadDTOs = new LinkedList<>();
-                                            incompleteSfuPadDTOByRtpStreamIds.put(dto.rtpStreamId, sfuRtpPadDTOs);
-                                        }
-                                        sfuRtpPadDTOs.add(dto);
-                                    });
                         })
-                .addActionStage("Try complete SfuPads based on sfuStreamIds",
-                // action
-                () -> {
-                    if (this.incompleteSfuPadDTOByRtpStreamIds.size() < 1) {
-                        return;
-                    }
-                    Set<UUID> rtpStreamIds = this.incompleteSfuPadDTOByRtpStreamIds.keySet();
-                    var task = findCallIdsByRtpStreamIdsTask.withRtpStreamIds(rtpStreamIds);
-                    if (!task.execute().succeeded()) {
-                        return;
-                    }
-                    Map<UUID, UUID> rtpStreamToCallIds = task.getResult();
-                    if (rtpStreamToCallIds.size() < 1) {
-                        return;
-                    }
-                    rtpStreamToCallIds.forEach((rtpStreamId, callId) -> {
-                        var sfuPadDTOs = this.incompleteSfuPadDTOByRtpStreamIds.get(rtpStreamId);
-                        if (Objects.isNull(sfuPadDTOs) || sfuPadDTOs.size() < 1) {
-                            return;
-                        }
-                        sfuPadDTOs.forEach(sfuPadDTO -> {
-                            var completedStreamDTO = SfuRtpPadDTO.builderFrom(sfuPadDTO)
-//                                    .withTrackId(mediaTrackDTO.trackId)
-//                                    .withClientId(mediaTrackDTO.clientId)
-                                    .withCallId(callId)
-                                    .build();
-                            this.report.completedSfuRtpPadDTOs.put(sfuPadDTO.sfuPadId, completedStreamDTO);
-                        });
-                    });
-                })
-                .addActionStage("Complete related RTP Pads", () -> {
-                    if (0 < this.report.completedSfuRtpPadDTOs.size()) {
-                        hazelcastMaps.getSFURtpPads().putAll(this.report.completedSfuRtpPadDTOs);
-                    }
-                })
                 .addActionStage("Check Sfu Transports",
                         // action
                         () -> {
@@ -155,20 +108,20 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         return this;
     }
 
-    public RefreshSfusTask withSfuRtpPodIds(UUID... rtpStreamIds) {
+    public RefreshSfusTask withSfuRtpPadIds(UUID... rtpStreamIds) {
         if (Objects.isNull(rtpStreamIds)) {
             return this;
         }
         var rtpStreamIdsList = Arrays.asList(rtpStreamIds);
-        this.rtpPodIds.addAll(rtpStreamIdsList);
+        this.rtpPadIds.addAll(rtpStreamIdsList);
         return this;
     }
 
-    public RefreshSfusTask withSfuRtpPodIds(Set<UUID> rtpPodIds) {
+    public RefreshSfusTask withSfuRtpPadIds(Set<UUID> rtpPodIds) {
         if (Objects.isNull(rtpPodIds)) {
             return this;
         }
-        this.rtpPodIds.addAll(rtpPodIds);
+        this.rtpPadIds.addAll(rtpPodIds);
         return this;
     }
 

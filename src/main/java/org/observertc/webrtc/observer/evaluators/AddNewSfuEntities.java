@@ -1,10 +1,7 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.micrometer.core.annotation.Timed;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.SfuDTO;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
@@ -13,7 +10,6 @@ import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.tasks.*;
 import org.observertc.webrtc.observer.samples.*;
-import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +17,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Responsible to Order appropriate updates on new calls, clients, peer connections
@@ -29,12 +24,6 @@ import java.util.stream.Collectors;
 @Singleton
 public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(AddNewSfuEntities.class);
-
-    private Subject<SfuEventReport> callEventReportSubject = PublishSubject.create();
-
-    public Observable<SfuEventReport> getObservableCallEventReports() {
-        return this.callEventReportSubject;
-    }
 
     @Inject
     ObserverConfig observerConfig;
@@ -56,13 +45,13 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
     public void accept(CollectedSfuSamples collectedSfuSamples) throws Throwable {
         Set<UUID> sfuIds = collectedSfuSamples.getSfuIds();
         Set<UUID> transportIds = collectedSfuSamples.getTransportIds();
-        Set<UUID> rtpPodIds = new HashSet<>();
-        rtpPodIds.addAll(collectedSfuSamples.getOutboundRtpPadIds());
-        rtpPodIds.addAll(collectedSfuSamples.getInboundRtpPadIds());
+        Set<UUID> rtpPadIds = new HashSet<>();
+        rtpPadIds.addAll(collectedSfuSamples.getOutboundRtpPadIds());
+        rtpPadIds.addAll(collectedSfuSamples.getInboundRtpPadIds());
         RefreshSfusTask refreshCallsTask = refreshTaskProvider.get()
                 .withSfuIds(sfuIds)
                 .withSfuTransportIds(transportIds)
-                .withSfuRtpPodIds(rtpPodIds);
+                .withSfuRtpPadIds(rtpPadIds);
         if (!refreshCallsTask.execute().succeeded()) {
             logger.warn("Unsuccessful execution of {}. Entities are not refreshed, new entities are not identified!", RefreshCallsTask.class.getSimpleName());
             return;
@@ -81,6 +70,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                             .withSfuId(sfuId)
                             .withConnectedTimestamp(observedSfuSample.getTimestamp())
                             .withTimeZoneId(observedSfuSample.getTimeZoneId())
+                            .withServiceId(observedSfuSample.getServiceId())
                             .withMediaUnitId(observedSfuSample.getMediaUnitId())
                             .build();
                     newSFUs.put(sfuId, sfuDTO);
@@ -91,6 +81,8 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         var sfuTransportDTO = SfuTransportDTO.builder()
                                 .withSfuId(sfuId)
                                 .withTransportId(transportId)
+                                .withInternal(sfuTransport.internal)
+                                .withServiceId(observedSfuSample.getServiceId())
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withOpenedTimestamp(observedSfuSample.getTimestamp())
                                 .build();
@@ -100,7 +92,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                 SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuRtpSource -> {
                     UUID streamId = UUID.fromString(sfuRtpSource.rtpStreamId);
                     UUID padId = UUID.fromString(sfuRtpSource.padId);
-                    boolean internalPad = Objects.nonNull(sfuRtpSource.piped);
+                    boolean internalPad = Objects.nonNull(sfuRtpSource.internal);
                     if (!report.foundRtpPadIds.contains(padId) && !newRtpPads.containsKey(padId)) {
                         UUID transportId = UUID.fromString(sfuRtpSource.transportId);
                         var sfuRtpPadDTO = SfuRtpPadDTO.builder()
@@ -109,6 +101,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                                 .withRtpStreamId(streamId)
                                 .withSfuRtpPadId(padId)
                                 .withInternalPad(internalPad)
+                                .withServiceId(observedSfuSample.getServiceId())
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
                                 .withStreamDirection(StreamDirection.OUTBOUND)
@@ -128,6 +121,7 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                                 .withRtpStreamId(streamId)
                                 .withSfuRtpPadId(padId)
                                 .withInternalPad(internalPad)
+                                .withServiceId(observedSfuSample.getServiceId())
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
                                 .withStreamDirection(StreamDirection.INBOUND)
@@ -157,12 +151,6 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return;
         }
-        List<SfuEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("New SFU is started"))
-                .map(this::buildReport)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        this.forwardReports(reports);
     }
 
     private void addNewTransports(Map<UUID, SfuTransportDTO> DTOs) {
@@ -173,13 +161,6 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return;
         }
-
-        List<SfuEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("Sfu Transport is added"))
-                .map(this::buildReport)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        this.forwardReports(reports);
     }
 
     private void addNewRtpPads(Map<UUID, SfuRtpPadDTO> DTOs) {
@@ -189,34 +170,6 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
             return;
-        }
-        List<SfuEventReport> reports = task.getResult().stream()
-                .filter(builder -> {
-                    if (Objects.isNull(builder)) {
-                        return false;
-                    }
-                    return true;
-                })
-                .map(this::buildReport)
-                .collect(Collectors.toList());
-        this.forwardReports(reports);
-    }
-
-    private void forwardReports(List<SfuEventReport> reports) {
-        if (Objects.isNull(reports) || reports.size() < 1) {
-            return;
-        }
-        synchronized (this) {
-            reports.stream().filter(Objects::nonNull).forEach(this.callEventReportSubject::onNext);
-        }
-    }
-
-    private SfuEventReport buildReport(SfuEventReport.Builder builder) {
-        try {
-            return builder.build();
-        } catch (Exception ex) {
-            logger.warn("Cannot build report due to exception", ex);
-            return null;
         }
     }
 }

@@ -2,20 +2,20 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @Prototype
-public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builder>> {
+public class AddSfuTransportsTask extends ChainedTask<Void> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddSfuTransportsTask.class);
 
@@ -26,7 +26,7 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
 
     @PostConstruct
     void setup() {
-        new Builder<List<SfuEventReport.Builder>>(this)
+        new Builder<Void>(this)
                 .<Map<UUID, SfuTransportDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
                         receivedSfuTransportDTOs -> {
@@ -37,7 +37,7 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
                 )
                 .<Map<UUID, SfuTransportDTO>> addBreakCondition((resultHolder) -> {
                     if (this.sfuTransports.size() < 1) {
-                        resultHolder.set(Collections.EMPTY_LIST);
+                        resultHolder.set(null);
                         return true;
                     }
                     return false;
@@ -53,13 +53,7 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
                         this.hazelcastMaps.getSFUTransports().remove(sfuId);
                     }
                 })
-                .addTerminalSupplier("Completed", () -> {
-                    List<SfuEventReport.Builder> result = this.sfuTransports.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                    return result;
-                })
+                .addTerminalPassingStage("Completed")
                 .build();
     }
 
@@ -72,17 +66,6 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
         return this;
     }
 
-    public AddSfuTransportsTask withSfuTransportDTOs(SfuTransportDTO... sfuTransportDTOs) {
-        if (Objects.isNull(sfuTransportDTOs) || sfuTransportDTOs.length < 1) {
-            this.getLogger().info("sfu transport DTO was not given to be added");
-            return this;
-        }
-        Arrays.stream(sfuTransportDTOs).forEach(sfuTransportDTO -> {
-            this.sfuTransports.put(sfuTransportDTO.transportId, sfuTransportDTO);
-        });
-        return this;
-    }
-
     public AddSfuTransportsTask withSfuTransportDTOs(Map<UUID, SfuTransportDTO> sfuTransportDTOs) {
         if (Objects.isNull(sfuTransportDTOs) || sfuTransportDTOs.size() < 1) {
             this.getLogger().info("sfu transport DTO was not given to be added");
@@ -90,19 +73,5 @@ public class AddSfuTransportsTask extends ChainedTask<List<SfuEventReport.Builde
         }
         this.sfuTransports.putAll(sfuTransportDTOs);
         return this;
-    }
-
-    private SfuEventReport.Builder makeReportBuilder(SfuTransportDTO sfuTransportDTO) {
-        try {
-            return SfuEventReport.newBuilder()
-                    .setName(SfuEventType.SFU_TRANSPORT_OPENED.name())
-                    .setSfuId(sfuTransportDTO.sfuId.toString())
-                    .setTransportId(sfuTransportDTO.transportId.toString())
-                    .setMediaUnitId(sfuTransportDTO.mediaUnitId)
-                    .setTimestamp(sfuTransportDTO.opened);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for Sfu Transport DTO", ex);
-            return null;
-        }
     }
 }

@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * binary and with that type the search is fast for activestreams. thats why.
  */
 @Secured(SecurityRule.IS_ANONYMOUS)
-@ServerWebSocket("/sfusamples/{mediaUnitId}")
+@ServerWebSocket("/sfusamples/{serviceId}/{mediaUnitId}")
 public class WebsocketSfuSamples {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketSfuSamples.class);
@@ -90,6 +90,7 @@ public class WebsocketSfuSamples {
 
 	@OnOpen
 	public void onOpen(
+			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
 		try {
@@ -108,7 +109,7 @@ public class WebsocketSfuSamples {
 				}
 				this.expirations.put(session.getId(), expiration.get());
 			}
-			this.exposedMetrics.incrementSfuSamplesOpenedWebsockets(mediaUnitId);
+			this.exposedMetrics.incrementSfuSamplesOpenedWebsockets(serviceId, mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -117,11 +118,12 @@ public class WebsocketSfuSamples {
 
 	@OnClose
 	public void onClose(
+			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
 		try {
 			this.expirations.remove(session.getId());
-			this.exposedMetrics.incrementSfuSamplesClosedWebsockets(mediaUnitId);
+			this.exposedMetrics.incrementSfuSamplesClosedWebsockets(serviceId, mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -130,6 +132,7 @@ public class WebsocketSfuSamples {
 
 	@OnMessage
 	public void onMessage(
+			String serviceId,
 			String mediaUnitId,
 			byte[] messageBytes,
 			WebSocketSession session) {
@@ -144,7 +147,7 @@ public class WebsocketSfuSamples {
 			}
 		}
 		try {
-			this.exposedMetrics.incrementSfuSamplesReceived(mediaUnitId);
+			this.exposedMetrics.incrementSfuSamplesReceived(serviceId, mediaUnitId);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -162,6 +165,7 @@ public class WebsocketSfuSamples {
 
 		try {
 			var observedSfuSample = ObservedSfuSampleBuilder.from(sample)
+					.withServiceId(serviceId)
 					.withMediaUnitId(mediaUnitId)
 					.build();
 			Observable.just(observedSfuSample)

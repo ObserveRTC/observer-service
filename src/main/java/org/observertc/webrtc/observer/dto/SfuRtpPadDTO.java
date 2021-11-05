@@ -37,6 +37,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 	}
 	public static Builder builderFrom(SfuRtpPadDTO source) {
 		return new Builder()
+				.withServiceId(source.serviceId)
 				.withMediaUnitId(source.mediaUnitId)
 				.withSfuId(source.sfuId)
 				.withSfuTransportId(source.sfuTransportId)
@@ -49,19 +50,21 @@ public class SfuRtpPadDTO implements VersionedPortable {
 				.withCallId(source.callId)
 				;
 	}
+	private static final String SERVICE_ID_FIELD_NAME = "serviceId";
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
 	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "transportId";
 	private static final String SFU_RTP_STREAM_ID_FIELD_NAME = "rtpStreamId";
 	private static final String SFU_RTP_PAD_ID_FIELD_NAME = "sfuRtpPadId";
 	private static final String SFU_RTP_STREAM_DIRECTION_FIELD_NAME = "sfuStreamDirection";
-	private static final String SFU_RTP_STREAM_INTERNAL_PAD_FIELD_NAME = "sfuRtpInternalPad";
+	private static final String SFU_RTP_INTERNAL_PAD_FIELD_NAME = "sfuRtpInternalPad";
 	private static final String ADDED_FIELD_NAME = "added";
 
 	private static final String TRACK_ID_FIELD_NAME = "trackId";
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
 
+	public String serviceId;
 	public String mediaUnitId;
 	public UUID sfuId;
 	public UUID sfuTransportId;
@@ -91,12 +94,13 @@ public class SfuRtpPadDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
+		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
 		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
 		writer.writeByteArray(SFU_TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuTransportId));
 		writer.writeByteArray(SFU_RTP_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.rtpStreamId));
 		writer.writeByteArray(SFU_RTP_PAD_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuPadId));
-		writer.writeBoolean(SFU_RTP_STREAM_INTERNAL_PAD_FIELD_NAME, this.internalPad);
+		writer.writeBoolean(SFU_RTP_INTERNAL_PAD_FIELD_NAME, this.internalPad);
 		writer.writeUTF(SFU_RTP_STREAM_DIRECTION_FIELD_NAME, this.streamDirection.name());
 
 		SerDeUtils.writeNullableUUID(writer, TRACK_ID_FIELD_NAME, this.trackId);
@@ -108,12 +112,13 @@ public class SfuRtpPadDTO implements VersionedPortable {
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
+		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
 		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
 		this.sfuTransportId = UUIDAdapter.toUUID(reader.readByteArray(SFU_TRANSPORT_ID_FIELD_NAME));
 		this.rtpStreamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_RTP_STREAM_ID_FIELD_NAME));
 		this.sfuPadId =  UUIDAdapter.toUUID(reader.readByteArray(SFU_RTP_PAD_ID_FIELD_NAME));
-		this.internalPad = reader.readBoolean(SFU_RTP_STREAM_INTERNAL_PAD_FIELD_NAME);
+		this.internalPad = reader.readBoolean(SFU_RTP_INTERNAL_PAD_FIELD_NAME);
 		this.streamDirection =  StreamDirection.valueOf(reader.readUTF(SFU_RTP_STREAM_DIRECTION_FIELD_NAME));
 
 		this.trackId = SerDeUtils.readNullableUUID(reader, TRACK_ID_FIELD_NAME);
@@ -140,6 +145,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		}
 		SfuRtpPadDTO otherDTO = (SfuRtpPadDTO) other;
 		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
+			!Objects.equals(this.serviceId, otherDTO.serviceId) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.sfuTransportId, otherDTO.sfuTransportId) ||
 			!Objects.equals(this.rtpStreamId, otherDTO.rtpStreamId) ||
@@ -161,7 +167,9 @@ public class SfuRtpPadDTO implements VersionedPortable {
 
 		public Builder from(SfuRtpPadDTO source) {
 			Objects.requireNonNull(source);
-			return this.withMediaUnitId(source.mediaUnitId)
+			return this
+					.withServiceId(source.serviceId)
+					.withMediaUnitId(source.mediaUnitId)
 					.withSfuId(source.sfuId)
 					.withSfuTransportId(source.sfuTransportId)
 					.withSfuRtpPadId(source.sfuPadId)
@@ -172,6 +180,11 @@ public class SfuRtpPadDTO implements VersionedPortable {
 					.withAddedTimestamp(source.added)
 					;
 
+		}
+
+		public Builder withServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
 		}
 
 		public Builder withMediaUnitId(String value) {

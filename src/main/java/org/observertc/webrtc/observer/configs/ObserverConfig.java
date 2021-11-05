@@ -19,6 +19,9 @@ package org.observertc.webrtc.observer.configs;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 import javax.validation.constraints.Min;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @ConfigurationProperties("observer")
@@ -71,7 +74,7 @@ public class ObserverConfig {
 
 		@ConfigurationProperties("pcSamples")
 		public static class PCSamplesConfig {
-			public boolean enabled = true;
+			public boolean enabled = false;
 			public String defaultServiceId = "defaultServiceId";
 		}
 
@@ -112,10 +115,10 @@ public class ObserverConfig {
 		public int sfuTransportMaxIdleTime = 600;
 
 		@Min(60)
-		public int sfuRtpStreamMaxIdleTime = 600;
+		public int sfuRtpPadMaxIdleTime = 600;
 
 		@Min(0)
-		public int eventsCollectingTimeInS = 0;
+		public int eventsCollectingTimeInS = 5;
 	}
 
 	// Evaluators Config
@@ -124,14 +127,14 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
-		@Min(30)
-		public int clientSamplesBufferMaxTimeInS = 30;
+		@Min(5)
+		public int clientSamplesBufferMaxTimeInS = 5;
 
 		@Min(1)
 		public int clientSamplesBufferMaxItems = 10000;
 
-		@Min(30)
-		public int sfuSamplesBufferMaxTimeInS = 30;
+		@Min(5)
+		public int sfuSamplesBufferMaxTimeInS = 5;
 
 		@Min(1)
 		public int sfuSamplesBufferMaxItems = 10000;
@@ -141,6 +144,18 @@ public class ObserverConfig {
 
 		@Min(1)
 		public int reportsBufferMaxRetainInS = 30;
+
+		@Min(1)
+		public int sfuReportsPreCollectingTimeInS = 3;
+
+		@Min(1)
+		public int sfuReportsPreCollectingMaxItems = 1000;
+
+		@Min(1)
+		public int clientReportsPreCollectingTimeInS = 3;
+
+		@Min(1)
+		public int clientReportsPreCollectingMaxItems = 1000;
 	}
 
 	public Map<String, Object> sinks;
@@ -166,13 +181,12 @@ public class ObserverConfig {
 		public boolean reportSfuEvents = true;
 		public boolean reportSfuMeta = true;
 		public boolean reportSfuTransports = true;
-		public boolean reportSfuRtpSources = true;
-		public boolean reportSfuRtpSinks = true;
 		public boolean reportSfuSctpStreams = true;
 
 		public boolean reportSfuInboundRtpStreams = true;
 		public boolean reportSfuOutboundRtpStreams = true;
-		public boolean reportSfuRtpPadAddedWithoutCallId = false;
+
+		public boolean reportSfuRtpPadOnlyWithCallId = true;
 
 		public String defaultServiceName = "defaultServiceName";
 
@@ -184,6 +198,7 @@ public class ObserverConfig {
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
+		public List<String> memberNamesPool = new ArrayList<>();
 	}
 
 }

@@ -11,9 +11,11 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for SCTP streams going through the SFU */
 @org.apache.avro.specific.AvroGenerated
 public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3671393128782143685L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuSctpStreamReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for SCTP streams going through the SFU\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"sfuId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The provided unique identifier of the SFU\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"transportId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the transport the RTP stream uses.\"},{\"name\":\"streamId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the sctp stream\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The label of the sctp stream\",\"default\":null},{\"name\":\"protocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used to establish an sctp stream\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. If there has been no round-trip time measurements yet, this value is undefined.\",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd defined in [RFC6458].\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd defined in [RFC6458].\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu defined in [RFC6458].\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata defined in [RFC6458].\",\"default\":null},{\"name\":\"messageReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of message received on the corresponded SCTP stream.\",\"default\":null},{\"name\":\"messageSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of message sent on the corresponded SCTP stream.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The number of bytes received on the corresponded SCTP stream.\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The number of bytes sent on the corresponded SCTP stream.\",\"default\":null}]}");
+  private static final long serialVersionUID = 6177045675581741826L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuSctpStreamReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for SCTP streams going through the SFU\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The service id the report belongs to\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"sfuId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The provided unique identifier of the SFU\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"transportId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the transport the RTP stream uses.\"},{\"name\":\"streamId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the sctp stream\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The label of the sctp stream\",\"default\":null},{\"name\":\"protocol\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The protocol used to establish an sctp stream\",\"default\":null},{\"name\":\"sctpSmoothedRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest smoothed round-trip time value, corresponding to spinfo_srtt defined in [RFC6458] but converted to seconds. If there has been no round-trip time measurements yet, this value is undefined.\",\"default\":null},{\"name\":\"sctpCongestionWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest congestion window, corresponding to spinfo_cwnd defined in [RFC6458].\",\"default\":null},{\"name\":\"sctpReceiverWindow\",\"type\":[\"null\",\"double\"],\"doc\":\"The latest receiver window, corresponding to sstat_rwnd defined in [RFC6458].\",\"default\":null},{\"name\":\"sctpMtu\",\"type\":[\"null\",\"int\"],\"doc\":\"The latest maximum transmission unit, corresponding to spinfo_mtu defined in [RFC6458].\",\"default\":null},{\"name\":\"sctpUnackData\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of unacknowledged DATA chunks, corresponding to sstat_unackdata defined in [RFC6458].\",\"default\":null},{\"name\":\"messageReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of message received on the corresponded SCTP stream.\",\"default\":null},{\"name\":\"messageSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of message sent on the corresponded SCTP stream.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The number of bytes received on the corresponded SCTP stream.\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The number of bytes sent on the corresponded SCTP stream.\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+  /** The service id the report belongs to */
+   private java.lang.String serviceId;
   /** The media unit id the report belongs to */
    private java.lang.String mediaUnitId;
   /** The provided unique identifier of the SFU */
@@ -62,6 +64,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
 
   /**
    * All-args constructor.
+   * @param serviceId The service id the report belongs to
    * @param mediaUnitId The media unit id the report belongs to
    * @param sfuId The provided unique identifier of the SFU
    * @param marker The marker the originated sample is reported with
@@ -82,7 +85,8 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
    * @param bytesReceived The number of bytes received on the corresponded SCTP stream.
    * @param bytesSent The number of bytes sent on the corresponded SCTP stream.
    */
-  public SfuSctpStreamReport(java.lang.String mediaUnitId, java.lang.String sfuId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String transportId, java.lang.String streamId, java.lang.String label, java.lang.String protocol, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData, java.lang.Integer messageReceived, java.lang.Integer messageSent, java.lang.Long bytesReceived, java.lang.Long bytesSent) {
+  public SfuSctpStreamReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String sfuId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String transportId, java.lang.String streamId, java.lang.String label, java.lang.String protocol, java.lang.Double sctpSmoothedRoundTripTime, java.lang.Double sctpCongestionWindow, java.lang.Double sctpReceiverWindow, java.lang.Integer sctpMtu, java.lang.Integer sctpUnackData, java.lang.Integer messageReceived, java.lang.Integer messageSent, java.lang.Long bytesReceived, java.lang.Long bytesSent) {
+    this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.sfuId = sfuId;
     this.marker = marker;
@@ -108,25 +112,26 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return mediaUnitId;
-    case 1: return sfuId;
-    case 2: return marker;
-    case 3: return timestamp;
-    case 4: return callId;
-    case 5: return roomId;
-    case 6: return transportId;
-    case 7: return streamId;
-    case 8: return label;
-    case 9: return protocol;
-    case 10: return sctpSmoothedRoundTripTime;
-    case 11: return sctpCongestionWindow;
-    case 12: return sctpReceiverWindow;
-    case 13: return sctpMtu;
-    case 14: return sctpUnackData;
-    case 15: return messageReceived;
-    case 16: return messageSent;
-    case 17: return bytesReceived;
-    case 18: return bytesSent;
+    case 0: return serviceId;
+    case 1: return mediaUnitId;
+    case 2: return sfuId;
+    case 3: return marker;
+    case 4: return timestamp;
+    case 5: return callId;
+    case 6: return roomId;
+    case 7: return transportId;
+    case 8: return streamId;
+    case 9: return label;
+    case 10: return protocol;
+    case 11: return sctpSmoothedRoundTripTime;
+    case 12: return sctpCongestionWindow;
+    case 13: return sctpReceiverWindow;
+    case 14: return sctpMtu;
+    case 15: return sctpUnackData;
+    case 16: return messageReceived;
+    case 17: return messageSent;
+    case 18: return bytesReceived;
+    case 19: return bytesSent;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -135,28 +140,38 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: mediaUnitId = (java.lang.String)value$; break;
-    case 1: sfuId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
-    case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: callId = (java.lang.String)value$; break;
-    case 5: roomId = (java.lang.String)value$; break;
-    case 6: transportId = (java.lang.String)value$; break;
-    case 7: streamId = (java.lang.String)value$; break;
-    case 8: label = (java.lang.String)value$; break;
-    case 9: protocol = (java.lang.String)value$; break;
-    case 10: sctpSmoothedRoundTripTime = (java.lang.Double)value$; break;
-    case 11: sctpCongestionWindow = (java.lang.Double)value$; break;
-    case 12: sctpReceiverWindow = (java.lang.Double)value$; break;
-    case 13: sctpMtu = (java.lang.Integer)value$; break;
-    case 14: sctpUnackData = (java.lang.Integer)value$; break;
-    case 15: messageReceived = (java.lang.Integer)value$; break;
-    case 16: messageSent = (java.lang.Integer)value$; break;
-    case 17: bytesReceived = (java.lang.Long)value$; break;
-    case 18: bytesSent = (java.lang.Long)value$; break;
+    case 0: serviceId = (java.lang.String)value$; break;
+    case 1: mediaUnitId = (java.lang.String)value$; break;
+    case 2: sfuId = (java.lang.String)value$; break;
+    case 3: marker = (java.lang.String)value$; break;
+    case 4: timestamp = (java.lang.Long)value$; break;
+    case 5: callId = (java.lang.String)value$; break;
+    case 6: roomId = (java.lang.String)value$; break;
+    case 7: transportId = (java.lang.String)value$; break;
+    case 8: streamId = (java.lang.String)value$; break;
+    case 9: label = (java.lang.String)value$; break;
+    case 10: protocol = (java.lang.String)value$; break;
+    case 11: sctpSmoothedRoundTripTime = (java.lang.Double)value$; break;
+    case 12: sctpCongestionWindow = (java.lang.Double)value$; break;
+    case 13: sctpReceiverWindow = (java.lang.Double)value$; break;
+    case 14: sctpMtu = (java.lang.Integer)value$; break;
+    case 15: sctpUnackData = (java.lang.Integer)value$; break;
+    case 16: messageReceived = (java.lang.Integer)value$; break;
+    case 17: messageSent = (java.lang.Integer)value$; break;
+    case 18: bytesReceived = (java.lang.Long)value$; break;
+    case 19: bytesSent = (java.lang.Long)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
+
+  /**
+   * Gets the value of the 'serviceId' field.
+   * @return The service id the report belongs to
+   */
+  public java.lang.String getServiceId() {
+    return serviceId;
+  }
+
 
   /**
    * Gets the value of the 'mediaUnitId' field.
@@ -361,6 +376,8 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<SfuSctpStreamReport>
     implements org.apache.avro.data.RecordBuilder<SfuSctpStreamReport> {
 
+    /** The service id the report belongs to */
+    private java.lang.String serviceId;
     /** The media unit id the report belongs to */
     private java.lang.String mediaUnitId;
     /** The provided unique identifier of the SFU */
@@ -411,81 +428,85 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
      */
     private Builder(org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[0], other.serviceId)) {
+        this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.sfuId)) {
-        this.sfuId = data().deepCopy(fields()[1].schema(), other.sfuId);
+      if (isValidValue(fields()[1], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.marker)) {
-        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
+      if (isValidValue(fields()[2], other.sfuId)) {
+        this.sfuId = data().deepCopy(fields()[2].schema(), other.sfuId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
+      if (isValidValue(fields()[3], other.marker)) {
+        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.callId)) {
-        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
+      if (isValidValue(fields()[4], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.roomId)) {
-        this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
+      if (isValidValue(fields()[5], other.callId)) {
+        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
+      if (isValidValue(fields()[6], other.roomId)) {
+        this.roomId = data().deepCopy(fields()[6].schema(), other.roomId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.streamId)) {
-        this.streamId = data().deepCopy(fields()[7].schema(), other.streamId);
+      if (isValidValue(fields()[7], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[7].schema(), other.transportId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.label)) {
-        this.label = data().deepCopy(fields()[8].schema(), other.label);
+      if (isValidValue(fields()[8], other.streamId)) {
+        this.streamId = data().deepCopy(fields()[8].schema(), other.streamId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.protocol)) {
-        this.protocol = data().deepCopy(fields()[9].schema(), other.protocol);
+      if (isValidValue(fields()[9], other.label)) {
+        this.label = data().deepCopy(fields()[9].schema(), other.label);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.sctpSmoothedRoundTripTime)) {
-        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[10].schema(), other.sctpSmoothedRoundTripTime);
+      if (isValidValue(fields()[10], other.protocol)) {
+        this.protocol = data().deepCopy(fields()[10].schema(), other.protocol);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.sctpCongestionWindow)) {
-        this.sctpCongestionWindow = data().deepCopy(fields()[11].schema(), other.sctpCongestionWindow);
+      if (isValidValue(fields()[11], other.sctpSmoothedRoundTripTime)) {
+        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[11].schema(), other.sctpSmoothedRoundTripTime);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.sctpReceiverWindow)) {
-        this.sctpReceiverWindow = data().deepCopy(fields()[12].schema(), other.sctpReceiverWindow);
+      if (isValidValue(fields()[12], other.sctpCongestionWindow)) {
+        this.sctpCongestionWindow = data().deepCopy(fields()[12].schema(), other.sctpCongestionWindow);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.sctpMtu)) {
-        this.sctpMtu = data().deepCopy(fields()[13].schema(), other.sctpMtu);
+      if (isValidValue(fields()[13], other.sctpReceiverWindow)) {
+        this.sctpReceiverWindow = data().deepCopy(fields()[13].schema(), other.sctpReceiverWindow);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.sctpUnackData)) {
-        this.sctpUnackData = data().deepCopy(fields()[14].schema(), other.sctpUnackData);
+      if (isValidValue(fields()[14], other.sctpMtu)) {
+        this.sctpMtu = data().deepCopy(fields()[14].schema(), other.sctpMtu);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.messageReceived)) {
-        this.messageReceived = data().deepCopy(fields()[15].schema(), other.messageReceived);
+      if (isValidValue(fields()[15], other.sctpUnackData)) {
+        this.sctpUnackData = data().deepCopy(fields()[15].schema(), other.sctpUnackData);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.messageSent)) {
-        this.messageSent = data().deepCopy(fields()[16].schema(), other.messageSent);
+      if (isValidValue(fields()[16], other.messageReceived)) {
+        this.messageReceived = data().deepCopy(fields()[16].schema(), other.messageReceived);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[17].schema(), other.bytesReceived);
+      if (isValidValue(fields()[17], other.messageSent)) {
+        this.messageSent = data().deepCopy(fields()[17].schema(), other.messageSent);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[18].schema(), other.bytesSent);
+      if (isValidValue(fields()[18], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[18].schema(), other.bytesReceived);
         fieldSetFlags()[18] = true;
+      }
+      if (isValidValue(fields()[19], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[19].schema(), other.bytesSent);
+        fieldSetFlags()[19] = true;
       }
     }
 
@@ -495,82 +516,129 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
      */
     private Builder(org.observertc.webrtc.schemas.reports.SfuSctpStreamReport other) {
             super(SCHEMA$);
-      if (isValidValue(fields()[0], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[0], other.serviceId)) {
+        this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.sfuId)) {
-        this.sfuId = data().deepCopy(fields()[1].schema(), other.sfuId);
+      if (isValidValue(fields()[1], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.marker)) {
-        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
+      if (isValidValue(fields()[2], other.sfuId)) {
+        this.sfuId = data().deepCopy(fields()[2].schema(), other.sfuId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
+      if (isValidValue(fields()[3], other.marker)) {
+        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.callId)) {
-        this.callId = data().deepCopy(fields()[4].schema(), other.callId);
+      if (isValidValue(fields()[4], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.roomId)) {
-        this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
+      if (isValidValue(fields()[5], other.callId)) {
+        this.callId = data().deepCopy(fields()[5].schema(), other.callId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
+      if (isValidValue(fields()[6], other.roomId)) {
+        this.roomId = data().deepCopy(fields()[6].schema(), other.roomId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.streamId)) {
-        this.streamId = data().deepCopy(fields()[7].schema(), other.streamId);
+      if (isValidValue(fields()[7], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[7].schema(), other.transportId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.label)) {
-        this.label = data().deepCopy(fields()[8].schema(), other.label);
+      if (isValidValue(fields()[8], other.streamId)) {
+        this.streamId = data().deepCopy(fields()[8].schema(), other.streamId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.protocol)) {
-        this.protocol = data().deepCopy(fields()[9].schema(), other.protocol);
+      if (isValidValue(fields()[9], other.label)) {
+        this.label = data().deepCopy(fields()[9].schema(), other.label);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.sctpSmoothedRoundTripTime)) {
-        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[10].schema(), other.sctpSmoothedRoundTripTime);
+      if (isValidValue(fields()[10], other.protocol)) {
+        this.protocol = data().deepCopy(fields()[10].schema(), other.protocol);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.sctpCongestionWindow)) {
-        this.sctpCongestionWindow = data().deepCopy(fields()[11].schema(), other.sctpCongestionWindow);
+      if (isValidValue(fields()[11], other.sctpSmoothedRoundTripTime)) {
+        this.sctpSmoothedRoundTripTime = data().deepCopy(fields()[11].schema(), other.sctpSmoothedRoundTripTime);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.sctpReceiverWindow)) {
-        this.sctpReceiverWindow = data().deepCopy(fields()[12].schema(), other.sctpReceiverWindow);
+      if (isValidValue(fields()[12], other.sctpCongestionWindow)) {
+        this.sctpCongestionWindow = data().deepCopy(fields()[12].schema(), other.sctpCongestionWindow);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.sctpMtu)) {
-        this.sctpMtu = data().deepCopy(fields()[13].schema(), other.sctpMtu);
+      if (isValidValue(fields()[13], other.sctpReceiverWindow)) {
+        this.sctpReceiverWindow = data().deepCopy(fields()[13].schema(), other.sctpReceiverWindow);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.sctpUnackData)) {
-        this.sctpUnackData = data().deepCopy(fields()[14].schema(), other.sctpUnackData);
+      if (isValidValue(fields()[14], other.sctpMtu)) {
+        this.sctpMtu = data().deepCopy(fields()[14].schema(), other.sctpMtu);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.messageReceived)) {
-        this.messageReceived = data().deepCopy(fields()[15].schema(), other.messageReceived);
+      if (isValidValue(fields()[15], other.sctpUnackData)) {
+        this.sctpUnackData = data().deepCopy(fields()[15].schema(), other.sctpUnackData);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.messageSent)) {
-        this.messageSent = data().deepCopy(fields()[16].schema(), other.messageSent);
+      if (isValidValue(fields()[16], other.messageReceived)) {
+        this.messageReceived = data().deepCopy(fields()[16].schema(), other.messageReceived);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[17].schema(), other.bytesReceived);
+      if (isValidValue(fields()[17], other.messageSent)) {
+        this.messageSent = data().deepCopy(fields()[17].schema(), other.messageSent);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[18].schema(), other.bytesSent);
+      if (isValidValue(fields()[18], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[18].schema(), other.bytesReceived);
         fieldSetFlags()[18] = true;
       }
+      if (isValidValue(fields()[19], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[19].schema(), other.bytesSent);
+        fieldSetFlags()[19] = true;
+      }
+    }
+
+    /**
+      * Gets the value of the 'serviceId' field.
+      * The service id the report belongs to
+      * @return The value.
+      */
+    public java.lang.String getServiceId() {
+      return serviceId;
+    }
+
+    /**
+      * Sets the value of the 'serviceId' field.
+      * The service id the report belongs to
+      * @param value The value of 'serviceId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setServiceId(java.lang.String value) {
+      validate(fields()[0], value);
+      this.serviceId = value;
+      fieldSetFlags()[0] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'serviceId' field has been set.
+      * The service id the report belongs to
+      * @return True if the 'serviceId' field has been set, false otherwise.
+      */
+    public boolean hasServiceId() {
+      return fieldSetFlags()[0];
+    }
+
+
+    /**
+      * Clears the value of the 'serviceId' field.
+      * The service id the report belongs to
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearServiceId() {
+      serviceId = null;
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     /**
@@ -589,9 +657,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setMediaUnitId(java.lang.String value) {
-      validate(fields()[0], value);
+      validate(fields()[1], value);
       this.mediaUnitId = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -601,7 +669,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'mediaUnitId' field has been set, false otherwise.
       */
     public boolean hasMediaUnitId() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[1];
     }
 
 
@@ -612,7 +680,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
-      fieldSetFlags()[0] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -632,9 +700,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setSfuId(java.lang.String value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.sfuId = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -644,7 +712,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'sfuId' field has been set, false otherwise.
       */
     public boolean hasSfuId() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -655,7 +723,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearSfuId() {
       sfuId = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -675,9 +743,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setMarker(java.lang.String value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.marker = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -687,7 +755,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'marker' field has been set, false otherwise.
       */
     public boolean hasMarker() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -698,7 +766,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearMarker() {
       marker = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -718,9 +786,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setTimestamp(long value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.timestamp = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -730,7 +798,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -740,7 +808,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearTimestamp() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -760,9 +828,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setCallId(java.lang.String value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.callId = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -772,7 +840,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'callId' field has been set, false otherwise.
       */
     public boolean hasCallId() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -783,7 +851,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearCallId() {
       callId = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -803,9 +871,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setRoomId(java.lang.String value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.roomId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -815,7 +883,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'roomId' field has been set, false otherwise.
       */
     public boolean hasRoomId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -826,7 +894,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearRoomId() {
       roomId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -846,9 +914,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setTransportId(java.lang.String value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.transportId = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -858,7 +926,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'transportId' field has been set, false otherwise.
       */
     public boolean hasTransportId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -869,7 +937,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearTransportId() {
       transportId = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -889,9 +957,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setStreamId(java.lang.String value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.streamId = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -901,7 +969,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'streamId' field has been set, false otherwise.
       */
     public boolean hasStreamId() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -912,7 +980,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearStreamId() {
       streamId = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -932,9 +1000,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setLabel(java.lang.String value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.label = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -944,7 +1012,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'label' field has been set, false otherwise.
       */
     public boolean hasLabel() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -955,7 +1023,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearLabel() {
       label = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -975,9 +1043,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setProtocol(java.lang.String value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.protocol = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -987,7 +1055,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'protocol' field has been set, false otherwise.
       */
     public boolean hasProtocol() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -998,7 +1066,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearProtocol() {
       protocol = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1018,9 +1086,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setSctpSmoothedRoundTripTime(java.lang.Double value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.sctpSmoothedRoundTripTime = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1030,7 +1098,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'sctpSmoothedRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasSctpSmoothedRoundTripTime() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1041,7 +1109,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearSctpSmoothedRoundTripTime() {
       sctpSmoothedRoundTripTime = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1061,9 +1129,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setSctpCongestionWindow(java.lang.Double value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.sctpCongestionWindow = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1073,7 +1141,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'sctpCongestionWindow' field has been set, false otherwise.
       */
     public boolean hasSctpCongestionWindow() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1084,7 +1152,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearSctpCongestionWindow() {
       sctpCongestionWindow = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1104,9 +1172,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setSctpReceiverWindow(java.lang.Double value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.sctpReceiverWindow = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1116,7 +1184,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'sctpReceiverWindow' field has been set, false otherwise.
       */
     public boolean hasSctpReceiverWindow() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1127,7 +1195,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearSctpReceiverWindow() {
       sctpReceiverWindow = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1147,9 +1215,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setSctpMtu(java.lang.Integer value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.sctpMtu = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1159,7 +1227,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'sctpMtu' field has been set, false otherwise.
       */
     public boolean hasSctpMtu() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1170,7 +1238,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearSctpMtu() {
       sctpMtu = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1190,9 +1258,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setSctpUnackData(java.lang.Integer value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.sctpUnackData = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1202,7 +1270,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'sctpUnackData' field has been set, false otherwise.
       */
     public boolean hasSctpUnackData() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1213,7 +1281,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearSctpUnackData() {
       sctpUnackData = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1233,9 +1301,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setMessageReceived(java.lang.Integer value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.messageReceived = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1245,7 +1313,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'messageReceived' field has been set, false otherwise.
       */
     public boolean hasMessageReceived() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1256,7 +1324,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearMessageReceived() {
       messageReceived = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1276,9 +1344,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setMessageSent(java.lang.Integer value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.messageSent = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1288,7 +1356,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'messageSent' field has been set, false otherwise.
       */
     public boolean hasMessageSent() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1299,7 +1367,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearMessageSent() {
       messageSent = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1319,9 +1387,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setBytesReceived(java.lang.Long value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.bytesReceived = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1331,7 +1399,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -1342,7 +1410,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1362,9 +1430,9 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder setBytesSent(java.lang.Long value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.bytesSent = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -1374,7 +1442,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       * @return True if the 'bytesSent' field has been set, false otherwise.
       */
     public boolean hasBytesSent() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -1385,7 +1453,7 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
       */
     public org.observertc.webrtc.schemas.reports.SfuSctpStreamReport.Builder clearBytesSent() {
       bytesSent = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -1393,25 +1461,26 @@ public class SfuSctpStreamReport extends org.apache.avro.specific.SpecificRecord
     public SfuSctpStreamReport build() {
       try {
         SfuSctpStreamReport record = new SfuSctpStreamReport();
-        record.mediaUnitId = fieldSetFlags()[0] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[0]);
-        record.sfuId = fieldSetFlags()[1] ? this.sfuId : (java.lang.String) defaultValue(fields()[1]);
-        record.marker = fieldSetFlags()[2] ? this.marker : (java.lang.String) defaultValue(fields()[2]);
-        record.timestamp = fieldSetFlags()[3] ? this.timestamp : (java.lang.Long) defaultValue(fields()[3]);
-        record.callId = fieldSetFlags()[4] ? this.callId : (java.lang.String) defaultValue(fields()[4]);
-        record.roomId = fieldSetFlags()[5] ? this.roomId : (java.lang.String) defaultValue(fields()[5]);
-        record.transportId = fieldSetFlags()[6] ? this.transportId : (java.lang.String) defaultValue(fields()[6]);
-        record.streamId = fieldSetFlags()[7] ? this.streamId : (java.lang.String) defaultValue(fields()[7]);
-        record.label = fieldSetFlags()[8] ? this.label : (java.lang.String) defaultValue(fields()[8]);
-        record.protocol = fieldSetFlags()[9] ? this.protocol : (java.lang.String) defaultValue(fields()[9]);
-        record.sctpSmoothedRoundTripTime = fieldSetFlags()[10] ? this.sctpSmoothedRoundTripTime : (java.lang.Double) defaultValue(fields()[10]);
-        record.sctpCongestionWindow = fieldSetFlags()[11] ? this.sctpCongestionWindow : (java.lang.Double) defaultValue(fields()[11]);
-        record.sctpReceiverWindow = fieldSetFlags()[12] ? this.sctpReceiverWindow : (java.lang.Double) defaultValue(fields()[12]);
-        record.sctpMtu = fieldSetFlags()[13] ? this.sctpMtu : (java.lang.Integer) defaultValue(fields()[13]);
-        record.sctpUnackData = fieldSetFlags()[14] ? this.sctpUnackData : (java.lang.Integer) defaultValue(fields()[14]);
-        record.messageReceived = fieldSetFlags()[15] ? this.messageReceived : (java.lang.Integer) defaultValue(fields()[15]);
-        record.messageSent = fieldSetFlags()[16] ? this.messageSent : (java.lang.Integer) defaultValue(fields()[16]);
-        record.bytesReceived = fieldSetFlags()[17] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[17]);
-        record.bytesSent = fieldSetFlags()[18] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[18]);
+        record.serviceId = fieldSetFlags()[0] ? this.serviceId : (java.lang.String) defaultValue(fields()[0]);
+        record.mediaUnitId = fieldSetFlags()[1] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[1]);
+        record.sfuId = fieldSetFlags()[2] ? this.sfuId : (java.lang.String) defaultValue(fields()[2]);
+        record.marker = fieldSetFlags()[3] ? this.marker : (java.lang.String) defaultValue(fields()[3]);
+        record.timestamp = fieldSetFlags()[4] ? this.timestamp : (java.lang.Long) defaultValue(fields()[4]);
+        record.callId = fieldSetFlags()[5] ? this.callId : (java.lang.String) defaultValue(fields()[5]);
+        record.roomId = fieldSetFlags()[6] ? this.roomId : (java.lang.String) defaultValue(fields()[6]);
+        record.transportId = fieldSetFlags()[7] ? this.transportId : (java.lang.String) defaultValue(fields()[7]);
+        record.streamId = fieldSetFlags()[8] ? this.streamId : (java.lang.String) defaultValue(fields()[8]);
+        record.label = fieldSetFlags()[9] ? this.label : (java.lang.String) defaultValue(fields()[9]);
+        record.protocol = fieldSetFlags()[10] ? this.protocol : (java.lang.String) defaultValue(fields()[10]);
+        record.sctpSmoothedRoundTripTime = fieldSetFlags()[11] ? this.sctpSmoothedRoundTripTime : (java.lang.Double) defaultValue(fields()[11]);
+        record.sctpCongestionWindow = fieldSetFlags()[12] ? this.sctpCongestionWindow : (java.lang.Double) defaultValue(fields()[12]);
+        record.sctpReceiverWindow = fieldSetFlags()[13] ? this.sctpReceiverWindow : (java.lang.Double) defaultValue(fields()[13]);
+        record.sctpMtu = fieldSetFlags()[14] ? this.sctpMtu : (java.lang.Integer) defaultValue(fields()[14]);
+        record.sctpUnackData = fieldSetFlags()[15] ? this.sctpUnackData : (java.lang.Integer) defaultValue(fields()[15]);
+        record.messageReceived = fieldSetFlags()[16] ? this.messageReceived : (java.lang.Integer) defaultValue(fields()[16]);
+        record.messageSent = fieldSetFlags()[17] ? this.messageSent : (java.lang.Integer) defaultValue(fields()[17]);
+        record.bytesReceived = fieldSetFlags()[18] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[18]);
+        record.bytesSent = fieldSetFlags()[19] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[19]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

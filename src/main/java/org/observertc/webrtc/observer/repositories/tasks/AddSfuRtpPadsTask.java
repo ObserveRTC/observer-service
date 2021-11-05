@@ -2,13 +2,12 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
+import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.repositories.StoredRequests;
-import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,25 +18,9 @@ import java.util.*;
 import static java.util.stream.Collectors.groupingBy;
 
 @Prototype
-public class AddSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>> {
+public class AddSfuRtpPadsTask extends ChainedTask<Void> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddSfuRtpPadsTask.class);
-
-    public static SfuEventReport.Builder makeSfuRtpPadAddedReportBuilder(SfuRtpPadDTO sfuRtpPadDTO) {
-        String sfuPadId = Objects.nonNull(sfuRtpPadDTO.sfuPadId) ?  sfuRtpPadDTO.sfuPadId.toString() : null;
-        String sfuPadStreamDirection = Objects.nonNull(sfuRtpPadDTO.streamDirection) ? sfuRtpPadDTO.streamDirection.toString() : "Unknown";
-        return SfuEventReport.newBuilder()
-                .setName(SfuEventType.SFU_RTP_PAD_ADDED.name())
-                .setSfuId(sfuRtpPadDTO.sfuId.toString())
-                .setTransportId(sfuRtpPadDTO.sfuTransportId.toString())
-                .setRtpStreamId(sfuRtpPadDTO.rtpStreamId.toString())
-                .setSfuPadId(sfuPadId)
-                .setAttachments("Direction of the Rtp stream is: " + sfuPadStreamDirection)
-                .setMessage("Sfu Rtp Pad is added")
-                .setMediaUnitId(sfuRtpPadDTO.mediaUnitId)
-                .setTimestamp(sfuRtpPadDTO.added);
-    }
-
 
 
     @Inject
@@ -50,7 +33,7 @@ public class AddSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>>
 
     @PostConstruct
     void setup() {
-        new Builder<List<SfuEventReport.Builder>>(this)
+        new Builder<Void>(this)
                 .<Map<UUID, SfuRtpPadDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
                         receivedSfuRtpStreamPadDTOs -> {
@@ -61,7 +44,7 @@ public class AddSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>>
                 )
                 .<Map<UUID, SfuTransportDTO>> addBreakCondition((resultHolder) -> {
                     if (this.sfuRtpPadDTOs.size() < 1) {
-                        resultHolder.set(Collections.EMPTY_LIST);
+                        resultHolder.set(null);
                         return true;
                     }
                     return false;
@@ -86,6 +69,10 @@ public class AddSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>>
                         }
                         sfuRtpPads.forEach(sfuRtpPad -> {
                             sfuRtpPad.callId = mediaTrackDTO.callId;
+                            if (!sfuRtpPad.internalPad && StreamDirection.INBOUND.equals(sfuRtpPad.streamDirection)) {
+                                sfuRtpPad.clientId = mediaTrackDTO.clientId;
+                                sfuRtpPad.trackId = mediaTrackDTO.trackId;
+                            }
                         });
                     });
                     if (0 < missingRtpStreamMediaTracks.size()) {
@@ -116,15 +103,7 @@ public class AddSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>>
                                 this.hazelcastMaps.getRtpStreamIdToSfuPadIds().remove(sfuRtpPadDTO.rtpStreamId, padId);
                             });
                         })
-                .addTerminalSupplier("Completed", () -> {
-                    // temporary
-                    return Collections.EMPTY_LIST;
-//                    List<SfuEventReport.Builder> result = this.sfuRtpPadDTOs.values().stream()
-//                            .map(this::makeReportBuilder)
-//                            .filter(Objects::nonNull)
-//                            .collect(Collectors.toList());
-//                    return result;
-                })
+                .addTerminalPassingStage("Completed")
                 .build();
         this.withLogger(logger);
     }
@@ -136,14 +115,5 @@ public class AddSfuRtpPadsTask extends ChainedTask<List<SfuEventReport.Builder>>
         }
         this.sfuRtpPadDTOs.putAll(sfuRtpPadDTO);
         return this;
-    }
-
-    private SfuEventReport.Builder makeReportBuilder(SfuRtpPadDTO sfuRtpPadDTO) {
-        try {
-            return makeSfuRtpPadAddedReportBuilder(sfuRtpPadDTO);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for Sfu stream DTO", ex);
-            return null;
-        }
     }
 }

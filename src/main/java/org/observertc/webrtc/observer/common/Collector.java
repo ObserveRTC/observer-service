@@ -1,6 +1,9 @@
 package org.observertc.webrtc.observer.common;
 
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.slf4j.Logger;
@@ -9,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Collector<T> implements AutoCloseable {
+public class Collector<T> implements AutoCloseable, Observer<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(Collector.class);
 
@@ -23,6 +26,7 @@ public class Collector<T> implements AutoCloseable {
     private final int maxItems;
     private Timer timer = null;
     private volatile boolean collecting = false;
+    private Disposable upstream = null;
 
     private Collector(int maxItems) {
         this.maxItems = maxItems;
@@ -81,21 +85,46 @@ public class Collector<T> implements AutoCloseable {
         }
     }
 
-    private void emit() {
-        if (this.queue.size() < 1) {
-            return;
-        }
-        List<T> collectedItems = new LinkedList<>();
-        while (!this.queue.isEmpty()) {
-            var item = this.queue.poll();
-            collectedItems.add(item);
-        }
-        this.listeners.onNext(collectedItems);
-        this.collecting = false;
-    }
-
     public Observable<List<T>> observableItems() {
         return this.listeners;
+    }
+
+    @Override
+    public void onSubscribe(@NonNull Disposable d) {
+        if (Objects.nonNull(this.upstream)) {
+            throw new IllegalStateException("Cannot subscribe twice");
+        }
+        this.upstream = d;
+    }
+
+    @Override
+    public void onNext(@NonNull T t) {
+        try {
+            this.add(t);
+        } catch (Throwable throwable) {
+            logger.error("Error occurred while adding item {}", t, throwable);
+        }
+    }
+
+    @Override
+    public void onError(@NonNull Throwable e) {
+        if (Objects.nonNull(this.upstream)) {
+            if (!this.upstream.isDisposed()) {
+                this.upstream.dispose();
+            }
+            this.upstream = null;
+        }
+        logger.warn("Upstream reported error", e);
+    }
+
+    @Override
+    public void onComplete() {
+        if (Objects.nonNull(this.upstream)) {
+            if (!this.upstream.isDisposed()) {
+                this.upstream.dispose();
+            }
+            this.upstream = null;
+        }
     }
 
     @Override
@@ -109,15 +138,33 @@ public class Collector<T> implements AutoCloseable {
             this.timer = null;
         }
         this.emit();
+        if (Objects.nonNull(this.upstream)) {
+            if (!this.upstream.isDisposed()) {
+                this.upstream.dispose();
+            }
+            this.upstream = null;
+        }
     }
 
+    private void emit() {
+        if (this.queue.size() < 1) {
+            return;
+        }
+        List<T> collectedItems = new LinkedList<>();
+        while (!this.queue.isEmpty()) {
+            var item = this.queue.poll();
+            collectedItems.add(item);
+        }
+        this.listeners.onNext(collectedItems);
+        this.collecting = false;
+    }
 
     public static class Builder<U> {
         private int maxTimeInMs = 0;
         private int maxItems = 0;
 
-        public Builder<U> withMaxTime(int value) {
-            this.maxTimeInMs = value;
+        public Builder<U> withMaxTime(int maxTimeInMs) {
+            this.maxTimeInMs = maxTimeInMs;
             return this;
         }
 

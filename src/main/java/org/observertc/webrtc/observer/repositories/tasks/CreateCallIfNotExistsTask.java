@@ -24,6 +24,7 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
     private static final String LOCK_NAME = "observertc-call-adder-lock";
 
     private final CallDTO.Builder callDTOBuilder = CallDTO.builder();
+    private UUID callId = null;
     private ServiceRoomId serviceRoomId = null;
 
     @Inject
@@ -48,12 +49,22 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
             .withLockProvider(() -> weakLockProvider.autoLock(LOCK_NAME))
             .<UUID> addConsumerEntry("Merge All Inputs",
                 () -> {
-                    UUID callId = UUID.randomUUID();
+                    if (Objects.isNull(this.callId)) {
+                        this.callId = UUID.randomUUID();
+                    }
                     this.callDTOBuilder
-                            .withCallId(callId);
+                            .withCallId(this.callId);
                 },
                 callId -> {
-                    this.callDTOBuilder.withCallId(callId);
+                    if (Objects.nonNull(callId)) {
+                        if (Objects.nonNull(this.callId)) {
+                            logger.warn("Previously set callId {} is overridden and a newly given one is used {}", this.callId, callId);
+                        }
+                        this.callId = callId;
+                    } else if (Objects.isNull(this.callId)) {
+                        this.callId = UUID.randomUUID();
+                    }
+                    this.callDTOBuilder.withCallId(this.callId);
                 }
             )
             // Check if call already exists
@@ -95,6 +106,14 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
                 return callDTO.callId;
             })
             .build();
+    }
+
+    public CreateCallIfNotExistsTask withCallId(UUID callId) {
+        if (Objects.nonNull(this.callId)) {
+            this.getLogger().warn("Overriding previously set callId {} to a new one {}", this.callId, callId);
+        }
+        this.callId = callId;
+        return this;
     }
 
     public CreateCallIfNotExistsTask withServiceRoomId(ServiceRoomId value) {

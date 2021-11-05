@@ -14,30 +14,44 @@
  * limitations under the License.
  */
 
-package org.observertc.webrtc.observer.subscriptions;
+package org.observertc.webrtc.observer;
 
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.discovery.event.ServiceReadyEvent;
+import io.micronaut.discovery.event.ServiceStoppedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 @Requires(notEnv = Environment.TEST) // Don't load data in tests.
-public class ServiceStartedListener implements ApplicationEventListener<ServiceReadyEvent> {
-	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
+public class ServiceShutdownListener implements ApplicationEventListener<ServiceStoppedEvent> {
+	private static final Logger logger = LoggerFactory.getLogger(ServiceShutdownListener.class);
 
+	@Inject
+	ObserverService observerService;
 
-	public ServiceStartedListener() {
+	@Inject
+	ObserverHazelcast observerHazelcast;
+
+	public ServiceShutdownListener() {
 		
 	}
 
 
-	@Override
-	public void onApplicationEvent(ServiceReadyEvent event) {
+	private void init() {
 
+	}
+
+	@Override
+	public void onApplicationEvent(ServiceStoppedEvent event) {
+		logger.info("Shutdown started");
+		observerService.stop();
+//		this.observerHazelcast.getInstance().getConfig().getMapConfig("whatever").getMapStoreConfig().setEnabled(false);
+		this.observerHazelcast.getInstance().getLifecycleService().shutdown();
+		logger.info("Shutdown ended");
 	}
 }

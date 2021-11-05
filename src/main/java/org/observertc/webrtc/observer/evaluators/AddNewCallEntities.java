@@ -34,12 +34,6 @@ import java.util.stream.Collectors;
 public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
     private static final Logger logger = LoggerFactory.getLogger(AddNewCallEntities.class);
 
-    private Subject<CallEventReport> callEventReportSubject = PublishSubject.create();
-
-    public Observable<CallEventReport> getObservableCallEventReports() {
-        return this.callEventReportSubject;
-    }
-
     @Inject
     Provider<RefreshCallsTask> refreshTaskProvider;
 
@@ -251,15 +245,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
 
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
-            return;
         }
-
-        List<CallEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("Media track is added"))
-                .map(this::buildReport)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        this.forwardReports(reports);
     }
 
     private void addNewPeerConnections(Map<UUID, ObservedNewEntity<PeerConnectionDTO>> newPeerConnections) {
@@ -272,15 +258,7 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
-            return;
         }
-
-        List<CallEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("Peer Connection is opened"))
-                .map(this::buildReport)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        this.forwardReports(reports);
     }
 
     private void addNewClients(Map<UUID, ObservedNewEntity<ClientDTO>> newClients) {
@@ -294,31 +272,6 @@ public class AddNewCallEntities implements Consumer<CollectedCallSamples> {
 
         if (!task.execute().succeeded()) {
             logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
-            return;
-        }
-        List<CallEventReport> reports = task.getResult().stream()
-                .map(builder -> builder.setMessage("Client is joined"))
-                .map(this::buildReport)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        this.forwardReports(reports);
-    }
-
-    private void forwardReports(List<CallEventReport> reports) {
-        if (Objects.isNull(reports) || reports.size() < 1) {
-            return;
-        }
-        synchronized (this) {
-            reports.stream().filter(Objects::nonNull).forEach(this.callEventReportSubject::onNext);
-        }
-    }
-
-    private CallEventReport buildReport(CallEventReport.Builder builder) {
-        try {
-            return builder.build();
-        } catch (Exception ex) {
-            logger.warn("Cannot build report due to exception", ex);
-            return null;
         }
     }
 

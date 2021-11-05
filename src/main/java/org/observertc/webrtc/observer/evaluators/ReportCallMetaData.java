@@ -26,7 +26,7 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
 
     Subject<CallMetaReport> reportSubject = PublishSubject.create();
 
-    public Observable<CallMetaReport> observableCallMetaReports() {
+    public Observable<CallMetaReport> getObservableCallMetaReports() {
         return this.reportSubject;
     }
 

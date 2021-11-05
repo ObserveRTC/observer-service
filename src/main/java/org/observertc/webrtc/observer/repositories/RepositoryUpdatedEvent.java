@@ -3,9 +3,9 @@ package org.observertc.webrtc.observer.repositories;
 import javax.inject.Singleton;
 
 @Singleton
-public interface RepositoryUpdateEvent<T> {
-    static<U> RepositoryUpdateEvent<U> make(U oldValue, U newValue) {
-        return new RepositoryUpdateEvent<U>() {
+public interface RepositoryUpdatedEvent<T> {
+    static<U> RepositoryUpdatedEvent<U> make(U oldValue, U newValue) {
+        return new RepositoryUpdatedEvent<U>() {
             @Override
             public U getOldValue() {
                 return oldValue;

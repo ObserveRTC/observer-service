@@ -11,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 
 @Singleton
 public class OutboundReportsObserver implements Observer<OutboundReports> {
@@ -52,11 +55,17 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
             var decoder = this.outboundReportsCodec.getDecoder();
             var sink = new LoggerSink()
                     .withDecoder(decoder)
-                    .withPrintReports(true)
+//                    .withPrintReports(true)
+                    .withPrintReports(false)
                     .withPrintTypeSummary(true);
-            this.sinks.put("defaultLogger", sink);
+            final String sinkId = "defaultLogger";
+            String sinkLoggerName = String.format("Sink-%s:", sinkId);
+            var logger = LoggerFactory.getLogger(sinkLoggerName);
+            sink.withLogger(logger);
+            this.sinks.put(sinkId, sink);
         }
     }
+
     private Sink buildSink(String sinkId, Map<String, Object> config) {
         SinkBuilder sinkBuilder = new SinkBuilder();
         sinkBuilder.withConfiguration(config);
@@ -68,6 +77,7 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
         result.withLogger(logger);
         return result;
     }
+
 
     @Override
     public void onNext(@NonNull OutboundReports outboundReports) {

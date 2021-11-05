@@ -11,9 +11,11 @@ import org.apache.avro.specific.SpecificData;
 /** A Report created for RTP streams going through the SFU */
 @org.apache.avro.specific.AvroGenerated
 public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -434892135076590648L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuInboundRtpPadReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for RTP streams going through the SFU\",\"fields\":[{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"sfuId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The provided unique identifier of the SFU\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"transportId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the transport the RTP stream uses.\"},{\"name\":\"rtpStreamId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the RTP stream.\"},{\"name\":\"padId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of Sfu pad.\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The synchronization source id of the RTP stream\"},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track the RTP stream related to at the client side\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"If the track id was provided by the Sfu, the observer can fill up the information of which client it belongs to\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"mediaType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the type of the media the stream carries (\\\"audio\\\" or \\\"video\\\")\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The payload type field of the RTP header\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The negotiated mimeType in the SDP\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The clock rate of the media source the RTP header carries\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The actual SDP line from the negotiation related to this RTP stream\",\"default\":null},{\"name\":\"rid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\" The rid parameter of the corresponded RTP stream\",\"default\":null},{\"name\":\"rtxSsrc\",\"type\":[\"null\",\"long\"],\"doc\":\"If RTX is negotiated as a separate stream, this is the SSRC of the RTX stream that is associated with this stream's ssrc. \",\"default\":null},{\"name\":\"targetBitrate\",\"type\":[\"null\",\"long\"],\"doc\":\"he bitrate the corresponded stream targets.\",\"default\":null},{\"name\":\"voiceActivityFlag\",\"type\":[\"null\",\"boolean\"],\"doc\":\"The RTP header V flag indicate of the activity of the media source by the media codec if the RTP transport ships it through\",\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number FIR packets sent from this endpoint to the source on the corresponded RTP stream. Only for Video streams\",\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of Picture Loss Indication sent on the corresponded RTP stream. Only for Video streams\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of negative acknowledgement received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"sliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of SLI indicator sent from the endpoint on the corresponded RTP stream. Only for Audio stream\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of discarded packets on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either retransmission or FEC on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsFailedDecryption\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets failed to be decrypted on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsDuplicated\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of duplicated packets appeared on the corresponded RTP stream.\",\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of FEC packets received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of FEC packets discarded on the corresponded RTP stream.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of payload bytes received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"rtcpSrReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of SR reports received by the corresponded RTP stream\",\"default\":null},{\"name\":\"rtcpRrSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of RR reports sent on the corresponded RTP stream\",\"default\":null},{\"name\":\"rtxPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"If rtx packets are sent or received on the same stream then this number indicates how may has been sent\",\"default\":null},{\"name\":\"rtxPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"If rtx packets are received on the same stream then this number indicates how may has been discarded\",\"default\":null},{\"name\":\"framesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames received on the corresponded RTP stream\",\"default\":null},{\"name\":\"framesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the number of frames the Sfu has been decoded\",\"default\":null},{\"name\":\"keyFramesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the number of keyframes the Sfu has been decoded\",\"default\":null},{\"name\":\"fractionLost\",\"type\":[\"null\",\"double\"],\"doc\":\"The calculated fractionLost of the stream\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The calculated jitter of the stream\",\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The calculated RTT of the stream\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Arbitrary attachments holds relevant information about the stream.\",\"default\":null}]}");
+  private static final long serialVersionUID = 3984110062281614920L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuInboundRtpPadReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for RTP streams going through the SFU\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The service id the report belongs to\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"sfuId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The provided unique identifier of the SFU\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"transportId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the transport the RTP stream uses.\"},{\"name\":\"rtpStreamId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of the RTP stream.\"},{\"name\":\"padId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The id of Sfu pad.\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The synchronization source id of the RTP stream\"},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track the RTP stream related to at the client side\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"If the track id was provided by the Sfu, the observer can fill up the information of which client it belongs to\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"mediaType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the type of the media the stream carries (\\\"audio\\\" or \\\"video\\\")\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The payload type field of the RTP header\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The negotiated mimeType in the SDP\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The clock rate of the media source the RTP header carries\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The actual SDP line from the negotiation related to this RTP stream\",\"default\":null},{\"name\":\"rid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\" The rid parameter of the corresponded RTP stream\",\"default\":null},{\"name\":\"rtxSsrc\",\"type\":[\"null\",\"long\"],\"doc\":\"If RTX is negotiated as a separate stream, this is the SSRC of the RTX stream that is associated with this stream's ssrc. \",\"default\":null},{\"name\":\"targetBitrate\",\"type\":[\"null\",\"long\"],\"doc\":\"he bitrate the corresponded stream targets.\",\"default\":null},{\"name\":\"voiceActivityFlag\",\"type\":[\"null\",\"boolean\"],\"doc\":\"The RTP header V flag indicate of the activity of the media source by the media codec if the RTP transport ships it through\",\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number FIR packets sent from this endpoint to the source on the corresponded RTP stream. Only for Video streams\",\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of Picture Loss Indication sent on the corresponded RTP stream. Only for Video streams\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of negative acknowledgement received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"sliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of SLI indicator sent from the endpoint on the corresponded RTP stream. Only for Audio stream\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of discarded packets on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either retransmission or FEC on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsFailedDecryption\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets failed to be decrypted on the corresponded RTP stream.\",\"default\":null},{\"name\":\"packetsDuplicated\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of duplicated packets appeared on the corresponded RTP stream.\",\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of FEC packets received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of FEC packets discarded on the corresponded RTP stream.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"The total amount of payload bytes received on the corresponded RTP stream.\",\"default\":null},{\"name\":\"rtcpSrReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of SR reports received by the corresponded RTP stream\",\"default\":null},{\"name\":\"rtcpRrSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of RR reports sent on the corresponded RTP stream\",\"default\":null},{\"name\":\"rtxPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"If rtx packets are sent or received on the same stream then this number indicates how may has been sent\",\"default\":null},{\"name\":\"rtxPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"If rtx packets are received on the same stream then this number indicates how may has been discarded\",\"default\":null},{\"name\":\"framesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames received on the corresponded RTP stream\",\"default\":null},{\"name\":\"framesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the number of frames the Sfu has been decoded\",\"default\":null},{\"name\":\"keyFramesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the number of keyframes the Sfu has been decoded\",\"default\":null},{\"name\":\"fractionLost\",\"type\":[\"null\",\"double\"],\"doc\":\"The calculated fractionLost of the stream\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The calculated jitter of the stream\",\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The calculated RTT of the stream\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Arbitrary attachments holds relevant information about the stream.\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+  /** The service id the report belongs to */
+   private java.lang.String serviceId;
   /** The media unit id the report belongs to */
    private java.lang.String mediaUnitId;
   /** The provided unique identifier of the SFU */
@@ -112,6 +114,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
 
   /**
    * All-args constructor.
+   * @param serviceId The service id the report belongs to
    * @param mediaUnitId The media unit id the report belongs to
    * @param sfuId The provided unique identifier of the SFU
    * @param marker The marker the originated sample is reported with
@@ -157,7 +160,8 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
    * @param roundTripTime The calculated RTT of the stream
    * @param attachments Arbitrary attachments holds relevant information about the stream.
    */
-  public SfuInboundRtpPadReport(java.lang.String mediaUnitId, java.lang.String sfuId, java.lang.String marker, java.lang.Long timestamp, java.lang.String transportId, java.lang.String rtpStreamId, java.lang.String padId, java.lang.Long ssrc, java.lang.String trackId, java.lang.String clientId, java.lang.String callId, java.lang.String mediaType, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.String sdpFmtpLine, java.lang.String rid, java.lang.Long rtxSsrc, java.lang.Long targetBitrate, java.lang.Boolean voiceActivityFlag, java.lang.Integer firCount, java.lang.Integer pliCount, java.lang.Integer nackCount, java.lang.Integer sliCount, java.lang.Integer packetsLost, java.lang.Integer packetsReceived, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer packetsFailedDecryption, java.lang.Integer packetsDuplicated, java.lang.Integer fecPacketsReceived, java.lang.Integer fecPacketsDiscarded, java.lang.Long bytesReceived, java.lang.Integer rtcpSrReceived, java.lang.Integer rtcpRrSent, java.lang.Integer rtxPacketsReceived, java.lang.Integer rtxPacketsDiscarded, java.lang.Integer framesReceived, java.lang.Integer framesDecoded, java.lang.Integer keyFramesDecoded, java.lang.Double fractionLost, java.lang.Double jitter, java.lang.Double roundTripTime, java.lang.String attachments) {
+  public SfuInboundRtpPadReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String sfuId, java.lang.String marker, java.lang.Long timestamp, java.lang.String transportId, java.lang.String rtpStreamId, java.lang.String padId, java.lang.Long ssrc, java.lang.String trackId, java.lang.String clientId, java.lang.String callId, java.lang.String mediaType, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.String sdpFmtpLine, java.lang.String rid, java.lang.Long rtxSsrc, java.lang.Long targetBitrate, java.lang.Boolean voiceActivityFlag, java.lang.Integer firCount, java.lang.Integer pliCount, java.lang.Integer nackCount, java.lang.Integer sliCount, java.lang.Integer packetsLost, java.lang.Integer packetsReceived, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer packetsFailedDecryption, java.lang.Integer packetsDuplicated, java.lang.Integer fecPacketsReceived, java.lang.Integer fecPacketsDiscarded, java.lang.Long bytesReceived, java.lang.Integer rtcpSrReceived, java.lang.Integer rtcpRrSent, java.lang.Integer rtxPacketsReceived, java.lang.Integer rtxPacketsDiscarded, java.lang.Integer framesReceived, java.lang.Integer framesDecoded, java.lang.Integer keyFramesDecoded, java.lang.Double fractionLost, java.lang.Double jitter, java.lang.Double roundTripTime, java.lang.String attachments) {
+    this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.sfuId = sfuId;
     this.marker = marker;
@@ -208,50 +212,51 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return mediaUnitId;
-    case 1: return sfuId;
-    case 2: return marker;
-    case 3: return timestamp;
-    case 4: return transportId;
-    case 5: return rtpStreamId;
-    case 6: return padId;
-    case 7: return ssrc;
-    case 8: return trackId;
-    case 9: return clientId;
-    case 10: return callId;
-    case 11: return mediaType;
-    case 12: return payloadType;
-    case 13: return mimeType;
-    case 14: return clockRate;
-    case 15: return sdpFmtpLine;
-    case 16: return rid;
-    case 17: return rtxSsrc;
-    case 18: return targetBitrate;
-    case 19: return voiceActivityFlag;
-    case 20: return firCount;
-    case 21: return pliCount;
-    case 22: return nackCount;
-    case 23: return sliCount;
-    case 24: return packetsLost;
-    case 25: return packetsReceived;
-    case 26: return packetsDiscarded;
-    case 27: return packetsRepaired;
-    case 28: return packetsFailedDecryption;
-    case 29: return packetsDuplicated;
-    case 30: return fecPacketsReceived;
-    case 31: return fecPacketsDiscarded;
-    case 32: return bytesReceived;
-    case 33: return rtcpSrReceived;
-    case 34: return rtcpRrSent;
-    case 35: return rtxPacketsReceived;
-    case 36: return rtxPacketsDiscarded;
-    case 37: return framesReceived;
-    case 38: return framesDecoded;
-    case 39: return keyFramesDecoded;
-    case 40: return fractionLost;
-    case 41: return jitter;
-    case 42: return roundTripTime;
-    case 43: return attachments;
+    case 0: return serviceId;
+    case 1: return mediaUnitId;
+    case 2: return sfuId;
+    case 3: return marker;
+    case 4: return timestamp;
+    case 5: return transportId;
+    case 6: return rtpStreamId;
+    case 7: return padId;
+    case 8: return ssrc;
+    case 9: return trackId;
+    case 10: return clientId;
+    case 11: return callId;
+    case 12: return mediaType;
+    case 13: return payloadType;
+    case 14: return mimeType;
+    case 15: return clockRate;
+    case 16: return sdpFmtpLine;
+    case 17: return rid;
+    case 18: return rtxSsrc;
+    case 19: return targetBitrate;
+    case 20: return voiceActivityFlag;
+    case 21: return firCount;
+    case 22: return pliCount;
+    case 23: return nackCount;
+    case 24: return sliCount;
+    case 25: return packetsLost;
+    case 26: return packetsReceived;
+    case 27: return packetsDiscarded;
+    case 28: return packetsRepaired;
+    case 29: return packetsFailedDecryption;
+    case 30: return packetsDuplicated;
+    case 31: return fecPacketsReceived;
+    case 32: return fecPacketsDiscarded;
+    case 33: return bytesReceived;
+    case 34: return rtcpSrReceived;
+    case 35: return rtcpRrSent;
+    case 36: return rtxPacketsReceived;
+    case 37: return rtxPacketsDiscarded;
+    case 38: return framesReceived;
+    case 39: return framesDecoded;
+    case 40: return keyFramesDecoded;
+    case 41: return fractionLost;
+    case 42: return jitter;
+    case 43: return roundTripTime;
+    case 44: return attachments;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -260,53 +265,63 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: mediaUnitId = (java.lang.String)value$; break;
-    case 1: sfuId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
-    case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: transportId = (java.lang.String)value$; break;
-    case 5: rtpStreamId = (java.lang.String)value$; break;
-    case 6: padId = (java.lang.String)value$; break;
-    case 7: ssrc = (java.lang.Long)value$; break;
-    case 8: trackId = (java.lang.String)value$; break;
-    case 9: clientId = (java.lang.String)value$; break;
-    case 10: callId = (java.lang.String)value$; break;
-    case 11: mediaType = (java.lang.String)value$; break;
-    case 12: payloadType = (java.lang.Integer)value$; break;
-    case 13: mimeType = (java.lang.String)value$; break;
-    case 14: clockRate = (java.lang.Long)value$; break;
-    case 15: sdpFmtpLine = (java.lang.String)value$; break;
-    case 16: rid = (java.lang.String)value$; break;
-    case 17: rtxSsrc = (java.lang.Long)value$; break;
-    case 18: targetBitrate = (java.lang.Long)value$; break;
-    case 19: voiceActivityFlag = (java.lang.Boolean)value$; break;
-    case 20: firCount = (java.lang.Integer)value$; break;
-    case 21: pliCount = (java.lang.Integer)value$; break;
-    case 22: nackCount = (java.lang.Integer)value$; break;
-    case 23: sliCount = (java.lang.Integer)value$; break;
-    case 24: packetsLost = (java.lang.Integer)value$; break;
-    case 25: packetsReceived = (java.lang.Integer)value$; break;
-    case 26: packetsDiscarded = (java.lang.Integer)value$; break;
-    case 27: packetsRepaired = (java.lang.Integer)value$; break;
-    case 28: packetsFailedDecryption = (java.lang.Integer)value$; break;
-    case 29: packetsDuplicated = (java.lang.Integer)value$; break;
-    case 30: fecPacketsReceived = (java.lang.Integer)value$; break;
-    case 31: fecPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 32: bytesReceived = (java.lang.Long)value$; break;
-    case 33: rtcpSrReceived = (java.lang.Integer)value$; break;
-    case 34: rtcpRrSent = (java.lang.Integer)value$; break;
-    case 35: rtxPacketsReceived = (java.lang.Integer)value$; break;
-    case 36: rtxPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 37: framesReceived = (java.lang.Integer)value$; break;
-    case 38: framesDecoded = (java.lang.Integer)value$; break;
-    case 39: keyFramesDecoded = (java.lang.Integer)value$; break;
-    case 40: fractionLost = (java.lang.Double)value$; break;
-    case 41: jitter = (java.lang.Double)value$; break;
-    case 42: roundTripTime = (java.lang.Double)value$; break;
-    case 43: attachments = (java.lang.String)value$; break;
+    case 0: serviceId = (java.lang.String)value$; break;
+    case 1: mediaUnitId = (java.lang.String)value$; break;
+    case 2: sfuId = (java.lang.String)value$; break;
+    case 3: marker = (java.lang.String)value$; break;
+    case 4: timestamp = (java.lang.Long)value$; break;
+    case 5: transportId = (java.lang.String)value$; break;
+    case 6: rtpStreamId = (java.lang.String)value$; break;
+    case 7: padId = (java.lang.String)value$; break;
+    case 8: ssrc = (java.lang.Long)value$; break;
+    case 9: trackId = (java.lang.String)value$; break;
+    case 10: clientId = (java.lang.String)value$; break;
+    case 11: callId = (java.lang.String)value$; break;
+    case 12: mediaType = (java.lang.String)value$; break;
+    case 13: payloadType = (java.lang.Integer)value$; break;
+    case 14: mimeType = (java.lang.String)value$; break;
+    case 15: clockRate = (java.lang.Long)value$; break;
+    case 16: sdpFmtpLine = (java.lang.String)value$; break;
+    case 17: rid = (java.lang.String)value$; break;
+    case 18: rtxSsrc = (java.lang.Long)value$; break;
+    case 19: targetBitrate = (java.lang.Long)value$; break;
+    case 20: voiceActivityFlag = (java.lang.Boolean)value$; break;
+    case 21: firCount = (java.lang.Integer)value$; break;
+    case 22: pliCount = (java.lang.Integer)value$; break;
+    case 23: nackCount = (java.lang.Integer)value$; break;
+    case 24: sliCount = (java.lang.Integer)value$; break;
+    case 25: packetsLost = (java.lang.Integer)value$; break;
+    case 26: packetsReceived = (java.lang.Integer)value$; break;
+    case 27: packetsDiscarded = (java.lang.Integer)value$; break;
+    case 28: packetsRepaired = (java.lang.Integer)value$; break;
+    case 29: packetsFailedDecryption = (java.lang.Integer)value$; break;
+    case 30: packetsDuplicated = (java.lang.Integer)value$; break;
+    case 31: fecPacketsReceived = (java.lang.Integer)value$; break;
+    case 32: fecPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 33: bytesReceived = (java.lang.Long)value$; break;
+    case 34: rtcpSrReceived = (java.lang.Integer)value$; break;
+    case 35: rtcpRrSent = (java.lang.Integer)value$; break;
+    case 36: rtxPacketsReceived = (java.lang.Integer)value$; break;
+    case 37: rtxPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 38: framesReceived = (java.lang.Integer)value$; break;
+    case 39: framesDecoded = (java.lang.Integer)value$; break;
+    case 40: keyFramesDecoded = (java.lang.Integer)value$; break;
+    case 41: fractionLost = (java.lang.Double)value$; break;
+    case 42: jitter = (java.lang.Double)value$; break;
+    case 43: roundTripTime = (java.lang.Double)value$; break;
+    case 44: attachments = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
+
+  /**
+   * Gets the value of the 'serviceId' field.
+   * @return The service id the report belongs to
+   */
+  public java.lang.String getServiceId() {
+    return serviceId;
+  }
+
 
   /**
    * Gets the value of the 'mediaUnitId' field.
@@ -736,6 +751,8 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<SfuInboundRtpPadReport>
     implements org.apache.avro.data.RecordBuilder<SfuInboundRtpPadReport> {
 
+    /** The service id the report belongs to */
+    private java.lang.String serviceId;
     /** The media unit id the report belongs to */
     private java.lang.String mediaUnitId;
     /** The provided unique identifier of the SFU */
@@ -836,181 +853,185 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
      */
     private Builder(org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[0], other.serviceId)) {
+        this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.sfuId)) {
-        this.sfuId = data().deepCopy(fields()[1].schema(), other.sfuId);
+      if (isValidValue(fields()[1], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.marker)) {
-        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
+      if (isValidValue(fields()[2], other.sfuId)) {
+        this.sfuId = data().deepCopy(fields()[2].schema(), other.sfuId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
+      if (isValidValue(fields()[3], other.marker)) {
+        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[4].schema(), other.transportId);
+      if (isValidValue(fields()[4], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.rtpStreamId)) {
-        this.rtpStreamId = data().deepCopy(fields()[5].schema(), other.rtpStreamId);
+      if (isValidValue(fields()[5], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[5].schema(), other.transportId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.padId)) {
-        this.padId = data().deepCopy(fields()[6].schema(), other.padId);
+      if (isValidValue(fields()[6], other.rtpStreamId)) {
+        this.rtpStreamId = data().deepCopy(fields()[6].schema(), other.rtpStreamId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[7].schema(), other.ssrc);
+      if (isValidValue(fields()[7], other.padId)) {
+        this.padId = data().deepCopy(fields()[7].schema(), other.padId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.trackId)) {
-        this.trackId = data().deepCopy(fields()[8].schema(), other.trackId);
+      if (isValidValue(fields()[8], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[8].schema(), other.ssrc);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[9].schema(), other.clientId);
+      if (isValidValue(fields()[9], other.trackId)) {
+        this.trackId = data().deepCopy(fields()[9].schema(), other.trackId);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.callId)) {
-        this.callId = data().deepCopy(fields()[10].schema(), other.callId);
+      if (isValidValue(fields()[10], other.clientId)) {
+        this.clientId = data().deepCopy(fields()[10].schema(), other.clientId);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[11].schema(), other.mediaType);
+      if (isValidValue(fields()[11], other.callId)) {
+        this.callId = data().deepCopy(fields()[11].schema(), other.callId);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.payloadType)) {
-        this.payloadType = data().deepCopy(fields()[12].schema(), other.payloadType);
+      if (isValidValue(fields()[12], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[12].schema(), other.mediaType);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.mimeType)) {
-        this.mimeType = data().deepCopy(fields()[13].schema(), other.mimeType);
+      if (isValidValue(fields()[13], other.payloadType)) {
+        this.payloadType = data().deepCopy(fields()[13].schema(), other.payloadType);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.clockRate)) {
-        this.clockRate = data().deepCopy(fields()[14].schema(), other.clockRate);
+      if (isValidValue(fields()[14], other.mimeType)) {
+        this.mimeType = data().deepCopy(fields()[14].schema(), other.mimeType);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.sdpFmtpLine)) {
-        this.sdpFmtpLine = data().deepCopy(fields()[15].schema(), other.sdpFmtpLine);
+      if (isValidValue(fields()[15], other.clockRate)) {
+        this.clockRate = data().deepCopy(fields()[15].schema(), other.clockRate);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.rid)) {
-        this.rid = data().deepCopy(fields()[16].schema(), other.rid);
+      if (isValidValue(fields()[16], other.sdpFmtpLine)) {
+        this.sdpFmtpLine = data().deepCopy(fields()[16].schema(), other.sdpFmtpLine);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.rtxSsrc)) {
-        this.rtxSsrc = data().deepCopy(fields()[17].schema(), other.rtxSsrc);
+      if (isValidValue(fields()[17], other.rid)) {
+        this.rid = data().deepCopy(fields()[17].schema(), other.rid);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.targetBitrate)) {
-        this.targetBitrate = data().deepCopy(fields()[18].schema(), other.targetBitrate);
+      if (isValidValue(fields()[18], other.rtxSsrc)) {
+        this.rtxSsrc = data().deepCopy(fields()[18].schema(), other.rtxSsrc);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.voiceActivityFlag)) {
-        this.voiceActivityFlag = data().deepCopy(fields()[19].schema(), other.voiceActivityFlag);
+      if (isValidValue(fields()[19], other.targetBitrate)) {
+        this.targetBitrate = data().deepCopy(fields()[19].schema(), other.targetBitrate);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[20].schema(), other.firCount);
+      if (isValidValue(fields()[20], other.voiceActivityFlag)) {
+        this.voiceActivityFlag = data().deepCopy(fields()[20].schema(), other.voiceActivityFlag);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[21].schema(), other.pliCount);
+      if (isValidValue(fields()[21], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[21].schema(), other.firCount);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[22].schema(), other.nackCount);
+      if (isValidValue(fields()[22], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[22].schema(), other.pliCount);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.sliCount)) {
-        this.sliCount = data().deepCopy(fields()[23].schema(), other.sliCount);
+      if (isValidValue(fields()[23], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[23].schema(), other.nackCount);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[24].schema(), other.packetsLost);
+      if (isValidValue(fields()[24], other.sliCount)) {
+        this.sliCount = data().deepCopy(fields()[24].schema(), other.sliCount);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[25].schema(), other.packetsReceived);
+      if (isValidValue(fields()[25], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[25].schema(), other.packetsLost);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.packetsDiscarded)) {
-        this.packetsDiscarded = data().deepCopy(fields()[26].schema(), other.packetsDiscarded);
+      if (isValidValue(fields()[26], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[26].schema(), other.packetsReceived);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.packetsRepaired)) {
-        this.packetsRepaired = data().deepCopy(fields()[27].schema(), other.packetsRepaired);
+      if (isValidValue(fields()[27], other.packetsDiscarded)) {
+        this.packetsDiscarded = data().deepCopy(fields()[27].schema(), other.packetsDiscarded);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.packetsFailedDecryption)) {
-        this.packetsFailedDecryption = data().deepCopy(fields()[28].schema(), other.packetsFailedDecryption);
+      if (isValidValue(fields()[28], other.packetsRepaired)) {
+        this.packetsRepaired = data().deepCopy(fields()[28].schema(), other.packetsRepaired);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.packetsDuplicated)) {
-        this.packetsDuplicated = data().deepCopy(fields()[29].schema(), other.packetsDuplicated);
+      if (isValidValue(fields()[29], other.packetsFailedDecryption)) {
+        this.packetsFailedDecryption = data().deepCopy(fields()[29].schema(), other.packetsFailedDecryption);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[30].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[30], other.packetsDuplicated)) {
+        this.packetsDuplicated = data().deepCopy(fields()[30].schema(), other.packetsDuplicated);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[31].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[31], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[31].schema(), other.fecPacketsReceived);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[32].schema(), other.bytesReceived);
+      if (isValidValue(fields()[32], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[32].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.rtcpSrReceived)) {
-        this.rtcpSrReceived = data().deepCopy(fields()[33].schema(), other.rtcpSrReceived);
+      if (isValidValue(fields()[33], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[33].schema(), other.bytesReceived);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.rtcpRrSent)) {
-        this.rtcpRrSent = data().deepCopy(fields()[34].schema(), other.rtcpRrSent);
+      if (isValidValue(fields()[34], other.rtcpSrReceived)) {
+        this.rtcpSrReceived = data().deepCopy(fields()[34].schema(), other.rtcpSrReceived);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.rtxPacketsReceived)) {
-        this.rtxPacketsReceived = data().deepCopy(fields()[35].schema(), other.rtxPacketsReceived);
+      if (isValidValue(fields()[35], other.rtcpRrSent)) {
+        this.rtcpRrSent = data().deepCopy(fields()[35].schema(), other.rtcpRrSent);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.rtxPacketsDiscarded)) {
-        this.rtxPacketsDiscarded = data().deepCopy(fields()[36].schema(), other.rtxPacketsDiscarded);
+      if (isValidValue(fields()[36], other.rtxPacketsReceived)) {
+        this.rtxPacketsReceived = data().deepCopy(fields()[36].schema(), other.rtxPacketsReceived);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.framesReceived)) {
-        this.framesReceived = data().deepCopy(fields()[37].schema(), other.framesReceived);
+      if (isValidValue(fields()[37], other.rtxPacketsDiscarded)) {
+        this.rtxPacketsDiscarded = data().deepCopy(fields()[37].schema(), other.rtxPacketsDiscarded);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.framesDecoded)) {
-        this.framesDecoded = data().deepCopy(fields()[38].schema(), other.framesDecoded);
+      if (isValidValue(fields()[38], other.framesReceived)) {
+        this.framesReceived = data().deepCopy(fields()[38].schema(), other.framesReceived);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.keyFramesDecoded)) {
-        this.keyFramesDecoded = data().deepCopy(fields()[39].schema(), other.keyFramesDecoded);
+      if (isValidValue(fields()[39], other.framesDecoded)) {
+        this.framesDecoded = data().deepCopy(fields()[39].schema(), other.framesDecoded);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.fractionLost)) {
-        this.fractionLost = data().deepCopy(fields()[40].schema(), other.fractionLost);
+      if (isValidValue(fields()[40], other.keyFramesDecoded)) {
+        this.keyFramesDecoded = data().deepCopy(fields()[40].schema(), other.keyFramesDecoded);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[41].schema(), other.jitter);
+      if (isValidValue(fields()[41], other.fractionLost)) {
+        this.fractionLost = data().deepCopy(fields()[41].schema(), other.fractionLost);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.roundTripTime)) {
-        this.roundTripTime = data().deepCopy(fields()[42].schema(), other.roundTripTime);
+      if (isValidValue(fields()[42], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[42].schema(), other.jitter);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[43].schema(), other.attachments);
+      if (isValidValue(fields()[43], other.roundTripTime)) {
+        this.roundTripTime = data().deepCopy(fields()[43].schema(), other.roundTripTime);
         fieldSetFlags()[43] = true;
+      }
+      if (isValidValue(fields()[44], other.attachments)) {
+        this.attachments = data().deepCopy(fields()[44].schema(), other.attachments);
+        fieldSetFlags()[44] = true;
       }
     }
 
@@ -1020,182 +1041,229 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
      */
     private Builder(org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport other) {
             super(SCHEMA$);
-      if (isValidValue(fields()[0], other.mediaUnitId)) {
-        this.mediaUnitId = data().deepCopy(fields()[0].schema(), other.mediaUnitId);
+      if (isValidValue(fields()[0], other.serviceId)) {
+        this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.sfuId)) {
-        this.sfuId = data().deepCopy(fields()[1].schema(), other.sfuId);
+      if (isValidValue(fields()[1], other.mediaUnitId)) {
+        this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.marker)) {
-        this.marker = data().deepCopy(fields()[2].schema(), other.marker);
+      if (isValidValue(fields()[2], other.sfuId)) {
+        this.sfuId = data().deepCopy(fields()[2].schema(), other.sfuId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
+      if (isValidValue(fields()[3], other.marker)) {
+        this.marker = data().deepCopy(fields()[3].schema(), other.marker);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.transportId)) {
-        this.transportId = data().deepCopy(fields()[4].schema(), other.transportId);
+      if (isValidValue(fields()[4], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.rtpStreamId)) {
-        this.rtpStreamId = data().deepCopy(fields()[5].schema(), other.rtpStreamId);
+      if (isValidValue(fields()[5], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[5].schema(), other.transportId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.padId)) {
-        this.padId = data().deepCopy(fields()[6].schema(), other.padId);
+      if (isValidValue(fields()[6], other.rtpStreamId)) {
+        this.rtpStreamId = data().deepCopy(fields()[6].schema(), other.rtpStreamId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[7].schema(), other.ssrc);
+      if (isValidValue(fields()[7], other.padId)) {
+        this.padId = data().deepCopy(fields()[7].schema(), other.padId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.trackId)) {
-        this.trackId = data().deepCopy(fields()[8].schema(), other.trackId);
+      if (isValidValue(fields()[8], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[8].schema(), other.ssrc);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[9].schema(), other.clientId);
+      if (isValidValue(fields()[9], other.trackId)) {
+        this.trackId = data().deepCopy(fields()[9].schema(), other.trackId);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.callId)) {
-        this.callId = data().deepCopy(fields()[10].schema(), other.callId);
+      if (isValidValue(fields()[10], other.clientId)) {
+        this.clientId = data().deepCopy(fields()[10].schema(), other.clientId);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.mediaType)) {
-        this.mediaType = data().deepCopy(fields()[11].schema(), other.mediaType);
+      if (isValidValue(fields()[11], other.callId)) {
+        this.callId = data().deepCopy(fields()[11].schema(), other.callId);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.payloadType)) {
-        this.payloadType = data().deepCopy(fields()[12].schema(), other.payloadType);
+      if (isValidValue(fields()[12], other.mediaType)) {
+        this.mediaType = data().deepCopy(fields()[12].schema(), other.mediaType);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.mimeType)) {
-        this.mimeType = data().deepCopy(fields()[13].schema(), other.mimeType);
+      if (isValidValue(fields()[13], other.payloadType)) {
+        this.payloadType = data().deepCopy(fields()[13].schema(), other.payloadType);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.clockRate)) {
-        this.clockRate = data().deepCopy(fields()[14].schema(), other.clockRate);
+      if (isValidValue(fields()[14], other.mimeType)) {
+        this.mimeType = data().deepCopy(fields()[14].schema(), other.mimeType);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.sdpFmtpLine)) {
-        this.sdpFmtpLine = data().deepCopy(fields()[15].schema(), other.sdpFmtpLine);
+      if (isValidValue(fields()[15], other.clockRate)) {
+        this.clockRate = data().deepCopy(fields()[15].schema(), other.clockRate);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.rid)) {
-        this.rid = data().deepCopy(fields()[16].schema(), other.rid);
+      if (isValidValue(fields()[16], other.sdpFmtpLine)) {
+        this.sdpFmtpLine = data().deepCopy(fields()[16].schema(), other.sdpFmtpLine);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.rtxSsrc)) {
-        this.rtxSsrc = data().deepCopy(fields()[17].schema(), other.rtxSsrc);
+      if (isValidValue(fields()[17], other.rid)) {
+        this.rid = data().deepCopy(fields()[17].schema(), other.rid);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.targetBitrate)) {
-        this.targetBitrate = data().deepCopy(fields()[18].schema(), other.targetBitrate);
+      if (isValidValue(fields()[18], other.rtxSsrc)) {
+        this.rtxSsrc = data().deepCopy(fields()[18].schema(), other.rtxSsrc);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.voiceActivityFlag)) {
-        this.voiceActivityFlag = data().deepCopy(fields()[19].schema(), other.voiceActivityFlag);
+      if (isValidValue(fields()[19], other.targetBitrate)) {
+        this.targetBitrate = data().deepCopy(fields()[19].schema(), other.targetBitrate);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[20].schema(), other.firCount);
+      if (isValidValue(fields()[20], other.voiceActivityFlag)) {
+        this.voiceActivityFlag = data().deepCopy(fields()[20].schema(), other.voiceActivityFlag);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[21].schema(), other.pliCount);
+      if (isValidValue(fields()[21], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[21].schema(), other.firCount);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[22].schema(), other.nackCount);
+      if (isValidValue(fields()[22], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[22].schema(), other.pliCount);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.sliCount)) {
-        this.sliCount = data().deepCopy(fields()[23].schema(), other.sliCount);
+      if (isValidValue(fields()[23], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[23].schema(), other.nackCount);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[24].schema(), other.packetsLost);
+      if (isValidValue(fields()[24], other.sliCount)) {
+        this.sliCount = data().deepCopy(fields()[24].schema(), other.sliCount);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[25].schema(), other.packetsReceived);
+      if (isValidValue(fields()[25], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[25].schema(), other.packetsLost);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.packetsDiscarded)) {
-        this.packetsDiscarded = data().deepCopy(fields()[26].schema(), other.packetsDiscarded);
+      if (isValidValue(fields()[26], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[26].schema(), other.packetsReceived);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.packetsRepaired)) {
-        this.packetsRepaired = data().deepCopy(fields()[27].schema(), other.packetsRepaired);
+      if (isValidValue(fields()[27], other.packetsDiscarded)) {
+        this.packetsDiscarded = data().deepCopy(fields()[27].schema(), other.packetsDiscarded);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.packetsFailedDecryption)) {
-        this.packetsFailedDecryption = data().deepCopy(fields()[28].schema(), other.packetsFailedDecryption);
+      if (isValidValue(fields()[28], other.packetsRepaired)) {
+        this.packetsRepaired = data().deepCopy(fields()[28].schema(), other.packetsRepaired);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.packetsDuplicated)) {
-        this.packetsDuplicated = data().deepCopy(fields()[29].schema(), other.packetsDuplicated);
+      if (isValidValue(fields()[29], other.packetsFailedDecryption)) {
+        this.packetsFailedDecryption = data().deepCopy(fields()[29].schema(), other.packetsFailedDecryption);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[30].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[30], other.packetsDuplicated)) {
+        this.packetsDuplicated = data().deepCopy(fields()[30].schema(), other.packetsDuplicated);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[31].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[31], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[31].schema(), other.fecPacketsReceived);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[32].schema(), other.bytesReceived);
+      if (isValidValue(fields()[32], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[32].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.rtcpSrReceived)) {
-        this.rtcpSrReceived = data().deepCopy(fields()[33].schema(), other.rtcpSrReceived);
+      if (isValidValue(fields()[33], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[33].schema(), other.bytesReceived);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.rtcpRrSent)) {
-        this.rtcpRrSent = data().deepCopy(fields()[34].schema(), other.rtcpRrSent);
+      if (isValidValue(fields()[34], other.rtcpSrReceived)) {
+        this.rtcpSrReceived = data().deepCopy(fields()[34].schema(), other.rtcpSrReceived);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.rtxPacketsReceived)) {
-        this.rtxPacketsReceived = data().deepCopy(fields()[35].schema(), other.rtxPacketsReceived);
+      if (isValidValue(fields()[35], other.rtcpRrSent)) {
+        this.rtcpRrSent = data().deepCopy(fields()[35].schema(), other.rtcpRrSent);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.rtxPacketsDiscarded)) {
-        this.rtxPacketsDiscarded = data().deepCopy(fields()[36].schema(), other.rtxPacketsDiscarded);
+      if (isValidValue(fields()[36], other.rtxPacketsReceived)) {
+        this.rtxPacketsReceived = data().deepCopy(fields()[36].schema(), other.rtxPacketsReceived);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.framesReceived)) {
-        this.framesReceived = data().deepCopy(fields()[37].schema(), other.framesReceived);
+      if (isValidValue(fields()[37], other.rtxPacketsDiscarded)) {
+        this.rtxPacketsDiscarded = data().deepCopy(fields()[37].schema(), other.rtxPacketsDiscarded);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.framesDecoded)) {
-        this.framesDecoded = data().deepCopy(fields()[38].schema(), other.framesDecoded);
+      if (isValidValue(fields()[38], other.framesReceived)) {
+        this.framesReceived = data().deepCopy(fields()[38].schema(), other.framesReceived);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.keyFramesDecoded)) {
-        this.keyFramesDecoded = data().deepCopy(fields()[39].schema(), other.keyFramesDecoded);
+      if (isValidValue(fields()[39], other.framesDecoded)) {
+        this.framesDecoded = data().deepCopy(fields()[39].schema(), other.framesDecoded);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.fractionLost)) {
-        this.fractionLost = data().deepCopy(fields()[40].schema(), other.fractionLost);
+      if (isValidValue(fields()[40], other.keyFramesDecoded)) {
+        this.keyFramesDecoded = data().deepCopy(fields()[40].schema(), other.keyFramesDecoded);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[41].schema(), other.jitter);
+      if (isValidValue(fields()[41], other.fractionLost)) {
+        this.fractionLost = data().deepCopy(fields()[41].schema(), other.fractionLost);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.roundTripTime)) {
-        this.roundTripTime = data().deepCopy(fields()[42].schema(), other.roundTripTime);
+      if (isValidValue(fields()[42], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[42].schema(), other.jitter);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.attachments)) {
-        this.attachments = data().deepCopy(fields()[43].schema(), other.attachments);
+      if (isValidValue(fields()[43], other.roundTripTime)) {
+        this.roundTripTime = data().deepCopy(fields()[43].schema(), other.roundTripTime);
         fieldSetFlags()[43] = true;
       }
+      if (isValidValue(fields()[44], other.attachments)) {
+        this.attachments = data().deepCopy(fields()[44].schema(), other.attachments);
+        fieldSetFlags()[44] = true;
+      }
+    }
+
+    /**
+      * Gets the value of the 'serviceId' field.
+      * The service id the report belongs to
+      * @return The value.
+      */
+    public java.lang.String getServiceId() {
+      return serviceId;
+    }
+
+    /**
+      * Sets the value of the 'serviceId' field.
+      * The service id the report belongs to
+      * @param value The value of 'serviceId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setServiceId(java.lang.String value) {
+      validate(fields()[0], value);
+      this.serviceId = value;
+      fieldSetFlags()[0] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'serviceId' field has been set.
+      * The service id the report belongs to
+      * @return True if the 'serviceId' field has been set, false otherwise.
+      */
+    public boolean hasServiceId() {
+      return fieldSetFlags()[0];
+    }
+
+
+    /**
+      * Clears the value of the 'serviceId' field.
+      * The service id the report belongs to
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearServiceId() {
+      serviceId = null;
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     /**
@@ -1214,9 +1282,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setMediaUnitId(java.lang.String value) {
-      validate(fields()[0], value);
+      validate(fields()[1], value);
       this.mediaUnitId = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -1226,7 +1294,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'mediaUnitId' field has been set, false otherwise.
       */
     public boolean hasMediaUnitId() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[1];
     }
 
 
@@ -1237,7 +1305,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
-      fieldSetFlags()[0] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -1257,9 +1325,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setSfuId(java.lang.String value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.sfuId = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -1269,7 +1337,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'sfuId' field has been set, false otherwise.
       */
     public boolean hasSfuId() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -1280,7 +1348,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearSfuId() {
       sfuId = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -1300,9 +1368,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setMarker(java.lang.String value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.marker = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -1312,7 +1380,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'marker' field has been set, false otherwise.
       */
     public boolean hasMarker() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -1323,7 +1391,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearMarker() {
       marker = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -1343,9 +1411,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setTimestamp(long value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.timestamp = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -1355,7 +1423,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -1365,7 +1433,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearTimestamp() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -1385,9 +1453,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setTransportId(java.lang.String value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.transportId = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -1397,7 +1465,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'transportId' field has been set, false otherwise.
       */
     public boolean hasTransportId() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -1408,7 +1476,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearTransportId() {
       transportId = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -1428,9 +1496,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRtpStreamId(java.lang.String value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.rtpStreamId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -1440,7 +1508,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rtpStreamId' field has been set, false otherwise.
       */
     public boolean hasRtpStreamId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -1451,7 +1519,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRtpStreamId() {
       rtpStreamId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -1471,9 +1539,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPadId(java.lang.String value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.padId = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -1483,7 +1551,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'padId' field has been set, false otherwise.
       */
     public boolean hasPadId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -1494,7 +1562,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPadId() {
       padId = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -1514,9 +1582,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setSsrc(long value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.ssrc = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -1526,7 +1594,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'ssrc' field has been set, false otherwise.
       */
     public boolean hasSsrc() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -1536,7 +1604,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearSsrc() {
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -1556,9 +1624,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setTrackId(java.lang.String value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.trackId = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -1568,7 +1636,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'trackId' field has been set, false otherwise.
       */
     public boolean hasTrackId() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -1579,7 +1647,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearTrackId() {
       trackId = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -1599,9 +1667,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setClientId(java.lang.String value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.clientId = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -1611,7 +1679,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'clientId' field has been set, false otherwise.
       */
     public boolean hasClientId() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -1622,7 +1690,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearClientId() {
       clientId = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1642,9 +1710,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setCallId(java.lang.String value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.callId = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1654,7 +1722,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'callId' field has been set, false otherwise.
       */
     public boolean hasCallId() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1665,7 +1733,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearCallId() {
       callId = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1685,9 +1753,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setMediaType(java.lang.String value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.mediaType = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1697,7 +1765,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'mediaType' field has been set, false otherwise.
       */
     public boolean hasMediaType() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1708,7 +1776,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearMediaType() {
       mediaType = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1728,9 +1796,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPayloadType(java.lang.Integer value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.payloadType = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1740,7 +1808,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'payloadType' field has been set, false otherwise.
       */
     public boolean hasPayloadType() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1751,7 +1819,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPayloadType() {
       payloadType = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1771,9 +1839,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setMimeType(java.lang.String value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.mimeType = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1783,7 +1851,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'mimeType' field has been set, false otherwise.
       */
     public boolean hasMimeType() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1794,7 +1862,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearMimeType() {
       mimeType = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1814,9 +1882,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setClockRate(java.lang.Long value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.clockRate = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1826,7 +1894,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'clockRate' field has been set, false otherwise.
       */
     public boolean hasClockRate() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1837,7 +1905,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearClockRate() {
       clockRate = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1857,9 +1925,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setSdpFmtpLine(java.lang.String value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.sdpFmtpLine = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1869,7 +1937,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'sdpFmtpLine' field has been set, false otherwise.
       */
     public boolean hasSdpFmtpLine() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1880,7 +1948,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearSdpFmtpLine() {
       sdpFmtpLine = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1900,9 +1968,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRid(java.lang.String value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.rid = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1912,7 +1980,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rid' field has been set, false otherwise.
       */
     public boolean hasRid() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1923,7 +1991,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRid() {
       rid = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1943,9 +2011,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRtxSsrc(java.lang.Long value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.rtxSsrc = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1955,7 +2023,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rtxSsrc' field has been set, false otherwise.
       */
     public boolean hasRtxSsrc() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -1966,7 +2034,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRtxSsrc() {
       rtxSsrc = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1986,9 +2054,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setTargetBitrate(java.lang.Long value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.targetBitrate = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -1998,7 +2066,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'targetBitrate' field has been set, false otherwise.
       */
     public boolean hasTargetBitrate() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -2009,7 +2077,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearTargetBitrate() {
       targetBitrate = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -2029,9 +2097,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setVoiceActivityFlag(java.lang.Boolean value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.voiceActivityFlag = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -2041,7 +2109,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'voiceActivityFlag' field has been set, false otherwise.
       */
     public boolean hasVoiceActivityFlag() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -2052,7 +2120,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearVoiceActivityFlag() {
       voiceActivityFlag = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -2072,9 +2140,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setFirCount(java.lang.Integer value) {
-      validate(fields()[20], value);
+      validate(fields()[21], value);
       this.firCount = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -2084,7 +2152,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'firCount' field has been set, false otherwise.
       */
     public boolean hasFirCount() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -2095,7 +2163,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearFirCount() {
       firCount = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -2115,9 +2183,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPliCount(java.lang.Integer value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.pliCount = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -2127,7 +2195,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'pliCount' field has been set, false otherwise.
       */
     public boolean hasPliCount() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -2138,7 +2206,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPliCount() {
       pliCount = null;
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -2158,9 +2226,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setNackCount(java.lang.Integer value) {
-      validate(fields()[22], value);
+      validate(fields()[23], value);
       this.nackCount = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -2170,7 +2238,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'nackCount' field has been set, false otherwise.
       */
     public boolean hasNackCount() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[23];
     }
 
 
@@ -2181,7 +2249,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearNackCount() {
       nackCount = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -2201,9 +2269,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setSliCount(java.lang.Integer value) {
-      validate(fields()[23], value);
+      validate(fields()[24], value);
       this.sliCount = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -2213,7 +2281,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'sliCount' field has been set, false otherwise.
       */
     public boolean hasSliCount() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[24];
     }
 
 
@@ -2224,7 +2292,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearSliCount() {
       sliCount = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -2244,9 +2312,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPacketsLost(java.lang.Integer value) {
-      validate(fields()[24], value);
+      validate(fields()[25], value);
       this.packetsLost = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -2256,7 +2324,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'packetsLost' field has been set, false otherwise.
       */
     public boolean hasPacketsLost() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[25];
     }
 
 
@@ -2267,7 +2335,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPacketsLost() {
       packetsLost = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -2287,9 +2355,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPacketsReceived(java.lang.Integer value) {
-      validate(fields()[25], value);
+      validate(fields()[26], value);
       this.packetsReceived = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -2299,7 +2367,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'packetsReceived' field has been set, false otherwise.
       */
     public boolean hasPacketsReceived() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[26];
     }
 
 
@@ -2310,7 +2378,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPacketsReceived() {
       packetsReceived = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -2330,9 +2398,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[26], value);
+      validate(fields()[27], value);
       this.packetsDiscarded = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -2342,7 +2410,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'packetsDiscarded' field has been set, false otherwise.
       */
     public boolean hasPacketsDiscarded() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[27];
     }
 
 
@@ -2353,7 +2421,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPacketsDiscarded() {
       packetsDiscarded = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -2373,9 +2441,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPacketsRepaired(java.lang.Integer value) {
-      validate(fields()[27], value);
+      validate(fields()[28], value);
       this.packetsRepaired = value;
-      fieldSetFlags()[27] = true;
+      fieldSetFlags()[28] = true;
       return this;
     }
 
@@ -2385,7 +2453,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'packetsRepaired' field has been set, false otherwise.
       */
     public boolean hasPacketsRepaired() {
-      return fieldSetFlags()[27];
+      return fieldSetFlags()[28];
     }
 
 
@@ -2396,7 +2464,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPacketsRepaired() {
       packetsRepaired = null;
-      fieldSetFlags()[27] = false;
+      fieldSetFlags()[28] = false;
       return this;
     }
 
@@ -2416,9 +2484,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPacketsFailedDecryption(java.lang.Integer value) {
-      validate(fields()[28], value);
+      validate(fields()[29], value);
       this.packetsFailedDecryption = value;
-      fieldSetFlags()[28] = true;
+      fieldSetFlags()[29] = true;
       return this;
     }
 
@@ -2428,7 +2496,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'packetsFailedDecryption' field has been set, false otherwise.
       */
     public boolean hasPacketsFailedDecryption() {
-      return fieldSetFlags()[28];
+      return fieldSetFlags()[29];
     }
 
 
@@ -2439,7 +2507,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPacketsFailedDecryption() {
       packetsFailedDecryption = null;
-      fieldSetFlags()[28] = false;
+      fieldSetFlags()[29] = false;
       return this;
     }
 
@@ -2459,9 +2527,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setPacketsDuplicated(java.lang.Integer value) {
-      validate(fields()[29], value);
+      validate(fields()[30], value);
       this.packetsDuplicated = value;
-      fieldSetFlags()[29] = true;
+      fieldSetFlags()[30] = true;
       return this;
     }
 
@@ -2471,7 +2539,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'packetsDuplicated' field has been set, false otherwise.
       */
     public boolean hasPacketsDuplicated() {
-      return fieldSetFlags()[29];
+      return fieldSetFlags()[30];
     }
 
 
@@ -2482,7 +2550,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearPacketsDuplicated() {
       packetsDuplicated = null;
-      fieldSetFlags()[29] = false;
+      fieldSetFlags()[30] = false;
       return this;
     }
 
@@ -2502,9 +2570,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setFecPacketsReceived(java.lang.Integer value) {
-      validate(fields()[30], value);
+      validate(fields()[31], value);
       this.fecPacketsReceived = value;
-      fieldSetFlags()[30] = true;
+      fieldSetFlags()[31] = true;
       return this;
     }
 
@@ -2514,7 +2582,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'fecPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasFecPacketsReceived() {
-      return fieldSetFlags()[30];
+      return fieldSetFlags()[31];
     }
 
 
@@ -2525,7 +2593,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearFecPacketsReceived() {
       fecPacketsReceived = null;
-      fieldSetFlags()[30] = false;
+      fieldSetFlags()[31] = false;
       return this;
     }
 
@@ -2545,9 +2613,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setFecPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[31], value);
+      validate(fields()[32], value);
       this.fecPacketsDiscarded = value;
-      fieldSetFlags()[31] = true;
+      fieldSetFlags()[32] = true;
       return this;
     }
 
@@ -2557,7 +2625,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'fecPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasFecPacketsDiscarded() {
-      return fieldSetFlags()[31];
+      return fieldSetFlags()[32];
     }
 
 
@@ -2568,7 +2636,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearFecPacketsDiscarded() {
       fecPacketsDiscarded = null;
-      fieldSetFlags()[31] = false;
+      fieldSetFlags()[32] = false;
       return this;
     }
 
@@ -2588,9 +2656,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setBytesReceived(java.lang.Long value) {
-      validate(fields()[32], value);
+      validate(fields()[33], value);
       this.bytesReceived = value;
-      fieldSetFlags()[32] = true;
+      fieldSetFlags()[33] = true;
       return this;
     }
 
@@ -2600,7 +2668,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[32];
+      return fieldSetFlags()[33];
     }
 
 
@@ -2611,7 +2679,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[32] = false;
+      fieldSetFlags()[33] = false;
       return this;
     }
 
@@ -2631,9 +2699,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRtcpSrReceived(java.lang.Integer value) {
-      validate(fields()[33], value);
+      validate(fields()[34], value);
       this.rtcpSrReceived = value;
-      fieldSetFlags()[33] = true;
+      fieldSetFlags()[34] = true;
       return this;
     }
 
@@ -2643,7 +2711,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rtcpSrReceived' field has been set, false otherwise.
       */
     public boolean hasRtcpSrReceived() {
-      return fieldSetFlags()[33];
+      return fieldSetFlags()[34];
     }
 
 
@@ -2654,7 +2722,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRtcpSrReceived() {
       rtcpSrReceived = null;
-      fieldSetFlags()[33] = false;
+      fieldSetFlags()[34] = false;
       return this;
     }
 
@@ -2674,9 +2742,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRtcpRrSent(java.lang.Integer value) {
-      validate(fields()[34], value);
+      validate(fields()[35], value);
       this.rtcpRrSent = value;
-      fieldSetFlags()[34] = true;
+      fieldSetFlags()[35] = true;
       return this;
     }
 
@@ -2686,7 +2754,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rtcpRrSent' field has been set, false otherwise.
       */
     public boolean hasRtcpRrSent() {
-      return fieldSetFlags()[34];
+      return fieldSetFlags()[35];
     }
 
 
@@ -2697,7 +2765,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRtcpRrSent() {
       rtcpRrSent = null;
-      fieldSetFlags()[34] = false;
+      fieldSetFlags()[35] = false;
       return this;
     }
 
@@ -2717,9 +2785,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRtxPacketsReceived(java.lang.Integer value) {
-      validate(fields()[35], value);
+      validate(fields()[36], value);
       this.rtxPacketsReceived = value;
-      fieldSetFlags()[35] = true;
+      fieldSetFlags()[36] = true;
       return this;
     }
 
@@ -2729,7 +2797,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rtxPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasRtxPacketsReceived() {
-      return fieldSetFlags()[35];
+      return fieldSetFlags()[36];
     }
 
 
@@ -2740,7 +2808,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRtxPacketsReceived() {
       rtxPacketsReceived = null;
-      fieldSetFlags()[35] = false;
+      fieldSetFlags()[36] = false;
       return this;
     }
 
@@ -2760,9 +2828,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRtxPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[36], value);
+      validate(fields()[37], value);
       this.rtxPacketsDiscarded = value;
-      fieldSetFlags()[36] = true;
+      fieldSetFlags()[37] = true;
       return this;
     }
 
@@ -2772,7 +2840,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'rtxPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasRtxPacketsDiscarded() {
-      return fieldSetFlags()[36];
+      return fieldSetFlags()[37];
     }
 
 
@@ -2783,7 +2851,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRtxPacketsDiscarded() {
       rtxPacketsDiscarded = null;
-      fieldSetFlags()[36] = false;
+      fieldSetFlags()[37] = false;
       return this;
     }
 
@@ -2803,9 +2871,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setFramesReceived(java.lang.Integer value) {
-      validate(fields()[37], value);
+      validate(fields()[38], value);
       this.framesReceived = value;
-      fieldSetFlags()[37] = true;
+      fieldSetFlags()[38] = true;
       return this;
     }
 
@@ -2815,7 +2883,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'framesReceived' field has been set, false otherwise.
       */
     public boolean hasFramesReceived() {
-      return fieldSetFlags()[37];
+      return fieldSetFlags()[38];
     }
 
 
@@ -2826,7 +2894,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearFramesReceived() {
       framesReceived = null;
-      fieldSetFlags()[37] = false;
+      fieldSetFlags()[38] = false;
       return this;
     }
 
@@ -2846,9 +2914,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setFramesDecoded(java.lang.Integer value) {
-      validate(fields()[38], value);
+      validate(fields()[39], value);
       this.framesDecoded = value;
-      fieldSetFlags()[38] = true;
+      fieldSetFlags()[39] = true;
       return this;
     }
 
@@ -2858,7 +2926,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'framesDecoded' field has been set, false otherwise.
       */
     public boolean hasFramesDecoded() {
-      return fieldSetFlags()[38];
+      return fieldSetFlags()[39];
     }
 
 
@@ -2869,7 +2937,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearFramesDecoded() {
       framesDecoded = null;
-      fieldSetFlags()[38] = false;
+      fieldSetFlags()[39] = false;
       return this;
     }
 
@@ -2889,9 +2957,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setKeyFramesDecoded(java.lang.Integer value) {
-      validate(fields()[39], value);
+      validate(fields()[40], value);
       this.keyFramesDecoded = value;
-      fieldSetFlags()[39] = true;
+      fieldSetFlags()[40] = true;
       return this;
     }
 
@@ -2901,7 +2969,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'keyFramesDecoded' field has been set, false otherwise.
       */
     public boolean hasKeyFramesDecoded() {
-      return fieldSetFlags()[39];
+      return fieldSetFlags()[40];
     }
 
 
@@ -2912,7 +2980,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearKeyFramesDecoded() {
       keyFramesDecoded = null;
-      fieldSetFlags()[39] = false;
+      fieldSetFlags()[40] = false;
       return this;
     }
 
@@ -2932,9 +3000,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setFractionLost(java.lang.Double value) {
-      validate(fields()[40], value);
+      validate(fields()[41], value);
       this.fractionLost = value;
-      fieldSetFlags()[40] = true;
+      fieldSetFlags()[41] = true;
       return this;
     }
 
@@ -2944,7 +3012,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'fractionLost' field has been set, false otherwise.
       */
     public boolean hasFractionLost() {
-      return fieldSetFlags()[40];
+      return fieldSetFlags()[41];
     }
 
 
@@ -2955,7 +3023,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearFractionLost() {
       fractionLost = null;
-      fieldSetFlags()[40] = false;
+      fieldSetFlags()[41] = false;
       return this;
     }
 
@@ -2975,9 +3043,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setJitter(java.lang.Double value) {
-      validate(fields()[41], value);
+      validate(fields()[42], value);
       this.jitter = value;
-      fieldSetFlags()[41] = true;
+      fieldSetFlags()[42] = true;
       return this;
     }
 
@@ -2987,7 +3055,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'jitter' field has been set, false otherwise.
       */
     public boolean hasJitter() {
-      return fieldSetFlags()[41];
+      return fieldSetFlags()[42];
     }
 
 
@@ -2998,7 +3066,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearJitter() {
       jitter = null;
-      fieldSetFlags()[41] = false;
+      fieldSetFlags()[42] = false;
       return this;
     }
 
@@ -3018,9 +3086,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setRoundTripTime(java.lang.Double value) {
-      validate(fields()[42], value);
+      validate(fields()[43], value);
       this.roundTripTime = value;
-      fieldSetFlags()[42] = true;
+      fieldSetFlags()[43] = true;
       return this;
     }
 
@@ -3030,7 +3098,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'roundTripTime' field has been set, false otherwise.
       */
     public boolean hasRoundTripTime() {
-      return fieldSetFlags()[42];
+      return fieldSetFlags()[43];
     }
 
 
@@ -3041,7 +3109,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearRoundTripTime() {
       roundTripTime = null;
-      fieldSetFlags()[42] = false;
+      fieldSetFlags()[43] = false;
       return this;
     }
 
@@ -3061,9 +3129,9 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder setAttachments(java.lang.String value) {
-      validate(fields()[43], value);
+      validate(fields()[44], value);
       this.attachments = value;
-      fieldSetFlags()[43] = true;
+      fieldSetFlags()[44] = true;
       return this;
     }
 
@@ -3073,7 +3141,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       * @return True if the 'attachments' field has been set, false otherwise.
       */
     public boolean hasAttachments() {
-      return fieldSetFlags()[43];
+      return fieldSetFlags()[44];
     }
 
 
@@ -3084,7 +3152,7 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
       */
     public org.observertc.webrtc.schemas.reports.SfuInboundRtpPadReport.Builder clearAttachments() {
       attachments = null;
-      fieldSetFlags()[43] = false;
+      fieldSetFlags()[44] = false;
       return this;
     }
 
@@ -3092,50 +3160,51 @@ public class SfuInboundRtpPadReport extends org.apache.avro.specific.SpecificRec
     public SfuInboundRtpPadReport build() {
       try {
         SfuInboundRtpPadReport record = new SfuInboundRtpPadReport();
-        record.mediaUnitId = fieldSetFlags()[0] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[0]);
-        record.sfuId = fieldSetFlags()[1] ? this.sfuId : (java.lang.String) defaultValue(fields()[1]);
-        record.marker = fieldSetFlags()[2] ? this.marker : (java.lang.String) defaultValue(fields()[2]);
-        record.timestamp = fieldSetFlags()[3] ? this.timestamp : (java.lang.Long) defaultValue(fields()[3]);
-        record.transportId = fieldSetFlags()[4] ? this.transportId : (java.lang.String) defaultValue(fields()[4]);
-        record.rtpStreamId = fieldSetFlags()[5] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[5]);
-        record.padId = fieldSetFlags()[6] ? this.padId : (java.lang.String) defaultValue(fields()[6]);
-        record.ssrc = fieldSetFlags()[7] ? this.ssrc : (java.lang.Long) defaultValue(fields()[7]);
-        record.trackId = fieldSetFlags()[8] ? this.trackId : (java.lang.String) defaultValue(fields()[8]);
-        record.clientId = fieldSetFlags()[9] ? this.clientId : (java.lang.String) defaultValue(fields()[9]);
-        record.callId = fieldSetFlags()[10] ? this.callId : (java.lang.String) defaultValue(fields()[10]);
-        record.mediaType = fieldSetFlags()[11] ? this.mediaType : (java.lang.String) defaultValue(fields()[11]);
-        record.payloadType = fieldSetFlags()[12] ? this.payloadType : (java.lang.Integer) defaultValue(fields()[12]);
-        record.mimeType = fieldSetFlags()[13] ? this.mimeType : (java.lang.String) defaultValue(fields()[13]);
-        record.clockRate = fieldSetFlags()[14] ? this.clockRate : (java.lang.Long) defaultValue(fields()[14]);
-        record.sdpFmtpLine = fieldSetFlags()[15] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[15]);
-        record.rid = fieldSetFlags()[16] ? this.rid : (java.lang.String) defaultValue(fields()[16]);
-        record.rtxSsrc = fieldSetFlags()[17] ? this.rtxSsrc : (java.lang.Long) defaultValue(fields()[17]);
-        record.targetBitrate = fieldSetFlags()[18] ? this.targetBitrate : (java.lang.Long) defaultValue(fields()[18]);
-        record.voiceActivityFlag = fieldSetFlags()[19] ? this.voiceActivityFlag : (java.lang.Boolean) defaultValue(fields()[19]);
-        record.firCount = fieldSetFlags()[20] ? this.firCount : (java.lang.Integer) defaultValue(fields()[20]);
-        record.pliCount = fieldSetFlags()[21] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[21]);
-        record.nackCount = fieldSetFlags()[22] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[22]);
-        record.sliCount = fieldSetFlags()[23] ? this.sliCount : (java.lang.Integer) defaultValue(fields()[23]);
-        record.packetsLost = fieldSetFlags()[24] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[24]);
-        record.packetsReceived = fieldSetFlags()[25] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[25]);
-        record.packetsDiscarded = fieldSetFlags()[26] ? this.packetsDiscarded : (java.lang.Integer) defaultValue(fields()[26]);
-        record.packetsRepaired = fieldSetFlags()[27] ? this.packetsRepaired : (java.lang.Integer) defaultValue(fields()[27]);
-        record.packetsFailedDecryption = fieldSetFlags()[28] ? this.packetsFailedDecryption : (java.lang.Integer) defaultValue(fields()[28]);
-        record.packetsDuplicated = fieldSetFlags()[29] ? this.packetsDuplicated : (java.lang.Integer) defaultValue(fields()[29]);
-        record.fecPacketsReceived = fieldSetFlags()[30] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[30]);
-        record.fecPacketsDiscarded = fieldSetFlags()[31] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[31]);
-        record.bytesReceived = fieldSetFlags()[32] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[32]);
-        record.rtcpSrReceived = fieldSetFlags()[33] ? this.rtcpSrReceived : (java.lang.Integer) defaultValue(fields()[33]);
-        record.rtcpRrSent = fieldSetFlags()[34] ? this.rtcpRrSent : (java.lang.Integer) defaultValue(fields()[34]);
-        record.rtxPacketsReceived = fieldSetFlags()[35] ? this.rtxPacketsReceived : (java.lang.Integer) defaultValue(fields()[35]);
-        record.rtxPacketsDiscarded = fieldSetFlags()[36] ? this.rtxPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[36]);
-        record.framesReceived = fieldSetFlags()[37] ? this.framesReceived : (java.lang.Integer) defaultValue(fields()[37]);
-        record.framesDecoded = fieldSetFlags()[38] ? this.framesDecoded : (java.lang.Integer) defaultValue(fields()[38]);
-        record.keyFramesDecoded = fieldSetFlags()[39] ? this.keyFramesDecoded : (java.lang.Integer) defaultValue(fields()[39]);
-        record.fractionLost = fieldSetFlags()[40] ? this.fractionLost : (java.lang.Double) defaultValue(fields()[40]);
-        record.jitter = fieldSetFlags()[41] ? this.jitter : (java.lang.Double) defaultValue(fields()[41]);
-        record.roundTripTime = fieldSetFlags()[42] ? this.roundTripTime : (java.lang.Double) defaultValue(fields()[42]);
-        record.attachments = fieldSetFlags()[43] ? this.attachments : (java.lang.String) defaultValue(fields()[43]);
+        record.serviceId = fieldSetFlags()[0] ? this.serviceId : (java.lang.String) defaultValue(fields()[0]);
+        record.mediaUnitId = fieldSetFlags()[1] ? this.mediaUnitId : (java.lang.String) defaultValue(fields()[1]);
+        record.sfuId = fieldSetFlags()[2] ? this.sfuId : (java.lang.String) defaultValue(fields()[2]);
+        record.marker = fieldSetFlags()[3] ? this.marker : (java.lang.String) defaultValue(fields()[3]);
+        record.timestamp = fieldSetFlags()[4] ? this.timestamp : (java.lang.Long) defaultValue(fields()[4]);
+        record.transportId = fieldSetFlags()[5] ? this.transportId : (java.lang.String) defaultValue(fields()[5]);
+        record.rtpStreamId = fieldSetFlags()[6] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[6]);
+        record.padId = fieldSetFlags()[7] ? this.padId : (java.lang.String) defaultValue(fields()[7]);
+        record.ssrc = fieldSetFlags()[8] ? this.ssrc : (java.lang.Long) defaultValue(fields()[8]);
+        record.trackId = fieldSetFlags()[9] ? this.trackId : (java.lang.String) defaultValue(fields()[9]);
+        record.clientId = fieldSetFlags()[10] ? this.clientId : (java.lang.String) defaultValue(fields()[10]);
+        record.callId = fieldSetFlags()[11] ? this.callId : (java.lang.String) defaultValue(fields()[11]);
+        record.mediaType = fieldSetFlags()[12] ? this.mediaType : (java.lang.String) defaultValue(fields()[12]);
+        record.payloadType = fieldSetFlags()[13] ? this.payloadType : (java.lang.Integer) defaultValue(fields()[13]);
+        record.mimeType = fieldSetFlags()[14] ? this.mimeType : (java.lang.String) defaultValue(fields()[14]);
+        record.clockRate = fieldSetFlags()[15] ? this.clockRate : (java.lang.Long) defaultValue(fields()[15]);
+        record.sdpFmtpLine = fieldSetFlags()[16] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[16]);
+        record.rid = fieldSetFlags()[17] ? this.rid : (java.lang.String) defaultValue(fields()[17]);
+        record.rtxSsrc = fieldSetFlags()[18] ? this.rtxSsrc : (java.lang.Long) defaultValue(fields()[18]);
+        record.targetBitrate = fieldSetFlags()[19] ? this.targetBitrate : (java.lang.Long) defaultValue(fields()[19]);
+        record.voiceActivityFlag = fieldSetFlags()[20] ? this.voiceActivityFlag : (java.lang.Boolean) defaultValue(fields()[20]);
+        record.firCount = fieldSetFlags()[21] ? this.firCount : (java.lang.Integer) defaultValue(fields()[21]);
+        record.pliCount = fieldSetFlags()[22] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[22]);
+        record.nackCount = fieldSetFlags()[23] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[23]);
+        record.sliCount = fieldSetFlags()[24] ? this.sliCount : (java.lang.Integer) defaultValue(fields()[24]);
+        record.packetsLost = fieldSetFlags()[25] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[25]);
+        record.packetsReceived = fieldSetFlags()[26] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[26]);
+        record.packetsDiscarded = fieldSetFlags()[27] ? this.packetsDiscarded : (java.lang.Integer) defaultValue(fields()[27]);
+        record.packetsRepaired = fieldSetFlags()[28] ? this.packetsRepaired : (java.lang.Integer) defaultValue(fields()[28]);
+        record.packetsFailedDecryption = fieldSetFlags()[29] ? this.packetsFailedDecryption : (java.lang.Integer) defaultValue(fields()[29]);
+        record.packetsDuplicated = fieldSetFlags()[30] ? this.packetsDuplicated : (java.lang.Integer) defaultValue(fields()[30]);
+        record.fecPacketsReceived = fieldSetFlags()[31] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[31]);
+        record.fecPacketsDiscarded = fieldSetFlags()[32] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[32]);
+        record.bytesReceived = fieldSetFlags()[33] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[33]);
+        record.rtcpSrReceived = fieldSetFlags()[34] ? this.rtcpSrReceived : (java.lang.Integer) defaultValue(fields()[34]);
+        record.rtcpRrSent = fieldSetFlags()[35] ? this.rtcpRrSent : (java.lang.Integer) defaultValue(fields()[35]);
+        record.rtxPacketsReceived = fieldSetFlags()[36] ? this.rtxPacketsReceived : (java.lang.Integer) defaultValue(fields()[36]);
+        record.rtxPacketsDiscarded = fieldSetFlags()[37] ? this.rtxPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[37]);
+        record.framesReceived = fieldSetFlags()[38] ? this.framesReceived : (java.lang.Integer) defaultValue(fields()[38]);
+        record.framesDecoded = fieldSetFlags()[39] ? this.framesDecoded : (java.lang.Integer) defaultValue(fields()[39]);
+        record.keyFramesDecoded = fieldSetFlags()[40] ? this.keyFramesDecoded : (java.lang.Integer) defaultValue(fields()[40]);
+        record.fractionLost = fieldSetFlags()[41] ? this.fractionLost : (java.lang.Double) defaultValue(fields()[41]);
+        record.jitter = fieldSetFlags()[42] ? this.jitter : (java.lang.Double) defaultValue(fields()[42]);
+        record.roundTripTime = fieldSetFlags()[43] ? this.roundTripTime : (java.lang.Double) defaultValue(fields()[43]);
+        record.attachments = fieldSetFlags()[44] ? this.attachments : (java.lang.String) defaultValue(fields()[44]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

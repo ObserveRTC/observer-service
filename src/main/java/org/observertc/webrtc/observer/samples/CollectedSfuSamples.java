@@ -43,7 +43,7 @@ public class CollectedSfuSamples implements Iterable<SfuSamples>{
     }
 
     public Set<UUID> getInboundRtpPadIds() {
-        return Collections.unmodifiableSet(this.outboundRtpPadIds);
+        return Collections.unmodifiableSet(this.inboundRtpPadIds);
     }
 
     public static class Builder {

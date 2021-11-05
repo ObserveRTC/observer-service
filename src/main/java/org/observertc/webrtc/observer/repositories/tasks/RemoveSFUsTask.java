@@ -2,20 +2,18 @@ package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.dto.SfuDTO;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
-public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
+public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
 
     private static final Logger logger = LoggerFactory.getLogger(RemoveSFUsTask.class);
 
@@ -27,7 +25,7 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
 
     @PostConstruct
     void setup() {
-        new Builder<List<SfuEventReport.Builder>>(this)
+        new Builder<List<SfuDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Fetch SfuIds",
                         () -> this.sfuIds,
                         receivedIds -> {
@@ -67,12 +65,7 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
                             this.hazelcastMaps.getSFUs().putAll(this.removedSfuDTOs);
                         })
                 .addTerminalSupplier("Completed", () -> {
-                    List<SfuEventReport.Builder> result = new LinkedList<>();
-                    this.removedSfuDTOs.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .forEach(result::add);
-                    return result;
+                    return this.removedSfuDTOs.values().stream().collect(Collectors.toList());
                 })
                 .build();
     }
@@ -92,30 +85,5 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuEventReport.Builder>> {
         this.sfuIds.add(sfuDTO.sfuId);
         this.removedSfuDTOs.put(sfuDTO.sfuId, sfuDTO);
         return this;
-    }
-
-    private SfuEventReport.Builder makeReportBuilder(SfuDTO sfuDTO) {
-        Long now = Instant.now().toEpochMilli();
-        try {
-            var builder = SfuEventReport.newBuilder()
-                    .setName(SfuEventType.SFU_LEFT.name())
-                    .setTimestamp(now);
-            return setupBuilder(builder, sfuDTO);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for SFU DTO", ex);
-            return null;
-        }
-    }
-
-    private SfuEventReport.Builder setupBuilder(SfuEventReport.Builder builder, SfuDTO sfuDTO) {
-        try {
-            return builder
-                    .setMediaUnitId(sfuDTO.mediaUnitId)
-                    .setSfuId(sfuDTO.sfuId.toString())
-                    ;
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for SFU DTO", ex);
-            return null;
-        }
     }
 }

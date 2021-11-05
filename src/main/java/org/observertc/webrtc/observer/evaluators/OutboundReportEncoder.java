@@ -1,5 +1,6 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-@Singleton
+@Prototype
 public class OutboundReportEncoder {
 
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);

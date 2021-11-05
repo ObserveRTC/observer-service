@@ -1,15 +1,15 @@
 package org.observertc.webrtc.observer.evaluators;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReportTypeVisitors;
-import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.evaluators.listeners.CallEvents;
 import org.observertc.webrtc.observer.samples.ObservedClientSample;
-import org.observertc.webrtc.observer.samples.ObservedSfuSample;
 import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;
 
 import javax.annotation.PostConstruct;
@@ -22,13 +22,12 @@ import java.util.concurrent.TimeUnit;
 public class ObservedClientSampleProcessingPipeline implements Consumer<ObservedClientSample> {
 
     private final Subject<ObservedClientSample> clientSampleSubject = PublishSubject.create();
-    private final Subject<ObservedSfuSample> sfuSampleSubject = PublishSubject.create();
 
     @Inject
     ObserverConfig observerConfig;
 
     @Inject
-    HazelcastEventSubscriber hazelcastEventSubscriber;
+    CallEvents callEvents;
 
     @Inject
     ObservedClientSampleObfuscator obfuscator;
@@ -38,18 +37,6 @@ public class ObservedClientSampleProcessingPipeline implements Consumer<Observed
 
     @Inject
     AddNewCallEntities addNewCallEntities;
-
-    @Inject
-    ListenClientEntryChanges listenClientEntryChanges;
-
-    @Inject
-    ListenCallEntryChanges listenCallEntryChanges;
-
-    @Inject
-    ListenPeerConnectionEntryChanges listenPeerConnectionEntryChanges;
-
-    @Inject
-    ListenMediaTrackEntryChanges listenMediaTrackEntryChanges;
 
     @Inject
     CollectCallSamples collectCallSamples;
@@ -64,17 +51,12 @@ public class ObservedClientSampleProcessingPipeline implements Consumer<Observed
     DemuxCollectedCallSamples demuxCollectedCallSamples;
 
 
-
     @PostConstruct
     void setup() {
         var clientSamplesBufferMaxTimeInS = this.observerConfig.evaluators.clientSamplesBufferMaxTimeInS;
         var clientSamplesBufferMaxItems = this.observerConfig.evaluators.clientSamplesBufferMaxItems;
-        this.hazelcastEventSubscriber
-                .withCallEntriesLocalListener(this.listenCallEntryChanges)
-                .withClientEntriesLocalListener(this.listenClientEntryChanges)
-                .withPeerConnectionEntriesLocalListener(this.listenPeerConnectionEntryChanges)
-                .withMediaTrackEntriesLocalListener(this.listenMediaTrackEntryChanges)
-        ;
+        var clientReportsPreCollectingMaxTimeInS = this.observerConfig.evaluators.clientReportsPreCollectingTimeInS;
+        var clientReportsPreCollectingMaxItems = this.observerConfig.evaluators.clientReportsPreCollectingMaxItems;
 
         var samplesBuffer = this.clientSampleSubject
                 .buffer(clientSamplesBufferMaxTimeInS, TimeUnit.SECONDS, clientSamplesBufferMaxItems)
@@ -96,87 +78,55 @@ public class ObservedClientSampleProcessingPipeline implements Consumer<Observed
         observableCollectedCallSamples
                 .subscribe(this.demuxCollectedCallSamples);
 
-        this.addNewCallEntities
-                .getObservableCallEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
-
         this.reportCallMetaData
-                .observableCallMetaReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .getObservableCallMetaReports()
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeCallMetaReports);
 
-        this.listenCallEntryChanges
-                .getObservableCallEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
-
-        this.listenClientEntryChanges
-                .getObservableCallEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
-
-        this.listenPeerConnectionEntryChanges
-                .getObservableCallEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
-                .subscribe(this.outboundReportEncoder::encodeCallEventReports);
-
-        this.listenMediaTrackEntryChanges
-                .getObservableCallEventReports()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+        this.callEvents
+                .getObservableCalEventReports()
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeCallEventReports);
 
         this.demuxCollectedCallSamples
                 .getObservableClientTransportReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeClientTransportReport);
 
         this.demuxCollectedCallSamples
                 .getObservableClientDataChannelReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeClientDataChannelReport);
 
         this.demuxCollectedCallSamples
                 .getObservableClientExtensionReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeClientExtensionReport);
 
         this.demuxCollectedCallSamples
                 .getObservableInboundAudioTrackReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeInboundAudioTrackReport);
 
         this.demuxCollectedCallSamples
                 .getObservableInboundVideoTrackReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeInboundVideoTrackReport);
 
         this.demuxCollectedCallSamples
                 .getObservableOutboundAudioTrackReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeOutboundAudioTrackReport);
 
         this.demuxCollectedCallSamples
                 .getObservableOutboundVideoTrackReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeOutboundVideoTrackReport);
 
         this.demuxCollectedCallSamples
                 .getObservableMediaTrackReport()
-                .buffer(30, TimeUnit.SECONDS, 1000)
+                .buffer(clientReportsPreCollectingMaxTimeInS, TimeUnit.SECONDS, clientReportsPreCollectingMaxItems)
                 .subscribe(this.outboundReportEncoder::encodeMediaTrackReport);
-
-
-
-        var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxItems;
-        var reportsBufferMaxRetainInS = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
-        var typeFilter = this.makeOutboundReportPredicate();
-        this.outboundReportEncoder
-                .getObservableOutboundReport()
-                .filter(typeFilter)
-                .buffer(reportsBufferMaxRetainInS, TimeUnit.SECONDS, reportsBufferMaxItems)
-                .map(OutboundReports::fromList)
-                .subscribe(this.outboundReportsObserver);
     }
 
     private Predicate<OutboundReport> makeOutboundReportPredicate() {
@@ -190,5 +140,12 @@ public class ObservedClientSampleProcessingPipeline implements Consumer<Observed
     @Override
     public void accept(ObservedClientSample observedClientSample) throws Throwable {
         this.clientSampleSubject.onNext(observedClientSample);
+    }
+
+    public Observable<OutboundReport> getObservableOutboundReport() {
+        var typeFilter = this.makeOutboundReportPredicate();
+        return this.outboundReportEncoder
+                .getObservableOutboundReport()
+                .filter(typeFilter);
     }
 }

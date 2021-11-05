@@ -62,17 +62,21 @@ observer:
     mediaTracksMaxIdleTime: 300
     peerConnectionsMaxIdleTime: 300
     clientMaxIdleTime: 300
-    sfuMaxIdleTime: 600
+    sfuMaxIdleTime: 60
     sfuTransportMaxIdleTime: 600
-    sfuRtpStreamMaxIdleTime: 600
+    sfuRtpPadMaxIdleTime: 600
     eventsCollectingTimeInS: 3
 
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
     clientSamplesBufferMaxTimeInS: 30
     clientSamplesBufferMaxItems: 1000
-    sfuSamplesBufferMaxTimeInS: 30
+    sfuSamplesBufferMaxTimeInS: 5
     sfuSamplesBufferMaxItems: 1000
+    sfuReportsPreCollectingTimeInS: 3
+    sfuReportsPreCollectingMaxItems: 1000
+    clientReportsPreCollectingTimeInS: 3
+    clientReportsPreCollectingMaxItems: 1000
 
 #  sinks:
 #    MyLogger:
@@ -127,12 +131,28 @@ observer:
 
     reportSfuSctpStreams: true
 
-#    reportSfuRtpSources: true
-#    reportSfuRtpSinks: true
-
     reportSfuOutboundRtpStreams: true
     reportSfuInboundRtpStreams: true
-    reportSfuRtpPadAddedWithoutCallId: true
+
+    reportSfuRtpPadOnlyWithCallId: true
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+    memberNamesPool:
+      - "Lisa"
+      - "Bart"
+      - "Homer"
+      - "Marge"
+      - "Maggie"
+      - "Barney"
+      - "Mo"
+      - "Ned"
+      - "Milhouse"
+      - "Grampa"
+      - "Krusty"
+      - "Smithers"
+      - "Ralph"
+      - "Tony"
+      - "Jacqueline"
+      - "Nelson"
+

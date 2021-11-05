@@ -11,7 +11,7 @@ public interface ObservedSfuSample {
 
     UUID getSfuId();
 
-    String getSfuName();
+    String getServiceId();
 
     SfuSample getSfuSample();
 

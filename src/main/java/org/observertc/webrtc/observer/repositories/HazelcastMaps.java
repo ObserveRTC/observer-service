@@ -7,7 +7,6 @@ import org.observertc.webrtc.observer.ObserverHazelcast;
 import org.observertc.webrtc.observer.configs.ConfigType;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.*;
-import org.observertc.webrtc.observer.evaluators.ListenClientEntryChanges;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -53,16 +52,6 @@ public class HazelcastMaps {
 
     @Inject
     ObserverHazelcast observerHazelcast;
-
-    @Inject
-    ListenClientEntryChanges listenClientEntryChanges;
-
-//    @Inject
-//    RemovePeerConnectionEntities removePeerConnectionEntities;
-//
-//    @Inject
-//    RemoveMediaTrackEntities removeMediaTrackEntities;
-
 
     // calls
     private IMap<UUID, CallDTO> calls;
@@ -121,11 +110,9 @@ public class HazelcastMaps {
         this.SFUs = hazelcast.getMap(HAZELCAST_SFUS_MAP_NAME);
         this.sfuTransports = hazelcast.getMap(HAZELCAST_SFU_TRANSPORTS_MAP_NAME);
         this.sfuRtpPads = hazelcast.getMap(HAZELCAST_SFU_RTP_PADS_MAP_NAME);
-//        this.sfuStreamToRtpPadIds = hazelcast.getMultiMap(HAZELCAST_SFU_STREAM_TO_RTP_PAD_IDS_MAP_NAME);
 
         this.inboundTrackIdsToOutboundTrackIds = hazelcast.getMap(HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME);
         this.rtpStreamIdToSfuPadIds = hazelcast.getMultiMap(HAZELCAST_RTP_STREAM_ID_TO_SFU_PAD_IDS_MAP_NAME);
-//        this.sfuRtpPadToMediaTracks = hazelcast.getMap(HAZELCAST_SFU_POD_TO_MEDIA_TRACK_ID_MAP_NAME);
 
         this.configurations = hazelcast.getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
         this.weakLocks = hazelcast.getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
@@ -161,7 +148,7 @@ public class HazelcastMaps {
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_RTP_PADS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuRtpStreamMaxIdleTime);
+                .setMaxIdleSeconds(this.config.sfuRtpPadMaxIdleTime);
 
         hazelcast
                 .getConfig()
@@ -189,31 +176,30 @@ public class HazelcastMaps {
     public MultiMap<UUID, UUID> getPeerConnectionToInboundTrackIds() { return this.peerConnectionToInboundMediaTrackIds; }
     public MultiMap<UUID, UUID> getPeerConnectionToOutboundTrackIds() { return this.peerConnectionToOutboundMediaTrackIds; }
 
-    public IMap<UUID, UUID> getRtpStreamIdsToOutboundTrackIds() { return this.rtpStreamIdsToOutboundTrackIds; }
-
     public IMap<UUID, MediaTrackDTO> getMediaTracks() {
         return this.mediaTracks;
     }
+    public IMap<UUID, UUID> getRtpStreamIdsToOutboundTrackIds() { return this.rtpStreamIdsToOutboundTrackIds; }
+    public IMap<UUID, UUID> getInboundTrackIdsToOutboundTrackIds() { return this.inboundTrackIdsToOutboundTrackIds; }
 
     public IMap<UUID, SfuDTO> getSFUs() {
         return this.SFUs;
     }
+
     public IMap<UUID, SfuTransportDTO> getSFUTransports() {
         return this.sfuTransports;
     }
+
     public IMap<UUID, SfuRtpPadDTO> getSFURtpPads() {
         return this.sfuRtpPads;
     }
     public MultiMap<UUID, UUID> getRtpStreamIdToSfuPadIds() { return this.rtpStreamIdToSfuPadIds; }
 //    public IMap<UUID, TrackLinkDTO> getInboundLinkedTracks() { return this.l; }
-    public IMap<UUID, UUID> getInboundTrackIdsToOutboundTrackIds() { return this.inboundTrackIdsToOutboundTrackIds; }
 
     public MultiMap<String, GeneralEntryDTO> getGeneralEntries() { return this.generalEntries; }
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
-
     public IMap<String, String> getSyncTaskStates() { return this.syncTaskStates; }
-
     public IMap<String, byte[]> getRequests() { return this.requests; }
 
     public IMap<ConfigType, ConfigDTO> getConfigurations() { return this.configurations; }

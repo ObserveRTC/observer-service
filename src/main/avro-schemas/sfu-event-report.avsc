@@ -5,6 +5,11 @@
   "doc": "Events happened in calls.",
   "fields": [
     {
+      "name": "serviceId",
+      "doc": "The service id the report belongs to",
+      "type": "string"
+    },
+    {
       "name": "mediaUnitId",
       "doc": "The media unit id the report belongs to",
       "type": [

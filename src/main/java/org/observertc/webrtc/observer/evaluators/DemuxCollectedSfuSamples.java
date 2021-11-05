@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
+import org.observertc.webrtc.observer.common.Utils;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.repositories.tasks.FetchSfuRelationsTask;
 import org.observertc.webrtc.observer.samples.*;
@@ -77,7 +78,6 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                 SfuSample sfuSample = observedSfuSample.getSfuSample();
                 SfuSampleVisitor.streamTransports(sfuSample)
                         .map(sfuTransport -> {
-                            UUID transportId = UUIDAdapter.tryParseOrNull(sfuTransport.transportId);
                             return this.createSfuTransportReport(
                                     sfuId,
                                     observedSfuSample,
@@ -89,6 +89,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                         .forEach(transportReports::add);
 
                 SfuSampleVisitor.streamInboundRtpPads(sfuSample)
+                        .filter(inboundRtpStream -> Utils.nullOrFalse(inboundRtpStream.skipMeasurements))
                         .map(inboundRtpStream -> {
 //                            UUID trackId = null;
 //                            UUID clientId = null;
@@ -106,6 +107,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                         .forEach(inboundRtpPadReports::add);
 
                 SfuSampleVisitor.streamOutboundRtpPads(sfuSample)
+                        .filter(outboundRtpPad -> Utils.nullOrFalse(outboundRtpPad.skipMeasurements))
                         .map(outboundRtpStream -> {
                             UUID rtpStreamId = UUIDAdapter.tryParseOrNull(outboundRtpStream.rtpStreamId);
                             UUID callId = report.rtpStreamIdToCallIds.get(rtpStreamId);
@@ -151,6 +153,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
             var result = SFUTransportReport.newBuilder()
 
                     /* Report MetaFields */
+                    .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setMarker(observedSfuSample.getMarker())
                     .setTimestamp(observedSfuSample.getTimestamp())
@@ -213,6 +216,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
             var result = SfuInboundRtpPadReport.newBuilder()
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
+                    .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
                     .setMarker(observedSfuSample.getMarker())
@@ -222,6 +226,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     .setTransportId(sfuRtpSource.transportId)
                     .setRtpStreamId(sfuRtpSource.rtpStreamId)
                     .setSsrc(sfuRtpSource.ssrc)
+                    .setPadId(sfuRtpSource.padId)
                     .setTrackId(null) // not implemented yet
                     .setClientId(null) // not implemented yet
                     .setCallId(callIdStr)
@@ -281,6 +286,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
+                    .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
                     .setMarker(observedSfuSample.getMarker())
@@ -292,6 +298,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
                     .setSsrc(sfuRtpSink.ssrc)
                     .setTrackId(null) // not implemented yet
                     .setClientId(null) // not implemented yet
+                    .setPadId(sfuRtpSink.padId)
                     .setCallId(callIdStr)
 
                     /* RTP Stats */
@@ -345,6 +352,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
             var result = SfuSctpStreamReport.newBuilder()
 
                     /* Report MetaFields */
+                    .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setSfuId(sfuId.toString())
                     .setMarker(observedSfuSample.getMarker())

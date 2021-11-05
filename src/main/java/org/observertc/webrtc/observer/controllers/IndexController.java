@@ -7,12 +7,22 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.views.View;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.Map;
 
 @Secured(SecurityRule.IS_ANONYMOUS)
 @Controller("/")
 public class IndexController {
+
+	@PostConstruct
+	void setup() {
+	}
+
+	@PreDestroy
+	void teardown() {
+	}
 
 	public IndexController() {
 

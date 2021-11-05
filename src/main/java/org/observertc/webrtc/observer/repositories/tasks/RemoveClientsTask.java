@@ -1,23 +1,20 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.entities.ClientEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.time.Instant;
 import java.util.*;
 
 @Prototype
-public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>> {
+public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
 
     private static final Logger logger = LoggerFactory.getLogger(RemoveClientsTask.class);
 
@@ -30,10 +27,11 @@ public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>
 
     @Inject
     Provider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
+    private boolean unmodifiableResult = false;
 
     @PostConstruct
     void setup() {
-        new Builder<List<CallEventReport.Builder>>(this)
+        new Builder<Map<UUID, ClientDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Merge Inputs",
                         () -> this.clientIds,
                         receivedClientIds -> {
@@ -44,12 +42,12 @@ public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>
                 .<Set<UUID>>addBreakCondition((clientIds, resultHolder) -> {
                     if (Objects.isNull(clientIds)) {
                         this.getLogger().warn("No ClientId have been passed");
-                        resultHolder.set(Collections.EMPTY_LIST);
+                        resultHolder.set(Collections.EMPTY_MAP);
                         return true;
                     }
                     if (clientIds.size() < 1) {
                         this.getLogger().warn("No ClientId have been passed");
-                        resultHolder.set(Collections.EMPTY_LIST);
+                        resultHolder.set(Collections.EMPTY_MAP);
                         return true;
                     }
                     return false;
@@ -89,7 +87,7 @@ public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>
                             this.hazelcastMaps.getCallToClientIds().put(clientDTO.callId, clientId);
                         });
                     })
-                .<List<CallEventReport.Builder>>addSupplierStage("Remove PeerConnection Entities",
+                .addActionStage("Remove PeerConnection Entities",
                         () -> {
                             Set<UUID> peerConnectionIds = new HashSet<>();
                             this.removedClientDTOs.keySet().forEach(clientId -> {
@@ -101,17 +99,15 @@ public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>
                                 }
                             });
                             if (peerConnectionIds.size() < 1) {
-                                return Collections.EMPTY_LIST;
+                                return;
                             }
                             var task = this.removePeerConnectionsTaskProvider.get();
                             task.wherePeerConnectionIds(peerConnectionIds);
 
                             if (!task.execute().succeeded()) {
                                 logger.warn("Remove peer connections failed");
-                                return Collections.EMPTY_LIST;
+                                return;
                             }
-
-                            return task.getResult();
                         },
                         (inputHolder, thrownException) -> {
                             if (this.removedClientPeerConnectionIds.size() < 1) {
@@ -123,17 +119,13 @@ public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>
                                 });
                             });
                         })
-                .<List<CallEventReport.Builder>> addTerminalFunction("Creating Client Entities", callEventBuildersObj -> {
-                    var callEventBuilders = (List<CallEventReport.Builder>) callEventBuildersObj;
-                    List<CallEventReport.Builder> result = new LinkedList<>();
-                    this.removedClientDTOs.values().stream()
-                            .map(this::makeReportBuilder)
-                            .filter(Objects::nonNull)
-                            .forEach(result::add);
-                    if (Objects.nonNull(callEventBuilders)) {
-                        callEventBuilders.stream().forEach(result::add);
+                .<Map<UUID, ClientDTO>> addTerminalFunction("Returning with removed Client DTOs", callEventBuildersObj -> {
+                    if (this.unmodifiableResult) {
+                        return Collections.unmodifiableMap(this.removedClientDTOs);
+                    } else {
+                        return this.removedClientDTOs;
                     }
-                    return result;
+
                 })
                 .build();
     }
@@ -155,33 +147,8 @@ public class RemoveClientsTask extends ChainedTask<List<CallEventReport.Builder>
         return this;
     }
 
-    private CallEventReport.Builder makeReportBuilder(ClientDTO clientDTO) {
-        Long now = Instant.now().toEpochMilli();
-        try {
-            var builder = CallEventReport.newBuilder()
-                    .setName(CallEventType.CLIENT_LEFT.name())
-                    .setTimestamp(now);
-            return setupBuilder(builder, clientDTO);
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for client DTO", ex);
-            return null;
-        }
-    }
-
-    private CallEventReport.Builder setupBuilder(CallEventReport.Builder builder, ClientDTO clientDTO) {
-        try {
-            return builder
-                    .setMediaUnitId(clientDTO.mediaUnitId)
-                    .setServiceId(clientDTO.serviceId)
-                    .setRoomId(clientDTO.roomId)
-
-                    .setUserId(clientDTO.userId)
-                    .setCallId(clientDTO.callId.toString())
-                    .setClientId(clientDTO.clientId.toString())
-                    ;
-        } catch (Exception ex) {
-            this.getLogger().error("Cannot make report for client DTO", ex);
-            return null;
-        }
+    public RemoveClientsTask withUnmodifiableResult(boolean value) {
+        this.unmodifiableResult = value;
+        return this;
     }
 }

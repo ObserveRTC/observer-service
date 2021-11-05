@@ -28,6 +28,8 @@ class EntryListenerBuilder<K, V> {
     private List<Consumer<EntryEvent<K, V>>> entryExpiredListeners = new LinkedList<>();
     private List<Consumer<EntryEvent<K, V>>> entryRemovedListeners = new LinkedList<>();
     private List<Consumer<EntryEvent<K, V>>> entryUpdatedListeners = new LinkedList<>();
+    private List<Consumer<MapEvent>> mapClearedListeners = new LinkedList<>();
+    private List<Consumer<MapEvent>> mapEvictedListeners = new LinkedList<>();
 
 
     private EntryListenerBuilder(String context) {
@@ -56,6 +58,16 @@ class EntryListenerBuilder<K, V> {
 
     public EntryListenerBuilder<K, V> onEntryUpdated(Consumer<EntryEvent<K, V>> listener) {
         this.entryUpdatedListeners.add(listener);
+        return this;
+    }
+
+    public EntryListenerBuilder<K, V> onMapCleared(Consumer<MapEvent> listener) {
+        this.mapClearedListeners.add(listener);
+        return this;
+    }
+
+    public EntryListenerBuilder<K, V> onMapEvicted(Consumer<MapEvent> listener) {
+        this.mapEvictedListeners.add(listener);
         return this;
     }
 
@@ -118,12 +130,24 @@ class EntryListenerBuilder<K, V> {
 
             @Override
             public void mapCleared(MapEvent event) {
-
+                mapClearedListeners.forEach(listener -> {
+                    try {
+                        listener.accept(event);
+                    } catch (Throwable throwable) {
+                        logger.warn("Exception occurred while dispatching map cleared event {}", event.toString(), throwable);
+                    }
+                });
             }
 
             @Override
             public void mapEvicted(MapEvent event) {
-
+                mapEvictedListeners.forEach(listener -> {
+                    try {
+                        listener.accept(event);
+                    } catch (Throwable throwable) {
+                        logger.warn("Exception occurred while dispatching map cleared event {}", event.toString(), throwable);
+                    }
+                });
             }
         };
     }
