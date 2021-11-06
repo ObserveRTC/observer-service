@@ -77,6 +77,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
             for (ObservedSfuSample observedSfuSample: sfuSamples) {
                 SfuSample sfuSample = observedSfuSample.getSfuSample();
                 SfuSampleVisitor.streamTransports(sfuSample)
+                        .filter(sfuTransport -> Utils.nullOrFalse(sfuTransport.skipMeasurements))
                         .map(sfuTransport -> {
                             return this.createSfuTransportReport(
                                     sfuId,

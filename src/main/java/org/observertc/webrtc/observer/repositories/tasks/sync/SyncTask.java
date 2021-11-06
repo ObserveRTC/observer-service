@@ -2,7 +2,7 @@ package org.observertc.webrtc.observer.repositories.tasks.sync;
 
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
-import org.observertc.webrtc.observer.repositories.tasks.MatchCallTracksTask;
+import org.observertc.webrtc.observer.repositories.tasks.FetchTracksRelationsTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class SyncTask<T> extends ChainedTask<Void> {
-    private static final Logger logger = LoggerFactory.getLogger(MatchCallTracksTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(FetchTracksRelationsTask.class);
 
     @Inject
     HazelcastMaps hazelcastMaps;

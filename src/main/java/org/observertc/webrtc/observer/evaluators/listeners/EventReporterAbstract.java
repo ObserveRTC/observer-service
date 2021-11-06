@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 abstract class EventReporterAbstract<DTO, TReport> {
 
@@ -35,6 +36,9 @@ abstract class EventReporterAbstract<DTO, TReport> {
 
 
     protected void forward(TReport report) {
+        if (Objects.isNull(report)) {
+            return;
+        }
         try {
             synchronized (this) {
                 this.reports.onNext(report);

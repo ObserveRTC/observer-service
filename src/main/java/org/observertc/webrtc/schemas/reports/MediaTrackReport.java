@@ -11,8 +11,8 @@ import org.apache.avro.specific.SpecificData;
 /** A General Flat merged Media Track Report for in-, outbound video and audio tracks */
 @org.apache.avro.specific.AvroGenerated
 public class MediaTrackReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 8241684172223444420L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MediaTrackReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A General Flat merged Media Track Report for in-, outbound video and audio tracks\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is labeled with\",\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track\",\"default\":null},{\"name\":\"rtpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the RTP stream connected to a remote media unit (such as an SFU)\",\"default\":null},{\"name\":\"remoteUserId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it\",\"default\":null},{\"name\":\"remoteClientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe observer matched remote client Id\",\"default\":null},{\"name\":\"remotePeerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe observer matched remote Peer Connection Id\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The RTP SSRC field\"},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded synchronization source\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of bytes received on the corresponded synchronization source\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The corresponded synchronization source reported jitter\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets missed the playout point and therefore discarded by the jitterbuffer\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source\",\"default\":null},{\"name\":\"burstPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost in burst (RFC6958)\",\"default\":null},{\"name\":\"burstPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets discarded in burst (RFC6958)\",\"default\":null},{\"name\":\"burstLossCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsLost on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"voiceActivityFlag\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only For Audio Reports\\nIndicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header\",\"default\":null},{\"name\":\"lastPacketReceivedTimestamp\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only For Inbound Media Track Reports\\nRepresents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"averageRtcpInterval\",\"type\":[\"null\",\"double\"],\"doc\":\"The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"headerBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of FEC packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of FEC packets discarded over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of bytes received over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsFailedDecryption\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of packets received and failed to decrypt over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsDuplicated\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of packets identified as duplicated over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"perDscpPacketsReceived\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalProcessingDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total processing delay in seconds spend on buffering RTP packets from received up until packets are decoded\",\"default\":null},{\"name\":\"estimatedPlayoutTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe estimated playout time of the corresponded synchronization source\",\"default\":null},{\"name\":\"jitterBufferDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total time of RTP packets spent in jitterbuffer waitin","g for frame completion due to network uncertenity.\",\"default\":null},{\"name\":\"jitterBufferEmittedCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total number of audio samples or video frames that have come out of the jitter buffer on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"decoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nIndicate the name of the decoder implementation library\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of RTP packets sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of payload bytes sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"remoteTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)\",\"default\":null},{\"name\":\"reportsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to\",\"default\":null},{\"name\":\"ended\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Flag represents if the receiver ended the media stream track or not.\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The type of the payload the RTP packet SSRC belongs to\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the MIME type of the codec (e.g.: video/vp8)\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The negotiated clock rate the RTP timestamp is generated of\",\"default\":null},{\"name\":\"channels\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The a=fmtp line in the SDP corresponding to the codec\",\"default\":null},{\"name\":\"framesDropped\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nThe total number of frames dropped at decoding process on the corresponding synchronization source\",\"default\":null},{\"name\":\"partialFramesLost\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nThe total number of partial frames lost at decoding process on the corresponding synchronization source\",\"default\":null},{\"name\":\"fullFramesLost\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nThe total number of full frames lost at decoding process on the corresponding synchronization source\",\"default\":null},{\"name\":\"framesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nIndicate the number of frames completly and without error decoded on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"keyFramesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nIndicate the number of keyframes received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"frameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nIndicate the width of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"frameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nIndicate the height of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"frameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nIndicate the bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"framesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nIndicate the number of decoded frames in the last second received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nsum of QP values of frames decoded on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalDecodeTime\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nThe total number of seconds spent on decoding frames on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalInterFrameDelay\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nThe total number of inter frame delay on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalSquaredInterFrameDelay\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nThe total number of inter frame delay squere on the corresponded synchronization source (ssrc) Useful for variance calculation for interframe delays\",\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nCount the total number of Full Intra Request sent by this receiver and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nCount the total number of Picture Loss Indication sent by this receiver and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"sliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nCount the total number of Slice Loss Indication sent by this receiver and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"framesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nRepresents the total number of complete frames received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"rid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Outbound Media Track Reports\\n The rid encoding parameter of the corresponded synchronization source\",\"default\":null},{\"name\":\"lastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\n the timestamp the last packet was sent. (UTC epoch in ms)\",\"default\":null},{\"name\":\"headerBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"packetsDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"bytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of FEC packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"retransmittedPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of retransmitted packets sent over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"retransmittedBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of retransmitted bytes sent over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"targetBitrate\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nReflects the current encoder target in bits per second.\",\"default\":null},{\"name\":\"totalEncodedBytesTarget\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets\",\"default\":null},{\"name\":\"totalSamplesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nThe total number of samples sent over the corr","esponding synchronization source\",\"default\":null},{\"name\":\"samplesEncodedWithSilk\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nThe total number of samples encoded by SILK portion in opus sent over the corresponding synchronization source\",\"default\":null},{\"name\":\"samplesEncodedWithCelt\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nThe total number of samples encoded by CELT portion in opus sent over the corresponding synchronization source\",\"default\":null},{\"name\":\"totalPacketSendDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source\",\"default\":null},{\"name\":\"perDscpPacketsSent\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"encoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Outbound Media Track Reports\\nIndicate the name of the encoder implementation library\",\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nRTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"totalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe sum of RTT measurements belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"fractionLost\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe receiver reported fractional lost belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"reportsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of RR reports received, which is the base of the remote inbound calculation on this source\",\"default\":null},{\"name\":\"roundTripTimeMeasurements\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of calculated RR measurements received on this source\",\"default\":null},{\"name\":\"relayedSource\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only For Outbound Media Track Reports\\nTrue if the corresponded media source is remote, false otherwise (or null depending on browser and version)\",\"default\":null},{\"name\":\"audioLevel\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the audio level reported by the media source\",\"default\":null},{\"name\":\"totalAudioEnergy\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the energy level reported by the media source\",\"default\":null},{\"name\":\"totalSamplesDuration\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the total duration of the audio samples the media source actually transconverted in seconds\",\"default\":null},{\"name\":\"echoReturnLoss\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the echo cancellation in decibels corresponded to the media source.\",\"default\":null},{\"name\":\"echoReturnLossEnhancement\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the echo cancellation in decibels added as a postprocessing by the library after the audio is catched from the emdia source.\",\"default\":null},{\"name\":\"framesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of frames sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"hugeFramesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of frames encoded over the corresponded synchronization source\",\"default\":null},{\"name\":\"keyFramesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of keyframes sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of frames discarded before sending over the corresponded synchronization source\",\"default\":null},{\"name\":\"totalEncodeTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe sum of encoding time spent by the encoder corresponded to the synchronization source\",\"default\":null},{\"name\":\"qualityLimitationDurationCPU\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU\",\"default\":null},{\"name\":\"qualityLimitationDurationNone\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state\",\"default\":null},{\"name\":\"qualityLimitationDurationBandwidth\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth\",\"default\":null},{\"name\":\"qualityLimitationDurationOther\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor\",\"default\":null},{\"name\":\"qualityLimitationReason\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate a reason for the corresponding synchronization source (ssrc) quality is limited\",\"default\":null},{\"name\":\"qualityLimitationResolutionChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of quality limiatation changes happened for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded width of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded height of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFramesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)\",\"default\":null}]}");
+  private static final long serialVersionUID = 4998576556640125049L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MediaTrackReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A General Flat merged Media Track Report for in-, outbound video and audio tracks\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is labeled with\",\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track\",\"default\":null},{\"name\":\"rtpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the RTP stream connected to a remote media unit (such as an SFU)\",\"default\":null},{\"name\":\"remoteTrackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe id of the remote track this inbound track is originated from\",\"default\":null},{\"name\":\"remoteUserId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it\",\"default\":null},{\"name\":\"remoteClientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe observer matched remote client Id\",\"default\":null},{\"name\":\"remotePeerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nThe observer matched remote Peer Connection Id\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The RTP SSRC field\"},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded synchronization source\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of bytes received on the corresponded synchronization source\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The corresponded synchronization source reported jitter\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets missed the playout point and therefore discarded by the jitterbuffer\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source\",\"default\":null},{\"name\":\"burstPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost in burst (RFC6958)\",\"default\":null},{\"name\":\"burstPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets discarded in burst (RFC6958)\",\"default\":null},{\"name\":\"burstLossCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsLost on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"voiceActivityFlag\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only For Audio Reports\\nIndicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header\",\"default\":null},{\"name\":\"lastPacketReceivedTimestamp\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only For Inbound Media Track Reports\\nRepresents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"averageRtcpInterval\",\"type\":[\"null\",\"double\"],\"doc\":\"The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"headerBytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of FEC packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of FEC packets discarded over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"bytesReceived\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of bytes received over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsFailedDecryption\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of packets received and failed to decrypt over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.\",\"default\":null},{\"name\":\"packetsDuplicated\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nTotal number of packets identified as duplicated over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"perDscpPacketsReceived\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalProcessingDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total processing delay in seconds spend on buffering RTP packets from received up until packets are decoded\",\"default\":null},{\"name\":\"estimatedPlayoutTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe estimated playout time of ","the corresponded synchronization source\",\"default\":null},{\"name\":\"jitterBufferDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total time of RTP packets spent in jitterbuffer waiting for frame completion due to network uncertenity.\",\"default\":null},{\"name\":\"jitterBufferEmittedCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe total number of audio samples or video frames that have come out of the jitter buffer on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"decoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Inbound Media Track Reports\\nIndicate the name of the decoder implementation library\",\"default\":null},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of RTP packets sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of payload bytes sent at the remote endpoint to this endpoint on this synchronization source\",\"default\":null},{\"name\":\"remoteTimestamp\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)\",\"default\":null},{\"name\":\"reportsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Inbound Media Track Reports\\nThe number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to\",\"default\":null},{\"name\":\"ended\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Flag represents if the receiver ended the media stream track or not.\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The type of the payload the RTP packet SSRC belongs to\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the MIME type of the codec (e.g.: video/vp8)\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The negotiated clock rate the RTP timestamp is generated of\",\"default\":null},{\"name\":\"channels\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The a=fmtp line in the SDP corresponding to the codec\",\"default\":null},{\"name\":\"framesDropped\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nThe total number of frames dropped at decoding process on the corresponding synchronization source\",\"default\":null},{\"name\":\"partialFramesLost\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nThe total number of partial frames lost at decoding process on the corresponding synchronization source\",\"default\":null},{\"name\":\"fullFramesLost\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nThe total number of full frames lost at decoding process on the corresponding synchronization source\",\"default\":null},{\"name\":\"framesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nIndicate the number of frames completly and without error decoded on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"keyFramesDecoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nIndicate the number of keyframes received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"frameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nIndicate the width of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"frameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nIndicate the height of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"frameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nIndicate the bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"framesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nIndicate the number of decoded frames in the last second received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nsum of QP values of frames decoded on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalDecodeTime\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nThe total number of seconds spent on decoding frames on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalInterFrameDelay\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nThe total number of inter frame delay on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"totalSquaredInterFrameDelay\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nThe total number of inter frame delay squere on the corresponded synchronization source (ssrc) Useful for variance calculation for interframe delays\",\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nCount the total number of Full Intra Request sent by this receiver and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nCount the total number of Picture Loss Indication sent by this receiver and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"sliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nCount the total number of Slice Loss Indication sent by this receiver and belongs to the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"framesReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Inbound Media Track Reports\\nRepresents the total number of complete frames received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"rid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Outbound Media Track Reports\\n The rid encoding parameter of the corresponded synchronization source\",\"default\":null},{\"name\":\"lastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\n the timestamp the last packet was sent. (UTC epoch in ms)\",\"default\":null},{\"name\":\"headerBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"packetsDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"bytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of FEC packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"retransmittedPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of retransmitted packets sent over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"retransmittedBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nTotal number of retransmitted bytes sent over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"targetBitrate\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nReflects the current encoder target in bits per second.\",\"default\":null},{\"name\":\"totalEncodedBytesTarget\",\"type\":[\"null\",\"long\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of bytes of RTP coherent frames encoded completly depending on the ","frame size the encoder targets\",\"default\":null},{\"name\":\"totalSamplesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nThe total number of samples sent over the corresponding synchronization source\",\"default\":null},{\"name\":\"samplesEncodedWithSilk\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nThe total number of samples encoded by SILK portion in opus sent over the corresponding synchronization source\",\"default\":null},{\"name\":\"samplesEncodedWithCelt\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nThe total number of samples encoded by CELT portion in opus sent over the corresponding synchronization source\",\"default\":null},{\"name\":\"totalPacketSendDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source\",\"default\":null},{\"name\":\"perDscpPacketsSent\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"encoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Outbound Media Track Reports\\nIndicate the name of the encoder implementation library\",\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nRTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"totalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe sum of RTT measurements belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"fractionLost\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe receiver reported fractional lost belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"reportsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of RR reports received, which is the base of the remote inbound calculation on this source\",\"default\":null},{\"name\":\"roundTripTimeMeasurements\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Outbound Media Track Reports\\nThe total number of calculated RR measurements received on this source\",\"default\":null},{\"name\":\"relayedSource\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only For Outbound Media Track Reports\\nTrue if the corresponded media source is remote, false otherwise (or null depending on browser and version)\",\"default\":null},{\"name\":\"audioLevel\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the audio level reported by the media source\",\"default\":null},{\"name\":\"totalAudioEnergy\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the energy level reported by the media source\",\"default\":null},{\"name\":\"totalSamplesDuration\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the total duration of the audio samples the media source actually transconverted in seconds\",\"default\":null},{\"name\":\"echoReturnLoss\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the echo cancellation in decibels corresponded to the media source.\",\"default\":null},{\"name\":\"echoReturnLossEnhancement\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Audio Reports\\nOnly For Outbound Media Track Reports\\nRepresents the echo cancellation in decibels added as a postprocessing by the library after the audio is catched from the emdia source.\",\"default\":null},{\"name\":\"framesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of frames sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"hugeFramesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of frames encoded over the corresponded synchronization source\",\"default\":null},{\"name\":\"keyFramesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of keyframes sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of frames discarded before sending over the corresponded synchronization source\",\"default\":null},{\"name\":\"totalEncodeTime\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe sum of encoding time spent by the encoder corresponded to the synchronization source\",\"default\":null},{\"name\":\"qualityLimitationDurationCPU\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU\",\"default\":null},{\"name\":\"qualityLimitationDurationNone\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state\",\"default\":null},{\"name\":\"qualityLimitationDurationBandwidth\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth\",\"default\":null},{\"name\":\"qualityLimitationDurationOther\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nTime elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor\",\"default\":null},{\"name\":\"qualityLimitationReason\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate a reason for the corresponding synchronization source (ssrc) quality is limited\",\"default\":null},{\"name\":\"qualityLimitationResolutionChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nThe number of quality limiatation changes happened for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded width of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded height of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFramesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"Only For Video Reports\\nOnly For Outbound Media Track Reports\\nIndicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The unique identifier of the service */
    private java.lang.String serviceId;
@@ -38,6 +38,9 @@ public class MediaTrackReport extends org.apache.avro.specific.SpecificRecordBas
    private java.lang.String trackId;
   /** The id of the RTP stream connected to a remote media unit (such as an SFU) */
    private java.lang.String rtpStreamId;
+  /** Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from */
+   private java.lang.String remoteTrackId;
   /** Only For Inbound Media Track Reports
 The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it */
    private java.lang.String remoteUserId;
@@ -377,6 +380,8 @@ Indicate the encoded number of decoded frames in the last second received on the
    * @param label The webrtc app provided label the peer connection is labeled with
    * @param trackId The id of the track
    * @param rtpStreamId The id of the RTP stream connected to a remote media unit (such as an SFU)
+   * @param remoteTrackId Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from
    * @param remoteUserId Only For Inbound Media Track Reports
 The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it
    * @param remoteClientId Only For Inbound Media Track Reports
@@ -591,7 +596,7 @@ Indicate the encoded bit depth per pixel of the last decoded frame received on t
 Only For Outbound Media Track Reports
 Indicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)
    */
-  public MediaTrackReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.String trackId, java.lang.String rtpStreamId, java.lang.String remoteUserId, java.lang.String remoteClientId, java.lang.String remotePeerConnectionId, java.lang.Integer sampleSeq, java.lang.Long ssrc, java.lang.Integer packetsReceived, java.lang.Integer packetsLost, java.lang.Double jitter, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer burstPacketsLost, java.lang.Integer burstPacketsDiscarded, java.lang.Integer burstLossCount, java.lang.Integer burstDiscardCount, java.lang.Double burstLossRate, java.lang.Double burstDiscardRate, java.lang.Double gapLossRate, java.lang.Double gapDiscardRate, java.lang.Boolean voiceActivityFlag, java.lang.Boolean lastPacketReceivedTimestamp, java.lang.Double averageRtcpInterval, java.lang.Long headerBytesReceived, java.lang.Integer fecPacketsReceived, java.lang.Integer fecPacketsDiscarded, java.lang.Long bytesReceived, java.lang.Integer packetsFailedDecryption, java.lang.Integer packetsDuplicated, java.lang.Double perDscpPacketsReceived, java.lang.Integer nackCount, java.lang.Double totalProcessingDelay, java.lang.Double estimatedPlayoutTimestamp, java.lang.Double jitterBufferDelay, java.lang.Integer jitterBufferEmittedCount, java.lang.String decoderImplementation, java.lang.Integer packetsSent, java.lang.Long bytesSent, java.lang.Double remoteTimestamp, java.lang.Integer reportsSent, java.lang.Boolean ended, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.Integer channels, java.lang.String sdpFmtpLine, java.lang.Integer framesDropped, java.lang.Double partialFramesLost, java.lang.Integer fullFramesLost, java.lang.Integer framesDecoded, java.lang.Integer keyFramesDecoded, java.lang.Integer frameWidth, java.lang.Integer frameHeight, java.lang.Integer frameBitDepth, java.lang.Double framesPerSecond, java.lang.Long qpSum, java.lang.Long totalDecodeTime, java.lang.Long totalInterFrameDelay, java.lang.Long totalSquaredInterFrameDelay, java.lang.Integer firCount, java.lang.Integer pliCount, java.lang.Integer sliCount, java.lang.Integer framesReceived, java.lang.String rid, java.lang.Long lastPacketSentTimestamp, java.lang.Long headerBytesSent, java.lang.Integer packetsDiscardedOnSend, java.lang.Long bytesDiscardedOnSend, java.lang.Integer fecPacketsSent, java.lang.Integer retransmittedPacketsSent, java.lang.Long retransmittedBytesSent, java.lang.Long targetBitrate, java.lang.Long totalEncodedBytesTarget, java.lang.Integer totalSamplesSent, java.lang.Integer samplesEncodedWithSilk, java.lang.Integer samplesEncodedWithCelt, java.lang.Double totalPacketSendDelay, java.lang.Double perDscpPacketsSent, java.lang.String encoderImplementation, java.lang.Double roundTripTime, java.lang.Double totalRoundTripTime, java.lang.Double fractionLost, java.lang.Integer reportsReceived, java.lang.Integer roundTripTimeMeasurements, java.lang.Boolean relayedSource, java.lang.Double audioLevel, java.lang.Double totalAudioEnergy, java.lang.Double totalSamplesDuration, java.lang.Double echoReturnLoss, java.lang.Double echoReturnLossEnhancement, java.lang.Integer framesSent, java.lang.Integer hugeFramesSent, java.lang.Integer framesEncoded, java.lang.Integer keyFramesEncoded, java.lang.Integer framesDiscardedOnSend, java.lang.Double totalEncodeTime, java.lang.Double qualityLimitationDurationCPU, java.lang.Double qualityLimitationDurationNone, java.lang.Double qualityLimitationDurationBandwidth, java.lang.Double qualityLimitationDurationOther, java.lang.String qualityLimitationReason, java.lang.Integer qualityLimitationResolutionChanges, java.lang.Integer encodedFrameWidth, java.lang.Integer encodedFrameHeight, java.lang.Integer encodedFrameBitDepth, java.lang.Double encodedFramesPerSecond) {
+  public MediaTrackReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.String trackId, java.lang.String rtpStreamId, java.lang.String remoteTrackId, java.lang.String remoteUserId, java.lang.String remoteClientId, java.lang.String remotePeerConnectionId, java.lang.Integer sampleSeq, java.lang.Long ssrc, java.lang.Integer packetsReceived, java.lang.Integer packetsLost, java.lang.Double jitter, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer burstPacketsLost, java.lang.Integer burstPacketsDiscarded, java.lang.Integer burstLossCount, java.lang.Integer burstDiscardCount, java.lang.Double burstLossRate, java.lang.Double burstDiscardRate, java.lang.Double gapLossRate, java.lang.Double gapDiscardRate, java.lang.Boolean voiceActivityFlag, java.lang.Boolean lastPacketReceivedTimestamp, java.lang.Double averageRtcpInterval, java.lang.Long headerBytesReceived, java.lang.Integer fecPacketsReceived, java.lang.Integer fecPacketsDiscarded, java.lang.Long bytesReceived, java.lang.Integer packetsFailedDecryption, java.lang.Integer packetsDuplicated, java.lang.Double perDscpPacketsReceived, java.lang.Integer nackCount, java.lang.Double totalProcessingDelay, java.lang.Double estimatedPlayoutTimestamp, java.lang.Double jitterBufferDelay, java.lang.Integer jitterBufferEmittedCount, java.lang.String decoderImplementation, java.lang.Integer packetsSent, java.lang.Long bytesSent, java.lang.Double remoteTimestamp, java.lang.Integer reportsSent, java.lang.Boolean ended, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.Integer channels, java.lang.String sdpFmtpLine, java.lang.Integer framesDropped, java.lang.Double partialFramesLost, java.lang.Integer fullFramesLost, java.lang.Integer framesDecoded, java.lang.Integer keyFramesDecoded, java.lang.Integer frameWidth, java.lang.Integer frameHeight, java.lang.Integer frameBitDepth, java.lang.Double framesPerSecond, java.lang.Long qpSum, java.lang.Long totalDecodeTime, java.lang.Long totalInterFrameDelay, java.lang.Long totalSquaredInterFrameDelay, java.lang.Integer firCount, java.lang.Integer pliCount, java.lang.Integer sliCount, java.lang.Integer framesReceived, java.lang.String rid, java.lang.Long lastPacketSentTimestamp, java.lang.Long headerBytesSent, java.lang.Integer packetsDiscardedOnSend, java.lang.Long bytesDiscardedOnSend, java.lang.Integer fecPacketsSent, java.lang.Integer retransmittedPacketsSent, java.lang.Long retransmittedBytesSent, java.lang.Long targetBitrate, java.lang.Long totalEncodedBytesTarget, java.lang.Integer totalSamplesSent, java.lang.Integer samplesEncodedWithSilk, java.lang.Integer samplesEncodedWithCelt, java.lang.Double totalPacketSendDelay, java.lang.Double perDscpPacketsSent, java.lang.String encoderImplementation, java.lang.Double roundTripTime, java.lang.Double totalRoundTripTime, java.lang.Double fractionLost, java.lang.Integer reportsReceived, java.lang.Integer roundTripTimeMeasurements, java.lang.Boolean relayedSource, java.lang.Double audioLevel, java.lang.Double totalAudioEnergy, java.lang.Double totalSamplesDuration, java.lang.Double echoReturnLoss, java.lang.Double echoReturnLossEnhancement, java.lang.Integer framesSent, java.lang.Integer hugeFramesSent, java.lang.Integer framesEncoded, java.lang.Integer keyFramesEncoded, java.lang.Integer framesDiscardedOnSend, java.lang.Double totalEncodeTime, java.lang.Double qualityLimitationDurationCPU, java.lang.Double qualityLimitationDurationNone, java.lang.Double qualityLimitationDurationBandwidth, java.lang.Double qualityLimitationDurationOther, java.lang.String qualityLimitationReason, java.lang.Integer qualityLimitationResolutionChanges, java.lang.Integer encodedFrameWidth, java.lang.Integer encodedFrameHeight, java.lang.Integer encodedFrameBitDepth, java.lang.Double encodedFramesPerSecond) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -604,6 +609,7 @@ Indicate the encoded number of decoded frames in the last second received on the
     this.label = label;
     this.trackId = trackId;
     this.rtpStreamId = rtpStreamId;
+    this.remoteTrackId = remoteTrackId;
     this.remoteUserId = remoteUserId;
     this.remoteClientId = remoteClientId;
     this.remotePeerConnectionId = remotePeerConnectionId;
@@ -726,110 +732,111 @@ Indicate the encoded number of decoded frames in the last second received on the
     case 9: return label;
     case 10: return trackId;
     case 11: return rtpStreamId;
-    case 12: return remoteUserId;
-    case 13: return remoteClientId;
-    case 14: return remotePeerConnectionId;
-    case 15: return sampleSeq;
-    case 16: return ssrc;
-    case 17: return packetsReceived;
-    case 18: return packetsLost;
-    case 19: return jitter;
-    case 20: return packetsDiscarded;
-    case 21: return packetsRepaired;
-    case 22: return burstPacketsLost;
-    case 23: return burstPacketsDiscarded;
-    case 24: return burstLossCount;
-    case 25: return burstDiscardCount;
-    case 26: return burstLossRate;
-    case 27: return burstDiscardRate;
-    case 28: return gapLossRate;
-    case 29: return gapDiscardRate;
-    case 30: return voiceActivityFlag;
-    case 31: return lastPacketReceivedTimestamp;
-    case 32: return averageRtcpInterval;
-    case 33: return headerBytesReceived;
-    case 34: return fecPacketsReceived;
-    case 35: return fecPacketsDiscarded;
-    case 36: return bytesReceived;
-    case 37: return packetsFailedDecryption;
-    case 38: return packetsDuplicated;
-    case 39: return perDscpPacketsReceived;
-    case 40: return nackCount;
-    case 41: return totalProcessingDelay;
-    case 42: return estimatedPlayoutTimestamp;
-    case 43: return jitterBufferDelay;
-    case 44: return jitterBufferEmittedCount;
-    case 45: return decoderImplementation;
-    case 46: return packetsSent;
-    case 47: return bytesSent;
-    case 48: return remoteTimestamp;
-    case 49: return reportsSent;
-    case 50: return ended;
-    case 51: return payloadType;
-    case 52: return mimeType;
-    case 53: return clockRate;
-    case 54: return channels;
-    case 55: return sdpFmtpLine;
-    case 56: return framesDropped;
-    case 57: return partialFramesLost;
-    case 58: return fullFramesLost;
-    case 59: return framesDecoded;
-    case 60: return keyFramesDecoded;
-    case 61: return frameWidth;
-    case 62: return frameHeight;
-    case 63: return frameBitDepth;
-    case 64: return framesPerSecond;
-    case 65: return qpSum;
-    case 66: return totalDecodeTime;
-    case 67: return totalInterFrameDelay;
-    case 68: return totalSquaredInterFrameDelay;
-    case 69: return firCount;
-    case 70: return pliCount;
-    case 71: return sliCount;
-    case 72: return framesReceived;
-    case 73: return rid;
-    case 74: return lastPacketSentTimestamp;
-    case 75: return headerBytesSent;
-    case 76: return packetsDiscardedOnSend;
-    case 77: return bytesDiscardedOnSend;
-    case 78: return fecPacketsSent;
-    case 79: return retransmittedPacketsSent;
-    case 80: return retransmittedBytesSent;
-    case 81: return targetBitrate;
-    case 82: return totalEncodedBytesTarget;
-    case 83: return totalSamplesSent;
-    case 84: return samplesEncodedWithSilk;
-    case 85: return samplesEncodedWithCelt;
-    case 86: return totalPacketSendDelay;
-    case 87: return perDscpPacketsSent;
-    case 88: return encoderImplementation;
-    case 89: return roundTripTime;
-    case 90: return totalRoundTripTime;
-    case 91: return fractionLost;
-    case 92: return reportsReceived;
-    case 93: return roundTripTimeMeasurements;
-    case 94: return relayedSource;
-    case 95: return audioLevel;
-    case 96: return totalAudioEnergy;
-    case 97: return totalSamplesDuration;
-    case 98: return echoReturnLoss;
-    case 99: return echoReturnLossEnhancement;
-    case 100: return framesSent;
-    case 101: return hugeFramesSent;
-    case 102: return framesEncoded;
-    case 103: return keyFramesEncoded;
-    case 104: return framesDiscardedOnSend;
-    case 105: return totalEncodeTime;
-    case 106: return qualityLimitationDurationCPU;
-    case 107: return qualityLimitationDurationNone;
-    case 108: return qualityLimitationDurationBandwidth;
-    case 109: return qualityLimitationDurationOther;
-    case 110: return qualityLimitationReason;
-    case 111: return qualityLimitationResolutionChanges;
-    case 112: return encodedFrameWidth;
-    case 113: return encodedFrameHeight;
-    case 114: return encodedFrameBitDepth;
-    case 115: return encodedFramesPerSecond;
+    case 12: return remoteTrackId;
+    case 13: return remoteUserId;
+    case 14: return remoteClientId;
+    case 15: return remotePeerConnectionId;
+    case 16: return sampleSeq;
+    case 17: return ssrc;
+    case 18: return packetsReceived;
+    case 19: return packetsLost;
+    case 20: return jitter;
+    case 21: return packetsDiscarded;
+    case 22: return packetsRepaired;
+    case 23: return burstPacketsLost;
+    case 24: return burstPacketsDiscarded;
+    case 25: return burstLossCount;
+    case 26: return burstDiscardCount;
+    case 27: return burstLossRate;
+    case 28: return burstDiscardRate;
+    case 29: return gapLossRate;
+    case 30: return gapDiscardRate;
+    case 31: return voiceActivityFlag;
+    case 32: return lastPacketReceivedTimestamp;
+    case 33: return averageRtcpInterval;
+    case 34: return headerBytesReceived;
+    case 35: return fecPacketsReceived;
+    case 36: return fecPacketsDiscarded;
+    case 37: return bytesReceived;
+    case 38: return packetsFailedDecryption;
+    case 39: return packetsDuplicated;
+    case 40: return perDscpPacketsReceived;
+    case 41: return nackCount;
+    case 42: return totalProcessingDelay;
+    case 43: return estimatedPlayoutTimestamp;
+    case 44: return jitterBufferDelay;
+    case 45: return jitterBufferEmittedCount;
+    case 46: return decoderImplementation;
+    case 47: return packetsSent;
+    case 48: return bytesSent;
+    case 49: return remoteTimestamp;
+    case 50: return reportsSent;
+    case 51: return ended;
+    case 52: return payloadType;
+    case 53: return mimeType;
+    case 54: return clockRate;
+    case 55: return channels;
+    case 56: return sdpFmtpLine;
+    case 57: return framesDropped;
+    case 58: return partialFramesLost;
+    case 59: return fullFramesLost;
+    case 60: return framesDecoded;
+    case 61: return keyFramesDecoded;
+    case 62: return frameWidth;
+    case 63: return frameHeight;
+    case 64: return frameBitDepth;
+    case 65: return framesPerSecond;
+    case 66: return qpSum;
+    case 67: return totalDecodeTime;
+    case 68: return totalInterFrameDelay;
+    case 69: return totalSquaredInterFrameDelay;
+    case 70: return firCount;
+    case 71: return pliCount;
+    case 72: return sliCount;
+    case 73: return framesReceived;
+    case 74: return rid;
+    case 75: return lastPacketSentTimestamp;
+    case 76: return headerBytesSent;
+    case 77: return packetsDiscardedOnSend;
+    case 78: return bytesDiscardedOnSend;
+    case 79: return fecPacketsSent;
+    case 80: return retransmittedPacketsSent;
+    case 81: return retransmittedBytesSent;
+    case 82: return targetBitrate;
+    case 83: return totalEncodedBytesTarget;
+    case 84: return totalSamplesSent;
+    case 85: return samplesEncodedWithSilk;
+    case 86: return samplesEncodedWithCelt;
+    case 87: return totalPacketSendDelay;
+    case 88: return perDscpPacketsSent;
+    case 89: return encoderImplementation;
+    case 90: return roundTripTime;
+    case 91: return totalRoundTripTime;
+    case 92: return fractionLost;
+    case 93: return reportsReceived;
+    case 94: return roundTripTimeMeasurements;
+    case 95: return relayedSource;
+    case 96: return audioLevel;
+    case 97: return totalAudioEnergy;
+    case 98: return totalSamplesDuration;
+    case 99: return echoReturnLoss;
+    case 100: return echoReturnLossEnhancement;
+    case 101: return framesSent;
+    case 102: return hugeFramesSent;
+    case 103: return framesEncoded;
+    case 104: return keyFramesEncoded;
+    case 105: return framesDiscardedOnSend;
+    case 106: return totalEncodeTime;
+    case 107: return qualityLimitationDurationCPU;
+    case 108: return qualityLimitationDurationNone;
+    case 109: return qualityLimitationDurationBandwidth;
+    case 110: return qualityLimitationDurationOther;
+    case 111: return qualityLimitationReason;
+    case 112: return qualityLimitationResolutionChanges;
+    case 113: return encodedFrameWidth;
+    case 114: return encodedFrameHeight;
+    case 115: return encodedFrameBitDepth;
+    case 116: return encodedFramesPerSecond;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -850,110 +857,111 @@ Indicate the encoded number of decoded frames in the last second received on the
     case 9: label = (java.lang.String)value$; break;
     case 10: trackId = (java.lang.String)value$; break;
     case 11: rtpStreamId = (java.lang.String)value$; break;
-    case 12: remoteUserId = (java.lang.String)value$; break;
-    case 13: remoteClientId = (java.lang.String)value$; break;
-    case 14: remotePeerConnectionId = (java.lang.String)value$; break;
-    case 15: sampleSeq = (java.lang.Integer)value$; break;
-    case 16: ssrc = (java.lang.Long)value$; break;
-    case 17: packetsReceived = (java.lang.Integer)value$; break;
-    case 18: packetsLost = (java.lang.Integer)value$; break;
-    case 19: jitter = (java.lang.Double)value$; break;
-    case 20: packetsDiscarded = (java.lang.Integer)value$; break;
-    case 21: packetsRepaired = (java.lang.Integer)value$; break;
-    case 22: burstPacketsLost = (java.lang.Integer)value$; break;
-    case 23: burstPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 24: burstLossCount = (java.lang.Integer)value$; break;
-    case 25: burstDiscardCount = (java.lang.Integer)value$; break;
-    case 26: burstLossRate = (java.lang.Double)value$; break;
-    case 27: burstDiscardRate = (java.lang.Double)value$; break;
-    case 28: gapLossRate = (java.lang.Double)value$; break;
-    case 29: gapDiscardRate = (java.lang.Double)value$; break;
-    case 30: voiceActivityFlag = (java.lang.Boolean)value$; break;
-    case 31: lastPacketReceivedTimestamp = (java.lang.Boolean)value$; break;
-    case 32: averageRtcpInterval = (java.lang.Double)value$; break;
-    case 33: headerBytesReceived = (java.lang.Long)value$; break;
-    case 34: fecPacketsReceived = (java.lang.Integer)value$; break;
-    case 35: fecPacketsDiscarded = (java.lang.Integer)value$; break;
-    case 36: bytesReceived = (java.lang.Long)value$; break;
-    case 37: packetsFailedDecryption = (java.lang.Integer)value$; break;
-    case 38: packetsDuplicated = (java.lang.Integer)value$; break;
-    case 39: perDscpPacketsReceived = (java.lang.Double)value$; break;
-    case 40: nackCount = (java.lang.Integer)value$; break;
-    case 41: totalProcessingDelay = (java.lang.Double)value$; break;
-    case 42: estimatedPlayoutTimestamp = (java.lang.Double)value$; break;
-    case 43: jitterBufferDelay = (java.lang.Double)value$; break;
-    case 44: jitterBufferEmittedCount = (java.lang.Integer)value$; break;
-    case 45: decoderImplementation = (java.lang.String)value$; break;
-    case 46: packetsSent = (java.lang.Integer)value$; break;
-    case 47: bytesSent = (java.lang.Long)value$; break;
-    case 48: remoteTimestamp = (java.lang.Double)value$; break;
-    case 49: reportsSent = (java.lang.Integer)value$; break;
-    case 50: ended = (java.lang.Boolean)value$; break;
-    case 51: payloadType = (java.lang.Integer)value$; break;
-    case 52: mimeType = (java.lang.String)value$; break;
-    case 53: clockRate = (java.lang.Long)value$; break;
-    case 54: channels = (java.lang.Integer)value$; break;
-    case 55: sdpFmtpLine = (java.lang.String)value$; break;
-    case 56: framesDropped = (java.lang.Integer)value$; break;
-    case 57: partialFramesLost = (java.lang.Double)value$; break;
-    case 58: fullFramesLost = (java.lang.Integer)value$; break;
-    case 59: framesDecoded = (java.lang.Integer)value$; break;
-    case 60: keyFramesDecoded = (java.lang.Integer)value$; break;
-    case 61: frameWidth = (java.lang.Integer)value$; break;
-    case 62: frameHeight = (java.lang.Integer)value$; break;
-    case 63: frameBitDepth = (java.lang.Integer)value$; break;
-    case 64: framesPerSecond = (java.lang.Double)value$; break;
-    case 65: qpSum = (java.lang.Long)value$; break;
-    case 66: totalDecodeTime = (java.lang.Long)value$; break;
-    case 67: totalInterFrameDelay = (java.lang.Long)value$; break;
-    case 68: totalSquaredInterFrameDelay = (java.lang.Long)value$; break;
-    case 69: firCount = (java.lang.Integer)value$; break;
-    case 70: pliCount = (java.lang.Integer)value$; break;
-    case 71: sliCount = (java.lang.Integer)value$; break;
-    case 72: framesReceived = (java.lang.Integer)value$; break;
-    case 73: rid = (java.lang.String)value$; break;
-    case 74: lastPacketSentTimestamp = (java.lang.Long)value$; break;
-    case 75: headerBytesSent = (java.lang.Long)value$; break;
-    case 76: packetsDiscardedOnSend = (java.lang.Integer)value$; break;
-    case 77: bytesDiscardedOnSend = (java.lang.Long)value$; break;
-    case 78: fecPacketsSent = (java.lang.Integer)value$; break;
-    case 79: retransmittedPacketsSent = (java.lang.Integer)value$; break;
-    case 80: retransmittedBytesSent = (java.lang.Long)value$; break;
-    case 81: targetBitrate = (java.lang.Long)value$; break;
-    case 82: totalEncodedBytesTarget = (java.lang.Long)value$; break;
-    case 83: totalSamplesSent = (java.lang.Integer)value$; break;
-    case 84: samplesEncodedWithSilk = (java.lang.Integer)value$; break;
-    case 85: samplesEncodedWithCelt = (java.lang.Integer)value$; break;
-    case 86: totalPacketSendDelay = (java.lang.Double)value$; break;
-    case 87: perDscpPacketsSent = (java.lang.Double)value$; break;
-    case 88: encoderImplementation = (java.lang.String)value$; break;
-    case 89: roundTripTime = (java.lang.Double)value$; break;
-    case 90: totalRoundTripTime = (java.lang.Double)value$; break;
-    case 91: fractionLost = (java.lang.Double)value$; break;
-    case 92: reportsReceived = (java.lang.Integer)value$; break;
-    case 93: roundTripTimeMeasurements = (java.lang.Integer)value$; break;
-    case 94: relayedSource = (java.lang.Boolean)value$; break;
-    case 95: audioLevel = (java.lang.Double)value$; break;
-    case 96: totalAudioEnergy = (java.lang.Double)value$; break;
-    case 97: totalSamplesDuration = (java.lang.Double)value$; break;
-    case 98: echoReturnLoss = (java.lang.Double)value$; break;
-    case 99: echoReturnLossEnhancement = (java.lang.Double)value$; break;
-    case 100: framesSent = (java.lang.Integer)value$; break;
-    case 101: hugeFramesSent = (java.lang.Integer)value$; break;
-    case 102: framesEncoded = (java.lang.Integer)value$; break;
-    case 103: keyFramesEncoded = (java.lang.Integer)value$; break;
-    case 104: framesDiscardedOnSend = (java.lang.Integer)value$; break;
-    case 105: totalEncodeTime = (java.lang.Double)value$; break;
-    case 106: qualityLimitationDurationCPU = (java.lang.Double)value$; break;
-    case 107: qualityLimitationDurationNone = (java.lang.Double)value$; break;
-    case 108: qualityLimitationDurationBandwidth = (java.lang.Double)value$; break;
-    case 109: qualityLimitationDurationOther = (java.lang.Double)value$; break;
-    case 110: qualityLimitationReason = (java.lang.String)value$; break;
-    case 111: qualityLimitationResolutionChanges = (java.lang.Integer)value$; break;
-    case 112: encodedFrameWidth = (java.lang.Integer)value$; break;
-    case 113: encodedFrameHeight = (java.lang.Integer)value$; break;
-    case 114: encodedFrameBitDepth = (java.lang.Integer)value$; break;
-    case 115: encodedFramesPerSecond = (java.lang.Double)value$; break;
+    case 12: remoteTrackId = (java.lang.String)value$; break;
+    case 13: remoteUserId = (java.lang.String)value$; break;
+    case 14: remoteClientId = (java.lang.String)value$; break;
+    case 15: remotePeerConnectionId = (java.lang.String)value$; break;
+    case 16: sampleSeq = (java.lang.Integer)value$; break;
+    case 17: ssrc = (java.lang.Long)value$; break;
+    case 18: packetsReceived = (java.lang.Integer)value$; break;
+    case 19: packetsLost = (java.lang.Integer)value$; break;
+    case 20: jitter = (java.lang.Double)value$; break;
+    case 21: packetsDiscarded = (java.lang.Integer)value$; break;
+    case 22: packetsRepaired = (java.lang.Integer)value$; break;
+    case 23: burstPacketsLost = (java.lang.Integer)value$; break;
+    case 24: burstPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 25: burstLossCount = (java.lang.Integer)value$; break;
+    case 26: burstDiscardCount = (java.lang.Integer)value$; break;
+    case 27: burstLossRate = (java.lang.Double)value$; break;
+    case 28: burstDiscardRate = (java.lang.Double)value$; break;
+    case 29: gapLossRate = (java.lang.Double)value$; break;
+    case 30: gapDiscardRate = (java.lang.Double)value$; break;
+    case 31: voiceActivityFlag = (java.lang.Boolean)value$; break;
+    case 32: lastPacketReceivedTimestamp = (java.lang.Boolean)value$; break;
+    case 33: averageRtcpInterval = (java.lang.Double)value$; break;
+    case 34: headerBytesReceived = (java.lang.Long)value$; break;
+    case 35: fecPacketsReceived = (java.lang.Integer)value$; break;
+    case 36: fecPacketsDiscarded = (java.lang.Integer)value$; break;
+    case 37: bytesReceived = (java.lang.Long)value$; break;
+    case 38: packetsFailedDecryption = (java.lang.Integer)value$; break;
+    case 39: packetsDuplicated = (java.lang.Integer)value$; break;
+    case 40: perDscpPacketsReceived = (java.lang.Double)value$; break;
+    case 41: nackCount = (java.lang.Integer)value$; break;
+    case 42: totalProcessingDelay = (java.lang.Double)value$; break;
+    case 43: estimatedPlayoutTimestamp = (java.lang.Double)value$; break;
+    case 44: jitterBufferDelay = (java.lang.Double)value$; break;
+    case 45: jitterBufferEmittedCount = (java.lang.Integer)value$; break;
+    case 46: decoderImplementation = (java.lang.String)value$; break;
+    case 47: packetsSent = (java.lang.Integer)value$; break;
+    case 48: bytesSent = (java.lang.Long)value$; break;
+    case 49: remoteTimestamp = (java.lang.Double)value$; break;
+    case 50: reportsSent = (java.lang.Integer)value$; break;
+    case 51: ended = (java.lang.Boolean)value$; break;
+    case 52: payloadType = (java.lang.Integer)value$; break;
+    case 53: mimeType = (java.lang.String)value$; break;
+    case 54: clockRate = (java.lang.Long)value$; break;
+    case 55: channels = (java.lang.Integer)value$; break;
+    case 56: sdpFmtpLine = (java.lang.String)value$; break;
+    case 57: framesDropped = (java.lang.Integer)value$; break;
+    case 58: partialFramesLost = (java.lang.Double)value$; break;
+    case 59: fullFramesLost = (java.lang.Integer)value$; break;
+    case 60: framesDecoded = (java.lang.Integer)value$; break;
+    case 61: keyFramesDecoded = (java.lang.Integer)value$; break;
+    case 62: frameWidth = (java.lang.Integer)value$; break;
+    case 63: frameHeight = (java.lang.Integer)value$; break;
+    case 64: frameBitDepth = (java.lang.Integer)value$; break;
+    case 65: framesPerSecond = (java.lang.Double)value$; break;
+    case 66: qpSum = (java.lang.Long)value$; break;
+    case 67: totalDecodeTime = (java.lang.Long)value$; break;
+    case 68: totalInterFrameDelay = (java.lang.Long)value$; break;
+    case 69: totalSquaredInterFrameDelay = (java.lang.Long)value$; break;
+    case 70: firCount = (java.lang.Integer)value$; break;
+    case 71: pliCount = (java.lang.Integer)value$; break;
+    case 72: sliCount = (java.lang.Integer)value$; break;
+    case 73: framesReceived = (java.lang.Integer)value$; break;
+    case 74: rid = (java.lang.String)value$; break;
+    case 75: lastPacketSentTimestamp = (java.lang.Long)value$; break;
+    case 76: headerBytesSent = (java.lang.Long)value$; break;
+    case 77: packetsDiscardedOnSend = (java.lang.Integer)value$; break;
+    case 78: bytesDiscardedOnSend = (java.lang.Long)value$; break;
+    case 79: fecPacketsSent = (java.lang.Integer)value$; break;
+    case 80: retransmittedPacketsSent = (java.lang.Integer)value$; break;
+    case 81: retransmittedBytesSent = (java.lang.Long)value$; break;
+    case 82: targetBitrate = (java.lang.Long)value$; break;
+    case 83: totalEncodedBytesTarget = (java.lang.Long)value$; break;
+    case 84: totalSamplesSent = (java.lang.Integer)value$; break;
+    case 85: samplesEncodedWithSilk = (java.lang.Integer)value$; break;
+    case 86: samplesEncodedWithCelt = (java.lang.Integer)value$; break;
+    case 87: totalPacketSendDelay = (java.lang.Double)value$; break;
+    case 88: perDscpPacketsSent = (java.lang.Double)value$; break;
+    case 89: encoderImplementation = (java.lang.String)value$; break;
+    case 90: roundTripTime = (java.lang.Double)value$; break;
+    case 91: totalRoundTripTime = (java.lang.Double)value$; break;
+    case 92: fractionLost = (java.lang.Double)value$; break;
+    case 93: reportsReceived = (java.lang.Integer)value$; break;
+    case 94: roundTripTimeMeasurements = (java.lang.Integer)value$; break;
+    case 95: relayedSource = (java.lang.Boolean)value$; break;
+    case 96: audioLevel = (java.lang.Double)value$; break;
+    case 97: totalAudioEnergy = (java.lang.Double)value$; break;
+    case 98: totalSamplesDuration = (java.lang.Double)value$; break;
+    case 99: echoReturnLoss = (java.lang.Double)value$; break;
+    case 100: echoReturnLossEnhancement = (java.lang.Double)value$; break;
+    case 101: framesSent = (java.lang.Integer)value$; break;
+    case 102: hugeFramesSent = (java.lang.Integer)value$; break;
+    case 103: framesEncoded = (java.lang.Integer)value$; break;
+    case 104: keyFramesEncoded = (java.lang.Integer)value$; break;
+    case 105: framesDiscardedOnSend = (java.lang.Integer)value$; break;
+    case 106: totalEncodeTime = (java.lang.Double)value$; break;
+    case 107: qualityLimitationDurationCPU = (java.lang.Double)value$; break;
+    case 108: qualityLimitationDurationNone = (java.lang.Double)value$; break;
+    case 109: qualityLimitationDurationBandwidth = (java.lang.Double)value$; break;
+    case 110: qualityLimitationDurationOther = (java.lang.Double)value$; break;
+    case 111: qualityLimitationReason = (java.lang.String)value$; break;
+    case 112: qualityLimitationResolutionChanges = (java.lang.Integer)value$; break;
+    case 113: encodedFrameWidth = (java.lang.Integer)value$; break;
+    case 114: encodedFrameHeight = (java.lang.Integer)value$; break;
+    case 115: encodedFrameBitDepth = (java.lang.Integer)value$; break;
+    case 116: encodedFramesPerSecond = (java.lang.Double)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -1063,6 +1071,16 @@ Indicate the encoded number of decoded frames in the last second received on the
    */
   public java.lang.String getRtpStreamId() {
     return rtpStreamId;
+  }
+
+
+  /**
+   * Gets the value of the 'remoteTrackId' field.
+   * @return Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from
+   */
+  public java.lang.String getRemoteTrackId() {
+    return remoteTrackId;
   }
 
 
@@ -2168,6 +2186,9 @@ Indicate the encoded number of decoded frames in the last second received on the
     /** The id of the RTP stream connected to a remote media unit (such as an SFU) */
     private java.lang.String rtpStreamId;
     /** Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from */
+    private java.lang.String remoteTrackId;
+    /** Only For Inbound Media Track Reports
 The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it */
     private java.lang.String remoteUserId;
     /** Only For Inbound Media Track Reports
@@ -2544,421 +2565,425 @@ Indicate the encoded number of decoded frames in the last second received on the
         this.rtpStreamId = data().deepCopy(fields()[11].schema(), other.rtpStreamId);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.remoteUserId)) {
-        this.remoteUserId = data().deepCopy(fields()[12].schema(), other.remoteUserId);
+      if (isValidValue(fields()[12], other.remoteTrackId)) {
+        this.remoteTrackId = data().deepCopy(fields()[12].schema(), other.remoteTrackId);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.remoteClientId)) {
-        this.remoteClientId = data().deepCopy(fields()[13].schema(), other.remoteClientId);
+      if (isValidValue(fields()[13], other.remoteUserId)) {
+        this.remoteUserId = data().deepCopy(fields()[13].schema(), other.remoteUserId);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.remotePeerConnectionId)) {
-        this.remotePeerConnectionId = data().deepCopy(fields()[14].schema(), other.remotePeerConnectionId);
+      if (isValidValue(fields()[14], other.remoteClientId)) {
+        this.remoteClientId = data().deepCopy(fields()[14].schema(), other.remoteClientId);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.sampleSeq)) {
-        this.sampleSeq = data().deepCopy(fields()[15].schema(), other.sampleSeq);
+      if (isValidValue(fields()[15], other.remotePeerConnectionId)) {
+        this.remotePeerConnectionId = data().deepCopy(fields()[15].schema(), other.remotePeerConnectionId);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[16].schema(), other.ssrc);
+      if (isValidValue(fields()[16], other.sampleSeq)) {
+        this.sampleSeq = data().deepCopy(fields()[16].schema(), other.sampleSeq);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[17].schema(), other.packetsReceived);
+      if (isValidValue(fields()[17], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[17].schema(), other.ssrc);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[18].schema(), other.packetsLost);
+      if (isValidValue(fields()[18], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[18].schema(), other.packetsReceived);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[19].schema(), other.jitter);
+      if (isValidValue(fields()[19], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[19].schema(), other.packetsLost);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.packetsDiscarded)) {
-        this.packetsDiscarded = data().deepCopy(fields()[20].schema(), other.packetsDiscarded);
+      if (isValidValue(fields()[20], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[20].schema(), other.jitter);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.packetsRepaired)) {
-        this.packetsRepaired = data().deepCopy(fields()[21].schema(), other.packetsRepaired);
+      if (isValidValue(fields()[21], other.packetsDiscarded)) {
+        this.packetsDiscarded = data().deepCopy(fields()[21].schema(), other.packetsDiscarded);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.burstPacketsLost)) {
-        this.burstPacketsLost = data().deepCopy(fields()[22].schema(), other.burstPacketsLost);
+      if (isValidValue(fields()[22], other.packetsRepaired)) {
+        this.packetsRepaired = data().deepCopy(fields()[22].schema(), other.packetsRepaired);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.burstPacketsDiscarded)) {
-        this.burstPacketsDiscarded = data().deepCopy(fields()[23].schema(), other.burstPacketsDiscarded);
+      if (isValidValue(fields()[23], other.burstPacketsLost)) {
+        this.burstPacketsLost = data().deepCopy(fields()[23].schema(), other.burstPacketsLost);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.burstLossCount)) {
-        this.burstLossCount = data().deepCopy(fields()[24].schema(), other.burstLossCount);
+      if (isValidValue(fields()[24], other.burstPacketsDiscarded)) {
+        this.burstPacketsDiscarded = data().deepCopy(fields()[24].schema(), other.burstPacketsDiscarded);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.burstDiscardCount)) {
-        this.burstDiscardCount = data().deepCopy(fields()[25].schema(), other.burstDiscardCount);
+      if (isValidValue(fields()[25], other.burstLossCount)) {
+        this.burstLossCount = data().deepCopy(fields()[25].schema(), other.burstLossCount);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.burstLossRate)) {
-        this.burstLossRate = data().deepCopy(fields()[26].schema(), other.burstLossRate);
+      if (isValidValue(fields()[26], other.burstDiscardCount)) {
+        this.burstDiscardCount = data().deepCopy(fields()[26].schema(), other.burstDiscardCount);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.burstDiscardRate)) {
-        this.burstDiscardRate = data().deepCopy(fields()[27].schema(), other.burstDiscardRate);
+      if (isValidValue(fields()[27], other.burstLossRate)) {
+        this.burstLossRate = data().deepCopy(fields()[27].schema(), other.burstLossRate);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.gapLossRate)) {
-        this.gapLossRate = data().deepCopy(fields()[28].schema(), other.gapLossRate);
+      if (isValidValue(fields()[28], other.burstDiscardRate)) {
+        this.burstDiscardRate = data().deepCopy(fields()[28].schema(), other.burstDiscardRate);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.gapDiscardRate)) {
-        this.gapDiscardRate = data().deepCopy(fields()[29].schema(), other.gapDiscardRate);
+      if (isValidValue(fields()[29], other.gapLossRate)) {
+        this.gapLossRate = data().deepCopy(fields()[29].schema(), other.gapLossRate);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.voiceActivityFlag)) {
-        this.voiceActivityFlag = data().deepCopy(fields()[30].schema(), other.voiceActivityFlag);
+      if (isValidValue(fields()[30], other.gapDiscardRate)) {
+        this.gapDiscardRate = data().deepCopy(fields()[30].schema(), other.gapDiscardRate);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.lastPacketReceivedTimestamp)) {
-        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[31].schema(), other.lastPacketReceivedTimestamp);
+      if (isValidValue(fields()[31], other.voiceActivityFlag)) {
+        this.voiceActivityFlag = data().deepCopy(fields()[31].schema(), other.voiceActivityFlag);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.averageRtcpInterval)) {
-        this.averageRtcpInterval = data().deepCopy(fields()[32].schema(), other.averageRtcpInterval);
+      if (isValidValue(fields()[32], other.lastPacketReceivedTimestamp)) {
+        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[32].schema(), other.lastPacketReceivedTimestamp);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.headerBytesReceived)) {
-        this.headerBytesReceived = data().deepCopy(fields()[33].schema(), other.headerBytesReceived);
+      if (isValidValue(fields()[33], other.averageRtcpInterval)) {
+        this.averageRtcpInterval = data().deepCopy(fields()[33].schema(), other.averageRtcpInterval);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[34].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[34], other.headerBytesReceived)) {
+        this.headerBytesReceived = data().deepCopy(fields()[34].schema(), other.headerBytesReceived);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[35].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[35], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[35].schema(), other.fecPacketsReceived);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[36].schema(), other.bytesReceived);
+      if (isValidValue(fields()[36], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[36].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.packetsFailedDecryption)) {
-        this.packetsFailedDecryption = data().deepCopy(fields()[37].schema(), other.packetsFailedDecryption);
+      if (isValidValue(fields()[37], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[37].schema(), other.bytesReceived);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.packetsDuplicated)) {
-        this.packetsDuplicated = data().deepCopy(fields()[38].schema(), other.packetsDuplicated);
+      if (isValidValue(fields()[38], other.packetsFailedDecryption)) {
+        this.packetsFailedDecryption = data().deepCopy(fields()[38].schema(), other.packetsFailedDecryption);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.perDscpPacketsReceived)) {
-        this.perDscpPacketsReceived = data().deepCopy(fields()[39].schema(), other.perDscpPacketsReceived);
+      if (isValidValue(fields()[39], other.packetsDuplicated)) {
+        this.packetsDuplicated = data().deepCopy(fields()[39].schema(), other.packetsDuplicated);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[40].schema(), other.nackCount);
+      if (isValidValue(fields()[40], other.perDscpPacketsReceived)) {
+        this.perDscpPacketsReceived = data().deepCopy(fields()[40].schema(), other.perDscpPacketsReceived);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.totalProcessingDelay)) {
-        this.totalProcessingDelay = data().deepCopy(fields()[41].schema(), other.totalProcessingDelay);
+      if (isValidValue(fields()[41], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[41].schema(), other.nackCount);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.estimatedPlayoutTimestamp)) {
-        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[42].schema(), other.estimatedPlayoutTimestamp);
+      if (isValidValue(fields()[42], other.totalProcessingDelay)) {
+        this.totalProcessingDelay = data().deepCopy(fields()[42].schema(), other.totalProcessingDelay);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.jitterBufferDelay)) {
-        this.jitterBufferDelay = data().deepCopy(fields()[43].schema(), other.jitterBufferDelay);
+      if (isValidValue(fields()[43], other.estimatedPlayoutTimestamp)) {
+        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[43].schema(), other.estimatedPlayoutTimestamp);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.jitterBufferEmittedCount)) {
-        this.jitterBufferEmittedCount = data().deepCopy(fields()[44].schema(), other.jitterBufferEmittedCount);
+      if (isValidValue(fields()[44], other.jitterBufferDelay)) {
+        this.jitterBufferDelay = data().deepCopy(fields()[44].schema(), other.jitterBufferDelay);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.decoderImplementation)) {
-        this.decoderImplementation = data().deepCopy(fields()[45].schema(), other.decoderImplementation);
+      if (isValidValue(fields()[45], other.jitterBufferEmittedCount)) {
+        this.jitterBufferEmittedCount = data().deepCopy(fields()[45].schema(), other.jitterBufferEmittedCount);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[46].schema(), other.packetsSent);
+      if (isValidValue(fields()[46], other.decoderImplementation)) {
+        this.decoderImplementation = data().deepCopy(fields()[46].schema(), other.decoderImplementation);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[47].schema(), other.bytesSent);
+      if (isValidValue(fields()[47], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[47].schema(), other.packetsSent);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.remoteTimestamp)) {
-        this.remoteTimestamp = data().deepCopy(fields()[48].schema(), other.remoteTimestamp);
+      if (isValidValue(fields()[48], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[48].schema(), other.bytesSent);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.reportsSent)) {
-        this.reportsSent = data().deepCopy(fields()[49].schema(), other.reportsSent);
+      if (isValidValue(fields()[49], other.remoteTimestamp)) {
+        this.remoteTimestamp = data().deepCopy(fields()[49].schema(), other.remoteTimestamp);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.ended)) {
-        this.ended = data().deepCopy(fields()[50].schema(), other.ended);
+      if (isValidValue(fields()[50], other.reportsSent)) {
+        this.reportsSent = data().deepCopy(fields()[50].schema(), other.reportsSent);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.payloadType)) {
-        this.payloadType = data().deepCopy(fields()[51].schema(), other.payloadType);
+      if (isValidValue(fields()[51], other.ended)) {
+        this.ended = data().deepCopy(fields()[51].schema(), other.ended);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.mimeType)) {
-        this.mimeType = data().deepCopy(fields()[52].schema(), other.mimeType);
+      if (isValidValue(fields()[52], other.payloadType)) {
+        this.payloadType = data().deepCopy(fields()[52].schema(), other.payloadType);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.clockRate)) {
-        this.clockRate = data().deepCopy(fields()[53].schema(), other.clockRate);
+      if (isValidValue(fields()[53], other.mimeType)) {
+        this.mimeType = data().deepCopy(fields()[53].schema(), other.mimeType);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.channels)) {
-        this.channels = data().deepCopy(fields()[54].schema(), other.channels);
+      if (isValidValue(fields()[54], other.clockRate)) {
+        this.clockRate = data().deepCopy(fields()[54].schema(), other.clockRate);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.sdpFmtpLine)) {
-        this.sdpFmtpLine = data().deepCopy(fields()[55].schema(), other.sdpFmtpLine);
+      if (isValidValue(fields()[55], other.channels)) {
+        this.channels = data().deepCopy(fields()[55].schema(), other.channels);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.framesDropped)) {
-        this.framesDropped = data().deepCopy(fields()[56].schema(), other.framesDropped);
+      if (isValidValue(fields()[56], other.sdpFmtpLine)) {
+        this.sdpFmtpLine = data().deepCopy(fields()[56].schema(), other.sdpFmtpLine);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.partialFramesLost)) {
-        this.partialFramesLost = data().deepCopy(fields()[57].schema(), other.partialFramesLost);
+      if (isValidValue(fields()[57], other.framesDropped)) {
+        this.framesDropped = data().deepCopy(fields()[57].schema(), other.framesDropped);
         fieldSetFlags()[57] = true;
       }
-      if (isValidValue(fields()[58], other.fullFramesLost)) {
-        this.fullFramesLost = data().deepCopy(fields()[58].schema(), other.fullFramesLost);
+      if (isValidValue(fields()[58], other.partialFramesLost)) {
+        this.partialFramesLost = data().deepCopy(fields()[58].schema(), other.partialFramesLost);
         fieldSetFlags()[58] = true;
       }
-      if (isValidValue(fields()[59], other.framesDecoded)) {
-        this.framesDecoded = data().deepCopy(fields()[59].schema(), other.framesDecoded);
+      if (isValidValue(fields()[59], other.fullFramesLost)) {
+        this.fullFramesLost = data().deepCopy(fields()[59].schema(), other.fullFramesLost);
         fieldSetFlags()[59] = true;
       }
-      if (isValidValue(fields()[60], other.keyFramesDecoded)) {
-        this.keyFramesDecoded = data().deepCopy(fields()[60].schema(), other.keyFramesDecoded);
+      if (isValidValue(fields()[60], other.framesDecoded)) {
+        this.framesDecoded = data().deepCopy(fields()[60].schema(), other.framesDecoded);
         fieldSetFlags()[60] = true;
       }
-      if (isValidValue(fields()[61], other.frameWidth)) {
-        this.frameWidth = data().deepCopy(fields()[61].schema(), other.frameWidth);
+      if (isValidValue(fields()[61], other.keyFramesDecoded)) {
+        this.keyFramesDecoded = data().deepCopy(fields()[61].schema(), other.keyFramesDecoded);
         fieldSetFlags()[61] = true;
       }
-      if (isValidValue(fields()[62], other.frameHeight)) {
-        this.frameHeight = data().deepCopy(fields()[62].schema(), other.frameHeight);
+      if (isValidValue(fields()[62], other.frameWidth)) {
+        this.frameWidth = data().deepCopy(fields()[62].schema(), other.frameWidth);
         fieldSetFlags()[62] = true;
       }
-      if (isValidValue(fields()[63], other.frameBitDepth)) {
-        this.frameBitDepth = data().deepCopy(fields()[63].schema(), other.frameBitDepth);
+      if (isValidValue(fields()[63], other.frameHeight)) {
+        this.frameHeight = data().deepCopy(fields()[63].schema(), other.frameHeight);
         fieldSetFlags()[63] = true;
       }
-      if (isValidValue(fields()[64], other.framesPerSecond)) {
-        this.framesPerSecond = data().deepCopy(fields()[64].schema(), other.framesPerSecond);
+      if (isValidValue(fields()[64], other.frameBitDepth)) {
+        this.frameBitDepth = data().deepCopy(fields()[64].schema(), other.frameBitDepth);
         fieldSetFlags()[64] = true;
       }
-      if (isValidValue(fields()[65], other.qpSum)) {
-        this.qpSum = data().deepCopy(fields()[65].schema(), other.qpSum);
+      if (isValidValue(fields()[65], other.framesPerSecond)) {
+        this.framesPerSecond = data().deepCopy(fields()[65].schema(), other.framesPerSecond);
         fieldSetFlags()[65] = true;
       }
-      if (isValidValue(fields()[66], other.totalDecodeTime)) {
-        this.totalDecodeTime = data().deepCopy(fields()[66].schema(), other.totalDecodeTime);
+      if (isValidValue(fields()[66], other.qpSum)) {
+        this.qpSum = data().deepCopy(fields()[66].schema(), other.qpSum);
         fieldSetFlags()[66] = true;
       }
-      if (isValidValue(fields()[67], other.totalInterFrameDelay)) {
-        this.totalInterFrameDelay = data().deepCopy(fields()[67].schema(), other.totalInterFrameDelay);
+      if (isValidValue(fields()[67], other.totalDecodeTime)) {
+        this.totalDecodeTime = data().deepCopy(fields()[67].schema(), other.totalDecodeTime);
         fieldSetFlags()[67] = true;
       }
-      if (isValidValue(fields()[68], other.totalSquaredInterFrameDelay)) {
-        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[68].schema(), other.totalSquaredInterFrameDelay);
+      if (isValidValue(fields()[68], other.totalInterFrameDelay)) {
+        this.totalInterFrameDelay = data().deepCopy(fields()[68].schema(), other.totalInterFrameDelay);
         fieldSetFlags()[68] = true;
       }
-      if (isValidValue(fields()[69], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[69].schema(), other.firCount);
+      if (isValidValue(fields()[69], other.totalSquaredInterFrameDelay)) {
+        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[69].schema(), other.totalSquaredInterFrameDelay);
         fieldSetFlags()[69] = true;
       }
-      if (isValidValue(fields()[70], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[70].schema(), other.pliCount);
+      if (isValidValue(fields()[70], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[70].schema(), other.firCount);
         fieldSetFlags()[70] = true;
       }
-      if (isValidValue(fields()[71], other.sliCount)) {
-        this.sliCount = data().deepCopy(fields()[71].schema(), other.sliCount);
+      if (isValidValue(fields()[71], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[71].schema(), other.pliCount);
         fieldSetFlags()[71] = true;
       }
-      if (isValidValue(fields()[72], other.framesReceived)) {
-        this.framesReceived = data().deepCopy(fields()[72].schema(), other.framesReceived);
+      if (isValidValue(fields()[72], other.sliCount)) {
+        this.sliCount = data().deepCopy(fields()[72].schema(), other.sliCount);
         fieldSetFlags()[72] = true;
       }
-      if (isValidValue(fields()[73], other.rid)) {
-        this.rid = data().deepCopy(fields()[73].schema(), other.rid);
+      if (isValidValue(fields()[73], other.framesReceived)) {
+        this.framesReceived = data().deepCopy(fields()[73].schema(), other.framesReceived);
         fieldSetFlags()[73] = true;
       }
-      if (isValidValue(fields()[74], other.lastPacketSentTimestamp)) {
-        this.lastPacketSentTimestamp = data().deepCopy(fields()[74].schema(), other.lastPacketSentTimestamp);
+      if (isValidValue(fields()[74], other.rid)) {
+        this.rid = data().deepCopy(fields()[74].schema(), other.rid);
         fieldSetFlags()[74] = true;
       }
-      if (isValidValue(fields()[75], other.headerBytesSent)) {
-        this.headerBytesSent = data().deepCopy(fields()[75].schema(), other.headerBytesSent);
+      if (isValidValue(fields()[75], other.lastPacketSentTimestamp)) {
+        this.lastPacketSentTimestamp = data().deepCopy(fields()[75].schema(), other.lastPacketSentTimestamp);
         fieldSetFlags()[75] = true;
       }
-      if (isValidValue(fields()[76], other.packetsDiscardedOnSend)) {
-        this.packetsDiscardedOnSend = data().deepCopy(fields()[76].schema(), other.packetsDiscardedOnSend);
+      if (isValidValue(fields()[76], other.headerBytesSent)) {
+        this.headerBytesSent = data().deepCopy(fields()[76].schema(), other.headerBytesSent);
         fieldSetFlags()[76] = true;
       }
-      if (isValidValue(fields()[77], other.bytesDiscardedOnSend)) {
-        this.bytesDiscardedOnSend = data().deepCopy(fields()[77].schema(), other.bytesDiscardedOnSend);
+      if (isValidValue(fields()[77], other.packetsDiscardedOnSend)) {
+        this.packetsDiscardedOnSend = data().deepCopy(fields()[77].schema(), other.packetsDiscardedOnSend);
         fieldSetFlags()[77] = true;
       }
-      if (isValidValue(fields()[78], other.fecPacketsSent)) {
-        this.fecPacketsSent = data().deepCopy(fields()[78].schema(), other.fecPacketsSent);
+      if (isValidValue(fields()[78], other.bytesDiscardedOnSend)) {
+        this.bytesDiscardedOnSend = data().deepCopy(fields()[78].schema(), other.bytesDiscardedOnSend);
         fieldSetFlags()[78] = true;
       }
-      if (isValidValue(fields()[79], other.retransmittedPacketsSent)) {
-        this.retransmittedPacketsSent = data().deepCopy(fields()[79].schema(), other.retransmittedPacketsSent);
+      if (isValidValue(fields()[79], other.fecPacketsSent)) {
+        this.fecPacketsSent = data().deepCopy(fields()[79].schema(), other.fecPacketsSent);
         fieldSetFlags()[79] = true;
       }
-      if (isValidValue(fields()[80], other.retransmittedBytesSent)) {
-        this.retransmittedBytesSent = data().deepCopy(fields()[80].schema(), other.retransmittedBytesSent);
+      if (isValidValue(fields()[80], other.retransmittedPacketsSent)) {
+        this.retransmittedPacketsSent = data().deepCopy(fields()[80].schema(), other.retransmittedPacketsSent);
         fieldSetFlags()[80] = true;
       }
-      if (isValidValue(fields()[81], other.targetBitrate)) {
-        this.targetBitrate = data().deepCopy(fields()[81].schema(), other.targetBitrate);
+      if (isValidValue(fields()[81], other.retransmittedBytesSent)) {
+        this.retransmittedBytesSent = data().deepCopy(fields()[81].schema(), other.retransmittedBytesSent);
         fieldSetFlags()[81] = true;
       }
-      if (isValidValue(fields()[82], other.totalEncodedBytesTarget)) {
-        this.totalEncodedBytesTarget = data().deepCopy(fields()[82].schema(), other.totalEncodedBytesTarget);
+      if (isValidValue(fields()[82], other.targetBitrate)) {
+        this.targetBitrate = data().deepCopy(fields()[82].schema(), other.targetBitrate);
         fieldSetFlags()[82] = true;
       }
-      if (isValidValue(fields()[83], other.totalSamplesSent)) {
-        this.totalSamplesSent = data().deepCopy(fields()[83].schema(), other.totalSamplesSent);
+      if (isValidValue(fields()[83], other.totalEncodedBytesTarget)) {
+        this.totalEncodedBytesTarget = data().deepCopy(fields()[83].schema(), other.totalEncodedBytesTarget);
         fieldSetFlags()[83] = true;
       }
-      if (isValidValue(fields()[84], other.samplesEncodedWithSilk)) {
-        this.samplesEncodedWithSilk = data().deepCopy(fields()[84].schema(), other.samplesEncodedWithSilk);
+      if (isValidValue(fields()[84], other.totalSamplesSent)) {
+        this.totalSamplesSent = data().deepCopy(fields()[84].schema(), other.totalSamplesSent);
         fieldSetFlags()[84] = true;
       }
-      if (isValidValue(fields()[85], other.samplesEncodedWithCelt)) {
-        this.samplesEncodedWithCelt = data().deepCopy(fields()[85].schema(), other.samplesEncodedWithCelt);
+      if (isValidValue(fields()[85], other.samplesEncodedWithSilk)) {
+        this.samplesEncodedWithSilk = data().deepCopy(fields()[85].schema(), other.samplesEncodedWithSilk);
         fieldSetFlags()[85] = true;
       }
-      if (isValidValue(fields()[86], other.totalPacketSendDelay)) {
-        this.totalPacketSendDelay = data().deepCopy(fields()[86].schema(), other.totalPacketSendDelay);
+      if (isValidValue(fields()[86], other.samplesEncodedWithCelt)) {
+        this.samplesEncodedWithCelt = data().deepCopy(fields()[86].schema(), other.samplesEncodedWithCelt);
         fieldSetFlags()[86] = true;
       }
-      if (isValidValue(fields()[87], other.perDscpPacketsSent)) {
-        this.perDscpPacketsSent = data().deepCopy(fields()[87].schema(), other.perDscpPacketsSent);
+      if (isValidValue(fields()[87], other.totalPacketSendDelay)) {
+        this.totalPacketSendDelay = data().deepCopy(fields()[87].schema(), other.totalPacketSendDelay);
         fieldSetFlags()[87] = true;
       }
-      if (isValidValue(fields()[88], other.encoderImplementation)) {
-        this.encoderImplementation = data().deepCopy(fields()[88].schema(), other.encoderImplementation);
+      if (isValidValue(fields()[88], other.perDscpPacketsSent)) {
+        this.perDscpPacketsSent = data().deepCopy(fields()[88].schema(), other.perDscpPacketsSent);
         fieldSetFlags()[88] = true;
       }
-      if (isValidValue(fields()[89], other.roundTripTime)) {
-        this.roundTripTime = data().deepCopy(fields()[89].schema(), other.roundTripTime);
+      if (isValidValue(fields()[89], other.encoderImplementation)) {
+        this.encoderImplementation = data().deepCopy(fields()[89].schema(), other.encoderImplementation);
         fieldSetFlags()[89] = true;
       }
-      if (isValidValue(fields()[90], other.totalRoundTripTime)) {
-        this.totalRoundTripTime = data().deepCopy(fields()[90].schema(), other.totalRoundTripTime);
+      if (isValidValue(fields()[90], other.roundTripTime)) {
+        this.roundTripTime = data().deepCopy(fields()[90].schema(), other.roundTripTime);
         fieldSetFlags()[90] = true;
       }
-      if (isValidValue(fields()[91], other.fractionLost)) {
-        this.fractionLost = data().deepCopy(fields()[91].schema(), other.fractionLost);
+      if (isValidValue(fields()[91], other.totalRoundTripTime)) {
+        this.totalRoundTripTime = data().deepCopy(fields()[91].schema(), other.totalRoundTripTime);
         fieldSetFlags()[91] = true;
       }
-      if (isValidValue(fields()[92], other.reportsReceived)) {
-        this.reportsReceived = data().deepCopy(fields()[92].schema(), other.reportsReceived);
+      if (isValidValue(fields()[92], other.fractionLost)) {
+        this.fractionLost = data().deepCopy(fields()[92].schema(), other.fractionLost);
         fieldSetFlags()[92] = true;
       }
-      if (isValidValue(fields()[93], other.roundTripTimeMeasurements)) {
-        this.roundTripTimeMeasurements = data().deepCopy(fields()[93].schema(), other.roundTripTimeMeasurements);
+      if (isValidValue(fields()[93], other.reportsReceived)) {
+        this.reportsReceived = data().deepCopy(fields()[93].schema(), other.reportsReceived);
         fieldSetFlags()[93] = true;
       }
-      if (isValidValue(fields()[94], other.relayedSource)) {
-        this.relayedSource = data().deepCopy(fields()[94].schema(), other.relayedSource);
+      if (isValidValue(fields()[94], other.roundTripTimeMeasurements)) {
+        this.roundTripTimeMeasurements = data().deepCopy(fields()[94].schema(), other.roundTripTimeMeasurements);
         fieldSetFlags()[94] = true;
       }
-      if (isValidValue(fields()[95], other.audioLevel)) {
-        this.audioLevel = data().deepCopy(fields()[95].schema(), other.audioLevel);
+      if (isValidValue(fields()[95], other.relayedSource)) {
+        this.relayedSource = data().deepCopy(fields()[95].schema(), other.relayedSource);
         fieldSetFlags()[95] = true;
       }
-      if (isValidValue(fields()[96], other.totalAudioEnergy)) {
-        this.totalAudioEnergy = data().deepCopy(fields()[96].schema(), other.totalAudioEnergy);
+      if (isValidValue(fields()[96], other.audioLevel)) {
+        this.audioLevel = data().deepCopy(fields()[96].schema(), other.audioLevel);
         fieldSetFlags()[96] = true;
       }
-      if (isValidValue(fields()[97], other.totalSamplesDuration)) {
-        this.totalSamplesDuration = data().deepCopy(fields()[97].schema(), other.totalSamplesDuration);
+      if (isValidValue(fields()[97], other.totalAudioEnergy)) {
+        this.totalAudioEnergy = data().deepCopy(fields()[97].schema(), other.totalAudioEnergy);
         fieldSetFlags()[97] = true;
       }
-      if (isValidValue(fields()[98], other.echoReturnLoss)) {
-        this.echoReturnLoss = data().deepCopy(fields()[98].schema(), other.echoReturnLoss);
+      if (isValidValue(fields()[98], other.totalSamplesDuration)) {
+        this.totalSamplesDuration = data().deepCopy(fields()[98].schema(), other.totalSamplesDuration);
         fieldSetFlags()[98] = true;
       }
-      if (isValidValue(fields()[99], other.echoReturnLossEnhancement)) {
-        this.echoReturnLossEnhancement = data().deepCopy(fields()[99].schema(), other.echoReturnLossEnhancement);
+      if (isValidValue(fields()[99], other.echoReturnLoss)) {
+        this.echoReturnLoss = data().deepCopy(fields()[99].schema(), other.echoReturnLoss);
         fieldSetFlags()[99] = true;
       }
-      if (isValidValue(fields()[100], other.framesSent)) {
-        this.framesSent = data().deepCopy(fields()[100].schema(), other.framesSent);
+      if (isValidValue(fields()[100], other.echoReturnLossEnhancement)) {
+        this.echoReturnLossEnhancement = data().deepCopy(fields()[100].schema(), other.echoReturnLossEnhancement);
         fieldSetFlags()[100] = true;
       }
-      if (isValidValue(fields()[101], other.hugeFramesSent)) {
-        this.hugeFramesSent = data().deepCopy(fields()[101].schema(), other.hugeFramesSent);
+      if (isValidValue(fields()[101], other.framesSent)) {
+        this.framesSent = data().deepCopy(fields()[101].schema(), other.framesSent);
         fieldSetFlags()[101] = true;
       }
-      if (isValidValue(fields()[102], other.framesEncoded)) {
-        this.framesEncoded = data().deepCopy(fields()[102].schema(), other.framesEncoded);
+      if (isValidValue(fields()[102], other.hugeFramesSent)) {
+        this.hugeFramesSent = data().deepCopy(fields()[102].schema(), other.hugeFramesSent);
         fieldSetFlags()[102] = true;
       }
-      if (isValidValue(fields()[103], other.keyFramesEncoded)) {
-        this.keyFramesEncoded = data().deepCopy(fields()[103].schema(), other.keyFramesEncoded);
+      if (isValidValue(fields()[103], other.framesEncoded)) {
+        this.framesEncoded = data().deepCopy(fields()[103].schema(), other.framesEncoded);
         fieldSetFlags()[103] = true;
       }
-      if (isValidValue(fields()[104], other.framesDiscardedOnSend)) {
-        this.framesDiscardedOnSend = data().deepCopy(fields()[104].schema(), other.framesDiscardedOnSend);
+      if (isValidValue(fields()[104], other.keyFramesEncoded)) {
+        this.keyFramesEncoded = data().deepCopy(fields()[104].schema(), other.keyFramesEncoded);
         fieldSetFlags()[104] = true;
       }
-      if (isValidValue(fields()[105], other.totalEncodeTime)) {
-        this.totalEncodeTime = data().deepCopy(fields()[105].schema(), other.totalEncodeTime);
+      if (isValidValue(fields()[105], other.framesDiscardedOnSend)) {
+        this.framesDiscardedOnSend = data().deepCopy(fields()[105].schema(), other.framesDiscardedOnSend);
         fieldSetFlags()[105] = true;
       }
-      if (isValidValue(fields()[106], other.qualityLimitationDurationCPU)) {
-        this.qualityLimitationDurationCPU = data().deepCopy(fields()[106].schema(), other.qualityLimitationDurationCPU);
+      if (isValidValue(fields()[106], other.totalEncodeTime)) {
+        this.totalEncodeTime = data().deepCopy(fields()[106].schema(), other.totalEncodeTime);
         fieldSetFlags()[106] = true;
       }
-      if (isValidValue(fields()[107], other.qualityLimitationDurationNone)) {
-        this.qualityLimitationDurationNone = data().deepCopy(fields()[107].schema(), other.qualityLimitationDurationNone);
+      if (isValidValue(fields()[107], other.qualityLimitationDurationCPU)) {
+        this.qualityLimitationDurationCPU = data().deepCopy(fields()[107].schema(), other.qualityLimitationDurationCPU);
         fieldSetFlags()[107] = true;
       }
-      if (isValidValue(fields()[108], other.qualityLimitationDurationBandwidth)) {
-        this.qualityLimitationDurationBandwidth = data().deepCopy(fields()[108].schema(), other.qualityLimitationDurationBandwidth);
+      if (isValidValue(fields()[108], other.qualityLimitationDurationNone)) {
+        this.qualityLimitationDurationNone = data().deepCopy(fields()[108].schema(), other.qualityLimitationDurationNone);
         fieldSetFlags()[108] = true;
       }
-      if (isValidValue(fields()[109], other.qualityLimitationDurationOther)) {
-        this.qualityLimitationDurationOther = data().deepCopy(fields()[109].schema(), other.qualityLimitationDurationOther);
+      if (isValidValue(fields()[109], other.qualityLimitationDurationBandwidth)) {
+        this.qualityLimitationDurationBandwidth = data().deepCopy(fields()[109].schema(), other.qualityLimitationDurationBandwidth);
         fieldSetFlags()[109] = true;
       }
-      if (isValidValue(fields()[110], other.qualityLimitationReason)) {
-        this.qualityLimitationReason = data().deepCopy(fields()[110].schema(), other.qualityLimitationReason);
+      if (isValidValue(fields()[110], other.qualityLimitationDurationOther)) {
+        this.qualityLimitationDurationOther = data().deepCopy(fields()[110].schema(), other.qualityLimitationDurationOther);
         fieldSetFlags()[110] = true;
       }
-      if (isValidValue(fields()[111], other.qualityLimitationResolutionChanges)) {
-        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[111].schema(), other.qualityLimitationResolutionChanges);
+      if (isValidValue(fields()[111], other.qualityLimitationReason)) {
+        this.qualityLimitationReason = data().deepCopy(fields()[111].schema(), other.qualityLimitationReason);
         fieldSetFlags()[111] = true;
       }
-      if (isValidValue(fields()[112], other.encodedFrameWidth)) {
-        this.encodedFrameWidth = data().deepCopy(fields()[112].schema(), other.encodedFrameWidth);
+      if (isValidValue(fields()[112], other.qualityLimitationResolutionChanges)) {
+        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[112].schema(), other.qualityLimitationResolutionChanges);
         fieldSetFlags()[112] = true;
       }
-      if (isValidValue(fields()[113], other.encodedFrameHeight)) {
-        this.encodedFrameHeight = data().deepCopy(fields()[113].schema(), other.encodedFrameHeight);
+      if (isValidValue(fields()[113], other.encodedFrameWidth)) {
+        this.encodedFrameWidth = data().deepCopy(fields()[113].schema(), other.encodedFrameWidth);
         fieldSetFlags()[113] = true;
       }
-      if (isValidValue(fields()[114], other.encodedFrameBitDepth)) {
-        this.encodedFrameBitDepth = data().deepCopy(fields()[114].schema(), other.encodedFrameBitDepth);
+      if (isValidValue(fields()[114], other.encodedFrameHeight)) {
+        this.encodedFrameHeight = data().deepCopy(fields()[114].schema(), other.encodedFrameHeight);
         fieldSetFlags()[114] = true;
       }
-      if (isValidValue(fields()[115], other.encodedFramesPerSecond)) {
-        this.encodedFramesPerSecond = data().deepCopy(fields()[115].schema(), other.encodedFramesPerSecond);
+      if (isValidValue(fields()[115], other.encodedFrameBitDepth)) {
+        this.encodedFrameBitDepth = data().deepCopy(fields()[115].schema(), other.encodedFrameBitDepth);
         fieldSetFlags()[115] = true;
+      }
+      if (isValidValue(fields()[116], other.encodedFramesPerSecond)) {
+        this.encodedFramesPerSecond = data().deepCopy(fields()[116].schema(), other.encodedFramesPerSecond);
+        fieldSetFlags()[116] = true;
       }
     }
 
@@ -3016,421 +3041,425 @@ Indicate the encoded number of decoded frames in the last second received on the
         this.rtpStreamId = data().deepCopy(fields()[11].schema(), other.rtpStreamId);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.remoteUserId)) {
-        this.remoteUserId = data().deepCopy(fields()[12].schema(), other.remoteUserId);
+      if (isValidValue(fields()[12], other.remoteTrackId)) {
+        this.remoteTrackId = data().deepCopy(fields()[12].schema(), other.remoteTrackId);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.remoteClientId)) {
-        this.remoteClientId = data().deepCopy(fields()[13].schema(), other.remoteClientId);
+      if (isValidValue(fields()[13], other.remoteUserId)) {
+        this.remoteUserId = data().deepCopy(fields()[13].schema(), other.remoteUserId);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.remotePeerConnectionId)) {
-        this.remotePeerConnectionId = data().deepCopy(fields()[14].schema(), other.remotePeerConnectionId);
+      if (isValidValue(fields()[14], other.remoteClientId)) {
+        this.remoteClientId = data().deepCopy(fields()[14].schema(), other.remoteClientId);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.sampleSeq)) {
-        this.sampleSeq = data().deepCopy(fields()[15].schema(), other.sampleSeq);
+      if (isValidValue(fields()[15], other.remotePeerConnectionId)) {
+        this.remotePeerConnectionId = data().deepCopy(fields()[15].schema(), other.remotePeerConnectionId);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.ssrc)) {
-        this.ssrc = data().deepCopy(fields()[16].schema(), other.ssrc);
+      if (isValidValue(fields()[16], other.sampleSeq)) {
+        this.sampleSeq = data().deepCopy(fields()[16].schema(), other.sampleSeq);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.packetsReceived)) {
-        this.packetsReceived = data().deepCopy(fields()[17].schema(), other.packetsReceived);
+      if (isValidValue(fields()[17], other.ssrc)) {
+        this.ssrc = data().deepCopy(fields()[17].schema(), other.ssrc);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.packetsLost)) {
-        this.packetsLost = data().deepCopy(fields()[18].schema(), other.packetsLost);
+      if (isValidValue(fields()[18], other.packetsReceived)) {
+        this.packetsReceived = data().deepCopy(fields()[18].schema(), other.packetsReceived);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.jitter)) {
-        this.jitter = data().deepCopy(fields()[19].schema(), other.jitter);
+      if (isValidValue(fields()[19], other.packetsLost)) {
+        this.packetsLost = data().deepCopy(fields()[19].schema(), other.packetsLost);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.packetsDiscarded)) {
-        this.packetsDiscarded = data().deepCopy(fields()[20].schema(), other.packetsDiscarded);
+      if (isValidValue(fields()[20], other.jitter)) {
+        this.jitter = data().deepCopy(fields()[20].schema(), other.jitter);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.packetsRepaired)) {
-        this.packetsRepaired = data().deepCopy(fields()[21].schema(), other.packetsRepaired);
+      if (isValidValue(fields()[21], other.packetsDiscarded)) {
+        this.packetsDiscarded = data().deepCopy(fields()[21].schema(), other.packetsDiscarded);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.burstPacketsLost)) {
-        this.burstPacketsLost = data().deepCopy(fields()[22].schema(), other.burstPacketsLost);
+      if (isValidValue(fields()[22], other.packetsRepaired)) {
+        this.packetsRepaired = data().deepCopy(fields()[22].schema(), other.packetsRepaired);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.burstPacketsDiscarded)) {
-        this.burstPacketsDiscarded = data().deepCopy(fields()[23].schema(), other.burstPacketsDiscarded);
+      if (isValidValue(fields()[23], other.burstPacketsLost)) {
+        this.burstPacketsLost = data().deepCopy(fields()[23].schema(), other.burstPacketsLost);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.burstLossCount)) {
-        this.burstLossCount = data().deepCopy(fields()[24].schema(), other.burstLossCount);
+      if (isValidValue(fields()[24], other.burstPacketsDiscarded)) {
+        this.burstPacketsDiscarded = data().deepCopy(fields()[24].schema(), other.burstPacketsDiscarded);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.burstDiscardCount)) {
-        this.burstDiscardCount = data().deepCopy(fields()[25].schema(), other.burstDiscardCount);
+      if (isValidValue(fields()[25], other.burstLossCount)) {
+        this.burstLossCount = data().deepCopy(fields()[25].schema(), other.burstLossCount);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.burstLossRate)) {
-        this.burstLossRate = data().deepCopy(fields()[26].schema(), other.burstLossRate);
+      if (isValidValue(fields()[26], other.burstDiscardCount)) {
+        this.burstDiscardCount = data().deepCopy(fields()[26].schema(), other.burstDiscardCount);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.burstDiscardRate)) {
-        this.burstDiscardRate = data().deepCopy(fields()[27].schema(), other.burstDiscardRate);
+      if (isValidValue(fields()[27], other.burstLossRate)) {
+        this.burstLossRate = data().deepCopy(fields()[27].schema(), other.burstLossRate);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.gapLossRate)) {
-        this.gapLossRate = data().deepCopy(fields()[28].schema(), other.gapLossRate);
+      if (isValidValue(fields()[28], other.burstDiscardRate)) {
+        this.burstDiscardRate = data().deepCopy(fields()[28].schema(), other.burstDiscardRate);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.gapDiscardRate)) {
-        this.gapDiscardRate = data().deepCopy(fields()[29].schema(), other.gapDiscardRate);
+      if (isValidValue(fields()[29], other.gapLossRate)) {
+        this.gapLossRate = data().deepCopy(fields()[29].schema(), other.gapLossRate);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.voiceActivityFlag)) {
-        this.voiceActivityFlag = data().deepCopy(fields()[30].schema(), other.voiceActivityFlag);
+      if (isValidValue(fields()[30], other.gapDiscardRate)) {
+        this.gapDiscardRate = data().deepCopy(fields()[30].schema(), other.gapDiscardRate);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.lastPacketReceivedTimestamp)) {
-        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[31].schema(), other.lastPacketReceivedTimestamp);
+      if (isValidValue(fields()[31], other.voiceActivityFlag)) {
+        this.voiceActivityFlag = data().deepCopy(fields()[31].schema(), other.voiceActivityFlag);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.averageRtcpInterval)) {
-        this.averageRtcpInterval = data().deepCopy(fields()[32].schema(), other.averageRtcpInterval);
+      if (isValidValue(fields()[32], other.lastPacketReceivedTimestamp)) {
+        this.lastPacketReceivedTimestamp = data().deepCopy(fields()[32].schema(), other.lastPacketReceivedTimestamp);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.headerBytesReceived)) {
-        this.headerBytesReceived = data().deepCopy(fields()[33].schema(), other.headerBytesReceived);
+      if (isValidValue(fields()[33], other.averageRtcpInterval)) {
+        this.averageRtcpInterval = data().deepCopy(fields()[33].schema(), other.averageRtcpInterval);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.fecPacketsReceived)) {
-        this.fecPacketsReceived = data().deepCopy(fields()[34].schema(), other.fecPacketsReceived);
+      if (isValidValue(fields()[34], other.headerBytesReceived)) {
+        this.headerBytesReceived = data().deepCopy(fields()[34].schema(), other.headerBytesReceived);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.fecPacketsDiscarded)) {
-        this.fecPacketsDiscarded = data().deepCopy(fields()[35].schema(), other.fecPacketsDiscarded);
+      if (isValidValue(fields()[35], other.fecPacketsReceived)) {
+        this.fecPacketsReceived = data().deepCopy(fields()[35].schema(), other.fecPacketsReceived);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.bytesReceived)) {
-        this.bytesReceived = data().deepCopy(fields()[36].schema(), other.bytesReceived);
+      if (isValidValue(fields()[36], other.fecPacketsDiscarded)) {
+        this.fecPacketsDiscarded = data().deepCopy(fields()[36].schema(), other.fecPacketsDiscarded);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.packetsFailedDecryption)) {
-        this.packetsFailedDecryption = data().deepCopy(fields()[37].schema(), other.packetsFailedDecryption);
+      if (isValidValue(fields()[37], other.bytesReceived)) {
+        this.bytesReceived = data().deepCopy(fields()[37].schema(), other.bytesReceived);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.packetsDuplicated)) {
-        this.packetsDuplicated = data().deepCopy(fields()[38].schema(), other.packetsDuplicated);
+      if (isValidValue(fields()[38], other.packetsFailedDecryption)) {
+        this.packetsFailedDecryption = data().deepCopy(fields()[38].schema(), other.packetsFailedDecryption);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.perDscpPacketsReceived)) {
-        this.perDscpPacketsReceived = data().deepCopy(fields()[39].schema(), other.perDscpPacketsReceived);
+      if (isValidValue(fields()[39], other.packetsDuplicated)) {
+        this.packetsDuplicated = data().deepCopy(fields()[39].schema(), other.packetsDuplicated);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.nackCount)) {
-        this.nackCount = data().deepCopy(fields()[40].schema(), other.nackCount);
+      if (isValidValue(fields()[40], other.perDscpPacketsReceived)) {
+        this.perDscpPacketsReceived = data().deepCopy(fields()[40].schema(), other.perDscpPacketsReceived);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.totalProcessingDelay)) {
-        this.totalProcessingDelay = data().deepCopy(fields()[41].schema(), other.totalProcessingDelay);
+      if (isValidValue(fields()[41], other.nackCount)) {
+        this.nackCount = data().deepCopy(fields()[41].schema(), other.nackCount);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.estimatedPlayoutTimestamp)) {
-        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[42].schema(), other.estimatedPlayoutTimestamp);
+      if (isValidValue(fields()[42], other.totalProcessingDelay)) {
+        this.totalProcessingDelay = data().deepCopy(fields()[42].schema(), other.totalProcessingDelay);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.jitterBufferDelay)) {
-        this.jitterBufferDelay = data().deepCopy(fields()[43].schema(), other.jitterBufferDelay);
+      if (isValidValue(fields()[43], other.estimatedPlayoutTimestamp)) {
+        this.estimatedPlayoutTimestamp = data().deepCopy(fields()[43].schema(), other.estimatedPlayoutTimestamp);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.jitterBufferEmittedCount)) {
-        this.jitterBufferEmittedCount = data().deepCopy(fields()[44].schema(), other.jitterBufferEmittedCount);
+      if (isValidValue(fields()[44], other.jitterBufferDelay)) {
+        this.jitterBufferDelay = data().deepCopy(fields()[44].schema(), other.jitterBufferDelay);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.decoderImplementation)) {
-        this.decoderImplementation = data().deepCopy(fields()[45].schema(), other.decoderImplementation);
+      if (isValidValue(fields()[45], other.jitterBufferEmittedCount)) {
+        this.jitterBufferEmittedCount = data().deepCopy(fields()[45].schema(), other.jitterBufferEmittedCount);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.packetsSent)) {
-        this.packetsSent = data().deepCopy(fields()[46].schema(), other.packetsSent);
+      if (isValidValue(fields()[46], other.decoderImplementation)) {
+        this.decoderImplementation = data().deepCopy(fields()[46].schema(), other.decoderImplementation);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.bytesSent)) {
-        this.bytesSent = data().deepCopy(fields()[47].schema(), other.bytesSent);
+      if (isValidValue(fields()[47], other.packetsSent)) {
+        this.packetsSent = data().deepCopy(fields()[47].schema(), other.packetsSent);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.remoteTimestamp)) {
-        this.remoteTimestamp = data().deepCopy(fields()[48].schema(), other.remoteTimestamp);
+      if (isValidValue(fields()[48], other.bytesSent)) {
+        this.bytesSent = data().deepCopy(fields()[48].schema(), other.bytesSent);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.reportsSent)) {
-        this.reportsSent = data().deepCopy(fields()[49].schema(), other.reportsSent);
+      if (isValidValue(fields()[49], other.remoteTimestamp)) {
+        this.remoteTimestamp = data().deepCopy(fields()[49].schema(), other.remoteTimestamp);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.ended)) {
-        this.ended = data().deepCopy(fields()[50].schema(), other.ended);
+      if (isValidValue(fields()[50], other.reportsSent)) {
+        this.reportsSent = data().deepCopy(fields()[50].schema(), other.reportsSent);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.payloadType)) {
-        this.payloadType = data().deepCopy(fields()[51].schema(), other.payloadType);
+      if (isValidValue(fields()[51], other.ended)) {
+        this.ended = data().deepCopy(fields()[51].schema(), other.ended);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.mimeType)) {
-        this.mimeType = data().deepCopy(fields()[52].schema(), other.mimeType);
+      if (isValidValue(fields()[52], other.payloadType)) {
+        this.payloadType = data().deepCopy(fields()[52].schema(), other.payloadType);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.clockRate)) {
-        this.clockRate = data().deepCopy(fields()[53].schema(), other.clockRate);
+      if (isValidValue(fields()[53], other.mimeType)) {
+        this.mimeType = data().deepCopy(fields()[53].schema(), other.mimeType);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.channels)) {
-        this.channels = data().deepCopy(fields()[54].schema(), other.channels);
+      if (isValidValue(fields()[54], other.clockRate)) {
+        this.clockRate = data().deepCopy(fields()[54].schema(), other.clockRate);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.sdpFmtpLine)) {
-        this.sdpFmtpLine = data().deepCopy(fields()[55].schema(), other.sdpFmtpLine);
+      if (isValidValue(fields()[55], other.channels)) {
+        this.channels = data().deepCopy(fields()[55].schema(), other.channels);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.framesDropped)) {
-        this.framesDropped = data().deepCopy(fields()[56].schema(), other.framesDropped);
+      if (isValidValue(fields()[56], other.sdpFmtpLine)) {
+        this.sdpFmtpLine = data().deepCopy(fields()[56].schema(), other.sdpFmtpLine);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.partialFramesLost)) {
-        this.partialFramesLost = data().deepCopy(fields()[57].schema(), other.partialFramesLost);
+      if (isValidValue(fields()[57], other.framesDropped)) {
+        this.framesDropped = data().deepCopy(fields()[57].schema(), other.framesDropped);
         fieldSetFlags()[57] = true;
       }
-      if (isValidValue(fields()[58], other.fullFramesLost)) {
-        this.fullFramesLost = data().deepCopy(fields()[58].schema(), other.fullFramesLost);
+      if (isValidValue(fields()[58], other.partialFramesLost)) {
+        this.partialFramesLost = data().deepCopy(fields()[58].schema(), other.partialFramesLost);
         fieldSetFlags()[58] = true;
       }
-      if (isValidValue(fields()[59], other.framesDecoded)) {
-        this.framesDecoded = data().deepCopy(fields()[59].schema(), other.framesDecoded);
+      if (isValidValue(fields()[59], other.fullFramesLost)) {
+        this.fullFramesLost = data().deepCopy(fields()[59].schema(), other.fullFramesLost);
         fieldSetFlags()[59] = true;
       }
-      if (isValidValue(fields()[60], other.keyFramesDecoded)) {
-        this.keyFramesDecoded = data().deepCopy(fields()[60].schema(), other.keyFramesDecoded);
+      if (isValidValue(fields()[60], other.framesDecoded)) {
+        this.framesDecoded = data().deepCopy(fields()[60].schema(), other.framesDecoded);
         fieldSetFlags()[60] = true;
       }
-      if (isValidValue(fields()[61], other.frameWidth)) {
-        this.frameWidth = data().deepCopy(fields()[61].schema(), other.frameWidth);
+      if (isValidValue(fields()[61], other.keyFramesDecoded)) {
+        this.keyFramesDecoded = data().deepCopy(fields()[61].schema(), other.keyFramesDecoded);
         fieldSetFlags()[61] = true;
       }
-      if (isValidValue(fields()[62], other.frameHeight)) {
-        this.frameHeight = data().deepCopy(fields()[62].schema(), other.frameHeight);
+      if (isValidValue(fields()[62], other.frameWidth)) {
+        this.frameWidth = data().deepCopy(fields()[62].schema(), other.frameWidth);
         fieldSetFlags()[62] = true;
       }
-      if (isValidValue(fields()[63], other.frameBitDepth)) {
-        this.frameBitDepth = data().deepCopy(fields()[63].schema(), other.frameBitDepth);
+      if (isValidValue(fields()[63], other.frameHeight)) {
+        this.frameHeight = data().deepCopy(fields()[63].schema(), other.frameHeight);
         fieldSetFlags()[63] = true;
       }
-      if (isValidValue(fields()[64], other.framesPerSecond)) {
-        this.framesPerSecond = data().deepCopy(fields()[64].schema(), other.framesPerSecond);
+      if (isValidValue(fields()[64], other.frameBitDepth)) {
+        this.frameBitDepth = data().deepCopy(fields()[64].schema(), other.frameBitDepth);
         fieldSetFlags()[64] = true;
       }
-      if (isValidValue(fields()[65], other.qpSum)) {
-        this.qpSum = data().deepCopy(fields()[65].schema(), other.qpSum);
+      if (isValidValue(fields()[65], other.framesPerSecond)) {
+        this.framesPerSecond = data().deepCopy(fields()[65].schema(), other.framesPerSecond);
         fieldSetFlags()[65] = true;
       }
-      if (isValidValue(fields()[66], other.totalDecodeTime)) {
-        this.totalDecodeTime = data().deepCopy(fields()[66].schema(), other.totalDecodeTime);
+      if (isValidValue(fields()[66], other.qpSum)) {
+        this.qpSum = data().deepCopy(fields()[66].schema(), other.qpSum);
         fieldSetFlags()[66] = true;
       }
-      if (isValidValue(fields()[67], other.totalInterFrameDelay)) {
-        this.totalInterFrameDelay = data().deepCopy(fields()[67].schema(), other.totalInterFrameDelay);
+      if (isValidValue(fields()[67], other.totalDecodeTime)) {
+        this.totalDecodeTime = data().deepCopy(fields()[67].schema(), other.totalDecodeTime);
         fieldSetFlags()[67] = true;
       }
-      if (isValidValue(fields()[68], other.totalSquaredInterFrameDelay)) {
-        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[68].schema(), other.totalSquaredInterFrameDelay);
+      if (isValidValue(fields()[68], other.totalInterFrameDelay)) {
+        this.totalInterFrameDelay = data().deepCopy(fields()[68].schema(), other.totalInterFrameDelay);
         fieldSetFlags()[68] = true;
       }
-      if (isValidValue(fields()[69], other.firCount)) {
-        this.firCount = data().deepCopy(fields()[69].schema(), other.firCount);
+      if (isValidValue(fields()[69], other.totalSquaredInterFrameDelay)) {
+        this.totalSquaredInterFrameDelay = data().deepCopy(fields()[69].schema(), other.totalSquaredInterFrameDelay);
         fieldSetFlags()[69] = true;
       }
-      if (isValidValue(fields()[70], other.pliCount)) {
-        this.pliCount = data().deepCopy(fields()[70].schema(), other.pliCount);
+      if (isValidValue(fields()[70], other.firCount)) {
+        this.firCount = data().deepCopy(fields()[70].schema(), other.firCount);
         fieldSetFlags()[70] = true;
       }
-      if (isValidValue(fields()[71], other.sliCount)) {
-        this.sliCount = data().deepCopy(fields()[71].schema(), other.sliCount);
+      if (isValidValue(fields()[71], other.pliCount)) {
+        this.pliCount = data().deepCopy(fields()[71].schema(), other.pliCount);
         fieldSetFlags()[71] = true;
       }
-      if (isValidValue(fields()[72], other.framesReceived)) {
-        this.framesReceived = data().deepCopy(fields()[72].schema(), other.framesReceived);
+      if (isValidValue(fields()[72], other.sliCount)) {
+        this.sliCount = data().deepCopy(fields()[72].schema(), other.sliCount);
         fieldSetFlags()[72] = true;
       }
-      if (isValidValue(fields()[73], other.rid)) {
-        this.rid = data().deepCopy(fields()[73].schema(), other.rid);
+      if (isValidValue(fields()[73], other.framesReceived)) {
+        this.framesReceived = data().deepCopy(fields()[73].schema(), other.framesReceived);
         fieldSetFlags()[73] = true;
       }
-      if (isValidValue(fields()[74], other.lastPacketSentTimestamp)) {
-        this.lastPacketSentTimestamp = data().deepCopy(fields()[74].schema(), other.lastPacketSentTimestamp);
+      if (isValidValue(fields()[74], other.rid)) {
+        this.rid = data().deepCopy(fields()[74].schema(), other.rid);
         fieldSetFlags()[74] = true;
       }
-      if (isValidValue(fields()[75], other.headerBytesSent)) {
-        this.headerBytesSent = data().deepCopy(fields()[75].schema(), other.headerBytesSent);
+      if (isValidValue(fields()[75], other.lastPacketSentTimestamp)) {
+        this.lastPacketSentTimestamp = data().deepCopy(fields()[75].schema(), other.lastPacketSentTimestamp);
         fieldSetFlags()[75] = true;
       }
-      if (isValidValue(fields()[76], other.packetsDiscardedOnSend)) {
-        this.packetsDiscardedOnSend = data().deepCopy(fields()[76].schema(), other.packetsDiscardedOnSend);
+      if (isValidValue(fields()[76], other.headerBytesSent)) {
+        this.headerBytesSent = data().deepCopy(fields()[76].schema(), other.headerBytesSent);
         fieldSetFlags()[76] = true;
       }
-      if (isValidValue(fields()[77], other.bytesDiscardedOnSend)) {
-        this.bytesDiscardedOnSend = data().deepCopy(fields()[77].schema(), other.bytesDiscardedOnSend);
+      if (isValidValue(fields()[77], other.packetsDiscardedOnSend)) {
+        this.packetsDiscardedOnSend = data().deepCopy(fields()[77].schema(), other.packetsDiscardedOnSend);
         fieldSetFlags()[77] = true;
       }
-      if (isValidValue(fields()[78], other.fecPacketsSent)) {
-        this.fecPacketsSent = data().deepCopy(fields()[78].schema(), other.fecPacketsSent);
+      if (isValidValue(fields()[78], other.bytesDiscardedOnSend)) {
+        this.bytesDiscardedOnSend = data().deepCopy(fields()[78].schema(), other.bytesDiscardedOnSend);
         fieldSetFlags()[78] = true;
       }
-      if (isValidValue(fields()[79], other.retransmittedPacketsSent)) {
-        this.retransmittedPacketsSent = data().deepCopy(fields()[79].schema(), other.retransmittedPacketsSent);
+      if (isValidValue(fields()[79], other.fecPacketsSent)) {
+        this.fecPacketsSent = data().deepCopy(fields()[79].schema(), other.fecPacketsSent);
         fieldSetFlags()[79] = true;
       }
-      if (isValidValue(fields()[80], other.retransmittedBytesSent)) {
-        this.retransmittedBytesSent = data().deepCopy(fields()[80].schema(), other.retransmittedBytesSent);
+      if (isValidValue(fields()[80], other.retransmittedPacketsSent)) {
+        this.retransmittedPacketsSent = data().deepCopy(fields()[80].schema(), other.retransmittedPacketsSent);
         fieldSetFlags()[80] = true;
       }
-      if (isValidValue(fields()[81], other.targetBitrate)) {
-        this.targetBitrate = data().deepCopy(fields()[81].schema(), other.targetBitrate);
+      if (isValidValue(fields()[81], other.retransmittedBytesSent)) {
+        this.retransmittedBytesSent = data().deepCopy(fields()[81].schema(), other.retransmittedBytesSent);
         fieldSetFlags()[81] = true;
       }
-      if (isValidValue(fields()[82], other.totalEncodedBytesTarget)) {
-        this.totalEncodedBytesTarget = data().deepCopy(fields()[82].schema(), other.totalEncodedBytesTarget);
+      if (isValidValue(fields()[82], other.targetBitrate)) {
+        this.targetBitrate = data().deepCopy(fields()[82].schema(), other.targetBitrate);
         fieldSetFlags()[82] = true;
       }
-      if (isValidValue(fields()[83], other.totalSamplesSent)) {
-        this.totalSamplesSent = data().deepCopy(fields()[83].schema(), other.totalSamplesSent);
+      if (isValidValue(fields()[83], other.totalEncodedBytesTarget)) {
+        this.totalEncodedBytesTarget = data().deepCopy(fields()[83].schema(), other.totalEncodedBytesTarget);
         fieldSetFlags()[83] = true;
       }
-      if (isValidValue(fields()[84], other.samplesEncodedWithSilk)) {
-        this.samplesEncodedWithSilk = data().deepCopy(fields()[84].schema(), other.samplesEncodedWithSilk);
+      if (isValidValue(fields()[84], other.totalSamplesSent)) {
+        this.totalSamplesSent = data().deepCopy(fields()[84].schema(), other.totalSamplesSent);
         fieldSetFlags()[84] = true;
       }
-      if (isValidValue(fields()[85], other.samplesEncodedWithCelt)) {
-        this.samplesEncodedWithCelt = data().deepCopy(fields()[85].schema(), other.samplesEncodedWithCelt);
+      if (isValidValue(fields()[85], other.samplesEncodedWithSilk)) {
+        this.samplesEncodedWithSilk = data().deepCopy(fields()[85].schema(), other.samplesEncodedWithSilk);
         fieldSetFlags()[85] = true;
       }
-      if (isValidValue(fields()[86], other.totalPacketSendDelay)) {
-        this.totalPacketSendDelay = data().deepCopy(fields()[86].schema(), other.totalPacketSendDelay);
+      if (isValidValue(fields()[86], other.samplesEncodedWithCelt)) {
+        this.samplesEncodedWithCelt = data().deepCopy(fields()[86].schema(), other.samplesEncodedWithCelt);
         fieldSetFlags()[86] = true;
       }
-      if (isValidValue(fields()[87], other.perDscpPacketsSent)) {
-        this.perDscpPacketsSent = data().deepCopy(fields()[87].schema(), other.perDscpPacketsSent);
+      if (isValidValue(fields()[87], other.totalPacketSendDelay)) {
+        this.totalPacketSendDelay = data().deepCopy(fields()[87].schema(), other.totalPacketSendDelay);
         fieldSetFlags()[87] = true;
       }
-      if (isValidValue(fields()[88], other.encoderImplementation)) {
-        this.encoderImplementation = data().deepCopy(fields()[88].schema(), other.encoderImplementation);
+      if (isValidValue(fields()[88], other.perDscpPacketsSent)) {
+        this.perDscpPacketsSent = data().deepCopy(fields()[88].schema(), other.perDscpPacketsSent);
         fieldSetFlags()[88] = true;
       }
-      if (isValidValue(fields()[89], other.roundTripTime)) {
-        this.roundTripTime = data().deepCopy(fields()[89].schema(), other.roundTripTime);
+      if (isValidValue(fields()[89], other.encoderImplementation)) {
+        this.encoderImplementation = data().deepCopy(fields()[89].schema(), other.encoderImplementation);
         fieldSetFlags()[89] = true;
       }
-      if (isValidValue(fields()[90], other.totalRoundTripTime)) {
-        this.totalRoundTripTime = data().deepCopy(fields()[90].schema(), other.totalRoundTripTime);
+      if (isValidValue(fields()[90], other.roundTripTime)) {
+        this.roundTripTime = data().deepCopy(fields()[90].schema(), other.roundTripTime);
         fieldSetFlags()[90] = true;
       }
-      if (isValidValue(fields()[91], other.fractionLost)) {
-        this.fractionLost = data().deepCopy(fields()[91].schema(), other.fractionLost);
+      if (isValidValue(fields()[91], other.totalRoundTripTime)) {
+        this.totalRoundTripTime = data().deepCopy(fields()[91].schema(), other.totalRoundTripTime);
         fieldSetFlags()[91] = true;
       }
-      if (isValidValue(fields()[92], other.reportsReceived)) {
-        this.reportsReceived = data().deepCopy(fields()[92].schema(), other.reportsReceived);
+      if (isValidValue(fields()[92], other.fractionLost)) {
+        this.fractionLost = data().deepCopy(fields()[92].schema(), other.fractionLost);
         fieldSetFlags()[92] = true;
       }
-      if (isValidValue(fields()[93], other.roundTripTimeMeasurements)) {
-        this.roundTripTimeMeasurements = data().deepCopy(fields()[93].schema(), other.roundTripTimeMeasurements);
+      if (isValidValue(fields()[93], other.reportsReceived)) {
+        this.reportsReceived = data().deepCopy(fields()[93].schema(), other.reportsReceived);
         fieldSetFlags()[93] = true;
       }
-      if (isValidValue(fields()[94], other.relayedSource)) {
-        this.relayedSource = data().deepCopy(fields()[94].schema(), other.relayedSource);
+      if (isValidValue(fields()[94], other.roundTripTimeMeasurements)) {
+        this.roundTripTimeMeasurements = data().deepCopy(fields()[94].schema(), other.roundTripTimeMeasurements);
         fieldSetFlags()[94] = true;
       }
-      if (isValidValue(fields()[95], other.audioLevel)) {
-        this.audioLevel = data().deepCopy(fields()[95].schema(), other.audioLevel);
+      if (isValidValue(fields()[95], other.relayedSource)) {
+        this.relayedSource = data().deepCopy(fields()[95].schema(), other.relayedSource);
         fieldSetFlags()[95] = true;
       }
-      if (isValidValue(fields()[96], other.totalAudioEnergy)) {
-        this.totalAudioEnergy = data().deepCopy(fields()[96].schema(), other.totalAudioEnergy);
+      if (isValidValue(fields()[96], other.audioLevel)) {
+        this.audioLevel = data().deepCopy(fields()[96].schema(), other.audioLevel);
         fieldSetFlags()[96] = true;
       }
-      if (isValidValue(fields()[97], other.totalSamplesDuration)) {
-        this.totalSamplesDuration = data().deepCopy(fields()[97].schema(), other.totalSamplesDuration);
+      if (isValidValue(fields()[97], other.totalAudioEnergy)) {
+        this.totalAudioEnergy = data().deepCopy(fields()[97].schema(), other.totalAudioEnergy);
         fieldSetFlags()[97] = true;
       }
-      if (isValidValue(fields()[98], other.echoReturnLoss)) {
-        this.echoReturnLoss = data().deepCopy(fields()[98].schema(), other.echoReturnLoss);
+      if (isValidValue(fields()[98], other.totalSamplesDuration)) {
+        this.totalSamplesDuration = data().deepCopy(fields()[98].schema(), other.totalSamplesDuration);
         fieldSetFlags()[98] = true;
       }
-      if (isValidValue(fields()[99], other.echoReturnLossEnhancement)) {
-        this.echoReturnLossEnhancement = data().deepCopy(fields()[99].schema(), other.echoReturnLossEnhancement);
+      if (isValidValue(fields()[99], other.echoReturnLoss)) {
+        this.echoReturnLoss = data().deepCopy(fields()[99].schema(), other.echoReturnLoss);
         fieldSetFlags()[99] = true;
       }
-      if (isValidValue(fields()[100], other.framesSent)) {
-        this.framesSent = data().deepCopy(fields()[100].schema(), other.framesSent);
+      if (isValidValue(fields()[100], other.echoReturnLossEnhancement)) {
+        this.echoReturnLossEnhancement = data().deepCopy(fields()[100].schema(), other.echoReturnLossEnhancement);
         fieldSetFlags()[100] = true;
       }
-      if (isValidValue(fields()[101], other.hugeFramesSent)) {
-        this.hugeFramesSent = data().deepCopy(fields()[101].schema(), other.hugeFramesSent);
+      if (isValidValue(fields()[101], other.framesSent)) {
+        this.framesSent = data().deepCopy(fields()[101].schema(), other.framesSent);
         fieldSetFlags()[101] = true;
       }
-      if (isValidValue(fields()[102], other.framesEncoded)) {
-        this.framesEncoded = data().deepCopy(fields()[102].schema(), other.framesEncoded);
+      if (isValidValue(fields()[102], other.hugeFramesSent)) {
+        this.hugeFramesSent = data().deepCopy(fields()[102].schema(), other.hugeFramesSent);
         fieldSetFlags()[102] = true;
       }
-      if (isValidValue(fields()[103], other.keyFramesEncoded)) {
-        this.keyFramesEncoded = data().deepCopy(fields()[103].schema(), other.keyFramesEncoded);
+      if (isValidValue(fields()[103], other.framesEncoded)) {
+        this.framesEncoded = data().deepCopy(fields()[103].schema(), other.framesEncoded);
         fieldSetFlags()[103] = true;
       }
-      if (isValidValue(fields()[104], other.framesDiscardedOnSend)) {
-        this.framesDiscardedOnSend = data().deepCopy(fields()[104].schema(), other.framesDiscardedOnSend);
+      if (isValidValue(fields()[104], other.keyFramesEncoded)) {
+        this.keyFramesEncoded = data().deepCopy(fields()[104].schema(), other.keyFramesEncoded);
         fieldSetFlags()[104] = true;
       }
-      if (isValidValue(fields()[105], other.totalEncodeTime)) {
-        this.totalEncodeTime = data().deepCopy(fields()[105].schema(), other.totalEncodeTime);
+      if (isValidValue(fields()[105], other.framesDiscardedOnSend)) {
+        this.framesDiscardedOnSend = data().deepCopy(fields()[105].schema(), other.framesDiscardedOnSend);
         fieldSetFlags()[105] = true;
       }
-      if (isValidValue(fields()[106], other.qualityLimitationDurationCPU)) {
-        this.qualityLimitationDurationCPU = data().deepCopy(fields()[106].schema(), other.qualityLimitationDurationCPU);
+      if (isValidValue(fields()[106], other.totalEncodeTime)) {
+        this.totalEncodeTime = data().deepCopy(fields()[106].schema(), other.totalEncodeTime);
         fieldSetFlags()[106] = true;
       }
-      if (isValidValue(fields()[107], other.qualityLimitationDurationNone)) {
-        this.qualityLimitationDurationNone = data().deepCopy(fields()[107].schema(), other.qualityLimitationDurationNone);
+      if (isValidValue(fields()[107], other.qualityLimitationDurationCPU)) {
+        this.qualityLimitationDurationCPU = data().deepCopy(fields()[107].schema(), other.qualityLimitationDurationCPU);
         fieldSetFlags()[107] = true;
       }
-      if (isValidValue(fields()[108], other.qualityLimitationDurationBandwidth)) {
-        this.qualityLimitationDurationBandwidth = data().deepCopy(fields()[108].schema(), other.qualityLimitationDurationBandwidth);
+      if (isValidValue(fields()[108], other.qualityLimitationDurationNone)) {
+        this.qualityLimitationDurationNone = data().deepCopy(fields()[108].schema(), other.qualityLimitationDurationNone);
         fieldSetFlags()[108] = true;
       }
-      if (isValidValue(fields()[109], other.qualityLimitationDurationOther)) {
-        this.qualityLimitationDurationOther = data().deepCopy(fields()[109].schema(), other.qualityLimitationDurationOther);
+      if (isValidValue(fields()[109], other.qualityLimitationDurationBandwidth)) {
+        this.qualityLimitationDurationBandwidth = data().deepCopy(fields()[109].schema(), other.qualityLimitationDurationBandwidth);
         fieldSetFlags()[109] = true;
       }
-      if (isValidValue(fields()[110], other.qualityLimitationReason)) {
-        this.qualityLimitationReason = data().deepCopy(fields()[110].schema(), other.qualityLimitationReason);
+      if (isValidValue(fields()[110], other.qualityLimitationDurationOther)) {
+        this.qualityLimitationDurationOther = data().deepCopy(fields()[110].schema(), other.qualityLimitationDurationOther);
         fieldSetFlags()[110] = true;
       }
-      if (isValidValue(fields()[111], other.qualityLimitationResolutionChanges)) {
-        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[111].schema(), other.qualityLimitationResolutionChanges);
+      if (isValidValue(fields()[111], other.qualityLimitationReason)) {
+        this.qualityLimitationReason = data().deepCopy(fields()[111].schema(), other.qualityLimitationReason);
         fieldSetFlags()[111] = true;
       }
-      if (isValidValue(fields()[112], other.encodedFrameWidth)) {
-        this.encodedFrameWidth = data().deepCopy(fields()[112].schema(), other.encodedFrameWidth);
+      if (isValidValue(fields()[112], other.qualityLimitationResolutionChanges)) {
+        this.qualityLimitationResolutionChanges = data().deepCopy(fields()[112].schema(), other.qualityLimitationResolutionChanges);
         fieldSetFlags()[112] = true;
       }
-      if (isValidValue(fields()[113], other.encodedFrameHeight)) {
-        this.encodedFrameHeight = data().deepCopy(fields()[113].schema(), other.encodedFrameHeight);
+      if (isValidValue(fields()[113], other.encodedFrameWidth)) {
+        this.encodedFrameWidth = data().deepCopy(fields()[113].schema(), other.encodedFrameWidth);
         fieldSetFlags()[113] = true;
       }
-      if (isValidValue(fields()[114], other.encodedFrameBitDepth)) {
-        this.encodedFrameBitDepth = data().deepCopy(fields()[114].schema(), other.encodedFrameBitDepth);
+      if (isValidValue(fields()[114], other.encodedFrameHeight)) {
+        this.encodedFrameHeight = data().deepCopy(fields()[114].schema(), other.encodedFrameHeight);
         fieldSetFlags()[114] = true;
       }
-      if (isValidValue(fields()[115], other.encodedFramesPerSecond)) {
-        this.encodedFramesPerSecond = data().deepCopy(fields()[115].schema(), other.encodedFramesPerSecond);
+      if (isValidValue(fields()[115], other.encodedFrameBitDepth)) {
+        this.encodedFrameBitDepth = data().deepCopy(fields()[115].schema(), other.encodedFrameBitDepth);
         fieldSetFlags()[115] = true;
+      }
+      if (isValidValue(fields()[116], other.encodedFramesPerSecond)) {
+        this.encodedFramesPerSecond = data().deepCopy(fields()[116].schema(), other.encodedFramesPerSecond);
+        fieldSetFlags()[116] = true;
       }
     }
 
@@ -3950,6 +3979,53 @@ Indicate the encoded number of decoded frames in the last second received on the
     }
 
     /**
+      * Gets the value of the 'remoteTrackId' field.
+      * Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from
+      * @return The value.
+      */
+    public java.lang.String getRemoteTrackId() {
+      return remoteTrackId;
+    }
+
+    /**
+      * Sets the value of the 'remoteTrackId' field.
+      * Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from
+      * @param value The value of 'remoteTrackId'.
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRemoteTrackId(java.lang.String value) {
+      validate(fields()[12], value);
+      this.remoteTrackId = value;
+      fieldSetFlags()[12] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'remoteTrackId' field has been set.
+      * Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from
+      * @return True if the 'remoteTrackId' field has been set, false otherwise.
+      */
+    public boolean hasRemoteTrackId() {
+      return fieldSetFlags()[12];
+    }
+
+
+    /**
+      * Clears the value of the 'remoteTrackId' field.
+      * Only For Inbound Media Track Reports
+The id of the remote track this inbound track is originated from
+      * @return This builder.
+      */
+    public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRemoteTrackId() {
+      remoteTrackId = null;
+      fieldSetFlags()[12] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'remoteUserId' field.
       * Only For Inbound Media Track Reports
 The webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it
@@ -3967,9 +4043,9 @@ The webrtc app provided user id the track belongs to, or if the webrtc app did n
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRemoteUserId(java.lang.String value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.remoteUserId = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -3980,7 +4056,7 @@ The webrtc app provided user id the track belongs to, or if the webrtc app did n
       * @return True if the 'remoteUserId' field has been set, false otherwise.
       */
     public boolean hasRemoteUserId() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -3992,7 +4068,7 @@ The webrtc app provided user id the track belongs to, or if the webrtc app did n
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRemoteUserId() {
       remoteUserId = null;
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -4014,9 +4090,9 @@ The observer matched remote client Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRemoteClientId(java.lang.String value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.remoteClientId = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -4027,7 +4103,7 @@ The observer matched remote client Id
       * @return True if the 'remoteClientId' field has been set, false otherwise.
       */
     public boolean hasRemoteClientId() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -4039,7 +4115,7 @@ The observer matched remote client Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRemoteClientId() {
       remoteClientId = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -4061,9 +4137,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRemotePeerConnectionId(java.lang.String value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.remotePeerConnectionId = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -4074,7 +4150,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'remotePeerConnectionId' field has been set, false otherwise.
       */
     public boolean hasRemotePeerConnectionId() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -4086,7 +4162,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRemotePeerConnectionId() {
       remotePeerConnectionId = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -4106,9 +4182,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setSampleSeq(int value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.sampleSeq = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -4118,7 +4194,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'sampleSeq' field has been set, false otherwise.
       */
     public boolean hasSampleSeq() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -4128,7 +4204,7 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearSampleSeq() {
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -4148,9 +4224,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setSsrc(long value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.ssrc = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -4160,7 +4236,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'ssrc' field has been set, false otherwise.
       */
     public boolean hasSsrc() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -4170,7 +4246,7 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearSsrc() {
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -4190,9 +4266,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsReceived(java.lang.Integer value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.packetsReceived = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -4202,7 +4278,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'packetsReceived' field has been set, false otherwise.
       */
     public boolean hasPacketsReceived() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -4213,7 +4289,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsReceived() {
       packetsReceived = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -4233,9 +4309,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsLost(java.lang.Integer value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.packetsLost = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -4245,7 +4321,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'packetsLost' field has been set, false otherwise.
       */
     public boolean hasPacketsLost() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -4256,7 +4332,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsLost() {
       packetsLost = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -4276,9 +4352,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setJitter(java.lang.Double value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.jitter = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -4288,7 +4364,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'jitter' field has been set, false otherwise.
       */
     public boolean hasJitter() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -4299,7 +4375,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearJitter() {
       jitter = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -4319,9 +4395,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[20], value);
+      validate(fields()[21], value);
       this.packetsDiscarded = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -4331,7 +4407,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'packetsDiscarded' field has been set, false otherwise.
       */
     public boolean hasPacketsDiscarded() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -4342,7 +4418,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsDiscarded() {
       packetsDiscarded = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -4362,9 +4438,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsRepaired(java.lang.Integer value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.packetsRepaired = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -4374,7 +4450,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'packetsRepaired' field has been set, false otherwise.
       */
     public boolean hasPacketsRepaired() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -4385,7 +4461,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsRepaired() {
       packetsRepaired = null;
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -4405,9 +4481,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBurstPacketsLost(java.lang.Integer value) {
-      validate(fields()[22], value);
+      validate(fields()[23], value);
       this.burstPacketsLost = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -4417,7 +4493,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'burstPacketsLost' field has been set, false otherwise.
       */
     public boolean hasBurstPacketsLost() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[23];
     }
 
 
@@ -4428,7 +4504,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBurstPacketsLost() {
       burstPacketsLost = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -4448,9 +4524,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBurstPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[23], value);
+      validate(fields()[24], value);
       this.burstPacketsDiscarded = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -4460,7 +4536,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'burstPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasBurstPacketsDiscarded() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[24];
     }
 
 
@@ -4471,7 +4547,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBurstPacketsDiscarded() {
       burstPacketsDiscarded = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -4491,9 +4567,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBurstLossCount(java.lang.Integer value) {
-      validate(fields()[24], value);
+      validate(fields()[25], value);
       this.burstLossCount = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -4503,7 +4579,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'burstLossCount' field has been set, false otherwise.
       */
     public boolean hasBurstLossCount() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[25];
     }
 
 
@@ -4514,7 +4590,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBurstLossCount() {
       burstLossCount = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -4534,9 +4610,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBurstDiscardCount(java.lang.Integer value) {
-      validate(fields()[25], value);
+      validate(fields()[26], value);
       this.burstDiscardCount = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -4546,7 +4622,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'burstDiscardCount' field has been set, false otherwise.
       */
     public boolean hasBurstDiscardCount() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[26];
     }
 
 
@@ -4557,7 +4633,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBurstDiscardCount() {
       burstDiscardCount = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -4577,9 +4653,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBurstLossRate(java.lang.Double value) {
-      validate(fields()[26], value);
+      validate(fields()[27], value);
       this.burstLossRate = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -4589,7 +4665,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'burstLossRate' field has been set, false otherwise.
       */
     public boolean hasBurstLossRate() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[27];
     }
 
 
@@ -4600,7 +4676,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBurstLossRate() {
       burstLossRate = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -4620,9 +4696,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBurstDiscardRate(java.lang.Double value) {
-      validate(fields()[27], value);
+      validate(fields()[28], value);
       this.burstDiscardRate = value;
-      fieldSetFlags()[27] = true;
+      fieldSetFlags()[28] = true;
       return this;
     }
 
@@ -4632,7 +4708,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'burstDiscardRate' field has been set, false otherwise.
       */
     public boolean hasBurstDiscardRate() {
-      return fieldSetFlags()[27];
+      return fieldSetFlags()[28];
     }
 
 
@@ -4643,7 +4719,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBurstDiscardRate() {
       burstDiscardRate = null;
-      fieldSetFlags()[27] = false;
+      fieldSetFlags()[28] = false;
       return this;
     }
 
@@ -4663,9 +4739,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setGapLossRate(java.lang.Double value) {
-      validate(fields()[28], value);
+      validate(fields()[29], value);
       this.gapLossRate = value;
-      fieldSetFlags()[28] = true;
+      fieldSetFlags()[29] = true;
       return this;
     }
 
@@ -4675,7 +4751,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'gapLossRate' field has been set, false otherwise.
       */
     public boolean hasGapLossRate() {
-      return fieldSetFlags()[28];
+      return fieldSetFlags()[29];
     }
 
 
@@ -4686,7 +4762,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearGapLossRate() {
       gapLossRate = null;
-      fieldSetFlags()[28] = false;
+      fieldSetFlags()[29] = false;
       return this;
     }
 
@@ -4706,9 +4782,9 @@ The observer matched remote Peer Connection Id
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setGapDiscardRate(java.lang.Double value) {
-      validate(fields()[29], value);
+      validate(fields()[30], value);
       this.gapDiscardRate = value;
-      fieldSetFlags()[29] = true;
+      fieldSetFlags()[30] = true;
       return this;
     }
 
@@ -4718,7 +4794,7 @@ The observer matched remote Peer Connection Id
       * @return True if the 'gapDiscardRate' field has been set, false otherwise.
       */
     public boolean hasGapDiscardRate() {
-      return fieldSetFlags()[29];
+      return fieldSetFlags()[30];
     }
 
 
@@ -4729,7 +4805,7 @@ The observer matched remote Peer Connection Id
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearGapDiscardRate() {
       gapDiscardRate = null;
-      fieldSetFlags()[29] = false;
+      fieldSetFlags()[30] = false;
       return this;
     }
 
@@ -4751,9 +4827,9 @@ Indicate if the last RTP packet received contained voice activity based on the p
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setVoiceActivityFlag(java.lang.Boolean value) {
-      validate(fields()[30], value);
+      validate(fields()[31], value);
       this.voiceActivityFlag = value;
-      fieldSetFlags()[30] = true;
+      fieldSetFlags()[31] = true;
       return this;
     }
 
@@ -4764,7 +4840,7 @@ Indicate if the last RTP packet received contained voice activity based on the p
       * @return True if the 'voiceActivityFlag' field has been set, false otherwise.
       */
     public boolean hasVoiceActivityFlag() {
-      return fieldSetFlags()[30];
+      return fieldSetFlags()[31];
     }
 
 
@@ -4776,7 +4852,7 @@ Indicate if the last RTP packet received contained voice activity based on the p
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearVoiceActivityFlag() {
       voiceActivityFlag = null;
-      fieldSetFlags()[30] = false;
+      fieldSetFlags()[31] = false;
       return this;
     }
 
@@ -4798,9 +4874,9 @@ Represents the timestamp at which the last packet was received on the correspond
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setLastPacketReceivedTimestamp(java.lang.Boolean value) {
-      validate(fields()[31], value);
+      validate(fields()[32], value);
       this.lastPacketReceivedTimestamp = value;
-      fieldSetFlags()[31] = true;
+      fieldSetFlags()[32] = true;
       return this;
     }
 
@@ -4811,7 +4887,7 @@ Represents the timestamp at which the last packet was received on the correspond
       * @return True if the 'lastPacketReceivedTimestamp' field has been set, false otherwise.
       */
     public boolean hasLastPacketReceivedTimestamp() {
-      return fieldSetFlags()[31];
+      return fieldSetFlags()[32];
     }
 
 
@@ -4823,7 +4899,7 @@ Represents the timestamp at which the last packet was received on the correspond
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearLastPacketReceivedTimestamp() {
       lastPacketReceivedTimestamp = null;
-      fieldSetFlags()[31] = false;
+      fieldSetFlags()[32] = false;
       return this;
     }
 
@@ -4843,9 +4919,9 @@ Represents the timestamp at which the last packet was received on the correspond
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setAverageRtcpInterval(java.lang.Double value) {
-      validate(fields()[32], value);
+      validate(fields()[33], value);
       this.averageRtcpInterval = value;
-      fieldSetFlags()[32] = true;
+      fieldSetFlags()[33] = true;
       return this;
     }
 
@@ -4855,7 +4931,7 @@ Represents the timestamp at which the last packet was received on the correspond
       * @return True if the 'averageRtcpInterval' field has been set, false otherwise.
       */
     public boolean hasAverageRtcpInterval() {
-      return fieldSetFlags()[32];
+      return fieldSetFlags()[33];
     }
 
 
@@ -4866,7 +4942,7 @@ Represents the timestamp at which the last packet was received on the correspond
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearAverageRtcpInterval() {
       averageRtcpInterval = null;
-      fieldSetFlags()[32] = false;
+      fieldSetFlags()[33] = false;
       return this;
     }
 
@@ -4888,9 +4964,9 @@ Total number of RTP header and padding bytes received over the corresponding syn
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setHeaderBytesReceived(java.lang.Long value) {
-      validate(fields()[33], value);
+      validate(fields()[34], value);
       this.headerBytesReceived = value;
-      fieldSetFlags()[33] = true;
+      fieldSetFlags()[34] = true;
       return this;
     }
 
@@ -4901,7 +4977,7 @@ Total number of RTP header and padding bytes received over the corresponding syn
       * @return True if the 'headerBytesReceived' field has been set, false otherwise.
       */
     public boolean hasHeaderBytesReceived() {
-      return fieldSetFlags()[33];
+      return fieldSetFlags()[34];
     }
 
 
@@ -4913,7 +4989,7 @@ Total number of RTP header and padding bytes received over the corresponding syn
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearHeaderBytesReceived() {
       headerBytesReceived = null;
-      fieldSetFlags()[33] = false;
+      fieldSetFlags()[34] = false;
       return this;
     }
 
@@ -4935,9 +5011,9 @@ Total number of FEC packets received over the corresponding synchronization sour
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFecPacketsReceived(java.lang.Integer value) {
-      validate(fields()[34], value);
+      validate(fields()[35], value);
       this.fecPacketsReceived = value;
-      fieldSetFlags()[34] = true;
+      fieldSetFlags()[35] = true;
       return this;
     }
 
@@ -4948,7 +5024,7 @@ Total number of FEC packets received over the corresponding synchronization sour
       * @return True if the 'fecPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasFecPacketsReceived() {
-      return fieldSetFlags()[34];
+      return fieldSetFlags()[35];
     }
 
 
@@ -4960,7 +5036,7 @@ Total number of FEC packets received over the corresponding synchronization sour
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFecPacketsReceived() {
       fecPacketsReceived = null;
-      fieldSetFlags()[34] = false;
+      fieldSetFlags()[35] = false;
       return this;
     }
 
@@ -4982,9 +5058,9 @@ Total number of FEC packets discarded over the corresponding synchronization sou
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFecPacketsDiscarded(java.lang.Integer value) {
-      validate(fields()[35], value);
+      validate(fields()[36], value);
       this.fecPacketsDiscarded = value;
-      fieldSetFlags()[35] = true;
+      fieldSetFlags()[36] = true;
       return this;
     }
 
@@ -4995,7 +5071,7 @@ Total number of FEC packets discarded over the corresponding synchronization sou
       * @return True if the 'fecPacketsDiscarded' field has been set, false otherwise.
       */
     public boolean hasFecPacketsDiscarded() {
-      return fieldSetFlags()[35];
+      return fieldSetFlags()[36];
     }
 
 
@@ -5007,7 +5083,7 @@ Total number of FEC packets discarded over the corresponding synchronization sou
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFecPacketsDiscarded() {
       fecPacketsDiscarded = null;
-      fieldSetFlags()[35] = false;
+      fieldSetFlags()[36] = false;
       return this;
     }
 
@@ -5029,9 +5105,9 @@ Total number of bytes received over the corresponding synchronization source (ss
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBytesReceived(java.lang.Long value) {
-      validate(fields()[36], value);
+      validate(fields()[37], value);
       this.bytesReceived = value;
-      fieldSetFlags()[36] = true;
+      fieldSetFlags()[37] = true;
       return this;
     }
 
@@ -5042,7 +5118,7 @@ Total number of bytes received over the corresponding synchronization source (ss
       * @return True if the 'bytesReceived' field has been set, false otherwise.
       */
     public boolean hasBytesReceived() {
-      return fieldSetFlags()[36];
+      return fieldSetFlags()[37];
     }
 
 
@@ -5054,7 +5130,7 @@ Total number of bytes received over the corresponding synchronization source (ss
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBytesReceived() {
       bytesReceived = null;
-      fieldSetFlags()[36] = false;
+      fieldSetFlags()[37] = false;
       return this;
     }
 
@@ -5076,9 +5152,9 @@ Total number of packets received and failed to decrypt over the corresponding sy
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsFailedDecryption(java.lang.Integer value) {
-      validate(fields()[37], value);
+      validate(fields()[38], value);
       this.packetsFailedDecryption = value;
-      fieldSetFlags()[37] = true;
+      fieldSetFlags()[38] = true;
       return this;
     }
 
@@ -5089,7 +5165,7 @@ Total number of packets received and failed to decrypt over the corresponding sy
       * @return True if the 'packetsFailedDecryption' field has been set, false otherwise.
       */
     public boolean hasPacketsFailedDecryption() {
-      return fieldSetFlags()[37];
+      return fieldSetFlags()[38];
     }
 
 
@@ -5101,7 +5177,7 @@ Total number of packets received and failed to decrypt over the corresponding sy
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsFailedDecryption() {
       packetsFailedDecryption = null;
-      fieldSetFlags()[37] = false;
+      fieldSetFlags()[38] = false;
       return this;
     }
 
@@ -5123,9 +5199,9 @@ Total number of packets identified as duplicated over the corresponding synchron
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsDuplicated(java.lang.Integer value) {
-      validate(fields()[38], value);
+      validate(fields()[39], value);
       this.packetsDuplicated = value;
-      fieldSetFlags()[38] = true;
+      fieldSetFlags()[39] = true;
       return this;
     }
 
@@ -5136,7 +5212,7 @@ Total number of packets identified as duplicated over the corresponding synchron
       * @return True if the 'packetsDuplicated' field has been set, false otherwise.
       */
     public boolean hasPacketsDuplicated() {
-      return fieldSetFlags()[38];
+      return fieldSetFlags()[39];
     }
 
 
@@ -5148,7 +5224,7 @@ Total number of packets identified as duplicated over the corresponding synchron
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsDuplicated() {
       packetsDuplicated = null;
-      fieldSetFlags()[38] = false;
+      fieldSetFlags()[39] = false;
       return this;
     }
 
@@ -5170,9 +5246,9 @@ The total number of DSCP flagged RTP packets received over the corresponding syn
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPerDscpPacketsReceived(java.lang.Double value) {
-      validate(fields()[39], value);
+      validate(fields()[40], value);
       this.perDscpPacketsReceived = value;
-      fieldSetFlags()[39] = true;
+      fieldSetFlags()[40] = true;
       return this;
     }
 
@@ -5183,7 +5259,7 @@ The total number of DSCP flagged RTP packets received over the corresponding syn
       * @return True if the 'perDscpPacketsReceived' field has been set, false otherwise.
       */
     public boolean hasPerDscpPacketsReceived() {
-      return fieldSetFlags()[39];
+      return fieldSetFlags()[40];
     }
 
 
@@ -5195,7 +5271,7 @@ The total number of DSCP flagged RTP packets received over the corresponding syn
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPerDscpPacketsReceived() {
       perDscpPacketsReceived = null;
-      fieldSetFlags()[39] = false;
+      fieldSetFlags()[40] = false;
       return this;
     }
 
@@ -5215,9 +5291,9 @@ The total number of DSCP flagged RTP packets received over the corresponding syn
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setNackCount(java.lang.Integer value) {
-      validate(fields()[40], value);
+      validate(fields()[41], value);
       this.nackCount = value;
-      fieldSetFlags()[40] = true;
+      fieldSetFlags()[41] = true;
       return this;
     }
 
@@ -5227,7 +5303,7 @@ The total number of DSCP flagged RTP packets received over the corresponding syn
       * @return True if the 'nackCount' field has been set, false otherwise.
       */
     public boolean hasNackCount() {
-      return fieldSetFlags()[40];
+      return fieldSetFlags()[41];
     }
 
 
@@ -5238,7 +5314,7 @@ The total number of DSCP flagged RTP packets received over the corresponding syn
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearNackCount() {
       nackCount = null;
-      fieldSetFlags()[40] = false;
+      fieldSetFlags()[41] = false;
       return this;
     }
 
@@ -5260,9 +5336,9 @@ The total processing delay in seconds spend on buffering RTP packets from receiv
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalProcessingDelay(java.lang.Double value) {
-      validate(fields()[41], value);
+      validate(fields()[42], value);
       this.totalProcessingDelay = value;
-      fieldSetFlags()[41] = true;
+      fieldSetFlags()[42] = true;
       return this;
     }
 
@@ -5273,7 +5349,7 @@ The total processing delay in seconds spend on buffering RTP packets from receiv
       * @return True if the 'totalProcessingDelay' field has been set, false otherwise.
       */
     public boolean hasTotalProcessingDelay() {
-      return fieldSetFlags()[41];
+      return fieldSetFlags()[42];
     }
 
 
@@ -5285,7 +5361,7 @@ The total processing delay in seconds spend on buffering RTP packets from receiv
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalProcessingDelay() {
       totalProcessingDelay = null;
-      fieldSetFlags()[41] = false;
+      fieldSetFlags()[42] = false;
       return this;
     }
 
@@ -5307,9 +5383,9 @@ The estimated playout time of the corresponded synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEstimatedPlayoutTimestamp(java.lang.Double value) {
-      validate(fields()[42], value);
+      validate(fields()[43], value);
       this.estimatedPlayoutTimestamp = value;
-      fieldSetFlags()[42] = true;
+      fieldSetFlags()[43] = true;
       return this;
     }
 
@@ -5320,7 +5396,7 @@ The estimated playout time of the corresponded synchronization source
       * @return True if the 'estimatedPlayoutTimestamp' field has been set, false otherwise.
       */
     public boolean hasEstimatedPlayoutTimestamp() {
-      return fieldSetFlags()[42];
+      return fieldSetFlags()[43];
     }
 
 
@@ -5332,7 +5408,7 @@ The estimated playout time of the corresponded synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEstimatedPlayoutTimestamp() {
       estimatedPlayoutTimestamp = null;
-      fieldSetFlags()[42] = false;
+      fieldSetFlags()[43] = false;
       return this;
     }
 
@@ -5354,9 +5430,9 @@ The total time of RTP packets spent in jitterbuffer waiting for frame completion
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setJitterBufferDelay(java.lang.Double value) {
-      validate(fields()[43], value);
+      validate(fields()[44], value);
       this.jitterBufferDelay = value;
-      fieldSetFlags()[43] = true;
+      fieldSetFlags()[44] = true;
       return this;
     }
 
@@ -5367,7 +5443,7 @@ The total time of RTP packets spent in jitterbuffer waiting for frame completion
       * @return True if the 'jitterBufferDelay' field has been set, false otherwise.
       */
     public boolean hasJitterBufferDelay() {
-      return fieldSetFlags()[43];
+      return fieldSetFlags()[44];
     }
 
 
@@ -5379,7 +5455,7 @@ The total time of RTP packets spent in jitterbuffer waiting for frame completion
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearJitterBufferDelay() {
       jitterBufferDelay = null;
-      fieldSetFlags()[43] = false;
+      fieldSetFlags()[44] = false;
       return this;
     }
 
@@ -5401,9 +5477,9 @@ The total number of audio samples or video frames that have come out of the jitt
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setJitterBufferEmittedCount(java.lang.Integer value) {
-      validate(fields()[44], value);
+      validate(fields()[45], value);
       this.jitterBufferEmittedCount = value;
-      fieldSetFlags()[44] = true;
+      fieldSetFlags()[45] = true;
       return this;
     }
 
@@ -5414,7 +5490,7 @@ The total number of audio samples or video frames that have come out of the jitt
       * @return True if the 'jitterBufferEmittedCount' field has been set, false otherwise.
       */
     public boolean hasJitterBufferEmittedCount() {
-      return fieldSetFlags()[44];
+      return fieldSetFlags()[45];
     }
 
 
@@ -5426,7 +5502,7 @@ The total number of audio samples or video frames that have come out of the jitt
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearJitterBufferEmittedCount() {
       jitterBufferEmittedCount = null;
-      fieldSetFlags()[44] = false;
+      fieldSetFlags()[45] = false;
       return this;
     }
 
@@ -5448,9 +5524,9 @@ Indicate the name of the decoder implementation library
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setDecoderImplementation(java.lang.String value) {
-      validate(fields()[45], value);
+      validate(fields()[46], value);
       this.decoderImplementation = value;
-      fieldSetFlags()[45] = true;
+      fieldSetFlags()[46] = true;
       return this;
     }
 
@@ -5461,7 +5537,7 @@ Indicate the name of the decoder implementation library
       * @return True if the 'decoderImplementation' field has been set, false otherwise.
       */
     public boolean hasDecoderImplementation() {
-      return fieldSetFlags()[45];
+      return fieldSetFlags()[46];
     }
 
 
@@ -5473,7 +5549,7 @@ Indicate the name of the decoder implementation library
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearDecoderImplementation() {
       decoderImplementation = null;
-      fieldSetFlags()[45] = false;
+      fieldSetFlags()[46] = false;
       return this;
     }
 
@@ -5493,9 +5569,9 @@ Indicate the name of the decoder implementation library
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsSent(java.lang.Integer value) {
-      validate(fields()[46], value);
+      validate(fields()[47], value);
       this.packetsSent = value;
-      fieldSetFlags()[46] = true;
+      fieldSetFlags()[47] = true;
       return this;
     }
 
@@ -5505,7 +5581,7 @@ Indicate the name of the decoder implementation library
       * @return True if the 'packetsSent' field has been set, false otherwise.
       */
     public boolean hasPacketsSent() {
-      return fieldSetFlags()[46];
+      return fieldSetFlags()[47];
     }
 
 
@@ -5516,7 +5592,7 @@ Indicate the name of the decoder implementation library
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsSent() {
       packetsSent = null;
-      fieldSetFlags()[46] = false;
+      fieldSetFlags()[47] = false;
       return this;
     }
 
@@ -5536,9 +5612,9 @@ Indicate the name of the decoder implementation library
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBytesSent(java.lang.Long value) {
-      validate(fields()[47], value);
+      validate(fields()[48], value);
       this.bytesSent = value;
-      fieldSetFlags()[47] = true;
+      fieldSetFlags()[48] = true;
       return this;
     }
 
@@ -5548,7 +5624,7 @@ Indicate the name of the decoder implementation library
       * @return True if the 'bytesSent' field has been set, false otherwise.
       */
     public boolean hasBytesSent() {
-      return fieldSetFlags()[47];
+      return fieldSetFlags()[48];
     }
 
 
@@ -5559,7 +5635,7 @@ Indicate the name of the decoder implementation library
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBytesSent() {
       bytesSent = null;
-      fieldSetFlags()[47] = false;
+      fieldSetFlags()[48] = false;
       return this;
     }
 
@@ -5581,9 +5657,9 @@ The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRemoteTimestamp(java.lang.Double value) {
-      validate(fields()[48], value);
+      validate(fields()[49], value);
       this.remoteTimestamp = value;
-      fieldSetFlags()[48] = true;
+      fieldSetFlags()[49] = true;
       return this;
     }
 
@@ -5594,7 +5670,7 @@ The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported
       * @return True if the 'remoteTimestamp' field has been set, false otherwise.
       */
     public boolean hasRemoteTimestamp() {
-      return fieldSetFlags()[48];
+      return fieldSetFlags()[49];
     }
 
 
@@ -5606,7 +5682,7 @@ The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRemoteTimestamp() {
       remoteTimestamp = null;
-      fieldSetFlags()[48] = false;
+      fieldSetFlags()[49] = false;
       return this;
     }
 
@@ -5628,9 +5704,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setReportsSent(java.lang.Integer value) {
-      validate(fields()[49], value);
+      validate(fields()[50], value);
       this.reportsSent = value;
-      fieldSetFlags()[49] = true;
+      fieldSetFlags()[50] = true;
       return this;
     }
 
@@ -5641,7 +5717,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'reportsSent' field has been set, false otherwise.
       */
     public boolean hasReportsSent() {
-      return fieldSetFlags()[49];
+      return fieldSetFlags()[50];
     }
 
 
@@ -5653,7 +5729,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearReportsSent() {
       reportsSent = null;
-      fieldSetFlags()[49] = false;
+      fieldSetFlags()[50] = false;
       return this;
     }
 
@@ -5673,9 +5749,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEnded(java.lang.Boolean value) {
-      validate(fields()[50], value);
+      validate(fields()[51], value);
       this.ended = value;
-      fieldSetFlags()[50] = true;
+      fieldSetFlags()[51] = true;
       return this;
     }
 
@@ -5685,7 +5761,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'ended' field has been set, false otherwise.
       */
     public boolean hasEnded() {
-      return fieldSetFlags()[50];
+      return fieldSetFlags()[51];
     }
 
 
@@ -5696,7 +5772,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEnded() {
       ended = null;
-      fieldSetFlags()[50] = false;
+      fieldSetFlags()[51] = false;
       return this;
     }
 
@@ -5716,9 +5792,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPayloadType(java.lang.Integer value) {
-      validate(fields()[51], value);
+      validate(fields()[52], value);
       this.payloadType = value;
-      fieldSetFlags()[51] = true;
+      fieldSetFlags()[52] = true;
       return this;
     }
 
@@ -5728,7 +5804,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'payloadType' field has been set, false otherwise.
       */
     public boolean hasPayloadType() {
-      return fieldSetFlags()[51];
+      return fieldSetFlags()[52];
     }
 
 
@@ -5739,7 +5815,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPayloadType() {
       payloadType = null;
-      fieldSetFlags()[51] = false;
+      fieldSetFlags()[52] = false;
       return this;
     }
 
@@ -5759,9 +5835,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setMimeType(java.lang.String value) {
-      validate(fields()[52], value);
+      validate(fields()[53], value);
       this.mimeType = value;
-      fieldSetFlags()[52] = true;
+      fieldSetFlags()[53] = true;
       return this;
     }
 
@@ -5771,7 +5847,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'mimeType' field has been set, false otherwise.
       */
     public boolean hasMimeType() {
-      return fieldSetFlags()[52];
+      return fieldSetFlags()[53];
     }
 
 
@@ -5782,7 +5858,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearMimeType() {
       mimeType = null;
-      fieldSetFlags()[52] = false;
+      fieldSetFlags()[53] = false;
       return this;
     }
 
@@ -5802,9 +5878,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setClockRate(java.lang.Long value) {
-      validate(fields()[53], value);
+      validate(fields()[54], value);
       this.clockRate = value;
-      fieldSetFlags()[53] = true;
+      fieldSetFlags()[54] = true;
       return this;
     }
 
@@ -5814,7 +5890,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'clockRate' field has been set, false otherwise.
       */
     public boolean hasClockRate() {
-      return fieldSetFlags()[53];
+      return fieldSetFlags()[54];
     }
 
 
@@ -5825,7 +5901,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearClockRate() {
       clockRate = null;
-      fieldSetFlags()[53] = false;
+      fieldSetFlags()[54] = false;
       return this;
     }
 
@@ -5845,9 +5921,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setChannels(java.lang.Integer value) {
-      validate(fields()[54], value);
+      validate(fields()[55], value);
       this.channels = value;
-      fieldSetFlags()[54] = true;
+      fieldSetFlags()[55] = true;
       return this;
     }
 
@@ -5857,7 +5933,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'channels' field has been set, false otherwise.
       */
     public boolean hasChannels() {
-      return fieldSetFlags()[54];
+      return fieldSetFlags()[55];
     }
 
 
@@ -5868,7 +5944,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearChannels() {
       channels = null;
-      fieldSetFlags()[54] = false;
+      fieldSetFlags()[55] = false;
       return this;
     }
 
@@ -5888,9 +5964,9 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setSdpFmtpLine(java.lang.String value) {
-      validate(fields()[55], value);
+      validate(fields()[56], value);
       this.sdpFmtpLine = value;
-      fieldSetFlags()[55] = true;
+      fieldSetFlags()[56] = true;
       return this;
     }
 
@@ -5900,7 +5976,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       * @return True if the 'sdpFmtpLine' field has been set, false otherwise.
       */
     public boolean hasSdpFmtpLine() {
-      return fieldSetFlags()[55];
+      return fieldSetFlags()[56];
     }
 
 
@@ -5911,7 +5987,7 @@ The number of SR reports the remote endpoint sent corresponded to synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearSdpFmtpLine() {
       sdpFmtpLine = null;
-      fieldSetFlags()[55] = false;
+      fieldSetFlags()[56] = false;
       return this;
     }
 
@@ -5933,9 +6009,9 @@ The total number of frames dropped at decoding process on the corresponding sync
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesDropped(java.lang.Integer value) {
-      validate(fields()[56], value);
+      validate(fields()[57], value);
       this.framesDropped = value;
-      fieldSetFlags()[56] = true;
+      fieldSetFlags()[57] = true;
       return this;
     }
 
@@ -5946,7 +6022,7 @@ The total number of frames dropped at decoding process on the corresponding sync
       * @return True if the 'framesDropped' field has been set, false otherwise.
       */
     public boolean hasFramesDropped() {
-      return fieldSetFlags()[56];
+      return fieldSetFlags()[57];
     }
 
 
@@ -5958,7 +6034,7 @@ The total number of frames dropped at decoding process on the corresponding sync
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesDropped() {
       framesDropped = null;
-      fieldSetFlags()[56] = false;
+      fieldSetFlags()[57] = false;
       return this;
     }
 
@@ -5980,9 +6056,9 @@ The total number of partial frames lost at decoding process on the corresponding
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPartialFramesLost(java.lang.Double value) {
-      validate(fields()[57], value);
+      validate(fields()[58], value);
       this.partialFramesLost = value;
-      fieldSetFlags()[57] = true;
+      fieldSetFlags()[58] = true;
       return this;
     }
 
@@ -5993,7 +6069,7 @@ The total number of partial frames lost at decoding process on the corresponding
       * @return True if the 'partialFramesLost' field has been set, false otherwise.
       */
     public boolean hasPartialFramesLost() {
-      return fieldSetFlags()[57];
+      return fieldSetFlags()[58];
     }
 
 
@@ -6005,7 +6081,7 @@ The total number of partial frames lost at decoding process on the corresponding
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPartialFramesLost() {
       partialFramesLost = null;
-      fieldSetFlags()[57] = false;
+      fieldSetFlags()[58] = false;
       return this;
     }
 
@@ -6027,9 +6103,9 @@ The total number of full frames lost at decoding process on the corresponding sy
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFullFramesLost(java.lang.Integer value) {
-      validate(fields()[58], value);
+      validate(fields()[59], value);
       this.fullFramesLost = value;
-      fieldSetFlags()[58] = true;
+      fieldSetFlags()[59] = true;
       return this;
     }
 
@@ -6040,7 +6116,7 @@ The total number of full frames lost at decoding process on the corresponding sy
       * @return True if the 'fullFramesLost' field has been set, false otherwise.
       */
     public boolean hasFullFramesLost() {
-      return fieldSetFlags()[58];
+      return fieldSetFlags()[59];
     }
 
 
@@ -6052,7 +6128,7 @@ The total number of full frames lost at decoding process on the corresponding sy
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFullFramesLost() {
       fullFramesLost = null;
-      fieldSetFlags()[58] = false;
+      fieldSetFlags()[59] = false;
       return this;
     }
 
@@ -6076,9 +6152,9 @@ Indicate the number of frames completly and without error decoded on the corresp
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesDecoded(java.lang.Integer value) {
-      validate(fields()[59], value);
+      validate(fields()[60], value);
       this.framesDecoded = value;
-      fieldSetFlags()[59] = true;
+      fieldSetFlags()[60] = true;
       return this;
     }
 
@@ -6090,7 +6166,7 @@ Indicate the number of frames completly and without error decoded on the corresp
       * @return True if the 'framesDecoded' field has been set, false otherwise.
       */
     public boolean hasFramesDecoded() {
-      return fieldSetFlags()[59];
+      return fieldSetFlags()[60];
     }
 
 
@@ -6103,7 +6179,7 @@ Indicate the number of frames completly and without error decoded on the corresp
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesDecoded() {
       framesDecoded = null;
-      fieldSetFlags()[59] = false;
+      fieldSetFlags()[60] = false;
       return this;
     }
 
@@ -6127,9 +6203,9 @@ Indicate the number of keyframes received on the corresponded synchronization so
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setKeyFramesDecoded(java.lang.Integer value) {
-      validate(fields()[60], value);
+      validate(fields()[61], value);
       this.keyFramesDecoded = value;
-      fieldSetFlags()[60] = true;
+      fieldSetFlags()[61] = true;
       return this;
     }
 
@@ -6141,7 +6217,7 @@ Indicate the number of keyframes received on the corresponded synchronization so
       * @return True if the 'keyFramesDecoded' field has been set, false otherwise.
       */
     public boolean hasKeyFramesDecoded() {
-      return fieldSetFlags()[60];
+      return fieldSetFlags()[61];
     }
 
 
@@ -6154,7 +6230,7 @@ Indicate the number of keyframes received on the corresponded synchronization so
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearKeyFramesDecoded() {
       keyFramesDecoded = null;
-      fieldSetFlags()[60] = false;
+      fieldSetFlags()[61] = false;
       return this;
     }
 
@@ -6176,9 +6252,9 @@ Indicate the width of the frame received on the corresponded synchronization sou
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFrameWidth(java.lang.Integer value) {
-      validate(fields()[61], value);
+      validate(fields()[62], value);
       this.frameWidth = value;
-      fieldSetFlags()[61] = true;
+      fieldSetFlags()[62] = true;
       return this;
     }
 
@@ -6189,7 +6265,7 @@ Indicate the width of the frame received on the corresponded synchronization sou
       * @return True if the 'frameWidth' field has been set, false otherwise.
       */
     public boolean hasFrameWidth() {
-      return fieldSetFlags()[61];
+      return fieldSetFlags()[62];
     }
 
 
@@ -6201,7 +6277,7 @@ Indicate the width of the frame received on the corresponded synchronization sou
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFrameWidth() {
       frameWidth = null;
-      fieldSetFlags()[61] = false;
+      fieldSetFlags()[62] = false;
       return this;
     }
 
@@ -6223,9 +6299,9 @@ Indicate the height of the frame received on the corresponded synchronization so
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFrameHeight(java.lang.Integer value) {
-      validate(fields()[62], value);
+      validate(fields()[63], value);
       this.frameHeight = value;
-      fieldSetFlags()[62] = true;
+      fieldSetFlags()[63] = true;
       return this;
     }
 
@@ -6236,7 +6312,7 @@ Indicate the height of the frame received on the corresponded synchronization so
       * @return True if the 'frameHeight' field has been set, false otherwise.
       */
     public boolean hasFrameHeight() {
-      return fieldSetFlags()[62];
+      return fieldSetFlags()[63];
     }
 
 
@@ -6248,7 +6324,7 @@ Indicate the height of the frame received on the corresponded synchronization so
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFrameHeight() {
       frameHeight = null;
-      fieldSetFlags()[62] = false;
+      fieldSetFlags()[63] = false;
       return this;
     }
 
@@ -6270,9 +6346,9 @@ Indicate the bit depth per pixel of the last decoded frame received on the corre
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFrameBitDepth(java.lang.Integer value) {
-      validate(fields()[63], value);
+      validate(fields()[64], value);
       this.frameBitDepth = value;
-      fieldSetFlags()[63] = true;
+      fieldSetFlags()[64] = true;
       return this;
     }
 
@@ -6283,7 +6359,7 @@ Indicate the bit depth per pixel of the last decoded frame received on the corre
       * @return True if the 'frameBitDepth' field has been set, false otherwise.
       */
     public boolean hasFrameBitDepth() {
-      return fieldSetFlags()[63];
+      return fieldSetFlags()[64];
     }
 
 
@@ -6295,7 +6371,7 @@ Indicate the bit depth per pixel of the last decoded frame received on the corre
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFrameBitDepth() {
       frameBitDepth = null;
-      fieldSetFlags()[63] = false;
+      fieldSetFlags()[64] = false;
       return this;
     }
 
@@ -6317,9 +6393,9 @@ Indicate the number of decoded frames in the last second received on the corresp
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesPerSecond(java.lang.Double value) {
-      validate(fields()[64], value);
+      validate(fields()[65], value);
       this.framesPerSecond = value;
-      fieldSetFlags()[64] = true;
+      fieldSetFlags()[65] = true;
       return this;
     }
 
@@ -6330,7 +6406,7 @@ Indicate the number of decoded frames in the last second received on the corresp
       * @return True if the 'framesPerSecond' field has been set, false otherwise.
       */
     public boolean hasFramesPerSecond() {
-      return fieldSetFlags()[64];
+      return fieldSetFlags()[65];
     }
 
 
@@ -6342,7 +6418,7 @@ Indicate the number of decoded frames in the last second received on the corresp
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesPerSecond() {
       framesPerSecond = null;
-      fieldSetFlags()[64] = false;
+      fieldSetFlags()[65] = false;
       return this;
     }
 
@@ -6364,9 +6440,9 @@ sum of QP values of frames decoded on the corresponded synchronization source (s
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQpSum(java.lang.Long value) {
-      validate(fields()[65], value);
+      validate(fields()[66], value);
       this.qpSum = value;
-      fieldSetFlags()[65] = true;
+      fieldSetFlags()[66] = true;
       return this;
     }
 
@@ -6377,7 +6453,7 @@ sum of QP values of frames decoded on the corresponded synchronization source (s
       * @return True if the 'qpSum' field has been set, false otherwise.
       */
     public boolean hasQpSum() {
-      return fieldSetFlags()[65];
+      return fieldSetFlags()[66];
     }
 
 
@@ -6389,7 +6465,7 @@ sum of QP values of frames decoded on the corresponded synchronization source (s
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQpSum() {
       qpSum = null;
-      fieldSetFlags()[65] = false;
+      fieldSetFlags()[66] = false;
       return this;
     }
 
@@ -6413,9 +6489,9 @@ The total number of seconds spent on decoding frames on the corresponded synchro
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalDecodeTime(java.lang.Long value) {
-      validate(fields()[66], value);
+      validate(fields()[67], value);
       this.totalDecodeTime = value;
-      fieldSetFlags()[66] = true;
+      fieldSetFlags()[67] = true;
       return this;
     }
 
@@ -6427,7 +6503,7 @@ The total number of seconds spent on decoding frames on the corresponded synchro
       * @return True if the 'totalDecodeTime' field has been set, false otherwise.
       */
     public boolean hasTotalDecodeTime() {
-      return fieldSetFlags()[66];
+      return fieldSetFlags()[67];
     }
 
 
@@ -6440,7 +6516,7 @@ The total number of seconds spent on decoding frames on the corresponded synchro
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalDecodeTime() {
       totalDecodeTime = null;
-      fieldSetFlags()[66] = false;
+      fieldSetFlags()[67] = false;
       return this;
     }
 
@@ -6464,9 +6540,9 @@ The total number of inter frame delay on the corresponded synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalInterFrameDelay(java.lang.Long value) {
-      validate(fields()[67], value);
+      validate(fields()[68], value);
       this.totalInterFrameDelay = value;
-      fieldSetFlags()[67] = true;
+      fieldSetFlags()[68] = true;
       return this;
     }
 
@@ -6478,7 +6554,7 @@ The total number of inter frame delay on the corresponded synchronization source
       * @return True if the 'totalInterFrameDelay' field has been set, false otherwise.
       */
     public boolean hasTotalInterFrameDelay() {
-      return fieldSetFlags()[67];
+      return fieldSetFlags()[68];
     }
 
 
@@ -6491,7 +6567,7 @@ The total number of inter frame delay on the corresponded synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalInterFrameDelay() {
       totalInterFrameDelay = null;
-      fieldSetFlags()[67] = false;
+      fieldSetFlags()[68] = false;
       return this;
     }
 
@@ -6515,9 +6591,9 @@ The total number of inter frame delay squere on the corresponded synchronization
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalSquaredInterFrameDelay(java.lang.Long value) {
-      validate(fields()[68], value);
+      validate(fields()[69], value);
       this.totalSquaredInterFrameDelay = value;
-      fieldSetFlags()[68] = true;
+      fieldSetFlags()[69] = true;
       return this;
     }
 
@@ -6529,7 +6605,7 @@ The total number of inter frame delay squere on the corresponded synchronization
       * @return True if the 'totalSquaredInterFrameDelay' field has been set, false otherwise.
       */
     public boolean hasTotalSquaredInterFrameDelay() {
-      return fieldSetFlags()[68];
+      return fieldSetFlags()[69];
     }
 
 
@@ -6542,7 +6618,7 @@ The total number of inter frame delay squere on the corresponded synchronization
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalSquaredInterFrameDelay() {
       totalSquaredInterFrameDelay = null;
-      fieldSetFlags()[68] = false;
+      fieldSetFlags()[69] = false;
       return this;
     }
 
@@ -6564,9 +6640,9 @@ Count the total number of Full Intra Request sent by this receiver and belongs t
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFirCount(java.lang.Integer value) {
-      validate(fields()[69], value);
+      validate(fields()[70], value);
       this.firCount = value;
-      fieldSetFlags()[69] = true;
+      fieldSetFlags()[70] = true;
       return this;
     }
 
@@ -6577,7 +6653,7 @@ Count the total number of Full Intra Request sent by this receiver and belongs t
       * @return True if the 'firCount' field has been set, false otherwise.
       */
     public boolean hasFirCount() {
-      return fieldSetFlags()[69];
+      return fieldSetFlags()[70];
     }
 
 
@@ -6589,7 +6665,7 @@ Count the total number of Full Intra Request sent by this receiver and belongs t
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFirCount() {
       firCount = null;
-      fieldSetFlags()[69] = false;
+      fieldSetFlags()[70] = false;
       return this;
     }
 
@@ -6611,9 +6687,9 @@ Count the total number of Picture Loss Indication sent by this receiver and belo
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPliCount(java.lang.Integer value) {
-      validate(fields()[70], value);
+      validate(fields()[71], value);
       this.pliCount = value;
-      fieldSetFlags()[70] = true;
+      fieldSetFlags()[71] = true;
       return this;
     }
 
@@ -6624,7 +6700,7 @@ Count the total number of Picture Loss Indication sent by this receiver and belo
       * @return True if the 'pliCount' field has been set, false otherwise.
       */
     public boolean hasPliCount() {
-      return fieldSetFlags()[70];
+      return fieldSetFlags()[71];
     }
 
 
@@ -6636,7 +6712,7 @@ Count the total number of Picture Loss Indication sent by this receiver and belo
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPliCount() {
       pliCount = null;
-      fieldSetFlags()[70] = false;
+      fieldSetFlags()[71] = false;
       return this;
     }
 
@@ -6658,9 +6734,9 @@ Count the total number of Slice Loss Indication sent by this receiver and belong
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setSliCount(java.lang.Integer value) {
-      validate(fields()[71], value);
+      validate(fields()[72], value);
       this.sliCount = value;
-      fieldSetFlags()[71] = true;
+      fieldSetFlags()[72] = true;
       return this;
     }
 
@@ -6671,7 +6747,7 @@ Count the total number of Slice Loss Indication sent by this receiver and belong
       * @return True if the 'sliCount' field has been set, false otherwise.
       */
     public boolean hasSliCount() {
-      return fieldSetFlags()[71];
+      return fieldSetFlags()[72];
     }
 
 
@@ -6683,7 +6759,7 @@ Count the total number of Slice Loss Indication sent by this receiver and belong
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearSliCount() {
       sliCount = null;
-      fieldSetFlags()[71] = false;
+      fieldSetFlags()[72] = false;
       return this;
     }
 
@@ -6707,9 +6783,9 @@ Represents the total number of complete frames received on the corresponded sync
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesReceived(java.lang.Integer value) {
-      validate(fields()[72], value);
+      validate(fields()[73], value);
       this.framesReceived = value;
-      fieldSetFlags()[72] = true;
+      fieldSetFlags()[73] = true;
       return this;
     }
 
@@ -6721,7 +6797,7 @@ Represents the total number of complete frames received on the corresponded sync
       * @return True if the 'framesReceived' field has been set, false otherwise.
       */
     public boolean hasFramesReceived() {
-      return fieldSetFlags()[72];
+      return fieldSetFlags()[73];
     }
 
 
@@ -6734,7 +6810,7 @@ Represents the total number of complete frames received on the corresponded sync
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesReceived() {
       framesReceived = null;
-      fieldSetFlags()[72] = false;
+      fieldSetFlags()[73] = false;
       return this;
     }
 
@@ -6756,9 +6832,9 @@ Represents the total number of complete frames received on the corresponded sync
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRid(java.lang.String value) {
-      validate(fields()[73], value);
+      validate(fields()[74], value);
       this.rid = value;
-      fieldSetFlags()[73] = true;
+      fieldSetFlags()[74] = true;
       return this;
     }
 
@@ -6769,7 +6845,7 @@ Represents the total number of complete frames received on the corresponded sync
       * @return True if the 'rid' field has been set, false otherwise.
       */
     public boolean hasRid() {
-      return fieldSetFlags()[73];
+      return fieldSetFlags()[74];
     }
 
 
@@ -6781,7 +6857,7 @@ Represents the total number of complete frames received on the corresponded sync
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRid() {
       rid = null;
-      fieldSetFlags()[73] = false;
+      fieldSetFlags()[74] = false;
       return this;
     }
 
@@ -6803,9 +6879,9 @@ Represents the total number of complete frames received on the corresponded sync
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setLastPacketSentTimestamp(java.lang.Long value) {
-      validate(fields()[74], value);
+      validate(fields()[75], value);
       this.lastPacketSentTimestamp = value;
-      fieldSetFlags()[74] = true;
+      fieldSetFlags()[75] = true;
       return this;
     }
 
@@ -6816,7 +6892,7 @@ Represents the total number of complete frames received on the corresponded sync
       * @return True if the 'lastPacketSentTimestamp' field has been set, false otherwise.
       */
     public boolean hasLastPacketSentTimestamp() {
-      return fieldSetFlags()[74];
+      return fieldSetFlags()[75];
     }
 
 
@@ -6828,7 +6904,7 @@ Represents the total number of complete frames received on the corresponded sync
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearLastPacketSentTimestamp() {
       lastPacketSentTimestamp = null;
-      fieldSetFlags()[74] = false;
+      fieldSetFlags()[75] = false;
       return this;
     }
 
@@ -6850,9 +6926,9 @@ Total number of RTP header and padding bytes sent over the corresponding synchro
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setHeaderBytesSent(java.lang.Long value) {
-      validate(fields()[75], value);
+      validate(fields()[76], value);
       this.headerBytesSent = value;
-      fieldSetFlags()[75] = true;
+      fieldSetFlags()[76] = true;
       return this;
     }
 
@@ -6863,7 +6939,7 @@ Total number of RTP header and padding bytes sent over the corresponding synchro
       * @return True if the 'headerBytesSent' field has been set, false otherwise.
       */
     public boolean hasHeaderBytesSent() {
-      return fieldSetFlags()[75];
+      return fieldSetFlags()[76];
     }
 
 
@@ -6875,7 +6951,7 @@ Total number of RTP header and padding bytes sent over the corresponding synchro
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearHeaderBytesSent() {
       headerBytesSent = null;
-      fieldSetFlags()[75] = false;
+      fieldSetFlags()[76] = false;
       return this;
     }
 
@@ -6897,9 +6973,9 @@ Total number of RTP packets discarded at sender side over the corresponding sync
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPacketsDiscardedOnSend(java.lang.Integer value) {
-      validate(fields()[76], value);
+      validate(fields()[77], value);
       this.packetsDiscardedOnSend = value;
-      fieldSetFlags()[76] = true;
+      fieldSetFlags()[77] = true;
       return this;
     }
 
@@ -6910,7 +6986,7 @@ Total number of RTP packets discarded at sender side over the corresponding sync
       * @return True if the 'packetsDiscardedOnSend' field has been set, false otherwise.
       */
     public boolean hasPacketsDiscardedOnSend() {
-      return fieldSetFlags()[76];
+      return fieldSetFlags()[77];
     }
 
 
@@ -6922,7 +6998,7 @@ Total number of RTP packets discarded at sender side over the corresponding sync
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPacketsDiscardedOnSend() {
       packetsDiscardedOnSend = null;
-      fieldSetFlags()[76] = false;
+      fieldSetFlags()[77] = false;
       return this;
     }
 
@@ -6944,9 +7020,9 @@ Total number of RTP bytes discarded at sender side over the corresponding synchr
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setBytesDiscardedOnSend(java.lang.Long value) {
-      validate(fields()[77], value);
+      validate(fields()[78], value);
       this.bytesDiscardedOnSend = value;
-      fieldSetFlags()[77] = true;
+      fieldSetFlags()[78] = true;
       return this;
     }
 
@@ -6957,7 +7033,7 @@ Total number of RTP bytes discarded at sender side over the corresponding synchr
       * @return True if the 'bytesDiscardedOnSend' field has been set, false otherwise.
       */
     public boolean hasBytesDiscardedOnSend() {
-      return fieldSetFlags()[77];
+      return fieldSetFlags()[78];
     }
 
 
@@ -6969,7 +7045,7 @@ Total number of RTP bytes discarded at sender side over the corresponding synchr
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearBytesDiscardedOnSend() {
       bytesDiscardedOnSend = null;
-      fieldSetFlags()[77] = false;
+      fieldSetFlags()[78] = false;
       return this;
     }
 
@@ -6991,9 +7067,9 @@ Total number of FEC packets sent over the corresponding synchronization source (
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFecPacketsSent(java.lang.Integer value) {
-      validate(fields()[78], value);
+      validate(fields()[79], value);
       this.fecPacketsSent = value;
-      fieldSetFlags()[78] = true;
+      fieldSetFlags()[79] = true;
       return this;
     }
 
@@ -7004,7 +7080,7 @@ Total number of FEC packets sent over the corresponding synchronization source (
       * @return True if the 'fecPacketsSent' field has been set, false otherwise.
       */
     public boolean hasFecPacketsSent() {
-      return fieldSetFlags()[78];
+      return fieldSetFlags()[79];
     }
 
 
@@ -7016,7 +7092,7 @@ Total number of FEC packets sent over the corresponding synchronization source (
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFecPacketsSent() {
       fecPacketsSent = null;
-      fieldSetFlags()[78] = false;
+      fieldSetFlags()[79] = false;
       return this;
     }
 
@@ -7038,9 +7114,9 @@ Total number of retransmitted packets sent over the corresponding synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRetransmittedPacketsSent(java.lang.Integer value) {
-      validate(fields()[79], value);
+      validate(fields()[80], value);
       this.retransmittedPacketsSent = value;
-      fieldSetFlags()[79] = true;
+      fieldSetFlags()[80] = true;
       return this;
     }
 
@@ -7051,7 +7127,7 @@ Total number of retransmitted packets sent over the corresponding synchronizatio
       * @return True if the 'retransmittedPacketsSent' field has been set, false otherwise.
       */
     public boolean hasRetransmittedPacketsSent() {
-      return fieldSetFlags()[79];
+      return fieldSetFlags()[80];
     }
 
 
@@ -7063,7 +7139,7 @@ Total number of retransmitted packets sent over the corresponding synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRetransmittedPacketsSent() {
       retransmittedPacketsSent = null;
-      fieldSetFlags()[79] = false;
+      fieldSetFlags()[80] = false;
       return this;
     }
 
@@ -7085,9 +7161,9 @@ Total number of retransmitted bytes sent over the corresponding synchronization 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRetransmittedBytesSent(java.lang.Long value) {
-      validate(fields()[80], value);
+      validate(fields()[81], value);
       this.retransmittedBytesSent = value;
-      fieldSetFlags()[80] = true;
+      fieldSetFlags()[81] = true;
       return this;
     }
 
@@ -7098,7 +7174,7 @@ Total number of retransmitted bytes sent over the corresponding synchronization 
       * @return True if the 'retransmittedBytesSent' field has been set, false otherwise.
       */
     public boolean hasRetransmittedBytesSent() {
-      return fieldSetFlags()[80];
+      return fieldSetFlags()[81];
     }
 
 
@@ -7110,7 +7186,7 @@ Total number of retransmitted bytes sent over the corresponding synchronization 
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRetransmittedBytesSent() {
       retransmittedBytesSent = null;
-      fieldSetFlags()[80] = false;
+      fieldSetFlags()[81] = false;
       return this;
     }
 
@@ -7132,9 +7208,9 @@ Reflects the current encoder target in bits per second.
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTargetBitrate(java.lang.Long value) {
-      validate(fields()[81], value);
+      validate(fields()[82], value);
       this.targetBitrate = value;
-      fieldSetFlags()[81] = true;
+      fieldSetFlags()[82] = true;
       return this;
     }
 
@@ -7145,7 +7221,7 @@ Reflects the current encoder target in bits per second.
       * @return True if the 'targetBitrate' field has been set, false otherwise.
       */
     public boolean hasTargetBitrate() {
-      return fieldSetFlags()[81];
+      return fieldSetFlags()[82];
     }
 
 
@@ -7157,7 +7233,7 @@ Reflects the current encoder target in bits per second.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTargetBitrate() {
       targetBitrate = null;
-      fieldSetFlags()[81] = false;
+      fieldSetFlags()[82] = false;
       return this;
     }
 
@@ -7179,9 +7255,9 @@ The total number of bytes of RTP coherent frames encoded completly depending on 
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalEncodedBytesTarget(java.lang.Long value) {
-      validate(fields()[82], value);
+      validate(fields()[83], value);
       this.totalEncodedBytesTarget = value;
-      fieldSetFlags()[82] = true;
+      fieldSetFlags()[83] = true;
       return this;
     }
 
@@ -7192,7 +7268,7 @@ The total number of bytes of RTP coherent frames encoded completly depending on 
       * @return True if the 'totalEncodedBytesTarget' field has been set, false otherwise.
       */
     public boolean hasTotalEncodedBytesTarget() {
-      return fieldSetFlags()[82];
+      return fieldSetFlags()[83];
     }
 
 
@@ -7204,7 +7280,7 @@ The total number of bytes of RTP coherent frames encoded completly depending on 
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalEncodedBytesTarget() {
       totalEncodedBytesTarget = null;
-      fieldSetFlags()[82] = false;
+      fieldSetFlags()[83] = false;
       return this;
     }
 
@@ -7228,9 +7304,9 @@ The total number of samples sent over the corresponding synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalSamplesSent(java.lang.Integer value) {
-      validate(fields()[83], value);
+      validate(fields()[84], value);
       this.totalSamplesSent = value;
-      fieldSetFlags()[83] = true;
+      fieldSetFlags()[84] = true;
       return this;
     }
 
@@ -7242,7 +7318,7 @@ The total number of samples sent over the corresponding synchronization source
       * @return True if the 'totalSamplesSent' field has been set, false otherwise.
       */
     public boolean hasTotalSamplesSent() {
-      return fieldSetFlags()[83];
+      return fieldSetFlags()[84];
     }
 
 
@@ -7255,7 +7331,7 @@ The total number of samples sent over the corresponding synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalSamplesSent() {
       totalSamplesSent = null;
-      fieldSetFlags()[83] = false;
+      fieldSetFlags()[84] = false;
       return this;
     }
 
@@ -7279,9 +7355,9 @@ The total number of samples encoded by SILK portion in opus sent over the corres
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setSamplesEncodedWithSilk(java.lang.Integer value) {
-      validate(fields()[84], value);
+      validate(fields()[85], value);
       this.samplesEncodedWithSilk = value;
-      fieldSetFlags()[84] = true;
+      fieldSetFlags()[85] = true;
       return this;
     }
 
@@ -7293,7 +7369,7 @@ The total number of samples encoded by SILK portion in opus sent over the corres
       * @return True if the 'samplesEncodedWithSilk' field has been set, false otherwise.
       */
     public boolean hasSamplesEncodedWithSilk() {
-      return fieldSetFlags()[84];
+      return fieldSetFlags()[85];
     }
 
 
@@ -7306,7 +7382,7 @@ The total number of samples encoded by SILK portion in opus sent over the corres
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearSamplesEncodedWithSilk() {
       samplesEncodedWithSilk = null;
-      fieldSetFlags()[84] = false;
+      fieldSetFlags()[85] = false;
       return this;
     }
 
@@ -7330,9 +7406,9 @@ The total number of samples encoded by CELT portion in opus sent over the corres
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setSamplesEncodedWithCelt(java.lang.Integer value) {
-      validate(fields()[85], value);
+      validate(fields()[86], value);
       this.samplesEncodedWithCelt = value;
-      fieldSetFlags()[85] = true;
+      fieldSetFlags()[86] = true;
       return this;
     }
 
@@ -7344,7 +7420,7 @@ The total number of samples encoded by CELT portion in opus sent over the corres
       * @return True if the 'samplesEncodedWithCelt' field has been set, false otherwise.
       */
     public boolean hasSamplesEncodedWithCelt() {
-      return fieldSetFlags()[85];
+      return fieldSetFlags()[86];
     }
 
 
@@ -7357,7 +7433,7 @@ The total number of samples encoded by CELT portion in opus sent over the corres
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearSamplesEncodedWithCelt() {
       samplesEncodedWithCelt = null;
-      fieldSetFlags()[85] = false;
+      fieldSetFlags()[86] = false;
       return this;
     }
 
@@ -7379,9 +7455,9 @@ The total number of delay packets buffered at the sender side in seconds over th
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalPacketSendDelay(java.lang.Double value) {
-      validate(fields()[86], value);
+      validate(fields()[87], value);
       this.totalPacketSendDelay = value;
-      fieldSetFlags()[86] = true;
+      fieldSetFlags()[87] = true;
       return this;
     }
 
@@ -7392,7 +7468,7 @@ The total number of delay packets buffered at the sender side in seconds over th
       * @return True if the 'totalPacketSendDelay' field has been set, false otherwise.
       */
     public boolean hasTotalPacketSendDelay() {
-      return fieldSetFlags()[86];
+      return fieldSetFlags()[87];
     }
 
 
@@ -7404,7 +7480,7 @@ The total number of delay packets buffered at the sender side in seconds over th
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalPacketSendDelay() {
       totalPacketSendDelay = null;
-      fieldSetFlags()[86] = false;
+      fieldSetFlags()[87] = false;
       return this;
     }
 
@@ -7426,9 +7502,9 @@ The total number of DSCP flagged RTP packets sent over the corresponding synchro
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setPerDscpPacketsSent(java.lang.Double value) {
-      validate(fields()[87], value);
+      validate(fields()[88], value);
       this.perDscpPacketsSent = value;
-      fieldSetFlags()[87] = true;
+      fieldSetFlags()[88] = true;
       return this;
     }
 
@@ -7439,7 +7515,7 @@ The total number of DSCP flagged RTP packets sent over the corresponding synchro
       * @return True if the 'perDscpPacketsSent' field has been set, false otherwise.
       */
     public boolean hasPerDscpPacketsSent() {
-      return fieldSetFlags()[87];
+      return fieldSetFlags()[88];
     }
 
 
@@ -7451,7 +7527,7 @@ The total number of DSCP flagged RTP packets sent over the corresponding synchro
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearPerDscpPacketsSent() {
       perDscpPacketsSent = null;
-      fieldSetFlags()[87] = false;
+      fieldSetFlags()[88] = false;
       return this;
     }
 
@@ -7473,9 +7549,9 @@ Indicate the name of the encoder implementation library
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEncoderImplementation(java.lang.String value) {
-      validate(fields()[88], value);
+      validate(fields()[89], value);
       this.encoderImplementation = value;
-      fieldSetFlags()[88] = true;
+      fieldSetFlags()[89] = true;
       return this;
     }
 
@@ -7486,7 +7562,7 @@ Indicate the name of the encoder implementation library
       * @return True if the 'encoderImplementation' field has been set, false otherwise.
       */
     public boolean hasEncoderImplementation() {
-      return fieldSetFlags()[88];
+      return fieldSetFlags()[89];
     }
 
 
@@ -7498,7 +7574,7 @@ Indicate the name of the encoder implementation library
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEncoderImplementation() {
       encoderImplementation = null;
-      fieldSetFlags()[88] = false;
+      fieldSetFlags()[89] = false;
       return this;
     }
 
@@ -7520,9 +7596,9 @@ RTT measurement in seconds based on (most likely) SR, and RR belongs to the corr
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRoundTripTime(java.lang.Double value) {
-      validate(fields()[89], value);
+      validate(fields()[90], value);
       this.roundTripTime = value;
-      fieldSetFlags()[89] = true;
+      fieldSetFlags()[90] = true;
       return this;
     }
 
@@ -7533,7 +7609,7 @@ RTT measurement in seconds based on (most likely) SR, and RR belongs to the corr
       * @return True if the 'roundTripTime' field has been set, false otherwise.
       */
     public boolean hasRoundTripTime() {
-      return fieldSetFlags()[89];
+      return fieldSetFlags()[90];
     }
 
 
@@ -7545,7 +7621,7 @@ RTT measurement in seconds based on (most likely) SR, and RR belongs to the corr
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRoundTripTime() {
       roundTripTime = null;
-      fieldSetFlags()[89] = false;
+      fieldSetFlags()[90] = false;
       return this;
     }
 
@@ -7567,9 +7643,9 @@ The sum of RTT measurements belongs to the corresponded synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalRoundTripTime(java.lang.Double value) {
-      validate(fields()[90], value);
+      validate(fields()[91], value);
       this.totalRoundTripTime = value;
-      fieldSetFlags()[90] = true;
+      fieldSetFlags()[91] = true;
       return this;
     }
 
@@ -7580,7 +7656,7 @@ The sum of RTT measurements belongs to the corresponded synchronization source
       * @return True if the 'totalRoundTripTime' field has been set, false otherwise.
       */
     public boolean hasTotalRoundTripTime() {
-      return fieldSetFlags()[90];
+      return fieldSetFlags()[91];
     }
 
 
@@ -7592,7 +7668,7 @@ The sum of RTT measurements belongs to the corresponded synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalRoundTripTime() {
       totalRoundTripTime = null;
-      fieldSetFlags()[90] = false;
+      fieldSetFlags()[91] = false;
       return this;
     }
 
@@ -7614,9 +7690,9 @@ The receiver reported fractional lost belongs to the corresponded synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFractionLost(java.lang.Double value) {
-      validate(fields()[91], value);
+      validate(fields()[92], value);
       this.fractionLost = value;
-      fieldSetFlags()[91] = true;
+      fieldSetFlags()[92] = true;
       return this;
     }
 
@@ -7627,7 +7703,7 @@ The receiver reported fractional lost belongs to the corresponded synchronizatio
       * @return True if the 'fractionLost' field has been set, false otherwise.
       */
     public boolean hasFractionLost() {
-      return fieldSetFlags()[91];
+      return fieldSetFlags()[92];
     }
 
 
@@ -7639,7 +7715,7 @@ The receiver reported fractional lost belongs to the corresponded synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFractionLost() {
       fractionLost = null;
-      fieldSetFlags()[91] = false;
+      fieldSetFlags()[92] = false;
       return this;
     }
 
@@ -7661,9 +7737,9 @@ The total number of RR reports received, which is the base of the remote inbound
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setReportsReceived(java.lang.Integer value) {
-      validate(fields()[92], value);
+      validate(fields()[93], value);
       this.reportsReceived = value;
-      fieldSetFlags()[92] = true;
+      fieldSetFlags()[93] = true;
       return this;
     }
 
@@ -7674,7 +7750,7 @@ The total number of RR reports received, which is the base of the remote inbound
       * @return True if the 'reportsReceived' field has been set, false otherwise.
       */
     public boolean hasReportsReceived() {
-      return fieldSetFlags()[92];
+      return fieldSetFlags()[93];
     }
 
 
@@ -7686,7 +7762,7 @@ The total number of RR reports received, which is the base of the remote inbound
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearReportsReceived() {
       reportsReceived = null;
-      fieldSetFlags()[92] = false;
+      fieldSetFlags()[93] = false;
       return this;
     }
 
@@ -7708,9 +7784,9 @@ The total number of calculated RR measurements received on this source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRoundTripTimeMeasurements(java.lang.Integer value) {
-      validate(fields()[93], value);
+      validate(fields()[94], value);
       this.roundTripTimeMeasurements = value;
-      fieldSetFlags()[93] = true;
+      fieldSetFlags()[94] = true;
       return this;
     }
 
@@ -7721,7 +7797,7 @@ The total number of calculated RR measurements received on this source
       * @return True if the 'roundTripTimeMeasurements' field has been set, false otherwise.
       */
     public boolean hasRoundTripTimeMeasurements() {
-      return fieldSetFlags()[93];
+      return fieldSetFlags()[94];
     }
 
 
@@ -7733,7 +7809,7 @@ The total number of calculated RR measurements received on this source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRoundTripTimeMeasurements() {
       roundTripTimeMeasurements = null;
-      fieldSetFlags()[93] = false;
+      fieldSetFlags()[94] = false;
       return this;
     }
 
@@ -7755,9 +7831,9 @@ True if the corresponded media source is remote, false otherwise (or null depend
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setRelayedSource(java.lang.Boolean value) {
-      validate(fields()[94], value);
+      validate(fields()[95], value);
       this.relayedSource = value;
-      fieldSetFlags()[94] = true;
+      fieldSetFlags()[95] = true;
       return this;
     }
 
@@ -7768,7 +7844,7 @@ True if the corresponded media source is remote, false otherwise (or null depend
       * @return True if the 'relayedSource' field has been set, false otherwise.
       */
     public boolean hasRelayedSource() {
-      return fieldSetFlags()[94];
+      return fieldSetFlags()[95];
     }
 
 
@@ -7780,7 +7856,7 @@ True if the corresponded media source is remote, false otherwise (or null depend
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearRelayedSource() {
       relayedSource = null;
-      fieldSetFlags()[94] = false;
+      fieldSetFlags()[95] = false;
       return this;
     }
 
@@ -7804,9 +7880,9 @@ Represents the audio level reported by the media source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setAudioLevel(java.lang.Double value) {
-      validate(fields()[95], value);
+      validate(fields()[96], value);
       this.audioLevel = value;
-      fieldSetFlags()[95] = true;
+      fieldSetFlags()[96] = true;
       return this;
     }
 
@@ -7818,7 +7894,7 @@ Represents the audio level reported by the media source
       * @return True if the 'audioLevel' field has been set, false otherwise.
       */
     public boolean hasAudioLevel() {
-      return fieldSetFlags()[95];
+      return fieldSetFlags()[96];
     }
 
 
@@ -7831,7 +7907,7 @@ Represents the audio level reported by the media source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearAudioLevel() {
       audioLevel = null;
-      fieldSetFlags()[95] = false;
+      fieldSetFlags()[96] = false;
       return this;
     }
 
@@ -7855,9 +7931,9 @@ Represents the energy level reported by the media source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalAudioEnergy(java.lang.Double value) {
-      validate(fields()[96], value);
+      validate(fields()[97], value);
       this.totalAudioEnergy = value;
-      fieldSetFlags()[96] = true;
+      fieldSetFlags()[97] = true;
       return this;
     }
 
@@ -7869,7 +7945,7 @@ Represents the energy level reported by the media source
       * @return True if the 'totalAudioEnergy' field has been set, false otherwise.
       */
     public boolean hasTotalAudioEnergy() {
-      return fieldSetFlags()[96];
+      return fieldSetFlags()[97];
     }
 
 
@@ -7882,7 +7958,7 @@ Represents the energy level reported by the media source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalAudioEnergy() {
       totalAudioEnergy = null;
-      fieldSetFlags()[96] = false;
+      fieldSetFlags()[97] = false;
       return this;
     }
 
@@ -7906,9 +7982,9 @@ Represents the total duration of the audio samples the media source actually tra
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalSamplesDuration(java.lang.Double value) {
-      validate(fields()[97], value);
+      validate(fields()[98], value);
       this.totalSamplesDuration = value;
-      fieldSetFlags()[97] = true;
+      fieldSetFlags()[98] = true;
       return this;
     }
 
@@ -7920,7 +7996,7 @@ Represents the total duration of the audio samples the media source actually tra
       * @return True if the 'totalSamplesDuration' field has been set, false otherwise.
       */
     public boolean hasTotalSamplesDuration() {
-      return fieldSetFlags()[97];
+      return fieldSetFlags()[98];
     }
 
 
@@ -7933,7 +8009,7 @@ Represents the total duration of the audio samples the media source actually tra
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalSamplesDuration() {
       totalSamplesDuration = null;
-      fieldSetFlags()[97] = false;
+      fieldSetFlags()[98] = false;
       return this;
     }
 
@@ -7957,9 +8033,9 @@ Represents the echo cancellation in decibels corresponded to the media source.
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEchoReturnLoss(java.lang.Double value) {
-      validate(fields()[98], value);
+      validate(fields()[99], value);
       this.echoReturnLoss = value;
-      fieldSetFlags()[98] = true;
+      fieldSetFlags()[99] = true;
       return this;
     }
 
@@ -7971,7 +8047,7 @@ Represents the echo cancellation in decibels corresponded to the media source.
       * @return True if the 'echoReturnLoss' field has been set, false otherwise.
       */
     public boolean hasEchoReturnLoss() {
-      return fieldSetFlags()[98];
+      return fieldSetFlags()[99];
     }
 
 
@@ -7984,7 +8060,7 @@ Represents the echo cancellation in decibels corresponded to the media source.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEchoReturnLoss() {
       echoReturnLoss = null;
-      fieldSetFlags()[98] = false;
+      fieldSetFlags()[99] = false;
       return this;
     }
 
@@ -8008,9 +8084,9 @@ Represents the echo cancellation in decibels added as a postprocessing by the li
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEchoReturnLossEnhancement(java.lang.Double value) {
-      validate(fields()[99], value);
+      validate(fields()[100], value);
       this.echoReturnLossEnhancement = value;
-      fieldSetFlags()[99] = true;
+      fieldSetFlags()[100] = true;
       return this;
     }
 
@@ -8022,7 +8098,7 @@ Represents the echo cancellation in decibels added as a postprocessing by the li
       * @return True if the 'echoReturnLossEnhancement' field has been set, false otherwise.
       */
     public boolean hasEchoReturnLossEnhancement() {
-      return fieldSetFlags()[99];
+      return fieldSetFlags()[100];
     }
 
 
@@ -8035,7 +8111,7 @@ Represents the echo cancellation in decibels added as a postprocessing by the li
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEchoReturnLossEnhancement() {
       echoReturnLossEnhancement = null;
-      fieldSetFlags()[99] = false;
+      fieldSetFlags()[100] = false;
       return this;
     }
 
@@ -8059,9 +8135,9 @@ The number of frames sent over the corresponded synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesSent(java.lang.Integer value) {
-      validate(fields()[100], value);
+      validate(fields()[101], value);
       this.framesSent = value;
-      fieldSetFlags()[100] = true;
+      fieldSetFlags()[101] = true;
       return this;
     }
 
@@ -8073,7 +8149,7 @@ The number of frames sent over the corresponded synchronization source
       * @return True if the 'framesSent' field has been set, false otherwise.
       */
     public boolean hasFramesSent() {
-      return fieldSetFlags()[100];
+      return fieldSetFlags()[101];
     }
 
 
@@ -8086,7 +8162,7 @@ The number of frames sent over the corresponded synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesSent() {
       framesSent = null;
-      fieldSetFlags()[100] = false;
+      fieldSetFlags()[101] = false;
       return this;
     }
 
@@ -8110,9 +8186,9 @@ The number of huge frames (2.5x greater than the average size of frame) sent ove
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setHugeFramesSent(java.lang.Integer value) {
-      validate(fields()[101], value);
+      validate(fields()[102], value);
       this.hugeFramesSent = value;
-      fieldSetFlags()[101] = true;
+      fieldSetFlags()[102] = true;
       return this;
     }
 
@@ -8124,7 +8200,7 @@ The number of huge frames (2.5x greater than the average size of frame) sent ove
       * @return True if the 'hugeFramesSent' field has been set, false otherwise.
       */
     public boolean hasHugeFramesSent() {
-      return fieldSetFlags()[101];
+      return fieldSetFlags()[102];
     }
 
 
@@ -8137,7 +8213,7 @@ The number of huge frames (2.5x greater than the average size of frame) sent ove
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearHugeFramesSent() {
       hugeFramesSent = null;
-      fieldSetFlags()[101] = false;
+      fieldSetFlags()[102] = false;
       return this;
     }
 
@@ -8161,9 +8237,9 @@ The number of frames encoded over the corresponded synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesEncoded(java.lang.Integer value) {
-      validate(fields()[102], value);
+      validate(fields()[103], value);
       this.framesEncoded = value;
-      fieldSetFlags()[102] = true;
+      fieldSetFlags()[103] = true;
       return this;
     }
 
@@ -8175,7 +8251,7 @@ The number of frames encoded over the corresponded synchronization source
       * @return True if the 'framesEncoded' field has been set, false otherwise.
       */
     public boolean hasFramesEncoded() {
-      return fieldSetFlags()[102];
+      return fieldSetFlags()[103];
     }
 
 
@@ -8188,7 +8264,7 @@ The number of frames encoded over the corresponded synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesEncoded() {
       framesEncoded = null;
-      fieldSetFlags()[102] = false;
+      fieldSetFlags()[103] = false;
       return this;
     }
 
@@ -8212,9 +8288,9 @@ The number of keyframes sent over the corresponded synchronization source
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setKeyFramesEncoded(java.lang.Integer value) {
-      validate(fields()[103], value);
+      validate(fields()[104], value);
       this.keyFramesEncoded = value;
-      fieldSetFlags()[103] = true;
+      fieldSetFlags()[104] = true;
       return this;
     }
 
@@ -8226,7 +8302,7 @@ The number of keyframes sent over the corresponded synchronization source
       * @return True if the 'keyFramesEncoded' field has been set, false otherwise.
       */
     public boolean hasKeyFramesEncoded() {
-      return fieldSetFlags()[103];
+      return fieldSetFlags()[104];
     }
 
 
@@ -8239,7 +8315,7 @@ The number of keyframes sent over the corresponded synchronization source
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearKeyFramesEncoded() {
       keyFramesEncoded = null;
-      fieldSetFlags()[103] = false;
+      fieldSetFlags()[104] = false;
       return this;
     }
 
@@ -8263,9 +8339,9 @@ The number of frames discarded before sending over the corresponded synchronizat
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setFramesDiscardedOnSend(java.lang.Integer value) {
-      validate(fields()[104], value);
+      validate(fields()[105], value);
       this.framesDiscardedOnSend = value;
-      fieldSetFlags()[104] = true;
+      fieldSetFlags()[105] = true;
       return this;
     }
 
@@ -8277,7 +8353,7 @@ The number of frames discarded before sending over the corresponded synchronizat
       * @return True if the 'framesDiscardedOnSend' field has been set, false otherwise.
       */
     public boolean hasFramesDiscardedOnSend() {
-      return fieldSetFlags()[104];
+      return fieldSetFlags()[105];
     }
 
 
@@ -8290,7 +8366,7 @@ The number of frames discarded before sending over the corresponded synchronizat
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearFramesDiscardedOnSend() {
       framesDiscardedOnSend = null;
-      fieldSetFlags()[104] = false;
+      fieldSetFlags()[105] = false;
       return this;
     }
 
@@ -8314,9 +8390,9 @@ The sum of encoding time spent by the encoder corresponded to the synchronizatio
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setTotalEncodeTime(java.lang.Double value) {
-      validate(fields()[105], value);
+      validate(fields()[106], value);
       this.totalEncodeTime = value;
-      fieldSetFlags()[105] = true;
+      fieldSetFlags()[106] = true;
       return this;
     }
 
@@ -8328,7 +8404,7 @@ The sum of encoding time spent by the encoder corresponded to the synchronizatio
       * @return True if the 'totalEncodeTime' field has been set, false otherwise.
       */
     public boolean hasTotalEncodeTime() {
-      return fieldSetFlags()[105];
+      return fieldSetFlags()[106];
     }
 
 
@@ -8341,7 +8417,7 @@ The sum of encoding time spent by the encoder corresponded to the synchronizatio
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearTotalEncodeTime() {
       totalEncodeTime = null;
-      fieldSetFlags()[105] = false;
+      fieldSetFlags()[106] = false;
       return this;
     }
 
@@ -8365,9 +8441,9 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQualityLimitationDurationCPU(java.lang.Double value) {
-      validate(fields()[106], value);
+      validate(fields()[107], value);
       this.qualityLimitationDurationCPU = value;
-      fieldSetFlags()[106] = true;
+      fieldSetFlags()[107] = true;
       return this;
     }
 
@@ -8379,7 +8455,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return True if the 'qualityLimitationDurationCPU' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationDurationCPU() {
-      return fieldSetFlags()[106];
+      return fieldSetFlags()[107];
     }
 
 
@@ -8392,7 +8468,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQualityLimitationDurationCPU() {
       qualityLimitationDurationCPU = null;
-      fieldSetFlags()[106] = false;
+      fieldSetFlags()[107] = false;
       return this;
     }
 
@@ -8416,9 +8492,9 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQualityLimitationDurationNone(java.lang.Double value) {
-      validate(fields()[107], value);
+      validate(fields()[108], value);
       this.qualityLimitationDurationNone = value;
-      fieldSetFlags()[107] = true;
+      fieldSetFlags()[108] = true;
       return this;
     }
 
@@ -8430,7 +8506,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return True if the 'qualityLimitationDurationNone' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationDurationNone() {
-      return fieldSetFlags()[107];
+      return fieldSetFlags()[108];
     }
 
 
@@ -8443,7 +8519,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQualityLimitationDurationNone() {
       qualityLimitationDurationNone = null;
-      fieldSetFlags()[107] = false;
+      fieldSetFlags()[108] = false;
       return this;
     }
 
@@ -8467,9 +8543,9 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQualityLimitationDurationBandwidth(java.lang.Double value) {
-      validate(fields()[108], value);
+      validate(fields()[109], value);
       this.qualityLimitationDurationBandwidth = value;
-      fieldSetFlags()[108] = true;
+      fieldSetFlags()[109] = true;
       return this;
     }
 
@@ -8481,7 +8557,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return True if the 'qualityLimitationDurationBandwidth' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationDurationBandwidth() {
-      return fieldSetFlags()[108];
+      return fieldSetFlags()[109];
     }
 
 
@@ -8494,7 +8570,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQualityLimitationDurationBandwidth() {
       qualityLimitationDurationBandwidth = null;
-      fieldSetFlags()[108] = false;
+      fieldSetFlags()[109] = false;
       return this;
     }
 
@@ -8518,9 +8594,9 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQualityLimitationDurationOther(java.lang.Double value) {
-      validate(fields()[109], value);
+      validate(fields()[110], value);
       this.qualityLimitationDurationOther = value;
-      fieldSetFlags()[109] = true;
+      fieldSetFlags()[110] = true;
       return this;
     }
 
@@ -8532,7 +8608,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       * @return True if the 'qualityLimitationDurationOther' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationDurationOther() {
-      return fieldSetFlags()[109];
+      return fieldSetFlags()[110];
     }
 
 
@@ -8545,7 +8621,7 @@ Time elapsed in seconds when the the corresponding synchronization source (ssrc)
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQualityLimitationDurationOther() {
       qualityLimitationDurationOther = null;
-      fieldSetFlags()[109] = false;
+      fieldSetFlags()[110] = false;
       return this;
     }
 
@@ -8569,9 +8645,9 @@ Indicate a reason for the corresponding synchronization source (ssrc) quality is
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQualityLimitationReason(java.lang.String value) {
-      validate(fields()[110], value);
+      validate(fields()[111], value);
       this.qualityLimitationReason = value;
-      fieldSetFlags()[110] = true;
+      fieldSetFlags()[111] = true;
       return this;
     }
 
@@ -8583,7 +8659,7 @@ Indicate a reason for the corresponding synchronization source (ssrc) quality is
       * @return True if the 'qualityLimitationReason' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationReason() {
-      return fieldSetFlags()[110];
+      return fieldSetFlags()[111];
     }
 
 
@@ -8596,7 +8672,7 @@ Indicate a reason for the corresponding synchronization source (ssrc) quality is
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQualityLimitationReason() {
       qualityLimitationReason = null;
-      fieldSetFlags()[110] = false;
+      fieldSetFlags()[111] = false;
       return this;
     }
 
@@ -8620,9 +8696,9 @@ The number of quality limiatation changes happened for the corresponding synchro
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setQualityLimitationResolutionChanges(java.lang.Integer value) {
-      validate(fields()[111], value);
+      validate(fields()[112], value);
       this.qualityLimitationResolutionChanges = value;
-      fieldSetFlags()[111] = true;
+      fieldSetFlags()[112] = true;
       return this;
     }
 
@@ -8634,7 +8710,7 @@ The number of quality limiatation changes happened for the corresponding synchro
       * @return True if the 'qualityLimitationResolutionChanges' field has been set, false otherwise.
       */
     public boolean hasQualityLimitationResolutionChanges() {
-      return fieldSetFlags()[111];
+      return fieldSetFlags()[112];
     }
 
 
@@ -8647,7 +8723,7 @@ The number of quality limiatation changes happened for the corresponding synchro
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearQualityLimitationResolutionChanges() {
       qualityLimitationResolutionChanges = null;
-      fieldSetFlags()[111] = false;
+      fieldSetFlags()[112] = false;
       return this;
     }
 
@@ -8671,9 +8747,9 @@ Indicate the encoded width of the frame received on the corresponded synchroniza
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEncodedFrameWidth(java.lang.Integer value) {
-      validate(fields()[112], value);
+      validate(fields()[113], value);
       this.encodedFrameWidth = value;
-      fieldSetFlags()[112] = true;
+      fieldSetFlags()[113] = true;
       return this;
     }
 
@@ -8685,7 +8761,7 @@ Indicate the encoded width of the frame received on the corresponded synchroniza
       * @return True if the 'encodedFrameWidth' field has been set, false otherwise.
       */
     public boolean hasEncodedFrameWidth() {
-      return fieldSetFlags()[112];
+      return fieldSetFlags()[113];
     }
 
 
@@ -8698,7 +8774,7 @@ Indicate the encoded width of the frame received on the corresponded synchroniza
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEncodedFrameWidth() {
       encodedFrameWidth = null;
-      fieldSetFlags()[112] = false;
+      fieldSetFlags()[113] = false;
       return this;
     }
 
@@ -8722,9 +8798,9 @@ Indicate the encoded height of the frame received on the corresponded synchroniz
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEncodedFrameHeight(java.lang.Integer value) {
-      validate(fields()[113], value);
+      validate(fields()[114], value);
       this.encodedFrameHeight = value;
-      fieldSetFlags()[113] = true;
+      fieldSetFlags()[114] = true;
       return this;
     }
 
@@ -8736,7 +8812,7 @@ Indicate the encoded height of the frame received on the corresponded synchroniz
       * @return True if the 'encodedFrameHeight' field has been set, false otherwise.
       */
     public boolean hasEncodedFrameHeight() {
-      return fieldSetFlags()[113];
+      return fieldSetFlags()[114];
     }
 
 
@@ -8749,7 +8825,7 @@ Indicate the encoded height of the frame received on the corresponded synchroniz
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEncodedFrameHeight() {
       encodedFrameHeight = null;
-      fieldSetFlags()[113] = false;
+      fieldSetFlags()[114] = false;
       return this;
     }
 
@@ -8773,9 +8849,9 @@ Indicate the encoded bit depth per pixel of the last decoded frame received on t
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEncodedFrameBitDepth(java.lang.Integer value) {
-      validate(fields()[114], value);
+      validate(fields()[115], value);
       this.encodedFrameBitDepth = value;
-      fieldSetFlags()[114] = true;
+      fieldSetFlags()[115] = true;
       return this;
     }
 
@@ -8787,7 +8863,7 @@ Indicate the encoded bit depth per pixel of the last decoded frame received on t
       * @return True if the 'encodedFrameBitDepth' field has been set, false otherwise.
       */
     public boolean hasEncodedFrameBitDepth() {
-      return fieldSetFlags()[114];
+      return fieldSetFlags()[115];
     }
 
 
@@ -8800,7 +8876,7 @@ Indicate the encoded bit depth per pixel of the last decoded frame received on t
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEncodedFrameBitDepth() {
       encodedFrameBitDepth = null;
-      fieldSetFlags()[114] = false;
+      fieldSetFlags()[115] = false;
       return this;
     }
 
@@ -8824,9 +8900,9 @@ Indicate the encoded number of decoded frames in the last second received on the
       * @return This builder.
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder setEncodedFramesPerSecond(java.lang.Double value) {
-      validate(fields()[115], value);
+      validate(fields()[116], value);
       this.encodedFramesPerSecond = value;
-      fieldSetFlags()[115] = true;
+      fieldSetFlags()[116] = true;
       return this;
     }
 
@@ -8838,7 +8914,7 @@ Indicate the encoded number of decoded frames in the last second received on the
       * @return True if the 'encodedFramesPerSecond' field has been set, false otherwise.
       */
     public boolean hasEncodedFramesPerSecond() {
-      return fieldSetFlags()[115];
+      return fieldSetFlags()[116];
     }
 
 
@@ -8851,7 +8927,7 @@ Indicate the encoded number of decoded frames in the last second received on the
       */
     public org.observertc.webrtc.schemas.reports.MediaTrackReport.Builder clearEncodedFramesPerSecond() {
       encodedFramesPerSecond = null;
-      fieldSetFlags()[115] = false;
+      fieldSetFlags()[116] = false;
       return this;
     }
 
@@ -8871,110 +8947,111 @@ Indicate the encoded number of decoded frames in the last second received on the
         record.label = fieldSetFlags()[9] ? this.label : (java.lang.String) defaultValue(fields()[9]);
         record.trackId = fieldSetFlags()[10] ? this.trackId : (java.lang.String) defaultValue(fields()[10]);
         record.rtpStreamId = fieldSetFlags()[11] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[11]);
-        record.remoteUserId = fieldSetFlags()[12] ? this.remoteUserId : (java.lang.String) defaultValue(fields()[12]);
-        record.remoteClientId = fieldSetFlags()[13] ? this.remoteClientId : (java.lang.String) defaultValue(fields()[13]);
-        record.remotePeerConnectionId = fieldSetFlags()[14] ? this.remotePeerConnectionId : (java.lang.String) defaultValue(fields()[14]);
-        record.sampleSeq = fieldSetFlags()[15] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[15]);
-        record.ssrc = fieldSetFlags()[16] ? this.ssrc : (java.lang.Long) defaultValue(fields()[16]);
-        record.packetsReceived = fieldSetFlags()[17] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[17]);
-        record.packetsLost = fieldSetFlags()[18] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[18]);
-        record.jitter = fieldSetFlags()[19] ? this.jitter : (java.lang.Double) defaultValue(fields()[19]);
-        record.packetsDiscarded = fieldSetFlags()[20] ? this.packetsDiscarded : (java.lang.Integer) defaultValue(fields()[20]);
-        record.packetsRepaired = fieldSetFlags()[21] ? this.packetsRepaired : (java.lang.Integer) defaultValue(fields()[21]);
-        record.burstPacketsLost = fieldSetFlags()[22] ? this.burstPacketsLost : (java.lang.Integer) defaultValue(fields()[22]);
-        record.burstPacketsDiscarded = fieldSetFlags()[23] ? this.burstPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[23]);
-        record.burstLossCount = fieldSetFlags()[24] ? this.burstLossCount : (java.lang.Integer) defaultValue(fields()[24]);
-        record.burstDiscardCount = fieldSetFlags()[25] ? this.burstDiscardCount : (java.lang.Integer) defaultValue(fields()[25]);
-        record.burstLossRate = fieldSetFlags()[26] ? this.burstLossRate : (java.lang.Double) defaultValue(fields()[26]);
-        record.burstDiscardRate = fieldSetFlags()[27] ? this.burstDiscardRate : (java.lang.Double) defaultValue(fields()[27]);
-        record.gapLossRate = fieldSetFlags()[28] ? this.gapLossRate : (java.lang.Double) defaultValue(fields()[28]);
-        record.gapDiscardRate = fieldSetFlags()[29] ? this.gapDiscardRate : (java.lang.Double) defaultValue(fields()[29]);
-        record.voiceActivityFlag = fieldSetFlags()[30] ? this.voiceActivityFlag : (java.lang.Boolean) defaultValue(fields()[30]);
-        record.lastPacketReceivedTimestamp = fieldSetFlags()[31] ? this.lastPacketReceivedTimestamp : (java.lang.Boolean) defaultValue(fields()[31]);
-        record.averageRtcpInterval = fieldSetFlags()[32] ? this.averageRtcpInterval : (java.lang.Double) defaultValue(fields()[32]);
-        record.headerBytesReceived = fieldSetFlags()[33] ? this.headerBytesReceived : (java.lang.Long) defaultValue(fields()[33]);
-        record.fecPacketsReceived = fieldSetFlags()[34] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[34]);
-        record.fecPacketsDiscarded = fieldSetFlags()[35] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[35]);
-        record.bytesReceived = fieldSetFlags()[36] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[36]);
-        record.packetsFailedDecryption = fieldSetFlags()[37] ? this.packetsFailedDecryption : (java.lang.Integer) defaultValue(fields()[37]);
-        record.packetsDuplicated = fieldSetFlags()[38] ? this.packetsDuplicated : (java.lang.Integer) defaultValue(fields()[38]);
-        record.perDscpPacketsReceived = fieldSetFlags()[39] ? this.perDscpPacketsReceived : (java.lang.Double) defaultValue(fields()[39]);
-        record.nackCount = fieldSetFlags()[40] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[40]);
-        record.totalProcessingDelay = fieldSetFlags()[41] ? this.totalProcessingDelay : (java.lang.Double) defaultValue(fields()[41]);
-        record.estimatedPlayoutTimestamp = fieldSetFlags()[42] ? this.estimatedPlayoutTimestamp : (java.lang.Double) defaultValue(fields()[42]);
-        record.jitterBufferDelay = fieldSetFlags()[43] ? this.jitterBufferDelay : (java.lang.Double) defaultValue(fields()[43]);
-        record.jitterBufferEmittedCount = fieldSetFlags()[44] ? this.jitterBufferEmittedCount : (java.lang.Integer) defaultValue(fields()[44]);
-        record.decoderImplementation = fieldSetFlags()[45] ? this.decoderImplementation : (java.lang.String) defaultValue(fields()[45]);
-        record.packetsSent = fieldSetFlags()[46] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[46]);
-        record.bytesSent = fieldSetFlags()[47] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[47]);
-        record.remoteTimestamp = fieldSetFlags()[48] ? this.remoteTimestamp : (java.lang.Double) defaultValue(fields()[48]);
-        record.reportsSent = fieldSetFlags()[49] ? this.reportsSent : (java.lang.Integer) defaultValue(fields()[49]);
-        record.ended = fieldSetFlags()[50] ? this.ended : (java.lang.Boolean) defaultValue(fields()[50]);
-        record.payloadType = fieldSetFlags()[51] ? this.payloadType : (java.lang.Integer) defaultValue(fields()[51]);
-        record.mimeType = fieldSetFlags()[52] ? this.mimeType : (java.lang.String) defaultValue(fields()[52]);
-        record.clockRate = fieldSetFlags()[53] ? this.clockRate : (java.lang.Long) defaultValue(fields()[53]);
-        record.channels = fieldSetFlags()[54] ? this.channels : (java.lang.Integer) defaultValue(fields()[54]);
-        record.sdpFmtpLine = fieldSetFlags()[55] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[55]);
-        record.framesDropped = fieldSetFlags()[56] ? this.framesDropped : (java.lang.Integer) defaultValue(fields()[56]);
-        record.partialFramesLost = fieldSetFlags()[57] ? this.partialFramesLost : (java.lang.Double) defaultValue(fields()[57]);
-        record.fullFramesLost = fieldSetFlags()[58] ? this.fullFramesLost : (java.lang.Integer) defaultValue(fields()[58]);
-        record.framesDecoded = fieldSetFlags()[59] ? this.framesDecoded : (java.lang.Integer) defaultValue(fields()[59]);
-        record.keyFramesDecoded = fieldSetFlags()[60] ? this.keyFramesDecoded : (java.lang.Integer) defaultValue(fields()[60]);
-        record.frameWidth = fieldSetFlags()[61] ? this.frameWidth : (java.lang.Integer) defaultValue(fields()[61]);
-        record.frameHeight = fieldSetFlags()[62] ? this.frameHeight : (java.lang.Integer) defaultValue(fields()[62]);
-        record.frameBitDepth = fieldSetFlags()[63] ? this.frameBitDepth : (java.lang.Integer) defaultValue(fields()[63]);
-        record.framesPerSecond = fieldSetFlags()[64] ? this.framesPerSecond : (java.lang.Double) defaultValue(fields()[64]);
-        record.qpSum = fieldSetFlags()[65] ? this.qpSum : (java.lang.Long) defaultValue(fields()[65]);
-        record.totalDecodeTime = fieldSetFlags()[66] ? this.totalDecodeTime : (java.lang.Long) defaultValue(fields()[66]);
-        record.totalInterFrameDelay = fieldSetFlags()[67] ? this.totalInterFrameDelay : (java.lang.Long) defaultValue(fields()[67]);
-        record.totalSquaredInterFrameDelay = fieldSetFlags()[68] ? this.totalSquaredInterFrameDelay : (java.lang.Long) defaultValue(fields()[68]);
-        record.firCount = fieldSetFlags()[69] ? this.firCount : (java.lang.Integer) defaultValue(fields()[69]);
-        record.pliCount = fieldSetFlags()[70] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[70]);
-        record.sliCount = fieldSetFlags()[71] ? this.sliCount : (java.lang.Integer) defaultValue(fields()[71]);
-        record.framesReceived = fieldSetFlags()[72] ? this.framesReceived : (java.lang.Integer) defaultValue(fields()[72]);
-        record.rid = fieldSetFlags()[73] ? this.rid : (java.lang.String) defaultValue(fields()[73]);
-        record.lastPacketSentTimestamp = fieldSetFlags()[74] ? this.lastPacketSentTimestamp : (java.lang.Long) defaultValue(fields()[74]);
-        record.headerBytesSent = fieldSetFlags()[75] ? this.headerBytesSent : (java.lang.Long) defaultValue(fields()[75]);
-        record.packetsDiscardedOnSend = fieldSetFlags()[76] ? this.packetsDiscardedOnSend : (java.lang.Integer) defaultValue(fields()[76]);
-        record.bytesDiscardedOnSend = fieldSetFlags()[77] ? this.bytesDiscardedOnSend : (java.lang.Long) defaultValue(fields()[77]);
-        record.fecPacketsSent = fieldSetFlags()[78] ? this.fecPacketsSent : (java.lang.Integer) defaultValue(fields()[78]);
-        record.retransmittedPacketsSent = fieldSetFlags()[79] ? this.retransmittedPacketsSent : (java.lang.Integer) defaultValue(fields()[79]);
-        record.retransmittedBytesSent = fieldSetFlags()[80] ? this.retransmittedBytesSent : (java.lang.Long) defaultValue(fields()[80]);
-        record.targetBitrate = fieldSetFlags()[81] ? this.targetBitrate : (java.lang.Long) defaultValue(fields()[81]);
-        record.totalEncodedBytesTarget = fieldSetFlags()[82] ? this.totalEncodedBytesTarget : (java.lang.Long) defaultValue(fields()[82]);
-        record.totalSamplesSent = fieldSetFlags()[83] ? this.totalSamplesSent : (java.lang.Integer) defaultValue(fields()[83]);
-        record.samplesEncodedWithSilk = fieldSetFlags()[84] ? this.samplesEncodedWithSilk : (java.lang.Integer) defaultValue(fields()[84]);
-        record.samplesEncodedWithCelt = fieldSetFlags()[85] ? this.samplesEncodedWithCelt : (java.lang.Integer) defaultValue(fields()[85]);
-        record.totalPacketSendDelay = fieldSetFlags()[86] ? this.totalPacketSendDelay : (java.lang.Double) defaultValue(fields()[86]);
-        record.perDscpPacketsSent = fieldSetFlags()[87] ? this.perDscpPacketsSent : (java.lang.Double) defaultValue(fields()[87]);
-        record.encoderImplementation = fieldSetFlags()[88] ? this.encoderImplementation : (java.lang.String) defaultValue(fields()[88]);
-        record.roundTripTime = fieldSetFlags()[89] ? this.roundTripTime : (java.lang.Double) defaultValue(fields()[89]);
-        record.totalRoundTripTime = fieldSetFlags()[90] ? this.totalRoundTripTime : (java.lang.Double) defaultValue(fields()[90]);
-        record.fractionLost = fieldSetFlags()[91] ? this.fractionLost : (java.lang.Double) defaultValue(fields()[91]);
-        record.reportsReceived = fieldSetFlags()[92] ? this.reportsReceived : (java.lang.Integer) defaultValue(fields()[92]);
-        record.roundTripTimeMeasurements = fieldSetFlags()[93] ? this.roundTripTimeMeasurements : (java.lang.Integer) defaultValue(fields()[93]);
-        record.relayedSource = fieldSetFlags()[94] ? this.relayedSource : (java.lang.Boolean) defaultValue(fields()[94]);
-        record.audioLevel = fieldSetFlags()[95] ? this.audioLevel : (java.lang.Double) defaultValue(fields()[95]);
-        record.totalAudioEnergy = fieldSetFlags()[96] ? this.totalAudioEnergy : (java.lang.Double) defaultValue(fields()[96]);
-        record.totalSamplesDuration = fieldSetFlags()[97] ? this.totalSamplesDuration : (java.lang.Double) defaultValue(fields()[97]);
-        record.echoReturnLoss = fieldSetFlags()[98] ? this.echoReturnLoss : (java.lang.Double) defaultValue(fields()[98]);
-        record.echoReturnLossEnhancement = fieldSetFlags()[99] ? this.echoReturnLossEnhancement : (java.lang.Double) defaultValue(fields()[99]);
-        record.framesSent = fieldSetFlags()[100] ? this.framesSent : (java.lang.Integer) defaultValue(fields()[100]);
-        record.hugeFramesSent = fieldSetFlags()[101] ? this.hugeFramesSent : (java.lang.Integer) defaultValue(fields()[101]);
-        record.framesEncoded = fieldSetFlags()[102] ? this.framesEncoded : (java.lang.Integer) defaultValue(fields()[102]);
-        record.keyFramesEncoded = fieldSetFlags()[103] ? this.keyFramesEncoded : (java.lang.Integer) defaultValue(fields()[103]);
-        record.framesDiscardedOnSend = fieldSetFlags()[104] ? this.framesDiscardedOnSend : (java.lang.Integer) defaultValue(fields()[104]);
-        record.totalEncodeTime = fieldSetFlags()[105] ? this.totalEncodeTime : (java.lang.Double) defaultValue(fields()[105]);
-        record.qualityLimitationDurationCPU = fieldSetFlags()[106] ? this.qualityLimitationDurationCPU : (java.lang.Double) defaultValue(fields()[106]);
-        record.qualityLimitationDurationNone = fieldSetFlags()[107] ? this.qualityLimitationDurationNone : (java.lang.Double) defaultValue(fields()[107]);
-        record.qualityLimitationDurationBandwidth = fieldSetFlags()[108] ? this.qualityLimitationDurationBandwidth : (java.lang.Double) defaultValue(fields()[108]);
-        record.qualityLimitationDurationOther = fieldSetFlags()[109] ? this.qualityLimitationDurationOther : (java.lang.Double) defaultValue(fields()[109]);
-        record.qualityLimitationReason = fieldSetFlags()[110] ? this.qualityLimitationReason : (java.lang.String) defaultValue(fields()[110]);
-        record.qualityLimitationResolutionChanges = fieldSetFlags()[111] ? this.qualityLimitationResolutionChanges : (java.lang.Integer) defaultValue(fields()[111]);
-        record.encodedFrameWidth = fieldSetFlags()[112] ? this.encodedFrameWidth : (java.lang.Integer) defaultValue(fields()[112]);
-        record.encodedFrameHeight = fieldSetFlags()[113] ? this.encodedFrameHeight : (java.lang.Integer) defaultValue(fields()[113]);
-        record.encodedFrameBitDepth = fieldSetFlags()[114] ? this.encodedFrameBitDepth : (java.lang.Integer) defaultValue(fields()[114]);
-        record.encodedFramesPerSecond = fieldSetFlags()[115] ? this.encodedFramesPerSecond : (java.lang.Double) defaultValue(fields()[115]);
+        record.remoteTrackId = fieldSetFlags()[12] ? this.remoteTrackId : (java.lang.String) defaultValue(fields()[12]);
+        record.remoteUserId = fieldSetFlags()[13] ? this.remoteUserId : (java.lang.String) defaultValue(fields()[13]);
+        record.remoteClientId = fieldSetFlags()[14] ? this.remoteClientId : (java.lang.String) defaultValue(fields()[14]);
+        record.remotePeerConnectionId = fieldSetFlags()[15] ? this.remotePeerConnectionId : (java.lang.String) defaultValue(fields()[15]);
+        record.sampleSeq = fieldSetFlags()[16] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[16]);
+        record.ssrc = fieldSetFlags()[17] ? this.ssrc : (java.lang.Long) defaultValue(fields()[17]);
+        record.packetsReceived = fieldSetFlags()[18] ? this.packetsReceived : (java.lang.Integer) defaultValue(fields()[18]);
+        record.packetsLost = fieldSetFlags()[19] ? this.packetsLost : (java.lang.Integer) defaultValue(fields()[19]);
+        record.jitter = fieldSetFlags()[20] ? this.jitter : (java.lang.Double) defaultValue(fields()[20]);
+        record.packetsDiscarded = fieldSetFlags()[21] ? this.packetsDiscarded : (java.lang.Integer) defaultValue(fields()[21]);
+        record.packetsRepaired = fieldSetFlags()[22] ? this.packetsRepaired : (java.lang.Integer) defaultValue(fields()[22]);
+        record.burstPacketsLost = fieldSetFlags()[23] ? this.burstPacketsLost : (java.lang.Integer) defaultValue(fields()[23]);
+        record.burstPacketsDiscarded = fieldSetFlags()[24] ? this.burstPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[24]);
+        record.burstLossCount = fieldSetFlags()[25] ? this.burstLossCount : (java.lang.Integer) defaultValue(fields()[25]);
+        record.burstDiscardCount = fieldSetFlags()[26] ? this.burstDiscardCount : (java.lang.Integer) defaultValue(fields()[26]);
+        record.burstLossRate = fieldSetFlags()[27] ? this.burstLossRate : (java.lang.Double) defaultValue(fields()[27]);
+        record.burstDiscardRate = fieldSetFlags()[28] ? this.burstDiscardRate : (java.lang.Double) defaultValue(fields()[28]);
+        record.gapLossRate = fieldSetFlags()[29] ? this.gapLossRate : (java.lang.Double) defaultValue(fields()[29]);
+        record.gapDiscardRate = fieldSetFlags()[30] ? this.gapDiscardRate : (java.lang.Double) defaultValue(fields()[30]);
+        record.voiceActivityFlag = fieldSetFlags()[31] ? this.voiceActivityFlag : (java.lang.Boolean) defaultValue(fields()[31]);
+        record.lastPacketReceivedTimestamp = fieldSetFlags()[32] ? this.lastPacketReceivedTimestamp : (java.lang.Boolean) defaultValue(fields()[32]);
+        record.averageRtcpInterval = fieldSetFlags()[33] ? this.averageRtcpInterval : (java.lang.Double) defaultValue(fields()[33]);
+        record.headerBytesReceived = fieldSetFlags()[34] ? this.headerBytesReceived : (java.lang.Long) defaultValue(fields()[34]);
+        record.fecPacketsReceived = fieldSetFlags()[35] ? this.fecPacketsReceived : (java.lang.Integer) defaultValue(fields()[35]);
+        record.fecPacketsDiscarded = fieldSetFlags()[36] ? this.fecPacketsDiscarded : (java.lang.Integer) defaultValue(fields()[36]);
+        record.bytesReceived = fieldSetFlags()[37] ? this.bytesReceived : (java.lang.Long) defaultValue(fields()[37]);
+        record.packetsFailedDecryption = fieldSetFlags()[38] ? this.packetsFailedDecryption : (java.lang.Integer) defaultValue(fields()[38]);
+        record.packetsDuplicated = fieldSetFlags()[39] ? this.packetsDuplicated : (java.lang.Integer) defaultValue(fields()[39]);
+        record.perDscpPacketsReceived = fieldSetFlags()[40] ? this.perDscpPacketsReceived : (java.lang.Double) defaultValue(fields()[40]);
+        record.nackCount = fieldSetFlags()[41] ? this.nackCount : (java.lang.Integer) defaultValue(fields()[41]);
+        record.totalProcessingDelay = fieldSetFlags()[42] ? this.totalProcessingDelay : (java.lang.Double) defaultValue(fields()[42]);
+        record.estimatedPlayoutTimestamp = fieldSetFlags()[43] ? this.estimatedPlayoutTimestamp : (java.lang.Double) defaultValue(fields()[43]);
+        record.jitterBufferDelay = fieldSetFlags()[44] ? this.jitterBufferDelay : (java.lang.Double) defaultValue(fields()[44]);
+        record.jitterBufferEmittedCount = fieldSetFlags()[45] ? this.jitterBufferEmittedCount : (java.lang.Integer) defaultValue(fields()[45]);
+        record.decoderImplementation = fieldSetFlags()[46] ? this.decoderImplementation : (java.lang.String) defaultValue(fields()[46]);
+        record.packetsSent = fieldSetFlags()[47] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[47]);
+        record.bytesSent = fieldSetFlags()[48] ? this.bytesSent : (java.lang.Long) defaultValue(fields()[48]);
+        record.remoteTimestamp = fieldSetFlags()[49] ? this.remoteTimestamp : (java.lang.Double) defaultValue(fields()[49]);
+        record.reportsSent = fieldSetFlags()[50] ? this.reportsSent : (java.lang.Integer) defaultValue(fields()[50]);
+        record.ended = fieldSetFlags()[51] ? this.ended : (java.lang.Boolean) defaultValue(fields()[51]);
+        record.payloadType = fieldSetFlags()[52] ? this.payloadType : (java.lang.Integer) defaultValue(fields()[52]);
+        record.mimeType = fieldSetFlags()[53] ? this.mimeType : (java.lang.String) defaultValue(fields()[53]);
+        record.clockRate = fieldSetFlags()[54] ? this.clockRate : (java.lang.Long) defaultValue(fields()[54]);
+        record.channels = fieldSetFlags()[55] ? this.channels : (java.lang.Integer) defaultValue(fields()[55]);
+        record.sdpFmtpLine = fieldSetFlags()[56] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[56]);
+        record.framesDropped = fieldSetFlags()[57] ? this.framesDropped : (java.lang.Integer) defaultValue(fields()[57]);
+        record.partialFramesLost = fieldSetFlags()[58] ? this.partialFramesLost : (java.lang.Double) defaultValue(fields()[58]);
+        record.fullFramesLost = fieldSetFlags()[59] ? this.fullFramesLost : (java.lang.Integer) defaultValue(fields()[59]);
+        record.framesDecoded = fieldSetFlags()[60] ? this.framesDecoded : (java.lang.Integer) defaultValue(fields()[60]);
+        record.keyFramesDecoded = fieldSetFlags()[61] ? this.keyFramesDecoded : (java.lang.Integer) defaultValue(fields()[61]);
+        record.frameWidth = fieldSetFlags()[62] ? this.frameWidth : (java.lang.Integer) defaultValue(fields()[62]);
+        record.frameHeight = fieldSetFlags()[63] ? this.frameHeight : (java.lang.Integer) defaultValue(fields()[63]);
+        record.frameBitDepth = fieldSetFlags()[64] ? this.frameBitDepth : (java.lang.Integer) defaultValue(fields()[64]);
+        record.framesPerSecond = fieldSetFlags()[65] ? this.framesPerSecond : (java.lang.Double) defaultValue(fields()[65]);
+        record.qpSum = fieldSetFlags()[66] ? this.qpSum : (java.lang.Long) defaultValue(fields()[66]);
+        record.totalDecodeTime = fieldSetFlags()[67] ? this.totalDecodeTime : (java.lang.Long) defaultValue(fields()[67]);
+        record.totalInterFrameDelay = fieldSetFlags()[68] ? this.totalInterFrameDelay : (java.lang.Long) defaultValue(fields()[68]);
+        record.totalSquaredInterFrameDelay = fieldSetFlags()[69] ? this.totalSquaredInterFrameDelay : (java.lang.Long) defaultValue(fields()[69]);
+        record.firCount = fieldSetFlags()[70] ? this.firCount : (java.lang.Integer) defaultValue(fields()[70]);
+        record.pliCount = fieldSetFlags()[71] ? this.pliCount : (java.lang.Integer) defaultValue(fields()[71]);
+        record.sliCount = fieldSetFlags()[72] ? this.sliCount : (java.lang.Integer) defaultValue(fields()[72]);
+        record.framesReceived = fieldSetFlags()[73] ? this.framesReceived : (java.lang.Integer) defaultValue(fields()[73]);
+        record.rid = fieldSetFlags()[74] ? this.rid : (java.lang.String) defaultValue(fields()[74]);
+        record.lastPacketSentTimestamp = fieldSetFlags()[75] ? this.lastPacketSentTimestamp : (java.lang.Long) defaultValue(fields()[75]);
+        record.headerBytesSent = fieldSetFlags()[76] ? this.headerBytesSent : (java.lang.Long) defaultValue(fields()[76]);
+        record.packetsDiscardedOnSend = fieldSetFlags()[77] ? this.packetsDiscardedOnSend : (java.lang.Integer) defaultValue(fields()[77]);
+        record.bytesDiscardedOnSend = fieldSetFlags()[78] ? this.bytesDiscardedOnSend : (java.lang.Long) defaultValue(fields()[78]);
+        record.fecPacketsSent = fieldSetFlags()[79] ? this.fecPacketsSent : (java.lang.Integer) defaultValue(fields()[79]);
+        record.retransmittedPacketsSent = fieldSetFlags()[80] ? this.retransmittedPacketsSent : (java.lang.Integer) defaultValue(fields()[80]);
+        record.retransmittedBytesSent = fieldSetFlags()[81] ? this.retransmittedBytesSent : (java.lang.Long) defaultValue(fields()[81]);
+        record.targetBitrate = fieldSetFlags()[82] ? this.targetBitrate : (java.lang.Long) defaultValue(fields()[82]);
+        record.totalEncodedBytesTarget = fieldSetFlags()[83] ? this.totalEncodedBytesTarget : (java.lang.Long) defaultValue(fields()[83]);
+        record.totalSamplesSent = fieldSetFlags()[84] ? this.totalSamplesSent : (java.lang.Integer) defaultValue(fields()[84]);
+        record.samplesEncodedWithSilk = fieldSetFlags()[85] ? this.samplesEncodedWithSilk : (java.lang.Integer) defaultValue(fields()[85]);
+        record.samplesEncodedWithCelt = fieldSetFlags()[86] ? this.samplesEncodedWithCelt : (java.lang.Integer) defaultValue(fields()[86]);
+        record.totalPacketSendDelay = fieldSetFlags()[87] ? this.totalPacketSendDelay : (java.lang.Double) defaultValue(fields()[87]);
+        record.perDscpPacketsSent = fieldSetFlags()[88] ? this.perDscpPacketsSent : (java.lang.Double) defaultValue(fields()[88]);
+        record.encoderImplementation = fieldSetFlags()[89] ? this.encoderImplementation : (java.lang.String) defaultValue(fields()[89]);
+        record.roundTripTime = fieldSetFlags()[90] ? this.roundTripTime : (java.lang.Double) defaultValue(fields()[90]);
+        record.totalRoundTripTime = fieldSetFlags()[91] ? this.totalRoundTripTime : (java.lang.Double) defaultValue(fields()[91]);
+        record.fractionLost = fieldSetFlags()[92] ? this.fractionLost : (java.lang.Double) defaultValue(fields()[92]);
+        record.reportsReceived = fieldSetFlags()[93] ? this.reportsReceived : (java.lang.Integer) defaultValue(fields()[93]);
+        record.roundTripTimeMeasurements = fieldSetFlags()[94] ? this.roundTripTimeMeasurements : (java.lang.Integer) defaultValue(fields()[94]);
+        record.relayedSource = fieldSetFlags()[95] ? this.relayedSource : (java.lang.Boolean) defaultValue(fields()[95]);
+        record.audioLevel = fieldSetFlags()[96] ? this.audioLevel : (java.lang.Double) defaultValue(fields()[96]);
+        record.totalAudioEnergy = fieldSetFlags()[97] ? this.totalAudioEnergy : (java.lang.Double) defaultValue(fields()[97]);
+        record.totalSamplesDuration = fieldSetFlags()[98] ? this.totalSamplesDuration : (java.lang.Double) defaultValue(fields()[98]);
+        record.echoReturnLoss = fieldSetFlags()[99] ? this.echoReturnLoss : (java.lang.Double) defaultValue(fields()[99]);
+        record.echoReturnLossEnhancement = fieldSetFlags()[100] ? this.echoReturnLossEnhancement : (java.lang.Double) defaultValue(fields()[100]);
+        record.framesSent = fieldSetFlags()[101] ? this.framesSent : (java.lang.Integer) defaultValue(fields()[101]);
+        record.hugeFramesSent = fieldSetFlags()[102] ? this.hugeFramesSent : (java.lang.Integer) defaultValue(fields()[102]);
+        record.framesEncoded = fieldSetFlags()[103] ? this.framesEncoded : (java.lang.Integer) defaultValue(fields()[103]);
+        record.keyFramesEncoded = fieldSetFlags()[104] ? this.keyFramesEncoded : (java.lang.Integer) defaultValue(fields()[104]);
+        record.framesDiscardedOnSend = fieldSetFlags()[105] ? this.framesDiscardedOnSend : (java.lang.Integer) defaultValue(fields()[105]);
+        record.totalEncodeTime = fieldSetFlags()[106] ? this.totalEncodeTime : (java.lang.Double) defaultValue(fields()[106]);
+        record.qualityLimitationDurationCPU = fieldSetFlags()[107] ? this.qualityLimitationDurationCPU : (java.lang.Double) defaultValue(fields()[107]);
+        record.qualityLimitationDurationNone = fieldSetFlags()[108] ? this.qualityLimitationDurationNone : (java.lang.Double) defaultValue(fields()[108]);
+        record.qualityLimitationDurationBandwidth = fieldSetFlags()[109] ? this.qualityLimitationDurationBandwidth : (java.lang.Double) defaultValue(fields()[109]);
+        record.qualityLimitationDurationOther = fieldSetFlags()[110] ? this.qualityLimitationDurationOther : (java.lang.Double) defaultValue(fields()[110]);
+        record.qualityLimitationReason = fieldSetFlags()[111] ? this.qualityLimitationReason : (java.lang.String) defaultValue(fields()[111]);
+        record.qualityLimitationResolutionChanges = fieldSetFlags()[112] ? this.qualityLimitationResolutionChanges : (java.lang.Integer) defaultValue(fields()[112]);
+        record.encodedFrameWidth = fieldSetFlags()[113] ? this.encodedFrameWidth : (java.lang.Integer) defaultValue(fields()[113]);
+        record.encodedFrameHeight = fieldSetFlags()[114] ? this.encodedFrameHeight : (java.lang.Integer) defaultValue(fields()[114]);
+        record.encodedFrameBitDepth = fieldSetFlags()[115] ? this.encodedFrameBitDepth : (java.lang.Integer) defaultValue(fields()[115]);
+        record.encodedFramesPerSecond = fieldSetFlags()[116] ? this.encodedFramesPerSecond : (java.lang.Double) defaultValue(fields()[116]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

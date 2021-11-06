@@ -14,14 +14,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Prototype
-public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.MatchedIds>> {
+public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTask.Report> {
 
-    private static final Logger logger = LoggerFactory.getLogger(MatchCallTracksTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(FetchTracksRelationsTask.class);
+    public static final Report EMPTY_REPORT = new Report();
 
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    private List<MatchedIds> result = new LinkedList<>();
+    public static class Report {
+        public final Map<UUID, MatchedIds> inboundTrackMatchIds = new HashMap<>();
+    }
+
+    private Report result = new Report();
 
     private Set<UUID> inboundTrackIds = new HashSet<>();
 
@@ -58,7 +63,7 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                             if (!outboundMediaTrackDTO.callId.equals(inboundMediaTrackDTO.callId)) {
                                 logger.warn("Two tracks matched already supposed to have the same callId, {}, {}", inboundMediaTrackDTO, outboundMediaTrackDTO);
                             }
-                            this.result.add(new MatchedIds(
+                            this.result.inboundTrackMatchIds.put(inboundMediaTrackDTO.trackId, new MatchedIds(
                                     inboundMediaTrackDTO.trackId,
                                     inboundMediaTrackDTO.peerConnectionId,
                                     inboundMediaTrackDTO.clientId,
@@ -118,7 +123,7 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                             logger.warn("CallId for in-, and outbound media tracks ({}, {}) are null or does not match", inboundMediaTrack.callId, outboundMediaTrack.callId);
                             return;
                         }
-                        this.result.add(new MatchedIds(
+                        this.result.inboundTrackMatchIds.put(inboundMediaTrack.trackId, new MatchedIds(
                                 inboundMediaTrack.trackId,
                                 inboundMediaTrack.peerConnectionId,
                                 inboundMediaTrack.clientId,
@@ -131,6 +136,7 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                         this.hazelcastMaps
                                 .getInboundTrackIdsToOutboundTrackIds()
                                 .put(inboundMediaTrack.trackId, outboundMediaTrack.trackId);
+                        logger.info("RtpStreamId Matching: Inbound Track {} from client {} is matched to outbound track {} from client {}", inboundMediaTrack.trackId, inboundMediaTrack.clientId, outboundMediaTrack.trackId, outboundMediaTrack.clientId);
                     });
                 });
 
@@ -140,7 +146,6 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                     if (this.callIds.size() < 1) {
                         return;
                     }
-                    List<MatchedIds> result = new LinkedList<>();
                     this.callIds.forEach(callId -> {
                         Collection<UUID> clientIds = this.hazelcastMaps.getCallToClientIds().get(callId);
                         clientIds.forEach(clientId -> {
@@ -167,10 +172,11 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
                                                 outboundMediaTrackDTO.peerConnectionId,
                                                 outboundMediaTrackDTO.trackId
                                         );
-                                        result.add(matchingIds);
+                                        this.result.inboundTrackMatchIds.put(inboundMediaTrackDTO.trackId, matchingIds);
                                         this.hazelcastMaps
                                                 .getInboundTrackIdsToOutboundTrackIds()
                                                 .put(inboundMediaTrackDTO.trackId, outboundMediaTrackDTO.trackId);
+                                        logger.info("SSRC Matching: Inbound Track {} from client {} is matched to outbound track {} from client {}", inboundMediaTrackDTO.trackId, inboundMediaTrackDTO.clientId, outboundMediaTrackDTO.trackId, outboundMediaTrackDTO.clientId);
                                     });
                                 });
                             });
@@ -183,7 +189,7 @@ public class MatchCallTracksTask extends ChainedTask<List<MatchCallTracksTask.Ma
         .build();
     }
 
-    public MatchCallTracksTask whereMediaTrackIds(Set<UUID> mediaTrackIds) {
+    public FetchTracksRelationsTask whereMediaTrackIds(Set<UUID> mediaTrackIds) {
         this.inboundTrackIds.addAll(mediaTrackIds);
         return this;
     }

@@ -102,7 +102,7 @@ class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<
                     .setAttachments("Direction of the media track: " + mediaTrackDTO.direction.name())
                     .setTimestamp(timestamp)
                     .build();
-            logger.info("Media Track {} on Peer Connection {} is closed at call \"{}\" in service \"{}\" at room \"{}\"", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId);
+            logger.info("Media Track {} on Peer Connection {} is closed at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

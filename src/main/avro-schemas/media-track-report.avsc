@@ -89,6 +89,15 @@
       "default": null
     },
     {
+      "name": "remoteTrackId",
+      "doc": "Only For Inbound Media Track Reports\nThe id of the remote track this inbound track is originated from",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "remoteUserId",
       "doc": "Only For Inbound Media Track Reports\nThe webrtc app provided user id the track belongs to, or if the webrtc app did not provided the observer tried to match it",
       "type": [

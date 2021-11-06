@@ -47,16 +47,17 @@ public class ChainedTask<T> extends TaskAbstract<T> {
     protected T perform() throws Throwable {
         AtomicReference nextInput = this.lastInput;
         ListIterator<TaskStage> it = this.stages.listIterator(this.executedNumberOfStages);
-        for(; it.hasNext(); ++this.executedNumberOfStages) {
+        for(TaskStage prevStage = null; it.hasNext(); ++this.executedNumberOfStages) {
             TaskStage stage = it.next();
             nextInput = stage.execute(nextInput);
             if (!stage.isExecuted()) {
-                throw new IllegalStateException("Execution of stage "+stage.toString()+" is interrupted due to not executed stage");
+                throw new IllegalStateException("Execution of stage "+ stage.toString() +" is interrupted due to not executed stage. previous stage: " + (Objects.nonNull(prevStage) ? prevStage.toString() : "null"));
             }
             if (this.doTerminate(stage, nextInput)) {
                 return this.resultHolder.get();
             }
             this.lastInput = nextInput;
+            prevStage = stage;
         }
         var result = this.resultHolder.get();
         if (Objects.nonNull(this.nextTask)) {

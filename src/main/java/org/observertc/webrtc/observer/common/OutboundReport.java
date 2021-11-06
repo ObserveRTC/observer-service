@@ -1,6 +1,8 @@
 package org.observertc.webrtc.observer.common;
 
 public interface OutboundReport {
+    // TODO: through the encoder we can define key assigning strategy
+//    default UUID getKey() { return UUID.randomUUID(); }
     ReportType getType();
     byte[] getBytes();
 

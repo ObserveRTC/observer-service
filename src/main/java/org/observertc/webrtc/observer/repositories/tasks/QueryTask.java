@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class QueryTask<T> extends ChainedTask<T> {
-    private static final Logger logger = LoggerFactory.getLogger(MatchCallTracksTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(FetchTracksRelationsTask.class);
 
     @Inject
     HazelcastMaps hazelcastMaps;

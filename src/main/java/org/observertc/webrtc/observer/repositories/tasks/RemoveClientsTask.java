@@ -119,7 +119,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
                                 });
                             });
                         })
-                .<Map<UUID, ClientDTO>> addTerminalFunction("Returning with removed Client DTOs", callEventBuildersObj -> {
+                . addSupplierStage("Returning with removed Client DTOs", () -> {
                     if (this.unmodifiableResult) {
                         return Collections.unmodifiableMap(this.removedClientDTOs);
                     } else {
