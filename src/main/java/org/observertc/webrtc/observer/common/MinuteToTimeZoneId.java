@@ -2,8 +2,8 @@ package org.observertc.webrtc.observer.common;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
-import org.observertc.webrtc.observer.monitors.FlawMonitor;
-import org.observertc.webrtc.observer.monitors.MonitorProvider;
+import org.observertc.webrtc.observer.micrometer.FlawMonitor;
+import org.observertc.webrtc.observer.micrometer.MonitorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;

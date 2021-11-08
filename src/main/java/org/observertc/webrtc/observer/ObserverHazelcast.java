@@ -33,6 +33,7 @@ import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
 
 @Singleton
@@ -41,20 +42,23 @@ public class ObserverHazelcast {
 	private static final Logger logger = LoggerFactory.getLogger(ObserverHazelcast.class);
 
 	private final HazelcastInstance instance;
+	private final String memberName;
 
 	public ObserverHazelcast(ObserverConfig.HazelcastConfig observerHazelcastConfig) {
 		Config config = this.makeConfig(observerHazelcastConfig);
 		this.instance = Hazelcast.newHazelcastInstance(config);
+		this.memberName = this.makeMemberName(observerHazelcastConfig);
 	}
 
 	@PostConstruct
 	void setup() {
-
+		logger.info("Hazelcast configuration: {}", this.toString());
+		logger.info("{} is ready", this.memberName);
 	}
 
 	@PreDestroy
 	void teardown() {
-
+		logger.info("Closed");
 	}
 
 	public HazelcastInstance getInstance() {
@@ -105,13 +109,18 @@ public class ObserverHazelcast {
 			}
 		}
 
-
-//		result.getSerializationConfig().getSerializerConfigs().add(
-//				new SerializerConfig().
-//						setTypeClass(CallEntity.class).
-//						setImplementation(new CallEntitySerializer()));
-//		result.getSerializationConfig().addPortableFactory(EntityFactory.FACTORY_ID, new EntityFactory());
 		result.getSerializationConfig().addPortableFactory(PortableDTOFactory.FACTORY_ID, new PortableDTOFactory());
+		return result;
+	}
+
+	public String makeMemberName(ObserverConfig.HazelcastConfig hazelcastConfig) {
+		UUID memberId = this.getLocalEndpointUUID();
+		if (Objects.isNull(hazelcastConfig.memberNamesPool) || hazelcastConfig.memberNamesPool.size() < 1) {
+			return memberId.toString();
+		}
+		int index = Math.abs(((int)  memberId.getMostSignificantBits()) % hazelcastConfig.memberNamesPool.size());
+		var result = hazelcastConfig.memberNamesPool.get(index);
+		logger.info("Member Id {} is bound to human readable member name {} ", memberId, result);
 		return result;
 	}
 
@@ -119,6 +128,8 @@ public class ObserverHazelcast {
 	public String toString() {
 		return this.instance.getConfig().toString();
 	}
+
+	public String getMemberName() { return this.memberName; }
 
 	public UUID getLocalEndpointUUID() {
 		return this.instance.getLocalEndpoint().getUuid();

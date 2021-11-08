@@ -16,12 +16,21 @@
 
 package org.observertc.webrtc.observer.configbuilders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 /**
  * An interface for any kind of Builder class
  */
 public interface Builder<T> {
+
+	final Logger logger = LoggerFactory.getLogger(Builder.class);
+
+	default void set(Object subject) {
+		logger.warn("set has not been implemented for {}", this.getClass().getSimpleName());
+	}
 	/**
 	 * Sets up the Builder imlementation with the provided configuration
 	 *

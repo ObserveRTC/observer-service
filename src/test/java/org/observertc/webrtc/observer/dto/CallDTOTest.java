@@ -5,26 +5,29 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.util.UUID;
 
 @MicronautTest
 class CallDTOTest {
 
     @Inject
-    DTOTestUtils testUtils;
+    CallDTOGenerator generator;
+
 
     @Test
     void shouldBuild_1() {
-        UUID callUUID = UUID.randomUUID();
-        UUID serviceUUID = UUID.randomUUID();
-        CallDTO callDTO = CallDTO.of(callUUID, serviceUUID, "serviceName", 1L, "callName", "marker");
+        CallDTO source = this.generator.get();
+        CallDTO target = CallDTO.builder()
+                .from(source)
+                .build();
 
-        Assertions.assertEquals(callUUID, callDTO.callUUID);
-        Assertions.assertEquals(serviceUUID, callDTO.serviceUUID);
-        Assertions.assertEquals("serviceName", callDTO.serviceName);
-        Assertions.assertEquals(1L, callDTO.initiated);
-        Assertions.assertEquals("callName", callDTO.callName);
-        Assertions.assertEquals("marker", callDTO.marker);
+        Assertions.assertEquals(source, target);
+    }
+
+    @Test
+    void shouldThrowException_1() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            CallDTO.builder().build();
+        });
     }
 
 }

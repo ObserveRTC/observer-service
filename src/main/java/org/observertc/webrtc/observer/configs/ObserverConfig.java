@@ -17,180 +17,50 @@
 package org.observertc.webrtc.observer.configs;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.context.annotation.EachProperty;
-import org.observertc.webrtc.observer.configbuilders.ConfigAssent;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @ConfigurationProperties("observer")
 public class ObserverConfig {
 
-	// Connectors Config
-	@ConfigAssent(keyField = "name")
-	public List<Map<String, Object>> connectors = new ArrayList<>();
-
-	@Min(1)
-	@Max(60)
-	public int sentinelsCheckingPeriodInMin = 1;
-
-	// Sentinels Config
-	@Valid
-	@ConfigAssent(keyField = "name")
-	public List<SentinelConfig> sentinels = new ArrayList<>();
-
-	// CallFilters Config
-	@Valid
-	@ConfigAssent(keyField = "name")
-	public List<CallFilterConfig> callFilters = new ArrayList<>();
-
-	// PC Filters Config
-	@Valid
-	@ConfigAssent(keyField = "name")
-	public List<PeerConnectionFilterConfig> pcFilters = new ArrayList<>();
-
 	// Security Configurations
 	public SecurityConfig security;
 
-	@ConfigAssent(mutable = false)
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
 
-		@Deprecated(since = "0.7.2") // because it is moved to sources config
-		public boolean dropUnknownServices = false;
-
-		public WebsocketSecurityConfig websockets = new WebsocketSecurityConfig();
+		public SecurityConfig.WebsocketSecurityConfig websockets = new SecurityConfig.WebsocketSecurityConfig();
 
 		@ConfigurationProperties("websockets")
 		public static class WebsocketSecurityConfig {
 			public int expirationInMin = 0; // 0 means the access token provided is used
 		}
+	}
 
-		// IP Address Converter Config
-		public IPAddressConverterConfig ipAddressConverter;
+	public ObfuscationsConfig obfuscations;
 
-		@ConfigurationProperties("ipAddressConverter")
-		public static class IPAddressConverterConfig {
-			public boolean enabled = false;
-			public String algorithm = "SHA-256";
-			public String salt = "mySalt";
+	@ConfigurationProperties("obfuscations")
+	public static class ObfuscationsConfig {
+		public enum ObfuscationType {
+			ANONYMIZATION,
+			NONE,
 		}
-	}
+		public boolean enabled = false;
+		public ObfuscationsMaskConfig maskConfig;
 
-	// Evaluators Config
-	public EvaluatorsConfig evaluators;
+		public ObfuscationType maskedIceAddresses = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType maskedUserId = ObfuscationType.ANONYMIZATION;
+		public ObfuscationType maskedRoomId = ObfuscationType.ANONYMIZATION;
 
-	@ConfigAssent(mutable = false)
-	@ConfigurationProperties("evaluators")
-	public static class EvaluatorsConfig {
-
-		@Min(0)
-		public int observedPCSBufferMaxTimeInS = 30;
-
-		@Min(1)
-		public int observedPCSBufferMaxItemNums = 10000;
-
-		@Min(15)
-		public int peerConnectionMaxIdleTimeInS = 300;
-
-		public String impairablePCsCallName = "impairable-peer-connections-default-call-name";
-	}
-
-	// Hazelcast Config
-	public HazelcastConfig hazelcast;
-
-	@ConfigAssent(mutable = false)
-	@ConfigurationProperties("hazelcast")
-	public static class HazelcastConfig {
-		public String configFile = null;
-	}
-
-
-	// Outbound Reports Config
-	public OutboundReportsConfig outboundReports;
-
-	@ConfigAssent(mutable = false)
-	@ConfigurationProperties("outboundReports")
-	public static class OutboundReportsConfig {
-		public boolean enabled = true;
-		public String defaultServiceName = "defaultServiceName";
-		public boolean reportOutboundRTPs = true;
-		public boolean reportInboundRTPs = true;
-		public boolean reportRemoteInboundRTPs = true;
-		public boolean reportTracks = true;
-		public boolean reportMediaSources = true;
-		public boolean reportCandidatePairs = true;
-		public boolean reportLocalCandidates = true;
-		public boolean reportRemoteCandidates = true;
-		public boolean reportUserMediaErrors = true;
-
-		public boolean reportInitiatedCalls = true;
-		public boolean reportFinishedCalls = true;
-		public boolean reportJoinedPeerConnections = true;
-		public boolean reportDetachedPeerConnections = true;
-		public boolean reportObserverEvents = true;
-		public boolean reportExtensions = true;
-		public boolean reportMediaDevices = true;
-		public boolean reportClientDetails = true;
-	}
-
-	// Service Mappings Config
-	@Valid
-	@ConfigAssent(keyField = "name")
-	public List<ServiceMapConfiguration> servicemappings = new ArrayList<>();
-
-	@EachProperty("servicemappings")
-	public static class ServiceMapConfiguration {
-
-		@NotNull
-		public String name;
-		public List<UUID> uuids = new ArrayList<>();
-	}
-
-	// Inbound RTP Monitoring Config
-	public InboundRtpMonitorConfig inboundRtpMonitor;
-
-	@ConfigurationProperties("inboundRtpMonitor")
-	public static class InboundRtpMonitorConfig extends RtpMonitorConfig{
-
-	}
-
-	// Outbound RTP Monitoring Config
-	public OutboundRtpMonitorConfig outboundRtpMonitor;
-
-	@ConfigurationProperties("outboundRtpMonitor")
-	public static class OutboundRtpMonitorConfig extends RtpMonitorConfig{
-
-	}
-
-	// Remote Inbound RTP Monitoring Config
-	public RemoteInboundRtpMonitorConfig remoteInboundRtpMonitor;
-
-	@ConfigurationProperties("remoteInboundRtpMonitor")
-	public static class RemoteInboundRtpMonitorConfig extends RtpMonitorConfig {
-		public double weightFactor = 0.5;
-	}
-
-	// Report Monitor Config
-	public ReportMonitorConfig reportMonitor;
-
-	@ConfigurationProperties("reportMonitor")
-	public static class ReportMonitorConfig extends ReportCounterMonitorConfig {
-
-	}
-
-	// User Media Errors Monitoring Config
-	public UserMediaErrorsMonitorConfig userMediaErrorsMonitor;
-
-	@ConfigurationProperties("userMediaErrorsMonitor")
-	public static class UserMediaErrorsMonitorConfig extends ReportCounterMonitorConfig {
-
+		@ConfigurationProperties("anonymization")
+		public static class ObfuscationsMaskConfig {
+			public String hashAlgorithm;
+			public String salt;
+		}
 	}
 
 	// Sources Config
@@ -199,27 +69,136 @@ public class ObserverConfig {
 	@ConfigurationProperties("sources")
 	public static class SourcesConfig {
 
-		public PCSamplesConfig pcSamples;
+		@Deprecated(since = "1.0.0")
+		public SourcesConfig.PCSamplesConfig pcSamples;
 
 		@ConfigurationProperties("pcSamples")
 		public static class PCSamplesConfig {
 			public boolean enabled = false;
-			public String defaultServiceName = "defaultServiceName";
-			public boolean dropUnknownServiceName = false;
+			public String defaultServiceId = "defaultServiceId";
+		}
+
+		public SourcesConfig.ClientSamplesConfig clientSamples;
+
+		@ConfigurationProperties("clientSamples")
+		public static class ClientSamplesConfig {
+			public boolean enabled = true;
+		}
+
+		public SourcesConfig.SfuSamplesConfig sfuSamples;
+
+		@ConfigurationProperties("sfuSamples")
+		public static class SfuSamplesConfig {
+			public boolean enabled = true;
 		}
 	}
 
-	public static class RtpMonitorConfig {
-		public boolean enabled = false;
-		public int retentionTimeInS = 300;
+	// Repository config
+	public RepositoryConfig repositories;
+
+	@ConfigurationProperties("repositories")
+	public static class RepositoryConfig {
+
+		@Min(60)
+		public int mediaTracksMaxIdleTime = 300;
+
+		@Min(60)
+		public int peerConnectionsMaxIdleTime = 300;
+
+		@Min(60)
+		public int clientMaxIdleTime = 300;
+
+		@Min(60)
+		public int sfuMaxIdleTime = 600;
+
+		@Min(60)
+		public int sfuTransportMaxIdleTime = 600;
+
+		@Min(60)
+		public int sfuRtpPadMaxIdleTime = 600;
+
+		@Min(0)
+		public int eventsCollectingTimeInS = 5;
 	}
 
-	@ConfigAssent(mutable = false)
-	public static class ReportCounterMonitorConfig {
-		public boolean enabled = false;
-		public boolean tagByType = false;
-		public boolean tagByServiceName = false;
-		public boolean tagByServiceUUID = false;
+	// Evaluators Config
+	public EvaluatorsConfig evaluators;
+
+	@ConfigurationProperties("evaluators")
+	public static class EvaluatorsConfig {
+
+		@Min(5)
+		public int clientSamplesBufferMaxTimeInS = 5;
+
+		@Min(1)
+		public int clientSamplesBufferMaxItems = 10000;
+
+		@Min(5)
+		public int sfuSamplesBufferMaxTimeInS = 5;
+
+		@Min(1)
+		public int sfuSamplesBufferMaxItems = 10000;
+
+		@Min(1)
+		public int reportsBufferMaxItems = 10000;
+
+		@Min(1)
+		public int reportsBufferMaxRetainInS = 30;
+
+		@Min(1)
+		public int sfuReportsPreCollectingTimeInS = 3;
+
+		@Min(1)
+		public int sfuReportsPreCollectingMaxItems = 1000;
+
+		@Min(1)
+		public int clientReportsPreCollectingTimeInS = 3;
+
+		@Min(1)
+		public int clientReportsPreCollectingMaxItems = 1000;
+	}
+
+	public Map<String, Object> sinks;
+
+	// Outbound Reports Config
+	public OutboundReportsConfig outboundReports;
+
+	@ConfigurationProperties("outboundReports")
+	public static class OutboundReportsConfig {
+		public ReportFormat reportFormat = ReportFormat.JSON;
+		public boolean reportObserverEvents = true;
+		public boolean reportCallEvents = true;
+		public boolean reportCallMeta = true;
+		public boolean reportClientExtensions = true;
+		public boolean reportInboundAudioTracks = true;
+		public boolean reportInboundVideoTracks = true;
+		public boolean reportOutboundAudioTracks = true;
+		public boolean reportOutboundVideoTracks = true;
+		public boolean reportClientTransports = true;
+		public boolean reportClientDataChannels = true;
+		public boolean reportMediaTracks = false;
+
+		public boolean reportSfuEvents = true;
+		public boolean reportSfuMeta = true;
+		public boolean reportSfuTransports = true;
+		public boolean reportSfuSctpStreams = true;
+
+		public boolean reportSfuInboundRtpStreams = true;
+		public boolean reportSfuOutboundRtpStreams = true;
+
+		public boolean reportSfuRtpPadOnlyWithCallId = true;
+
+		public String defaultServiceName = "defaultServiceName";
+
+    }
+
+	// Hazelcast Config
+	public HazelcastConfig hazelcast;
+
+	@ConfigurationProperties("hazelcast")
+	public static class HazelcastConfig {
+		public String configFile = null;
+		public List<String> memberNamesPool = new ArrayList<>();
 	}
 
 }

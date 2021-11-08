@@ -28,21 +28,21 @@ class WeakSpinLockTest {
         Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
     }
 
-    @Test
-    void shouldLockAndUnlockMaps_2() {
-        var lockName = "shouldLockAndUnlockMaps_2";
-        boolean exceptionBranchIsTouched = false; // Trust no one!
-
-        try (var lock = weakLockProvider.autoLock(lockName)) {
-            throw new RuntimeException("exception throw during locked operation");
-        } catch (Exception ex) {
-            Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
-            exceptionBranchIsTouched = true;
-        }
-
-        Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
-        Assertions.assertTrue(exceptionBranchIsTouched);
-    }
+//    @Test
+//    void shouldLockAndUnlockMaps_2() {
+//        var lockName = "shouldLockAndUnlockMaps_2";
+//        boolean exceptionBranchIsTouched = false; // Trust no one!
+//
+//        try (var lock = weakLockProvider.autoLock(lockName)) {
+//            throw new RuntimeException("exception throw during locked operation");
+//        } catch (Exception ex) {
+//            Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
+//            exceptionBranchIsTouched = true;
+//        }
+//
+//        Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
+//        Assertions.assertTrue(exceptionBranchIsTouched);
+//    }
 
 //    @Test
 //    void shouldWaitAndThenReplace_1() {

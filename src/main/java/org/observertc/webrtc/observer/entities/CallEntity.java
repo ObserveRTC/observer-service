@@ -19,8 +19,10 @@ package org.observertc.webrtc.observer.entities;
 import org.observertc.webrtc.observer.common.ObjectToString;
 import org.observertc.webrtc.observer.dto.CallDTO;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 // To avoid exposing hazelcast serialization specific fields
 public class CallEntity {
@@ -29,14 +31,29 @@ public class CallEntity {
 		return new Builder();
 	}
 
-	public final CallDTO call;
-	public final Set<Long> SSRCs;
-	public final Map<UUID, PeerConnectionEntity> peerConnections;
+	private CallDTO callDTO;
+	private Map<UUID, ClientEntity> clients = new HashMap<>();
 
-	private CallEntity(CallDTO call, Set<Long> ssrCs, Map<UUID, PeerConnectionEntity> peerConnections) {
-		this.call = call;
-		SSRCs = ssrCs;
-		this.peerConnections = peerConnections;
+	CallEntity() {
+
+	}
+
+	public UUID getCallId() {
+		return this.callDTO.callId;
+	}
+
+	public ClientEntity getClientEntity(UUID clientId) {
+		return this.clients.get(clientId);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.callDTO.callId.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return ObjectToString.toString(this);
 	}
 
 	@Override
@@ -45,46 +62,46 @@ public class CallEntity {
 			return false;
 		}
 		CallEntity otherEntity = (CallEntity) other;
-		if (!this.call.equals(otherEntity.call)) return false;
-		if (!this.SSRCs.stream().allMatch(otherEntity.SSRCs::contains)) return false;
-		if (!otherEntity.SSRCs.stream().allMatch(this.SSRCs::contains)) return false;
-		if (!this.peerConnections.values().stream().allMatch(pcE -> pcE.equals(otherEntity.peerConnections.get(pcE.pcUUID)))) return false;
-		if (!otherEntity.peerConnections.values().stream().allMatch(pcE -> pcE.equals(this.peerConnections.get(pcE.pcUUID)))) return false;
+		if (!this.callDTO.equals(otherEntity.callDTO)) return false;
+		if (!this.clients.values().stream().allMatch(clientEntity -> clientEntity.equals(otherEntity.getClientEntity(clientEntity.getClientId())))) return false;
+		if (!otherEntity.clients.values().stream().allMatch(clientEntity -> clientEntity.equals(this.clients.get(clientEntity.getClientId())))) return false;
 		return true;
 	}
 
-	@Override
-	public int hashCode() {
-		return this.call.callUUID.hashCode();
+	public CallDTO getCallDTO() {
+		return this.callDTO;
 	}
 
-	@Override
-	public String toString() {
-		return ObjectToString.toString(this);
-	}
+    public static class Builder {
 
-	public static class Builder {
-		public CallDTO callDTO;
-		public Map<UUID, PeerConnectionEntity> peerConnections = new HashMap<>();
+		private final CallEntity result = new CallEntity();
+
+		public Builder from(CallEntity source) {
+			return this.withCallDTO(source.getCallDTO())
+					.withClientEntities(source.clients)
+					;
+		}
 
 		public CallEntity build() {
-			Objects.requireNonNull(this.callDTO);
-			Objects.requireNonNull(this.peerConnections);
-			Set<Long> SSRCs = this.peerConnections.values().stream().flatMap(pc -> pc.SSRCs.stream()).collect(Collectors.toSet());
-			return new CallEntity(this.callDTO,
-					Collections.unmodifiableSet(SSRCs),
-					Collections.unmodifiableMap(this.peerConnections)
-			);
+			Objects.requireNonNull(this.result.callDTO);
+			return this.result;
 		}
 
 		public Builder withCallDTO(CallDTO callDTO) {
-			this.callDTO = callDTO;
+			this.result.callDTO = callDTO;
 			return this;
 		}
 
-		public Builder withPeerConnections(Map<UUID, PeerConnectionEntity> peerConnectionEntities) {
-			this.peerConnections.putAll(peerConnectionEntities);
+		public Builder withClientEntities(Map<UUID, ClientEntity> clientEntities) {
+			this.result.clients.putAll(clientEntities);
 			return this;
 		}
-    }
+
+		public Builder withClientEntity(ClientEntity clientEntity) {
+			this.result.clients.put(clientEntity.getClientId(), clientEntity);
+			return this;
+		}
+
+
+	}
 }

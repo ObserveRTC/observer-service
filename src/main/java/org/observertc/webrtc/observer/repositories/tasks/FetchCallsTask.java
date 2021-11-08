@@ -1,11 +1,10 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ChainedTask;
-import org.observertc.webrtc.observer.common.TaskStage;
 import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
-import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -16,112 +15,108 @@ import java.util.stream.Collectors;
 @Prototype
 public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
 
-    private Set<UUID> callUUIDs = new HashSet<>();
-    private boolean fetchPeerConnections = true;
+    private Set<UUID> callIds = new HashSet<>();
 
     @Inject
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    FetchPCsTask fetchPCsTask;
+    FetchClientsTask fetchClientsTask;
 
 
     @PostConstruct
     void setup() {
-        new Builder<>(this)
-            .addStage(TaskStage.builder("Find Call By UUID")
-                    .<Map<UUID, CallDTO>>withSupplier(() -> {
-                        if (callUUIDs.size() < 1) {
-                            this.getLogger().info("Call tried to find by provided callUUIDs, but the there is no");
-                            return null;
-                        }
-                        return hazelcastMaps.getCallDTOs().getAll(callUUIDs);
-                    })
-                    .<Set<UUID>, Map<UUID, CallDTO>>withFunction(passedCallUUIDs -> {
-                        if (Objects.isNull(passedCallUUIDs)) {
-                            this.getLogger().info("Call tried to find by passed callUUID, but the callUUID is null");
-                            return null;
-                        }
-                        callUUIDs.addAll(passedCallUUIDs);
-                        if (callUUIDs.size() < 1) {
-                            return null;
-                        }
-                        return hazelcastMaps.getCallDTOs().getAll(callUUIDs);
-                    })
-                    .build()
-            )
-            .<Map<UUID, CallDTO>>addBreakCondition((callDTOMap, resultHolder) -> {
-                if (Objects.isNull(callDTOMap) || callDTOMap.size() < 1) {
-                    resultHolder.set(Collections.EMPTY_MAP);
-                    return true;
-                }
-                return false;
-            })
-            .<Map<UUID, CallDTO>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Convert CallDTOs to CallEntity.Builder", callDTOMap -> {
-                Map<UUID, CallEntity.Builder> dataCarriers = callDTOMap.entrySet().stream().collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> {
-                            CallEntity.Builder builder = CallEntity.builder();
-                            builder.callDTO = entry.getValue();
-                            return builder;
-                        }
-                ));
-                return dataCarriers;
-            })
-            .<Map<UUID, CallEntity.Builder>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Fetch Peer Connections", callEntityBuilders -> {
-                if (!fetchPeerConnections) {
-                    return callEntityBuilders;
-                }
-                Set<UUID> peerConnectionUUIDs = new HashSet<>();
-                for (CallEntity.Builder builder : callEntityBuilders.values()) {
-                    Collection<UUID> pcUUIDs = hazelcastMaps.getCallToPCUUIDs().get(builder.callDTO.callUUID);
-                    peerConnectionUUIDs.addAll(pcUUIDs);
-                }
-                fetchPCsTask.wherePCUuid(peerConnectionUUIDs).execute();
-                if (!fetchPCsTask.succeeded()) {
-                    getLogger().warn("Fetching peer connection was not completed successfully");
-                    return callEntityBuilders;
-                }
-                Map<UUID, PeerConnectionEntity> pcEntities = fetchPCsTask.getResult();
-                for (PeerConnectionEntity pcEntity : pcEntities.values()) {
-                    CallEntity.Builder builder = callEntityBuilders.get(pcEntity.callUUID);
-                    if (Objects.isNull(builder)) {
-                        this.getLogger().warn("Call Entity Builder has not been set for peer connection {}", pcEntity);
-                        continue;
+        Function<Set<UUID>, Map<UUID, CallDTO>> fetchCallDTOs = clientIds -> {
+            if (Objects.nonNull(clientIds)) {
+                this.callIds.addAll(clientIds);
+            }
+            if (this.callIds.size() < 1) {
+                return Collections.EMPTY_MAP;
+            }
+            return hazelcastMaps.getCalls().getAll(this.callIds);
+        };
+        new Builder<Map<UUID, CallEntity>>(this)
+                .<Set<UUID>, Map<UUID, CallDTO>>addSupplierEntry("Find Call DTOs by UUIDs",
+                        () -> fetchCallDTOs.apply(this.callIds),
+                        callIds -> fetchCallDTOs.apply(callIds)
+                )
+                .<Map<UUID, CallDTO>>addBreakCondition((callDTOMap, resultHolder) -> {
+                    if (Objects.isNull(callDTOMap) || callDTOMap.size() < 1) {
+                        resultHolder.set(Collections.EMPTY_MAP);
+                        return true;
                     }
-                    builder.peerConnections.put(pcEntity.pcUUID, pcEntity);
-                }
-                return callEntityBuilders;
-            })
-            .<Map<UUID, CallEntity.Builder>>addTerminalFunction("Completed", callEntityBuilders -> {
-                return callEntityBuilders.entrySet().stream()
-                        .map(entry -> Map.entry(entry.getKey(), entry.getValue().build()))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            })
-        .build();
+                    return false;
+                })
+                .<Map<UUID, CallDTO>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Convert Call DTO to Call Entity builders", callDTOMap -> {
+                    Map<UUID, CallEntity.Builder> callEntityBuilders = callDTOMap.entrySet().stream().collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> {
+                                var callDTO = entry.getValue();
+                                CallEntity.Builder builder = CallEntity.builder().withCallDTO(callDTO);
+                                return builder;
+                            }
+                    ));
+                    return callEntityBuilders;
+                })
+                .<Map<UUID, CallEntity.Builder>, Map<UUID, CallEntity.Builder>> addFunctionalStage("Add Client Entities", callEntityBuilders -> {
+                    Set<UUID> callIds = callEntityBuilders.keySet();
+                    Map<UUID, UUID> clientToCallIds = new HashMap<>();
+                    callIds.forEach(callId -> {
+                        Collection<UUID> clientIds = this.hazelcastMaps.getCallToClientIds().get(callId);
+                        clientIds.forEach(clientId -> {
+                            clientToCallIds.put(clientId, callId);
+                        });
+                    });
+                    Set<UUID> clientIds = clientToCallIds.keySet();
+                    this.fetchClientsTask.whereClientIds(clientIds);
+
+                    if (!this.fetchClientsTask.execute().succeeded()) {
+                        // TODO: raise some errors?
+                        return callEntityBuilders;
+                    }
+                    var clientEntities = this.fetchClientsTask.getResult();
+                    clientEntities.forEach((clientId, clientEntity) -> {
+                        UUID callId = clientToCallIds.get(clientId);
+                        if (Objects.isNull(callId)) {
+                            // TODO: notify a module about the inconsistency
+                            return;
+                        }
+                        CallEntity.Builder builder = callEntityBuilders.get(callId);
+                        if (Objects.isNull(builder)) {
+                            // TODO: notify a module about the inconsistency, although this should be impossible as we got the client Id from the builders
+                            return;
+                        }
+                        builder.withClientEntity(clientEntity);
+                    });
+                    return callEntityBuilders;
+                })
+                .<Map<UUID, CallEntity.Builder>> addTerminalFunction("Creating Call Entities", callEntityBuilders -> {
+                    return callEntityBuilders.entrySet().stream().collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> {
+                                CallEntity.Builder callEntityBuilder = entry.getValue();
+                                return callEntityBuilder.build();
+                            })
+                    );
+                })
+                .build();
     }
 
     public FetchCallsTask whereCallUUID(UUID... values) {
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }
-        this.callUUIDs.addAll(Arrays.asList(values));
+        this.callIds.addAll(Arrays.asList(values));
         return this;
     }
 
-    public FetchCallsTask whereCallUUIDs(Set<UUID> callUUIDs) {
+    public FetchCallsTask whereCallIds(Set<UUID> callUUIDs) {
         if (Objects.isNull(callUUIDs) || callUUIDs.size() < 1) {
             return this;
         }
-        this.callUUIDs.addAll(callUUIDs);
+        this.callIds.addAll(callUUIDs);
         return this;
     }
-
-    public FetchCallsTask doNotFetchPeerConnections() {
-        this.fetchPeerConnections = false;
-        return this;
-    }
-
 
 
     @Override

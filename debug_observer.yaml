@@ -1,0 +1,32 @@
+#micronaut:
+#  security:
+#    enabled: true
+#    authentication: idtoken
+#    token:
+#      jwt:
+#        enabled: true
+#        signatures.jwks.keycloak:
+#          url: http://docker_keycloak:8080/auth/realms/master/protocol/openid-connect/certs
+#    oauth2.clients.keycloak:
+#      openid:
+#        issuer: http://docker_keycloak:8080/auth/realms/master
+#
+
+#observer:
+#  connectors:
+#    - name: "KafkaConnector"
+#      sink:
+#        type: "KafkaSink"
+#        config:
+#          topic: "reports"
+#          properties:
+#            bootstrap.servers: "docker_kafka:29092"
+
+
+observer:
+  sinks:
+    MyMongo:
+      type: MongoSink
+      config:
+        uri: "mongodb://root:password@docker_mongo:27017"
+        database: "myReports"

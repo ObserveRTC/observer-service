@@ -1,54 +1,32 @@
 package org.observertc.webrtc.observer.dto;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import javax.inject.Inject;
 
 @MicronautTest
 class PeerConnectionDTOTest {
 
-    private static EasyRandom generator = new EasyRandom();
+    @Inject
+    PeerConnectionDTOGenerator generator;
 
     @Test
     void shouldBuild_1() {
-        UUID serviceUUID = UUID.randomUUID();
-        UUID callUUID = UUID.randomUUID();
-        UUID pcUUID = UUID.randomUUID();
-        PeerConnectionDTO peerConnectionDTO = PeerConnectionDTO.of(serviceUUID,
-                "serviceName",
-                "mediaUnitId",
-                callUUID,
-                "callName",
-                pcUUID,
-                "userName",
-                "browserId",
-                "timeZone",
-                1L,
-                "marker");
+        PeerConnectionDTO source = this.generator.get();
+        PeerConnectionDTO target = PeerConnectionDTO.builder()
+                .from(source)
+                .build();
 
-        Assertions.assertEquals(serviceUUID, peerConnectionDTO.serviceUUID);
-        Assertions.assertEquals("serviceName", peerConnectionDTO.serviceName);
-        Assertions.assertEquals("mediaUnitId", peerConnectionDTO.mediaUnitId);
-        Assertions.assertEquals(callUUID, peerConnectionDTO.callUUID);
-        Assertions.assertEquals("callName", peerConnectionDTO.callName);
-        Assertions.assertEquals(pcUUID, peerConnectionDTO.peerConnectionUUID);
-        Assertions.assertEquals("userName", peerConnectionDTO.providedUserName);
-        Assertions.assertEquals("timeZone", peerConnectionDTO.timeZone);
-        Assertions.assertEquals(1L, peerConnectionDTO.joined);
-        Assertions.assertEquals("marker", peerConnectionDTO.marker);
-
+        Assertions.assertEquals(source, target);
     }
 
     @Test
-    void shouldCheckEquality_1() {
-        PeerConnectionDTO peerConnectionDTO_1 = generator.nextObject(PeerConnectionDTO.class);
-        PeerConnectionDTO peerConnectionDTO_2 = generator.nextObject(PeerConnectionDTO.class);
-
-        Assertions.assertEquals(peerConnectionDTO_1, peerConnectionDTO_1);
-        Assertions.assertNotEquals(peerConnectionDTO_1, peerConnectionDTO_2);
+    void shouldThrowException_1() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            PeerConnectionDTO.builder().build();
+        });
     }
 
 }

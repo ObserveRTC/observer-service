@@ -153,13 +153,20 @@ public class ConfigConverter<T> implements Function<Map<String, Object>, T>{
 		}
 	}
 
+	private final boolean forceCamelCase;
+
 	private final Class<T> klass;
 
 	/**
 	 * Constructs an abstract builder
 	 */
-	public ConfigConverter(Class<T> klass) {
+	public ConfigConverter(Class<T> klass, boolean forceCamelCase) {
 		this.klass = klass;
+		this.forceCamelCase = forceCamelCase;
+	}
+
+	public ConfigConverter(Class<T> klass) {
+		this(klass, true);
 	}
 
 	public T apply(Map<String, Object> configs) {
@@ -176,6 +183,9 @@ public class ConfigConverter<T> implements Function<Map<String, Object>, T>{
 	 * @throws ConstraintViolationException if the validation fails during the conversion.
 	 */
 	private T convertAndValidate(Class<T> klass, Map<String, Object> configs) {
+		if (this.forceCamelCase) {
+			forceKeysToBeCamelCase(configs);
+		}
 		this.checkForSystemEnv(configs);
 		T result = this.OBJECT_MAPPER.convertValue(configs, klass);
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

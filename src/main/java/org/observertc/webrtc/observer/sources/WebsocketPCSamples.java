@@ -27,16 +27,15 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.pcsamples.v20200114.PeerConnectionSample;
-import org.observertc.webrtc.observer.monitors.FlawMonitor;
-import org.observertc.webrtc.observer.monitors.MonitorProvider;
-import org.observertc.webrtc.observer.samples.SourceSample;
+import org.observertc.webrtc.observer.evaluators.ObservedClientSampleProcessingPipeline;
+import org.observertc.webrtc.observer.micrometer.FlawMonitor;
+import org.observertc.webrtc.observer.micrometer.MonitorProvider;
+import org.observertc.webrtc.observer.samples.ClientSample;
+import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
-import org.observertc.webrtc.observer.security.WebsocketSecurityCustomCloseReasons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -44,7 +43,10 @@ import org.slf4j.event.Level;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -54,7 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/pcsamples/{serviceUUIDStr}/{mediaUnitID}")
-public class WebsocketPCSamples extends Observable<SourceSample> {
+public class WebsocketPCSamples {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsocketPCSamples.class);
 	private final ObjectReader objectReader;
@@ -62,15 +64,19 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	private Map<String, Instant> expirations;
 
 	@Inject
+	PCSampleToClientSampleConverter pcSampleConverter;
+
+	@Inject
+	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
+
+	@Inject
 	MeterRegistry meterRegistry;
 
 	@Inject
-	WebsocketSecurityCustomCloseReasons securityCustomCloseReasons;
+	WebsocketCustomCloseReasons securityCustomCloseReasons;
 
 	@Inject
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
-
-	private Observer<? super SourceSample> observer = null;
 
 	public WebsocketPCSamples(
 			ObjectMapper objectMapper,
@@ -84,11 +90,6 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 	@PostConstruct
 	void setup() {
 
-	}
-
-	@Override
-	protected void subscribeActual(@NonNull Observer<? super SourceSample> observer) {
-		this.observer = observer;
 	}
 
 	@OnOpen
@@ -182,47 +183,19 @@ public class WebsocketPCSamples extends Observable<SourceSample> {
 					.complete();
 			return;
 		}
-		SourceSample.Builder sourceSampleBuilder = new SourceSample.Builder()
-				.withServiceUUID(serviceUUID)
-				.withMediaUnitId(mediaUnitID)
-				.withSample(sample);
 
-		if (Objects.isNull(sample.peerConnectionId)) {
-			if (Objects.nonNull(sample.userMediaErrors)) {
-				this.observer.onNext(
-						sourceSampleBuilder.build()
-				);
-				return;
-			}
-			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("pc uuid is null for ", sample)
-					.complete();
-			return;
-		}
-
-		Optional<UUID> peerConnectionUUIDHolder = UUIDAdapter.tryParse(sample.peerConnectionId);
-
-		if (!peerConnectionUUIDHolder.isPresent()) {
-			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
-					.withLogLevel(Level.WARN)
-					.withMessage("invalid peer connection uuid for sample {} ", sample)
-					.complete();
-			return;
-		}
-		sourceSampleBuilder.withPeerConnectionUUID(peerConnectionUUIDHolder.get());
 
 		try {
-			this.observer.onNext(
-					sourceSampleBuilder.build()
-			);
+			ClientSample clientSample = pcSampleConverter.apply(sample);
+			var observedClientSample = ObservedClientSampleBuilder.from(clientSample)
+					.withServiceId(serviceUUID.toString())
+					.withMediaUnitId(mediaUnitID)
+					.build();
+			Observable.just(observedClientSample)
+					.subscribe(this.observedClientSampleProcessingPipeline);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
-					.withLogger(logger)
 					.withException(ex)
-					.withLogLevel(Level.WARN)
 					.withMessage("Error occured processing message by {} ", this.getClass().getSimpleName())
 					.complete();
 		}

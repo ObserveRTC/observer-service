@@ -1,6 +1,7 @@
 plugins {
     id("io.micronaut.application") version "1.2.0"
     id("com.google.cloud.tools.jib") version "2.6.0"
+    id "com.commercehub.gradle.plugin.avro" version "0.99.99"
 }
 
 // target version:
@@ -9,12 +10,24 @@ plugins {
 //version = "hydrogen:deuterium"
 // latest version
 //version = "latest"
-version = "0.8.2"
+version = "1.0.0-beta"
 group = "org.observertc.webrtc.observer"
 
 repositories {
     mavenCentral()
     jcenter()
+}
+
+avro {
+    createSetters = false
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+}
+
+def generateAvro = tasks.register("generateAvro", com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
+    source("src/main/avro-schemas")
+    outputDir = file("src/main/avro-out/")
+//    outputDir = file("src/dest")
 }
 
 micronaut {
@@ -27,6 +40,7 @@ micronaut {
 }
 
 dependencies {
+    implementation 'javax.inject:javax.inject:1'
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     annotationProcessor("io.dekorate:prometheus-annotations:${dekorateVersion}")
@@ -41,6 +55,10 @@ dependencies {
 
     implementation("io.dekorate:prometheus-annotations:${dekorateVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
+//    implementation 'javax.websocket:javax.websocket-api:1.1'
+    implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
+// https://mvnrepository.com/artifact/org.glassfish.tyrus.bundles/tyrus-standalone-client
+    implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '2.0.1'
 
 
     // Exposed Metrics Client Libraries
@@ -50,13 +68,13 @@ dependencies {
 
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
 
-    compile group: 'org.apache.avro', name: 'avro', version: '1.10.0'
+    compile group: 'org.apache.avro', name: 'avro', version: '1.10.2'
     testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
     // ------------- Hazelcast -----------
     compile group: 'com.hazelcast', name: 'hazelcast', version: '4.1'
 
     // --------- Connector dependencies -----
-    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.7.0'
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.0'
     compile 'org.mongodb:mongodb-driver-sync:4.2.2'
 
     // ------- Render Views --------
@@ -84,22 +102,34 @@ java {
     targetCompatibility = JavaVersion.toVersion("11")
 }
 
-task createProperties {
+//task createProperties {
 //    doLast {
-//        new File("$buildDir/resources/main/version.properties").withWriter { w ->
-//            Properties p = new Properties()
-//            p['version'] = project.version.toString()
-//            p.store w, null
-//        }
+//            new File("$buildDir/resources/main/version.properties").withWriter { w ->
+//                Properties p = new Properties()
+//                p['version'] = project.version.toString()
+//                p.store w, null
+//            }
 //    }
+//}
+
+task createVersion {
+    File outputDir = file("$buildDir/resources/main")
+    outputs.dir outputDir
+    doFirst {
+        outputDir.exists() || outputDir.mkdirs()
+        new File(outputDir, "service.properties").withWriter { w ->
+                Properties p = new Properties()
+                p['version'] = project.version.toString()
+                p.store w, null
+            }
+    }
 }
 
-classes {
-    dependsOn createProperties
-}
+compileJava.dependsOn createVersion
+
 tasks {
     dockerBuild{
-        images = ["${System.env.DOCKER_IMAGE}:$project.version"]
+        images = ["observertc/observer:$project.version"]
     }
 
     jib {

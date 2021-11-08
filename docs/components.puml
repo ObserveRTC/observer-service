@@ -1,0 +1,36 @@
+@startuml
+skinparam handwritten true
+skinparam roundcorner 20
+skinparam monochrome true
+skinparam arrowThickness 2
+skinparam BoxPadding 60
+
+
+
+rectangle Observer #transparent {
+	component sources
+	component evaluators
+	component repositories
+	component sinks
+}
+() kafka as kafka
+() mongo as mongo
+() client as client
+() sfu as sfu
+
+
+kafka -[hidden]-> mongo
+client -[hidden]-> sfu
+
+
+sfu .> [sources] : SFUSample
+client .> [sources] : ClientSample
+
+
+[sources] -> [evaluators]
+[evaluators] <..> [repositories]
+[evaluators] .> sinks
+[sinks] .> kafka : WebRTC-Reports
+[sinks] .> mongo : WebRTC-Reports
+
+@enduml

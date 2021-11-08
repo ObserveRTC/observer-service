@@ -93,7 +93,7 @@ public class TaskStage {
         return this.executed;
     }
 
-    public boolean isRolledbacked() {
+    public boolean isRolledback() {
         return this.rolledbacked;
     }
 
@@ -212,50 +212,3 @@ public class TaskStage {
         }
     }
 }
-    /**
-     *
-     * WARNING! The input reference is shared. whatever you are producing in the previous step
-     * make sure the output is thread safe. One way you may wanna affect the input goes through every
-     * thread is to add the inputHandler implementation and clone the input.
-     *
-     * @param joiner
-     * @param functions
-     * @param <U>
-     * @param <V>
-     * @return
-     */
-//    public<U, V> ChainedTask.Builder<R> addParallelFunctions(String stageName, Function<U, U> inputHandler, Function<List<V>, V> joiner, Function<U, V>... functions) {
-//        this.requireExecutorService();
-//        return this.<U, V>addFunctionalStage(stageName, input -> {
-//            List<Callable<V>> callables = Arrays.asList(functions).stream().map(function ->
-//                    new Callable<V>() {
-//                        @Override
-//                        public V call() throws Exception {
-//                            U handledInput = null;
-//                            try {
-//                                handledInput = inputHandler.apply(input);
-//                            } catch (Throwable throwable) {
-//                                throwable.printStackTrace();
-//                            }
-//                            try {
-//                                return function.apply(handledInput);
-//                            } catch (Throwable throwable) {
-//                                throwable.printStackTrace();
-//                                return null;
-//                            }
-//                        }
-//                    }).collect(Collectors.toList());
-//
-//            List<V> results = executorService.invokeAll(callables)
-//                    .stream()
-//                    .map(future -> {
-//                        try {
-//                            return future.get();
-//                        }
-//                        catch (Exception e) {
-//                            throw new IllegalStateException(e);
-//                        }
-//                    }).collect(Collectors.toList());
-//            return joiner.apply(results);
-//        });
-//    }

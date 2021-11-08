@@ -21,32 +21,44 @@ import com.hazelcast.nio.serialization.PortableFactory;
 
 public class PortableDTOFactory implements PortableFactory {
 
-	public static final int FACTORY_ID = 200000;
-	public static final int PEER_CONNECTION_DTO_CLASS_ID = 1000;
-	public static final int CALL_DTO_CLASS_ID = 2000;
-	public static final int WEAKLOCKS_DTO_CLASS_ID = 4000;
-	public static final int INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 9000;
-	public static final int OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 10000;
-	public static final int REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID = 11000;
-	public static final int CONFIG_DTO_CLASS_ID = 12000;
+	public static final int FACTORY_ID                      = 200000;
+	public static final int CALL_DTO_CLASS_ID               = 102000;
+	public static final int CLIENT_DTO_CLASS_ID             = 103000;
+	public static final int PEER_CONNECTION_DTO_CLASS_ID    = 104000;
+	public static final int MEDIA_TRACK_DTO_CLASS_ID        = 105000;
+	public static final int WEAKLOCKS_DTO_CLASS_ID          = 106000;
+	public static final int CONFIG_DTO_CLASS_ID             = 107000;
+	public static final int SFU_DTO_CLASS_ID                = 108000;
+	public static final int SFU_TRANSPORT_DTO_CLASS_ID      = 109000;
+	public static final int SFU_RTP_STREAM_POD_DTO_CLASS_ID = 110000;
+	public static final int GENERAL_ENTRY_DTO_CLASS_ID      = 120000;
 
-	@Override
+
+    @Override
 	public Portable create(int classId) {
 		switch (classId) {
-			case PEER_CONNECTION_DTO_CLASS_ID:
-				return new PeerConnectionDTO();
 			case CALL_DTO_CLASS_ID:
 				return new CallDTO();
+			case CLIENT_DTO_CLASS_ID:
+				return new ClientDTO();
+			case PEER_CONNECTION_DTO_CLASS_ID:
+				return new PeerConnectionDTO();
+			case MEDIA_TRACK_DTO_CLASS_ID:
+				return new MediaTrackDTO();
 			case WEAKLOCKS_DTO_CLASS_ID:
 				return new WeakLockDTO();
-			case INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
-				return new InboundRtpTrafficDTO();
-			case OUTBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
-				return new OutboundRtpTrafficDTO();
-			case REMOTE_INBOUND_RTP_TRAFFIC_DTO_CLASS_ID:
-				return new RemoteInboundRtpTrafficDTO();
 			case CONFIG_DTO_CLASS_ID:
 				return new ConfigDTO();
+
+			case SFU_DTO_CLASS_ID:
+				return new SfuDTO();
+			case SFU_TRANSPORT_DTO_CLASS_ID:
+				return new SfuTransportDTO();
+			case SFU_RTP_STREAM_POD_DTO_CLASS_ID:
+				return new SfuRtpPadDTO();
+
+			case GENERAL_ENTRY_DTO_CLASS_ID:
+				return new GeneralEntryDTO();
 		}
 		throw new IllegalArgumentException("Unsupported type " + classId);
 	}

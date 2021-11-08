@@ -19,6 +19,7 @@ package org.observertc.webrtc.observer.micrometer;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.micronaut.configuration.metrics.aggregator.MeterRegistryConfigurer;
+
 import javax.inject.Singleton;
 
 @Singleton
@@ -33,5 +34,9 @@ public class WebRTCStatsMeterRegistryConfigurer implements MeterRegistryConfigur
 	@Override
 	public boolean supports(MeterRegistry meterRegistry) {
 		return meterRegistry instanceof SimpleMeterRegistry;
+	}
+
+	public Class<WebRTCStatsMeterRegistryConfigurer> getType() {
+		return WebRTCStatsMeterRegistryConfigurer.class;
 	}
 }

@@ -14,26 +14,35 @@ of samples per minutes.
 ----
 @startuml
 skinparam handwritten true
+skinparam roundcorner 20
 skinparam monochrome true
-skinparam backgroundColor transparent
+skinparam arrowThickness 2
+skinparam BoxPadding 60
 
-package "Collection" {
-  ws - [WebRTC App]
-}
 
-cloud "Processing" {
-  ws --> [Observer]
-  [Observer] --> [Connector]
-}
 
-database "Data warehouse" {
-    [Connector] --> [BigQuery]
-    [Connector] --> [RedShift]
-    [Connector] --> [MongoDB]
-    [Connector] --> [Kafka]
+rectangle Observer #transparent {
+	component sources
+	component evaluators
+	component repositories
+	component sinks
 }
+() kafka as kafka
+() mongo as mongo
+() client as client
+
+kafka -[hidden]-> mongo
+
+client .> [sources] : ClientSample
+
+[sources] -> [evaluators]
+[evaluators] <..> [repositories]
+[evaluators] .> sinks
+[sinks] .> kafka
+[sinks] .> mongo
 
 @enduml
+
 ----
 
 Observer is a focus point for metrics originated
@@ -64,39 +73,47 @@ skinparam backgroundColor transparent
 ' hide the spot
 hide circle
 
-entity "Peer Connection Sample" as pcs {
-*peerConnectionId: UUID <<generated>>
+entity "MediaTrack" as tracks {
+*trackId: UUID
+*peerConnectionId: UUID
 --
 ...metrics...
 }
 
-entity "User" as user {
-*browserId: String <<generated>>
+entity "Peer Connection" as pcs {
+*peerConnectionId: UUID
+*clientId: UUID
 --
-providedUserId: String <<optional>>
+...metrics...
 }
+
+entity "Client" as client {
+*clientId*: UUID
+*callId: UUID
+--
+...metrics...
+}
+
 
 entity "Call" as call {
-*call: UUID <<generated>>
+*callId*: UUID
+*roomId*: String
+*serviceId: String
 --
-providedCallId: String <<optional>>
+...metrics...
 }
 
-entity "Media Unit" as mediaUnit {
-*mediaUnitId: String <<generated>>
-}
 
 entity "Service" as service {
-*serviceUUID: UUID <<generated>>
----
-serviceName: String <<optional>>
+*serviceId: String
+--
 }
 
+call ||..o{ service
+client ||..o{ call
+pcs ||..o{ client
+tracks ||..o{ pcs
 
-user ||..o{ pcs
-call ||..o{ user
-mediaUnit ||..o{ call
-service ||..o{ mediaUnit
 
 @enduml
 ----

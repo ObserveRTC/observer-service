@@ -1,58 +1,90 @@
 package org.observertc.webrtc.observer.entities;
 
-import org.jeasy.random.EasyRandom;
-import org.observertc.webrtc.observer.configs.SentinelConfig;
-import org.observertc.webrtc.observer.dto.CallDTO;
-import org.observertc.webrtc.observer.dto.DTOTestUtils;
-import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.dto.CallDTOGenerator;
+import org.observertc.webrtc.observer.dto.ClientDTOGenerator;
+import org.observertc.webrtc.observer.dto.MediaTrackDTOGenerator;
+import org.observertc.webrtc.observer.dto.PeerConnectionDTOGenerator;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Random;
+import java.util.UUID;
 
 @Singleton
 public class EntitiesTestUtils {
 
-    private static EasyRandom generator = new EasyRandom();
+    @Inject
+    CallDTOGenerator callDTOGenerator;
 
     @Inject
-    DTOTestUtils dtoTestUtils;
+    PeerConnectionDTOGenerator peerConnectionDTOGenerator;
 
-    public PeerConnectionEntity generatePeerConnectionEntity() {
-        return this.generatePeerConnectionEntity(null, null);
-    }
+    @Inject
+    MediaTrackDTOGenerator mediaTrackDTOGenerator;
 
-    public PeerConnectionEntity generatePeerConnectionEntity(UUID callUUID, UUID serviceUUID) {
-        PeerConnectionDTO pcDTO = dtoTestUtils.generatePeerConnectionDTO(callUUID, serviceUUID);
-        Set<Long> SSRCs = generator.longs(new Random().nextInt(10) + 1).boxed().collect(Collectors.toSet());
-        return PeerConnectionEntity.builder()
-                .withPCDTO(pcDTO)
-                .withSSRCs(SSRCs)
-                .build();
-    }
+    @Inject
+    ClientDTOGenerator clientDTOGenerator;
 
-    public SentinelEntity generateSentinelEntityWithoutFilter() {
-        SentinelConfig sentinelConfig = dtoTestUtils.generateSentinelDTO();
-        return SentinelEntity.builder()
-                .withSentinelDTO(sentinelConfig)
-                .build();
-    }
-    public CallEntity generateCallEntity() {
-        return this.generateCallEntity(1);
-    }
+    private final Random random = new Random();
 
-    public CallEntity generateCallEntity(int pcNum) {
-        CallDTO callDTO = dtoTestUtils.generateCallDTO();
-        Map<UUID, PeerConnectionEntity> pcs = new HashMap<>();
-        for (int i =0; i < pcNum; ++i) {
-            PeerConnectionEntity pcEntity = this.generatePeerConnectionEntity(callDTO.callUUID, callDTO.serviceUUID);
-            pcs.put(pcEntity.pcUUID, pcEntity);
+    public CallEntity getCallEntity() {
+        var callDTO = this.callDTOGenerator.get();
+        var result = CallEntity.builder().withCallDTO(callDTO);
+        for (int i = 0, c = 1 + random.nextInt(1); i < c; ++i) {
+            var clientEntity = this.getClientEntity(callDTO.callId);
+            result.withClientEntity(clientEntity);
         }
-
-        return CallEntity.builder()
-                .withCallDTO(callDTO)
-                .withPeerConnections(pcs)
-                .build();
+        return result.build();
     }
+
+    public ClientEntity getClientEntity() {
+        UUID callId = UUID.randomUUID();
+        return this.getClientEntity(
+                callId
+        );
+    }
+
+    private ClientEntity getClientEntity(UUID callId) {
+        var clientDTO = this.clientDTOGenerator.withCallId(callId).get();
+        var result = ClientEntity.builder()
+                .withClientDTO(clientDTO);
+        for (int i = 0, c = 1 + random.nextInt(1); i < c; ++i) {
+            var peerConnectionEntity = this.getPeerConnectionEntity(callId, clientDTO.clientId);
+            result.withPeerConnectionEntity(peerConnectionEntity);
+        }
+        return result.build();
+    }
+
+    public PeerConnectionEntity getPeerConnectionEntity() {
+        UUID callId = UUID.randomUUID();
+        UUID clientId = UUID.randomUUID();
+        return this.getPeerConnectionEntity(
+                callId,
+                clientId
+        );
+    }
+
+    private PeerConnectionEntity getPeerConnectionEntity(UUID callId, UUID clientId) {
+        var peerConnectionDTO = this.peerConnectionDTOGenerator
+                .withClientId(clientId).get();
+        PeerConnectionEntity.Builder result = PeerConnectionEntity.builder().withPeerConnectionDTO(peerConnectionDTO);
+
+        for (int i = 0, c = 1 + random.nextInt(4); i < c; ++i) {
+            var trackDTO = this.mediaTrackDTOGenerator
+                    .withCallId(callId)
+                    .withClientId(clientId)
+                    .withPeerConnectionId(peerConnectionDTO.peerConnectionId)
+                    .get();
+            switch(trackDTO.direction) {
+                case INBOUND:
+                    result.withInboundMediaTrackDTO(trackDTO);
+                    break;
+                case OUTBOUND:
+                    result.withOutboundMediaTrackDTO(trackDTO);
+                    break;
+            }
+        }
+        return result.build();
+    }
+
 }

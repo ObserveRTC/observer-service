@@ -3,8 +3,6 @@ package org.observertc.webrtc.observer.entities;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.CallDTO;
-import org.observertc.webrtc.observer.dto.DTOTestUtils;
 
 import javax.inject.Inject;
 
@@ -14,17 +12,12 @@ class CallEntityTest {
     @Inject
     EntitiesTestUtils entitiesTestUtils;
 
-    @Inject
-    DTOTestUtils dtoTestUtils;
-
     @Test
     void shouldBuild() {
-        CallDTO callDTO = dtoTestUtils.generateCallDTO();
-        CallEntity callEntity = CallEntity.builder()
-                .withCallDTO(callDTO)
-                .build();
+        CallEntity source = this.entitiesTestUtils.getCallEntity();
 
-        Assertions.assertEquals(callDTO, callEntity.call);
+        CallEntity target = CallEntity.builder().from(source).build();
+
+        Assertions.assertEquals(source, target);
     }
-
 }

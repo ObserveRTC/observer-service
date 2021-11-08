@@ -29,13 +29,6 @@ endpoints:
     get-allowed: true
 ---
 observer:
-  sources:
-    pcSamples:
-      enabled: true
-      defaultServiceName: "defaultServiceName"
-      security:
-        dropUnknownServices: false
-
   security:
     websockets:
       expirationInMin: 0
@@ -44,43 +37,122 @@ observer:
       algorithm: SHA-256
       salt: "MySalt"
 
-  sentinelsCheckingPeriodInMin: 1
-  connectors:
-    - name: "ReportSinkLogger"
-      buffer:
-        maxItems: 100
-        maxWaitingTimeInS: 10
-      sink:
-        type: LoggerSink
-        config:
-          printReports: false
+  obfuscations:
+    enabled: false
+    obfuscate-ice-addresses: ANONYMIZATION
+    obfuscate-user-id: ANONYMIZATION
+    obfuscate-room-id: NONE
+    anonymization:
+      hash-algorithm: "SHA-512"
+      salt: "mySuperSalt"
 
-  reportMonitor:
-    enabled: true
-    tagByServiceName: true
-    tagByServiceUUID: false
-    tagByType: false
 
-  userMediaErrorsMonitor:
-    enabled: true
-    tagByServiceName: true
-    tagByServiceUUID: false
+  sources:
+    pcSamples:
+      enabled: true
+      defaultServiceName: "defaultServiceName"
+      security:
+        dropUnknownServices: false
+    clientSamples:
+      enabled: true
+    sfuSamples:
+      enabled: true
+
+  repositories:
+    mediaTracksMaxIdleTime: 300
+    peerConnectionsMaxIdleTime: 300
+    clientMaxIdleTime: 300
+    sfuMaxIdleTime: 60
+    sfuTransportMaxIdleTime: 600
+    sfuRtpPadMaxIdleTime: 600
+    eventsCollectingTimeInS: 3
 
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
-    observedPCSBufferMaxTimeInS: 10
-    observedPCSBufferMaxItemNums: 10000
-    peerConnectionMaxIdleTimeInS: 60
+    clientSamplesBufferMaxTimeInS: 30
+    clientSamplesBufferMaxItems: 1000
+    sfuSamplesBufferMaxTimeInS: 5
+    sfuSamplesBufferMaxItems: 1000
+    sfuReportsPreCollectingTimeInS: 3
+    sfuReportsPreCollectingMaxItems: 1000
+    clientReportsPreCollectingTimeInS: 3
+    clientReportsPreCollectingMaxItems: 1000
+
+#  sinks:
+#    MyLogger:
+#      type: LoggerSink
+#      config:
+#        printReports: true
+#        printTypeSummary: true
+
+#    MySocket:
+#      type: SocketSink
+#      config:
+#        host: "http://localhost"
+#        port: 8080
+#        maxRetry: 3
+
+#    MyWebsocket:
+#      type: WebsocketSink
+#      config:
+#        uri: "ws://localhost:1880/ws/samples"
+
+#    MyKafka:
+#      type: KafkaSink
+#      config:
+#        muxReports: true
+#        muxTopic: "ortc_demo_2_reports"
+#        demuxTopicPrefix: "ortc_"
+#        properties:
+#          bootstrap.servers: localhost:9092
+
+#    MyMongo:
+#      type: MongoSink
+#      config:
+#        uri: "mongodb://root:password@localhost:27017"
+#        database: "reports"
 
   outboundReports:
-    reportOutboundRTPs: true
-    reportInboundRTPs: true
-    reportRemoteInboundRTPs: true
-    reportTracks: true
-    reportMediaSources: true
-    reportCandidatePairs: true
-    reportLocalCandidates: true
-    reportRemoteCandidates: true
-    reportUserMediaErrors: true
+    reportFormat: JSON
+    reportObserverEvents: true
+    reportCallEvents: true
+    reportCallMeta: true
+    reportClientExtensions: true
+    reportInboundAudioTracks: true
+    reportInboundVideoTracks: true
+    reportOutboundAudioTracks: true
+    reportOutboundVideoTracks: true
+    reportClientTransports: true
+    reportClientDataChannels: true
+    reportMediaTracks: true
+    reportSfuEvents: true
+    reportSfuMeta: true
+    reportSfuTransports: true
+
+    reportSfuSctpStreams: true
+
+    reportSfuOutboundRtpStreams: true
+    reportSfuInboundRtpStreams: true
+
+    reportSfuRtpPadOnlyWithCallId: true
+
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+    memberNamesPool:
+      - "Lisa"
+      - "Bart"
+      - "Homer"
+      - "Marge"
+      - "Maggie"
+      - "Barney"
+      - "Mo"
+      - "Ned"
+      - "Milhouse"
+      - "Grampa"
+      - "Krusty"
+      - "Smithers"
+      - "Ralph"
+      - "Tony"
+      - "Jacqueline"
+      - "Nelson"
+

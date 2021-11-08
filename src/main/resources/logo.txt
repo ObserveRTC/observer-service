@@ -1,31 +1,6 @@
-   `-+o/`
-`-+ssssso.
-/sssssssso:
- -ossssssss/`
-  `+sssssssso.
-    /sssssssso:
-     -ossssssss/`
-      `+sssssssso.
-        /sssssssso`
-         -ossssss+
-          `/o+osso:
-              .osss+`  `.-::////::-.`
-               `/ssso/osssssssssssssso+:.
-                `+sssssso+/:----://ossssso:`
-               :ossso/-`            `-/ossso/`
-             .ossso-                    -+ssso-
-            :ssso:                        -osss:
-           -ssso.                          `osss:
-          `osso. -::::-` -::::::::-  `-::-. .osso.
-          :sss/ .ss+++oo::::/ss/:::.+so++os: :sss/
-          +sss- .ss-  /so   .ss.  `os:    `  .ssso
-          +sss- .ssoooso.   .ss.  .ss-       .ssso
-          /sss: .ss:.-os:   .ss`   :oo/::/+- -sss+
-          .ssso``//`  .+:   `//`    `-/++/:` osss-
-           /sss+                            /sss+
-            +sss+`                        `+sss+`
-             /ssso:`                     :osss/`
-              .+ssso/.                ./ossso-
-                -+sssso+:-.``````.-:+ossss+-
-                  `:+osssssssssssssssso+:.
-                      .-/++oooooo++/:.`
+   ____  _                             _____ _______ _____
+  / __ \| |                           |  __ \__   __/ ____|
+ | |  | | |__  ___  ___ _ ____   _____| |__) | | | | |
+ | |  | | '_ \/ __|/ _ \ '__\ \ / / _ \  _  /  | | | |
+ | |__| | |_) \__ \  __/ |   \ V /  __/ | \ \  | | | |____
+  \____/|_.__/|___/\___|_|    \_/ \___|_|  \_\ |_|  \_____|
