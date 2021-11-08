@@ -113,7 +113,7 @@ java {
 //}
 
 task createVersion {
-    File outputDir = file("$buildDir/resources/main")
+    File outputDir = file("$projectDir/src/main/resources")
     outputs.dir outputDir
     doFirst {
         outputDir.exists() || outputDir.mkdirs()

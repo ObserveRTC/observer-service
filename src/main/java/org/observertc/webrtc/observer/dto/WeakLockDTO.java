@@ -3,7 +3,7 @@ package org.observertc.webrtc.observer.dto;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -62,7 +62,7 @@ public class WeakLockDTO implements VersionedPortable {
 
     @Override
     public String toString() {
-        return ObjectToString.toString(this);
+        return JsonUtils.objectToString(this);
     }
 
     @Override

@@ -101,7 +101,7 @@ observer:
 #      type: KafkaSink
 #      config:
 #        muxReports: true
-#        muxTopic: "ortc_demo_2_reports"
+#        muxTopic: "observertc-reports"
 #        demuxTopicPrefix: "ortc_"
 #        properties:
 #          bootstrap.servers: localhost:9092
@@ -113,6 +113,7 @@ observer:
 #        database: "reports"
 
   outboundReports:
+    keyAssignmentStrategy:
     reportFormat: JSON
     reportObserverEvents: true
     reportCallEvents: true

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -30,19 +30,16 @@ import java.util.Objects;
 public class GeneralEntryDTO implements VersionedPortable {
 
 	public static final int CLASS_VERSION = 1;
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	private static final String KEY_FIELD_NAME = "key";
 	private static final String VALUE_FIELD_NAME = "value";
 	private static final String TIMESTAMP_FIELD_NAME = "timestamp";
 
-	public static GeneralEntryDTO of(
-			byte[] payload) {
-		GeneralEntryDTO result = new GeneralEntryDTO();
-		result.value = payload;
-		return result;
-	}
-
 	public String key;
-	public byte[] value;
+	public String value;
 	public Long timestamp;
 
 	@Override
@@ -58,20 +55,20 @@ public class GeneralEntryDTO implements VersionedPortable {
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeUTF(KEY_FIELD_NAME, this.key);
-		writer.writeByteArray(VALUE_FIELD_NAME, this.value);
+		writer.writeUTF(VALUE_FIELD_NAME, this.value);
 		writer.writeLong(TIMESTAMP_FIELD_NAME, this.timestamp);
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
 		this.key = reader.readUTF(KEY_FIELD_NAME);
-		this.value = reader.readByteArray(VALUE_FIELD_NAME);
+		this.value = reader.readUTF(VALUE_FIELD_NAME);
 		this.timestamp = reader.readLong(TIMESTAMP_FIELD_NAME);
 	}
 
 	@Override
 	public String toString() {
-		return ObjectToString.toString(this);
+		return JsonUtils.objectToString(this);
 	}
 
 	@Override
@@ -111,7 +108,7 @@ public class GeneralEntryDTO implements VersionedPortable {
 			return this;
 		}
 
-		public GeneralEntryDTO.Builder withValue(byte[] value) {
+		public GeneralEntryDTO.Builder withValue(String value) {
 			Objects.requireNonNull(value);
 			this.result.value = value;
 			return this;

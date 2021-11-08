@@ -4,13 +4,9 @@ import io.reactivex.rxjava3.functions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class TaskStage {
     private static final Logger logger = LoggerFactory.getLogger(TaskStage.class);
@@ -123,10 +119,27 @@ public class TaskStage {
 
     @Override
     public String toString() {
+        Boolean consumeInput = false;
+        Boolean produceOutput = false;
+        String operator = "Unknown";
+        if (Objects.nonNull(this.onExecFunc)) {
+            operator = "Function";
+            consumeInput = produceOutput = true;
+        } else if (Objects.nonNull(this.onExecSupplier)) {
+            operator = "Supplier";
+            produceOutput = true;
+        } else if (Objects.nonNull(this.onExecConsumer)) {
+            operator = "Consumer";
+            consumeInput = true;
+        } else if (Objects.nonNull(this.onExecAction)) {
+            operator = "Action";
+        }
         java.util.function.Function<Object, String> ifNull = obj -> Objects.isNull(obj) ? "false": "true";
-        return ObjectToString.toString(Map.of(
+        return JsonUtils.objectToString(Map.of(
                 "name", this.name,
-                "func, consumer, supplier, action", String.format("%s, %s, %s, %s", ifNull.apply(this.onExecFunc), ifNull.apply(this.onExecConsumer), ifNull.apply(this.onExecSupplier), ifNull.apply(this.onExecAction)),
+                "operator", operator,
+                "consume input", consumeInput.toString(),
+                "produce output", produceOutput.toString(),
                 "input", Objects.nonNull(this.inputHolder) ? Objects.nonNull(inputHolder.get()) ? inputHolder.get().toString() : "null Input" : "null inputHolder"
         ));
     }

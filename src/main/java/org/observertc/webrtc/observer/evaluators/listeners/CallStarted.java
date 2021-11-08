@@ -53,7 +53,7 @@ class CallStarted extends EventReporterAbstract.CallEventReporterAbstract<CallDT
         try {
             String callId = UUIDAdapter.toStringOrNull(callDTO.callId);
             var result = CallEventReport.newBuilder()
-                    .setName(CallEventType.CLIENT_LEFT.name())
+                    .setName(CallEventType.CALL_STARTED.name())
                     .setCallId(callId)
                     .setServiceId(callDTO.serviceId)
                     .setRoomId(callDTO.roomId)

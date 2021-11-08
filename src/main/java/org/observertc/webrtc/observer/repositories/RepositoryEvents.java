@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.ClientMessageEvent;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.*;
 import org.slf4j.Logger;
@@ -22,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class RepositoryEvents {
-
     private static final Logger logger = LoggerFactory.getLogger(RepositoryEvents.class);
 
     @Inject
@@ -59,6 +59,9 @@ public class RepositoryEvents {
     private Subject<SfuDTO> addedSfu = PublishSubject.create();
     private Subject<RepositoryExpiredEvent<SfuDTO>> expiredSfu = PublishSubject.create();
     private Subject<SfuDTO> removedSfu = PublishSubject.create();
+
+    private Subject<RepositoryUpdatedEvent<ClientMessageEvent>> updatedClientMessages = PublishSubject.create();
+    private Subject<ClientMessageEvent> removedClientMessages = PublishSubject.create();
 
     private List<Runnable> destructors = new LinkedList<>();
 
@@ -194,6 +197,22 @@ public class RepositoryEvents {
                     });
                 });
 
+
+        this.add(
+                "General Client Message Event",
+                this.hazelcastMaps.getClientMessages(),
+                builder -> {
+                    builder.onEntryUpdated(event -> {
+                        UUID clientId = event.getKey();
+                        GeneralEntryDTO oldEntryDTO = event.getOldValue();
+                        GeneralEntryDTO newEntryDTO = event.getValue();
+                        var oldMessage = ClientMessageEvent.of(clientId, oldEntryDTO);
+                        var newMessage = ClientMessageEvent.of(clientId, newEntryDTO);
+                        var forwardedEvent = RepositoryUpdatedEvent.make(oldMessage, newMessage);
+                        updatedClientMessages.onNext(forwardedEvent);
+                    });
+                });
+
     }
 
     @PreDestroy
@@ -303,6 +322,11 @@ public class RepositoryEvents {
 
     public Observable<List<SfuDTO>> addedSfu() {
         var result = this.getObservableList(this.addedSfu);
+        return result;
+    }
+
+    public Observable<List<RepositoryUpdatedEvent<ClientMessageEvent>>> updatedClientMessageEvents() {
+        var result = this.getObservableList(this.updatedClientMessages);
         return result;
     }
 
