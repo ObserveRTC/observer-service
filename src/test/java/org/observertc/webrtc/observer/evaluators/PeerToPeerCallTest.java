@@ -2,13 +2,9 @@ package org.observertc.webrtc.observer.evaluators;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.common.Sleeper;
 
 import javax.inject.Inject;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 @MicronautTest
 class PeerToPeerCallTest {
@@ -46,10 +42,10 @@ class PeerToPeerCallTest {
 
     }
 
-    @Test
-    public void checkReports() throws ExecutionException, InterruptedException, TimeoutException {
-        this.testCallProcessor.start();
-        new Sleeper(() -> 200000).run();
-        return;
-    }
+//    @Test
+//    public void checkReports() throws ExecutionException, InterruptedException, TimeoutException {
+//        this.testCallProcessor.start();
+//        new Sleeper(() -> 200000).run();
+//        return;
+//    }
 }

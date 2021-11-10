@@ -85,12 +85,10 @@ observer:
 #        printReports: true
 #        printTypeSummary: true
 
-#    MySocket:
-#      type: SocketSink
+#    MySocketIO:
+#      type: SocketIOSink
 #      config:
-#        host: "http://localhost"
-#        port: 8080
-#        maxRetry: 3
+#        uri: "http://localhost:5080"
 
 #    MyWebsocket:
 #      type: WebsocketSink

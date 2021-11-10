@@ -186,6 +186,8 @@ public class ClientDTO implements VersionedPortable {
 		}
 
 		public ClientDTO build() {
+			Objects.requireNonNull(this.result.serviceId);
+			Objects.requireNonNull(this.result.roomId);
 			Objects.requireNonNull(this.result.callId);
 			Objects.requireNonNull(this.result.clientId);
 			Objects.requireNonNull(this.result.joined);

@@ -3,8 +3,8 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.PeerConnectionDTOGenerator;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.utils.DTOGenerators;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -20,11 +20,11 @@ class AddPeerConnectionsTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    PeerConnectionDTOGenerator generator;
+    DTOGenerators generator;
 
     @Test
     public void inserted_1() {
-        var peerConnectionDTO = generator.get();
+        var peerConnectionDTO = generator.getPeerConnectionDTO();
         var task = addPeerConnectionsTaskProvider.get()
                 .withPeerConnectionDTOs(Map.of(peerConnectionDTO.peerConnectionId, peerConnectionDTO));
 
@@ -36,7 +36,7 @@ class AddPeerConnectionsTaskTest {
 
     @Test
     public void bound_1() {
-        var peerConnectionDTO = generator.get();
+        var peerConnectionDTO = generator.getPeerConnectionDTO();
         var task = addPeerConnectionsTaskProvider.get()
                 .withPeerConnectionDTOs(Map.of(peerConnectionDTO.peerConnectionId, peerConnectionDTO));
 

@@ -169,7 +169,6 @@ public class PeerConnectionDTO implements VersionedPortable {
 		}
 
 		public PeerConnectionDTO.Builder withMediaUnitId(String value) {
-			Objects.requireNonNull(value);
 			this.result.mediaUnitId = value;
 			return this;
 		}
@@ -195,6 +194,8 @@ public class PeerConnectionDTO implements VersionedPortable {
 		}
 
 		public PeerConnectionDTO build() {
+			Objects.requireNonNull(this.result.serviceId);
+			Objects.requireNonNull(this.result.roomId);
 			Objects.requireNonNull(this.result.callId);
 			Objects.requireNonNull(this.result.clientId);
 			Objects.requireNonNull(this.result.peerConnectionId);

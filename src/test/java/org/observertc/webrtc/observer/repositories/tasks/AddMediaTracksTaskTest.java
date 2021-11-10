@@ -3,9 +3,9 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.MediaTrackDTOGenerator;
 import org.observertc.webrtc.observer.dto.StreamDirection;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.utils.DTOGenerators;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -21,11 +21,11 @@ class AddMediaTracksTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    MediaTrackDTOGenerator generator;
+    DTOGenerators generator;
 
     @Test
     public void inserted_1() {
-        var mediaTrackDTO = generator.get();
+        var mediaTrackDTO = generator.getMediaTrackDTO();
         var task = addMediaTracksTasksProvider.get()
                 .withMediaTrackDTOs(Map.of(mediaTrackDTO.trackId, mediaTrackDTO));
 
@@ -37,7 +37,7 @@ class AddMediaTracksTaskTest {
 
     @Test
     public void boundInboundMediaStreamToPeerConnection_1() {
-        var mediaTrackDTO = generator.withStreamDirection(StreamDirection.INBOUND).get();
+        var mediaTrackDTO = generator.getMediaTrackDTOBuilder().withDirection(StreamDirection.INBOUND).build();
         var task = addMediaTracksTasksProvider.get()
                 .withMediaTrackDTOs(Map.of(mediaTrackDTO.trackId, mediaTrackDTO));
 
@@ -49,7 +49,7 @@ class AddMediaTracksTaskTest {
 
     @Test
     public void boundOutboundMediaStreamToPeerConnection_1() {
-        var mediaTrackDTO = generator.withStreamDirection(StreamDirection.OUTBOUND).get();
+        var mediaTrackDTO = generator.getMediaTrackDTOBuilder().withDirection(StreamDirection.OUTBOUND).build();
         var task = addMediaTracksTasksProvider.get()
                 .withMediaTrackDTOs(Map.of(mediaTrackDTO.trackId, mediaTrackDTO));
 

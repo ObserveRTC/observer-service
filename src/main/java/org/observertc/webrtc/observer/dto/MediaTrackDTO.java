@@ -202,7 +202,6 @@ public class MediaTrackDTO implements VersionedPortable {
 		}
 
 		public Builder withMediaUnitId(String value) {
-			Objects.requireNonNull(value);
 			this.result.mediaUnitId = value;
 			return this;
 		}
@@ -248,6 +247,8 @@ public class MediaTrackDTO implements VersionedPortable {
 		}
 
 		public MediaTrackDTO build() {
+			Objects.requireNonNull(this.result.serviceId);
+			Objects.requireNonNull(this.result.roomId);
 			Objects.requireNonNull(this.result.callId);
 			Objects.requireNonNull(this.result.clientId);
 			Objects.requireNonNull(this.result.peerConnectionId);

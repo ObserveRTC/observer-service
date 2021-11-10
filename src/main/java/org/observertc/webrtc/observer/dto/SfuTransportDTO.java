@@ -136,6 +136,7 @@ public class SfuTransportDTO implements VersionedPortable {
 					.withInternal(source.internal)
 					.withTransportId(source.transportId)
 					.withCallId(source.callId)
+					.withServiceId(source.serviceId)
 					.withMediaUnitId(source.mediaUnitId)
 					.withOpenedTimestamp(source.opened)
 					;

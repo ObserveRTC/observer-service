@@ -1,9 +1,11 @@
-package org.observertc.webrtc.observer;
+package org.observertc.webrtc.observer.utils;
 
 import io.micronaut.context.annotation.Prototype;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
+import org.observertc.webrtc.observer.TestUtils;
 import org.observertc.webrtc.observer.common.CallEventType;
+import org.observertc.webrtc.observer.utils.RandomGenerators;
 import org.observertc.webrtc.schemas.reports.*;
 
 import javax.inject.Inject;

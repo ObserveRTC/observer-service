@@ -16,12 +16,38 @@ public class TestUtils {
         );
     }
 
+    public static List<String> getServiceIds() {
+        return List.of(
+                "Skynet",
+                "Ingen",
+                "Umbrella"
+        );
+    }
+
     public static List<String> getTestRoomIds() {
         return List.of(
                 "Kickstart Meetings",
                 "Leaders Think Space",
                 "Banding Together",
                 "Fellowship Hall"
+        );
+    }
+
+    public static List<String> getClientSideMediaUintIds() {
+        return List.of(
+                "chatApp-1.0.0",
+                "chatApp-2.0.0",
+                "meetingApp",
+                "SuperTeamApp"
+        );
+    }
+
+    public static List<String> getSFUSideMediaUintIds() {
+        return List.of(
+                "SFU-eu-west",
+                "SFU-us-central",
+                "SFU-central-asia",
+                "SFU-eu-north"
         );
     }
 
@@ -119,4 +145,6 @@ public class TestUtils {
                 "TLS"
         );
     }
+
+
 }
