@@ -93,90 +93,90 @@ class CollectorTest {
         Assertions.assertEquals(1, executed.get());
     }
 
-    @Test
-    public void valhalla_1() throws Throwable {
-        var collector = Collector.<Integer>builder().withMaxItems(100).build();
-        AtomicInteger executed = new AtomicInteger(0);
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-        });
-        AtomicBoolean run = new AtomicBoolean(true);
-        for(int i=0; i<5; i++){
-            var thread = new Thread("" + i){
-                public void run(){
-                    while (run.get()) {
-                        int value = getRandom(1, 10000);
-                        try {
-                            collector.add(value);
-                        } catch (Throwable throwable) {
-                            throw new RuntimeException(throwable);
-                        }
-                    }
-                }
-            };
-            thread.start();
-        }
-        new Sleeper(() -> 2000).run();
-        Assertions.assertTrue(0 < executed.get());
-        System.out.println("Executed:" + executed.get());
-        run.set(false);
-    }
-
-    @Test
-    public void valhalla_2() throws Throwable {
-        var collector = Collector.<Integer>builder().withMaxTime(100).build();
-        AtomicInteger executed = new AtomicInteger(0);
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-        });
-        AtomicBoolean run = new AtomicBoolean(true);
-        for(int i=0; i<5; i++){
-            var thread = new Thread("" + i){
-                public void run(){
-                    while (run.get()) {
-                        int value = getRandom(1, 10);
-                        try {
-                            collector.add(value);
-                        } catch (Throwable throwable) {
-                            throw new RuntimeException(throwable);
-                        }
-                    }
-                }
-            };
-            thread.start();
-        }
-        new Sleeper(() -> 2000).run();
-        run.set(false);
-        Assertions.assertTrue(0 < executed.get());
-    }
-
-    @Test
-    public void valhalla_3() throws Throwable {
-        var collector = Collector.<Integer>builder().withMaxTime(100).withMaxItems(100).build();
-        AtomicInteger executed = new AtomicInteger(0);
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-        });
-        AtomicBoolean run = new AtomicBoolean(true);
-        for(int i=0; i<5; i++){
-            var thread = new Thread("" + i){
-                public void run(){
-                    while (run.get()) {
-                        int value = getRandom(1, 10);
-                        try {
-                            collector.add(value);
-                        } catch (Throwable throwable) {
-                            throw new RuntimeException(throwable);
-                        }
-                    }
-                }
-            };
-            thread.start();
-        }
-        new Sleeper(() -> 2000).run();
-        run.set(false);
-        Assertions.assertTrue(0 < executed.get());
-    }
+//    @Test
+//    public void valhalla_1() throws Throwable {
+//        var collector = Collector.<Integer>builder().withMaxItems(100).build();
+//        AtomicInteger executed = new AtomicInteger(0);
+//        collector.observableItems().subscribe(items -> {
+//            executed.incrementAndGet();
+//        });
+//        AtomicBoolean run = new AtomicBoolean(true);
+//        for(int i=0; i<5; i++){
+//            var thread = new Thread("" + i){
+//                public void run(){
+//                    while (run.get()) {
+//                        int value = getRandom(1, 10000);
+//                        try {
+//                            collector.add(value);
+//                        } catch (Throwable throwable) {
+//                            throw new RuntimeException(throwable);
+//                        }
+//                    }
+//                }
+//            };
+//            thread.start();
+//        }
+//        new Sleeper(() -> 2000).run();
+//        Assertions.assertTrue(0 < executed.get());
+//        System.out.println("Executed:" + executed.get());
+//        run.set(false);
+//    }
+//
+//    @Test
+//    public void valhalla_2() throws Throwable {
+//        var collector = Collector.<Integer>builder().withMaxTime(100).build();
+//        AtomicInteger executed = new AtomicInteger(0);
+//        collector.observableItems().subscribe(items -> {
+//            executed.incrementAndGet();
+//        });
+//        AtomicBoolean run = new AtomicBoolean(true);
+//        for(int i=0; i<5; i++){
+//            var thread = new Thread("" + i){
+//                public void run(){
+//                    while (run.get()) {
+//                        int value = getRandom(1, 10);
+//                        try {
+//                            collector.add(value);
+//                        } catch (Throwable throwable) {
+//                            throw new RuntimeException(throwable);
+//                        }
+//                    }
+//                }
+//            };
+//            thread.start();
+//        }
+//        new Sleeper(() -> 2000).run();
+//        run.set(false);
+//        Assertions.assertTrue(0 < executed.get());
+//    }
+//
+//    @Test
+//    public void valhalla_3() throws Throwable {
+//        var collector = Collector.<Integer>builder().withMaxTime(100).withMaxItems(100).build();
+//        AtomicInteger executed = new AtomicInteger(0);
+//        collector.observableItems().subscribe(items -> {
+//            executed.incrementAndGet();
+//        });
+//        AtomicBoolean run = new AtomicBoolean(true);
+//        for(int i=0; i<5; i++){
+//            var thread = new Thread("" + i){
+//                public void run(){
+//                    while (run.get()) {
+//                        int value = getRandom(1, 10);
+//                        try {
+//                            collector.add(value);
+//                        } catch (Throwable throwable) {
+//                            throw new RuntimeException(throwable);
+//                        }
+//                    }
+//                }
+//            };
+//            thread.start();
+//        }
+//        new Sleeper(() -> 2000).run();
+//        run.set(false);
+//        Assertions.assertTrue(0 < executed.get());
+//    }
 
     private static int getRandom(int min, int max) {
         int range = max - min + 1;
