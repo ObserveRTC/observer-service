@@ -3,8 +3,8 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.ClientDTOGenerator;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.utils.DTOGenerators;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -20,11 +20,11 @@ class AddClientsTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ClientDTOGenerator generator;
+    DTOGenerators generator;
 
     @Test
     public void inserted_1() {
-        var clientDTO = generator.get();
+        var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTO(clientDTO);
 
@@ -36,7 +36,7 @@ class AddClientsTaskTest {
 
     @Test
     public void bindToCall_1() {
-        var clientDTO = generator.get();
+        var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTO(clientDTO);
 
@@ -48,7 +48,7 @@ class AddClientsTaskTest {
 
     @Test
     public void inserted_2() {
-        var clientDTO = generator.get();
+        var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTOs(clientDTO);
 
@@ -60,7 +60,7 @@ class AddClientsTaskTest {
 
     @Test
     public void bindToCall_2() {
-        var clientDTO = generator.get();
+        var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTOs(clientDTO);
 
@@ -72,7 +72,7 @@ class AddClientsTaskTest {
 
     @Test
     public void inserted_3() {
-        var clientDTO = generator.get();
+        var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTOs(Map.of(clientDTO.clientId, clientDTO));
 
@@ -84,7 +84,7 @@ class AddClientsTaskTest {
 
     @Test
     public void bindToCall_3() {
-        var clientDTO = generator.get();
+        var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTOs(Map.of(clientDTO.clientId, clientDTO));
 

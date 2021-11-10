@@ -30,6 +30,22 @@ class ServiceRoomIdTest {
     }
 
     @Test
+    public void equals() {
+        var serviceRoomId_1 = ServiceRoomId.make(this.serviceId, this.roomId);
+        var serviceRoomId_2 = ServiceRoomId.make(this.serviceId, this.roomId);
+
+        Assertions.assertEquals(serviceRoomId_1, serviceRoomId_2);
+    }
+
+    @Test
+    public void notEquals() {
+        var serviceRoomId_1 = ServiceRoomId.make(this.serviceId, this.roomId);
+        var serviceRoomId_2 = ServiceRoomId.make(this.roomId, this.serviceId);
+
+        Assertions.assertNotEquals(serviceRoomId_1, serviceRoomId_2);
+    }
+
+    @Test
     public void equalFromKey_1() {
         var serviceRoomId_1 = ServiceRoomId.make(this.serviceId, this.roomId);
         var key = serviceRoomId_1.getKey();

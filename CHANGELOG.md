@@ -1,45 +1,22 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
-## 1.0.0 (H)
+## 1.0.0-beta
 
 Breaking Changes:
- * New Schema for reporting (Reports v3)
- * New Schema to accept client samples (ClientSample)
- * New Schema to accept sfu samples (SfuSample)
+ * New Schema for reporting ([Reports v3](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/reports/v3))
+ * New Schema to accept client samples ([ClientSample](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.md))
+ * New Schema to accept sfu samples ([SfuSample](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/SfuSample.md))
 
-Plan:
- * Remove KeyMaker from configholds
- * Clear separation what is static config and what is dynamic config (sinks are static, servicenames are dynamic)
- * Add new schema pipeline
- * Remove Sentinel exposing
- * No SSRC based pair matching, roomId is required to match the calls
- * No marker field in saved DTO
- * No serviceId serviceName resolving, only string as serviceId
- * serviceId to organizationId
- * Lambda function supports for GCP, AWS, Azure, etc.
- * Making a module handles inconsistency (like not existing media track for peer connections)
- * Task to handle inconsistency
- * Rename serviceId to organizationId, and mediaUnitId to appId
+Major changes:
+ * All generated reports for the client contains the callId referring to the call clients are joined.
+ * No SSRC based pair matching, serviceId and roomId is required to match the calls.
+ * Support SFU sampling, and SFU samples are matched with clients based on provided rtpStreamIds
+ * Remove Sentinel exposing, no direct prometheus exposures
+ * No serviceId serviceName resolving, only serviceId
 
-My notes:
- * No UserMediaError monitors
- * No Sentinels
- * Only through ObserverMetrics (renamed to ServiceMetrics) can put counter or anything through
- * eviction and expiration is based on hazelcast expiration. -> refresher is necessary
- 
-Noticable features:
- * Call matching to all reports: you do not need to join tables to know which call it belongs to
- * Matching pcs to tracks inside reports, so you instantly know from a report which track belongs to which client
-
-Config features (can be configured dynamically):
+Config features:
  * obfuscations
-
-Missing from schema:
- * timeZoneId
- * marker
-
- 
  
 ## 0.8.3 (H)
 

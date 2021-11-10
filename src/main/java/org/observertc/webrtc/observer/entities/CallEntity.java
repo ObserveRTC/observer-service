@@ -16,7 +16,7 @@
 
 package org.observertc.webrtc.observer.entities;
 
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.dto.CallDTO;
 
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class CallEntity {
 
 	@Override
 	public String toString() {
-		return ObjectToString.toString(this);
+		return JsonUtils.objectToString(this);
 	}
 
 	@Override

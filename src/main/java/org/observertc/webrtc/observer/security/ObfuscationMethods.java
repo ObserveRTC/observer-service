@@ -1,6 +1,6 @@
 package org.observertc.webrtc.observer.security;
 
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,12 +76,12 @@ public class ObfuscationMethods {
                 try {
                     return makeHashDigester(salt, config.hashAlgorithm);
                 } catch (Exception ex) {
-                    logger.error("Cannot make hash algorithm for obfuscator. config: {}", ObjectToString.toString(config), ex);
+                    logger.error("Cannot make hash algorithm for obfuscator. config: {}", JsonUtils.objectToString(config), ex);
                     return Function.identity();
                 }
             };
         } catch (Throwable t) {
-            logger.error("Cannot make hash algorithm for obfuscator. config: {}", ObjectToString.toString(config), t);
+            logger.error("Cannot make hash algorithm for obfuscator. config: {}", JsonUtils.objectToString(config), t);
             return () -> Function.identity();
         }
     }

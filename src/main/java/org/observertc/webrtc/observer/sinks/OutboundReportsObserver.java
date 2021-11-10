@@ -4,7 +4,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import org.observertc.webrtc.observer.codecs.OutboundReportsCodec;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class OutboundReportsObserver implements Observer<OutboundReports> {
                 } catch (Exception ex) {
                     logger.error("Error occurred while setting up a Sink {} with config {}",
                             sinkId,
-                            ObjectToString.toString(sinkConfig),
+                            JsonUtils.objectToString(sinkConfig),
                             ex
                     );
                 }

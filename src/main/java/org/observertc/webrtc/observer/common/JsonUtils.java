@@ -20,17 +20,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.util.Base64;
 import java.util.Objects;
 
-public class ObjectToString {
+public class JsonUtils {
 	private static final ObjectWriter OBJECT_WRITER;
 
 	static {
 		OBJECT_WRITER = new ObjectMapper().writer().withDefaultPrettyPrinter();
 	}
 
+	public static String objectToBase64(Object subject) {
+		if (Objects.isNull(subject)) {
+			return null;
+		}
+		try {
+			byte[] bytes = OBJECT_WRITER.writeValueAsBytes(subject);
+			String result = Base64.getEncoder().encodeToString(bytes);
+			return result;
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		}
+	}
 
-	public static String toString(Object subject) {
+	public static String objectToString(Object subject) {
 		if (Objects.isNull(subject)) {
 			return "null";
 		}

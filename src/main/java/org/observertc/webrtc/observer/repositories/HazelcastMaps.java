@@ -46,7 +46,8 @@ public class HazelcastMaps {
     public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
     public static final String HAZELCAST_CONFIGURATIONS_MAP_NAME = "observertc-configurations";
 
-    public static final String HAZELCAST_GENERAL_ENTRIES_DTO = "observertc-general-entries";
+    public static final String HAZELCAST_CLIENT_MESSAGES = "observertc-client-messages";
+
     public static final String HAZELCAST_SYNC_TASK_STATES_MAP_NAME = "observertc-distributed-tasks-states";
     public static final String HAZELCAST_REQUESTS_MAP_NAME = "observertc-requests-map-name";
 
@@ -82,10 +83,11 @@ public class HazelcastMaps {
     // other necessary maps
     private IMap<String, WeakLockDTO> weakLocks;
     private IMap<ConfigType, ConfigDTO> configurations;
-    private MultiMap<String, GeneralEntryDTO> generalEntries;
     private IMap<String, String> syncTaskStates;
     private IMap<String, byte[]> requests;
     private ObserverConfig.RepositoryConfig config;
+
+    private IMap<UUID, GeneralEntryDTO> clientMessages;
 
     public HazelcastMaps(ObserverConfig observerConfig) {
         this.config = observerConfig.repositories;
@@ -119,6 +121,7 @@ public class HazelcastMaps {
         this.syncTaskStates = hazelcast.getMap(HAZELCAST_SYNC_TASK_STATES_MAP_NAME);
         this.requests = hazelcast.getMap(HAZELCAST_REQUESTS_MAP_NAME);
 
+        this.clientMessages = hazelcast.getMap(HAZELCAST_CLIENT_MESSAGES);
         // setup expirations
         hazelcast
                 .getConfig()
@@ -160,7 +163,7 @@ public class HazelcastMaps {
                 .getMapConfig(HAZELCAST_REQUESTS_MAP_NAME)
                 .setMaxIdleSeconds(3600); // one hour
 
-        this.generalEntries = hazelcast.getMultiMap(HAZELCAST_GENERAL_ENTRIES_DTO);
+
     }
 
     public IMap<UUID, CallDTO> getCalls(){
@@ -196,7 +199,7 @@ public class HazelcastMaps {
     public MultiMap<UUID, UUID> getRtpStreamIdToSfuPadIds() { return this.rtpStreamIdToSfuPadIds; }
 //    public IMap<UUID, TrackLinkDTO> getInboundLinkedTracks() { return this.l; }
 
-    public MultiMap<String, GeneralEntryDTO> getGeneralEntries() { return this.generalEntries; }
+    public IMap<UUID, GeneralEntryDTO> getClientMessages() { return this.clientMessages; }
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
     public IMap<String, String> getSyncTaskStates() { return this.syncTaskStates; }

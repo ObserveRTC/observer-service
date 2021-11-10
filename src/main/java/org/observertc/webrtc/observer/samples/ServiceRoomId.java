@@ -1,6 +1,6 @@
 package org.observertc.webrtc.observer.samples;
 
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 
 import java.util.Objects;
 
@@ -42,7 +42,7 @@ public class ServiceRoomId {
 
     @Override
     public String toString() {
-        return ObjectToString.toString(this);
+        return JsonUtils.objectToString(this);
     }
 
     public String getKey() {

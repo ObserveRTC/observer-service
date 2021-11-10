@@ -27,10 +27,13 @@ import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.dto.GeneralEntryDTO;
 import org.observertc.webrtc.observer.evaluators.ObservedClientSampleProcessingPipeline;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
+import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.observer.samples.ClientSample;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
@@ -44,6 +47,8 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -59,6 +64,8 @@ public class WebsocketClientSamples {
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
 	private Map<String, Instant> expirations;
+//	private Map<String, UUID> sessionToClients;
+//	private Map<UUID, WebSocketSession> clientSessions;
 
 	@Inject
 	ExposedMetrics exposedMetrics;
@@ -73,6 +80,12 @@ public class WebsocketClientSamples {
 	ObserverConfig.SourcesConfig.ClientSamplesConfig config;
 
 	@Inject
+	RepositoryEvents repositoryEvents;
+
+	@Inject
+	HazelcastMaps hazelcastMaps;
+
+	@Inject
 	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
 
 	public WebsocketClientSamples(
@@ -82,11 +95,31 @@ public class WebsocketClientSamples {
 		this.objectReader = objectMapper.reader();
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass()).withDefaultLogger(logger).withDefaultLogLevel(Level.WARN);
 		this.expirations = new ConcurrentHashMap<>();
+//		this.clientSessions = new ConcurrentHashMap<>();
+//		this.sessionToClients = new ConcurrentHashMap<>();
 	}
 
 	@PostConstruct
 	void setup() {
-
+//		this.repositoryEvents.updatedClientMessageEvents()
+//				.flatMap(Observable::fromIterable)
+//				.subscribe(event -> {
+//					var eventMessage = event.getNewValue();
+//					if (Objects.isNull(eventMessage)) {
+//						return;
+//					}
+//					UUID clientId = eventMessage.getClientId();
+//					GeneralEntryDTO value = eventMessage.getValue();
+//					if (Objects.isNull(clientId) || Objects.isNull(value)) {
+//						return;
+//					}
+//					WebSocketSession session = this.clientSessions.get(clientId);
+//					if (Objects.isNull(session)) {
+//						logger.warn("A message received for client {} have not registered in observer. Message: {}", clientId, value);
+//						return;
+//					}
+//					session.send(value.value);
+//				});
 	}
 
 	@OnOpen
@@ -99,6 +132,14 @@ public class WebsocketClientSamples {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
+//			var requestParameters = session.getRequestParameters();
+//			String clientIdParam = requestParameters.get("clientId");
+//			if (Objects.nonNull(clientIdParam)) {
+//				UUID clientId = UUID.fromString(clientIdParam);
+//				this.hazelcastMaps.getClientMessages().put(clientId, null);
+//				this.clientSessions.put(clientId, session);
+//				this.sessionToClients.put(session.getId(), clientId);
+//			}
 			// validated access token from websocket
 			if (websocketAccessTokenValidator.isEnabled()) {
 				var expiration = new AtomicReference<Instant>(null);
@@ -123,9 +164,14 @@ public class WebsocketClientSamples {
 			String mediaUnitId,
 			WebSocketSession session) {
 		try {
+
 			this.expirations.remove(session.getId());
 			this.exposedMetrics.incrementClientSamplesClosedWebsockets(serviceId, mediaUnitId);
-
+//			UUID clientId = this.sessionToClients.get(session.getId());
+//			if (Objects.nonNull(clientId)) {
+//				this.clientSessions.remove(clientId, session);
+//				this.hazelcastMaps.getClientMessages().remove(clientId);
+//			}
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}

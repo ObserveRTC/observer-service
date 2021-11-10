@@ -5,6 +5,7 @@ import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
+import org.observertc.webrtc.observer.evaluators.listeners.attachments.RtpPadAttachment;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.webrtc.observer.repositories.tasks.RemoveSfuRtpPadsTask;
@@ -92,6 +93,9 @@ class SfuRtpPadRemoved extends EventReporterAbstract.SfuEventReporterAbstract<Sf
             String callId = UUIDAdapter.toStringOrNull(sfuRtpPadDTO.callId);
             String sfuPadId = Objects.nonNull(sfuRtpPadDTO.sfuPadId) ?  sfuRtpPadDTO.sfuPadId.toString() : null;
             String sfuPadStreamDirection = Objects.nonNull(sfuRtpPadDTO.streamDirection) ? sfuRtpPadDTO.streamDirection.toString() : "Unknown";
+            var attachment = RtpPadAttachment.builder()
+                    .withStreamDirection(sfuRtpPadDTO.streamDirection)
+                    .build().toBase64();
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_RTP_PAD_REMOVED.name())
                     .setSfuId(sfuRtpPadDTO.sfuId.toString())
@@ -99,7 +103,7 @@ class SfuRtpPadRemoved extends EventReporterAbstract.SfuEventReporterAbstract<Sf
                     .setTransportId(sfuRtpPadDTO.sfuTransportId.toString())
                     .setRtpStreamId(sfuRtpPadDTO.rtpStreamId.toString())
                     .setSfuPadId(sfuPadId)
-                    .setAttachments("Direction of the Rtp stream is: " + sfuPadStreamDirection)
+                    .setAttachments(attachment)
                     .setMessage("Sfu Rtp Pad is removed")
                     .setServiceId(sfuRtpPadDTO.serviceId)
                     .setMediaUnitId(sfuRtpPadDTO.mediaUnitId)

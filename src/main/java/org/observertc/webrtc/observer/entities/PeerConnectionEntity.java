@@ -16,7 +16,7 @@
 
 package org.observertc.webrtc.observer.entities;
 
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.slf4j.Logger;
@@ -66,7 +66,7 @@ public class PeerConnectionEntity {
 
     @Override
     public String toString() {
-        return ObjectToString.toString(this);
+        return JsonUtils.objectToString(this);
     }
 
     public Map<Long, MediaTrackDTO> getInboundMediaTrackDTOs() {

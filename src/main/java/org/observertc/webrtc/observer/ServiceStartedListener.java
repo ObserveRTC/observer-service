@@ -109,7 +109,7 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 			List<String> lines = Files.readAllLines(path);
 			var text = String.join("\n", lines);
 			System.out.println(text);
-			System.out.println("\t\t\t\t\t\t\t\tObserver version: " + this.properties.getProperty("version"));
+			System.out.println("Observer version: " + this.properties.getProperty("version"));
 		} catch (Throwable t) {
 			logger.warn("Error rendering logo", t);
 		}
@@ -125,7 +125,7 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 			properties.load(inputStream);
 			return properties;
 		} catch (Throwable t) {
-			logger.warn("Error reading version.properties", t);
+			logger.warn("Error reading service.properties", t);
 			return new Properties();
 		}
 	}

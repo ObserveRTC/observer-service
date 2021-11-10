@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.codecs.Encoder;
 import org.observertc.webrtc.observer.codecs.OutboundReportsCodec;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.schemas.reports.*;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -173,7 +172,7 @@ public class OutboundReportEncoder {
             try {
                 outboundReport = converter.apply(report);
             } catch (Exception ex) {
-                logger.warn("Converting report {} is failed", ObjectToString.toString(report), ex);
+                logger.warn("Converting report {} is failed", JsonUtils.objectToString(report), ex);
                 continue;
             }
             if (Objects.isNull(report)) {

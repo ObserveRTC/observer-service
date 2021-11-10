@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,7 +121,7 @@ public class MediaTrackDTO implements VersionedPortable {
 
 	@Override
 	public String toString() {
-		return ObjectToString.toString(this);
+		return JsonUtils.objectToString(this);
 	}
 
 	@Override
@@ -202,7 +202,6 @@ public class MediaTrackDTO implements VersionedPortable {
 		}
 
 		public Builder withMediaUnitId(String value) {
-			Objects.requireNonNull(value);
 			this.result.mediaUnitId = value;
 			return this;
 		}
@@ -248,6 +247,8 @@ public class MediaTrackDTO implements VersionedPortable {
 		}
 
 		public MediaTrackDTO build() {
+			Objects.requireNonNull(this.result.serviceId);
+			Objects.requireNonNull(this.result.roomId);
 			Objects.requireNonNull(this.result.callId);
 			Objects.requireNonNull(this.result.clientId);
 			Objects.requireNonNull(this.result.peerConnectionId);

@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.api.Randomizer;
-import org.observertc.webrtc.observer.RandomGenerators;
+import org.observertc.webrtc.observer.utils.RandomGenerators;
 import org.observertc.webrtc.observer.TestUtils;
 
 import javax.annotation.PostConstruct;
@@ -131,7 +131,7 @@ public class PeerConnectionTransportGenerator implements Supplier<ClientSample.P
             case "candidatePairResponseBytesSent":
                 return this.randomGenerators::getRandomPositiveLong;
             case "localAddress":
-                return this.randomGenerators::getRandomIpAddress;
+                return this.randomGenerators::getRandomIPv4Address;
             case "localPort":
                 return this.randomGenerators::getRandomPort;
             case "localProtocol":
@@ -141,7 +141,7 @@ public class PeerConnectionTransportGenerator implements Supplier<ClientSample.P
             case "localRelayProtocol":
                 return () -> this.randomGenerators.getRandomFromList(TestUtils.getRelayProtocols());
             case "remoteAddress":
-                return this.randomGenerators::getRandomIpAddress;
+                return this.randomGenerators::getRandomIPv4Address;
             case "remotePort":
                 return this.randomGenerators::getRandomPort;
             case "remoteProtocol":

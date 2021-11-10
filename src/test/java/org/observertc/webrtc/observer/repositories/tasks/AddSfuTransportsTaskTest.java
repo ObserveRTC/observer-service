@@ -3,8 +3,8 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.webrtc.observer.dto.SfuTransportDTOGenerator;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.utils.DTOGenerators;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -20,11 +20,11 @@ class AddSfuTransportsTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    SfuTransportDTOGenerator generator;
+    DTOGenerators generator;
 
     @Test
     public void inserted_1() {
-        var sfuTransportDTO = generator.get();
+        var sfuTransportDTO = generator.getSfuTransportDTO();
         var task = addSfuTransportsTaskProvider.get()
                 .withSfuTransportDTO(sfuTransportDTO);
 
@@ -36,7 +36,7 @@ class AddSfuTransportsTaskTest {
 
     @Test
     public void inserted_2() {
-        var sfuTransportDTO = generator.get();
+        var sfuTransportDTO = generator.getSfuTransportDTO();
         var task = addSfuTransportsTaskProvider.get()
                 .withSfuTransportDTO(sfuTransportDTO);
 
@@ -48,7 +48,7 @@ class AddSfuTransportsTaskTest {
 
     @Test
     public void inserted_3() {
-        var sfuTransportDTO = generator.get();
+        var sfuTransportDTO = generator.getSfuTransportDTO();
         var task = addSfuTransportsTaskProvider.get()
                 .withSfuTransportDTOs(Map.of(sfuTransportDTO.transportId, sfuTransportDTO));
 
