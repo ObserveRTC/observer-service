@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
+import org.observertc.webrtc.observer.evaluators.listeners.attachments.RtpPadAttachment;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.observer.repositories.RepositoryUpdatedEvent;
 import org.observertc.webrtc.schemas.reports.SfuEventReport;
@@ -81,6 +82,9 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
 
     protected SfuEventReport makeReport(SfuRtpPadDTO sfuRtpPadDTO, Long timestamp) {
         try {
+            var attachment = RtpPadAttachment.builder()
+                    .withStreamDirection(sfuRtpPadDTO.streamDirection)
+                    .build().toBase64();
             String sfuPadId = Objects.nonNull(sfuRtpPadDTO.sfuPadId) ?  sfuRtpPadDTO.sfuPadId.toString() : null;
             String sfuPadStreamDirection = Objects.nonNull(sfuRtpPadDTO.streamDirection) ? sfuRtpPadDTO.streamDirection.toString() : "Unknown";
             var builder = SfuEventReport.newBuilder()
@@ -90,7 +94,7 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
                     .setTransportId(sfuRtpPadDTO.sfuTransportId.toString())
                     .setRtpStreamId(sfuRtpPadDTO.rtpStreamId.toString())
                     .setSfuPadId(sfuPadId)
-                    .setAttachments("Direction of the Rtp stream is: " + sfuPadStreamDirection)
+                    .setAttachments(attachment)
                     .setMessage("Sfu Rtp Pad is added")
                     .setServiceId(sfuRtpPadDTO.serviceId)
                     .setMediaUnitId(sfuRtpPadDTO.mediaUnitId)
@@ -103,5 +107,9 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
             logger.warn("Unexpected exception occurred while making report", ex);
             return null;
         }
+    }
+
+    public class Attachment {
+
     }
 }

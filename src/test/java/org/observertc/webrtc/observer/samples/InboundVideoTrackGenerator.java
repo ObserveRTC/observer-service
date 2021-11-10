@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.api.Randomizer;
-import org.observertc.webrtc.observer.RandomGenerators;
+import org.observertc.webrtc.observer.utils.RandomGenerators;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;

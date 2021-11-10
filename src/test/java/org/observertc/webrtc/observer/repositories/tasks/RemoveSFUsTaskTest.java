@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.dto.SfuDTO;
-import org.observertc.webrtc.observer.dto.SfuDTOGenerator;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.utils.DTOGenerators;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -19,7 +19,7 @@ class RemoveSFUsTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    SfuDTOGenerator generator;
+    DTOGenerators generator;
 
     @Inject
     Provider<RemoveSFUsTask> removeSFUsTaskProvider;
@@ -28,7 +28,7 @@ class RemoveSFUsTaskTest {
 
     @BeforeEach
     void setup() {
-        this.createdSfuDTO = this.generator.get();
+        this.createdSfuDTO = this.generator.getSfuDTO();
         this.hazelcastMaps.getSFUs().put(this.createdSfuDTO.sfuId, this.createdSfuDTO);
     }
 

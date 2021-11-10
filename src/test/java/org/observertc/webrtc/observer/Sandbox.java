@@ -5,6 +5,7 @@ import org.jeasy.random.api.Randomizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.webrtc.observer.samples.ClientSampleGenerator;
+import org.observertc.webrtc.observer.utils.ReportGenerators;
 
 import javax.inject.Inject;
 import java.util.Map;

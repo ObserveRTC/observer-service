@@ -17,17 +17,17 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
     }
 
     static Stream<SfuSample.SfuOutboundRtpPad> streamOutboundRtpPads(@NotNull SfuSample sfuSample) {
-        if (Objects.isNull(sfuSample.outboundRtpStreams)) {
+        if (Objects.isNull(sfuSample.outboundRtpPads)) {
             return Stream.empty();
         }
-        return Arrays.stream(sfuSample.outboundRtpStreams);
+        return Arrays.stream(sfuSample.outboundRtpPads);
     }
 
     static Stream<SfuSample.SfuInboundRtpPad> streamInboundRtpPads(@NotNull SfuSample sfuSample) {
-        if (Objects.isNull(sfuSample.inboundRtpStreams)) {
+        if (Objects.isNull(sfuSample.inboundRtpPads)) {
             return Stream.empty();
         }
-        return Arrays.stream(sfuSample.inboundRtpStreams);
+        return Arrays.stream(sfuSample.inboundRtpPads);
     }
 
     static Stream<SfuSample.SctpStream> streamSctpStreams(@NotNull SfuSample sfuSample) {

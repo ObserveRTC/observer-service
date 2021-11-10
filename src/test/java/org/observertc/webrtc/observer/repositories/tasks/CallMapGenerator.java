@@ -1,9 +1,10 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.RandomGenerators;
 import org.observertc.webrtc.observer.dto.*;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
+import org.observertc.webrtc.observer.utils.DTOGenerators;
+import org.observertc.webrtc.observer.utils.RandomGenerators;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -21,16 +22,7 @@ public class CallMapGenerator {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    CallDTOGenerator callDTOGenerator;
-
-    @Inject
-    ClientDTOGenerator clientDTOGenerator;
-
-    @Inject
-    PeerConnectionDTOGenerator peerConnectionDTOGenerator;
-
-    @Inject
-    MediaTrackDTOGenerator mediaTrackDTOGenerator;
+    DTOGenerators dtoGenerators;
 
     @Inject
     RandomGenerators randomGenerators;
@@ -42,31 +34,31 @@ public class CallMapGenerator {
 
     void generate() {
         Random random = new Random();
-        this.callDTO = this.callDTOGenerator.get();
+        this.callDTO = this.dtoGenerators.getCallDTO();
         this.hazelcastMaps.getCalls().put(this.callDTO.callId, this.callDTO);
         int clientsNum = random.nextInt(8) + 2;
         List<MediaTrackDTO> outboundMediaTrackDTOs = new LinkedList<>();
         List<MediaTrackDTO> inboundMediaTrackDTOs = new LinkedList<>();
 //        clientsNum = 2;
         for (int i = 0; i < clientsNum; ++i) {
-            var clientDTO = this.clientDTOGenerator.withCallId(callDTO.callId).get();
+            var clientDTO = this.dtoGenerators.getClientDTOBuilder().withCallId(callDTO.callId).build();
             this.hazelcastMaps.getClients().put(clientDTO.clientId, clientDTO);
             this.hazelcastMaps.getCallToClientIds().put(clientDTO.callId, clientDTO.clientId);
             this.clientDTOs.put(clientDTO.clientId, clientDTO);
             int peerConnectionsNum = random.nextInt(2) + 1;
 //            peerConnectionsNum = 1;
             for (int j = 0; j < peerConnectionsNum; ++j) {
-                var peerConnectionDTO = this.peerConnectionDTOGenerator.withClientId(clientDTO.clientId).get();
+                var peerConnectionDTO = this.dtoGenerators.getPeerConnectionDTOBuilder().withClientId(clientDTO.clientId).build();
                 this.hazelcastMaps.getPeerConnections().put(peerConnectionDTO.peerConnectionId, peerConnectionDTO);
                 this.hazelcastMaps.getClientToPeerConnectionIds().put(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
                 this.peerConnectionDTOs.put(peerConnectionDTO.peerConnectionId, peerConnectionDTO);
                 int mediaTracksNum = random.nextInt(10) + 1;
 //                mediaTracksNum = 2;
                 for (int k = 0; k < mediaTracksNum; ++k) {
-                    var mediaTrackDTO = this.mediaTrackDTOGenerator
+                    var mediaTrackDTO = this.dtoGenerators.getMediaTrackDTOBuilder()
                             .withCallId(this.callDTO.callId)
                             .withClientId(clientDTO.clientId)
-                            .withPeerConnectionId(peerConnectionDTO.peerConnectionId).get();
+                            .withPeerConnectionId(peerConnectionDTO.peerConnectionId).build();
                     mediaTrackDTO.direction =  k % 2 == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
                     this.hazelcastMaps.getMediaTracks().put(mediaTrackDTO.trackId, mediaTrackDTO);
                     switch (mediaTrackDTO.direction) {

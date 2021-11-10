@@ -128,7 +128,7 @@ public class LoggerSink extends Sink {
             }
             org.apache.avro.specific.SpecificRecordBase recordBase = decoder.apply(outboundReport);
             if (Objects.isNull(recordBase)) {
-                logger.warn("Cannot decoding {}", ObjectToString.toString(outboundReport));
+                logger.warn("Cannot decoding {}", JsonUtils.objectToString(outboundReport));
                 return;
             }
             logger.info("Decoded Report type {}, value: {}", outboundReport.getType(), recordBase.toString());

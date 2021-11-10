@@ -85,12 +85,10 @@ observer:
 #        printReports: true
 #        printTypeSummary: true
 
-#    MySocket:
-#      type: SocketSink
+#    MySocketIO:
+#      type: SocketIOSink
 #      config:
-#        host: "http://localhost"
-#        port: 8080
-#        maxRetry: 3
+#        uri: "http://localhost:5080"
 
 #    MyWebsocket:
 #      type: WebsocketSink
@@ -101,7 +99,7 @@ observer:
 #      type: KafkaSink
 #      config:
 #        muxReports: true
-#        muxTopic: "ortc_demo_2_reports"
+#        muxTopic: "observertc-reports"
 #        demuxTopicPrefix: "ortc_"
 #        properties:
 #          bootstrap.servers: localhost:9092
@@ -113,6 +111,7 @@ observer:
 #        database: "reports"
 
   outboundReports:
+    keyAssignmentStrategy:
     reportFormat: JSON
     reportObserverEvents: true
     reportCallEvents: true

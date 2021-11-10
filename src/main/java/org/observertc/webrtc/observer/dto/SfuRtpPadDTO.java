@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import com.hazelcast.nio.serialization.VersionedPortable;
-import org.observertc.webrtc.observer.common.ObjectToString;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 
 import java.io.IOException;
@@ -129,7 +129,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 
 	@Override
 	public String toString() {
-		return ObjectToString.toString(this);
+		return JsonUtils.objectToString(this);
 	}
 
 

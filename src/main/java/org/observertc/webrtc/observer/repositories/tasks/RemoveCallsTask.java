@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Prototype
 public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
@@ -131,7 +130,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 });
                             });
                         })
-                .<Map<UUID, CallDTO>> addTerminalFunction("Completed", callEventBuildersObj -> {
+                .<Map<UUID, CallDTO>> addTerminalSupplier("Completed", () -> {
                     if (this.unmodifiableResult) {
                         return Collections.unmodifiableMap(this.removedCallDTOs);
                     } else {

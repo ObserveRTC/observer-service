@@ -64,5 +64,7 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         public String muxTopic = "reports";
 
         public boolean muxReports = false;
+
+        public KeyAssignmentStrategy keyAssignmentStrategy = KeyAssignmentStrategy.INSTANCE_BASED;
     }
 }
