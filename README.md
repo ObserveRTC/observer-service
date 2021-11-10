@@ -14,7 +14,7 @@ Open Source monitoring service for WebRTC applications.
 
 ## Quick Start
 
-You can deploy the service by using [docker](https://github.com/ObserveRTC/docker-webrtc-observer)
+You can deploy the service by using [docker](https://github.com/ObserveRTC/docker-compose)
 or [helm](https://github.com/ObserveRTC/helm).
 To integrate `observer-js`, please visit the integration [guidline](https://github.com/ObserveRTC/integrations)
 
@@ -36,7 +36,7 @@ please read our [contribution](CONTRIBUTING.md) guideline.
 
 
 ## Open source licensing info
-=======
+====
 
 1. [LICENSE](LICENSE)
 
