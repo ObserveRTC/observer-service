@@ -8,6 +8,11 @@ import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * A special LinkedHasMap created for time limited storage of items
+ * @param <K>
+ * @param <V>
+ */
 public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
     private static final Logger logger = LoggerFactory.getLogger(TimeLimitedMap.class);
 

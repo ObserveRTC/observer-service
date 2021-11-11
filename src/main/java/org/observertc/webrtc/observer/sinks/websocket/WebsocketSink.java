@@ -6,13 +6,13 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import jakarta.websocket.*;
 import org.observertc.webrtc.observer.common.MuxedReport;
 import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.common.ReportType;
 import org.observertc.webrtc.observer.sinks.Sink;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Objects;
 
 public class WebsocketSink extends Sink {
@@ -90,8 +90,8 @@ public class WebsocketSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull OutboundReports outboundReports) {
-        if (outboundReports.getReportsNum() < 1) {
+    public void accept(@NonNull List<OutboundReport> outboundReports) {
+        if (outboundReports.size() < 1) {
             this.ping();
             return;
         } else if (Objects.isNull(this.session)) {

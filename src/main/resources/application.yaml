@@ -67,6 +67,27 @@ observer:
     sfuRtpPadMaxIdleTime: 600
     eventsCollectingTimeInS: 3
 
+  internalCollectors:
+    clientSamples:
+      maxItems: 100
+      maxTimeInS: 10
+
+    sfuSamples:
+      maxItems: 100
+      maxTimeInS: 10
+
+    clientProcessDebouncers:
+      maxItems: 10000
+      maxTimeInS: 3
+
+    sfuProcessDebouncers:
+      maxItems: 10000
+      maxTimeInS: 3
+
+    outboundReports:
+      maxItems: 10000
+      maxTimeInS: 10
+
   evaluators:
     impairablePCsCallName: "impairable-peer-connections-default-call-name"
     clientSamplesBufferMaxTimeInS: 30

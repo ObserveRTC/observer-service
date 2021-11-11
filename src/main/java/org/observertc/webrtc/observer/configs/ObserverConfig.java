@@ -20,7 +20,6 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +32,12 @@ public class ObserverConfig {
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
 
+		public boolean allowExposeConfig = false;
+
 		public SecurityConfig.WebsocketSecurityConfig websockets = new SecurityConfig.WebsocketSecurityConfig();
 
-		@ConfigurationProperties("websockets")
+
+        @ConfigurationProperties("websockets")
 		public static class WebsocketSecurityConfig {
 			public int expirationInMin = 0; // 0 means the access token provided is used
 		}
@@ -156,6 +158,30 @@ public class ObserverConfig {
 
 		@Min(1)
 		public int clientReportsPreCollectingMaxItems = 1000;
+	}
+
+	// internal collectors config
+	public InternalCollectorConfigs internalCollectors;
+
+	@ConfigurationProperties(("internalCollectors"))
+	public static class InternalCollectorConfigs {
+		public CollectorConfig clientSamples = new CollectorConfig();
+		public CollectorConfig clientProcessDebouncers = new CollectorConfig();
+
+		public CollectorConfig sfuSamples = new CollectorConfig();
+		public CollectorConfig sfuProcessDebouncers = new CollectorConfig();
+
+		public CollectorConfig outboundReports = new CollectorConfig();
+	}
+
+	public static class CollectorConfig {
+
+		@Min(1)
+		public int maxItems = 1000;
+
+		@Min(0)
+		public int maxTimeInS = 0;
+
 	}
 
 	public Map<String, Object> sinks;

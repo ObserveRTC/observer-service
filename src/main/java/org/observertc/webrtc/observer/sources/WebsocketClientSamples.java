@@ -25,10 +25,7 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.dto.GeneralEntryDTO;
-import org.observertc.webrtc.observer.evaluators.ObservedClientSampleProcessingPipeline;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
@@ -42,13 +39,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.time.Instant;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -86,7 +82,10 @@ public class WebsocketClientSamples {
 	HazelcastMaps hazelcastMaps;
 
 	@Inject
-	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
+	ClientSamplesCollector clientSamplesCollector;
+
+//	@Inject
+//	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
 
 	public WebsocketClientSamples(
 			ObjectMapper objectMapper,
@@ -120,6 +119,10 @@ public class WebsocketClientSamples {
 //					}
 //					session.send(value.value);
 //				});
+	}
+
+	@PreDestroy
+	void teardown() {
 	}
 
 	@OnOpen
@@ -216,19 +219,19 @@ public class WebsocketClientSamples {
 					.withServiceId(serviceId)
 					.withMediaUnitId(mediaUnitId)
 					.build();
-			Observable.just(observedClientSample)
-					.subscribe(this.observedClientSampleProcessingPipeline);
+			this.clientSamplesCollector.add(observedClientSample);
+//			Observable.just(observedClientSample)
+//					.subscribe(this.observedClientSampleProcessingPipeline);
 		} catch (InvalidObjectException invalidEx) {
 			final String message = invalidEx.getMessage();
 			session.close(
 					this.customCloseReasons.getInvalidInput(message)
 			);
-		} catch (Exception ex) {
+		} catch (Throwable ex) {
 			this.flawMonitor.makeLogEntry()
 					.withException(ex)
 					.withMessage("Error occured processing sample {} ", sample)
 					.complete();
-
 		}
 	}
 }

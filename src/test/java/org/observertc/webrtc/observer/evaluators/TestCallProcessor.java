@@ -6,9 +6,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
+import org.observertc.webrtc.observer.common.ReportType;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.samples.ObservedClientSampleGenerator;
-import org.observertc.webrtc.observer.common.ReportType;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 @Prototype
 class TestCallProcessor {
 
-    private Subject<OutboundReport> reportCollector = PublishSubject.create();
+    private Subject<List<OutboundReport>> reportCollector = PublishSubject.create();
     private Map<ReportType, List<OutboundReport>> receivedReports = new HashMap<>();
     private CompletableFuture<Void> endedTest;
 
@@ -44,18 +44,18 @@ class TestCallProcessor {
         this.receivedReports.clear();
         this.endedTest = new CompletableFuture<>();
         this.mockedOutboundReportEncoder.getTestObservableOutboundReport().subscribe(this.reportCollector);
-        this.reportCollector.map(report -> {
-            List<OutboundReport> reports = this.receivedReports.get(report.getType());
-            if (Objects.isNull(reports)) {
-                reports = new LinkedList<>();
-                this.receivedReports.put(report.getType(), reports);
-            }
-            reports.add(report);
-            return true;
-        }).debounce(10, TimeUnit.SECONDS)
-                .subscribe(something -> {
-                    endedTest.complete(null);
-                });
+//        this.reportCollector.map(report -> {
+//            List<OutboundReport> reports = this.receivedReports.get(report.getType());
+//            if (Objects.isNull(reports)) {
+//                reports = new LinkedList<>();
+//                this.receivedReports.put(report.getType(), reports);
+//            }
+//            reports.add(report);
+//            return true;
+//        }).debounce(10, TimeUnit.SECONDS)
+//                .subscribe(something -> {
+//                    endedTest.complete(null);
+//                });
 
     }
 
@@ -96,6 +96,7 @@ class TestCallProcessor {
                 Observable.range(0, random.nextInt(10) + 5)
                     .delay(delayInMs, TimeUnit.MILLISECONDS)
                     .map(i -> generator.get())
+                    .buffer(1)
                     .subscribe(this.pipeline)
                 ;
             });
@@ -117,12 +118,12 @@ class TestCallProcessor {
         }
 
         @Override
-        public Observable<OutboundReport> getObservableOutboundReport() {
+        public Observable<List<OutboundReport>> getObservableOutboundReports() {
             return PublishSubject.create();
         }
 
-        public Observable<OutboundReport> getTestObservableOutboundReport() {
-            return super.getObservableOutboundReport();
+        public Observable<List<OutboundReport>> getTestObservableOutboundReport() {
+            return super.getObservableOutboundReports();
         }
     }
 }

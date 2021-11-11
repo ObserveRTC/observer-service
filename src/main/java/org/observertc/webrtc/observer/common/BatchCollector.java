@@ -16,10 +16,10 @@
 
 package org.observertc.webrtc.observer.common;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collector;
 
@@ -34,6 +34,12 @@ import static java.util.Objects.requireNonNull;
  */
 public class BatchCollector<T> implements Collector<T, List<T>, List<T>> {
 
+	public static final Logger logger = LoggerFactory.getLogger(BatchCollector.class);
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	/**
 	 * Creates a new batch collector
 	 *
@@ -43,7 +49,10 @@ public class BatchCollector<T> implements Collector<T, List<T>, List<T>> {
 	 * @return a batch collector instance
 	 */
 	public static <T> Collector<T, List<T>, List<T>> makeCollector(int batchSize, Consumer<List<T>> batchProcessor) {
-		return new BatchCollector<T>(batchSize, batchProcessor);
+		return builder()
+				.withBatchSize(batchSize)
+				.withConsumer(batchProcessor)
+				.build();
 	}
 
 	private final int batchSize;
@@ -90,12 +99,39 @@ public class BatchCollector<T> implements Collector<T, List<T>, List<T>> {
 
 	public Function<List<T>, List<T>> finisher() {
 		return ts -> {
-			batchProcessor.accept(ts);
+			if (0 < ts.size()) {
+				batchProcessor.accept(ts);
+			}
 			return Collections.emptyList();
 		};
 	}
 
 	public Set<Characteristics> characteristics() {
 		return Collections.emptySet();
+	}
+
+	static class Builder<U> {
+		private Integer batchSize = null;
+		private Consumer<List<U>> batchProcessor = null;
+		private Builder() {
+
+		}
+
+		public Builder<U> withBatchSize(int value) {
+			this.batchSize = value;
+			return this;
+		}
+
+		public Builder<U> withConsumer(Consumer<List<U>> consumer) {
+			this.batchProcessor = consumer;
+			return this;
+		}
+
+		public BatchCollector<U> build() {
+			Objects.requireNonNull(this.batchProcessor);
+			Objects.requireNonNull(this.batchSize);
+			return new BatchCollector<>(this.batchSize, this.batchProcessor);
+		}
+
 	}
 }

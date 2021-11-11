@@ -17,18 +17,22 @@
 package org.observertc.webrtc.observer.common;
 
 public final class Once<T> {
+	private volatile boolean set = false;
 	private T value = null;
 
 	public void set(final T value) {
-		if (null != this.value)
+		if (this.set)
 			throw new IllegalStateException("Illegal attempt to set a Once value after it's value has already been set.");
-		if (null == value)
-			throw new IllegalArgumentException("Illegal attempt to pass null value to Once setter.");
 		this.value = value;
+		this.set = true;
 	}
 
 	public T get() {
-		if (null == this.value) throw new IllegalStateException("Illegal attempt to access Once value.");
+		if (!this.set) throw new IllegalStateException("Illegal attempt to access Once value.");
 		return this.value;
+	}
+
+	public boolean isSet() {
+		return this.set;
 	}
 }

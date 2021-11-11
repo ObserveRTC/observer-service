@@ -8,11 +8,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.utils.Bytes;
 import org.observertc.webrtc.observer.common.MuxedReport;
 import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.common.ReportType;
 import org.observertc.webrtc.observer.sinks.Sink;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
@@ -48,8 +48,8 @@ public class KafkaSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull OutboundReports outboundReports) {
-        if (outboundReports.getReportsNum() < 1) {
+    public void accept(@NonNull List<OutboundReport> outboundReports) {
+        if (outboundReports.size() < 1) {
             if (3 < ++this.consecutiveEmptyLists) {
                 // keep the connection alive
             }
