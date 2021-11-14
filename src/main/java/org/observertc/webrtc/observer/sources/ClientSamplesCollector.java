@@ -37,7 +37,7 @@ public class ClientSamplesCollector {
     @PreDestroy
     void teardown() {
         if (!this.observableCollector.isClosed()) {
-            this.observableCollector.close();
+            this.observableCollector.onComplete();
         }
     }
 
@@ -46,7 +46,7 @@ public class ClientSamplesCollector {
     }
 
     public void addAll(List<ObservedClientSample> observedClientSamples) {
-        this.observableCollector.addBatch(observedClientSamples);
+        this.observableCollector.addAll(observedClientSamples);
     }
 
     public Observable<List<ObservedClientSample>> observableClientSamples() {

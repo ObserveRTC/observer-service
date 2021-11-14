@@ -97,7 +97,7 @@ class TestCallProcessor {
                     .delay(delayInMs, TimeUnit.MILLISECONDS)
                     .map(i -> generator.get())
                     .buffer(1)
-                    .subscribe(this.pipeline)
+                    .subscribe(this.pipeline.getObservedClientSampleObserver())
                 ;
             });
         });

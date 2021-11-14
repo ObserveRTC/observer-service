@@ -1,14 +1,12 @@
 package org.observertc.webrtc.observer.common;
 
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Consumer;
 
 /**
  * Collect items until a time or number limitation has been reached
@@ -26,38 +24,14 @@ public class PassiveCollector<T> {
         return new Builder<>();
     }
 
-    private Subject<List<T>> listeners = PublishSubject.create();
+    private Consumer<List<T>> listener = null;
     private LinkedBlockingQueue<T> queue = new LinkedBlockingQueue<>();
     private int maxTimeInMs = 0;
-    private final int maxItems;
+    private int maxItems = 0;
     private boolean mutableResults = true;
 
-    private PassiveCollector(int maxItems) {
-        this.maxItems = maxItems;
-    }
+    private PassiveCollector() {
 
-    public PassiveCollector<T> addAll(T... items) {
-        if (Objects.isNull(items)) {
-            return this;
-        }
-        Arrays.stream(items).forEach(item -> {
-            try {
-                this.add(item);
-            } catch (Throwable throwable) {
-                logger.warn("Adding item thrown exception", throwable);
-            }
-        });
-        return this;
-    }
-
-    public PassiveCollector<T> add(T item) throws Throwable {
-        if (Objects.isNull(item)) {
-            return this;
-        }
-        this.execute(() -> {
-            this.queue.add(item);
-        });
-        return this;
     }
 
     /**
@@ -74,13 +48,26 @@ public class PassiveCollector<T> {
      * @return
      * @throws Throwable
      */
-    public<U extends T> PassiveCollector<T> addBatch(Collection<U> items) throws Throwable {
+    public<U extends T> PassiveCollector<T> addAll(Collection<U> items) throws Throwable {
         if (Objects.isNull(items)) {
             return this;
         }
         this.execute(() -> {
             this.queue.addAll(items);
         });
+        return this;
+    }
+
+    public PassiveCollector<T> add(T... items) throws Throwable {
+        if (Objects.isNull(items)) {
+            return this;
+        }
+        for (int i = 0; i< items.length; ++i) {
+            var item = items[i];
+            this.execute(() -> {
+                this.queue.add(item);
+            });
+        }
         return this;
     }
 
@@ -101,10 +88,6 @@ public class PassiveCollector<T> {
         }
     }
 
-    public Observable<List<T>> observableItems() {
-        return this.listeners;
-    }
-
     public void flush() throws Exception {
         if (0 < this.queue.size()) {
             this.emit();
@@ -123,36 +106,37 @@ public class PassiveCollector<T> {
                 collectedItems = Collections.unmodifiableList(collectedItems);
             }
         }
-        this.listeners.onNext(collectedItems);
+        this.listener.accept(collectedItems);
     }
 
-    public static class Builder<U> {
-        private int maxTimeInMs = 0;
-        private int maxItems = 0;
-        private boolean mutableResults = true;
 
-        public Builder<U> withMaxTime(int maxTimeInMs) {
-            this.maxTimeInMs = maxTimeInMs;
+    public static class Builder<U> {
+        private PassiveCollector<U> result = new PassiveCollector<>();
+        public Builder<U> withMaxTimeInMs(int maxTimeInMs) {
+            this.result.maxTimeInMs = maxTimeInMs;
             return this;
         }
 
         public Builder<U> withMaxItems(int value) {
-            this.maxItems = value;
+            this.result.maxItems = value;
             return this;
         }
 
         public Builder<U> withMutableResults(boolean value) {
-            this.mutableResults = value;
+            this.result.mutableResults = value;
+            return this;
+        }
+
+        public Builder<U> withListener(Consumer<List<U>> listener) {
+            this.result.listener = listener;
             return this;
         }
 
         public PassiveCollector<U> build() {
-            if (this.maxTimeInMs < 1 && this.maxItems < 1) {
+            if (this.result.maxItems < 1 && this.result.maxTimeInMs < 1) {
                 throw new IllegalStateException("Collector must be set to hold max items or max time");
             }
-            PassiveCollector<U> result = new PassiveCollector<>(this.maxItems);
-            result.maxTimeInMs = maxTimeInMs;
-            result.mutableResults = this.mutableResults;
+            Objects.requireNonNull(this.result.listener);
             return result;
         }
 

@@ -1,7 +1,7 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
-public class ObservedClientSampleProcessingPipeline implements Consumer<List<ObservedClientSample>> {
+public class ObservedClientSampleProcessingPipeline {
 
     private final Subject<List<ObservedClientSample>> clientSamples = PublishSubject.create();
 
@@ -102,11 +102,6 @@ public class ObservedClientSampleProcessingPipeline implements Consumer<List<Obs
                 .subscribe(this.outboundReportEncoder::encodeMediaTrackReport);
     }
 
-    @Override
-    public void accept(List<ObservedClientSample> observedClientSamples) throws Throwable {
-        clientSamples.onNext(observedClientSamples);
-    }
-
     private<T> Observable<List<T>> debounce(Observable<T> source) {
         var debounceConfig = this.observerConfig.internalCollectors.clientProcessDebouncers;
         var maxItems = debounceConfig.maxItems;
@@ -121,6 +116,10 @@ public class ObservedClientSampleProcessingPipeline implements Consumer<List<Obs
             return source.buffer(maxItems);
         }
         return source.buffer(maxTimeInS, TimeUnit.SECONDS, maxItems);
+    }
+
+    public Observer<List<ObservedClientSample>> getObservedClientSampleObserver() {
+        return this.clientSamples;
     }
 
     public Observable<List<OutboundReport>> getObservableOutboundReports() {

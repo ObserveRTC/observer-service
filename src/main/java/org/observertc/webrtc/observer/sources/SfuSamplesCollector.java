@@ -28,6 +28,7 @@ public class SfuSamplesCollector {
         var maxItems = observerConfig.internalCollectors.sfuSamples.maxItems;
         var maxTimeInMs = observerConfig.internalCollectors.sfuSamples.maxTimeInS * 1000;
         this.observableCollector = ObservableCollector.<ObservedSfuSample>builder()
+                .withResilientInput(true)
                 .withLogger(logger)
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
@@ -37,7 +38,7 @@ public class SfuSamplesCollector {
     @PreDestroy
     void teardown() {
         if (!this.observableCollector.isClosed()) {
-            this.observableCollector.close();
+            this.observableCollector.onComplete();
         }
     }
 
@@ -46,7 +47,7 @@ public class SfuSamplesCollector {
     }
 
     public void addAll(List<ObservedSfuSample> observedSfuSamples) {
-        this.observableCollector.addBatch(observedSfuSamples);
+        this.observableCollector.addAll(observedSfuSamples);
     }
 
     public Observable<List<ObservedSfuSample>> observableSfuSamples() {

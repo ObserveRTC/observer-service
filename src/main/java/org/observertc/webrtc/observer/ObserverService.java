@@ -47,7 +47,7 @@ public class ObserverService {
     void setup() {
         this.clientSamplesCollector
                 .observableClientSamples()
-                .subscribe(this.clientSamplesProcessor);
+                .subscribe(this.clientSamplesProcessor.getObservedClientSampleObserver());
 
         this.clientSamplesProcessor
                 .getObservableOutboundReports()
@@ -55,7 +55,7 @@ public class ObserverService {
 
         this.sfuSamplesCollector
                 .observableSfuSamples()
-                .subscribe(this.sfuSamplesProcessor);
+                .subscribe(this.sfuSamplesProcessor.getObservedSfuSamplesObserver());
 
         this.sfuSamplesProcessor
                 .getObservableOutboundReports()
@@ -87,7 +87,7 @@ public class ObserverService {
         this.run = false;
         try {
             if (Objects.nonNull(this.outboundReportsCollector)) {
-                this.outboundReportsCollector.flush();
+//                this.outboundReportsCollector.on();
             }
         } catch (Exception e) {
             logger.error("Error occurred while flushing collector");

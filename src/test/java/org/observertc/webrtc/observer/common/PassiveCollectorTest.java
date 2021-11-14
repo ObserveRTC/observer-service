@@ -33,42 +33,44 @@ class PassiveCollectorTest {
 
     @Test
     public void shouldCollect_1() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxItems(2).build();
+        var collector = PassiveCollector.<Integer>builder().withMaxItems(2)
+                .withListener(items -> {
+                    Assertions.assertEquals(1, items.get(0));
+                    Assertions.assertEquals(2, items.get(1));
+                    Assertions.assertEquals(2, items.size());
+                })
+                .build();
 
-        collector.observableItems().subscribe(items -> {
-            Assertions.assertEquals(1, items.get(0));
-            Assertions.assertEquals(2, items.get(1));
-            Assertions.assertEquals(2, items.size());
-        });
 
-        collector.addAll(1, 2);
+        collector.add(1, 2);
         collector.add(3);
     }
 
     @Test
     public void shouldBatchCollect_1() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxItems(2).build();
+        var collector = PassiveCollector.<Integer>builder().withMaxItems(2)
+                .withListener(items -> {
+                    Assertions.assertEquals(1, items.get(0));
+                    Assertions.assertEquals(2, items.get(1));
+                    Assertions.assertEquals(3, items.get(2));
+                    Assertions.assertEquals(3, items.size());
+                })
+                .build();
 
-        collector.observableItems().subscribe(items -> {
-            Assertions.assertEquals(1, items.get(0));
-            Assertions.assertEquals(2, items.get(1));
-            Assertions.assertEquals(3, items.get(2));
-            Assertions.assertEquals(3, items.size());
-        });
-
-        collector.addBatch(List.of(1,2,3));
+        collector.addAll(List.of(1,2,3));
     }
 
     @Test
     public void shouldCollect_2() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxTime(200).build();
         AtomicBoolean done = new AtomicBoolean(false);
-        collector.observableItems().subscribe(items -> {
-            Assertions.assertEquals(1, items.size());
-            done.set(true);
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxTimeInMs(200)
+                .withListener(items -> {
+                    Assertions.assertEquals(1, items.size());
+                    done.set(true);
+                })
+                .build();
 
-        collector.addAll(1);
+        collector.add(1);
         new Sleeper(() -> 500).run();
         collector.add(2);
         Assertions.assertTrue(done.get());
@@ -76,105 +78,117 @@ class PassiveCollectorTest {
 
     @Test
     public void shouldBatchCollect_2() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxTime(200).build();
         AtomicBoolean done = new AtomicBoolean(false);
-        collector.observableItems().subscribe(items -> {
-            Assertions.assertEquals(1, items.size());
-            done.set(true);
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxTimeInMs(200)
+                .withListener(items -> {
+                    Assertions.assertEquals(1, items.size());
+                    done.set(true);
+                })
+                .build();
 
-        collector.addBatch(List.of(1));
+        collector.addAll(List.of(1));
         new Sleeper(() -> 500).run();
-        collector.addBatch(List.of(2));
+        collector.addAll(List.of(2));
         Assertions.assertTrue(done.get());
     }
 
     @Test
     public void shouldCollectAndRestart_1() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxItems(1).build();
         AtomicInteger executed = new AtomicInteger(0);
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-            Assertions.assertEquals(1, items.size());
-            Assertions.assertEquals(executed.get(), items.get(0));
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxItems(1)
+                .withListener(items -> {
+                    executed.incrementAndGet();
+                    Assertions.assertEquals(1, items.size());
+                    Assertions.assertEquals(executed.get(), items.get(0));
+                })
+                .build();
 
-        collector.addAll(1, 2, 3, 4, 5);
+        collector.add(1, 2, 3, 4, 5);
         Assertions.assertEquals(5, executed.get());
     }
 
     @Test
     public void shouldCollectAndRestart_2() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxTime(200).build();
         AtomicInteger executed = new AtomicInteger();
-        collector.observableItems().subscribe(items -> {
-            Assertions.assertEquals(2, items.size());
-            executed.incrementAndGet();
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxTimeInMs(200)
+                .withListener(items -> {
+                    Assertions.assertEquals(2, items.size());
+                    executed.incrementAndGet();
+                })
+                .build();
 
-        collector.addAll(1, 2);
+
+        collector.add(1, 2);
         new Sleeper(() -> 500).run();
-        collector.addAll(3, 4);
+        collector.add(3, 4);
         new Sleeper(() -> 500).run();
-        collector.addAll(1);
+        collector.add(1);
         Assertions.assertEquals(2, executed.get());
     }
 
     @Test
     public void shouldCollectAndRestart_3() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxTime(200).withMaxItems(2).build();
         AtomicInteger executed = new AtomicInteger();
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxTimeInMs(200).withMaxItems(2)
+                .withListener(items -> {
+                    executed.incrementAndGet();
+                })
+                .build();
 
-        collector.addAll(1, 2, 3, 4);
+
+        collector.add(1, 2, 3, 4);
         new Sleeper(() -> 500).run();
-        collector.addAll(5);
+        collector.add(5);
         new Sleeper(() -> 500).run();
-        collector.addAll(6);
+        collector.add(6);
         Assertions.assertEquals(3, executed.get());
     }
 
     @Test
     public void shouldEmitOnFlush_1() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxItems(2).build();
         AtomicInteger executed = new AtomicInteger();
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxItems(2)
+                .withListener(items -> {
+                    executed.incrementAndGet();
+                })
+                .build();
 
-        collector.addAll(1);
+
+        collector.add(1);
         collector.flush();
         Assertions.assertEquals(1, executed.get());
     }
 
     @Test
     public void shouldEmitMutableResults() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxItems(2).build();
         AtomicInteger executed = new AtomicInteger();
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-            items.add(2); // do not throw exception
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxItems(1)
+                .withMutableResults(true)
+                .withListener(items -> {
+                    executed.incrementAndGet();
+                    items.add(1);
+                })
+                .build();
 
-        collector.addAll(1);
+        collector.add(1);
         collector.flush();
         Assertions.assertEquals(1, executed.get());
     }
 
     @Test
     public void shouldEmitImmutableResults() throws Throwable {
-        var collector = PassiveCollector.<Integer>builder().withMaxItems(2).withMutableResults(false).build();
         AtomicInteger executed = new AtomicInteger();
-        collector.observableItems().subscribe(items -> {
-            executed.incrementAndGet();
-            Assertions.assertThrows(Exception.class, () -> {
-                items.add(1);
-            });
-        });
+        var collector = PassiveCollector.<Integer>builder().withMaxItems(1)
+                .withMutableResults(false)
+                .withListener(items -> {
+                    executed.incrementAndGet();
+                    Assertions.assertThrows(Exception.class, () -> {
+                        items.add(1);
+                    });
+                })
+                .build();
 
-        collector.addAll(1);
+        collector.add(1);
         collector.flush();
         Assertions.assertEquals(1, executed.get());
     }

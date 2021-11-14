@@ -1,7 +1,7 @@
 package org.observertc.webrtc.observer.evaluators;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.common.OutboundReport;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
-public class ObservedSfuSampleProcessingPipeline implements Consumer<List<ObservedSfuSample>> {
+public class ObservedSfuSampleProcessingPipeline {
 
     private final Subject<List<ObservedSfuSample>> sfuSamples = PublishSubject.create();
 
@@ -80,10 +80,10 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<List<Observ
                 .subscribe(this.outboundReportEncoder::encodeSfuEventReport);
     }
 
-    @Override
-    public void accept(List<ObservedSfuSample> observedSfuSamples) throws Throwable {
-        this.sfuSamples.onNext(observedSfuSamples);
-    }
+//    @Override
+//    public void accept(List<ObservedSfuSample> observedSfuSamples) throws Throwable {
+//        this.sfuSamples.onNext(observedSfuSamples);
+//    }
 
     private<T> Observable<List<T>> debounce(Observable<T> source) {
         var debounceConfig = this.observerConfig.internalCollectors.sfuProcessDebouncers;
@@ -101,8 +101,13 @@ public class ObservedSfuSampleProcessingPipeline implements Consumer<List<Observ
         return source.buffer(maxTimeInS, TimeUnit.SECONDS, maxItems);
     }
 
+    public Observer<List<ObservedSfuSample>> getObservedSfuSamplesObserver() {
+        return this.sfuSamples;
+    }
+
     public Observable<List<OutboundReport>> getObservableOutboundReports() {
         return this.outboundReportEncoder
                 .getObservableOutboundReports();
     }
+
 }

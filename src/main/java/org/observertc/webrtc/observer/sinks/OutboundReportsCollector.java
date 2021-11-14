@@ -35,6 +35,7 @@ public class OutboundReportsCollector {
         var maxItems = observerConfig.internalCollectors.outboundReports.maxItems;
         var maxTimeInMs = observerConfig.internalCollectors.outboundReports.maxTimeInS * 1000;
         this.observableCollector = ObservableCollector.<OutboundReport>builder()
+                .withResilientInput(true)
                 .withLogger(logger)
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
@@ -45,7 +46,7 @@ public class OutboundReportsCollector {
     @PreDestroy
     void teardown() {
         if (!this.observableCollector.isClosed()) {
-            this.observableCollector.close();
+            this.observableCollector.onComplete();
         }
     }
 
@@ -54,11 +55,7 @@ public class OutboundReportsCollector {
     }
 
     public void addAll(List<OutboundReport> outboundReports) {
-        this.observableCollector.addBatch(outboundReports);
-    }
-
-    public void flush() {
-        this.observableCollector.close();
+        this.observableCollector.addAll(outboundReports);
     }
 
     public Observable<List<OutboundReport>> observableOutboundReports() {
