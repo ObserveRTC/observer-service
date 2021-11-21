@@ -21,6 +21,7 @@ public class ObservedClientSampleBuilder {
     private String mediaUnitId;
     private ClientSample clientSample;
     private UUID clientId;
+    private UUID callId = null;
     private String timeZoneId;
 
     private ObservedClientSampleBuilder() {
@@ -64,6 +65,14 @@ public class ObservedClientSampleBuilder {
         if (UUIDAdapter.tryParse(this.clientSample.clientId).isEmpty()) {
             message.set("clientId in client sample is not a valid uuid");
             return false;
+        }
+        if (Objects.nonNull(this.clientSample.callId)) {
+            var callIdHolder = UUIDAdapter.tryParse(this.clientSample.callId);
+            if (callIdHolder.isEmpty()) {
+                message.set("If callId is given, it must be a valid UUID");
+                return false;
+            }
+            this.callId = callIdHolder.get();
         }
         if (Objects.isNull(this.clientSample.timestamp)) {
             message.set("ClientSample.timestamp is null");
@@ -139,6 +148,11 @@ public class ObservedClientSampleBuilder {
             @Override
             public String getMediaUnitId() {
                 return mediaUnitId;
+            }
+
+            @Override
+            public UUID getCallId() {
+                return callId;
             }
 
             @Override

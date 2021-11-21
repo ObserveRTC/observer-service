@@ -14,6 +14,17 @@ class ObservedClientSampleBuilderTest {
     ClientSampleGenerator clientSampleGenerator;
 
     @Test
+    public void invalidCallId() {
+        var clientSample = this.clientSampleGenerator.get();
+
+        clientSample.callId = "Invalid UUID";
+
+        Assertions.assertThrows(InvalidObjectException.class, () -> {
+            ObservedClientSampleBuilder.from(clientSample).build();
+        });
+    }
+
+    @Test
     public void invalidClientId() {
         var clientSample = this.clientSampleGenerator.get();
 

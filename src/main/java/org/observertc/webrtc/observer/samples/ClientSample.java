@@ -9,6 +9,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public  class ClientSample {
 
 	/**
+	 * Optional. If the client is aware of the callId for some reason (generated while clients are joined to the same room) then the observer will use this id.
+	 Otherwise the observer matches the client and assign a callId in reports.
+	 */
+	@JsonProperty("callId")
+	public String callId;
+
+	/**
 	 * The unique generated client id the report is generated from
 	 */
 	@JsonProperty("clientId")

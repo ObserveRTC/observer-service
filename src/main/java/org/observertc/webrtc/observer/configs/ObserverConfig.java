@@ -21,6 +21,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -253,7 +254,9 @@ public class ObserverConfig {
 	@ConfigurationProperties("hazelcast")
 	public static class HazelcastConfig {
 		public String configFile = null;
+//		public Map<String, Object> config;
 		public List<String> memberNamesPool = new ArrayList<>();
+		public List<String> logs = new LinkedList<>();
 	}
 
 }

@@ -2,9 +2,7 @@ package org.observertc.webrtc.observer.common;
 
 import io.reactivex.rxjava3.functions.Function;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Utils {
@@ -12,6 +10,10 @@ public class Utils {
 
     public static<T> T ifExpectedThenAlternative(T subject, T expected, T alternative) {
         return !Objects.equals(subject, expected) ? expected : alternative;
+    }
+
+    public static<T> Collection<T> coalesceCollection(Collection<T> actualValue) {
+        return Objects.nonNull(actualValue) ? actualValue : Collections.EMPTY_LIST;
     }
 
     public static<T> void runIfValueNonNull(T value, Runnable action) {

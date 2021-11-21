@@ -1,5 +1,7 @@
 package org.observertc.webrtc.observer.samples;
 
+import org.observertc.webrtc.observer.common.UUIDAdapter;
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -13,6 +15,7 @@ public class RoomSamples implements Iterable<ClientSamples> {
     final Map<UUID, ClientSamples> clientSamples = new HashMap<>();
     Long minTimestamp = null;
     Long maxTimestamp = null;
+    UUID callId = null;
 
     private RoomSamples() {
 
@@ -38,6 +41,10 @@ public class RoomSamples implements Iterable<ClientSamples> {
 
     public Long getMinTimestamp() {
         return this.minTimestamp;
+    }
+
+    public UUID getCallId() {
+        return this.callId;
     }
 
     public static class Builder {
@@ -68,6 +75,9 @@ public class RoomSamples implements Iterable<ClientSamples> {
             }
             if (Objects.isNull(this.result.maxTimestamp) || clientSample.timestamp < this.result.maxTimestamp) {
                 this.result.maxTimestamp = clientSample.timestamp;
+            }
+            if (Objects.nonNull(clientSample.callId) && Objects.isNull(this.result.callId)) {
+                this.result.callId = UUIDAdapter.tryParseOrNull(clientSample.callId);
             }
             return this;
         }

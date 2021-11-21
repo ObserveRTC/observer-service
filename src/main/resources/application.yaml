@@ -158,11 +158,14 @@ observer:
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
-
+    # for more information which level what represent take a look: java.util.logging.Level
+    # Possible values are: ALL, FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE
+#    logs:
+#      - "CONFIG"
+#      - "WARNING"
+#      - "SEVERE"
     config:
       cluster-name: my-hz-cluster
-
-
     memberNamesPool:
       - "Lisa"
       - "Bart"

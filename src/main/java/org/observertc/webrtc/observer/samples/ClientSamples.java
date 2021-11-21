@@ -141,6 +141,9 @@ public class ClientSamples implements ObservedClientSample, Iterable<ClientSampl
     }
 
     @Override
+    public UUID getCallId() { return this.observedClientSample.getCallId(); }
+
+    @Override
     public Iterator<ClientSample> iterator() {
         return this.samples.iterator();
     }

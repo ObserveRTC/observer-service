@@ -2,6 +2,8 @@ package org.observertc.webrtc.observer.evaluators.listeners;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.SfuEventType;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
+import org.observertc.webrtc.observer.common.Utils;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.evaluators.listeners.attachments.RtpPadAttachment;
@@ -89,7 +91,7 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
         if (!task.succeeded()) {
             return;
         }
-        task.getResult().stream()
+        Utils.coalesceCollection(task.getResult()).stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
                 .forEach(this::forward);
@@ -127,10 +129,11 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
                     .build().toBase64();
             String sfuPadId = Objects.nonNull(sfuRtpPadDTO.sfuPadId) ?  sfuRtpPadDTO.sfuPadId.toString() : null;
             String sfuPadStreamDirection = Objects.nonNull(sfuRtpPadDTO.streamDirection) ? sfuRtpPadDTO.streamDirection.toString() : "Unknown";
+            String callId = UUIDAdapter.toStringOrNull(sfuRtpPadDTO.callId);
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_RTP_PAD_ADDED.name())
                     .setSfuId(sfuRtpPadDTO.sfuId.toString())
-                    .setCallId(sfuRtpPadDTO.callId.toString())
+                    .setCallId(callId)
                     .setTransportId(sfuRtpPadDTO.sfuTransportId.toString())
                     .setRtpStreamId(sfuRtpPadDTO.rtpStreamId.toString())
                     .setSfuPadId(sfuPadId)

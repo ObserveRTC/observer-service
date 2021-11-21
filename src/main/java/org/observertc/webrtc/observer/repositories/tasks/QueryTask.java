@@ -26,7 +26,7 @@ public class QueryTask<T> extends ChainedTask<T> {
     @PostConstruct
     void setup() {
         this.withStatsConsumer(this.exposedMetrics::processTaskStats);
-        new Builder<>(this)
+        new Builder<T>(this)
                 .<Function<HazelcastMaps, T>> addConsumerEntry("Merge all provided inputs",
                         () -> {}, // no input was invoked
                         query -> { // input was invoked, so we may got some names through that
@@ -35,7 +35,7 @@ public class QueryTask<T> extends ChainedTask<T> {
                             }
                             this.withQuery(query);
                         })
-                .addTerminalSupplier("Completed", () -> {
+                .<T>addTerminalSupplier("Completed", () -> {
                     Objects.requireNonNull(this.query);
                     return this.query.apply(this.hazelcastMaps);
                 })
