@@ -3,20 +3,16 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 ## 1.0.0-beta
 
-Breaking Changes:
+### Breaking Changes
  * New Schema for reporting ([Reports v3](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/reports/v3))
  * New Schema to accept client samples ([ClientSample](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.md))
  * New Schema to accept sfu samples ([SfuSample](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/SfuSample.md))
 
-Major changes:
- * All generated reports for the client contains the callId referring to the call clients are joined.
- * No SSRC based pair matching, serviceId and roomId is required to match the calls.
+### Major changes
+ * All generated reports for the client contains the callId referring to the call clients are joined to.
+ * No SSRC based pair matching, serviceId and roomId are required to match the calls.
  * Support SFU sampling, and SFU samples are matched with clients based on provided rtpStreamIds
- * Remove Sentinel exposing, no direct prometheus exposures
- * No serviceId serviceName resolving, only serviceId
 
-Config features:
- * obfuscations
  
 ## 0.8.3 (H)
 

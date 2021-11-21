@@ -31,14 +31,25 @@ public class JsonUtils {
 	private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 	private static final ObjectWriter OBJECT_WRITER;
 	private static final ObjectReader OBJECT_READER;
+	private static final ObjectMapper OBJECT_MAPPER;
 
 	static {
 		OBJECT_WRITER = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		OBJECT_READER = new ObjectMapper().reader();
+		OBJECT_MAPPER = new ObjectMapper();
 	}
 
 	public static String objectToBase64(Object subject) {
 		return objectToBase64OrDefault(subject, null);
+	}
+
+	public static String beautifyJsonString(String inputJson) {
+		try {
+			return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(OBJECT_MAPPER.readTree(inputJson));
+		} catch (Exception ex) {
+			logger.warn("Exception while beautifying json", ex);
+			return "";
+		}
 	}
 
 	public static String objectToBase64OrDefault(Object subject, String defaultValue) {

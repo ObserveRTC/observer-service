@@ -2,28 +2,36 @@ package org.observertc.webrtc.observer.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
+import org.observertc.webrtc.observer.configs.ObserverConfig;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Singleton
 public class StoredRequests {
 
+    public static final String COMPLETE_SFU_RTP_PAD_BY_RTP_STREAM_REQUEST = "COMPLETE_SFU_RTP_PAD_BY_RTP_STREAM_REQUEST";
+
     @Inject
     HazelcastMaps hazelcastMaps;
+
+    @Inject
+    ObserverConfig observerConfig;
+
     private ObjectMapper mapper = new ObjectMapper();
 
     private String getCompleteRtpStreamSfuRtpPadsRequestId(UUID rtpStreamId) {
-        return String.format("COMPLETE_SFU_RTP_PAD_BY_RTP_STREAM_REQUEST-%s", UUIDAdapter.toStringOrDefault(rtpStreamId, "NO_EXISTING"));
+        return String.format("%s-%s", COMPLETE_SFU_RTP_PAD_BY_RTP_STREAM_REQUEST, UUIDAdapter.toStringOrDefault(rtpStreamId, "NO_EXISTING"));
     }
 
-    public void addCompleteRtpStreamSfuRtpPadRequests(UUID... rtpStreamIds) {
-        if (Objects.isNull(rtpStreamIds)) {
-            return;
+    public boolean isCompleteRtpStreamSfuRtpPadRequest(String key) {
+        if (Objects.isNull(key)) {
+            return false;
         }
-        this.addCompleteRtpStreamSfuRtpPadRequests(Arrays.asList(rtpStreamIds));
+        return key.startsWith(COMPLETE_SFU_RTP_PAD_BY_RTP_STREAM_REQUEST);
     }
 
     public void addCompleteRtpStreamSfuRtpPadRequests(Collection<UUID> rtpStreamIds) {
@@ -36,15 +44,14 @@ public class StoredRequests {
                         rtpStreamId -> getCompleteRtpStreamSfuRtpPadsRequestId(rtpStreamId),
                         rtpStreamId -> UUIDAdapter.toBytes(rtpStreamId)
                 ));
-        this.hazelcastMaps.getRequests().putAll(requests);
-    }
-
-    public Set<UUID> removeCompleteRtpStreamSfuRtpPadsRequests(UUID... rtpStreamIds) {
-        if (Objects.isNull(rtpStreamIds)) {
-            return Collections.EMPTY_SET;
-        }
-        List<UUID> list = Arrays.asList(rtpStreamIds);
-        return this.removeCompleteRtpStreamSfuRtpPadsRequests(list);
+        int reportSfuRtpPadWithCallIdTimeoutInS = this.observerConfig.outboundReports.reportSfuRtpPadWithCallIdTimeoutInS;
+        requests.entrySet().stream().forEach(entry -> {
+            this.hazelcastMaps.getRequests().put(entry.getKey(),
+                    entry.getValue(),
+                    reportSfuRtpPadWithCallIdTimeoutInS,
+                    TimeUnit.SECONDS
+            );
+        });
     }
 
     public Set<UUID> removeCompleteRtpStreamSfuRtpPadsRequests(Collection<UUID> rtpStreamIds) {

@@ -1,6 +1,7 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import org.observertc.webrtc.observer.common.ChainedTask;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,15 @@ public class QueryTask<T> extends ChainedTask<T> {
     @Inject
     HazelcastMaps hazelcastMaps;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     private Function<HazelcastMaps, T> query = null;
 
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<>(this)
                 .<Function<HazelcastMaps, T>> addConsumerEntry("Merge all provided inputs",
                         () -> {}, // no input was invoked

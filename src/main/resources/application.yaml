@@ -119,9 +119,9 @@ observer:
 #    MyKafka:
 #      type: KafkaSink
 #      config:
-#        muxReports: true
-#        muxTopic: "observertc-reports"
-#        demuxTopicPrefix: "ortc_"
+#        muxReports: false
+##        muxTopic: "observertc-reports"
+#        demuxTopicPrefix: "observertc-"
 #        properties:
 #          bootstrap.servers: localhost:9092
 
@@ -158,6 +158,11 @@ observer:
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+
+    config:
+      cluster-name: my-hz-cluster
+
+
     memberNamesPool:
       - "Lisa"
       - "Bart"

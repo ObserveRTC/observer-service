@@ -167,6 +167,10 @@ public class ObservableCollector<T> extends Observable<List<T>> implements Obser
         return this.closed;
     }
 
+    public void checkTime() {
+        this.collector.checkTime();
+    }
+
     public static class Builder<U> {
         private PassiveCollector.Builder<U> passiveCollectorBuilder = PassiveCollector.builder();
         private ObservableCollector<U> result = new ObservableCollector<>();

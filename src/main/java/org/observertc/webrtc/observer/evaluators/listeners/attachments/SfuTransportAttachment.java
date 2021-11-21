@@ -3,24 +3,18 @@ package org.observertc.webrtc.observer.evaluators.listeners.attachments;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.observertc.webrtc.observer.common.JsonUtils;
-import org.observertc.webrtc.observer.dto.StreamDirection;
-
-import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RtpPadAttachment {
+public class SfuTransportAttachment {
 
     public static Builder builder() {
         return new Builder();
     }
 
-    @JsonProperty("streamDirection")
-    public String streamDirection;
-
     @JsonProperty("internal")
     public boolean internal;
 
-    private RtpPadAttachment() {
+    private SfuTransportAttachment() {
 
     }
 
@@ -34,19 +28,10 @@ public class RtpPadAttachment {
     }
 
     public static class Builder {
-        private RtpPadAttachment result = new RtpPadAttachment();
+        private SfuTransportAttachment result = new SfuTransportAttachment();
 
         private Builder() {
 
-        }
-
-        public Builder withStreamDirection(StreamDirection streamDirection) {
-            if (Objects.isNull(streamDirection)) {
-                this.result.streamDirection = null;
-            } else {
-                this.result.streamDirection = streamDirection.name();
-            }
-            return this;
         }
 
         public Builder withInternal(boolean value) {
@@ -54,7 +39,7 @@ public class RtpPadAttachment {
             return this;
         }
 
-        public RtpPadAttachment build() {
+        public SfuTransportAttachment build() {
             return this.result;
         }
     }

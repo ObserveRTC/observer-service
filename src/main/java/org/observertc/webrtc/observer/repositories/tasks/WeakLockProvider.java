@@ -43,8 +43,8 @@ public class WeakLockProvider {
 	}
 
 	WeakSpinLock makeSpinLock(String name) {
-        UUID endpointUUID = this.observerHazelcast.getLocalEndpointUUID();
-        final String instance = Objects.isNull(endpointUUID) ? "noName" : endpointUUID.toString();
+        UUID endpointId = this.observerHazelcast.getLocalEndpointId();
+        final String instance = Objects.isNull(endpointId) ? "noName" : endpointId.toString();
         final WeakLockDTO lockEntity = WeakLockDTO.of(name, instance);
         return new WeakSpinLock(hazelcastMaps.getWeakLocks(), lockEntity);
     }

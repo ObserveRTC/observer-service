@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.SfuDTO;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,12 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
     @Inject
     HazelcastMaps hazelcastMaps;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<List<SfuDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Fetch SfuIds",
                         () -> this.sfuIds,

@@ -7,6 +7,7 @@ import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
 import org.observertc.webrtc.observer.dto.StreamDirection;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.repositories.StoredRequests;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
@@ -31,11 +32,15 @@ public class AddMediaTracksTasks extends ChainedTask<Void> {
     @Inject
     StoredRequests storedRequests;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     private Map<UUID, MediaTrackDTO> mediaTrackDTOs = new HashMap<>();
 
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<Void>(this)
                 .<Map<UUID, MediaTrackDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},

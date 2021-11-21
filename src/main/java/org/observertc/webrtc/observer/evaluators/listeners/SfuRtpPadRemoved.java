@@ -95,6 +95,7 @@ class SfuRtpPadRemoved extends EventReporterAbstract.SfuEventReporterAbstract<Sf
             String sfuPadStreamDirection = Objects.nonNull(sfuRtpPadDTO.streamDirection) ? sfuRtpPadDTO.streamDirection.toString() : "Unknown";
             var attachment = RtpPadAttachment.builder()
                     .withStreamDirection(sfuRtpPadDTO.streamDirection)
+                    .withInternal(sfuRtpPadDTO.internalPad)
                     .build().toBase64();
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_RTP_PAD_REMOVED.name())

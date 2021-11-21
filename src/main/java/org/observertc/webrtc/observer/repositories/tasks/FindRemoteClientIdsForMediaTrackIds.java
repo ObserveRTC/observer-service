@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ public class FindRemoteClientIdsForMediaTrackIds extends ChainedTask<List<FindRe
 
     @Inject
     HazelcastMaps hazelcastMaps;
+
+    @Inject
+    ExposedMetrics exposedMetrics;
 
     private Set<UUID> inboundTrackIds = new HashSet<>();
 
@@ -42,7 +46,7 @@ public class FindRemoteClientIdsForMediaTrackIds extends ChainedTask<List<FindRe
 
     @PostConstruct
     void setup() {
-
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<>(this)
             .<Set<UUID>> addConsumerEntry("Merge all provided inputs",
                     () -> {}, // no input was invoked

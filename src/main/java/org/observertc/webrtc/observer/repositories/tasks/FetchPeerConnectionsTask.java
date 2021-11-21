@@ -6,6 +6,7 @@ import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.entities.PeerConnectionEntity;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -21,9 +22,12 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
     @Inject
     HazelcastMaps hazelcastMaps;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         Function<Set<UUID>, Map<UUID, PeerConnectionDTO>> fetchPcDTO = pcUUIDs -> {
             if (Objects.nonNull(pcUUIDs)) {
                 this.peerConnectionIds.addAll(pcUUIDs);

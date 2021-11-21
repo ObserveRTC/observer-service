@@ -119,6 +119,10 @@ public class OutboundReportsDispatcher implements Consumer<List<OutboundReport>>
         var decoder = this.outboundReportsCodec.getDecoder();
         sinkBuilder.setDecoder(decoder);
         Sink result = sinkBuilder.build();
+        if (Objects.isNull(result)) {
+            logger.warn("Sink for {} has not been built", sinkId, JsonUtils.objectToString(config));
+            return null;
+        }
         String sinkLoggerName = String.format("Sink-%s:", sinkId);
         var logger = LoggerFactory.getLogger(sinkLoggerName);
         result.withLogger(logger);

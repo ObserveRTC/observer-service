@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.entities.ClientEntity;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,12 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
     Provider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
     private boolean unmodifiableResult = false;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<Map<UUID, ClientDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Merge Inputs",
                         () -> this.clientIds,

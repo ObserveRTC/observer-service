@@ -71,6 +71,21 @@ public class PassiveCollector<T> {
         return this;
     }
 
+    /**
+     * A method to help to make the collector active.
+     * An outside timer can call this method, which eventually can push forward the items.
+     */
+    public void checkTime() {
+        if (Objects.isNull(this.started)) {
+            return;
+        }
+        Long now = Instant.now().toEpochMilli();
+        if (this.maxTimeInMs < now - this.started) {
+            this.emit();
+            this.started = null;
+        }
+    }
+
     private void execute(Runnable action) throws Throwable{
         if (0 < this.maxTimeInMs) {
             Long now = Instant.now().toEpochMilli();

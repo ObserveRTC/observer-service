@@ -16,6 +16,7 @@
 
 package org.observertc.webrtc.observer.configs;
 
+import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 import javax.validation.constraints.Min;
@@ -165,19 +166,48 @@ public class ObserverConfig {
 
 	@ConfigurationProperties(("internalCollectors"))
 	public static class InternalCollectorConfigs {
-		public CollectorConfig clientSamples = new CollectorConfig();
-		public CollectorConfig clientProcessDebouncers = new CollectorConfig();
 
-		public CollectorConfig sfuSamples = new CollectorConfig();
-		public CollectorConfig sfuProcessDebouncers = new CollectorConfig();
+		public ClientSamplesCollectorConfig clientSamples = new ClientSamplesCollectorConfig();
 
-		public CollectorConfig outboundReports = new CollectorConfig();
+		@ConfigurationProperties("clientSamples")
+		public static class ClientSamplesCollectorConfig extends CollectorConfig {
+
+		}
+
+		public ClientProcessDebouncersCollectorConfig clientProcessDebouncers = new ClientProcessDebouncersCollectorConfig();
+
+		@ConfigurationProperties("clientProcessDebouncers")
+		public static class ClientProcessDebouncersCollectorConfig extends CollectorConfig {
+
+		}
+
+		public SfuSamplesCollectorConfig sfuSamples = new SfuSamplesCollectorConfig();
+
+		@ConfigurationProperties("clientSamples")
+		public static class SfuSamplesCollectorConfig extends CollectorConfig {
+
+		}
+
+		public SfuProcessDebouncersCollectorConfig sfuProcessDebouncers = new SfuProcessDebouncersCollectorConfig();
+
+		@ConfigurationProperties("sfuProcessDebouncers")
+		public static class SfuProcessDebouncersCollectorConfig extends CollectorConfig {
+
+		}
+
+		public OutboundReportsCollectorConfig outboundReports = new OutboundReportsCollectorConfig();
+
+		@ConfigurationProperties("outboundReports")
+		public static class OutboundReportsCollectorConfig extends CollectorConfig {
+
+		}
 	}
+
 
 	public static class CollectorConfig {
 
 		@Min(1)
-		public int maxItems = 1000;
+		public int maxItems = 2000;
 
 		@Min(0)
 		public int maxTimeInS = 0;
@@ -212,9 +242,8 @@ public class ObserverConfig {
 		public boolean reportSfuInboundRtpStreams = true;
 		public boolean reportSfuOutboundRtpStreams = true;
 
-		public boolean reportSfuRtpPadOnlyWithCallId = true;
-
-		public String defaultServiceName = "defaultServiceName";
+		@Min(1)
+		public int reportSfuRtpPadWithCallIdTimeoutInS = 60;
 
     }
 

@@ -1,11 +1,13 @@
 package org.observertc.webrtc.observer.sinks;
 
+import io.micronaut.scheduling.annotation.Scheduled;
 import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.codecs.OutboundReportsCodec;
 import org.observertc.webrtc.observer.common.ObservableCollector;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.common.OutboundReportTypeVisitors;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,9 @@ public class OutboundReportsCollector {
     @Inject
     ObserverConfig observerConfig;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     private ObservableCollector<OutboundReport> observableCollector;
 
     @PostConstruct
@@ -35,12 +40,18 @@ public class OutboundReportsCollector {
         var maxItems = observerConfig.internalCollectors.outboundReports.maxItems;
         var maxTimeInMs = observerConfig.internalCollectors.outboundReports.maxTimeInS * 1000;
         this.observableCollector = ObservableCollector.<OutboundReport>builder()
-                .withResilientInput(true)
+                .withResilientInput(false)
+                .withResilientOutput(true)
                 .withLogger(logger)
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
                 .build();
 
+    }
+
+    @Scheduled(fixedDelay = "10s", initialDelay = "1m")
+    void checkCollector() {
+        this.observableCollector.checkTime();
     }
 
     @PreDestroy
@@ -52,10 +63,12 @@ public class OutboundReportsCollector {
 
     public void add(OutboundReport outboundReport) {
         this.observableCollector.add(outboundReport);
+        this.exposedMetrics.incrementGeneratedReports();
     }
 
     public void addAll(List<OutboundReport> outboundReports) {
         this.observableCollector.addAll(outboundReports);
+        this.exposedMetrics.incrementGeneratedReports(outboundReports.size());
     }
 
     public Observable<List<OutboundReport>> observableOutboundReports() {

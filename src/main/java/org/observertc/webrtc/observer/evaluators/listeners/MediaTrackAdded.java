@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
+import org.observertc.webrtc.observer.evaluators.listeners.attachments.MediaTrackAttachment;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract<Me
 
     private CallEventReport makeReport(MediaTrackDTO mediaTrackDTO) {
         Long now = Instant.now().toEpochMilli();
-        return this.makeReport(mediaTrackDTO, now);
+        return this.makeReport(mediaTrackDTO, mediaTrackDTO.added);
     }
 
     @Override
@@ -54,6 +55,12 @@ class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract<Me
             String clientId = UUIDAdapter.toStringOrNull(mediaTrackDTO.clientId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(mediaTrackDTO.peerConnectionId);
             String trackId = UUIDAdapter.toStringOrNull(mediaTrackDTO.trackId);
+            String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.rtpStreamId);
+            String streamDirection = mediaTrackDTO.direction != null ? mediaTrackDTO.direction.name() : null;
+            MediaTrackAttachment attachment = MediaTrackAttachment.builder()
+                    .withRtpStreamId(rtpStreamId)
+                    .withStreamDirection(streamDirection)
+                    .build();
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_ADDED.name())
                     .setCallId(callId)
@@ -62,9 +69,10 @@ class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract<Me
                     .setClientId(clientId)
                     .setMediaUnitId(mediaTrackDTO.mediaUnitId)
                     .setUserId(mediaTrackDTO.userId)
+                    .setSSRC(mediaTrackDTO.ssrc)
                     .setPeerConnectionId(peerConnectionId)
                     .setMediaTrackId(trackId)
-                    .setAttachments("Direction of the media track: " + mediaTrackDTO.direction.name())
+                    .setAttachments(attachment.toBase64())
                     .setTimestamp(timestamp)
                     .build();
             logger.info("Media track {} is added on Peer Connection {} at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);

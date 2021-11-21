@@ -16,12 +16,17 @@
 
 package org.observertc.webrtc.observer;
 
+import com.hazelcast.client.util.AbstractLoadBalancer;
+import com.hazelcast.cluster.Member;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.XmlConfigBuilder;
 import com.hazelcast.config.YamlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
+import com.hazelcast.logging.LogEvent;
+import com.hazelcast.logging.LogListener;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.PortableDTOFactory;
 import org.slf4j.Logger;
@@ -35,6 +40,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 @Singleton
 public class ObserverHazelcast {
@@ -48,6 +56,20 @@ public class ObserverHazelcast {
 		Config config = this.makeConfig(observerHazelcastConfig);
 		this.instance = Hazelcast.newHazelcastInstance(config);
 		this.memberName = this.makeMemberName(observerHazelcastConfig);
+		this.instance.getLoggingService().addLogListener(Level.ALL, new LogListener() {
+			@Override
+			public void log(LogEvent logEvent) {
+				var member = logEvent.getMember();
+				var record =  logEvent.getLogRecord();
+						logger.info("{}: Member: {}, Logger: {} Message: {}", record.getLevel(), member.getUuid(), record.getLoggerName(), record.getMessage());
+				}
+			}
+		);
+//		java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
+//		rootLogger.setLevel(Level.ALL);
+//		for (Handler h : rootLogger.getHandlers()) {
+//			h.setLevel(Level.ALL);
+//		}
 	}
 
 	@PostConstruct
@@ -114,7 +136,7 @@ public class ObserverHazelcast {
 	}
 
 	public String makeMemberName(ObserverConfig.HazelcastConfig hazelcastConfig) {
-		UUID memberId = this.getLocalEndpointUUID();
+		UUID memberId = this.getLocalEndpointId();
 		if (Objects.isNull(hazelcastConfig.memberNamesPool) || hazelcastConfig.memberNamesPool.size() < 1) {
 			return memberId.toString();
 		}
@@ -126,12 +148,16 @@ public class ObserverHazelcast {
 
 	@Override
 	public String toString() {
-		return this.instance.getConfig().toString();
+		var config = this.instance.getConfig().toString();
+		return config;
+//		return config.replace(", ", ", \n");
+//		return JsonUtils.beautifyJsonString(this.instance.getConfig().toString().substring(6));
+//		return this.instance.getConfig().toString();
 	}
 
 	public String getMemberName() { return this.memberName; }
 
-	public UUID getLocalEndpointUUID() {
+	public UUID getLocalEndpointId() {
 		return this.instance.getLocalEndpoint().getUuid();
 	}
 }

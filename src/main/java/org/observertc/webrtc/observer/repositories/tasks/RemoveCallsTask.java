@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.entities.CallEntity;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
@@ -35,8 +36,12 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
     @Inject
     WeakLockProvider weakLockProvider;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new ChainedTask.Builder<Map<UUID, CallDTO>>(this)
                 .withLockProvider(() -> weakLockProvider.autoLock(LOCK_NAME))
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Fetch CallIds",

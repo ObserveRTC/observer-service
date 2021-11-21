@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -24,11 +25,15 @@ public class AddPeerConnectionsTask extends ChainedTask<List<CallEventReport.Bui
     @Inject
     HazelcastMaps hazelcastMaps;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     private Map<UUID, PeerConnectionDTO> peerConnectionDTOs = new HashMap<>();
 
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<List<CallEventReport.Builder>>(this)
                 .<Map<UUID, PeerConnectionDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
