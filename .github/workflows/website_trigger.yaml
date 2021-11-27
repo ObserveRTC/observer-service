@@ -1,7 +1,7 @@
 name: Dispatch events to website repository
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 jobs:
   dispatch:
     runs-on: ubuntu-latest
