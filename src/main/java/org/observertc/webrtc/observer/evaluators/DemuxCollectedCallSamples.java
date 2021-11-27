@@ -195,7 +195,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
             inboundVideoTrackReports.stream().forEach(this.inboundVideoTrackReportSubject::onNext);
             outboundAudioTrackReports.stream().forEach(this.outboundAudioTrackReportSubject::onNext);
             outboundVideoTrackReports.stream().forEach(this.outboundVideoTrackReportSubject::onNext);
-            if (observerConfig.outboundReports.reportMediaTracks) {
+            if (observerConfig.reports.sendMediaTracks) {
 //                inboundAudioTrackReports.stream().map(this::createMediaTrackReportFromInboundAudio)
 //                        .forEach(this.mediaTrackReportSubject::onNext);
 //                inboundVideoTrackReports.stream().map(this::createMediaTrackReportFromInboundVideo)

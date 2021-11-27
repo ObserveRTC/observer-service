@@ -1,0 +1,22 @@
+@startuml
+skinparam handwritten true
+skinparam roundcorner 20
+skinparam monochrome true
+skinparam arrowThickness 2
+skinparam BoxPadding 60
+
+
+
+cloud "Your Cloud" #transparent {
+	component observer
+	database "Database" as processor
+}
+() "WebRTCApp" as client
+
+
+
+client ..r..> [observer] : Sample
+[observer] ..r..> processor: Report
+
+
+@enduml

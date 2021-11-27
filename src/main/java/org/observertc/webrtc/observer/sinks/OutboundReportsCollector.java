@@ -37,8 +37,8 @@ public class OutboundReportsCollector {
 
     @PostConstruct
     void setup() {
-        var maxItems = observerConfig.internalCollectors.outboundReports.maxItems;
-        var maxTimeInMs = observerConfig.internalCollectors.outboundReports.maxTimeInS * 1000;
+        var maxItems = observerConfig.buffers.outboundReportsCollector.maxItems;
+        var maxTimeInMs = observerConfig.buffers.outboundReportsCollector.maxTimeInS * 1000;
         this.observableCollector = ObservableCollector.<OutboundReport>builder()
                 .withResilientInput(false)
                 .withResilientOutput(true)
@@ -79,7 +79,7 @@ public class OutboundReportsCollector {
     }
 
     private Predicate<OutboundReport> makeOutboundReportPredicate() {
-        var config = this.observerConfig.outboundReports;
+        var config = this.observerConfig.reports;
         var typeVisitor = OutboundReportTypeVisitors.makeTypeFilter(config);
         return report -> {
             return typeVisitor.apply(null, report.getType());

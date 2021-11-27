@@ -1,0 +1,83 @@
+@startuml
+skinparam handwritten true
+skinparam monochrome true
+skinparam backgroundColor transparent
+
+' hide the spot
+hide circle
+
+
+entity "SfuRtpPad" as sfupads {
+*transportId: UUID
+*rtpStreamId: UUID
+--
+...stats...
+}
+
+entity "SfuTransport" as sfutransport {
+*transportId: UUID
+*sfuId: UUID
+--
+...stats...
+}
+
+entity "Sfu" as sfu {
+*sfuId: UUID
+*mediaUnitId: String
+*serviceId: String
+--
+...stats...
+}
+
+entity "ClientMediaTrack" as tracks {
+*trackId: UUID
+*peerConnectionId: UUID
+*rtpStreamId: UUID
+--
+...stats...
+}
+
+entity "ClientPeerConnection" as pcs {
+*peerConnectionId: UUID
+*clientId: UUID
+--
+...stats...
+}
+
+entity "Client" as client {
+*clientId*: UUID
+*callId: UUID
+*mediaUnitId: String
+--
+...stats...
+}
+
+
+entity "Call" as call {
+*callId*: UUID
+*roomId*: String
+*serviceId: String
+--
+}
+
+
+entity "Service" as service {
+*serviceId: String
+--
+}
+
+service ||.d.{ call
+call ||.d.{ client
+client ||.d.{ pcs
+pcs ||.d.{ tracks
+
+service ||.d.{ sfu
+sfu ||.d.{ sfutransport
+sfutransport ||.d.{ sfupads
+
+sfupads <-left-> tracks
+
+sfutransport -[hidden]l-> pcs
+sfu -[hidden]l-> client
+
+@enduml

@@ -44,7 +44,7 @@ public class StoredRequests {
                         rtpStreamId -> getCompleteRtpStreamSfuRtpPadsRequestId(rtpStreamId),
                         rtpStreamId -> UUIDAdapter.toBytes(rtpStreamId)
                 ));
-        int reportSfuRtpPadWithCallIdTimeoutInS = this.observerConfig.outboundReports.reportSfuRtpPadWithCallIdTimeoutInS;
+        int reportSfuRtpPadWithCallIdTimeoutInS = this.observerConfig.evaluators.reportSfuRtpPadWithCallIdTimeoutInS;
         requests.entrySet().stream().forEach(entry -> {
             this.hazelcastMaps.getRequests().put(entry.getKey(),
                     entry.getValue(),

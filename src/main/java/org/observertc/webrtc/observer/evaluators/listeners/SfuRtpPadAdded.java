@@ -57,7 +57,7 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
                 .expiredIncompleteSfuRtpPadIds()
                 .subscribe(this::receiveExpiredIncompleteSfuRtpPadIds);
 
-        this.reportSfuRtpPadWithCallIdTimeoutInS = observerConfig.outboundReports.reportSfuRtpPadWithCallIdTimeoutInS;
+        this.reportSfuRtpPadWithCallIdTimeoutInS = observerConfig.evaluators.reportSfuRtpPadWithCallIdTimeoutInS;
     }
 
     private void receiveAddedSfuRtpPads(List<SfuRtpPadDTO> sfuRtpPadDTOs) {
@@ -84,7 +84,7 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
             Set<UUID> localRtpPadIds = hazelcastMaps.getSFURtpPads().localKeySet().stream().filter(expiredSfuRtpPadIds::contains).collect(Collectors.toSet());
             return hazelcastMaps.getSFURtpPads().getAll(localRtpPadIds)
                     .values().stream()
-                    .filter(sfuRtpPadDTO -> Objects.isNull(sfuRtpPadDTO.callId))
+                    .filter(sfuRtpPadDTO -> Objects.isNull(sfuRtpPadDTO.callId) && sfuRtpPadDTO.internalPad == false)
                     .collect(Collectors.toList());
         }).execute();
 

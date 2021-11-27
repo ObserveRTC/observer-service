@@ -67,7 +67,7 @@ public class WebsocketSfuSamples {
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
 
 	@Inject
-	ObserverConfig.SourcesConfig.SfuSamplesConfig config;
+	ObserverConfig.SourcesConfig.WebsocketsConfig config;
 
 	@Inject
 	SfuSamplesCollector sfuSamplesCollector;

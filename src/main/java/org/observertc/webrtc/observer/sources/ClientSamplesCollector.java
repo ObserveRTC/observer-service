@@ -25,8 +25,8 @@ public class ClientSamplesCollector {
 
     @PostConstruct
     void setup() {
-        var maxItems = observerConfig.internalCollectors.clientSamples.maxItems;
-        var maxTimeInMs = observerConfig.internalCollectors.clientSamples.maxTimeInS * 1000;
+        var maxItems = observerConfig.buffers.clientSamplesCollector.maxItems;
+        var maxTimeInMs = observerConfig.buffers.clientSamplesCollector.maxTimeInS * 1000;
         this.observableCollector = ObservableCollector.<ObservedClientSample>builder()
                 .withLogger(logger)
                 .withMaxItems(maxItems)

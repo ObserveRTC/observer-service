@@ -25,8 +25,8 @@ public class SfuSamplesCollector {
 
     @PostConstruct
     void setup() {
-        var maxItems = observerConfig.internalCollectors.sfuSamples.maxItems;
-        var maxTimeInMs = observerConfig.internalCollectors.sfuSamples.maxTimeInS * 1000;
+        var maxItems = observerConfig.buffers.sfuSamplesCollector.maxItems;
+        var maxTimeInMs = observerConfig.buffers.sfuSamplesCollector.maxTimeInS * 1000;
         this.observableCollector = ObservableCollector.<ObservedSfuSample>builder()
                 .withResilientInput(true)
                 .withLogger(logger)

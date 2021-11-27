@@ -16,7 +16,6 @@
 
 package org.observertc.webrtc.observer.configs;
 
-import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 import javax.validation.constraints.Min;
@@ -73,32 +72,38 @@ public class ObserverConfig {
 	@ConfigurationProperties("sources")
 	public static class SourcesConfig {
 
-		@Deprecated(since = "1.0.0")
-		public SourcesConfig.PCSamplesConfig pcSamples;
+		public List<String> allowedServiceIds = null;
 
-		@ConfigurationProperties("pcSamples")
-		public static class PCSamplesConfig {
-			public boolean enabled = false;
-			public String defaultServiceId = "defaultServiceId";
+		public RestApiConfig restapi;
+
+		@ConfigurationProperties("restapi")
+		public static class RestApiConfig {
+			public boolean acceptClientSamples = true;
+			public boolean acceptSfuSamples = true;
+
+			@Min(1)
+			public int maxClientSamplesBatch = 1000;
+
+			@Min(1)
+			public int maxSfuSamplesBatch = 1000;
 		}
 
-		public SourcesConfig.ClientSamplesConfig clientSamples;
+		public WebsocketsConfig websockets;
 
-		@ConfigurationProperties("clientSamples")
-		public static class ClientSamplesConfig {
+		@ConfigurationProperties("websockets")
+		public static class WebsocketsConfig {
 			public boolean enabled = true;
-		}
 
-		public SourcesConfig.SfuSamplesConfig sfuSamples;
+			@Min(1)
+			public int maxClientSamplesBatch = 1000;
 
-		@ConfigurationProperties("sfuSamples")
-		public static class SfuSamplesConfig {
-			public boolean enabled = true;
+			@Min(1)
+			public int maxSfuSamplesBatch = 1000;
 		}
 	}
 
 	// Repository config
-	public RepositoryConfig repositories;
+	public RepositoryConfig repository;
 
 	@ConfigurationProperties("repositories")
 	public static class RepositoryConfig {
@@ -121,8 +126,6 @@ public class ObserverConfig {
 		@Min(60)
 		public int sfuRtpPadMaxIdleTime = 600;
 
-		@Min(0)
-		public int eventsCollectingTimeInS = 5;
 	}
 
 	// Evaluators Config
@@ -131,44 +134,18 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
-		@Min(5)
-		public int clientSamplesBufferMaxTimeInS = 5;
-
 		@Min(1)
-		public int clientSamplesBufferMaxItems = 10000;
+		public int reportSfuRtpPadWithCallIdTimeoutInS = 60;
 
-		@Min(5)
-		public int sfuSamplesBufferMaxTimeInS = 5;
-
-		@Min(1)
-		public int sfuSamplesBufferMaxItems = 10000;
-
-		@Min(1)
-		public int reportsBufferMaxItems = 10000;
-
-		@Min(1)
-		public int reportsBufferMaxRetainInS = 30;
-
-		@Min(1)
-		public int sfuReportsPreCollectingTimeInS = 3;
-
-		@Min(1)
-		public int sfuReportsPreCollectingMaxItems = 1000;
-
-		@Min(1)
-		public int clientReportsPreCollectingTimeInS = 3;
-
-		@Min(1)
-		public int clientReportsPreCollectingMaxItems = 1000;
 	}
 
 	// internal collectors config
-	public InternalCollectorConfigs internalCollectors;
+	public InternalBuffersConfig buffers;
 
-	@ConfigurationProperties(("internalCollectors"))
-	public static class InternalCollectorConfigs {
+	@ConfigurationProperties(("buffers"))
+	public static class InternalBuffersConfig {
 
-		public ClientSamplesCollectorConfig clientSamples = new ClientSamplesCollectorConfig();
+		public ClientSamplesCollectorConfig clientSamplesCollector = new ClientSamplesCollectorConfig();
 
 		@ConfigurationProperties("clientSamples")
 		public static class ClientSamplesCollectorConfig extends CollectorConfig {
@@ -182,7 +159,7 @@ public class ObserverConfig {
 
 		}
 
-		public SfuSamplesCollectorConfig sfuSamples = new SfuSamplesCollectorConfig();
+		public SfuSamplesCollectorConfig sfuSamplesCollector = new SfuSamplesCollectorConfig();
 
 		@ConfigurationProperties("clientSamples")
 		public static class SfuSamplesCollectorConfig extends CollectorConfig {
@@ -196,10 +173,17 @@ public class ObserverConfig {
 
 		}
 
-		public OutboundReportsCollectorConfig outboundReports = new OutboundReportsCollectorConfig();
+		public OutboundReportsCollectorConfig outboundReportsCollector = new OutboundReportsCollectorConfig();
 
 		@ConfigurationProperties("outboundReports")
 		public static class OutboundReportsCollectorConfig extends CollectorConfig {
+
+		}
+
+		public RepositoryEventsDebouncersConfig repositoryEventsDebouncers = new RepositoryEventsDebouncersConfig();
+
+		@ConfigurationProperties("repositoryEventsDebouncers")
+		public static class RepositoryEventsDebouncersConfig extends CollectorConfig {
 
 		}
 	}
@@ -218,33 +202,30 @@ public class ObserverConfig {
 	public Map<String, Object> sinks;
 
 	// Outbound Reports Config
-	public OutboundReportsConfig outboundReports;
+	public ReportsConfig reports;
 
-	@ConfigurationProperties("outboundReports")
-	public static class OutboundReportsConfig {
-		public ReportFormat reportFormat = ReportFormat.JSON;
-		public boolean reportObserverEvents = true;
-		public boolean reportCallEvents = true;
-		public boolean reportCallMeta = true;
-		public boolean reportClientExtensions = true;
-		public boolean reportInboundAudioTracks = true;
-		public boolean reportInboundVideoTracks = true;
-		public boolean reportOutboundAudioTracks = true;
-		public boolean reportOutboundVideoTracks = true;
-		public boolean reportClientTransports = true;
-		public boolean reportClientDataChannels = true;
-		public boolean reportMediaTracks = false;
+	@ConfigurationProperties("reports")
+	public static class ReportsConfig {
+		public ReportFormat format = ReportFormat.JSON;
+		public boolean sendObserverEvents = true;
+		public boolean sendCallEvents = true;
+		public boolean sendCallMeta = true;
+		public boolean sendClientExtensions = true;
+		public boolean sendInboundAudioTracks = true;
+		public boolean sendInboundVideoTracks = true;
+		public boolean sendOutboundAudioTracks = true;
+		public boolean sendOutboundVideoTracks = true;
+		public boolean sendClientTransports = true;
+		public boolean sendClientDataChannels = true;
+		public boolean sendMediaTracks = false;
 
-		public boolean reportSfuEvents = true;
-		public boolean reportSfuMeta = true;
-		public boolean reportSfuTransports = true;
-		public boolean reportSfuSctpStreams = true;
+		public boolean sendSfuEvents = true;
+		public boolean sendSfuMeta = true;
+		public boolean sendSfuTransports = true;
+		public boolean sendSfuSctpStreams = true;
 
-		public boolean reportSfuInboundRtpStreams = true;
-		public boolean reportSfuOutboundRtpStreams = true;
-
-		@Min(1)
-		public int reportSfuRtpPadWithCallIdTimeoutInS = 60;
+		public boolean sendSfuInboundRtpStreams = true;
+		public boolean sendSfuOutboundRtpStreams = true;
 
     }
 

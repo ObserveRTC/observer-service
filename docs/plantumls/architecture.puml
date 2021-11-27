@@ -1,0 +1,73 @@
+@startuml
+allowmixing
+skinparam handwritten true
+skinparam roundcorner 20
+skinparam monochrome true
+skinparam arrowThickness 2
+skinparam BoxPadding 60
+
+
+!define GCPPuml https://raw.githubusercontent.com/gamma-data/GCP-C4-PlantUML/master/templates
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist
+
+!include <cloudinsight/kafka>
+!include <cloudinsight/java>
+!include <cloudogu/tools/k8s>
+!includeurl GCPPuml/GCPCommon.puml
+!includeurl GCPPuml/DataAnalytics/BigQuery.puml
+!include <awslib/AWSCommon>
+!include <kubernetes/k8s-sprites-unlabeled-25pct>
+
+!includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/AWSCommon.puml
+!includeurl AWSPuml/Analytics/Redshift.puml
+
+!include <awslib/Analytics/Redshift>
+
+' hide the spot
+hide circle
+
+package "Collection" {
+  entity "SFU" as sfu {
+    * sfu-observer-js
+    --
+    ...
+  }
+  
+  entity "WebRTC App" as client {
+    * observer-js
+    --
+    ...
+  }
+  
+}
+
+
+package "Processing" {
+    queue "<$kafka>" as kafka
+    rectangle "<$java>\nObserver" as observer
+    
+    component "<$hpa>\nk8s hpa" as hpa
+}
+
+package "Analysis and Reporting" {
+    BigQuery(bq, "BQ Dataset", "BigQuery")
+    Redshift(rs, "Redshift database", "Redshift")
+}
+
+
+
+client -[hidden]u-> sfu
+
+client -r-> observer : ClientSample
+sfu -r-> observer : SFUSample
+observer -r-> kafka : Report
+hpa -[hidden]r-> bq
+hpa -[hidden]r-> rs
+
+
+
+observer -[hidden]u-> hpa
+
+bq -[hidden]u-> rs
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+skinparam handwritten true
+skinparam roundcorner 20
+skinparam monochrome true
+skinparam arrowThickness 2
+skinparam BoxPadding 60
+
+
+package "Service" #transparent {
+    [Server]
+    [Security]
+    package "Observer" #transparent {
+        () " " as collector_1
+        () " " as collector_2
+    	[Sources]
+        [Evaluators]
+        [Repository]
+        [Hazelcast]
+        [Sinks]
+        [Buffers]
+    }
+
+
+}
+
+() "Samples" as clients
+() "Reports" as reports
+
+
+clients -r-> [Sources]
+[Sources] -r-> collector_1
+collector_1 -r-> [Evaluators]
+[Evaluators] <-d-> [Repository]
+[Repository] <-d-> [Hazelcast]
+[Evaluators] -r-> collector_2
+collector_2 -r-> [Sinks]
+[Sinks] -r-> reports
+
+[Hazelcast] -[hidden]-> [Buffers]
+[Buffers] -u-> collector_1
+[Buffers] -u-> collector_2
+
+[Server] -[hidden]d-> [Sources]
+[Security] -[hidden]d-> [Evaluators]
+[Server] -[hidden]r-> [Security]
+
+
+@enduml

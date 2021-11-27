@@ -4,6 +4,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.BufferUtils;
 import org.observertc.webrtc.observer.common.OutboundReport;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.evaluators.listeners.SfuEvents;
@@ -15,7 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class ObservedSfuSampleProcessingPipeline {
@@ -86,19 +86,8 @@ public class ObservedSfuSampleProcessingPipeline {
 //    }
 
     private<T> Observable<List<T>> debounce(Observable<T> source) {
-        var debounceConfig = this.observerConfig.internalCollectors.sfuProcessDebouncers;
-        var maxItems = debounceConfig.maxItems;
-        var maxTimeInS = debounceConfig.maxTimeInS;
-        if (maxItems < 1 && maxTimeInS < 1) {
-            return source.map(List::of);
-        }
-        if (maxItems < 1) {
-            return source.buffer(maxTimeInS, TimeUnit.SECONDS);
-        }
-        if (maxTimeInS < 1) {
-            return source.buffer(maxItems);
-        }
-        return source.buffer(maxTimeInS, TimeUnit.SECONDS, maxItems);
+        var debounceConfig = this.observerConfig.buffers.sfuProcessDebouncers;
+        return BufferUtils.wrapObservable(source, debounceConfig);
     }
 
     public Observer<List<ObservedSfuSample>> getObservedSfuSamplesObserver() {

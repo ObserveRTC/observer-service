@@ -57,25 +57,25 @@ public final class OutboundReportTypeVisitors {
         );
     }
 
-    public static OutboundReportTypeVisitor<Void, Boolean> makeTypeFilter(ObserverConfig.OutboundReportsConfig config) {
+    public static OutboundReportTypeVisitor<Void, Boolean> makeTypeFilter(ObserverConfig.ReportsConfig config) {
         return OutboundReportTypeVisitor.<Boolean>createSupplierVisitor(
-                () -> config.reportObserverEvents,
-                () -> config.reportCallEvents,
-                () -> config.reportCallMeta,
-                () -> config.reportClientExtensions,
-                () -> config.reportClientTransports,
-                () -> config.reportClientDataChannels,
-                () -> config.reportInboundAudioTracks,
-                () -> config.reportInboundVideoTracks,
-                () -> config.reportOutboundAudioTracks,
-                () -> config.reportOutboundVideoTracks,
-                () -> config.reportMediaTracks,
-                () -> config.reportSfuEvents,
-                () -> config.reportSfuMeta,
-                () -> config.reportSfuTransports,
-                () -> config.reportSfuInboundRtpStreams,
-                () -> config.reportSfuOutboundRtpStreams,
-                () -> config.reportSfuSctpStreams
+                () -> config.sendObserverEvents,
+                () -> config.sendCallEvents,
+                () -> config.sendCallMeta,
+                () -> config.sendClientExtensions,
+                () -> config.sendClientTransports,
+                () -> config.sendClientDataChannels,
+                () -> config.sendInboundAudioTracks,
+                () -> config.sendInboundVideoTracks,
+                () -> config.sendOutboundAudioTracks,
+                () -> config.sendOutboundVideoTracks,
+                () -> config.sendMediaTracks,
+                () -> config.sendSfuEvents,
+                () -> config.sendSfuMeta,
+                () -> config.sendSfuTransports,
+                () -> config.sendSfuInboundRtpStreams,
+                () -> config.sendSfuOutboundRtpStreams,
+                () -> config.sendSfuSctpStreams
         );
     }
 

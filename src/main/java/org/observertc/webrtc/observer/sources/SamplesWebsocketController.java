@@ -25,14 +25,14 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
-import org.observertc.webrtc.observer.samples.ClientSample;
-import org.observertc.webrtc.observer.samples.ObservedClientSampleBuilder;
+import org.observertc.webrtc.observer.samples.*;
 import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,9 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,10 +55,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * binary and with that type the search is fast for activestreams. thats why.
  */
 @Secured(SecurityRule.IS_ANONYMOUS)
-@ServerWebSocket("/clientsamples/{serviceId}/{mediaUnitId}")
-public class WebsocketClientSamples {
+@ServerWebSocket("/samples/{serviceId}/{mediaUnitId}")
+public class SamplesWebsocketController {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebsocketClientSamples.class);
+	private static final Logger logger = LoggerFactory.getLogger(SamplesWebsocketController.class);
 	private final ObjectReader objectReader;
 	private final FlawMonitor flawMonitor;
 	private Map<String, Instant> expirations;
@@ -67,7 +69,7 @@ public class WebsocketClientSamples {
 	ExposedMetrics exposedMetrics;
 
 	@Inject
-	WebsocketCustomCloseReasons customCloseReasons;
+    WebsocketCustomCloseReasons customCloseReasons;
 
 	@Inject
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
@@ -81,13 +83,16 @@ public class WebsocketClientSamples {
 	@Inject
 	HazelcastMaps hazelcastMaps;
 
-	@Inject
-	ClientSamplesCollector clientSamplesCollector;
+    @Inject
+    ClientSamplesCollector clientSamplesCollector;
+
+    @Inject
+    SfuSamplesCollector sfuSamplesCollector;
 
 //	@Inject
 //	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
 
-	public WebsocketClientSamples(
+	public SamplesWebsocketController(
 			ObjectMapper objectMapper,
 			MonitorProvider monitorProvider
 	) {
@@ -202,9 +207,9 @@ public class WebsocketClientSamples {
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
-		ClientSample sample;
+		Samples message;
 		try {
-			sample = this.objectReader.readValue(messageBytes, ClientSample.class);
+            message = this.objectReader.readValue(messageBytes, Samples.class);
 		} catch (IOException e) {
 			this.flawMonitor.makeLogEntry()
 					.withMessage("Exception while parsing {}", ClientSample.class.getSimpleName())
@@ -213,25 +218,100 @@ public class WebsocketClientSamples {
 			session.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
 			return;
 		}
+        if (Objects.isNull(message)) {
+            return;
+        }
+        if (Objects.nonNull(message.clientSamples)) {
+            if (this.config.maxClientSamplesBatch < message.clientSamples.length) {
+                logger.warn("Client sample batch is too large");
+                return;
+            }
+            if (!this.acceptClientSamples(session, serviceId, mediaUnitId, message.clientSamples)) {
+                return;
+            }
+        }
+        if (Objects.nonNull(message.sfuSamples)) {
+            if (this.config.maxSfuSamplesBatch < message.sfuSamples.length) {
+                logger.warn("Sfu sample batch is too large");
+                return;
+            }
+            if (!this.acceptSfuSamples(session, serviceId, mediaUnitId, message.sfuSamples)) {
+                return;
+            }
+        }
+    }
 
-		try {
-			var observedClientSample = ObservedClientSampleBuilder.from(sample)
-					.withServiceId(serviceId)
-					.withMediaUnitId(mediaUnitId)
-					.build();
-			this.clientSamplesCollector.add(observedClientSample);
-//			Observable.just(observedClientSample)
-//					.subscribe(this.observedClientSampleProcessingPipeline);
-		} catch (InvalidObjectException invalidEx) {
-			final String message = invalidEx.getMessage();
-			session.close(
-					this.customCloseReasons.getInvalidInput(message)
-			);
-		} catch (Throwable ex) {
-			this.flawMonitor.makeLogEntry()
-					.withException(ex)
-					.withMessage("Error occured processing sample {} ", sample)
-					.complete();
-		}
-	}
+    private boolean acceptSfuSamples(WebSocketSession session, String serviceId, String mediaUnitId, SfuSample[] samples) {
+        var observedSfuSamples = new LinkedList<ObservedSfuSample>();
+        Consumer<SfuSample> processor = sample -> {
+            var observedSfuSample = ObservedSfuSampleBuilder.from(sample)
+                    .withServiceId(serviceId)
+                    .withMediaUnitId(mediaUnitId)
+                    .build();
+            observedSfuSamples.add(observedSfuSample);
+        };
+        if (!this.accept(session, samples, processor) || observedSfuSamples.size() < 1) {
+            return false;
+        }
+        try {
+            this.sfuSamplesCollector.addAll(observedSfuSamples);
+        } catch (Exception ex) {
+            this.flawMonitor.makeLogEntry()
+                    .withException(ex)
+                    .withMessage("Error occurred while collecting samples")
+                    .complete();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean acceptClientSamples(WebSocketSession session, String serviceId, String mediaUnitId, ClientSample[] samples) {
+        var observedClientSamples = new LinkedList<ObservedClientSample>();
+        Consumer<ClientSample> processor = sample -> {
+            var observedClientSample = ObservedClientSampleBuilder.from(sample)
+                    .withServiceId(serviceId)
+                    .withMediaUnitId(mediaUnitId)
+                    .build();
+            observedClientSamples.add(observedClientSample);
+        };
+        if (!this.accept(session, samples, processor) || observedClientSamples.size() < 1) {
+            return false;
+        }
+        try {
+            this.clientSamplesCollector.addAll(observedClientSamples);
+        } catch (Exception ex) {
+            this.flawMonitor.makeLogEntry()
+                    .withException(ex)
+                    .withMessage("Error occurred while collecting samples")
+                    .complete();
+            return false;
+        }
+        return true;
+    }
+
+
+
+	private<T> boolean accept(WebSocketSession session, T[] samples, Consumer<T> processor) {
+        try {
+            for (var sample : samples) {
+                processor.accept(sample);
+            }
+        } catch (InvalidObjectException invalidEx) {
+            final String message = invalidEx.getMessage();
+            session.close(
+                    this.customCloseReasons.getInvalidInput(message)
+            );
+            return false;
+        } catch (Throwable ex) {
+            this.flawMonitor.makeLogEntry()
+                    .withException(ex)
+                    .withMessage("Error occured processing samples")
+                    .complete();
+            session.close(
+                    this.customCloseReasons.getInternalServerError(ex.getMessage())
+            );
+            return false;
+        }
+        return true;
+    }
 }

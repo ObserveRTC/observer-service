@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.BufferUtils;
 import org.observertc.webrtc.observer.common.ClientMessageEvent;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
@@ -74,7 +75,7 @@ public class RepositoryEvents {
 
     @PostConstruct
     void setup() {
-        ObserverConfig.RepositoryConfig repositoryConfig = this.observerConfig.repositories;
+        ObserverConfig.RepositoryConfig repositoryConfig = this.observerConfig.repository;
         this.add(
                 "Call DTO Related Events",
                 this.hazelcastMaps.getCalls(),
@@ -385,10 +386,7 @@ public class RepositoryEvents {
     }
 
     private<T> Observable<List<T>> getObservableList(Observable<T> source) {
-        int eventsCollectingTimeInS = this.observerConfig.repositories.eventsCollectingTimeInS;
-        if (eventsCollectingTimeInS < 1) {
-            return source.map(List::of);
-        }
-        return source.buffer(eventsCollectingTimeInS, TimeUnit.SECONDS);
+        var debounceConfig = this.observerConfig.buffers.repositoryEventsDebouncers;
+        return BufferUtils.wrapObservable(source, debounceConfig);
     }
 }

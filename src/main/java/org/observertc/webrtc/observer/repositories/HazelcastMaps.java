@@ -92,7 +92,7 @@ public class HazelcastMaps {
     private IMap<UUID, GeneralEntryDTO> clientMessages;
 
     public HazelcastMaps(ObserverConfig observerConfig) {
-        this.config = observerConfig.repositories;
+        this.config = observerConfig.repository;
     }
 
     @PostConstruct
