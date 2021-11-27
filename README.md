@@ -1,4 +1,4 @@
-WebRTC-Observer Service
+WebRTC-Observer
 ==
 ![Build](https://github.com/ObserveRTC/observer/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/ObserveRTC/observer/actions/workflows/test.yml/badge.svg)
