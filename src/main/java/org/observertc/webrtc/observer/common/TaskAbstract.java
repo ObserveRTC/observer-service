@@ -16,18 +16,15 @@
 
 package org.observertc.webrtc.observer.common;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.MessageFormatter;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
@@ -38,27 +35,32 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private Logger onLogger = DEFAULT_LOGGER;
 	private Logger defaultLogger = DEFAULT_LOGGER;
 	private Level onErrorLogLevel = Level.ERROR;
-	private MeterRegistry meterRegistry = null;
 	private boolean rethrowException = false;
 	private boolean succeeded = false;
 	private int maxRetry = 1;
 	private T result = null;
 	private Supplier<AutoCloseable> lockProvider = () -> { return () -> {};};
+	private Consumer<Stats> statsConsumer = input -> {};
+
+	public static class Stats {
+		public Instant started = Instant.now();
+		public Instant ended;
+		public int run = 0;
+		public boolean succeeded;
+		public String taskName;
+	}
 
 	public TaskAbstract<T> execute() {
 		this.validate();
+		Stats stats = new Stats();
+		stats.taskName = this.getClass().getSimpleName();
 		Throwable thrown = null;
+		int run = 0;
 		try {
-			for (int run = 0; run < this.maxRetry; ++run) {
+			for (run = 0; run < this.maxRetry; ++run) {
 				try (var lock = this.lockProvider.get()){
 					thrown = null;
-					Instant started = Instant.now();
 					T result = this.perform();
-					if (Objects.nonNull(this.meterRegistry)) {
-						this.meterRegistry
-								.timer("observertc_tasks_execution_time_in_ms", List.of(Tag.of("task", this.getClass().getSimpleName())))
-								.record(Duration.between(started, Instant.now()));
-					}
 					this.succeeded = true;
 					this.result = result;
 					break;
@@ -93,6 +95,16 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 			}
 		} finally {
 			this.executed = true;
+			stats.ended = Instant.now();
+			stats.run = run;
+			stats.succeeded = this.succeeded;
+			try {
+				if (Objects.nonNull(this.statsConsumer)) {
+					this.statsConsumer.accept(stats);
+				}
+			} catch (Exception ex) {
+				this.onLogger.error("Error while forwarding task stats");
+			}
 		}
 		return this;
 	}
@@ -181,8 +193,8 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 		return this;
 	}
 
-	public TaskAbstract<T> withMeterRegistry(MeterRegistry meterRegistry) {
-		this.meterRegistry = meterRegistry;
+	public TaskAbstract<T> withStatsConsumer(Consumer<Stats> statsConsumer) {
+		this.statsConsumer = statsConsumer;
 		return this;
 	}
 

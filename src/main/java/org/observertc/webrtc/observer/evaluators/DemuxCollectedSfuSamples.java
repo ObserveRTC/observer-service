@@ -38,8 +38,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
     public Observable<SFUTransportReport> getSfuTransportReport() {
         return this.sfuTransportReportSubject;
     }
-    public Observable<SfuInboundRtpPadReport> getSfuRtpSourceReport() {return this.sfuRtpSourceReportSubject; }
-    public Observable<SfuOutboundRtpPadReport> getSfuRtpSinkReport() {return this.sfuRtpSinkReportSubject; }
+    public Observable<SfuInboundRtpPadReport> getSfuInboundRtpPadReport() {return this.sfuRtpSourceReportSubject; }
+    public Observable<SfuOutboundRtpPadReport> getSfuOutboundRtpPadReport() {return this.sfuRtpSinkReportSubject; }
 
     public Observable<SfuSctpStreamReport> getSctpStreamReport() {return this.sfuSctpStreamSubject; }
 

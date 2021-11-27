@@ -1,12 +1,12 @@
 package org.observertc.webrtc.observer;
 
-import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.OutboundReports;
-import org.observertc.webrtc.observer.common.PassiveCollector;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.evaluators.ObservedClientSampleProcessingPipeline;
 import org.observertc.webrtc.observer.evaluators.ObservedSfuSampleProcessingPipeline;
-import org.observertc.webrtc.observer.sinks.OutboundReportsObserver;
+import org.observertc.webrtc.observer.sinks.OutboundReportsCollector;
+import org.observertc.webrtc.observer.sinks.OutboundReportsDispatcher;
+import org.observertc.webrtc.observer.sources.ClientSamplesCollector;
+import org.observertc.webrtc.observer.sources.SfuSamplesCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,10 +21,15 @@ public class ObserverService {
 
     private static final Logger logger = LoggerFactory.getLogger(ObserverService.class);
     private volatile boolean run = false;
-    private PassiveCollector<OutboundReport> reportCollector;
 
     @Inject
     ObserverConfig observerConfig;
+
+    @Inject
+    ClientSamplesCollector clientSamplesCollector;
+
+    @Inject
+    SfuSamplesCollector sfuSamplesCollector;
 
     @Inject
     ObservedSfuSampleProcessingPipeline sfuSamplesProcessor;
@@ -33,36 +38,31 @@ public class ObserverService {
     ObservedClientSampleProcessingPipeline clientSamplesProcessor;
 
     @Inject
-    OutboundReportsObserver outboundReportsObserver;
+    OutboundReportsCollector outboundReportsCollector;
+
+    @Inject
+    OutboundReportsDispatcher outboundReportsDispatcher;
 
     @PostConstruct
     void setup() {
-        var reportsBufferMaxItems = this.observerConfig.evaluators.reportsBufferMaxItems;
-        var reportsBufferMaxRetainInS = this.observerConfig.evaluators.reportsBufferMaxRetainInS;
-        this.reportCollector = PassiveCollector.<OutboundReport>builder()
-                .withMaxTime(reportsBufferMaxRetainInS * 1000)
-                .withMaxItems(reportsBufferMaxItems).build();
-
-        this.sfuSamplesProcessor
-                .getObservableOutboundReport()
-                .subscribe(this.reportCollector::add);
-//                .map(Utils.createPrintingMapper("sfuSamplesProcessor"))
-//                .buffer(3, TimeUnit.SECONDS)
-//                .map(OutboundReports::fromList)
-//                .subscribe(this.outboundReportsObserver);
-
+        this.clientSamplesCollector
+                .observableClientSamples()
+                .subscribe(this.clientSamplesProcessor.getObservedClientSampleObserver());
 
         this.clientSamplesProcessor
-                .getObservableOutboundReport()
-                .subscribe(this.reportCollector::add);
-//                .map(Utils.createPrintingMapper("clientSamplesProcessor"))
-//                .buffer(3, TimeUnit.SECONDS)
-//                .map(OutboundReports::fromList)
-//                .subscribe(this.outboundReportsObserver);
+                .getObservableOutboundReports()
+                .subscribe(this.outboundReportsCollector::addAll);
 
-        this.reportCollector.observableItems()
-                .map(OutboundReports::fromList)
-                .subscribe(this.outboundReportsObserver);
+        this.sfuSamplesCollector
+                .observableSfuSamples()
+                .subscribe(this.sfuSamplesProcessor.getObservedSfuSamplesObserver());
+
+        this.sfuSamplesProcessor
+                .getObservableOutboundReports()
+                .subscribe(this.outboundReportsCollector::addAll);
+
+        this.outboundReportsCollector.observableOutboundReports()
+                .subscribe(this.outboundReportsDispatcher);
     }
 
     @PreDestroy
@@ -86,8 +86,8 @@ public class ObserverService {
         }
         this.run = false;
         try {
-            if (Objects.nonNull(this.reportCollector)) {
-                this.reportCollector.flush();
+            if (Objects.nonNull(this.outboundReportsCollector)) {
+//                this.outboundReportsCollector.on();
             }
         } catch (Exception e) {
             logger.error("Error occurred while flushing collector");

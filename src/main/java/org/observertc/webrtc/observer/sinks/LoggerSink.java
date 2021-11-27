@@ -3,12 +3,16 @@ package org.observertc.webrtc.observer.sinks;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.webrtc.observer.codecs.Decoder;
-import org.observertc.webrtc.observer.common.*;
+import org.observertc.webrtc.observer.common.JsonUtils;
+import org.observertc.webrtc.observer.common.OutboundReport;
+import org.observertc.webrtc.observer.common.OutboundReportTypeVisitor;
+import org.observertc.webrtc.observer.common.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -28,8 +32,8 @@ public class LoggerSink extends Sink {
     }
 
     @Override
-    public void accept(@NonNull OutboundReports outboundReports) {
-        logger.info("Number of reports are: {}", outboundReports.getReportsNum());
+    public void accept(@NonNull List<OutboundReport> outboundReports) {
+        logger.info("Number of reports are: {}", outboundReports.size());
         Map<ReportType, Integer> receivedTypes = new HashMap<>();
         for (OutboundReport outboundReport : outboundReports) {
             ReportType reportType = outboundReport.getType();

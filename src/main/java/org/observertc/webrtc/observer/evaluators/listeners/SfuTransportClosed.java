@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.SfuEventType;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.dto.SfuTransportDTO;
+import org.observertc.webrtc.observer.evaluators.listeners.attachments.SfuTransportAttachment;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.webrtc.observer.repositories.tasks.RemoveSfuTransportsTask;
@@ -84,6 +85,9 @@ class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract<
             String sfuId = UUIDAdapter.toStringOrNull(sfuTransportDTO.sfuId);
             String callId = UUIDAdapter.toStringOrNull(sfuTransportDTO.callId);
             String transportId = UUIDAdapter.toStringOrNull(sfuTransportDTO.transportId);
+            var attachment = SfuTransportAttachment.builder()
+                    .withInternal(sfuTransportDTO.internal)
+                    .build().toBase64();
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_TRANSPORT_CLOSED.name())
                     .setSfuId(sfuId)
@@ -92,7 +96,9 @@ class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract<
                     .setMessage("Sfu Transport is closed")
                     .setServiceId(sfuTransportDTO.serviceId)
                     .setMediaUnitId(sfuTransportDTO.mediaUnitId)
-                    .setTimestamp(timestamp);
+                    .setTimestamp(timestamp)
+                    .setAttachments(attachment)
+                    ;
             logger.info("SFU Transport (id: {}, internal: {}) is CLOSED (mediaUnitId: {}, serviceId {})",
                     transportId, sfuTransportDTO.internal, sfuTransportDTO.mediaUnitId, sfuTransportDTO.serviceId
             );

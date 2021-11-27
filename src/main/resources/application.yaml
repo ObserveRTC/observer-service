@@ -48,35 +48,52 @@ observer:
 
 
   sources:
-    pcSamples:
-      enabled: true
-      defaultServiceName: "defaultServiceName"
-      security:
-        dropUnknownServices: false
-    clientSamples:
-      enabled: true
-    sfuSamples:
-      enabled: true
+#    allowedServiceIds: []
+    restapi:
+      acceptClientSamples: true
+      acceptSfuSamples: true
+      maxClientSamplesBatch: 100
+      maxSfuSamplesBatch: 100
 
-  repositories:
+    websockets:
+      enabled: true
+      maxClientSamplesBatch: 100
+      maxSfuSamplesBatch: 100
+
+  repository:
     mediaTracksMaxIdleTime: 300
     peerConnectionsMaxIdleTime: 300
     clientMaxIdleTime: 300
     sfuMaxIdleTime: 60
     sfuTransportMaxIdleTime: 600
     sfuRtpPadMaxIdleTime: 600
-    eventsCollectingTimeInS: 3
 
-  evaluators:
-    impairablePCsCallName: "impairable-peer-connections-default-call-name"
-    clientSamplesBufferMaxTimeInS: 30
-    clientSamplesBufferMaxItems: 1000
-    sfuSamplesBufferMaxTimeInS: 5
-    sfuSamplesBufferMaxItems: 1000
-    sfuReportsPreCollectingTimeInS: 3
-    sfuReportsPreCollectingMaxItems: 1000
-    clientReportsPreCollectingTimeInS: 3
-    clientReportsPreCollectingMaxItems: 1000
+  buffers:
+    repositoryEventsDebouncers:
+      maxItems: 100
+      maxTimeInS: 3
+
+    clientSamples:
+      maxItems: 100
+      maxTimeInS: 10
+
+    sfuSamples:
+      maxItems: 100
+      maxTimeInS: 10
+
+    clientProcessDebouncers:
+      maxItems: 10000
+      maxTimeInS: 3
+
+    sfuProcessDebouncers:
+      maxItems: 10000
+      maxTimeInS: 3
+
+    outboundReports:
+      maxItems: 10000
+      maxTimeInS: 10
+
+  evaluators: {}
 
 #  sinks:
 #    MyLogger:
@@ -98,9 +115,9 @@ observer:
 #    MyKafka:
 #      type: KafkaSink
 #      config:
-#        muxReports: true
-#        muxTopic: "observertc-reports"
-#        demuxTopicPrefix: "ortc_"
+#        muxReports: false
+##        muxTopic: "observertc-reports"
+#        demuxTopicPrefix: "observertc-"
 #        properties:
 #          bootstrap.servers: localhost:9092
 
@@ -110,33 +127,38 @@ observer:
 #        uri: "mongodb://root:password@localhost:27017"
 #        database: "reports"
 
-  outboundReports:
-    keyAssignmentStrategy:
-    reportFormat: JSON
-    reportObserverEvents: true
-    reportCallEvents: true
-    reportCallMeta: true
-    reportClientExtensions: true
-    reportInboundAudioTracks: true
-    reportInboundVideoTracks: true
-    reportOutboundAudioTracks: true
-    reportOutboundVideoTracks: true
-    reportClientTransports: true
-    reportClientDataChannels: true
-    reportMediaTracks: true
-    reportSfuEvents: true
-    reportSfuMeta: true
-    reportSfuTransports: true
+  reports:
+    format: JSON
+    sendObserverEvents: true
+    sendCallEvents: true
+    sendCallMeta: true
+    sendClientExtensions: true
+    sendInboundAudioTracks: true
+    sendInboundVideoTracks: true
+    sendOutboundAudioTracks: true
+    sendOutboundVideoTracks: true
+    sendClientTransports: true
+    sendClientDataChannels: true
+    sendMediaTracks: true
+    sendSfuEvents: true
+    sendSfuMeta: true
+    sendSfuTransports: true
+    sendSfuSctpStreams: true
+    sendSfuOutboundRtpStreams: true
+    sendSfuInboundRtpStreams: true
 
-    reportSfuSctpStreams: true
-
-    reportSfuOutboundRtpStreams: true
-    reportSfuInboundRtpStreams: true
-
-    reportSfuRtpPadOnlyWithCallId: true
+    reportSfuRtpPadOnlyWithCallId: 10
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
+    # for more information which level what represent take a look: java.util.logging.Level
+    # Possible values are: ALL, FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE
+#    logs:
+#      - "CONFIG"
+#      - "WARNING"
+#      - "SEVERE"
+    config:
+      cluster-name: my-hz-cluster
     memberNamesPool:
       - "Lisa"
       - "Bart"

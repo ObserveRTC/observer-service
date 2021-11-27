@@ -5,9 +5,9 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.sinks.Sink;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,7 +52,7 @@ public class SocketIOSink extends Sink {
     }
 
     @Override
-    public void accept(@NonNull OutboundReports outboundReports) {
+    public void accept(@NonNull List<OutboundReport> outboundReports) {
         if (Objects.isNull(this.socket) || !this.socket.connected()) {
             this.connect();
         }

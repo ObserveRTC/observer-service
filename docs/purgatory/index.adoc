@@ -65,57 +65,7 @@ browser, operation system, etc., all of them should be monitored in order to eva
 
 [plantuml, data-hierarchy, png]
 ----
-@startuml
-skinparam handwritten true
-skinparam monochrome true
-skinparam backgroundColor transparent
 
-' hide the spot
-hide circle
-
-entity "MediaTrack" as tracks {
-*trackId: UUID
-*peerConnectionId: UUID
---
-...metrics...
-}
-
-entity "Peer Connection" as pcs {
-*peerConnectionId: UUID
-*clientId: UUID
---
-...metrics...
-}
-
-entity "Client" as client {
-*clientId*: UUID
-*callId: UUID
---
-...metrics...
-}
-
-
-entity "Call" as call {
-*callId*: UUID
-*roomId*: String
-*serviceId: String
---
-...metrics...
-}
-
-
-entity "Service" as service {
-*serviceId: String
---
-}
-
-call ||..o{ service
-client ||..o{ call
-pcs ||..o{ client
-tracks ||..o{ pcs
-
-
-@enduml
 ----
 
 The start point in Collection part is to monitor the WebRTC peer connections.

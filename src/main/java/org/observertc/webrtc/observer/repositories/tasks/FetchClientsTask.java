@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.functions.Function;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.entities.ClientEntity;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -22,10 +23,14 @@ public class FetchClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
     HazelcastMaps hazelcastMaps;
 
     @Inject
+    ExposedMetrics exposedMetrics;
+
+    @Inject
     FetchPeerConnectionsTask fetchPeerConnectionsTask;
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         Function<Set<UUID>, Map<UUID, ClientDTO>> fetchClientDTOs = clientIds -> {
             if (Objects.nonNull(clientIds)) {
                 this.clientIds.addAll(clientIds);

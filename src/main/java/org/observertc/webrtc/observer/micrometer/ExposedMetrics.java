@@ -1,9 +1,13 @@
 package org.observertc.webrtc.observer.micrometer;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.observertc.webrtc.observer.common.TaskAbstract;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Objects;
 
 @Singleton
 public class ExposedMetrics {
@@ -18,8 +22,19 @@ public class ExposedMetrics {
     private static final String OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "closed_websockets");
     private static final String OBSERVERTC_SFU_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "received");
 
+    private static final String OBSERVERTC_MODULE_FLAWS = String.join("_", OBSERVERTC_PREFIX, "module_flaws");
+
+    private static final String OBSERVERTC_TASK_EXECUTION_TIME = String.join("_", OBSERVERTC_PREFIX, "task_execution_time");
+    private static final String OBSERVERTC_TASK_EXECUTIONS = String.join("_", OBSERVERTC_PREFIX, "task_executions");
+
+    private static final String OBSERVERTC_GENERATED_REPORTS = String.join("_", OBSERVERTC_PREFIX, "generated_reports");
+
     private static final String SERVICE_TAG_NAME = "service";
     private static final String MEDIA_UNIT_TAG_NAME = "mediaunit";
+    private static final String MODULE_TAG_NAME = "module";
+    private static final String TASK_TAG_NAME = "task";
+    private static final String TASK_SUCCEEDED_TAG_NAME = "succeeded";
+
 
 
     @Inject
@@ -68,5 +83,43 @@ public class ExposedMetrics {
     }
     public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId, int value) {
         this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
+    }
+
+    public void incrementGeneratedReports() {
+        this.incrementGeneratedReports(1);
+    }
+
+    public void incrementGeneratedReports(int value) {
+        this.meterRegistry.counter(OBSERVERTC_GENERATED_REPORTS).increment(value);
+    }
+
+    public void incrementModuleFlaws(String moduleId) {
+        this.incrementModuleFlaws(moduleId, 1);
+    }
+
+    public void incrementModuleFlaws(String moduleId, int value) {
+        this.meterRegistry.counter(OBSERVERTC_MODULE_FLAWS, MODULE_TAG_NAME, moduleId).increment(value);
+    }
+
+    public void processTaskStats(TaskAbstract.Stats stats) {
+        if (Objects.isNull(stats)) {
+            return;
+        }
+        if (Objects.nonNull(stats.started) && Objects.nonNull(stats.ended)) {
+            this.addTaskExecutionTime(stats.taskName, stats.started, stats.ended);
+        }
+        this.incrementTaskExecutions(stats.taskName, stats.succeeded);
+    }
+
+    public void addTaskExecutionTime(String taskName, Instant started, Instant ended) {
+        this.meterRegistry
+                .timer(OBSERVERTC_TASK_EXECUTION_TIME, TASK_TAG_NAME, taskName)
+                .record(Duration.between(started, ended));
+    }
+
+    public void incrementTaskExecutions(String taskName, boolean succeeded) {
+        this.meterRegistry
+                .counter(OBSERVERTC_TASK_EXECUTIONS, TASK_TAG_NAME, taskName, TASK_SUCCEEDED_TAG_NAME, succeeded ? "true" : "false")
+                .increment();
     }
 }

@@ -6,6 +6,7 @@ import org.observertc.webrtc.observer.dto.CallDTO;
 import org.observertc.webrtc.observer.dto.ClientDTO;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,9 @@ public class FindParentalDTOsTask extends ChainedTask<FindParentalDTOsTask.Repor
 
     @Inject
     HazelcastMaps hazelcastMaps;
+
+    @Inject
+    ExposedMetrics exposedMetrics;
 
     private Set<UUID> trackIds = new HashSet<>();
     private Set<UUID> peerConnectionIds = new HashSet<>();
@@ -34,7 +38,7 @@ public class FindParentalDTOsTask extends ChainedTask<FindParentalDTOsTask.Repor
 
     @PostConstruct
     void setup() {
-
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<>(this)
                 .addActionStage("Collect Media track DTOs", () -> {
                     if (this.trackIds.size() < 1) {

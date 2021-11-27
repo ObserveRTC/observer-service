@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.CallDTO;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
@@ -42,9 +43,12 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
     @Inject
     WeakLockProvider weakLockProvider;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<>(this)
             .withLockProvider(() -> weakLockProvider.autoLock(LOCK_NAME))
             .<UUID> addConsumerEntry("Merge All Inputs",

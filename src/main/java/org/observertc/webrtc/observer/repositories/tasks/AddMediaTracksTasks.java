@@ -1,22 +1,19 @@
 package org.observertc.webrtc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.PeerConnectionDTO;
 import org.observertc.webrtc.observer.dto.SfuRtpPadDTO;
-import org.observertc.webrtc.observer.dto.StreamDirection;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.repositories.StoredRequests;
-import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -31,11 +28,15 @@ public class AddMediaTracksTasks extends ChainedTask<Void> {
     @Inject
     StoredRequests storedRequests;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     private Map<UUID, MediaTrackDTO> mediaTrackDTOs = new HashMap<>();
 
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<Void>(this)
                 .<Map<UUID, MediaTrackDTO>>addConsumerEntry("Merge all inputs",
                         () -> {},
@@ -119,7 +120,7 @@ public class AddMediaTracksTasks extends ChainedTask<Void> {
                         var builder = SfuRtpPadDTO.builderFrom(loadedSfuRtpPad).withCallId(callId);
                         var completedSfuRtpPad = builder.build();
                         completedSfuRtpPadDTOs.put(completedSfuRtpPad.sfuPadId, completedSfuRtpPad);
-                        logger.info("SfuRtpPad {} is assigned with CallId {}", completedSfuRtpPad.sfuPadId, callId);
+                        logger.info("SfuRtpPad {} for streamId {} is assigned with CallId {}", completedSfuRtpPad.sfuPadId, completedSfuRtpPad.rtpStreamId, callId);
                     });
                     if (0 < completedSfuRtpPadDTOs.size()) {
                         this.hazelcastMaps.getSFURtpPads().putAll(completedSfuRtpPadDTOs);

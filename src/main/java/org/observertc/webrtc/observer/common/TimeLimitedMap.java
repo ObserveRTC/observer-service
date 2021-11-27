@@ -8,12 +8,18 @@ import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * A special LinkedHasMap created for time limited storage of items
+ * @param <K>
+ * @param <V>
+ */
 public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
     private static final Logger logger = LoggerFactory.getLogger(TimeLimitedMap.class);
 
     private final Map<K, Instant> accessedKeys;
     private Duration threshold;
     private Consumer<V> removedCb = null;
+    private Consumer<V> timeoutRemovedCb = null;
 
     public TimeLimitedMap(Duration threshold) {
         this.accessedKeys = new LinkedHashMap<>(16, .75f, true);
@@ -55,8 +61,13 @@ public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
         return value;
     }
 
-    public TimeLimitedMap<K, V> withRemovedCb(Consumer<V> removedCb) {
+    public TimeLimitedMap<K, V> onRemoved(Consumer<V> removedCb) {
         this.removedCb = removedCb;
+        return this;
+    }
+
+    public TimeLimitedMap<K, V> onTimeoutRemoved(Consumer<V> removedCb) {
+        this.timeoutRemovedCb = removedCb;
         return this;
     }
 
@@ -67,12 +78,15 @@ public class TimeLimitedMap<K, V>  extends HashMap<K, V>{
 
             if (Duration.between(entry.getValue(), now).compareTo(this.threshold) < 0) {
                 // the first item, accessed less than threshold, then we stop the check because
-                // we know all consecutive items are accessed less than this.
+                // we know all consecutive items are accessed less then this.
                 return;
             }
             // no hard feelings
-            this.remove(entry.getKey());
+            var removedItem = this.remove(entry.getKey());
             it.remove();
+            if (Objects.nonNull(this.timeoutRemovedCb)) {
+                this.timeoutRemovedCb.accept(removedItem);
+            }
         }
     }
 }

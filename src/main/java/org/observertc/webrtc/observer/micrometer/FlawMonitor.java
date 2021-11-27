@@ -16,7 +16,6 @@
 
 package org.observertc.webrtc.observer.micrometer;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -25,30 +24,18 @@ import java.util.Objects;
 
 public class FlawMonitor {
 	private static final Logger logger = LoggerFactory.getLogger(FlawMonitor.class);
-	private final MeterRegistry meterRegistry;
-	private String name;
-	private String tag;
-	private String value;
+	private final ExposedMetrics exposedMetrics;
+	private String moduleId;
 	private Logger defaultLogger;
 	private Level defaultLogLevel;
 
-	public FlawMonitor(MeterRegistry meterRegistry) {
-		this.meterRegistry = meterRegistry;
+	public FlawMonitor(ExposedMetrics exposedMetrics) {
+		this.exposedMetrics = exposedMetrics;
 
 	}
 
-	FlawMonitor withTag(String tag) {
-		return this.withTag(tag, null);
-	}
-
-	FlawMonitor withTag(String tag, String value) {
-		this.tag = tag;
-		this.value = value;
-		return this;
-	}
-
-	FlawMonitor withName(String name) {
-		this.name = name;
+	FlawMonitor withModuleId(String value) {
+		this.moduleId = value;
 		return this;
 	}
 
@@ -63,23 +50,19 @@ public class FlawMonitor {
 	}
 
 	public LogEntry makeLogEntry() {
-		String value = this.value;
-		if (Objects.isNull(value)) {
-			value = "defaultTag";
-		}
-		return this.makeLogEntryFor(value);
-	}
-
-	public LogEntry makeLogEntryFor(String value) {
 		LogEntry result = new LogEntry();
-		if (Objects.nonNull(this.tag)) {
-			result.withTag(this.tag, value);
-		}
-		if (Objects.isNull(this.name)) {
+		if (Objects.isNull(this.moduleId)) {
 			logger.warn("No name provided for a flawmonitor, cannot provide metrics");
 			return result;
 		}
-		Runnable report = () -> this.meterRegistry.counter(this.name, this.tag, value).increment();
+		Runnable report = () -> {
+			try {
+				this.exposedMetrics.incrementModuleFlaws(this.moduleId);
+			} catch (Exception ex) {
+				logger.error("Error while reporting error...", ex);
+			}
+
+		};
 		result.withPostAction(report);
 		if (Objects.nonNull(this.defaultLogger)) {
 			result.withLogger(this.defaultLogger);

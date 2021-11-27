@@ -5,7 +5,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.webrtc.observer.common.BufferUtils;
 import org.observertc.webrtc.observer.common.ClientMessageEvent;
+import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.*;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +30,9 @@ public class RepositoryEvents {
 
     @Inject
     HazelcastMaps hazelcastMaps;
+
+    @Inject
+    StoredRequests storedRequests;
 
     @Inject
     ObserverConfig observerConfig;
@@ -63,11 +69,13 @@ public class RepositoryEvents {
     private Subject<RepositoryUpdatedEvent<ClientMessageEvent>> updatedClientMessages = PublishSubject.create();
     private Subject<ClientMessageEvent> removedClientMessages = PublishSubject.create();
 
+    private Subject<UUID> expiredIncompleteSfuRtpPadIds = PublishSubject.create();
+
     private List<Runnable> destructors = new LinkedList<>();
 
     @PostConstruct
     void setup() {
-        ObserverConfig.RepositoryConfig repositoryConfig = this.observerConfig.repositories;
+        ObserverConfig.RepositoryConfig repositoryConfig = this.observerConfig.repository;
         this.add(
                 "Call DTO Related Events",
                 this.hazelcastMaps.getCalls(),
@@ -143,7 +151,7 @@ public class RepositoryEvents {
                         SfuDTO sfuDTO = event.getValue();
                         addedSfu.onNext(sfuDTO);
                     }).onEntryRemoved(event -> {
-                        SfuDTO sfuDTO = event.getValue();
+                        SfuDTO sfuDTO = event.getOldValue();
                         removedSfu.onNext(sfuDTO);
                     }).onEntryExpired(event -> {
                         SfuDTO sfuDTO = event.getOldValue();
@@ -161,7 +169,7 @@ public class RepositoryEvents {
                         SfuTransportDTO sfuTransportDTO = event.getValue();
                         addedSfuTransport.onNext(sfuTransportDTO);
                     }).onEntryRemoved(event -> {
-                        SfuTransportDTO sfuTransportDTO = event.getValue();
+                        SfuTransportDTO sfuTransportDTO = event.getOldValue();
                         removedSfuTransport.onNext(sfuTransportDTO);
                     }).onEntryUpdated(event -> {
                         SfuTransportDTO oldSfuTransportDTO = event.getOldValue();
@@ -183,7 +191,7 @@ public class RepositoryEvents {
                         SfuRtpPadDTO sfuRtpPadDTO = event.getValue();
                         addedSfuRtpPad.onNext(sfuRtpPadDTO);
                     }).onEntryRemoved(event -> {
-                        SfuRtpPadDTO sfuRtpPadDTO = event.getValue();
+                        SfuRtpPadDTO sfuRtpPadDTO = event.getOldValue();
                         removedSfuRtpPad.onNext(sfuRtpPadDTO);
                     }).onEntryUpdated(event -> {
                         SfuRtpPadDTO oldSfuRtpPadDTO = event.getOldValue();
@@ -212,6 +220,22 @@ public class RepositoryEvents {
                         updatedClientMessages.onNext(forwardedEvent);
                     });
                 });
+
+        this.add(
+                "Requests Storage Events",
+                this.hazelcastMaps.getRequests(),
+                builder -> {
+                    builder.onEntryExpired(event -> {
+                        var key = event.getKey();
+                        if (this.storedRequests.isCompleteRtpStreamSfuRtpPadRequest(key)) {
+                            var rtpStreamId = UUIDAdapter.toUUIDOrDefault(event.getOldValue(), null);
+                            Collection<UUID> sfuRtpPadIds = this.hazelcastMaps.getRtpStreamIdToSfuPadIds().get(rtpStreamId);
+                            sfuRtpPadIds.stream().forEach(this.expiredIncompleteSfuRtpPadIds::onNext);
+                            ;
+                        }
+                    });
+                }
+        );
 
     }
 
@@ -340,6 +364,11 @@ public class RepositoryEvents {
         return result;
     }
 
+    public Observable<List<UUID>> expiredIncompleteSfuRtpPadIds() {
+        var result= this.getObservableList(this.expiredIncompleteSfuRtpPadIds);
+        return result;
+    }
+
     private<K, V> RepositoryEvents add(String context, IMap<K, V> map, Consumer<EntryListenerBuilder<K, V>> setup) {
         var builder = EntryListenerBuilder.<K, V>create(context);
         try {
@@ -357,10 +386,7 @@ public class RepositoryEvents {
     }
 
     private<T> Observable<List<T>> getObservableList(Observable<T> source) {
-        int eventsCollectingTimeInS = this.observerConfig.repositories.eventsCollectingTimeInS;
-        if (eventsCollectingTimeInS < 1) {
-            return source.map(List::of);
-        }
-        return source.buffer(eventsCollectingTimeInS, TimeUnit.SECONDS);
+        var debounceConfig = this.observerConfig.buffers.repositoryEventsDebouncers;
+        return BufferUtils.wrapObservable(source, debounceConfig);
     }
 }

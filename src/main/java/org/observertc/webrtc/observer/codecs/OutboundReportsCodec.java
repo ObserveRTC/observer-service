@@ -11,12 +11,12 @@ public class OutboundReportsCodec {
     private final Encoder encoder;
     private final Decoder decoder;
 
-    OutboundReportsCodec( ObserverConfig.OutboundReportsConfig config,
+    OutboundReportsCodec( ObserverConfig.ReportsConfig config,
                                OutboundReportsAvroEncoder avroEncoder,
                                OutboundReportsAvroDecoder avroDecoder,
                                OutboundReportsJsonEncoder jsonEncoder,
                                OutboundReportsJsonDecoder jsonDecoder) {
-        switch (config.reportFormat) {
+        switch (config.format) {
             case AVRO:
                 this.encoder = avroEncoder;
                 this.decoder = avroDecoder;
@@ -26,7 +26,7 @@ public class OutboundReportsCodec {
                 this.decoder = jsonDecoder;
                 break;
             default:
-                throw new IllegalStateException("Unrecognized reportCodec {} " + config.reportFormat);
+                throw new IllegalStateException("Unrecognized reportCodec {} " + config.format);
         }
     }
 

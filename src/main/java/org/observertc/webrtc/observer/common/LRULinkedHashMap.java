@@ -4,6 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * Least Recent Unit cache type map, where the map size is fized, and the least read items
+ * are removed when size limit is reached
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class LRULinkedHashMap<K, V> extends LinkedHashMap<K, V> {
     private int maxSize;
     private final Consumer<Map.Entry<K, V>> removedCb;

@@ -44,7 +44,7 @@ class PeerConnectionOpened extends EventReporterAbstract.CallEventReporterAbstra
 
     private CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO) {
         Long now = Instant.now().toEpochMilli();
-        return this.makeReport(peerConnectionDTO, now);
+        return this.makeReport(peerConnectionDTO, peerConnectionDTO.created);
     }
 
     @Override

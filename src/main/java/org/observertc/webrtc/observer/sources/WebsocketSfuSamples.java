@@ -25,9 +25,7 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import io.reactivex.rxjava3.core.Observable;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
-import org.observertc.webrtc.observer.evaluators.ObservedSfuSampleProcessingPipeline;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
 import org.observertc.webrtc.observer.micrometer.MonitorProvider;
@@ -69,10 +67,10 @@ public class WebsocketSfuSamples {
 	WebsocketAccessTokenValidator websocketAccessTokenValidator;
 
 	@Inject
-	ObserverConfig.SourcesConfig.SfuSamplesConfig config;
+	ObserverConfig.SourcesConfig.WebsocketsConfig config;
 
 	@Inject
-	ObservedSfuSampleProcessingPipeline observedSfuSampleProcessingPipeline;
+	SfuSamplesCollector sfuSamplesCollector;
 
 	public WebsocketSfuSamples(
 			ObjectMapper objectMapper,
@@ -168,8 +166,7 @@ public class WebsocketSfuSamples {
 					.withServiceId(serviceId)
 					.withMediaUnitId(mediaUnitId)
 					.build();
-			Observable.just(observedSfuSample)
-					.subscribe(this.observedSfuSampleProcessingPipeline);
+			this.sfuSamplesCollector.add(observedSfuSample);
 		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withException(ex)

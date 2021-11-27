@@ -49,6 +49,7 @@ public class HazelcastMaps {
     public static final String HAZELCAST_CLIENT_MESSAGES = "observertc-client-messages";
 
     public static final String HAZELCAST_SYNC_TASK_STATES_MAP_NAME = "observertc-distributed-tasks-states";
+    public static final String HAZELCAST_ETC_MAP_NAME = "observertc-distributed-map";
     public static final String HAZELCAST_REQUESTS_MAP_NAME = "observertc-requests-map-name";
 
     @Inject
@@ -85,12 +86,13 @@ public class HazelcastMaps {
     private IMap<ConfigType, ConfigDTO> configurations;
     private IMap<String, String> syncTaskStates;
     private IMap<String, byte[]> requests;
+    private IMap<String, String> etcMap;
     private ObserverConfig.RepositoryConfig config;
 
     private IMap<UUID, GeneralEntryDTO> clientMessages;
 
     public HazelcastMaps(ObserverConfig observerConfig) {
-        this.config = observerConfig.repositories;
+        this.config = observerConfig.repository;
     }
 
     @PostConstruct
@@ -120,6 +122,7 @@ public class HazelcastMaps {
         this.weakLocks = hazelcast.getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
         this.syncTaskStates = hazelcast.getMap(HAZELCAST_SYNC_TASK_STATES_MAP_NAME);
         this.requests = hazelcast.getMap(HAZELCAST_REQUESTS_MAP_NAME);
+        this.etcMap = hazelcast.getMap(HAZELCAST_ETC_MAP_NAME);
 
         this.clientMessages = hazelcast.getMap(HAZELCAST_CLIENT_MESSAGES);
         // setup expirations
@@ -162,8 +165,6 @@ public class HazelcastMaps {
                 .getConfig()
                 .getMapConfig(HAZELCAST_REQUESTS_MAP_NAME)
                 .setMaxIdleSeconds(3600); // one hour
-
-
     }
 
     public IMap<UUID, CallDTO> getCalls(){
@@ -204,6 +205,8 @@ public class HazelcastMaps {
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
     public IMap<String, String> getSyncTaskStates() { return this.syncTaskStates; }
     public IMap<String, byte[]> getRequests() { return this.requests; }
+
+    public IMap<String, String> getEtcMap() { return this.etcMap; }
 
     public IMap<ConfigType, ConfigDTO> getConfigurations() { return this.configurations; }
 }

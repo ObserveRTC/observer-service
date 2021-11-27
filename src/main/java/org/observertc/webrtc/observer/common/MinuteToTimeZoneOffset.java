@@ -9,38 +9,30 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import java.time.ZoneOffset;
+import java.util.Objects;
 
 @Prototype
-public class MinuteToTimeZoneId implements Function<Integer, ZoneOffset> {
+public class MinuteToTimeZoneOffset implements Function<Integer, ZoneOffset> {
 
-    private static final Logger logger = LoggerFactory.getLogger(MinuteToTimeZoneId.class);
+    private static final Logger logger = LoggerFactory.getLogger(MinuteToTimeZoneOffset.class);
 
     private final FlawMonitor flawMonitor;
 
-    public MinuteToTimeZoneId(MonitorProvider monitorProvider) {
+    public MinuteToTimeZoneOffset(MonitorProvider monitorProvider) {
         this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass());
     }
 
     @Override
     public ZoneOffset apply(Integer timeZoneOffsetInMinute) throws Throwable {
         try {
+            if (Objects.isNull(timeZoneOffsetInMinute)) {
+                return ZoneOffset.UTC;
+            }
             int timeZoneOffsetInHours = timeZoneOffsetInMinute / 60;
             if (timeZoneOffsetInHours == 0) {
                 return ZoneOffset.UTC;
             }
-            String offsetID;
-            char sign = '+';
-            if (timeZoneOffsetInHours < 0) {
-                sign = '-';
-                timeZoneOffsetInHours *= -1;
-            }
-            if (9 < timeZoneOffsetInHours) {
-                offsetID = String.format("%c%d:00", sign, timeZoneOffsetInHours);
-            } else {
-                offsetID = String.format("%c%02d:00", sign, timeZoneOffsetInHours);
-            }
-            ZoneOffset zoneOffset = ZoneOffset.of(offsetID);
-            return zoneOffset;
+            return ZoneOffset.ofHoursMinutes(timeZoneOffsetInHours, timeZoneOffsetInMinute % 60);
         } catch (Throwable t) {
             String message = String.format("The provided value %d is failed to convert to a zone", timeZoneOffsetInMinute);
             this.flawMonitor

@@ -5,6 +5,7 @@ import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
 import org.observertc.webrtc.observer.dto.StreamDirection;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -26,8 +27,12 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
     @Inject
     HazelcastMaps hazelcastMaps;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<Map<UUID, MediaTrackDTO>>(this)
                 .<Set<UUID>, Set<UUID>>addSupplierEntry("Merge Inputs",
                         () -> this.mediaTrackIds,

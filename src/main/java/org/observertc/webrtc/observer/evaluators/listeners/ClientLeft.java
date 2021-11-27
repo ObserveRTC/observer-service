@@ -5,6 +5,7 @@ import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.ClientDTO;
+import org.observertc.webrtc.observer.evaluators.listeners.attachments.ClientAttachment;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.webrtc.observer.repositories.tasks.FetchCallClientsTask;
@@ -136,6 +137,9 @@ class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientD
         try {
             String callId = UUIDAdapter.toStringOrNull(clientDTO.callId);
             String clientId = UUIDAdapter.toStringOrNull(clientDTO.clientId);
+            ClientAttachment attachment = ClientAttachment.builder()
+                    .withTimeZoneId(clientDTO.timeZoneId)
+                    .build();
             var result = CallEventReport.newBuilder()
                     .setName(CallEventType.CLIENT_LEFT.name())
                     .setCallId(callId)
@@ -145,6 +149,7 @@ class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientD
                     .setMediaUnitId(clientDTO.mediaUnitId)
                     .setUserId(clientDTO.userId)
                     .setTimestamp(timestamp)
+                    .setAttachments(attachment.toBase64())
                     .build();
             logger.info("Client {} left call \"{}\" in service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
             return result;

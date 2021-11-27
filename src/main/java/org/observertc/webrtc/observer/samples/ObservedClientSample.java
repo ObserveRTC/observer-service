@@ -14,6 +14,8 @@ public interface ObservedClientSample {
 
     String getRoomId();
 
+    UUID getCallId();
+
     UUID getClientId();
 
     ClientSample getClientSample();

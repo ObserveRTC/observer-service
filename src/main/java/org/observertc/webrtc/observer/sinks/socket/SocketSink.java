@@ -6,7 +6,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import jakarta.websocket.ClientEndpoint;
 import org.observertc.webrtc.observer.common.MuxedReport;
 import org.observertc.webrtc.observer.common.OutboundReport;
-import org.observertc.webrtc.observer.common.OutboundReports;
 import org.observertc.webrtc.observer.common.ReportType;
 import org.observertc.webrtc.observer.sinks.Sink;
 
@@ -14,6 +13,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
+import java.util.List;
 import java.util.Objects;
 
 @ClientEndpoint
@@ -41,8 +41,8 @@ public class SocketSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull OutboundReports outboundReports) {
-        if (outboundReports.getReportsNum() < 1) {
+    public void accept(@NonNull List<OutboundReport> outboundReports) {
+        if (outboundReports.size() < 1) {
             return;
         } else if (Objects.isNull(this.writer)) {
             this.connect(false);

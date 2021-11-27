@@ -16,28 +16,19 @@
 
 package org.observertc.webrtc.observer.micrometer;
 
-import io.micrometer.core.instrument.MeterRegistry;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class MonitorProvider {
-	private static final String KLASS_TAG_NAME = "klass";
 
 	@Inject
-	MeterRegistry meterRegistry;
+	ExposedMetrics exposedMetrics;
 
-	public MonitorProvider(
-			MeterRegistry meterRegistry
-	) {
-		this.meterRegistry = meterRegistry;
-	}
 
 	public FlawMonitor makeFlawMonitorFor(Class klass) {
-		return new FlawMonitor(this.meterRegistry)
-				.withName(FlawMonitor.class.getSimpleName())
-				.withTag(KLASS_TAG_NAME, klass.getSimpleName());
+		return new FlawMonitor(this.exposedMetrics)
+				.withModuleId(klass.getSimpleName());
 	}
 
 }

@@ -103,8 +103,9 @@ public class CollectCallSamples implements Function<List<ObservedClientSample>, 
     private UUID createCallIfNotExists(RoomSamples roomSamples) {
         var task = createCallIfNotExistsTaskProvider.get();
         task.withServiceRoomId(roomSamples.getServiceRoomId())
-                .withStartedTimestamp(roomSamples.getMinTimestamp())
-                .execute();
+            .withStartedTimestamp(roomSamples.getMinTimestamp())
+            .withCallId(roomSamples.getCallId())
+            .execute();
 
         if (!task.succeeded()) {
             return null;

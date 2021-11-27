@@ -1,6 +1,8 @@
 package org.observertc.webrtc.observer.sinks.kafka;
 
 import io.micronaut.context.annotation.Prototype;
+import io.micronaut.core.util.StringUtils;
+import io.micronaut.security.oauth2.endpoint.authorization.state.InvalidStateException;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.UUIDSerializer;
@@ -28,6 +30,9 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         this.evaluateProperties(flattenedProperties);
         Properties properties = new Properties();
         flattenedProperties.entrySet().stream().forEach(entry -> properties.put(entry.getKey(), entry.getValue()));
+        if (config.muxReports && StringUtils.isEmpty(config.muxTopic)) {
+            throw new InvalidStateException("if muxReports is true, muxTopic cannot be empty");
+        }
         KafkaSink result = new KafkaSink(
                 properties,
                 config.tryReconnectOnFailure,

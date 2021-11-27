@@ -16,12 +16,17 @@
 
 package org.observertc.webrtc.observer;
 
+import com.hazelcast.client.util.AbstractLoadBalancer;
+import com.hazelcast.cluster.Member;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.XmlConfigBuilder;
 import com.hazelcast.config.YamlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
+import com.hazelcast.logging.LogEvent;
+import com.hazelcast.logging.LogListener;
+import org.observertc.webrtc.observer.common.JsonUtils;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.PortableDTOFactory;
 import org.slf4j.Logger;
@@ -33,8 +38,12 @@ import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 @Singleton
 public class ObserverHazelcast {
@@ -48,6 +57,9 @@ public class ObserverHazelcast {
 		Config config = this.makeConfig(observerHazelcastConfig);
 		this.instance = Hazelcast.newHazelcastInstance(config);
 		this.memberName = this.makeMemberName(observerHazelcastConfig);
+		if (Objects.nonNull(observerHazelcastConfig.logs)) {
+			observerHazelcastConfig.logs.stream().forEach(this::addLogPrinters);
+		}
 	}
 
 	@PostConstruct
@@ -80,12 +92,43 @@ public class ObserverHazelcast {
 		}
 	}
 
+	public String makeMemberName(ObserverConfig.HazelcastConfig hazelcastConfig) {
+		UUID memberId = this.getLocalEndpointId();
+		if (Objects.isNull(hazelcastConfig.memberNamesPool) || hazelcastConfig.memberNamesPool.size() < 1) {
+			return memberId.toString();
+		}
+		int index = Math.abs(((int)  memberId.getMostSignificantBits()) % hazelcastConfig.memberNamesPool.size());
+		var result = hazelcastConfig.memberNamesPool.get(index);
+		logger.info("Member Id {} is bound to human readable member name {} ", memberId, result);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		var config = this.instance.getConfig().toString();
+		return config;
+//		return config.replace(", ", ", \n");
+//		return JsonUtils.beautifyJsonString(this.instance.getConfig().toString().substring(6));
+//		return this.instance.getConfig().toString();
+	}
+
+	public String getMemberName() { return this.memberName; }
+
+	public UUID getLocalEndpointId() {
+		return this.instance.getLocalEndpoint().getUuid();
+	}
+
 	private Config makeConfig(ObserverConfig.HazelcastConfig observerHazelcastConfig) {
 		String configPath = observerHazelcastConfig.configFile;
 		// From ClassLoader, all paths are "absolute" already - there's no context
-// from which they could be relative. Therefore you don't need a leading slash.
+		// from which they could be relative. Therefore you don't need a leading slash.
 
 		Config result;
+//		if (Objects.isNull(observerHazelcastConfig.configFile) && Objects.isNull(observerHazelcastConfig.config)) {
+//			logger.warn("No configuration for hazelcast is given, the default is used");
+//			result = new XmlConfigBuilder().build();
+//		}
+
 		if (configPath == null) {
 			result = new XmlConfigBuilder().build();
 		} else {
@@ -113,25 +156,24 @@ public class ObserverHazelcast {
 		return result;
 	}
 
-	public String makeMemberName(ObserverConfig.HazelcastConfig hazelcastConfig) {
-		UUID memberId = this.getLocalEndpointUUID();
-		if (Objects.isNull(hazelcastConfig.memberNamesPool) || hazelcastConfig.memberNamesPool.size() < 1) {
-			return memberId.toString();
+	private void addLogPrinters(String level) {
+		if (Objects.isNull(level)) {
+			return;
 		}
-		int index = Math.abs(((int)  memberId.getMostSignificantBits()) % hazelcastConfig.memberNamesPool.size());
-		var result = hazelcastConfig.memberNamesPool.get(index);
-		logger.info("Member Id {} is bound to human readable member name {} ", memberId, result);
-		return result;
-	}
+		try {
+			logger.info("Printing logs for level {}", level);
+			Level logLevel = Level.parse(level);
+			this.instance.getLoggingService().addLogListener(logLevel, new LogListener() {
+				@Override
+				public void log(LogEvent logEvent) {
+					var member = logEvent.getMember();
+					var record =  logEvent.getLogRecord();
+					logger.info("{}: Member: {}, Logger: {} Message: {}", record.getLevel(), member.getUuid(), record.getLoggerName(), record.getMessage());
+				}
+			});
+		} catch (Exception ex) {
+			logger.warn("Cannot add logging level {}", level, ex);
+		}
 
-	@Override
-	public String toString() {
-		return this.instance.getConfig().toString();
-	}
-
-	public String getMemberName() { return this.memberName; }
-
-	public UUID getLocalEndpointUUID() {
-		return this.instance.getLocalEndpoint().getUuid();
 	}
 }

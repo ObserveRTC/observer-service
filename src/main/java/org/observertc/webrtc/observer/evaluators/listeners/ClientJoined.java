@@ -5,6 +5,7 @@ import org.observertc.webrtc.observer.common.CallEventType;
 import org.observertc.webrtc.observer.common.UUIDAdapter;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.dto.ClientDTO;
+import org.observertc.webrtc.observer.evaluators.listeners.attachments.ClientAttachment;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -53,6 +54,9 @@ class ClientJoined extends EventReporterAbstract.CallEventReporterAbstract<Clien
         try {
             String callId = UUIDAdapter.toStringOrNull(clientDTO.callId);
             String clientId = UUIDAdapter.toStringOrNull(clientDTO.clientId);
+            ClientAttachment attachment = ClientAttachment.builder()
+                    .withTimeZoneId(clientDTO.timeZoneId)
+                    .build();
             var result = CallEventReport.newBuilder()
                     .setName(CallEventType.CLIENT_JOINED.name())
                     .setCallId(callId)
@@ -62,6 +66,7 @@ class ClientJoined extends EventReporterAbstract.CallEventReporterAbstract<Clien
                     .setMediaUnitId(clientDTO.mediaUnitId)
                     .setUserId(clientDTO.userId)
                     .setTimestamp(timestamp)
+                    .setAttachments(attachment.toBase64())
                     .build();
             logger.info("Client with id {} is joined to call \"{}\" for service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
             return result;

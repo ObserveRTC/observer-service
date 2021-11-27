@@ -17,6 +17,9 @@ public class RtpPadAttachment {
     @JsonProperty("streamDirection")
     public String streamDirection;
 
+    @JsonProperty("internal")
+    public boolean internal;
+
     private RtpPadAttachment() {
 
     }
@@ -43,6 +46,11 @@ public class RtpPadAttachment {
             } else {
                 this.result.streamDirection = streamDirection.name();
             }
+            return this;
+        }
+
+        public Builder withInternal(boolean value) {
+            this.result.internal = value;
             return this;
         }
 

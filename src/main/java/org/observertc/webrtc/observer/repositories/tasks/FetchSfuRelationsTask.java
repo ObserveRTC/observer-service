@@ -3,6 +3,7 @@ package org.observertc.webrtc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.webrtc.observer.common.ChainedTask;
 import org.observertc.webrtc.observer.dto.MediaTrackDTO;
+import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,9 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     @Inject
     HazelcastMaps hazelcastMaps;
 
+    @Inject
+    ExposedMetrics exposedMetrics;
+
     public static class Report {
         public final Map<UUID, UUID> rtpStreamIdToCallIds = new HashMap<>();
     }
@@ -32,6 +36,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
 
     @PostConstruct
     void setup() {
+        this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<>(this)
                 .addActionStage("Collect Sfu Stream relations", () -> {
                     if (this.rtpStreamIds.size() < 1) {

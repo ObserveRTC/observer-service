@@ -25,7 +25,7 @@ public class OutboundReportEncoder {
 
     private static final Logger logger = LoggerFactory.getLogger(OutboundReportEncoder.class);
 
-    private Subject<OutboundReport> outboundReportSubject = PublishSubject.create();
+    private Subject<List<OutboundReport>> outboundReportSubject = PublishSubject.create();
     private Encoder encoder;
 
     @Inject
@@ -40,7 +40,7 @@ public class OutboundReportEncoder {
 
     }
 
-    public Observable<OutboundReport> getObservableOutboundReport() {
+    public Observable<List<OutboundReport>> getObservableOutboundReports() {
         return this.outboundReportSubject;
     }
 
@@ -182,7 +182,7 @@ public class OutboundReportEncoder {
             outboundReports.add(outboundReport);
         }
         synchronized (this) {
-            outboundReports.stream().forEach(this.outboundReportSubject::onNext);
+            this.outboundReportSubject.onNext(outboundReports);
         }
     }
 }

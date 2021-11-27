@@ -32,6 +32,7 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
 
     private final AtomicInteger sampleSeqHolder = new AtomicInteger(0);
     private EasyRandom generator;
+    private UUID callId = null;
     private UUID clientId = UUID.randomUUID();
     private String roomId = null;
     private String userId = null;
@@ -53,6 +54,11 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
             }
         }
         var result = this.generator.nextObject(ClientSample.class);
+        if (Objects.nonNull(this.callId)) {
+            result.callId = this.callId.toString();
+        } else {
+            result.callId = null;
+        }
         if (Objects.nonNull(this.clientId)) {
             result.clientId = this.clientId.toString();
         }
@@ -79,6 +85,11 @@ public class ClientSampleGenerator implements Supplier<ClientSample> {
 
     public Set<UUID> getPeerConnectionIds() {
         return this.peerConnectionIds;
+    }
+
+    public ClientSampleGenerator withCallId(UUID value) {
+        this.callId = value;
+        return this;
     }
 
     public ClientSampleGenerator withClientId(UUID value) {
