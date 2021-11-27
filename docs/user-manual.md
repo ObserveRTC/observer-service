@@ -1,6 +1,4 @@
 
-## What is WebRTC-Observer?
-
 ![Overview](images/superficial-overview.png)
 
 Observer is a focuspoint for stats object origianted from different part of a WebRTC media services. 
