@@ -8,16 +8,15 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
-import org.observertc.webrtc.observer.samples.*;
+import org.observertc.webrtc.observer.sources.inboundSamples.InboundSamplesAcceptor;
+import org.observertc.webrtc.observer.sources.inboundSamples.InboundSamplesAcceptorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import java.io.InvalidObjectException;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Objects;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -27,16 +26,10 @@ public class SamplesRestApiController {
 	private static final Logger logger = LoggerFactory.getLogger(SamplesRestApiController.class);
 
 	@Inject
-	ClientSamplesCollector clientSamplesCollector;
-
-	@Inject
-	SfuSamplesCollector sfuSamplesCollector;
-
-	@Inject
 	ExposedMetrics exposedMetrics;
 
-	@Inject
-    ObserverConfig.SourcesConfig.RestApiConfig config;
+    private final ObserverConfig.SourcesConfig.RestApiConfig config;
+	private final InboundSamplesAcceptor inboundSamplesAcceptor;
 
 	@PostConstruct
 	void setup() {
@@ -46,108 +39,26 @@ public class SamplesRestApiController {
 	void teardown() {
 	}
 
-	public SamplesRestApiController() {
-
+	public SamplesRestApiController(ObserverConfig observerConfig, InboundSamplesAcceptorFactory acceptorFactory) {
+		this.config = observerConfig.sources.restapi;
+		this.inboundSamplesAcceptor = acceptorFactory.makeAcceptor(this.config);
 	}
 
 	@Post(value = "/samples/{serviceId}/{mediaUnitId}")
-	public HttpResponse<Object> acceptSamples(String serviceId, String mediaUnitId, @Body Samples samples) {
+	public HttpResponse<Object> acceptSamples(String serviceId, String mediaUnitId, @Body byte[] message) {
 		if (!config.acceptClientSamples) {
 			return HttpResponse.serverError("Not accepting client samples through REST");
 		}
-		try {
-			if (Objects.isNull(samples)) {
-				return HttpResponse.ok();
-			}
-			List<HttpResponse<Object>> responses = new LinkedList<>();
-			if (Objects.nonNull(samples.clientSamples)) {
-				responses.add(this.acceptClientSamples(serviceId, mediaUnitId, samples.clientSamples));
-			}
-			if (Objects.nonNull(samples.sfuSamples)) {
-				responses.add(this.acceptSfuSamples(serviceId, mediaUnitId, samples.sfuSamples));
-			}
-			if (responses.size() < 1) {
-				return HttpResponse.ok();
-			}
-			var nokResponseHolder = responses.stream().filter(response -> response.code() != HttpResponse.ok().code()).findFirst();
-			if (nokResponseHolder.isPresent()) {
-				return nokResponseHolder.get();
-			}
+		if (Objects.isNull(message)) {
 			return HttpResponse.ok();
-		} catch (Exception ex) {
-			return HttpResponse.serverError(ex);
 		}
-	}
-
-	@Post(value = "/clientsamples/{serviceId}/{mediaUnitId}")
-	public HttpResponse<Object> acceptClientSamples(String serviceId, String mediaUnitId, @Body ClientSample[] samples) {
-        if (!config.acceptClientSamples) {
-            return HttpResponse.serverError("Not accepting client samples through REST");
-        }
 		try {
-			if (Objects.isNull(samples) || samples.length < 1) {
-				return HttpResponse.ok();
-			}
-            if (config.maxClientSamplesBatch < samples.length) {
-                return HttpResponse.badRequest("size of batch is too large. Maximum size is: " + config.maxClientSamplesBatch);
-            }
-			var observedClientSamples = new LinkedList<ObservedClientSample>();
-			for (var sample : samples) {
-				var observedClientSample = ObservedClientSampleBuilder.from(sample)
-						.withServiceId(serviceId)
-						.withMediaUnitId(mediaUnitId)
-						.build();
-				observedClientSamples.add(observedClientSample);
-			}
-			try {
-				this.clientSamplesCollector.addAll(observedClientSamples);
-				this.exposedMetrics.incrementSfuSamplesReceived(serviceId, mediaUnitId, observedClientSamples.size());
-			} catch (Throwable t) {
-				logger.warn("MeterRegistry just caused an error by counting samples", t);
-			}
-			return HttpResponse.ok();
-		} catch (InvalidObjectException invalidEx) {
-			final String message = invalidEx.getMessage();
-			return HttpResponse.serverError(message);
-		} catch (Exception ex) {
-			return HttpResponse.serverError(ex);
+			this.inboundSamplesAcceptor.accept(serviceId, mediaUnitId, message);
+		} catch (IOException e) {
+			return HttpResponse.serverError(e.getMessage());
+		} catch (Throwable ex) {
+			return HttpResponse.serverError(ex.getMessage());
 		}
+		return HttpResponse.ok();
 	}
-
-	@Post(value = "/sfusamples/{serviceId}/{mediaUnitId}")
-	public HttpResponse<Object> acceptSfuSamples(String serviceId, String mediaUnitId, @Body SfuSample[] samples) {
-        if (!config.acceptSfuSamples) {
-            return HttpResponse.serverError("Not accepting sfu samples through REST");
-        }
-		try {
-			if (Objects.isNull(samples) || samples.length < 1) {
-				return HttpResponse.ok();
-			}
-            if (config.maxSfuSamplesBatch < samples.length) {
-                return HttpResponse.badRequest("size of batch is too large. Maximum size is: " + config.maxClientSamplesBatch);
-            }
-			var observedSfuSamples = new LinkedList<ObservedSfuSample>();
-			for (var sample : samples) {
-				var observedSfuSample = ObservedSfuSampleBuilder.from(sample)
-						.withServiceId(serviceId)
-						.withMediaUnitId(mediaUnitId)
-						.build();
-				observedSfuSamples.add(observedSfuSample);
-			}
-
-			try {
-				this.sfuSamplesCollector.addAll(observedSfuSamples);
-				this.exposedMetrics.incrementSfuSamplesReceived(serviceId, mediaUnitId);
-			} catch (Throwable t) {
-				logger.warn("MeterRegistry just caused an error by counting samples", t);
-			}
-			return HttpResponse.ok();
-		} catch (InvalidObjectException invalidEx) {
-			final String message = invalidEx.getMessage();
-			return HttpResponse.serverError(message);
-		} catch (Exception ex) {
-			return HttpResponse.serverError(ex);
-		}
-	}
-
 }

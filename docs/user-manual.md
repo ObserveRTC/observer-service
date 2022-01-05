@@ -1,21 +1,22 @@
 
 ![Overview](images/superficial-overview.png)
 
-Observer is a focuspoint for stats object origianted from different part of a WebRTC media services. 
+Observer consumes statistics generated from WebRTC end points like browsers and Selective Forwarding Units (SFUs).
+
 In our terminology the provided stats object at a specific time is called a sample.
-[Samples]() are the input of the Observer.
+[Samples](/docs/schemas/samples/) are the input of the Observer.
 Currently the following type of Samples are supported:
- * [ClientSample]() for WebRTC client applications running in the browser
- * [SfuSample]() for Selective Forwarding Units running at the server side.
+ * [ClientSample](/docs/schemas/client-sample/) for WebRTC client applications running in the browser
+ * [SfuSample](/docs/schemas/sfu-sample/) for Selective Forwarding Units running at the server side.
 
 Based on the received samples the Observer do the following:
  * Matching samples belong to the same call (see definition later)
- * Matching samples from SFUs with samples from clients 
+ * Matching samples from SFUs with samples from clients
  * Matching video or audio streams between the source, and remote clients
  * Identify events based on the sample (call started, client joined, peer connection opened, etc...)
  * Assemble and send reports
 
-The observer generates reports as output. [Reports]() compound and contain 
+The observer generates reports as output. [Reports]() compound and contain
 relevant part of the sample based on the type of the report.
 Currently the following type of Reports are assembled:
  * [CallEventReport](): Events related to calls (call started, call ended, client joined, client left, etc...)
@@ -35,37 +36,6 @@ Currently the following type of Reports are assembled:
  * [SfuSctpStreamReport](): Measurements of SCTP streams.
  * [SfuTransportReport](): Measurements of Transport objects.
 
-## Getting Started
-
-### 1. Integrate your WebRTC client application
-
-To integrate your client application, it must provide [ClientSample]() the observer can accept.
-You can write your own integration (example to write your own is [here]()), or you can 
-use an already written. Currently Observer integration for the following media services have been already written:
- * [Mediasoup]()
- * [Janus]()
- * [PeerJS]()
- * [Vonage TokBox]()
- * [Jitsi]()
-
-### 2. Run Observer
-
-In your terminal, type:
-
-
-    docker run observertc/observer:1.0.0-beta
-
-
-This will spin up an observer instance with the default configuration print reports to the terminal.
-
-
-### 3. Analyze reports
-
-Once your application start sending [ClientSample]()s to the observer, you should see the generated reports in your console.
-
-*NOTE*: The default configuration have around 30-60s collecting time periods for the incoming samples, thus 
-the reports are generated with that expected delay.
-
 
 ## Architecture
 
@@ -74,27 +44,27 @@ the reports are generated with that expected delay.
 
 ### Object Hierarchy
 
-![Object hierarchy](images/object-hierarchy.png)
+{{< img-simple src="object-hierarchy.png" alt="Object hierarchy" >}}
 
-Observer analyze incoming samples and build an internal object hierarchy stores in its repository. 
-Object hierarchy is then used to group the client samples, matching tracks and sfu rtp pads, 
-identify tracks' peer connections, SFU transports, etc... The identifiers 
+Observer analyze incoming samples and build an internal object hierarchy stores in its repository.
+Object hierarchy is then used to group the client samples, matching tracks and sfu rtp pads,
+identify tracks' peer connections, SFU transports, etc... The identifiers
 revealed by the object hierarchy for the sample are assigned to the generated reports.
 As a result, for example, all client related reports can be identified which call it belongs to.
 
 The basic elements of the object hierarchy are the following:
 
  * **Service** is the top level object identify the owner the provided media service belongs to.
- * **Room** is a virtual place clients share to exchange media contents. 
-   Clients are in the same Room under the same Service participating in the same call. 
+ * **Room** is a virtual place clients share to exchange media contents.
+   Clients are in the same Room under the same Service participating in the same call.
  * **Call** identifies a group of clients exchange media contents at the same time in the same room under the same service.
- * **MediaUnit** hold information clients and SFUs can arbitrary add in the samples. 
-   For example, it can be the webrtc app version in the client side, 
+ * **MediaUnit** hold information clients and SFUs can arbitrary add in the samples.
+   For example, it can be the webrtc app version in the client side,
    and the geographic region and availability zone in the SFUs side.
  * **Client** uses the WebRTC app provides the ClientSamples
  * **PeerConnection**s are established by the client to another client or to an SFU.
  * **MediaTrack**s are used by the peer connection to send out or receive in media contents.
- * **SFU** or Selective Forwarding Units are server side components to compound and distribute media contents between 
+ * **SFU** or Selective Forwarding Units are server side components to compound and distribute media contents between
    several participants.
  * **SfuTransport** are the peer connection established by the SFU with either a client or with another SFU / media service.
  * **SfuRtpPad**s are used by the SfuTransports to send out or receive in media contents using RTP transport protocol.
@@ -107,12 +77,12 @@ The company develop a webrtc app called `my-webrtc-app`, and it is integrated to
 
 ### Observe peer to peer calls
 
-The company provides `free-tutorials` media service through `my-webrtc-app` clients are actively using. 
-The `my-webrtc-app` send [ClientSample]()s to the observer using a websocket endpoint `wss://observer.MyAwesomeTutorialForEveryoneExample.com/free-tutorials/my-webrtc-app-1-0-0`, where the `free-tutorials` is the serviceId, and `my-webrtc-app-1-0-0` is the webrtc app bundled with its current version. 
+The company provides `free-tutorials` media service through `my-webrtc-app` clients are actively using.
+The `my-webrtc-app` send [ClientSample]()s to the observer using a websocket endpoint `wss://observer.MyAwesomeTutorialForEveryoneExample.com/free-tutorials/my-webrtc-app-1-0-0`, where the `free-tutorials` is the serviceId, and `my-webrtc-app-1-0-0` is the webrtc app bundled with its current version.
 
 At 8am until 9am Alice and Bob enter to `cryptography` room using the link `https://www.MyAwesomeTutorialForEveryoneExample.com/cryptography`. While they are in the room `cryptography` observer collects the samples from both client and the generated reports forwarded by the observer contains the same callId. Furthermore Alice's outbound video and audio tracks are matched with Bob's inbound audio and video tracks from Alice, and the generated report contains the trackId which remote client id and track the inbound track belongs to.
 
-### Observe multitenant calls
+### Observe multi-tenant calls
 
 Your company wants to provide tutorials for a group of people and not just 1:1 sessions. You setup an SFU, with what your comapny is able to do a call with multiple participant. With no changes to the ClientSample creation setup for the p2p calls, the observer is able to match calls in the same room under the same service, but to match the tracks ClientSample Outbound-, and Inbound Audio, and Video calls must set the `rtpStreamId` UUID to match between tracks. this id is provided by the SFU client SDK and you should get it through a signal server. When this information is added observer can match the tracks just before to the p2p calls.
 
@@ -123,17 +93,17 @@ Further going with monitoring, observer is able to accept samples from SFUs inte
 
 ### Observe multiple services
 
-Your company wants to provide paid tutorials for clients but using the same `my-webrtc-app`. In this case the only difference is the serviceId for the observer reported through the `my-webrtc-app`, which should be different than the previously used `free-tutorials`. 
+Your company wants to provide paid tutorials for clients but using the same `my-webrtc-app`. In this case the only difference is the serviceId for the observer reported through the `my-webrtc-app`, which should be different than the previously used `free-tutorials`.
 
 ## Configurations
 
 ![Configuration Overview](images/configuration-overview.png)
 
-The default configuration file is packed with the compiled observer in its resources, depending on the version 
+The default configuration file is packed with the compiled observer in its resources, depending on the version
 you are using the default configuration can be found [here]().
-The application can be configured through its configuration file fetched at startup. To fetch a custom 
-configuration override the default values you need to set the `MICRONAUT_CONFIG_FILES` and point to your custom 
-configuration. 
+The application can be configured through its configuration file fetched at startup. To fetch a custom
+configuration override the default values you need to set the `MICRONAUT_CONFIG_FILES` and point to your custom
+configuration.
 
 The structure of configuration is the following:
 
@@ -150,7 +120,7 @@ observer:
 ```
 
 The application ses the [micronaut]() framework to provide the application capabilities.
-For example under the **server** component in the configuration you can set yhe port the application listens 
+For example under the **server** component in the configuration you can set yhe port the application listens
 for incoming requests. The full documentation of the configuration related to micronaut framework can be found [here](https://docs.micronaut.io/latest/guide/configurationreference.html).
 
 Using micronaut framework the observer can be configured by the following components:
@@ -174,7 +144,7 @@ sources:
 ```
 
 Currently supported source types:
- * **REST API** endpoints accept batch of samples through http REST requests. 
+ * **REST API** endpoints accept batch of samples through http REST requests.
  * **Websockets** endpoint accepts samples through websocket connections
 
 #### REST API
@@ -196,7 +166,7 @@ sources:
         maxSfuSamplesBatch: 100
 ```
 
-where 
+where
  * `acceptClientSamples` indicate if the clientsample endpoint accept samples or not
  * `acceptSfuSamples` indicate if the sfusample endpoint accept samples or not
  * `maxClientSamplesBatch` determines what is the maximum size of batch one request can send for the clientsample endpoint
@@ -220,7 +190,7 @@ sources:
 
 ```
 
-where 
+where
  * `enabled` indicate if the websocket connection can be established or not
  * `acceptSfuSamples` indicate if the sfusample endpoint accept samples or not
  * `maxClientSamplesBatch` determines what is the maximum size of batch one message can send
@@ -229,7 +199,7 @@ where
 
 ### Evalautors
 
-Evaluators configurations sets up parameters influence the behaviour of analyzing the incoming samples 
+Evaluators configurations sets up parameters influence the behaviour of analyzing the incoming samples
 
 ```yaml
 evaluators:
@@ -250,7 +220,7 @@ sinks:
         config: {}
 ```
 
-In the above example `MyUniqueSinkId_1` is the key in the config map under the sink. The `type` determines the client integration, 
+In the above example `MyUniqueSinkId_1` is the key in the config map under the sink. The `type` determines the client integration,
 for which the appropriate configuration is fetched from `config`.
 Currently supported sink types:
  * [KafkaSink]()
@@ -275,11 +245,11 @@ sinks:
 
 Under the `config` you can set:
     * `tryReconnectOnFailure`: Makes the sink resilient to failure of the kafka consumer, and tries to reconnect maximum 3 times.
-    * `demuxTopicPrefix`: By default the KafkaSink sends each report type to a different topic, for which the topic name is 
+    * `demuxTopicPrefix`: By default the KafkaSink sends each report type to a different topic, for which the topic name is
     built up as follows: `demuxTopicPrefix + [REPORT_TYPE]`.
     * `properties` is the config key to setup the properties of a [kafka producer](https://kafka.apache.org/documentation/#producerconfigs).
 
-By default the KafkaSink send each report type to a different topic. That behavior can be altered and order the sink 
+By default the KafkaSink send each report type to a different topic. That behavior can be altered and order the sink
 to send all reports into one by multiplexing the reports.
 
 ```yaml
@@ -331,10 +301,10 @@ sinks:
         timeoutInMs: 500
         reconnectionDelayInMs: 1000 # default
         maxRetry: 3 # default
-        transports: 
+        transports:
          - websocket # default
          - polling
-    
+
 
 ```
 
@@ -392,7 +362,7 @@ where
 
 ### Hazelcast
 
-The repository observer uses is built on using [Hazelcast](). Hazelcast configuration is used to spread observer internal memory storage and spread accross all observer running in one cluster. 
+The repository observer uses is built on using [Hazelcast](). Hazelcast configuration is used to spread observer internal memory storage and spread accross all observer running in one cluster.
 
 ```yaml
 hazelcast:
@@ -401,7 +371,7 @@ hazelcast:
     memberNamesPool: []
 ```
 
-where 
+where
  * `configFile` sets the config file hazelcast instance is used to bootstrap.
  * `logs` holds an array of logging level printed out into the console catched from hazelcast. possible values are: ALL, FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE
  * `memberNamesPool` holds an array of value observer assign a name from in order to give in the logs a human readable name instead of the UUID hazelcast gives.
@@ -428,6 +398,7 @@ buffers:
 ```
 
 where `maxItems` determines the maximum number of item the buffer can hold, and the `maxTimeInS` determines the threshold for time in seconds a buffer holds items. Either option can be `0`, which means it skip limitation of time or item number, but not both!
+
 
 ## Samples and Reports (I/O)
 

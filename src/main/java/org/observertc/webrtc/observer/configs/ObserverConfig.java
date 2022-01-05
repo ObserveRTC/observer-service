@@ -17,6 +17,8 @@
 package org.observertc.webrtc.observer.configs;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
+import org.observertc.webrtc.observer.compressors.DecompressorBuilder;
+import org.observertc.webrtc.observer.sources.inboundSamples.InboundSamplesConfig;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
@@ -77,29 +79,31 @@ public class ObserverConfig {
 		public RestApiConfig restapi;
 
 		@ConfigurationProperties("restapi")
-		public static class RestApiConfig {
+		public static class RestApiConfig extends InboundSamplesConfig {
 			public boolean acceptClientSamples = true;
 			public boolean acceptSfuSamples = true;
 
-			@Min(1)
-			public int maxClientSamplesBatch = 1000;
-
-			@Min(1)
-			public int maxSfuSamplesBatch = 1000;
 		}
 
 		public WebsocketsConfig websockets;
 
 		@ConfigurationProperties("websockets")
-		public static class WebsocketsConfig {
+		public static class WebsocketsConfig extends InboundSamplesConfig {
 			public boolean enabled = true;
 
-			@Min(1)
-			public int maxClientSamplesBatch = 1000;
+			public SamplesDecompressorConfig decompressor = null;
 
-			@Min(1)
-			public int maxSfuSamplesBatch = 1000;
+			@ConfigurationProperties("decompressor")
+			public static class SamplesDecompressorConfig extends DecompressorBuilder.Config {
+
+			}
+
 		}
+
+		public static class WebsocketSamplesConfig extends InboundSamplesConfig {
+
+		}
+
 	}
 
 	// Repository config
