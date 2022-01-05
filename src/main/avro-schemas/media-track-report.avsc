@@ -265,7 +265,7 @@
       "doc": "Only For Inbound Media Track Reports\nRepresents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)",
       "type": [
         "null",
-        "boolean"
+        "double"
       ],
       "default": null
     },

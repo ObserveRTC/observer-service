@@ -1056,7 +1056,7 @@ public  class ClientSample {
 		 * The RTP timestamp of the last received packet on the corresponded RTP stream
 		 */
 		@JsonProperty("lastPacketReceivedTimestamp")
-		public boolean lastPacketReceivedTimestamp;
+		public Double lastPacketReceivedTimestamp;
 
 		/**
 		 * The RTCP average interval of sending compound RTCP reports
@@ -1498,7 +1498,7 @@ public  class ClientSample {
 		 * The RTP timestamp of the last received packet on the corresponded RTP stream
 		 */
 		@JsonProperty("lastPacketReceivedTimestamp")
-		public boolean lastPacketReceivedTimestamp;
+		public Double lastPacketReceivedTimestamp;
 
 		/**
 		 * The RTCP average interval of sending compound RTCP reports

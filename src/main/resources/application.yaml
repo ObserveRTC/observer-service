@@ -59,6 +59,14 @@ observer:
       enabled: true
       maxClientSamplesBatch: 100
       maxSfuSamplesBatch: 100
+      decrypter:
+        type: AES-256
+        config:
+          key: ${AES-KEY}
+#      decompressor:
+#        type: JSZIP
+#        config:
+#          key: value
 
   repository:
     mediaTracksMaxIdleTime: 300
@@ -146,7 +154,6 @@ observer:
     sendSfuSctpStreams: true
     sendSfuOutboundRtpStreams: true
     sendSfuInboundRtpStreams: true
-
     reportSfuRtpPadOnlyWithCallId: 10
 
   hazelcast:
