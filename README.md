@@ -28,7 +28,7 @@ Observer is made with the intention to provide an scalable open-source monitorin
 WebRTC developers. Keeping our design goals ahead we develop new features and maintaining the current 
 product with the help of the community. If you are interested in getting involved 
 please read our [contribution](CONTRIBUTING.md) guideline.
-
+ 
 ----
 
 ## Versions
