@@ -20,4 +20,8 @@ public  class Samples {
     @JsonProperty("sfuSamples")
     public SfuSample[] sfuSamples;
 
+//    public enum Flags {
+//        JSON_DELTA,
+//        JSZIP,
+//    }
 }

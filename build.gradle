@@ -64,6 +64,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     compile ('io.socket:socket.io-server:3.0.1')
+    implementation group: 'org.webjars', name: 'jszip', version: '2.4.0'
 
     // Exposed Metrics Client Libraries
     // https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/index.html

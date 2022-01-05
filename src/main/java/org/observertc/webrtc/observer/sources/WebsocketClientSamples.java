@@ -25,6 +25,7 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import org.observertc.webrtc.observer.common.Utils;
 import org.observertc.webrtc.observer.configs.ObserverConfig;
 import org.observertc.webrtc.observer.micrometer.ExposedMetrics;
 import org.observertc.webrtc.observer.micrometer.FlawMonitor;
@@ -52,6 +53,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Service should be UUId, because currently mysql stores it as
  * binary and with that type the search is fast for activestreams. thats why.
  */
+@Deprecated
 @Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/clientsamples/{serviceId}/{mediaUnitId}")
 public class WebsocketClientSamples {
@@ -180,8 +182,8 @@ public class WebsocketClientSamples {
 		}
 	}
 
-	//	@OnMessage(maxPayloadLength = 1000000) // 1MB
-	@OnMessage
+	@OnMessage(maxPayloadLength = 1000000) // 1MB
+//	@OnMessage
 	public void onMessage(
 			String serviceId,
 			String mediaUnitId,
@@ -206,8 +208,9 @@ public class WebsocketClientSamples {
 		try {
 			sample = this.objectReader.readValue(messageBytes, ClientSample.class);
 		} catch (IOException e) {
+			var message = Utils.supplyOrNull(() -> new String(messageBytes));
 			this.flawMonitor.makeLogEntry()
-					.withMessage("Exception while parsing {}", ClientSample.class.getSimpleName())
+					.withMessage("Exception while parsing {}. Message: {}", ClientSample.class.getSimpleName(), message)
 					.withException(e)
 					.complete();
 			session.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
@@ -227,7 +230,7 @@ public class WebsocketClientSamples {
 			session.close(
 					this.customCloseReasons.getInvalidInput(message)
 			);
-		} catch (Throwable ex) {
+		} catch (Exception ex) {
 			this.flawMonitor.makeLogEntry()
 					.withException(ex)
 					.withMessage("Error occured processing sample {} ", sample)

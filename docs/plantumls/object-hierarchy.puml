@@ -8,6 +8,7 @@ hide circle
 
 
 entity "SfuRtpPad" as sfupads {
+*rtpPadId: UUID
 *transportId: UUID
 *rtpStreamId: UUID
 --
@@ -29,7 +30,7 @@ entity "Sfu" as sfu {
 ...stats...
 }
 
-entity "ClientMediaTrack" as tracks {
+entity "MediaTrack" as tracks {
 *trackId: UUID
 *peerConnectionId: UUID
 *rtpStreamId: UUID
@@ -37,7 +38,7 @@ entity "ClientMediaTrack" as tracks {
 ...stats...
 }
 
-entity "ClientPeerConnection" as pcs {
+entity "PeerConnection" as pcs {
 *peerConnectionId: UUID
 *clientId: UUID
 --
