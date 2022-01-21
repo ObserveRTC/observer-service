@@ -44,7 +44,7 @@ Currently the following type of Reports are assembled:
 
 ### Object Hierarchy
 
-{{< img-simple src="object-hierarchy.png" alt="Object hierarchy" >}}
+![Object-Hierarchy](images/object-hierarchy.png)
 
 Observer analyze incoming samples and build an internal object hierarchy stores in its repository.
 Object hierarchy is then used to group the client samples, matching tracks and sfu rtp pads,
