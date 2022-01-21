@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DecompressorBuilder extends AbstractBuilder {
-
+    private static final Decompressor NULL_DECOMPRESSOR = Decompressor.of(message -> message, () -> {});
     private static final Logger logger = LoggerFactory.getLogger(DecompressorBuilder.class);
     private Config providedConfig = null;
     private final List<String> packages;
@@ -32,14 +32,14 @@ public class DecompressorBuilder extends AbstractBuilder {
         Config fetchedConfig = Objects.nonNull(this.providedConfig) ? this.providedConfig : this.convertAndValidate(Config.class);
         Objects.requireNonNull(fetchedConfig);
         if (DecompressorType.NONE.equals(fetchedConfig.type)) {
-            return message -> message;
+            return NULL_DECOMPRESSOR;
         }
         String klassName = fetchedConfig.type.getKlassName();
         String builderClassName = AbstractBuilder.getBuilderClassName(klassName);
         Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
         if (!builderHolder.isPresent()) {
             logger.error("Cannot find decompressor builder for {} in packages: {}", fetchedConfig.type, String.join(",", this.packages ));
-            return null;
+            return NULL_DECOMPRESSOR;
         }
         Builder<Decompressor> builder = (Builder<Decompressor>) builderHolder.get();
         builder.withConfiguration(fetchedConfig.config);

@@ -74,7 +74,6 @@ public class InboundAudioTrackGenerator implements Supplier<ClientSample.Inbound
             case "gapDiscardRate":
                 return this.randomGenerators::getRandomPositiveDouble;
             case "voiceActivityFlag":
-            case "lastPacketReceivedTimestamp":
                 return () -> 32000 < this.randomGenerators.getRandomPort();
             case "averageRtcpInterval":
                 return this.randomGenerators::getRandomPositiveDouble;

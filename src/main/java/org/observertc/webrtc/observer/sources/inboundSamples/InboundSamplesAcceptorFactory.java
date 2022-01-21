@@ -52,6 +52,6 @@ public class InboundSamplesAcceptorFactory {
         samplesParser.getObservableSfuSamples().subscribe(this.sfuSamplesCollector::add);
 
         // make acceptor
-        return samplesParser::accept;
+        return samplesParser;
     }
 }

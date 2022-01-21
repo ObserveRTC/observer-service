@@ -88,8 +88,6 @@ public class InboundVideoTrackGenerator implements Supplier<ClientSample.Inbound
             case "totalInterFrameDelay":
             case "totalSquaredInterFrameDelay":
                 return this.randomGenerators::getRandomPositiveLong;
-            case "lastPacketReceivedTimestamp":
-                return () -> 32000 < this.randomGenerators.getRandomPort();
             case "averageRtcpInterval":
                 return this.randomGenerators::getRandomPositiveDouble;
             case "headerBytesReceived":
