@@ -30,7 +30,6 @@ import org.observertc.webrtc.observer.micrometer.MonitorProvider;
 import org.observertc.webrtc.observer.repositories.HazelcastMaps;
 import org.observertc.webrtc.observer.repositories.RepositoryEvents;
 import org.observertc.webrtc.observer.samples.Samples;
-import org.observertc.webrtc.observer.security.WebsocketAccessTokenValidator;
 import org.observertc.webrtc.observer.sources.inboundSamples.InboundSamplesAcceptor;
 import org.observertc.webrtc.observer.sources.inboundSamples.InboundSamplesAcceptorFactory;
 import org.slf4j.Logger;
@@ -64,9 +63,6 @@ public class SamplesWebsocketController {
     WebsocketCustomCloseReasons customCloseReasons;
 
 	@Inject
-	WebsocketAccessTokenValidator websocketAccessTokenValidator;
-
-	@Inject
 	RepositoryEvents repositoryEvents;
 
 	@Inject
@@ -80,9 +76,6 @@ public class SamplesWebsocketController {
 
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
     private final InboundSamplesAcceptor inboundSamplesAcceptor;
-
-//	@Inject
-//	ObservedClientSampleProcessingPipeline observedClientSampleProcessingPipeline;
 
 	public SamplesWebsocketController(
 	        ObserverConfig observerConfig,
@@ -125,6 +118,11 @@ public class SamplesWebsocketController {
 
 	@PreDestroy
 	void teardown() {
+		try {
+			this.inboundSamplesAcceptor.close();
+		} catch (Throwable throwable) {
+			logger.warn("Exception while closing resource", throwable);
+		}
 	}
 
 	@OnOpen

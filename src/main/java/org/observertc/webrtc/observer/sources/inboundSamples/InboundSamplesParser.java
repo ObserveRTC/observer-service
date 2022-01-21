@@ -1,6 +1,7 @@
 package org.observertc.webrtc.observer.sources.inboundSamples;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.webrtc.observer.compressors.Decompressor;
@@ -15,6 +16,7 @@ public class InboundSamplesParser implements InboundSamplesAcceptor {
     }
 
     private Parser parser = null;
+    private Action closer = null;
     private Subject<ObservedClientSample> observedClientSampleSubject = PublishSubject.create();
     private Subject<ObservedSfuSample> observedSfuSampleSubject = PublishSubject.create();
 
@@ -54,6 +56,14 @@ public class InboundSamplesParser implements InboundSamplesAcceptor {
         }
     }
 
+    @Override
+    public void close() throws Throwable {
+        if (Objects.nonNull(this.closer)) {
+            this.closer.run();
+        }
+    }
+
+
     private InboundSamplesParser() {
 
     }
@@ -76,14 +86,20 @@ public class InboundSamplesParser implements InboundSamplesAcceptor {
         public InboundSamplesParser build() {
             Objects.requireNonNull(this.parser);
             Parser decompressedParser = this.parser;
+            Action decompressorCloser = () -> {};
             if (Objects.nonNull(this.decompressor)) {
                 decompressedParser = message -> {
                     var decompressedMessage = this.decompressor.apply(message);
                     return parser.apply(decompressedMessage);
                 };
+                decompressorCloser = () -> {
+                    this.decompressor.close();
+                };
             }
             final Parser finalParser = decompressedParser;
+            final Action finalCloser = decompressorCloser;
             this.result.parser = finalParser;
+            this.result.closer = finalCloser;
             return this.result;
         }
     }
