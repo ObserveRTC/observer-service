@@ -14,6 +14,15 @@ jobs:
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+      - name: Read version from service.properties
+        id: observer_properties
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: './src/main/resources/service.properties'
+          property: 'version'
+
+      - name: Tag
+        run: echo ${{ steps.observer_properties.outputs.value }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -29,4 +38,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: observertc/observer:latest
+          tags: observertc/observer:latest,observertc/observer:${{ steps.observer_properties.outputs.value }}
