@@ -54,3 +54,13 @@ jobs:
         with:
           push: true
           tags: observertc/observer:latest,observertc/observer:${{ steps.observer_properties.outputs.value }}
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'observertc/observer:${{ steps.observer_properties.outputs.value }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
