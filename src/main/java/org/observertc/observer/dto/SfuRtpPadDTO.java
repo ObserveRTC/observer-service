@@ -1,0 +1,222 @@
+/*
+ * Copyright  2020 Balazs Kreith
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.observertc.observer.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hazelcast.nio.serialization.PortableReader;
+import com.hazelcast.nio.serialization.PortableWriter;
+import com.hazelcast.nio.serialization.VersionedPortable;
+import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.common.UUIDAdapter;
+
+import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
+
+// To avoid exposing hazelcast serialization specific fields
+@JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
+public class SfuRtpPadDTO implements VersionedPortable {
+	public static final int CLASS_VERSION = 1;
+
+	public static Builder builder() {
+		return new Builder();
+	}
+	public static Builder builderFrom(SfuRtpPadDTO source) {
+		return new Builder().from(source);
+	}
+	private static final String SERVICE_ID_FIELD_NAME = "serviceId";
+	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
+	private static final String SFU_ID_FIELD_NAME = "sfuId";
+	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "transportId";
+//	private static final String SFU_RTP_STREAM_ID_FIELD_NAME = "rtpStreamId";
+	private static final String SFU_STREAM_ID_FIELD_NAME = "streamId";
+	private static final String SFU_SINK_ID_FIELD_NAME = "sinkId";
+	private static final String SFU_RTP_PAD_ID_FIELD_NAME = "sfuRtpPadId";
+	private static final String SFU_RTP_STREAM_DIRECTION_FIELD_NAME = "sfuStreamDirection";
+	private static final String SFU_RTP_INTERNAL_FIELD_NAME = "internal";
+	private static final String ADDED_FIELD_NAME = "added";
+
+	public String serviceId;
+	public String mediaUnitId;
+	public UUID sfuId;
+	public UUID transportId;
+	public UUID streamId;
+	public UUID sinkId;
+	public UUID sfuPadId;
+	public StreamDirection streamDirection;
+	public boolean internal;
+	public Long added;
+
+	SfuRtpPadDTO() {
+
+	}
+
+	@Override
+	public int getFactoryId() {
+		return PortableDTOFactory.FACTORY_ID;
+	}
+
+	@Override
+	public int getClassId() {
+		return PortableDTOFactory.SFU_RTP_PAD_DTO_CLASS_ID;
+	}
+
+	@Override
+	public void writePortable(PortableWriter writer) throws IOException {
+		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
+		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
+		writer.writeByteArray(SFU_TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.transportId));
+//		writer.writeByteArray(SFU_RTP_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.rtpStreamId));
+		writer.writeByteArray(SFU_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.streamId));
+		writer.writeByteArray(SFU_SINK_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sinkId));
+		writer.writeByteArray(SFU_RTP_PAD_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuPadId));
+		writer.writeBoolean(SFU_RTP_INTERNAL_FIELD_NAME, this.internal);
+		writer.writeUTF(SFU_RTP_STREAM_DIRECTION_FIELD_NAME, this.streamDirection.name());
+
+		writer.writeLong(ADDED_FIELD_NAME, this.added);
+
+	}
+
+	@Override
+	public void readPortable(PortableReader reader) throws IOException {
+		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
+		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
+		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
+		this.transportId = UUIDAdapter.toUUID(reader.readByteArray(SFU_TRANSPORT_ID_FIELD_NAME));
+//		this.rtpStreamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_RTP_STREAM_ID_FIELD_NAME));
+		this.streamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_STREAM_ID_FIELD_NAME));
+		this.sinkId = UUIDAdapter.toUUID(reader.readByteArray(SFU_SINK_ID_FIELD_NAME));
+		this.sfuPadId =  UUIDAdapter.toUUID(reader.readByteArray(SFU_RTP_PAD_ID_FIELD_NAME));
+		this.internal = reader.readBoolean(SFU_RTP_INTERNAL_FIELD_NAME);
+		this.streamDirection =  StreamDirection.valueOf(reader.readUTF(SFU_RTP_STREAM_DIRECTION_FIELD_NAME));
+
+		this.added = reader.readLong(ADDED_FIELD_NAME);
+	}
+
+	@Override
+	public String toString() {
+		return JsonUtils.objectToString(this);
+	}
+
+
+	@Override
+	public int getClassVersion() {
+		return CLASS_VERSION;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (Objects.isNull(other) || !this.getClass().getName().equals(other.getClass().getName())) {
+			return false;
+		}
+		SfuRtpPadDTO otherDTO = (SfuRtpPadDTO) other;
+		if (!Objects.equals(this.sfuId, otherDTO.sfuId) ||
+			!Objects.equals(this.serviceId, otherDTO.serviceId) ||
+			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
+			!Objects.equals(this.transportId, otherDTO.transportId) ||
+			!Objects.equals(this.sinkId, otherDTO.sinkId) ||
+			!Objects.equals(this.streamId, otherDTO.streamId) ||
+			!Objects.equals(this.sfuPadId, otherDTO.sfuPadId) ||
+			!Objects.equals(this.streamDirection, otherDTO.streamDirection) ||
+			!Objects.equals(this.internal, otherDTO.internal) ||
+			!Objects.equals(this.added, otherDTO.added)
+		) {
+			return false;
+		}
+		return true;
+	}
+
+	public static class Builder {
+		private final SfuRtpPadDTO result = new SfuRtpPadDTO();
+
+		public Builder from(SfuRtpPadDTO source) {
+			Objects.requireNonNull(source);
+			return this
+					.withServiceId(source.serviceId)
+					.withMediaUnitId(source.mediaUnitId)
+					.withSfuId(source.sfuId)
+					.withSfuTransportId(source.transportId)
+					.withSfuRtpPadId(source.sfuPadId)
+					.withStreamId(source.streamId)
+					.withSinkId(source.sinkId)
+					.withStreamDirection(source.streamDirection)
+					.withAddedTimestamp(source.added)
+
+					;
+
+		}
+
+		public Builder withServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+
+		public Builder withMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+
+		public Builder withSfuId(UUID value) {
+			this.result.sfuId = value;
+			return this;
+		}
+
+		public Builder withSfuTransportId(UUID value) {
+			this.result.transportId = value;
+			return this;
+		}
+
+		public Builder withSfuRtpPadId(UUID value) {
+			this.result.sfuPadId = value;
+			return this;
+		}
+
+		public Builder withStreamId(UUID value) {
+			this.result.streamId = value;
+			return this;
+		}
+
+		public Builder withSinkId(UUID value) {
+			this.result.sinkId = value;
+			return this;
+		}
+
+		public Builder withStreamDirection(StreamDirection value) {
+			this.result.streamDirection = value;
+			return this;
+		}
+
+		public Builder withInternal(boolean value) {
+			this.result.internal = value;
+			return this;
+		}
+
+		public Builder withAddedTimestamp(Long value) {
+			this.result.added = value;
+			return this;
+		}
+
+		public SfuRtpPadDTO build() {
+			Objects.requireNonNull(this.result.sfuId);
+			Objects.requireNonNull(this.result.transportId);
+			Objects.requireNonNull(this.result.sfuPadId);
+			Objects.requireNonNull(this.result.added);
+			return this.result;
+		}
+    }
+}

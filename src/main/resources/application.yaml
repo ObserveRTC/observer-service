@@ -57,8 +57,9 @@ observer:
 
     websockets:
       enabled: true
-      maxClientSamplesBatch: 100
-      maxSfuSamplesBatch: 100
+      feedbacks:
+        callInfo: true
+#      crypting:
       decrypter:
         type: AES-256
         config:
