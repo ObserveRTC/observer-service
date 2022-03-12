@@ -3,6 +3,11 @@ WebRTC-Observer
 ![Build](https://github.com/ObserveRTC/observer/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/ObserveRTC/observer/actions/workflows/test.yml/badge.svg)
 
+
+UNDER DEVELOPMENT, NO STABLE VERSION AVAILABLE AT THE MOMENT
+
+
+
 Open Source monitoring service for WebRTC applications.
 
 ## Design Goals
