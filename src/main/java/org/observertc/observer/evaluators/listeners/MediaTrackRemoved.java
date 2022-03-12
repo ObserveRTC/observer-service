@@ -90,10 +90,10 @@ class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<
             String clientId = UUIDAdapter.toStringOrNull(mediaTrackDTO.clientId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(mediaTrackDTO.peerConnectionId);
             String trackId = UUIDAdapter.toStringOrNull(mediaTrackDTO.trackId);
-            String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.rtpStreamId);
+            String sfuStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.sfuStreamId);
             String streamDirection = mediaTrackDTO.direction != null ? mediaTrackDTO.direction.name() : null;
             MediaTrackAttachment attachment = MediaTrackAttachment.builder()
-                    .withRtpStreamId(rtpStreamId)
+                    .withSfuStreamId(sfuStreamId)
                     .withStreamDirection(streamDirection)
                     .build();
             var report = CallEventReport.newBuilder()

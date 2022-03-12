@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.OutboundReport;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

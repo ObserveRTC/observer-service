@@ -9,8 +9,11 @@ import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.tasks.*;
-import org.observertc.observer.samples.*;
-import org.observertc.webrtc.observer.samples.*;
+import org.observertc.observer.samples.CollectedSfuSamples;
+import org.observertc.observer.samples.ObservedSfuSample;
+import org.observertc.observer.samples.SfuSampleVisitor;
+import org.observertc.observer.samples.SfuSamples;
+import org.observertc.schemas.samples.Samples.SfuSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,18 +93,20 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         newTransports.put(transportId, sfuTransportDTO);
                     }
                 });
-                SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuRtpSource -> {
-                    UUID streamId = UUID.fromString(sfuRtpSource.rtpStreamId);
-                    UUID padId = UUID.fromString(sfuRtpSource.padId);
-                    boolean internalPad = Objects.nonNull(sfuRtpSource.internal);
+                SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
+                    UUID streamId = UUID.fromString(sfuOutboundRtpPad.streamId);
+                    UUID sinkId = UUID.fromString(sfuOutboundRtpPad.sinkId);
+                    UUID padId = UUID.fromString(sfuOutboundRtpPad.padId);
+                    boolean internalPad = Objects.nonNull(sfuOutboundRtpPad.internal);
                     if (!report.foundRtpPadIds.contains(padId) && !newRtpPads.containsKey(padId)) {
-                        UUID transportId = UUID.fromString(sfuRtpSource.transportId);
+                        UUID transportId = UUID.fromString(sfuOutboundRtpPad.transportId);
                         var sfuRtpPadDTO = SfuRtpPadDTO.builder()
                                 .withSfuId(sfuId)
                                 .withSfuTransportId(transportId)
-                                .withRtpStreamId(streamId)
+                                .withStreamId(streamId)
+                                .withSinkId(sinkId)
                                 .withSfuRtpPadId(padId)
-                                .withInternalPad(internalPad)
+                                .withInternal(internalPad)
                                 .withServiceId(observedSfuSample.getServiceId())
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())
@@ -110,18 +115,18 @@ public class AddNewSfuEntities implements Consumer<CollectedSfuSamples> {
                         newRtpPads.put(padId, sfuRtpPadDTO);
                     }
                 });
-                SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuRtpSink -> {
-                    UUID streamId = UUID.fromString(sfuRtpSink.rtpStreamId);
-                    UUID padId = UUID.fromString(sfuRtpSink.padId);
+                SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(inboundRtpPad -> {
+                    UUID streamId = UUID.fromString(inboundRtpPad.streamId);
+                    UUID padId = UUID.fromString(inboundRtpPad.padId);
                     if (!report.foundRtpPadIds.contains(padId) && !newRtpPads.containsKey(padId)) {
-                        UUID transportId = UUID.fromString(sfuRtpSink.transportId);
-                        boolean internalPad = Objects.nonNull(sfuRtpSink.outboundPadId);
+                        UUID transportId = UUID.fromString(inboundRtpPad.transportId);
+                        boolean internalPad = Objects.nonNull(inboundRtpPad.internal);
                         var sfuRtpPadDTO = SfuRtpPadDTO.builder()
                                 .withSfuId(sfuId)
                                 .withSfuTransportId(transportId)
-                                .withRtpStreamId(streamId)
+                                .withStreamId(streamId)
                                 .withSfuRtpPadId(padId)
-                                .withInternalPad(internalPad)
+                                .withInternal(internalPad)
                                 .withServiceId(observedSfuSample.getServiceId())
                                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                                 .withAddedTimestamp(observedSfuSample.getTimestamp())

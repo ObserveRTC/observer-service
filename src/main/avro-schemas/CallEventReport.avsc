@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "CallEventReport",
-  "namespace": "org.observertc.schemas.reports",
+  "namespace": "org.observertc.schemas.reports.reports",
   "doc": "Observer created reports related to events (call started, call ended, client joined, etc...) indicated by the incoming samples.",
   "fields": [
     {

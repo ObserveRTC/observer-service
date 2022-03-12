@@ -6,7 +6,6 @@ import org.apache.avro.message.MessageEncoder;
 import org.apache.avro.specific.SpecificData;
 import org.observertc.observer.common.OutboundReport;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

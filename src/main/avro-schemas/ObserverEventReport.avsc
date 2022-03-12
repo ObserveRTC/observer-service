@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "ObserverEventReport",
-  "namespace": "org.observertc.schemas",
+  "namespace": "org.observertc.schemas.reports",
   "doc": "A report created for observer generated events",
   "fields": [
     {

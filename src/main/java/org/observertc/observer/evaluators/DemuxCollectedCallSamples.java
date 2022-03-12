@@ -12,8 +12,7 @@ import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
 import org.observertc.observer.samples.*;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.observer.samples.*;
-import org.observertc.webrtc.schemas.reports.*;
+import org.observertc.schemas.samples.Samples.ClientSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -616,8 +615,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setGapLossRate(outboundVideoTrack.gapLossRate)
                     .setGapDiscardRate(outboundVideoTrack.gapDiscardRate)
                     .setFramesDropped(outboundVideoTrack.framesDropped)
-                    .setPartialFramesLost(outboundVideoTrack.partialFramesList)
-                    .setFullFramesLost(outboundVideoTrack.fullFramesList)
+                    .setPartialFramesLost(outboundVideoTrack.partialFramesLost)
+                    .setFullFramesLost(outboundVideoTrack.fullFramesLost)
                     .setRoundTripTime(outboundVideoTrack.roundTripTime)
                     .setTotalRoundTripTime(outboundVideoTrack.totalRoundTripTime)
                     .setFractionLost(outboundVideoTrack.fractionLost)
@@ -709,7 +708,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setLocalProtocol(peerConnectionTransport.localProtocol)
                     .setLocalCandidateType(peerConnectionTransport.localCandidateType)
                     .setLocalCandidateICEServerUrl(peerConnectionTransport.localCandidateICEServerUrl)
-                    .setLocalCandidateRelayProtocol(peerConnectionTransport.localRelayProtocol)
+                    .setLocalCandidateRelayProtocol(peerConnectionTransport.localCandidateRelayProtocol)
 
                     /* ICE Remote Candidate */
                     .setRemoteAddress(peerConnectionTransport.remoteAddress)
@@ -717,7 +716,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setRemoteProtocol(peerConnectionTransport.remoteProtocol)
                     .setRemoteCandidateType(peerConnectionTransport.remoteCandidateType)
                     .setRemoteCandidateICEServerUrl(peerConnectionTransport.remoteCandidateICEServerUrl)
-                    .setRemoteCandidateRelayProtocol(peerConnectionTransport.remoteRelayProtocol)
+                    .setRemoteCandidateRelayProtocol(peerConnectionTransport.remoteCandidateRelayProtocol)
 
                     /* ICE Candidate Pair*/
                     .setCandidatePairState(peerConnectionTransport.candidatePairState)
@@ -830,7 +829,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                     .setSampleSeq(observedClientSample.getSampleSeq())
 
                     /* Data Channel stats */
-                    .setExtensionType(extensionStat.extensionType)
+                    .setExtensionType(extensionStat.type)
                     .setPayload(extensionStat.payload)
 
                     .build();
@@ -871,49 +870,4 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
         var result = task.getResult().inboundTrackMatchIds;
         return result;
     }
-
-
-//    private Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> makeCallsMatchedIds(CollectedCallSamples collectedCallSamples) {
-//        Set<UUID> inboundTrackIds = new HashSet<>();
-//        collectedCallSamples.stream()
-//                .flatMap(CallSamples::stream)
-//                .flatMap(ClientSamples::stream)
-//                .forEach(clientSample -> {
-//                    ClientSampleVisitor.streamInboundAudioTracks(clientSample)
-//                            .map(t -> UUIDAdapter.tryParse(t.trackId))
-//                            .filter(Optional::isPresent)
-//                            .map(Optional::get)
-//                            .forEach(inboundTrackIds::add);
-//
-//                    ClientSampleVisitor.streamInboundVideoTracks(clientSample)
-//                            .map(t -> UUIDAdapter.tryParse(t.trackId))
-//                            .filter(Optional::isPresent)
-//                            .map(Optional::get)
-//                            .forEach(inboundTrackIds::add);
-//                });
-//        var task = findRemoteClientIdsForMediaTrackIdsProvider.get()
-//                .whereMediaTrackIds(inboundTrackIds);
-//
-//        if (!task.execute().succeeded()) {
-//            logger.warn("Cannot match inbound tracks to outbound tracks, because the task execution is failed");
-//            return Collections.EMPTY_MAP;
-//        }
-//
-//        Map<UUID, Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>>> result = new HashMap<>();
-//        var mappings = task.getResult();
-//        mappings.forEach(matchedIds -> {
-//            Map<Long, List<FindRemoteClientIdsForMediaTrackIds.MatchedIds>> ssrcMatches = result.get(matchedIds.callId);
-//            if (Objects.isNull(ssrcMatches)) {
-//                ssrcMatches = new HashMap<>();
-//                result.put(matchedIds.callId, ssrcMatches);
-//            }
-//            var matchedIdsList = ssrcMatches.get(matchedIds.SSRC);
-//            if (Objects.isNull(matchedIdsList)) {
-//                matchedIdsList = new LinkedList<>();
-//                ssrcMatches.put(matchedIds.SSRC, matchedIdsList);
-//            }
-//            matchedIdsList.add(matchedIds);
-//        });
-//        return result;
-//    }
 }

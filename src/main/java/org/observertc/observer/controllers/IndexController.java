@@ -5,7 +5,6 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import io.micronaut.views.View;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -34,7 +33,6 @@ public class IndexController {
 	}
 
 	@Secured(SecurityRule.IS_ANONYMOUS)
-	@View("home")
 	@Get("/home")
 	public Map<String, Object> getHome() {
 		return new HashMap<>();

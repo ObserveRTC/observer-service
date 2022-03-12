@@ -1,4 +1,4 @@
-package org.observertc.webrtc.schemas.samples;
+package org.observertc.schemas.samples;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.26";
+	public static final String VERSION="2.0.0-beta.30";
 	/**
 	* undefined
 	*/
@@ -1068,6 +1068,11 @@ public class Samples {
 			@JsonProperty("framesDropped")
 			public Integer framesDropped;
 			/**
+			* The total number of frames decoded on the corresponded RTP stream
+			*/
+			@JsonProperty("framesDecoded")
+			public Integer framesDecoded;
+			/**
 			* The total number of frames partially lost on the corresponded RTP stream
 			*/
 			@JsonProperty("partialFramesLost")
@@ -1116,7 +1121,12 @@ public class Samples {
 			* The total interframe delay
 			*/
 			@JsonProperty("totalInterFrameDelay")
-			public Double totalInterFrameDelay;
+			public Long totalInterFrameDelay;
+			/**
+			* The total number of inter frame delay squere on the corresponded synchronization source (ssrc) Useful for variance calculation for interframe delays
+			*/
+			@JsonProperty("totalSquaredInterFrameDelay")
+			public Long totalSquaredInterFrameDelay;
 			/**
 			* The total number FIR packets sent from this endpoint to the source on the corresponded RTP stream
 			*/
@@ -1600,6 +1610,21 @@ public class Samples {
 			@JsonProperty("nackCount")
 			public Integer nackCount;
 			/**
+			* The total number FIR packets sent from this endpoint to the source on the corresponded RTP stream
+			*/
+			@JsonProperty("firCount")
+			public Integer firCount;
+			/**
+			* The total number of Picture Loss Indication sent on the corresponded RTP stream
+			*/
+			@JsonProperty("pliCount")
+			public Integer pliCount;
+			/**
+			* The total number of SLI indicator sent from the endpoint on the corresponded RTP stream
+			*/
+			@JsonProperty("sliCount")
+			public Integer sliCount;
+			/**
 			* Indicate the name of the encoder implementation library
 			*/
 			@JsonProperty("encoderImplementation")
@@ -1653,7 +1678,7 @@ public class Samples {
 			* The sum of the QP the media encoder provided on the corresponded RTP stream.
 			*/
 			@JsonProperty("qpSum")
-			public Integer qpSum;
+			public Long qpSum;
 			/**
 			* The total time in seconds spent in encoding media frames for the corresponded RTP stream.
 			*/
@@ -1792,8 +1817,8 @@ public class Samples {
 			/**
 			* The total number of full frames lost at the remote endpoint on the corresponded RTP stream.
 			*/
-			@JsonProperty("fullFramesList")
-			public Integer fullFramesList;
+			@JsonProperty("fullFramesLost")
+			public Integer fullFramesLost;
 			/**
 			* True if the corresponded media source is remote, false otherwise (or null depending on browser and version)
 			*/
@@ -2331,6 +2356,11 @@ public class Samples {
 			@JsonProperty("transportId")
 			public String transportId;
 			/**
+			* Flag to indicate that the rtp pad is used as an internal communication between SFU instances
+			*/
+			@JsonProperty("internal")
+			public Boolean internal;
+			/**
 			* The id of the media stream the RTP pad belongs to. This id is to group rtp pads (e.g.: simulcast) carrying payloads to the same media. 
 			*/
 			@JsonProperty("streamId")
@@ -2521,6 +2551,11 @@ public class Samples {
 			*/
 			@JsonProperty("transportId")
 			public String transportId;
+			/**
+			* Flag to indicate that the rtp pad is used as an internal communication between SFU instances
+			*/
+			@JsonProperty("internal")
+			public Boolean internal;
 			/**
 			* The id of the stream this outbound RTP pad sinks the media from
 			*/

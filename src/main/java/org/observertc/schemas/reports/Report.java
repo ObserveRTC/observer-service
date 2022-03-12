@@ -5,19 +5,79 @@
  */
 package org.observertc.schemas.reports;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 /** A multiplexed Report object wraps an encoded report in bytes format */
 @org.apache.avro.specific.AvroGenerated
 public class Report extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3498214851812190228L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Report\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A multiplexed Report object wraps an encoded report in bytes format\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The type of the report\"},{\"name\":\"payload\",\"type\":\"bytes\",\"doc\":\"The payload of contans the actual report\"}]}");
+  private static final long serialVersionUID = 7593841525707115457L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Report\",\"namespace\":\"org.observertc.schemas.reports\",\"doc\":\"A multiplexed Report object wraps an encoded report in bytes format\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The type of the report\"},{\"name\":\"payload\",\"type\":\"bytes\",\"doc\":\"The payload of contans the actual report\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  private static final SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<Report> ENCODER =
+      new BinaryMessageEncoder<Report>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<Report> DECODER =
+      new BinaryMessageDecoder<Report>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<Report> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<Report> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<Report> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<Report>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this Report to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a Report from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a Report instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static Report fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
   /** The type of the report */
-   private java.lang.String type;
+  private java.lang.String type;
   /** The payload of contans the actual report */
-   private java.nio.ByteBuffer payload;
+  private java.nio.ByteBuffer payload;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -36,13 +96,14 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
     this.payload = payload;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return type;
     case 1: return payload;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -50,9 +111,9 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: type = (java.lang.String)value$; break;
+    case 0: type = value$ != null ? value$.toString() : null; break;
     case 1: payload = (java.nio.ByteBuffer)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -65,6 +126,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
   }
 
 
+
   /**
    * Gets the value of the 'payload' field.
    * @return The payload of contans the actual report
@@ -74,12 +136,13 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
   }
 
 
+
   /**
    * Creates a new Report RecordBuilder.
    * @return A new Report RecordBuilder
    */
-  public static Report.Builder newBuilder() {
-    return new Report.Builder();
+  public static org.observertc.schemas.reports.Report.Builder newBuilder() {
+    return new org.observertc.schemas.reports.Report.Builder();
   }
 
   /**
@@ -87,8 +150,12 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
    * @param other The existing builder to copy.
    * @return A new Report RecordBuilder
    */
-  public static Report.Builder newBuilder(Report.Builder other) {
-    return new Report.Builder(other);
+  public static org.observertc.schemas.reports.Report.Builder newBuilder(org.observertc.schemas.reports.Report.Builder other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.Report.Builder();
+    } else {
+      return new org.observertc.schemas.reports.Report.Builder(other);
+    }
   }
 
   /**
@@ -96,13 +163,18 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
    * @param other The existing instance to copy.
    * @return A new Report RecordBuilder
    */
-  public static Report.Builder newBuilder(Report other) {
-    return new Report.Builder(other);
+  public static org.observertc.schemas.reports.Report.Builder newBuilder(org.observertc.schemas.reports.Report other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.Report.Builder();
+    } else {
+      return new org.observertc.schemas.reports.Report.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for Report instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Report>
     implements org.apache.avro.data.RecordBuilder<Report> {
 
@@ -113,22 +185,22 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(Report.Builder other) {
+    private Builder(org.observertc.schemas.reports.Report.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.type)) {
         this.type = data().deepCopy(fields()[0].schema(), other.type);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.payload)) {
         this.payload = data().deepCopy(fields()[1].schema(), other.payload);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
     }
 
@@ -136,8 +208,8 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
      * Creates a Builder by copying an existing Report instance
      * @param other The existing instance to copy.
      */
-    private Builder(Report other) {
-            super(SCHEMA$);
+    private Builder(org.observertc.schemas.reports.Report other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.type)) {
         this.type = data().deepCopy(fields()[0].schema(), other.type);
         fieldSetFlags()[0] = true;
@@ -157,13 +229,14 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
       return type;
     }
 
+
     /**
       * Sets the value of the 'type' field.
       * The type of the report
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public Report.Builder setType(java.lang.String value) {
+    public org.observertc.schemas.reports.Report.Builder setType(java.lang.String value) {
       validate(fields()[0], value);
       this.type = value;
       fieldSetFlags()[0] = true;
@@ -185,7 +258,7 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
       * The type of the report
       * @return This builder.
       */
-    public Report.Builder clearType() {
+    public org.observertc.schemas.reports.Report.Builder clearType() {
       type = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -200,13 +273,14 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
       return payload;
     }
 
+
     /**
       * Sets the value of the 'payload' field.
       * The payload of contans the actual report
       * @param value The value of 'payload'.
       * @return This builder.
       */
-    public Report.Builder setPayload(java.nio.ByteBuffer value) {
+    public org.observertc.schemas.reports.Report.Builder setPayload(java.nio.ByteBuffer value) {
       validate(fields()[1], value);
       this.payload = value;
       fieldSetFlags()[1] = true;
@@ -228,39 +302,91 @@ public class Report extends org.apache.avro.specific.SpecificRecordBase implemen
       * The payload of contans the actual report
       * @return This builder.
       */
-    public Report.Builder clearPayload() {
+    public org.observertc.schemas.reports.Report.Builder clearPayload() {
       payload = null;
       fieldSetFlags()[1] = false;
       return this;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Report build() {
       try {
         Report record = new Report();
         record.type = fieldSetFlags()[0] ? this.type : (java.lang.String) defaultValue(fields()[0]);
         record.payload = fieldSetFlags()[1] ? this.payload : (java.nio.ByteBuffer) defaultValue(fields()[1]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<Report>
+    WRITER$ = (org.apache.avro.io.DatumWriter<Report>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<Report>
+    READER$ = (org.apache.avro.io.DatumReader<Report>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.type);
+
+    out.writeBytes(this.payload);
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.type = in.readString();
+
+      this.payload = in.readBytes(this.payload);
+
+    } else {
+      for (int i = 0; i < 2; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.type = in.readString();
+          break;
+
+        case 1:
+          this.payload = in.readBytes(this.payload);
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

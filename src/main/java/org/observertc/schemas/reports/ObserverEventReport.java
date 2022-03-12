@@ -5,45 +5,105 @@
  */
 package org.observertc.schemas.reports;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 /** A report created for observer generated events */
 @org.apache.avro.specific.AvroGenerated
 public class ObserverEventReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 260284003382657590L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ObserverEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A report created for observer generated events\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
+  private static final long serialVersionUID = -8212878431723797702L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ObserverEventReport\",\"namespace\":\"org.observertc.schemas.reports\",\"doc\":\"A report created for observer generated events\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  private static final SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<ObserverEventReport> ENCODER =
+      new BinaryMessageEncoder<ObserverEventReport>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<ObserverEventReport> DECODER =
+      new BinaryMessageDecoder<ObserverEventReport>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<ObserverEventReport> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<ObserverEventReport> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<ObserverEventReport> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<ObserverEventReport>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this ObserverEventReport to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a ObserverEventReport from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a ObserverEventReport instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static ObserverEventReport fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
   /** The unique identifier of the service */
-   private java.lang.String serviceId;
+  private java.lang.String serviceId;
   /** The media unit id the report belongs to */
-   private java.lang.String mediaUnitId;
+  private java.lang.String mediaUnitId;
   /** The marker the originated sample is reported with */
-   private java.lang.String marker;
+  private java.lang.String marker;
   /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
-   private long timestamp;
+  private long timestamp;
   /** The generated unique identifier of the call */
-   private java.lang.String callId;
+  private java.lang.String callId;
   /** webrtc app provided room id */
-   private java.lang.String roomId;
+  private java.lang.String roomId;
   /** The generated unique identifier of the client */
-   private java.lang.String clientId;
+  private java.lang.String clientId;
   /** webrtc app provided user identifier */
-   private java.lang.String userId;
+  private java.lang.String userId;
   /** The unique identifier of the peer connection */
-   private java.lang.String peerConnectionId;
+  private java.lang.String peerConnectionId;
   /** The timestamp of the sample the event related to */
-   private java.lang.Long sampleTimestamp;
+  private java.lang.Long sampleTimestamp;
   /** The sequence number of the sample the event may related to */
-   private java.lang.Integer sampleSeq;
+  private java.lang.Integer sampleSeq;
   /** The name of the event */
-   private java.lang.String name;
+  private java.lang.String name;
   /** the human readable message of the event */
-   private java.lang.String message;
+  private java.lang.String message;
   /** the value of the event */
-   private java.lang.String value;
+  private java.lang.String value;
   /** attachment the event may created with */
-   private java.lang.String attachments;
+  private java.lang.String attachments;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -88,6 +148,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
     this.attachments = attachments;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -107,7 +168,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
     case 12: return message;
     case 13: return value;
     case 14: return attachments;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -115,22 +176,22 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (java.lang.String)value$; break;
-    case 1: mediaUnitId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
+    case 0: serviceId = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnitId = value$ != null ? value$.toString() : null; break;
+    case 2: marker = value$ != null ? value$.toString() : null; break;
     case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: callId = (java.lang.String)value$; break;
-    case 5: roomId = (java.lang.String)value$; break;
-    case 6: clientId = (java.lang.String)value$; break;
-    case 7: userId = (java.lang.String)value$; break;
-    case 8: peerConnectionId = (java.lang.String)value$; break;
+    case 4: callId = value$ != null ? value$.toString() : null; break;
+    case 5: roomId = value$ != null ? value$.toString() : null; break;
+    case 6: clientId = value$ != null ? value$.toString() : null; break;
+    case 7: userId = value$ != null ? value$.toString() : null; break;
+    case 8: peerConnectionId = value$ != null ? value$.toString() : null; break;
     case 9: sampleTimestamp = (java.lang.Long)value$; break;
     case 10: sampleSeq = (java.lang.Integer)value$; break;
-    case 11: name = (java.lang.String)value$; break;
-    case 12: message = (java.lang.String)value$; break;
-    case 13: value = (java.lang.String)value$; break;
-    case 14: attachments = (java.lang.String)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 11: name = value$ != null ? value$.toString() : null; break;
+    case 12: message = value$ != null ? value$.toString() : null; break;
+    case 13: value = value$ != null ? value$.toString() : null; break;
+    case 14: attachments = value$ != null ? value$.toString() : null; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -143,6 +204,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'mediaUnitId' field.
    * @return The media unit id the report belongs to
@@ -150,6 +212,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   public java.lang.String getMediaUnitId() {
     return mediaUnitId;
   }
+
 
 
   /**
@@ -161,13 +224,15 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'timestamp' field.
    * @return The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    */
-  public java.lang.Long getTimestamp() {
+  public long getTimestamp() {
     return timestamp;
   }
+
 
 
   /**
@@ -179,6 +244,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'roomId' field.
    * @return webrtc app provided room id
@@ -186,6 +252,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   public java.lang.String getRoomId() {
     return roomId;
   }
+
 
 
   /**
@@ -197,6 +264,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'userId' field.
    * @return webrtc app provided user identifier
@@ -204,6 +272,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   public java.lang.String getUserId() {
     return userId;
   }
+
 
 
   /**
@@ -215,6 +284,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'sampleTimestamp' field.
    * @return The timestamp of the sample the event related to
@@ -222,6 +292,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   public java.lang.Long getSampleTimestamp() {
     return sampleTimestamp;
   }
+
 
 
   /**
@@ -233,6 +304,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'name' field.
    * @return The name of the event
@@ -240,6 +312,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   public java.lang.String getName() {
     return name;
   }
+
 
 
   /**
@@ -251,6 +324,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Gets the value of the 'value' field.
    * @return the value of the event
@@ -258,6 +332,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   public java.lang.String getValue() {
     return value;
   }
+
 
 
   /**
@@ -269,12 +344,13 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
   }
 
 
+
   /**
    * Creates a new ObserverEventReport RecordBuilder.
    * @return A new ObserverEventReport RecordBuilder
    */
-  public static ObserverEventReport.Builder newBuilder() {
-    return new ObserverEventReport.Builder();
+  public static org.observertc.schemas.reports.ObserverEventReport.Builder newBuilder() {
+    return new org.observertc.schemas.reports.ObserverEventReport.Builder();
   }
 
   /**
@@ -282,8 +358,12 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
    * @param other The existing builder to copy.
    * @return A new ObserverEventReport RecordBuilder
    */
-  public static ObserverEventReport.Builder newBuilder(ObserverEventReport.Builder other) {
-    return new ObserverEventReport.Builder(other);
+  public static org.observertc.schemas.reports.ObserverEventReport.Builder newBuilder(org.observertc.schemas.reports.ObserverEventReport.Builder other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.ObserverEventReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.ObserverEventReport.Builder(other);
+    }
   }
 
   /**
@@ -291,13 +371,18 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
    * @param other The existing instance to copy.
    * @return A new ObserverEventReport RecordBuilder
    */
-  public static ObserverEventReport.Builder newBuilder(ObserverEventReport other) {
-    return new ObserverEventReport.Builder(other);
+  public static org.observertc.schemas.reports.ObserverEventReport.Builder newBuilder(org.observertc.schemas.reports.ObserverEventReport other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.ObserverEventReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.ObserverEventReport.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for ObserverEventReport instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ObserverEventReport>
     implements org.apache.avro.data.RecordBuilder<ObserverEventReport> {
 
@@ -334,74 +419,74 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(ObserverEventReport.Builder other) {
+    private Builder(org.observertc.schemas.reports.ObserverEventReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.mediaUnitId)) {
         this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.marker)) {
         this.marker = data().deepCopy(fields()[2].schema(), other.marker);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.timestamp)) {
         this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.callId)) {
         this.callId = data().deepCopy(fields()[4].schema(), other.callId);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (isValidValue(fields()[5], other.roomId)) {
         this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
       if (isValidValue(fields()[6], other.clientId)) {
         this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
-        fieldSetFlags()[6] = true;
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
       if (isValidValue(fields()[7], other.userId)) {
         this.userId = data().deepCopy(fields()[7].schema(), other.userId);
-        fieldSetFlags()[7] = true;
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
       if (isValidValue(fields()[8], other.peerConnectionId)) {
         this.peerConnectionId = data().deepCopy(fields()[8].schema(), other.peerConnectionId);
-        fieldSetFlags()[8] = true;
+        fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
       if (isValidValue(fields()[9], other.sampleTimestamp)) {
         this.sampleTimestamp = data().deepCopy(fields()[9].schema(), other.sampleTimestamp);
-        fieldSetFlags()[9] = true;
+        fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
       if (isValidValue(fields()[10], other.sampleSeq)) {
         this.sampleSeq = data().deepCopy(fields()[10].schema(), other.sampleSeq);
-        fieldSetFlags()[10] = true;
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
       if (isValidValue(fields()[11], other.name)) {
         this.name = data().deepCopy(fields()[11].schema(), other.name);
-        fieldSetFlags()[11] = true;
+        fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
       if (isValidValue(fields()[12], other.message)) {
         this.message = data().deepCopy(fields()[12].schema(), other.message);
-        fieldSetFlags()[12] = true;
+        fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
       if (isValidValue(fields()[13], other.value)) {
         this.value = data().deepCopy(fields()[13].schema(), other.value);
-        fieldSetFlags()[13] = true;
+        fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
       if (isValidValue(fields()[14], other.attachments)) {
         this.attachments = data().deepCopy(fields()[14].schema(), other.attachments);
-        fieldSetFlags()[14] = true;
+        fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
     }
 
@@ -409,8 +494,8 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
      * Creates a Builder by copying an existing ObserverEventReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(ObserverEventReport other) {
-            super(SCHEMA$);
+    private Builder(org.observertc.schemas.reports.ObserverEventReport other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
@@ -482,13 +567,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return serviceId;
     }
 
+
     /**
       * Sets the value of the 'serviceId' field.
       * The unique identifier of the service
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -510,7 +596,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The unique identifier of the service
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearServiceId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -525,13 +611,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return mediaUnitId;
     }
 
+
     /**
       * Sets the value of the 'mediaUnitId' field.
       * The media unit id the report belongs to
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -553,7 +640,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearMediaUnitId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -568,13 +655,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return marker;
     }
 
+
     /**
       * Sets the value of the 'marker' field.
       * The marker the originated sample is reported with
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -596,7 +684,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearMarker() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -607,9 +695,10 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getTimestamp() {
+    public long getTimestamp() {
       return timestamp;
     }
+
 
     /**
       * Sets the value of the 'timestamp' field.
@@ -617,7 +706,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setTimestamp(long value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -639,7 +728,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearTimestamp() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -653,13 +742,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return callId;
     }
 
+
     /**
       * Sets the value of the 'callId' field.
       * The generated unique identifier of the call
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setCallId(java.lang.String value) {
       validate(fields()[4], value);
       this.callId = value;
       fieldSetFlags()[4] = true;
@@ -681,7 +771,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The generated unique identifier of the call
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearCallId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -696,13 +786,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return roomId;
     }
 
+
     /**
       * Sets the value of the 'roomId' field.
       * webrtc app provided room id
       * @param value The value of 'roomId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setRoomId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setRoomId(java.lang.String value) {
       validate(fields()[5], value);
       this.roomId = value;
       fieldSetFlags()[5] = true;
@@ -724,7 +815,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * webrtc app provided room id
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearRoomId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearRoomId() {
       roomId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -739,13 +830,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return clientId;
     }
 
+
     /**
       * Sets the value of the 'clientId' field.
       * The generated unique identifier of the client
       * @param value The value of 'clientId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setClientId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setClientId(java.lang.String value) {
       validate(fields()[6], value);
       this.clientId = value;
       fieldSetFlags()[6] = true;
@@ -767,7 +859,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The generated unique identifier of the client
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearClientId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearClientId() {
       clientId = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -782,13 +874,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return userId;
     }
 
+
     /**
       * Sets the value of the 'userId' field.
       * webrtc app provided user identifier
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setUserId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setUserId(java.lang.String value) {
       validate(fields()[7], value);
       this.userId = value;
       fieldSetFlags()[7] = true;
@@ -810,7 +903,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * webrtc app provided user identifier
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearUserId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearUserId() {
       userId = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -825,13 +918,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return peerConnectionId;
     }
 
+
     /**
       * Sets the value of the 'peerConnectionId' field.
       * The unique identifier of the peer connection
       * @param value The value of 'peerConnectionId'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setPeerConnectionId(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setPeerConnectionId(java.lang.String value) {
       validate(fields()[8], value);
       this.peerConnectionId = value;
       fieldSetFlags()[8] = true;
@@ -853,7 +947,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The unique identifier of the peer connection
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearPeerConnectionId() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
       fieldSetFlags()[8] = false;
       return this;
@@ -868,13 +962,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return sampleTimestamp;
     }
 
+
     /**
       * Sets the value of the 'sampleTimestamp' field.
       * The timestamp of the sample the event related to
       * @param value The value of 'sampleTimestamp'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setSampleTimestamp(java.lang.Long value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setSampleTimestamp(java.lang.Long value) {
       validate(fields()[9], value);
       this.sampleTimestamp = value;
       fieldSetFlags()[9] = true;
@@ -896,7 +991,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The timestamp of the sample the event related to
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearSampleTimestamp() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearSampleTimestamp() {
       sampleTimestamp = null;
       fieldSetFlags()[9] = false;
       return this;
@@ -911,13 +1006,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return sampleSeq;
     }
 
+
     /**
       * Sets the value of the 'sampleSeq' field.
       * The sequence number of the sample the event may related to
       * @param value The value of 'sampleSeq'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setSampleSeq(java.lang.Integer value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setSampleSeq(java.lang.Integer value) {
       validate(fields()[10], value);
       this.sampleSeq = value;
       fieldSetFlags()[10] = true;
@@ -939,7 +1035,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The sequence number of the sample the event may related to
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearSampleSeq() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearSampleSeq() {
       sampleSeq = null;
       fieldSetFlags()[10] = false;
       return this;
@@ -954,13 +1050,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return name;
     }
 
+
     /**
       * Sets the value of the 'name' field.
       * The name of the event
       * @param value The value of 'name'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setName(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setName(java.lang.String value) {
       validate(fields()[11], value);
       this.name = value;
       fieldSetFlags()[11] = true;
@@ -982,7 +1079,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * The name of the event
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearName() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearName() {
       name = null;
       fieldSetFlags()[11] = false;
       return this;
@@ -997,13 +1094,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return message;
     }
 
+
     /**
       * Sets the value of the 'message' field.
       * the human readable message of the event
       * @param value The value of 'message'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setMessage(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setMessage(java.lang.String value) {
       validate(fields()[12], value);
       this.message = value;
       fieldSetFlags()[12] = true;
@@ -1025,7 +1123,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * the human readable message of the event
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearMessage() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearMessage() {
       message = null;
       fieldSetFlags()[12] = false;
       return this;
@@ -1040,13 +1138,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return value;
     }
 
+
     /**
       * Sets the value of the 'value' field.
       * the value of the event
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setValue(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setValue(java.lang.String value) {
       validate(fields()[13], value);
       this.value = value;
       fieldSetFlags()[13] = true;
@@ -1068,7 +1167,7 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * the value of the event
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearValue() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearValue() {
       value = null;
       fieldSetFlags()[13] = false;
       return this;
@@ -1083,13 +1182,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       return attachments;
     }
 
+
     /**
       * Sets the value of the 'attachments' field.
       * attachment the event may created with
       * @param value The value of 'attachments'.
       * @return This builder.
       */
-    public ObserverEventReport.Builder setAttachments(java.lang.String value) {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder setAttachments(java.lang.String value) {
       validate(fields()[14], value);
       this.attachments = value;
       fieldSetFlags()[14] = true;
@@ -1111,13 +1211,14 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
       * attachment the event may created with
       * @return This builder.
       */
-    public ObserverEventReport.Builder clearAttachments() {
+    public org.observertc.schemas.reports.ObserverEventReport.Builder clearAttachments() {
       attachments = null;
       fieldSetFlags()[14] = false;
       return this;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ObserverEventReport build() {
       try {
         ObserverEventReport record = new ObserverEventReport();
@@ -1137,26 +1238,357 @@ public class ObserverEventReport extends org.apache.avro.specific.SpecificRecord
         record.value = fieldSetFlags()[13] ? this.value : (java.lang.String) defaultValue(fields()[13]);
         record.attachments = fieldSetFlags()[14] ? this.attachments : (java.lang.String) defaultValue(fields()[14]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<ObserverEventReport>
+    WRITER$ = (org.apache.avro.io.DatumWriter<ObserverEventReport>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<ObserverEventReport>
+    READER$ = (org.apache.avro.io.DatumReader<ObserverEventReport>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.serviceId);
+
+    if (this.mediaUnitId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaUnitId);
+    }
+
+    if (this.marker == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.marker);
+    }
+
+    out.writeLong(this.timestamp);
+
+    out.writeString(this.callId);
+
+    if (this.roomId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.roomId);
+    }
+
+    if (this.clientId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.clientId);
+    }
+
+    if (this.userId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.userId);
+    }
+
+    if (this.peerConnectionId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.peerConnectionId);
+    }
+
+    if (this.sampleTimestamp == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.sampleTimestamp);
+    }
+
+    if (this.sampleSeq == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.sampleSeq);
+    }
+
+    out.writeString(this.name);
+
+    if (this.message == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.message);
+    }
+
+    if (this.value == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.value);
+    }
+
+    if (this.attachments == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.attachments);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.serviceId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaUnitId = null;
+      } else {
+        this.mediaUnitId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.marker = null;
+      } else {
+        this.marker = in.readString();
+      }
+
+      this.timestamp = in.readLong();
+
+      this.callId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.roomId = null;
+      } else {
+        this.roomId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.clientId = null;
+      } else {
+        this.clientId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.userId = null;
+      } else {
+        this.userId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.peerConnectionId = null;
+      } else {
+        this.peerConnectionId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sampleTimestamp = null;
+      } else {
+        this.sampleTimestamp = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sampleSeq = null;
+      } else {
+        this.sampleSeq = in.readInt();
+      }
+
+      this.name = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.message = null;
+      } else {
+        this.message = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.value = null;
+      } else {
+        this.value = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.attachments = null;
+      } else {
+        this.attachments = in.readString();
+      }
+
+    } else {
+      for (int i = 0; i < 15; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.serviceId = in.readString();
+          break;
+
+        case 1:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaUnitId = null;
+          } else {
+            this.mediaUnitId = in.readString();
+          }
+          break;
+
+        case 2:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.marker = null;
+          } else {
+            this.marker = in.readString();
+          }
+          break;
+
+        case 3:
+          this.timestamp = in.readLong();
+          break;
+
+        case 4:
+          this.callId = in.readString();
+          break;
+
+        case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.roomId = null;
+          } else {
+            this.roomId = in.readString();
+          }
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.clientId = null;
+          } else {
+            this.clientId = in.readString();
+          }
+          break;
+
+        case 7:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.userId = null;
+          } else {
+            this.userId = in.readString();
+          }
+          break;
+
+        case 8:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.peerConnectionId = null;
+          } else {
+            this.peerConnectionId = in.readString();
+          }
+          break;
+
+        case 9:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sampleTimestamp = null;
+          } else {
+            this.sampleTimestamp = in.readLong();
+          }
+          break;
+
+        case 10:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sampleSeq = null;
+          } else {
+            this.sampleSeq = in.readInt();
+          }
+          break;
+
+        case 11:
+          this.name = in.readString();
+          break;
+
+        case 12:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.message = null;
+          } else {
+            this.message = in.readString();
+          }
+          break;
+
+        case 13:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.value = null;
+          } else {
+            this.value = in.readString();
+          }
+          break;
+
+        case 14:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.attachments = null;
+          } else {
+            this.attachments = in.readString();
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

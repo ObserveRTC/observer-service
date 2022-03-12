@@ -5,181 +5,241 @@
  */
 package org.observertc.schemas.reports;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 /** A Report created for Outbound Video Tracks. A combination of Video source, Codec metadata carrying outbound and remote inbound RTP stat measurements */
 @org.apache.avro.specific.AvroGenerated
 public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -431817785295811178L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OutboundVideoTrackReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"A Report created for Outbound Video Tracks. A combination of Video source, Codec metadata carrying outbound and remote inbound RTP stat measurements\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is labeled with\",\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track\",\"default\":null},{\"name\":\"rtpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the RTP stream connected to a remote media unit (such as an SFU)\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The RTP SSRC field\"},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent on the corresponded synchronization source\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent on the corresponded synchronization source\",\"default\":null},{\"name\":\"rid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\" The rid encoding parameter of the corresponded synchronization source\",\"default\":null},{\"name\":\"lastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\" the timestamp the last packet was sent. (UTC epoch in ms)\",\"default\":null},{\"name\":\"headerBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"packetsDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"bytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of FEC packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"retransmittedPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of retransmitted packets sent over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"retransmittedBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of retransmitted bytes sent over the corresponded synchronization source (ssrc).\",\"default\":null},{\"name\":\"targetBitrate\",\"type\":[\"null\",\"long\"],\"doc\":\"Reflects the current encoder target in bits per second.\",\"default\":null},{\"name\":\"totalEncodedBytesTarget\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets\",\"default\":null},{\"name\":\"frameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the height of the last encoded frame sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"frameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the width of the last encoded frame sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"frameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the bit depth per pixel of the last encoded frame sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"The number of encoded frames over the last second sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"hugeFramesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames encoded over the corresponded synchronization source\",\"default\":null},{\"name\":\"keyFramesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of keyframes sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames discarded before sending over the corresponded synchronization source\",\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"long\"],\"doc\":\"The sum of QP values encoded by the encoder corresponded to the synchronization source\",\"default\":null},{\"name\":\"totalEncodeTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of encoding time spent by the encoder corresponded to the synchronization source\",\"default\":null},{\"name\":\"totalPacketSendDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source\",\"default\":null},{\"name\":\"averageRtcpInterval\",\"type\":[\"null\",\"double\"],\"doc\":\"The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"qualityLimitationDurationCPU\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU\",\"default\":null},{\"name\":\"qualityLimitationDurationNone\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state\",\"default\":null},{\"name\":\"qualityLimitationDurationBandwidth\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth\",\"default\":null},{\"name\":\"qualityLimitationDurationOther\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor\",\"default\":null},{\"name\":\"qualityLimitationReason\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Indicate a reason for the corresponding synchronization source (ssrc) quality is limited\",\"default\":null},{\"name\":\"qualityLimitationResolutionChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of quality limiatation changes happened for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"perDscpPacketsSent\",\"type\":[\"null\",\"double\"],\"doc\":\"The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of full inter requests happened over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of picture loss indication happened received over the corresponding synchronization source (ssrc)\",\"de","fault\":null},{\"name\":\"sliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of slice loss indication happened over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"encoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Indicate the name of the encoder implementation library\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded synchronization source\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of bytes received on the corresponded synchronization source\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The corresponded synchronization source reported jitter\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets missed the playout point and therefore discarded by the jitterbuffer\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source\",\"default\":null},{\"name\":\"burstPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost in burst (RFC6958)\",\"default\":null},{\"name\":\"burstPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets discarded in burst (RFC6958)\",\"default\":null},{\"name\":\"burstLossCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsLost on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"framesDropped\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames dropped over the corresponded synchronization source\",\"default\":null},{\"name\":\"partialFramesLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of partial frames lost over the corresponded synchronization source\",\"default\":null},{\"name\":\"fullFramesLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of full frames lost over the corresponded synchronization source\",\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"totalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of RTT measurements belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"fractionLost\",\"type\":[\"null\",\"double\"],\"doc\":\"The receiver reported fractional lost belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"reportsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of RR reports received, which is the base of the remote inbound calculation on this source\",\"default\":null},{\"name\":\"roundTripTimeMeasurements\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of calculated RR measurements received on this source\",\"default\":null},{\"name\":\"relayedSource\",\"type\":[\"null\",\"boolean\"],\"doc\":\"True if the corresponded media source is remote, false otherwise (or null depending on browser and version)\",\"default\":null},{\"name\":\"encodedFrameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the encoded width of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the encoded height of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFramesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"Indicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"ended\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Flag represents if the sender ended the media stream track or not.\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The type of the payload the RTP packet SSRC belongs to\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the MIME type of the codec (e.g.: video/vp8)\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The negotiated clock rate the RTP timestamp is generated of\",\"default\":null},{\"name\":\"channels\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The a=fmtp line in the SDP corresponding to the codec\",\"default\":null}]}");
+  private static final long serialVersionUID = -7869018583538331087L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OutboundVideoTrackReport\",\"namespace\":\"org.observertc.schemas.reports\",\"doc\":\"A Report created for Outbound Video Tracks. A combination of Video source, Codec metadata carrying outbound and remote inbound RTP stat measurements\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The media unit id the report belongs to\"},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the call\"},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The generated unique identifier of the client\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the peer connection\"},{\"name\":\"label\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The webrtc app provided label the peer connection is labeled with\",\"default\":null},{\"name\":\"trackId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the track\",\"default\":null},{\"name\":\"sfuStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the Sfu stream corresponds to the outbound track\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":\"int\",\"doc\":\"The sequence number of the sample the report is generated from\"},{\"name\":\"ssrc\",\"type\":\"long\",\"doc\":\"The RTP SSRC field\"},{\"name\":\"packetsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets sent on the corresponded synchronization source\",\"default\":null},{\"name\":\"bytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes sent on the corresponded synchronization source\",\"default\":null},{\"name\":\"rid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\" The rid encoding parameter of the corresponded synchronization source\",\"default\":null},{\"name\":\"lastPacketSentTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\" the timestamp the last packet was sent. (UTC epoch in ms)\",\"default\":null},{\"name\":\"headerBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"packetsDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"bytesDiscardedOnSend\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"fecPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of FEC packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"retransmittedPacketsSent\",\"type\":[\"null\",\"int\"],\"doc\":\"Total number of retransmitted packets sent over the corresponding synchronization source (ssrc).\",\"default\":null},{\"name\":\"retransmittedBytesSent\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of retransmitted bytes sent over the corresponded synchronization source (ssrc).\",\"default\":null},{\"name\":\"targetBitrate\",\"type\":[\"null\",\"long\"],\"doc\":\"Reflects the current encoder target in bits per second.\",\"default\":null},{\"name\":\"totalEncodedBytesTarget\",\"type\":[\"null\",\"long\"],\"doc\":\"The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets\",\"default\":null},{\"name\":\"frameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the height of the last encoded frame sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"frameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the width of the last encoded frame sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"frameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Represents the bit depth per pixel of the last encoded frame sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"The number of encoded frames over the last second sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"hugeFramesSent\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames encoded over the corresponded synchronization source\",\"default\":null},{\"name\":\"keyFramesEncoded\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of keyframes sent over the corresponded synchronization source\",\"default\":null},{\"name\":\"framesDiscardedOnSend\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames discarded before sending over the corresponded synchronization source\",\"default\":null},{\"name\":\"qpSum\",\"type\":[\"null\",\"long\"],\"doc\":\"The sum of QP values encoded by the encoder corresponded to the synchronization source\",\"default\":null},{\"name\":\"totalEncodeTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of encoding time spent by the encoder corresponded to the synchronization source\",\"default\":null},{\"name\":\"totalPacketSendDelay\",\"type\":[\"null\",\"double\"],\"doc\":\"The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source\",\"default\":null},{\"name\":\"averageRtcpInterval\",\"type\":[\"null\",\"double\"],\"doc\":\"The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"qualityLimitationDurationCPU\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU\",\"default\":null},{\"name\":\"qualityLimitationDurationNone\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state\",\"default\":null},{\"name\":\"qualityLimitationDurationBandwidth\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth\",\"default\":null},{\"name\":\"qualityLimitationDurationOther\",\"type\":[\"null\",\"double\"],\"doc\":\"Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor\",\"default\":null},{\"name\":\"qualityLimitationReason\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Indicate a reason for the corresponding synchronization source (ssrc) quality is limited\",\"default\":null},{\"name\":\"qualityLimitationResolutionChanges\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of quality limiatation changes happened for the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"perDscpPacketsSent\",\"type\":[\"null\",\"double\"],\"doc\":\"The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"nackCount\",\"type\":[\"null\",\"int\"],\"doc\":\"Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"firCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of full inter requests happened over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"pliCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of picture loss indication happened received over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"s","liCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of slice loss indication happened over the corresponding synchronization source (ssrc)\",\"default\":null},{\"name\":\"encoderImplementation\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Indicate the name of the encoder implementation library\",\"default\":null},{\"name\":\"packetsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets received on the corresponded synchronization source\",\"default\":null},{\"name\":\"packetsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of bytes received on the corresponded synchronization source\",\"default\":null},{\"name\":\"jitter\",\"type\":[\"null\",\"double\"],\"doc\":\"The corresponded synchronization source reported jitter\",\"default\":null},{\"name\":\"packetsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets missed the playout point and therefore discarded by the jitterbuffer\",\"default\":null},{\"name\":\"packetsRepaired\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source\",\"default\":null},{\"name\":\"burstPacketsLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets lost in burst (RFC6958)\",\"default\":null},{\"name\":\"burstPacketsDiscarded\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of packets discarded in burst (RFC6958)\",\"default\":null},{\"name\":\"burstLossCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsLost on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardCount\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"burstDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapLossRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"gapDiscardRate\",\"type\":[\"null\",\"double\"],\"doc\":\"The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source\",\"default\":null},{\"name\":\"framesDropped\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of frames dropped over the corresponded synchronization source\",\"default\":null},{\"name\":\"partialFramesLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of partial frames lost over the corresponded synchronization source\",\"default\":null},{\"name\":\"fullFramesLost\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of full frames lost over the corresponded synchronization source\",\"default\":null},{\"name\":\"roundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"totalRoundTripTime\",\"type\":[\"null\",\"double\"],\"doc\":\"The sum of RTT measurements belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"fractionLost\",\"type\":[\"null\",\"double\"],\"doc\":\"The receiver reported fractional lost belongs to the corresponded synchronization source\",\"default\":null},{\"name\":\"reportsReceived\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of RR reports received, which is the base of the remote inbound calculation on this source\",\"default\":null},{\"name\":\"roundTripTimeMeasurements\",\"type\":[\"null\",\"int\"],\"doc\":\"The total number of calculated RR measurements received on this source\",\"default\":null},{\"name\":\"relayedSource\",\"type\":[\"null\",\"boolean\"],\"doc\":\"True if the corresponded media source is remote, false otherwise (or null depending on browser and version)\",\"default\":null},{\"name\":\"encodedFrameWidth\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the encoded width of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameHeight\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the encoded height of the frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFrameBitDepth\",\"type\":[\"null\",\"int\"],\"doc\":\"Indicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"encodedFramesPerSecond\",\"type\":[\"null\",\"double\"],\"doc\":\"Indicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)\",\"default\":null},{\"name\":\"ended\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Flag represents if the sender ended the media stream track or not.\",\"default\":null},{\"name\":\"payloadType\",\"type\":[\"null\",\"int\"],\"doc\":\"The type of the payload the RTP packet SSRC belongs to\",\"default\":null},{\"name\":\"mimeType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the MIME type of the codec (e.g.: video/vp8)\",\"default\":null},{\"name\":\"clockRate\",\"type\":[\"null\",\"long\"],\"doc\":\"The negotiated clock rate the RTP timestamp is generated of\",\"default\":null},{\"name\":\"channels\",\"type\":[\"null\",\"int\"],\"doc\":\"The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)\",\"default\":null},{\"name\":\"sdpFmtpLine\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The a=fmtp line in the SDP corresponding to the codec\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  private static final SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<OutboundVideoTrackReport> ENCODER =
+      new BinaryMessageEncoder<OutboundVideoTrackReport>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<OutboundVideoTrackReport> DECODER =
+      new BinaryMessageDecoder<OutboundVideoTrackReport>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<OutboundVideoTrackReport> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<OutboundVideoTrackReport> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<OutboundVideoTrackReport> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<OutboundVideoTrackReport>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this OutboundVideoTrackReport to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a OutboundVideoTrackReport from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a OutboundVideoTrackReport instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static OutboundVideoTrackReport fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
   /** The unique identifier of the service */
-   private java.lang.String serviceId;
+  private java.lang.String serviceId;
   /** The media unit id the report belongs to */
-   private java.lang.String mediaUnitId;
+  private java.lang.String mediaUnitId;
   /** The marker the originated sample is reported with */
-   private java.lang.String marker;
+  private java.lang.String marker;
   /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
-   private long timestamp;
+  private long timestamp;
   /** The generated unique identifier of the call */
-   private java.lang.String callId;
+  private java.lang.String callId;
   /** webrtc app provided room id */
-   private java.lang.String roomId;
+  private java.lang.String roomId;
   /** The generated unique identifier of the client */
-   private java.lang.String clientId;
+  private java.lang.String clientId;
   /** webrtc app provided user identifier */
-   private java.lang.String userId;
+  private java.lang.String userId;
   /** The unique identifier of the peer connection */
-   private java.lang.String peerConnectionId;
+  private java.lang.String peerConnectionId;
   /** The webrtc app provided label the peer connection is labeled with */
-   private java.lang.String label;
+  private java.lang.String label;
   /** The id of the track */
-   private java.lang.String trackId;
-  /** The id of the RTP stream connected to a remote media unit (such as an SFU) */
-   private java.lang.String rtpStreamId;
+  private java.lang.String trackId;
+  /** The id of the Sfu stream corresponds to the outbound track */
+  private java.lang.String sfuStreamId;
   /** The sequence number of the sample the report is generated from */
-   private int sampleSeq;
+  private int sampleSeq;
   /** The RTP SSRC field */
-   private long ssrc;
+  private long ssrc;
   /** The total number of packets sent on the corresponded synchronization source */
-   private java.lang.Integer packetsSent;
+  private java.lang.Integer packetsSent;
   /** The total number of bytes sent on the corresponded synchronization source */
-   private java.lang.Long bytesSent;
+  private java.lang.Long bytesSent;
   /**  The rid encoding parameter of the corresponded synchronization source */
-   private java.lang.String rid;
+  private java.lang.String rid;
   /**  the timestamp the last packet was sent. (UTC epoch in ms) */
-   private java.lang.Long lastPacketSentTimestamp;
+  private java.lang.Long lastPacketSentTimestamp;
   /** Total number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc) */
-   private java.lang.Long headerBytesSent;
+  private java.lang.Long headerBytesSent;
   /** Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc) */
-   private java.lang.Integer packetsDiscardedOnSend;
+  private java.lang.Integer packetsDiscardedOnSend;
   /** Total number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc) */
-   private java.lang.Long bytesDiscardedOnSend;
+  private java.lang.Long bytesDiscardedOnSend;
   /** Total number of FEC packets sent over the corresponding synchronization source (ssrc) */
-   private java.lang.Integer fecPacketsSent;
+  private java.lang.Integer fecPacketsSent;
   /** Total number of retransmitted packets sent over the corresponding synchronization source (ssrc). */
-   private java.lang.Integer retransmittedPacketsSent;
+  private java.lang.Integer retransmittedPacketsSent;
   /** Total number of retransmitted bytes sent over the corresponded synchronization source (ssrc). */
-   private java.lang.Long retransmittedBytesSent;
+  private java.lang.Long retransmittedBytesSent;
   /** Reflects the current encoder target in bits per second. */
-   private java.lang.Long targetBitrate;
+  private java.lang.Long targetBitrate;
   /** The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets */
-   private java.lang.Long totalEncodedBytesTarget;
+  private java.lang.Long totalEncodedBytesTarget;
   /** Represents the height of the last encoded frame sent over the corresponded synchronization source */
-   private java.lang.Integer frameWidth;
+  private java.lang.Integer frameWidth;
   /** Represents the width of the last encoded frame sent over the corresponded synchronization source */
-   private java.lang.Integer frameHeight;
+  private java.lang.Integer frameHeight;
   /** Represents the bit depth per pixel of the last encoded frame sent over the corresponded synchronization source */
-   private java.lang.Integer frameBitDepth;
+  private java.lang.Integer frameBitDepth;
   /** The number of encoded frames over the last second sent over the corresponded synchronization source */
-   private java.lang.Double framesPerSecond;
+  private java.lang.Double framesPerSecond;
   /** The number of frames sent over the corresponded synchronization source */
-   private java.lang.Integer framesSent;
+  private java.lang.Integer framesSent;
   /** The number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source */
-   private java.lang.Integer hugeFramesSent;
+  private java.lang.Integer hugeFramesSent;
   /** The number of frames encoded over the corresponded synchronization source */
-   private java.lang.Integer framesEncoded;
+  private java.lang.Integer framesEncoded;
   /** The number of keyframes sent over the corresponded synchronization source */
-   private java.lang.Integer keyFramesEncoded;
+  private java.lang.Integer keyFramesEncoded;
   /** The number of frames discarded before sending over the corresponded synchronization source */
-   private java.lang.Integer framesDiscardedOnSend;
+  private java.lang.Integer framesDiscardedOnSend;
   /** The sum of QP values encoded by the encoder corresponded to the synchronization source */
-   private java.lang.Long qpSum;
+  private java.lang.Long qpSum;
   /** The sum of encoding time spent by the encoder corresponded to the synchronization source */
-   private java.lang.Double totalEncodeTime;
+  private java.lang.Double totalEncodeTime;
   /** The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source */
-   private java.lang.Double totalPacketSendDelay;
+  private java.lang.Double totalPacketSendDelay;
   /** The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc) */
-   private java.lang.Double averageRtcpInterval;
+  private java.lang.Double averageRtcpInterval;
   /** Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU */
-   private java.lang.Double qualityLimitationDurationCPU;
+  private java.lang.Double qualityLimitationDurationCPU;
   /** Time elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state */
-   private java.lang.Double qualityLimitationDurationNone;
+  private java.lang.Double qualityLimitationDurationNone;
   /** Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth */
-   private java.lang.Double qualityLimitationDurationBandwidth;
+  private java.lang.Double qualityLimitationDurationBandwidth;
   /** Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor */
-   private java.lang.Double qualityLimitationDurationOther;
+  private java.lang.Double qualityLimitationDurationOther;
   /** Indicate a reason for the corresponding synchronization source (ssrc) quality is limited */
-   private java.lang.String qualityLimitationReason;
+  private java.lang.String qualityLimitationReason;
   /** The number of quality limiatation changes happened for the corresponding synchronization source (ssrc) */
-   private java.lang.Integer qualityLimitationResolutionChanges;
+  private java.lang.Integer qualityLimitationResolutionChanges;
   /** The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc) */
-   private java.lang.Double perDscpPacketsSent;
+  private java.lang.Double perDscpPacketsSent;
   /** Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc) */
-   private java.lang.Integer nackCount;
+  private java.lang.Integer nackCount;
   /** The number of full inter requests happened over the corresponding synchronization source (ssrc) */
-   private java.lang.Integer firCount;
+  private java.lang.Integer firCount;
   /** The number of picture loss indication happened received over the corresponding synchronization source (ssrc) */
-   private java.lang.Integer pliCount;
+  private java.lang.Integer pliCount;
   /** The number of slice loss indication happened over the corresponding synchronization source (ssrc) */
-   private java.lang.Integer sliCount;
+  private java.lang.Integer sliCount;
   /** Indicate the name of the encoder implementation library */
-   private java.lang.String encoderImplementation;
+  private java.lang.String encoderImplementation;
   /** The total number of packets received on the corresponded synchronization source */
-   private java.lang.Integer packetsReceived;
+  private java.lang.Integer packetsReceived;
   /** The total number of bytes received on the corresponded synchronization source */
-   private java.lang.Integer packetsLost;
+  private java.lang.Integer packetsLost;
   /** The corresponded synchronization source reported jitter */
-   private java.lang.Double jitter;
+  private java.lang.Double jitter;
   /** The total number of packets missed the playout point and therefore discarded by the jitterbuffer */
-   private java.lang.Integer packetsDiscarded;
+  private java.lang.Integer packetsDiscarded;
   /** The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source */
-   private java.lang.Integer packetsRepaired;
+  private java.lang.Integer packetsRepaired;
   /** The total number of packets lost in burst (RFC6958) */
-   private java.lang.Integer burstPacketsLost;
+  private java.lang.Integer burstPacketsLost;
   /** The total number of packets discarded in burst (RFC6958) */
-   private java.lang.Integer burstPacketsDiscarded;
+  private java.lang.Integer burstPacketsDiscarded;
   /** The total number of burst happened causes burstPacketsLost on the corresponding synchronization source */
-   private java.lang.Integer burstLossCount;
+  private java.lang.Integer burstLossCount;
   /** The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source */
-   private java.lang.Integer burstDiscardCount;
+  private java.lang.Integer burstDiscardCount;
   /** The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source */
-   private java.lang.Double burstLossRate;
+  private java.lang.Double burstLossRate;
   /** The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source */
-   private java.lang.Double burstDiscardRate;
+  private java.lang.Double burstDiscardRate;
   /** The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source */
-   private java.lang.Double gapLossRate;
+  private java.lang.Double gapLossRate;
   /** The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source */
-   private java.lang.Double gapDiscardRate;
+  private java.lang.Double gapDiscardRate;
   /** The number of frames dropped over the corresponded synchronization source */
-   private java.lang.Integer framesDropped;
+  private java.lang.Integer framesDropped;
   /** The number of partial frames lost over the corresponded synchronization source */
-   private java.lang.Integer partialFramesLost;
+  private java.lang.Integer partialFramesLost;
   /** The number of full frames lost over the corresponded synchronization source */
-   private java.lang.Integer fullFramesLost;
+  private java.lang.Integer fullFramesLost;
   /** RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source */
-   private java.lang.Double roundTripTime;
+  private java.lang.Double roundTripTime;
   /** The sum of RTT measurements belongs to the corresponded synchronization source */
-   private java.lang.Double totalRoundTripTime;
+  private java.lang.Double totalRoundTripTime;
   /** The receiver reported fractional lost belongs to the corresponded synchronization source */
-   private java.lang.Double fractionLost;
+  private java.lang.Double fractionLost;
   /** The total number of RR reports received, which is the base of the remote inbound calculation on this source */
-   private java.lang.Integer reportsReceived;
+  private java.lang.Integer reportsReceived;
   /** The total number of calculated RR measurements received on this source */
-   private java.lang.Integer roundTripTimeMeasurements;
+  private java.lang.Integer roundTripTimeMeasurements;
   /** True if the corresponded media source is remote, false otherwise (or null depending on browser and version) */
-   private java.lang.Boolean relayedSource;
+  private java.lang.Boolean relayedSource;
   /** Indicate the encoded width of the frame received on the corresponded synchronization source (ssrc) */
-   private java.lang.Integer encodedFrameWidth;
+  private java.lang.Integer encodedFrameWidth;
   /** Indicate the encoded height of the frame received on the corresponded synchronization source (ssrc) */
-   private java.lang.Integer encodedFrameHeight;
+  private java.lang.Integer encodedFrameHeight;
   /** Indicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc) */
-   private java.lang.Integer encodedFrameBitDepth;
+  private java.lang.Integer encodedFrameBitDepth;
   /** Indicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc) */
-   private java.lang.Double encodedFramesPerSecond;
+  private java.lang.Double encodedFramesPerSecond;
   /** Flag represents if the sender ended the media stream track or not. */
-   private java.lang.Boolean ended;
+  private java.lang.Boolean ended;
   /** The type of the payload the RTP packet SSRC belongs to */
-   private java.lang.Integer payloadType;
+  private java.lang.Integer payloadType;
   /** the MIME type of the codec (e.g.: video/vp8) */
-   private java.lang.String mimeType;
+  private java.lang.String mimeType;
   /** The negotiated clock rate the RTP timestamp is generated of */
-   private java.lang.Long clockRate;
+  private java.lang.Long clockRate;
   /** The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null) */
-   private java.lang.Integer channels;
+  private java.lang.Integer channels;
   /** The a=fmtp line in the SDP corresponding to the codec */
-   private java.lang.String sdpFmtpLine;
+  private java.lang.String sdpFmtpLine;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -201,7 +261,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
    * @param peerConnectionId The unique identifier of the peer connection
    * @param label The webrtc app provided label the peer connection is labeled with
    * @param trackId The id of the track
-   * @param rtpStreamId The id of the RTP stream connected to a remote media unit (such as an SFU)
+   * @param sfuStreamId The id of the Sfu stream corresponds to the outbound track
    * @param sampleSeq The sequence number of the sample the report is generated from
    * @param ssrc The RTP SSRC field
    * @param packetsSent The total number of packets sent on the corresponded synchronization source
@@ -274,7 +334,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
    * @param channels The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
    * @param sdpFmtpLine The a=fmtp line in the SDP corresponding to the codec
    */
-  public OutboundVideoTrackReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.String trackId, java.lang.String rtpStreamId, java.lang.Integer sampleSeq, java.lang.Long ssrc, java.lang.Integer packetsSent, java.lang.Long bytesSent, java.lang.String rid, java.lang.Long lastPacketSentTimestamp, java.lang.Long headerBytesSent, java.lang.Integer packetsDiscardedOnSend, java.lang.Long bytesDiscardedOnSend, java.lang.Integer fecPacketsSent, java.lang.Integer retransmittedPacketsSent, java.lang.Long retransmittedBytesSent, java.lang.Long targetBitrate, java.lang.Long totalEncodedBytesTarget, java.lang.Integer frameWidth, java.lang.Integer frameHeight, java.lang.Integer frameBitDepth, java.lang.Double framesPerSecond, java.lang.Integer framesSent, java.lang.Integer hugeFramesSent, java.lang.Integer framesEncoded, java.lang.Integer keyFramesEncoded, java.lang.Integer framesDiscardedOnSend, java.lang.Long qpSum, java.lang.Double totalEncodeTime, java.lang.Double totalPacketSendDelay, java.lang.Double averageRtcpInterval, java.lang.Double qualityLimitationDurationCPU, java.lang.Double qualityLimitationDurationNone, java.lang.Double qualityLimitationDurationBandwidth, java.lang.Double qualityLimitationDurationOther, java.lang.String qualityLimitationReason, java.lang.Integer qualityLimitationResolutionChanges, java.lang.Double perDscpPacketsSent, java.lang.Integer nackCount, java.lang.Integer firCount, java.lang.Integer pliCount, java.lang.Integer sliCount, java.lang.String encoderImplementation, java.lang.Integer packetsReceived, java.lang.Integer packetsLost, java.lang.Double jitter, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer burstPacketsLost, java.lang.Integer burstPacketsDiscarded, java.lang.Integer burstLossCount, java.lang.Integer burstDiscardCount, java.lang.Double burstLossRate, java.lang.Double burstDiscardRate, java.lang.Double gapLossRate, java.lang.Double gapDiscardRate, java.lang.Integer framesDropped, java.lang.Integer partialFramesLost, java.lang.Integer fullFramesLost, java.lang.Double roundTripTime, java.lang.Double totalRoundTripTime, java.lang.Double fractionLost, java.lang.Integer reportsReceived, java.lang.Integer roundTripTimeMeasurements, java.lang.Boolean relayedSource, java.lang.Integer encodedFrameWidth, java.lang.Integer encodedFrameHeight, java.lang.Integer encodedFrameBitDepth, java.lang.Double encodedFramesPerSecond, java.lang.Boolean ended, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.Integer channels, java.lang.String sdpFmtpLine) {
+  public OutboundVideoTrackReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.String label, java.lang.String trackId, java.lang.String sfuStreamId, java.lang.Integer sampleSeq, java.lang.Long ssrc, java.lang.Integer packetsSent, java.lang.Long bytesSent, java.lang.String rid, java.lang.Long lastPacketSentTimestamp, java.lang.Long headerBytesSent, java.lang.Integer packetsDiscardedOnSend, java.lang.Long bytesDiscardedOnSend, java.lang.Integer fecPacketsSent, java.lang.Integer retransmittedPacketsSent, java.lang.Long retransmittedBytesSent, java.lang.Long targetBitrate, java.lang.Long totalEncodedBytesTarget, java.lang.Integer frameWidth, java.lang.Integer frameHeight, java.lang.Integer frameBitDepth, java.lang.Double framesPerSecond, java.lang.Integer framesSent, java.lang.Integer hugeFramesSent, java.lang.Integer framesEncoded, java.lang.Integer keyFramesEncoded, java.lang.Integer framesDiscardedOnSend, java.lang.Long qpSum, java.lang.Double totalEncodeTime, java.lang.Double totalPacketSendDelay, java.lang.Double averageRtcpInterval, java.lang.Double qualityLimitationDurationCPU, java.lang.Double qualityLimitationDurationNone, java.lang.Double qualityLimitationDurationBandwidth, java.lang.Double qualityLimitationDurationOther, java.lang.String qualityLimitationReason, java.lang.Integer qualityLimitationResolutionChanges, java.lang.Double perDscpPacketsSent, java.lang.Integer nackCount, java.lang.Integer firCount, java.lang.Integer pliCount, java.lang.Integer sliCount, java.lang.String encoderImplementation, java.lang.Integer packetsReceived, java.lang.Integer packetsLost, java.lang.Double jitter, java.lang.Integer packetsDiscarded, java.lang.Integer packetsRepaired, java.lang.Integer burstPacketsLost, java.lang.Integer burstPacketsDiscarded, java.lang.Integer burstLossCount, java.lang.Integer burstDiscardCount, java.lang.Double burstLossRate, java.lang.Double burstDiscardRate, java.lang.Double gapLossRate, java.lang.Double gapDiscardRate, java.lang.Integer framesDropped, java.lang.Integer partialFramesLost, java.lang.Integer fullFramesLost, java.lang.Double roundTripTime, java.lang.Double totalRoundTripTime, java.lang.Double fractionLost, java.lang.Integer reportsReceived, java.lang.Integer roundTripTimeMeasurements, java.lang.Boolean relayedSource, java.lang.Integer encodedFrameWidth, java.lang.Integer encodedFrameHeight, java.lang.Integer encodedFrameBitDepth, java.lang.Double encodedFramesPerSecond, java.lang.Boolean ended, java.lang.Integer payloadType, java.lang.String mimeType, java.lang.Long clockRate, java.lang.Integer channels, java.lang.String sdpFmtpLine) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -286,7 +346,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     this.peerConnectionId = peerConnectionId;
     this.label = label;
     this.trackId = trackId;
-    this.rtpStreamId = rtpStreamId;
+    this.sfuStreamId = sfuStreamId;
     this.sampleSeq = sampleSeq;
     this.ssrc = ssrc;
     this.packetsSent = packetsSent;
@@ -360,6 +420,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     this.sdpFmtpLine = sdpFmtpLine;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -375,7 +436,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     case 8: return peerConnectionId;
     case 9: return label;
     case 10: return trackId;
-    case 11: return rtpStreamId;
+    case 11: return sfuStreamId;
     case 12: return sampleSeq;
     case 13: return ssrc;
     case 14: return packetsSent;
@@ -447,7 +508,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     case 80: return clockRate;
     case 81: return channels;
     case 82: return sdpFmtpLine;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -455,23 +516,23 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (java.lang.String)value$; break;
-    case 1: mediaUnitId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
+    case 0: serviceId = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnitId = value$ != null ? value$.toString() : null; break;
+    case 2: marker = value$ != null ? value$.toString() : null; break;
     case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: callId = (java.lang.String)value$; break;
-    case 5: roomId = (java.lang.String)value$; break;
-    case 6: clientId = (java.lang.String)value$; break;
-    case 7: userId = (java.lang.String)value$; break;
-    case 8: peerConnectionId = (java.lang.String)value$; break;
-    case 9: label = (java.lang.String)value$; break;
-    case 10: trackId = (java.lang.String)value$; break;
-    case 11: rtpStreamId = (java.lang.String)value$; break;
+    case 4: callId = value$ != null ? value$.toString() : null; break;
+    case 5: roomId = value$ != null ? value$.toString() : null; break;
+    case 6: clientId = value$ != null ? value$.toString() : null; break;
+    case 7: userId = value$ != null ? value$.toString() : null; break;
+    case 8: peerConnectionId = value$ != null ? value$.toString() : null; break;
+    case 9: label = value$ != null ? value$.toString() : null; break;
+    case 10: trackId = value$ != null ? value$.toString() : null; break;
+    case 11: sfuStreamId = value$ != null ? value$.toString() : null; break;
     case 12: sampleSeq = (java.lang.Integer)value$; break;
     case 13: ssrc = (java.lang.Long)value$; break;
     case 14: packetsSent = (java.lang.Integer)value$; break;
     case 15: bytesSent = (java.lang.Long)value$; break;
-    case 16: rid = (java.lang.String)value$; break;
+    case 16: rid = value$ != null ? value$.toString() : null; break;
     case 17: lastPacketSentTimestamp = (java.lang.Long)value$; break;
     case 18: headerBytesSent = (java.lang.Long)value$; break;
     case 19: packetsDiscardedOnSend = (java.lang.Integer)value$; break;
@@ -498,14 +559,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     case 40: qualityLimitationDurationNone = (java.lang.Double)value$; break;
     case 41: qualityLimitationDurationBandwidth = (java.lang.Double)value$; break;
     case 42: qualityLimitationDurationOther = (java.lang.Double)value$; break;
-    case 43: qualityLimitationReason = (java.lang.String)value$; break;
+    case 43: qualityLimitationReason = value$ != null ? value$.toString() : null; break;
     case 44: qualityLimitationResolutionChanges = (java.lang.Integer)value$; break;
     case 45: perDscpPacketsSent = (java.lang.Double)value$; break;
     case 46: nackCount = (java.lang.Integer)value$; break;
     case 47: firCount = (java.lang.Integer)value$; break;
     case 48: pliCount = (java.lang.Integer)value$; break;
     case 49: sliCount = (java.lang.Integer)value$; break;
-    case 50: encoderImplementation = (java.lang.String)value$; break;
+    case 50: encoderImplementation = value$ != null ? value$.toString() : null; break;
     case 51: packetsReceived = (java.lang.Integer)value$; break;
     case 52: packetsLost = (java.lang.Integer)value$; break;
     case 53: jitter = (java.lang.Double)value$; break;
@@ -534,11 +595,11 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     case 76: encodedFramesPerSecond = (java.lang.Double)value$; break;
     case 77: ended = (java.lang.Boolean)value$; break;
     case 78: payloadType = (java.lang.Integer)value$; break;
-    case 79: mimeType = (java.lang.String)value$; break;
+    case 79: mimeType = value$ != null ? value$.toString() : null; break;
     case 80: clockRate = (java.lang.Long)value$; break;
     case 81: channels = (java.lang.Integer)value$; break;
-    case 82: sdpFmtpLine = (java.lang.String)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 82: sdpFmtpLine = value$ != null ? value$.toString() : null; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -551,6 +612,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'mediaUnitId' field.
    * @return The media unit id the report belongs to
@@ -558,6 +620,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.String getMediaUnitId() {
     return mediaUnitId;
   }
+
 
 
   /**
@@ -569,13 +632,15 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'timestamp' field.
    * @return The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    */
-  public java.lang.Long getTimestamp() {
+  public long getTimestamp() {
     return timestamp;
   }
+
 
 
   /**
@@ -587,6 +652,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'roomId' field.
    * @return webrtc app provided room id
@@ -594,6 +660,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.String getRoomId() {
     return roomId;
   }
+
 
 
   /**
@@ -605,6 +672,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'userId' field.
    * @return webrtc app provided user identifier
@@ -612,6 +680,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.String getUserId() {
     return userId;
   }
+
 
 
   /**
@@ -623,6 +692,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'label' field.
    * @return The webrtc app provided label the peer connection is labeled with
@@ -630,6 +700,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.String getLabel() {
     return label;
   }
+
 
 
   /**
@@ -641,31 +712,35 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
-   * Gets the value of the 'rtpStreamId' field.
-   * @return The id of the RTP stream connected to a remote media unit (such as an SFU)
+   * Gets the value of the 'sfuStreamId' field.
+   * @return The id of the Sfu stream corresponds to the outbound track
    */
-  public java.lang.String getRtpStreamId() {
-    return rtpStreamId;
+  public java.lang.String getSfuStreamId() {
+    return sfuStreamId;
   }
+
 
 
   /**
    * Gets the value of the 'sampleSeq' field.
    * @return The sequence number of the sample the report is generated from
    */
-  public java.lang.Integer getSampleSeq() {
+  public int getSampleSeq() {
     return sampleSeq;
   }
+
 
 
   /**
    * Gets the value of the 'ssrc' field.
    * @return The RTP SSRC field
    */
-  public java.lang.Long getSsrc() {
+  public long getSsrc() {
     return ssrc;
   }
+
 
 
   /**
@@ -677,6 +752,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'bytesSent' field.
    * @return The total number of bytes sent on the corresponded synchronization source
@@ -684,6 +760,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Long getBytesSent() {
     return bytesSent;
   }
+
 
 
   /**
@@ -695,6 +772,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'lastPacketSentTimestamp' field.
    * @return  the timestamp the last packet was sent. (UTC epoch in ms)
@@ -702,6 +780,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Long getLastPacketSentTimestamp() {
     return lastPacketSentTimestamp;
   }
+
 
 
   /**
@@ -713,6 +792,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'packetsDiscardedOnSend' field.
    * @return Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)
@@ -720,6 +800,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getPacketsDiscardedOnSend() {
     return packetsDiscardedOnSend;
   }
+
 
 
   /**
@@ -731,6 +812,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'fecPacketsSent' field.
    * @return Total number of FEC packets sent over the corresponding synchronization source (ssrc)
@@ -738,6 +820,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getFecPacketsSent() {
     return fecPacketsSent;
   }
+
 
 
   /**
@@ -749,6 +832,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'retransmittedBytesSent' field.
    * @return Total number of retransmitted bytes sent over the corresponded synchronization source (ssrc).
@@ -756,6 +840,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Long getRetransmittedBytesSent() {
     return retransmittedBytesSent;
   }
+
 
 
   /**
@@ -767,6 +852,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'totalEncodedBytesTarget' field.
    * @return The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets
@@ -774,6 +860,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Long getTotalEncodedBytesTarget() {
     return totalEncodedBytesTarget;
   }
+
 
 
   /**
@@ -785,6 +872,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'frameHeight' field.
    * @return Represents the width of the last encoded frame sent over the corresponded synchronization source
@@ -792,6 +880,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getFrameHeight() {
     return frameHeight;
   }
+
 
 
   /**
@@ -803,6 +892,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'framesPerSecond' field.
    * @return The number of encoded frames over the last second sent over the corresponded synchronization source
@@ -810,6 +900,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getFramesPerSecond() {
     return framesPerSecond;
   }
+
 
 
   /**
@@ -821,6 +912,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'hugeFramesSent' field.
    * @return The number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source
@@ -828,6 +920,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getHugeFramesSent() {
     return hugeFramesSent;
   }
+
 
 
   /**
@@ -839,6 +932,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'keyFramesEncoded' field.
    * @return The number of keyframes sent over the corresponded synchronization source
@@ -846,6 +940,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getKeyFramesEncoded() {
     return keyFramesEncoded;
   }
+
 
 
   /**
@@ -857,6 +952,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'qpSum' field.
    * @return The sum of QP values encoded by the encoder corresponded to the synchronization source
@@ -864,6 +960,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Long getQpSum() {
     return qpSum;
   }
+
 
 
   /**
@@ -875,6 +972,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'totalPacketSendDelay' field.
    * @return The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source
@@ -882,6 +980,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getTotalPacketSendDelay() {
     return totalPacketSendDelay;
   }
+
 
 
   /**
@@ -893,6 +992,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'qualityLimitationDurationCPU' field.
    * @return Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU
@@ -900,6 +1000,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getQualityLimitationDurationCPU() {
     return qualityLimitationDurationCPU;
   }
+
 
 
   /**
@@ -911,6 +1012,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'qualityLimitationDurationBandwidth' field.
    * @return Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth
@@ -918,6 +1020,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getQualityLimitationDurationBandwidth() {
     return qualityLimitationDurationBandwidth;
   }
+
 
 
   /**
@@ -929,6 +1032,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'qualityLimitationReason' field.
    * @return Indicate a reason for the corresponding synchronization source (ssrc) quality is limited
@@ -936,6 +1040,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.String getQualityLimitationReason() {
     return qualityLimitationReason;
   }
+
 
 
   /**
@@ -947,6 +1052,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'perDscpPacketsSent' field.
    * @return The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
@@ -954,6 +1060,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getPerDscpPacketsSent() {
     return perDscpPacketsSent;
   }
+
 
 
   /**
@@ -965,6 +1072,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'firCount' field.
    * @return The number of full inter requests happened over the corresponding synchronization source (ssrc)
@@ -972,6 +1080,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getFirCount() {
     return firCount;
   }
+
 
 
   /**
@@ -983,6 +1092,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'sliCount' field.
    * @return The number of slice loss indication happened over the corresponding synchronization source (ssrc)
@@ -990,6 +1100,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getSliCount() {
     return sliCount;
   }
+
 
 
   /**
@@ -1001,6 +1112,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'packetsReceived' field.
    * @return The total number of packets received on the corresponded synchronization source
@@ -1008,6 +1120,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getPacketsReceived() {
     return packetsReceived;
   }
+
 
 
   /**
@@ -1019,6 +1132,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'jitter' field.
    * @return The corresponded synchronization source reported jitter
@@ -1026,6 +1140,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getJitter() {
     return jitter;
   }
+
 
 
   /**
@@ -1037,6 +1152,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'packetsRepaired' field.
    * @return The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source
@@ -1044,6 +1160,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getPacketsRepaired() {
     return packetsRepaired;
   }
+
 
 
   /**
@@ -1055,6 +1172,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'burstPacketsDiscarded' field.
    * @return The total number of packets discarded in burst (RFC6958)
@@ -1062,6 +1180,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getBurstPacketsDiscarded() {
     return burstPacketsDiscarded;
   }
+
 
 
   /**
@@ -1073,6 +1192,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'burstDiscardCount' field.
    * @return The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source
@@ -1080,6 +1200,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getBurstDiscardCount() {
     return burstDiscardCount;
   }
+
 
 
   /**
@@ -1091,6 +1212,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'burstDiscardRate' field.
    * @return The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
@@ -1098,6 +1220,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getBurstDiscardRate() {
     return burstDiscardRate;
   }
+
 
 
   /**
@@ -1109,6 +1232,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'gapDiscardRate' field.
    * @return The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
@@ -1116,6 +1240,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getGapDiscardRate() {
     return gapDiscardRate;
   }
+
 
 
   /**
@@ -1127,6 +1252,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'partialFramesLost' field.
    * @return The number of partial frames lost over the corresponded synchronization source
@@ -1134,6 +1260,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getPartialFramesLost() {
     return partialFramesLost;
   }
+
 
 
   /**
@@ -1145,6 +1272,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'roundTripTime' field.
    * @return RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source
@@ -1152,6 +1280,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getRoundTripTime() {
     return roundTripTime;
   }
+
 
 
   /**
@@ -1163,6 +1292,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'fractionLost' field.
    * @return The receiver reported fractional lost belongs to the corresponded synchronization source
@@ -1170,6 +1300,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Double getFractionLost() {
     return fractionLost;
   }
+
 
 
   /**
@@ -1181,6 +1312,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'roundTripTimeMeasurements' field.
    * @return The total number of calculated RR measurements received on this source
@@ -1188,6 +1320,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getRoundTripTimeMeasurements() {
     return roundTripTimeMeasurements;
   }
+
 
 
   /**
@@ -1199,6 +1332,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'encodedFrameWidth' field.
    * @return Indicate the encoded width of the frame received on the corresponded synchronization source (ssrc)
@@ -1206,6 +1340,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getEncodedFrameWidth() {
     return encodedFrameWidth;
   }
+
 
 
   /**
@@ -1217,6 +1352,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'encodedFrameBitDepth' field.
    * @return Indicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)
@@ -1224,6 +1360,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getEncodedFrameBitDepth() {
     return encodedFrameBitDepth;
   }
+
 
 
   /**
@@ -1235,6 +1372,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'ended' field.
    * @return Flag represents if the sender ended the media stream track or not.
@@ -1242,6 +1380,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Boolean getEnded() {
     return ended;
   }
+
 
 
   /**
@@ -1253,6 +1392,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'mimeType' field.
    * @return the MIME type of the codec (e.g.: video/vp8)
@@ -1260,6 +1400,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.String getMimeType() {
     return mimeType;
   }
+
 
 
   /**
@@ -1271,6 +1412,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Gets the value of the 'channels' field.
    * @return The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
@@ -1278,6 +1420,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getChannels() {
     return channels;
   }
+
 
 
   /**
@@ -1289,12 +1432,13 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
   }
 
 
+
   /**
    * Creates a new OutboundVideoTrackReport RecordBuilder.
    * @return A new OutboundVideoTrackReport RecordBuilder
    */
-  public static OutboundVideoTrackReport.Builder newBuilder() {
-    return new OutboundVideoTrackReport.Builder();
+  public static org.observertc.schemas.reports.OutboundVideoTrackReport.Builder newBuilder() {
+    return new org.observertc.schemas.reports.OutboundVideoTrackReport.Builder();
   }
 
   /**
@@ -1302,8 +1446,12 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
    * @param other The existing builder to copy.
    * @return A new OutboundVideoTrackReport RecordBuilder
    */
-  public static OutboundVideoTrackReport.Builder newBuilder(OutboundVideoTrackReport.Builder other) {
-    return new OutboundVideoTrackReport.Builder(other);
+  public static org.observertc.schemas.reports.OutboundVideoTrackReport.Builder newBuilder(org.observertc.schemas.reports.OutboundVideoTrackReport.Builder other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.OutboundVideoTrackReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.OutboundVideoTrackReport.Builder(other);
+    }
   }
 
   /**
@@ -1311,13 +1459,18 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
    * @param other The existing instance to copy.
    * @return A new OutboundVideoTrackReport RecordBuilder
    */
-  public static OutboundVideoTrackReport.Builder newBuilder(OutboundVideoTrackReport other) {
-    return new OutboundVideoTrackReport.Builder(other);
+  public static org.observertc.schemas.reports.OutboundVideoTrackReport.Builder newBuilder(org.observertc.schemas.reports.OutboundVideoTrackReport other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.OutboundVideoTrackReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.OutboundVideoTrackReport.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for OutboundVideoTrackReport instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<OutboundVideoTrackReport>
     implements org.apache.avro.data.RecordBuilder<OutboundVideoTrackReport> {
 
@@ -1343,8 +1496,8 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
     private java.lang.String label;
     /** The id of the track */
     private java.lang.String trackId;
-    /** The id of the RTP stream connected to a remote media unit (such as an SFU) */
-    private java.lang.String rtpStreamId;
+    /** The id of the Sfu stream corresponds to the outbound track */
+    private java.lang.String sfuStreamId;
     /** The sequence number of the sample the report is generated from */
     private int sampleSeq;
     /** The RTP SSRC field */
@@ -1490,346 +1643,346 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(OutboundVideoTrackReport.Builder other) {
+    private Builder(org.observertc.schemas.reports.OutboundVideoTrackReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.mediaUnitId)) {
         this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.marker)) {
         this.marker = data().deepCopy(fields()[2].schema(), other.marker);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.timestamp)) {
         this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.callId)) {
         this.callId = data().deepCopy(fields()[4].schema(), other.callId);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (isValidValue(fields()[5], other.roomId)) {
         this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
       if (isValidValue(fields()[6], other.clientId)) {
         this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
-        fieldSetFlags()[6] = true;
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
       if (isValidValue(fields()[7], other.userId)) {
         this.userId = data().deepCopy(fields()[7].schema(), other.userId);
-        fieldSetFlags()[7] = true;
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
       if (isValidValue(fields()[8], other.peerConnectionId)) {
         this.peerConnectionId = data().deepCopy(fields()[8].schema(), other.peerConnectionId);
-        fieldSetFlags()[8] = true;
+        fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
       if (isValidValue(fields()[9], other.label)) {
         this.label = data().deepCopy(fields()[9].schema(), other.label);
-        fieldSetFlags()[9] = true;
+        fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
       if (isValidValue(fields()[10], other.trackId)) {
         this.trackId = data().deepCopy(fields()[10].schema(), other.trackId);
-        fieldSetFlags()[10] = true;
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
-      if (isValidValue(fields()[11], other.rtpStreamId)) {
-        this.rtpStreamId = data().deepCopy(fields()[11].schema(), other.rtpStreamId);
-        fieldSetFlags()[11] = true;
+      if (isValidValue(fields()[11], other.sfuStreamId)) {
+        this.sfuStreamId = data().deepCopy(fields()[11].schema(), other.sfuStreamId);
+        fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
       if (isValidValue(fields()[12], other.sampleSeq)) {
         this.sampleSeq = data().deepCopy(fields()[12].schema(), other.sampleSeq);
-        fieldSetFlags()[12] = true;
+        fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
       if (isValidValue(fields()[13], other.ssrc)) {
         this.ssrc = data().deepCopy(fields()[13].schema(), other.ssrc);
-        fieldSetFlags()[13] = true;
+        fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
       if (isValidValue(fields()[14], other.packetsSent)) {
         this.packetsSent = data().deepCopy(fields()[14].schema(), other.packetsSent);
-        fieldSetFlags()[14] = true;
+        fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
       if (isValidValue(fields()[15], other.bytesSent)) {
         this.bytesSent = data().deepCopy(fields()[15].schema(), other.bytesSent);
-        fieldSetFlags()[15] = true;
+        fieldSetFlags()[15] = other.fieldSetFlags()[15];
       }
       if (isValidValue(fields()[16], other.rid)) {
         this.rid = data().deepCopy(fields()[16].schema(), other.rid);
-        fieldSetFlags()[16] = true;
+        fieldSetFlags()[16] = other.fieldSetFlags()[16];
       }
       if (isValidValue(fields()[17], other.lastPacketSentTimestamp)) {
         this.lastPacketSentTimestamp = data().deepCopy(fields()[17].schema(), other.lastPacketSentTimestamp);
-        fieldSetFlags()[17] = true;
+        fieldSetFlags()[17] = other.fieldSetFlags()[17];
       }
       if (isValidValue(fields()[18], other.headerBytesSent)) {
         this.headerBytesSent = data().deepCopy(fields()[18].schema(), other.headerBytesSent);
-        fieldSetFlags()[18] = true;
+        fieldSetFlags()[18] = other.fieldSetFlags()[18];
       }
       if (isValidValue(fields()[19], other.packetsDiscardedOnSend)) {
         this.packetsDiscardedOnSend = data().deepCopy(fields()[19].schema(), other.packetsDiscardedOnSend);
-        fieldSetFlags()[19] = true;
+        fieldSetFlags()[19] = other.fieldSetFlags()[19];
       }
       if (isValidValue(fields()[20], other.bytesDiscardedOnSend)) {
         this.bytesDiscardedOnSend = data().deepCopy(fields()[20].schema(), other.bytesDiscardedOnSend);
-        fieldSetFlags()[20] = true;
+        fieldSetFlags()[20] = other.fieldSetFlags()[20];
       }
       if (isValidValue(fields()[21], other.fecPacketsSent)) {
         this.fecPacketsSent = data().deepCopy(fields()[21].schema(), other.fecPacketsSent);
-        fieldSetFlags()[21] = true;
+        fieldSetFlags()[21] = other.fieldSetFlags()[21];
       }
       if (isValidValue(fields()[22], other.retransmittedPacketsSent)) {
         this.retransmittedPacketsSent = data().deepCopy(fields()[22].schema(), other.retransmittedPacketsSent);
-        fieldSetFlags()[22] = true;
+        fieldSetFlags()[22] = other.fieldSetFlags()[22];
       }
       if (isValidValue(fields()[23], other.retransmittedBytesSent)) {
         this.retransmittedBytesSent = data().deepCopy(fields()[23].schema(), other.retransmittedBytesSent);
-        fieldSetFlags()[23] = true;
+        fieldSetFlags()[23] = other.fieldSetFlags()[23];
       }
       if (isValidValue(fields()[24], other.targetBitrate)) {
         this.targetBitrate = data().deepCopy(fields()[24].schema(), other.targetBitrate);
-        fieldSetFlags()[24] = true;
+        fieldSetFlags()[24] = other.fieldSetFlags()[24];
       }
       if (isValidValue(fields()[25], other.totalEncodedBytesTarget)) {
         this.totalEncodedBytesTarget = data().deepCopy(fields()[25].schema(), other.totalEncodedBytesTarget);
-        fieldSetFlags()[25] = true;
+        fieldSetFlags()[25] = other.fieldSetFlags()[25];
       }
       if (isValidValue(fields()[26], other.frameWidth)) {
         this.frameWidth = data().deepCopy(fields()[26].schema(), other.frameWidth);
-        fieldSetFlags()[26] = true;
+        fieldSetFlags()[26] = other.fieldSetFlags()[26];
       }
       if (isValidValue(fields()[27], other.frameHeight)) {
         this.frameHeight = data().deepCopy(fields()[27].schema(), other.frameHeight);
-        fieldSetFlags()[27] = true;
+        fieldSetFlags()[27] = other.fieldSetFlags()[27];
       }
       if (isValidValue(fields()[28], other.frameBitDepth)) {
         this.frameBitDepth = data().deepCopy(fields()[28].schema(), other.frameBitDepth);
-        fieldSetFlags()[28] = true;
+        fieldSetFlags()[28] = other.fieldSetFlags()[28];
       }
       if (isValidValue(fields()[29], other.framesPerSecond)) {
         this.framesPerSecond = data().deepCopy(fields()[29].schema(), other.framesPerSecond);
-        fieldSetFlags()[29] = true;
+        fieldSetFlags()[29] = other.fieldSetFlags()[29];
       }
       if (isValidValue(fields()[30], other.framesSent)) {
         this.framesSent = data().deepCopy(fields()[30].schema(), other.framesSent);
-        fieldSetFlags()[30] = true;
+        fieldSetFlags()[30] = other.fieldSetFlags()[30];
       }
       if (isValidValue(fields()[31], other.hugeFramesSent)) {
         this.hugeFramesSent = data().deepCopy(fields()[31].schema(), other.hugeFramesSent);
-        fieldSetFlags()[31] = true;
+        fieldSetFlags()[31] = other.fieldSetFlags()[31];
       }
       if (isValidValue(fields()[32], other.framesEncoded)) {
         this.framesEncoded = data().deepCopy(fields()[32].schema(), other.framesEncoded);
-        fieldSetFlags()[32] = true;
+        fieldSetFlags()[32] = other.fieldSetFlags()[32];
       }
       if (isValidValue(fields()[33], other.keyFramesEncoded)) {
         this.keyFramesEncoded = data().deepCopy(fields()[33].schema(), other.keyFramesEncoded);
-        fieldSetFlags()[33] = true;
+        fieldSetFlags()[33] = other.fieldSetFlags()[33];
       }
       if (isValidValue(fields()[34], other.framesDiscardedOnSend)) {
         this.framesDiscardedOnSend = data().deepCopy(fields()[34].schema(), other.framesDiscardedOnSend);
-        fieldSetFlags()[34] = true;
+        fieldSetFlags()[34] = other.fieldSetFlags()[34];
       }
       if (isValidValue(fields()[35], other.qpSum)) {
         this.qpSum = data().deepCopy(fields()[35].schema(), other.qpSum);
-        fieldSetFlags()[35] = true;
+        fieldSetFlags()[35] = other.fieldSetFlags()[35];
       }
       if (isValidValue(fields()[36], other.totalEncodeTime)) {
         this.totalEncodeTime = data().deepCopy(fields()[36].schema(), other.totalEncodeTime);
-        fieldSetFlags()[36] = true;
+        fieldSetFlags()[36] = other.fieldSetFlags()[36];
       }
       if (isValidValue(fields()[37], other.totalPacketSendDelay)) {
         this.totalPacketSendDelay = data().deepCopy(fields()[37].schema(), other.totalPacketSendDelay);
-        fieldSetFlags()[37] = true;
+        fieldSetFlags()[37] = other.fieldSetFlags()[37];
       }
       if (isValidValue(fields()[38], other.averageRtcpInterval)) {
         this.averageRtcpInterval = data().deepCopy(fields()[38].schema(), other.averageRtcpInterval);
-        fieldSetFlags()[38] = true;
+        fieldSetFlags()[38] = other.fieldSetFlags()[38];
       }
       if (isValidValue(fields()[39], other.qualityLimitationDurationCPU)) {
         this.qualityLimitationDurationCPU = data().deepCopy(fields()[39].schema(), other.qualityLimitationDurationCPU);
-        fieldSetFlags()[39] = true;
+        fieldSetFlags()[39] = other.fieldSetFlags()[39];
       }
       if (isValidValue(fields()[40], other.qualityLimitationDurationNone)) {
         this.qualityLimitationDurationNone = data().deepCopy(fields()[40].schema(), other.qualityLimitationDurationNone);
-        fieldSetFlags()[40] = true;
+        fieldSetFlags()[40] = other.fieldSetFlags()[40];
       }
       if (isValidValue(fields()[41], other.qualityLimitationDurationBandwidth)) {
         this.qualityLimitationDurationBandwidth = data().deepCopy(fields()[41].schema(), other.qualityLimitationDurationBandwidth);
-        fieldSetFlags()[41] = true;
+        fieldSetFlags()[41] = other.fieldSetFlags()[41];
       }
       if (isValidValue(fields()[42], other.qualityLimitationDurationOther)) {
         this.qualityLimitationDurationOther = data().deepCopy(fields()[42].schema(), other.qualityLimitationDurationOther);
-        fieldSetFlags()[42] = true;
+        fieldSetFlags()[42] = other.fieldSetFlags()[42];
       }
       if (isValidValue(fields()[43], other.qualityLimitationReason)) {
         this.qualityLimitationReason = data().deepCopy(fields()[43].schema(), other.qualityLimitationReason);
-        fieldSetFlags()[43] = true;
+        fieldSetFlags()[43] = other.fieldSetFlags()[43];
       }
       if (isValidValue(fields()[44], other.qualityLimitationResolutionChanges)) {
         this.qualityLimitationResolutionChanges = data().deepCopy(fields()[44].schema(), other.qualityLimitationResolutionChanges);
-        fieldSetFlags()[44] = true;
+        fieldSetFlags()[44] = other.fieldSetFlags()[44];
       }
       if (isValidValue(fields()[45], other.perDscpPacketsSent)) {
         this.perDscpPacketsSent = data().deepCopy(fields()[45].schema(), other.perDscpPacketsSent);
-        fieldSetFlags()[45] = true;
+        fieldSetFlags()[45] = other.fieldSetFlags()[45];
       }
       if (isValidValue(fields()[46], other.nackCount)) {
         this.nackCount = data().deepCopy(fields()[46].schema(), other.nackCount);
-        fieldSetFlags()[46] = true;
+        fieldSetFlags()[46] = other.fieldSetFlags()[46];
       }
       if (isValidValue(fields()[47], other.firCount)) {
         this.firCount = data().deepCopy(fields()[47].schema(), other.firCount);
-        fieldSetFlags()[47] = true;
+        fieldSetFlags()[47] = other.fieldSetFlags()[47];
       }
       if (isValidValue(fields()[48], other.pliCount)) {
         this.pliCount = data().deepCopy(fields()[48].schema(), other.pliCount);
-        fieldSetFlags()[48] = true;
+        fieldSetFlags()[48] = other.fieldSetFlags()[48];
       }
       if (isValidValue(fields()[49], other.sliCount)) {
         this.sliCount = data().deepCopy(fields()[49].schema(), other.sliCount);
-        fieldSetFlags()[49] = true;
+        fieldSetFlags()[49] = other.fieldSetFlags()[49];
       }
       if (isValidValue(fields()[50], other.encoderImplementation)) {
         this.encoderImplementation = data().deepCopy(fields()[50].schema(), other.encoderImplementation);
-        fieldSetFlags()[50] = true;
+        fieldSetFlags()[50] = other.fieldSetFlags()[50];
       }
       if (isValidValue(fields()[51], other.packetsReceived)) {
         this.packetsReceived = data().deepCopy(fields()[51].schema(), other.packetsReceived);
-        fieldSetFlags()[51] = true;
+        fieldSetFlags()[51] = other.fieldSetFlags()[51];
       }
       if (isValidValue(fields()[52], other.packetsLost)) {
         this.packetsLost = data().deepCopy(fields()[52].schema(), other.packetsLost);
-        fieldSetFlags()[52] = true;
+        fieldSetFlags()[52] = other.fieldSetFlags()[52];
       }
       if (isValidValue(fields()[53], other.jitter)) {
         this.jitter = data().deepCopy(fields()[53].schema(), other.jitter);
-        fieldSetFlags()[53] = true;
+        fieldSetFlags()[53] = other.fieldSetFlags()[53];
       }
       if (isValidValue(fields()[54], other.packetsDiscarded)) {
         this.packetsDiscarded = data().deepCopy(fields()[54].schema(), other.packetsDiscarded);
-        fieldSetFlags()[54] = true;
+        fieldSetFlags()[54] = other.fieldSetFlags()[54];
       }
       if (isValidValue(fields()[55], other.packetsRepaired)) {
         this.packetsRepaired = data().deepCopy(fields()[55].schema(), other.packetsRepaired);
-        fieldSetFlags()[55] = true;
+        fieldSetFlags()[55] = other.fieldSetFlags()[55];
       }
       if (isValidValue(fields()[56], other.burstPacketsLost)) {
         this.burstPacketsLost = data().deepCopy(fields()[56].schema(), other.burstPacketsLost);
-        fieldSetFlags()[56] = true;
+        fieldSetFlags()[56] = other.fieldSetFlags()[56];
       }
       if (isValidValue(fields()[57], other.burstPacketsDiscarded)) {
         this.burstPacketsDiscarded = data().deepCopy(fields()[57].schema(), other.burstPacketsDiscarded);
-        fieldSetFlags()[57] = true;
+        fieldSetFlags()[57] = other.fieldSetFlags()[57];
       }
       if (isValidValue(fields()[58], other.burstLossCount)) {
         this.burstLossCount = data().deepCopy(fields()[58].schema(), other.burstLossCount);
-        fieldSetFlags()[58] = true;
+        fieldSetFlags()[58] = other.fieldSetFlags()[58];
       }
       if (isValidValue(fields()[59], other.burstDiscardCount)) {
         this.burstDiscardCount = data().deepCopy(fields()[59].schema(), other.burstDiscardCount);
-        fieldSetFlags()[59] = true;
+        fieldSetFlags()[59] = other.fieldSetFlags()[59];
       }
       if (isValidValue(fields()[60], other.burstLossRate)) {
         this.burstLossRate = data().deepCopy(fields()[60].schema(), other.burstLossRate);
-        fieldSetFlags()[60] = true;
+        fieldSetFlags()[60] = other.fieldSetFlags()[60];
       }
       if (isValidValue(fields()[61], other.burstDiscardRate)) {
         this.burstDiscardRate = data().deepCopy(fields()[61].schema(), other.burstDiscardRate);
-        fieldSetFlags()[61] = true;
+        fieldSetFlags()[61] = other.fieldSetFlags()[61];
       }
       if (isValidValue(fields()[62], other.gapLossRate)) {
         this.gapLossRate = data().deepCopy(fields()[62].schema(), other.gapLossRate);
-        fieldSetFlags()[62] = true;
+        fieldSetFlags()[62] = other.fieldSetFlags()[62];
       }
       if (isValidValue(fields()[63], other.gapDiscardRate)) {
         this.gapDiscardRate = data().deepCopy(fields()[63].schema(), other.gapDiscardRate);
-        fieldSetFlags()[63] = true;
+        fieldSetFlags()[63] = other.fieldSetFlags()[63];
       }
       if (isValidValue(fields()[64], other.framesDropped)) {
         this.framesDropped = data().deepCopy(fields()[64].schema(), other.framesDropped);
-        fieldSetFlags()[64] = true;
+        fieldSetFlags()[64] = other.fieldSetFlags()[64];
       }
       if (isValidValue(fields()[65], other.partialFramesLost)) {
         this.partialFramesLost = data().deepCopy(fields()[65].schema(), other.partialFramesLost);
-        fieldSetFlags()[65] = true;
+        fieldSetFlags()[65] = other.fieldSetFlags()[65];
       }
       if (isValidValue(fields()[66], other.fullFramesLost)) {
         this.fullFramesLost = data().deepCopy(fields()[66].schema(), other.fullFramesLost);
-        fieldSetFlags()[66] = true;
+        fieldSetFlags()[66] = other.fieldSetFlags()[66];
       }
       if (isValidValue(fields()[67], other.roundTripTime)) {
         this.roundTripTime = data().deepCopy(fields()[67].schema(), other.roundTripTime);
-        fieldSetFlags()[67] = true;
+        fieldSetFlags()[67] = other.fieldSetFlags()[67];
       }
       if (isValidValue(fields()[68], other.totalRoundTripTime)) {
         this.totalRoundTripTime = data().deepCopy(fields()[68].schema(), other.totalRoundTripTime);
-        fieldSetFlags()[68] = true;
+        fieldSetFlags()[68] = other.fieldSetFlags()[68];
       }
       if (isValidValue(fields()[69], other.fractionLost)) {
         this.fractionLost = data().deepCopy(fields()[69].schema(), other.fractionLost);
-        fieldSetFlags()[69] = true;
+        fieldSetFlags()[69] = other.fieldSetFlags()[69];
       }
       if (isValidValue(fields()[70], other.reportsReceived)) {
         this.reportsReceived = data().deepCopy(fields()[70].schema(), other.reportsReceived);
-        fieldSetFlags()[70] = true;
+        fieldSetFlags()[70] = other.fieldSetFlags()[70];
       }
       if (isValidValue(fields()[71], other.roundTripTimeMeasurements)) {
         this.roundTripTimeMeasurements = data().deepCopy(fields()[71].schema(), other.roundTripTimeMeasurements);
-        fieldSetFlags()[71] = true;
+        fieldSetFlags()[71] = other.fieldSetFlags()[71];
       }
       if (isValidValue(fields()[72], other.relayedSource)) {
         this.relayedSource = data().deepCopy(fields()[72].schema(), other.relayedSource);
-        fieldSetFlags()[72] = true;
+        fieldSetFlags()[72] = other.fieldSetFlags()[72];
       }
       if (isValidValue(fields()[73], other.encodedFrameWidth)) {
         this.encodedFrameWidth = data().deepCopy(fields()[73].schema(), other.encodedFrameWidth);
-        fieldSetFlags()[73] = true;
+        fieldSetFlags()[73] = other.fieldSetFlags()[73];
       }
       if (isValidValue(fields()[74], other.encodedFrameHeight)) {
         this.encodedFrameHeight = data().deepCopy(fields()[74].schema(), other.encodedFrameHeight);
-        fieldSetFlags()[74] = true;
+        fieldSetFlags()[74] = other.fieldSetFlags()[74];
       }
       if (isValidValue(fields()[75], other.encodedFrameBitDepth)) {
         this.encodedFrameBitDepth = data().deepCopy(fields()[75].schema(), other.encodedFrameBitDepth);
-        fieldSetFlags()[75] = true;
+        fieldSetFlags()[75] = other.fieldSetFlags()[75];
       }
       if (isValidValue(fields()[76], other.encodedFramesPerSecond)) {
         this.encodedFramesPerSecond = data().deepCopy(fields()[76].schema(), other.encodedFramesPerSecond);
-        fieldSetFlags()[76] = true;
+        fieldSetFlags()[76] = other.fieldSetFlags()[76];
       }
       if (isValidValue(fields()[77], other.ended)) {
         this.ended = data().deepCopy(fields()[77].schema(), other.ended);
-        fieldSetFlags()[77] = true;
+        fieldSetFlags()[77] = other.fieldSetFlags()[77];
       }
       if (isValidValue(fields()[78], other.payloadType)) {
         this.payloadType = data().deepCopy(fields()[78].schema(), other.payloadType);
-        fieldSetFlags()[78] = true;
+        fieldSetFlags()[78] = other.fieldSetFlags()[78];
       }
       if (isValidValue(fields()[79], other.mimeType)) {
         this.mimeType = data().deepCopy(fields()[79].schema(), other.mimeType);
-        fieldSetFlags()[79] = true;
+        fieldSetFlags()[79] = other.fieldSetFlags()[79];
       }
       if (isValidValue(fields()[80], other.clockRate)) {
         this.clockRate = data().deepCopy(fields()[80].schema(), other.clockRate);
-        fieldSetFlags()[80] = true;
+        fieldSetFlags()[80] = other.fieldSetFlags()[80];
       }
       if (isValidValue(fields()[81], other.channels)) {
         this.channels = data().deepCopy(fields()[81].schema(), other.channels);
-        fieldSetFlags()[81] = true;
+        fieldSetFlags()[81] = other.fieldSetFlags()[81];
       }
       if (isValidValue(fields()[82], other.sdpFmtpLine)) {
         this.sdpFmtpLine = data().deepCopy(fields()[82].schema(), other.sdpFmtpLine);
-        fieldSetFlags()[82] = true;
+        fieldSetFlags()[82] = other.fieldSetFlags()[82];
       }
     }
 
@@ -1837,8 +1990,8 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
      * Creates a Builder by copying an existing OutboundVideoTrackReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(OutboundVideoTrackReport other) {
-            super(SCHEMA$);
+    private Builder(org.observertc.schemas.reports.OutboundVideoTrackReport other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
@@ -1883,8 +2036,8 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
         this.trackId = data().deepCopy(fields()[10].schema(), other.trackId);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.rtpStreamId)) {
-        this.rtpStreamId = data().deepCopy(fields()[11].schema(), other.rtpStreamId);
+      if (isValidValue(fields()[11], other.sfuStreamId)) {
+        this.sfuStreamId = data().deepCopy(fields()[11].schema(), other.sfuStreamId);
         fieldSetFlags()[11] = true;
       }
       if (isValidValue(fields()[12], other.sampleSeq)) {
@@ -2182,13 +2335,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return serviceId;
     }
 
+
     /**
       * Sets the value of the 'serviceId' field.
       * The unique identifier of the service
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -2210,7 +2364,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The unique identifier of the service
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearServiceId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -2225,13 +2379,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return mediaUnitId;
     }
 
+
     /**
       * Sets the value of the 'mediaUnitId' field.
       * The media unit id the report belongs to
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -2253,7 +2408,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearMediaUnitId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -2268,13 +2423,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return marker;
     }
 
+
     /**
       * Sets the value of the 'marker' field.
       * The marker the originated sample is reported with
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -2296,7 +2452,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearMarker() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -2307,9 +2463,10 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getTimestamp() {
+    public long getTimestamp() {
       return timestamp;
     }
+
 
     /**
       * Sets the value of the 'timestamp' field.
@@ -2317,7 +2474,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTimestamp(long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -2339,7 +2496,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTimestamp() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -2353,13 +2510,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return callId;
     }
 
+
     /**
       * Sets the value of the 'callId' field.
       * The generated unique identifier of the call
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setCallId(java.lang.String value) {
       validate(fields()[4], value);
       this.callId = value;
       fieldSetFlags()[4] = true;
@@ -2381,7 +2539,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The generated unique identifier of the call
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearCallId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -2396,13 +2554,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return roomId;
     }
 
+
     /**
       * Sets the value of the 'roomId' field.
       * webrtc app provided room id
       * @param value The value of 'roomId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRoomId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRoomId(java.lang.String value) {
       validate(fields()[5], value);
       this.roomId = value;
       fieldSetFlags()[5] = true;
@@ -2424,7 +2583,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * webrtc app provided room id
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRoomId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRoomId() {
       roomId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -2439,13 +2598,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return clientId;
     }
 
+
     /**
       * Sets the value of the 'clientId' field.
       * The generated unique identifier of the client
       * @param value The value of 'clientId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setClientId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setClientId(java.lang.String value) {
       validate(fields()[6], value);
       this.clientId = value;
       fieldSetFlags()[6] = true;
@@ -2467,7 +2627,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The generated unique identifier of the client
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearClientId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearClientId() {
       clientId = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -2482,13 +2642,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return userId;
     }
 
+
     /**
       * Sets the value of the 'userId' field.
       * webrtc app provided user identifier
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setUserId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setUserId(java.lang.String value) {
       validate(fields()[7], value);
       this.userId = value;
       fieldSetFlags()[7] = true;
@@ -2510,7 +2671,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * webrtc app provided user identifier
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearUserId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearUserId() {
       userId = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -2525,13 +2686,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return peerConnectionId;
     }
 
+
     /**
       * Sets the value of the 'peerConnectionId' field.
       * The unique identifier of the peer connection
       * @param value The value of 'peerConnectionId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPeerConnectionId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPeerConnectionId(java.lang.String value) {
       validate(fields()[8], value);
       this.peerConnectionId = value;
       fieldSetFlags()[8] = true;
@@ -2553,7 +2715,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The unique identifier of the peer connection
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPeerConnectionId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
       fieldSetFlags()[8] = false;
       return this;
@@ -2568,13 +2730,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return label;
     }
 
+
     /**
       * Sets the value of the 'label' field.
       * The webrtc app provided label the peer connection is labeled with
       * @param value The value of 'label'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setLabel(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setLabel(java.lang.String value) {
       validate(fields()[9], value);
       this.label = value;
       fieldSetFlags()[9] = true;
@@ -2596,7 +2759,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The webrtc app provided label the peer connection is labeled with
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearLabel() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearLabel() {
       label = null;
       fieldSetFlags()[9] = false;
       return this;
@@ -2611,13 +2774,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return trackId;
     }
 
+
     /**
       * Sets the value of the 'trackId' field.
       * The id of the track
       * @param value The value of 'trackId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTrackId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTrackId(java.lang.String value) {
       validate(fields()[10], value);
       this.trackId = value;
       fieldSetFlags()[10] = true;
@@ -2639,51 +2803,52 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The id of the track
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTrackId() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTrackId() {
       trackId = null;
       fieldSetFlags()[10] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'rtpStreamId' field.
-      * The id of the RTP stream connected to a remote media unit (such as an SFU)
+      * Gets the value of the 'sfuStreamId' field.
+      * The id of the Sfu stream corresponds to the outbound track
       * @return The value.
       */
-    public java.lang.String getRtpStreamId() {
-      return rtpStreamId;
+    public java.lang.String getSfuStreamId() {
+      return sfuStreamId;
     }
 
+
     /**
-      * Sets the value of the 'rtpStreamId' field.
-      * The id of the RTP stream connected to a remote media unit (such as an SFU)
-      * @param value The value of 'rtpStreamId'.
+      * Sets the value of the 'sfuStreamId' field.
+      * The id of the Sfu stream corresponds to the outbound track
+      * @param value The value of 'sfuStreamId'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRtpStreamId(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setSfuStreamId(java.lang.String value) {
       validate(fields()[11], value);
-      this.rtpStreamId = value;
+      this.sfuStreamId = value;
       fieldSetFlags()[11] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'rtpStreamId' field has been set.
-      * The id of the RTP stream connected to a remote media unit (such as an SFU)
-      * @return True if the 'rtpStreamId' field has been set, false otherwise.
+      * Checks whether the 'sfuStreamId' field has been set.
+      * The id of the Sfu stream corresponds to the outbound track
+      * @return True if the 'sfuStreamId' field has been set, false otherwise.
       */
-    public boolean hasRtpStreamId() {
+    public boolean hasSfuStreamId() {
       return fieldSetFlags()[11];
     }
 
 
     /**
-      * Clears the value of the 'rtpStreamId' field.
-      * The id of the RTP stream connected to a remote media unit (such as an SFU)
+      * Clears the value of the 'sfuStreamId' field.
+      * The id of the Sfu stream corresponds to the outbound track
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRtpStreamId() {
-      rtpStreamId = null;
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearSfuStreamId() {
+      sfuStreamId = null;
       fieldSetFlags()[11] = false;
       return this;
     }
@@ -2693,9 +2858,10 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The sequence number of the sample the report is generated from
       * @return The value.
       */
-    public java.lang.Integer getSampleSeq() {
+    public int getSampleSeq() {
       return sampleSeq;
     }
+
 
     /**
       * Sets the value of the 'sampleSeq' field.
@@ -2703,7 +2869,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * @param value The value of 'sampleSeq'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setSampleSeq(int value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setSampleSeq(int value) {
       validate(fields()[12], value);
       this.sampleSeq = value;
       fieldSetFlags()[12] = true;
@@ -2725,7 +2891,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The sequence number of the sample the report is generated from
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearSampleSeq() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearSampleSeq() {
       fieldSetFlags()[12] = false;
       return this;
     }
@@ -2735,9 +2901,10 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The RTP SSRC field
       * @return The value.
       */
-    public java.lang.Long getSsrc() {
+    public long getSsrc() {
       return ssrc;
     }
+
 
     /**
       * Sets the value of the 'ssrc' field.
@@ -2745,7 +2912,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * @param value The value of 'ssrc'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setSsrc(long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setSsrc(long value) {
       validate(fields()[13], value);
       this.ssrc = value;
       fieldSetFlags()[13] = true;
@@ -2767,7 +2934,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The RTP SSRC field
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearSsrc() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearSsrc() {
       fieldSetFlags()[13] = false;
       return this;
     }
@@ -2781,13 +2948,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return packetsSent;
     }
 
+
     /**
       * Sets the value of the 'packetsSent' field.
       * The total number of packets sent on the corresponded synchronization source
       * @param value The value of 'packetsSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPacketsSent(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPacketsSent(java.lang.Integer value) {
       validate(fields()[14], value);
       this.packetsSent = value;
       fieldSetFlags()[14] = true;
@@ -2809,7 +2977,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of packets sent on the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPacketsSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPacketsSent() {
       packetsSent = null;
       fieldSetFlags()[14] = false;
       return this;
@@ -2824,13 +2992,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return bytesSent;
     }
 
+
     /**
       * Sets the value of the 'bytesSent' field.
       * The total number of bytes sent on the corresponded synchronization source
       * @param value The value of 'bytesSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBytesSent(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBytesSent(java.lang.Long value) {
       validate(fields()[15], value);
       this.bytesSent = value;
       fieldSetFlags()[15] = true;
@@ -2852,7 +3021,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of bytes sent on the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBytesSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBytesSent() {
       bytesSent = null;
       fieldSetFlags()[15] = false;
       return this;
@@ -2867,13 +3036,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return rid;
     }
 
+
     /**
       * Sets the value of the 'rid' field.
       *  The rid encoding parameter of the corresponded synchronization source
       * @param value The value of 'rid'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRid(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRid(java.lang.String value) {
       validate(fields()[16], value);
       this.rid = value;
       fieldSetFlags()[16] = true;
@@ -2895,7 +3065,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       *  The rid encoding parameter of the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRid() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRid() {
       rid = null;
       fieldSetFlags()[16] = false;
       return this;
@@ -2910,13 +3080,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return lastPacketSentTimestamp;
     }
 
+
     /**
       * Sets the value of the 'lastPacketSentTimestamp' field.
       *  the timestamp the last packet was sent. (UTC epoch in ms)
       * @param value The value of 'lastPacketSentTimestamp'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setLastPacketSentTimestamp(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setLastPacketSentTimestamp(java.lang.Long value) {
       validate(fields()[17], value);
       this.lastPacketSentTimestamp = value;
       fieldSetFlags()[17] = true;
@@ -2938,7 +3109,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       *  the timestamp the last packet was sent. (UTC epoch in ms)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearLastPacketSentTimestamp() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearLastPacketSentTimestamp() {
       lastPacketSentTimestamp = null;
       fieldSetFlags()[17] = false;
       return this;
@@ -2953,13 +3124,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return headerBytesSent;
     }
 
+
     /**
       * Sets the value of the 'headerBytesSent' field.
       * Total number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)
       * @param value The value of 'headerBytesSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setHeaderBytesSent(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setHeaderBytesSent(java.lang.Long value) {
       validate(fields()[18], value);
       this.headerBytesSent = value;
       fieldSetFlags()[18] = true;
@@ -2981,7 +3153,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Total number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearHeaderBytesSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearHeaderBytesSent() {
       headerBytesSent = null;
       fieldSetFlags()[18] = false;
       return this;
@@ -2996,13 +3168,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return packetsDiscardedOnSend;
     }
 
+
     /**
       * Sets the value of the 'packetsDiscardedOnSend' field.
       * Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)
       * @param value The value of 'packetsDiscardedOnSend'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPacketsDiscardedOnSend(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPacketsDiscardedOnSend(java.lang.Integer value) {
       validate(fields()[19], value);
       this.packetsDiscardedOnSend = value;
       fieldSetFlags()[19] = true;
@@ -3024,7 +3197,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPacketsDiscardedOnSend() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPacketsDiscardedOnSend() {
       packetsDiscardedOnSend = null;
       fieldSetFlags()[19] = false;
       return this;
@@ -3039,13 +3212,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return bytesDiscardedOnSend;
     }
 
+
     /**
       * Sets the value of the 'bytesDiscardedOnSend' field.
       * Total number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)
       * @param value The value of 'bytesDiscardedOnSend'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBytesDiscardedOnSend(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBytesDiscardedOnSend(java.lang.Long value) {
       validate(fields()[20], value);
       this.bytesDiscardedOnSend = value;
       fieldSetFlags()[20] = true;
@@ -3067,7 +3241,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Total number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBytesDiscardedOnSend() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBytesDiscardedOnSend() {
       bytesDiscardedOnSend = null;
       fieldSetFlags()[20] = false;
       return this;
@@ -3082,13 +3256,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return fecPacketsSent;
     }
 
+
     /**
       * Sets the value of the 'fecPacketsSent' field.
       * Total number of FEC packets sent over the corresponding synchronization source (ssrc)
       * @param value The value of 'fecPacketsSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFecPacketsSent(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFecPacketsSent(java.lang.Integer value) {
       validate(fields()[21], value);
       this.fecPacketsSent = value;
       fieldSetFlags()[21] = true;
@@ -3110,7 +3285,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Total number of FEC packets sent over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFecPacketsSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFecPacketsSent() {
       fecPacketsSent = null;
       fieldSetFlags()[21] = false;
       return this;
@@ -3125,13 +3300,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return retransmittedPacketsSent;
     }
 
+
     /**
       * Sets the value of the 'retransmittedPacketsSent' field.
       * Total number of retransmitted packets sent over the corresponding synchronization source (ssrc).
       * @param value The value of 'retransmittedPacketsSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRetransmittedPacketsSent(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRetransmittedPacketsSent(java.lang.Integer value) {
       validate(fields()[22], value);
       this.retransmittedPacketsSent = value;
       fieldSetFlags()[22] = true;
@@ -3153,7 +3329,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Total number of retransmitted packets sent over the corresponding synchronization source (ssrc).
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRetransmittedPacketsSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRetransmittedPacketsSent() {
       retransmittedPacketsSent = null;
       fieldSetFlags()[22] = false;
       return this;
@@ -3168,13 +3344,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return retransmittedBytesSent;
     }
 
+
     /**
       * Sets the value of the 'retransmittedBytesSent' field.
       * Total number of retransmitted bytes sent over the corresponded synchronization source (ssrc).
       * @param value The value of 'retransmittedBytesSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRetransmittedBytesSent(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRetransmittedBytesSent(java.lang.Long value) {
       validate(fields()[23], value);
       this.retransmittedBytesSent = value;
       fieldSetFlags()[23] = true;
@@ -3196,7 +3373,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Total number of retransmitted bytes sent over the corresponded synchronization source (ssrc).
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRetransmittedBytesSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRetransmittedBytesSent() {
       retransmittedBytesSent = null;
       fieldSetFlags()[23] = false;
       return this;
@@ -3211,13 +3388,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return targetBitrate;
     }
 
+
     /**
       * Sets the value of the 'targetBitrate' field.
       * Reflects the current encoder target in bits per second.
       * @param value The value of 'targetBitrate'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTargetBitrate(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTargetBitrate(java.lang.Long value) {
       validate(fields()[24], value);
       this.targetBitrate = value;
       fieldSetFlags()[24] = true;
@@ -3239,7 +3417,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Reflects the current encoder target in bits per second.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTargetBitrate() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTargetBitrate() {
       targetBitrate = null;
       fieldSetFlags()[24] = false;
       return this;
@@ -3254,13 +3432,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return totalEncodedBytesTarget;
     }
 
+
     /**
       * Sets the value of the 'totalEncodedBytesTarget' field.
       * The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets
       * @param value The value of 'totalEncodedBytesTarget'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTotalEncodedBytesTarget(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTotalEncodedBytesTarget(java.lang.Long value) {
       validate(fields()[25], value);
       this.totalEncodedBytesTarget = value;
       fieldSetFlags()[25] = true;
@@ -3282,7 +3461,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTotalEncodedBytesTarget() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTotalEncodedBytesTarget() {
       totalEncodedBytesTarget = null;
       fieldSetFlags()[25] = false;
       return this;
@@ -3297,13 +3476,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return frameWidth;
     }
 
+
     /**
       * Sets the value of the 'frameWidth' field.
       * Represents the height of the last encoded frame sent over the corresponded synchronization source
       * @param value The value of 'frameWidth'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFrameWidth(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFrameWidth(java.lang.Integer value) {
       validate(fields()[26], value);
       this.frameWidth = value;
       fieldSetFlags()[26] = true;
@@ -3325,7 +3505,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Represents the height of the last encoded frame sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFrameWidth() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFrameWidth() {
       frameWidth = null;
       fieldSetFlags()[26] = false;
       return this;
@@ -3340,13 +3520,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return frameHeight;
     }
 
+
     /**
       * Sets the value of the 'frameHeight' field.
       * Represents the width of the last encoded frame sent over the corresponded synchronization source
       * @param value The value of 'frameHeight'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFrameHeight(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFrameHeight(java.lang.Integer value) {
       validate(fields()[27], value);
       this.frameHeight = value;
       fieldSetFlags()[27] = true;
@@ -3368,7 +3549,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Represents the width of the last encoded frame sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFrameHeight() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFrameHeight() {
       frameHeight = null;
       fieldSetFlags()[27] = false;
       return this;
@@ -3383,13 +3564,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return frameBitDepth;
     }
 
+
     /**
       * Sets the value of the 'frameBitDepth' field.
       * Represents the bit depth per pixel of the last encoded frame sent over the corresponded synchronization source
       * @param value The value of 'frameBitDepth'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFrameBitDepth(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFrameBitDepth(java.lang.Integer value) {
       validate(fields()[28], value);
       this.frameBitDepth = value;
       fieldSetFlags()[28] = true;
@@ -3411,7 +3593,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Represents the bit depth per pixel of the last encoded frame sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFrameBitDepth() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFrameBitDepth() {
       frameBitDepth = null;
       fieldSetFlags()[28] = false;
       return this;
@@ -3426,13 +3608,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return framesPerSecond;
     }
 
+
     /**
       * Sets the value of the 'framesPerSecond' field.
       * The number of encoded frames over the last second sent over the corresponded synchronization source
       * @param value The value of 'framesPerSecond'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFramesPerSecond(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFramesPerSecond(java.lang.Double value) {
       validate(fields()[29], value);
       this.framesPerSecond = value;
       fieldSetFlags()[29] = true;
@@ -3454,7 +3637,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of encoded frames over the last second sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFramesPerSecond() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFramesPerSecond() {
       framesPerSecond = null;
       fieldSetFlags()[29] = false;
       return this;
@@ -3469,13 +3652,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return framesSent;
     }
 
+
     /**
       * Sets the value of the 'framesSent' field.
       * The number of frames sent over the corresponded synchronization source
       * @param value The value of 'framesSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFramesSent(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFramesSent(java.lang.Integer value) {
       validate(fields()[30], value);
       this.framesSent = value;
       fieldSetFlags()[30] = true;
@@ -3497,7 +3681,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of frames sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFramesSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFramesSent() {
       framesSent = null;
       fieldSetFlags()[30] = false;
       return this;
@@ -3512,13 +3696,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return hugeFramesSent;
     }
 
+
     /**
       * Sets the value of the 'hugeFramesSent' field.
       * The number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source
       * @param value The value of 'hugeFramesSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setHugeFramesSent(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setHugeFramesSent(java.lang.Integer value) {
       validate(fields()[31], value);
       this.hugeFramesSent = value;
       fieldSetFlags()[31] = true;
@@ -3540,7 +3725,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of huge frames (2.5x greater than the average size of frame) sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearHugeFramesSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearHugeFramesSent() {
       hugeFramesSent = null;
       fieldSetFlags()[31] = false;
       return this;
@@ -3555,13 +3740,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return framesEncoded;
     }
 
+
     /**
       * Sets the value of the 'framesEncoded' field.
       * The number of frames encoded over the corresponded synchronization source
       * @param value The value of 'framesEncoded'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFramesEncoded(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFramesEncoded(java.lang.Integer value) {
       validate(fields()[32], value);
       this.framesEncoded = value;
       fieldSetFlags()[32] = true;
@@ -3583,7 +3769,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of frames encoded over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFramesEncoded() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFramesEncoded() {
       framesEncoded = null;
       fieldSetFlags()[32] = false;
       return this;
@@ -3598,13 +3784,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return keyFramesEncoded;
     }
 
+
     /**
       * Sets the value of the 'keyFramesEncoded' field.
       * The number of keyframes sent over the corresponded synchronization source
       * @param value The value of 'keyFramesEncoded'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setKeyFramesEncoded(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setKeyFramesEncoded(java.lang.Integer value) {
       validate(fields()[33], value);
       this.keyFramesEncoded = value;
       fieldSetFlags()[33] = true;
@@ -3626,7 +3813,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of keyframes sent over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearKeyFramesEncoded() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearKeyFramesEncoded() {
       keyFramesEncoded = null;
       fieldSetFlags()[33] = false;
       return this;
@@ -3641,13 +3828,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return framesDiscardedOnSend;
     }
 
+
     /**
       * Sets the value of the 'framesDiscardedOnSend' field.
       * The number of frames discarded before sending over the corresponded synchronization source
       * @param value The value of 'framesDiscardedOnSend'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFramesDiscardedOnSend(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFramesDiscardedOnSend(java.lang.Integer value) {
       validate(fields()[34], value);
       this.framesDiscardedOnSend = value;
       fieldSetFlags()[34] = true;
@@ -3669,7 +3857,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of frames discarded before sending over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFramesDiscardedOnSend() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFramesDiscardedOnSend() {
       framesDiscardedOnSend = null;
       fieldSetFlags()[34] = false;
       return this;
@@ -3684,13 +3872,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qpSum;
     }
 
+
     /**
       * Sets the value of the 'qpSum' field.
       * The sum of QP values encoded by the encoder corresponded to the synchronization source
       * @param value The value of 'qpSum'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQpSum(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQpSum(java.lang.Long value) {
       validate(fields()[35], value);
       this.qpSum = value;
       fieldSetFlags()[35] = true;
@@ -3712,7 +3901,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The sum of QP values encoded by the encoder corresponded to the synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQpSum() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQpSum() {
       qpSum = null;
       fieldSetFlags()[35] = false;
       return this;
@@ -3727,13 +3916,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return totalEncodeTime;
     }
 
+
     /**
       * Sets the value of the 'totalEncodeTime' field.
       * The sum of encoding time spent by the encoder corresponded to the synchronization source
       * @param value The value of 'totalEncodeTime'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTotalEncodeTime(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTotalEncodeTime(java.lang.Double value) {
       validate(fields()[36], value);
       this.totalEncodeTime = value;
       fieldSetFlags()[36] = true;
@@ -3755,7 +3945,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The sum of encoding time spent by the encoder corresponded to the synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTotalEncodeTime() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTotalEncodeTime() {
       totalEncodeTime = null;
       fieldSetFlags()[36] = false;
       return this;
@@ -3770,13 +3960,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return totalPacketSendDelay;
     }
 
+
     /**
       * Sets the value of the 'totalPacketSendDelay' field.
       * The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source
       * @param value The value of 'totalPacketSendDelay'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTotalPacketSendDelay(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTotalPacketSendDelay(java.lang.Double value) {
       validate(fields()[37], value);
       this.totalPacketSendDelay = value;
       fieldSetFlags()[37] = true;
@@ -3798,7 +3989,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTotalPacketSendDelay() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTotalPacketSendDelay() {
       totalPacketSendDelay = null;
       fieldSetFlags()[37] = false;
       return this;
@@ -3813,13 +4004,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return averageRtcpInterval;
     }
 
+
     /**
       * Sets the value of the 'averageRtcpInterval' field.
       * The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
       * @param value The value of 'averageRtcpInterval'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setAverageRtcpInterval(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setAverageRtcpInterval(java.lang.Double value) {
       validate(fields()[38], value);
       this.averageRtcpInterval = value;
       fieldSetFlags()[38] = true;
@@ -3841,7 +4033,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearAverageRtcpInterval() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearAverageRtcpInterval() {
       averageRtcpInterval = null;
       fieldSetFlags()[38] = false;
       return this;
@@ -3856,13 +4048,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qualityLimitationDurationCPU;
     }
 
+
     /**
       * Sets the value of the 'qualityLimitationDurationCPU' field.
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU
       * @param value The value of 'qualityLimitationDurationCPU'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQualityLimitationDurationCPU(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQualityLimitationDurationCPU(java.lang.Double value) {
       validate(fields()[39], value);
       this.qualityLimitationDurationCPU = value;
       fieldSetFlags()[39] = true;
@@ -3884,7 +4077,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state due to CPU
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQualityLimitationDurationCPU() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQualityLimitationDurationCPU() {
       qualityLimitationDurationCPU = null;
       fieldSetFlags()[39] = false;
       return this;
@@ -3899,13 +4092,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qualityLimitationDurationNone;
     }
 
+
     /**
       * Sets the value of the 'qualityLimitationDurationNone' field.
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state
       * @param value The value of 'qualityLimitationDurationNone'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQualityLimitationDurationNone(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQualityLimitationDurationNone(java.lang.Double value) {
       validate(fields()[40], value);
       this.qualityLimitationDurationNone = value;
       fieldSetFlags()[40] = true;
@@ -3927,7 +4121,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was not in a limited state
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQualityLimitationDurationNone() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQualityLimitationDurationNone() {
       qualityLimitationDurationNone = null;
       fieldSetFlags()[40] = false;
       return this;
@@ -3942,13 +4136,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qualityLimitationDurationBandwidth;
     }
 
+
     /**
       * Sets the value of the 'qualityLimitationDurationBandwidth' field.
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth
       * @param value The value of 'qualityLimitationDurationBandwidth'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQualityLimitationDurationBandwidth(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQualityLimitationDurationBandwidth(java.lang.Double value) {
       validate(fields()[41], value);
       this.qualityLimitationDurationBandwidth = value;
       fieldSetFlags()[41] = true;
@@ -3970,7 +4165,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becasue of bandwidth
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQualityLimitationDurationBandwidth() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQualityLimitationDurationBandwidth() {
       qualityLimitationDurationBandwidth = null;
       fieldSetFlags()[41] = false;
       return this;
@@ -3985,13 +4180,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qualityLimitationDurationOther;
     }
 
+
     /**
       * Sets the value of the 'qualityLimitationDurationOther' field.
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor
       * @param value The value of 'qualityLimitationDurationOther'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQualityLimitationDurationOther(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQualityLimitationDurationOther(java.lang.Double value) {
       validate(fields()[42], value);
       this.qualityLimitationDurationOther = value;
       fieldSetFlags()[42] = true;
@@ -4013,7 +4209,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Time elapsed in seconds when the the corresponding synchronization source (ssrc) was in a limited state becaue of other factor
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQualityLimitationDurationOther() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQualityLimitationDurationOther() {
       qualityLimitationDurationOther = null;
       fieldSetFlags()[42] = false;
       return this;
@@ -4028,13 +4224,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qualityLimitationReason;
     }
 
+
     /**
       * Sets the value of the 'qualityLimitationReason' field.
       * Indicate a reason for the corresponding synchronization source (ssrc) quality is limited
       * @param value The value of 'qualityLimitationReason'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQualityLimitationReason(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQualityLimitationReason(java.lang.String value) {
       validate(fields()[43], value);
       this.qualityLimitationReason = value;
       fieldSetFlags()[43] = true;
@@ -4056,7 +4253,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Indicate a reason for the corresponding synchronization source (ssrc) quality is limited
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQualityLimitationReason() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQualityLimitationReason() {
       qualityLimitationReason = null;
       fieldSetFlags()[43] = false;
       return this;
@@ -4071,13 +4268,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return qualityLimitationResolutionChanges;
     }
 
+
     /**
       * Sets the value of the 'qualityLimitationResolutionChanges' field.
       * The number of quality limiatation changes happened for the corresponding synchronization source (ssrc)
       * @param value The value of 'qualityLimitationResolutionChanges'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setQualityLimitationResolutionChanges(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setQualityLimitationResolutionChanges(java.lang.Integer value) {
       validate(fields()[44], value);
       this.qualityLimitationResolutionChanges = value;
       fieldSetFlags()[44] = true;
@@ -4099,7 +4297,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of quality limiatation changes happened for the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearQualityLimitationResolutionChanges() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearQualityLimitationResolutionChanges() {
       qualityLimitationResolutionChanges = null;
       fieldSetFlags()[44] = false;
       return this;
@@ -4114,13 +4312,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return perDscpPacketsSent;
     }
 
+
     /**
       * Sets the value of the 'perDscpPacketsSent' field.
       * The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
       * @param value The value of 'perDscpPacketsSent'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPerDscpPacketsSent(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPerDscpPacketsSent(java.lang.Double value) {
       validate(fields()[45], value);
       this.perDscpPacketsSent = value;
       fieldSetFlags()[45] = true;
@@ -4142,7 +4341,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPerDscpPacketsSent() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPerDscpPacketsSent() {
       perDscpPacketsSent = null;
       fieldSetFlags()[45] = false;
       return this;
@@ -4157,13 +4356,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return nackCount;
     }
 
+
     /**
       * Sets the value of the 'nackCount' field.
       * Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)
       * @param value The value of 'nackCount'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setNackCount(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setNackCount(java.lang.Integer value) {
       validate(fields()[46], value);
       this.nackCount = value;
       fieldSetFlags()[46] = true;
@@ -4185,7 +4385,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearNackCount() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearNackCount() {
       nackCount = null;
       fieldSetFlags()[46] = false;
       return this;
@@ -4200,13 +4400,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return firCount;
     }
 
+
     /**
       * Sets the value of the 'firCount' field.
       * The number of full inter requests happened over the corresponding synchronization source (ssrc)
       * @param value The value of 'firCount'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFirCount(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFirCount(java.lang.Integer value) {
       validate(fields()[47], value);
       this.firCount = value;
       fieldSetFlags()[47] = true;
@@ -4228,7 +4429,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of full inter requests happened over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFirCount() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFirCount() {
       firCount = null;
       fieldSetFlags()[47] = false;
       return this;
@@ -4243,13 +4444,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return pliCount;
     }
 
+
     /**
       * Sets the value of the 'pliCount' field.
       * The number of picture loss indication happened received over the corresponding synchronization source (ssrc)
       * @param value The value of 'pliCount'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPliCount(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPliCount(java.lang.Integer value) {
       validate(fields()[48], value);
       this.pliCount = value;
       fieldSetFlags()[48] = true;
@@ -4271,7 +4473,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of picture loss indication happened received over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPliCount() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPliCount() {
       pliCount = null;
       fieldSetFlags()[48] = false;
       return this;
@@ -4286,13 +4488,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return sliCount;
     }
 
+
     /**
       * Sets the value of the 'sliCount' field.
       * The number of slice loss indication happened over the corresponding synchronization source (ssrc)
       * @param value The value of 'sliCount'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setSliCount(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setSliCount(java.lang.Integer value) {
       validate(fields()[49], value);
       this.sliCount = value;
       fieldSetFlags()[49] = true;
@@ -4314,7 +4517,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of slice loss indication happened over the corresponding synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearSliCount() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearSliCount() {
       sliCount = null;
       fieldSetFlags()[49] = false;
       return this;
@@ -4329,13 +4532,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return encoderImplementation;
     }
 
+
     /**
       * Sets the value of the 'encoderImplementation' field.
       * Indicate the name of the encoder implementation library
       * @param value The value of 'encoderImplementation'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setEncoderImplementation(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setEncoderImplementation(java.lang.String value) {
       validate(fields()[50], value);
       this.encoderImplementation = value;
       fieldSetFlags()[50] = true;
@@ -4357,7 +4561,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Indicate the name of the encoder implementation library
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearEncoderImplementation() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearEncoderImplementation() {
       encoderImplementation = null;
       fieldSetFlags()[50] = false;
       return this;
@@ -4372,13 +4576,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return packetsReceived;
     }
 
+
     /**
       * Sets the value of the 'packetsReceived' field.
       * The total number of packets received on the corresponded synchronization source
       * @param value The value of 'packetsReceived'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPacketsReceived(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPacketsReceived(java.lang.Integer value) {
       validate(fields()[51], value);
       this.packetsReceived = value;
       fieldSetFlags()[51] = true;
@@ -4400,7 +4605,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of packets received on the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPacketsReceived() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPacketsReceived() {
       packetsReceived = null;
       fieldSetFlags()[51] = false;
       return this;
@@ -4415,13 +4620,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return packetsLost;
     }
 
+
     /**
       * Sets the value of the 'packetsLost' field.
       * The total number of bytes received on the corresponded synchronization source
       * @param value The value of 'packetsLost'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPacketsLost(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPacketsLost(java.lang.Integer value) {
       validate(fields()[52], value);
       this.packetsLost = value;
       fieldSetFlags()[52] = true;
@@ -4443,7 +4649,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of bytes received on the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPacketsLost() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPacketsLost() {
       packetsLost = null;
       fieldSetFlags()[52] = false;
       return this;
@@ -4458,13 +4664,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return jitter;
     }
 
+
     /**
       * Sets the value of the 'jitter' field.
       * The corresponded synchronization source reported jitter
       * @param value The value of 'jitter'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setJitter(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setJitter(java.lang.Double value) {
       validate(fields()[53], value);
       this.jitter = value;
       fieldSetFlags()[53] = true;
@@ -4486,7 +4693,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The corresponded synchronization source reported jitter
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearJitter() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearJitter() {
       jitter = null;
       fieldSetFlags()[53] = false;
       return this;
@@ -4501,13 +4708,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return packetsDiscarded;
     }
 
+
     /**
       * Sets the value of the 'packetsDiscarded' field.
       * The total number of packets missed the playout point and therefore discarded by the jitterbuffer
       * @param value The value of 'packetsDiscarded'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPacketsDiscarded(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPacketsDiscarded(java.lang.Integer value) {
       validate(fields()[54], value);
       this.packetsDiscarded = value;
       fieldSetFlags()[54] = true;
@@ -4529,7 +4737,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of packets missed the playout point and therefore discarded by the jitterbuffer
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPacketsDiscarded() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPacketsDiscarded() {
       packetsDiscarded = null;
       fieldSetFlags()[54] = false;
       return this;
@@ -4544,13 +4752,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return packetsRepaired;
     }
 
+
     /**
       * Sets the value of the 'packetsRepaired' field.
       * The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source
       * @param value The value of 'packetsRepaired'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPacketsRepaired(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPacketsRepaired(java.lang.Integer value) {
       validate(fields()[55], value);
       this.packetsRepaired = value;
       fieldSetFlags()[55] = true;
@@ -4572,7 +4781,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPacketsRepaired() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPacketsRepaired() {
       packetsRepaired = null;
       fieldSetFlags()[55] = false;
       return this;
@@ -4587,13 +4796,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return burstPacketsLost;
     }
 
+
     /**
       * Sets the value of the 'burstPacketsLost' field.
       * The total number of packets lost in burst (RFC6958)
       * @param value The value of 'burstPacketsLost'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBurstPacketsLost(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBurstPacketsLost(java.lang.Integer value) {
       validate(fields()[56], value);
       this.burstPacketsLost = value;
       fieldSetFlags()[56] = true;
@@ -4615,7 +4825,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of packets lost in burst (RFC6958)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBurstPacketsLost() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBurstPacketsLost() {
       burstPacketsLost = null;
       fieldSetFlags()[56] = false;
       return this;
@@ -4630,13 +4840,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return burstPacketsDiscarded;
     }
 
+
     /**
       * Sets the value of the 'burstPacketsDiscarded' field.
       * The total number of packets discarded in burst (RFC6958)
       * @param value The value of 'burstPacketsDiscarded'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBurstPacketsDiscarded(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBurstPacketsDiscarded(java.lang.Integer value) {
       validate(fields()[57], value);
       this.burstPacketsDiscarded = value;
       fieldSetFlags()[57] = true;
@@ -4658,7 +4869,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of packets discarded in burst (RFC6958)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBurstPacketsDiscarded() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBurstPacketsDiscarded() {
       burstPacketsDiscarded = null;
       fieldSetFlags()[57] = false;
       return this;
@@ -4673,13 +4884,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return burstLossCount;
     }
 
+
     /**
       * Sets the value of the 'burstLossCount' field.
       * The total number of burst happened causes burstPacketsLost on the corresponding synchronization source
       * @param value The value of 'burstLossCount'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBurstLossCount(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBurstLossCount(java.lang.Integer value) {
       validate(fields()[58], value);
       this.burstLossCount = value;
       fieldSetFlags()[58] = true;
@@ -4701,7 +4913,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of burst happened causes burstPacketsLost on the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBurstLossCount() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBurstLossCount() {
       burstLossCount = null;
       fieldSetFlags()[58] = false;
       return this;
@@ -4716,13 +4928,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return burstDiscardCount;
     }
 
+
     /**
       * Sets the value of the 'burstDiscardCount' field.
       * The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source
       * @param value The value of 'burstDiscardCount'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBurstDiscardCount(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBurstDiscardCount(java.lang.Integer value) {
       validate(fields()[59], value);
       this.burstDiscardCount = value;
       fieldSetFlags()[59] = true;
@@ -4744,7 +4957,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBurstDiscardCount() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBurstDiscardCount() {
       burstDiscardCount = null;
       fieldSetFlags()[59] = false;
       return this;
@@ -4759,13 +4972,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return burstLossRate;
     }
 
+
     /**
       * Sets the value of the 'burstLossRate' field.
       * The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @param value The value of 'burstLossRate'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBurstLossRate(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBurstLossRate(java.lang.Double value) {
       validate(fields()[60], value);
       this.burstLossRate = value;
       fieldSetFlags()[60] = true;
@@ -4787,7 +5001,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBurstLossRate() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBurstLossRate() {
       burstLossRate = null;
       fieldSetFlags()[60] = false;
       return this;
@@ -4802,13 +5016,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return burstDiscardRate;
     }
 
+
     /**
       * Sets the value of the 'burstDiscardRate' field.
       * The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @param value The value of 'burstDiscardRate'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setBurstDiscardRate(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setBurstDiscardRate(java.lang.Double value) {
       validate(fields()[61], value);
       this.burstDiscardRate = value;
       fieldSetFlags()[61] = true;
@@ -4830,7 +5045,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearBurstDiscardRate() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearBurstDiscardRate() {
       burstDiscardRate = null;
       fieldSetFlags()[61] = false;
       return this;
@@ -4845,13 +5060,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return gapLossRate;
     }
 
+
     /**
       * Sets the value of the 'gapLossRate' field.
       * The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @param value The value of 'gapLossRate'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setGapLossRate(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setGapLossRate(java.lang.Double value) {
       validate(fields()[62], value);
       this.gapLossRate = value;
       fieldSetFlags()[62] = true;
@@ -4873,7 +5089,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearGapLossRate() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearGapLossRate() {
       gapLossRate = null;
       fieldSetFlags()[62] = false;
       return this;
@@ -4888,13 +5104,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return gapDiscardRate;
     }
 
+
     /**
       * Sets the value of the 'gapDiscardRate' field.
       * The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @param value The value of 'gapDiscardRate'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setGapDiscardRate(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setGapDiscardRate(java.lang.Double value) {
       validate(fields()[63], value);
       this.gapDiscardRate = value;
       fieldSetFlags()[63] = true;
@@ -4916,7 +5133,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearGapDiscardRate() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearGapDiscardRate() {
       gapDiscardRate = null;
       fieldSetFlags()[63] = false;
       return this;
@@ -4931,13 +5148,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return framesDropped;
     }
 
+
     /**
       * Sets the value of the 'framesDropped' field.
       * The number of frames dropped over the corresponded synchronization source
       * @param value The value of 'framesDropped'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFramesDropped(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFramesDropped(java.lang.Integer value) {
       validate(fields()[64], value);
       this.framesDropped = value;
       fieldSetFlags()[64] = true;
@@ -4959,7 +5177,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of frames dropped over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFramesDropped() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFramesDropped() {
       framesDropped = null;
       fieldSetFlags()[64] = false;
       return this;
@@ -4974,13 +5192,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return partialFramesLost;
     }
 
+
     /**
       * Sets the value of the 'partialFramesLost' field.
       * The number of partial frames lost over the corresponded synchronization source
       * @param value The value of 'partialFramesLost'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPartialFramesLost(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPartialFramesLost(java.lang.Integer value) {
       validate(fields()[65], value);
       this.partialFramesLost = value;
       fieldSetFlags()[65] = true;
@@ -5002,7 +5221,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of partial frames lost over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPartialFramesLost() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPartialFramesLost() {
       partialFramesLost = null;
       fieldSetFlags()[65] = false;
       return this;
@@ -5017,13 +5236,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return fullFramesLost;
     }
 
+
     /**
       * Sets the value of the 'fullFramesLost' field.
       * The number of full frames lost over the corresponded synchronization source
       * @param value The value of 'fullFramesLost'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFullFramesLost(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFullFramesLost(java.lang.Integer value) {
       validate(fields()[66], value);
       this.fullFramesLost = value;
       fieldSetFlags()[66] = true;
@@ -5045,7 +5265,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of full frames lost over the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFullFramesLost() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFullFramesLost() {
       fullFramesLost = null;
       fieldSetFlags()[66] = false;
       return this;
@@ -5060,13 +5280,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return roundTripTime;
     }
 
+
     /**
       * Sets the value of the 'roundTripTime' field.
       * RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source
       * @param value The value of 'roundTripTime'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRoundTripTime(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRoundTripTime(java.lang.Double value) {
       validate(fields()[67], value);
       this.roundTripTime = value;
       fieldSetFlags()[67] = true;
@@ -5088,7 +5309,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRoundTripTime() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRoundTripTime() {
       roundTripTime = null;
       fieldSetFlags()[67] = false;
       return this;
@@ -5103,13 +5324,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return totalRoundTripTime;
     }
 
+
     /**
       * Sets the value of the 'totalRoundTripTime' field.
       * The sum of RTT measurements belongs to the corresponded synchronization source
       * @param value The value of 'totalRoundTripTime'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setTotalRoundTripTime(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setTotalRoundTripTime(java.lang.Double value) {
       validate(fields()[68], value);
       this.totalRoundTripTime = value;
       fieldSetFlags()[68] = true;
@@ -5131,7 +5353,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The sum of RTT measurements belongs to the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearTotalRoundTripTime() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearTotalRoundTripTime() {
       totalRoundTripTime = null;
       fieldSetFlags()[68] = false;
       return this;
@@ -5146,13 +5368,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return fractionLost;
     }
 
+
     /**
       * Sets the value of the 'fractionLost' field.
       * The receiver reported fractional lost belongs to the corresponded synchronization source
       * @param value The value of 'fractionLost'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setFractionLost(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setFractionLost(java.lang.Double value) {
       validate(fields()[69], value);
       this.fractionLost = value;
       fieldSetFlags()[69] = true;
@@ -5174,7 +5397,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The receiver reported fractional lost belongs to the corresponded synchronization source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearFractionLost() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearFractionLost() {
       fractionLost = null;
       fieldSetFlags()[69] = false;
       return this;
@@ -5189,13 +5412,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return reportsReceived;
     }
 
+
     /**
       * Sets the value of the 'reportsReceived' field.
       * The total number of RR reports received, which is the base of the remote inbound calculation on this source
       * @param value The value of 'reportsReceived'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setReportsReceived(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setReportsReceived(java.lang.Integer value) {
       validate(fields()[70], value);
       this.reportsReceived = value;
       fieldSetFlags()[70] = true;
@@ -5217,7 +5441,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of RR reports received, which is the base of the remote inbound calculation on this source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearReportsReceived() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearReportsReceived() {
       reportsReceived = null;
       fieldSetFlags()[70] = false;
       return this;
@@ -5232,13 +5456,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return roundTripTimeMeasurements;
     }
 
+
     /**
       * Sets the value of the 'roundTripTimeMeasurements' field.
       * The total number of calculated RR measurements received on this source
       * @param value The value of 'roundTripTimeMeasurements'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRoundTripTimeMeasurements(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRoundTripTimeMeasurements(java.lang.Integer value) {
       validate(fields()[71], value);
       this.roundTripTimeMeasurements = value;
       fieldSetFlags()[71] = true;
@@ -5260,7 +5485,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The total number of calculated RR measurements received on this source
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRoundTripTimeMeasurements() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRoundTripTimeMeasurements() {
       roundTripTimeMeasurements = null;
       fieldSetFlags()[71] = false;
       return this;
@@ -5275,13 +5500,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return relayedSource;
     }
 
+
     /**
       * Sets the value of the 'relayedSource' field.
       * True if the corresponded media source is remote, false otherwise (or null depending on browser and version)
       * @param value The value of 'relayedSource'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setRelayedSource(java.lang.Boolean value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setRelayedSource(java.lang.Boolean value) {
       validate(fields()[72], value);
       this.relayedSource = value;
       fieldSetFlags()[72] = true;
@@ -5303,7 +5529,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * True if the corresponded media source is remote, false otherwise (or null depending on browser and version)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearRelayedSource() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearRelayedSource() {
       relayedSource = null;
       fieldSetFlags()[72] = false;
       return this;
@@ -5318,13 +5544,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return encodedFrameWidth;
     }
 
+
     /**
       * Sets the value of the 'encodedFrameWidth' field.
       * Indicate the encoded width of the frame received on the corresponded synchronization source (ssrc)
       * @param value The value of 'encodedFrameWidth'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setEncodedFrameWidth(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setEncodedFrameWidth(java.lang.Integer value) {
       validate(fields()[73], value);
       this.encodedFrameWidth = value;
       fieldSetFlags()[73] = true;
@@ -5346,7 +5573,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Indicate the encoded width of the frame received on the corresponded synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearEncodedFrameWidth() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearEncodedFrameWidth() {
       encodedFrameWidth = null;
       fieldSetFlags()[73] = false;
       return this;
@@ -5361,13 +5588,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return encodedFrameHeight;
     }
 
+
     /**
       * Sets the value of the 'encodedFrameHeight' field.
       * Indicate the encoded height of the frame received on the corresponded synchronization source (ssrc)
       * @param value The value of 'encodedFrameHeight'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setEncodedFrameHeight(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setEncodedFrameHeight(java.lang.Integer value) {
       validate(fields()[74], value);
       this.encodedFrameHeight = value;
       fieldSetFlags()[74] = true;
@@ -5389,7 +5617,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Indicate the encoded height of the frame received on the corresponded synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearEncodedFrameHeight() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearEncodedFrameHeight() {
       encodedFrameHeight = null;
       fieldSetFlags()[74] = false;
       return this;
@@ -5404,13 +5632,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return encodedFrameBitDepth;
     }
 
+
     /**
       * Sets the value of the 'encodedFrameBitDepth' field.
       * Indicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)
       * @param value The value of 'encodedFrameBitDepth'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setEncodedFrameBitDepth(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setEncodedFrameBitDepth(java.lang.Integer value) {
       validate(fields()[75], value);
       this.encodedFrameBitDepth = value;
       fieldSetFlags()[75] = true;
@@ -5432,7 +5661,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Indicate the encoded bit depth per pixel of the last decoded frame received on the corresponded synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearEncodedFrameBitDepth() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearEncodedFrameBitDepth() {
       encodedFrameBitDepth = null;
       fieldSetFlags()[75] = false;
       return this;
@@ -5447,13 +5676,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return encodedFramesPerSecond;
     }
 
+
     /**
       * Sets the value of the 'encodedFramesPerSecond' field.
       * Indicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)
       * @param value The value of 'encodedFramesPerSecond'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setEncodedFramesPerSecond(java.lang.Double value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setEncodedFramesPerSecond(java.lang.Double value) {
       validate(fields()[76], value);
       this.encodedFramesPerSecond = value;
       fieldSetFlags()[76] = true;
@@ -5475,7 +5705,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Indicate the encoded number of decoded frames in the last second received on the corresponded synchronization source (ssrc)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearEncodedFramesPerSecond() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearEncodedFramesPerSecond() {
       encodedFramesPerSecond = null;
       fieldSetFlags()[76] = false;
       return this;
@@ -5490,13 +5720,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return ended;
     }
 
+
     /**
       * Sets the value of the 'ended' field.
       * Flag represents if the sender ended the media stream track or not.
       * @param value The value of 'ended'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setEnded(java.lang.Boolean value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setEnded(java.lang.Boolean value) {
       validate(fields()[77], value);
       this.ended = value;
       fieldSetFlags()[77] = true;
@@ -5518,7 +5749,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * Flag represents if the sender ended the media stream track or not.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearEnded() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearEnded() {
       ended = null;
       fieldSetFlags()[77] = false;
       return this;
@@ -5533,13 +5764,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return payloadType;
     }
 
+
     /**
       * Sets the value of the 'payloadType' field.
       * The type of the payload the RTP packet SSRC belongs to
       * @param value The value of 'payloadType'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setPayloadType(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setPayloadType(java.lang.Integer value) {
       validate(fields()[78], value);
       this.payloadType = value;
       fieldSetFlags()[78] = true;
@@ -5561,7 +5793,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The type of the payload the RTP packet SSRC belongs to
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearPayloadType() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearPayloadType() {
       payloadType = null;
       fieldSetFlags()[78] = false;
       return this;
@@ -5576,13 +5808,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return mimeType;
     }
 
+
     /**
       * Sets the value of the 'mimeType' field.
       * the MIME type of the codec (e.g.: video/vp8)
       * @param value The value of 'mimeType'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setMimeType(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setMimeType(java.lang.String value) {
       validate(fields()[79], value);
       this.mimeType = value;
       fieldSetFlags()[79] = true;
@@ -5604,7 +5837,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * the MIME type of the codec (e.g.: video/vp8)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearMimeType() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearMimeType() {
       mimeType = null;
       fieldSetFlags()[79] = false;
       return this;
@@ -5619,13 +5852,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return clockRate;
     }
 
+
     /**
       * Sets the value of the 'clockRate' field.
       * The negotiated clock rate the RTP timestamp is generated of
       * @param value The value of 'clockRate'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setClockRate(java.lang.Long value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setClockRate(java.lang.Long value) {
       validate(fields()[80], value);
       this.clockRate = value;
       fieldSetFlags()[80] = true;
@@ -5647,7 +5881,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The negotiated clock rate the RTP timestamp is generated of
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearClockRate() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearClockRate() {
       clockRate = null;
       fieldSetFlags()[80] = false;
       return this;
@@ -5662,13 +5896,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return channels;
     }
 
+
     /**
       * Sets the value of the 'channels' field.
       * The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
       * @param value The value of 'channels'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setChannels(java.lang.Integer value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setChannels(java.lang.Integer value) {
       validate(fields()[81], value);
       this.channels = value;
       fieldSetFlags()[81] = true;
@@ -5690,7 +5925,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearChannels() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearChannels() {
       channels = null;
       fieldSetFlags()[81] = false;
       return this;
@@ -5705,13 +5940,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       return sdpFmtpLine;
     }
 
+
     /**
       * Sets the value of the 'sdpFmtpLine' field.
       * The a=fmtp line in the SDP corresponding to the codec
       * @param value The value of 'sdpFmtpLine'.
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder setSdpFmtpLine(java.lang.String value) {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder setSdpFmtpLine(java.lang.String value) {
       validate(fields()[82], value);
       this.sdpFmtpLine = value;
       fieldSetFlags()[82] = true;
@@ -5733,13 +5969,14 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
       * The a=fmtp line in the SDP corresponding to the codec
       * @return This builder.
       */
-    public OutboundVideoTrackReport.Builder clearSdpFmtpLine() {
+    public org.observertc.schemas.reports.OutboundVideoTrackReport.Builder clearSdpFmtpLine() {
       sdpFmtpLine = null;
       fieldSetFlags()[82] = false;
       return this;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public OutboundVideoTrackReport build() {
       try {
         OutboundVideoTrackReport record = new OutboundVideoTrackReport();
@@ -5754,7 +5991,7 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
         record.peerConnectionId = fieldSetFlags()[8] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[8]);
         record.label = fieldSetFlags()[9] ? this.label : (java.lang.String) defaultValue(fields()[9]);
         record.trackId = fieldSetFlags()[10] ? this.trackId : (java.lang.String) defaultValue(fields()[10]);
-        record.rtpStreamId = fieldSetFlags()[11] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[11]);
+        record.sfuStreamId = fieldSetFlags()[11] ? this.sfuStreamId : (java.lang.String) defaultValue(fields()[11]);
         record.sampleSeq = fieldSetFlags()[12] ? this.sampleSeq : (java.lang.Integer) defaultValue(fields()[12]);
         record.ssrc = fieldSetFlags()[13] ? this.ssrc : (java.lang.Long) defaultValue(fields()[13]);
         record.packetsSent = fieldSetFlags()[14] ? this.packetsSent : (java.lang.Integer) defaultValue(fields()[14]);
@@ -5827,26 +6064,1925 @@ public class OutboundVideoTrackReport extends org.apache.avro.specific.SpecificR
         record.channels = fieldSetFlags()[81] ? this.channels : (java.lang.Integer) defaultValue(fields()[81]);
         record.sdpFmtpLine = fieldSetFlags()[82] ? this.sdpFmtpLine : (java.lang.String) defaultValue(fields()[82]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<OutboundVideoTrackReport>
+    WRITER$ = (org.apache.avro.io.DatumWriter<OutboundVideoTrackReport>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<OutboundVideoTrackReport>
+    READER$ = (org.apache.avro.io.DatumReader<OutboundVideoTrackReport>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.serviceId);
+
+    out.writeString(this.mediaUnitId);
+
+    if (this.marker == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.marker);
+    }
+
+    out.writeLong(this.timestamp);
+
+    out.writeString(this.callId);
+
+    if (this.roomId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.roomId);
+    }
+
+    out.writeString(this.clientId);
+
+    if (this.userId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.userId);
+    }
+
+    out.writeString(this.peerConnectionId);
+
+    if (this.label == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.label);
+    }
+
+    if (this.trackId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.trackId);
+    }
+
+    if (this.sfuStreamId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.sfuStreamId);
+    }
+
+    out.writeInt(this.sampleSeq);
+
+    out.writeLong(this.ssrc);
+
+    if (this.packetsSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.packetsSent);
+    }
+
+    if (this.bytesSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.bytesSent);
+    }
+
+    if (this.rid == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.rid);
+    }
+
+    if (this.lastPacketSentTimestamp == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.lastPacketSentTimestamp);
+    }
+
+    if (this.headerBytesSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.headerBytesSent);
+    }
+
+    if (this.packetsDiscardedOnSend == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.packetsDiscardedOnSend);
+    }
+
+    if (this.bytesDiscardedOnSend == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.bytesDiscardedOnSend);
+    }
+
+    if (this.fecPacketsSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.fecPacketsSent);
+    }
+
+    if (this.retransmittedPacketsSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.retransmittedPacketsSent);
+    }
+
+    if (this.retransmittedBytesSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.retransmittedBytesSent);
+    }
+
+    if (this.targetBitrate == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.targetBitrate);
+    }
+
+    if (this.totalEncodedBytesTarget == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.totalEncodedBytesTarget);
+    }
+
+    if (this.frameWidth == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.frameWidth);
+    }
+
+    if (this.frameHeight == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.frameHeight);
+    }
+
+    if (this.frameBitDepth == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.frameBitDepth);
+    }
+
+    if (this.framesPerSecond == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.framesPerSecond);
+    }
+
+    if (this.framesSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.framesSent);
+    }
+
+    if (this.hugeFramesSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.hugeFramesSent);
+    }
+
+    if (this.framesEncoded == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.framesEncoded);
+    }
+
+    if (this.keyFramesEncoded == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.keyFramesEncoded);
+    }
+
+    if (this.framesDiscardedOnSend == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.framesDiscardedOnSend);
+    }
+
+    if (this.qpSum == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.qpSum);
+    }
+
+    if (this.totalEncodeTime == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.totalEncodeTime);
+    }
+
+    if (this.totalPacketSendDelay == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.totalPacketSendDelay);
+    }
+
+    if (this.averageRtcpInterval == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.averageRtcpInterval);
+    }
+
+    if (this.qualityLimitationDurationCPU == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.qualityLimitationDurationCPU);
+    }
+
+    if (this.qualityLimitationDurationNone == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.qualityLimitationDurationNone);
+    }
+
+    if (this.qualityLimitationDurationBandwidth == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.qualityLimitationDurationBandwidth);
+    }
+
+    if (this.qualityLimitationDurationOther == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.qualityLimitationDurationOther);
+    }
+
+    if (this.qualityLimitationReason == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.qualityLimitationReason);
+    }
+
+    if (this.qualityLimitationResolutionChanges == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.qualityLimitationResolutionChanges);
+    }
+
+    if (this.perDscpPacketsSent == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.perDscpPacketsSent);
+    }
+
+    if (this.nackCount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.nackCount);
+    }
+
+    if (this.firCount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.firCount);
+    }
+
+    if (this.pliCount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.pliCount);
+    }
+
+    if (this.sliCount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.sliCount);
+    }
+
+    if (this.encoderImplementation == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.encoderImplementation);
+    }
+
+    if (this.packetsReceived == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.packetsReceived);
+    }
+
+    if (this.packetsLost == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.packetsLost);
+    }
+
+    if (this.jitter == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.jitter);
+    }
+
+    if (this.packetsDiscarded == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.packetsDiscarded);
+    }
+
+    if (this.packetsRepaired == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.packetsRepaired);
+    }
+
+    if (this.burstPacketsLost == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.burstPacketsLost);
+    }
+
+    if (this.burstPacketsDiscarded == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.burstPacketsDiscarded);
+    }
+
+    if (this.burstLossCount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.burstLossCount);
+    }
+
+    if (this.burstDiscardCount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.burstDiscardCount);
+    }
+
+    if (this.burstLossRate == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.burstLossRate);
+    }
+
+    if (this.burstDiscardRate == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.burstDiscardRate);
+    }
+
+    if (this.gapLossRate == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.gapLossRate);
+    }
+
+    if (this.gapDiscardRate == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.gapDiscardRate);
+    }
+
+    if (this.framesDropped == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.framesDropped);
+    }
+
+    if (this.partialFramesLost == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.partialFramesLost);
+    }
+
+    if (this.fullFramesLost == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.fullFramesLost);
+    }
+
+    if (this.roundTripTime == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.roundTripTime);
+    }
+
+    if (this.totalRoundTripTime == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.totalRoundTripTime);
+    }
+
+    if (this.fractionLost == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.fractionLost);
+    }
+
+    if (this.reportsReceived == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.reportsReceived);
+    }
+
+    if (this.roundTripTimeMeasurements == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.roundTripTimeMeasurements);
+    }
+
+    if (this.relayedSource == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeBoolean(this.relayedSource);
+    }
+
+    if (this.encodedFrameWidth == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.encodedFrameWidth);
+    }
+
+    if (this.encodedFrameHeight == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.encodedFrameHeight);
+    }
+
+    if (this.encodedFrameBitDepth == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.encodedFrameBitDepth);
+    }
+
+    if (this.encodedFramesPerSecond == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.encodedFramesPerSecond);
+    }
+
+    if (this.ended == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeBoolean(this.ended);
+    }
+
+    if (this.payloadType == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.payloadType);
+    }
+
+    if (this.mimeType == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mimeType);
+    }
+
+    if (this.clockRate == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.clockRate);
+    }
+
+    if (this.channels == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.channels);
+    }
+
+    if (this.sdpFmtpLine == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.sdpFmtpLine);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.serviceId = in.readString();
+
+      this.mediaUnitId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.marker = null;
+      } else {
+        this.marker = in.readString();
+      }
+
+      this.timestamp = in.readLong();
+
+      this.callId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.roomId = null;
+      } else {
+        this.roomId = in.readString();
+      }
+
+      this.clientId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.userId = null;
+      } else {
+        this.userId = in.readString();
+      }
+
+      this.peerConnectionId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.label = null;
+      } else {
+        this.label = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.trackId = null;
+      } else {
+        this.trackId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sfuStreamId = null;
+      } else {
+        this.sfuStreamId = in.readString();
+      }
+
+      this.sampleSeq = in.readInt();
+
+      this.ssrc = in.readLong();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.packetsSent = null;
+      } else {
+        this.packetsSent = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.bytesSent = null;
+      } else {
+        this.bytesSent = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.rid = null;
+      } else {
+        this.rid = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.lastPacketSentTimestamp = null;
+      } else {
+        this.lastPacketSentTimestamp = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.headerBytesSent = null;
+      } else {
+        this.headerBytesSent = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.packetsDiscardedOnSend = null;
+      } else {
+        this.packetsDiscardedOnSend = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.bytesDiscardedOnSend = null;
+      } else {
+        this.bytesDiscardedOnSend = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.fecPacketsSent = null;
+      } else {
+        this.fecPacketsSent = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.retransmittedPacketsSent = null;
+      } else {
+        this.retransmittedPacketsSent = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.retransmittedBytesSent = null;
+      } else {
+        this.retransmittedBytesSent = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.targetBitrate = null;
+      } else {
+        this.targetBitrate = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.totalEncodedBytesTarget = null;
+      } else {
+        this.totalEncodedBytesTarget = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.frameWidth = null;
+      } else {
+        this.frameWidth = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.frameHeight = null;
+      } else {
+        this.frameHeight = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.frameBitDepth = null;
+      } else {
+        this.frameBitDepth = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.framesPerSecond = null;
+      } else {
+        this.framesPerSecond = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.framesSent = null;
+      } else {
+        this.framesSent = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.hugeFramesSent = null;
+      } else {
+        this.hugeFramesSent = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.framesEncoded = null;
+      } else {
+        this.framesEncoded = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.keyFramesEncoded = null;
+      } else {
+        this.keyFramesEncoded = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.framesDiscardedOnSend = null;
+      } else {
+        this.framesDiscardedOnSend = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qpSum = null;
+      } else {
+        this.qpSum = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.totalEncodeTime = null;
+      } else {
+        this.totalEncodeTime = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.totalPacketSendDelay = null;
+      } else {
+        this.totalPacketSendDelay = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.averageRtcpInterval = null;
+      } else {
+        this.averageRtcpInterval = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qualityLimitationDurationCPU = null;
+      } else {
+        this.qualityLimitationDurationCPU = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qualityLimitationDurationNone = null;
+      } else {
+        this.qualityLimitationDurationNone = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qualityLimitationDurationBandwidth = null;
+      } else {
+        this.qualityLimitationDurationBandwidth = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qualityLimitationDurationOther = null;
+      } else {
+        this.qualityLimitationDurationOther = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qualityLimitationReason = null;
+      } else {
+        this.qualityLimitationReason = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.qualityLimitationResolutionChanges = null;
+      } else {
+        this.qualityLimitationResolutionChanges = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.perDscpPacketsSent = null;
+      } else {
+        this.perDscpPacketsSent = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.nackCount = null;
+      } else {
+        this.nackCount = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.firCount = null;
+      } else {
+        this.firCount = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.pliCount = null;
+      } else {
+        this.pliCount = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sliCount = null;
+      } else {
+        this.sliCount = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.encoderImplementation = null;
+      } else {
+        this.encoderImplementation = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.packetsReceived = null;
+      } else {
+        this.packetsReceived = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.packetsLost = null;
+      } else {
+        this.packetsLost = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.jitter = null;
+      } else {
+        this.jitter = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.packetsDiscarded = null;
+      } else {
+        this.packetsDiscarded = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.packetsRepaired = null;
+      } else {
+        this.packetsRepaired = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.burstPacketsLost = null;
+      } else {
+        this.burstPacketsLost = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.burstPacketsDiscarded = null;
+      } else {
+        this.burstPacketsDiscarded = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.burstLossCount = null;
+      } else {
+        this.burstLossCount = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.burstDiscardCount = null;
+      } else {
+        this.burstDiscardCount = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.burstLossRate = null;
+      } else {
+        this.burstLossRate = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.burstDiscardRate = null;
+      } else {
+        this.burstDiscardRate = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.gapLossRate = null;
+      } else {
+        this.gapLossRate = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.gapDiscardRate = null;
+      } else {
+        this.gapDiscardRate = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.framesDropped = null;
+      } else {
+        this.framesDropped = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.partialFramesLost = null;
+      } else {
+        this.partialFramesLost = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.fullFramesLost = null;
+      } else {
+        this.fullFramesLost = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.roundTripTime = null;
+      } else {
+        this.roundTripTime = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.totalRoundTripTime = null;
+      } else {
+        this.totalRoundTripTime = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.fractionLost = null;
+      } else {
+        this.fractionLost = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.reportsReceived = null;
+      } else {
+        this.reportsReceived = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.roundTripTimeMeasurements = null;
+      } else {
+        this.roundTripTimeMeasurements = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.relayedSource = null;
+      } else {
+        this.relayedSource = in.readBoolean();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.encodedFrameWidth = null;
+      } else {
+        this.encodedFrameWidth = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.encodedFrameHeight = null;
+      } else {
+        this.encodedFrameHeight = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.encodedFrameBitDepth = null;
+      } else {
+        this.encodedFrameBitDepth = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.encodedFramesPerSecond = null;
+      } else {
+        this.encodedFramesPerSecond = in.readDouble();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.ended = null;
+      } else {
+        this.ended = in.readBoolean();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.payloadType = null;
+      } else {
+        this.payloadType = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mimeType = null;
+      } else {
+        this.mimeType = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.clockRate = null;
+      } else {
+        this.clockRate = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.channels = null;
+      } else {
+        this.channels = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sdpFmtpLine = null;
+      } else {
+        this.sdpFmtpLine = in.readString();
+      }
+
+    } else {
+      for (int i = 0; i < 83; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.serviceId = in.readString();
+          break;
+
+        case 1:
+          this.mediaUnitId = in.readString();
+          break;
+
+        case 2:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.marker = null;
+          } else {
+            this.marker = in.readString();
+          }
+          break;
+
+        case 3:
+          this.timestamp = in.readLong();
+          break;
+
+        case 4:
+          this.callId = in.readString();
+          break;
+
+        case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.roomId = null;
+          } else {
+            this.roomId = in.readString();
+          }
+          break;
+
+        case 6:
+          this.clientId = in.readString();
+          break;
+
+        case 7:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.userId = null;
+          } else {
+            this.userId = in.readString();
+          }
+          break;
+
+        case 8:
+          this.peerConnectionId = in.readString();
+          break;
+
+        case 9:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.label = null;
+          } else {
+            this.label = in.readString();
+          }
+          break;
+
+        case 10:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.trackId = null;
+          } else {
+            this.trackId = in.readString();
+          }
+          break;
+
+        case 11:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sfuStreamId = null;
+          } else {
+            this.sfuStreamId = in.readString();
+          }
+          break;
+
+        case 12:
+          this.sampleSeq = in.readInt();
+          break;
+
+        case 13:
+          this.ssrc = in.readLong();
+          break;
+
+        case 14:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.packetsSent = null;
+          } else {
+            this.packetsSent = in.readInt();
+          }
+          break;
+
+        case 15:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.bytesSent = null;
+          } else {
+            this.bytesSent = in.readLong();
+          }
+          break;
+
+        case 16:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.rid = null;
+          } else {
+            this.rid = in.readString();
+          }
+          break;
+
+        case 17:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.lastPacketSentTimestamp = null;
+          } else {
+            this.lastPacketSentTimestamp = in.readLong();
+          }
+          break;
+
+        case 18:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.headerBytesSent = null;
+          } else {
+            this.headerBytesSent = in.readLong();
+          }
+          break;
+
+        case 19:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.packetsDiscardedOnSend = null;
+          } else {
+            this.packetsDiscardedOnSend = in.readInt();
+          }
+          break;
+
+        case 20:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.bytesDiscardedOnSend = null;
+          } else {
+            this.bytesDiscardedOnSend = in.readLong();
+          }
+          break;
+
+        case 21:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.fecPacketsSent = null;
+          } else {
+            this.fecPacketsSent = in.readInt();
+          }
+          break;
+
+        case 22:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.retransmittedPacketsSent = null;
+          } else {
+            this.retransmittedPacketsSent = in.readInt();
+          }
+          break;
+
+        case 23:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.retransmittedBytesSent = null;
+          } else {
+            this.retransmittedBytesSent = in.readLong();
+          }
+          break;
+
+        case 24:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.targetBitrate = null;
+          } else {
+            this.targetBitrate = in.readLong();
+          }
+          break;
+
+        case 25:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.totalEncodedBytesTarget = null;
+          } else {
+            this.totalEncodedBytesTarget = in.readLong();
+          }
+          break;
+
+        case 26:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.frameWidth = null;
+          } else {
+            this.frameWidth = in.readInt();
+          }
+          break;
+
+        case 27:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.frameHeight = null;
+          } else {
+            this.frameHeight = in.readInt();
+          }
+          break;
+
+        case 28:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.frameBitDepth = null;
+          } else {
+            this.frameBitDepth = in.readInt();
+          }
+          break;
+
+        case 29:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.framesPerSecond = null;
+          } else {
+            this.framesPerSecond = in.readDouble();
+          }
+          break;
+
+        case 30:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.framesSent = null;
+          } else {
+            this.framesSent = in.readInt();
+          }
+          break;
+
+        case 31:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.hugeFramesSent = null;
+          } else {
+            this.hugeFramesSent = in.readInt();
+          }
+          break;
+
+        case 32:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.framesEncoded = null;
+          } else {
+            this.framesEncoded = in.readInt();
+          }
+          break;
+
+        case 33:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.keyFramesEncoded = null;
+          } else {
+            this.keyFramesEncoded = in.readInt();
+          }
+          break;
+
+        case 34:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.framesDiscardedOnSend = null;
+          } else {
+            this.framesDiscardedOnSend = in.readInt();
+          }
+          break;
+
+        case 35:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qpSum = null;
+          } else {
+            this.qpSum = in.readLong();
+          }
+          break;
+
+        case 36:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.totalEncodeTime = null;
+          } else {
+            this.totalEncodeTime = in.readDouble();
+          }
+          break;
+
+        case 37:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.totalPacketSendDelay = null;
+          } else {
+            this.totalPacketSendDelay = in.readDouble();
+          }
+          break;
+
+        case 38:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.averageRtcpInterval = null;
+          } else {
+            this.averageRtcpInterval = in.readDouble();
+          }
+          break;
+
+        case 39:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qualityLimitationDurationCPU = null;
+          } else {
+            this.qualityLimitationDurationCPU = in.readDouble();
+          }
+          break;
+
+        case 40:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qualityLimitationDurationNone = null;
+          } else {
+            this.qualityLimitationDurationNone = in.readDouble();
+          }
+          break;
+
+        case 41:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qualityLimitationDurationBandwidth = null;
+          } else {
+            this.qualityLimitationDurationBandwidth = in.readDouble();
+          }
+          break;
+
+        case 42:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qualityLimitationDurationOther = null;
+          } else {
+            this.qualityLimitationDurationOther = in.readDouble();
+          }
+          break;
+
+        case 43:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qualityLimitationReason = null;
+          } else {
+            this.qualityLimitationReason = in.readString();
+          }
+          break;
+
+        case 44:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.qualityLimitationResolutionChanges = null;
+          } else {
+            this.qualityLimitationResolutionChanges = in.readInt();
+          }
+          break;
+
+        case 45:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.perDscpPacketsSent = null;
+          } else {
+            this.perDscpPacketsSent = in.readDouble();
+          }
+          break;
+
+        case 46:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.nackCount = null;
+          } else {
+            this.nackCount = in.readInt();
+          }
+          break;
+
+        case 47:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.firCount = null;
+          } else {
+            this.firCount = in.readInt();
+          }
+          break;
+
+        case 48:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.pliCount = null;
+          } else {
+            this.pliCount = in.readInt();
+          }
+          break;
+
+        case 49:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sliCount = null;
+          } else {
+            this.sliCount = in.readInt();
+          }
+          break;
+
+        case 50:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.encoderImplementation = null;
+          } else {
+            this.encoderImplementation = in.readString();
+          }
+          break;
+
+        case 51:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.packetsReceived = null;
+          } else {
+            this.packetsReceived = in.readInt();
+          }
+          break;
+
+        case 52:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.packetsLost = null;
+          } else {
+            this.packetsLost = in.readInt();
+          }
+          break;
+
+        case 53:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.jitter = null;
+          } else {
+            this.jitter = in.readDouble();
+          }
+          break;
+
+        case 54:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.packetsDiscarded = null;
+          } else {
+            this.packetsDiscarded = in.readInt();
+          }
+          break;
+
+        case 55:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.packetsRepaired = null;
+          } else {
+            this.packetsRepaired = in.readInt();
+          }
+          break;
+
+        case 56:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.burstPacketsLost = null;
+          } else {
+            this.burstPacketsLost = in.readInt();
+          }
+          break;
+
+        case 57:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.burstPacketsDiscarded = null;
+          } else {
+            this.burstPacketsDiscarded = in.readInt();
+          }
+          break;
+
+        case 58:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.burstLossCount = null;
+          } else {
+            this.burstLossCount = in.readInt();
+          }
+          break;
+
+        case 59:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.burstDiscardCount = null;
+          } else {
+            this.burstDiscardCount = in.readInt();
+          }
+          break;
+
+        case 60:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.burstLossRate = null;
+          } else {
+            this.burstLossRate = in.readDouble();
+          }
+          break;
+
+        case 61:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.burstDiscardRate = null;
+          } else {
+            this.burstDiscardRate = in.readDouble();
+          }
+          break;
+
+        case 62:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.gapLossRate = null;
+          } else {
+            this.gapLossRate = in.readDouble();
+          }
+          break;
+
+        case 63:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.gapDiscardRate = null;
+          } else {
+            this.gapDiscardRate = in.readDouble();
+          }
+          break;
+
+        case 64:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.framesDropped = null;
+          } else {
+            this.framesDropped = in.readInt();
+          }
+          break;
+
+        case 65:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.partialFramesLost = null;
+          } else {
+            this.partialFramesLost = in.readInt();
+          }
+          break;
+
+        case 66:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.fullFramesLost = null;
+          } else {
+            this.fullFramesLost = in.readInt();
+          }
+          break;
+
+        case 67:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.roundTripTime = null;
+          } else {
+            this.roundTripTime = in.readDouble();
+          }
+          break;
+
+        case 68:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.totalRoundTripTime = null;
+          } else {
+            this.totalRoundTripTime = in.readDouble();
+          }
+          break;
+
+        case 69:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.fractionLost = null;
+          } else {
+            this.fractionLost = in.readDouble();
+          }
+          break;
+
+        case 70:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.reportsReceived = null;
+          } else {
+            this.reportsReceived = in.readInt();
+          }
+          break;
+
+        case 71:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.roundTripTimeMeasurements = null;
+          } else {
+            this.roundTripTimeMeasurements = in.readInt();
+          }
+          break;
+
+        case 72:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.relayedSource = null;
+          } else {
+            this.relayedSource = in.readBoolean();
+          }
+          break;
+
+        case 73:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.encodedFrameWidth = null;
+          } else {
+            this.encodedFrameWidth = in.readInt();
+          }
+          break;
+
+        case 74:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.encodedFrameHeight = null;
+          } else {
+            this.encodedFrameHeight = in.readInt();
+          }
+          break;
+
+        case 75:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.encodedFrameBitDepth = null;
+          } else {
+            this.encodedFrameBitDepth = in.readInt();
+          }
+          break;
+
+        case 76:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.encodedFramesPerSecond = null;
+          } else {
+            this.encodedFramesPerSecond = in.readDouble();
+          }
+          break;
+
+        case 77:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.ended = null;
+          } else {
+            this.ended = in.readBoolean();
+          }
+          break;
+
+        case 78:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.payloadType = null;
+          } else {
+            this.payloadType = in.readInt();
+          }
+          break;
+
+        case 79:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mimeType = null;
+          } else {
+            this.mimeType = in.readString();
+          }
+          break;
+
+        case 80:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.clockRate = null;
+          } else {
+            this.clockRate = in.readLong();
+          }
+          break;
+
+        case 81:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.channels = null;
+          } else {
+            this.channels = in.readInt();
+          }
+          break;
+
+        case 82:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sdpFmtpLine = null;
+          } else {
+            this.sdpFmtpLine = in.readString();
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

@@ -34,11 +34,6 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
         this.sfuRtpPadEvents
                 .completedSfuRtpPads()
                 .subscribe(this::receiveCompletedSfuRtpPads);
-
-        this.sfuRtpPadEvents
-                .disposedSfuRtpPads()
-                .subscribe(this::receiveUpdatedSfuRtpPads);
-
     }
 
     private void receiveCompletedSfuRtpPads(List<SfuRtpPadEvents.Payload> payloads) {
@@ -57,19 +52,17 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
                     .withStreamDirection(sfuRtpPad.streamDirection)
                     .withInternal(sfuRtpPad.internal)
                     .build().toBase64();
-            String sfuPadId = UUIDAdapter.toStringOrNull(sfuRtpPad.sfuPadId);
+            String sfuPadId = UUIDAdapter.toStringOrNull(sfuRtpPad.rtpPadId);
             String sfuPadStreamDirection = Objects.nonNull(sfuRtpPad.streamDirection) ? sfuRtpPad.streamDirection.toString() : "Unknown";
             String callId = null;
-            String clientId = null;
-            String trackId = null;
+            String streamId = null;
+            String sinkId = null;
             if (Objects.nonNull(sfuSink)) {
                 callId = UUIDAdapter.toStringOrNull(sfuSink.callId);
-                clientId = UUIDAdapter.toStringOrNull(sfuSink.clientId);
-                trackId = UUIDAdapter.toStringOrNull(sfuSink.trackId);
+                sinkId = UUIDAdapter.toStringOrNull(sfuSink.sfuSinkId);
             } else if (Objects.nonNull(sfuStream)) {
                 callId = UUIDAdapter.toStringOrNull(sfuStream.callId);
-                clientId = UUIDAdapter.toStringOrNull(sfuStream.clientId);
-                trackId = UUIDAdapter.toStringOrNull(sfuStream.trackId);
+                streamId = UUIDAdapter.toStringOrNull(sfuSink.sfuStreamId);
             }
 
             var builder = SfuEventReport.newBuilder()
@@ -77,8 +70,9 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
                     .setSfuId(sfuRtpPad.sfuId.toString())
                     .setCallId(callId)
                     .setTransportId(sfuRtpPad.transportId.toString())
-                    .setRtpStreamId(sfuRtpPadDTO.rtpStreamId.toString())
-                    .setSfuPadId(sfuPadId)
+                    .setMediaStreamId(streamId)
+                    .setMediaSinkId(sinkId)
+                    .setRtpPadId(sfuPadId)
                     .setAttachments(attachment)
                     .setMessage("Sfu Rtp Pad is added")
                     .setServiceId(sfuRtpPad.serviceId)
@@ -92,5 +86,11 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
             logger.warn("Unexpected exception occurred while making report", ex);
             return null;
         }
+    }
+
+    @Override
+    protected SfuEventReport makeReport(SfuRtpPadDTO input, Long timestamp) {
+        logger.warn("makeReport(SfuRtpPadDTO input, Long timestamp) is called, supposed not to");
+        return null;
     }
 }

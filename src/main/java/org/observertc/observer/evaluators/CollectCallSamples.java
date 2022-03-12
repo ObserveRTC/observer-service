@@ -6,7 +6,6 @@ import io.reactivex.rxjava3.functions.Function;
 import org.observertc.observer.repositories.tasks.CreateCallIfNotExistsTask;
 import org.observertc.observer.repositories.tasks.FindCallIdsByServiceRoomIds;
 import org.observertc.observer.samples.*;
-import org.observertc.webrtc.observer.samples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

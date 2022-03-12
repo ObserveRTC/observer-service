@@ -5,45 +5,105 @@
  */
 package org.observertc.schemas.reports;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 /** Events happened in calls. */
 @org.apache.avro.specific.AvroGenerated
 public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3863358723384913766L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuEventReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The service id the report belongs to\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the SFU\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"SFU provided transport identifier\",\"default\":null},{\"name\":\"rtpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the RTP stream the event is related to\",\"default\":null},{\"name\":\"sctpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SCTP stream the event is related to\",\"default\":null},{\"name\":\"sfuPadId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the Sfu Pad the event is related to\",\"default\":null},{\"name\":\"SSRC\",\"type\":[\"null\",\"long\"],\"doc\":\"The SSRC identifier of the RTP stream related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
+  private static final long serialVersionUID = 3236767350193985409L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuEventReport\",\"namespace\":\"org.observertc.schemas.reports\",\"doc\":\"Events happened in calls.\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The service id the report belongs to\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the SFU\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"SFU provided transport identifier\",\"default\":null},{\"name\":\"mediaStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SFU stream id the rtp pad belongs to\",\"default\":null},{\"name\":\"mediaSinkId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SFU stream id the rtp pad belongs to\",\"default\":null},{\"name\":\"sctpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SCTP stream the event is related to\",\"default\":null},{\"name\":\"rtpPadId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the Sfu Pad the event is related to\",\"default\":null},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED\"},{\"name\":\"message\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the human readable message of the event\",\"default\":null},{\"name\":\"value\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"the value of the event\",\"default\":null},{\"name\":\"attachments\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"attachment the event may created with\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  private static final SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<SfuEventReport> ENCODER =
+      new BinaryMessageEncoder<SfuEventReport>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<SfuEventReport> DECODER =
+      new BinaryMessageDecoder<SfuEventReport>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<SfuEventReport> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<SfuEventReport> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<SfuEventReport> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<SfuEventReport>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this SfuEventReport to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a SfuEventReport from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a SfuEventReport instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static SfuEventReport fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
   /** The service id the report belongs to */
-   private java.lang.String serviceId;
+  private java.lang.String serviceId;
   /** The media unit id the report belongs to */
-   private java.lang.String mediaUnitId;
+  private java.lang.String mediaUnitId;
   /** The marker the originated sample is reported with */
-   private java.lang.String marker;
+  private java.lang.String marker;
   /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
-   private long timestamp;
+  private long timestamp;
   /** The generated unique identifier of the SFU */
-   private java.lang.String sfuId;
+  private java.lang.String sfuId;
   /** The callId the event belongs to */
-   private java.lang.String callId;
+  private java.lang.String callId;
   /** SFU provided transport identifier */
-   private java.lang.String transportId;
-  /** Unique identifier of the RTP stream the event is related to */
-   private java.lang.String rtpStreamId;
+  private java.lang.String transportId;
+  /** Unique identifier of the SFU stream id the rtp pad belongs to */
+  private java.lang.String mediaStreamId;
+  /** Unique identifier of the SFU stream id the rtp pad belongs to */
+  private java.lang.String mediaSinkId;
   /** Unique identifier of the SCTP stream the event is related to */
-   private java.lang.String sctpStreamId;
+  private java.lang.String sctpStreamId;
   /** Unique identifier of the Sfu Pad the event is related to */
-   private java.lang.String sfuPadId;
-  /** The SSRC identifier of the RTP stream related to */
-   private java.lang.Long SSRC;
+  private java.lang.String rtpPadId;
   /** The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED */
-   private java.lang.String name;
+  private java.lang.String name;
   /** the human readable message of the event */
-   private java.lang.String message;
+  private java.lang.String message;
   /** the value of the event */
-   private java.lang.String value;
+  private java.lang.String value;
   /** attachment the event may created with */
-   private java.lang.String attachments;
+  private java.lang.String attachments;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -61,16 +121,16 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param sfuId The generated unique identifier of the SFU
    * @param callId The callId the event belongs to
    * @param transportId SFU provided transport identifier
-   * @param rtpStreamId Unique identifier of the RTP stream the event is related to
+   * @param mediaStreamId Unique identifier of the SFU stream id the rtp pad belongs to
+   * @param mediaSinkId Unique identifier of the SFU stream id the rtp pad belongs to
    * @param sctpStreamId Unique identifier of the SCTP stream the event is related to
-   * @param sfuPadId Unique identifier of the Sfu Pad the event is related to
-   * @param SSRC The SSRC identifier of the RTP stream related to
+   * @param rtpPadId Unique identifier of the Sfu Pad the event is related to
    * @param name The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
    * @param message the human readable message of the event
    * @param value the value of the event
    * @param attachments attachment the event may created with
    */
-  public SfuEventReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String callId, java.lang.String transportId, java.lang.String rtpStreamId, java.lang.String sctpStreamId, java.lang.String sfuPadId, java.lang.Long SSRC, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
+  public SfuEventReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String callId, java.lang.String transportId, java.lang.String mediaStreamId, java.lang.String mediaSinkId, java.lang.String sctpStreamId, java.lang.String rtpPadId, java.lang.String name, java.lang.String message, java.lang.String value, java.lang.String attachments) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
@@ -78,16 +138,17 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     this.sfuId = sfuId;
     this.callId = callId;
     this.transportId = transportId;
-    this.rtpStreamId = rtpStreamId;
+    this.mediaStreamId = mediaStreamId;
+    this.mediaSinkId = mediaSinkId;
     this.sctpStreamId = sctpStreamId;
-    this.sfuPadId = sfuPadId;
-    this.SSRC = SSRC;
+    this.rtpPadId = rtpPadId;
     this.name = name;
     this.message = message;
     this.value = value;
     this.attachments = attachments;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -99,15 +160,15 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     case 4: return sfuId;
     case 5: return callId;
     case 6: return transportId;
-    case 7: return rtpStreamId;
-    case 8: return sctpStreamId;
-    case 9: return sfuPadId;
-    case 10: return SSRC;
+    case 7: return mediaStreamId;
+    case 8: return mediaSinkId;
+    case 9: return sctpStreamId;
+    case 10: return rtpPadId;
     case 11: return name;
     case 12: return message;
     case 13: return value;
     case 14: return attachments;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -115,22 +176,22 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (java.lang.String)value$; break;
-    case 1: mediaUnitId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
+    case 0: serviceId = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnitId = value$ != null ? value$.toString() : null; break;
+    case 2: marker = value$ != null ? value$.toString() : null; break;
     case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: sfuId = (java.lang.String)value$; break;
-    case 5: callId = (java.lang.String)value$; break;
-    case 6: transportId = (java.lang.String)value$; break;
-    case 7: rtpStreamId = (java.lang.String)value$; break;
-    case 8: sctpStreamId = (java.lang.String)value$; break;
-    case 9: sfuPadId = (java.lang.String)value$; break;
-    case 10: SSRC = (java.lang.Long)value$; break;
-    case 11: name = (java.lang.String)value$; break;
-    case 12: message = (java.lang.String)value$; break;
-    case 13: value = (java.lang.String)value$; break;
-    case 14: attachments = (java.lang.String)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 4: sfuId = value$ != null ? value$.toString() : null; break;
+    case 5: callId = value$ != null ? value$.toString() : null; break;
+    case 6: transportId = value$ != null ? value$.toString() : null; break;
+    case 7: mediaStreamId = value$ != null ? value$.toString() : null; break;
+    case 8: mediaSinkId = value$ != null ? value$.toString() : null; break;
+    case 9: sctpStreamId = value$ != null ? value$.toString() : null; break;
+    case 10: rtpPadId = value$ != null ? value$.toString() : null; break;
+    case 11: name = value$ != null ? value$.toString() : null; break;
+    case 12: message = value$ != null ? value$.toString() : null; break;
+    case 13: value = value$ != null ? value$.toString() : null; break;
+    case 14: attachments = value$ != null ? value$.toString() : null; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -143,6 +204,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'mediaUnitId' field.
    * @return The media unit id the report belongs to
@@ -150,6 +212,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.String getMediaUnitId() {
     return mediaUnitId;
   }
+
 
 
   /**
@@ -161,13 +224,15 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'timestamp' field.
    * @return The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    */
-  public java.lang.Long getTimestamp() {
+  public long getTimestamp() {
     return timestamp;
   }
+
 
 
   /**
@@ -179,6 +244,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'callId' field.
    * @return The callId the event belongs to
@@ -186,6 +252,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.String getCallId() {
     return callId;
   }
+
 
 
   /**
@@ -197,13 +264,25 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
-   * Gets the value of the 'rtpStreamId' field.
-   * @return Unique identifier of the RTP stream the event is related to
+   * Gets the value of the 'mediaStreamId' field.
+   * @return Unique identifier of the SFU stream id the rtp pad belongs to
    */
-  public java.lang.String getRtpStreamId() {
-    return rtpStreamId;
+  public java.lang.String getMediaStreamId() {
+    return mediaStreamId;
   }
+
+
+
+  /**
+   * Gets the value of the 'mediaSinkId' field.
+   * @return Unique identifier of the SFU stream id the rtp pad belongs to
+   */
+  public java.lang.String getMediaSinkId() {
+    return mediaSinkId;
+  }
+
 
 
   /**
@@ -215,22 +294,15 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
-   * Gets the value of the 'sfuPadId' field.
+   * Gets the value of the 'rtpPadId' field.
    * @return Unique identifier of the Sfu Pad the event is related to
    */
-  public java.lang.String getSfuPadId() {
-    return sfuPadId;
+  public java.lang.String getRtpPadId() {
+    return rtpPadId;
   }
 
-
-  /**
-   * Gets the value of the 'SSRC' field.
-   * @return The SSRC identifier of the RTP stream related to
-   */
-  public java.lang.Long getSSRC() {
-    return SSRC;
-  }
 
 
   /**
@@ -242,6 +314,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'message' field.
    * @return the human readable message of the event
@@ -249,6 +322,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.String getMessage() {
     return message;
   }
+
 
 
   /**
@@ -260,6 +334,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'attachments' field.
    * @return attachment the event may created with
@@ -269,12 +344,13 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Creates a new SfuEventReport RecordBuilder.
    * @return A new SfuEventReport RecordBuilder
    */
-  public static SfuEventReport.Builder newBuilder() {
-    return new SfuEventReport.Builder();
+  public static org.observertc.schemas.reports.SfuEventReport.Builder newBuilder() {
+    return new org.observertc.schemas.reports.SfuEventReport.Builder();
   }
 
   /**
@@ -282,8 +358,12 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param other The existing builder to copy.
    * @return A new SfuEventReport RecordBuilder
    */
-  public static SfuEventReport.Builder newBuilder(SfuEventReport.Builder other) {
-    return new SfuEventReport.Builder(other);
+  public static org.observertc.schemas.reports.SfuEventReport.Builder newBuilder(org.observertc.schemas.reports.SfuEventReport.Builder other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.SfuEventReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.SfuEventReport.Builder(other);
+    }
   }
 
   /**
@@ -291,13 +371,18 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param other The existing instance to copy.
    * @return A new SfuEventReport RecordBuilder
    */
-  public static SfuEventReport.Builder newBuilder(SfuEventReport other) {
-    return new SfuEventReport.Builder(other);
+  public static org.observertc.schemas.reports.SfuEventReport.Builder newBuilder(org.observertc.schemas.reports.SfuEventReport other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.SfuEventReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.SfuEventReport.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for SfuEventReport instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<SfuEventReport>
     implements org.apache.avro.data.RecordBuilder<SfuEventReport> {
 
@@ -315,14 +400,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
     private java.lang.String callId;
     /** SFU provided transport identifier */
     private java.lang.String transportId;
-    /** Unique identifier of the RTP stream the event is related to */
-    private java.lang.String rtpStreamId;
+    /** Unique identifier of the SFU stream id the rtp pad belongs to */
+    private java.lang.String mediaStreamId;
+    /** Unique identifier of the SFU stream id the rtp pad belongs to */
+    private java.lang.String mediaSinkId;
     /** Unique identifier of the SCTP stream the event is related to */
     private java.lang.String sctpStreamId;
     /** Unique identifier of the Sfu Pad the event is related to */
-    private java.lang.String sfuPadId;
-    /** The SSRC identifier of the RTP stream related to */
-    private java.lang.Long SSRC;
+    private java.lang.String rtpPadId;
     /** The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED */
     private java.lang.String name;
     /** the human readable message of the event */
@@ -334,74 +419,74 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(SfuEventReport.Builder other) {
+    private Builder(org.observertc.schemas.reports.SfuEventReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.mediaUnitId)) {
         this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.marker)) {
         this.marker = data().deepCopy(fields()[2].schema(), other.marker);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.timestamp)) {
         this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.sfuId)) {
         this.sfuId = data().deepCopy(fields()[4].schema(), other.sfuId);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (isValidValue(fields()[5], other.callId)) {
         this.callId = data().deepCopy(fields()[5].schema(), other.callId);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
       if (isValidValue(fields()[6], other.transportId)) {
         this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
-        fieldSetFlags()[6] = true;
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.rtpStreamId)) {
-        this.rtpStreamId = data().deepCopy(fields()[7].schema(), other.rtpStreamId);
-        fieldSetFlags()[7] = true;
+      if (isValidValue(fields()[7], other.mediaStreamId)) {
+        this.mediaStreamId = data().deepCopy(fields()[7].schema(), other.mediaStreamId);
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.sctpStreamId)) {
-        this.sctpStreamId = data().deepCopy(fields()[8].schema(), other.sctpStreamId);
-        fieldSetFlags()[8] = true;
+      if (isValidValue(fields()[8], other.mediaSinkId)) {
+        this.mediaSinkId = data().deepCopy(fields()[8].schema(), other.mediaSinkId);
+        fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.sfuPadId)) {
-        this.sfuPadId = data().deepCopy(fields()[9].schema(), other.sfuPadId);
-        fieldSetFlags()[9] = true;
+      if (isValidValue(fields()[9], other.sctpStreamId)) {
+        this.sctpStreamId = data().deepCopy(fields()[9].schema(), other.sctpStreamId);
+        fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
-      if (isValidValue(fields()[10], other.SSRC)) {
-        this.SSRC = data().deepCopy(fields()[10].schema(), other.SSRC);
-        fieldSetFlags()[10] = true;
+      if (isValidValue(fields()[10], other.rtpPadId)) {
+        this.rtpPadId = data().deepCopy(fields()[10].schema(), other.rtpPadId);
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
       if (isValidValue(fields()[11], other.name)) {
         this.name = data().deepCopy(fields()[11].schema(), other.name);
-        fieldSetFlags()[11] = true;
+        fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
       if (isValidValue(fields()[12], other.message)) {
         this.message = data().deepCopy(fields()[12].schema(), other.message);
-        fieldSetFlags()[12] = true;
+        fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
       if (isValidValue(fields()[13], other.value)) {
         this.value = data().deepCopy(fields()[13].schema(), other.value);
-        fieldSetFlags()[13] = true;
+        fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
       if (isValidValue(fields()[14], other.attachments)) {
         this.attachments = data().deepCopy(fields()[14].schema(), other.attachments);
-        fieldSetFlags()[14] = true;
+        fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
     }
 
@@ -409,8 +494,8 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
      * Creates a Builder by copying an existing SfuEventReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(SfuEventReport other) {
-            super(SCHEMA$);
+    private Builder(org.observertc.schemas.reports.SfuEventReport other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
@@ -439,20 +524,20 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
         this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.rtpStreamId)) {
-        this.rtpStreamId = data().deepCopy(fields()[7].schema(), other.rtpStreamId);
+      if (isValidValue(fields()[7], other.mediaStreamId)) {
+        this.mediaStreamId = data().deepCopy(fields()[7].schema(), other.mediaStreamId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.sctpStreamId)) {
-        this.sctpStreamId = data().deepCopy(fields()[8].schema(), other.sctpStreamId);
+      if (isValidValue(fields()[8], other.mediaSinkId)) {
+        this.mediaSinkId = data().deepCopy(fields()[8].schema(), other.mediaSinkId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.sfuPadId)) {
-        this.sfuPadId = data().deepCopy(fields()[9].schema(), other.sfuPadId);
+      if (isValidValue(fields()[9], other.sctpStreamId)) {
+        this.sctpStreamId = data().deepCopy(fields()[9].schema(), other.sctpStreamId);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.SSRC)) {
-        this.SSRC = data().deepCopy(fields()[10].schema(), other.SSRC);
+      if (isValidValue(fields()[10], other.rtpPadId)) {
+        this.rtpPadId = data().deepCopy(fields()[10].schema(), other.rtpPadId);
         fieldSetFlags()[10] = true;
       }
       if (isValidValue(fields()[11], other.name)) {
@@ -482,13 +567,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return serviceId;
     }
 
+
     /**
       * Sets the value of the 'serviceId' field.
       * The service id the report belongs to
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -510,7 +596,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The service id the report belongs to
       * @return This builder.
       */
-    public SfuEventReport.Builder clearServiceId() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -525,13 +611,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return mediaUnitId;
     }
 
+
     /**
       * Sets the value of the 'mediaUnitId' field.
       * The media unit id the report belongs to
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -553,7 +640,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public SfuEventReport.Builder clearMediaUnitId() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -568,13 +655,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return marker;
     }
 
+
     /**
       * Sets the value of the 'marker' field.
       * The marker the originated sample is reported with
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -596,7 +684,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public SfuEventReport.Builder clearMarker() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -607,9 +695,10 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getTimestamp() {
+    public long getTimestamp() {
       return timestamp;
     }
+
 
     /**
       * Sets the value of the 'timestamp' field.
@@ -617,7 +706,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setTimestamp(long value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -639,7 +728,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public SfuEventReport.Builder clearTimestamp() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -653,13 +742,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return sfuId;
     }
 
+
     /**
       * Sets the value of the 'sfuId' field.
       * The generated unique identifier of the SFU
       * @param value The value of 'sfuId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setSfuId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setSfuId(java.lang.String value) {
       validate(fields()[4], value);
       this.sfuId = value;
       fieldSetFlags()[4] = true;
@@ -681,7 +771,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The generated unique identifier of the SFU
       * @return This builder.
       */
-    public SfuEventReport.Builder clearSfuId() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearSfuId() {
       sfuId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -696,13 +786,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return callId;
     }
 
+
     /**
       * Sets the value of the 'callId' field.
       * The callId the event belongs to
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setCallId(java.lang.String value) {
       validate(fields()[5], value);
       this.callId = value;
       fieldSetFlags()[5] = true;
@@ -724,7 +815,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The callId the event belongs to
       * @return This builder.
       */
-    public SfuEventReport.Builder clearCallId() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -739,13 +830,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return transportId;
     }
 
+
     /**
       * Sets the value of the 'transportId' field.
       * SFU provided transport identifier
       * @param value The value of 'transportId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setTransportId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setTransportId(java.lang.String value) {
       validate(fields()[6], value);
       this.transportId = value;
       fieldSetFlags()[6] = true;
@@ -767,52 +859,97 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * SFU provided transport identifier
       * @return This builder.
       */
-    public SfuEventReport.Builder clearTransportId() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearTransportId() {
       transportId = null;
       fieldSetFlags()[6] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'rtpStreamId' field.
-      * Unique identifier of the RTP stream the event is related to
+      * Gets the value of the 'mediaStreamId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
       * @return The value.
       */
-    public java.lang.String getRtpStreamId() {
-      return rtpStreamId;
+    public java.lang.String getMediaStreamId() {
+      return mediaStreamId;
     }
 
+
     /**
-      * Sets the value of the 'rtpStreamId' field.
-      * Unique identifier of the RTP stream the event is related to
-      * @param value The value of 'rtpStreamId'.
+      * Sets the value of the 'mediaStreamId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @param value The value of 'mediaStreamId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setRtpStreamId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setMediaStreamId(java.lang.String value) {
       validate(fields()[7], value);
-      this.rtpStreamId = value;
+      this.mediaStreamId = value;
       fieldSetFlags()[7] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'rtpStreamId' field has been set.
-      * Unique identifier of the RTP stream the event is related to
-      * @return True if the 'rtpStreamId' field has been set, false otherwise.
+      * Checks whether the 'mediaStreamId' field has been set.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return True if the 'mediaStreamId' field has been set, false otherwise.
       */
-    public boolean hasRtpStreamId() {
+    public boolean hasMediaStreamId() {
       return fieldSetFlags()[7];
     }
 
 
     /**
-      * Clears the value of the 'rtpStreamId' field.
-      * Unique identifier of the RTP stream the event is related to
+      * Clears the value of the 'mediaStreamId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
       * @return This builder.
       */
-    public SfuEventReport.Builder clearRtpStreamId() {
-      rtpStreamId = null;
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearMediaStreamId() {
+      mediaStreamId = null;
       fieldSetFlags()[7] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'mediaSinkId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return The value.
+      */
+    public java.lang.String getMediaSinkId() {
+      return mediaSinkId;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaSinkId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @param value The value of 'mediaSinkId'.
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuEventReport.Builder setMediaSinkId(java.lang.String value) {
+      validate(fields()[8], value);
+      this.mediaSinkId = value;
+      fieldSetFlags()[8] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaSinkId' field has been set.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return True if the 'mediaSinkId' field has been set, false otherwise.
+      */
+    public boolean hasMediaSinkId() {
+      return fieldSetFlags()[8];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaSinkId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearMediaSinkId() {
+      mediaSinkId = null;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -825,16 +962,17 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return sctpStreamId;
     }
 
+
     /**
       * Sets the value of the 'sctpStreamId' field.
       * Unique identifier of the SCTP stream the event is related to
       * @param value The value of 'sctpStreamId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setSctpStreamId(java.lang.String value) {
-      validate(fields()[8], value);
+    public org.observertc.schemas.reports.SfuEventReport.Builder setSctpStreamId(java.lang.String value) {
+      validate(fields()[9], value);
       this.sctpStreamId = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -844,7 +982,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'sctpStreamId' field has been set, false otherwise.
       */
     public boolean hasSctpStreamId() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -853,94 +991,52 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * Unique identifier of the SCTP stream the event is related to
       * @return This builder.
       */
-    public SfuEventReport.Builder clearSctpStreamId() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearSctpStreamId() {
       sctpStreamId = null;
-      fieldSetFlags()[8] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sfuPadId' field.
-      * Unique identifier of the Sfu Pad the event is related to
-      * @return The value.
-      */
-    public java.lang.String getSfuPadId() {
-      return sfuPadId;
-    }
-
-    /**
-      * Sets the value of the 'sfuPadId' field.
-      * Unique identifier of the Sfu Pad the event is related to
-      * @param value The value of 'sfuPadId'.
-      * @return This builder.
-      */
-    public SfuEventReport.Builder setSfuPadId(java.lang.String value) {
-      validate(fields()[9], value);
-      this.sfuPadId = value;
-      fieldSetFlags()[9] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sfuPadId' field has been set.
-      * Unique identifier of the Sfu Pad the event is related to
-      * @return True if the 'sfuPadId' field has been set, false otherwise.
-      */
-    public boolean hasSfuPadId() {
-      return fieldSetFlags()[9];
-    }
-
-
-    /**
-      * Clears the value of the 'sfuPadId' field.
-      * Unique identifier of the Sfu Pad the event is related to
-      * @return This builder.
-      */
-    public SfuEventReport.Builder clearSfuPadId() {
-      sfuPadId = null;
       fieldSetFlags()[9] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'SSRC' field.
-      * The SSRC identifier of the RTP stream related to
+      * Gets the value of the 'rtpPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
       * @return The value.
       */
-    public java.lang.Long getSSRC() {
-      return SSRC;
+    public java.lang.String getRtpPadId() {
+      return rtpPadId;
     }
 
+
     /**
-      * Sets the value of the 'SSRC' field.
-      * The SSRC identifier of the RTP stream related to
-      * @param value The value of 'SSRC'.
+      * Sets the value of the 'rtpPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @param value The value of 'rtpPadId'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setSSRC(java.lang.Long value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setRtpPadId(java.lang.String value) {
       validate(fields()[10], value);
-      this.SSRC = value;
+      this.rtpPadId = value;
       fieldSetFlags()[10] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'SSRC' field has been set.
-      * The SSRC identifier of the RTP stream related to
-      * @return True if the 'SSRC' field has been set, false otherwise.
+      * Checks whether the 'rtpPadId' field has been set.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return True if the 'rtpPadId' field has been set, false otherwise.
       */
-    public boolean hasSSRC() {
+    public boolean hasRtpPadId() {
       return fieldSetFlags()[10];
     }
 
 
     /**
-      * Clears the value of the 'SSRC' field.
-      * The SSRC identifier of the RTP stream related to
+      * Clears the value of the 'rtpPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
       * @return This builder.
       */
-    public SfuEventReport.Builder clearSSRC() {
-      SSRC = null;
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearRtpPadId() {
+      rtpPadId = null;
       fieldSetFlags()[10] = false;
       return this;
     }
@@ -954,13 +1050,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return name;
     }
 
+
     /**
       * Sets the value of the 'name' field.
       * The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
       * @param value The value of 'name'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setName(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setName(java.lang.String value) {
       validate(fields()[11], value);
       this.name = value;
       fieldSetFlags()[11] = true;
@@ -982,7 +1079,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * The name of the event. Possible values are: SFU_JOINED, SFU_LEFT, SFU_TRANSPORT_OPENED, SFU_TRANSPORT_CLOSED, SFU_RTP_STREAM_ADDED, SFU_RTP_STREAM_REMOVED
       * @return This builder.
       */
-    public SfuEventReport.Builder clearName() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearName() {
       name = null;
       fieldSetFlags()[11] = false;
       return this;
@@ -997,13 +1094,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return message;
     }
 
+
     /**
       * Sets the value of the 'message' field.
       * the human readable message of the event
       * @param value The value of 'message'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setMessage(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setMessage(java.lang.String value) {
       validate(fields()[12], value);
       this.message = value;
       fieldSetFlags()[12] = true;
@@ -1025,7 +1123,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * the human readable message of the event
       * @return This builder.
       */
-    public SfuEventReport.Builder clearMessage() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearMessage() {
       message = null;
       fieldSetFlags()[12] = false;
       return this;
@@ -1040,13 +1138,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return value;
     }
 
+
     /**
       * Sets the value of the 'value' field.
       * the value of the event
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setValue(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setValue(java.lang.String value) {
       validate(fields()[13], value);
       this.value = value;
       fieldSetFlags()[13] = true;
@@ -1068,7 +1167,7 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * the value of the event
       * @return This builder.
       */
-    public SfuEventReport.Builder clearValue() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearValue() {
       value = null;
       fieldSetFlags()[13] = false;
       return this;
@@ -1083,13 +1182,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       return attachments;
     }
 
+
     /**
       * Sets the value of the 'attachments' field.
       * attachment the event may created with
       * @param value The value of 'attachments'.
       * @return This builder.
       */
-    public SfuEventReport.Builder setAttachments(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuEventReport.Builder setAttachments(java.lang.String value) {
       validate(fields()[14], value);
       this.attachments = value;
       fieldSetFlags()[14] = true;
@@ -1111,13 +1211,14 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
       * attachment the event may created with
       * @return This builder.
       */
-    public SfuEventReport.Builder clearAttachments() {
+    public org.observertc.schemas.reports.SfuEventReport.Builder clearAttachments() {
       attachments = null;
       fieldSetFlags()[14] = false;
       return this;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public SfuEventReport build() {
       try {
         SfuEventReport record = new SfuEventReport();
@@ -1128,35 +1229,382 @@ public class SfuEventReport extends org.apache.avro.specific.SpecificRecordBase 
         record.sfuId = fieldSetFlags()[4] ? this.sfuId : (java.lang.String) defaultValue(fields()[4]);
         record.callId = fieldSetFlags()[5] ? this.callId : (java.lang.String) defaultValue(fields()[5]);
         record.transportId = fieldSetFlags()[6] ? this.transportId : (java.lang.String) defaultValue(fields()[6]);
-        record.rtpStreamId = fieldSetFlags()[7] ? this.rtpStreamId : (java.lang.String) defaultValue(fields()[7]);
-        record.sctpStreamId = fieldSetFlags()[8] ? this.sctpStreamId : (java.lang.String) defaultValue(fields()[8]);
-        record.sfuPadId = fieldSetFlags()[9] ? this.sfuPadId : (java.lang.String) defaultValue(fields()[9]);
-        record.SSRC = fieldSetFlags()[10] ? this.SSRC : (java.lang.Long) defaultValue(fields()[10]);
+        record.mediaStreamId = fieldSetFlags()[7] ? this.mediaStreamId : (java.lang.String) defaultValue(fields()[7]);
+        record.mediaSinkId = fieldSetFlags()[8] ? this.mediaSinkId : (java.lang.String) defaultValue(fields()[8]);
+        record.sctpStreamId = fieldSetFlags()[9] ? this.sctpStreamId : (java.lang.String) defaultValue(fields()[9]);
+        record.rtpPadId = fieldSetFlags()[10] ? this.rtpPadId : (java.lang.String) defaultValue(fields()[10]);
         record.name = fieldSetFlags()[11] ? this.name : (java.lang.String) defaultValue(fields()[11]);
         record.message = fieldSetFlags()[12] ? this.message : (java.lang.String) defaultValue(fields()[12]);
         record.value = fieldSetFlags()[13] ? this.value : (java.lang.String) defaultValue(fields()[13]);
         record.attachments = fieldSetFlags()[14] ? this.attachments : (java.lang.String) defaultValue(fields()[14]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<SfuEventReport>
+    WRITER$ = (org.apache.avro.io.DatumWriter<SfuEventReport>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<SfuEventReport>
+    READER$ = (org.apache.avro.io.DatumReader<SfuEventReport>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.serviceId);
+
+    if (this.mediaUnitId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaUnitId);
+    }
+
+    if (this.marker == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.marker);
+    }
+
+    out.writeLong(this.timestamp);
+
+    if (this.sfuId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.sfuId);
+    }
+
+    if (this.callId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.callId);
+    }
+
+    if (this.transportId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.transportId);
+    }
+
+    if (this.mediaStreamId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaStreamId);
+    }
+
+    if (this.mediaSinkId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaSinkId);
+    }
+
+    if (this.sctpStreamId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.sctpStreamId);
+    }
+
+    if (this.rtpPadId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.rtpPadId);
+    }
+
+    out.writeString(this.name);
+
+    if (this.message == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.message);
+    }
+
+    if (this.value == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.value);
+    }
+
+    if (this.attachments == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.attachments);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.serviceId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaUnitId = null;
+      } else {
+        this.mediaUnitId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.marker = null;
+      } else {
+        this.marker = in.readString();
+      }
+
+      this.timestamp = in.readLong();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sfuId = null;
+      } else {
+        this.sfuId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.callId = null;
+      } else {
+        this.callId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.transportId = null;
+      } else {
+        this.transportId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaStreamId = null;
+      } else {
+        this.mediaStreamId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaSinkId = null;
+      } else {
+        this.mediaSinkId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sctpStreamId = null;
+      } else {
+        this.sctpStreamId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.rtpPadId = null;
+      } else {
+        this.rtpPadId = in.readString();
+      }
+
+      this.name = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.message = null;
+      } else {
+        this.message = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.value = null;
+      } else {
+        this.value = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.attachments = null;
+      } else {
+        this.attachments = in.readString();
+      }
+
+    } else {
+      for (int i = 0; i < 15; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.serviceId = in.readString();
+          break;
+
+        case 1:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaUnitId = null;
+          } else {
+            this.mediaUnitId = in.readString();
+          }
+          break;
+
+        case 2:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.marker = null;
+          } else {
+            this.marker = in.readString();
+          }
+          break;
+
+        case 3:
+          this.timestamp = in.readLong();
+          break;
+
+        case 4:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sfuId = null;
+          } else {
+            this.sfuId = in.readString();
+          }
+          break;
+
+        case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.callId = null;
+          } else {
+            this.callId = in.readString();
+          }
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.transportId = null;
+          } else {
+            this.transportId = in.readString();
+          }
+          break;
+
+        case 7:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaStreamId = null;
+          } else {
+            this.mediaStreamId = in.readString();
+          }
+          break;
+
+        case 8:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaSinkId = null;
+          } else {
+            this.mediaSinkId = in.readString();
+          }
+          break;
+
+        case 9:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sctpStreamId = null;
+          } else {
+            this.sctpStreamId = in.readString();
+          }
+          break;
+
+        case 10:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.rtpPadId = null;
+          } else {
+            this.rtpPadId = in.readString();
+          }
+          break;
+
+        case 11:
+          this.name = in.readString();
+          break;
+
+        case 12:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.message = null;
+          } else {
+            this.message = in.readString();
+          }
+          break;
+
+        case 13:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.value = null;
+          } else {
+            this.value = in.readString();
+          }
+          break;
+
+        case 14:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.attachments = null;
+          } else {
+            this.attachments = in.readString();
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

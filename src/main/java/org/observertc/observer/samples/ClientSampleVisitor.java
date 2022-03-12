@@ -1,5 +1,7 @@
 package org.observertc.observer.samples;
 
+import org.observertc.schemas.samples.Samples.ClientSample;
+
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Objects;
@@ -16,7 +18,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.certificates);
     }
 
-    static Stream<ClientSample.Codec> streamCodecs(@NotNull ClientSample clientSample) {
+    static Stream<ClientSample.MediaCodecStats> streamCodecs(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.codecs)) {
             return Stream.empty();
         }
@@ -37,14 +39,14 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.extensionStats);
     }
 
-    static Stream<ClientSample.ICELocalCandidate> streamIceLocalCandidates(@NotNull ClientSample clientSample) {
+    static Stream<ClientSample.IceLocalCandidate> streamIceLocalCandidates(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.iceLocalCandidates)) {
             return Stream.empty();
         }
         return Arrays.stream(clientSample.iceLocalCandidates);
     }
 
-    static Stream<ClientSample.ICERemoteCandidate> streamIceRemoteCandidates(@NotNull ClientSample clientSample) {
+    static Stream<ClientSample.IceRemoteCandidate> streamIceRemoteCandidates(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.iceRemoteCandidates)) {
             return Stream.empty();
         }
@@ -94,7 +96,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
     }
 
 
-    static Stream<String> streamMediaDevices(@NotNull ClientSample clientSample) {
+    static Stream<ClientSample.MediaDevice> streamMediaDevices(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.mediaDevices)) {
             return Stream.empty();
         }
@@ -154,15 +156,15 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
 
     void visitCertificate(T obj, UUID clientId, ClientSample.Certificate certificate);
 
-    void visitCodec(T obj, UUID clientId, ClientSample.Codec codec);
+    void visitCodec(T obj, UUID clientId, ClientSample.MediaCodecStats codec);
 
     void visitDataChannel(T obj, UUID clientId, ClientSample.DataChannel dataChannel);
 
     void visitExtensionStat(T obj, UUID clientId, ClientSample.ExtensionStat extensionStat);
 
-    void visitIceLocalCandidate(T obj, UUID clientId, ClientSample.ICELocalCandidate iceLocalCandidate);
+    void visitIceLocalCandidate(T obj, UUID clientId, ClientSample.IceLocalCandidate iceLocalCandidate);
 
-    void visitIceRemoteCandidate(T obj, UUID clientId, ClientSample.ICERemoteCandidate iceRemoteCandidate);
+    void visitIceRemoteCandidate(T obj, UUID clientId, ClientSample.IceRemoteCandidate iceRemoteCandidate);
 
     void visitIceServer(T obj, UUID clientId, String iceServer);
 
@@ -176,7 +178,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
 
     void visitMediaConstraint(T obj, UUID clientId, String mediaConstraint);
 
-    void visitMediaDevice(T obj, UUID clientId, String mediaDevice);
+    void visitMediaDevice(T obj, UUID clientId, ClientSample.MediaDevice mediaDevice);
 
     void visitMediaSource(T obj, UUID clientId, ClientSample.MediaSourceStat mediaSource);
 

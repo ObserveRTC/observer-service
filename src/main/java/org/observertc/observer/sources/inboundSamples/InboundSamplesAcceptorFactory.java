@@ -1,15 +1,13 @@
 package org.observertc.observer.sources.inboundSamples;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.observertc.observer.samples.Samples;
+import org.observertc.observer.micrometer.MonitorProvider;
 import org.observertc.observer.sources.ClientSamplesCollector;
 import org.observertc.observer.sources.SfuSamplesCollector;
-import org.observertc.webrtc.observer.compressors.DecompressorBuilder;
-import org.observertc.observer.micrometer.MonitorProvider;
+import org.observertc.schemas.samples.Samples;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Objects;
 
 @Singleton
 public class InboundSamplesAcceptorFactory {
@@ -32,14 +30,6 @@ public class InboundSamplesAcceptorFactory {
 
     public InboundSamplesAcceptor makeAcceptor(InboundSamplesConfig config) {
         var parserBuilder = InboundSamplesParser.builder();
-
-        // add decompressor if it is configured
-        if (Objects.nonNull(config.decompressor)) {
-            var decompressorBuilder = new DecompressorBuilder();
-            decompressorBuilder.withConfiguration(config.decompressor);
-            var decompressor = decompressorBuilder.build();
-            parserBuilder.withDecompressor(decompressor);
-        }
 
         // add the sample parser base function
         var reader = this.objectMapper.reader();

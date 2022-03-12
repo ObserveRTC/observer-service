@@ -5,41 +5,101 @@
  */
 package org.observertc.schemas.reports;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 /** Metadata belongs to a call and can be useful */
 @org.apache.avro.specific.AvroGenerated
 public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8153992253088484756L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CallMetaReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Metadata belongs to a call and can be useful\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the meta data reported for the peer connection\",\"default\":null},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The payload for the metadata reported for the peeer connection\",\"default\":null}]}");
+  private static final long serialVersionUID = 4535075033945024132L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CallMetaReport\",\"namespace\":\"org.observertc.schemas.reports\",\"doc\":\"Metadata belongs to a call and can be useful\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The unique identifier of the service\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the call\",\"default\":null},{\"name\":\"roomId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided room id\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"webrtc app provided user identifier\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"sampleTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"The timestamp of the sample the event related to\",\"default\":null},{\"name\":\"sampleSeq\",\"type\":[\"null\",\"int\"],\"doc\":\"The sequence number of the sample the event may related to\",\"default\":null},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,\",\"default\":null},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The payload for the metadata reported for the peeer connection\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  private static final SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<CallMetaReport> ENCODER =
+      new BinaryMessageEncoder<CallMetaReport>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<CallMetaReport> DECODER =
+      new BinaryMessageDecoder<CallMetaReport>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<CallMetaReport> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<CallMetaReport> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<CallMetaReport> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<CallMetaReport>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this CallMetaReport to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a CallMetaReport from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a CallMetaReport instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static CallMetaReport fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
   /** The unique identifier of the service */
-   private java.lang.String serviceId;
+  private java.lang.String serviceId;
   /** The media unit id the report belongs to */
-   private java.lang.String mediaUnitId;
+  private java.lang.String mediaUnitId;
   /** The marker the originated sample is reported with */
-   private java.lang.String marker;
+  private java.lang.String marker;
   /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
-   private long timestamp;
+  private long timestamp;
   /** The generated unique identifier of the call */
-   private java.lang.String callId;
+  private java.lang.String callId;
   /** webrtc app provided room id */
-   private java.lang.String roomId;
+  private java.lang.String roomId;
   /** The generated unique identifier of the client */
-   private java.lang.String clientId;
+  private java.lang.String clientId;
   /** webrtc app provided user identifier */
-   private java.lang.String userId;
+  private java.lang.String userId;
   /** The unique identifier of the peer connection */
-   private java.lang.String peerConnectionId;
+  private java.lang.String peerConnectionId;
   /** The timestamp of the sample the event related to */
-   private java.lang.Long sampleTimestamp;
+  private java.lang.Long sampleTimestamp;
   /** The sequence number of the sample the event may related to */
-   private java.lang.Integer sampleSeq;
-  /** The type of the meta data reported for the peer connection */
-   private java.lang.String type;
+  private java.lang.Integer sampleSeq;
+  /** The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR, */
+  private java.lang.String type;
   /** The payload for the metadata reported for the peeer connection */
-   private java.lang.String payload;
+  private java.lang.String payload;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -61,7 +121,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param peerConnectionId The unique identifier of the peer connection
    * @param sampleTimestamp The timestamp of the sample the event related to
    * @param sampleSeq The sequence number of the sample the event may related to
-   * @param type The type of the meta data reported for the peer connection
+   * @param type The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
    * @param payload The payload for the metadata reported for the peeer connection
    */
   public CallMetaReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String callId, java.lang.String roomId, java.lang.String clientId, java.lang.String userId, java.lang.String peerConnectionId, java.lang.Long sampleTimestamp, java.lang.Integer sampleSeq, java.lang.String type, java.lang.String payload) {
@@ -80,6 +140,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
     this.payload = payload;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -97,7 +158,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
     case 10: return sampleSeq;
     case 11: return type;
     case 12: return payload;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -105,20 +166,20 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (java.lang.String)value$; break;
-    case 1: mediaUnitId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
+    case 0: serviceId = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnitId = value$ != null ? value$.toString() : null; break;
+    case 2: marker = value$ != null ? value$.toString() : null; break;
     case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: callId = (java.lang.String)value$; break;
-    case 5: roomId = (java.lang.String)value$; break;
-    case 6: clientId = (java.lang.String)value$; break;
-    case 7: userId = (java.lang.String)value$; break;
-    case 8: peerConnectionId = (java.lang.String)value$; break;
+    case 4: callId = value$ != null ? value$.toString() : null; break;
+    case 5: roomId = value$ != null ? value$.toString() : null; break;
+    case 6: clientId = value$ != null ? value$.toString() : null; break;
+    case 7: userId = value$ != null ? value$.toString() : null; break;
+    case 8: peerConnectionId = value$ != null ? value$.toString() : null; break;
     case 9: sampleTimestamp = (java.lang.Long)value$; break;
     case 10: sampleSeq = (java.lang.Integer)value$; break;
-    case 11: type = (java.lang.String)value$; break;
-    case 12: payload = (java.lang.String)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 11: type = value$ != null ? value$.toString() : null; break;
+    case 12: payload = value$ != null ? value$.toString() : null; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -131,6 +192,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'mediaUnitId' field.
    * @return The media unit id the report belongs to
@@ -138,6 +200,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.String getMediaUnitId() {
     return mediaUnitId;
   }
+
 
 
   /**
@@ -149,13 +212,15 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'timestamp' field.
    * @return The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    */
-  public java.lang.Long getTimestamp() {
+  public long getTimestamp() {
     return timestamp;
   }
+
 
 
   /**
@@ -167,6 +232,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'roomId' field.
    * @return webrtc app provided room id
@@ -174,6 +240,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.String getRoomId() {
     return roomId;
   }
+
 
 
   /**
@@ -185,6 +252,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'userId' field.
    * @return webrtc app provided user identifier
@@ -192,6 +260,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.String getUserId() {
     return userId;
   }
+
 
 
   /**
@@ -203,6 +272,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'sampleTimestamp' field.
    * @return The timestamp of the sample the event related to
@@ -210,6 +280,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.Long getSampleTimestamp() {
     return sampleTimestamp;
   }
+
 
 
   /**
@@ -221,13 +292,15 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Gets the value of the 'type' field.
-   * @return The type of the meta data reported for the peer connection
+   * @return The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
    */
   public java.lang.String getType() {
     return type;
   }
+
 
 
   /**
@@ -239,12 +312,13 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
   }
 
 
+
   /**
    * Creates a new CallMetaReport RecordBuilder.
    * @return A new CallMetaReport RecordBuilder
    */
-  public static CallMetaReport.Builder newBuilder() {
-    return new CallMetaReport.Builder();
+  public static org.observertc.schemas.reports.CallMetaReport.Builder newBuilder() {
+    return new org.observertc.schemas.reports.CallMetaReport.Builder();
   }
 
   /**
@@ -252,8 +326,12 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param other The existing builder to copy.
    * @return A new CallMetaReport RecordBuilder
    */
-  public static CallMetaReport.Builder newBuilder(CallMetaReport.Builder other) {
-    return new CallMetaReport.Builder(other);
+  public static org.observertc.schemas.reports.CallMetaReport.Builder newBuilder(org.observertc.schemas.reports.CallMetaReport.Builder other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.CallMetaReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.CallMetaReport.Builder(other);
+    }
   }
 
   /**
@@ -261,13 +339,18 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
    * @param other The existing instance to copy.
    * @return A new CallMetaReport RecordBuilder
    */
-  public static CallMetaReport.Builder newBuilder(CallMetaReport other) {
-    return new CallMetaReport.Builder(other);
+  public static org.observertc.schemas.reports.CallMetaReport.Builder newBuilder(org.observertc.schemas.reports.CallMetaReport other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.CallMetaReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.CallMetaReport.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for CallMetaReport instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CallMetaReport>
     implements org.apache.avro.data.RecordBuilder<CallMetaReport> {
 
@@ -293,73 +376,73 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
     private java.lang.Long sampleTimestamp;
     /** The sequence number of the sample the event may related to */
     private java.lang.Integer sampleSeq;
-    /** The type of the meta data reported for the peer connection */
+    /** The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR, */
     private java.lang.String type;
     /** The payload for the metadata reported for the peeer connection */
     private java.lang.String payload;
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(CallMetaReport.Builder other) {
+    private Builder(org.observertc.schemas.reports.CallMetaReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.mediaUnitId)) {
         this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.marker)) {
         this.marker = data().deepCopy(fields()[2].schema(), other.marker);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.timestamp)) {
         this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.callId)) {
         this.callId = data().deepCopy(fields()[4].schema(), other.callId);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (isValidValue(fields()[5], other.roomId)) {
         this.roomId = data().deepCopy(fields()[5].schema(), other.roomId);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
       if (isValidValue(fields()[6], other.clientId)) {
         this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
-        fieldSetFlags()[6] = true;
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
       if (isValidValue(fields()[7], other.userId)) {
         this.userId = data().deepCopy(fields()[7].schema(), other.userId);
-        fieldSetFlags()[7] = true;
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
       if (isValidValue(fields()[8], other.peerConnectionId)) {
         this.peerConnectionId = data().deepCopy(fields()[8].schema(), other.peerConnectionId);
-        fieldSetFlags()[8] = true;
+        fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
       if (isValidValue(fields()[9], other.sampleTimestamp)) {
         this.sampleTimestamp = data().deepCopy(fields()[9].schema(), other.sampleTimestamp);
-        fieldSetFlags()[9] = true;
+        fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
       if (isValidValue(fields()[10], other.sampleSeq)) {
         this.sampleSeq = data().deepCopy(fields()[10].schema(), other.sampleSeq);
-        fieldSetFlags()[10] = true;
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
       if (isValidValue(fields()[11], other.type)) {
         this.type = data().deepCopy(fields()[11].schema(), other.type);
-        fieldSetFlags()[11] = true;
+        fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
       if (isValidValue(fields()[12], other.payload)) {
         this.payload = data().deepCopy(fields()[12].schema(), other.payload);
-        fieldSetFlags()[12] = true;
+        fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
     }
 
@@ -367,8 +450,8 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
      * Creates a Builder by copying an existing CallMetaReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(CallMetaReport other) {
-            super(SCHEMA$);
+    private Builder(org.observertc.schemas.reports.CallMetaReport other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
@@ -432,13 +515,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return serviceId;
     }
 
+
     /**
       * Sets the value of the 'serviceId' field.
       * The unique identifier of the service
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -460,7 +544,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The unique identifier of the service
       * @return This builder.
       */
-    public CallMetaReport.Builder clearServiceId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -475,13 +559,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return mediaUnitId;
     }
 
+
     /**
       * Sets the value of the 'mediaUnitId' field.
       * The media unit id the report belongs to
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -503,7 +588,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public CallMetaReport.Builder clearMediaUnitId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -518,13 +603,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return marker;
     }
 
+
     /**
       * Sets the value of the 'marker' field.
       * The marker the originated sample is reported with
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -546,7 +632,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public CallMetaReport.Builder clearMarker() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -557,9 +643,10 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getTimestamp() {
+    public long getTimestamp() {
       return timestamp;
     }
+
 
     /**
       * Sets the value of the 'timestamp' field.
@@ -567,7 +654,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setTimestamp(long value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -589,7 +676,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public CallMetaReport.Builder clearTimestamp() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -603,13 +690,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return callId;
     }
 
+
     /**
       * Sets the value of the 'callId' field.
       * The generated unique identifier of the call
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setCallId(java.lang.String value) {
       validate(fields()[4], value);
       this.callId = value;
       fieldSetFlags()[4] = true;
@@ -631,7 +719,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The generated unique identifier of the call
       * @return This builder.
       */
-    public CallMetaReport.Builder clearCallId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -646,13 +734,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return roomId;
     }
 
+
     /**
       * Sets the value of the 'roomId' field.
       * webrtc app provided room id
       * @param value The value of 'roomId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setRoomId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setRoomId(java.lang.String value) {
       validate(fields()[5], value);
       this.roomId = value;
       fieldSetFlags()[5] = true;
@@ -674,7 +763,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * webrtc app provided room id
       * @return This builder.
       */
-    public CallMetaReport.Builder clearRoomId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearRoomId() {
       roomId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -689,13 +778,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return clientId;
     }
 
+
     /**
       * Sets the value of the 'clientId' field.
       * The generated unique identifier of the client
       * @param value The value of 'clientId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setClientId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setClientId(java.lang.String value) {
       validate(fields()[6], value);
       this.clientId = value;
       fieldSetFlags()[6] = true;
@@ -717,7 +807,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The generated unique identifier of the client
       * @return This builder.
       */
-    public CallMetaReport.Builder clearClientId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearClientId() {
       clientId = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -732,13 +822,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return userId;
     }
 
+
     /**
       * Sets the value of the 'userId' field.
       * webrtc app provided user identifier
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setUserId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setUserId(java.lang.String value) {
       validate(fields()[7], value);
       this.userId = value;
       fieldSetFlags()[7] = true;
@@ -760,7 +851,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * webrtc app provided user identifier
       * @return This builder.
       */
-    public CallMetaReport.Builder clearUserId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearUserId() {
       userId = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -775,13 +866,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return peerConnectionId;
     }
 
+
     /**
       * Sets the value of the 'peerConnectionId' field.
       * The unique identifier of the peer connection
       * @param value The value of 'peerConnectionId'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setPeerConnectionId(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setPeerConnectionId(java.lang.String value) {
       validate(fields()[8], value);
       this.peerConnectionId = value;
       fieldSetFlags()[8] = true;
@@ -803,7 +895,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The unique identifier of the peer connection
       * @return This builder.
       */
-    public CallMetaReport.Builder clearPeerConnectionId() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearPeerConnectionId() {
       peerConnectionId = null;
       fieldSetFlags()[8] = false;
       return this;
@@ -818,13 +910,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return sampleTimestamp;
     }
 
+
     /**
       * Sets the value of the 'sampleTimestamp' field.
       * The timestamp of the sample the event related to
       * @param value The value of 'sampleTimestamp'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setSampleTimestamp(java.lang.Long value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setSampleTimestamp(java.lang.Long value) {
       validate(fields()[9], value);
       this.sampleTimestamp = value;
       fieldSetFlags()[9] = true;
@@ -846,7 +939,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The timestamp of the sample the event related to
       * @return This builder.
       */
-    public CallMetaReport.Builder clearSampleTimestamp() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearSampleTimestamp() {
       sampleTimestamp = null;
       fieldSetFlags()[9] = false;
       return this;
@@ -861,13 +954,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return sampleSeq;
     }
 
+
     /**
       * Sets the value of the 'sampleSeq' field.
       * The sequence number of the sample the event may related to
       * @param value The value of 'sampleSeq'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setSampleSeq(java.lang.Integer value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setSampleSeq(java.lang.Integer value) {
       validate(fields()[10], value);
       this.sampleSeq = value;
       fieldSetFlags()[10] = true;
@@ -889,7 +983,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The sequence number of the sample the event may related to
       * @return This builder.
       */
-    public CallMetaReport.Builder clearSampleSeq() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearSampleSeq() {
       sampleSeq = null;
       fieldSetFlags()[10] = false;
       return this;
@@ -897,20 +991,21 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
 
     /**
       * Gets the value of the 'type' field.
-      * The type of the meta data reported for the peer connection
+      * The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
       * @return The value.
       */
     public java.lang.String getType() {
       return type;
     }
 
+
     /**
       * Sets the value of the 'type' field.
-      * The type of the meta data reported for the peer connection
+      * The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setType(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setType(java.lang.String value) {
       validate(fields()[11], value);
       this.type = value;
       fieldSetFlags()[11] = true;
@@ -919,7 +1014,7 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
 
     /**
       * Checks whether the 'type' field has been set.
-      * The type of the meta data reported for the peer connection
+      * The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
       * @return True if the 'type' field has been set, false otherwise.
       */
     public boolean hasType() {
@@ -929,10 +1024,10 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
 
     /**
       * Clears the value of the 'type' field.
-      * The type of the meta data reported for the peer connection
+      * The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
       * @return This builder.
       */
-    public CallMetaReport.Builder clearType() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearType() {
       type = null;
       fieldSetFlags()[11] = false;
       return this;
@@ -947,13 +1042,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       return payload;
     }
 
+
     /**
       * Sets the value of the 'payload' field.
       * The payload for the metadata reported for the peeer connection
       * @param value The value of 'payload'.
       * @return This builder.
       */
-    public CallMetaReport.Builder setPayload(java.lang.String value) {
+    public org.observertc.schemas.reports.CallMetaReport.Builder setPayload(java.lang.String value) {
       validate(fields()[12], value);
       this.payload = value;
       fieldSetFlags()[12] = true;
@@ -975,13 +1071,14 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
       * The payload for the metadata reported for the peeer connection
       * @return This builder.
       */
-    public CallMetaReport.Builder clearPayload() {
+    public org.observertc.schemas.reports.CallMetaReport.Builder clearPayload() {
       payload = null;
       fieldSetFlags()[12] = false;
       return this;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public CallMetaReport build() {
       try {
         CallMetaReport record = new CallMetaReport();
@@ -999,26 +1096,341 @@ public class CallMetaReport extends org.apache.avro.specific.SpecificRecordBase 
         record.type = fieldSetFlags()[11] ? this.type : (java.lang.String) defaultValue(fields()[11]);
         record.payload = fieldSetFlags()[12] ? this.payload : (java.lang.String) defaultValue(fields()[12]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<CallMetaReport>
+    WRITER$ = (org.apache.avro.io.DatumWriter<CallMetaReport>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<CallMetaReport>
+    READER$ = (org.apache.avro.io.DatumReader<CallMetaReport>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.serviceId);
+
+    if (this.mediaUnitId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaUnitId);
+    }
+
+    if (this.marker == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.marker);
+    }
+
+    out.writeLong(this.timestamp);
+
+    if (this.callId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.callId);
+    }
+
+    if (this.roomId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.roomId);
+    }
+
+    if (this.clientId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.clientId);
+    }
+
+    if (this.userId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.userId);
+    }
+
+    if (this.peerConnectionId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.peerConnectionId);
+    }
+
+    if (this.sampleTimestamp == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.sampleTimestamp);
+    }
+
+    if (this.sampleSeq == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.sampleSeq);
+    }
+
+    if (this.type == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.type);
+    }
+
+    if (this.payload == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.payload);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.serviceId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaUnitId = null;
+      } else {
+        this.mediaUnitId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.marker = null;
+      } else {
+        this.marker = in.readString();
+      }
+
+      this.timestamp = in.readLong();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.callId = null;
+      } else {
+        this.callId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.roomId = null;
+      } else {
+        this.roomId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.clientId = null;
+      } else {
+        this.clientId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.userId = null;
+      } else {
+        this.userId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.peerConnectionId = null;
+      } else {
+        this.peerConnectionId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sampleTimestamp = null;
+      } else {
+        this.sampleTimestamp = in.readLong();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sampleSeq = null;
+      } else {
+        this.sampleSeq = in.readInt();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.type = null;
+      } else {
+        this.type = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.payload = null;
+      } else {
+        this.payload = in.readString();
+      }
+
+    } else {
+      for (int i = 0; i < 13; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.serviceId = in.readString();
+          break;
+
+        case 1:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaUnitId = null;
+          } else {
+            this.mediaUnitId = in.readString();
+          }
+          break;
+
+        case 2:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.marker = null;
+          } else {
+            this.marker = in.readString();
+          }
+          break;
+
+        case 3:
+          this.timestamp = in.readLong();
+          break;
+
+        case 4:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.callId = null;
+          } else {
+            this.callId = in.readString();
+          }
+          break;
+
+        case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.roomId = null;
+          } else {
+            this.roomId = in.readString();
+          }
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.clientId = null;
+          } else {
+            this.clientId = in.readString();
+          }
+          break;
+
+        case 7:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.userId = null;
+          } else {
+            this.userId = in.readString();
+          }
+          break;
+
+        case 8:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.peerConnectionId = null;
+          } else {
+            this.peerConnectionId = in.readString();
+          }
+          break;
+
+        case 9:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sampleTimestamp = null;
+          } else {
+            this.sampleTimestamp = in.readLong();
+          }
+          break;
+
+        case 10:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sampleSeq = null;
+          } else {
+            this.sampleSeq = in.readInt();
+          }
+          break;
+
+        case 11:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.type = null;
+          } else {
+            this.type = in.readString();
+          }
+          break;
+
+        case 12:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.payload = null;
+          } else {
+            this.payload = in.readString();
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

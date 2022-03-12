@@ -1,7 +1,5 @@
 package org.observertc.observer.events;
 
-import org.apache.avro.Schema;
-
 public enum CallMetaType {
     CERTIFICATE,
     CODEC,

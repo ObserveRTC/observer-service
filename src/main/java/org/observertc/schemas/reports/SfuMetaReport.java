@@ -5,35 +5,101 @@
  */
 package org.observertc.schemas.reports;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 /** Metadata belongs to SFUs */
 @org.apache.avro.specific.AvroGenerated
 public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -1134523418756729917L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuMetaReport\",\"namespace\":\"org.observertc.webrtc.schemas.reports\",\"doc\":\"Metadata belongs to SFUs\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The service id the report belongs to\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The id of the Sfu\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"clientId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the client\",\"default\":null},{\"name\":\"peerConnectionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The unique identifier of the peer connection\",\"default\":null},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the meta data reported for the peer connection\",\"default\":null},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The payload for the metadata reported for the peeer connection\",\"default\":null}]}");
+  private static final long serialVersionUID = -7876368858665379491L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SfuMetaReport\",\"namespace\":\"org.observertc.schemas.reports\",\"doc\":\"Metadata belongs to SFUs\",\"fields\":[{\"name\":\"serviceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"The service id the report belongs to\"},{\"name\":\"mediaUnitId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The media unit id the report belongs to\",\"default\":null},{\"name\":\"marker\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The marker the originated sample is reported with\",\"default\":null},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)\"},{\"name\":\"sfuId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The generated unique identifier of the SFU\",\"default\":null},{\"name\":\"callId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The callId the event belongs to\",\"default\":null},{\"name\":\"transportId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"SFU provided transport identifier\",\"default\":null},{\"name\":\"mediaStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SFU stream id the rtp pad belongs to\",\"default\":null},{\"name\":\"mediaSinkId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SFU stream id the rtp pad belongs to\",\"default\":null},{\"name\":\"sctpStreamId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the SCTP stream the event is related to\",\"default\":null},{\"name\":\"rtpPadId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"Unique identifier of the Sfu Pad the event is related to\",\"default\":null},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The type of the meta data reported for the peer connection\",\"default\":null},{\"name\":\"payload\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"The payload for the metadata reported for the peeer connection\",\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  private static final SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<SfuMetaReport> ENCODER =
+      new BinaryMessageEncoder<SfuMetaReport>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<SfuMetaReport> DECODER =
+      new BinaryMessageDecoder<SfuMetaReport>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<SfuMetaReport> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<SfuMetaReport> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<SfuMetaReport> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<SfuMetaReport>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this SfuMetaReport to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a SfuMetaReport from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a SfuMetaReport instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static SfuMetaReport fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
   /** The service id the report belongs to */
-   private java.lang.String serviceId;
+  private java.lang.String serviceId;
   /** The media unit id the report belongs to */
-   private java.lang.String mediaUnitId;
+  private java.lang.String mediaUnitId;
   /** The marker the originated sample is reported with */
-   private java.lang.String marker;
+  private java.lang.String marker;
   /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
-   private long timestamp;
-  /** The id of the Sfu */
-   private java.lang.String sfuId;
+  private long timestamp;
+  /** The generated unique identifier of the SFU */
+  private java.lang.String sfuId;
   /** The callId the event belongs to */
-   private java.lang.String callId;
-  /** The generated unique identifier of the client */
-   private java.lang.String clientId;
-  /** The unique identifier of the peer connection */
-   private java.lang.String peerConnectionId;
+  private java.lang.String callId;
+  /** SFU provided transport identifier */
+  private java.lang.String transportId;
+  /** Unique identifier of the SFU stream id the rtp pad belongs to */
+  private java.lang.String mediaStreamId;
+  /** Unique identifier of the SFU stream id the rtp pad belongs to */
+  private java.lang.String mediaSinkId;
+  /** Unique identifier of the SCTP stream the event is related to */
+  private java.lang.String sctpStreamId;
+  /** Unique identifier of the Sfu Pad the event is related to */
+  private java.lang.String rtpPadId;
   /** The type of the meta data reported for the peer connection */
-   private java.lang.String type;
+  private java.lang.String type;
   /** The payload for the metadata reported for the peeer connection */
-   private java.lang.String payload;
+  private java.lang.String payload;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -48,26 +114,33 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
    * @param mediaUnitId The media unit id the report belongs to
    * @param marker The marker the originated sample is reported with
    * @param timestamp The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
-   * @param sfuId The id of the Sfu
+   * @param sfuId The generated unique identifier of the SFU
    * @param callId The callId the event belongs to
-   * @param clientId The generated unique identifier of the client
-   * @param peerConnectionId The unique identifier of the peer connection
+   * @param transportId SFU provided transport identifier
+   * @param mediaStreamId Unique identifier of the SFU stream id the rtp pad belongs to
+   * @param mediaSinkId Unique identifier of the SFU stream id the rtp pad belongs to
+   * @param sctpStreamId Unique identifier of the SCTP stream the event is related to
+   * @param rtpPadId Unique identifier of the Sfu Pad the event is related to
    * @param type The type of the meta data reported for the peer connection
    * @param payload The payload for the metadata reported for the peeer connection
    */
-  public SfuMetaReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String callId, java.lang.String clientId, java.lang.String peerConnectionId, java.lang.String type, java.lang.String payload) {
+  public SfuMetaReport(java.lang.String serviceId, java.lang.String mediaUnitId, java.lang.String marker, java.lang.Long timestamp, java.lang.String sfuId, java.lang.String callId, java.lang.String transportId, java.lang.String mediaStreamId, java.lang.String mediaSinkId, java.lang.String sctpStreamId, java.lang.String rtpPadId, java.lang.String type, java.lang.String payload) {
     this.serviceId = serviceId;
     this.mediaUnitId = mediaUnitId;
     this.marker = marker;
     this.timestamp = timestamp;
     this.sfuId = sfuId;
     this.callId = callId;
-    this.clientId = clientId;
-    this.peerConnectionId = peerConnectionId;
+    this.transportId = transportId;
+    this.mediaStreamId = mediaStreamId;
+    this.mediaSinkId = mediaSinkId;
+    this.sctpStreamId = sctpStreamId;
+    this.rtpPadId = rtpPadId;
     this.type = type;
     this.payload = payload;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -78,11 +151,14 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
     case 3: return timestamp;
     case 4: return sfuId;
     case 5: return callId;
-    case 6: return clientId;
-    case 7: return peerConnectionId;
-    case 8: return type;
-    case 9: return payload;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 6: return transportId;
+    case 7: return mediaStreamId;
+    case 8: return mediaSinkId;
+    case 9: return sctpStreamId;
+    case 10: return rtpPadId;
+    case 11: return type;
+    case 12: return payload;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -90,17 +166,20 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: serviceId = (java.lang.String)value$; break;
-    case 1: mediaUnitId = (java.lang.String)value$; break;
-    case 2: marker = (java.lang.String)value$; break;
+    case 0: serviceId = value$ != null ? value$.toString() : null; break;
+    case 1: mediaUnitId = value$ != null ? value$.toString() : null; break;
+    case 2: marker = value$ != null ? value$.toString() : null; break;
     case 3: timestamp = (java.lang.Long)value$; break;
-    case 4: sfuId = (java.lang.String)value$; break;
-    case 5: callId = (java.lang.String)value$; break;
-    case 6: clientId = (java.lang.String)value$; break;
-    case 7: peerConnectionId = (java.lang.String)value$; break;
-    case 8: type = (java.lang.String)value$; break;
-    case 9: payload = (java.lang.String)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 4: sfuId = value$ != null ? value$.toString() : null; break;
+    case 5: callId = value$ != null ? value$.toString() : null; break;
+    case 6: transportId = value$ != null ? value$.toString() : null; break;
+    case 7: mediaStreamId = value$ != null ? value$.toString() : null; break;
+    case 8: mediaSinkId = value$ != null ? value$.toString() : null; break;
+    case 9: sctpStreamId = value$ != null ? value$.toString() : null; break;
+    case 10: rtpPadId = value$ != null ? value$.toString() : null; break;
+    case 11: type = value$ != null ? value$.toString() : null; break;
+    case 12: payload = value$ != null ? value$.toString() : null; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -113,6 +192,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   }
 
 
+
   /**
    * Gets the value of the 'mediaUnitId' field.
    * @return The media unit id the report belongs to
@@ -120,6 +200,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   public java.lang.String getMediaUnitId() {
     return mediaUnitId;
   }
+
 
 
   /**
@@ -131,22 +212,25 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   }
 
 
+
   /**
    * Gets the value of the 'timestamp' field.
    * @return The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
    */
-  public java.lang.Long getTimestamp() {
+  public long getTimestamp() {
     return timestamp;
   }
 
 
+
   /**
    * Gets the value of the 'sfuId' field.
-   * @return The id of the Sfu
+   * @return The generated unique identifier of the SFU
    */
   public java.lang.String getSfuId() {
     return sfuId;
   }
+
 
 
   /**
@@ -158,22 +242,55 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   }
 
 
+
   /**
-   * Gets the value of the 'clientId' field.
-   * @return The generated unique identifier of the client
+   * Gets the value of the 'transportId' field.
+   * @return SFU provided transport identifier
    */
-  public java.lang.String getClientId() {
-    return clientId;
+  public java.lang.String getTransportId() {
+    return transportId;
   }
 
 
+
   /**
-   * Gets the value of the 'peerConnectionId' field.
-   * @return The unique identifier of the peer connection
+   * Gets the value of the 'mediaStreamId' field.
+   * @return Unique identifier of the SFU stream id the rtp pad belongs to
    */
-  public java.lang.String getPeerConnectionId() {
-    return peerConnectionId;
+  public java.lang.String getMediaStreamId() {
+    return mediaStreamId;
   }
+
+
+
+  /**
+   * Gets the value of the 'mediaSinkId' field.
+   * @return Unique identifier of the SFU stream id the rtp pad belongs to
+   */
+  public java.lang.String getMediaSinkId() {
+    return mediaSinkId;
+  }
+
+
+
+  /**
+   * Gets the value of the 'sctpStreamId' field.
+   * @return Unique identifier of the SCTP stream the event is related to
+   */
+  public java.lang.String getSctpStreamId() {
+    return sctpStreamId;
+  }
+
+
+
+  /**
+   * Gets the value of the 'rtpPadId' field.
+   * @return Unique identifier of the Sfu Pad the event is related to
+   */
+  public java.lang.String getRtpPadId() {
+    return rtpPadId;
+  }
+
 
 
   /**
@@ -185,6 +302,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   }
 
 
+
   /**
    * Gets the value of the 'payload' field.
    * @return The payload for the metadata reported for the peeer connection
@@ -194,12 +312,13 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
   }
 
 
+
   /**
    * Creates a new SfuMetaReport RecordBuilder.
    * @return A new SfuMetaReport RecordBuilder
    */
-  public static SfuMetaReport.Builder newBuilder() {
-    return new SfuMetaReport.Builder();
+  public static org.observertc.schemas.reports.SfuMetaReport.Builder newBuilder() {
+    return new org.observertc.schemas.reports.SfuMetaReport.Builder();
   }
 
   /**
@@ -207,8 +326,12 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
    * @param other The existing builder to copy.
    * @return A new SfuMetaReport RecordBuilder
    */
-  public static SfuMetaReport.Builder newBuilder(SfuMetaReport.Builder other) {
-    return new SfuMetaReport.Builder(other);
+  public static org.observertc.schemas.reports.SfuMetaReport.Builder newBuilder(org.observertc.schemas.reports.SfuMetaReport.Builder other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.SfuMetaReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.SfuMetaReport.Builder(other);
+    }
   }
 
   /**
@@ -216,13 +339,18 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
    * @param other The existing instance to copy.
    * @return A new SfuMetaReport RecordBuilder
    */
-  public static SfuMetaReport.Builder newBuilder(SfuMetaReport other) {
-    return new SfuMetaReport.Builder(other);
+  public static org.observertc.schemas.reports.SfuMetaReport.Builder newBuilder(org.observertc.schemas.reports.SfuMetaReport other) {
+    if (other == null) {
+      return new org.observertc.schemas.reports.SfuMetaReport.Builder();
+    } else {
+      return new org.observertc.schemas.reports.SfuMetaReport.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for SfuMetaReport instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<SfuMetaReport>
     implements org.apache.avro.data.RecordBuilder<SfuMetaReport> {
 
@@ -234,14 +362,20 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
     private java.lang.String marker;
     /** The timestamp when the corresponded data is generated for the report (UTC Epoch in ms) */
     private long timestamp;
-    /** The id of the Sfu */
+    /** The generated unique identifier of the SFU */
     private java.lang.String sfuId;
     /** The callId the event belongs to */
     private java.lang.String callId;
-    /** The generated unique identifier of the client */
-    private java.lang.String clientId;
-    /** The unique identifier of the peer connection */
-    private java.lang.String peerConnectionId;
+    /** SFU provided transport identifier */
+    private java.lang.String transportId;
+    /** Unique identifier of the SFU stream id the rtp pad belongs to */
+    private java.lang.String mediaStreamId;
+    /** Unique identifier of the SFU stream id the rtp pad belongs to */
+    private java.lang.String mediaSinkId;
+    /** Unique identifier of the SCTP stream the event is related to */
+    private java.lang.String sctpStreamId;
+    /** Unique identifier of the Sfu Pad the event is related to */
+    private java.lang.String rtpPadId;
     /** The type of the meta data reported for the peer connection */
     private java.lang.String type;
     /** The payload for the metadata reported for the peeer connection */
@@ -249,54 +383,66 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(SfuMetaReport.Builder other) {
+    private Builder(org.observertc.schemas.reports.SfuMetaReport.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.mediaUnitId)) {
         this.mediaUnitId = data().deepCopy(fields()[1].schema(), other.mediaUnitId);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.marker)) {
         this.marker = data().deepCopy(fields()[2].schema(), other.marker);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.timestamp)) {
         this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.sfuId)) {
         this.sfuId = data().deepCopy(fields()[4].schema(), other.sfuId);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (isValidValue(fields()[5], other.callId)) {
         this.callId = data().deepCopy(fields()[5].schema(), other.callId);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
-        fieldSetFlags()[6] = true;
+      if (isValidValue(fields()[6], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.peerConnectionId)) {
-        this.peerConnectionId = data().deepCopy(fields()[7].schema(), other.peerConnectionId);
-        fieldSetFlags()[7] = true;
+      if (isValidValue(fields()[7], other.mediaStreamId)) {
+        this.mediaStreamId = data().deepCopy(fields()[7].schema(), other.mediaStreamId);
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.type)) {
-        this.type = data().deepCopy(fields()[8].schema(), other.type);
-        fieldSetFlags()[8] = true;
+      if (isValidValue(fields()[8], other.mediaSinkId)) {
+        this.mediaSinkId = data().deepCopy(fields()[8].schema(), other.mediaSinkId);
+        fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.payload)) {
-        this.payload = data().deepCopy(fields()[9].schema(), other.payload);
-        fieldSetFlags()[9] = true;
+      if (isValidValue(fields()[9], other.sctpStreamId)) {
+        this.sctpStreamId = data().deepCopy(fields()[9].schema(), other.sctpStreamId);
+        fieldSetFlags()[9] = other.fieldSetFlags()[9];
+      }
+      if (isValidValue(fields()[10], other.rtpPadId)) {
+        this.rtpPadId = data().deepCopy(fields()[10].schema(), other.rtpPadId);
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
+      }
+      if (isValidValue(fields()[11], other.type)) {
+        this.type = data().deepCopy(fields()[11].schema(), other.type);
+        fieldSetFlags()[11] = other.fieldSetFlags()[11];
+      }
+      if (isValidValue(fields()[12], other.payload)) {
+        this.payload = data().deepCopy(fields()[12].schema(), other.payload);
+        fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
     }
 
@@ -304,8 +450,8 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
      * Creates a Builder by copying an existing SfuMetaReport instance
      * @param other The existing instance to copy.
      */
-    private Builder(SfuMetaReport other) {
-            super(SCHEMA$);
+    private Builder(org.observertc.schemas.reports.SfuMetaReport other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.serviceId)) {
         this.serviceId = data().deepCopy(fields()[0].schema(), other.serviceId);
         fieldSetFlags()[0] = true;
@@ -330,21 +476,33 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
         this.callId = data().deepCopy(fields()[5].schema(), other.callId);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.clientId)) {
-        this.clientId = data().deepCopy(fields()[6].schema(), other.clientId);
+      if (isValidValue(fields()[6], other.transportId)) {
+        this.transportId = data().deepCopy(fields()[6].schema(), other.transportId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.peerConnectionId)) {
-        this.peerConnectionId = data().deepCopy(fields()[7].schema(), other.peerConnectionId);
+      if (isValidValue(fields()[7], other.mediaStreamId)) {
+        this.mediaStreamId = data().deepCopy(fields()[7].schema(), other.mediaStreamId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.type)) {
-        this.type = data().deepCopy(fields()[8].schema(), other.type);
+      if (isValidValue(fields()[8], other.mediaSinkId)) {
+        this.mediaSinkId = data().deepCopy(fields()[8].schema(), other.mediaSinkId);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.payload)) {
-        this.payload = data().deepCopy(fields()[9].schema(), other.payload);
+      if (isValidValue(fields()[9], other.sctpStreamId)) {
+        this.sctpStreamId = data().deepCopy(fields()[9].schema(), other.sctpStreamId);
         fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.rtpPadId)) {
+        this.rtpPadId = data().deepCopy(fields()[10].schema(), other.rtpPadId);
+        fieldSetFlags()[10] = true;
+      }
+      if (isValidValue(fields()[11], other.type)) {
+        this.type = data().deepCopy(fields()[11].schema(), other.type);
+        fieldSetFlags()[11] = true;
+      }
+      if (isValidValue(fields()[12], other.payload)) {
+        this.payload = data().deepCopy(fields()[12].schema(), other.payload);
+        fieldSetFlags()[12] = true;
       }
     }
 
@@ -357,13 +515,14 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       return serviceId;
     }
 
+
     /**
       * Sets the value of the 'serviceId' field.
       * The service id the report belongs to
       * @param value The value of 'serviceId'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setServiceId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setServiceId(java.lang.String value) {
       validate(fields()[0], value);
       this.serviceId = value;
       fieldSetFlags()[0] = true;
@@ -385,7 +544,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The service id the report belongs to
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearServiceId() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearServiceId() {
       serviceId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -400,13 +559,14 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       return mediaUnitId;
     }
 
+
     /**
       * Sets the value of the 'mediaUnitId' field.
       * The media unit id the report belongs to
       * @param value The value of 'mediaUnitId'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setMediaUnitId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setMediaUnitId(java.lang.String value) {
       validate(fields()[1], value);
       this.mediaUnitId = value;
       fieldSetFlags()[1] = true;
@@ -428,7 +588,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The media unit id the report belongs to
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearMediaUnitId() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearMediaUnitId() {
       mediaUnitId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -443,13 +603,14 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       return marker;
     }
 
+
     /**
       * Sets the value of the 'marker' field.
       * The marker the originated sample is reported with
       * @param value The value of 'marker'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setMarker(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setMarker(java.lang.String value) {
       validate(fields()[2], value);
       this.marker = value;
       fieldSetFlags()[2] = true;
@@ -471,7 +632,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The marker the originated sample is reported with
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearMarker() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearMarker() {
       marker = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -482,9 +643,10 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return The value.
       */
-    public java.lang.Long getTimestamp() {
+    public long getTimestamp() {
       return timestamp;
     }
+
 
     /**
       * Sets the value of the 'timestamp' field.
@@ -492,7 +654,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setTimestamp(long value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setTimestamp(long value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -514,27 +676,28 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearTimestamp() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearTimestamp() {
       fieldSetFlags()[3] = false;
       return this;
     }
 
     /**
       * Gets the value of the 'sfuId' field.
-      * The id of the Sfu
+      * The generated unique identifier of the SFU
       * @return The value.
       */
     public java.lang.String getSfuId() {
       return sfuId;
     }
 
+
     /**
       * Sets the value of the 'sfuId' field.
-      * The id of the Sfu
+      * The generated unique identifier of the SFU
       * @param value The value of 'sfuId'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setSfuId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setSfuId(java.lang.String value) {
       validate(fields()[4], value);
       this.sfuId = value;
       fieldSetFlags()[4] = true;
@@ -543,7 +706,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
 
     /**
       * Checks whether the 'sfuId' field has been set.
-      * The id of the Sfu
+      * The generated unique identifier of the SFU
       * @return True if the 'sfuId' field has been set, false otherwise.
       */
     public boolean hasSfuId() {
@@ -553,10 +716,10 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
 
     /**
       * Clears the value of the 'sfuId' field.
-      * The id of the Sfu
+      * The generated unique identifier of the SFU
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearSfuId() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearSfuId() {
       sfuId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -571,13 +734,14 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       return callId;
     }
 
+
     /**
       * Sets the value of the 'callId' field.
       * The callId the event belongs to
       * @param value The value of 'callId'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setCallId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setCallId(java.lang.String value) {
       validate(fields()[5], value);
       this.callId = value;
       fieldSetFlags()[5] = true;
@@ -599,95 +763,229 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The callId the event belongs to
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearCallId() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearCallId() {
       callId = null;
       fieldSetFlags()[5] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'clientId' field.
-      * The generated unique identifier of the client
+      * Gets the value of the 'transportId' field.
+      * SFU provided transport identifier
       * @return The value.
       */
-    public java.lang.String getClientId() {
-      return clientId;
+    public java.lang.String getTransportId() {
+      return transportId;
     }
 
+
     /**
-      * Sets the value of the 'clientId' field.
-      * The generated unique identifier of the client
-      * @param value The value of 'clientId'.
+      * Sets the value of the 'transportId' field.
+      * SFU provided transport identifier
+      * @param value The value of 'transportId'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setClientId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setTransportId(java.lang.String value) {
       validate(fields()[6], value);
-      this.clientId = value;
+      this.transportId = value;
       fieldSetFlags()[6] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'clientId' field has been set.
-      * The generated unique identifier of the client
-      * @return True if the 'clientId' field has been set, false otherwise.
+      * Checks whether the 'transportId' field has been set.
+      * SFU provided transport identifier
+      * @return True if the 'transportId' field has been set, false otherwise.
       */
-    public boolean hasClientId() {
+    public boolean hasTransportId() {
       return fieldSetFlags()[6];
     }
 
 
     /**
-      * Clears the value of the 'clientId' field.
-      * The generated unique identifier of the client
+      * Clears the value of the 'transportId' field.
+      * SFU provided transport identifier
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearClientId() {
-      clientId = null;
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearTransportId() {
+      transportId = null;
       fieldSetFlags()[6] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'peerConnectionId' field.
-      * The unique identifier of the peer connection
+      * Gets the value of the 'mediaStreamId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
       * @return The value.
       */
-    public java.lang.String getPeerConnectionId() {
-      return peerConnectionId;
+    public java.lang.String getMediaStreamId() {
+      return mediaStreamId;
     }
 
+
     /**
-      * Sets the value of the 'peerConnectionId' field.
-      * The unique identifier of the peer connection
-      * @param value The value of 'peerConnectionId'.
+      * Sets the value of the 'mediaStreamId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @param value The value of 'mediaStreamId'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setPeerConnectionId(java.lang.String value) {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setMediaStreamId(java.lang.String value) {
       validate(fields()[7], value);
-      this.peerConnectionId = value;
+      this.mediaStreamId = value;
       fieldSetFlags()[7] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'peerConnectionId' field has been set.
-      * The unique identifier of the peer connection
-      * @return True if the 'peerConnectionId' field has been set, false otherwise.
+      * Checks whether the 'mediaStreamId' field has been set.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return True if the 'mediaStreamId' field has been set, false otherwise.
       */
-    public boolean hasPeerConnectionId() {
+    public boolean hasMediaStreamId() {
       return fieldSetFlags()[7];
     }
 
 
     /**
-      * Clears the value of the 'peerConnectionId' field.
-      * The unique identifier of the peer connection
+      * Clears the value of the 'mediaStreamId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearPeerConnectionId() {
-      peerConnectionId = null;
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearMediaStreamId() {
+      mediaStreamId = null;
       fieldSetFlags()[7] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'mediaSinkId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return The value.
+      */
+    public java.lang.String getMediaSinkId() {
+      return mediaSinkId;
+    }
+
+
+    /**
+      * Sets the value of the 'mediaSinkId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @param value The value of 'mediaSinkId'.
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setMediaSinkId(java.lang.String value) {
+      validate(fields()[8], value);
+      this.mediaSinkId = value;
+      fieldSetFlags()[8] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'mediaSinkId' field has been set.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return True if the 'mediaSinkId' field has been set, false otherwise.
+      */
+    public boolean hasMediaSinkId() {
+      return fieldSetFlags()[8];
+    }
+
+
+    /**
+      * Clears the value of the 'mediaSinkId' field.
+      * Unique identifier of the SFU stream id the rtp pad belongs to
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearMediaSinkId() {
+      mediaSinkId = null;
+      fieldSetFlags()[8] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sctpStreamId' field.
+      * Unique identifier of the SCTP stream the event is related to
+      * @return The value.
+      */
+    public java.lang.String getSctpStreamId() {
+      return sctpStreamId;
+    }
+
+
+    /**
+      * Sets the value of the 'sctpStreamId' field.
+      * Unique identifier of the SCTP stream the event is related to
+      * @param value The value of 'sctpStreamId'.
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setSctpStreamId(java.lang.String value) {
+      validate(fields()[9], value);
+      this.sctpStreamId = value;
+      fieldSetFlags()[9] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sctpStreamId' field has been set.
+      * Unique identifier of the SCTP stream the event is related to
+      * @return True if the 'sctpStreamId' field has been set, false otherwise.
+      */
+    public boolean hasSctpStreamId() {
+      return fieldSetFlags()[9];
+    }
+
+
+    /**
+      * Clears the value of the 'sctpStreamId' field.
+      * Unique identifier of the SCTP stream the event is related to
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearSctpStreamId() {
+      sctpStreamId = null;
+      fieldSetFlags()[9] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'rtpPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return The value.
+      */
+    public java.lang.String getRtpPadId() {
+      return rtpPadId;
+    }
+
+
+    /**
+      * Sets the value of the 'rtpPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @param value The value of 'rtpPadId'.
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setRtpPadId(java.lang.String value) {
+      validate(fields()[10], value);
+      this.rtpPadId = value;
+      fieldSetFlags()[10] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'rtpPadId' field has been set.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return True if the 'rtpPadId' field has been set, false otherwise.
+      */
+    public boolean hasRtpPadId() {
+      return fieldSetFlags()[10];
+    }
+
+
+    /**
+      * Clears the value of the 'rtpPadId' field.
+      * Unique identifier of the Sfu Pad the event is related to
+      * @return This builder.
+      */
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearRtpPadId() {
+      rtpPadId = null;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -700,16 +998,17 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       return type;
     }
 
+
     /**
       * Sets the value of the 'type' field.
       * The type of the meta data reported for the peer connection
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setType(java.lang.String value) {
-      validate(fields()[8], value);
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setType(java.lang.String value) {
+      validate(fields()[11], value);
       this.type = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -719,7 +1018,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'type' field has been set, false otherwise.
       */
     public boolean hasType() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[11];
     }
 
 
@@ -728,9 +1027,9 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The type of the meta data reported for the peer connection
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearType() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearType() {
       type = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -743,16 +1042,17 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       return payload;
     }
 
+
     /**
       * Sets the value of the 'payload' field.
       * The payload for the metadata reported for the peeer connection
       * @param value The value of 'payload'.
       * @return This builder.
       */
-    public SfuMetaReport.Builder setPayload(java.lang.String value) {
-      validate(fields()[9], value);
+    public org.observertc.schemas.reports.SfuMetaReport.Builder setPayload(java.lang.String value) {
+      validate(fields()[12], value);
       this.payload = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -762,7 +1062,7 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'payload' field has been set, false otherwise.
       */
     public boolean hasPayload() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[12];
     }
 
 
@@ -771,13 +1071,14 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
       * The payload for the metadata reported for the peeer connection
       * @return This builder.
       */
-    public SfuMetaReport.Builder clearPayload() {
+    public org.observertc.schemas.reports.SfuMetaReport.Builder clearPayload() {
       payload = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public SfuMetaReport build() {
       try {
         SfuMetaReport record = new SfuMetaReport();
@@ -787,31 +1088,349 @@ public class SfuMetaReport extends org.apache.avro.specific.SpecificRecordBase i
         record.timestamp = fieldSetFlags()[3] ? this.timestamp : (java.lang.Long) defaultValue(fields()[3]);
         record.sfuId = fieldSetFlags()[4] ? this.sfuId : (java.lang.String) defaultValue(fields()[4]);
         record.callId = fieldSetFlags()[5] ? this.callId : (java.lang.String) defaultValue(fields()[5]);
-        record.clientId = fieldSetFlags()[6] ? this.clientId : (java.lang.String) defaultValue(fields()[6]);
-        record.peerConnectionId = fieldSetFlags()[7] ? this.peerConnectionId : (java.lang.String) defaultValue(fields()[7]);
-        record.type = fieldSetFlags()[8] ? this.type : (java.lang.String) defaultValue(fields()[8]);
-        record.payload = fieldSetFlags()[9] ? this.payload : (java.lang.String) defaultValue(fields()[9]);
+        record.transportId = fieldSetFlags()[6] ? this.transportId : (java.lang.String) defaultValue(fields()[6]);
+        record.mediaStreamId = fieldSetFlags()[7] ? this.mediaStreamId : (java.lang.String) defaultValue(fields()[7]);
+        record.mediaSinkId = fieldSetFlags()[8] ? this.mediaSinkId : (java.lang.String) defaultValue(fields()[8]);
+        record.sctpStreamId = fieldSetFlags()[9] ? this.sctpStreamId : (java.lang.String) defaultValue(fields()[9]);
+        record.rtpPadId = fieldSetFlags()[10] ? this.rtpPadId : (java.lang.String) defaultValue(fields()[10]);
+        record.type = fieldSetFlags()[11] ? this.type : (java.lang.String) defaultValue(fields()[11]);
+        record.payload = fieldSetFlags()[12] ? this.payload : (java.lang.String) defaultValue(fields()[12]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<SfuMetaReport>
+    WRITER$ = (org.apache.avro.io.DatumWriter<SfuMetaReport>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<SfuMetaReport>
+    READER$ = (org.apache.avro.io.DatumReader<SfuMetaReport>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.serviceId);
+
+    if (this.mediaUnitId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaUnitId);
+    }
+
+    if (this.marker == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.marker);
+    }
+
+    out.writeLong(this.timestamp);
+
+    if (this.sfuId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.sfuId);
+    }
+
+    if (this.callId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.callId);
+    }
+
+    if (this.transportId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.transportId);
+    }
+
+    if (this.mediaStreamId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaStreamId);
+    }
+
+    if (this.mediaSinkId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.mediaSinkId);
+    }
+
+    if (this.sctpStreamId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.sctpStreamId);
+    }
+
+    if (this.rtpPadId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.rtpPadId);
+    }
+
+    if (this.type == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.type);
+    }
+
+    if (this.payload == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.payload);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.serviceId = in.readString();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaUnitId = null;
+      } else {
+        this.mediaUnitId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.marker = null;
+      } else {
+        this.marker = in.readString();
+      }
+
+      this.timestamp = in.readLong();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sfuId = null;
+      } else {
+        this.sfuId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.callId = null;
+      } else {
+        this.callId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.transportId = null;
+      } else {
+        this.transportId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaStreamId = null;
+      } else {
+        this.mediaStreamId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.mediaSinkId = null;
+      } else {
+        this.mediaSinkId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.sctpStreamId = null;
+      } else {
+        this.sctpStreamId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.rtpPadId = null;
+      } else {
+        this.rtpPadId = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.type = null;
+      } else {
+        this.type = in.readString();
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.payload = null;
+      } else {
+        this.payload = in.readString();
+      }
+
+    } else {
+      for (int i = 0; i < 13; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.serviceId = in.readString();
+          break;
+
+        case 1:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaUnitId = null;
+          } else {
+            this.mediaUnitId = in.readString();
+          }
+          break;
+
+        case 2:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.marker = null;
+          } else {
+            this.marker = in.readString();
+          }
+          break;
+
+        case 3:
+          this.timestamp = in.readLong();
+          break;
+
+        case 4:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sfuId = null;
+          } else {
+            this.sfuId = in.readString();
+          }
+          break;
+
+        case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.callId = null;
+          } else {
+            this.callId = in.readString();
+          }
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.transportId = null;
+          } else {
+            this.transportId = in.readString();
+          }
+          break;
+
+        case 7:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaStreamId = null;
+          } else {
+            this.mediaStreamId = in.readString();
+          }
+          break;
+
+        case 8:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.mediaSinkId = null;
+          } else {
+            this.mediaSinkId = in.readString();
+          }
+          break;
+
+        case 9:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.sctpStreamId = null;
+          } else {
+            this.sctpStreamId = in.readString();
+          }
+          break;
+
+        case 10:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.rtpPadId = null;
+          } else {
+            this.rtpPadId = in.readString();
+          }
+          break;
+
+        case 11:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.type = null;
+          } else {
+            this.type = in.readString();
+          }
+          break;
+
+        case 12:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.payload = null;
+          } else {
+            this.payload = in.readString();
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

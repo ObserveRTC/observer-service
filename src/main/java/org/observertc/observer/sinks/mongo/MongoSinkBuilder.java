@@ -4,12 +4,11 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.codecs.Decoder;
-import org.observertc.observer.events.ReportType;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
+import org.observertc.observer.events.ReportType;
 import org.observertc.observer.sinks.Sink;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

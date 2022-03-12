@@ -4,9 +4,9 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.samples.ObservedSfuSample;
-import org.observertc.observer.samples.SfuSample;
 import org.observertc.observer.samples.SfuSampleVisitor;
 import org.observertc.observer.security.ObfuscationMethods;
+import org.observertc.schemas.samples.Samples.SfuSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

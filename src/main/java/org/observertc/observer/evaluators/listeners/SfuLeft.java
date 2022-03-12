@@ -76,7 +76,8 @@ class SfuLeft extends EventReporterAbstract.SfuEventReporterAbstract<SfuDTO> {
     }
 
     private SfuEventReport makeReport(SfuDTO sfuDTO) {
-        return this.makeReport(sfuDTO, sfuDTO.joined);
+        Long now = Instant.now().toEpochMilli();
+        return this.makeReport(sfuDTO, now);
     }
 
     @Override

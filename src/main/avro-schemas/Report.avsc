@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "Report",
-  "namespace": "org.observertc.schemas",
+  "namespace": "org.observertc.schemas.reports",
   "doc": "A multiplexed Report object wraps an encoded report in bytes format",
   "fields": [
     {

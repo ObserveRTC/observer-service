@@ -2,10 +2,9 @@ package org.observertc.observer.common;
 
 import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.codecs.Decoder;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 
 import java.util.function.Function;
 

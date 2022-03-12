@@ -86,8 +86,8 @@ public class AddSfuRtpPadsTask extends ChainedTask<Void> {
                                             .withStreamId(sfuRtpPadDTO.streamId)
                                             .withSinkId(sfuRtpPadDTO.sinkId)
                                             .build();
-                                    sfuSInks.put(sfuRtpPadDTO.streamId, sfuSink);
-                                    this.hazelcastMaps.getSfuSinkIdToRtpPadIds().put(sfuRtpPadDTO.sinkId, sfuRtpPadDTO.sfuPadId);
+                                    sfuSInks.put(sfuRtpPadDTO.sinkId, sfuSink);
+                                    this.hazelcastMaps.getSfuSinkIdToRtpPadIds().put(sfuRtpPadDTO.sinkId, sfuRtpPadDTO.rtpPadId);
                                 }
                                 else if (StreamDirection.INBOUND.equals(sfuRtpPadDTO.streamDirection) && Objects.nonNull(sfuRtpPadDTO.streamId))
                                 {
@@ -102,7 +102,7 @@ public class AddSfuRtpPadsTask extends ChainedTask<Void> {
                                             .withStreamId(sfuRtpPadDTO.streamId)
                                             .build();
                                     sfuStreams.put(sfuRtpPadDTO.streamId, sfuStream);
-                                    this.hazelcastMaps.getSfuStreamIdToRtpPadIds().put(sfuRtpPadDTO.streamId, sfuRtpPadDTO.sfuPadId);
+                                    this.hazelcastMaps.getSfuStreamIdToRtpPadIds().put(sfuRtpPadDTO.streamId, sfuRtpPadDTO.rtpPadId);
                                 }
                             });
                             if (0 < sfuStreams.size()) {

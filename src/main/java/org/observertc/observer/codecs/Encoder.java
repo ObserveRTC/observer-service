@@ -2,7 +2,6 @@ package org.observertc.observer.codecs;
 
 import org.observertc.observer.common.OutboundReport;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 
 public interface Encoder {
 

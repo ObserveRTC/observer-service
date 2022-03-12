@@ -31,13 +31,8 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
     private Set<UUID> rtpPadIds = new HashSet<>();
     private final Report report = new Report();
 
-    private Map<UUID, List<SfuRtpPadDTO>> incompleteSfuPadDTOByRtpStreamIds = new HashMap<>();
-
     @Inject
     HazelcastMaps hazelcastMaps;
-
-    @Inject
-    FindCallIdsByRtpStreamIdsTask findCallIdsByRtpStreamIdsTask;
 
     @Inject
     ExposedMetrics exposedMetrics;

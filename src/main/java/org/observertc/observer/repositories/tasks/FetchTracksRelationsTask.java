@@ -35,7 +35,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
     private Set<UUID> inboundTrackIds = new HashSet<>();
 
     // match it by rtp stream ids
-    private Map<UUID, List<MediaTrackDTO>> rtpStreamIdToInboundTrackDTOs = new HashMap<>();
+    private Map<UUID, List<MediaTrackDTO>> sfuSinkIdToInboundTrackDTOs = new HashMap<>();
 
     // match it by ssrcs
     private Set<UUID> callIds = new HashSet<>();
@@ -81,14 +81,14 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                         }
                     }
 
-                    UUID rtpStreamId = inboundMediaTrackDTO.rtpStreamId;
-                    if (Objects.nonNull(rtpStreamId)) { // track is streamed to an SFU
-                        List<MediaTrackDTO> rtpStreamInboundTrackDTOs = this.rtpStreamIdToInboundTrackDTOs.get(rtpStreamId);
-                        if (Objects.isNull(rtpStreamInboundTrackDTOs)) {
-                            rtpStreamInboundTrackDTOs = new LinkedList<>();
-                            this.rtpStreamIdToInboundTrackDTOs.put(rtpStreamId, rtpStreamInboundTrackDTOs);
+                    UUID sfuSinkId = inboundMediaTrackDTO.sfuSinkId;
+                    if (Objects.nonNull(sfuSinkId)) { // track is streamed to an SFU
+                        List<MediaTrackDTO> sfuSinkIdToInboundTrackDTOs = this.sfuSinkIdToInboundTrackDTOs.get(sfuSinkId);
+                        if (Objects.isNull(sfuSinkIdToInboundTrackDTOs)) {
+                            sfuSinkIdToInboundTrackDTOs = new LinkedList<>();
+                            this.sfuSinkIdToInboundTrackDTOs.put(sfuSinkId, sfuSinkIdToInboundTrackDTOs);
                         }
-                        rtpStreamInboundTrackDTOs.add(inboundMediaTrackDTO);
+                        sfuSinkIdToInboundTrackDTOs.add(inboundMediaTrackDTO);
                         return;
                     }
                     // track belongs to a p2p call
@@ -102,24 +102,37 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                 });
             })
             .addActionStage("Matching Tracks by RtpStream Ids", () -> {
-                if (this.rtpStreamIdToInboundTrackDTOs.size() < 1) {
+                if (this.sfuSinkIdToInboundTrackDTOs.size() < 1) {
                     return;
                 }
-                var outboundTrackIds = this.hazelcastMaps.getRtpStreamIdsToOutboundTrackIds().getAll(this.rtpStreamIdToInboundTrackDTOs.keySet());
-                outboundTrackIds.forEach((rtpStreamId, outboundTrackId) -> {
-                    var outboundMediaTrack = this.hazelcastMaps.getMediaTracks().get(outboundTrackId);
+                var sfuSinks = this.hazelcastMaps.getSfuSinks().getAll(this.sfuSinkIdToInboundTrackDTOs.keySet());
+                var sfuStreamIds = sfuSinks.values()
+                        .stream()
+                        .filter(dto -> Objects.nonNull(dto.sfuStreamId))
+                        .map(dto -> dto.sfuStreamId)
+                        .collect(Collectors.toSet());
+                var sfuStreams = this.hazelcastMaps.getSfuStreams().getAll(sfuStreamIds);
+                sfuSinks.forEach((sfuSinkId, sfuSink) -> {
+                    if (Objects.isNull(sfuSink.sfuStreamId)) {
+                        return;
+                    }
+                    var sfuStream = sfuStreams.get(sfuSink.sfuStreamId);
+                    if (Objects.isNull(sfuStream)) {
+                        return;
+                    }
+                    var outboundMediaTrack = this.hazelcastMaps.getMediaTracks().get(sfuStream.trackId);
                     if (Objects.isNull(outboundMediaTrack)) {
-                        logger.warn("Outbound track does not exists referenced by rtp stream id {} (not existing) outbound track id {} ", rtpStreamId, outboundTrackId);
+                        logger.warn("Outbound track does not exists referenced by rtp stream id {} (not existing) outbound track id {} ", sfuSinkId, sfuSink);
                         return;
                     }
                     if (!StreamDirection.OUTBOUND.equals(outboundMediaTrack.direction)) {
-                        logger.warn("Matched Track {} for Rtp Stream Id {} is not an outbound track", outboundMediaTrack, rtpStreamId);
+                        logger.warn("Matched Track {} for Sfu Stream Id {} is not an outbound track", outboundMediaTrack, sfuSink.sfuStreamId);
                         return;
                     }
-                    var inboundTrackDTOs = rtpStreamIdToInboundTrackDTOs.get(rtpStreamId);
+                    var inboundTrackDTOs = this.sfuSinkIdToInboundTrackDTOs.get(sfuSinkId);
                     if (Objects.isNull((inboundTrackDTOs))) {
                         // WTF?!
-                        logger.warn("Inbound Track DTOs, which supposed to be a list for RtpStream Id {} is null...", inboundTrackDTOs, rtpStreamId);
+                        logger.warn("Inbound Track DTOs, which supposed to be a list for sfu sink Id {} is null...", inboundTrackDTOs, sfuSinkId);
                         return;
                     }
                     inboundTrackDTOs.forEach(inboundMediaTrack -> {

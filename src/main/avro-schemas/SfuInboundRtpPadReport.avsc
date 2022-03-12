@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "SfuInboundRtpPadReport",
-  "namespace": "org.observertc.schemas",
+  "namespace": "org.observertc.schemas.reports",
   "doc": "A Report created for RTP streams going through the SFU",
   "fields": [
     {
@@ -29,6 +29,15 @@
       "default": null
     },
     {
+      "name": "internal",
+      "doc": "Flag indicate if the sfu rtp pad is used as an internal rtp session between SFUs",
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "default": null
+    },
+    {
       "name": "timestamp",
       "doc": "The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)",
       "type": "long"
@@ -39,13 +48,13 @@
       "type": "string"
     },
     {
-      "name": "mediaStreamId",
-      "doc": "Unique identifier of the Media stream the event is related to",
+      "name": "sfuStreamId",
+      "doc": "Unique identifier of the Sfu stream the event is related to",
       "type": "string"
     },
     {
-      "name": "padId",
-      "doc": "The id of Sfu pad.",
+      "name": "rtpPadId",
+      "doc": "The id of RTP pad.",
       "type": "string"
     },
     {
@@ -365,15 +374,6 @@
       "type": [
         "null",
         "double"
-      ],
-      "default": null
-    },
-    {
-      "name": "attachments",
-      "doc": "Arbitrary attachments holds relevant information about the stream.",
-      "type": [
-        "null",
-        "string"
       ],
       "default": null
     }

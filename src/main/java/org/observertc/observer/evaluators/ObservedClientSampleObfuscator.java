@@ -3,10 +3,10 @@ package org.observertc.observer.evaluators;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.samples.ClientSample;
 import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.observer.security.ObfuscationMethods;
+import org.observertc.schemas.samples.Samples.ClientSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

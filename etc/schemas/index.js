@@ -17,7 +17,7 @@ const main = () => {
     // console.log(samplesClassString);
 
     const samplesModule = [
-        `package org.observertc.webrtc.schemas.samples;`,
+        `package org.observertc.schemas.samples;`,
         ``,
         `import com.fasterxml.jackson.annotation.JsonIgnoreProperties;`,
         `import com.fasterxml.jackson.annotation.JsonProperty;`,

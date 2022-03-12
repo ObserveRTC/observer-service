@@ -1,5 +1,7 @@
 package org.observertc.observer.samples;
 
+import org.observertc.schemas.samples.Samples.SfuSample;
+
 import javax.validation.constraints.NotNull;
 import java.io.InvalidObjectException;
 import java.util.Objects;

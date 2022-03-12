@@ -4,11 +4,11 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.samples.*;
-import org.observertc.webrtc.observer.samples.*;
 import org.observertc.schemas.reports.CallMetaReport;
+import org.observertc.schemas.samples.Samples.ClientSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,7 +105,7 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
                 ;
     }
 
-    private CallMetaReport.Builder createCodecReportBuilder(CallMetaReport.Builder builder, ClientSample.Codec codec) {
+    private CallMetaReport.Builder createCodecReportBuilder(CallMetaReport.Builder builder, ClientSample.MediaCodecStats codec) {
         String payload = JsonUtils.objectToString(codec);
         return builder
                 .setType(CallMetaType.CODEC.name())
@@ -113,7 +113,7 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
                 ;
     }
 
-    private CallMetaReport.Builder createIceLocalCandidateReportBuilder(CallMetaReport.Builder builder, ClientSample.ICELocalCandidate localCandidate) {
+    private CallMetaReport.Builder createIceLocalCandidateReportBuilder(CallMetaReport.Builder builder, ClientSample.IceLocalCandidate localCandidate) {
         String payload = JsonUtils.objectToString(localCandidate);
         return builder
                 .setType(CallMetaType.ICE_LOCAL_CANDIDATE.name())
@@ -121,7 +121,7 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
                 ;
     }
 
-    private CallMetaReport.Builder createIceRemoteCandidateReportBuilder(CallMetaReport.Builder builder, ClientSample.ICERemoteCandidate remoteCandidate) {
+    private CallMetaReport.Builder createIceRemoteCandidateReportBuilder(CallMetaReport.Builder builder, ClientSample.IceRemoteCandidate remoteCandidate) {
         String payload = JsonUtils.objectToString(remoteCandidate);
         return builder
                 .setType(CallMetaType.ICE_REMOTE_CANDIDATE.name())
@@ -143,10 +143,11 @@ public class ReportCallMetaData implements Consumer<CollectedCallSamples> {
                 ;
     }
 
-    private CallMetaReport.Builder createMediaDeviceReportBuilder(CallMetaReport.Builder builder, String mediaDevice) {
+    private CallMetaReport.Builder createMediaDeviceReportBuilder(CallMetaReport.Builder builder, ClientSample.MediaDevice mediaDevice) {
+        String payload = JsonUtils.objectToString(mediaDevice);
         return builder
                 .setType(CallMetaType.MEDIA_DEVICE.name())
-                .setPayload(mediaDevice)
+                .setPayload(payload)
                 ;
     }
 

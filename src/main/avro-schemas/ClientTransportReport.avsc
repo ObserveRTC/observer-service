@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "ClientTransportReport",
-  "namespace": "org.observertc.schemas",
+  "namespace": "org.observertc.schemas.reports",
   "doc": "A Report created for Client PeerConnection Transport. It is a combination of Transport report, sender, receiver, local, remote and candidate pair of ICE together with the used certificates",
   "fields": [
     {

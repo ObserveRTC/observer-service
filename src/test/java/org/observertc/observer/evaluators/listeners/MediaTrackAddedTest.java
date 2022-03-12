@@ -65,7 +65,7 @@ class MediaTrackAddedTest {
         String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.rtpStreamId);
         String attachmentInBase64 = callEventReportPromise.get(5, TimeUnit.SECONDS).getAttachments();
         MediaTrackAttachment attachment = MediaTrackAttachment.builder().fromBase64(attachmentInBase64).build();
-        Assertions.assertEquals(rtpStreamId, attachment.rtpStreamId);
+        Assertions.assertEquals(rtpStreamId, attachment.sfuStreamId);
         Assertions.assertEquals(mediaTrackDTO.direction.name(), attachment.streamDirection);
     }
 
@@ -82,7 +82,7 @@ class MediaTrackAddedTest {
         String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.rtpStreamId);
         String attachmentInBase64 = callEventReportPromise.get(5, TimeUnit.SECONDS).getAttachments();
         MediaTrackAttachment attachment = MediaTrackAttachment.builder().fromBase64(attachmentInBase64).build();
-        Assertions.assertEquals(rtpStreamId, attachment.rtpStreamId);
+        Assertions.assertEquals(rtpStreamId, attachment.sfuStreamId);
         Assertions.assertEquals(mediaTrackDTO.direction.name(), attachment.streamDirection);
     }
 }

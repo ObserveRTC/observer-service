@@ -20,8 +20,6 @@ import io.dekorate.prometheus.annotation.EnableServiceMonitor;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.runtime.Micronaut;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
 import org.observertc.observer.common.Sleeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +37,6 @@ import java.time.temporal.ChronoUnit;
                 TypeHint.AccessType.ALL_PUBLIC_METHODS,
                 TypeHint.AccessType.ALL_DECLARED_FIELDS
         }
-)
-@OpenAPIDefinition(
-        info = @Info(
-                title = "observer",
-                version = "H"
-        )
 )
 @EnableServiceMonitor(port = "http", path = "/prometheus")
 public class Application {

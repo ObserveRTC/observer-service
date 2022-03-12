@@ -29,17 +29,17 @@ class RemoveSfuRtpStreamTaskTest {
     @BeforeEach
     void setup() {
         this.createdDTO = this.generator.get();
-        this.hazelcastMaps.getSFURtpPads().put(this.createdDTO.sfuPadId, this.createdDTO);
+        this.hazelcastMaps.getSFURtpPads().put(this.createdDTO.rtpPadId, this.createdDTO);
     }
 
     @Test
     public void removeSfuTransport_1() {
         var task = removeSfuRtpStreamsTaskProvider.get()
-                .whereSfuRtpStreamPodIds(Set.of(this.createdDTO.sfuPadId))
+                .whereSfuRtpStreamPadIds(Set.of(this.createdDTO.rtpPadId))
                 .execute()
                 ;
 
-        var hasId = this.hazelcastMaps.getSFURtpPads().containsKey(this.createdDTO.sfuPadId);
+        var hasId = this.hazelcastMaps.getSFURtpPads().containsKey(this.createdDTO.rtpPadId);
         Assertions.assertFalse(hasId);
     }
 
@@ -50,7 +50,7 @@ class RemoveSfuRtpStreamTaskTest {
                 .execute()
                 ;
 
-        var hasId = this.hazelcastMaps.getSFURtpPads().containsKey(this.createdDTO.sfuPadId);
+        var hasId = this.hazelcastMaps.getSFURtpPads().containsKey(this.createdDTO.rtpPadId);
         Assertions.assertTrue(hasId);
     }
 }

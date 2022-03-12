@@ -53,7 +53,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                                     return;
                                 }
                                 SfuRtpPadDTO DTO = this.hazelcastMaps.getSFURtpPads().remove(id);
-                                this.removedRtpPads.put(DTO.sfuPadId, DTO);
+                                this.removedRtpPads.put(DTO.rtpPadId, DTO);
                             });
                             return;
                         },
@@ -94,7 +94,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                 .build();
     }
 
-    public RemoveSfuRtpPadsTask whereSfuRtpStreamPodIds(Set<UUID> podIds) {
+    public RemoveSfuRtpPadsTask whereSfuRtpStreamPadIds(Set<UUID> podIds) {
         if (Objects.isNull(podIds) || podIds.size() < 1) {
             return this;
         }
@@ -106,8 +106,8 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
         if (Objects.isNull(DTO)) {
             return this;
         }
-        this.padIds.add(DTO.sfuPadId);
-        this.removedRtpPads.put(DTO.sfuPadId, DTO);
+        this.padIds.add(DTO.rtpPadId);
+        this.removedRtpPads.put(DTO.rtpPadId, DTO);
         return this;
     }
 }

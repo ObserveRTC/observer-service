@@ -1,6 +1,7 @@
 package org.observertc.observer.samples;
 
 import org.observertc.observer.common.UUIDAdapter;
+import org.observertc.schemas.samples.Samples.ClientSample;
 
 import java.util.*;
 import java.util.stream.Stream;

@@ -3,7 +3,6 @@ package org.observertc.observer.codecs;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.OutboundReport;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 
 @Prototype
 public interface Decoder {

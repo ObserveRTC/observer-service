@@ -4,20 +4,19 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.SfuRtpPadDTO;
+import org.observertc.observer.dto.SfuSinkDTO;
+import org.observertc.observer.dto.SfuStreamDTO;
 import org.observertc.observer.evaluators.listeners.attachments.RtpPadAttachment;
 import org.observertc.observer.events.SfuEventType;
-import org.observertc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.observer.repositories.SfuRtpPadEvents;
-import org.observertc.observer.repositories.tasks.RemoveSfuRtpPadsTask;
 import org.observertc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Provider;
-import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Prototype
 class SfuRtpPadRemoved extends EventReporterAbstract.SfuEventReporterAbstract<SfuRtpPadDTO> {
@@ -30,91 +29,67 @@ class SfuRtpPadRemoved extends EventReporterAbstract.SfuEventReporterAbstract<Sf
     @Inject
     SfuRtpPadEvents sfuRtpPadEvents;
 
-    @Inject
-    Provider<RemoveSfuRtpPadsTask> removeSfuRtpPadsTaskProvider;
-
     @PostConstruct
     void setup() {
-        this.repositoryEvents.removedSfuRtpPads()
-                .subscribe(this::receiveRemovedSfuRtpPads);
-
-        this.repositoryEvents.expiredSfuRtpPads()
-                .subscribe(this::receiveExpiredSfuRtpPad);
-
+        this.sfuRtpPadEvents
+                .disposedSfuRtpPads()
+                .subscribe(this::receiveDisposedSfuRtpPads);
     }
 
-    private void receiveRemovedSfuRtpPads(List<SfuRtpPadDTO> sfuRtpPadDTOs) throws Throwable{
-        if (Objects.isNull(sfuRtpPadDTOs) || sfuRtpPadDTOs.size() < 1) {
+    private void receiveDisposedSfuRtpPads(List<SfuRtpPadEvents.Payload> payloads) {
+        if (Objects.isNull(payloads) || payloads.size() < 1) {
             return;
         }
-                // this is just acknowledge the removal, as in normal cases it is expired, which
-        // triggers the removal task from here, but if a higher level ordered the purge,
-        // we just need to report it.
-        sfuRtpPadDTOs.stream()
-                .map(this::makeReport)
-                .filter(Objects::nonNull)
-                .forEach(this::forward);
-    }
-
-    void receiveExpiredSfuRtpPad(List<RepositoryExpiredEvent<SfuRtpPadDTO>> expiredSfuRtpPads) throws Throwable {
-        if (Objects.isNull(expiredSfuRtpPads) || expiredSfuRtpPads.size() < 1) {
-            return;
+        for (var payload : payloads) {
+            var report = this.makeReport(payload.sfuRtpPadDTO, payload.sfuStreamDTO, payload.sfuSinkDTO, payload.timestamp);
+            this.forward(report);
         }
-        // this triggers a removeSfuRtpPad
-        var task = this.removeSfuRtpPadsTaskProvider.get();
-        Map<UUID, Long> estimatedRemovals = new HashMap<>();
-        expiredSfuRtpPads.stream().forEach(expiredSfuRtpPad -> {
-            var sfuRtpPadDTO = expiredSfuRtpPad.getValue();
-            var estimatedRemoval = expiredSfuRtpPad.estimatedLastTouch();
-            estimatedRemovals.put(sfuRtpPadDTO.sfuPadId, estimatedRemoval);
-            task.addRemovedSfuRtpStreamPadDTO(sfuRtpPadDTO);
-        });
-
-        if (!task.execute().succeeded()) {
-            logger.warn("Removing expired SfuRtpPad was unsuccessful");
-            // we still need to report about the removal
-            return;
-        }
-        task.getResult().stream().map(removedRtpPad -> {
-            Long estimatedRemoval = estimatedRemovals.getOrDefault(removedRtpPad.sfuPadId, Instant.now().toEpochMilli());
-            var report = this.makeReport(removedRtpPad, estimatedRemoval);
-            return report;
-        }).filter(Objects::nonNull).forEach(this::forward);
-    }
-
-    private SfuEventReport makeReport(SfuRtpPadDTO sfuRtpPadDTO){
-        Long timestamp = Instant.now().toEpochMilli();
-        return this.makeReport(sfuRtpPadDTO, timestamp);
     }
 
     @Override
-    protected SfuEventReport makeReport(SfuRtpPadDTO sfuRtpPadDTO, Long timestamp) {
+    protected SfuEventReport makeReport(SfuRtpPadDTO sfuRtpPadDTO, Long timestamp){
+        logger.warn("SHould not happen");
+        return null;
+    }
+
+    private SfuEventReport makeReport(SfuRtpPadDTO sfuRtpPad, SfuStreamDTO sfuStream, SfuSinkDTO sfuSink, Long timestamp) {
         try {
-            String callId = UUIDAdapter.toStringOrNull(sfuRtpPadDTO.callId);
-            String sfuPadId = Objects.nonNull(sfuRtpPadDTO.sfuPadId) ?  sfuRtpPadDTO.sfuPadId.toString() : null;
-            String sfuPadStreamDirection = Objects.nonNull(sfuRtpPadDTO.streamDirection) ? sfuRtpPadDTO.streamDirection.toString() : "Unknown";
             var attachment = RtpPadAttachment.builder()
-                    .withStreamDirection(sfuRtpPadDTO.streamDirection)
-                    .withInternal(sfuRtpPadDTO.internal)
+                    .withStreamDirection(sfuRtpPad.streamDirection)
+                    .withInternal(sfuRtpPad.internal)
                     .build().toBase64();
+            String sfuPadId = UUIDAdapter.toStringOrNull(sfuRtpPad.rtpPadId);
+            String sfuPadStreamDirection = Objects.nonNull(sfuRtpPad.streamDirection) ? sfuRtpPad.streamDirection.toString() : "Unknown";
+            String callId = null;
+            String streamId = null;
+            String sinkId = null;
+            if (Objects.nonNull(sfuSink)) {
+                callId = UUIDAdapter.toStringOrNull(sfuSink.callId);
+                sinkId = UUIDAdapter.toStringOrNull(sfuSink.sfuSinkId);
+            } else if (Objects.nonNull(sfuStream)) {
+                callId = UUIDAdapter.toStringOrNull(sfuStream.callId);
+                streamId = UUIDAdapter.toStringOrNull(sfuSink.sfuStreamId);
+            }
+
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_RTP_PAD_REMOVED.name())
-                    .setSfuId(sfuRtpPadDTO.sfuId.toString())
+                    .setSfuId(sfuRtpPad.sfuId.toString())
                     .setCallId(callId)
-                    .setTransportId(sfuRtpPadDTO.transportId.toString())
-                    .setRtpStreamId(sfuRtpPadDTO.rtpStreamId.toString())
-                    .setSfuPadId(sfuPadId)
+                    .setTransportId(sfuRtpPad.transportId.toString())
+                    .setMediaStreamId(streamId)
+                    .setMediaSinkId(sinkId)
+                    .setRtpPadId(sfuPadId)
                     .setAttachments(attachment)
-                    .setMessage("Sfu Rtp Pad is removed")
-                    .setServiceId(sfuRtpPadDTO.serviceId)
-                    .setMediaUnitId(sfuRtpPadDTO.mediaUnitId)
+                    .setMessage("Sfu Rtp Pad is added")
+                    .setServiceId(sfuRtpPad.serviceId)
+                    .setMediaUnitId(sfuRtpPad.mediaUnitId)
                     .setTimestamp(timestamp);
-            logger.info("SFU Pad (id: {}, rtpStreamId: {}) is REMOVED (mediaUnitId: {}, serviceId {}), direction is {}",
-                    sfuPadId, sfuRtpPadDTO.rtpStreamId, sfuRtpPadDTO.mediaUnitId, sfuRtpPadDTO.serviceId, sfuPadStreamDirection
+            logger.info("SFU Pad (id: {}, streamId: {}, sinkId: {}) is REMOVED (mediaUnitId: {}, serviceId {}), direction is {}",
+                    sfuPadId, sfuRtpPad.streamId, sfuRtpPad.sinkId, sfuRtpPad.mediaUnitId, sfuRtpPad.serviceId, sfuPadStreamDirection
             );
             return builder.build();
         } catch (Exception ex) {
-            logger.warn("Exception while making report", ex);
+            logger.warn("Unexpected exception occurred while making report", ex);
             return null;
         }
     }
