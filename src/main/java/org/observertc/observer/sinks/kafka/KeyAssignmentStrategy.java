@@ -17,9 +17,7 @@ public enum KeyAssignmentStrategy {
      */
     INSTANCE_BASED,
     /**
-     * Keys are selected if they are presented in the report
-     * in the following order:
-     * callId, sfuId
+     * Keys are selected in the order of the object hierarchy
      */
 //    CALL_SFU_ORIENTED,
 }

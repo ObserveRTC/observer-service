@@ -244,11 +244,11 @@ class MediaTrackDTOTest {
     }
 
     @Test
-    void shouldBuildWithRtpStreamId() {
+    void shouldBuildWithSfuStreamId() {
         var expectedRtpStreamId = UUID.randomUUID();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withRtpStreamId(expectedRtpStreamId).build();
+        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withSfuStreamId(expectedRtpStreamId).build();
 
-        Assertions.assertEquals(expectedRtpStreamId, mediaTrackDTO.rtpStreamId);
+        Assertions.assertEquals(expectedRtpStreamId, mediaTrackDTO.sfuStreamId);
     }
 
 

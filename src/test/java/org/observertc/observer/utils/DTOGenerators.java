@@ -109,7 +109,7 @@ public class DTOGenerators {
         var trackId = UUID.randomUUID();
         var userId = this.randomGenerators.getRandomTestUserIds();
         var ssrc = this.randomGenerators.getRandomSSRC();
-        var rtpStreamId = callId.getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID() : null;
+        var sfuStreamId = callId.getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID() : null;
         var direction = this.randomGenerators.getRandomStreamDirection();
         var result = MediaTrackDTO.builder()
                 .withServiceId(serviceId)
@@ -122,7 +122,7 @@ public class DTOGenerators {
                 .withUserId(userId)
                 .withAddedTimestamp(timestamp)
                 .withSSRC(ssrc)
-                .withRtpStreamId(rtpStreamId)
+                .withSfuStreamId(sfuStreamId)
                 .withDirection(direction)
                 ;
         return result;
@@ -172,7 +172,7 @@ public class DTOGenerators {
     public SfuRtpPadDTO getSfuRtpPadDTO() {
         var sfuId = UUID.randomUUID();
         var callId = UUID.randomUUID();
-        var rtpStreamId = UUID.randomUUID();
+        var sfuStreamId = UUID.randomUUID();
         var sfuPadId = UUID.randomUUID();
         var trackId = UUID.randomUUID();
         var clientId = UUID.randomUUID();
@@ -186,13 +186,10 @@ public class DTOGenerators {
                 .withMediaUnitId(mediaUnitId)
                 .withSfuId(sfuId)
                 .withSfuTransportId(sfuTransportId)
-                .withRtpStreamId(rtpStreamId)
+                .withStreamId(sfuStreamId)
                 .withSfuRtpPadId(sfuPadId)
                 .withStreamDirection(streamDirection)
                 .withAddedTimestamp(timestamp)
-                .withTrackId(trackId)
-                .withClientId(clientId)
-                .withCallId(callId)
                 .build();
         return result;
     }

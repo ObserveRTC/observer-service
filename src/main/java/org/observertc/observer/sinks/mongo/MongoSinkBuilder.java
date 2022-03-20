@@ -3,25 +3,21 @@ package org.observertc.observer.sinks.mongo;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.codecs.Decoder;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
-import org.observertc.observer.events.ReportType;
+import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.sinks.Sink;
 import org.observertc.schemas.reports.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Prototype
 public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
     private final static Logger logger = LoggerFactory.getLogger(MongoSinkBuilder.class);
-    private Decoder decoder;
 
     private static Map<ReportType, String> getDefaultCollectionNames() {
         final Map<ReportType, String> result = new HashMap<>();
@@ -31,7 +27,6 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         result.put(ReportType.CALL_META_DATA, CallMetaReport.class.getSimpleName() + "s");
         result.put(ReportType.INBOUND_AUDIO_TRACK, InboundAudioTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.INBOUND_VIDEO_TRACK, InboundVideoTrackReport.class.getSimpleName() + "s");
-        result.put(ReportType.MEDIA_TRACK, MediaTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.OUTBOUND_AUDIO_TRACK, OutboundAudioTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.OUTBOUND_VIDEO_TRACK, OutboundVideoTrackReport.class.getSimpleName() + "s");
         result.put(ReportType.PEER_CONNECTION_DATA_CHANNEL, ClientDataChannelReport.class.getSimpleName() + "s");
@@ -48,11 +43,7 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
     @Override
     public void set(Object subject) {
-        if (subject instanceof Decoder) {
-            this.decoder = (Decoder) subject;
-        } else {
-            logger.warn("Unrecognized subject {}", subject.getClass().getSimpleName());
-        }
+        logger.warn("Unrecognized subject {}", subject.getClass().getSimpleName());
     }
 
     public Sink build() {
@@ -72,18 +63,6 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
             logger.error("cannot make mongo sink", t);
             return null;
         }
-
-        var documentMappers = DocumentMapper.getDocumentMappers(this.decoder);
-        Map<ReportType, String> customCollectionNames = config.collectionNames != null ? config.collectionNames : Collections.EMPTY_MAP;
-        getDefaultCollectionNames().forEach((reportType, defaultCollectionName) -> {
-            String collectionName = customCollectionNames.getOrDefault(reportType, defaultCollectionName);
-            var documentMapper = documentMappers.get(reportType);
-            if (Objects.isNull(collectionName) || Objects.isNull(documentMapper)) {
-                logger.warn("No Collection name or document mapper to map report type {}", reportType);
-                return;
-            }
-            result.withMapper(reportType, collectionName, documentMapper);
-        });
 
         return result.withLogSummary(config.printSummary);
     }

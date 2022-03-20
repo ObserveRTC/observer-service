@@ -17,9 +17,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
-class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract<SfuTransportDTO> {
+class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuTransportClosed.class);
 
@@ -44,10 +45,12 @@ class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract<
         if (Objects.isNull(sfuTransportDTOs) || sfuTransportDTOs.size() < 1) {
             return;
         }
-        sfuTransportDTOs.stream()
+        var reports = sfuTransportDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private void receiveExpiredSfuTransport(List<RepositoryExpiredEvent<SfuTransportDTO>> expiredSfuTransports) {
@@ -67,11 +70,14 @@ class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract<
             logger.warn("Removing expired SfuRtpPad was unsuccessful");
             return;
         }
-        task.getResult().stream().map(removedSfuTransport -> {
+
+        var reports = task.getResult().stream().map(removedSfuTransport -> {
             Long estimatedRemoval = estimatedRemovals.getOrDefault(removedSfuTransport.transportId, Instant.now().toEpochMilli());
             var report = this.makeReport(removedSfuTransport, estimatedRemoval);
             return report;
-        }).filter(Objects::nonNull).forEach(this::forward);
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private SfuEventReport makeReport(SfuTransportDTO sfuTransportDTO) {
@@ -79,8 +85,7 @@ class SfuTransportClosed extends EventReporterAbstract.SfuEventReporterAbstract<
         return this.makeReport(sfuTransportDTO, now);
     }
 
-    @Override
-    protected SfuEventReport makeReport(SfuTransportDTO sfuTransportDTO, Long timestamp) {
+    private SfuEventReport makeReport(SfuTransportDTO sfuTransportDTO, Long timestamp) {
         try {
             String sfuId = UUIDAdapter.toStringOrNull(sfuTransportDTO.sfuId);
             String callId = UUIDAdapter.toStringOrNull(sfuTransportDTO.callId);

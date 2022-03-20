@@ -5,10 +5,9 @@ import io.micronaut.context.annotation.Replaces;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.samples.ObservedClientSampleGenerator;
-import org.observertc.observer.common.OutboundReport;
-import org.observertc.observer.events.ReportType;
+import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.samples.ObservedClientSampleGenerator;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,9 +25,6 @@ class TestCallProcessor {
     private String mediaUnitId = "myApp";
     private String roomId = "myTest";
     private List<ClientSurrogate> clientSurrogates = new LinkedList<>();
-
-    @Inject
-    ObservedClientSampleProcessingPipeline pipeline;
 
     @Inject
     ObservedClientSampleGenerator alice;

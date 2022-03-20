@@ -20,7 +20,7 @@ import com.hazelcast.map.IMap;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.discovery.event.ServiceReadyEvent;
+import io.micronaut.runtime.server.event.ServerStartupEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Properties;
 
 @Singleton
-@Requires(notEnv = Environment.TEST) // Don't load data in tests.
-public class ServiceStartedListener implements ApplicationEventListener<ServiceReadyEvent> {
+@Requires(notEnv = Environment.TEST)
+public class ServiceStartedListener implements ApplicationEventListener<ServerStartupEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
 
 	@Inject
@@ -72,9 +72,12 @@ public class ServiceStartedListener implements ApplicationEventListener<ServiceR
 
 
 	@Override
-	public void onApplicationEvent(ServiceReadyEvent event) {
+	public void onApplicationEvent(ServerStartupEvent event) {
 		observerService.start();
 		renderLogoAndVersion();
+		// TODO: websocket status message
+		// TODO: rest api status page
+		// TODO: sinks status
 	}
 
 	/**

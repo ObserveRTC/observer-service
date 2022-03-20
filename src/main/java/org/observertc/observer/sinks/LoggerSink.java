@@ -2,11 +2,9 @@ package org.observertc.observer.sinks;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.functions.Consumer;
-import org.observertc.observer.codecs.Decoder;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.common.OutboundReport;
-import org.observertc.observer.common.OutboundReportTypeVisitor;
-import org.observertc.observer.events.ReportType;
+import org.observertc.observer.reports.Report;
+import org.observertc.observer.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -15,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class LoggerSink extends Sink {
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(LoggerSink.class);
@@ -24,21 +21,20 @@ public class LoggerSink extends Sink {
     private Level level = Level.INFO;
     private boolean typeSummary = false;
 
-    private Decoder decoder;
-    private java.util.function.Consumer<OutboundReport> printer;
+    private java.util.function.Consumer<Report> printer;
 
     LoggerSink() {
         this.printer = report -> {};
     }
 
     @Override
-    public void accept(@NonNull List<OutboundReport> outboundReports) {
-        logger.info("Number of reports are: {}", outboundReports.size());
+    public void accept(@NonNull List<Report> reports) {
+        logger.info("Number of reports are: {}", reports.size());
         Map<ReportType, Integer> receivedTypes = new HashMap<>();
-        for (OutboundReport outboundReport : outboundReports) {
-            ReportType reportType = outboundReport.getType();
+        for (var report : reports) {
+            ReportType reportType = report.type;
             receivedTypes.put(reportType, receivedTypes.getOrDefault(reportType, 0) + 1);
-            this.printer.accept(outboundReport);
+            this.printer.accept(report);
         }
 
         if (this.typeSummary) {
@@ -53,12 +49,6 @@ public class LoggerSink extends Sink {
         }
     }
 
-    LoggerSink withDecoder(Decoder decoder) {
-        logger.info("Set decoder to {}", decoder.getClass().getSimpleName());
-        this.decoder = decoder;
-        return this;
-    }
-
     LoggerSink withPrintTypeSummary(boolean value) {
         this.typeSummary = value;
         return this;
@@ -67,7 +57,10 @@ public class LoggerSink extends Sink {
     LoggerSink withPrintReports(boolean value) {
         this.printReports = value;
         if (this.printReports) {
-            this.printer = this.makePrinter();
+            this.printer = report -> {
+                var jsonStr = JsonUtils.objectToString(report);
+                logger.info("Report: {}", jsonStr);
+            };
         }
         return this;
     }
@@ -94,48 +87,5 @@ public class LoggerSink extends Sink {
                 break;
         }
         return this;
-    }
-
-    private java.util.function.Consumer<OutboundReport> makePrinter() {
-        var decoder = this.decoder;
-        var decodeAndPrint = OutboundReportTypeVisitor.createConsumerVisitor(
-                this.makeDecodeAndPrintConsumer(decoder::decodeObserverEventReports),
-                this.makeDecodeAndPrintConsumer(decoder::decodeCallEventReports),
-                this.makeDecodeAndPrintConsumer(decoder::decodeCallMetaReports),
-                this.makeDecodeAndPrintConsumer(decoder::decodeClientExtensionReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeClientTransportReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeClientDataChannelReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeInboundAudioTrackReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeInboundVideoTrackReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeOutboundAudioTrackReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeOutboundVideoTrackReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeMediaTrackReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuEventReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuMetaReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuTransportReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuInboundRtpPadReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuOutboundRtpPadReport),
-                this.makeDecodeAndPrintConsumer(decoder::decodeSfuSctpStreamReport)
-        );
-        return outboundReport -> {
-            if (Objects.isNull(outboundReport)) {
-                return;
-            }
-            decodeAndPrint.apply(outboundReport, outboundReport.getType());
-        };
-    }
-
-    private<T extends org.apache.avro.specific.SpecificRecordBase> java.util.function.Consumer<OutboundReport> makeDecodeAndPrintConsumer(Function<OutboundReport, T> decoder) {
-        return outboundReport -> {
-            if (Objects.isNull(outboundReport)) {
-                return;
-            }
-            org.apache.avro.specific.SpecificRecordBase recordBase = decoder.apply(outboundReport);
-            if (Objects.isNull(recordBase)) {
-                logger.warn("Cannot decoding {}", JsonUtils.objectToString(outboundReport));
-                return;
-            }
-            logger.info("Decoded Report type {}, value: {}", outboundReport.getType(), recordBase.toString());
-        };
     }
 }

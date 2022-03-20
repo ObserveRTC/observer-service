@@ -139,6 +139,9 @@ public class SfuRtpPadEvents {
     }
 
     private void onSfuRtpPadsExpired(List<RepositoryExpiredEvent<SfuRtpPadDTO>> expiredSfuRtpPads) {
+        if (Objects.isNull(expiredSfuRtpPads) || expiredSfuRtpPads.size() < 1) {
+            return;
+        }
         var sfuRtpPads = expiredSfuRtpPads.stream().map(event -> event.getValue()).collect(Collectors.toList());
         var timestamps = expiredSfuRtpPads.stream().collect(Collectors.toMap(
                 event -> event.getValue().rtpPadId,

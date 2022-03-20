@@ -10,12 +10,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Objects;
 
 @Singleton
 public class CallEvents {
 
-    private Subject<CallEventReport> reports = PublishSubject.create();
+    private Subject<List<CallEventReport>> reports = PublishSubject.create();
 
     @Inject
     RepositoryEvents repositoryEvents;
@@ -77,16 +78,19 @@ public class CallEvents {
 
     }
 
-    public Observable<CallEventReport> getObservableCalEventReports() {
+    public Observable<List<CallEventReport>> getObservableCalEventReports() {
         return this.reports;
     }
 
-    private void forward(CallEventReport callEventReport) {
-        if (Objects.isNull(callEventReport)) {
+    private void forward(List<CallEventReport> callEventReports) {
+        if (Objects.isNull(callEventReports)) {
+            return;
+        }
+        if (callEventReports.size() < 1) {
             return;
         }
         synchronized (this) {
-            this.reports.onNext(callEventReport);
+            this.reports.onNext(callEventReports);
         }
     }
 

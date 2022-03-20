@@ -24,13 +24,12 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.mappings.Decoder;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.micrometer.FlawMonitor;
 import org.observertc.observer.micrometer.MonitorProvider;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.repositories.RepositoryEvents;
-import org.observertc.observer.sources.inboundSamples.InboundSamplesAcceptor;
-import org.observertc.observer.sources.inboundSamples.InboundSamplesAcceptorFactory;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * Service should be UUId, because currently mysql stores it as
@@ -52,9 +54,8 @@ public class SamplesWebsocketController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SamplesWebsocketController.class);
 	private final FlawMonitor flawMonitor;
-	private Function<byte[], Samples> converter;
 //	private Map<String, UUID> sessionToClients;
-//	private Map<UUID, WebSocketSession> clientSessions;
+	private Map<String, WebSocketSession> webSocketSessions = new ConcurrentHashMap<>();
 
 	@Inject
 	ExposedMetrics exposedMetrics;
@@ -69,21 +70,16 @@ public class SamplesWebsocketController {
 	HazelcastMaps hazelcastMaps;
 
 	@Inject
-    ClientSamplesCollector clientSamplesCollector;
-
-    @Inject
-    SfuSamplesCollector sfuSamplesCollector;
+    SamplesCollector samplesCollector;
 
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
-    private final InboundSamplesAcceptor inboundSamplesAcceptor;
+	private Consumer<ReceivedMessage> acceptor;
 
 	public SamplesWebsocketController(
 	        ObserverConfig observerConfig,
-            InboundSamplesAcceptorFactory acceptorFactory,
             MonitorProvider monitorProvider
     ) {
-		this.config = observerConfig.sources.websockets;
-		this.inboundSamplesAcceptor = acceptorFactory.makeAcceptor(this.config);
+		this.config = observerConfig.sources.websocket;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass()).withDefaultLogger(logger).withDefaultLogLevel(Level.WARN);
 //		this.clientSessions = new ConcurrentHashMap<>();
 //		this.sessionToClients = new ConcurrentHashMap<>();
@@ -91,38 +87,17 @@ public class SamplesWebsocketController {
 
 	@PostConstruct
 	void setup() {
-//		this.repositoryEvents.updatedClientMessageEvents()
-//				.flatMap(Observable::fromIterable)
-//				.subscribe(event -> {
-//					var eventMessage = event.getNewValue();
-//					if (Objects.isNull(eventMessage)) {
-//						return;
-//					}
-//					UUID clientId = eventMessage.getClientId();
-//					GeneralEntryDTO value = eventMessage.getValue();
-//					if (Objects.isNull(clientId) || Objects.isNull(value)) {
-//						return;
-//					}
-//					WebSocketSession session = this.clientSessions.get(clientId);
-//					if (Objects.isNull(session)) {
-//						logger.warn("A message received for client {} have not registered in observer. Message: {}", clientId, value);
-//						return;
-//					}
-//					session.send(value.value);
-//				});
-		Function<byte[], byte[]> decrypt = Function.identity();
-		Function<byte[], byte[]> unzip = Function.identity();;
-		Function<byte[], Samples> parse = input -> new Samples();
-		this.converter = decrypt.andThen(unzip.andThen(parse));
+		var decoder = new SamplesDecoderBuilder()
+				.withCodecType(this.config.decoder)
+				.build();
+		var messageProcessor = this.createMessageProcessor(decoder);
+		// TODO: here create an assembler for assembling the chunks.
+		this.acceptor = messageProcessor;
 	}
 
 	@PreDestroy
 	void teardown() {
-		try {
-			this.inboundSamplesAcceptor.close();
-		} catch (Throwable throwable) {
-			logger.warn("Exception while closing resource", throwable);
-		}
+
 	}
 
 	@OnOpen
@@ -135,6 +110,7 @@ public class SamplesWebsocketController {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
+			this.webSocketSessions.put(session.getId(), session);
 //			var requestParameters = session.getRequestParameters();
 //			String clientIdParam = requestParameters.get("clientId");
 //			if (Objects.nonNull(clientIdParam)) {
@@ -143,7 +119,7 @@ public class SamplesWebsocketController {
 //				this.clientSessions.put(clientId, session);
 //				this.sessionToClients.put(session.getId(), clientId);
 //			}
-			this.exposedMetrics.incrementClientSamplesOpenedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
 
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -157,12 +133,13 @@ public class SamplesWebsocketController {
 			WebSocketSession session) {
 		try {
 
-			this.exposedMetrics.incrementClientSamplesClosedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementSamplesOpenedWebsockets(serviceId, mediaUnitId);
 //			UUID clientId = this.sessionToClients.get(session.getId());
 //			if (Objects.nonNull(clientId)) {
 //				this.clientSessions.remove(clientId, session);
 //				this.hazelcastMaps.getClientMessages().remove(clientId);
 //			}
+			this.webSocketSessions.remove(session.getId());
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -176,27 +153,62 @@ public class SamplesWebsocketController {
 			WebSocketSession session) {
 
 		try {
-			this.exposedMetrics.incrementClientSamplesReceived(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementSamplesClosedWebsockets(serviceId, mediaUnitId);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
-		try {
-            this.inboundSamplesAcceptor.accept(serviceId, mediaUnitId, messageBytes);
-		} catch (IOException e) {
-			this.flawMonitor.makeLogEntry()
-					.withMessage("Exception while accepting sample")
-					.withException(e)
-					.complete();
-			session.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
-			return;
-        } catch (Throwable ex) {
-            this.flawMonitor.makeLogEntry()
-                    .withException(ex)
-                    .withMessage("Error occured processing samples")
-                    .complete();
-            session.close(
-                    this.customCloseReasons.getInternalServerError(ex.getMessage())
-            );
-        }
+		var receivedMessage = ReceivedMessage.of(
+				session.getId(),
+				serviceId,
+				mediaUnitId,
+				messageBytes
+		);
+		this.acceptor.accept(receivedMessage);
     }
+
+
+	private Consumer<ReceivedMessage> createMessageProcessor(Decoder<byte[], Samples> decoder) {
+		return receivedMessage -> {
+			try {
+				var samples = decoder.decode(receivedMessage.message);
+				var receivedSamples = ReceivedSamples.of(
+						receivedMessage.serviceId,
+						receivedMessage.mediaUnitId,
+						samples
+				);
+				this.samplesCollector.add(receivedSamples);
+			} catch (IOException e) {
+				this.flawMonitor.makeLogEntry()
+						.withMessage("Exception while accepting sample")
+						.withException(e)
+						.complete();
+				if (Objects.isNull(receivedMessage.sessionId)) {
+					return;
+				}
+				var websocketSession = this.webSocketSessions.get(receivedMessage.sessionId);
+				if (Objects.isNull(websocketSession)) {
+					return;
+				}
+				websocketSession.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
+				return;
+			} catch (Throwable ex) {
+				this.flawMonitor.makeLogEntry()
+						.withException(ex)
+						.withMessage("Error occured processing samples")
+						.complete();
+				if (Objects.isNull(receivedMessage.sessionId)) {
+					return;
+				}
+				var websocketSession = this.webSocketSessions.get(receivedMessage.sessionId);
+				if (Objects.isNull(websocketSession)) {
+					return;
+				}
+				websocketSession.close(
+						this.customCloseReasons.getInternalServerError(ex.getMessage())
+				);
+			}
+		};
+	}
+
+
 }

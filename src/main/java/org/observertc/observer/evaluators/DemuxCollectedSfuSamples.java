@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
@@ -36,18 +37,9 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(DemuxCollectedSfuSamples.class);
 //    private static final String _____missingFromSample____ = "I did not find it in the SfuSample";
 //    private static final String _____missingByBound____ = "I did not find it in to be bound from the observed sample?";
-    private Subject<SFUTransportReport> sfuTransportReportSubject = PublishSubject.create();
-    private Subject<SfuInboundRtpPadReport> sfuRtpSourceReportSubject = PublishSubject.create();
-    private Subject<SfuOutboundRtpPadReport> sfuRtpSinkReportSubject = PublishSubject.create();
-    private Subject<SfuSctpStreamReport> sfuSctpStreamSubject = PublishSubject.create();
+    private Subject<List<Report>> reportSubject = PublishSubject.create();
 
-    public Observable<SFUTransportReport> getSfuTransportReport() {
-        return this.sfuTransportReportSubject;
-    }
-    public Observable<SfuInboundRtpPadReport> getSfuInboundRtpPadReport() {return this.sfuRtpSourceReportSubject; }
-    public Observable<SfuOutboundRtpPadReport> getSfuOutboundRtpPadReport() {return this.sfuRtpSinkReportSubject; }
-
-    public Observable<SfuSctpStreamReport> getSctpStreamReport() {return this.sfuSctpStreamSubject; }
+    public Observable<List<Report>> getObservableReport() {return this.reportSubject; }
 
 
     @Inject
@@ -74,10 +66,7 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
     public void doAccept(CollectedSfuSamples collectedSfuSamples) throws Throwable {
         FetchSfuRelationsTask.Report report = this.fetchSfuRelations(collectedSfuSamples);
 
-        List<SFUTransportReport> transportReports = new LinkedList<>();
-        List<SfuInboundRtpPadReport> inboundRtpPadReports = new LinkedList<>();
-        List<SfuOutboundRtpPadReport> outboundRtpPadReports = new LinkedList<>();
-        List<SfuSctpStreamReport> sctpStreamReports = new LinkedList<>();
+        List<Report> reports = new LinkedList<>();
         for (SfuSamples sfuSamples : collectedSfuSamples) {
             UUID sfuId = sfuSamples.getSfuId();
             for (ObservedSfuSample observedSfuSample: sfuSamples) {
@@ -93,7 +82,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(transportReports::add);
+                        .map(Report::fromSfuTransportReport)
+                        .forEach(reports::add);
 
                 SfuSampleVisitor.streamInboundRtpPads(sfuSample)
                         .filter(inboundRtpStream -> Utils.nullOrFalse(inboundRtpStream.noReport))
@@ -109,7 +99,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(inboundRtpPadReports::add);
+                        .map(Report::fromSfuInboundRtpPadReport)
+                        .forEach(reports::add);
 
                 SfuSampleVisitor.streamOutboundRtpPads(sfuSample)
                         .filter(outboundRtpPad -> Utils.nullOrFalse(outboundRtpPad.noReport))
@@ -125,7 +116,8 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(outboundRtpPadReports::add);
+                        .map(Report::fromSfuOutboundRtpPadReport)
+                        .forEach(reports::add);
 
                 SfuSampleVisitor.streamSctpStreams(sfuSample)
                         .map(sctpStream -> {
@@ -137,14 +129,12 @@ public class DemuxCollectedSfuSamples implements Consumer<CollectedSfuSamples> {
 
                         })
                         .filter(Objects::nonNull)
-                        .forEach(sctpStreamReports::add);
+                        .map(Report::fromSfuSctpStreamReport)
+                        .forEach(reports::add);
             }
         }
         synchronized (this) {
-            transportReports.stream().forEach(this.sfuTransportReportSubject::onNext);
-            inboundRtpPadReports.stream().forEach(this.sfuRtpSourceReportSubject::onNext);
-            outboundRtpPadReports.stream().forEach(this.sfuRtpSinkReportSubject::onNext);
-            sctpStreamReports.stream().forEach(this.sfuSctpStreamSubject::onNext);
+            this.reportSubject.onNext(reports);
         }
     }
 

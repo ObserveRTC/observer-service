@@ -7,9 +7,9 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.mappings.Decoder;
 import org.observertc.observer.micrometer.ExposedMetrics;
-import org.observertc.observer.sources.inboundSamples.InboundSamplesAcceptor;
-import org.observertc.observer.sources.inboundSamples.InboundSamplesAcceptorFactory;
+import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,32 +28,41 @@ public class SamplesRestApiController {
 	@Inject
 	ExposedMetrics exposedMetrics;
 
-    private final ObserverConfig.SourcesConfig.RestApiConfig config;
-	private final InboundSamplesAcceptor inboundSamplesAcceptor;
+	@Inject
+	SamplesCollector samplesCollector;
+
+    private final ObserverConfig.SourcesConfig.RestConfig config;
+	private final Decoder<byte[], Samples> decoder;
 
 	@PostConstruct
 	void setup() {
+
 	}
 
 	@PreDestroy
 	void teardown() {
 	}
 
-	public SamplesRestApiController(ObserverConfig observerConfig, InboundSamplesAcceptorFactory acceptorFactory) {
-		this.config = observerConfig.sources.restapi;
-		this.inboundSamplesAcceptor = acceptorFactory.makeAcceptor(this.config);
+	public SamplesRestApiController(ObserverConfig observerConfig) {
+		this.config = observerConfig.sources.rest;
+		this.decoder = new SamplesDecoderBuilder()
+				.withCodecType(this.config.decoder)
+				.build();
 	}
 
 	@Post(value = "/samples/{serviceId}/{mediaUnitId}")
 	public HttpResponse<Object> acceptSamples(String serviceId, String mediaUnitId, @Body byte[] message) {
-		if (!config.acceptClientSamples) {
-			return HttpResponse.serverError("Not accepting client samples through REST");
-		}
 		if (Objects.isNull(message)) {
 			return HttpResponse.ok();
 		}
 		try {
-			this.inboundSamplesAcceptor.accept(serviceId, mediaUnitId, message);
+			var samples = this.decoder.decode(message);
+			var receivedSample = ReceivedSamples.of(
+					serviceId,
+					mediaUnitId,
+					samples
+			);
+			this.samplesCollector.add(receivedSample);
 		} catch (IOException e) {
 			return HttpResponse.serverError(e.getMessage());
 		} catch (Throwable ex) {

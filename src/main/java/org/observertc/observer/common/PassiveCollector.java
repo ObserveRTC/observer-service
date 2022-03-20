@@ -52,6 +52,10 @@ public class PassiveCollector<T> {
         if (Objects.isNull(items)) {
             return this;
         }
+        if (items.size() < 0) {
+            this.checkTime();
+            return this;
+        }
         this.execute(() -> {
             this.queue.addAll(items);
         });

@@ -14,9 +14,10 @@ import javax.inject.Inject;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Prototype
-class PeerConnectionOpened extends EventReporterAbstract.CallEventReporterAbstract<PeerConnectionDTO> {
+class PeerConnectionOpened extends EventReporterAbstract.CallEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionOpened.class);
 
@@ -36,10 +37,12 @@ class PeerConnectionOpened extends EventReporterAbstract.CallEventReporterAbstra
             return;
         }
 
-        peerConnectionDTOs.stream()
+        var reports = peerConnectionDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO) {
@@ -47,7 +50,6 @@ class PeerConnectionOpened extends EventReporterAbstract.CallEventReporterAbstra
         return this.makeReport(peerConnectionDTO, peerConnectionDTO.created);
     }
 
-    @Override
     protected CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO, Long timestamp) {
         try {
             String callId = UUIDAdapter.toStringOrNull(peerConnectionDTO.callId);

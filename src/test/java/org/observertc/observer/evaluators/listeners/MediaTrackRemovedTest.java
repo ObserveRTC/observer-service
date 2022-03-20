@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.MediaTrackDTO;
-import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.utils.DTOGenerators;
 import org.observertc.observer.evaluators.listeners.attachments.MediaTrackAttachment;
+import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.utils.DTOGenerators;
 import org.observertc.schemas.reports.CallEventReport;
 
 import javax.inject.Inject;
@@ -66,7 +66,7 @@ class MediaTrackRemovedTest {
         this.hazelcastMaps.getMediaTracks().put(mediaTrackDTO.trackId, mediaTrackDTO);
         this.hazelcastMaps.getMediaTracks().remove(mediaTrackDTO.trackId);
 
-        String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.rtpStreamId);
+        String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.sfuStreamId);
         String attachmentInBase64 = callEventReportPromise.get(5, TimeUnit.SECONDS).getAttachments();
         MediaTrackAttachment attachment = MediaTrackAttachment.builder().fromBase64(attachmentInBase64).build();
         Assertions.assertEquals(rtpStreamId, attachment.sfuStreamId);
@@ -77,17 +77,17 @@ class MediaTrackRemovedTest {
     void ifFieldsForAttachmentIsNullNoProblemOccurs() throws InterruptedException, ExecutionException, TimeoutException {
         var callEventReportPromise = new CompletableFuture<CallEventReport>();
         var mediaTrackDTO = MediaTrackDTO.builder().from(dtoGenerators.getMediaTrackDTO())
-                .withRtpStreamId(null)
+                .withSfuStreamId(null)
                 .build();
 
         this.mediaTrackRemoved.getObservableReports().subscribe(callEventReportPromise::complete);
         this.hazelcastMaps.getMediaTracks().put(mediaTrackDTO.trackId, mediaTrackDTO);
         this.hazelcastMaps.getMediaTracks().remove(mediaTrackDTO.trackId);
 
-        String rtpStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.rtpStreamId);
+        String sfuStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.sfuStreamId);
         String attachmentInBase64 = callEventReportPromise.get(5, TimeUnit.SECONDS).getAttachments();
         MediaTrackAttachment attachment = MediaTrackAttachment.builder().fromBase64(attachmentInBase64).build();
-        Assertions.assertEquals(rtpStreamId, attachment.sfuStreamId);
+        Assertions.assertEquals(sfuStreamId, attachment.sfuStreamId);
         Assertions.assertEquals(mediaTrackDTO.direction.name(), attachment.streamDirection);
     }
 }

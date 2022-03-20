@@ -30,7 +30,7 @@ public class SfuRtpStreamPodDTOGenerator implements Supplier<SfuRtpPadDTO> {
             result.sfuId = this.sfuId;
         }
         if (Objects.nonNull(this.streamId)) {
-            result.rtpStreamId = this.streamId;
+            result.streamId = this.streamId;
         }
         return result;
     }

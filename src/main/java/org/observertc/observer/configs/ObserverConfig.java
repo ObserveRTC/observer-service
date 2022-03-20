@@ -17,7 +17,6 @@
 package org.observertc.observer.configs;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
-import org.observertc.observer.sources.inboundSamples.InboundSamplesConfig;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
@@ -70,33 +69,32 @@ public class ObserverConfig {
 	// Sources Config
 	public SourcesConfig sources;
 
+	public static class SourceConfig {
+		public boolean enabled = false;
+
+
+		public TransportCodecType encoder = TransportCodecType.JSON;
+        public TransportCodecType decoder = TransportCodecType.JSON;;
+    }
+
 	@ConfigurationProperties("sources")
 	public static class SourcesConfig {
 
 		public List<String> allowedServiceIds = null;
 
-		public RestApiConfig restapi;
+		public RestConfig rest = new RestConfig();
 
-		@ConfigurationProperties("restapi")
-		public static class RestApiConfig extends InboundSamplesConfig {
-			public boolean acceptClientSamples = true;
-			public boolean acceptSfuSamples = true;
+		@ConfigurationProperties("rest")
+		public static class RestConfig extends SourceConfig {
 
 		}
 
-		public WebsocketsConfig websockets;
+		public WebsocketsConfig websocket = new WebsocketsConfig();
 
-		@ConfigurationProperties("websockets")
-		public static class WebsocketsConfig extends InboundSamplesConfig {
-			public boolean enabled = true;
-
+		@ConfigurationProperties("websocket")
+		public static class WebsocketsConfig extends SourceConfig {
 
 		}
-
-		public static class WebsocketSamplesConfig extends InboundSamplesConfig {
-
-		}
-
 	}
 
 	// Repository config
@@ -200,7 +198,6 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("reports")
 	public static class ReportsConfig {
-		public ReportFormat format = ReportFormat.JSON;
 		public boolean sendObserverEvents = true;
 		public boolean sendCallEvents = true;
 		public boolean sendCallMeta = true;
@@ -211,7 +208,6 @@ public class ObserverConfig {
 		public boolean sendOutboundVideoTracks = true;
 		public boolean sendClientTransports = true;
 		public boolean sendClientDataChannels = true;
-		public boolean sendMediaTracks = false;
 
 		public boolean sendSfuEvents = true;
 		public boolean sendSfuMeta = true;

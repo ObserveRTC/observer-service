@@ -15,9 +15,10 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Prototype
-class ClientJoined extends EventReporterAbstract.CallEventReporterAbstract<ClientDTO> {
+class ClientJoined extends EventReporterAbstract.CallEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientJoined.class);
 
@@ -39,17 +40,18 @@ class ClientJoined extends EventReporterAbstract.CallEventReporterAbstract<Clien
             return;
         }
 
-        clientDTOs.stream()
+        var reports = clientDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private CallEventReport makeReport(ClientDTO clientDTO) {
         return this.makeReport(clientDTO, clientDTO.joined);
     }
 
-    @Override
     protected CallEventReport makeReport(ClientDTO clientDTO, Long timestamp) {
         try {
             String callId = UUIDAdapter.toStringOrNull(clientDTO.callId);

@@ -15,11 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 @Prototype
-class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuRtpPadDTO> {
+class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuRtpPadAdded.class);
 
@@ -40,10 +41,12 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
         if (Objects.isNull(payloads) || payloads.size() < 1) {
             return;
         }
+        var reports = new LinkedList<SfuEventReport>();
         for (var payload : payloads) {
             var report = this.makeReport(payload.sfuRtpPadDTO, payload.sfuStreamDTO, payload.sfuSinkDTO);
-            this.forward(report);
+            reports.add(report);
         }
+        this.forward(reports);
     }
 
     private SfuEventReport makeReport(SfuRtpPadDTO sfuRtpPad, SfuStreamDTO sfuStream, SfuSinkDTO sfuSink) {
@@ -88,7 +91,6 @@ class SfuRtpPadAdded extends EventReporterAbstract.SfuEventReporterAbstract<SfuR
         }
     }
 
-    @Override
     protected SfuEventReport makeReport(SfuRtpPadDTO input, Long timestamp) {
         logger.warn("makeReport(SfuRtpPadDTO input, Long timestamp) is called, supposed not to");
         return null;

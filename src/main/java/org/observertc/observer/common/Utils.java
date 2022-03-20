@@ -4,38 +4,38 @@ import io.reactivex.rxjava3.functions.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Utils {
+    private Utils() {
+
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(Utils.class);
 //    public static final String UNKOWN_TAG_VALUE;
 
-    public static<T> T ifExpectedThenAlternative(T subject, T expected, T alternative) {
-        return !Objects.equals(subject, expected) ? expected : alternative;
+    public static<T> T ifSubjectIsExpectedOrAlternative(T subject, T expected, T alternative) {
+        return Objects.equals(subject, expected) ? expected : alternative;
     }
 
-    public static<T> Collection<T> coalesceCollection(Collection<T> actualValue) {
-        return Objects.nonNull(actualValue) ? actualValue : Collections.EMPTY_LIST;
+    public static<T> T supplyFirstNotNull(Supplier<T>... suppliers) {
+        if (Objects.isNull(suppliers)) return null;
+        for (var supplier : suppliers) {
+            if (Objects.isNull(supplier)) continue;
+            var result = supplier.get();
+            if (Objects.nonNull(result)) return result;
+        }
+        return null;
     }
 
-    public static<T> T supplyOrNull(Supplier<T> supplier) {
-        return supplyOrNull(supplier, logger, "Exception occurred while executing a supplier task");
-    }
 
-    public static<T> T supplyOrNull(Supplier<T> supplier, Logger logger, String messages, Object... args) {
-       try {
-           return supplier.get();
-       } catch (Exception ex) {
-           if (Objects.isNull(args)) {
-               logger.warn(messages, ex);
-           } else {
-               logger.warn(messages, args, ex);
-           }
-           return null;
-       }
-    }
+//    public static<T> Collection<T> coalesceCollection(Collection<T> actualValue) {
+//        return Objects.nonNull(actualValue) ? actualValue : Collections.EMPTY_LIST;
+//    }
 
     public static<T> void runIfValueNonNull(T value, Runnable action) {
         if (Objects.nonNull(value)) {
@@ -59,12 +59,12 @@ public class Utils {
         return Arrays.stream(objects).allMatch(Objects::isNull);
     }
 
-    public static<T> boolean isListNotEmpty(List<T> list) {
-        return Objects.nonNull(list) && 0 < list.size();
+    public static<T> boolean isCollectionNotEmpty(Collection<T> collection) {
+        return Objects.nonNull(collection) && 0 < collection.size();
     }
 
-    public static<T> boolean isListEmptyOrNull(List<T> list) {
-        return Objects.isNull(list) || list.size() < 1;
+    public static<T> boolean isCollectionEmptyOrNull(Collection<T> collection) {
+        return Objects.isNull(collection) || collection.size() < 1;
     }
 
     public static boolean nullOrFalse(Boolean value) {

@@ -5,6 +5,7 @@ import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.api.Randomizer;
 import org.observertc.observer.utils.RandomGenerators;
+import org.observertc.schemas.samples.Samples.ClientSample;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -12,7 +13,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
-
 @Prototype
 public class OutboundVideoTrackGenerator implements Supplier<ClientSample.OutboundVideoTrack> {
 

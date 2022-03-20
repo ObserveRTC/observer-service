@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.apache.avro.specific.SpecificRecordBase;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
@@ -28,29 +28,11 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     private static final Logger logger = LoggerFactory.getLogger(DemuxCollectedCallSamples.class);
 //    private static final String _____missingFromSample____ = "I did not find it in the ClientSample";
 //    private static final String _____missingByBound____ = "I did not find it in to be bound from the observed sample?";
-    private Subject<ClientTransportReport> clientTransportReportSubject = PublishSubject.create();
-    private Subject<InboundAudioTrackReport> inboundAudioTrackReportSubject = PublishSubject.create();
-    private Subject<InboundVideoTrackReport> inboundVideoTrackReportSubject = PublishSubject.create();
-    private Subject<OutboundAudioTrackReport> outboundAudioTrackReportSubject = PublishSubject.create();
-    private Subject<OutboundVideoTrackReport> outboundVideoTrackReportSubject = PublishSubject.create();
-    private Subject<MediaTrackReport> mediaTrackReportSubject = PublishSubject.create();
-    private Subject<ClientDataChannelReport> clientDataChannelReportSubject = PublishSubject.create();
-    private Subject<ClientExtensionReport> clientExtensionReportSubject = PublishSubject.create();
+    private Subject<List<Report>> reportSubject = PublishSubject.create();
 
-    public Observable<ClientTransportReport> getObservableClientTransportReport() {
-        return this.clientTransportReportSubject;
+    public Observable<List<Report>> getObservableReport() {
+        return this.reportSubject;
     }
-    public Observable<ClientDataChannelReport> getObservableClientDataChannelReport() {return this.clientDataChannelReportSubject; }
-    public Observable<ClientExtensionReport> getObservableClientExtensionReport() {return this.clientExtensionReportSubject; }
-
-    public Observable<InboundAudioTrackReport> getObservableInboundAudioTrackReport() {return this.inboundAudioTrackReportSubject; }
-    public Observable<InboundVideoTrackReport> getObservableInboundVideoTrackReport() {return this.inboundVideoTrackReportSubject; }
-
-    public Observable<OutboundAudioTrackReport> getObservableOutboundAudioTrackReport() {return this.outboundAudioTrackReportSubject; }
-    public Observable<OutboundVideoTrackReport> getObservableOutboundVideoTrackReport() {return this.outboundVideoTrackReportSubject; }
-
-    public Observable<MediaTrackReport> getObservableMediaTrackReport() {return this.mediaTrackReportSubject; }
-
 
     @Inject
     ObserverConfig observerConfig;
@@ -76,13 +58,7 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
     public void doAccept(CollectedCallSamples collectedCallSamples) throws Throwable {
         Map<UUID, FetchTracksRelationsTask.MatchedIds> inboundTrackMatchIds = this.makeInboundTrackMatchIds(collectedCallSamples);
 
-        List<ClientTransportReport> clientTransportReports = new LinkedList<>();
-        List<InboundAudioTrackReport> inboundAudioTrackReports = new LinkedList<>();
-        List<InboundVideoTrackReport> inboundVideoTrackReports = new LinkedList<>();
-        List<OutboundAudioTrackReport> outboundAudioTrackReports = new LinkedList<>();
-        List<OutboundVideoTrackReport> outboundVideoTrackReports = new LinkedList<>();
-        List<ClientDataChannelReport> clientDataChannelReports = new LinkedList<>();
-        List<ClientExtensionReport> clientExtensionReports = new LinkedList<>();
+        List<Report> reports = new LinkedList<>();
         Map<String, String> peerConnectionLabels = new HashMap<>();
         for (CallSamples callSamples : collectedCallSamples) {
             var callId = callSamples.getCallId();
@@ -100,7 +76,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
 
                                 })
                                 .filter(Objects::nonNull)
-                                .forEach(clientTransportReports::add);
+                                .map(Report::fromClientTransportReport)
+                                .forEach(reports::add);
 
                     ClientSampleVisitor.streamDataChannels(clientSample)
                             .map(dataChannel -> {
@@ -113,7 +90,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                 );
                             })
                             .filter(Objects::nonNull)
-                            .forEach(clientDataChannelReports::add);
+                            .map(Report::fromClientDataChannelReport)
+                            .forEach(reports::add);
 
                     ClientSampleVisitor.streamExtensionStats(clientSample)
                             .map(extensionStat -> {
@@ -124,7 +102,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                 );
                             })
                             .filter(Objects::nonNull)
-                            .forEach(clientExtensionReports::add);
+                            .map(Report::fromClientExtensionReport)
+                            .forEach(reports::add);
 
                     ClientSampleVisitor.streamInboundAudioTracks(clientSample)
                                 .map(inboundAudioTrack -> {
@@ -140,7 +119,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                     );
                                 })
                                 .filter(Objects::nonNull)
-                                .forEach(inboundAudioTrackReports::add);
+                                .map(Report::fromInboundAudioTrackReport)
+                                .forEach(reports::add);
 
                         ClientSampleVisitor.streamInboundVideoTracks(clientSample)
                             .map(inboundVideoTrack -> {
@@ -156,7 +136,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                 );
                             })
                             .filter(Objects::nonNull)
-                            .forEach(inboundVideoTrackReports::add);
+                            .map(Report::fromInboundVideoTrackReport)
+                            .forEach(reports::add);
 
 
                         ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
@@ -170,7 +151,8 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                 );
                             })
                             .filter(Objects::nonNull)
-                            .forEach(outboundAudioTrackReports::add);
+                            .map(Report::fromOutboundAudioTrackReport)
+                            .forEach(reports::add);
 
                     ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
                             .map(outboundVideoTrack -> {
@@ -183,31 +165,14 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
                                 );
                             })
                             .filter(Objects::nonNull)
-                            .forEach(outboundVideoTrackReports::add);
+                            .map(Report::fromOutboundVideoTrackReport)
+                            .forEach(reports::add);
 
                 }
             }
         }
         synchronized (this) {
-            clientTransportReports.stream().forEach(this.clientTransportReportSubject::onNext);
-            clientDataChannelReports.stream().forEach(this.clientDataChannelReportSubject::onNext);
-            clientExtensionReports.stream().forEach(this.clientExtensionReportSubject::onNext);
-            inboundAudioTrackReports.stream().forEach(this.inboundAudioTrackReportSubject::onNext);
-            inboundVideoTrackReports.stream().forEach(this.inboundVideoTrackReportSubject::onNext);
-            outboundAudioTrackReports.stream().forEach(this.outboundAudioTrackReportSubject::onNext);
-            outboundVideoTrackReports.stream().forEach(this.outboundVideoTrackReportSubject::onNext);
-            if (observerConfig.reports.sendMediaTracks) {
-//                inboundAudioTrackReports.stream().map(this::createMediaTrackReportFromInboundAudio)
-//                        .forEach(this.mediaTrackReportSubject::onNext);
-//                inboundVideoTrackReports.stream().map(this::createMediaTrackReportFromInboundVideo)
-//                        .forEach(this.mediaTrackReportSubject::onNext);
-//                outboundAudioTrackReports.stream().map(this::createMediaTrackReportFromOutboundAudio)
-//                        .forEach(this.mediaTrackReportSubject::onNext);
-//                outboundVideoTrackReports.stream().map(this::createMediaTrackReportFromOutboundVideo)
-//                        .forEach(this.mediaTrackReportSubject::onNext);
-
-            }
-
+            this.reportSubject.onNext(reports);
         }
     }
 
@@ -646,22 +611,6 @@ public class DemuxCollectedCallSamples implements Consumer<CollectedCallSamples>
             logger.error("Unexpected error occurred while building OutboundAudioTrackReport", ex);
             return null;
         }
-    }
-
-    private MediaTrackReport createMediaTrackReportFromInboundAudio(SpecificRecordBase inboundAudioTrackReport) {
-        return null;
-    }
-
-    private MediaTrackReport createMediaTrackReportFromInboundVideo(InboundVideoTrackReport inboundVideoTrackReport) {
-        return null;
-    }
-
-    private MediaTrackReport createMediaTrackReportFromOutboundAudio(OutboundAudioTrackReport outboundAudioTrackReport) {
-        return null;
-    }
-
-    private MediaTrackReport createMediaTrackReportFromOutboundVideo(OutboundVideoTrackReport outboundVideoTrackReport) {
-        return null;
     }
 
     private ClientTransportReport createPeerConnectionTransportReport(

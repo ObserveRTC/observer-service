@@ -5,7 +5,7 @@ plugins {
 }
 
 version = "1.0.0-beta"
-group = "org.observertc.webrtc.observer"
+group = "org.observertc.observer"
 repositories {
     mavenCentral()
 }
@@ -26,7 +26,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("org.observertc.webrtc.observer.*")
+        annotations("org.observertc.observer.*")
     }
 }
 
@@ -89,7 +89,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("org.observertc.webrtc.observer.Application")
+    mainClass.set("org.observertc.observer.Application")
 }
 
 java {

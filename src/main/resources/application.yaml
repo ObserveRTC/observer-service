@@ -49,25 +49,13 @@ observer:
 
   sources:
 #    allowedServiceIds: []
-    restapi:
-      acceptClientSamples: true
-      acceptSfuSamples: true
-      maxClientSamplesBatch: 100
-      maxSfuSamplesBatch: 100
+    rest: {}
 
-    websockets:
+    websocket:
       enabled: true
-      feedbacks:
-        callInfo: true
-#      crypting:
-      decrypter:
-        type: AES-256
-        config:
-          key: ${AES-KEY}
-#      decompressor:
-#        type: JSZIP
-#        config:
-#          key: value
+      format: JSON
+      formatConfig: {}
+
 
   repository:
     mediaTracksMaxIdleTime: 300

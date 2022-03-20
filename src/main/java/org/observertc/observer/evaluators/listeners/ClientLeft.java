@@ -20,9 +20,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
-class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientDTO> {
+class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientLeft.class);
 
@@ -56,17 +57,18 @@ class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientD
             return;
         }
 
-        clientDTOs.stream()
+        var reports = clientDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private void receiveExpiredClients(List<RepositoryExpiredEvent<ClientDTO>> expiredClientDTOs) {
         if (Objects.isNull(expiredClientDTOs) || expiredClientDTOs.size() < 1) {
             return;
         }
-        var affectedCallIds = new HashSet<UUID>();
         var removeClientsTask = removeClientsTaskProvider.get();
         expiredClientDTOs.stream()
                 .map(expiredDTO -> expiredDTO.getValue())
@@ -77,8 +79,8 @@ class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientD
             logger.warn("Remove Client Entities are failed");
             return;
         }
-
-        expiredClientDTOs.stream()
+        var affectedCallIds = new HashSet<UUID>();
+        var reports = expiredClientDTOs.stream()
                 .filter(Objects::nonNull)
                 .map(expiredClientDTO -> {
                     var timestamp = expiredClientDTO.estimatedLastTouch();
@@ -91,8 +93,9 @@ class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientD
                     return report;
                 })
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
 
+        this.forward(reports);
         this.removeAbandonedCallIds(affectedCallIds);
     }
 
@@ -132,7 +135,6 @@ class ClientLeft extends EventReporterAbstract.CallEventReporterAbstract<ClientD
     }
 
 
-    @Override
     protected CallEventReport makeReport(ClientDTO clientDTO, Long timestamp) {
         try {
             String callId = UUIDAdapter.toStringOrNull(clientDTO.callId);

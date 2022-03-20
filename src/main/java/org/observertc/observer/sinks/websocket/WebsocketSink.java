@@ -4,9 +4,7 @@ package org.observertc.observer.sinks.websocket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.annotations.NonNull;
 import jakarta.websocket.*;
-import org.observertc.observer.common.MuxedReport;
-import org.observertc.observer.common.OutboundReport;
-import org.observertc.observer.events.ReportType;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.Sink;
 
 import java.io.IOException;
@@ -90,8 +88,8 @@ public class WebsocketSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull List<OutboundReport> outboundReports) {
-        if (outboundReports.size() < 1) {
+    public void accept(@NonNull List<Report> reports) {
+        if (reports.size() < 1) {
             this.ping();
             return;
         } else if (Objects.isNull(this.session)) {
@@ -101,15 +99,11 @@ public class WebsocketSink extends Sink {
         for (int tried = 0; tried < 3; ++tried) {
             try {
                 int recordsCounter = 0;
-                for (OutboundReport outboundReport : outboundReports) {
+                for (var report : reports) {
                     if (++recordsCounter < sent) {
                         continue;
                     }
-                    MuxedReport muxedReport = new MuxedReport();
-                    ReportType reportType = outboundReport.getType();
-                    muxedReport.type = reportType.name();
-                    muxedReport.payload = outboundReport.getBytes();
-                    var encodedReport = mapper.writeValueAsString(muxedReport);
+                    var encodedReport = mapper.writeValueAsString(report);
 //                    var message = ByteBuffer.wrap(encodedReport);
                     this.session.getBasicRemote().sendText(encodedReport);
                     ++sent;

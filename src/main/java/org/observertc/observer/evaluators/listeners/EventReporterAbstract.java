@@ -1,7 +1,6 @@
 package org.observertc.observer.evaluators.listeners;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.schemas.reports.CallEventReport;
@@ -12,39 +11,35 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Objects;
 
-abstract class EventReporterAbstract<DTO, TReport> {
+abstract class EventReporterAbstract<TReport> {
 
-    public static abstract class SfuEventReporterAbstract<T> extends EventReporterAbstract<T, SfuEventReport> {
+    public static abstract class SfuEventReporterAbstract extends EventReporterAbstract<SfuEventReport> {
 
     }
 
-    public static abstract class CallEventReporterAbstract<T> extends EventReporterAbstract<T, CallEventReport> {
+    public static abstract class CallEventReporterAbstract extends EventReporterAbstract<CallEventReport> {
 
     }
 
     private static final Logger logger = LoggerFactory.getLogger(EventReporterAbstract.class);
 
-    private Subject<TReport> reports = PublishSubject.create();
+    private Subject<List<TReport>> reports = PublishSubject.create();
 
-    public Observable<TReport> getObservableReports() { return this.reports; }
+    public Observable<List<TReport>> getObservableReports() { return this.reports; }
 
-    protected<DTO> void bindListener(Observable<List<DTO>> observable, Consumer<List<DTO>> subscriber) {
-        observable.subscribe(subscriber);
-    }
-
-    protected abstract TReport makeReport(DTO input, Long timestamp);
-
-
-    protected void forward(TReport report) {
-        if (Objects.isNull(report)) {
+    protected void forward(List<TReport> reports) {
+        if (Objects.isNull(reports)) {
+            return;
+        }
+        if (reports.size() < 1) {
             return;
         }
         try {
             synchronized (this) {
-                this.reports.onNext(report);
+                this.reports.onNext(reports);
             }
         } catch (Exception ex) {
-            logger.warn("Cannot send report forward {}", report, ex);
+            logger.warn("Cannot send report forward {}", reports, ex);
         }
     }
 }

@@ -11,11 +11,12 @@ class SleeperTest {
 
     @Test
     void shouldSleepEnough() {
-        var started = Instant.now();
+        var started = Instant.now().toEpochMilli();
 
-        new Sleeper(() -> 2000).run();
+        new Sleeper(() -> 500).run();
 
-        Assertions.assertTrue(2000 <= Instant.now().minusMillis(started.toEpochMilli()).toEpochMilli());
+        var ended = Instant.now().toEpochMilli();
+        Assertions.assertTrue(500 <= ended - started);
     }
 
 }

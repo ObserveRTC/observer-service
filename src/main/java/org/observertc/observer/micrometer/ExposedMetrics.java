@@ -22,6 +22,11 @@ public class ExposedMetrics {
     private static final String OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "closed_websockets");
     private static final String OBSERVERTC_SFU_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "received");
 
+    private static final String SAMPLES_PREFIX = "samples";
+    private static final String OBSERVERTC_SAMPLES_OPENED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SAMPLES_PREFIX, "opened_websockets");
+    private static final String OBSERVERTC_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SAMPLES_PREFIX, "closed_websockets");
+    private static final String OBSERVERTC_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, SAMPLES_PREFIX, "received");
+
     private static final String OBSERVERTC_MODULE_FLAWS = String.join("_", OBSERVERTC_PREFIX, "module_flaws");
 
     private static final String OBSERVERTC_TASK_EXECUTION_TIME = String.join("_", OBSERVERTC_PREFIX, "task_execution_time");
@@ -51,36 +56,57 @@ public class ExposedMetrics {
     public static final String OBSERVERTC_EVALUATORS_DEMUX_COLLECTED_SFU_SAMPLES_TIME = "observertc-evaluators-demux-collected-sfu-samples";
 
 
+    public void incrementSamplesOpenedWebsockets(String serviceId, String mediaUnitId) {
+        this.meterRegistry.counter(OBSERVERTC_SAMPLES_OPENED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
+    }
 
-    // TODO: Client Samples Related Metrics
+    public void incrementSamplesClosedWebsockets(String serviceId, String mediaUnitId) {
+        this.meterRegistry.counter(OBSERVERTC_SAMPLES_CLOSED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
+    }
 
+    public void incrementSamplesReceived(String serviceId, String mediaUnitId) {
+        this.incrementSamplesReceived(serviceId, mediaUnitId, 1);
+    }
+
+    public void incrementSamplesReceived(String serviceId, String mediaUnitId, int value) {
+        this.meterRegistry.counter(OBSERVERTC_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
+    }
+
+
+    @Deprecated
     public void incrementClientSamplesOpenedWebsockets(String serviceId, String mediaUnitId) {
         this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_OPENED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
     }
 
+    @Deprecated
     public void incrementClientSamplesClosedWebsockets(String serviceId, String mediaUnitId) {
         this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_CLOSED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
     }
 
+    @Deprecated
     public void incrementClientSamplesReceived(String serviceId, String mediaUnitId) {
         this.incrementClientSamplesReceived(serviceId, mediaUnitId, 1);
     }
 
+    @Deprecated
     public void incrementClientSamplesReceived(String serviceId, String mediaUnitId, int value) {
         this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
     }
 
-    // TODO: Sfu Samples Related Metrics
+    @Deprecated
     public void incrementSfuSamplesOpenedWebsockets(String serviceId,  String mediaUnitId) {
         this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_OPENED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
     }
 
+    @Deprecated
     public void incrementSfuSamplesClosedWebsockets(String serviceId, String mediaUnitId) {
         this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
     }
+    @Deprecated
     public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId) {
         this.incrementSfuSamplesReceived(serviceId, mediaUnitId, 1);
     }
+    @Deprecated
     public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId, int value) {
         this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
     }

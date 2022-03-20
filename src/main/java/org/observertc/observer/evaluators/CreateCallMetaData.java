@@ -1,0 +1,192 @@
+package org.observertc.observer.evaluators;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.events.CallMetaType;
+import org.observertc.observer.samples.*;
+import org.observertc.schemas.reports.CallMetaReport;
+import org.observertc.schemas.samples.Samples.ClientSample;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
+import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+@Singleton
+public class CreateCallMetaData implements Consumer<CollectedCallSamples> {
+
+    private static final Logger logger = LoggerFactory.getLogger(CreateCallMetaData.class);
+
+    Subject<List<CallMetaReport>> reportSubject = PublishSubject.create();
+
+    public Observable<List<CallMetaReport>> getObservableCallMetaReports() {
+        return this.reportSubject;
+    }
+
+    @Override
+    public void accept(CollectedCallSamples collectedCallSamples) throws Throwable {
+        List<CallMetaReport.Builder> reportBuilders = new LinkedList<>();
+        for (CallSamples callSamples : collectedCallSamples) {
+            var callId = callSamples.getCallId();
+            for (ClientSamples clientSamples : callSamples) {
+                var observedClientSample = clientSamples;
+                for (ClientSample clientSample : clientSamples) {
+
+                    Supplier<CallMetaReport.Builder> createCallMetaReport = () ->
+                            prepareReport(callId, observedClientSample, clientSample);
+
+                    // streamCertificates
+                    ClientSampleVisitor.streamCertificates(clientSample)
+                            .map(certificate -> this.createCertificateReportBuilder(createCallMetaReport.get(), certificate))
+                            .forEach(reportBuilders::add);
+
+                    // streamCodecs
+                    ClientSampleVisitor.streamCodecs(clientSample)
+                            .map(codec -> this.createCodecReportBuilder(createCallMetaReport.get(), codec))
+                            .forEach(reportBuilders::add);
+
+                    // streamIceLocalCandidates
+                    ClientSampleVisitor.streamIceLocalCandidates(clientSample)
+                            .map(iceLocalCandidate -> this.createIceLocalCandidateReportBuilder(createCallMetaReport.get(), iceLocalCandidate))
+                            .forEach(reportBuilders::add);
+
+                    // streamIceRemoteCandidates
+                    ClientSampleVisitor.streamIceRemoteCandidates(clientSample)
+                            .map(iceRemoteCandidate -> this.createIceRemoteCandidateReportBuilder(createCallMetaReport.get(), iceRemoteCandidate))
+                            .forEach(reportBuilders::add);
+
+                    // streamIceServers
+                    ClientSampleVisitor.streamIceServers(clientSample)
+                            .map(iceServer -> this.createIceServerReportBuilder(createCallMetaReport.get(), iceServer))
+                            .forEach(reportBuilders::add);
+
+                    // streamMediaConstraints
+                    ClientSampleVisitor.streamMediaConstraints(clientSample)
+                            .map(mediaConstraint -> this.createMediaConstraintReportBuilder(createCallMetaReport.get(), mediaConstraint))
+                            .forEach(reportBuilders::add);
+
+                    // streamMediaDevices
+                    ClientSampleVisitor.streamMediaDevices(clientSample)
+                            .map(mediaDevice -> this.createMediaDeviceReportBuilder(createCallMetaReport.get(), mediaDevice))
+                            .forEach(reportBuilders::add);
+
+                    // streamMediaSources
+                    ClientSampleVisitor.streamMediaSources(clientSample)
+                            .map(mediaSourceStat -> this.createMediaSourceReportBuilder(createCallMetaReport.get(), mediaSourceStat))
+                            .forEach(reportBuilders::add);
+
+                    // streamUserMediaErrors
+                    ClientSampleVisitor.streamUserMediaErrors(clientSample)
+                            .map(userMediaError -> this.createUserMediaErrorReportBuilder(createCallMetaReport.get(), userMediaError))
+                            .forEach(reportBuilders::add);
+                }
+            }
+        }
+
+        var reports = reportBuilders.stream()
+                .map(CallMetaReport.Builder::build)
+                .filter(Objects::nonNull)
+                .filter(this::validateMetaReport)
+                .collect(Collectors.toList());
+
+        this.reportSubject.onNext(reports);
+    }
+
+    private CallMetaReport.Builder createCertificateReportBuilder(CallMetaReport.Builder builder, ClientSample.Certificate certificate) {
+        String payload = JsonUtils.objectToString(certificate);
+        return builder
+                .setType(CallMetaType.CERTIFICATE.name())
+                .setPayload(payload)
+                ;
+    }
+
+    private CallMetaReport.Builder createCodecReportBuilder(CallMetaReport.Builder builder, ClientSample.MediaCodecStats codec) {
+        String payload = JsonUtils.objectToString(codec);
+        return builder
+                .setType(CallMetaType.CODEC.name())
+                .setPayload(payload)
+                ;
+    }
+
+    private CallMetaReport.Builder createIceLocalCandidateReportBuilder(CallMetaReport.Builder builder, ClientSample.IceLocalCandidate localCandidate) {
+        String payload = JsonUtils.objectToString(localCandidate);
+        return builder
+                .setType(CallMetaType.ICE_LOCAL_CANDIDATE.name())
+                .setPayload(payload)
+                ;
+    }
+
+    private CallMetaReport.Builder createIceRemoteCandidateReportBuilder(CallMetaReport.Builder builder, ClientSample.IceRemoteCandidate remoteCandidate) {
+        String payload = JsonUtils.objectToString(remoteCandidate);
+        return builder
+                .setType(CallMetaType.ICE_REMOTE_CANDIDATE.name())
+                .setPayload(payload)
+                ;
+    }
+
+    private CallMetaReport.Builder createIceServerReportBuilder(CallMetaReport.Builder builder, String iceServer) {
+        return builder
+                .setType(CallMetaType.ICE_SERVER.name())
+                .setPayload(iceServer)
+                ;
+    }
+
+    private CallMetaReport.Builder createMediaConstraintReportBuilder(CallMetaReport.Builder builder, String mediaConstraint) {
+        return builder
+                .setType(CallMetaType.MEDIA_CONSTRAINT.name())
+                .setPayload(mediaConstraint)
+                ;
+    }
+
+    private CallMetaReport.Builder createMediaDeviceReportBuilder(CallMetaReport.Builder builder, ClientSample.MediaDevice mediaDevice) {
+        String payload = JsonUtils.objectToString(mediaDevice);
+        return builder
+                .setType(CallMetaType.MEDIA_DEVICE.name())
+                .setPayload(payload)
+                ;
+    }
+
+    private CallMetaReport.Builder createMediaSourceReportBuilder(CallMetaReport.Builder builder, ClientSample.MediaSourceStat mediaSource) {
+        String payload = JsonUtils.objectToString(mediaSource);
+        return builder
+                .setType(CallMetaType.MEDIA_SOURCE.name())
+                .setPayload(payload)
+                ;
+    }
+
+    private CallMetaReport.Builder createUserMediaErrorReportBuilder(CallMetaReport.Builder builder, String userMediaError) {
+        return builder
+                .setType(CallMetaType.USER_MEDIA_ERROR.name())
+                .setPayload(userMediaError)
+                ;
+    }
+
+    private CallMetaReport.Builder prepareReport(UUID callId, ObservedClientSample observedSample, ClientSample clientSample) {
+        Long now = Instant.now().toEpochMilli();
+        return CallMetaReport.newBuilder()
+                .setServiceId(observedSample.getServiceId())
+                .setMediaUnitId(observedSample.getMediaUnitId())
+                .setRoomId(clientSample.roomId)
+                .setCallId(callId.toString())
+                .setUserId(clientSample.userId)
+                .setClientId(clientSample.clientId)
+                .setTimestamp(now)
+                .setSampleSeq(clientSample.sampleSeq)
+                .setSampleTimestamp(clientSample.timestamp)
+                .setMarker(clientSample.marker)
+                ;
+    }
+
+    private boolean validateMetaReport(CallMetaReport report) {
+        return Objects.nonNull(report.timestamp);
+    }
+}

@@ -15,9 +15,10 @@ import javax.inject.Inject;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Prototype
-class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract<MediaTrackDTO> {
+class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(MediaTrackAdded.class);
 
@@ -37,10 +38,12 @@ class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract<Me
             return;
         }
 
-        mediaTrackDTOs.stream()
+        var reports = mediaTrackDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private CallEventReport makeReport(MediaTrackDTO mediaTrackDTO) {
@@ -48,8 +51,7 @@ class MediaTrackAdded extends EventReporterAbstract.CallEventReporterAbstract<Me
         return this.makeReport(mediaTrackDTO, mediaTrackDTO.added);
     }
 
-    @Override
-    protected CallEventReport makeReport(MediaTrackDTO mediaTrackDTO, Long timestamp) {
+    private CallEventReport makeReport(MediaTrackDTO mediaTrackDTO, Long timestamp) {
         try {
             String callId = UUIDAdapter.toStringOrNull(mediaTrackDTO.callId);
             String clientId = UUIDAdapter.toStringOrNull(mediaTrackDTO.clientId);

@@ -1,12 +1,12 @@
 package org.observertc.observer;
 
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.evaluators.ObservedClientSampleProcessingPipeline;
-import org.observertc.observer.evaluators.ObservedSfuSampleProcessingPipeline;
-import org.observertc.observer.sources.ClientSamplesCollector;
-import org.observertc.observer.sources.SfuSamplesCollector;
-import org.observertc.observer.sinks.OutboundReportsCollector;
-import org.observertc.observer.sinks.OutboundReportsDispatcher;
+import org.observertc.observer.evaluators.ClientSamplesProcessor;
+import org.observertc.observer.evaluators.SfuSamplesProcessor;
+import org.observertc.observer.sinks.ReportSinks;
+import org.observertc.observer.sinks.ReportsCollector;
+import org.observertc.observer.sources.SampleSources;
+import org.observertc.observer.sources.SamplesCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Objects;
 
 @Singleton
 public class ObserverService {
@@ -26,43 +25,44 @@ public class ObserverService {
     ObserverConfig observerConfig;
 
     @Inject
-    ClientSamplesCollector clientSamplesCollector;
+    SampleSources sampleSources;
 
     @Inject
-    SfuSamplesCollector sfuSamplesCollector;
+    SamplesCollector samplesCollector;
 
     @Inject
-    ObservedSfuSampleProcessingPipeline sfuSamplesProcessor;
+    ClientSamplesProcessor clientSamplesProcessor;
 
     @Inject
-    ObservedClientSampleProcessingPipeline clientSamplesProcessor;
+    SfuSamplesProcessor sfuSamplesProcessor;
 
     @Inject
-    OutboundReportsCollector outboundReportsCollector;
+    ReportsCollector reportsCollector;
 
     @Inject
-    OutboundReportsDispatcher outboundReportsDispatcher;
+    ReportSinks reportSinks;
 
     @PostConstruct
     void setup() {
-        this.clientSamplesCollector
+        this.samplesCollector
                 .observableClientSamples()
                 .subscribe(this.clientSamplesProcessor.getObservedClientSampleObserver());
 
         this.clientSamplesProcessor
-                .getObservableOutboundReports()
-                .subscribe(this.outboundReportsCollector::addAll);
+                .getObservableReports()
+                .subscribe(this.reportsCollector::acceptAll);
 
-        this.sfuSamplesCollector
+        this.samplesCollector
                 .observableSfuSamples()
                 .subscribe(this.sfuSamplesProcessor.getObservedSfuSamplesObserver());
 
         this.sfuSamplesProcessor
-                .getObservableOutboundReports()
-                .subscribe(this.outboundReportsCollector::addAll);
+                .getObservableReports()
+                .subscribe(this.reportsCollector::acceptAll);
 
-        this.outboundReportsCollector.observableOutboundReports()
-                .subscribe(this.outboundReportsDispatcher);
+        this.reportsCollector
+                .getObservableReports()
+                .subscribe(this.reportSinks);
     }
 
     @PreDestroy
@@ -85,14 +85,6 @@ public class ObserverService {
             return;
         }
         this.run = false;
-        try {
-            if (Objects.nonNull(this.outboundReportsCollector)) {
-//                this.outboundReportsCollector.on();
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred while flushing collector");
-        }
-
         logger.info("Stopped");
     }
 

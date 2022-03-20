@@ -14,9 +14,10 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Prototype
-class SfuTransportOpened  extends EventReporterAbstract.SfuEventReporterAbstract<SfuTransportDTO> {
+class SfuTransportOpened  extends EventReporterAbstract.SfuEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuTransportOpened.class);
 
@@ -35,16 +36,17 @@ class SfuTransportOpened  extends EventReporterAbstract.SfuEventReporterAbstract
         if (Objects.isNull(sfuTransportDTOs) || sfuTransportDTOs.size() < 1) {
             return;
         }
-        sfuTransportDTOs.stream()
+        var reports = sfuTransportDTOs.stream()
                 .map(this::makeReport)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private SfuEventReport makeReport(SfuTransportDTO sfuTransportDTO) {
         return this.makeReport(sfuTransportDTO, sfuTransportDTO.opened);
     }
 
-    @Override
     protected SfuEventReport makeReport(SfuTransportDTO sfuTransportDTO, Long timestamp) {
         try {
             String sfuId = UUIDAdapter.toStringOrNull(sfuTransportDTO.sfuId);

@@ -1,9 +1,9 @@
 package org.observertc.observer.evaluators.listeners;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.PeerConnectionDTO;
+import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.RepositoryEvents;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.observer.repositories.tasks.RemovePeerConnectionsTask;
@@ -17,9 +17,10 @@ import javax.inject.Provider;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Prototype
-class PeerConnectionClosed extends EventReporterAbstract.CallEventReporterAbstract<PeerConnectionDTO> {
+class PeerConnectionClosed extends EventReporterAbstract.CallEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionClosed.class);
 
@@ -45,10 +46,12 @@ class PeerConnectionClosed extends EventReporterAbstract.CallEventReporterAbstra
             return;
         }
 
-        peerConnectionDTOs.stream()
+        var reports = peerConnectionDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private void receiveExpiredPeerConnections(List<RepositoryExpiredEvent<PeerConnectionDTO>> expiredPeerConnectionDTOs) {
@@ -65,7 +68,7 @@ class PeerConnectionClosed extends EventReporterAbstract.CallEventReporterAbstra
             return;
         }
 
-        expiredPeerConnectionDTOs.stream()
+        var reports = expiredPeerConnectionDTOs.stream()
                 .filter(Objects::nonNull)
                 .map(expiredPeerConnectionDTO -> {
                     var timestamp = expiredPeerConnectionDTO.estimatedLastTouch();
@@ -77,7 +80,9 @@ class PeerConnectionClosed extends EventReporterAbstract.CallEventReporterAbstra
                     return report;
                 })
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO) {
@@ -85,7 +90,6 @@ class PeerConnectionClosed extends EventReporterAbstract.CallEventReporterAbstra
         return this.makeReport(peerConnectionDTO, now);
     }
 
-    @Override
     protected CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO, Long timestamp) {
         try {
             String callId = UUIDAdapter.toStringOrNull(peerConnectionDTO.callId);

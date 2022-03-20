@@ -1,17 +1,13 @@
 package org.observertc.observer.sinks.kafka;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.annotations.NonNull;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.utils.Bytes;
-import org.observertc.observer.common.MuxedReport;
-import org.observertc.observer.common.OutboundReport;
-import org.observertc.observer.events.ReportType;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.Sink;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -20,24 +16,19 @@ import java.util.function.Function;
 
 public class KafkaSink extends Sink {
     private UUID key = UUID.randomUUID();
-    private String muxTopic;
-    private String demuxTopicPrefix;
     private Properties properties;
-    private boolean tryReconnectOnFailure = false;
+    private boolean tryReconnectOnFailure;
     private int consecutiveEmptyLists = 0;
-    private final Function<OutboundReport, ProducerRecord<UUID, Bytes>> createRecord;
+    private final Function<Report, ProducerRecord<UUID, Bytes>> recorder;
     private KafkaProducer<UUID, Bytes> producer;
 
-    public KafkaSink(Properties properties, boolean tryReconnectOnFailure, boolean multiplex, String demuxTopicPrefix, String muxTopic) {
+    public KafkaSink(Properties properties,
+                     boolean tryReconnectOnFailure,
+                     Function<Report, ProducerRecord<UUID, Bytes>> recorder
+    ) {
         this.properties = properties;
         this.tryReconnectOnFailure = tryReconnectOnFailure;
-        this.muxTopic = muxTopic;
-        this.demuxTopicPrefix = demuxTopicPrefix;
-        if (multiplex) {
-            this.createRecord = this.createMuxedRecordFunc();
-        } else {
-            this.createRecord = this.createDemuxedRecordFunc();
-        }
+        this.recorder = recorder;
     }
 
     @Override
@@ -48,8 +39,8 @@ public class KafkaSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull List<OutboundReport> outboundReports) {
-        if (outboundReports.size() < 1) {
+    public void accept(@NonNull List<Report> reports) {
+        if (reports.size() < 1) {
             if (3 < ++this.consecutiveEmptyLists) {
                 // keep the connection alive
             }
@@ -62,11 +53,11 @@ public class KafkaSink extends Sink {
         for (int tried = 0; tried < 3; ++tried) {
             try {
                 int recordsCounter = 0;
-                for (OutboundReport outboundReport : outboundReports) {
+                for (var report : reports) {
                     if (++recordsCounter < sent) {
                         continue;
                     }
-                    ProducerRecord<UUID, Bytes> producerRecord = this.createRecord.apply(outboundReport);
+                    var producerRecord = this.recorder.apply(report);
                     this.producer.send(producerRecord);
                     ++sent;
                 }
@@ -84,43 +75,5 @@ public class KafkaSink extends Sink {
                 break;
             }
         }
-
-    }
-
-    private Function<OutboundReport, ProducerRecord<UUID, Bytes>> createDemuxedRecordFunc() {
-        final String prefix = Objects.isNull(this.demuxTopicPrefix) ? "" : this.demuxTopicPrefix;
-        return outboundReport -> {
-            String topic = prefix + outboundReport.getType().toString();
-            Bytes message = new Bytes(outboundReport.getBytes());
-            ProducerRecord<UUID, Bytes> result = new ProducerRecord<UUID, Bytes>(topic, this.key, message);
-            return result;
-        };
-    }
-
-    private Function<OutboundReport, ProducerRecord<UUID, Bytes>> createMuxedRecordFunc() {
-//        SpecificData specificData = SpecificData.getForSchema(Report.getClassSchema());
-        ObjectMapper mapper = new ObjectMapper();
-        return inputReport -> {
-            MuxedReport muxedReport = new MuxedReport();
-            try {
-                ReportType reportType = inputReport.getType();
-                muxedReport.type = reportType.name();
-                muxedReport.payload = inputReport.getBytes();
-            } catch (Exception ex) {
-                logger.warn("Exception while creating mux report", ex);
-                return null;
-            }
-            ProducerRecord<UUID, Bytes> result;
-            try {
-                var encodedReport = mapper.writeValueAsBytes(muxedReport);
-                var message = Bytes.wrap(encodedReport);
-                result = new ProducerRecord<UUID, Bytes>(this.muxTopic, this.key, message);
-            } catch (IOException ex) {
-                logger.warn("Exception while creating mux message", ex);
-                return null;
-            }
-            return result;
-        };
-
     }
 }

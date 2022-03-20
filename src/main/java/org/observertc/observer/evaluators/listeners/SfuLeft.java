@@ -16,9 +16,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
-class SfuLeft extends EventReporterAbstract.SfuEventReporterAbstract<SfuDTO> {
+class SfuLeft extends EventReporterAbstract.SfuEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuLeft.class);
 
@@ -30,15 +31,13 @@ class SfuLeft extends EventReporterAbstract.SfuEventReporterAbstract<SfuDTO> {
 
     @PostConstruct
     void setup() {
-        this.bindListener(
-                this.repositoryEvents.removedSfu(),
-                this::removedSfuJoined
-        );
+        this.repositoryEvents
+                .removedSfu()
+                .subscribe(this::removedSfuJoined);
 
-        this.bindListener(
-                this.repositoryEvents.expiredSfu(),
-                this::receiveExpiredSfu
-        );
+        this.repositoryEvents
+                .expiredSfu()
+                .subscribe(this::receiveExpiredSfu);
 
     }
 
@@ -59,20 +58,24 @@ class SfuLeft extends EventReporterAbstract.SfuEventReporterAbstract<SfuDTO> {
             logger.warn("Removing expired SfuLeft was unsuccessful");
             return;
         }
-        task.getResult().stream().map(removedSfu -> {
+        var reports = task.getResult().stream().map(removedSfu -> {
             Long estimatedRemoval = estimatedRemovals.getOrDefault(removedSfu.sfuId, Instant.now().toEpochMilli());
             var report = this.makeReport(removedSfu, estimatedRemoval);
             return report;
-        }).filter(Objects::nonNull).forEach(this::forward);
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private void removedSfuJoined(List<SfuDTO> sfuDTOs) {
         if (Objects.isNull(sfuDTOs) || sfuDTOs.size() < 1) {
             return;
         }
-        sfuDTOs.stream()
+        var reports = sfuDTOs.stream()
                 .map(this::makeReport)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private SfuEventReport makeReport(SfuDTO sfuDTO) {
@@ -80,7 +83,6 @@ class SfuLeft extends EventReporterAbstract.SfuEventReporterAbstract<SfuDTO> {
         return this.makeReport(sfuDTO, now);
     }
 
-    @Override
     protected SfuEventReport makeReport(SfuDTO sfuDTO, Long timestamp) {
         try {
             String sfuId = UUIDAdapter.toStringOrNull(sfuDTO.sfuId);

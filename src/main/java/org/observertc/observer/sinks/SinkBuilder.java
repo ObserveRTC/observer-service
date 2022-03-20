@@ -1,6 +1,5 @@
 package org.observertc.observer.sinks;
 
-import org.observertc.observer.codecs.Decoder;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
@@ -22,13 +21,6 @@ public class SinkBuilder extends AbstractBuilder {
                 .filter(p -> p.getName().startsWith(thisPackage.getName()))
                 .map(Package::getName)
                 .collect(Collectors.toList());
-    }
-
-    public SinkBuilder setDecoder(Decoder decoder) {
-        if (Objects.nonNull(decoder)) {
-            this.subjects.add(decoder);
-        }
-        return this;
     }
 
     public Sink build() {

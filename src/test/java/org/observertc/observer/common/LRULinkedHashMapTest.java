@@ -18,6 +18,8 @@ class LRULinkedHashMapTest {
         cache.put(3, "three");
 
         Assertions.assertEquals(2, cache.size());
+        Assertions.assertNotNull(cache.get(2));
+        Assertions.assertNotNull(cache.get(3));
     }
 
 }

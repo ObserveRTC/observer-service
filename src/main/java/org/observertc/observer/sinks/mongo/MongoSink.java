@@ -3,9 +3,11 @@ package org.observertc.observer.sinks.mongo;
 import com.mongodb.client.MongoClient;
 import io.reactivex.rxjava3.annotations.NonNull;
 import org.bson.Document;
-import org.observertc.observer.common.OutboundReport;
 import org.observertc.observer.common.Utils;
-import org.observertc.observer.events.ReportType;
+import org.observertc.observer.mappings.Encoder;
+import org.observertc.observer.mappings.JsonMapper;
+import org.observertc.observer.reports.Report;
+import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.sinks.Sink;
 
 import java.util.*;
@@ -14,19 +16,21 @@ public class MongoSink extends Sink {
     private String database;
     private final MongoClient mongoClient;
     private int consecutiveEmptyLists = 0;
-    private Map<ReportType, DocumentMapper> mappers = new HashMap<>();
+    private final Encoder<Report, String> encoder;
     private Map<ReportType, String> collectionNames = new HashMap<>();
     private boolean logSummary = false;
 
 
     public MongoSink(MongoClient mongoClient) {
         this.mongoClient = mongoClient;
+        var mapper = JsonMapper.<Report>createObjectToStringMapper();
+        this.encoder = Encoder.from(mapper);
     }
 
 
     @Override
-    public void accept(@NonNull List<OutboundReport> outboundReports) {
-        if (outboundReports.size() < 1) {
+    public void accept(@NonNull List<Report> reports) {
+        if (reports.size() < 1) {
             if (3 < ++this.consecutiveEmptyLists) {
                 // keep the connection alive
                 this.mongoClient.listDatabaseNames();
@@ -38,14 +42,13 @@ public class MongoSink extends Sink {
 
         Map<ReportType, List<Document>> documents = new HashMap<>();
         try {
-            for (OutboundReport outboundReport : outboundReports) {
-                ReportType reportType = outboundReport.getType();
-                var mapper = this.mappers.get(reportType);
-                if (Objects.isNull(mapper)) {
-                    logger.warn("No mapper for report type, report cannot be decoded and mapped to Document, therefore it is dropped here", reportType);
+            for (var report : reports) {
+                ReportType reportType = report.type;
+                var jsonStr = this.encoder.encode(report);
+                if (Objects.isNull(jsonStr)) {
                     continue;
                 }
-                Document document = mapper.apply(outboundReport);
+                Document document = Document.parse(jsonStr);
                 List<Document> typeDocs = documents.get(reportType);
                 if (Objects.isNull(typeDocs)) {
                     typeDocs = new LinkedList<>();
@@ -96,12 +99,6 @@ public class MongoSink extends Sink {
 
     MongoSink withLogSummary(boolean value) {
         this.logSummary = value;
-        return this;
-    }
-
-    MongoSink withMapper(ReportType reportType, String collectionName, DocumentMapper documentMapper) {
-        this.mappers.put(reportType, documentMapper);
-        this.collectionNames.put(reportType, collectionName);
         return this;
     }
 }

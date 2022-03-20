@@ -18,9 +18,10 @@ import javax.inject.Provider;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Prototype
-class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<MediaTrackDTO> {
+class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract {
 
     private static final Logger logger = LoggerFactory.getLogger(MediaTrackRemoved.class);
 
@@ -46,10 +47,12 @@ class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<
             return;
         }
 
-        mediaTrackDTOs.stream()
+        var reports = mediaTrackDTOs.stream()
                 .map(this::makeReport)
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private void receiveExpiredMediaTracks(List<RepositoryExpiredEvent<MediaTrackDTO>> expiredMediaTracks) {
@@ -63,7 +66,7 @@ class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<
             return;
         }
 
-        expiredMediaTracks.stream()
+        var reports = expiredMediaTracks.stream()
                 .filter(Objects::nonNull)
                 .map(expiredMediaTrackDTO -> {
                     var timestamp = expiredMediaTrackDTO.estimatedLastTouch();
@@ -75,7 +78,9 @@ class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<
                     return report;
                 })
                 .filter(Objects::nonNull)
-                .forEach(this::forward);
+                .collect(Collectors.toList());
+
+        this.forward(reports);
     }
 
     private CallEventReport makeReport(MediaTrackDTO mediaTrackDTO) {
@@ -83,7 +88,6 @@ class MediaTrackRemoved extends EventReporterAbstract.CallEventReporterAbstract<
         return this.makeReport(mediaTrackDTO, now);
     }
 
-    @Override
     protected CallEventReport makeReport(MediaTrackDTO mediaTrackDTO, Long timestamp) {
         try {
             String callId = UUIDAdapter.toStringOrNull(mediaTrackDTO.callId);

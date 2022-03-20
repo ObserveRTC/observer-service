@@ -6,7 +6,6 @@ import org.jeasy.random.EasyRandomParameters;
 import org.observertc.observer.TestUtils;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.schemas.reports.*;
-import org.observertc.webrtc.schemas.reports.*;
 
 import javax.inject.Inject;
 import java.lang.reflect.Field;
