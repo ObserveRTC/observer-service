@@ -64,21 +64,21 @@ public class SfuDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
-		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
-		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
+		writer.writeString(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeString(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
 		writer.writeLong(JOINED_FIELD_NAME, this.joined);
-		writer.writeUTF(TIMEZONE_FIELD_NAME, this.timeZoneId);
+		writer.writeString(TIMEZONE_FIELD_NAME, this.timeZoneId);
 
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
-		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
+		this.serviceId = reader.readString(SERVICE_ID_FIELD_NAME);
+		this.mediaUnitId = reader.readString(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
 		this.joined = reader.readLong(JOINED_FIELD_NAME);
-		this.timeZoneId = reader.readUTF(TIMEZONE_FIELD_NAME);
+		this.timeZoneId = reader.readString(TIMEZONE_FIELD_NAME);
 	}
 
 	@Override

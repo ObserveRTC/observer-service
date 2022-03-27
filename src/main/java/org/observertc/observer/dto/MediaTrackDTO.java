@@ -63,7 +63,6 @@ public class MediaTrackDTO implements VersionedPortable {
 	public UUID trackId;
 	public UUID sfuStreamId;
 	public UUID sfuSinkId;
-//	public UUID rtpStreamId;
 	public Long ssrc;
 	public Long added;
 	public StreamDirection direction;
@@ -86,12 +85,12 @@ public class MediaTrackDTO implements VersionedPortable {
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
-		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
-		writer.writeUTF(ROOM_ID_FIELD_NAME, this.roomId);
+		writer.writeString(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeString(ROOM_ID_FIELD_NAME, this.roomId);
 
 		writer.writeByteArray(CLIENT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.clientId));
-		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
-		writer.writeUTF(USER_ID_FIELD_NAME, this.userId);
+		writer.writeString(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
+		writer.writeString(USER_ID_FIELD_NAME, this.userId);
 
 		writer.writeByteArray(PEER_CONNECTION_ID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionId));
 		writer.writeByteArray(MEDIA_TRACK_ID_FIELD_NAME, UUIDAdapter.toBytes(this.trackId));
@@ -101,19 +100,19 @@ public class MediaTrackDTO implements VersionedPortable {
 		writer.writeLong(SSRC_FIELD_NAME, this.ssrc);
 		writer.writeLong(ADDED_FIELD_NAME, this.added);
 		var direction = this.direction.name();
-		writer.writeUTF(DIRECTION_FIELD_NAME, direction);
+		writer.writeString(DIRECTION_FIELD_NAME, direction);
 
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
-		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
-		this.roomId = reader.readUTF(ROOM_ID_FIELD_NAME);
+		this.serviceId = reader.readString(SERVICE_ID_FIELD_NAME);
+		this.roomId = reader.readString(ROOM_ID_FIELD_NAME);
 
 		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));
-		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
-		this.userId = reader.readUTF(USER_ID_FIELD_NAME);
+		this.mediaUnitId = reader.readString(MEDIA_UNIT_ID_FIELD_NAME);
+		this.userId = reader.readString(USER_ID_FIELD_NAME);
 
 		this.peerConnectionId = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_ID_FIELD_NAME));
 		this.trackId = UUIDAdapter.toUUID(reader.readByteArray(MEDIA_TRACK_ID_FIELD_NAME));
@@ -121,7 +120,7 @@ public class MediaTrackDTO implements VersionedPortable {
 		this.sfuSinkId = SerDeUtils.readNullableUUID(reader, SFU_SINK_ID_FIELD_NAME);
 		this.ssrc = reader.readLong(SSRC_FIELD_NAME);
 		this.added = reader.readLong(ADDED_FIELD_NAME);
-		var direction = reader.readUTF(DIRECTION_FIELD_NAME);
+		var direction = reader.readString(DIRECTION_FIELD_NAME);
 		this.direction = StreamDirection.valueOf(direction);
 	}
 

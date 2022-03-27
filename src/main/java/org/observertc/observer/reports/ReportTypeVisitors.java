@@ -8,27 +8,6 @@ import org.observertc.schemas.reports.*;
  */
 public final class ReportTypeVisitors {
 
-//    public static OutboundReportTypeVisitor<Void, Schema> avroSchemaResolver() {
-//        return OutboundReportTypeVisitor.<Schema>createSupplierVisitor(
-//                () -> ObserverEventReport.getClassSchema(),
-//                () -> CallEventReport.getClassSchema(),
-//                () -> CallMetaReport.getClassSchema(),
-//                () -> ClientExtensionReport.getClassSchema(),
-//                () -> ClientTransportReport.getClassSchema(),
-//                () -> ClientDataChannelReport.getClassSchema(),
-//                () -> InboundAudioTrackReport.getClassSchema(),
-//                () -> InboundVideoTrackReport.getClassSchema(),
-//                () -> OutboundAudioTrackReport.getClassSchema(),
-//                () -> OutboundVideoTrackReport.getClassSchema(),
-//                () -> MediaTrackReport.getClassSchema(),
-//                () -> SfuEventReport.getClassSchema(),
-//                () -> SfuMetaReport.getClassSchema(),
-//                () -> SFUTransportReport.getClassSchema(),
-//                () -> SfuInboundRtpPadReport.getClassSchema(),
-//                () -> SfuOutboundRtpPadReport.getClassSchema(),
-//                () -> SfuSctpStreamReport.getClassSchema()
-//        );
-//    }
 
     public static ReportTypeVisitor<Object, Report> reportMuxer() {
         return ReportTypeVisitor.<Object, Report>createFunctionalVisitor(
@@ -50,29 +29,7 @@ public final class ReportTypeVisitors {
                 report -> Report.fromSfuSctpStreamReport((SfuSctpStreamReport) report)
         );
     }
-//
-//    public static OutboundReportTypeVisitor<Void, Function<OutboundReport, SpecificRecordBase>> decoderProvider(Decoder decoder) {
-//        return OutboundReportTypeVisitor.<Function<OutboundReport, SpecificRecordBase>>createSupplierVisitor(
-//                () -> decoder::decodeObserverEventReports,
-//                () -> decoder::decodeCallEventReports,
-//                () -> decoder::decodeCallMetaReports,
-//                () -> decoder::decodeClientExtensionReport,
-//                () -> decoder::decodeClientTransportReport,
-//                () -> decoder::decodeClientDataChannelReport,
-//                () -> decoder::decodeInboundAudioTrackReport,
-//                () -> decoder::decodeInboundVideoTrackReport,
-//                () -> decoder::decodeOutboundAudioTrackReport,
-//                () -> decoder::decodeOutboundVideoTrackReport,
-//                () -> decoder::decodeMediaTrackReport,
-//                () -> decoder::decodeSfuEventReport,
-//                () -> decoder::decodeSfuMetaReport,
-//                () -> decoder::decodeSfuTransportReport,
-//                () -> decoder::decodeSfuInboundRtpPadReport,
-//                () -> decoder::decodeSfuOutboundRtpPadReport,
-//                () -> decoder::decodeSfuSctpStreamReport
-//        );
-//    }
-//
+
     public static ReportTypeVisitor<Void, Boolean> makeTypeFilter(ObserverConfig.ReportsConfig config) {
         return ReportTypeVisitor.<Boolean>createSupplierVisitor(
                 () -> config.sendObserverEvents,

@@ -58,8 +58,8 @@ public class CallDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
-		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
-		writer.writeUTF(ROOM_ID_FIELD_NAME, this.roomId);
+		writer.writeString(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeString(ROOM_ID_FIELD_NAME, this.roomId);
 		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
 		writer.writeLong(STARTED_FIELD_NAME, this.started);
 
@@ -67,8 +67,8 @@ public class CallDTO implements VersionedPortable {
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
-		this.roomId = reader.readUTF(ROOM_ID_FIELD_NAME);
+		this.serviceId = reader.readString(SERVICE_ID_FIELD_NAME);
+		this.roomId = reader.readString(ROOM_ID_FIELD_NAME);
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
 		this.started = reader.readLong(STARTED_FIELD_NAME);
 	}

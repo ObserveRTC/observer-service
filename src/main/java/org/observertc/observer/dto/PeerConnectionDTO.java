@@ -78,11 +78,11 @@ public class PeerConnectionDTO implements VersionedPortable {
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
 		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
-		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
-		writer.writeUTF(ROOM_ID_FIELD_NAME, this.roomId);
+		writer.writeString(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeString(ROOM_ID_FIELD_NAME, this.roomId);
 
-		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
-		writer.writeUTF(USER_ID_FIELD_NAME, this.userId);
+		writer.writeString(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
+		writer.writeString(USER_ID_FIELD_NAME, this.userId);
 
 		writer.writeByteArray(CLIENT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.clientId));
 		writer.writeByteArray(PEER_CONNECTION_ID_FIELD_NAME, UUIDAdapter.toBytes(this.peerConnectionId));
@@ -94,11 +94,11 @@ public class PeerConnectionDTO implements VersionedPortable {
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
-		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
-		this.roomId = reader.readUTF(ROOM_ID_FIELD_NAME);
+		this.serviceId = reader.readString(SERVICE_ID_FIELD_NAME);
+		this.roomId = reader.readString(ROOM_ID_FIELD_NAME);
 
-		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
-		this.userId = reader.readUTF(USER_ID_FIELD_NAME);
+		this.mediaUnitId = reader.readString(MEDIA_UNIT_ID_FIELD_NAME);
+		this.userId = reader.readString(USER_ID_FIELD_NAME);
 
 		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));
 		this.peerConnectionId = UUIDAdapter.toUUID(reader.readByteArray(PEER_CONNECTION_ID_FIELD_NAME));

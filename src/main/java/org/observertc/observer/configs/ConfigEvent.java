@@ -2,6 +2,7 @@ package org.observertc.observer.configs;
 
 import java.util.Objects;
 
+@Deprecated
 public class ConfigEvent<T> {
 
     public static Builder<ObserverReportConfig> makeObserverReportConfigBuilder() {

@@ -3,29 +3,32 @@ package org.observertc.observer.dto;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
 import java.time.Instant;
 import java.util.UUID;
-
-import static org.observertc.observer.dto.CommonConstants.ROOM_ID;
-import static org.observertc.observer.dto.CommonConstants.SERVICE_ID;
 
 @MicronautTest
 class PeerConnectionDTOTest {
 
-    @Inject
-    DTOGenerators generator;
+    private final String ROOM_ID = UUID.randomUUID().toString();
+    private final String SERVICE_ID = UUID.randomUUID().toString();
+    private final String MEDIA_UNIT_ID = UUID.randomUUID().toString();
+    private final Long TIMESTAMP = Instant.now().toEpochMilli();
+    private final UUID CALL_ID = UUID.randomUUID();
+    private final UUID CLIENT_ID = UUID.randomUUID();
+    private final UUID PEER_CONNECTION_ID = UUID.randomUUID();
+    private final String USER_ID = UUID.randomUUID().toString();
+    private final Long SSRC = 1234L;
+    private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
 
     @Test
     void shouldNotBuildWithoutCallId() {
         var builder = PeerConnectionDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withCreatedTimestamp(TIMESTAMP)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -35,10 +38,10 @@ class PeerConnectionDTOTest {
     void shouldNotBuildWithoutServiceId() {
         var builder = PeerConnectionDTO.builder()
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withCreatedTimestamp(TIMESTAMP)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -48,10 +51,10 @@ class PeerConnectionDTOTest {
     void shouldNotBuildWithoutRoomId() {
         var builder = PeerConnectionDTO.builder()
                 .withServiceId(SERVICE_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withCreatedTimestamp(TIMESTAMP)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -62,9 +65,9 @@ class PeerConnectionDTOTest {
         var builder = PeerConnectionDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
+                .withCallId(CALL_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withCreatedTimestamp(TIMESTAMP)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -75,9 +78,9 @@ class PeerConnectionDTOTest {
         var builder = PeerConnectionDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -88,9 +91,9 @@ class PeerConnectionDTOTest {
         var builder = PeerConnectionDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withCreatedTimestamp(TIMESTAMP)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -179,10 +182,10 @@ class PeerConnectionDTOTest {
         return PeerConnectionDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withCreatedTimestamp(TIMESTAMP)
                 ;
     }
 

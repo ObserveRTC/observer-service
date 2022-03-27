@@ -1,7 +1,6 @@
 package org.observertc.observer.utils;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.TestUtils;
 import org.observertc.observer.dto.StreamDirection;
 
 import java.time.Instant;

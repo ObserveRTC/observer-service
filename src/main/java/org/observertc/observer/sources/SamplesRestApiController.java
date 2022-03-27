@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.util.Objects;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -62,9 +61,7 @@ public class SamplesRestApiController {
 					mediaUnitId,
 					samples
 			);
-			this.samplesCollector.add(receivedSample);
-		} catch (IOException e) {
-			return HttpResponse.serverError(e.getMessage());
+			this.samplesCollector.accept(receivedSample);
 		} catch (Throwable ex) {
 			return HttpResponse.serverError(ex.getMessage());
 		}

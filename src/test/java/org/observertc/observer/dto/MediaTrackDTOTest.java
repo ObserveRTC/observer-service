@@ -3,20 +3,26 @@ package org.observertc.observer.dto;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
 import java.time.Instant;
 import java.util.UUID;
-
-import static org.observertc.observer.dto.CommonConstants.ROOM_ID;
-import static org.observertc.observer.dto.CommonConstants.SERVICE_ID;
 
 @MicronautTest
 class MediaTrackDTOTest {
 
-    @Inject
-    DTOGenerators generator;
+    private final String ROOM_ID = UUID.randomUUID().toString();
+    private final String SERVICE_ID = UUID.randomUUID().toString();
+    private final String MEDIA_UNIT_ID = UUID.randomUUID().toString();
+    private final Long TIMESTAMP = Instant.now().toEpochMilli();
+    private final UUID CALL_ID = UUID.randomUUID();
+    private final UUID CLIENT_ID = UUID.randomUUID();
+    private final UUID TRACK_ID = UUID.randomUUID();
+    private final UUID PEER_CONNECTION_ID = UUID.randomUUID();
+    private final UUID SFU_STREAM_ID = UUID.randomUUID();
+    private final UUID SFU_SINK_ID = UUID.randomUUID();
+    private final String USER_ID = UUID.randomUUID().toString();
+    private final Long SSRC = 1234L;
+    private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
 
 
     @Test
@@ -24,12 +30,12 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -38,13 +44,13 @@ class MediaTrackDTOTest {
     void shouldNotBuildWithoutServiceId() {
         var builder = MediaTrackDTO.builder()
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -53,13 +59,13 @@ class MediaTrackDTOTest {
     void shouldNotBuildWithoutRoomId() {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -69,12 +75,12 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -84,12 +90,12 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -99,12 +105,12 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -114,12 +120,12 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -129,12 +135,12 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -144,123 +150,47 @@ class MediaTrackDTOTest {
         var builder = MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L);
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withAddedTimestamp(TIMESTAMP);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
 
     @Test
-    void shouldBuildWithServiceId() {
-        var expectedServiceId = "MyService";
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withServiceId(expectedServiceId).build();
+    void shouldHasExpectedValues() {
+        var subject = this.makeDTO();
 
-        Assertions.assertEquals(expectedServiceId, mediaTrackDTO.serviceId);
-    }
-
-    @Test
-    void shouldBuildWithMediaUnitId() {
-        var expectedMediaUintId = "myMediaUnitId";
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withMediaUnitId(expectedMediaUintId).build();
-
-        Assertions.assertEquals(expectedMediaUintId, mediaTrackDTO.mediaUnitId);
-    }
-
-    @Test
-    void shouldBuildWithRoomId() {
-        var expectedRoomId = "MyRoom";
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withRoomId(expectedRoomId).build();
-
-        Assertions.assertEquals(expectedRoomId, mediaTrackDTO.roomId);
-    }
-
-    @Test
-    void shouldBuildWithCallId() {
-        var expectedCallId = UUID.randomUUID();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withCallId(expectedCallId).build();
-
-        Assertions.assertEquals(expectedCallId, mediaTrackDTO.callId);
-    }
-
-    @Test
-    void shouldBuildWithClientId() {
-        var expectedClientId = UUID.randomUUID();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withClientId(expectedClientId).build();
-
-        Assertions.assertEquals(expectedClientId, mediaTrackDTO.clientId);
-    }
-
-    @Test
-    void shouldBuildWithPeerConnectionId() {
-        var expectedPeerConnectionId = UUID.randomUUID();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withPeerConnectionId(expectedPeerConnectionId).build();
-
-        Assertions.assertEquals(expectedPeerConnectionId, mediaTrackDTO.peerConnectionId);
-    }
-
-    @Test
-    void shouldBuildWithTrackId() {
-        var expectedTrackId = UUID.randomUUID();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withTrackId(expectedTrackId).build();
-
-        Assertions.assertEquals(expectedTrackId, mediaTrackDTO.trackId);
-    }
-
-    @Test
-    void shouldBuildWithSSRC() {
-        var expectedSSRC = 2347232L;
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withSSRC(expectedSSRC).build();
-
-        Assertions.assertEquals(expectedSSRC, mediaTrackDTO.ssrc);
-    }
-
-    @Test
-    void shouldBuildWithStreamDirection() {
-        var expectedStreamDirection = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withDirection(expectedStreamDirection).build();
-
-        Assertions.assertEquals(expectedStreamDirection, mediaTrackDTO.direction);
-    }
-
-    @Test
-    void shouldBuildWithTimestamp() {
-        var expectedTimestamp = Instant.now().toEpochMilli();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withAddedTimestamp(expectedTimestamp).build();
-
-        Assertions.assertEquals(expectedTimestamp, mediaTrackDTO.added);
-    }
-
-
-    @Test
-    void shouldBuildWithUserId() {
-        var expectedUserId = "myUserId";
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withUserId(expectedUserId).build();
-
-        Assertions.assertEquals(expectedUserId, mediaTrackDTO.userId);
-    }
-
-    @Test
-    void shouldBuildWithSfuStreamId() {
-        var expectedRtpStreamId = UUID.randomUUID();
-        MediaTrackDTO mediaTrackDTO = this.makeBuilder().withSfuStreamId(expectedRtpStreamId).build();
-
-        Assertions.assertEquals(expectedRtpStreamId, mediaTrackDTO.sfuStreamId);
+        Assertions.assertEquals(subject.callId, CALL_ID);
+        Assertions.assertEquals(subject.clientId, CLIENT_ID);
+        Assertions.assertEquals(subject.added, TIMESTAMP);
+        Assertions.assertEquals(subject.roomId, ROOM_ID);
+        Assertions.assertEquals(subject.userId, USER_ID);
+        Assertions.assertEquals(subject.trackId, TRACK_ID);
+        Assertions.assertEquals(subject.peerConnectionId, PEER_CONNECTION_ID);
+        Assertions.assertEquals(subject.ssrc, SSRC);
+        Assertions.assertEquals(subject.serviceId, SERVICE_ID);
+        Assertions.assertEquals(subject.mediaUnitId, MEDIA_UNIT_ID);
+        Assertions.assertEquals(subject.sfuStreamId, SFU_STREAM_ID);
+        Assertions.assertEquals(subject.sfuSinkId, SFU_SINK_ID);
+        Assertions.assertEquals(subject.direction, DIRECTION);
     }
 
 
     @Test
     void shouldBeEqual() {
-        var source = this.makeBuilder()
-                .withAddedTimestamp(Instant.now().toEpochMilli())
-                .build();
+        var source = this.makeDTO();
         var target = MediaTrackDTO.builder().from(source).build();
 
         boolean equals = source.equals(target);
         Assertions.assertTrue(equals);
+    }
+
+    private MediaTrackDTO makeDTO() {
+        return this.makeBuilder().build();
     }
 
 
@@ -268,13 +198,16 @@ class MediaTrackDTOTest {
         return MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withPeerConnectionId(UUID.randomUUID())
-                .withTrackId(UUID.randomUUID())
-                .withSSRC(1234L)
-                .withDirection(UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND)
-                .withAddedTimestamp(Instant.now().toEpochMilli())
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withSSRC(SSRC)
+                .withDirection(DIRECTION)
+                .withAddedTimestamp(TIMESTAMP)
+                .withSfuStreamId(SFU_STREAM_ID)
+                .withSfuSinkId(SFU_SINK_ID)
+                .withUserId(USER_ID)
                 ;
     }
 

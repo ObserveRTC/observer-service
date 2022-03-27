@@ -59,7 +59,7 @@ public class DTOGenerators {
                 .withMediaUnitId(mediaUnitId)
                 .withClientId(clientId)
                 .withUserId(userId)
-                .withConnectedTimestamp(timestamp)
+                .withJoinedTimestamp(timestamp)
                 .withTimeZoneId(timeZoneId);
         return result;
     }

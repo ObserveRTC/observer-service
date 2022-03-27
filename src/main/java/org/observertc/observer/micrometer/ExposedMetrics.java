@@ -12,16 +12,6 @@ import java.util.Objects;
 @Singleton
 public class ExposedMetrics {
     private static final String OBSERVERTC_PREFIX = "observertc";
-    private static final String CLIENT_SAMPLES_PREFIX = "clientsamples";
-    private static final String OBSERVERTC_CLIENT_SAMPLES_OPENED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, CLIENT_SAMPLES_PREFIX, "opened_websockets");
-    private static final String OBSERVERTC_CLIENT_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, CLIENT_SAMPLES_PREFIX, "closed_websockets");
-    private static final String OBSERVERTC_CLIENT_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, CLIENT_SAMPLES_PREFIX, "received");
-
-    private static final String SFU_SAMPLES_PREFIX = "sfusamples";
-    private static final String OBSERVERTC_SFU_SAMPLES_OPENED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "opened_websockets");
-    private static final String OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "closed_websockets");
-    private static final String OBSERVERTC_SFU_SAMPLES_RECEIVED = String.join("_", OBSERVERTC_PREFIX, SFU_SAMPLES_PREFIX, "received");
-
     private static final String SAMPLES_PREFIX = "samples";
     private static final String OBSERVERTC_SAMPLES_OPENED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SAMPLES_PREFIX, "opened_websockets");
     private static final String OBSERVERTC_SAMPLES_CLOSED_WEBSOCKETS = String.join("_", OBSERVERTC_PREFIX, SAMPLES_PREFIX, "closed_websockets");
@@ -72,44 +62,6 @@ public class ExposedMetrics {
         this.meterRegistry.counter(OBSERVERTC_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
     }
 
-
-    @Deprecated
-    public void incrementClientSamplesOpenedWebsockets(String serviceId, String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_OPENED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
-    }
-
-    @Deprecated
-    public void incrementClientSamplesClosedWebsockets(String serviceId, String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_CLOSED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
-    }
-
-    @Deprecated
-    public void incrementClientSamplesReceived(String serviceId, String mediaUnitId) {
-        this.incrementClientSamplesReceived(serviceId, mediaUnitId, 1);
-    }
-
-    @Deprecated
-    public void incrementClientSamplesReceived(String serviceId, String mediaUnitId, int value) {
-        this.meterRegistry.counter(OBSERVERTC_CLIENT_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
-    }
-
-    @Deprecated
-    public void incrementSfuSamplesOpenedWebsockets(String serviceId,  String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_OPENED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
-    }
-
-    @Deprecated
-    public void incrementSfuSamplesClosedWebsockets(String serviceId, String mediaUnitId) {
-        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_CLOSED_WEBSOCKETS, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId);
-    }
-    @Deprecated
-    public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId) {
-        this.incrementSfuSamplesReceived(serviceId, mediaUnitId, 1);
-    }
-    @Deprecated
-    public void incrementSfuSamplesReceived(String serviceId, String mediaUnitId, int value) {
-        this.meterRegistry.counter(OBSERVERTC_SFU_SAMPLES_RECEIVED, SERVICE_TAG_NAME, serviceId, MEDIA_UNIT_TAG_NAME, mediaUnitId).increment(value);
-    }
 
     public void incrementGeneratedReports() {
         this.incrementGeneratedReports(1);

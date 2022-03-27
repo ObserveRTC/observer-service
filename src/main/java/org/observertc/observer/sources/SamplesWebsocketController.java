@@ -38,7 +38,6 @@ import org.slf4j.event.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -176,21 +175,21 @@ public class SamplesWebsocketController {
 						receivedMessage.mediaUnitId,
 						samples
 				);
-				this.samplesCollector.add(receivedSamples);
-			} catch (IOException e) {
-				this.flawMonitor.makeLogEntry()
-						.withMessage("Exception while accepting sample")
-						.withException(e)
-						.complete();
-				if (Objects.isNull(receivedMessage.sessionId)) {
-					return;
-				}
-				var websocketSession = this.webSocketSessions.get(receivedMessage.sessionId);
-				if (Objects.isNull(websocketSession)) {
-					return;
-				}
-				websocketSession.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
-				return;
+				this.samplesCollector.accept(receivedSamples);
+//			} catch (IOException e) {
+//				this.flawMonitor.makeLogEntry()
+//						.withMessage("Exception while accepting sample")
+//						.withException(e)
+//						.complete();
+//				if (Objects.isNull(receivedMessage.sessionId)) {
+//					return;
+//				}
+//				var websocketSession = this.webSocketSessions.get(receivedMessage.sessionId);
+//				if (Objects.isNull(websocketSession)) {
+//					return;
+//				}
+//				websocketSession.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
+//				return;
 			} catch (Throwable ex) {
 				this.flawMonitor.makeLogEntry()
 						.withException(ex)

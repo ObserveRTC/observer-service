@@ -27,6 +27,7 @@ import java.util.Objects;
 
 // To avoid exposing hazelcast serialization specific fields
 @JsonIgnoreProperties(value = { "classId", "factoryId" })
+
 public class GeneralEntryDTO implements VersionedPortable {
 
 	public static final int CLASS_VERSION = 1;
@@ -54,15 +55,15 @@ public class GeneralEntryDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
-		writer.writeUTF(KEY_FIELD_NAME, this.key);
-		writer.writeUTF(VALUE_FIELD_NAME, this.value);
+		writer.writeString(KEY_FIELD_NAME, this.key);
+		writer.writeString(VALUE_FIELD_NAME, this.value);
 		writer.writeLong(TIMESTAMP_FIELD_NAME, this.timestamp);
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.key = reader.readUTF(KEY_FIELD_NAME);
-		this.value = reader.readUTF(VALUE_FIELD_NAME);
+		this.key = reader.readString(KEY_FIELD_NAME);
+		this.value = reader.readString(VALUE_FIELD_NAME);
 		this.timestamp = reader.readLong(TIMESTAMP_FIELD_NAME);
 	}
 
@@ -83,6 +84,8 @@ public class GeneralEntryDTO implements VersionedPortable {
 		}
 		GeneralEntryDTO otherDTO = (GeneralEntryDTO) other;
 		if (this.key != otherDTO.key) return false;
+		if (this.value != otherDTO.value) return false;
+		if (this.timestamp != otherDTO.timestamp) return false;
 		return true;
 	}
 

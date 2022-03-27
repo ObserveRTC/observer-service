@@ -3,9 +3,9 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.CallDTO;
-import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +33,6 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
 
     @Inject
     FindCallIdsByServiceRoomIds findCallIds;
-
-    @Inject
-    FetchCallsTask fetchCallsTask;
 
     @Inject
     Provider<RemoveClientsTask> removeClientsTaskProvider;

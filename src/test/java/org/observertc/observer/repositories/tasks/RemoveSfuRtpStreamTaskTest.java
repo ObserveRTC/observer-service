@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.SfuRtpPadDTO;
-import org.observertc.observer.dto.SfuRtpStreamPodDTOGenerator;
 import org.observertc.observer.repositories.HazelcastMaps;
 
 import javax.inject.Inject;

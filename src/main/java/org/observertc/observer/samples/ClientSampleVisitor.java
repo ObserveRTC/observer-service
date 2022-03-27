@@ -132,7 +132,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         if (Objects.isNull(clientSample)) {
             return;
         }
-        UUID clientId = UUID.fromString(clientSample.clientId);
+        UUID clientId = clientSample.clientId;
         streamCertificates(clientSample).forEach(certificate -> this.visitCertificate(obj, clientId, certificate));
         streamCodecs(clientSample).forEach(codec -> this.visitCodec(obj, clientId, codec));
         streamDataChannels(clientSample).forEach(dataChannel -> this.visitDataChannel(obj, clientId, dataChannel));

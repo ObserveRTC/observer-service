@@ -10,16 +10,16 @@ public class BufferUtils {
 
     public static<T> Observable<List<T>> wrapObservable(Observable<T> source, ObserverConfig.CollectorConfig config) {
         var maxItems = config.maxItems;
-        var maxTimeInS = config.maxTimeInS;
-        if (maxItems < 1 && maxTimeInS < 1) {
+        var maxTimeInMs = config.maxTimeInMs;
+        if (maxItems < 1 && maxTimeInMs < 1) {
             return source.map(List::of);
         }
         if (maxItems < 1) {
-            return source.buffer(maxTimeInS, TimeUnit.SECONDS);
+            return source.buffer(maxTimeInMs, TimeUnit.MILLISECONDS);
         }
-        if (maxTimeInS < 1) {
+        if (maxTimeInMs < 1) {
             return source.buffer(maxItems);
         }
-        return source.buffer(maxTimeInS, TimeUnit.SECONDS, maxItems);
+        return source.buffer(maxTimeInMs, TimeUnit.MILLISECONDS, maxItems);
     }
 }

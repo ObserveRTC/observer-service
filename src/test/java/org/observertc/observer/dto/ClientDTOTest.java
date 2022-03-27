@@ -1,29 +1,30 @@
 package org.observertc.observer.dto;
 
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.UUID;
 
-@MicronautTest
 class ClientDTOTest {
 
-    @Inject
-    DTOGenerators generator;
-
+    private final String ROOM_ID = UUID.randomUUID().toString();
+    private final String SERVICE_ID = UUID.randomUUID().toString();
+    private final String MEDIA_UNIT_ID = UUID.randomUUID().toString();
+    private final Long TIMESTAMP = Instant.now().toEpochMilli();
+    private final UUID CALL_ID = UUID.randomUUID();
+    private final UUID CLIENT_ID = UUID.randomUUID();
+    private final String TIMEZONE_ID = ZoneId.systemDefault().getId();
 
     @Test
     void shouldNotBuildWithoutCallId() {
         ClientDTO.Builder builder = ClientDTO.builder()
-                .withClientId(UUID.randomUUID())
-                .withServiceId(CommonConstants.SERVICE_ID)
-                .withConnectedTimestamp(Instant.now().toEpochMilli())
-                .withRoomId(CommonConstants.ROOM_ID);
+                .withServiceId(SERVICE_ID)
+                .withRoomId(ROOM_ID)
+                .withClientId(CLIENT_ID)
+                .withJoinedTimestamp(TIMESTAMP);
+
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -31,10 +32,10 @@ class ClientDTOTest {
     @Test
     void shouldNotBuildWithoutServiceId() {
         ClientDTO.Builder builder = ClientDTO.builder()
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withConnectedTimestamp(Instant.now().toEpochMilli())
-                .withRoomId(CommonConstants.ROOM_ID);
+                .withRoomId(ROOM_ID)
+                .withClientId(CLIENT_ID)
+                .withJoinedTimestamp(TIMESTAMP)
+                .withCallId(CALL_ID);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -42,10 +43,10 @@ class ClientDTOTest {
     @Test
     void shouldNotBuildWithoutRoomId() {
         ClientDTO.Builder builder = ClientDTO.builder()
-                .withServiceId(CommonConstants.SERVICE_ID)
-                .withClientId(UUID.randomUUID())
-                .withConnectedTimestamp(Instant.now().toEpochMilli())
-                .withCallId(UUID.randomUUID());
+                .withServiceId(SERVICE_ID)
+                .withClientId(CLIENT_ID)
+                .withJoinedTimestamp(TIMESTAMP)
+                .withCallId(CALL_ID);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -53,10 +54,10 @@ class ClientDTOTest {
     @Test
     void shouldNotBuildWithoutClientId() {
         ClientDTO.Builder builder = ClientDTO.builder()
-                .withServiceId(CommonConstants.SERVICE_ID)
-                .withRoomId(CommonConstants.ROOM_ID)
-                .withConnectedTimestamp(Instant.now().toEpochMilli())
-                .withCallId(UUID.randomUUID());
+                .withServiceId(SERVICE_ID)
+                .withRoomId(ROOM_ID)
+                .withJoinedTimestamp(TIMESTAMP)
+                .withCallId(CALL_ID);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -64,84 +65,32 @@ class ClientDTOTest {
     @Test
     void shouldNotBuildWithoutTimestamp() {
         ClientDTO.Builder builder = ClientDTO.builder()
-                .withServiceId(CommonConstants.SERVICE_ID)
-                .withRoomId(CommonConstants.ROOM_ID)
-                .withClientId(UUID.randomUUID())
-                .withCallId(UUID.randomUUID());
+                .withServiceId(SERVICE_ID)
+                .withRoomId(ROOM_ID)
+                .withClientId(CLIENT_ID)
+                .withCallId(CALL_ID);
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
 
-    @Test
-    void shouldBuildWithServiceId() {
-        var expectedServiceId = "MyService";
-        ClientDTO clientDTO = this.makeBuilder().withServiceId(expectedServiceId).build();
-
-        Assertions.assertEquals(expectedServiceId, clientDTO.serviceId);
-    }
-
-    @Test
-    void shouldBuildWithRoomId() {
-        var expectedRoomId = "MyRoom";
-        ClientDTO clientDTO = this.makeBuilder().withRoomId(expectedRoomId).build();
-
-        Assertions.assertEquals(expectedRoomId, clientDTO.roomId);
-    }
-
-    @Test
-    void shouldBuildWithMediaUnitId() {
-        var expectedMediaUintId = "myMediaUnitId";
-        ClientDTO clientDTO = this.makeBuilder().withMediaUnitId(expectedMediaUintId).build();
-
-        Assertions.assertEquals(expectedMediaUintId, clientDTO.mediaUnitId);
-    }
-
-    @Test
-    void shouldBuildWithUserId() {
-        var expectedUserId = "myUserId";
-        ClientDTO clientDTO = this.makeBuilder().withUserId(expectedUserId).build();
-
-        Assertions.assertEquals(expectedUserId, clientDTO.userId);
-    }
-
-    @Test
-    void shouldBuildWithClientId() {
-        var expectedClientId = UUID.randomUUID();
-        ClientDTO clientDTO = this.makeBuilder().withClientId(expectedClientId).build();
-
-        Assertions.assertEquals(expectedClientId, clientDTO.clientId);
-    }
-
-    @Test
-    void shouldBuildWithTimeZoneId() {
-        var expectedTimeZoneId = ZoneId.SHORT_IDS.values().stream().findFirst().get();
-        ClientDTO clientDTO = this.makeBuilder().withTimeZoneId(expectedTimeZoneId).build();
-
-        Assertions.assertEquals(expectedTimeZoneId, clientDTO.timeZoneId);
-    }
 
 
     @Test
-    void shouldBuildWithCallId() {
-        var expectedCallId = UUID.randomUUID();
-        ClientDTO clientDTO = this.makeBuilder().withCallId(expectedCallId).build();
+    void shouldHasExpectedValues() {
+        var subject = this.makeDTO();
 
-        Assertions.assertEquals(expectedCallId, clientDTO.callId);
-    }
-
-    @Test
-    void shouldBuildWithTimestamp() {
-        var expectedTimestamp = Instant.now().toEpochMilli();
-        ClientDTO clientDTO = this.makeBuilder().withConnectedTimestamp(expectedTimestamp).build();
-
-        Assertions.assertEquals(expectedTimestamp, clientDTO.joined);
+        Assertions.assertEquals(subject.callId, CALL_ID);
+        Assertions.assertEquals(subject.clientId, CLIENT_ID);
+        Assertions.assertEquals(subject.joined, TIMESTAMP);
+        Assertions.assertEquals(subject.roomId, ROOM_ID);
+        Assertions.assertEquals(subject.serviceId, SERVICE_ID);
+        Assertions.assertEquals(subject.mediaUnitId, MEDIA_UNIT_ID);
+        Assertions.assertEquals(subject.timeZoneId, TIMEZONE_ID);
     }
 
     @Test
     void shouldBeEqual() {
-        var source = this.makeBuilder()
-                .withConnectedTimestamp(Instant.now().toEpochMilli())
-                .build();
+        var source = this.makeDTO();
         var target = ClientDTO.builder().from(source).build();
 
         boolean equals = source.equals(target);
@@ -151,12 +100,21 @@ class ClientDTOTest {
 
     private ClientDTO.Builder makeBuilder() {
         return ClientDTO.builder()
-                .withServiceId(CommonConstants.SERVICE_ID)
-                .withRoomId(CommonConstants.ROOM_ID)
-                .withCallId(UUID.randomUUID())
-                .withClientId(UUID.randomUUID())
-                .withConnectedTimestamp(Instant.now().toEpochMilli())
+                .withServiceId(SERVICE_ID)
+                .withRoomId(ROOM_ID)
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withJoinedTimestamp(TIMESTAMP)
+                .withTimeZoneId(TIMEZONE_ID)
+                .withMediaUnitId(MEDIA_UNIT_ID)
                 ;
     }
+
+    private ClientDTO makeDTO() {
+        return this.makeBuilder().build();
+    }
+
+
+
 
 }

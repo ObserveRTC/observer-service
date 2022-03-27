@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.api.Randomizer;
-import org.observertc.observer.TestUtils;
+import org.observertc.observer.utils.TestUtils;
 import org.observertc.observer.utils.RandomGenerators;
 import org.observertc.schemas.samples.Samples.ClientSample;
 

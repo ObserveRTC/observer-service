@@ -144,31 +144,25 @@ public class ObserverConfig {
 
 		}
 
-		public ClientProcessDebouncersCollectorConfig clientProcessDebouncers = new ClientProcessDebouncersCollectorConfig();
-
-		@ConfigurationProperties("clientProcessDebouncers")
-		public static class ClientProcessDebouncersCollectorConfig extends CollectorConfig {
-
-		}
-
-		public SfuSamplesCollectorConfig sfuSamplesCollector = new SfuSamplesCollectorConfig();
-
-		@ConfigurationProperties("clientSamples")
-		public static class SfuSamplesCollectorConfig extends CollectorConfig {
-
-		}
-
-		public SfuProcessDebouncersCollectorConfig sfuProcessDebouncers = new SfuProcessDebouncersCollectorConfig();
+		public DebouncersCollectorConfig debouncers = new DebouncersCollectorConfig();
 
 		@ConfigurationProperties("sfuProcessDebouncers")
-		public static class SfuProcessDebouncersCollectorConfig extends CollectorConfig {
+		public static class DebouncersCollectorConfig extends CollectorConfig {
 
 		}
 
-		public OutboundReportsCollectorConfig outboundReportsCollector = new OutboundReportsCollectorConfig();
+		public SamplesBufferCollectorConfig samplesBuffer = new SamplesBufferCollectorConfig();
+
+		@ConfigurationProperties("sfuProcessDebouncers")
+		public static class SamplesBufferCollectorConfig extends CollectorConfig {
+
+		}
+
+
+		public ReportsCollectorConfig reportsCollector = new ReportsCollectorConfig();
 
 		@ConfigurationProperties("outboundReports")
-		public static class OutboundReportsCollectorConfig extends CollectorConfig {
+		public static class ReportsCollectorConfig extends CollectorConfig {
 
 		}
 
@@ -187,7 +181,7 @@ public class ObserverConfig {
 		public int maxItems = 2000;
 
 		@Min(0)
-		public int maxTimeInS = 0;
+		public int maxTimeInMs = 0;
 
 	}
 

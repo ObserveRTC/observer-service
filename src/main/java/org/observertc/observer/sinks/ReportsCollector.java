@@ -1,13 +1,11 @@
 package org.observertc.observer.sinks;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
+import org.observertc.observer.common.ObservableCollector;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.observer.reports.ReportTypeVisitors;
-import org.observertc.observer.common.PassiveCollector;
-import org.observertc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +24,14 @@ public class ReportsCollector {
 
     @Inject
     ObserverConfig observerConfig;
-    private final Subject<List<Report>> reportSubject = PublishSubject.create();
-    private PassiveCollector<Report> reportsCollector;
+    private ObservableCollector<Report> reportsCollector;
     private ReportTypeVisitor<Void, Boolean> reportsFilter = null;
 
     @PostConstruct
     void setup() {
-        var maxItems = observerConfig.buffers.outboundReportsCollector.maxItems;
-        var maxTimeInMs = observerConfig.buffers.outboundReportsCollector.maxTimeInS * 1000;
-        this.reportsCollector = PassiveCollector.<Report>builder()
-                .withListener(this.reportSubject::onNext)
+        var maxItems = observerConfig.buffers.reportsCollector.maxItems;
+        var maxTimeInMs = observerConfig.buffers.reportsCollector.maxTimeInMs * 1000;
+        this.reportsCollector = ObservableCollector.<Report>builder()
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
                 .build();
@@ -78,6 +74,6 @@ public class ReportsCollector {
     }
 
     public Observable<List<Report>> getObservableReports() {
-        return this.reportSubject;
+        return this.reportsCollector.observableEmittedItems();
     }
 }

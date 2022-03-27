@@ -45,7 +45,7 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
         if (Objects.isNull(sfuSample)) {
             return;
         }
-        UUID sfuId = UUID.fromString(sfuSample.sfuId);
+        UUID sfuId = sfuSample.sfuId;
         streamTransports(sfuSample).forEach(transport -> this.visitSfuTransport(obj, sfuId, transport));
         streamOutboundRtpPads(sfuSample).forEach(sfuRtpSource -> this.visitSfuOutboundRtpPads(obj, sfuId, sfuRtpSource));
         streamInboundRtpPads(sfuSample).forEach(sfuRtpSink -> this.visitSfuInboundRtpPads(obj, sfuId, sfuRtpSink));

@@ -7,6 +7,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+@Deprecated
 public interface ConfigTypeVisitor<TIn, TOut> extends BiFunction<TIn, ConfigType, TOut> {
     static final Logger logger = LoggerFactory.getLogger(ConfigTypeVisitor.class);
 

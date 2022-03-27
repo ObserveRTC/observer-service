@@ -4,11 +4,12 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.utils.DTOGenerators;
 import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.utils.DTOGenerators;
 import org.observertc.schemas.reports.CallEventReport;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +29,7 @@ class CallStartedTest {
 
     @Test
     void reportFieldsShouldHaveTheRightValues() throws InterruptedException, ExecutionException, TimeoutException {
-        var callEventReportPromise = new CompletableFuture<CallEventReport>();
+        var callEventReportPromise = new CompletableFuture<List<CallEventReport>>();
         var callDTO = dtoGenerators.getCallDTO();
         this.callStarted.getObservableReports().subscribe(callEventReportPromise::complete);
 

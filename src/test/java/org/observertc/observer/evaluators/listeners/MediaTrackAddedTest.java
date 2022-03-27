@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.MediaTrackDTO;
-import org.observertc.observer.evaluators.listeners.attachments.MediaTrackAttachment;
+import org.observertc.observer.components.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;

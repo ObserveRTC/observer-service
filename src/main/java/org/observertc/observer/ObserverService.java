@@ -1,8 +1,7 @@
 package org.observertc.observer;
 
+import org.observertc.observer.components.*;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.evaluators.ClientSamplesProcessor;
-import org.observertc.observer.evaluators.SfuSamplesProcessor;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;
 import org.observertc.observer.sources.SampleSources;
@@ -31,10 +30,19 @@ public class ObserverService {
     SamplesCollector samplesCollector;
 
     @Inject
-    ClientSamplesProcessor clientSamplesProcessor;
+    CallEntitiesUpdater callEntitiesUpdater;
 
     @Inject
-    SfuSamplesProcessor sfuSamplesProcessor;
+    ClientSamplesAnalyzer clientSamplesAnalyzer;
+
+    @Inject
+    SfuEntitiesUpdater sfuEntitiesUpdater;
+
+    @Inject
+    SfuSamplesAnalyzer sfuSamplesAnalyzer;
+
+    @Inject
+    RepositoryEventsInterpreter repositoryEventsInterpreter;
 
     @Inject
     ReportsCollector reportsCollector;
@@ -46,22 +54,31 @@ public class ObserverService {
     void setup() {
         this.samplesCollector
                 .observableClientSamples()
-                .subscribe(this.clientSamplesProcessor.getObservedClientSampleObserver());
-
-        this.clientSamplesProcessor
-                .getObservableReports()
-                .subscribe(this.reportsCollector::acceptAll);
+                .subscribe(this.callEntitiesUpdater::accept);
 
         this.samplesCollector
                 .observableSfuSamples()
-                .subscribe(this.sfuSamplesProcessor.getObservedSfuSamplesObserver());
+                .subscribe(this.sfuEntitiesUpdater::accept);
 
-        this.sfuSamplesProcessor
-                .getObservableReports()
+        // call samples
+        this.callEntitiesUpdater.observableClientSamples()
+                .subscribe(this.clientSamplesAnalyzer::accept);
+
+        this.clientSamplesAnalyzer.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
-        this.reportsCollector
-                .getObservableReports()
+        // sfu samples
+        this.sfuEntitiesUpdater.observableClientSamples()
+                .subscribe(this.sfuSamplesAnalyzer::accept);
+
+        this.sfuSamplesAnalyzer.observableReports()
+                .subscribe(this.reportsCollector::acceptAll);
+
+        // repository events
+        this.repositoryEventsInterpreter.observableReports()
+                .subscribe(this.reportsCollector::acceptAll);
+
+        this.reportsCollector.getObservableReports()
                 .subscribe(this.reportSinks);
     }
 

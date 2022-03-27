@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 import java.util.Objects;
 
 
+@Deprecated
 @Singleton
 public class ConfigEntryDispatcher implements EntryListener<ConfigType, ConfigDTO> {
     private static final Logger logger = LoggerFactory.getLogger(ConfigEntryDispatcher.class);

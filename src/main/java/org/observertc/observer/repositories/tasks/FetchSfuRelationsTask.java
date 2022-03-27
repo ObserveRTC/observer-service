@@ -29,7 +29,6 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     ExposedMetrics exposedMetrics;
 
     public static class Report {
-        public final Map<UUID, SfuRtpPadDTO> sfuRtpPads = new HashMap<>();
         public final Map<UUID, SfuStreamDTO> sfuStreams = new HashMap<>();
         public final Map<UUID, SfuSinkDTO> sfuSinks = new HashMap<>();
     }
@@ -50,7 +49,6 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
                     if (rtpPads.size() < 1) {
                         return;
                     }
-                    this.result.sfuRtpPads.putAll(rtpPads);
                     var streamIds = rtpPads.values().stream()
                             .filter(dto -> Objects.nonNull(dto.streamId))
                             .map(dto -> dto.streamId)

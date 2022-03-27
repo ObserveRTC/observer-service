@@ -10,7 +10,19 @@ const copyAvroSchema = (schema) => {
 
 const createSamples = (path) => {
     const samplesSchema = schemas.AvroSamples;
-    const samplesClass = POJO.from(samplesSchema, true);
+    const uuidFields = new Set([
+        "callId",
+        "clientId",
+        "peerConnectionId",
+        "trackId",
+        "sfuStreamId",
+        "sfuSinkId",
+        "sfuId",
+        "transportId",
+        "padId",
+        "channelId",
+    ]);
+    const samplesClass = POJO.from(samplesSchema, true, uuidFields);
     samplesClass.version = schemas.version;
     const samplesClassString = samplesClass.toLines().join("\n");
 
@@ -19,6 +31,7 @@ const createSamples = (path) => {
         ``,
         `import com.fasterxml.jackson.annotation.JsonIgnoreProperties;`,
         `import com.fasterxml.jackson.annotation.JsonProperty;`,
+        `import java.util.UUID;`,
         ``,
         samplesClassString
     ].join("\n");

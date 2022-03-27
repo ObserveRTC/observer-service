@@ -43,9 +43,6 @@ public class SfuTransportDTO implements VersionedPortable {
 	private static final String INTERNAL_TRANSPORT_FIELD_NAME = "internal";
 	private static final String OPENED_FIELD_NAME = "opened";
 
-	private static final String CALL_ID_FIELD_NAME = "callId";
-	private static final String CLIENT_ID_FIELD_NAME = "clientId";
-
 	public String serviceId;
 	public String mediaUnitId;
 	public UUID sfuId;
@@ -53,9 +50,6 @@ public class SfuTransportDTO implements VersionedPortable {
 	public boolean internal = false;
 	public Long opened;
 
-
-	public UUID clientId;
-	public UUID callId;
 
 	SfuTransportDTO() {
 
@@ -73,28 +67,24 @@ public class SfuTransportDTO implements VersionedPortable {
 
 	@Override
 	public void writePortable(PortableWriter writer) throws IOException {
-		writer.writeUTF(SERVICE_ID_FIELD_NAME, this.serviceId);
-		writer.writeUTF(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
+		writer.writeString(SERVICE_ID_FIELD_NAME, this.serviceId);
+		writer.writeString(MEDIA_UNIT_ID_FIELD_NAME, this.mediaUnitId);
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
 		writer.writeByteArray(TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.transportId));
 		writer.writeBoolean(INTERNAL_TRANSPORT_FIELD_NAME, this.internal);
 		writer.writeLong(OPENED_FIELD_NAME, this.opened);
 
-		SerDeUtils.writeNullableUUID(writer, CALL_ID_FIELD_NAME, this.callId);
-		SerDeUtils.writeNullableUUID(writer, CLIENT_ID_FIELD_NAME, this.clientId);
 	}
 
 	@Override
 	public void readPortable(PortableReader reader) throws IOException {
-		this.serviceId = reader.readUTF(SERVICE_ID_FIELD_NAME);
-		this.mediaUnitId = reader.readUTF(MEDIA_UNIT_ID_FIELD_NAME);
+		this.serviceId = reader.readString(SERVICE_ID_FIELD_NAME);
+		this.mediaUnitId = reader.readString(MEDIA_UNIT_ID_FIELD_NAME);
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
 		this.transportId = UUIDAdapter.toUUID(reader.readByteArray(TRANSPORT_ID_FIELD_NAME));
 		this.internal = reader.readBoolean(INTERNAL_TRANSPORT_FIELD_NAME);
 		this.opened = reader.readLong(OPENED_FIELD_NAME);
 
-		this.callId = SerDeUtils.readNullableUUID(reader, CALL_ID_FIELD_NAME);
-		this.clientId = SerDeUtils.readNullableUUID(reader, CLIENT_ID_FIELD_NAME);
 	}
 
 	@Override
@@ -118,9 +108,7 @@ public class SfuTransportDTO implements VersionedPortable {
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.internal, otherDTO.internal) ||
 			!Objects.equals(this.transportId, otherDTO.transportId) ||
-			!Objects.equals(this.opened, otherDTO.opened) ||
-			!Objects.equals(this.clientId, otherDTO.clientId) ||
-			!Objects.equals(this.callId, otherDTO.callId)
+			!Objects.equals(this.opened, otherDTO.opened)
 		) {
 			return false;
 		}
@@ -135,7 +123,6 @@ public class SfuTransportDTO implements VersionedPortable {
 			return this.withSfuId(source.sfuId)
 					.withInternal(source.internal)
 					.withTransportId(source.transportId)
-					.withCallId(source.callId)
 					.withServiceId(source.serviceId)
 					.withMediaUnitId(source.mediaUnitId)
 					.withOpenedTimestamp(source.opened)
@@ -149,16 +136,6 @@ public class SfuTransportDTO implements VersionedPortable {
 
 		public Builder withTransportId(UUID value) {
 			this.result.transportId = value;
-			return this;
-		}
-
-		public Builder withCallId(UUID value) {
-			this.result.callId = value;
-			return this;
-		}
-
-		public Builder withClientId(UUID value) {
-			this.result.clientId = value;
 			return this;
 		}
 

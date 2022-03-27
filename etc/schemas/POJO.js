@@ -1,9 +1,12 @@
 
 export class POJO {
-    static from(schema, generateBuilder = false) {
+    static from(schema, generateBuilder = false, uuidFields = undefined) {
         const result = new POJO();
         result._doc = schema.doc;
         result._name = schema.name;
+        if (!!uuidFields) {
+            result._uuidFields = uuidFields;
+        }
         result.generateBuilder = generateBuilder;
         for (const field of schema.fields) {
             try {
@@ -11,7 +14,6 @@ export class POJO {
             } catch (err) {
                 console.warn(`Error occurred while adding`, field, err);
             }
-
         }
         return result;
     }
@@ -23,6 +25,7 @@ export class POJO {
         this._fields = [];
         this._nestedClasses = [];
         this._builderFields = null;
+        this._uuidFields = new Set();
     }
 
     get name() {
@@ -39,6 +42,10 @@ export class POJO {
 
     set level(value) {
         this._level = value;
+    }
+
+    addUuidField(...fieldNames) {
+        this._uuidFields.add(...fieldNames);
     }
 
     add(field) {
@@ -64,7 +71,7 @@ export class POJO {
             return;
         }
         if (isObject) {
-            const nestedClass = POJO.from(type, !!this._builderFields);
+            const nestedClass = POJO.from(type, !!this._builderFields, this._uuidFields);
             nestedClass.level = this._level + 1;
             // console.log("nestedBuilder", this._builderFields, !!this._builderFields);
             this._nestedClasses.push(nestedClass);
@@ -77,35 +84,38 @@ export class POJO {
             return;
         }
         let javaType = undefined;
-        switch (type) {
-            case "string":
-                javaType = "String";
-                break;
-            case "float":
-                javaType = "Float";
-                break;
-            case "double":
-                javaType = "Double";
-                break;
-            case "long":
-                javaType = "Long";
-                break;
-            case "boolean":
-                javaType = "Boolean";
-                break;
-            case "int":
-                javaType = "Integer";
-                break;
-            case "bytes":
-                javaType = "byte[]";
-                break;
+        if (this._uuidFields.has(field.name)) {
+            javaType = "UUID";
+        } else {
+            javaType = this._mapPrimitive(type);
         }
+
         this._addField({
             doc: field.doc,
             name: field.name,
             type: javaType,
             isArray,
         });
+    }
+
+    _mapPrimitive(type) {
+        switch (type) {
+            case "string":
+                return "String";
+            case "float":
+                return "Float";
+            case "double":
+                return "Double";
+            case "long":
+                return "Long";
+            case "boolean":
+                return "Boolean";
+            case "int":
+                return "Integer";
+            case "bytes":
+                return "byte[]";
+        }
+        return undefined;
     }
 
     _addField({ doc, name, type, isArray }) {
