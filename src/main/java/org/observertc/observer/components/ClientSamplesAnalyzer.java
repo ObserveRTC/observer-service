@@ -216,7 +216,7 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
             ClientSampleVisitor.streamExtensionStats(clientSample).forEach(extensionStat -> {
                 this.clientExtensionReportsDepot
                         .setObservedClientSample(observedClientSample)
-                        .setType(extensionStat.type)
+                        .setExtensionType(extensionStat.type)
                         .setPayload(extensionStat.payload)
                         .assemble();
             });

@@ -14,6 +14,13 @@ class SfuDTOTest {
     private final Long TIMESTAMP = Instant.now().toEpochMilli();
     private final UUID SFU_ID = UUID.randomUUID();
     private final String TIMEZONE_ID = ZoneId.systemDefault().getId();
+    private final String MARKER = SerDeUtils.NULL_STRING;
+
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = SfuDTOTest.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutServiceId() {
@@ -41,6 +48,7 @@ class SfuDTOTest {
         Assertions.assertEquals(subject.serviceId, SERVICE_ID);
         Assertions.assertEquals(subject.mediaUnitId, MEDIA_UNIT_ID);
         Assertions.assertEquals(subject.timeZoneId, TIMEZONE_ID);
+        Assertions.assertEquals(subject.marker, MARKER);
     }
 
     @Test
@@ -60,6 +68,7 @@ class SfuDTOTest {
                 .withSfuId(SFU_ID)
                 .withTimeZoneId(TIMEZONE_ID)
                 .withConnectedTimestamp(TIMESTAMP)
+                .withMarker(MARKER)
                 ;
     }
 

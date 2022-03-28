@@ -41,12 +41,14 @@ public class SfuDTO implements VersionedPortable {
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
 	private static final String JOINED_FIELD_NAME = "joined";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
+	private static final String MARKER_FIELD_NAME = "marker";
 
 	public String serviceId;
 	public String mediaUnitId;
 	public UUID sfuId;
 	public Long joined;
 	public String timeZoneId;
+	public String marker;
 
 	SfuDTO() {
 
@@ -70,6 +72,8 @@ public class SfuDTO implements VersionedPortable {
 		writer.writeLong(JOINED_FIELD_NAME, this.joined);
 		writer.writeString(TIMEZONE_FIELD_NAME, this.timeZoneId);
 
+		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
+
 	}
 
 	@Override
@@ -79,6 +83,8 @@ public class SfuDTO implements VersionedPortable {
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
 		this.joined = reader.readLong(JOINED_FIELD_NAME);
 		this.timeZoneId = reader.readString(TIMEZONE_FIELD_NAME);
+
+		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
 	}
 
 	@Override
@@ -101,7 +107,8 @@ public class SfuDTO implements VersionedPortable {
 			!Objects.equals(this.serviceId, otherDTO.serviceId) ||
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.joined, otherDTO.joined) ||
-			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId)
+			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId) ||
+			!Objects.equals(this.marker, otherDTO.marker)
 		) {
 			return false;
 		}
@@ -118,6 +125,7 @@ public class SfuDTO implements VersionedPortable {
 					.withMediaUnitId(source.mediaUnitId)
 					.withConnectedTimestamp(source.joined)
 					.withTimeZoneId(source.timeZoneId)
+					.withMarker(source.marker)
 				;
 		}
 
@@ -143,6 +151,11 @@ public class SfuDTO implements VersionedPortable {
 
 		public Builder withTimeZoneId(String value) {
 			this.result.timeZoneId = value;
+			return this;
+		}
+
+		public Builder withMarker(String value) {
+			this.result.marker = value;
 			return this;
 		}
 

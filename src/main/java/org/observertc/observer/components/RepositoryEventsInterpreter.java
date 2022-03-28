@@ -101,7 +101,7 @@ public class RepositoryEventsInterpreter {
                 .subscribe(this::collectCallEventReports);
 
         this.repositoryEvents.addedClients()
-                .map(this.clientJoinedReports::mapAddedCalls)
+                .map(this.clientJoinedReports::mapAddedClient)
                 .subscribe(this::collectCallEventReports);
 
         this.repositoryEvents.removedClients()

@@ -103,7 +103,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
 
                             });
                         })
-                .addTerminalSupplier("Creating PeerConnection Entities", () -> {
+                .addTerminalSupplier("Terminal Stage", () -> {
                     if (this.unmodifiableResult) {
                         return Collections.unmodifiableMap(this.removedTrackDTOs);
                     } else {

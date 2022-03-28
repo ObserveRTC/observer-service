@@ -12,7 +12,14 @@ class CallDTOTest {
     private final String SERVICE_ID = UUID.randomUUID().toString();
     private final Long TIMESTAMP = Instant.now().toEpochMilli();
     private final UUID CALL_ID = UUID.randomUUID();
+    private final String MARKER = SerDeUtils.NULL_STRING;
 
+
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = CallDTO.class.getFields();
+        Assertions.assertEquals(5, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutCallId() {
@@ -49,6 +56,7 @@ class CallDTOTest {
         Assertions.assertEquals(subject.started, TIMESTAMP);
         Assertions.assertEquals(subject.roomId, ROOM_ID);
         Assertions.assertEquals(subject.serviceId, SERVICE_ID);
+        Assertions.assertEquals(subject.marker, MARKER);
     }
 
     @Test
@@ -80,6 +88,7 @@ class CallDTOTest {
                 .withRoomId(this.ROOM_ID)
                 .withCallId(this.CALL_ID)
                 .withStartedTimestamp(this.TIMESTAMP)
+                .withMarker(MARKER)
                 ;
     }
 

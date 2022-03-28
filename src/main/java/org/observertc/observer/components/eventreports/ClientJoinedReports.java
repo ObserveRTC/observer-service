@@ -25,7 +25,7 @@ public class ClientJoinedReports {
 
     }
 
-    public List<CallEventReport> mapAddedCalls(List<ClientDTO> clientDTOs) {
+    public List<CallEventReport> mapAddedClient(List<ClientDTO> clientDTOs) {
         if (Objects.isNull(clientDTOs) || clientDTOs.size() < 1) {
             return Collections.EMPTY_LIST;
         }

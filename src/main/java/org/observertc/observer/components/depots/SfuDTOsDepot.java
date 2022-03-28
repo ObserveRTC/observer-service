@@ -17,7 +17,7 @@ public class SfuDTOsDepot implements Supplier<Map<UUID, SfuDTO>> {
 
     private Map<UUID, SfuDTO> buffer = new HashMap<>();
 
-    public SfuDTOsDepot addFromObservedClientSample(ObservedSfuSample observedSfuSample) {
+    public SfuDTOsDepot addFromObservedSfuSample(ObservedSfuSample observedSfuSample) {
         if (Objects.isNull(observedSfuSample) || Objects.isNull(observedSfuSample.getSfuSample())) {
             logger.warn("No observed client sample");
         }
@@ -31,6 +31,7 @@ public class SfuDTOsDepot implements Supplier<Map<UUID, SfuDTO>> {
                 .withMediaUnitId(observedSfuSample.getMediaUnitId())
                 .withTimeZoneId(observedSfuSample.getTimeZoneId())
                 .withConnectedTimestamp(sfuSample.timestamp)
+                .withMarker(sfuSample.marker)
                 .build();
         this.buffer.put(sfuDTO.sfuId, sfuDTO);
         return this;

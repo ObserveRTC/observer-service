@@ -42,6 +42,7 @@ public class SfuTransportDTO implements VersionedPortable {
 	private static final String TRANSPORT_ID_FIELD_NAME = "transportId";
 	private static final String INTERNAL_TRANSPORT_FIELD_NAME = "internal";
 	private static final String OPENED_FIELD_NAME = "opened";
+	private static final String MARKER_FIELD_NAME = "marker";
 
 	public String serviceId;
 	public String mediaUnitId;
@@ -49,7 +50,7 @@ public class SfuTransportDTO implements VersionedPortable {
 	public UUID transportId;
 	public boolean internal = false;
 	public Long opened;
-
+	public String marker;
 
 	SfuTransportDTO() {
 
@@ -74,6 +75,7 @@ public class SfuTransportDTO implements VersionedPortable {
 		writer.writeBoolean(INTERNAL_TRANSPORT_FIELD_NAME, this.internal);
 		writer.writeLong(OPENED_FIELD_NAME, this.opened);
 
+		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
 	}
 
 	@Override
@@ -85,6 +87,7 @@ public class SfuTransportDTO implements VersionedPortable {
 		this.internal = reader.readBoolean(INTERNAL_TRANSPORT_FIELD_NAME);
 		this.opened = reader.readLong(OPENED_FIELD_NAME);
 
+		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
 	}
 
 	@Override
@@ -108,7 +111,8 @@ public class SfuTransportDTO implements VersionedPortable {
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.internal, otherDTO.internal) ||
 			!Objects.equals(this.transportId, otherDTO.transportId) ||
-			!Objects.equals(this.opened, otherDTO.opened)
+			!Objects.equals(this.opened, otherDTO.opened) ||
+			!Objects.equals(this.marker, otherDTO.marker)
 		) {
 			return false;
 		}
@@ -126,6 +130,7 @@ public class SfuTransportDTO implements VersionedPortable {
 					.withServiceId(source.serviceId)
 					.withMediaUnitId(source.mediaUnitId)
 					.withOpenedTimestamp(source.opened)
+					.withMarker(source.marker)
 					;
 		}
 
@@ -156,6 +161,11 @@ public class SfuTransportDTO implements VersionedPortable {
 
 		public Builder withOpenedTimestamp(Long value) {
 			this.result.opened = value;
+			return this;
+		}
+
+		public Builder withMarker(String value) {
+			this.result.marker = value;
 			return this;
 		}
 

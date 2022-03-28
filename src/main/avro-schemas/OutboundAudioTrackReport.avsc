@@ -193,7 +193,7 @@
       "doc": "Reflects the current encoder target in bits per second.",
       "type": [
         "null",
-        "long"
+        "int"
       ],
       "default": null
     },
@@ -265,7 +265,7 @@
       "doc": "The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)",
       "type": [
         "null",
-        "double"
+        "int"
       ],
       "default": null
     },
@@ -535,7 +535,7 @@
       "doc": "The negotiated clock rate the RTP timestamp is generated of",
       "type": [
         "null",
-        "long"
+        "int"
       ],
       "default": null
     },

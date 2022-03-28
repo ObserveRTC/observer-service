@@ -16,8 +16,11 @@ public class MediaTrackAttachment {
     @JsonProperty("streamDirection")
     public String streamDirection;
 
-    @JsonProperty("rtpStreamId")
+    @JsonProperty("sfuStreamId")
     public String sfuStreamId;
+
+    @JsonProperty("sfuSinkId")
+    public String sfuSinkId;
 
     private MediaTrackAttachment() {
 
@@ -51,12 +54,19 @@ public class MediaTrackAttachment {
         }
 
         private Builder from(MediaTrackAttachment source) {
-            return this.withSfuStreamId(source.sfuStreamId)
+            return this
+                    .withSfuStreamId(source.sfuStreamId)
+                    .withSfuSinkId(source.sfuSinkId)
                     .withStreamDirection(source.streamDirection);
         }
 
         public Builder withSfuStreamId(String value) {
             this.result.sfuStreamId = value;
+            return this;
+        }
+
+        public Builder withSfuSinkId(String value) {
+            this.result.sfuSinkId = value;
             return this;
         }
 

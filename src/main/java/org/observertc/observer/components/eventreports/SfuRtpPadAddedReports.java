@@ -2,10 +2,10 @@ package org.observertc.observer.components.eventreports;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.UUIDAdapter;
+import org.observertc.observer.components.eventreports.attachments.RtpPadAttachment;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuSinkDTO;
 import org.observertc.observer.dto.SfuStreamDTO;
-import org.observertc.observer.components.eventreports.attachments.RtpPadAttachment;
 import org.observertc.observer.events.SfuEventType;
 import org.observertc.observer.repositories.SfuRtpPadEvents;
 import org.observertc.schemas.reports.SfuEventReport;
@@ -71,7 +71,9 @@ public class SfuRtpPadAddedReports {
                     .setMessage("Sfu Rtp Pad is added")
                     .setServiceId(sfuRtpPad.serviceId)
                     .setMediaUnitId(sfuRtpPad.mediaUnitId)
-                    .setTimestamp(sfuRtpPad.added);
+                    .setTimestamp(sfuRtpPad.added)
+                    .setMarker(sfuRtpPad.marker)
+                    ;
             logger.info("SFU Pad (id: {}, streamId: {}, sinkId: {}) is ADDED (mediaUnitId: {}, serviceId {}), direction is {}",
                     sfuPadId, sfuRtpPad.streamId, sfuRtpPad.sinkId, sfuRtpPad.mediaUnitId, sfuRtpPad.serviceId, sfuPadStreamDirection
             );

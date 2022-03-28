@@ -7,10 +7,7 @@ import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamReport>> {
@@ -20,10 +17,21 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
     private ObservedSfuSample observedSfuSample = null;
     private Samples.SfuSample.SfuSctpChannel sctpChannel = null;
     private List<SfuSctpStreamReport> buffer = new LinkedList<>();
-
+    private UUID callId = null;
+    private String roomId = null;
 
     public SfuSctpStreamReportsDepot setObservedSfuSample(ObservedSfuSample value) {
         this.observedSfuSample = value;
+        return this;
+    }
+
+    public SfuSctpStreamReportsDepot setCallId(UUID value) {
+        this.callId = value;
+        return this;
+    }
+
+    public SfuSctpStreamReportsDepot setRoomId(String value) {
+        this.roomId = value;
         return this;
     }
 
@@ -35,6 +43,8 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
     private SfuSctpStreamReportsDepot clean() {
         this.observedSfuSample = null;
         this.sctpChannel = null;
+        this.callId = null;
+        this.roomId = null;
         return this;
     }
 
@@ -51,6 +61,8 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
             var sfuSample = observedSfuSample.getSfuSample();
             String transportId = UUIDAdapter.toStringOrNull(sctpChannel.transportId);
             String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
+            String streamId = UUIDAdapter.toStringOrNull(sctpChannel.streamId);
+            String callId = this.callId.toString();
             var report = SfuSctpStreamReport.newBuilder()
 
                     /* Report MetaFields */
@@ -61,10 +73,10 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
                     .setTimestamp(sfuSample.timestamp)
 
                     /* Helper field */
-//                    .setCallId(callId)
+                    .setCallId(callId)
+                    .setRoomId(roomId)
                     .setTransportId(transportId)
-//                    .setRoomId()
-                    .setStreamId(sctpChannel.streamId)
+                    .setStreamId(streamId)
 
                     /* SCTP Stats */
                     .setLabel(sctpChannel.label)

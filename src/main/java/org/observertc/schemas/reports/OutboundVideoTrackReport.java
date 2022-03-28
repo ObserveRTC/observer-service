@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OutboundVideoTrackReport {
-	public static final String VERSION="2.0.0-beta.30";
+	public static final String VERSION="2.0.0-beta.44";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -136,7 +136,7 @@ public class OutboundVideoTrackReport {
 	* Reflects the current encoder target in bits per second.
 	*/
 	@JsonProperty("targetBitrate")
-	public Long targetBitrate;
+	public Integer targetBitrate;
 	/**
 	* The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets
 	*/
@@ -241,7 +241,7 @@ public class OutboundVideoTrackReport {
 	* The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
 	*/
 	@JsonProperty("perDscpPacketsSent")
-	public Double perDscpPacketsSent;
+	public Integer perDscpPacketsSent;
 	/**
 	* Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)
 	*/
@@ -416,7 +416,7 @@ public class OutboundVideoTrackReport {
 	* The negotiated clock rate the RTP timestamp is generated of
 	*/
 	@JsonProperty("clockRate")
-	public Long clockRate;
+	public Integer clockRate;
 	/**
 	* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
 	*/
@@ -457,7 +457,7 @@ public class OutboundVideoTrackReport {
 		public Builder setFecPacketsSent(Integer value) { this.result.fecPacketsSent = value; return this; }
 		public Builder setRetransmittedPacketsSent(Integer value) { this.result.retransmittedPacketsSent = value; return this; }
 		public Builder setRetransmittedBytesSent(Long value) { this.result.retransmittedBytesSent = value; return this; }
-		public Builder setTargetBitrate(Long value) { this.result.targetBitrate = value; return this; }
+		public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
 		public Builder setTotalEncodedBytesTarget(Long value) { this.result.totalEncodedBytesTarget = value; return this; }
 		public Builder setFrameWidth(Integer value) { this.result.frameWidth = value; return this; }
 		public Builder setFrameHeight(Integer value) { this.result.frameHeight = value; return this; }
@@ -478,7 +478,7 @@ public class OutboundVideoTrackReport {
 		public Builder setQualityLimitationDurationOther(Double value) { this.result.qualityLimitationDurationOther = value; return this; }
 		public Builder setQualityLimitationReason(String value) { this.result.qualityLimitationReason = value; return this; }
 		public Builder setQualityLimitationResolutionChanges(Integer value) { this.result.qualityLimitationResolutionChanges = value; return this; }
-		public Builder setPerDscpPacketsSent(Double value) { this.result.perDscpPacketsSent = value; return this; }
+		public Builder setPerDscpPacketsSent(Integer value) { this.result.perDscpPacketsSent = value; return this; }
 		public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
 		public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
 		public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }
@@ -513,7 +513,7 @@ public class OutboundVideoTrackReport {
 		public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
 		public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 		public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-		public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+		public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 		public Builder setChannels(Integer value) { this.result.channels = value; return this; }
 		public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 		public OutboundVideoTrackReport build() {

@@ -1,13 +1,12 @@
 package org.observertc.observer.components.depots;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.observertc.observer.simulator.ObservedSamplesGenerator;
+import org.junit.jupiter.api.*;
+import org.observertc.observer.samples.ObservedSamplesGenerator;
 import org.observertc.observer.utils.RandomGenerators;
 
 import java.util.UUID;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class InboundAudioReportsDepotTest {
     private final RandomGenerators randomGenerators = new RandomGenerators();
     private final ObservedSamplesGenerator generator = new ObservedSamplesGenerator();
@@ -15,97 +14,114 @@ class InboundAudioReportsDepotTest {
 
     @Test
     @Order(1)
-    void shouldMakeDTO() {
+    void shouldMakeReport() {
         var callId = UUID.randomUUID();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
+        var serviceId = observedClientSample.getServiceId();
+        var mediaUnitId = observedClientSample.getMediaUnitId();
         var clientSample = observedClientSample.getClientSample();
+        var label = UUID.randomUUID().toString();
         var remoteClientId = UUID.randomUUID();
         var remotePeerConnectionId = UUID.randomUUID();
         var remoteTrackId = UUID.randomUUID();
         var remoteUserId = randomGenerators.getRandomTestUserIds();
-        var inboundAudioTrack = clientSample.inboundAudioTracks[0];
+        var expected = clientSample.inboundAudioTracks[0];
         this.depot
-                .setInboundAudioTrack(inboundAudioTrack)
+                .setInboundAudioTrack(expected)
                 .setObservedClientSample(observedClientSample)
                 .setRemoteClientId(remoteClientId)
                 .setRemotePeerConnectionId(remotePeerConnectionId)
+                .setPeerConnectionLabel(label)
                 .setRemoteTrackId(remoteTrackId)
                 .setRemoteUserId(remoteUserId)
                 .assemble();
-        var inboundAudioTrackReport = depot.get().get(0);
+        var actual = depot.get().get(0);
 
-        Assertions.assertEquals(inboundAudioTrackReport.serviceId, observedClientSample.getServiceId());
-        Assertions.assertEquals(inboundAudioTrackReport.mediaUnitId, observedClientSample.getMediaUnitId());
-        Assertions.assertEquals(inboundAudioTrackReport.marker, clientSample.marker);
-        Assertions.assertEquals(inboundAudioTrackReport.timestamp, clientSample.timestamp);
-
-        Assertions.assertEquals(inboundAudioTrackReport.callId, callId);
-        Assertions.assertEquals(inboundAudioTrackReport.roomId, clientSample.roomId);
-        Assertions.assertEquals(inboundAudioTrackReport.clientId, clientSample.clientId.toString());
-        Assertions.assertEquals(inboundAudioTrackReport.userId, clientSample.userId);
-        Assertions.assertEquals(inboundAudioTrackReport.peerConnectionId, inboundAudioTrack.peerConnectionId.toString());
-//                       .setLabel(inboundAudioTrack.)
-        Assertions.assertEquals(inboundAudioTrackReport.trackId, inboundAudioTrack.trackId.toString());
-
-        Assertions.assertEquals(inboundAudioTrackReport.remoteClientId, remoteClientId);
-        Assertions.assertEquals(inboundAudioTrackReport.remoteUserId, remoteUserId);
-        Assertions.assertEquals(inboundAudioTrackReport.remotePeerConnectionId, remotePeerConnectionId);
-        Assertions.assertEquals(inboundAudioTrackReport.remoteTrackId, remoteTrackId);
-
-        Assertions.assertEquals(inboundAudioTrackReport.sampleSeq, clientSample.sampleSeq);
-
-
-        Assertions.assertEquals(inboundAudioTrackReport.ssrc, inboundAudioTrack.ssrc);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsReceived, inboundAudioTrack.packetsReceived);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsSent, inboundAudioTrack.packetsSent);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsLost, inboundAudioTrack.packetsLost);
-        Assertions.assertEquals(inboundAudioTrackReport.jitter, inboundAudioTrack.jitter);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsDiscarded, inboundAudioTrack.packetsDiscarded);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsRepaired, inboundAudioTrack.packetsRepaired);
-        Assertions.assertEquals(inboundAudioTrackReport.burstPacketsLost, inboundAudioTrack.burstPacketsLost);
-        Assertions.assertEquals(inboundAudioTrackReport.burstPacketsDiscarded, inboundAudioTrack.burstPacketsDiscarded);
-        Assertions.assertEquals(inboundAudioTrackReport.burstLossCount, inboundAudioTrack.burstLossCount);
-        Assertions.assertEquals(inboundAudioTrackReport.burstDiscardCount, inboundAudioTrack.burstDiscardCount);
-        Assertions.assertEquals(inboundAudioTrackReport.burstLossRate, inboundAudioTrack.burstLossRate);
-        Assertions.assertEquals(inboundAudioTrackReport.burstDiscardRate, inboundAudioTrack.burstDiscardRate);
-        Assertions.assertEquals(inboundAudioTrackReport.gapLossRate, inboundAudioTrack.gapLossRate);
-        Assertions.assertEquals(inboundAudioTrackReport.gapLossRate, inboundAudioTrack.gapLossRate);
-        Assertions.assertEquals(inboundAudioTrackReport.gapDiscardRate, inboundAudioTrack.gapDiscardRate);
-        Assertions.assertEquals(inboundAudioTrackReport.voiceActivityFlag, inboundAudioTrack.voiceActivityFlag);
-        Assertions.assertEquals(inboundAudioTrackReport.lastPacketReceivedTimestamp, inboundAudioTrack.lastPacketReceivedTimestamp);
-        Assertions.assertEquals(inboundAudioTrackReport.averageRtcpInterval, inboundAudioTrack.averageRtcpInterval);
-        Assertions.assertEquals(inboundAudioTrackReport.headerBytesReceived, inboundAudioTrack.headerBytesReceived);
-        Assertions.assertEquals(inboundAudioTrackReport.fecPacketsReceived, inboundAudioTrack.fecPacketsReceived);
-        Assertions.assertEquals(inboundAudioTrackReport.fecPacketsDiscarded, inboundAudioTrack.fecPacketsDiscarded);
-        Assertions.assertEquals(inboundAudioTrackReport.bytesReceived, inboundAudioTrack.bytesReceived);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsFailedDecryption, inboundAudioTrack.packetsFailedDecryption);
-        Assertions.assertEquals(inboundAudioTrackReport.packetsDuplicated, inboundAudioTrack.packetsDuplicated);
-        Assertions.assertEquals(inboundAudioTrackReport.perDscpPacketsReceived, inboundAudioTrack.perDscpPacketsReceived);
-        Assertions.assertEquals(inboundAudioTrackReport.nackCount, inboundAudioTrack.nackCount);
-        Assertions.assertEquals(inboundAudioTrackReport.totalProcessingDelay, inboundAudioTrack.totalProcessingDelay);
-        Assertions.assertEquals(inboundAudioTrackReport.estimatedPlayoutTimestamp, inboundAudioTrack.estimatedPlayoutTimestamp);
-        Assertions.assertEquals(inboundAudioTrackReport.jitterBufferDelay, inboundAudioTrack.jitterBufferDelay);
-        Assertions.assertEquals(inboundAudioTrackReport.jitterBufferEmittedCount, inboundAudioTrack.jitterBufferEmittedCount);
-        Assertions.assertEquals(inboundAudioTrackReport.decoderImplementation, inboundAudioTrack.decoderImplementation);
-
-
-        Assertions.assertEquals(inboundAudioTrackReport.packetsSent, inboundAudioTrack.packetsSent);
-        Assertions.assertEquals(inboundAudioTrackReport.bytesSent, inboundAudioTrack.bytesSent);
-        Assertions.assertEquals(inboundAudioTrackReport.remoteTimestamp, inboundAudioTrack.remoteTimestamp);
-        Assertions.assertEquals(inboundAudioTrackReport.reportsSent, inboundAudioTrack.reportsSent);
-
-        Assertions.assertEquals(inboundAudioTrackReport.ended, inboundAudioTrack.ended);
-
-        Assertions.assertEquals(inboundAudioTrackReport.payloadType, inboundAudioTrack.payloadType);
-        Assertions.assertEquals(inboundAudioTrackReport.mimeType, inboundAudioTrack.mimeType);
-        Assertions.assertEquals(inboundAudioTrackReport.clockRate, inboundAudioTrack.clockRate);
-        Assertions.assertEquals(inboundAudioTrackReport.channels, inboundAudioTrack.channels);
-        Assertions.assertEquals(inboundAudioTrackReport.sdpFmtpLine, inboundAudioTrack.sdpFmtpLine);
+        Assertions.assertEquals(serviceId, actual.serviceId, "serviceId field");
+        Assertions.assertEquals(mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(clientSample.marker, actual.marker, "marker field");
+        Assertions.assertEquals(clientSample.timestamp, actual.timestamp, "timestamp field");
+        Assertions.assertEquals(clientSample.callId, actual.callId, "callId field");
+        Assertions.assertEquals(clientSample.roomId, actual.roomId, "roomId field");
+        Assertions.assertEquals(clientSample.clientId, actual.clientId, "clientId field");
+        Assertions.assertEquals(clientSample.userId, actual.userId, "userId field");
+        Assertions.assertEquals(expected.peerConnectionId, actual.peerConnectionId, "peerConnectionId field");
+        Assertions.assertEquals(label, actual.label, "label field");
+        Assertions.assertEquals(expected.trackId, actual.trackId, "trackId field");
+        Assertions.assertEquals(null, actual.sfuStreamId, "sfuStreamId field");
+        Assertions.assertEquals(expected.sfuSinkId, actual.sfuSinkId, "sfuSinkId field");
+        Assertions.assertEquals(remoteTrackId, actual.remoteTrackId, "remoteTrackId field");
+        Assertions.assertEquals(remoteUserId, actual.remoteUserId, "remoteUserId field");
+        Assertions.assertEquals(remoteClientId, actual.remoteClientId, "remoteClientId field");
+        Assertions.assertEquals(remotePeerConnectionId, actual.remotePeerConnectionId, "remotePeerConnectionId field");
+        Assertions.assertEquals(clientSample.sampleSeq, actual.sampleSeq, "sampleSeq field");
+        Assertions.assertEquals(expected.ssrc, actual.ssrc, "ssrc field");
+        Assertions.assertEquals(expected.packetsReceived, actual.packetsReceived, "packetsReceived field");
+        Assertions.assertEquals(expected.packetsLost, actual.packetsLost, "packetsLost field");
+        Assertions.assertEquals(expected.jitter, actual.jitter, "jitter field");
+        Assertions.assertEquals(expected.packetsDiscarded, actual.packetsDiscarded, "packetsDiscarded field");
+        Assertions.assertEquals(expected.packetsRepaired, actual.packetsRepaired, "packetsRepaired field");
+        Assertions.assertEquals(expected.burstPacketsLost, actual.burstPacketsLost, "burstPacketsLost field");
+        Assertions.assertEquals(expected.burstPacketsDiscarded, actual.burstPacketsDiscarded, "burstPacketsDiscarded field");
+        Assertions.assertEquals(expected.burstLossCount, actual.burstLossCount, "burstLossCount field");
+        Assertions.assertEquals(expected.burstDiscardCount, actual.burstDiscardCount, "burstDiscardCount field");
+        Assertions.assertEquals(expected.burstLossRate, actual.burstLossRate, "burstLossRate field");
+        Assertions.assertEquals(expected.burstDiscardRate, actual.burstDiscardRate, "burstDiscardRate field");
+        Assertions.assertEquals(expected.gapLossRate, actual.gapLossRate, "gapLossRate field");
+        Assertions.assertEquals(expected.gapDiscardRate, actual.gapDiscardRate, "gapDiscardRate field");
+        Assertions.assertEquals(expected.voiceActivityFlag, actual.voiceActivityFlag, "voiceActivityFlag field");
+        Assertions.assertEquals(expected.lastPacketReceivedTimestamp, actual.lastPacketReceivedTimestamp, "lastPacketReceivedTimestamp field");
+        Assertions.assertEquals(expected.averageRtcpInterval, actual.averageRtcpInterval, "averageRtcpInterval field");
+        Assertions.assertEquals(expected.headerBytesReceived, actual.headerBytesReceived, "headerBytesReceived field");
+        Assertions.assertEquals(expected.fecPacketsReceived, actual.fecPacketsReceived, "fecPacketsReceived field");
+        Assertions.assertEquals(expected.fecPacketsDiscarded, actual.fecPacketsDiscarded, "fecPacketsDiscarded field");
+        Assertions.assertEquals(expected.bytesReceived, actual.bytesReceived, "bytesReceived field");
+        Assertions.assertEquals(expected.packetsFailedDecryption, actual.packetsFailedDecryption, "packetsFailedDecryption field");
+        Assertions.assertEquals(expected.packetsDuplicated, actual.packetsDuplicated, "packetsDuplicated field");
+        Assertions.assertEquals(expected.perDscpPacketsReceived, actual.perDscpPacketsReceived, "perDscpPacketsReceived field");
+        Assertions.assertEquals(expected.nackCount, actual.nackCount, "nackCount field");
+        Assertions.assertEquals(expected.totalProcessingDelay, actual.totalProcessingDelay, "totalProcessingDelay field");
+        Assertions.assertEquals(expected.estimatedPlayoutTimestamp, actual.estimatedPlayoutTimestamp, "estimatedPlayoutTimestamp field");
+        Assertions.assertEquals(expected.jitterBufferDelay, actual.jitterBufferDelay, "jitterBufferDelay field");
+        Assertions.assertEquals(expected.jitterBufferEmittedCount, actual.jitterBufferEmittedCount, "jitterBufferEmittedCount field");
+        Assertions.assertEquals(expected.decoderImplementation, actual.decoderImplementation, "decoderImplementation field");
+        Assertions.assertEquals(expected.packetsSent, actual.packetsSent, "packetsSent field");
+        Assertions.assertEquals(expected.bytesSent, actual.bytesSent, "bytesSent field");
+        Assertions.assertEquals(expected.remoteTimestamp, actual.remoteTimestamp, "remoteTimestamp field");
+        Assertions.assertEquals(expected.reportsSent, actual.reportsSent, "reportsSent field");
+        Assertions.assertEquals(expected.ended, actual.ended, "ended field");
+        Assertions.assertEquals(expected.payloadType, actual.payloadType, "payloadType field");
+        Assertions.assertEquals(expected.mimeType, actual.mimeType, "mimeType field");
+        Assertions.assertEquals(expected.clockRate, actual.clockRate, "clockRate field");
+        Assertions.assertEquals(expected.channels, actual.channels, "channels field");
+        Assertions.assertEquals(expected.sdpFmtpLine, actual.sdpFmtpLine, "sdpFmtpLine field");
     }
 
     @Test
     @Order(2)
     void shouldBeEmpty() {
         Assertions.assertEquals(0, this.depot.get().size());
+    }
+
+    @Test
+    @Order(3)
+    void shouldBeCleaned() {
+        var callId = UUID.randomUUID();
+        var observedClientSample = this.generator.generateObservedClientSample(callId);
+        var expected = observedClientSample.getClientSample().inboundAudioTracks[0];
+        this.depot
+                .setInboundAudioTrack(expected)
+                .setObservedClientSample(observedClientSample)
+                .assemble();
+        var reports = depot.get();
+        var actual = reports.get(0);
+
+        // check if the things are cleaned properly
+        Assertions.assertEquals(1, reports.size());
+        Assertions.assertNull( actual.label, "label field");
+        Assertions.assertNull( actual.remoteTrackId, "remoteTrackId field");
+        Assertions.assertNull( actual.remoteUserId, "remoteUserId field");
+        Assertions.assertNull( actual.remoteClientId, "remoteClientId field");
+        Assertions.assertNull( actual.remotePeerConnectionId, "remotePeerConnectionId field");
     }
 }

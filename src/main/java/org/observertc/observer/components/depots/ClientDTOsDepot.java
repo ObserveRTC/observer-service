@@ -34,6 +34,7 @@ public class ClientDTOsDepot implements Supplier<Map<UUID, ClientDTO>> {
                 .withUserId(clientSample.userId)
                 .withTimeZoneId(observedClientSample.getTimeZoneId())
                 .withJoinedTimestamp(clientSample.timestamp)
+                .withMarker(clientSample.marker)
                 .build();
         this.buffer.put(clientSample.clientId, clientDTO);
         return this;

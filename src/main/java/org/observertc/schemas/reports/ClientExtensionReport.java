@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientExtensionReport {
-	public static final String VERSION="2.0.0-beta.30";
+	public static final String VERSION="2.0.0-beta.44";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -17,11 +17,6 @@ public class ClientExtensionReport {
 	*/
 	@JsonProperty("serviceId")
 	public String serviceId;
-	/**
-	* The resolved service name configured for the service Id
-	*/
-	@JsonProperty("serviceName")
-	public String serviceName;
 	/**
 	* The media unit id the report belongs to
 	*/
@@ -84,7 +79,6 @@ public class ClientExtensionReport {
 		private ClientExtensionReport result = new ClientExtensionReport();
 
 		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setServiceName(String value) { this.result.serviceName = value; return this; }
 		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
 		public Builder setMarker(String value) { this.result.marker = value; return this; }
 		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }

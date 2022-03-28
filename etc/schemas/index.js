@@ -10,11 +10,14 @@ const copyAvroSchema = (schema) => {
 
 const createSamples = (path) => {
     const samplesSchema = schemas.AvroSamples;
+    const assigns = [];
     const uuidFields = new Set([
         "callId",
         "clientId",
         "peerConnectionId",
         "trackId",
+        "streamId",
+        "sinkId",
         "sfuStreamId",
         "sfuSinkId",
         "sfuId",
@@ -36,10 +39,14 @@ const createSamples = (path) => {
         samplesClassString
     ].join("\n");
     fs.writeFileSync(path, samplesModule);
+
+    assigns.push(...samplesClass.drainAssigns());
+    fs.writeFileSync(`samples_assigns.txt`, assigns.join(`\n`));
 }
 
 const createReports = (path) => {
     const schemaKeys = Object.keys(schemas);
+    const assertations = [];
     for (const schemaKey of schemaKeys) {
         if (!schemaKey.startsWith("Avro")) continue;
         if (!schemaKey.endsWith("Report")) continue;
@@ -58,7 +65,10 @@ const createReports = (path) => {
             klassString
         ].join("\n");
         fs.writeFileSync(path + `${schema.name}.java`, module);
+
+        assertations.push(...klass.drainAssertions());
     }
+    fs.writeFileSync(`report_assertations.txt`, assertations.join(`\n`));
 }
 
 const main = () => {

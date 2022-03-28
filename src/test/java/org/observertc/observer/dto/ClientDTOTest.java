@@ -16,6 +16,13 @@ class ClientDTOTest {
     private final UUID CALL_ID = UUID.randomUUID();
     private final UUID CLIENT_ID = UUID.randomUUID();
     private final String TIMEZONE_ID = ZoneId.systemDefault().getId();
+    private final String MARKER = SerDeUtils.NULL_STRING;
+
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = ClientDTO.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutCallId() {
@@ -107,6 +114,7 @@ class ClientDTOTest {
                 .withJoinedTimestamp(TIMESTAMP)
                 .withTimeZoneId(TIMEZONE_ID)
                 .withMediaUnitId(MEDIA_UNIT_ID)
+                .withMarker(MARKER)
                 ;
     }
 

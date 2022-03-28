@@ -36,6 +36,7 @@ public class CallDTO implements VersionedPortable {
 	private static final String ROOM_ID_FIELD_NAME = "roomId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
 	private static final String STARTED_FIELD_NAME = "started"; // ended
+	private static final String MARKER_FIELD_NAME = "marker";
 
 	public static Builder builder() {
 		return new Builder();
@@ -45,6 +46,7 @@ public class CallDTO implements VersionedPortable {
 	public String roomId;
 	public UUID callId;
 	public Long started;
+	public String marker;
 
 	@Override
 	public int getFactoryId() {
@@ -63,6 +65,7 @@ public class CallDTO implements VersionedPortable {
 		writer.writeByteArray(CALL_ID_FIELD_NAME, UUIDAdapter.toBytes(this.callId));
 		writer.writeLong(STARTED_FIELD_NAME, this.started);
 
+		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
 	}
 
 	@Override
@@ -71,6 +74,8 @@ public class CallDTO implements VersionedPortable {
 		this.roomId = reader.readString(ROOM_ID_FIELD_NAME);
 		this.callId = UUIDAdapter.toUUID(reader.readByteArray(CALL_ID_FIELD_NAME));
 		this.started = reader.readLong(STARTED_FIELD_NAME);
+
+		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
 	}
 
 	@Override
@@ -92,7 +97,8 @@ public class CallDTO implements VersionedPortable {
 		if (!Objects.equals(this.serviceId, otherDTO.serviceId) ||
 			!Objects.equals(this.roomId, otherDTO.roomId) ||
 			!Objects.equals(this.callId, otherDTO.callId) ||
-			!Objects.equals(this.started, otherDTO.started)
+			!Objects.equals(this.started, otherDTO.started) ||
+			!Objects.equals(this.marker, otherDTO.marker)
 		) {
 			return false;
 		}
@@ -109,6 +115,7 @@ public class CallDTO implements VersionedPortable {
 					.withCallId(source.callId)
 					.withRoomId(source.roomId)
 					.withStartedTimestamp(source.started)
+					.withMarker(source.marker)
 					;
 		}
 
@@ -133,6 +140,11 @@ public class CallDTO implements VersionedPortable {
 		public Builder withStartedTimestamp(Long value) {
 			Objects.requireNonNull(value);
 			this.result.started = value;
+			return this;
+		}
+
+		public Builder withMarker(String value) {
+			this.result.marker = value;
 			return this;
 		}
 

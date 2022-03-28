@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.30";
+	public static final String VERSION="2.0.0-beta.44";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -562,7 +562,7 @@ public class Samples {
 			* Total amount of packets for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
 			*/
 			@JsonProperty("candidatePairPacketsDiscardedOnSend")
-			public Long candidatePairPacketsDiscardedOnSend;
+			public Integer candidatePairPacketsDiscardedOnSend;
 			/**
 			* Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport
 			*/
@@ -664,7 +664,7 @@ public class Samples {
 				public Builder setCandidatePairConsentRequestsSent(Integer value) { this.result.candidatePairConsentRequestsSent = value; return this; }
 				public Builder setCandidatePairConsentExpiredTimestamp(Long value) { this.result.candidatePairConsentExpiredTimestamp = value; return this; }
 				public Builder setCandidatePairBytesDiscardedOnSend(Long value) { this.result.candidatePairBytesDiscardedOnSend = value; return this; }
-				public Builder setCandidatePairPacketsDiscardedOnSend(Long value) { this.result.candidatePairPacketsDiscardedOnSend = value; return this; }
+				public Builder setCandidatePairPacketsDiscardedOnSend(Integer value) { this.result.candidatePairPacketsDiscardedOnSend = value; return this; }
 				public Builder setCandidatePairRequestBytesSent(Long value) { this.result.candidatePairRequestBytesSent = value; return this; }
 				public Builder setCandidatePairConsentRequestBytesSent(Long value) { this.result.candidatePairConsentRequestBytesSent = value; return this; }
 				public Builder setCandidatePairResponseBytesSent(Long value) { this.result.candidatePairResponseBytesSent = value; return this; }
@@ -745,7 +745,7 @@ public class Samples {
 			* The total number of frames originated from the media source
 			*/
 			@JsonProperty("frames")
-			public Long frames;
+			public Integer frames;
 			/**
 			*  The number of frames origianted from the media source in the last second
 			*/
@@ -768,7 +768,7 @@ public class Samples {
 				public Builder setWidth(Integer value) { this.result.width = value; return this; }
 				public Builder setHeight(Integer value) { this.result.height = value; return this; }
 				public Builder setBitDepth(Integer value) { this.result.bitDepth = value; return this; }
-				public Builder setFrames(Long value) { this.result.frames = value; return this; }
+				public Builder setFrames(Integer value) { this.result.frames = value; return this; }
 				public Builder setFramesPerSecond(Double value) { this.result.framesPerSecond = value; return this; }
 				public MediaSourceStat build() {
 					return this.result;
@@ -975,7 +975,7 @@ public class Samples {
 			* Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 			*/
 			@JsonProperty("lastPacketReceivedTimestamp")
-			public Double lastPacketReceivedTimestamp;
+			public Long lastPacketReceivedTimestamp;
 			/**
 			* The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
 			*/
@@ -1015,7 +1015,7 @@ public class Samples {
 			* The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)
 			*/
 			@JsonProperty("perDscpPacketsReceived")
-			public Double perDscpPacketsReceived;
+			public Integer perDscpPacketsReceived;
 			/**
 			* Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)
 			*/
@@ -1030,7 +1030,7 @@ public class Samples {
 			* The estimated playout time of the corresponded synchronization source
 			*/
 			@JsonProperty("estimatedPlayoutTimestamp")
-			public Double estimatedPlayoutTimestamp;
+			public Long estimatedPlayoutTimestamp;
 			/**
 			* The total time of RTP packets spent in jitterbuffer waiting for frame completion due to network uncertenity.
 			*/
@@ -1110,7 +1110,7 @@ public class Samples {
 			* The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)
 			*/
 			@JsonProperty("remoteTimestamp")
-			public Double remoteTimestamp;
+			public Long remoteTimestamp;
 			/**
 			* The number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to
 			*/
@@ -1130,7 +1130,7 @@ public class Samples {
 			* Represents the total number of SR reports received with DLRR reports to be able to calculate the round trip time on the corresponded RTP stream
 			*/
 			@JsonProperty("roundTripTimeMeasurements")
-			public Double roundTripTimeMeasurements;
+			public Integer roundTripTimeMeasurements;
 			/**
 			* Flag represents if the receiver ended the media stream track or not.
 			*/
@@ -1150,7 +1150,7 @@ public class Samples {
 			* The negotiated clock rate the RTP timestamp is generated of
 			*/
 			@JsonProperty("clockRate")
-			public Long clockRate;
+			public Integer clockRate;
 			/**
 			* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
 			*/
@@ -1185,7 +1185,7 @@ public class Samples {
 				public Builder setBurstDiscardRate(Double value) { this.result.burstDiscardRate = value; return this; }
 				public Builder setGapLossRate(Double value) { this.result.gapLossRate = value; return this; }
 				public Builder setGapDiscardRate(Double value) { this.result.gapDiscardRate = value; return this; }
-				public Builder setLastPacketReceivedTimestamp(Double value) { this.result.lastPacketReceivedTimestamp = value; return this; }
+				public Builder setLastPacketReceivedTimestamp(Long value) { this.result.lastPacketReceivedTimestamp = value; return this; }
 				public Builder setAverageRtcpInterval(Double value) { this.result.averageRtcpInterval = value; return this; }
 				public Builder setHeaderBytesReceived(Long value) { this.result.headerBytesReceived = value; return this; }
 				public Builder setFecPacketsReceived(Integer value) { this.result.fecPacketsReceived = value; return this; }
@@ -1193,10 +1193,10 @@ public class Samples {
 				public Builder setBytesReceived(Long value) { this.result.bytesReceived = value; return this; }
 				public Builder setPacketsFailedDecryption(Integer value) { this.result.packetsFailedDecryption = value; return this; }
 				public Builder setPacketsDuplicated(Integer value) { this.result.packetsDuplicated = value; return this; }
-				public Builder setPerDscpPacketsReceived(Double value) { this.result.perDscpPacketsReceived = value; return this; }
+				public Builder setPerDscpPacketsReceived(Integer value) { this.result.perDscpPacketsReceived = value; return this; }
 				public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
 				public Builder setTotalProcessingDelay(Double value) { this.result.totalProcessingDelay = value; return this; }
-				public Builder setEstimatedPlayoutTimestamp(Double value) { this.result.estimatedPlayoutTimestamp = value; return this; }
+				public Builder setEstimatedPlayoutTimestamp(Long value) { this.result.estimatedPlayoutTimestamp = value; return this; }
 				public Builder setJitterBufferDelay(Double value) { this.result.jitterBufferDelay = value; return this; }
 				public Builder setJitterBufferEmittedCount(Integer value) { this.result.jitterBufferEmittedCount = value; return this; }
 				public Builder setDecoderImplementation(String value) { this.result.decoderImplementation = value; return this; }
@@ -1212,15 +1212,15 @@ public class Samples {
 				public Builder setRemovedSamplesForAcceleration(Integer value) { this.result.removedSamplesForAcceleration = value; return this; }
 				public Builder setPacketsSent(Integer value) { this.result.packetsSent = value; return this; }
 				public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
-				public Builder setRemoteTimestamp(Double value) { this.result.remoteTimestamp = value; return this; }
+				public Builder setRemoteTimestamp(Long value) { this.result.remoteTimestamp = value; return this; }
 				public Builder setReportsSent(Integer value) { this.result.reportsSent = value; return this; }
 				public Builder setRoundTripTime(Double value) { this.result.roundTripTime = value; return this; }
 				public Builder setTotalRoundTripTime(Double value) { this.result.totalRoundTripTime = value; return this; }
-				public Builder setRoundTripTimeMeasurements(Double value) { this.result.roundTripTimeMeasurements = value; return this; }
+				public Builder setRoundTripTimeMeasurements(Integer value) { this.result.roundTripTimeMeasurements = value; return this; }
 				public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
 				public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 				public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-				public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+				public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 				public Builder setChannels(Integer value) { this.result.channels = value; return this; }
 				public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 				public InboundAudioTrack build() {
@@ -1330,7 +1330,7 @@ public class Samples {
 			* Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 			*/
 			@JsonProperty("lastPacketReceivedTimestamp")
-			public Double lastPacketReceivedTimestamp;
+			public Long lastPacketReceivedTimestamp;
 			/**
 			* The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
 			*/
@@ -1370,7 +1370,7 @@ public class Samples {
 			* The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)
 			*/
 			@JsonProperty("perDscpPacketsReceived")
-			public Double perDscpPacketsReceived;
+			public Integer perDscpPacketsReceived;
 			/**
 			* Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)
 			*/
@@ -1385,7 +1385,7 @@ public class Samples {
 			* The estimated playout time of the corresponded synchronization source
 			*/
 			@JsonProperty("estimatedPlayoutTimestamp")
-			public Double estimatedPlayoutTimestamp;
+			public Long estimatedPlayoutTimestamp;
 			/**
 			* The total time of RTP packets spent in jitterbuffer waiting for frame completion due to network uncertenity.
 			*/
@@ -1460,12 +1460,12 @@ public class Samples {
 			* The total interframe delay
 			*/
 			@JsonProperty("totalInterFrameDelay")
-			public Long totalInterFrameDelay;
+			public Double totalInterFrameDelay;
 			/**
 			* The total number of inter frame delay squere on the corresponded synchronization source (ssrc) Useful for variance calculation for interframe delays
 			*/
 			@JsonProperty("totalSquaredInterFrameDelay")
-			public Long totalSquaredInterFrameDelay;
+			public Double totalSquaredInterFrameDelay;
 			/**
 			* The total number FIR packets sent from this endpoint to the source on the corresponded RTP stream
 			*/
@@ -1500,7 +1500,7 @@ public class Samples {
 			* The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)
 			*/
 			@JsonProperty("remoteTimestamp")
-			public Double remoteTimestamp;
+			public Long remoteTimestamp;
 			/**
 			* The number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to
 			*/
@@ -1520,7 +1520,7 @@ public class Samples {
 			* Represents the total number of SR reports received with DLRR reports to be able to calculate the round trip time on the corresponded RTP stream
 			*/
 			@JsonProperty("roundTripTimeMeasurements")
-			public Double roundTripTimeMeasurements;
+			public Integer roundTripTimeMeasurements;
 			/**
 			* Flag represents if the receiver ended the media stream track or not.
 			*/
@@ -1540,7 +1540,7 @@ public class Samples {
 			* The negotiated clock rate the RTP timestamp is generated of
 			*/
 			@JsonProperty("clockRate")
-			public Long clockRate;
+			public Integer clockRate;
 			/**
 			* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
 			*/
@@ -1575,7 +1575,7 @@ public class Samples {
 				public Builder setBurstDiscardRate(Double value) { this.result.burstDiscardRate = value; return this; }
 				public Builder setGapLossRate(Double value) { this.result.gapLossRate = value; return this; }
 				public Builder setGapDiscardRate(Double value) { this.result.gapDiscardRate = value; return this; }
-				public Builder setLastPacketReceivedTimestamp(Double value) { this.result.lastPacketReceivedTimestamp = value; return this; }
+				public Builder setLastPacketReceivedTimestamp(Long value) { this.result.lastPacketReceivedTimestamp = value; return this; }
 				public Builder setAverageRtcpInterval(Double value) { this.result.averageRtcpInterval = value; return this; }
 				public Builder setHeaderBytesReceived(Long value) { this.result.headerBytesReceived = value; return this; }
 				public Builder setFecPacketsReceived(Integer value) { this.result.fecPacketsReceived = value; return this; }
@@ -1583,10 +1583,10 @@ public class Samples {
 				public Builder setBytesReceived(Long value) { this.result.bytesReceived = value; return this; }
 				public Builder setPacketsFailedDecryption(Integer value) { this.result.packetsFailedDecryption = value; return this; }
 				public Builder setPacketsDuplicated(Integer value) { this.result.packetsDuplicated = value; return this; }
-				public Builder setPerDscpPacketsReceived(Double value) { this.result.perDscpPacketsReceived = value; return this; }
+				public Builder setPerDscpPacketsReceived(Integer value) { this.result.perDscpPacketsReceived = value; return this; }
 				public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
 				public Builder setTotalProcessingDelay(Double value) { this.result.totalProcessingDelay = value; return this; }
-				public Builder setEstimatedPlayoutTimestamp(Double value) { this.result.estimatedPlayoutTimestamp = value; return this; }
+				public Builder setEstimatedPlayoutTimestamp(Long value) { this.result.estimatedPlayoutTimestamp = value; return this; }
 				public Builder setJitterBufferDelay(Double value) { this.result.jitterBufferDelay = value; return this; }
 				public Builder setJitterBufferEmittedCount(Integer value) { this.result.jitterBufferEmittedCount = value; return this; }
 				public Builder setDecoderImplementation(String value) { this.result.decoderImplementation = value; return this; }
@@ -1601,23 +1601,23 @@ public class Samples {
 				public Builder setFramesPerSecond(Double value) { this.result.framesPerSecond = value; return this; }
 				public Builder setQpSum(Long value) { this.result.qpSum = value; return this; }
 				public Builder setTotalDecodeTime(Double value) { this.result.totalDecodeTime = value; return this; }
-				public Builder setTotalInterFrameDelay(Long value) { this.result.totalInterFrameDelay = value; return this; }
-				public Builder setTotalSquaredInterFrameDelay(Long value) { this.result.totalSquaredInterFrameDelay = value; return this; }
+				public Builder setTotalInterFrameDelay(Double value) { this.result.totalInterFrameDelay = value; return this; }
+				public Builder setTotalSquaredInterFrameDelay(Double value) { this.result.totalSquaredInterFrameDelay = value; return this; }
 				public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
 				public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }
 				public Builder setSliCount(Integer value) { this.result.sliCount = value; return this; }
 				public Builder setFramesReceived(Integer value) { this.result.framesReceived = value; return this; }
 				public Builder setPacketsSent(Integer value) { this.result.packetsSent = value; return this; }
 				public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
-				public Builder setRemoteTimestamp(Double value) { this.result.remoteTimestamp = value; return this; }
+				public Builder setRemoteTimestamp(Long value) { this.result.remoteTimestamp = value; return this; }
 				public Builder setReportsSent(Integer value) { this.result.reportsSent = value; return this; }
 				public Builder setRoundTripTime(Double value) { this.result.roundTripTime = value; return this; }
 				public Builder setTotalRoundTripTime(Double value) { this.result.totalRoundTripTime = value; return this; }
-				public Builder setRoundTripTimeMeasurements(Double value) { this.result.roundTripTimeMeasurements = value; return this; }
+				public Builder setRoundTripTimeMeasurements(Integer value) { this.result.roundTripTimeMeasurements = value; return this; }
 				public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
 				public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 				public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-				public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+				public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 				public Builder setChannels(Integer value) { this.result.channels = value; return this; }
 				public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 				public InboundVideoTrack build() {
@@ -1712,7 +1712,7 @@ public class Samples {
 			* Reflects the current encoder target in bits per second.
 			*/
 			@JsonProperty("targetBitrate")
-			public Long targetBitrate;
+			public Integer targetBitrate;
 			/**
 			* The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets
 			*/
@@ -1732,7 +1732,7 @@ public class Samples {
 			* The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
 			*/
 			@JsonProperty("perDscpPacketsSent")
-			public Double perDscpPacketsSent;
+			public Integer perDscpPacketsSent;
 			/**
 			* Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)
 			*/
@@ -1902,7 +1902,7 @@ public class Samples {
 			* The negotiated clock rate the RTP timestamp is generated of
 			*/
 			@JsonProperty("clockRate")
-			public Long clockRate;
+			public Integer clockRate;
 			/**
 			* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
 			*/
@@ -1934,11 +1934,11 @@ public class Samples {
 				public Builder setFecPacketsSent(Integer value) { this.result.fecPacketsSent = value; return this; }
 				public Builder setRetransmittedPacketsSent(Integer value) { this.result.retransmittedPacketsSent = value; return this; }
 				public Builder setRetransmittedBytesSent(Long value) { this.result.retransmittedBytesSent = value; return this; }
-				public Builder setTargetBitrate(Long value) { this.result.targetBitrate = value; return this; }
+				public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
 				public Builder setTotalEncodedBytesTarget(Long value) { this.result.totalEncodedBytesTarget = value; return this; }
 				public Builder setTotalPacketSendDelay(Double value) { this.result.totalPacketSendDelay = value; return this; }
 				public Builder setAverageRtcpInterval(Double value) { this.result.averageRtcpInterval = value; return this; }
-				public Builder setPerDscpPacketsSent(Double value) { this.result.perDscpPacketsSent = value; return this; }
+				public Builder setPerDscpPacketsSent(Integer value) { this.result.perDscpPacketsSent = value; return this; }
 				public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
 				public Builder setEncoderImplementation(String value) { this.result.encoderImplementation = value; return this; }
 				public Builder setTotalSamplesSent(Integer value) { this.result.totalSamplesSent = value; return this; }
@@ -1972,7 +1972,7 @@ public class Samples {
 				public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
 				public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 				public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-				public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+				public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 				public Builder setChannels(Integer value) { this.result.channels = value; return this; }
 				public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 				public OutboundAudioTrack build() {
@@ -2067,7 +2067,7 @@ public class Samples {
 			* Reflects the current encoder target in bits per second.
 			*/
 			@JsonProperty("targetBitrate")
-			public Long targetBitrate;
+			public Integer targetBitrate;
 			/**
 			* The total number of bytes of RTP coherent frames encoded completly depending on the frame size the encoder targets
 			*/
@@ -2087,7 +2087,7 @@ public class Samples {
 			* The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
 			*/
 			@JsonProperty("perDscpPacketsSent")
-			public Double perDscpPacketsSent;
+			public Integer perDscpPacketsSent;
 			/**
 			* Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)
 			*/
@@ -2347,7 +2347,7 @@ public class Samples {
 			* The negotiated clock rate the RTP timestamp is generated of
 			*/
 			@JsonProperty("clockRate")
-			public Long clockRate;
+			public Integer clockRate;
 			/**
 			* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
 			*/
@@ -2379,11 +2379,11 @@ public class Samples {
 				public Builder setFecPacketsSent(Integer value) { this.result.fecPacketsSent = value; return this; }
 				public Builder setRetransmittedPacketsSent(Integer value) { this.result.retransmittedPacketsSent = value; return this; }
 				public Builder setRetransmittedBytesSent(Long value) { this.result.retransmittedBytesSent = value; return this; }
-				public Builder setTargetBitrate(Long value) { this.result.targetBitrate = value; return this; }
+				public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
 				public Builder setTotalEncodedBytesTarget(Long value) { this.result.totalEncodedBytesTarget = value; return this; }
 				public Builder setTotalPacketSendDelay(Double value) { this.result.totalPacketSendDelay = value; return this; }
 				public Builder setAverageRtcpInterval(Double value) { this.result.averageRtcpInterval = value; return this; }
-				public Builder setPerDscpPacketsSent(Double value) { this.result.perDscpPacketsSent = value; return this; }
+				public Builder setPerDscpPacketsSent(Integer value) { this.result.perDscpPacketsSent = value; return this; }
 				public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
 				public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
 				public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }
@@ -2435,7 +2435,7 @@ public class Samples {
 				public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
 				public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 				public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-				public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+				public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 				public Builder setChannels(Integer value) { this.result.channels = value; return this; }
 				public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 				public OutboundVideoTrack build() {
@@ -2461,11 +2461,6 @@ public class Samples {
 			*/
 			@JsonProperty("id")
 			public String id;
-			/**
-			* The unique identifier of the transport the local candidate belongs to
-			*/
-			@JsonProperty("transportId")
-			public UUID transportId;
 			/**
 			* The address of the local endpoint (Ipv4, Ipv6, FQDN)
 			*/
@@ -2509,7 +2504,6 @@ public class Samples {
 		
 				public Builder setPeerConnectionId(UUID value) { this.result.peerConnectionId = value; return this; }
 				public Builder setId(String value) { this.result.id = value; return this; }
-				public Builder setTransportId(UUID value) { this.result.transportId = value; return this; }
 				public Builder setAddress(String value) { this.result.address = value; return this; }
 				public Builder setPort(Integer value) { this.result.port = value; return this; }
 				public Builder setProtocol(String value) { this.result.protocol = value; return this; }
@@ -2540,11 +2534,6 @@ public class Samples {
 			*/
 			@JsonProperty("id")
 			public String id;
-			/**
-			* The unique identifier of the transport the local candidate belongs to
-			*/
-			@JsonProperty("transportId")
-			public UUID transportId;
 			/**
 			* The address of the local endpoint (Ipv4, Ipv6, FQDN)
 			*/
@@ -2588,7 +2577,6 @@ public class Samples {
 		
 				public Builder setPeerConnectionId(UUID value) { this.result.peerConnectionId = value; return this; }
 				public Builder setId(String value) { this.result.id = value; return this; }
-				public Builder setTransportId(UUID value) { this.result.transportId = value; return this; }
 				public Builder setAddress(String value) { this.result.address = value; return this; }
 				public Builder setPort(Integer value) { this.result.port = value; return this; }
 				public Builder setProtocol(String value) { this.result.protocol = value; return this; }
@@ -3087,7 +3075,7 @@ public class Samples {
 			* The id of the media stream the RTP pad belongs to. This id is to group rtp pads (e.g.: simulcast) carrying payloads to the same media. 
 			*/
 			@JsonProperty("streamId")
-			public String streamId;
+			public UUID streamId;
 			/**
 			* The id of Sfu pad.
 			*/
@@ -3117,7 +3105,7 @@ public class Samples {
 			* The clock rate of the media source the RTP header carries
 			*/
 			@JsonProperty("clockRate")
-			public Long clockRate;
+			public Integer clockRate;
 			/**
 			* The actual SDP line from the negotiation related to this RTP stream
 			*/
@@ -3137,7 +3125,7 @@ public class Samples {
 			* he bitrate the corresponded stream targets.
 			*/
 			@JsonProperty("targetBitrate")
-			public Long targetBitrate;
+			public Integer targetBitrate;
 			/**
 			* The RTP header V flag indicate of the activity of the media source by the media codec if the RTP transport ships it through
 			*/
@@ -3267,17 +3255,17 @@ public class Samples {
 				public Builder setNoReport(Boolean value) { this.result.noReport = value; return this; }
 				public Builder setTransportId(UUID value) { this.result.transportId = value; return this; }
 				public Builder setInternal(Boolean value) { this.result.internal = value; return this; }
-				public Builder setStreamId(String value) { this.result.streamId = value; return this; }
+				public Builder setStreamId(UUID value) { this.result.streamId = value; return this; }
 				public Builder setPadId(UUID value) { this.result.padId = value; return this; }
 				public Builder setSsrc(Long value) { this.result.ssrc = value; return this; }
 				public Builder setMediaType(String value) { this.result.mediaType = value; return this; }
 				public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 				public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-				public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+				public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 				public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 				public Builder setRid(String value) { this.result.rid = value; return this; }
 				public Builder setRtxSsrc(Long value) { this.result.rtxSsrc = value; return this; }
-				public Builder setTargetBitrate(Long value) { this.result.targetBitrate = value; return this; }
+				public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
 				public Builder setVoiceActivityFlag(Boolean value) { this.result.voiceActivityFlag = value; return this; }
 				public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
 				public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }
@@ -3334,12 +3322,12 @@ public class Samples {
 			* The id of the stream this outbound RTP pad sinks the media from
 			*/
 			@JsonProperty("streamId")
-			public String streamId;
+			public UUID streamId;
 			/**
 			* The id of a group of RTP pad sinks the media stream out from the SFU.
 			*/
 			@JsonProperty("sinkId")
-			public String sinkId;
+			public UUID sinkId;
 			/**
 			* The id of Sfu pad.
 			*/
@@ -3384,7 +3372,7 @@ public class Samples {
 			* The clock rate of the media source the RTP header carries
 			*/
 			@JsonProperty("clockRate")
-			public Long clockRate;
+			public Integer clockRate;
 			/**
 			* The actual SDP line from the negotiation related to this RTP stream
 			*/
@@ -3404,7 +3392,7 @@ public class Samples {
 			* he bitrate the corresponded stream targets.
 			*/
 			@JsonProperty("targetBitrate")
-			public Long targetBitrate;
+			public Integer targetBitrate;
 			/**
 			* The RTP header V flag indicate of the activity of the media source by the media codec if the RTP transport ships it through
 			*/
@@ -3534,8 +3522,8 @@ public class Samples {
 				public Builder setNoReport(Boolean value) { this.result.noReport = value; return this; }
 				public Builder setTransportId(UUID value) { this.result.transportId = value; return this; }
 				public Builder setInternal(Boolean value) { this.result.internal = value; return this; }
-				public Builder setStreamId(String value) { this.result.streamId = value; return this; }
-				public Builder setSinkId(String value) { this.result.sinkId = value; return this; }
+				public Builder setStreamId(UUID value) { this.result.streamId = value; return this; }
+				public Builder setSinkId(UUID value) { this.result.sinkId = value; return this; }
 				public Builder setPadId(UUID value) { this.result.padId = value; return this; }
 				public Builder setSsrc(Long value) { this.result.ssrc = value; return this; }
 				public Builder setCallId(UUID value) { this.result.callId = value; return this; }
@@ -3544,11 +3532,11 @@ public class Samples {
 				public Builder setMediaType(String value) { this.result.mediaType = value; return this; }
 				public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 				public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-				public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+				public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 				public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 				public Builder setRid(String value) { this.result.rid = value; return this; }
 				public Builder setRtxSsrc(Long value) { this.result.rtxSsrc = value; return this; }
-				public Builder setTargetBitrate(Long value) { this.result.targetBitrate = value; return this; }
+				public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
 				public Builder setVoiceActivityFlag(Boolean value) { this.result.voiceActivityFlag = value; return this; }
 				public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
 				public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }
@@ -3600,7 +3588,7 @@ public class Samples {
 			* The id of the sctp stream
 			*/
 			@JsonProperty("streamId")
-			public String streamId;
+			public UUID streamId;
 			/**
 			* The id of the sctp stream
 			*/
@@ -3669,7 +3657,7 @@ public class Samples {
 		
 				public Builder setNoReport(Boolean value) { this.result.noReport = value; return this; }
 				public Builder setTransportId(UUID value) { this.result.transportId = value; return this; }
-				public Builder setStreamId(String value) { this.result.streamId = value; return this; }
+				public Builder setStreamId(UUID value) { this.result.streamId = value; return this; }
 				public Builder setChannelId(UUID value) { this.result.channelId = value; return this; }
 				public Builder setLabel(String value) { this.result.label = value; return this; }
 				public Builder setProtocol(String value) { this.result.protocol = value; return this; }

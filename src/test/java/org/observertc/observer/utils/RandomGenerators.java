@@ -6,6 +6,7 @@ import org.observertc.observer.dto.StreamDirection;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -20,6 +21,15 @@ public class RandomGenerators {
     public<T> T getRandomFromList(List<T> givenList) {
         int randomElement = this.rand.nextInt(givenList.size());
         return givenList.get(randomElement);
+    }
+
+    public<T> T getRandomFromCollection(Collection<T> givenCollection) {
+        int randomElement = Math.abs(this.rand.nextInt(givenCollection.size()));
+        var it = givenCollection.iterator();
+        for (int index = 0; index < randomElement; ++index) {
+            it.next();
+        }
+        return it.next();
     }
 
     public <T> Supplier<T> randomProviderFrom(List<T> givenList) {
@@ -52,6 +62,23 @@ public class RandomGenerators {
 
     }
 
+    public String getRandomString() {
+        return getRandomString(32);
+    }
+
+    public String getRandomString(int targetStringLength) {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        Random random = new Random();
+
+        String result = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        return result;
+    }
+
     public Long getRandomPositiveLong() {
         Long part1 = Integer.valueOf(this.rand.nextInt()).longValue();
         Long part2 = Integer.valueOf(this.rand.nextInt()).longValue();
@@ -75,6 +102,21 @@ public class RandomGenerators {
     private List<String> userIds = TestUtils.getTestUserIds();
     public String getRandomTestUserIds() {
         return this.getRandomFromList(this.userIds);
+    }
+
+    private List<String> browserNames = TestUtils.getBrowserName();
+    public String getRandomBrowserNames() {
+        return this.getRandomFromList(this.browserNames);
+    }
+
+    private List<String> operationSystemNames = TestUtils.getOperationSystemName();
+    public String getOperationSystemName() {
+        return this.getRandomFromList(this.operationSystemNames);
+    }
+
+    private List<String> osVersionNumbers = TestUtils.getVersionNumber();
+    public String getRandomVersionNumber() {
+        return this.getRandomFromList(this.osVersionNumbers);
     }
 
     private List<String> zoneIds = ZoneId.SHORT_IDS.keySet().stream().collect(Collectors.toList());
@@ -102,8 +144,8 @@ public class RandomGenerators {
         return this.getRandomFromList(this.sfuSideMediaUnitIds);
     }
 
-    private List<String> pcLabels = TestUtils.getLabels();
-    public String getRandomLabels() {
+    private List<String> pcLabels = TestUtils.getPeerConnectionLabels();
+    public String getRandomPeerConnectionLabels() {
         return this.getRandomFromList(pcLabels);
     }
 
@@ -152,6 +194,11 @@ public class RandomGenerators {
         return this.getRandomFromList(relayProtocols);
     }
 
+    List<String> mediaKinds = TestUtils.getMediaKinds();
+    public String getRandomMediaKind() {
+        return this.getRandomFromList(mediaKinds);
+    }
+
     public Long getRandomSSRC() {
         var result = this.rand.nextLong() % 4_294_967_296L;
         return Math.abs(result);
@@ -160,5 +207,45 @@ public class RandomGenerators {
     private List<StreamDirection> streamDirections = Arrays.asList(StreamDirection.values());
     public StreamDirection getRandomStreamDirection() {
         return this.getRandomFromList(streamDirections);
+    }
+
+    private List<Integer> clockRates = TestUtils.getClockRates();
+    public Integer getRandomClockRate() {
+        return this.getRandomFromList(clockRates);
+    }
+
+    private List<String> dataChannelStates = TestUtils.getDataChannelState();
+    public String getRandomDataChannelState() {
+        return this.getRandomFromList(dataChannelStates);
+    }
+
+    private List<String> qualityLimitationReasons = TestUtils.getQualityLimitationReason();
+    public String getRandomQualityLimitationReason() {
+        return this.getRandomFromList(qualityLimitationReasons);
+    }
+
+    public Integer getRandomPayloadType() {
+        var result = this.rand.nextInt() % 256;
+        return Math.abs(result);
+    }
+
+    public boolean getRandomBoolean() {
+        var result = this.rand.nextInt();
+        return result % 2 == 0;
+    }
+
+    private List<String> codecTypes = TestUtils.getCodecTypes();
+    public String getRandomCodecType() {
+        return this.getRandomFromList(codecTypes);
+    }
+
+    private List<String> iceUrls = TestUtils.getIceUrls();
+    public String getRandomIceUrl() {
+        return this.getRandomFromList(iceUrls);
+    }
+
+    private List<String> markers = TestUtils.getMarkers();
+    public String getRandomMarker() {
+        return this.getRandomFromList(markers);
     }
 }

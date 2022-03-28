@@ -3,6 +3,7 @@ package org.observertc.observer.utils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 public class TestUtils {
 
@@ -53,7 +54,7 @@ public class TestUtils {
         );
     }
 
-    public static List<String> getLabels() {
+    public static List<String> getPeerConnectionLabels() {
         return List.of(
                 "senderPeerConnection",
                 "receiverPeerConnection",
@@ -104,6 +105,33 @@ public class TestUtils {
         );
     }
 
+    public static List<String> getDataChannelState() {
+        return List.of(
+                "connecting",
+                "open",
+                "closing",
+                "closed"
+        );
+    }
+
+    public static List<String> getQualityLimitationReason() {
+        return List.of(
+                "none",
+                "cpu",
+                "bandwidth",
+                "other"
+        );
+    }
+
+    public static List<String> getIceUrls() {
+        return List.of(
+                "http://iceServer.com",
+                "http://iceServer2.com",
+                "http://myserver.com",
+                "http://myturn.com"
+        );
+    }
+
     public static List<String> getSrtpCipher() {
         return List.of(
                 "SRTP_AES128_CM_HMAC_SHA1_80",
@@ -148,6 +176,43 @@ public class TestUtils {
         );
     }
 
+    public static List<String> getBrowserName() {
+        return List.of(
+                "Microsoft Edge",
+                "Chrome",
+                "Firefox"
+        );
+    }
+
+    public static List<String> getOperationSystemName() {
+        return List.of(
+                "Windows",
+                "Ubuntu",
+                "MacOs"
+        );
+    }
+
+    public static List<String> getVersionNumber() {
+        return List.of(
+                "41.1.35.1",
+                "10.14.5",
+                "13240.14.5",
+                "10.13434.5",
+                "10.14.53433",
+                "12320.12324.5",
+                "1345340.14343.5343",
+                "1230.1234.5",
+                "10.999999"
+        );
+    }
+
+    public static List<Integer> getClockRates() {
+        return List.of(
+                48000,
+                90000
+        );
+    }
+
     public static final String AUDIO_KIND = "audio";
     public static final String VIDEO_KIND = "video";
 
@@ -168,4 +233,36 @@ public class TestUtils {
         return (T[]) list.toArray();
     }
 
+    public static<T> T[] arrayOrNullFromList(List<T> items) {
+        if (Objects.isNull(items)) return null;
+        if (items.size() < 1) return null;
+        return (T[]) items.toArray();
+    }
+
+    public static<T> T[] arrayOrNullFromQueue(Queue<T> items) {
+        if (Objects.isNull(items)) return null;
+        if (items.size() < 1) return null;
+        var drainedItems = new LinkedList<T>();
+        while (!items.isEmpty()) drainedItems.add(items.poll());
+        return (T[]) drainedItems.toArray();
+    }
+
+    public static List<String> getCodecTypes() {
+        return List.of(
+                "opus",
+                "vp8",
+                "vp9"
+        );
+    }
+
+    public static List<String> getMarkers() {
+        return List.of(
+                "dev",
+                "prod",
+                "experimental",
+                "canary",
+                "beta",
+                null
+        );
+    }
 }

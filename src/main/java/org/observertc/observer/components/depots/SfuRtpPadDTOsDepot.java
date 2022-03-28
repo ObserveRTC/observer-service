@@ -1,6 +1,5 @@
 package org.observertc.observer.components.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.samples.ObservedSfuSample;
@@ -68,15 +67,15 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
                 transportId = sfuInboundRtpPad.transportId;
                 rtpPadId = sfuInboundRtpPad.padId;
                 internal = sfuInboundRtpPad.internal;
-                streamId = UUIDAdapter.tryParseOrNull(sfuInboundRtpPad.streamId);
+                streamId = sfuInboundRtpPad.streamId;
                 sinkId = null;
                 direction = StreamDirection.INBOUND;
             } else {
                 transportId = sfuOutboundRtpPad.transportId;
                 rtpPadId = sfuOutboundRtpPad.padId;
                 internal = sfuOutboundRtpPad.internal;
-                streamId = UUIDAdapter.tryParseOrNull(sfuOutboundRtpPad.streamId);
-                sinkId = UUIDAdapter.tryParseOrNull(sfuOutboundRtpPad.sinkId);
+                streamId = sfuOutboundRtpPad.streamId;
+                sinkId = sfuOutboundRtpPad.sinkId;
                 direction = StreamDirection.OUTBOUND;
             }
             if (this.buffer.containsKey(rtpPadId)) {
@@ -93,6 +92,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
                     .withSinkId(sinkId)
                     .withStreamDirection(direction)
                     .withAddedTimestamp(sfuSample.timestamp)
+                    .withMarker(sfuSample.marker)
                     .build();
             this.buffer.put(sfuRtpPadDTO.rtpPadId, sfuRtpPadDTO);
         } catch (Exception ex){

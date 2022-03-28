@@ -1,8 +1,8 @@
 package org.observertc.observer.components.depots;
 
 import org.observertc.observer.dto.PeerConnectionDTO;
-import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSample;
+import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,17 +16,38 @@ public class PeerConnectionDTOsDepot implements Supplier<Map<UUID, PeerConnectio
 
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionDTOsDepot.class);
 
+    private ObservedClientSample observedClientSample = null;
+    private Samples.ClientSample.PeerConnectionTransport pcTransport;
     private Map<UUID, PeerConnectionDTO> buffer = new HashMap<>();
 
-    public PeerConnectionDTOsDepot addFromObservedClientSample(ObservedClientSample observedClientSample) {
+    public PeerConnectionDTOsDepot setObservedClientSample(ObservedClientSample value) {
+        if (Objects.isNull(value)) return this;
+        this.observedClientSample = value;
+        return this;
+    }
+
+    public PeerConnectionDTOsDepot setPeerConnectionTransport(Samples.ClientSample.PeerConnectionTransport value) {
+        if (Objects.isNull(value)) return this;
+        this.pcTransport = value;
+        return this;
+    }
+
+    private void clean() {
+        this.observedClientSample = null;
+        this.pcTransport = null;
+    }
+
+    public void assemble() {
         if (Objects.isNull(observedClientSample) || Objects.isNull(observedClientSample.getClientSample())) {
             logger.warn("No observed client sample");
+            return;
+        }
+        if (this.buffer.containsKey(pcTransport)) {
+            logger.warn("Cannot assemble {} without pcTransport", this.getClass().getSimpleName());
+            return;
         }
         var clientSample = observedClientSample.getClientSample();
-        ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(pcTransport -> {
-            if (this.buffer.containsKey(pcTransport.peerConnectionId)) {
-                return;
-            }
+        try {
             var peerConnection = PeerConnectionDTO.builder()
                     .withCallId(clientSample.callId)
                     .withServiceId(observedClientSample.getServiceId())
@@ -38,11 +59,14 @@ public class PeerConnectionDTOsDepot implements Supplier<Map<UUID, PeerConnectio
                     .withPeerConnectionId(pcTransport.peerConnectionId)
                     .withCreatedTimestamp(clientSample.timestamp)
                     .withClientId(clientSample.clientId)
-
+                    .withMarker(clientSample.marker)
                     .build();
             this.buffer.put(pcTransport.peerConnectionId, peerConnection);
-        });
-        return this;
+        } catch (Exception ex) {
+            logger.warn("Error occurred while assembling {}", this.getClass().getSimpleName(), ex);
+        } finally {
+            this.clean();
+        }
     }
 
     @Override

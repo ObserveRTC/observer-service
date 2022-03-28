@@ -1,17 +1,15 @@
 package org.observertc.observer.components.depots;
 
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.*;
-import org.observertc.observer.simulator.ObservedSamplesGenerator;
+import org.observertc.observer.samples.ObservedSamplesGenerator;
 
 import java.util.UUID;
 
-@MicronautTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ClientDTOsDepotTest {
 
     private final ObservedSamplesGenerator generator = new ObservedSamplesGenerator();
-    private ClientDTOsDepot depot = new ClientDTOsDepot();
+    private final ClientDTOsDepot depot = new ClientDTOsDepot();
 
     @Test
     @Order(1)
@@ -33,6 +31,8 @@ public class ClientDTOsDepotTest {
 
         Assertions.assertEquals(clientDTO.joined, clientSample.timestamp);
         Assertions.assertEquals(clientDTO.timeZoneId, observedClientSample.getTimeZoneId());
+
+        Assertions.assertEquals(clientDTO.marker, clientSample.marker, "marker field");
     }
 
     @Test
@@ -40,4 +40,5 @@ public class ClientDTOsDepotTest {
     void shouldBeEmpty() {
         Assertions.assertEquals(0, this.depot.get().size());
     }
+
 }

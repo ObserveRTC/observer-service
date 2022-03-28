@@ -23,7 +23,13 @@ class MediaTrackDTOTest {
     private final String USER_ID = UUID.randomUUID().toString();
     private final Long SSRC = 1234L;
     private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
+    private final String MARKER = SerDeUtils.NULL_STRING;
 
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = MediaTrackDTO.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutCallId() {
@@ -177,6 +183,7 @@ class MediaTrackDTOTest {
         Assertions.assertEquals(subject.sfuStreamId, SFU_STREAM_ID);
         Assertions.assertEquals(subject.sfuSinkId, SFU_SINK_ID);
         Assertions.assertEquals(subject.direction, DIRECTION);
+        Assertions.assertEquals(subject.marker, MARKER);
     }
 
 
@@ -208,6 +215,7 @@ class MediaTrackDTOTest {
                 .withSfuStreamId(SFU_STREAM_ID)
                 .withSfuSinkId(SFU_SINK_ID)
                 .withUserId(USER_ID)
+                .withMarker(MARKER)
                 ;
     }
 

@@ -4,7 +4,6 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.components.depots.SfuInboundRtpPadReportsDepot;
 import org.observertc.observer.components.depots.SfuOutboundRtpPadReportsDepot;
 import org.observertc.observer.components.depots.SfuSctpStreamReportsDepot;
@@ -66,7 +65,7 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
             });
 
             SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuInboundRtpPad -> {
-                UUID sfuStreamId = UUIDAdapter.tryParseOrNull(sfuInboundRtpPad.streamId);
+                UUID sfuStreamId = sfuInboundRtpPad.streamId;
                 if (Objects.nonNull(sfuStreamId)) {
                     var sfuStream = sfuStreams.get(sfuStreamId);
                     if (Objects.nonNull(sfuStream)) {
@@ -84,7 +83,7 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
             });
 
             SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
-                UUID sfuSinkId = UUIDAdapter.tryParseOrNull(sfuOutboundRtpPad.sinkId);
+                UUID sfuSinkId = sfuOutboundRtpPad.sinkId;
                 if (Objects.nonNull(sfuSinkId)) {
                     var sfuStream = sfuSinks.get(sfuSinkId);
                     if (Objects.nonNull(sfuStream)) {

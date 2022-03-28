@@ -59,6 +59,7 @@ public class SfuTransportDTOsDepot implements Supplier<Map<UUID, SfuTransportDTO
                     .withMediaUnitId(observedSfuSample.getMediaUnitId())
                     .withInternal(sfuTransport.internal)
                     .withOpenedTimestamp(sfuSample.timestamp)
+                    .withMarker(sfuSample.marker)
                     .build();
             this.buffer.put(sfuTransportDTO.transportId, sfuTransportDTO);
         } catch (Exception ex){

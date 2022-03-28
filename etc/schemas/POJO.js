@@ -26,6 +26,8 @@ export class POJO {
         this._nestedClasses = [];
         this._builderFields = null;
         this._uuidFields = new Set();
+        this._assertations = [];
+        this._assigns = [];
     }
 
     get name() {
@@ -139,6 +141,44 @@ export class POJO {
             ];
             this._builderFields.push(...lines);
         }
+        const assertation = `Assertions.assertEquals(expected.${name}, actual.${name}, "${name} field");`
+        this._assertations.push(assertation);
+
+        const varName =  this.name.charAt(0).toLowerCase() + this.name.slice(1);
+        const assign = `${varName}.${name} = ASSIGNED;`
+        this._assigns.push(assign);
+    }
+
+    drainAssertions() {
+        const result = [];
+        result.push(
+            ``,
+            this.name,
+            ...this._assertations,
+        )
+        for (const nestedClass of this._nestedClasses) {
+            const assertations = nestedClass.drainAssertions();
+            result.push(
+                ...assertations
+            );
+        }
+        return result;
+    }
+
+    drainAssigns() {
+        const result = [];
+        result.push(
+            ``,
+            this.name,
+            ...this._assigns,
+        )
+        for (const nestedClass of this._nestedClasses) {
+            const assigns = nestedClass.drainAssigns();
+            result.push(
+                ...assigns
+            );
+        }
+        return result;
     }
 
     toLines() {

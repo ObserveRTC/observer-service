@@ -44,6 +44,7 @@ public class ClientDTO implements VersionedPortable {
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 	private static final String JOINED_FIELD_NAME = "joined";
 	private static final String TIMEZONE_FIELD_NAME = "timeZone";
+	private static final String MARKER_FIELD_NAME = "marker";
 
 	public String serviceId;
 	public String roomId;
@@ -54,6 +55,7 @@ public class ClientDTO implements VersionedPortable {
 	public UUID clientId;
 	public Long joined;
 	public String timeZoneId;
+	public String marker;
 
 	ClientDTO() {
 
@@ -81,6 +83,8 @@ public class ClientDTO implements VersionedPortable {
 		writer.writeLong(JOINED_FIELD_NAME, this.joined);
 		writer.writeString(TIMEZONE_FIELD_NAME, this.timeZoneId);
 
+		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
+
 	}
 
 	@Override
@@ -94,6 +98,8 @@ public class ClientDTO implements VersionedPortable {
 		this.clientId = UUIDAdapter.toUUID(reader.readByteArray(CLIENT_ID_FIELD_NAME));
 		this.joined = reader.readLong(JOINED_FIELD_NAME);
 		this.timeZoneId = reader.readString(TIMEZONE_FIELD_NAME);
+
+		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
 	}
 
 	@Override
@@ -120,7 +126,8 @@ public class ClientDTO implements VersionedPortable {
 			!Objects.equals(this.mediaUnitId, otherDTO.mediaUnitId) ||
 			!Objects.equals(this.clientId, otherDTO.clientId) ||
 			!Objects.equals(this.joined, otherDTO.joined) ||
-			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId)
+			!Objects.equals(this.timeZoneId, otherDTO.timeZoneId) ||
+			!Objects.equals(this.marker, otherDTO.marker)
 		) {
 			return false;
 		}
@@ -182,6 +189,11 @@ public class ClientDTO implements VersionedPortable {
 
 		public Builder withTimeZoneId(String value) {
 			this.result.timeZoneId = value;
+			return this;
+		}
+
+		public Builder withMarker(String value) {
+			this.result.marker = value;
 			return this;
 		}
 

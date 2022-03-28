@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SfuOutboundRtpPadReport {
-	public static final String VERSION="2.0.0-beta.30";
+	public static final String VERSION="2.0.0-beta.44";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -101,7 +101,7 @@ public class SfuOutboundRtpPadReport {
 	* The clock rate of the media source the RTP header carries
 	*/
 	@JsonProperty("clockRate")
-	public Long clockRate;
+	public Integer clockRate;
 	/**
 	* The actual SDP line from the negotiation related to this RTP stream
 	*/
@@ -121,7 +121,7 @@ public class SfuOutboundRtpPadReport {
 	* he bitrate the corresponded stream targets.
 	*/
 	@JsonProperty("targetBitrate")
-	public Long targetBitrate;
+	public Integer targetBitrate;
 	/**
 	* The RTP header V flag indicate of the activity of the media source by the media codec if the RTP transport ships it through
 	*/
@@ -250,11 +250,11 @@ public class SfuOutboundRtpPadReport {
 		public Builder setMediaType(String value) { this.result.mediaType = value; return this; }
 		public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 		public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-		public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+		public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 		public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 		public Builder setRid(String value) { this.result.rid = value; return this; }
 		public Builder setRtxSsrc(Long value) { this.result.rtxSsrc = value; return this; }
-		public Builder setTargetBitrate(Long value) { this.result.targetBitrate = value; return this; }
+		public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
 		public Builder setVoiceActivityFlag(Boolean value) { this.result.voiceActivityFlag = value; return this; }
 		public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
 		public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }

@@ -14,8 +14,13 @@ class SfuTransportDTOTest {
     private final UUID SFU_TRANSPORT_ID = UUID.randomUUID();
     private final boolean INTERNAL = true;
     private final Long TIMESTAMP = Instant.now().toEpochMilli();
-    private final UUID CLIENT_ID = UUID.randomUUID();
-    private final UUID CALL_ID = UUID.randomUUID();
+    private final String MARKER = SerDeUtils.NULL_STRING;
+
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = SfuTransportDTO.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutSfuId() {
@@ -57,8 +62,7 @@ class SfuTransportDTOTest {
         Assertions.assertEquals(subject.transportId, SFU_TRANSPORT_ID);
         Assertions.assertEquals(subject.internal, INTERNAL);
         Assertions.assertEquals(subject.opened, TIMESTAMP);
-        Assertions.assertEquals(subject.callId, CALL_ID);
-        Assertions.assertEquals(subject.clientId, CLIENT_ID);
+        Assertions.assertEquals(subject.marker, MARKER);
 
     }
 
@@ -80,8 +84,7 @@ class SfuTransportDTOTest {
                 .withTransportId(SFU_TRANSPORT_ID)
                 .withInternal(INTERNAL)
                 .withOpenedTimestamp(TIMESTAMP)
-                .withClientId(CLIENT_ID)
-                .withCallId(CALL_ID)
+                .withMarker(MARKER)
                 ;
     }
 

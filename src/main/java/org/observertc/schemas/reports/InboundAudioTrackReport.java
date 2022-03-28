@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InboundAudioTrackReport {
-	public static final String VERSION="2.0.0-beta.30";
+	public static final String VERSION="2.0.0-beta.44";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -181,7 +181,7 @@ public class InboundAudioTrackReport {
 	* Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 	*/
 	@JsonProperty("lastPacketReceivedTimestamp")
-	public Double lastPacketReceivedTimestamp;
+	public Long lastPacketReceivedTimestamp;
 	/**
 	* The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
 	*/
@@ -221,7 +221,7 @@ public class InboundAudioTrackReport {
 	* The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)
 	*/
 	@JsonProperty("perDscpPacketsReceived")
-	public Double perDscpPacketsReceived;
+	public Integer perDscpPacketsReceived;
 	/**
 	* Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)
 	*/
@@ -236,7 +236,7 @@ public class InboundAudioTrackReport {
 	* The estimated playout time of the corresponded synchronization source
 	*/
 	@JsonProperty("estimatedPlayoutTimestamp")
-	public Double estimatedPlayoutTimestamp;
+	public Long estimatedPlayoutTimestamp;
 	/**
 	* The total time of RTP packets spent in jitterbuffer waiting for frame completion due to network uncertenity.
 	*/
@@ -266,7 +266,7 @@ public class InboundAudioTrackReport {
 	* The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)
 	*/
 	@JsonProperty("remoteTimestamp")
-	public Double remoteTimestamp;
+	public Long remoteTimestamp;
 	/**
 	* The number of SR reports the remote endpoint sent corresponded to synchronization source (ssrc) this report belongs to
 	*/
@@ -291,7 +291,7 @@ public class InboundAudioTrackReport {
 	* The negotiated clock rate the RTP timestamp is generated of
 	*/
 	@JsonProperty("clockRate")
-	public Long clockRate;
+	public Integer clockRate;
 	/**
 	* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
 	*/
@@ -341,7 +341,7 @@ public class InboundAudioTrackReport {
 		public Builder setGapLossRate(Double value) { this.result.gapLossRate = value; return this; }
 		public Builder setGapDiscardRate(Double value) { this.result.gapDiscardRate = value; return this; }
 		public Builder setVoiceActivityFlag(Boolean value) { this.result.voiceActivityFlag = value; return this; }
-		public Builder setLastPacketReceivedTimestamp(Double value) { this.result.lastPacketReceivedTimestamp = value; return this; }
+		public Builder setLastPacketReceivedTimestamp(Long value) { this.result.lastPacketReceivedTimestamp = value; return this; }
 		public Builder setAverageRtcpInterval(Double value) { this.result.averageRtcpInterval = value; return this; }
 		public Builder setHeaderBytesReceived(Long value) { this.result.headerBytesReceived = value; return this; }
 		public Builder setFecPacketsReceived(Integer value) { this.result.fecPacketsReceived = value; return this; }
@@ -349,21 +349,21 @@ public class InboundAudioTrackReport {
 		public Builder setBytesReceived(Long value) { this.result.bytesReceived = value; return this; }
 		public Builder setPacketsFailedDecryption(Integer value) { this.result.packetsFailedDecryption = value; return this; }
 		public Builder setPacketsDuplicated(Integer value) { this.result.packetsDuplicated = value; return this; }
-		public Builder setPerDscpPacketsReceived(Double value) { this.result.perDscpPacketsReceived = value; return this; }
+		public Builder setPerDscpPacketsReceived(Integer value) { this.result.perDscpPacketsReceived = value; return this; }
 		public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
 		public Builder setTotalProcessingDelay(Double value) { this.result.totalProcessingDelay = value; return this; }
-		public Builder setEstimatedPlayoutTimestamp(Double value) { this.result.estimatedPlayoutTimestamp = value; return this; }
+		public Builder setEstimatedPlayoutTimestamp(Long value) { this.result.estimatedPlayoutTimestamp = value; return this; }
 		public Builder setJitterBufferDelay(Double value) { this.result.jitterBufferDelay = value; return this; }
 		public Builder setJitterBufferEmittedCount(Integer value) { this.result.jitterBufferEmittedCount = value; return this; }
 		public Builder setDecoderImplementation(String value) { this.result.decoderImplementation = value; return this; }
 		public Builder setPacketsSent(Integer value) { this.result.packetsSent = value; return this; }
 		public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
-		public Builder setRemoteTimestamp(Double value) { this.result.remoteTimestamp = value; return this; }
+		public Builder setRemoteTimestamp(Long value) { this.result.remoteTimestamp = value; return this; }
 		public Builder setReportsSent(Integer value) { this.result.reportsSent = value; return this; }
 		public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
 		public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
 		public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-		public Builder setClockRate(Long value) { this.result.clockRate = value; return this; }
+		public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
 		public Builder setChannels(Integer value) { this.result.channels = value; return this; }
 		public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
 		public InboundAudioTrackReport build() {

@@ -50,6 +50,7 @@ public class MediaTrackDTO implements VersionedPortable {
 	private static final String SSRC_FIELD_NAME = "ssrc";
 	private static final String ADDED_FIELD_NAME = "added";
 	private static final String DIRECTION_FIELD_NAME = "direction";
+	private static final String MARKER_FIELD_NAME = "marker";
 
 	public UUID callId;
 	public String serviceId;
@@ -66,6 +67,7 @@ public class MediaTrackDTO implements VersionedPortable {
 	public Long ssrc;
 	public Long added;
 	public StreamDirection direction;
+	public String marker;
 
 	public static Builder builder() {
 		return new Builder();
@@ -102,6 +104,7 @@ public class MediaTrackDTO implements VersionedPortable {
 		var direction = this.direction.name();
 		writer.writeString(DIRECTION_FIELD_NAME, direction);
 
+		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
 	}
 
 	@Override
@@ -122,6 +125,8 @@ public class MediaTrackDTO implements VersionedPortable {
 		this.added = reader.readLong(ADDED_FIELD_NAME);
 		var direction = reader.readString(DIRECTION_FIELD_NAME);
 		this.direction = StreamDirection.valueOf(direction);
+
+		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
 	}
 
 	@Override
@@ -155,13 +160,14 @@ public class MediaTrackDTO implements VersionedPortable {
 		if (!Objects.equals(this.ssrc, otherDTO.ssrc)) return false;
 		if (!Objects.equals(this.added, otherDTO.added)) return false;
 		if (!Objects.equals(this.direction, otherDTO.direction)) return false;
+		if (!Objects.equals(this.marker, otherDTO.marker)) return false;
 		return true;
 	}
 
 	public static class Builder {
 		private final MediaTrackDTO result = new MediaTrackDTO();
 
-		private Builder() {
+		protected Builder() {
 
 		}
 
@@ -181,6 +187,7 @@ public class MediaTrackDTO implements VersionedPortable {
 					.withSfuSinkId(source.sfuSinkId)
 					.withAddedTimestamp(source.added)
 					.withDirection(source.direction)
+					.withMarker(source.marker)
 					;
 		}
 
@@ -255,6 +262,11 @@ public class MediaTrackDTO implements VersionedPortable {
 
 		public Builder withDirection(StreamDirection value) {
 			this.result.direction = value;
+			return this;
+		}
+
+		public Builder withMarker(String value) {
+			this.result.marker = value;
 			return this;
 		}
 

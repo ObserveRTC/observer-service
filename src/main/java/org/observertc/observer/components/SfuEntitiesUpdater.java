@@ -71,7 +71,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
             if (!foundSfuIds.contains(sfuSample.sfuId)) {
-                sfuDTOsDepot.addFromObservedClientSample(observedSfuSample);
+                sfuDTOsDepot.addFromObservedSfuSample(observedSfuSample);
             }
             SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {
                 if (foundTransportIds.contains(sfuTransport.transportId)) return;

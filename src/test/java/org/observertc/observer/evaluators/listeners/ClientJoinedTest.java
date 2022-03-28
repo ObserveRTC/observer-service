@@ -3,11 +3,11 @@ package org.observertc.observer.evaluators.listeners;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.utils.DTOGenerators;
-import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.components.eventreports.attachments.ClientAttachment;
+import org.observertc.observer.dto.ClientDTO;
+import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.utils.DTOGenerators;
 import org.observertc.schemas.reports.CallEventReport;
 
 import javax.inject.Inject;

@@ -2,7 +2,6 @@ package org.observertc.observer.components.depots;
 
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.StreamDirection;
-import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,103 +17,112 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
     private static final Logger logger = LoggerFactory.getLogger(MediaTrackDTOsDepot.class);
 
     private Map<UUID, MediaTrackDTO> buffer = new HashMap<>();
+    private ObservedClientSample observedClientSample;
+    private UUID trackId = null;
+    private UUID sfuSinkId = null;
+    private UUID sfuStreamId = null;
+    private StreamDirection direction = null;
+    private Long SSRC = null;
+    private UUID peerConnectionId = null;
 
-    public MediaTrackDTOsDepot addFromObservedClientSample(ObservedClientSample observedClientSample) {
+
+    public MediaTrackDTOsDepot setObservedClientSample(ObservedClientSample value) {
+        if (Objects.isNull(value)) return this;
+        this.observedClientSample = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setTrackId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.trackId = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setSfuSinkId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.sfuSinkId = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setSfuStreamId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.sfuStreamId = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setStreamDirection(StreamDirection value) {
+        if (Objects.isNull(value)) return this;
+        this.direction = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setSSRC(Long value) {
+        if (Objects.isNull(value)) return this;
+        this.SSRC = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setPeerConnectionId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.peerConnectionId = value;
+        return this;
+    }
+
+    private void clean() {
+        this.trackId = null;
+        this.sfuSinkId = null;
+        this.sfuStreamId = null;
+        this.direction = null;
+        this.SSRC = null;
+        this.peerConnectionId = null;
+    }
+
+    public void assemble() {
         if (Objects.isNull(observedClientSample) || Objects.isNull(observedClientSample.getClientSample())) {
             logger.warn("No observed client sample");
+            return;
+        }
+        if (Objects.isNull(this.trackId)) {
+            logger.warn("Cannot create {} without trackId", MediaTrackDTO.class.getSimpleName());
+        }
+        if (Objects.isNull(this.direction)) {
+            logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
+        }
+        if (Objects.isNull(this.SSRC)) {
+            logger.warn("Cannot create {} without SSRC", MediaTrackDTO.class.getSimpleName());
+        }
+        if (Objects.isNull(this.peerConnectionId)) {
+            logger.warn("Cannot create {} without peerConnectionId", MediaTrackDTO.class.getSimpleName());
+        }
+        if (this.buffer.containsKey(trackId)) {
+            return;
         }
         var clientSample = observedClientSample.getClientSample();
-        ClientSampleVisitor.streamInboundAudioTracks(clientSample)
-            .forEach(track -> {
-                if (this.buffer.containsKey(track.trackId)) {
-                    return;
-                }
-                var mediaTrackDTO = MediaTrackDTO.builder()
-                        .withCallId(clientSample.callId)
-                        .withServiceId(observedClientSample.getServiceId())
-                        .withRoomId(clientSample.roomId)
+        try {
+            var mediaTrackDTO = MediaTrackDTO.builder()
+                    .withCallId(clientSample.callId)
+                    .withServiceId(observedClientSample.getServiceId())
+                    .withRoomId(clientSample.roomId)
 
-                        .withClientId(clientSample.clientId)
-                        .withUserId(clientSample.userId)
-                        .withMediaUnitId(observedClientSample.getMediaUnitId())
+                    .withClientId(clientSample.clientId)
+                    .withUserId(clientSample.userId)
+                    .withMediaUnitId(observedClientSample.getMediaUnitId())
 
-                        .withTrackId(track.trackId)
-//                        .withSfuStreamId(track.sfuStreamId)
-                        .withSfuSinkId(track.sfuSinkId)
-                        .withDirection(StreamDirection.INBOUND)
-                        .withPeerConnectionId(track.peerConnectionId)
-                        .withSSRC(track.ssrc)
-                        .withAddedTimestamp(clientSample.timestamp)
-                        .build();
-                this.buffer.put(track.trackId, mediaTrackDTO);
-        });
-
-        ClientSampleVisitor.streamInboundVideoTracks(clientSample)
-            .forEach(track -> {
-                var mediaTrackDTO = MediaTrackDTO.builder()
-                        .withCallId(clientSample.callId)
-                        .withServiceId(observedClientSample.getServiceId())
-                        .withRoomId(clientSample.roomId)
-
-                        .withClientId(clientSample.clientId)
-                        .withUserId(clientSample.userId)
-                        .withMediaUnitId(observedClientSample.getMediaUnitId())
-
-                        .withTrackId(track.trackId)
-//                        .withSfuStreamId(track.sfuStreamId)
-                        .withSfuSinkId(track.sfuSinkId)
-                        .withDirection(StreamDirection.INBOUND)
-                        .withPeerConnectionId(track.peerConnectionId)
-                        .withSSRC(track.ssrc)
-                        .withAddedTimestamp(clientSample.timestamp)
-                        .build();
-                this.buffer.put(track.trackId, mediaTrackDTO);
-        });
-
-        ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
-            .forEach(track -> {
-                var mediaTrackDTO = MediaTrackDTO.builder()
-                        .withCallId(clientSample.callId)
-                        .withServiceId(observedClientSample.getServiceId())
-                        .withRoomId(clientSample.roomId)
-
-                        .withClientId(clientSample.clientId)
-                        .withUserId(clientSample.userId)
-                        .withMediaUnitId(observedClientSample.getMediaUnitId())
-
-                        .withTrackId(track.trackId)
-                        .withSfuStreamId(track.sfuStreamId)
-//                        .withSfuSinkId(track.sfuSinkId)
-                        .withDirection(StreamDirection.OUTBOUND)
-                        .withPeerConnectionId(track.peerConnectionId)
-                        .withSSRC(track.ssrc)
-                        .withAddedTimestamp(clientSample.timestamp)
-                        .build();
-                this.buffer.put(track.trackId, mediaTrackDTO);
-        });
-
-        ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
-            .forEach(track -> {
-                var mediaTrackDTO = MediaTrackDTO.builder()
-                        .withCallId(clientSample.callId)
-                        .withServiceId(observedClientSample.getServiceId())
-                        .withRoomId(clientSample.roomId)
-
-                        .withClientId(clientSample.clientId)
-                        .withUserId(clientSample.userId)
-                        .withMediaUnitId(observedClientSample.getMediaUnitId())
-
-                        .withTrackId(track.trackId)
-                        .withSfuStreamId(track.sfuStreamId)
-//                        .withSfuSinkId(track.sfuSinkId)
-                        .withDirection(StreamDirection.OUTBOUND)
-                        .withPeerConnectionId(track.peerConnectionId)
-                        .withSSRC(track.ssrc)
-                        .withAddedTimestamp(clientSample.timestamp)
-                        .build();
-                this.buffer.put(track.trackId, mediaTrackDTO);
-        });
-        return this;
+                    .withTrackId(trackId)
+                    .withSfuStreamId(sfuStreamId)
+                    .withSfuSinkId(sfuSinkId)
+                    .withDirection(StreamDirection.INBOUND)
+                    .withPeerConnectionId(peerConnectionId)
+                    .withSSRC(SSRC)
+                    .withAddedTimestamp(clientSample.timestamp)
+                    .withMarker(clientSample.marker)
+                    .build();
+            this.buffer.put(mediaTrackDTO.trackId, mediaTrackDTO);
+        } catch (Exception ex) {
+            logger.warn("Exception occurred while assembling {}", this.getClass().getSimpleName());
+        } finally {
+            this.clean();
+        }
     }
 
     @Override

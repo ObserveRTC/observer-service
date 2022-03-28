@@ -28,11 +28,13 @@ public class DTOGenerators {
         var roomId = this.randomGenerators.getRandomTestRoomIds();
         var callId = UUID.randomUUID();
         var timestamp = this.randomGenerators.getRandomTimestamp();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = CallDTO.builder()
                 .withServiceId(serviceId)
                 .withRoomId(roomId)
                 .withCallId(callId)
                 .withStartedTimestamp(timestamp)
+                .withMarker(marker)
                 ;
         return result;
     }
@@ -52,6 +54,7 @@ public class DTOGenerators {
         var clientId = UUID.randomUUID();
         var userId = this.randomGenerators.getRandomTestUserIds();
         var timeZoneId = this.randomGenerators.getRandomTimeZoneId();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = ClientDTO.builder()
                 .withServiceId(serviceId)
                 .withRoomId(roomId)
@@ -60,7 +63,9 @@ public class DTOGenerators {
                 .withClientId(clientId)
                 .withUserId(userId)
                 .withJoinedTimestamp(timestamp)
-                .withTimeZoneId(timeZoneId);
+                .withTimeZoneId(timeZoneId)
+                .withMarker(marker)
+                ;
         return result;
     }
 
@@ -80,6 +85,7 @@ public class DTOGenerators {
         var clientId = UUID.randomUUID();
         var peerConnectionId = UUID.randomUUID();
         var userId = this.randomGenerators.getRandomTestUserIds();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = PeerConnectionDTO.builder()
                 .withServiceId(serviceId)
                 .withRoomId(roomId)
@@ -89,6 +95,7 @@ public class DTOGenerators {
                 .withPeerConnectionId(peerConnectionId)
                 .withUserId(userId)
                 .withCreatedTimestamp(timestamp)
+                .withMarker(marker)
                 ;
         return result;
     }
@@ -111,6 +118,7 @@ public class DTOGenerators {
         var ssrc = this.randomGenerators.getRandomSSRC();
         var sfuStreamId = callId.getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID() : null;
         var direction = this.randomGenerators.getRandomStreamDirection();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = MediaTrackDTO.builder()
                 .withServiceId(serviceId)
                 .withRoomId(roomId)
@@ -124,6 +132,7 @@ public class DTOGenerators {
                 .withSSRC(ssrc)
                 .withSfuStreamId(sfuStreamId)
                 .withDirection(direction)
+                .withMarker(marker)
                 ;
         return result;
     }
@@ -139,12 +148,14 @@ public class DTOGenerators {
         var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
         var timeZoneId = this.randomGenerators.getRandomTimeZoneId();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = SfuDTO.builder()
                 .withSfuId(sfuId)
                 .withServiceId(serviceId)
                 .withMediaUnitId(mediaUnitId)
                 .withConnectedTimestamp(timestamp)
                 .withTimeZoneId(timeZoneId)
+                .withMarker(marker)
                 ;
         return result;
     }
@@ -157,30 +168,36 @@ public class DTOGenerators {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = SfuTransportDTO.builder()
                 .withSfuId(sfuId)
                 .withServiceId(serviceId)
                 .withInternal(internal)
                 .withTransportId(transportId)
-                .withCallId(callId)
                 .withMediaUnitId(mediaUnitId)
                 .withOpenedTimestamp(timestamp)
+                .withMarker(marker)
                 .build();
         return result;
     }
 
     public SfuRtpPadDTO getSfuRtpPadDTO() {
+        var result = this.getSfuRtpPadDTOBuilder()
+                .build()
+                ;
+        return result;
+    }
+
+    public SfuRtpPadDTO.Builder getSfuRtpPadDTOBuilder() {
         var sfuId = UUID.randomUUID();
-        var callId = UUID.randomUUID();
         var sfuStreamId = UUID.randomUUID();
         var sfuPadId = UUID.randomUUID();
-        var trackId = UUID.randomUUID();
-        var clientId = UUID.randomUUID();
         var sfuTransportId = UUID.randomUUID();
         var serviceId = this.randomGenerators.getRandomServiceId();
         var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
         var streamDirection = this.randomGenerators.getRandomStreamDirection();
+        var marker = this.randomGenerators.getRandomMarker();
         var result = SfuRtpPadDTO.builder()
                 .withServiceId(serviceId)
                 .withMediaUnitId(mediaUnitId)
@@ -190,7 +207,57 @@ public class DTOGenerators {
                 .withSfuRtpPadId(sfuPadId)
                 .withStreamDirection(streamDirection)
                 .withAddedTimestamp(timestamp)
+                .withMarker(marker)
+        return result;
+    }
+
+    public SfuStreamDTO getSfuStreamDTO() {
+        var result = this.getSfuStreamDTOBuilder()
                 .build();
+        return result;
+    }
+
+    public SfuStreamDTO.Builder getSfuStreamDTOBuilder() {
+        var sfuId = UUID.randomUUID();
+        var sfuStreamId = UUID.randomUUID();
+        var trackId = UUID.randomUUID();
+        var clientId = UUID.randomUUID();
+        var callId = UUID.randomUUID();
+        var sfuTransportId = UUID.randomUUID();
+        var result = SfuStreamDTO.builder()
+                .withSfuId(sfuId)
+                .withSfuTransportId(sfuTransportId)
+                .withStreamId(sfuStreamId)
+                .withTrackId(trackId)
+                .withClientId(clientId)
+                .withCallId(callId)
+                ;
+        return result;
+    }
+
+    public SfuSinkDTO getSfuSinkIdDTO() {
+        var result = this.getSfuSinkDTOBuilder()
+                .build();
+        return result;
+    }
+
+    public SfuSinkDTO.Builder getSfuSinkDTOBuilder() {
+        var sfuId = UUID.randomUUID();
+        var sfuStreamId = UUID.randomUUID();
+        var sfuSinkId = UUID.randomUUID();
+        var trackId = UUID.randomUUID();
+        var clientId = UUID.randomUUID();
+        var callId = UUID.randomUUID();
+        var sfuTransportId = UUID.randomUUID();
+        var result = SfuSinkDTO.builder()
+                .withSfuId(sfuId)
+                .withSfuTransportId(sfuTransportId)
+                .withStreamId(sfuStreamId)
+                .withSinkId(sfuSinkId)
+                .withTrackId(trackId)
+                .withClientId(clientId)
+                .withCallId(callId)
+                ;
         return result;
     }
 }

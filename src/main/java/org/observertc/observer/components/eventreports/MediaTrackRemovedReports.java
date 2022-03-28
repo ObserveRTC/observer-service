@@ -2,8 +2,8 @@ package org.observertc.observer.components.eventreports;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.components.eventreports.attachments.MediaTrackAttachment;
+import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.observer.repositories.tasks.RemoveMediaTracksTask;
@@ -85,9 +85,11 @@ public class MediaTrackRemovedReports {
             String peerConnectionId = UUIDAdapter.toStringOrNull(mediaTrackDTO.peerConnectionId);
             String trackId = UUIDAdapter.toStringOrNull(mediaTrackDTO.trackId);
             String sfuStreamId = UUIDAdapter.toStringOrNull(mediaTrackDTO.sfuStreamId);
+            String sfuSinkId = UUIDAdapter.toStringOrNull(mediaTrackDTO.sfuSinkId);
             String streamDirection = mediaTrackDTO.direction != null ? mediaTrackDTO.direction.name() : null;
             MediaTrackAttachment attachment = MediaTrackAttachment.builder()
                     .withSfuStreamId(sfuStreamId)
+                    .withSfuSinkId(sfuSinkId)
                     .withStreamDirection(streamDirection)
                     .build();
             var report = CallEventReport.newBuilder()

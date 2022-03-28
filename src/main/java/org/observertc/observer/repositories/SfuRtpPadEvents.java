@@ -61,7 +61,7 @@ public class SfuRtpPadEvents {
 
     @PostConstruct
     void setup() {
-        this.repositoryEvents.addedSfuRtpPads().subscribe(this::onSfuRtpPadAdded);
+        this.repositoryEvents.addedSfuRtpPads().subscribe(this::onSfuRtpPadsAdded);
         this.repositoryEvents.removedSfuRtpPads().subscribe(list -> this.onSfuRtpPadsRemoved(list, Collections.EMPTY_MAP));
         this.repositoryEvents.expiredSfuRtpPads().subscribe(this::onSfuRtpPadsExpired);
         this.repositoryEvents.updatedSfuStreams().subscribe(this::onSfuStreamUpdated);
@@ -76,7 +76,7 @@ public class SfuRtpPadEvents {
         return this.getObservableList(this.disposedSfuRtpPad);
     }
 
-    private void onSfuRtpPadAdded(List<SfuRtpPadDTO> sfuRtpPads) {
+    private void onSfuRtpPadsAdded(List<SfuRtpPadDTO> sfuRtpPads) {
         var streamIds = sfuRtpPads.stream().map(pad -> pad.streamId).collect(Collectors.toSet());
         var sinkIds = sfuRtpPads.stream().map(pad -> pad.sinkId).collect(Collectors.toSet());
         Map<UUID, SfuStreamDTO> streamDTOs;

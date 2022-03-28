@@ -20,6 +20,13 @@ class PeerConnectionDTOTest {
     private final String USER_ID = UUID.randomUUID().toString();
     private final Long SSRC = 1234L;
     private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
+    private final String MARKER = SerDeUtils.NULL_STRING;
+
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = PeerConnectionDTO.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutCallId() {
@@ -164,6 +171,14 @@ class PeerConnectionDTOTest {
         Assertions.assertEquals(expectedUserId, peerConnectionDTO.userId);
     }
 
+    @Test
+    void shouldBuildWithMarker() {
+        var expectedMarker = UUID.randomUUID().toString();
+        var peerConnectionDTO = this.makeBuilder().withMarker(expectedMarker).build();
+
+        Assertions.assertEquals(expectedMarker, peerConnectionDTO.marker);
+    }
+
 
 
     @Test
@@ -186,6 +201,7 @@ class PeerConnectionDTOTest {
                 .withClientId(CLIENT_ID)
                 .withPeerConnectionId(PEER_CONNECTION_ID)
                 .withCreatedTimestamp(TIMESTAMP)
+                .withMarker(MARKER)
                 ;
     }
 

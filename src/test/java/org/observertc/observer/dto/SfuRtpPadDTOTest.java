@@ -18,6 +18,13 @@ class SfuRtpPadDTOTest {
     private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
     private final boolean SFU_RTP_INTERNAL = true;
     private final Long TIMESTAMP = Instant.now().toEpochMilli();
+    private final String MARKER = SerDeUtils.NULL_STRING;
+
+    @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = SfuRtpPadDTO.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
 
     @Test
     void shouldNotBuildWithoutSfuId() {
@@ -77,6 +84,7 @@ class SfuRtpPadDTOTest {
         Assertions.assertEquals(subject.transportId, SFU_TRANSPORT_ID);
         Assertions.assertEquals(subject.internal, SFU_RTP_INTERNAL);
         Assertions.assertEquals(subject.added, TIMESTAMP);
+        Assertions.assertEquals(subject.marker, MARKER);
     }
 
     @Test
@@ -101,6 +109,7 @@ class SfuRtpPadDTOTest {
                 .withSfuTransportId(SFU_TRANSPORT_ID)
                 .withInternal(SFU_RTP_INTERNAL)
                 .withAddedTimestamp(TIMESTAMP)
+                .withMarker(MARKER)
                 ;
     }
 

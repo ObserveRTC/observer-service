@@ -18,6 +18,7 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
     private Samples.SfuSample.SfuTransport sfuTransport = null;
     private String callId = null;
     private List<SFUTransportReport> buffer = new LinkedList<>();
+    private String roomId = null;
 
 
     public SfuTransportReportsDepot setObservedSfuSample(ObservedSfuSample value) {
@@ -36,10 +37,16 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
         return this;
     }
 
+    public SfuTransportReportsDepot setRoomId(String value) {
+        this.roomId = value;
+        return this;
+    }
+
     private SfuTransportReportsDepot clean() {
         this.observedSfuSample = null;
         this.sfuTransport = null;
         this.callId = null;
+        this.roomId = null;
         return this;
     }
 
@@ -69,6 +76,7 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
                     .setTransportId(transportId)
                     .setSfuId(sfuId)
                     .setCallId(callId)
+                    .setRoomId(roomId)
 
                     /* Transport stats */
                     .setDtlsState(sfuTransport.dtlsState)
@@ -93,7 +101,7 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
                     .setRtxBytesSent(sfuTransport.rtxBytesSent)
                     .setRtxPacketsReceived(sfuTransport.rtxPacketsReceived)
                     .setRtxPacketsSent(sfuTransport.rtxPacketsSent)
-//                    .setRtxPacketsLost(sfuTransport.rtxPacket)
+                    .setRtxPacketsLost(sfuTransport.rtxPacketsLost)
                     .setRtxPacketsDiscarded(sfuTransport.rtxPacketsDiscarded)
 
                     /* SCTP related stats */

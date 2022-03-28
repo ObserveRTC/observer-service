@@ -1,6 +1,5 @@
 package org.observertc.observer.common;
 
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.RxObserverBuilder;
@@ -9,57 +8,152 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@MicronautTest
 class ObservableCollectorTest {
 
-
     @Test
-    void shouldCollectMaxItemsWithSubscriber() {
-        AtomicBoolean executed = new AtomicBoolean(false);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(2)
+    public void shouldCollect_1() throws Throwable {
+        AtomicBoolean done = new AtomicBoolean(false);
+        var collector = ObservableCollector.<Integer>builder().withMaxItems(2)
                 .build();
-        collector.subscribe(items -> {
+
+        collector.observableEmittedItems().subscribe(items -> {
+            Assertions.assertEquals(1, items.get(0));
+            Assertions.assertEquals(2, items.get(1));
             Assertions.assertEquals(2, items.size());
-            executed.set(true);
+            done.set(true);
         });
 
-        collector.addAll(List.of(1,2));
-        Assertions.assertTrue(executed.get());
+        collector.add(1, 2);
+        collector.add(3);
+        Assertions.assertTrue(done.get());
     }
 
     @Test
-    void shouldCollectTimeoutInMsWithSubscriber() {
-        AtomicBoolean executed = new AtomicBoolean(false);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxTimeInMs(200)
-                .build();
-        collector.subscribe(items -> {
-            Assertions.assertEquals(2, items.size());
-            executed.set(true);
+    public void shouldBatchCollect_1() throws Throwable {
+        AtomicBoolean done = new AtomicBoolean(false);
+        var collector = ObservableCollector.<Integer>builder().withMaxItems(2).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            Assertions.assertEquals(1, items.get(0));
+            Assertions.assertEquals(2, items.get(1));
+            Assertions.assertEquals(3, items.get(2));
+            Assertions.assertEquals(3, items.size());
+            done.set(true);
         });
 
-        collector.addAll(List.of(1,2));
-        new Sleeper(() -> 500).run();
+        collector.addAll(List.of(1,2,3));
+        Assertions.assertTrue(done.get());
+    }
+
+    @Test
+    public void shouldCollect_2() throws Throwable {
+        AtomicBoolean done = new AtomicBoolean(false);
+        var collector = ObservableCollector.<Integer>builder().withMaxTimeInMs(200).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            Assertions.assertEquals(1, items.size());
+            done.set(true);
+        });
+
         collector.add(1);
-        Assertions.assertTrue(executed.get());
+        new Sleeper(() -> 500).run();
+        Assertions.assertTrue(done.get());
     }
 
     @Test
-    void shouldCompleteAllSubscribers() {
-        var completed = new AtomicInteger(0);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(1)
-                .build();
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
-                .onCompleted(completed::incrementAndGet)
-                .build());
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
-                .onCompleted(completed::incrementAndGet)
-                .build());
+    public void shouldCollectOnce_1() throws Throwable {
+        AtomicInteger executed = new AtomicInteger(0);
+        var collector = ObservableCollector.<Integer>builder().withMaxItems(2).withMaxTimeInMs(200).build();
 
-        collector.onComplete();
-        Assertions.assertEquals(2, completed.get());
+        collector.observableEmittedItems().subscribe(items -> {
+            executed.incrementAndGet();
+        });
+
+        collector.add(1, 2);
+        new Sleeper(() -> 500).run();
+        Assertions.assertEquals(1, executed.get());
+    }
+
+    @Test
+    public void shouldCollectOnce_2() throws Throwable {
+        AtomicInteger executed = new AtomicInteger(0);
+        var collector = ObservableCollector.<Integer>builder().withMaxItems(2).withMaxTimeInMs(200).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            executed.incrementAndGet();
+        });
+
+        collector.add(1);
+        new Sleeper(() -> 500).run();
+        collector.add(2);
+        Assertions.assertEquals(1, executed.get());
+    }
+
+    @Test
+    public void shouldCollectAndRestart_1() throws Throwable {
+        AtomicInteger expected = new AtomicInteger(0);
+        var collector = ObservableCollector.<Integer>builder().withMaxItems(1).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            expected.incrementAndGet();
+            Assertions.assertEquals(1, items.size());
+            Assertions.assertEquals(expected.get(), items.get(0));
+        });
+
+        collector.add(1, 2, 3, 4, 5);
+        Assertions.assertEquals(5, expected.get());
+    }
+
+
+
+    @Test
+    public void shouldCollectAndRestart_2() throws Throwable {
+        AtomicInteger expected = new AtomicInteger();
+        var collector = ObservableCollector.<Integer>builder().withMaxTimeInMs(200).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            Assertions.assertEquals(2, items.size());
+            expected.incrementAndGet();
+        });
+
+        collector.add(1, 2);
+        new Sleeper(() -> 500).run();
+        collector.add(3, 4);
+        new Sleeper(() -> 500).run();
+        Assertions.assertEquals(2, expected.get());
+    }
+
+
+
+    @Test
+    public void shouldCollectAndRestart_3() throws Throwable {
+        AtomicInteger executed = new AtomicInteger();
+        var collector = ObservableCollector.<Integer>builder().withMaxTimeInMs(200).withMaxItems(2).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            executed.incrementAndGet();
+        });
+
+        collector.add(1, 2, 3, 4);
+        new Sleeper(() -> 500).run();
+        collector.add(5);
+        new Sleeper(() -> 500).run();
+        collector.add(6);
+        Assertions.assertEquals(3, executed.get());
+    }
+
+    @Test
+    public void shouldEmitOnFlush_1() throws Throwable {
+        AtomicInteger executed = new AtomicInteger();
+        var collector = ObservableCollector.<Integer>builder().withMaxItems(2).build();
+
+        collector.observableEmittedItems().subscribe(items -> {
+            executed.incrementAndGet();
+        });
+
+        collector.add(1);
+        collector.flush();
+        Assertions.assertEquals(1, executed.get());
     }
 
     @Test
@@ -68,32 +162,14 @@ class ObservableCollectorTest {
         var collector = ObservableCollector.<Integer>builder()
                 .withMaxItems(2)
                 .build();
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
+        collector.observableEmittedItems().subscribe(new RxObserverBuilder<List<Integer>>()
                 .onNext(items -> receivedItems.addAndGet(items.size()))
                 .build());
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
-                .onNext(items -> receivedItems.addAndGet(items.size()))
-                .build());
-
-        collector.addAll(List.of(1,2));
-        Assertions.assertEquals(4, receivedItems.get());
-    }
-
-    @Test
-    void shouldFlushOnComplete() {
-        var receivedItems = new AtomicInteger(0);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(3)
-                .build();
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
-                .onNext(items -> receivedItems.addAndGet(items.size()))
-                .build());
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
+        collector.observableEmittedItems().subscribe(new RxObserverBuilder<List<Integer>>()
                 .onNext(items -> receivedItems.addAndGet(items.size()))
                 .build());
 
         collector.addAll(List.of(1,2));
-        collector.onComplete();
         Assertions.assertEquals(4, receivedItems.get());
     }
 
@@ -104,9 +180,9 @@ class ObservableCollectorTest {
         var source_2 = ObservableCollector.<Integer>builder().withMaxItems(2).build();
         var sink = ObservableCollector.<List<Integer>>builder().withMaxItems(2).build();
 
-        source_1.subscribe(sink);
-        source_2.subscribe(sink);
-        sink.subscribe(itemsOfItems -> {
+        source_1.observableEmittedItems().subscribe(sink::add);
+        source_2.observableEmittedItems().subscribe(sink::add);
+        sink.observableEmittedItems().subscribe(itemsOfItems -> {
             itemsOfItems.stream().forEach(items -> {
                 receivedItems.addAndGet(items.size());
             });
@@ -117,87 +193,11 @@ class ObservableCollectorTest {
         Assertions.assertEquals(4, receivedItems.get());
     }
 
-    @Test
-    void shouldFlushForward_1() {
-        var receivedItems = new AtomicInteger(0);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(1)
-                .build();
 
-        collector.buffer(2).subscribe(items -> {
-            receivedItems.addAndGet(items.size());
+    @Test
+    public void shoulNotBuiltWithoutSetup() throws Throwable {
+        Assertions.assertThrows(Exception.class, () -> {
+            ObservableCollector.<Integer>builder().build();
         });
-
-        collector.add(1);
-        collector.onComplete();
-        Assertions.assertEquals(1, receivedItems.get());
     }
-
-    @Test
-    void shouldFlushForward_2() {
-        var receivedItems = new AtomicInteger(0);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(1)
-                .build();
-
-        collector.buffer(2).subscribe(items -> {
-            receivedItems.addAndGet(items.size());
-        });
-
-        collector.add(1);
-        collector.onError(new RuntimeException());
-        Assertions.assertEquals(1, receivedItems.get());
-    }
-
-    @Test
-    void shouldCloseOnlyErroredSubscriber() {
-        var receivedItems = new AtomicInteger(0);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(2)
-                .build();
-
-        collector.subscribe(items -> {
-            throw new RuntimeException();
-        });
-        collector.subscribe(items -> {
-            receivedItems.addAndGet(items.size());
-        });
-
-        collector.addAll(List.of(1,2));
-        Assertions.assertEquals(2, receivedItems.get());
-    }
-
-    @Test
-    void shouldCallOnErrorIfExceptionIsThrown() {
-        var onErrorIsCalled = new AtomicBoolean(false);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(2)
-                .withResilientOutput(false)
-                .build();
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
-                .onNext(items -> { throw new RuntimeException();})
-                .onError(t -> onErrorIsCalled.set(true))
-                .build());
-
-        collector.addAll(List.of(1,2));
-        Assertions.assertTrue(onErrorIsCalled.get());
-    }
-
-    @Test
-    void shouldNotCallOnErrorIfExceptionIsThrownWhenOutputsAreResilient() {
-        var onErrorIsCalled = new AtomicBoolean(false);
-        var collector = ObservableCollector.<Integer>builder()
-                .withMaxItems(2)
-                .withResilientOutput(true)
-                .build();
-        collector.subscribe(new RxObserverBuilder<List<Integer>>()
-                .onNext(items -> { throw new RuntimeException();})
-                .onError(t -> onErrorIsCalled.set(true))
-                .build());
-
-        collector.addAll(List.of(1,2));
-        Assertions.assertFalse(onErrorIsCalled.get());
-    }
-
-
 }

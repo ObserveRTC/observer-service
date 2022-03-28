@@ -42,13 +42,13 @@ public class SfuRtpPadDTO implements VersionedPortable {
 	private static final String MEDIA_UNIT_ID_FIELD_NAME = "mediaUnitId";
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
 	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "transportId";
-//	private static final String SFU_RTP_STREAM_ID_FIELD_NAME = "rtpStreamId";
 	private static final String SFU_STREAM_ID_FIELD_NAME = "streamId";
 	private static final String SFU_SINK_ID_FIELD_NAME = "sinkId";
 	private static final String SFU_RTP_PAD_ID_FIELD_NAME = "rtpPadId";
 	private static final String SFU_RTP_STREAM_DIRECTION_FIELD_NAME = "sfuStreamDirection";
 	private static final String SFU_RTP_INTERNAL_FIELD_NAME = "internal";
 	private static final String ADDED_FIELD_NAME = "added";
+	private static final String MARKER_FIELD_NAME = "marker";
 
 	public String serviceId;
 	public String mediaUnitId;
@@ -60,6 +60,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 	public StreamDirection streamDirection;
 	public boolean internal;
 	public Long added;
+	public String marker;
 
 	SfuRtpPadDTO() {
 
@@ -86,9 +87,11 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		writer.writeByteArray(SFU_SINK_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sinkId));
 		writer.writeByteArray(SFU_RTP_PAD_ID_FIELD_NAME, UUIDAdapter.toBytes(this.rtpPadId));
 		writer.writeBoolean(SFU_RTP_INTERNAL_FIELD_NAME, this.internal);
-		writer.writeUTF(SFU_RTP_STREAM_DIRECTION_FIELD_NAME, this.streamDirection.name());
+		writer.writeString(SFU_RTP_STREAM_DIRECTION_FIELD_NAME, this.streamDirection.name());
 
 		writer.writeLong(ADDED_FIELD_NAME, this.added);
+
+		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
 
 	}
 
@@ -106,6 +109,8 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		this.streamDirection =  StreamDirection.valueOf(reader.readString(SFU_RTP_STREAM_DIRECTION_FIELD_NAME));
 
 		this.added = reader.readLong(ADDED_FIELD_NAME);
+
+		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
 	}
 
 	@Override
@@ -134,7 +139,8 @@ public class SfuRtpPadDTO implements VersionedPortable {
 			!Objects.equals(this.rtpPadId, otherDTO.rtpPadId) ||
 			!Objects.equals(this.streamDirection, otherDTO.streamDirection) ||
 			!Objects.equals(this.internal, otherDTO.internal) ||
-			!Objects.equals(this.added, otherDTO.added)
+			!Objects.equals(this.added, otherDTO.added) ||
+			!Objects.equals(this.marker, otherDTO.marker)
 		) {
 			return false;
 		}
@@ -156,7 +162,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 					.withSinkId(source.sinkId)
 					.withStreamDirection(source.streamDirection)
 					.withAddedTimestamp(source.added)
-
+					.withMarker(source.marker)
 					;
 
 		}
@@ -208,6 +214,11 @@ public class SfuRtpPadDTO implements VersionedPortable {
 
 		public Builder withAddedTimestamp(Long value) {
 			this.result.added = value;
+			return this;
+		}
+
+		public Builder withMarker(String value) {
+			this.result.marker = value;
 			return this;
 		}
 

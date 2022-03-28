@@ -274,7 +274,7 @@
       "doc": "Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)",
       "type": [
         "null",
-        "double"
+        "long"
       ],
       "default": null
     },
@@ -346,7 +346,7 @@
       "doc": "The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)",
       "type": [
         "null",
-        "double"
+        "int"
       ],
       "default": null
     },
@@ -373,7 +373,7 @@
       "doc": "The estimated playout time of the corresponded synchronization source",
       "type": [
         "null",
-        "double"
+        "long"
       ],
       "default": null
     },
@@ -427,7 +427,7 @@
       "doc": "The timestamp corresnponds to the time in UTC Epoch the remote endpoint reported the statistics belong to the sender side and correspond to the synchronization source (ssrc)",
       "type": [
         "null",
-        "double"
+        "long"
       ],
       "default": null
     },
@@ -472,7 +472,7 @@
       "doc": "The negotiated clock rate the RTP timestamp is generated of",
       "type": [
         "null",
-        "long"
+        "int"
       ],
       "default": null
     },

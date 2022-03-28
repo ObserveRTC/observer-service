@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 @MicronautTest
 class BatchCollectorTest {
 
-
     @Test
     void shouldEmitAll_1() {
         AtomicInteger invoked = new AtomicInteger(0);

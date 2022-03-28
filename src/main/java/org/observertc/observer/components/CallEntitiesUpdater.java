@@ -10,7 +10,9 @@ import org.observertc.observer.components.depots.PeerConnectionDTOsDepot;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
+import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.repositories.tasks.*;
+import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.samples.Samples;
@@ -23,7 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Prototype
 public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
@@ -96,34 +97,81 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 }
                 clientSample.callId = callId;
             }
-            this.clientsDepot.addFromObservedClientSample(observedClientSample);
-            this.peerConnectionsDepot.addFromObservedClientSample(observedClientSample);
-            this.mediaTracksDepot.addFromObservedClientSample(observedClientSample);
+            if (!foundClientIds.contains(clientSample.clientId)) {
+                this.clientsDepot.addFromObservedClientSample(observedClientSample);
+            }
+            ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(pcTransport -> {
+                if (foundPeerConnectionIds.contains(pcTransport.peerConnectionId)) return;
+                this.peerConnectionsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setPeerConnectionTransport(pcTransport)
+                        .assemble();
+            });
+            ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(track -> {
+                if (foundMediaTrackIds.contains(track.trackId)) return;
+                this.mediaTracksDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setTrackId(track.trackId)
+//                        .setSfuStreamId(track.sfuStreamId)
+                        .setSfuSinkId(track.sfuSinkId)
+                        .setStreamDirection(StreamDirection.INBOUND)
+                        .setPeerConnectionId(track.peerConnectionId)
+                        .setSSRC(track.ssrc)
+                        .assemble();
+
+            });
+
+            ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(track -> {
+                if (foundMediaTrackIds.contains(track.trackId)) return;
+                this.mediaTracksDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setTrackId(track.trackId)
+//                        .setSfuStreamId(track.sfuStreamId)
+                        .setSfuSinkId(track.sfuSinkId)
+                        .setStreamDirection(StreamDirection.INBOUND)
+                        .setPeerConnectionId(track.peerConnectionId)
+                        .setSSRC(track.ssrc)
+                        .assemble();
+
+            });
+
+            ClientSampleVisitor.streamOutboundAudioTracks(clientSample).forEach(track -> {
+                if (foundMediaTrackIds.contains(track.trackId)) return;
+                this.mediaTracksDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setTrackId(track.trackId)
+                        .setSfuStreamId(track.sfuStreamId)
+//                        .setSfuSinkId(track.sfuSinkId)
+                        .setStreamDirection(StreamDirection.OUTBOUND)
+                        .setPeerConnectionId(track.peerConnectionId)
+                        .setSSRC(track.ssrc)
+                        .assemble();
+
+            });
+
+            ClientSampleVisitor.streamOutboundVideoTracks(clientSample).forEach(track -> {
+                if (foundMediaTrackIds.contains(track.trackId)) return;
+                this.mediaTracksDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setTrackId(track.trackId)
+                        .setSfuStreamId(track.sfuStreamId)
+//                        .setSfuSinkId(track.sfuSinkId)
+                        .setStreamDirection(StreamDirection.OUTBOUND)
+                        .setPeerConnectionId(track.peerConnectionId)
+                        .setSSRC(track.ssrc)
+                        .assemble();
+
+            });
         }
-        var newClientDTOs = this.clientsDepot.get().entrySet()
-                .stream().filter(entry -> !foundClientIds.contains(entry.getKey()))
-                .collect(Collectors.toMap(
-                    entry -> entry.getKey(),
-                    entry -> entry.getValue()
-                ));
+        var newClientDTOs = this.clientsDepot.get();
+        var newPeerConnectionDTOs = this.peerConnectionsDepot.get();
+        var newMediaTrackDTOs = this.mediaTracksDepot.get();
         if (0 < newClientDTOs.size()) {
             this.addNewClients(newClientDTOs);
         }
-        var newPeerConnectionDTOs = this.peerConnectionsDepot.get().entrySet()
-                .stream().filter(entry -> !foundPeerConnectionIds.contains(entry.getKey()))
-                .collect(Collectors.toMap(
-                    entry -> entry.getKey(),
-                    entry -> entry.getValue()
-                ));
         if (0 < newPeerConnectionDTOs.size()) {
             this.addNewPeerConnections(newPeerConnectionDTOs);
         }
-        var newMediaTrackDTOs = this.mediaTracksDepot.get().entrySet()
-                .stream().filter(entry -> !foundMediaTrackIds.contains(entry.getKey()))
-                .collect(Collectors.toMap(
-                        entry -> entry.getKey(),
-                        entry -> entry.getValue()
-                ));
         if (0 < newMediaTrackDTOs.size()) {
             this.addNewMediaTracks(newMediaTrackDTOs);
         }

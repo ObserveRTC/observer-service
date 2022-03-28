@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientTransportReport {
-	public static final String VERSION="2.0.0-beta.30";
+	public static final String VERSION="2.0.0-beta.44";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -311,7 +311,7 @@ public class ClientTransportReport {
 	* Total amount of packets for this candidate pair that have been discarded due to socket errors on the selected candidate pair using the corresponded transport
 	*/
 	@JsonProperty("candidatePairPacketsDiscardedOnSend")
-	public Long candidatePairPacketsDiscardedOnSend;
+	public Integer candidatePairPacketsDiscardedOnSend;
 	/**
 	* Total number of bytes sent for connectivity checks on the selected candidate pair using the corresponded transport
 	*/
@@ -417,7 +417,7 @@ public class ClientTransportReport {
 		public Builder setCandidatePairConsentRequestsSent(Integer value) { this.result.candidatePairConsentRequestsSent = value; return this; }
 		public Builder setCandidatePairConsentExpiredTimestamp(Long value) { this.result.candidatePairConsentExpiredTimestamp = value; return this; }
 		public Builder setCandidatePairBytesDiscardedOnSend(Long value) { this.result.candidatePairBytesDiscardedOnSend = value; return this; }
-		public Builder setCandidatePairPacketsDiscardedOnSend(Long value) { this.result.candidatePairPacketsDiscardedOnSend = value; return this; }
+		public Builder setCandidatePairPacketsDiscardedOnSend(Integer value) { this.result.candidatePairPacketsDiscardedOnSend = value; return this; }
 		public Builder setCandidatePairRequestBytesSent(Long value) { this.result.candidatePairRequestBytesSent = value; return this; }
 		public Builder setCandidatePairConsentRequestBytesSent(Long value) { this.result.candidatePairConsentRequestBytesSent = value; return this; }
 		public Builder setCandidatePairResponseBytesSent(Long value) { this.result.candidatePairResponseBytesSent = value; return this; }

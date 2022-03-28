@@ -73,8 +73,8 @@ public class SfuOutboundRtpPadReportsDepot implements Supplier<List<SfuOutboundR
             String transportId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.transportId);
             String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
             String padId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.padId);
-            String streamId = sfuOutboundRtpPad.streamId;
-            String sinkId = sfuOutboundRtpPad.sinkId;
+            String streamId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.streamId);
+            String sinkId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.sinkId);
             var report = SfuOutboundRtpPadReport.newBuilder()
 
                     /* Report MetaFields */

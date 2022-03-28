@@ -7,10 +7,7 @@ import org.observertc.schemas.reports.ClientExtensionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensionReport>> {
@@ -19,7 +16,8 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
 
     private ObservedClientSample observedClientSample = null;
     private String payload;
-    private String type;
+    private String extensionType;
+    private String peerConnectionId = null;
     private List<ClientExtensionReport> buffer = new LinkedList<>();
 
 
@@ -28,8 +26,14 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
         return this;
     }
 
-    public ClientExtensionReportsDepot setType(String value) {
-        this.type = value;
+    public ClientExtensionReportsDepot setExtensionType(String value) {
+        this.extensionType = value;
+        return this;
+    }
+
+    public ClientExtensionReportsDepot setPeerConnectionId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.peerConnectionId = value.toString();
         return this;
     }
 
@@ -40,8 +44,9 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
 
     private void clean() {
         this.observedClientSample = null;
-        this.type = null;
+        this.extensionType = null;
         this.payload = null;
+        this.peerConnectionId = null;
         return;
     }
 
@@ -50,12 +55,8 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
             logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
             return;
         }
-        if (Objects.isNull(type)) {
-            logger.warn("Cannot assemble {} without type", this.getClass().getSimpleName());
-            return;
-        }
-        if (Objects.isNull(payload)) {
-            logger.warn("Cannot assemble {} without payload", this.getClass().getSimpleName());
+        if (Objects.isNull(extensionType)) {
+            logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
             return;
         }
         var clientSample = observedClientSample.getClientSample();
@@ -71,8 +72,8 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
                     .setClientId(clientId)
                     .setTimestamp(clientSample.timestamp)
                     .setSampleSeq(clientSample.sampleSeq)
-//                    .setPeerConnectionId()
-                    .setExtensionType(type)
+                    .setPeerConnectionId(peerConnectionId)
+                    .setExtensionType(extensionType)
                     .setPayload(payload)
                     .setMarker(clientSample.marker)
                     .build();
@@ -82,7 +83,6 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
         } finally {
             this.clean();
         }
-
     }
 
     @Override
