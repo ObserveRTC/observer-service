@@ -100,7 +100,11 @@ class ObservableCollectorTest {
             Assertions.assertEquals(expected.get(), items.get(0));
         });
 
-        collector.add(1, 2, 3, 4, 5);
+        collector.add(1);
+        collector.add(2);
+        collector.add(3);
+        collector.add(4);
+        collector.add(5);
         Assertions.assertEquals(5, expected.get());
     }
 
@@ -134,12 +138,13 @@ class ObservableCollectorTest {
             executed.incrementAndGet();
         });
 
-        collector.add(1, 2, 3, 4);
-        new Sleeper(() -> 500).run();
+        collector.add(1, 2);
+        collector.add(3, 4);
         collector.add(5);
         new Sleeper(() -> 500).run();
         collector.add(6);
-        Assertions.assertEquals(3, executed.get());
+        new Sleeper(() -> 500).run();
+        Assertions.assertEquals(4, executed.get());
     }
 
     @Test

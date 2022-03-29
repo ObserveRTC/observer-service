@@ -33,7 +33,7 @@ class PeerConnectionClosedReportsTest {
         var actual = reports.get(0);
 
         Assertions.assertEquals(expected.serviceId, actual.serviceId, "serviceId field");
-        Assertions.assertNull(actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
         Assertions.assertEquals(expected.marker, actual.marker, "marker field");
         Assertions.assertNotEquals(expected.created, actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.callId.toString(), actual.callId, "callId field");
@@ -77,7 +77,7 @@ class PeerConnectionClosedReportsTest {
         this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(peerConnectionDTO.peerConnectionId, mediaTrackDTO.trackId);
 
         var lastTouched = Instant.now().minusMillis(6000).toEpochMilli();
-        var expired = RepositoryExpiredEvent.make(peerConnectionDTO, lastTouched);
+        var expired = RepositoryExpiredEvent.make(this.hazelcastMaps.getPeerConnections().remove(peerConnectionDTO.peerConnectionId), lastTouched);
         var reports = this.peerConnectionClosedReports.mapExpiredPeerConnections(List.of(expired));
         var actual = reports.get(0);
 

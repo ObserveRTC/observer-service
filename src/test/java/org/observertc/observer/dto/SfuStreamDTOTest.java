@@ -15,6 +15,12 @@ class SfuStreamDTOTest {
     private final UUID CALL_ID = UUID.randomUUID();
 
     @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = SfuStreamDTO.class.getFields();
+        Assertions.assertEquals(8, fields.length);
+    }
+
+    @Test
     void shouldHasExpectedValues() {
         var subject = this.makeDTO();
 

@@ -58,9 +58,6 @@ public class SfuSurrogate implements NetworkLinkProvider {
 
     private SfuSample generateSfuSample() {
         var result = new SfuSample();
-        result.inboundRtpPads = this.generateInboundRtpPadStats();
-        result.outboundRtpPads = this.generateOutboundRtpPadStats();
-        result.transports = this.generateTransportStats();
 //        result.sctpChannels = this.generateSctpChannels();
         result.sfuId = this.sfuId;
         result.timestamp = Instant.now().toEpochMilli();

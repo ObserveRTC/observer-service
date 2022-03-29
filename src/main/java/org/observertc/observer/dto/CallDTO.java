@@ -155,6 +155,7 @@ public class CallDTO implements VersionedPortable {
 					.withRoomId(callDTOBuilder.result.roomId)
 					.withCallId(callDTOBuilder.result.callId)
 					.withStartedTimestamp(callDTOBuilder.result.started)
+					.withMarker(callDTOBuilder.result.marker)
 			;
 
 		}

@@ -3,7 +3,6 @@ package org.observertc.observer.components.eventreports;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.components.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.utils.DTOGenerators;
 
@@ -27,7 +26,7 @@ class MediaTrackAddedReportsTest {
         var actual = reports.get(0);
 
         Assertions.assertEquals(expected.serviceId, actual.serviceId, "serviceId field");
-        Assertions.assertNull(actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
         Assertions.assertEquals(expected.marker, actual.marker, "marker field");
         Assertions.assertNotNull(actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.callId.toString(), actual.callId, "callId field");
@@ -44,10 +43,5 @@ class MediaTrackAddedReportsTest {
         Assertions.assertNotEquals(null, actual.message, "message field");
         Assertions.assertEquals(null, actual.value, "value field");
         Assertions.assertNotEquals(null, actual.attachments, "attachments field");
-
-        MediaTrackAttachment attachment = MediaTrackAttachment.builder().fromBase64(actual.attachments).build();
-        Assertions.assertEquals(expected.sfuStreamId, attachment.sfuStreamId);
-        Assertions.assertEquals(expected.sfuSinkId, attachment.sfuSinkId);
-        Assertions.assertEquals(expected.direction, attachment.streamDirection);
     }
 }

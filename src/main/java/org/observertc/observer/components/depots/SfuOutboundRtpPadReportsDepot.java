@@ -90,6 +90,7 @@ public class SfuOutboundRtpPadReportsDepot implements Supplier<List<SfuOutboundR
                     .setSfuStreamId(streamId)
                     .setSfuSinkId(sinkId)
                     .setRtpPadId(padId)
+                    .setInternal(sfuOutboundRtpPad.internal)
                     .setSsrc(sfuOutboundRtpPad.ssrc)
 
                     .setTrackId(trackId)

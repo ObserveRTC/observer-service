@@ -1,6 +1,5 @@
-package org.observertc.observer.simulator;
+package org.observertc.observer.utils;
 
-import org.observertc.observer.utils.RandomGenerators;
 import org.observertc.schemas.samples.Samples;
 
 import java.time.Instant;
@@ -545,7 +544,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
             return inboundVideoTrack;
         }).collect(Collectors.toList());
 
-        var outboundAudioTracks = this.inboundAudioTracks.entrySet().stream().map(entry -> {
+        var outboundAudioTracks = this.outboundAudioTracks.entrySet().stream().map(entry -> {
             var trackId = entry.getKey();
             var session = entry.getValue();
             var outboundAudioTrack = new Samples.ClientSample.OutboundAudioTrack();
@@ -608,7 +607,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
             return outboundAudioTrack;
         }).collect(Collectors.toList());
 
-        var outboundVideoTracks = this.inboundAudioTracks.entrySet().stream().map(entry -> {
+        var outboundVideoTracks = this.outboundVideoTracks.entrySet().stream().map(entry -> {
             var trackId = entry.getKey();
             var session = entry.getValue();
             var outboundVideoTrack = new Samples.ClientSample.OutboundVideoTrack();
@@ -718,22 +717,22 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         clientSample.platform = this.addedPlatforms.poll();
         clientSample.browser = this.addedBrowsers.poll();
         clientSample.os = this.addedOperationSystems.poll();
-        clientSample.mediaConstraints = arrayOrNullFromQueue(this.addedMediaConstraints);
-        clientSample.mediaDevices = arrayOrNullFromQueue(this.addedMediaDevices);
-        clientSample.userMediaErrors = arrayOrNullFromQueue(this.addedUserMediaErrors);
-        clientSample.extensionStats = arrayOrNullFromQueue(this.addedExtensionStats);
-        clientSample.iceServers = arrayOrNullFromQueue(this.addedIceServers);
-        clientSample.pcTransports = arrayOrNullFromList(pcTransports);
-        clientSample.mediaSources = arrayOrNullFromQueue(this.mediaSources);
-        clientSample.codecs = arrayOrNullFromQueue(this.addedMediaCodecStats);
-        clientSample.certificates = arrayOrNullFromQueue(this.addedCertificates);
-        clientSample.inboundAudioTracks = arrayOrNullFromList(inboundAudioTracks);
-        clientSample.inboundVideoTracks = arrayOrNullFromList(inboundVideoTracks);;
-        clientSample.outboundAudioTracks = arrayOrNullFromList(outboundAudioTracks);;
-        clientSample.outboundVideoTracks = arrayOrNullFromList(outboundVideoTracks);;
-        clientSample.iceLocalCandidates = arrayOrNullFromQueue(this.addedIceLocalCandidates);
-        clientSample.iceRemoteCandidates = arrayOrNullFromQueue(this.addedIceRemoteCandidates);
-        clientSample.dataChannels = arrayOrNullFromList(dataChannels);
+        clientSample.mediaConstraints = arrayOrNullFromQueue(String.class, this.addedMediaConstraints);
+        clientSample.mediaDevices = arrayOrNullFromQueue(Samples.ClientSample.MediaDevice.class, this.addedMediaDevices);
+        clientSample.userMediaErrors = arrayOrNullFromQueue(String.class, this.addedUserMediaErrors);
+        clientSample.extensionStats = arrayOrNullFromQueue(Samples.ClientSample.ExtensionStat.class, this.addedExtensionStats);
+        clientSample.iceServers = arrayOrNullFromQueue(String.class, this.addedIceServers);
+        clientSample.pcTransports = arrayOrNullFromList(Samples.ClientSample.PeerConnectionTransport.class, pcTransports);
+        clientSample.mediaSources = arrayOrNullFromQueue(Samples.ClientSample.MediaSourceStat.class, this.mediaSources);
+        clientSample.codecs = arrayOrNullFromQueue(Samples.ClientSample.MediaCodecStats.class, this.addedMediaCodecStats);
+        clientSample.certificates = arrayOrNullFromQueue(Samples.ClientSample.Certificate.class, this.addedCertificates);
+        clientSample.inboundAudioTracks = arrayOrNullFromList(Samples.ClientSample.InboundAudioTrack.class, inboundAudioTracks);
+        clientSample.inboundVideoTracks = arrayOrNullFromList(Samples.ClientSample.InboundVideoTrack.class, inboundVideoTracks);;
+        clientSample.outboundAudioTracks = arrayOrNullFromList(Samples.ClientSample.OutboundAudioTrack.class, outboundAudioTracks);;
+        clientSample.outboundVideoTracks = arrayOrNullFromList(Samples.ClientSample.OutboundVideoTrack.class, outboundVideoTracks);;
+        clientSample.iceLocalCandidates = arrayOrNullFromQueue(Samples.ClientSample.IceLocalCandidate.class, this.addedIceLocalCandidates);
+        clientSample.iceRemoteCandidates = arrayOrNullFromQueue(Samples.ClientSample.IceRemoteCandidate.class, this.addedIceRemoteCandidates);
+        clientSample.dataChannels = arrayOrNullFromList(Samples.ClientSample.DataChannel.class, dataChannels);
         clientSample.timestamp = Instant.now().toEpochMilli();
         clientSample.timeZoneOffsetInHours = this.timeZoneOffsetInHours;
         clientSample.marker = this.marker;

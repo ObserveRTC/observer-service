@@ -39,14 +39,17 @@ public class SfuSinkDTO implements VersionedPortable {
 	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "sfuTransportId";
 	private static final String SFU_STREAM_ID_FIELD_NAME = "sfuStreamId";
 	private static final String SFU_SINK_ID_FIELD_NAME = "sfuSinkId";
+	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
 	private static final String TRACK_ID_FIELD_NAME = "trackId";
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
+
 
 	public UUID sfuId;
 	public UUID sfuTransportId;
 	public UUID sfuStreamId;
 	public UUID sfuSinkId;
+	public UUID peerConnectionId;
 	public UUID trackId;
 	public UUID clientId;
 	public UUID callId;
@@ -71,6 +74,7 @@ public class SfuSinkDTO implements VersionedPortable {
 		SerDeUtils.writeNullableUUID(writer, SFU_TRANSPORT_ID_FIELD_NAME, this.sfuTransportId);
 		SerDeUtils.writeNullableUUID(writer, SFU_STREAM_ID_FIELD_NAME, this.sfuStreamId);
 		SerDeUtils.writeNullableUUID(writer, SFU_SINK_ID_FIELD_NAME, this.sfuSinkId);
+		SerDeUtils.writeNullableUUID(writer, PEER_CONNECTION_ID_FIELD_NAME, this.peerConnectionId);
 		SerDeUtils.writeNullableUUID(writer, TRACK_ID_FIELD_NAME, this.trackId);
 		SerDeUtils.writeNullableUUID(writer, CLIENT_ID_FIELD_NAME, this.clientId);
 		SerDeUtils.writeNullableUUID(writer, CALL_ID_FIELD_NAME, this.callId);
@@ -82,6 +86,7 @@ public class SfuSinkDTO implements VersionedPortable {
 		this.sfuTransportId = SerDeUtils.readNullableUUID(reader, SFU_TRANSPORT_ID_FIELD_NAME);
 		this.sfuStreamId = SerDeUtils.readNullableUUID(reader, SFU_STREAM_ID_FIELD_NAME);
 		this.sfuSinkId = SerDeUtils.readNullableUUID(reader, SFU_SINK_ID_FIELD_NAME);
+		this.peerConnectionId = SerDeUtils.readNullableUUID(reader, PEER_CONNECTION_ID_FIELD_NAME);
 		this.trackId = SerDeUtils.readNullableUUID(reader, TRACK_ID_FIELD_NAME);
 		this.clientId = SerDeUtils.readNullableUUID(reader, CLIENT_ID_FIELD_NAME);
 		this.callId = SerDeUtils.readNullableUUID(reader, CALL_ID_FIELD_NAME);
@@ -108,6 +113,7 @@ public class SfuSinkDTO implements VersionedPortable {
 			!Objects.equals(this.sfuTransportId, otherDTO.sfuTransportId) ||
 			!Objects.equals(this.sfuStreamId, otherDTO.sfuStreamId) ||
 			!Objects.equals(this.sfuSinkId, otherDTO.sfuSinkId) ||
+			!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId) ||
 			!Objects.equals(this.trackId, otherDTO.trackId) ||
 			!Objects.equals(this.clientId, otherDTO.clientId) ||
 			!Objects.equals(this.callId, otherDTO.callId)
@@ -127,6 +133,7 @@ public class SfuSinkDTO implements VersionedPortable {
 					.withSfuTransportId(source.sfuTransportId)
 					.withStreamId(source.sfuStreamId)
 					.withSinkId(source.sfuSinkId)
+					.withPeerConnectionId(source.peerConnectionId)
 					.withTrackId(source.trackId)
 					.withClientId(source.clientId)
 					.withCallId(source.callId)
@@ -151,6 +158,11 @@ public class SfuSinkDTO implements VersionedPortable {
 
 		public Builder withSinkId(UUID value) {
 			this.result.sfuSinkId = value;
+			return this;
+		}
+
+		public Builder withPeerConnectionId(UUID value) {
+			this.result.peerConnectionId = value;
 			return this;
 		}
 

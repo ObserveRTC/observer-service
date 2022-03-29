@@ -67,7 +67,7 @@ public class ClientDataChannelReportsDepot implements Supplier<List<ClientDataCh
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId.toString())
+                    .setCallId(callId)
                     .setRoomId(clientSample.roomId)
                     .setClientId(clientId)
                     .setUserId(clientSample.userId)
@@ -84,6 +84,7 @@ public class ClientDataChannelReportsDepot implements Supplier<List<ClientDataCh
                     .setBytesSent(dataChannel.bytesSent)
                     .setMessagesReceived(dataChannel.messagesReceived)
                     .setBytesReceived(dataChannel.bytesReceived)
+                    .setState(dataChannel.state)
                     .build();
             this.buffer.add(report);
         } catch (Exception ex) {

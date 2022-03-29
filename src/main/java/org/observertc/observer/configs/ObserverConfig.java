@@ -104,22 +104,22 @@ public class ObserverConfig {
 	public static class RepositoryConfig {
 
 		@Min(60)
-		public int mediaTracksMaxIdleTime = 300;
+		public int mediaTracksMaxIdleTimeInS = 300;
 
 		@Min(60)
 		public int peerConnectionsMaxIdleTime = 300;
 
 		@Min(60)
-		public int clientMaxIdleTime = 300;
+		public int clientMaxIdleTimeInS = 300;
 
 		@Min(60)
-		public int sfuMaxIdleTime = 600;
+		public int sfuMaxIdleTimeInS = 600;
 
 		@Min(60)
-		public int sfuTransportMaxIdleTime = 600;
+		public int sfuTransportMaxIdleTimeInS = 600;
 
 		@Min(60)
-		public int sfuRtpPadMaxIdleTime = 600;
+		public int sfuRtpPadMaxIdleTimeInS = 600;
 
 	}
 
@@ -137,39 +137,24 @@ public class ObserverConfig {
 	@ConfigurationProperties(("buffers"))
 	public static class InternalBuffersConfig {
 
-		public ClientSamplesCollectorConfig clientSamplesCollector = new ClientSamplesCollectorConfig();
-
-		@ConfigurationProperties("clientSamples")
-		public static class ClientSamplesCollectorConfig extends CollectorConfig {
-
-		}
-
 		public DebouncersCollectorConfig debouncers = new DebouncersCollectorConfig();
 
-		@ConfigurationProperties("sfuProcessDebouncers")
+		@ConfigurationProperties("debouncers")
 		public static class DebouncersCollectorConfig extends CollectorConfig {
 
 		}
 
 		public SamplesBufferCollectorConfig samplesBuffer = new SamplesBufferCollectorConfig();
 
-		@ConfigurationProperties("sfuProcessDebouncers")
+		@ConfigurationProperties("samplesBuffer")
 		public static class SamplesBufferCollectorConfig extends CollectorConfig {
 
 		}
 
+		public ReportsCollectorConfig reportsBuffer = new ReportsCollectorConfig();
 
-		public ReportsCollectorConfig reportsCollector = new ReportsCollectorConfig();
-
-		@ConfigurationProperties("outboundReports")
+		@ConfigurationProperties("reportsCollector")
 		public static class ReportsCollectorConfig extends CollectorConfig {
-
-		}
-
-		public RepositoryEventsDebouncersConfig repositoryEventsDebouncers = new RepositoryEventsDebouncersConfig();
-
-		@ConfigurationProperties("repositoryEventsDebouncers")
-		public static class RepositoryEventsDebouncersConfig extends CollectorConfig {
 
 		}
 	}
@@ -211,6 +196,7 @@ public class ObserverConfig {
 		public boolean sendSfuInboundRtpStreams = true;
 		public boolean sendSfuOutboundRtpStreams = true;
 
+        public boolean sendSfuExtensions = true;
     }
 
 	// Hazelcast Config

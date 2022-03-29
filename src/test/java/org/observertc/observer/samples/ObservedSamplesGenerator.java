@@ -1,8 +1,8 @@
 package org.observertc.observer.samples;
 
-import org.observertc.observer.simulator.ClientSideSamplesGenerator;
-import org.observertc.observer.simulator.SfuSideSamplesGenerator;
+import org.observertc.observer.utils.ClientSideSamplesGenerator;
 import org.observertc.observer.utils.RandomGenerators;
+import org.observertc.observer.utils.SfuSideSamplesGenerator;
 
 import java.util.UUID;
 
@@ -51,7 +51,7 @@ public class ObservedSamplesGenerator {
                 .addInboundAudioTrack(peerConnectionId, UUID.randomUUID(), clientInbAudioSSRC, audioStreamId, audioSinkId)
                 .addInboundVideoTrack(peerConnectionId, UUID.randomUUID(), clientInbVideoSSRC, videoStreamId, videoSinkId)
                 .addOutboundAudioTrack(peerConnectionId, UUID.randomUUID(), clientOutbAudioSSRC, audioStreamId)
-                .addOutboundAudioTrack(peerConnectionId, UUID.randomUUID(), clientOutbVideoSSRC, videoStreamId)
+                .addOutboundVideoTrack(peerConnectionId, UUID.randomUUID(), clientOutbVideoSSRC, videoStreamId)
                 ;
 
         this.sfuSamples = new SfuSideSamplesGenerator()

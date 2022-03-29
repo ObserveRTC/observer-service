@@ -64,7 +64,7 @@ class PortableDTOFactoryTest {
 
         Assertions.assertEquals(PortableDTOFactory.FACTORY_ID, dto.getFactoryId());
         Assertions.assertEquals(classId, dto.getClassId());
-        Assertions.assertTrue(dto instanceof MediaTrackDTO);
+        Assertions.assertTrue(dto instanceof PeerConnectionDTO);
     }
 
     @Test

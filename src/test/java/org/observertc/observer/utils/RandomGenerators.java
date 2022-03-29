@@ -1,7 +1,8 @@
 package org.observertc.observer.utils;
 
-import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.dto.StreamDirection;
+import org.observertc.observer.events.CallEventType;
+import org.observertc.observer.events.SfuEventType;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -12,7 +13,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Prototype
 public class RandomGenerators {
     private final Random rand = new Random();
     private Long maxTime = Instant.now().toEpochMilli();
@@ -247,5 +247,14 @@ public class RandomGenerators {
     private List<String> markers = TestUtils.getMarkers();
     public String getRandomMarker() {
         return this.getRandomFromList(markers);
+    }
+
+    private List<SfuEventType> sfuEventTypes = List.of(SfuEventType.values());
+    public SfuEventType getRandomSfuEventReport() {
+        return this.getRandomFromList(sfuEventTypes);
+    }
+    private List<CallEventType> callEventTypes = List.of(CallEventType.values());
+    public CallEventType getRandomCallEventType() {
+        return this.getRandomFromList(callEventTypes);
     }
 }

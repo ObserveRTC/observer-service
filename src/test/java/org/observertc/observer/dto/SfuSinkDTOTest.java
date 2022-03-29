@@ -16,6 +16,12 @@ class SfuSinkDTOTest {
     private final UUID CALL_ID = UUID.randomUUID();
 
     @Test
+    void structureShouldHasNotChangedSinceLastTestFixed() {
+        var fields = SfuSinkDTO.class.getFields();
+        Assertions.assertEquals(9, fields.length);
+    }
+
+    @Test
     void shouldHasExpectedValues() {
         var subject = this.makeDTO();
 

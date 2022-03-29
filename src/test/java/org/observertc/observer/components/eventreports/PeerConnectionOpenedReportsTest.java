@@ -26,7 +26,7 @@ class PeerConnectionOpenedReportsTest {
         var actual = reports.get(0);
 
         Assertions.assertEquals(expected.serviceId, actual.serviceId, "serviceId field");
-        Assertions.assertNull(actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
         Assertions.assertEquals(expected.marker, actual.marker, "marker field");
         Assertions.assertNotNull(actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.callId.toString(), actual.callId, "callId field");

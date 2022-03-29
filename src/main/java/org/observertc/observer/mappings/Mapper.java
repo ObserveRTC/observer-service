@@ -38,6 +38,11 @@ public interface Mapper<U, R> {
         };
     }
 
+    static<T, U> Mapper<T, U> createFromRxFunc(io.reactivex.rxjava3.functions.Function<T, U> encoder) {
+        var logger = loggers.get(DEFAULT_MAPPER_LOGGER);
+        return createFromRxFunc(encoder, logger);
+    }
+
     static<T, U> Mapper<T, U> create(Function<T, U> mapper, Logger _logger) {
         return new Mapper<T, U>() {
             @Override
@@ -60,6 +65,11 @@ public interface Mapper<U, R> {
     static Mapper<byte[], String> createBase64Mapper() {
         Logger logger = loggers.get(BASE_64_MAPPER_LOGGER);
         return create(Base64::encode, logger);
+    }
+
+    static Mapper<String, byte[]> createBytesToBase64Mapper() {
+        Logger logger = loggers.get(BASE_64_MAPPER_LOGGER);
+        return create(Base64::decode, logger);
     }
 
     static Mapper<String, byte[]> createStringToBytesMapper() {

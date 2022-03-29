@@ -5,11 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
-
 class PeerConnectionEntityTest {
-    @Inject
-    DTOGenerators generator;
+
+    DTOGenerators generator = new DTOGenerators();
 
     @Test
     void shouldHasExpectedValues() {

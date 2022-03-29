@@ -87,6 +87,7 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                     /* Report Fields */
                     .setTransportId(transportId)
                     .setSfuStreamId(streamId)
+                    .setInternal(sfuInboundRtpPad.internal)
 
                     .setSsrc(sfuInboundRtpPad.ssrc)
                     .setRtpPadId(padId)
@@ -102,6 +103,7 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                     .setSdpFmtpLine(sfuInboundRtpPad.sdpFmtpLine)
                     .setRid(sfuInboundRtpPad.rid)
                     .setRtxSsrc(sfuInboundRtpPad.rtxSsrc)
+                    .setPacketsDuplicated(sfuInboundRtpPad.packetsDuplicated)
                     .setTargetBitrate(sfuInboundRtpPad.targetBitrate)
                     .setVoiceActivityFlag(sfuInboundRtpPad.voiceActivityFlag)
                     .setFirCount(sfuInboundRtpPad.firCount)

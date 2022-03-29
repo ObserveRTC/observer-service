@@ -7,7 +7,7 @@ import org.observertc.observer.components.eventreports.*;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.RepositoryEvents;
-import org.observertc.observer.repositories.SfuRtpPadEvents;
+import org.observertc.observer.repositories.SfuRtpPadToMediaTrackBinder;
 import org.observertc.schemas.reports.CallEventReport;
 import org.observertc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class RepositoryEventsInterpreter {
     RepositoryEvents repositoryEvents;
 
     @Inject
-    SfuRtpPadEvents sfuRtpPadEvents;
+    SfuRtpPadToMediaTrackBinder sfuRtpPadToMediaTrackBinder;
 
     @Inject
     CallStartedReports callStartedReports;
@@ -81,17 +81,23 @@ public class RepositoryEventsInterpreter {
             ObserverConfig observerConfig
     ) {
         var maxItems = observerConfig.buffers.debouncers.maxItems;
-        var maxTimeInMs = observerConfig.buffers.debouncers.maxItems;
+        var maxTimeInMs = observerConfig.buffers.debouncers.maxTimeInMs;
         this.collector = ObservableCollector.<Report>builder()
                 .withScheduler(Schedulers.computation())
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
                 .build();
-
     }
 
     @PostConstruct
     void setup() {
+
+        this.repositoryEvents.addedSfuRtpPads()
+                .subscribe(this.sfuRtpPadToMediaTrackBinder::onSfuRtpPadsAdded);
+
+        this.repositoryEvents.addedMediaTracks()
+                .subscribe(this.sfuRtpPadToMediaTrackBinder::onMediaTracksAdded);
+
         this.repositoryEvents.addedCalls()
                 .map(this.callStartedReports::mapAddedCalls)
                 .subscribe(this::collectCallEventReports);
@@ -160,12 +166,16 @@ public class RepositoryEventsInterpreter {
                 .map(this.sfuTransportClosedReports::mapExpiredSfuTransport)
                 .subscribe(this::collectSfuEventReports);
 
-        this.sfuRtpPadEvents.completedSfuRtpPads()
-                .map(this.sfuRtpPadAddedReports::mapCompletedSfuRtpPads)
+        this.repositoryEvents.addedSfuRtpPads()
+                .map(this.sfuRtpPadAddedReports::mapAddedSfuRtpPads)
                 .subscribe(this::collectSfuEventReports);
 
-        this.sfuRtpPadEvents.disposedSfuRtpPads()
-                .map(this.sfuRtpPadRemovedReports::mapDisposedSfuRtpPads)
+        this.repositoryEvents.removedSfuRtpPads()
+                .map(this.sfuRtpPadRemovedReports::mapRemovedSfuRtpPad)
+                .subscribe(this::collectSfuEventReports);
+
+        this.repositoryEvents.expiredSfuRtpPads()
+                .map(this.sfuRtpPadRemovedReports::mapExpiredSfuRtpPad)
                 .subscribe(this::collectSfuEventReports);
 
     }

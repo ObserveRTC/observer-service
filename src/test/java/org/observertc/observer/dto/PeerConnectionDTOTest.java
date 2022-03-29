@@ -18,37 +18,18 @@ class PeerConnectionDTOTest {
     private final UUID CLIENT_ID = UUID.randomUUID();
     private final UUID PEER_CONNECTION_ID = UUID.randomUUID();
     private final String USER_ID = UUID.randomUUID().toString();
-    private final Long SSRC = 1234L;
-    private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
     private final String MARKER = SerDeUtils.NULL_STRING;
 
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
-        var fields = PeerConnectionDTO.class.getFields();
-        Assertions.assertEquals(8, fields.length);
-    }
-
-    @Test
-    void shouldNotBuildWithoutCallId() {
-        var builder = PeerConnectionDTO.builder()
-                .withServiceId(SERVICE_ID)
-                .withRoomId(ROOM_ID)
-                .withClientId(CLIENT_ID)
-                .withPeerConnectionId(PEER_CONNECTION_ID)
-                .withCreatedTimestamp(TIMESTAMP)
-                ;
-
-        Assertions.assertThrows(Exception.class, () -> builder.build());
+        var fields = ClientDTO.class.getFields();
+        Assertions.assertEquals(10, fields.length);
     }
 
     @Test
     void shouldNotBuildWithoutServiceId() {
-        var builder = PeerConnectionDTO.builder()
-                .withRoomId(ROOM_ID)
-                .withCallId(CALL_ID)
-                .withClientId(CLIENT_ID)
-                .withPeerConnectionId(PEER_CONNECTION_ID)
-                .withCreatedTimestamp(TIMESTAMP)
+        PeerConnectionDTO.Builder builder = this.makeBuilder()
+                .withServiceId(null)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -56,12 +37,17 @@ class PeerConnectionDTOTest {
 
     @Test
     void shouldNotBuildWithoutRoomId() {
-        var builder = PeerConnectionDTO.builder()
-                .withServiceId(SERVICE_ID)
-                .withCallId(CALL_ID)
-                .withClientId(CLIENT_ID)
-                .withPeerConnectionId(PEER_CONNECTION_ID)
-                .withCreatedTimestamp(TIMESTAMP)
+        PeerConnectionDTO.Builder builder = this.makeBuilder()
+                .withRoomId(null)
+                ;
+
+        Assertions.assertThrows(Exception.class, () -> builder.build());
+    }
+
+    @Test
+    void shouldNotBuildWithoutCallId() {
+        PeerConnectionDTO.Builder builder = this.makeBuilder()
+                .withCallId(null)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -69,25 +55,8 @@ class PeerConnectionDTOTest {
 
     @Test
     void shouldNotBuildWithoutClientId() {
-        var builder = PeerConnectionDTO.builder()
-                .withServiceId(SERVICE_ID)
-                .withRoomId(ROOM_ID)
-                .withCallId(CALL_ID)
-                .withPeerConnectionId(PEER_CONNECTION_ID)
-                .withCreatedTimestamp(TIMESTAMP)
-                ;
-
-        Assertions.assertThrows(Exception.class, () -> builder.build());
-    }
-
-    @Test
-    void shouldNotBuildWithoutTimestamp() {
-        var builder = PeerConnectionDTO.builder()
-                .withServiceId(SERVICE_ID)
-                .withRoomId(ROOM_ID)
-                .withCallId(CALL_ID)
-                .withClientId(CLIENT_ID)
-                .withPeerConnectionId(PEER_CONNECTION_ID)
+        PeerConnectionDTO.Builder builder = this.makeBuilder()
+                .withClientId(null)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -95,97 +64,42 @@ class PeerConnectionDTOTest {
 
     @Test
     void shouldNotBuildWithoutPeerConnectionId() {
-        var builder = PeerConnectionDTO.builder()
-                .withServiceId(SERVICE_ID)
-                .withRoomId(ROOM_ID)
-                .withCallId(CALL_ID)
-                .withClientId(CLIENT_ID)
-                .withCreatedTimestamp(TIMESTAMP)
+        PeerConnectionDTO.Builder builder = this.makeBuilder()
+                .withPeerConnectionId(null)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
 
     @Test
-    void shouldBuildWithServiceId() {
-        var expectedServiceId = "MyService";
-        var peerConnectionDTO = this.makeBuilder().withServiceId(expectedServiceId).build();
+    void shouldNotBuildWithoutTimestamp() {
+        PeerConnectionDTO.Builder builder = this.makeBuilder()
+                .withCreatedTimestamp(null)
+                ;
 
-        Assertions.assertEquals(expectedServiceId, peerConnectionDTO.serviceId);
+        Assertions.assertThrows(Exception.class, () -> builder.build());
     }
 
-    @Test
-    void shouldBuildWithMediaUnitId() {
-        var expectedMediaUintId = "myMediaUnitId";
-        var peerConnectionDTO = this.makeBuilder().withMediaUnitId(expectedMediaUintId).build();
-
-        Assertions.assertEquals(expectedMediaUintId, peerConnectionDTO.mediaUnitId);
-    }
-
-    @Test
-    void shouldBuildWithRoomId() {
-        var expectedRoomId = "MyRoom";
-        var peerConnectionDTO = this.makeBuilder().withRoomId(expectedRoomId).build();
-
-        Assertions.assertEquals(expectedRoomId, peerConnectionDTO.roomId);
-    }
-
-    @Test
-    void shouldBuildWithCallId() {
-        var expectedCallId = UUID.randomUUID();
-        var peerConnectionDTO = this.makeBuilder().withCallId(expectedCallId).build();
-
-        Assertions.assertEquals(expectedCallId, peerConnectionDTO.callId);
-    }
-
-    @Test
-    void shouldBuildWithClientId() {
-        var expectedClientId = UUID.randomUUID();
-        var peerConnectionDTO = this.makeBuilder().withClientId(expectedClientId).build();
-
-        Assertions.assertEquals(expectedClientId, peerConnectionDTO.clientId);
-    }
-
-    @Test
-    void shouldBuildWithPeerConnectionId() {
-        var expectedPeerConnectionId = UUID.randomUUID();
-        var peerConnectionDTO = this.makeBuilder().withPeerConnectionId(expectedPeerConnectionId).build();
-
-        Assertions.assertEquals(expectedPeerConnectionId, peerConnectionDTO.peerConnectionId);
-    }
-
-    @Test
-    void shouldBuildWithTimestamp() {
-        var expectedTimestamp = Instant.now().toEpochMilli();
-        var peerConnectionDTO = this.makeBuilder().withCreatedTimestamp(expectedTimestamp).build();
-
-        Assertions.assertEquals(expectedTimestamp, peerConnectionDTO.created);
-    }
 
 
     @Test
-    void shouldBuildWithUserId() {
-        var expectedUserId = "myUserId";
-        var peerConnectionDTO = this.makeBuilder().withUserId(expectedUserId).build();
+    void shouldHasExpectedValues() {
+        var subject = this.makeDTO();
 
-        Assertions.assertEquals(expectedUserId, peerConnectionDTO.userId);
+        Assertions.assertEquals(subject.callId, CALL_ID);
+        Assertions.assertEquals(subject.serviceId, SERVICE_ID);
+        Assertions.assertEquals(subject.roomId, ROOM_ID);
+        Assertions.assertEquals(subject.mediaUnitId, MEDIA_UNIT_ID);
+        Assertions.assertEquals(subject.userId, USER_ID);
+        Assertions.assertEquals(subject.clientId, CLIENT_ID);
+        Assertions.assertEquals(subject.peerConnectionId, PEER_CONNECTION_ID);
+        Assertions.assertEquals(subject.created, TIMESTAMP);
+        Assertions.assertEquals(subject.marker, MARKER);
     }
-
-    @Test
-    void shouldBuildWithMarker() {
-        var expectedMarker = UUID.randomUUID().toString();
-        var peerConnectionDTO = this.makeBuilder().withMarker(expectedMarker).build();
-
-        Assertions.assertEquals(expectedMarker, peerConnectionDTO.marker);
-    }
-
-
 
     @Test
     void shouldBeEqual() {
-        var source = this.makeBuilder()
-                .withCreatedTimestamp(Instant.now().toEpochMilli())
-                .build();
+        var source = this.makeDTO();
         var target = PeerConnectionDTO.builder().from(source).build();
 
         boolean equals = source.equals(target);
@@ -195,14 +109,22 @@ class PeerConnectionDTOTest {
 
     private PeerConnectionDTO.Builder makeBuilder() {
         return PeerConnectionDTO.builder()
+                .withCallId(CALL_ID)
                 .withServiceId(SERVICE_ID)
                 .withRoomId(ROOM_ID)
-                .withCallId(CALL_ID)
+
+                .withMediaUnitId(MEDIA_UNIT_ID)
+                .withUserId(USER_ID)
+
                 .withClientId(CLIENT_ID)
                 .withPeerConnectionId(PEER_CONNECTION_ID)
                 .withCreatedTimestamp(TIMESTAMP)
                 .withMarker(MARKER)
                 ;
+    }
+
+    private PeerConnectionDTO makeDTO() {
+        return this.makeBuilder().build();
     }
 
 }

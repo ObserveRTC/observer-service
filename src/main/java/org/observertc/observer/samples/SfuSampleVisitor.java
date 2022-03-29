@@ -39,6 +39,13 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
         return Arrays.stream(sfuSample.sctpChannels);
     }
 
+    static Stream<SfuSample.SfuExtensionStats> streamExtensionStats(@NotNull SfuSample sfuSample) {
+        if (Objects.isNull(sfuSample.extensionStats)) {
+            return Stream.empty();
+        }
+        return Arrays.stream(sfuSample.extensionStats);
+    }
+
 
     @Override
     default void accept(T obj, SfuSample sfuSample) {

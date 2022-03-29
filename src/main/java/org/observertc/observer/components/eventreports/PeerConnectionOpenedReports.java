@@ -42,6 +42,7 @@ public class PeerConnectionOpenedReports {
             String callId = UUIDAdapter.toStringOrNull(peerConnectionDTO.callId);
             String clientId = UUIDAdapter.toStringOrNull(peerConnectionDTO.clientId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(peerConnectionDTO.peerConnectionId);
+            String message = String.format("PeerConnection (%s) is opened", peerConnectionId);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.PEER_CONNECTION_OPENED.name())
                     .setCallId(callId)
@@ -52,6 +53,8 @@ public class PeerConnectionOpenedReports {
                     .setUserId(peerConnectionDTO.userId)
                     .setPeerConnectionId(peerConnectionId)
                     .setTimestamp(peerConnectionDTO.created)
+                    .setMarker(peerConnectionDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Peer Connection {} is opened at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.peerConnectionId, peerConnectionDTO.callId, peerConnectionDTO.serviceId, peerConnectionDTO.roomId);
             return report;

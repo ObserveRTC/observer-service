@@ -58,12 +58,12 @@ observer:
 
 
   repository:
-    mediaTracksMaxIdleTime: 300
-    peerConnectionsMaxIdleTime: 300
-    clientMaxIdleTime: 300
-    sfuMaxIdleTime: 60
-    sfuTransportMaxIdleTime: 600
-    sfuRtpPadMaxIdleTime: 600
+    mediaTracksMaxIdleTimeInS: 300
+    peerConnectionsMaxIdleTimeInS: 300
+    clientMaxIdleTimeInS: 300
+    sfuMaxIdleTimeInS: 60
+    sfuTransportMaxIdleTimeInS: 600
+    sfuRtpPadMaxIdleTimeInS: 600
 
   buffers:
     repositoryEventsDebouncers:
@@ -72,23 +72,19 @@ observer:
 
     clientSamples:
       maxItems: 100
-      maxTimeInS: 10
+      maxTimeInMs: 10
 
     sfuSamples:
       maxItems: 100
-      maxTimeInS: 10
+      maxTimeInMs: 10
 
-    clientProcessDebouncers:
+    debouncers:
       maxItems: 10000
-      maxTimeInS: 3
-
-    sfuProcessDebouncers:
-      maxItems: 10000
-      maxTimeInS: 3
+      maxTimeInMs: 500
 
     outboundReports:
       maxItems: 10000
-      maxTimeInS: 10
+      maxTimeInMs: 10
 
   evaluators: {}
 

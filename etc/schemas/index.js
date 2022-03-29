@@ -47,6 +47,7 @@ const createSamples = (path) => {
 const createReports = (path) => {
     const schemaKeys = Object.keys(schemas);
     const assertations = [];
+    const assigns = [];
     for (const schemaKey of schemaKeys) {
         if (!schemaKey.startsWith("Avro")) continue;
         if (!schemaKey.endsWith("Report")) continue;
@@ -67,8 +68,11 @@ const createReports = (path) => {
         fs.writeFileSync(path + `${schema.name}.java`, module);
 
         assertations.push(...klass.drainAssertions());
+        assigns.push(...klass.drainAssigns());
     }
     fs.writeFileSync(`report_assertations.txt`, assertations.join(`\n`));
+
+    fs.writeFileSync(`reports_assigns.txt`, assigns.join(`\n`));
 }
 
 const main = () => {

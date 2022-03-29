@@ -55,6 +55,7 @@ public class SfuTransportOpenedReports {
                     .setMediaUnitId(sfuTransportDTO.mediaUnitId)
                     .setTimestamp(sfuTransportDTO.opened)
                     .setAttachments(attachment)
+                    .setMarker(sfuTransportDTO.marker)
                     ;
             logger.info("SFU Transport (id: {}, internal: {}) is OPENED (mediaUnitId: {}, serviceId {})",
                     transportId, sfuTransportDTO.internal, sfuTransportDTO.mediaUnitId, sfuTransportDTO.serviceId

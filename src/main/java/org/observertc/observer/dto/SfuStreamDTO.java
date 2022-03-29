@@ -38,6 +38,7 @@ public class SfuStreamDTO implements VersionedPortable {
 	private static final String SFU_ID_FIELD_NAME = "sfuId";
 	private static final String SFU_TRANSPORT_ID_FIELD_NAME = "sfuTransportId";
 	private static final String SFU_STREAM_ID_FIELD_NAME = "sfuStreamId";
+	private static final String PEER_CONNECTION_ID_FIELD_NAME = "peerConnectionId";
 	private static final String TRACK_ID_FIELD_NAME = "trackId";
 	private static final String CLIENT_ID_FIELD_NAME = "clientId";
 	private static final String CALL_ID_FIELD_NAME = "callId";
@@ -48,6 +49,7 @@ public class SfuStreamDTO implements VersionedPortable {
 	public UUID trackId;
 	public UUID clientId;
 	public UUID callId;
+	public UUID peerConnectionId;
 
 	SfuStreamDTO() {
 
@@ -71,6 +73,7 @@ public class SfuStreamDTO implements VersionedPortable {
 		SerDeUtils.writeNullableUUID(writer, TRACK_ID_FIELD_NAME, this.trackId);
 		SerDeUtils.writeNullableUUID(writer, CLIENT_ID_FIELD_NAME, this.clientId);
 		SerDeUtils.writeNullableUUID(writer, CALL_ID_FIELD_NAME, this.callId);
+		SerDeUtils.writeNullableUUID(writer, PEER_CONNECTION_ID_FIELD_NAME, this.peerConnectionId);
 	}
 
 	@Override
@@ -81,6 +84,7 @@ public class SfuStreamDTO implements VersionedPortable {
 		this.trackId = SerDeUtils.readNullableUUID(reader, TRACK_ID_FIELD_NAME);
 		this.clientId = SerDeUtils.readNullableUUID(reader, CLIENT_ID_FIELD_NAME);
 		this.callId = SerDeUtils.readNullableUUID(reader, CALL_ID_FIELD_NAME);
+		this.peerConnectionId = SerDeUtils.readNullableUUID(reader, PEER_CONNECTION_ID_FIELD_NAME);
 	}
 
 	@Override
@@ -105,7 +109,8 @@ public class SfuStreamDTO implements VersionedPortable {
 			!Objects.equals(this.sfuStreamId, otherDTO.sfuStreamId) ||
 			!Objects.equals(this.trackId, otherDTO.trackId) ||
 			!Objects.equals(this.clientId, otherDTO.clientId) ||
-			!Objects.equals(this.callId, otherDTO.callId)
+			!Objects.equals(this.callId, otherDTO.callId) ||
+			!Objects.equals(this.peerConnectionId, otherDTO.peerConnectionId)
 		) {
 			return false;
 		}
@@ -124,6 +129,7 @@ public class SfuStreamDTO implements VersionedPortable {
 					.withTrackId(source.trackId)
 					.withClientId(source.clientId)
 					.withCallId(source.callId)
+					.withPeerConnectionId(source.peerConnectionId)
 					;
 
 		}
@@ -155,6 +161,11 @@ public class SfuStreamDTO implements VersionedPortable {
 
 		public Builder withCallId(UUID value) {
 			this.result.callId = value;
+			return this;
+		}
+
+		public Builder withPeerConnectionId(UUID value) {
+			this.result.peerConnectionId = value;
 			return this;
 		}
 

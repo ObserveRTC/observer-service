@@ -5,7 +5,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
 import org.observertc.observer.ObserverHazelcast;
-import org.observertc.observer.configs.ConfigType;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.*;
 
@@ -53,7 +52,6 @@ public class HazelcastMaps {
     private static final String HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME = "observertc-inbound-track-ids-to-outbound-track-ids";
 
     public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
-    public static final String HAZELCAST_CONFIGURATIONS_MAP_NAME = "observertc-configurations";
 
     public static final String HAZELCAST_CLIENT_MESSAGES = "observertc-client-messages";
 
@@ -101,7 +99,6 @@ public class HazelcastMaps {
 
     // other necessary maps
     private IMap<String, WeakLockDTO> weakLocks;
-    private IMap<ConfigType, ConfigDTO> configurations;
     private IMap<String, String> syncTaskStates;
     private IMap<String, byte[]> requests;
     private IMap<String, String> etcMap;
@@ -140,7 +137,6 @@ public class HazelcastMaps {
 
 //        this.rtpStreamIdToSfuPadIds = hazelcast.getMultiMap(HAZELCAST_RTP_STREAM_ID_TO_SFU_PAD_IDS_MAP_NAME);
 
-        this.configurations = hazelcast.getMap(HAZELCAST_CONFIGURATIONS_MAP_NAME);
         this.weakLocks = hazelcast.getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
         this.syncTaskStates = hazelcast.getMap(HAZELCAST_SYNC_TASK_STATES_MAP_NAME);
         this.requests = hazelcast.getMap(HAZELCAST_REQUESTS_MAP_NAME);
@@ -151,7 +147,7 @@ public class HazelcastMaps {
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_CLIENTS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.clientMaxIdleTime);
+                .setMaxIdleSeconds(this.config.clientMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
@@ -161,24 +157,24 @@ public class HazelcastMaps {
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.mediaTracksMaxIdleTime);
+                .setMaxIdleSeconds(this.config.mediaTracksMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuMaxIdleTime);
+                .setMaxIdleSeconds(this.config.sfuMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_TRANSPORTS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuTransportMaxIdleTime);
+                .setMaxIdleSeconds(this.config.sfuTransportMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_RTP_PADS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuRtpPadMaxIdleTime);
+                .setMaxIdleSeconds(this.config.sfuRtpPadMaxIdleTimeInS);
 
-        var bindingLifetime = Math.max(this.config.mediaTracksMaxIdleTime, this.config.sfuRtpPadMaxIdleTime);
+        var bindingLifetime = Math.max(this.config.mediaTracksMaxIdleTimeInS, this.config.sfuRtpPadMaxIdleTimeInS);
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_STREAMS_MAP_NAME)
@@ -251,5 +247,4 @@ public class HazelcastMaps {
 
     public IMap<String, String> getEtcMap() { return this.etcMap; }
 
-    public IMap<ConfigType, ConfigDTO> getConfigurations() { return this.configurations; }
 }

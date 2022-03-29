@@ -81,7 +81,9 @@ public class SfuLeftReports {
                     .setMessage("Sfu is left")
                     .setServiceId(sfuDTO.serviceId)
                     .setMediaUnitId(sfuDTO.mediaUnitId)
-                    .setTimestamp(timestamp);
+                    .setTimestamp(timestamp)
+                    .setMarker(sfuDTO.marker)
+                    ;
             logger.info("SFU (sfuId: {}, mediaUnitId: {}) is LEFT serviceId {}.", sfuId, sfuDTO.serviceId, sfuDTO.mediaUnitId);
             return builder.build();
         } catch (Exception ex) {

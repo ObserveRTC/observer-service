@@ -33,17 +33,17 @@ class SfuInboundRtpPadReportsDepotTest {
 
         Assertions.assertEquals(serviceId, actual.serviceId, "serviceId field");
         Assertions.assertEquals(mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
-        Assertions.assertEquals(sfuSample.sfuId, actual.sfuId, "sfuId field");
+        Assertions.assertEquals(sfuSample.sfuId.toString(), actual.sfuId, "sfuId field");
         Assertions.assertEquals(sfuSample.marker, actual.marker, "marker field");
         Assertions.assertEquals(expected.internal, actual.internal, "internal field");
         Assertions.assertEquals(sfuSample.timestamp, actual.timestamp, "timestamp field");
-        Assertions.assertEquals(expected.transportId, actual.transportId, "transportId field");
-        Assertions.assertEquals(expected.streamId, actual.sfuStreamId, "sfuStreamId field");
-        Assertions.assertEquals(expected.padId, actual.rtpPadId, "rtpPadId field");
+        Assertions.assertEquals(expected.transportId.toString(), actual.transportId, "transportId field");
+        Assertions.assertEquals(expected.streamId.toString(), actual.sfuStreamId, "sfuStreamId field");
+        Assertions.assertEquals(expected.padId.toString(), actual.rtpPadId, "rtpPadId field");
         Assertions.assertEquals(expected.ssrc, actual.ssrc, "ssrc field");
-        Assertions.assertEquals(trackId, actual.trackId, "trackId field");
-        Assertions.assertEquals(clientId, actual.clientId, "clientId field");
-        Assertions.assertEquals(callId, actual.callId, "callId field");
+        Assertions.assertEquals(trackId.toString(), actual.trackId, "trackId field");
+        Assertions.assertEquals(clientId.toString(), actual.clientId, "clientId field");
+        Assertions.assertEquals(callId.toString(), actual.callId, "callId field");
         Assertions.assertEquals(expected.mediaType, actual.mediaType, "mediaType field");
         Assertions.assertEquals(expected.payloadType, actual.payloadType, "payloadType field");
         Assertions.assertEquals(expected.mimeType, actual.mimeType, "mimeType field");
@@ -99,7 +99,6 @@ class SfuInboundRtpPadReportsDepotTest {
 
         // check if the things are cleaned properly
         Assertions.assertEquals(1, reports.size());
-        Assertions.assertNull( actual.sfuStreamId, "sfuStreamId field");
         Assertions.assertNull( actual.clientId, "clientId field");
         Assertions.assertNull( actual.callId, "callId field");
         Assertions.assertNull( actual.trackId, "trackId field");

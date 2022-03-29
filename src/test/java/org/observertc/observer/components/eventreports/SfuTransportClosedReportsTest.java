@@ -32,7 +32,7 @@ class SfuTransportClosedReportsTest {
         Assertions.assertEquals(expected.marker, actual.marker, "marker field");
         Assertions.assertNotEquals(expected.opened, actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.sfuId.toString(), actual.sfuId, "sfuId field");
-        Assertions.assertEquals(expected.toString(), actual.callId, "callId field");
+        Assertions.assertEquals(null, actual.callId, "callId field");
         Assertions.assertEquals(expected.transportId.toString(), actual.transportId, "transportId field");
         Assertions.assertEquals(null, actual.mediaStreamId, "mediaStreamId field");
         Assertions.assertEquals(null, actual.mediaSinkId, "mediaSinkId field");

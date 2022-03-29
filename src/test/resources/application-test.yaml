@@ -1,10 +1,42 @@
 observer:
+  buffers:
+    clientSamples:
+      maxItems: 100
+      maxTimeInMs: 10
 
-  evaluators:
-    clientSamplesBufferMaxTimeInS: 30
-    clientSamplesBufferMaxItems: 10000
-    mediaTracksMaxIdleTime: 80
-    peerConnectionsMaxIdleTime: 70
-    clientMaxIdleTime: 60
-    reportsBufferMaxItems: 100
-    reportsBufferMaxRetainInS: 60
+    sfuSamples:
+      maxItems: 100
+      maxTimeInMs: 10
+
+    debouncers:
+      maxItems: 10000
+      maxTimeInMs: 500
+
+  repository:
+    mediaTracksMaxIdleTimeInS: 5
+    peerConnectionsMaxIdleTimeInS: 5
+    clientMaxIdleTimeInS: 5
+    sfuMaxIdleTimeInS: 5
+    sfuTransportMaxIdleTimeInS: 5
+    sfuRtpPadMaxIdleTimeInS: 5
+
+  reports:
+    format: JSON
+    sendObserverEvents: true
+    sendCallEvents: true
+    sendCallMeta: true
+    sendClientExtensions: true
+    sendInboundAudioTracks: true
+    sendInboundVideoTracks: true
+    sendOutboundAudioTracks: true
+    sendOutboundVideoTracks: true
+    sendClientTransports: true
+    sendClientDataChannels: true
+    sendMediaTracks: true
+    sendSfuEvents: true
+    sendSfuMeta: true
+    sendSfuTransports: true
+    sendSfuSctpStreams: true
+    sendSfuOutboundRtpStreams: true
+    sendSfuInboundRtpStreams: true
+    reportSfuRtpPadOnlyWithCallId: 10

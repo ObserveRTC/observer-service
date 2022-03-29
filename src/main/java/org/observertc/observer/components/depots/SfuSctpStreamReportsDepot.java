@@ -62,7 +62,7 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
             String transportId = UUIDAdapter.toStringOrNull(sctpChannel.transportId);
             String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
             String streamId = UUIDAdapter.toStringOrNull(sctpChannel.streamId);
-            String callId = this.callId.toString();
+            String callId = UUIDAdapter.toStringOrNull(this.callId);
             var report = SfuSctpStreamReport.newBuilder()
 
                     /* Report MetaFields */
@@ -89,6 +89,7 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
                     .setMessageSent(sctpChannel.messageSent)
                     .setBytesReceived(sctpChannel.bytesReceived)
                     .setBytesSent(sctpChannel.bytesSent)
+                    .setSctpMtu(sctpChannel.sctpMtu)
 
                     .build();
             this.buffer.add(report);

@@ -24,6 +24,7 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Function<RIn, ROut> outboundVideoTrackFuncProcess,
             Function<RIn, ROut> sfuEventFuncProcess,
             Function<RIn, ROut> sfuMetaFuncProcess,
+            Function<RIn, ROut> sfuExtensionFuncProcess,
             Function<RIn, ROut> sfuTransportFuncProcess,
             Function<RIn, ROut> sfuInboundRtpPadFuncProcess,
             Function<RIn, ROut> sfuOutboundRtpPadProcess,
@@ -91,6 +92,11 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
+            public ROut visitSfuExtensionReport(RIn obj) {
+                return sfuExtensionFuncProcess.apply(obj);
+            }
+
+            @Override
             public ROut visitSfuTransportReport(RIn obj) {
                 return sfuTransportFuncProcess.apply(obj);
             }
@@ -126,6 +132,7 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Consumer<RIn> outboundVideoTrackConsumer,
             Consumer<RIn> sfuEventConsumer,
             Consumer<RIn> sfuMetaConsumer,
+            Consumer<RIn> sfuExtensionConsumer,
             Consumer<RIn> sfuTransportConsumer,
             Consumer<RIn> sfuInboundRtpPadConsumer,
             Consumer<RIn> sfuOutboundRtpPadConsumer,
@@ -205,6 +212,12 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
+            public Void visitSfuExtensionReport(RIn obj) {
+                sfuExtensionConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
             public Void visitSfuTransportReport(RIn obj) {
                 sfuTransportConsumer.accept(obj);
                 return null;
@@ -243,6 +256,7 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Supplier<ROut> outboundVideoTrackSupplier,
             Supplier<ROut> sfuEventSupplier,
             Supplier<ROut> sfuMetaSupplier,
+            Supplier<ROut> sfuExtensionSupplier,
             Supplier<ROut> sfuTransportSupplier,
             Supplier<ROut> sfuSfuInboundRtpPadSupplier,
             Supplier<ROut> sfuOutboundRtpPadSupplier,
@@ -311,6 +325,11 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
+            public ROut visitSfuExtensionReport(Void obj) {
+                return sfuExtensionSupplier.get();
+            }
+
+            @Override
             public ROut visitSfuTransportReport(Void obj) {
                 return sfuTransportSupplier.get();
             }
@@ -343,9 +362,9 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Runnable inboundVideoTrackCallback,
             Runnable outboundAudioTrackCallback,
             Runnable outboundVideoTrackCallback,
-            Runnable mediaTrackCallback,
             Runnable sfuEventCallback,
             Runnable sfuMetaCallback,
+            Runnable sfuExtensionCallback,
             Runnable sfuTransportCallback,
             Runnable sfuInboundRtpPadCallback,
             Runnable sfuRtpOutboundPadCallback,
@@ -425,6 +444,12 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
+            public Void visitSfuExtensionReport(Void obj) {
+                sfuExtensionCallback.run();
+                return null;
+            }
+
+            @Override
             public Void visitSfuTransportReport(Void obj) {
                 sfuTransportCallback.run();
                 return null;
@@ -478,6 +503,8 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
                 return this.visitSfuEventReport(obj);
             case SFU_META_DATA:
                 return this.visitSfuMetaReport(obj);
+            case SFU_EXTENSION_DATA:
+                return this.visitSfuExtensionReport(obj);
             case SFU_TRANSPORT:
                 return this.visitSfuTransportReport(obj);
             case SFU_INBOUND_RTP_PAD:
@@ -505,6 +532,7 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
 
     TOut visitSfuEventReport(TIn obj);
     TOut visitSfuMetaReport(TIn obj);
+    TOut visitSfuExtensionReport(TIn obj);
     TOut visitSfuTransportReport(TIn obj);
     TOut visitSfuInboundRtpPadReport(TIn obj);
     TOut visitSfuOutboundRtpPadReport(TIn obj);

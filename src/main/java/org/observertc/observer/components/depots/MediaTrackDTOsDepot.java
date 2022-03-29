@@ -84,15 +84,23 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
         }
         if (Objects.isNull(this.trackId)) {
             logger.warn("Cannot create {} without trackId", MediaTrackDTO.class.getSimpleName());
+            return;
         }
         if (Objects.isNull(this.direction)) {
             logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
+            return;
         }
         if (Objects.isNull(this.SSRC)) {
             logger.warn("Cannot create {} without SSRC", MediaTrackDTO.class.getSimpleName());
+            return;
         }
         if (Objects.isNull(this.peerConnectionId)) {
             logger.warn("Cannot create {} without peerConnectionId", MediaTrackDTO.class.getSimpleName());
+            return;
+        }
+        if (Objects.isNull(this.direction)) {
+            logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
+            return;
         }
         if (this.buffer.containsKey(trackId)) {
             return;

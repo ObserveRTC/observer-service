@@ -36,12 +36,15 @@ public class CallEndedReports {
         Long timestamp = Instant.now().toEpochMilli();
         try {
             String callId = UUIDAdapter.toStringOrNull(callDTO.callId);
+            String message = String.format("Call (%s) is ended", callDTO.callId);
             var result = CallEventReport.newBuilder()
                     .setName(CallEventType.CALL_ENDED.name())
                     .setCallId(callId)
                     .setServiceId(callDTO.serviceId)
                     .setRoomId(callDTO.roomId)
                     .setTimestamp(timestamp)
+                    .setMarker(callDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Call \"{}\" for service \"{}\" at room \"{}\" is ended", callDTO.callId, callDTO.serviceId, callDTO.roomId);
             return result;

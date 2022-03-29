@@ -18,8 +18,8 @@ class SfuDTOTest {
 
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
-        var fields = SfuDTOTest.class.getFields();
-        Assertions.assertEquals(8, fields.length);
+        var fields = SfuDTO.class.getFields();
+        Assertions.assertEquals(7, fields.length);
     }
 
     @Test

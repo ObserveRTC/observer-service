@@ -2,11 +2,10 @@ package org.observertc.observer.repositories;
 
 import com.hazelcast.map.IMap;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.common.BufferUtils;
 import org.observertc.observer.common.ClientMessageEvent;
+import org.observertc.observer.common.ObservablePassiveCollector;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.*;
 import org.slf4j.Logger;
@@ -17,9 +16,9 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Instant;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class RepositoryEvents {
@@ -31,47 +30,70 @@ public class RepositoryEvents {
     @Inject
     ObserverConfig observerConfig;
 
-    private Subject<CallDTO> addedCalls = PublishSubject.create();
-    private Subject<CallDTO> removedCalls = PublishSubject.create();
+    private ObservablePassiveCollector<CallDTO> addedCalls = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<CallDTO> removedCalls = ObservablePassiveCollector.create();
 
-    private Subject<ClientDTO> addedClient = PublishSubject.create();
-    private Subject<RepositoryExpiredEvent<ClientDTO>> expiredClient = PublishSubject.create();
-    private Subject<ClientDTO> removedClient = PublishSubject.create();
+    private ObservablePassiveCollector<ClientDTO> addedClient = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryExpiredEvent<ClientDTO>> expiredClient = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<ClientDTO> removedClient = ObservablePassiveCollector.create();
 
-    private Subject<PeerConnectionDTO> addedPeerConnection = PublishSubject.create();
-    private Subject<RepositoryExpiredEvent<PeerConnectionDTO>> expiredPeerConnection = PublishSubject.create();
-    private Subject<PeerConnectionDTO> removedPeerConnection = PublishSubject.create();
+    private ObservablePassiveCollector<PeerConnectionDTO> addedPeerConnection = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryExpiredEvent<PeerConnectionDTO>> expiredPeerConnection = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<PeerConnectionDTO> removedPeerConnection = ObservablePassiveCollector.create();
 
-    private Subject<MediaTrackDTO> addedMediaTrack = PublishSubject.create();
-    private Subject<RepositoryExpiredEvent<MediaTrackDTO>> expiredMediaTrack = PublishSubject.create();
-    private Subject<MediaTrackDTO> removedMediaTrack = PublishSubject.create();
+    private ObservablePassiveCollector<MediaTrackDTO> addedMediaTrack = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryExpiredEvent<MediaTrackDTO>> expiredMediaTrack = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<MediaTrackDTO> removedMediaTrack = ObservablePassiveCollector.create();
 
-    private Subject<SfuRtpPadDTO> addedSfuRtpPad = PublishSubject.create();
-    private Subject<RepositoryExpiredEvent<SfuRtpPadDTO>> expiredSfuRtpPad = PublishSubject.create();
-    private Subject<RepositoryUpdatedEvent<SfuRtpPadDTO>> updatedSfuRtpPad = PublishSubject.create();
-    private Subject<SfuRtpPadDTO> removedSfuRtpPad = PublishSubject.create();
+    private ObservablePassiveCollector<SfuRtpPadDTO> addedSfuRtpPad = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryExpiredEvent<SfuRtpPadDTO>> expiredSfuRtpPad = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuRtpPadDTO>> updatedSfuRtpPad = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<SfuRtpPadDTO> removedSfuRtpPad = ObservablePassiveCollector.create();
 
-    private Subject<SfuTransportDTO> addedSfuTransport = PublishSubject.create();
-    private Subject<RepositoryExpiredEvent<SfuTransportDTO>> expiredSfuTransport = PublishSubject.create();
-    private Subject<RepositoryUpdatedEvent<SfuTransportDTO>> updatedSfuTransport = PublishSubject.create();
-    private Subject<SfuTransportDTO> removedSfuTransport = PublishSubject.create();
+    private ObservablePassiveCollector<SfuTransportDTO> addedSfuTransport = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryExpiredEvent<SfuTransportDTO>> expiredSfuTransport = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuTransportDTO>> updatedSfuTransport = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<SfuTransportDTO> removedSfuTransport = ObservablePassiveCollector.create();
 
-    private Subject<SfuDTO> addedSfu = PublishSubject.create();
-    private Subject<RepositoryExpiredEvent<SfuDTO>> expiredSfu = PublishSubject.create();
-    private Subject<SfuDTO> removedSfu = PublishSubject.create();
+    private ObservablePassiveCollector<SfuDTO> addedSfu = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryExpiredEvent<SfuDTO>> expiredSfu = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<SfuDTO> removedSfu =ObservablePassiveCollector.create();
 
-    private Subject<RepositoryUpdatedEvent<ClientMessageEvent>> updatedClientMessages = PublishSubject.create();
-    private Subject<ClientMessageEvent> removedClientMessages = PublishSubject.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<ClientMessageEvent>> updatedClientMessages = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<ClientMessageEvent> removedClientMessages = ObservablePassiveCollector.create();
 
-    private Subject<UUID> expiredIncompleteSfuRtpPadIds = PublishSubject.create();
+    private ObservablePassiveCollector<UUID> expiredIncompleteSfuRtpPadIds = ObservablePassiveCollector.create();
 
-    private Subject<RepositoryUpdatedEvent<SfuStreamDTO>> updatedSfuStreams = PublishSubject.create();
-    private Subject<RepositoryUpdatedEvent<SfuSinkDTO>> updatedSfuSinks = PublishSubject.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuStreamDTO>> updatedSfuStreams = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuSinkDTO>> updatedSfuSinks = ObservablePassiveCollector.create();
 
     private List<Runnable> destructors = new LinkedList<>();
+    private Disposable timer = null;
+    private Map<UUID, Runnable> debouncers = new ConcurrentHashMap<>();
+
+
+    public RepositoryEvents() {
+
+    }
 
     @PostConstruct
     void setup() {
+        var debounceConfig = this.observerConfig.buffers.debouncers;
+        var debounceTimeInMs = debounceConfig.maxTimeInMs;
+        if (debounceTimeInMs < 1) {
+            debounceTimeInMs = 1000;
+            logger.info("No debounce time is given, but {} must have one, so it uses a default 1000ms", this.getClass().getSimpleName());
+        }
+        this.timer = Observable.interval(debounceTimeInMs, debounceTimeInMs, TimeUnit.MILLISECONDS).subscribe(counter -> {
+            this.debouncers.values().stream().forEach(timeChecker -> {
+                try {
+                    timeChecker.run();
+                } catch (Exception ex) {
+                    logger.warn("Error occurred while running timeChecker");
+                }
+            });
+        });
+
         ObserverConfig.RepositoryConfig repositoryConfig = this.observerConfig.repository;
         this.add(
                 "Call DTO Storage Events",
@@ -79,10 +101,10 @@ public class RepositoryEvents {
                 builder -> {
                     builder.onEntryAdded(event -> {
                         CallDTO callDTO = event.getValue();
-                        addedCalls.onNext(callDTO);
+                        addedCalls.add(callDTO);
                     }).onEntryRemoved(event -> {
                         CallDTO callDTO= event.getOldValue();
-                        removedCalls.onNext(callDTO);
+                        removedCalls.add(callDTO);
                     });
                 });
 
@@ -92,15 +114,15 @@ public class RepositoryEvents {
                 builder -> {
                     builder.onEntryAdded(event -> {
                         ClientDTO clientDTO = event.getValue();
-                        addedClient.onNext(clientDTO);
+                        addedClient.add(clientDTO);
                     }).onEntryRemoved(event -> {
                         ClientDTO clientDTO = event.getOldValue();
-                        removedClient.onNext(clientDTO);
+                        removedClient.add(clientDTO);
                     }).onEntryExpired(event -> {
                         ClientDTO clientDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTime).toEpochMilli();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<ClientDTO>make(clientDTO, estimatedLastTouch);
-                        expiredClient.onNext(forwardedEvent);
+                        expiredClient.add(forwardedEvent);
                     });
                 });
 
@@ -110,15 +132,15 @@ public class RepositoryEvents {
                 builder -> {
                     builder.onEntryAdded(event -> {
                         PeerConnectionDTO peerConnectionDTO = event.getValue();
-                        addedPeerConnection.onNext(peerConnectionDTO);
+                        addedPeerConnection.add(peerConnectionDTO);
                     }).onEntryRemoved(event -> {
                         PeerConnectionDTO peerConnectionDTO = event.getOldValue();
-                        removedPeerConnection.onNext(peerConnectionDTO);
+                        removedPeerConnection.add(peerConnectionDTO);
                     }).onEntryExpired(event -> {
                         PeerConnectionDTO peerConnectionDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTime).toEpochMilli();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<PeerConnectionDTO>make(peerConnectionDTO, estimatedLastTouch);
-                        expiredPeerConnection.onNext(forwardedEvent);
+                        expiredPeerConnection.add(forwardedEvent);
                     });
                 });
 
@@ -128,15 +150,15 @@ public class RepositoryEvents {
                 builder -> {
                     builder.onEntryAdded(event -> {
                         MediaTrackDTO mediaTrackDTO = event.getValue();
-                        addedMediaTrack.onNext(mediaTrackDTO);
+                        addedMediaTrack.add(mediaTrackDTO);
                     }).onEntryRemoved(event -> {
                         MediaTrackDTO mediaTrackDTO = event.getOldValue();
-                        removedMediaTrack.onNext(mediaTrackDTO);
+                        removedMediaTrack.add(mediaTrackDTO);
                     }).onEntryExpired(event -> {
                         MediaTrackDTO mediaTrackDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTime).toEpochMilli();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<MediaTrackDTO>make(mediaTrackDTO, estimatedLastTouch);
-                        expiredMediaTrack.onNext(forwardedEvent);
+                        expiredMediaTrack.add(forwardedEvent);
                     });
                 });
 
@@ -146,15 +168,15 @@ public class RepositoryEvents {
                 builder -> {
                     builder.onEntryAdded(event -> {
                         SfuDTO sfuDTO = event.getValue();
-                        addedSfu.onNext(sfuDTO);
+                        addedSfu.add(sfuDTO);
                     }).onEntryRemoved(event -> {
                         SfuDTO sfuDTO = event.getOldValue();
-                        removedSfu.onNext(sfuDTO);
+                        removedSfu.add(sfuDTO);
                     }).onEntryExpired(event -> {
                         SfuDTO sfuDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuMaxIdleTime).toEpochMilli();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<SfuDTO>make(sfuDTO, estimatedLastTouch);
-                        expiredSfu.onNext(forwardedEvent);
+                        expiredSfu.add(forwardedEvent);
                     });
                 });
 
@@ -164,63 +186,41 @@ public class RepositoryEvents {
                 builder -> {
                     builder.onEntryAdded(event -> {
                         SfuTransportDTO sfuTransportDTO = event.getValue();
-                        addedSfuTransport.onNext(sfuTransportDTO);
+                        addedSfuTransport.add(sfuTransportDTO);
                     }).onEntryRemoved(event -> {
                         SfuTransportDTO sfuTransportDTO = event.getOldValue();
-                        removedSfuTransport.onNext(sfuTransportDTO);
+                        removedSfuTransport.add(sfuTransportDTO);
                     }).onEntryUpdated(event -> {
                         SfuTransportDTO oldSfuTransportDTO = event.getOldValue();
                         SfuTransportDTO newSfuTransportDTO = event.getValue();
-                        updatedSfuTransport.onNext(RepositoryUpdatedEvent.make(oldSfuTransportDTO, newSfuTransportDTO));
+                        updatedSfuTransport.add(RepositoryUpdatedEvent.make(oldSfuTransportDTO, newSfuTransportDTO));
                     }).onEntryExpired(event -> {
                         SfuTransportDTO sfuTransportDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuTransportMaxIdleTime).toEpochMilli();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuTransportMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<SfuTransportDTO>make(sfuTransportDTO, estimatedLastTouch);
-                        expiredSfuTransport.onNext(forwardedEvent);
+                        expiredSfuTransport.add(forwardedEvent);
                     });
                 });
 
         this.add(
-                "Sfu Rtp Pad DTO Storage Events",
+                "Sfu Rtp Pad DTO Events",
                 this.hazelcastMaps.getSFURtpPads(),
                 builder -> {
                     builder.onEntryAdded(event -> {
                         SfuRtpPadDTO sfuRtpPadDTO = event.getValue();
-                        addedSfuRtpPad.onNext(sfuRtpPadDTO);
+                        addedSfuRtpPad.add(sfuRtpPadDTO);
                     }).onEntryRemoved(event -> {
                         SfuRtpPadDTO sfuRtpPadDTO = event.getOldValue();
-                        removedSfuRtpPad.onNext(sfuRtpPadDTO);
+                        removedSfuRtpPad.add(sfuRtpPadDTO);
                     }).onEntryUpdated(event -> {
                         SfuRtpPadDTO oldSfuRtpPadDTO = event.getOldValue();
                         SfuRtpPadDTO newSfuRtpPadDTO = event.getValue();
-                        updatedSfuRtpPad.onNext(RepositoryUpdatedEvent.make(oldSfuRtpPadDTO, newSfuRtpPadDTO));
+                        updatedSfuRtpPad.add(RepositoryUpdatedEvent.make(oldSfuRtpPadDTO, newSfuRtpPadDTO));
                     }).onEntryExpired(event -> {
                         var sfuRtpPadDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuRtpPadMaxIdleTime).toEpochMilli();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuRtpPadMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<SfuRtpPadDTO>make(sfuRtpPadDTO, estimatedLastTouch);
-                        expiredSfuRtpPad.onNext(forwardedEvent);
-                    });
-                });
-
-        this.add(
-                "Sfu Rtp Pad DTO Storage Events",
-                this.hazelcastMaps.getSFURtpPads(),
-                builder -> {
-                    builder.onEntryAdded(event -> {
-                        SfuRtpPadDTO sfuRtpPadDTO = event.getValue();
-                        addedSfuRtpPad.onNext(sfuRtpPadDTO);
-                    }).onEntryRemoved(event -> {
-                        SfuRtpPadDTO sfuRtpPadDTO = event.getOldValue();
-                        removedSfuRtpPad.onNext(sfuRtpPadDTO);
-                    }).onEntryUpdated(event -> {
-                        SfuRtpPadDTO oldSfuRtpPadDTO = event.getOldValue();
-                        SfuRtpPadDTO newSfuRtpPadDTO = event.getValue();
-                        updatedSfuRtpPad.onNext(RepositoryUpdatedEvent.make(oldSfuRtpPadDTO, newSfuRtpPadDTO));
-                    }).onEntryExpired(event -> {
-                        var sfuRtpPadDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuRtpPadMaxIdleTime).toEpochMilli();
-                        var forwardedEvent = RepositoryExpiredEvent.<SfuRtpPadDTO>make(sfuRtpPadDTO, estimatedLastTouch);
-                        expiredSfuRtpPad.onNext(forwardedEvent);
+                        expiredSfuRtpPad.add(forwardedEvent);
                     });
                 });
 
@@ -231,7 +231,7 @@ public class RepositoryEvents {
                     builder.onEntryUpdated(event -> {
                         SfuStreamDTO oldDTO = event.getOldValue();
                         SfuStreamDTO newDTO = event.getValue();
-                        updatedSfuStreams.onNext(RepositoryUpdatedEvent.make(oldDTO, newDTO));
+                        updatedSfuStreams.add(RepositoryUpdatedEvent.make(oldDTO, newDTO));
                     });
                 });
 
@@ -242,7 +242,7 @@ public class RepositoryEvents {
                     builder.onEntryUpdated(event -> {
                         SfuSinkDTO oldDTO = event.getOldValue();
                         SfuSinkDTO newDTO = event.getValue();
-                        updatedSfuSinks.onNext(RepositoryUpdatedEvent.make(oldDTO, newDTO));
+                        updatedSfuSinks.add(RepositoryUpdatedEvent.make(oldDTO, newDTO));
                     });
                 });
 
@@ -257,13 +257,16 @@ public class RepositoryEvents {
                         var oldMessage = ClientMessageEvent.of(clientId, oldEntryDTO);
                         var newMessage = ClientMessageEvent.of(clientId, newEntryDTO);
                         var forwardedEvent = RepositoryUpdatedEvent.make(oldMessage, newMessage);
-                        updatedClientMessages.onNext(forwardedEvent);
+                        updatedClientMessages.add(forwardedEvent);
                     });
                 });
     }
 
     @PreDestroy
     void teardown() {
+        if (Objects.nonNull(this.timer)) {
+            this.timer.dispose();
+        }
         this.destructors.forEach(destructor -> {
             destructor.run();
         });
@@ -413,8 +416,23 @@ public class RepositoryEvents {
         return this;
     }
 
-    private<T> Observable<List<T>> getObservableList(Observable<T> source) {
-        var debounceConfig = this.observerConfig.buffers.repositoryEventsDebouncers;
-        return BufferUtils.wrapObservable(source, debounceConfig);
+    private<T> Observable<List<T>> getObservableList(ObservablePassiveCollector<T> source) {
+        if (!this.debouncers.containsKey(source.getId())) {
+            var maxTimeInMs = this.observerConfig.buffers.debouncers.maxTimeInMs;
+            var maxItems = this.observerConfig.buffers.debouncers.maxItems;
+            Runnable debouncer = () -> {
+                var collectingTimeInsMs = source.getCollectingTimeInMs();
+                if (0 < maxTimeInMs && maxTimeInMs <= collectingTimeInsMs) {
+                    source.flush();
+                    return;
+                }
+                if (0 < maxItems && maxItems < source.getCollectedNumberOfItems()) {
+                    source.flush();
+                    return;
+                }
+            };
+            this.debouncers.put(source.getId(), debouncer);
+        }
+        return source.observableEmittedItems();
     }
 }

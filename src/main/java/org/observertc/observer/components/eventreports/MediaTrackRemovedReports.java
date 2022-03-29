@@ -92,6 +92,7 @@ public class MediaTrackRemovedReports {
                     .withSfuSinkId(sfuSinkId)
                     .withStreamDirection(streamDirection)
                     .build();
+            String message = String.format("Media Track is removed. sfuStreamId: %s, sfuSinkId: %s, direction: %s", sfuStreamId, sfuSinkId, streamDirection);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_REMOVED.name())
                     .setCallId(callId)
@@ -105,6 +106,8 @@ public class MediaTrackRemovedReports {
                     .setMediaTrackId(trackId)
                     .setAttachments(attachment.toBase64())
                     .setTimestamp(timestamp)
+                    .setMarker(mediaTrackDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Media Track {} on Peer Connection {} is closed at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
             return report;

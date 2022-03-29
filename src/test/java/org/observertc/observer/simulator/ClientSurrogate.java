@@ -1,6 +1,6 @@
 package org.observertc.observer.simulator;
 
-import io.micronaut.context.annotation.Prototype;
+import org.observertc.observer.utils.ClientSideSamplesGenerator;
 import org.observertc.observer.utils.RandomGenerators;
 import org.observertc.observer.utils.TestUtils;
 import org.observertc.schemas.samples.Samples;
@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-@Prototype
 public class ClientSurrogate implements NetworkLinkProvider {
 
     public final String roomId;

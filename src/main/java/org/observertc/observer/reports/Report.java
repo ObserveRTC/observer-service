@@ -108,6 +108,14 @@ public class Report {
                 .build();
     }
 
+    public static Report fromSfuExtensionReport(SfuExtensionReport report) {
+        return builder()
+                .setType(ReportType.SFU_EXTENSION_DATA)
+                .setSchemaVersion(SfuMetaReport.VERSION)
+                .setPayload(report)
+                .build();
+    }
+
     public static Report fromSfuTransportReport(SFUTransportReport report) {
         return builder()
                 .setType(ReportType.SFU_TRANSPORT)

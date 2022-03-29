@@ -18,7 +18,7 @@ class CallDTOTest {
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
         var fields = CallDTO.class.getFields();
-        Assertions.assertEquals(5, fields.length);
+        Assertions.assertEquals(6, fields.length);
     }
 
     @Test

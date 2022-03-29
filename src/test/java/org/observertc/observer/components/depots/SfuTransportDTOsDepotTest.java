@@ -20,7 +20,7 @@ class SfuTransportDTOsDepotTest {
                 .setSfuTransport(sfuTransport)
                 .assemble();
 
-        var sfuTransportDTO = depot.get().get(sfuSample.sfuId);
+        var sfuTransportDTO = depot.get().get(sfuTransport.transportId);
 
         Assertions.assertEquals(sfuTransportDTO.serviceId, observedSfuSample.getServiceId());
         Assertions.assertEquals(sfuTransportDTO.mediaUnitId, observedSfuSample.getMediaUnitId());

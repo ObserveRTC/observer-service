@@ -81,7 +81,7 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
             var clientSample = observedClientSample.getClientSample();
             String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
             String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-
+            String sfuSinkId = UUIDAdapter.toStringOrNull(inboundVideoTrack.sfuSinkId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(inboundVideoTrack.peerConnectionId);
             var trackId = UUIDAdapter.toStringOrNull(inboundVideoTrack.trackId);
             var report = InboundVideoTrackReport.newBuilder()
@@ -111,6 +111,7 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
 
 
                     /* Inbound RTP Video specific fields */
+                    .setSfuSinkId(sfuSinkId)
                     .setSsrc(inboundVideoTrack.ssrc)
                     .setPacketsReceived(inboundVideoTrack.packetsReceived)
                     .setPacketsLost(inboundVideoTrack.packetsLost)

@@ -46,7 +46,9 @@ public class SfuJoinedReports {
                     .setMessage("Sfu is joined")
                     .setServiceId(sfuDTO.serviceId)
                     .setMediaUnitId(sfuDTO.mediaUnitId)
-                    .setTimestamp(sfuDTO.joined);
+                    .setTimestamp(sfuDTO.joined)
+                    .setMarker(sfuDTO.marker)
+                    ;
             logger.info("SFU (sfuId: {}, mediaUnitId: {}) is JOINED serviceId {}.", sfuId, sfuDTO.serviceId, sfuDTO.mediaUnitId);
             return builder.build();
         } catch (Exception ex) {

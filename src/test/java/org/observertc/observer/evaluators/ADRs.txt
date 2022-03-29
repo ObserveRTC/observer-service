@@ -1,5 +1,0 @@
-Testing evaluators:
- - Considering the nature of evaluators highly tied to tasks injected to them, and
- the fact we should mock all task in order to have a proper unit test, we do not.
- We do need to have a complex integration test, where we test the processing pipeline with various scenarios,
- and checking the outputs

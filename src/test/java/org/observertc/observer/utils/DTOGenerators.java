@@ -3,14 +3,12 @@ package org.observertc.observer.utils;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.dto.*;
 
-import javax.inject.Inject;
 import java.util.UUID;
 
 @Prototype
 public class DTOGenerators {
 
-    @Inject
-    RandomGenerators randomGenerators;
+    RandomGenerators randomGenerators = new RandomGenerators();
 
 
     public DTOGenerators() {
@@ -208,6 +206,7 @@ public class DTOGenerators {
                 .withStreamDirection(streamDirection)
                 .withAddedTimestamp(timestamp)
                 .withMarker(marker)
+                ;
         return result;
     }
 

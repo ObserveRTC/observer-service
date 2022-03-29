@@ -21,7 +21,7 @@ class ClientDTOTest {
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
         var fields = ClientDTO.class.getFields();
-        Assertions.assertEquals(8, fields.length);
+        Assertions.assertEquals(10, fields.length);
     }
 
     @Test
@@ -121,8 +121,5 @@ class ClientDTOTest {
     private ClientDTO makeDTO() {
         return this.makeBuilder().build();
     }
-
-
-
 
 }

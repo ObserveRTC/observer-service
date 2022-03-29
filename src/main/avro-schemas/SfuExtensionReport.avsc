@@ -1,0 +1,59 @@
+{
+  "type": "record",
+  "name": "SfuExtensionReport",
+  "namespace": "org.observertc.schemas.reports",
+  "doc": "A Report created for Extended provided arbitrary data.",
+  "fields": [
+    {
+      "name": "serviceId",
+      "doc": "The service id the report belongs to",
+      "type": "string"
+    },
+    {
+      "name": "mediaUnitId",
+      "doc": "The media unit id the report belongs to",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "marker",
+      "doc": "The marker the originated sample is reported with",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "doc": "The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)",
+      "type": "long"
+    },
+    {
+      "name": "sfuId",
+      "doc": "The generated unique identifier of the SFU",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "extensionType",
+      "doc": "The name of the event",
+      "type": "string"
+    },
+    {
+      "name": "payload",
+      "doc": "the human readable message of the event",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

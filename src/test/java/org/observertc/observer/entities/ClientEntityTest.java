@@ -4,11 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
-
 class ClientEntityTest {
-    @Inject
-    DTOGenerators generator;
+
+    DTOGenerators generator = new DTOGenerators();
 
     @Test
     void shouldHasExpectedValues() {
@@ -23,7 +21,7 @@ class ClientEntityTest {
                 .build();
 
         boolean hasClientDTO = clientEntity.getClientDTO().equals(clientDTO);
-        boolean hasPeerConnectionDTO = clientEntity.getPeerConnections().get(clientDTO.clientId).equals(clientDTO);
+        boolean hasPeerConnectionDTO = clientEntity.getPeerConnections().get(peerConnectionEntity.getPeerConnectionId()).getPeerConnectionDTO().equals(peerConnectionDTO);
         Assertions.assertTrue(hasClientDTO);
         Assertions.assertTrue(hasPeerConnectionDTO);
     }

@@ -59,6 +59,7 @@ public class OutboundVideoReportsDepot implements Supplier<List<OutboundVideoTra
             String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(outboundVideoTrack.peerConnectionId);
             var trackId = UUIDAdapter.toStringOrNull(outboundVideoTrack.trackId);
+            var sfuStreamId = UUIDAdapter.toStringOrNull(outboundVideoTrack.sfuStreamId);
             var report = OutboundVideoTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -79,15 +80,17 @@ public class OutboundVideoReportsDepot implements Supplier<List<OutboundVideoTra
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* OutboundRTP related fields specific for Audio*/
+                    .setSfuStreamId(sfuStreamId)
                     .setSsrc(outboundVideoTrack.ssrc)
                     .setPacketsSent(outboundVideoTrack.packetsSent)
                     .setBytesSent(outboundVideoTrack.bytesSent)
                     .setRid(outboundVideoTrack.rid)
                     .setLastPacketSentTimestamp(outboundVideoTrack.lastPacketSentTimestamp)
                     .setHeaderBytesSent(outboundVideoTrack.headerBytesSent)
+                    .setPacketsDiscardedOnSend(outboundVideoTrack.packetsDiscardedOnSend)
                     .setPacketsDiscarded(outboundVideoTrack.packetsDiscarded)
                     .setBytesDiscardedOnSend(outboundVideoTrack.bytesDiscardedOnSend)
-                    .setPacketsSent(outboundVideoTrack.fecPacketsSent)
+                    .setFecPacketsSent(outboundVideoTrack.fecPacketsSent)
                     .setRetransmittedPacketsSent(outboundVideoTrack.retransmittedPacketsSent)
                     .setRetransmittedBytesSent(outboundVideoTrack.retransmittedBytesSent)
                     .setTargetBitrate(outboundVideoTrack.targetBitrate)
@@ -128,7 +131,7 @@ public class OutboundVideoReportsDepot implements Supplier<List<OutboundVideoTra
                     .setBurstPacketsLost(outboundVideoTrack.burstPacketsLost)
                     .setBurstPacketsDiscarded(outboundVideoTrack.burstPacketsDiscarded)
                     .setBurstLossCount(outboundVideoTrack.burstLossCount)
-                    .setBurstDiscardCount(outboundVideoTrack.burstLossCount)
+                    .setBurstDiscardCount(outboundVideoTrack.burstDiscardCount)
                     .setBurstLossRate(outboundVideoTrack.burstLossRate)
                     .setBurstDiscardRate(outboundVideoTrack.burstDiscardRate)
                     .setGapLossRate(outboundVideoTrack.gapLossRate)

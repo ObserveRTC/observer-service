@@ -35,9 +35,9 @@ class ClientExtensionReportsDepotTest {
         Assertions.assertEquals(mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
         Assertions.assertEquals(clientSample.marker, actual.marker, "marker field");
         Assertions.assertEquals(clientSample.timestamp, actual.timestamp, "timestamp field");
-        Assertions.assertEquals(clientSample.callId, actual.callId, "callId field");
+        Assertions.assertEquals(clientSample.callId.toString(), actual.callId, "callId field");
         Assertions.assertEquals(clientSample.roomId, actual.roomId, "roomId field");
-        Assertions.assertEquals(clientSample.clientId, actual.clientId, "clientId field");
+        Assertions.assertEquals(clientSample.clientId.toString(), actual.clientId, "clientId field");
         Assertions.assertEquals(clientSample.userId, actual.userId, "userId field");
         Assertions.assertEquals(peerConnectionId.toString(), actual.peerConnectionId, "peerConnectionId field");
         Assertions.assertEquals(clientSample.sampleSeq, actual.sampleSeq, "sampleSeq field");

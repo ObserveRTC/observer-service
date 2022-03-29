@@ -3,7 +3,6 @@ package org.observertc.observer.components.eventreports;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.components.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
@@ -51,11 +50,6 @@ class MediaTrackRemovedReportsTest {
         Assertions.assertNotEquals(null, actual.message, "message field");
         Assertions.assertEquals(null, actual.value, "value field");
         Assertions.assertNotEquals(null, actual.attachments, "attachments field");
-
-        MediaTrackAttachment attachment = MediaTrackAttachment.builder().fromBase64(actual.attachments).build();
-        Assertions.assertEquals(expected.sfuStreamId, attachment.sfuStreamId);
-        Assertions.assertEquals(expected.sfuSinkId, attachment.sfuSinkId);
-        Assertions.assertEquals(expected.direction, attachment.streamDirection);
     }
 
     @Test

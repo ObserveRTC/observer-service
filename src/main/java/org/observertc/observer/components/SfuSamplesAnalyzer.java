@@ -4,10 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.components.depots.SfuInboundRtpPadReportsDepot;
-import org.observertc.observer.components.depots.SfuOutboundRtpPadReportsDepot;
-import org.observertc.observer.components.depots.SfuSctpStreamReportsDepot;
-import org.observertc.observer.components.depots.SfuTransportReportsDepot;
+import org.observertc.observer.components.depots.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.FetchSfuRelationsTask;
 import org.observertc.observer.samples.ObservedSfuSamples;
@@ -35,6 +32,7 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
     private final SfuInboundRtpPadReportsDepot sfuInboundRtpPadReportsDepot = new SfuInboundRtpPadReportsDepot();
     private final SfuOutboundRtpPadReportsDepot sfuOutboundRtpPadReportsDepot = new SfuOutboundRtpPadReportsDepot();
     private final SfuSctpStreamReportsDepot sfuSctpStreamReportsDepot = new SfuSctpStreamReportsDepot();
+    private final SfuExtensionReportsDepot sfuExtensionReportsDepot = new SfuExtensionReportsDepot();
 
     public Observable<List<Report>> observableReports() {
         return this.output;
@@ -106,12 +104,21 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
                         .setSctpChannel(sctpChannel)
                         .assemble();
             });
+
+            SfuSampleVisitor.streamExtensionStats(sfuSample).forEach(sfuExtensionStats -> {
+                this.sfuExtensionReportsDepot
+                        .setObservedSfuSample(observedSfuSample)
+                        .setExtensionType(sfuExtensionStats.type)
+                        .setPayload(sfuExtensionStats.payload)
+                        .assemble();
+            });
         }
         var reports = new LinkedList<Report>();
         this.sfuTransportReportsDepot.get().stream().map(Report::fromSfuTransportReport).forEach(reports::add);
         this.sfuInboundRtpPadReportsDepot.get().stream().map(Report::fromSfuInboundRtpPadReport).forEach(reports::add);
         this.sfuOutboundRtpPadReportsDepot.get().stream().map(Report::fromSfuOutboundRtpPadReport).forEach(reports::add);
         this.sfuSctpStreamReportsDepot.get().stream().map(Report::fromSfuSctpStreamReport).forEach(reports::add);
+        this.sfuExtensionReportsDepot.get().stream().map(Report::fromSfuExtensionReport).forEach(reports::add);
         if (0 < reports.size()) {
             this.output.onNext(reports);
         }

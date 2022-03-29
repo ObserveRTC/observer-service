@@ -31,13 +31,13 @@ class SfuSctpStreamReportsDepotTest {
 
         Assertions.assertEquals(serviceId, actual.serviceId, "serviceId field");
         Assertions.assertEquals(mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
-        Assertions.assertEquals(sfuSample.sfuId, actual.sfuId, "sfuId field");
+        Assertions.assertEquals(sfuSample.sfuId.toString(), actual.sfuId, "sfuId field");
         Assertions.assertEquals(sfuSample.marker, actual.marker, "marker field");
         Assertions.assertEquals(sfuSample.timestamp, actual.timestamp, "timestamp field");
-        Assertions.assertEquals(callId, actual.callId, "callId field");
+        Assertions.assertEquals(callId.toString(), actual.callId, "callId field");
         Assertions.assertEquals(roomId, actual.roomId, "callId field");
-        Assertions.assertEquals(expected.transportId, actual.transportId, "transportId field");
-        Assertions.assertEquals(expected.streamId, actual.streamId, "streamId field");
+        Assertions.assertEquals(expected.transportId.toString(), actual.transportId, "transportId field");
+        Assertions.assertEquals(expected.streamId.toString(), actual.streamId, "streamId field");
         Assertions.assertEquals(expected.label, actual.label, "label field");
         Assertions.assertEquals(expected.protocol, actual.protocol, "protocol field");
         Assertions.assertEquals(expected.sctpSmoothedRoundTripTime, actual.sctpSmoothedRoundTripTime, "sctpSmoothedRoundTripTime field");

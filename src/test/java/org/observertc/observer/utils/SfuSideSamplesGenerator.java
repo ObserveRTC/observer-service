@@ -1,6 +1,5 @@
-package org.observertc.observer.simulator;
+package org.observertc.observer.utils;
 
-import org.observertc.observer.utils.RandomGenerators;
 import org.observertc.schemas.samples.Samples;
 
 import java.time.Instant;
@@ -291,11 +290,11 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
         sfuSample.timestamp = Instant.now().toEpochMilli();
         sfuSample.timeZoneOffsetInHours = this.timeZoneOffsetInHours;
         sfuSample.marker = this.marker;
-        sfuSample.transports = arrayOrNullFromList(transports);
-        sfuSample.inboundRtpPads = arrayOrNullFromList(inboundRtpPads);
-        sfuSample.outboundRtpPads = arrayOrNullFromList(outboundRtpPads);
-        sfuSample.sctpChannels = arrayOrNullFromList(sctpChannels);
-        sfuSample.extensionStats = arrayOrNullFromQueue(addedExtensionStats);
+        sfuSample.transports = arrayOrNullFromList(Samples.SfuSample.SfuTransport.class, transports);
+        sfuSample.inboundRtpPads = arrayOrNullFromList(Samples.SfuSample.SfuInboundRtpPad.class, inboundRtpPads);
+        sfuSample.outboundRtpPads = arrayOrNullFromList(Samples.SfuSample.SfuOutboundRtpPad.class, outboundRtpPads);
+        sfuSample.sctpChannels = arrayOrNullFromList(Samples.SfuSample.SfuSctpChannel.class, sctpChannels);
+        sfuSample.extensionStats = arrayOrNullFromQueue(Samples.SfuSample.SfuExtensionStats.class, addedExtensionStats);
 
         var samplesMeta = new Samples.SamplesMeta();
         samplesMeta.schemaVersion = Samples.VERSION;

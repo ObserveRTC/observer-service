@@ -80,7 +80,7 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
             var clientSample = observedClientSample.getClientSample();
             String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
             String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-
+            String sfuSinkId = UUIDAdapter.toStringOrNull(inboundAudioTrack.sfuSinkId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(inboundAudioTrack.peerConnectionId);
             var trackId = UUIDAdapter.toStringOrNull(inboundAudioTrack.trackId);
             var report = InboundAudioTrackReport.newBuilder()
@@ -108,8 +108,8 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     /* Sample Based Report Fields */
                     .setSampleSeq(clientSample.sampleSeq)
 
-
                     /* Inbound RTP Audio specific fields */
+                    .setSfuSinkId(sfuSinkId)
                     .setSsrc(inboundAudioTrack.ssrc)
                     .setPacketsReceived(inboundAudioTrack.packetsReceived)
                     .setPacketsSent(inboundAudioTrack.packetsSent)

@@ -24,7 +24,7 @@ class CallEntityTest {
                 .build();
 
         boolean hasCallDTO = callEntity.getCallDTO().equals(callDTO);
-        boolean hasClientDTO = callEntity.getClientEntity(clientEntity.getClientId()).equals(clientDTO);
+        boolean hasClientDTO = callEntity.getClientEntity(clientEntity.getClientId()).getClientDTO().equals(clientDTO);
         Assertions.assertTrue(hasCallDTO);
         Assertions.assertTrue(hasClientDTO);
     }

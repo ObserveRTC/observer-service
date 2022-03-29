@@ -4,14 +4,12 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
 import java.time.ZoneOffset;
 
 @MicronautTest
 class MinuteToTimeZoneOffsetConverterTest {
 
-    @Inject
-    MinuteToTimeZoneOffsetConverter minuteToTimeZoneOffsetConverter;
+    MinuteToTimeZoneOffsetConverter minuteToTimeZoneOffsetConverter = new MinuteToTimeZoneOffsetConverter();
 
     @Test
     void convertToZoneOffset_1() throws Throwable {

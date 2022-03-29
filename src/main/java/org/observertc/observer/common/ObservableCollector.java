@@ -50,8 +50,8 @@ public class ObservableCollector<T> {
      * NOTE: the caller must ensure the additional number of items do not cause memory overflow.
      * Once the addBatch is called all of the items added to the queue at once and only after that it is checked
      * if limitation regarding to the number of items reached. To take an example lets say the max items of your
-     * collector is 10, and you add 15 items as batch. then the queue first add 15 items (even if it means 24 in the end)
-     * and only after it emits it.
+     * collector is 10, and you add 15 items as batch. then the queue first add 15 items (even if it means 10 + 15 = 25 in the end)
+     * and only after it emits it all at once.
      *
      * NOTE 2: it emits all of the collected items regardless of the overflowing number it may contain.
      * @param items

@@ -2,8 +2,8 @@ package org.observertc.observer.components.eventreports;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.components.eventreports.attachments.ClientAttachment;
+import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.observer.repositories.tasks.FetchCallClientsTask;
@@ -130,6 +130,7 @@ public class ClientLeftReports {
             ClientAttachment attachment = ClientAttachment.builder()
                     .withTimeZoneId(clientDTO.timeZoneId)
                     .build();
+            String message = String.format("Client left");
             var result = CallEventReport.newBuilder()
                     .setName(CallEventType.CLIENT_LEFT.name())
                     .setCallId(callId)
@@ -140,6 +141,8 @@ public class ClientLeftReports {
                     .setUserId(clientDTO.userId)
                     .setTimestamp(timestamp)
                     .setAttachments(attachment.toBase64())
+                    .setMarker(clientDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Client {} left call \"{}\" in service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
             return result;

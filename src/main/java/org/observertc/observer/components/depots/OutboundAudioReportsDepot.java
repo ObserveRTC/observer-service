@@ -59,6 +59,7 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
             String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(outboundAudioTrack.peerConnectionId);
             var trackId = UUIDAdapter.toStringOrNull(outboundAudioTrack.trackId);
+            var sfuStreamId = UUIDAdapter.toStringOrNull(outboundAudioTrack.sfuStreamId);
             var report = OutboundAudioTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -79,15 +80,17 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* OutboundRTP related fields specific for Audio*/
+                    .setSfuStreamId(sfuStreamId)
                     .setSsrc(outboundAudioTrack.ssrc)
                     .setPacketsSent(outboundAudioTrack.packetsSent)
                     .setBytesSent(outboundAudioTrack.bytesSent)
                     .setRid(outboundAudioTrack.rid)
                     .setLastPacketSentTimestamp(outboundAudioTrack.lastPacketSentTimestamp)
                     .setHeaderBytesSent(outboundAudioTrack.headerBytesSent)
+                    .setPacketsDiscardedOnSend(outboundAudioTrack.packetsDiscardedOnSend)
                     .setPacketsDiscarded(outboundAudioTrack.packetsDiscarded)
                     .setBytesDiscardedOnSend(outboundAudioTrack.bytesDiscardedOnSend)
-                    .setPacketsSent(outboundAudioTrack.fecPacketsSent)
+                    .setFecPacketsSent(outboundAudioTrack.fecPacketsSent)
                     .setRetransmittedPacketsSent(outboundAudioTrack.retransmittedPacketsSent)
                     .setRetransmittedBytesSent(outboundAudioTrack.retransmittedBytesSent)
                     .setTargetBitrate(outboundAudioTrack.targetBitrate)
@@ -112,6 +115,7 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                     .setBurstPacketsDiscarded(outboundAudioTrack.burstPacketsDiscarded)
                     .setBurstPacketsLost(outboundAudioTrack.burstPacketsLost)
                     .setBurstDiscardCount(outboundAudioTrack.burstDiscardCount)
+                    .setBurstLossCount(outboundAudioTrack.burstLossCount)
                     .setBurstLossRate(outboundAudioTrack.burstLossRate)
                     .setBurstDiscardRate(outboundAudioTrack.burstDiscardRate)
                     .setGapLossRate(outboundAudioTrack.gapLossRate)

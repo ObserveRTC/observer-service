@@ -93,6 +93,7 @@ public class SfuTransportClosedReports {
                     .setMediaUnitId(sfuTransportDTO.mediaUnitId)
                     .setTimestamp(timestamp)
                     .setAttachments(attachment)
+                    .setMarker(sfuTransportDTO.marker)
                     ;
             logger.info("SFU Transport (id: {}, internal: {}) is CLOSED (mediaUnitId: {}, serviceId {})",
                     transportId, sfuTransportDTO.internal, sfuTransportDTO.mediaUnitId, sfuTransportDTO.serviceId

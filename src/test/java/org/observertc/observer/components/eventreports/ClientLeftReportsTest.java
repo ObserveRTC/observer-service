@@ -34,7 +34,7 @@ class ClientLeftReportsTest {
         var actual = reports.get(0);
 
         Assertions.assertEquals(expected.serviceId, actual.serviceId, "serviceId field");
-        Assertions.assertNull(actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
         Assertions.assertEquals(expected.marker, actual.marker, "marker field");
         Assertions.assertNotEquals(expected.joined, actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.callId.toString(), actual.callId, "callId field");
@@ -93,7 +93,7 @@ class ClientLeftReportsTest {
         this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(peerConnectionDTO.peerConnectionId, mediaTrackDTO.trackId);
 
         var lastTouched = Instant.now().minusMillis(6000).toEpochMilli();
-        var expired = RepositoryExpiredEvent.make(clientDTO, lastTouched);
+        var expired = RepositoryExpiredEvent.make(this.hazelcastMaps.getClients().remove(clientDTO.clientId), lastTouched);
         this.clientLeftReports.mapExpiredClients(List.of(expired));
 
         Assertions.assertNull(this.hazelcastMaps.getCalls().get(callDTO.callId));

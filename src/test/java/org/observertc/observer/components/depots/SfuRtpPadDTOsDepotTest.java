@@ -21,13 +21,13 @@ class SfuRtpPadDTOsDepotTest {
                 .setOutboundRtpPad(outboundRtpPad)
                 .assemble();
 
-        var sfuRtpPadDTO = depot.get().get(sfuSample.sfuId);
+        var sfuRtpPadDTO = depot.get().get(outboundRtpPad.padId);
 
         Assertions.assertEquals(sfuRtpPadDTO.serviceId, observedSfuSample.getServiceId());
         Assertions.assertEquals(sfuRtpPadDTO.mediaUnitId, observedSfuSample.getMediaUnitId());
 
         Assertions.assertEquals(sfuRtpPadDTO.sfuId, sfuSample.sfuId);
-        Assertions.assertEquals(sfuRtpPadDTO.transportId, sfuSample.sfuId);
+        Assertions.assertEquals(sfuRtpPadDTO.transportId, outboundRtpPad.transportId);
         Assertions.assertEquals(sfuRtpPadDTO.streamId, outboundRtpPad.streamId);
         Assertions.assertEquals(sfuRtpPadDTO.sinkId, outboundRtpPad.sinkId);
         Assertions.assertEquals(sfuRtpPadDTO.rtpPadId, outboundRtpPad.padId);
@@ -54,13 +54,13 @@ class SfuRtpPadDTOsDepotTest {
                 .setSfuInboundRtpPad(inboundRtpPad)
                 .assemble();
 
-        var sfuRtpPadDTO = depot.get().get(sfuSample.sfuId);
+        var sfuRtpPadDTO = depot.get().get(inboundRtpPad.padId);
 
         Assertions.assertEquals(sfuRtpPadDTO.serviceId, observedSfuSample.getServiceId());
         Assertions.assertEquals(sfuRtpPadDTO.mediaUnitId, observedSfuSample.getMediaUnitId());
 
         Assertions.assertEquals(sfuRtpPadDTO.sfuId, sfuSample.sfuId);
-        Assertions.assertEquals(sfuRtpPadDTO.transportId, sfuSample.sfuId);
+        Assertions.assertEquals(sfuRtpPadDTO.transportId, inboundRtpPad.transportId);
         Assertions.assertEquals(sfuRtpPadDTO.streamId, inboundRtpPad.streamId);
         Assertions.assertEquals(sfuRtpPadDTO.sinkId, null);
         Assertions.assertEquals(sfuRtpPadDTO.rtpPadId, inboundRtpPad.padId);

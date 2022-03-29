@@ -29,8 +29,8 @@ public class ReportsCollector {
 
     @PostConstruct
     void setup() {
-        var maxItems = observerConfig.buffers.reportsCollector.maxItems;
-        var maxTimeInMs = observerConfig.buffers.reportsCollector.maxTimeInMs * 1000;
+        var maxItems = observerConfig.buffers.reportsBuffer.maxItems;
+        var maxTimeInMs = observerConfig.buffers.reportsBuffer.maxTimeInMs * 1000;
         this.reportsCollector = ObservableCollector.<Report>builder()
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)

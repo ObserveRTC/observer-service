@@ -35,8 +35,8 @@ public class PeerConnectionEntity {
     }
 
     private PeerConnectionDTO peerConnectionDTO;
-	private Map<Long, MediaTrackDTO> outboundTracks = new HashMap<>();
-	private Map<Long, MediaTrackDTO> inboundTracks = new HashMap<>();
+	private Map<UUID, MediaTrackDTO> outboundTracks = new HashMap<>();
+	private Map<UUID, MediaTrackDTO> inboundTracks = new HashMap<>();
 
 	PeerConnectionEntity() {
 
@@ -69,11 +69,11 @@ public class PeerConnectionEntity {
         return JsonUtils.objectToString(this);
     }
 
-    public Map<Long, MediaTrackDTO> getInboundMediaTrackDTOs() {
+    public Map<UUID, MediaTrackDTO> getInboundMediaTrackDTOs() {
         return this.inboundTracks;
     }
 
-    public Map<Long, MediaTrackDTO> getOutboundMediaTrackDTOs() {
+    public Map<UUID, MediaTrackDTO> getOutboundMediaTrackDTOs() {
 	    return this.outboundTracks;
     }
 
@@ -98,23 +98,23 @@ public class PeerConnectionEntity {
             return this;
         }
 
-        public PeerConnectionEntity.Builder withOutboundMediaTrackDTOs(Map<Long, MediaTrackDTO> mediaTrackDTOs) {
+        public PeerConnectionEntity.Builder withOutboundMediaTrackDTOs(Map<UUID, MediaTrackDTO> mediaTrackDTOs) {
             this.result.outboundTracks.putAll(mediaTrackDTOs);
             return this;
         }
 
-        public PeerConnectionEntity.Builder withInboundMediaTrackDTOs(Map<Long, MediaTrackDTO> mediaTrackDTOs) {
+        public PeerConnectionEntity.Builder withInboundMediaTrackDTOs(Map<UUID, MediaTrackDTO> mediaTrackDTOs) {
             this.result.inboundTracks.putAll(mediaTrackDTOs);
             return this;
         }
 
         public PeerConnectionEntity.Builder withInboundMediaTrackDTO(MediaTrackDTO mediaTrackDTO) {
-            this.result.inboundTracks.put(mediaTrackDTO.ssrc, mediaTrackDTO);
+            this.result.inboundTracks.put(mediaTrackDTO.trackId, mediaTrackDTO);
             return this;
         }
 
         public PeerConnectionEntity.Builder withOutboundMediaTrackDTO(MediaTrackDTO mediaTrackDTO) {
-            this.result.outboundTracks.put(mediaTrackDTO.ssrc, mediaTrackDTO);
+            this.result.outboundTracks.put(mediaTrackDTO.trackId, mediaTrackDTO);
             return this;
         }
     }

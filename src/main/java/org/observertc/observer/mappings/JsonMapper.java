@@ -46,11 +46,19 @@ public class JsonMapper {
         return createBytesToObjectMapper(klass, new ObjectMapper());
     }
 
+    public static<U> Codec<U, byte[]> createBytesToObjectCodec(Class<U> klass) {
+        return createBytesToObjectCodec(klass, new ObjectMapper());
+    }
+
     public static<U> Codec<U, byte[]> createBytesToObjectCodec(Class<U> klass, ObjectMapper mapper) {
         Mapper<byte[], U> decoder = createBytesToObjectMapper(klass, mapper);
         Mapper<U, byte[]> encoder = createObjectToBytesMapper(mapper);
         var result = Codec.create(encoder, decoder);
         return result;
+    }
+
+    public static<U> Codec<U, String> createStringToObjectCodec(Class<U> klass) {
+        return createStringToObjectCodec(klass, new ObjectMapper());
     }
 
     public static<U> Codec<U, String> createStringToObjectCodec(Class<U> klass, ObjectMapper mapper) {

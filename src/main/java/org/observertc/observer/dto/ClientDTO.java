@@ -148,6 +148,7 @@ public class ClientDTO implements VersionedPortable {
 					.withUserId(source.userId)
 					.withJoinedTimestamp(source.joined)
 					.withTimeZoneId(source.timeZoneId)
+					.withMarker(source.marker)
 					;
 		}
 

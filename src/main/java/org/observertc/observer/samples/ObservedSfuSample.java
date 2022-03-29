@@ -6,7 +6,7 @@ import org.observertc.schemas.samples.Samples.SfuSample;
 public interface ObservedSfuSample {
 
     static ObservedSfuSample.Builder builder() {
-        return null;
+        return new Builder();
     }
 
     String getMediaUnitId();

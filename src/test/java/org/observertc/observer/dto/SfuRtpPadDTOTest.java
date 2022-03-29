@@ -23,7 +23,7 @@ class SfuRtpPadDTOTest {
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
         var fields = SfuRtpPadDTO.class.getFields();
-        Assertions.assertEquals(8, fields.length);
+        Assertions.assertEquals(12, fields.length);
     }
 
     @Test

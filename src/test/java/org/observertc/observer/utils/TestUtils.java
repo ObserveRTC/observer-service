@@ -1,5 +1,6 @@
 package org.observertc.observer.utils;
 
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -233,18 +234,26 @@ public class TestUtils {
         return (T[]) list.toArray();
     }
 
-    public static<T> T[] arrayOrNullFromList(List<T> items) {
+    public static<T> T[] arrayOrNullFromList(Class<T> klass, List<T> items) {
         if (Objects.isNull(items)) return null;
         if (items.size() < 1) return null;
-        return (T[]) items.toArray();
+        @SuppressWarnings("unchecked")
+        final T[] result = (T[]) Array.newInstance(klass, items.size());
+        for (int c = items.size(), i = 0; i < c; ++i ) {
+            result[i] = items.get(i);
+        }
+        return result;
     }
 
-    public static<T> T[] arrayOrNullFromQueue(Queue<T> items) {
+    public static<T> T[] arrayOrNullFromQueue(Class<T> klass, Queue<T> items) {
         if (Objects.isNull(items)) return null;
         if (items.size() < 1) return null;
-        var drainedItems = new LinkedList<T>();
-        while (!items.isEmpty()) drainedItems.add(items.poll());
-        return (T[]) drainedItems.toArray();
+        @SuppressWarnings("unchecked")
+        final T[] result = (T[]) Array.newInstance(klass, items.size());
+        for (int c = items.size(), i = 0; i < c; ++i ) {
+            result[i] = items.poll();
+        }
+        return result;
     }
 
     public static List<String> getCodecTypes() {
@@ -261,8 +270,7 @@ public class TestUtils {
                 "prod",
                 "experimental",
                 "canary",
-                "beta",
-                null
+                "beta"
         );
     }
 }

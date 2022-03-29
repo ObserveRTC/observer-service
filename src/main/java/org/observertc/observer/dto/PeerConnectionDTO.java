@@ -153,19 +153,16 @@ public class PeerConnectionDTO implements VersionedPortable {
 		}
 
 		public PeerConnectionDTO.Builder withCallId(UUID value) {
-			Objects.requireNonNull(value);
 			this.result.callId = value;
 			return this;
 		}
 
 		public PeerConnectionDTO.Builder withServiceId(String value) {
-			Objects.requireNonNull(value);
 			this.result.serviceId = value;
 			return this;
 		}
 
 		public PeerConnectionDTO.Builder withRoomId(String value) {
-			Objects.requireNonNull(value);
 			this.result.roomId = value;
 			return this;
 		}

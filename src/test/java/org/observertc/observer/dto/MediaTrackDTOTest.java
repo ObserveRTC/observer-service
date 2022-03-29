@@ -28,7 +28,7 @@ class MediaTrackDTOTest {
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
         var fields = MediaTrackDTO.class.getFields();
-        Assertions.assertEquals(8, fields.length);
+        Assertions.assertEquals(15, fields.length);
     }
 
     @Test
@@ -41,7 +41,8 @@ class MediaTrackDTOTest {
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -204,6 +205,7 @@ class MediaTrackDTOTest {
     private MediaTrackDTO.Builder makeBuilder() {
         return MediaTrackDTO.builder()
                 .withServiceId(SERVICE_ID)
+                .withMediaUnitId(MEDIA_UNIT_ID)
                 .withRoomId(ROOM_ID)
                 .withCallId(CALL_ID)
                 .withClientId(CLIENT_ID)

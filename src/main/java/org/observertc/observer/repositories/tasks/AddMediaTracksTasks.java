@@ -4,8 +4,6 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
-import org.observertc.observer.dto.SfuSinkDTO;
-import org.observertc.observer.dto.SfuStreamDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.repositories.StoredRequests;
@@ -73,35 +71,9 @@ public class AddMediaTracksTasks extends ChainedTask<Void> {
                                 switch (mediaTrackDTO.direction) {
                                     case INBOUND:
                                         this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackId);
-                                        if (Objects.nonNull(mediaTrackDTO.sfuSinkId)) {
-                                            var sfuSinkBuilder = SfuSinkDTO.builder();
-                                            SfuSinkDTO existingSfuSink = this.hazelcastMaps.getSfuSinks().get(mediaTrackDTO.sfuSinkId);
-                                            if (Objects.nonNull(existingSfuSink)) {
-                                                sfuSinkBuilder.from(existingSfuSink);
-                                            }
-                                            var newSfuSink = sfuSinkBuilder
-                                                    .withCallId(mediaTrackDTO.callId)
-                                                    .withClientId(mediaTrackDTO.clientId)
-                                                    .withTrackId(mediaTrackDTO.trackId)
-                                                    .build();
-                                            this.hazelcastMaps.getSfuSinks().put(mediaTrackDTO.sfuSinkId, newSfuSink);
-                                        }
                                         break;
                                     case OUTBOUND:
                                         this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackId);
-                                        if (Objects.nonNull(mediaTrackDTO.sfuStreamId)) {
-                                            var sfuStreamBuilder = SfuStreamDTO.builder();
-                                            SfuStreamDTO existingSfuStream = this.hazelcastMaps.getSfuStreams().get(mediaTrackDTO.sfuStreamId);
-                                            if (Objects.nonNull(existingSfuStream)) {
-                                                sfuStreamBuilder.from(existingSfuStream);
-                                            }
-                                            var newSfuStream = sfuStreamBuilder
-                                                    .withCallId(mediaTrackDTO.callId)
-                                                    .withClientId(mediaTrackDTO.clientId)
-                                                    .withTrackId(mediaTrackDTO.trackId)
-                                                    .build();
-                                            this.hazelcastMaps.getSfuStreams().put(mediaTrackDTO.sfuStreamId, newSfuStream);
-                                        }
                                         break;
                                 }
                             }));

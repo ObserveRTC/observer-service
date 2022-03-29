@@ -26,7 +26,7 @@ class SfuDTOsDepotTest {
         Assertions.assertEquals(sfuDTO.sfuId, sfuSample.sfuId);
         Assertions.assertEquals(sfuDTO.joined, sfuSample.timestamp);
 
-        Assertions.assertEquals(sfuDTO.timeZoneId, converter.apply(sfuSample.timeZoneOffsetInHours));
+        Assertions.assertEquals(sfuDTO.timeZoneId, observedSfuSample.getTimeZoneId());
         Assertions.assertEquals(sfuDTO.marker, sfuSample.marker, "marker field");
     }
 

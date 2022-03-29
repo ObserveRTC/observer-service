@@ -40,12 +40,15 @@ public class CallStartedReports {
     private CallEventReport makeReport(CallDTO callDTO) {
         try {
             String callId = UUIDAdapter.toStringOrNull(callDTO.callId);
+            String message = String.format("Call (%s) started ", callId);
             var result = CallEventReport.newBuilder()
                     .setName(CallEventType.CALL_STARTED.name())
                     .setCallId(callId)
                     .setServiceId(callDTO.serviceId)
                     .setRoomId(callDTO.roomId)
                     .setTimestamp(callDTO.started)
+                    .setMarker(callDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Call is registered with id \"{}\" for service \"{}\" at room \"{}\"", callDTO.callId, callDTO.serviceId, callDTO.roomId);
             return result;

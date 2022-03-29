@@ -83,8 +83,8 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		writer.writeByteArray(SFU_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sfuId));
 		writer.writeByteArray(SFU_TRANSPORT_ID_FIELD_NAME, UUIDAdapter.toBytes(this.transportId));
 //		writer.writeByteArray(SFU_RTP_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.rtpStreamId));
-		writer.writeByteArray(SFU_STREAM_ID_FIELD_NAME, UUIDAdapter.toBytes(this.streamId));
-		writer.writeByteArray(SFU_SINK_ID_FIELD_NAME, UUIDAdapter.toBytes(this.sinkId));
+		SerDeUtils.writeNullableUUID(writer, SFU_STREAM_ID_FIELD_NAME, this.streamId);
+		SerDeUtils.writeNullableUUID(writer, SFU_SINK_ID_FIELD_NAME, this.sinkId);
 		writer.writeByteArray(SFU_RTP_PAD_ID_FIELD_NAME, UUIDAdapter.toBytes(this.rtpPadId));
 		writer.writeBoolean(SFU_RTP_INTERNAL_FIELD_NAME, this.internal);
 		writer.writeString(SFU_RTP_STREAM_DIRECTION_FIELD_NAME, this.streamDirection.name());
@@ -102,8 +102,8 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		this.sfuId = UUIDAdapter.toUUID(reader.readByteArray(SFU_ID_FIELD_NAME));
 		this.transportId = UUIDAdapter.toUUID(reader.readByteArray(SFU_TRANSPORT_ID_FIELD_NAME));
 //		this.rtpStreamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_RTP_STREAM_ID_FIELD_NAME));
-		this.streamId = UUIDAdapter.toUUID(reader.readByteArray(SFU_STREAM_ID_FIELD_NAME));
-		this.sinkId = UUIDAdapter.toUUID(reader.readByteArray(SFU_SINK_ID_FIELD_NAME));
+		this.streamId = SerDeUtils.readNullableUUID(reader, SFU_STREAM_ID_FIELD_NAME);
+		this.sinkId = SerDeUtils.readNullableUUID(reader, SFU_SINK_ID_FIELD_NAME);
 		this.rtpPadId =  UUIDAdapter.toUUID(reader.readByteArray(SFU_RTP_PAD_ID_FIELD_NAME));
 		this.internal = reader.readBoolean(SFU_RTP_INTERNAL_FIELD_NAME);
 		this.streamDirection =  StreamDirection.valueOf(reader.readString(SFU_RTP_STREAM_DIRECTION_FIELD_NAME));
@@ -162,6 +162,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 					.withSinkId(source.sinkId)
 					.withStreamDirection(source.streamDirection)
 					.withAddedTimestamp(source.added)
+					.withInternal(source.internal)
 					.withMarker(source.marker)
 					;
 
@@ -226,6 +227,10 @@ public class SfuRtpPadDTO implements VersionedPortable {
 			Objects.requireNonNull(this.result.sfuId);
 			Objects.requireNonNull(this.result.transportId);
 			Objects.requireNonNull(this.result.rtpPadId);
+			Objects.requireNonNull(this.result.added);
+			if (Objects.isNull(this.result.sinkId) && Objects.isNull(this.result.streamId)) {
+				throw new NullPointerException("SfuRtpPad must have a sink or streamId");
+			}
 			Objects.requireNonNull(this.result.added);
 			return this.result;
 		}

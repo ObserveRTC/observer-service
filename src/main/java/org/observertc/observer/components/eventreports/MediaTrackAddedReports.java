@@ -52,6 +52,7 @@ public class MediaTrackAddedReports {
                     .withSfuSinkId(sfuSinkId)
                     .withStreamDirection(streamDirection)
                     .build();
+            String message = String.format("Media Track is added. streamId: %s, sinkId: %s, direction: %s", sfuStreamId, sfuSinkId, streamDirection);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_ADDED.name())
                     .setCallId(callId)
@@ -65,6 +66,8 @@ public class MediaTrackAddedReports {
                     .setMediaTrackId(trackId)
                     .setAttachments(attachment.toBase64())
                     .setTimestamp(mediaTrackDTO.added)
+                    .setMarker(mediaTrackDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Media track {} is added on Peer Connection {} at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
             return report;

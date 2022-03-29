@@ -32,7 +32,6 @@ public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
 
         public Builder addObservedSfuSample(ObservedSfuSample value) {
             var sfuSample = value.getSfuSample();
-            sfuIds.add(sfuSample.sfuId);
             SfuSampleVisitor.streamTransports(sfuSample)
                     .map(transport -> transport.transportId)
                     .forEach(transportIds::add);
@@ -45,6 +44,8 @@ public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
             SfuSampleVisitor.streamSctpStreams(sfuSample)
                     .map(channel -> channel.channelId)
                     .forEach(channelIds::add);
+            sfuIds.add(sfuSample.sfuId);
+            sfuSamples.add(value);
             return this;
         }
 

@@ -56,6 +56,7 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
         var peerConnectionLabels = new HashMap<UUID, String>();
         for (var observedClientSample : observedClientSamples) {
             var clientSample = observedClientSample.getClientSample();
+            if (Objects.isNull(clientSample)) continue;
             ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(peerConnectionTransport -> {
                 this.clientTransportReportsDepot
                         .setObservedClientSample(observedClientSample)
@@ -124,6 +125,46 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
                         .setDataChannel(dataChannel)
                         .assemble();
             });
+
+            // operation system
+            if (Objects.nonNull(clientSample.os)) {
+                String payload = JsonUtils.objectToString(clientSample.os);
+                this.callMetaReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setMetaType(CallMetaType.OPERATION_SYSTEM)
+                        .setPayload(payload)
+                        .assemble();
+            }
+
+            // engine
+            if (Objects.nonNull(clientSample.engine)) {
+                String payload = JsonUtils.objectToString(clientSample.engine);
+                this.callMetaReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setMetaType(CallMetaType.ENGINE)
+                        .setPayload(payload)
+                        .assemble();
+            }
+
+            // platform
+            if (Objects.nonNull(clientSample.platform)) {
+                String payload = JsonUtils.objectToString(clientSample.platform);
+                this.callMetaReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setMetaType(CallMetaType.PLATFORM)
+                        .setPayload(payload)
+                        .assemble();
+            }
+
+            // browser
+            if (Objects.nonNull(clientSample.browser)) {
+                String payload = JsonUtils.objectToString(clientSample.browser);
+                this.callMetaReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setMetaType(CallMetaType.BROWSER)
+                        .setPayload(payload)
+                        .assemble();
+            }
 
             // streamCertificates
             ClientSampleVisitor.streamCertificates(clientSample).forEach(certificate -> {

@@ -86,6 +86,7 @@ public class PeerConnectionClosedReports {
             String callId = UUIDAdapter.toStringOrNull(peerConnectionDTO.callId);
             String clientId = UUIDAdapter.toStringOrNull(peerConnectionDTO.clientId);
             String peerConnectionId = UUIDAdapter.toStringOrNull(peerConnectionDTO.peerConnectionId);
+            String message = String.format("Peer Connection (%s) is closed", peerConnectionId);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.PEER_CONNECTION_CLOSED.name())
                     .setCallId(callId)
@@ -96,6 +97,8 @@ public class PeerConnectionClosedReports {
                     .setUserId(peerConnectionDTO.userId)
                     .setPeerConnectionId(peerConnectionId)
                     .setTimestamp(timestamp)
+                    .setMarker(peerConnectionDTO.marker)
+                    .setMessage(message)
                     .build();
             logger.info("Peer Connection {} is closed at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.peerConnectionId, peerConnectionDTO.callId, peerConnectionDTO.serviceId, peerConnectionDTO.roomId);
             return report;
