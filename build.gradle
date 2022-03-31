@@ -31,7 +31,7 @@ dependencies {
     implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
 
     // ------------- Hazelcast -----------
-    implementation group: 'com.hazelcast', name: 'hazelcast', version: '4.2.4'
+    implementation group: 'com.hazelcast', name: 'hazelcast', version: '5.1'
 
     // --------- Sink dependencies -----
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.1'
