@@ -24,7 +24,8 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
         with:
-          arguments: build -x test
+#          arguments: build -x test
+          arguments: build
 
       - name: Read version from service.properties
         id: observer_properties
@@ -63,4 +64,5 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+#          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL'
