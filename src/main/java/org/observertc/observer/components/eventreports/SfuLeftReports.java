@@ -84,7 +84,7 @@ public class SfuLeftReports {
                     .setTimestamp(timestamp)
                     .setMarker(sfuDTO.marker)
                     ;
-            logger.info("SFU (sfuId: {}, mediaUnitId: {}) is LEFT serviceId {}.", sfuId, sfuDTO.serviceId, sfuDTO.mediaUnitId);
+            logger.info("SFU (sfuId: {}, mediaUnitId: {}) is LEFT. serviceId: {}.", sfuId, sfuDTO.serviceId, sfuDTO.mediaUnitId);
             return builder.build();
         } catch (Exception ex) {
             logger.error("Cannot make report for Sfu DTO", ex);

@@ -15,7 +15,7 @@ import java.util.Map;
 class AddMediaTracksTaskTest {
 
     @Inject
-    Provider<AddMediaTracksTasks> addMediaTracksTasksProvider;
+    Provider<AddMediaTracksTask> addMediaTracksTaskProvider;
 
     @Inject
     HazelcastMaps hazelcastMaps;
@@ -25,37 +25,44 @@ class AddMediaTracksTaskTest {
 
     @Test
     public void inserted_1() {
-        var mediaTrackDTO = generator.getMediaTrackDTO();
-        var task = addMediaTracksTasksProvider.get()
-                .withMediaTrackDTOs(Map.of(mediaTrackDTO.trackId, mediaTrackDTO));
+        var expected = generator.getMediaTrackDTO();
+        var task = addMediaTracksTaskProvider.get()
+                .withMediaTrackDTOs(Map.of(expected.trackId, expected));
 
         task.execute();
 
-        var insertedMediaTrackDTO = this.hazelcastMaps.getMediaTracks().get(mediaTrackDTO.trackId);
-        Assertions.assertEquals(mediaTrackDTO, insertedMediaTrackDTO);
+        var actual = this.hazelcastMaps.getMediaTracks().get(expected.trackId);
+        var equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 
     @Test
-    public void boundInboundMediaStreamToPeerConnection_1() {
-        var mediaTrackDTO = generator.getMediaTrackDTOBuilder().withDirection(StreamDirection.INBOUND).build();
-        var task = addMediaTracksTasksProvider.get()
+    public void boundInboundTrackToPeerConnection_1() {
+        var mediaTrackDTO = generator.getMediaTrackDTOBuilder()
+                .withDirection(StreamDirection.INBOUND)
+                .build();
+        var task = addMediaTracksTaskProvider.get()
                 .withMediaTrackDTOs(Map.of(mediaTrackDTO.trackId, mediaTrackDTO));
 
         task.execute();
 
-        var peerConnectionMediaTracks = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().get(mediaTrackDTO.peerConnectionId);
-        Assertions.assertTrue(peerConnectionMediaTracks.contains(mediaTrackDTO.trackId));
+        var inboundMediaTrackIds = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().get(mediaTrackDTO.peerConnectionId);
+        var contains = inboundMediaTrackIds.contains(mediaTrackDTO.trackId);
+        Assertions.assertTrue(contains);
     }
 
     @Test
-    public void boundOutboundMediaStreamToPeerConnection_1() {
-        var mediaTrackDTO = generator.getMediaTrackDTOBuilder().withDirection(StreamDirection.OUTBOUND).build();
-        var task = addMediaTracksTasksProvider.get()
+    public void boundOutboundTrackToPeerConnection_1() {
+        var mediaTrackDTO = generator.getMediaTrackDTOBuilder()
+                .withDirection(StreamDirection.OUTBOUND)
+                .build();
+        var task = addMediaTracksTaskProvider.get()
                 .withMediaTrackDTOs(Map.of(mediaTrackDTO.trackId, mediaTrackDTO));
 
         task.execute();
 
-        var peerConnectionMediaTracks = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(mediaTrackDTO.peerConnectionId);
-        Assertions.assertTrue(peerConnectionMediaTracks.contains(mediaTrackDTO.trackId));
+        var outboundMediaTrackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(mediaTrackDTO.peerConnectionId);
+        var contains = outboundMediaTrackIds.contains(mediaTrackDTO.trackId);
+        Assertions.assertTrue(contains);
     }
 }

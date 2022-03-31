@@ -33,7 +33,7 @@ class MediaTrackRemovedReportsTest {
         var actual = reports.get(0);
 
         Assertions.assertEquals(expected.serviceId, actual.serviceId, "serviceId field");
-        Assertions.assertNull(actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
         Assertions.assertEquals(expected.marker, actual.marker, "marker field");
         Assertions.assertNotNull(actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.callId.toString(), actual.callId, "callId field");
@@ -66,9 +66,5 @@ class MediaTrackRemovedReportsTest {
         var actual = reports.get(0);
 
         Assertions.assertEquals(lastTouch, actual.timestamp, "timestamp field");
-        Assertions.assertNull(this.hazelcastMaps.getMediaTracks().get(mediaTrackDTO.trackId));
-        Assertions.assertNull(this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().get(mediaTrackDTO.trackId));
-        Assertions.assertEquals(0, this.hazelcastMaps.getPeerConnectionToInboundTrackIds().get(mediaTrackDTO.peerConnectionId).size());
-
     }
 }

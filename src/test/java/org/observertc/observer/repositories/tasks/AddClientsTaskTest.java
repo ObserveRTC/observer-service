@@ -35,7 +35,7 @@ class AddClientsTaskTest {
     }
 
     @Test
-    public void bindToCall_1() {
+    public void boundToCall_1() {
         var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTO(clientDTO);
@@ -59,7 +59,7 @@ class AddClientsTaskTest {
     }
 
     @Test
-    public void bindToCall_2() {
+    public void boundToCall_2() {
         var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTOs(clientDTO);
@@ -83,7 +83,7 @@ class AddClientsTaskTest {
     }
 
     @Test
-    public void bindToCall_3() {
+    public void boundToCall_3() {
         var clientDTO = generator.getClientDTO();
         var task = addClientsTaskProvider.get()
                 .withClientDTOs(Map.of(clientDTO.clientId, clientDTO));

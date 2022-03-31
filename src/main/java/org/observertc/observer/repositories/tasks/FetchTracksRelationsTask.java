@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+
 @Prototype
 public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTask.Report> {
 
@@ -71,6 +73,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                                     inboundMediaTrackDTO.trackId,
                                     inboundMediaTrackDTO.peerConnectionId,
                                     inboundMediaTrackDTO.clientId,
+                                    inboundMediaTrackDTO.userId,
                                     inboundMediaTrackDTO.callId,
                                     outboundMediaTrackDTO.clientId,
                                     outboundMediaTrackDTO.userId,
@@ -101,7 +104,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                     this.callIds.add(inboundMediaTrackDTO.callId);
                 });
             })
-            .addActionStage("Matching Tracks by RtpStream Ids", () -> {
+            .addActionStage("Matching Tracks by SfuStreams", () -> {
                 if (this.sfuSinkIdToInboundTrackDTOs.size() < 1) {
                     return;
                 }
@@ -144,6 +147,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                                 inboundMediaTrack.trackId,
                                 inboundMediaTrack.peerConnectionId,
                                 inboundMediaTrack.clientId,
+                                inboundMediaTrack.userId,
                                 inboundMediaTrack.callId,
                                 outboundMediaTrack.clientId,
                                 outboundMediaTrack.userId,
@@ -163,41 +167,57 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                     if (this.callIds.size() < 1) {
                         return;
                     }
+                    var ssrcToInboundTrackIds = this.hazelcastMaps.getMediaTracks().getAll(inboundTrackIds)
+                            .values().stream().collect(groupingBy(track -> track.ssrc));
+
                     this.callIds.forEach(callId -> {
                         Collection<UUID> clientIds = this.hazelcastMaps.getCallToClientIds().get(callId);
-                        clientIds.forEach(clientId -> {
-                            Collection<UUID> peerConnectionIds = this.hazelcastMaps.getClientToPeerConnectionIds().get(clientId);
-                            peerConnectionIds.forEach(peerConnectionId -> {
-                                Set<UUID> trackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(peerConnectionId).stream().collect(Collectors.toSet());
-                                var outboundMediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(trackIds);
-                                outboundMediaTrackDTOs.forEach((trackId, outboundMediaTrackDTO) -> {
-                                    List<MediaTrackDTO> inboundMediaTrackDTOs = this.ssrcToInboundTracks.get(outboundMediaTrackDTO.ssrc);
-                                    if (Objects.isNull(inboundMediaTrackDTOs)) {
-                                        return;
-                                    }
-                                    inboundMediaTrackDTOs.forEach(inboundMediaTrackDTO -> {
-                                        if (!inboundMediaTrackDTO.callId.equals(outboundMediaTrackDTO.callId)) {
-                                            return;
-                                        }
-                                        var matchingIds = new MatchedIds(
-                                                inboundMediaTrackDTO.trackId,
-                                                inboundMediaTrackDTO.peerConnectionId,
-                                                inboundMediaTrackDTO.clientId,
-                                                inboundMediaTrackDTO.callId,
-                                                outboundMediaTrackDTO.clientId,
-                                                outboundMediaTrackDTO.userId,
-                                                outboundMediaTrackDTO.peerConnectionId,
-                                                outboundMediaTrackDTO.trackId
-                                        );
-                                        this.result.inboundTrackMatchIds.put(inboundMediaTrackDTO.trackId, matchingIds);
-                                        this.hazelcastMaps
-                                                .getInboundTrackIdsToOutboundTrackIds()
-                                                .put(inboundMediaTrackDTO.trackId, outboundMediaTrackDTO.trackId);
-                                        logger.info("SSRC Matching: Inbound Track {} from client {} is matched to outbound track {} from client {}", inboundMediaTrackDTO.trackId, inboundMediaTrackDTO.clientId, outboundMediaTrackDTO.trackId, outboundMediaTrackDTO.clientId);
-                                    });
-                                });
-                            });
-                        });
+                        var peerConnectionIds = clientIds.stream().map(this.hazelcastMaps.getClientToPeerConnectionIds()::get)
+                                        .flatMap(Collection::stream)
+                                        .collect(Collectors.toSet());
+                        var peerConnections = this.hazelcastMaps.getPeerConnections().getAll(peerConnectionIds);
+                        var outboundMediaTrackIds = peerConnections.keySet().stream().map(this.hazelcastMaps.getPeerConnectionToOutboundTrackIds()::get)
+                                        .flatMap(Collection::stream)
+                                        .collect(Collectors.toSet());
+                        var outboundMediaTracks = this.hazelcastMaps.getMediaTracks().getAll(outboundMediaTrackIds);
+                        for (var outboundMediaTrack : outboundMediaTracks.values()) {
+                            var ssrcMatchedInboundMediaTracks = ssrcToInboundTrackIds.get(outboundMediaTrack.ssrc);
+                            if (Objects.isNull(ssrcMatchedInboundMediaTracks)) {
+                                continue;
+                            }
+                            if (!outboundMediaTrack.callId.equals(callId)) {
+                                // should not happen
+                                continue;
+                            }
+                            for (var inboundMediaTrack : ssrcMatchedInboundMediaTracks) {
+                                // already found
+                                if (this.result.inboundTrackMatchIds.containsKey(inboundMediaTrack.trackId)) {
+                                    continue;
+                                }
+                                // not in this call
+                                if (!inboundMediaTrack.callId.equals(callId)) {
+                                    continue;
+                                }
+                                if (!inboundMediaTrack.direction.equals(StreamDirection.INBOUND)) {
+                                    continue;
+                                }
+                                var matchingIds = new MatchedIds(
+                                        inboundMediaTrack.trackId,
+                                        inboundMediaTrack.peerConnectionId,
+                                        inboundMediaTrack.clientId,
+                                        inboundMediaTrack.userId,
+                                        inboundMediaTrack.callId,
+                                        outboundMediaTrack.clientId,
+                                        outboundMediaTrack.userId,
+                                        outboundMediaTrack.peerConnectionId,
+                                        outboundMediaTrack.trackId
+                                );
+                                this.result.inboundTrackMatchIds.put(inboundMediaTrack.trackId, matchingIds);
+                                this.hazelcastMaps
+                                        .getInboundTrackIdsToOutboundTrackIds()
+                                        .put(inboundMediaTrack.trackId, outboundMediaTrack.trackId);
+                            }
+                        }
                     });
                 })
                 .addTerminalSupplier("Completed", () -> {
@@ -206,7 +226,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
         .build();
     }
 
-    public FetchTracksRelationsTask whereMediaTrackIds(Set<UUID> mediaTrackIds) {
+    public FetchTracksRelationsTask whereInboundMediaTrackIds(Set<UUID> mediaTrackIds) {
         this.inboundTrackIds.addAll(mediaTrackIds);
         return this;
     }
@@ -220,6 +240,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
     public static class MatchedIds {
         public final UUID inboundTrackId;
         public final UUID inboundPeerConnectionId;
+        public final String inboundUserId;
         public final UUID inboundClientId;
         public final UUID callId;
         public final UUID outboundClientId;
@@ -227,10 +248,12 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
         public final UUID outboundPeerConnectionId;
         public final UUID outboundTrackId;
 
-        private MatchedIds(UUID inboundTrackId, UUID inboundPeerConnectionId, UUID inboundClientId, UUID callId, UUID outboundClientId, String outboundUserId, UUID outboundPeerConnectionId, UUID outboundTrackId) {
+        private MatchedIds(UUID inboundTrackId, UUID inboundPeerConnectionId, UUID inboundClientId, String inboundUserId,
+                           UUID callId, UUID outboundClientId, String outboundUserId, UUID outboundPeerConnectionId, UUID outboundTrackId) {
             this.inboundTrackId = inboundTrackId;
             this.inboundPeerConnectionId = inboundPeerConnectionId;
             this.inboundClientId = inboundClientId;
+            this.inboundUserId = inboundUserId;
             this.callId = callId;
             this.outboundClientId = outboundClientId;
             this.outboundUserId = outboundUserId;

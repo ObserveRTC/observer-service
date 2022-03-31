@@ -43,6 +43,22 @@ public class DTOGenerators {
         return result;
     }
 
+    public ClientDTO getClientDTOFromCallDTO(CallDTO callDTO) {
+        var result = this.getClientDTOBuilderFromCallDTO(callDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public ClientDTO.Builder getClientDTOBuilderFromCallDTO(CallDTO callDTO) {
+        var result = this.getClientDTOBuilder()
+                .withCallId(callDTO.callId)
+                .withServiceId(callDTO.serviceId)
+                .withRoomId(callDTO.roomId)
+                ;
+        return result;
+    }
+
     public ClientDTO.Builder getClientDTOBuilder() {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var roomId = this.randomGenerators.getRandomTestRoomIds();
@@ -74,6 +90,25 @@ public class DTOGenerators {
         return result;
     }
 
+    public PeerConnectionDTO getPeerConnectionDTOFromClientDTO(ClientDTO clientDTO) {
+        var result = this.getPeerConnectionDTOBuilderFromClientDTO(clientDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public PeerConnectionDTO.Builder getPeerConnectionDTOBuilderFromClientDTO(ClientDTO clientDTO) {
+        var result = this.getPeerConnectionDTOBuilder()
+                .withCallId(clientDTO.callId)
+                .withServiceId(clientDTO.serviceId)
+                .withRoomId(clientDTO.roomId)
+                .withMediaUnitId(clientDTO.mediaUnitId)
+                .withClientId(clientDTO.clientId)
+                .withUserId(clientDTO.userId)
+                ;
+        return result;
+    }
+
     public PeerConnectionDTO.Builder getPeerConnectionDTOBuilder() {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var roomId = this.randomGenerators.getRandomTestRoomIds();
@@ -100,6 +135,26 @@ public class DTOGenerators {
 
     public MediaTrackDTO getMediaTrackDTO() {
         var result = this.getMediaTrackDTOBuilder().build();
+        return result;
+    }
+
+    public MediaTrackDTO getMediaTrackDTOFromPeerConnectionDTO(PeerConnectionDTO peerConnectionDTO) {
+        var result = this.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnectionDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public MediaTrackDTO.Builder getMediaTrackDTOBuilderFromPeerConnectionDTO(PeerConnectionDTO peerConnectionDTO) {
+        var result = this.getMediaTrackDTOBuilder()
+                .withCallId(peerConnectionDTO.callId)
+                .withServiceId(peerConnectionDTO.serviceId)
+                .withRoomId(peerConnectionDTO.roomId)
+                .withMediaUnitId(peerConnectionDTO.mediaUnitId)
+                .withClientId(peerConnectionDTO.clientId)
+                .withUserId(peerConnectionDTO.userId)
+                .withPeerConnectionId(peerConnectionDTO.peerConnectionId)
+                ;
         return result;
     }
 
@@ -140,6 +195,8 @@ public class DTOGenerators {
         return result;
     }
 
+
+
     public SfuDTO.Builder getSfuDTOBuilder() {
         var sfuId = UUID.randomUUID();
         var serviceId = this.randomGenerators.getRandomServiceId();
@@ -158,7 +215,29 @@ public class DTOGenerators {
         return result;
     }
 
+    public SfuTransportDTO getSfuTransportDTOFromSfuDTO(SfuDTO sfuDTO) {
+        var result = this.getSfuTransportDTOBuilderFromSfuDTO(sfuDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public SfuTransportDTO.Builder getSfuTransportDTOBuilderFromSfuDTO(SfuDTO sfuDTO) {
+        var result = this.getSfuTransportDTOBuilder()
+                .withSfuId(sfuDTO.sfuId)
+                .withServiceId(sfuDTO.serviceId)
+                .withMediaUnitId(sfuDTO.mediaUnitId)
+                ;
+        return result;
+    }
+
     public SfuTransportDTO getSfuTransportDTO() {
+        var result = this.getSfuTransportDTOBuilder()
+                .build();
+        return result;
+    }
+
+    public SfuTransportDTO.Builder getSfuTransportDTOBuilder() {
         var sfuId = UUID.randomUUID();
         var callId = UUID.randomUUID();
         var transportId = UUID.randomUUID();
@@ -175,13 +254,31 @@ public class DTOGenerators {
                 .withMediaUnitId(mediaUnitId)
                 .withOpenedTimestamp(timestamp)
                 .withMarker(marker)
-                .build();
+                ;
         return result;
     }
 
     public SfuRtpPadDTO getSfuRtpPadDTO() {
         var result = this.getSfuRtpPadDTOBuilder()
                 .build()
+                ;
+        return result;
+    }
+
+    public SfuRtpPadDTO getSfuRtpPadDTOFromSfuTransportDTO(SfuTransportDTO sfuTransportDTO) {
+        var result = this.getSfuRtpPadDTOBuilderFromSfuTransportDTO(sfuTransportDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public SfuRtpPadDTO.Builder getSfuRtpPadDTOBuilderFromSfuTransportDTO(SfuTransportDTO sfuTransportDTO) {
+        var result = this.getSfuRtpPadDTOBuilder()
+                .withSfuId(sfuTransportDTO.sfuId)
+                .withServiceId(sfuTransportDTO.serviceId)
+                .withMediaUnitId(sfuTransportDTO.mediaUnitId)
+                .withSfuTransportId(sfuTransportDTO.transportId)
+                .withInternal(sfuTransportDTO.internal)
                 ;
         return result;
     }
@@ -196,12 +293,14 @@ public class DTOGenerators {
         var timestamp = this.randomGenerators.getRandomTimestamp();
         var streamDirection = this.randomGenerators.getRandomStreamDirection();
         var marker = this.randomGenerators.getRandomMarker();
+        var sinkId = StreamDirection.OUTBOUND.equals(streamDirection) ? UUID.randomUUID() : null;
         var result = SfuRtpPadDTO.builder()
                 .withServiceId(serviceId)
                 .withMediaUnitId(mediaUnitId)
                 .withSfuId(sfuId)
                 .withSfuTransportId(sfuTransportId)
                 .withStreamId(sfuStreamId)
+                .withSinkId(sinkId)
                 .withSfuRtpPadId(sfuPadId)
                 .withStreamDirection(streamDirection)
                 .withAddedTimestamp(timestamp)
@@ -234,7 +333,7 @@ public class DTOGenerators {
         return result;
     }
 
-    public SfuSinkDTO getSfuSinkIdDTO() {
+    public SfuSinkDTO getSfuSinkDTO() {
         var result = this.getSfuSinkDTOBuilder()
                 .build();
         return result;

@@ -138,7 +138,6 @@ public class CallDTO implements VersionedPortable {
 		}
 
 		public Builder withStartedTimestamp(Long value) {
-			Objects.requireNonNull(value);
 			this.result.started = value;
 			return this;
 		}
@@ -161,9 +160,10 @@ public class CallDTO implements VersionedPortable {
 		}
 
 		public CallDTO build() {
-			Objects.requireNonNull(this.result.serviceId);
-			Objects.requireNonNull(this.result.roomId);
-			Objects.requireNonNull(this.result.callId);
+			Objects.requireNonNull(this.result.serviceId, "serviceId cannot be null");
+			Objects.requireNonNull(this.result.roomId, "room cannot be null");
+			Objects.requireNonNull(this.result.callId, "callId cannot be null");
+			Objects.requireNonNull(this.result.started, "timestamp cannot be null");
 			return this.result;
 		}
 	}

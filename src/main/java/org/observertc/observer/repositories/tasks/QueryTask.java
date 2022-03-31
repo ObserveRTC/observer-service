@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 import java.util.Objects;
 import java.util.function.Function;
 
+@Prototype
 public class QueryTask<T> extends ChainedTask<T> {
     private static final Logger logger = LoggerFactory.getLogger(FetchTracksRelationsTask.class);
 

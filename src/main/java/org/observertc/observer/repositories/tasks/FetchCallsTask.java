@@ -75,19 +75,16 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                     this.fetchClientsTask.whereClientIds(clientIds);
 
                     if (!this.fetchClientsTask.execute().succeeded()) {
-                        // TODO: raise some errors?
                         return callEntityBuilders;
                     }
                     var clientEntities = this.fetchClientsTask.getResult();
                     clientEntities.forEach((clientId, clientEntity) -> {
                         UUID callId = clientToCallIds.get(clientId);
                         if (Objects.isNull(callId)) {
-                            // TODO: notify a module about the inconsistency
                             return;
                         }
                         CallEntity.Builder builder = callEntityBuilders.get(callId);
                         if (Objects.isNull(builder)) {
-                            // TODO: notify a module about the inconsistency, although this should be impossible as we got the client Id from the builders
                             return;
                         }
                         builder.withClientEntity(clientEntity);
@@ -106,7 +103,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
                 .build();
     }
 
-    public FetchCallsTask whereCallUUID(UUID... values) {
+    public FetchCallsTask whereCallId(UUID... values) {
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }

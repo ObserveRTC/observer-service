@@ -53,7 +53,7 @@ dependencies {
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
 
     implementation group: 'org.apache.avro', name: 'avro', version: '1.11.0'
-    testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
+//    testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
     // ------------- Hazelcast -----------
     implementation group: 'com.hazelcast', name: 'hazelcast', version: '5.0.1'
 
@@ -81,9 +81,6 @@ application {
 }
 
 java {
-//    toolchain {
-//        languageVersion = JavaLanguageVersion.of(14)
-//    }
     sourceCompatibility = JavaVersion.toVersion("11")
     targetCompatibility = JavaVersion.toVersion("17")
 }

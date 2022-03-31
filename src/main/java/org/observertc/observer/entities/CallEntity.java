@@ -18,15 +18,27 @@ package org.observertc.observer.entities;
 
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.dto.CallDTO;
+import org.observertc.observer.dto.ClientDTO;
+import org.observertc.observer.dto.MediaTrackDTO;
+import org.observertc.observer.dto.PeerConnectionDTO;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 // To avoid exposing hazelcast serialization specific fields
-public class CallEntity {
-
+public class CallEntity implements Iterable<ClientEntity> {
+	public static CallEntity from(CallDTO callDTO,
+								  Map<UUID, ClientDTO> clientDTOs,
+								  Map<UUID, PeerConnectionDTO> peerConnectionDTOs,
+								  Map<UUID, MediaTrackDTO> mediaTrackDTOMap) {
+		var result = new CallEntity();
+		result.callDTO = callDTO;
+		for (var clientDTO : clientDTOs.values()) {
+			if (clientDTO.callId != callDTO.callId) continue;
+			var clientEntity = ClientEntity.from(clientDTO, peerConnectionDTOs, mediaTrackDTOMap);
+			result.clients.put(clientEntity.getClientId(), clientEntity);
+		}
+		return result;
+	}
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -72,7 +84,12 @@ public class CallEntity {
 		return this.callDTO;
 	}
 
-    public static class Builder {
+	@Override
+	public Iterator<ClientEntity> iterator() {
+		return this.clients.values().iterator();
+	}
+
+	public static class Builder {
 
 		private final CallEntity result = new CallEntity();
 

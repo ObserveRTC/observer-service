@@ -83,9 +83,9 @@ public class GeneralEntryDTO implements VersionedPortable {
 			return false;
 		}
 		GeneralEntryDTO otherDTO = (GeneralEntryDTO) other;
-		if (this.key != otherDTO.key) return false;
-		if (this.value != otherDTO.value) return false;
-		if (this.timestamp != otherDTO.timestamp) return false;
+		if (!this.key.equals(otherDTO.key)) return false;
+		if (!this.value.equals(otherDTO.value)) return false;
+		if (!this.timestamp.equals(otherDTO.timestamp)) return false;
 		return true;
 	}
 

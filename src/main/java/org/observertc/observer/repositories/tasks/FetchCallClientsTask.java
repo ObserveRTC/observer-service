@@ -16,10 +16,6 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    FetchClientsTask fetchClientsTask;
-
-
     @PostConstruct
     void setup() {
         new Builder<Map<UUID, Set<UUID>>>(this)

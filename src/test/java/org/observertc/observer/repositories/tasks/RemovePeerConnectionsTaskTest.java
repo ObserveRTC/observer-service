@@ -1,17 +1,15 @@
 package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.dto.MediaTrackDTO;
-import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.utils.DTOMapGenerator;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.util.Map;
-import java.util.UUID;
 
 @MicronautTest
 class RemovePeerConnectionsTaskTest {
@@ -19,31 +17,31 @@ class RemovePeerConnectionsTaskTest {
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    CallMapGenerator callMapGenerator;
+    DTOMapGenerator dtoMapGenerator = new DTOMapGenerator().generateP2pCase();
 
     @Inject
     Provider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
 
-    private Map<UUID, PeerConnectionDTO> createdPeerConnectionDTOs;
-    private Map<UUID, MediaTrackDTO> createdMediaTrackDTOs;
-
     @BeforeEach
     void setup() {
-        this.callMapGenerator.generate();
-        this.createdPeerConnectionDTOs = this.callMapGenerator.getPeerConnectionDTOs();
-        this.createdMediaTrackDTOs = this.callMapGenerator.getMediaTrackDTOs();
+        this.dtoMapGenerator.saveTo(hazelcastMaps);
+    }
+
+    @AfterEach
+    void teardown() {
+        this.dtoMapGenerator.deleteFrom(hazelcastMaps);
     }
 
 
     @Test
     public void removePeerConnectionDTOs_1() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
+                .wherePeerConnectionIds(createdPeerConnectionDTOs.keySet())
                 .execute()
                 ;
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertFalse(hasPeerConnections);
         });
@@ -55,11 +53,12 @@ class RemovePeerConnectionsTaskTest {
      */
     @Test
     public void removePeerConnectionDTOs_2() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get();
-        this.createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
+        createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
         task.execute();
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertTrue(hasPeerConnections);
         });
@@ -67,12 +66,13 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeClientPeerConnectionBindings_1() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
+                .wherePeerConnectionIds(createdPeerConnectionDTOs.keySet())
                 .execute()
                 ;
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasClientBinding = this.hazelcastMaps.getClientToPeerConnectionIds().containsKey(peerConnectionDTO.clientId);
             Assertions.assertFalse(hasClientBinding);
         });
@@ -80,11 +80,12 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeClientPeerConnectionBindings_2() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get();
-        this.createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
+        createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
         task.execute();
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasClientBinding = this.hazelcastMaps.getClientToPeerConnectionIds().containsKey(peerConnectionDTO.clientId);
             Assertions.assertFalse(hasClientBinding);
         });
@@ -92,12 +93,13 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeInboundMediaTrackBindings_1() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
+                .wherePeerConnectionIds(createdPeerConnectionDTOs.keySet())
                 .execute()
                 ;
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
@@ -105,11 +107,12 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeInboundMediaTrackBindings_2() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get();
-        this.createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
+        createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
         task.execute();
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
@@ -117,12 +120,13 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeOutboundMediaTrackBindings_1() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
+                .wherePeerConnectionIds(createdPeerConnectionDTOs.keySet())
                 .execute()
                 ;
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
@@ -130,11 +134,12 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeOutboundMediaTrackBindings_2() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
         var task = removePeerConnectionsTaskProvider.get();
-        this.createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
+        createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
         task.execute();
 
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
+        createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
             var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
@@ -142,12 +147,14 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeMediaTrackDTOs_1() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
+        var createdMediaTrackDTOs = dtoMapGenerator.getMediaTrackDTOs();
         var task = removePeerConnectionsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
+                .wherePeerConnectionIds(createdPeerConnectionDTOs.keySet())
                 .execute()
                 ;
 
-        this.createdMediaTrackDTOs.keySet().forEach(trackId -> {
+        createdMediaTrackDTOs.keySet().forEach(trackId -> {
             var hasMediaTrack = this.hazelcastMaps.getMediaTracks().containsKey(trackId);
             Assertions.assertFalse(hasMediaTrack);
         });
@@ -155,11 +162,13 @@ class RemovePeerConnectionsTaskTest {
 
     @Test
     public void removeMediaTrackDTOs_2() {
+        var createdPeerConnectionDTOs = this.dtoMapGenerator.getPeerConnectionDTOs();
+        var createdMediaTrackDTOs = dtoMapGenerator.getMediaTrackDTOs();
         var task = removePeerConnectionsTaskProvider.get();
-        this.createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
+        createdPeerConnectionDTOs.values().forEach(task::addRemovedPeerConnectionDTO);
         task.execute();
 
-        this.createdMediaTrackDTOs.keySet().forEach(trackId -> {
+        createdMediaTrackDTOs.keySet().forEach(trackId -> {
             var hasMediaTrack = this.hazelcastMaps.getMediaTracks().containsKey(trackId);
             Assertions.assertFalse(hasMediaTrack);
         });

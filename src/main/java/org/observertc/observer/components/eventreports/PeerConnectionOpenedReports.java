@@ -56,7 +56,7 @@ public class PeerConnectionOpenedReports {
                     .setMarker(peerConnectionDTO.marker)
                     .setMessage(message)
                     .build();
-            logger.info("Peer Connection {} is opened at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.peerConnectionId, peerConnectionDTO.callId, peerConnectionDTO.serviceId, peerConnectionDTO.roomId);
+            logger.info("Peer Connection {} is OPENED at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.peerConnectionId, peerConnectionDTO.callId, peerConnectionDTO.serviceId, peerConnectionDTO.roomId);
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

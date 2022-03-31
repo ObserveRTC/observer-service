@@ -56,8 +56,8 @@ class ReportTypeVisitorTest {
                 actual -> Assertions.assertEquals(ReportType.SFU_SCTP_STREAM, actual)
         );
 
-        for (var expected : ReportType.values()) {
-            var actual = visitor.apply(expected, expected);
+        for (var reportType : ReportType.values()) {
+            visitor.apply(reportType, reportType);
         }
     }
 

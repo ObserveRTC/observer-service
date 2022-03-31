@@ -1,6 +1,5 @@
 package org.observertc.observer.repositories;
 
-import com.hazelcast.collection.ISet;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
@@ -33,8 +32,6 @@ public class HazelcastMaps {
     // MediaTrack
     private static final String HAZELCAST_MEDIA_TRACKS_MAP_NAME = "observertc-peerconnection-media-tracks";
 
-    private static final String HAZELCAST_RTP_STREAM_IDS_TO_OUTBOUND_TRACKS_MAP_NAME = "observertc-rtp-streams-to-outbound-track-ids";
-
     // SFU Transports
     private static final String HAZELCAST_SFU_MAP_NAME = "observertc-sfu";
     private static final String HAZELCAST_SFU_TRANSPORTS_MAP_NAME = "observertc-sfu-transports";
@@ -44,16 +41,12 @@ public class HazelcastMaps {
     private static final String HAZELCAST_SFU_STREAM_ID_TO_RTP_PAD_IDS = "observertc-sfu-stream-id-to-rtp-pad-ids";
     private static final String HAZELCAST_SFU_STREAMS_MAP_NAME = "observertc-sfu-streams";
     private static final String HAZELCAST_SFU_SINKS_MAP_NAME = "observertc-sfu-sinks";
-//    private static final String HAZELCAST_SFU_STREAM_ID_TO_OUTBOUND_TRACK_ID = "observertc-sfu-stream-id-to-outbound-track-id";
-//    private static final String HAZELCAST_SFU_SINK_ID_TO_INBOUND_TRACK_ID = "observertc-sfu-sink-id-to-inbound-track-id";
-//    private static final String HAZELCAST_SFU_UNBOUND_SFU_RTP_PAD_IDS = "observertc-unbound-sfu-rtp-pad-ids";
-//    private static final String HAZELCAST_RTP_STREAM_ID_TO_SFU_PAD_IDS_MAP_NAME = "observertc-rtp-stream-ids-to-sfu-pad-ids";
 
     private static final String HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME = "observertc-inbound-track-ids-to-outbound-track-ids";
 
     public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
 
-    public static final String HAZELCAST_CLIENT_MESSAGES = "observertc-client-messages";
+    public static final String HAZELCAST_GENERALENTRIES = "observertc-client-messages";
 
     public static final String HAZELCAST_SYNC_TASK_STATES_MAP_NAME = "observertc-distributed-tasks-states";
     public static final String HAZELCAST_ETC_MAP_NAME = "observertc-distributed-map";
@@ -88,9 +81,6 @@ public class HazelcastMaps {
     private IMap<UUID, SfuSinkDTO> sfuSinks;
     private MultiMap<UUID, UUID> sfuStreamIdToRtpPadIds;
     private MultiMap<UUID, UUID> sfuSinkIdToRtpPadIds;
-//    private IMap<UUID, UUID> sfuStreamIdToOutboundTrackId;
-//    private IMap<UUID, UUID> sfuSinkIdToInboundTrackId;
-    private ISet<UUID> sfuUnboundRtpPadIds;
 
 
 //    private MultiMap<UUID, UUID> rtpStreamIdToSfuPadIds;
@@ -104,7 +94,7 @@ public class HazelcastMaps {
     private IMap<String, String> etcMap;
     private ObserverConfig.RepositoryConfig config;
 
-    private IMap<UUID, GeneralEntryDTO> clientMessages;
+    private IMap<UUID, GeneralEntryDTO> generalEntries;
 
     public HazelcastMaps(ObserverConfig observerConfig) {
         this.config = observerConfig.repository;
@@ -142,7 +132,7 @@ public class HazelcastMaps {
         this.requests = hazelcast.getMap(HAZELCAST_REQUESTS_MAP_NAME);
         this.etcMap = hazelcast.getMap(HAZELCAST_ETC_MAP_NAME);
 
-        this.clientMessages = hazelcast.getMap(HAZELCAST_CLIENT_MESSAGES);
+        this.generalEntries = hazelcast.getMap(HAZELCAST_GENERALENTRIES);
         // setup expirations
         hazelcast
                 .getConfig()
@@ -212,7 +202,6 @@ public class HazelcastMaps {
     public IMap<UUID, MediaTrackDTO> getMediaTracks() {
         return this.mediaTracks;
     }
-//    public IMap<UUID, UUID> getRtpStreamIdsToOutboundTrackIds() { return this.rtpStreamIdsToOutboundTrackIds; }
     public IMap<UUID, UUID> getInboundTrackIdsToOutboundTrackIds() { return this.inboundTrackIdsToOutboundTrackIds; }
 
     public IMap<UUID, SfuDTO> getSFUs() {
@@ -229,17 +218,11 @@ public class HazelcastMaps {
 
     public MultiMap<UUID, UUID> getSfuStreamIdToRtpPadIds() { return this.sfuStreamIdToRtpPadIds; }
     public MultiMap<UUID, UUID> getSfuSinkIdToRtpPadIds() { return this.sfuSinkIdToRtpPadIds; }
-    public ISet<UUID> getSfuUnboundRtpPadIds() { return this.sfuUnboundRtpPadIds; }
 
     public IMap<UUID, SfuStreamDTO> getSfuStreams() { return this.sfuStreams; }
     public IMap<UUID, SfuSinkDTO> getSfuSinks() { return this.sfuSinks; }
-//    public IMap<UUID, UUID> getSfuStreamIdToOutboundTrackId() { return this.sfuStreamIdToOutboundTrackId; }
-//    public IMap<UUID, UUID> getSfuSinkIdToInboundTrackId() { return this.sfuSinkIdToInboundTrackId; }
 
-//    public MultiMap<UUID, UUID> getRtpStreamIdToSfuPadIds() { return this.rtpStreamIdToSfuPadIds; }
-//    public IMap<UUID, TrackLinkDTO> getInboundLinkedTracks() { return this.l; }
-
-    public IMap<UUID, GeneralEntryDTO> getClientMessages() { return this.clientMessages; }
+    public IMap<UUID, GeneralEntryDTO> getGeneralEntries() { return this.generalEntries; }
 
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
     public IMap<String, String> getSyncTaskStates() { return this.syncTaskStates; }

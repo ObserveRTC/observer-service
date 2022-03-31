@@ -38,6 +38,7 @@ public class ObservedSamplesGenerator {
                 .addEngine()
                 .addPlatform()
                 .addExtensionStat()
+                .addMediaConstraint("constraint")
                 .addPeerConnection(peerConnectionId)
                 .addIceLocalCandidate()
                 .addIceRemoteCandidate()

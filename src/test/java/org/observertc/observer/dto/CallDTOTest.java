@@ -49,6 +49,17 @@ class CallDTOTest {
     }
 
     @Test
+    void shouldNotBuildWithoutStartedTimestamp() {
+        CallDTO.Builder builder = CallDTO.builder()
+                .withServiceId(SERVICE_ID)
+                .withCallId(CALL_ID)
+                .withStartedTimestamp(null)
+                ;
+
+        Assertions.assertThrows(Exception.class, () -> builder.build());
+    }
+
+    @Test
     void shouldHasExpectedValues() {
         var subject = this.makeDTO();
 
@@ -76,6 +87,37 @@ class CallDTOTest {
 
         boolean equals = expected.equals(actual);
         Assertions.assertTrue(equals);
+    }
+
+    @Test
+    public void shouldBeNotEqual_1() {
+        var source = this.makeDTO();
+        var modified_1 = CallDTO.builder().from(source)
+                .withCallId(UUID.randomUUID())
+                .build();
+        var modified_2 = CallDTO.builder().from(source)
+                .withMarker(UUID.randomUUID().toString())
+                .build();
+        var modified_3 = CallDTO.builder().from(source)
+                .withServiceId(UUID.randomUUID().toString())
+                .build();
+        var modified_4 = CallDTO.builder().from(source)
+                .withRoomId(UUID.randomUUID().toString())
+                .build();
+        var modified_5 = CallDTO.builder().from(source)
+                .withStartedTimestamp(Instant.now().minusSeconds(3600).toEpochMilli())
+                .build();
+
+        boolean equals_1 = source.equals(modified_1);
+        boolean equals_2 = source.equals(modified_2);
+        boolean equals_3 = source.equals(modified_3);
+        boolean equals_4 = source.equals(modified_4);
+        boolean equals_5 = source.equals(modified_5);
+        Assertions.assertFalse(equals_1);
+        Assertions.assertFalse(equals_2);
+        Assertions.assertFalse(equals_3);
+        Assertions.assertFalse(equals_4);
+        Assertions.assertFalse(equals_5);
     }
 
     private CallDTO makeDTO() {

@@ -18,9 +18,9 @@ package org.observertc.observer.repositories.tasks;
 
 import com.hazelcast.cp.lock.FencedLock;
 import io.micronaut.context.annotation.Prototype;
-import java.util.concurrent.TimeUnit;
-
 import org.observertc.observer.ObserverHazelcast;
+
+import java.util.concurrent.TimeUnit;
 
 @Prototype
 class FencedLockAcquirer implements AutoCloseable {

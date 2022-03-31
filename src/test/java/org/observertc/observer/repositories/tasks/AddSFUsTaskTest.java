@@ -24,37 +24,40 @@ class AddSFUsTaskTest {
 
     @Test
     public void inserted_1() {
-        var sfuDTO = generator.getSfuDTO();
+        var expected = generator.getSfuDTO();
         var task = addSFUsTaskProvider.get()
-                .withSfuDTO(sfuDTO);
+                .withSfuDTO(expected);
 
         task.execute();
 
-        var insertedSfuDTO = this.hazelcastMaps.getSFUs().get(sfuDTO.sfuId);
-        Assertions.assertEquals(sfuDTO, insertedSfuDTO);
+        var actual = this.hazelcastMaps.getSFUs().get(expected.sfuId);
+        boolean equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 
     @Test
     public void inserted_2() {
-        var sfuDTO = generator.getSfuDTO();
+        var expected = generator.getSfuDTO();
         var task = addSFUsTaskProvider.get()
-                .withSfuDTO(sfuDTO);
+                .withSfuDTO(expected);
 
         task.execute();
 
-        var insertedSfuDTO = this.hazelcastMaps.getSFUs().get(sfuDTO.sfuId);
-        Assertions.assertEquals(sfuDTO, insertedSfuDTO);
+        var actual = this.hazelcastMaps.getSFUs().get(expected.sfuId);
+        boolean equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 
     @Test
     public void inserted_3() {
-        var sfuDTO = generator.getSfuDTO();
+        var expected = generator.getSfuDTO();
         var task = addSFUsTaskProvider.get()
-                .withSfuDTOs(Map.of(sfuDTO.sfuId, sfuDTO));
+                .withSfuDTOs(Map.of(expected.sfuId, expected));
 
         task.execute();
 
-        var insertedSfuDTO = this.hazelcastMaps.getSFUs().get(sfuDTO.sfuId);
-        Assertions.assertEquals(sfuDTO, insertedSfuDTO);
+        var actual = this.hazelcastMaps.getSFUs().get(expected.sfuId);
+        boolean equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 }

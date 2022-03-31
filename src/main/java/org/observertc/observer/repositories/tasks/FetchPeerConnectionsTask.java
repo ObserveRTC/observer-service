@@ -130,10 +130,10 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
     }
 
     public FetchPeerConnectionsTask wherePeerConnectionIds(Set<UUID> peerConnectionIds) {
-        if (Objects.isNull(this.peerConnectionIds) || this.peerConnectionIds.size() < 1) {
+        if (Objects.isNull(peerConnectionIds) || peerConnectionIds.size() < 1) {
             return this;
         }
-        this.peerConnectionIds.addAll(this.peerConnectionIds);
+        this.peerConnectionIds.addAll(peerConnectionIds);
         return this;
     }
 

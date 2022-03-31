@@ -46,7 +46,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
 
     @Inject
-    Provider<AddMediaTracksTasks> addMediaTrackTaskProvider;
+    Provider<AddMediaTracksTask> addMediaTrackTaskProvider;
 
     private Subject<ObservedClientSamples> output = PublishSubject.create();
     private final ClientDTOsDepot clientsDepot = new ClientDTOsDepot();

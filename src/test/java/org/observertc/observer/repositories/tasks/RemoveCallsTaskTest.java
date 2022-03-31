@@ -1,19 +1,17 @@
 package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.samples.ServiceRoomId;
-import org.observertc.observer.dto.CallDTO;
-import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.samples.ServiceRoomId;
+import org.observertc.observer.utils.DTOMapGenerator;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 @MicronautTest
 class RemoveCallsTaskTest {
@@ -21,49 +19,52 @@ class RemoveCallsTaskTest {
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    CallMapGenerator callMapGenerator;
+    DTOMapGenerator DTOMapGenerator = new DTOMapGenerator().generateP2pCase();
 
     @Inject
     Provider<RemoveCallsTask> removeCallsTaskProvider;
 
-    private CallDTO createdCallDTO;
-    private Map<UUID, ClientDTO> createdClientDTOs;
 
     @BeforeEach
     void setup() {
-        this.callMapGenerator.generate();
-        this.createdCallDTO = this.callMapGenerator.getCallDTO();
-        this.createdClientDTOs = this.callMapGenerator.getClientDTOs();
+        this.DTOMapGenerator.saveTo(hazelcastMaps);
+    }
+
+    @AfterEach
+    void teardown() {
+        this.DTOMapGenerator.deleteFrom(hazelcastMaps);
     }
 
     @Test
     public void removeCall_1() {
+        var call = DTOMapGenerator.getCallDTO();
         var task = removeCallsTaskProvider.get()
-                .whereCallIds(Set.of(this.createdCallDTO.callId))
+                .whereCallIds(Set.of(call.callId))
                 .execute()
                 ;
 
-        var hasCallId = this.hazelcastMaps.getCalls().containsKey(this.createdCallDTO.callId);
+        var hasCallId = this.hazelcastMaps.getCalls().containsKey(call.callId);
         Assertions.assertFalse(hasCallId);
     }
 
     @Test
     public void removeCall_2() {
+        var call = DTOMapGenerator.getCallDTO();
         var task = removeCallsTaskProvider.get()
-                .addRemovedCallDTO(this.createdCallDTO)
+                .addRemovedCallDTO(call)
                 .execute()
                 ;
 
-        var hasCallId = this.hazelcastMaps.getCalls().containsKey(this.createdCallDTO.callId);
+        var hasCallId = this.hazelcastMaps.getCalls().containsKey(call.callId);
         Assertions.assertTrue(hasCallId);
     }
 
     @Test
     public void removeRoomBindings_1() {
-        var serviceRoomId = ServiceRoomId.make(this.createdCallDTO.serviceId, this.createdCallDTO.roomId);
+        var call = DTOMapGenerator.getCallDTO();
+        var serviceRoomId = ServiceRoomId.make(call.serviceId, call.roomId);
         var task = removeCallsTaskProvider.get()
-                .whereCallIds(Set.of(this.createdCallDTO.callId))
+                .whereCallIds(Set.of(call.callId))
                 .execute();
 
         var hasServiceRoomId = this.hazelcastMaps.getServiceRoomToCallIds().containsKey(serviceRoomId.getKey());
@@ -72,9 +73,10 @@ class RemoveCallsTaskTest {
 
     @Test
     public void removeRoomBindings_2() {
-        var serviceRoomId = ServiceRoomId.make(this.createdCallDTO.serviceId, this.createdCallDTO.roomId);
+        var call = DTOMapGenerator.getCallDTO();
+        var serviceRoomId = ServiceRoomId.make(call.serviceId, call.roomId);
         var task = removeCallsTaskProvider.get()
-                .addRemovedCallDTO(this.createdCallDTO)
+                .addRemovedCallDTO(call)
                 .execute();
 
         var hasServiceRoomId = this.hazelcastMaps.getServiceRoomToCallIds().containsKey(serviceRoomId.getKey());
@@ -83,34 +85,37 @@ class RemoveCallsTaskTest {
 
     @Test
     public void removeCallClientBindings_1() {
+        var call = DTOMapGenerator.getCallDTO();
         var task = removeCallsTaskProvider.get()
-                .whereCallIds(Set.of(this.createdCallDTO.callId))
+                .whereCallIds(Set.of(call.callId))
                 .execute()
                 ;
 
-        var hasCallId = this.hazelcastMaps.getCallToClientIds().containsKey(this.createdCallDTO.callId);
+        var hasCallId = this.hazelcastMaps.getCallToClientIds().containsKey(call.callId);
         Assertions.assertFalse(hasCallId);
     }
 
     @Test
     public void removeCallClientBindings_2() {
+        var call = DTOMapGenerator.getCallDTO();
         var task = removeCallsTaskProvider.get()
-                .addRemovedCallDTO(this.createdCallDTO)
+                .addRemovedCallDTO(call)
                 .execute()
                 ;
 
-        var hasCallId = this.hazelcastMaps.getCallToClientIds().containsKey(this.createdCallDTO.callId);
+        var hasCallId = this.hazelcastMaps.getCallToClientIds().containsKey(call.callId);
         Assertions.assertFalse(hasCallId);
     }
 
     @Test
     public void removeClientDTOs_1() {
+        var call = DTOMapGenerator.getCallDTO();
         var task = removeCallsTaskProvider.get()
-                .whereCallIds(Set.of(this.createdCallDTO.callId))
+                .whereCallIds(Set.of(call.callId))
                 .execute()
                 ;
 
-        this.createdClientDTOs.forEach((clientId, clientDTO) -> {
+        DTOMapGenerator.getClientDTOs().forEach((clientId, clientDTO) -> {
             var hasClient = this.hazelcastMaps.getClients().containsKey(clientId);
             Assertions.assertFalse(hasClient);
         });
@@ -118,12 +123,13 @@ class RemoveCallsTaskTest {
 
     @Test
     public void removeClientDTOs_2() {
+        var call = DTOMapGenerator.getCallDTO();
         var task = removeCallsTaskProvider.get()
-                .addRemovedCallDTO(this.createdCallDTO)
+                .addRemovedCallDTO(call)
                 .execute()
                 ;
 
-        this.createdClientDTOs.forEach((clientId, clientDTO) -> {
+        DTOMapGenerator.getClientDTOs().forEach((clientId, clientDTO) -> {
             var hasClient = this.hazelcastMaps.getClients().containsKey(clientId);
             Assertions.assertFalse(hasClient);
         });

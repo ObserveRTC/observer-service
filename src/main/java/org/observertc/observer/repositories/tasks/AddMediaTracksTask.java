@@ -6,7 +6,6 @@ import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
-import org.observertc.observer.repositories.StoredRequests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,15 +17,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Prototype
-public class AddMediaTracksTasks extends ChainedTask<Void> {
+public class AddMediaTracksTask extends ChainedTask<Void> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AddMediaTracksTasks.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddMediaTracksTask.class);
 
     @Inject
     HazelcastMaps hazelcastMaps;
-
-    @Inject
-    StoredRequests storedRequests;
 
     @Inject
     ExposedMetrics exposedMetrics;
@@ -96,7 +92,7 @@ public class AddMediaTracksTasks extends ChainedTask<Void> {
     }
 
 
-    public AddMediaTracksTasks withMediaTrackDTOs(Map<UUID, MediaTrackDTO> mediaTrackDTOs) {
+    public AddMediaTracksTask withMediaTrackDTOs(Map<UUID, MediaTrackDTO> mediaTrackDTOs) {
         if (Objects.isNull(mediaTrackDTOs) || mediaTrackDTOs.size() < 1) {
             this.getLogger().info("mediaTrackDTOs was not given");
             return this;

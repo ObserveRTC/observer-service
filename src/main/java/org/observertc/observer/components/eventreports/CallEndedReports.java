@@ -46,7 +46,7 @@ public class CallEndedReports {
                     .setMarker(callDTO.marker)
                     .setMessage(message)
                     .build();
-            logger.info("Call \"{}\" for service \"{}\" at room \"{}\" is ended", callDTO.callId, callDTO.serviceId, callDTO.roomId);
+            logger.info("Call \"{}\" for service \"{}\" at room \"{}\" is ENDED", callDTO.callId, callDTO.serviceId, callDTO.roomId);
             return result;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

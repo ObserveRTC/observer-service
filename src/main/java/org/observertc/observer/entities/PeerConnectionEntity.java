@@ -22,16 +22,30 @@ import org.observertc.observer.dto.PeerConnectionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Stream;
 
-public class PeerConnectionEntity {
+public class PeerConnectionEntity implements Iterable<MediaTrackDTO> {
 	private static final Logger logger = LoggerFactory.getLogger(PeerConnectionEntity.class);
 
 	public static PeerConnectionEntity.Builder builder() {
 	    return new Builder();
+    }
+    public static PeerConnectionEntity from(PeerConnectionDTO peerConnectionDTO, Map<UUID, MediaTrackDTO> mediaTrackDTOMap) {
+        var result = new PeerConnectionEntity();
+        result.peerConnectionDTO = peerConnectionDTO;
+        for (var mediaTrackDTO : mediaTrackDTOMap.values()) {
+            if (mediaTrackDTO.peerConnectionId != mediaTrackDTO.peerConnectionId) continue;
+            switch (mediaTrackDTO.direction) {
+                case INBOUND:
+                    result.inboundTracks.put(mediaTrackDTO.trackId, mediaTrackDTO);
+                    break;
+                case OUTBOUND:
+                    result.outboundTracks.put(mediaTrackDTO.trackId, mediaTrackDTO);
+                    break;
+            }
+        }
+        return result;
     }
 
     private PeerConnectionDTO peerConnectionDTO;
@@ -42,7 +56,9 @@ public class PeerConnectionEntity {
 
 	}
 
-	public UUID getPeerConnectionId() {
+
+
+    public UUID getPeerConnectionId() {
 	    return this.peerConnectionDTO.peerConnectionId;
     }
 
@@ -75,6 +91,12 @@ public class PeerConnectionEntity {
 
     public Map<UUID, MediaTrackDTO> getOutboundMediaTrackDTOs() {
 	    return this.outboundTracks;
+    }
+
+    @Override
+    public Iterator<MediaTrackDTO> iterator() {
+        var stream = Stream.concat(this.inboundTracks.values().stream(), this.outboundTracks.values().stream());
+        return stream.iterator();
     }
 
     public static class Builder {

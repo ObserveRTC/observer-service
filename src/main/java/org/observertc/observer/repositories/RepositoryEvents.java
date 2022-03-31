@@ -37,6 +37,14 @@ public class RepositoryEvents {
     private ObservablePassiveCollector<RepositoryExpiredEvent<ClientDTO>> expiredClient = ObservablePassiveCollector.create();
     private ObservablePassiveCollector<ClientDTO> removedClient = ObservablePassiveCollector.create();
 
+    private ObservablePassiveCollector<SfuStreamDTO> addedSfuStreams = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuStreamDTO>> updatedSfuStreams = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<SfuStreamDTO> removedSfuStreams = ObservablePassiveCollector.create();
+
+    private ObservablePassiveCollector<SfuSinkDTO> addedSfuSinks = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuSinkDTO>> updatedSfuSinks = ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<SfuSinkDTO> removedSfuSinks = ObservablePassiveCollector.create();
+
     private ObservablePassiveCollector<PeerConnectionDTO> addedPeerConnection = ObservablePassiveCollector.create();
     private ObservablePassiveCollector<RepositoryExpiredEvent<PeerConnectionDTO>> expiredPeerConnection = ObservablePassiveCollector.create();
     private ObservablePassiveCollector<PeerConnectionDTO> removedPeerConnection = ObservablePassiveCollector.create();
@@ -57,15 +65,13 @@ public class RepositoryEvents {
 
     private ObservablePassiveCollector<SfuDTO> addedSfu = ObservablePassiveCollector.create();
     private ObservablePassiveCollector<RepositoryExpiredEvent<SfuDTO>> expiredSfu = ObservablePassiveCollector.create();
-    private ObservablePassiveCollector<SfuDTO> removedSfu =ObservablePassiveCollector.create();
+    private ObservablePassiveCollector<SfuDTO> removedSfu = ObservablePassiveCollector.create();
 
     private ObservablePassiveCollector<RepositoryUpdatedEvent<ClientMessageEvent>> updatedClientMessages = ObservablePassiveCollector.create();
     private ObservablePassiveCollector<ClientMessageEvent> removedClientMessages = ObservablePassiveCollector.create();
 
     private ObservablePassiveCollector<UUID> expiredIncompleteSfuRtpPadIds = ObservablePassiveCollector.create();
 
-    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuStreamDTO>> updatedSfuStreams = ObservablePassiveCollector.create();
-    private ObservablePassiveCollector<RepositoryUpdatedEvent<SfuSinkDTO>> updatedSfuSinks = ObservablePassiveCollector.create();
 
     private List<Runnable> destructors = new LinkedList<>();
     private Disposable timer = null;
@@ -228,27 +234,37 @@ public class RepositoryEvents {
                 "Sfu Stream Related Events",
                 this.hazelcastMaps.getSfuStreams(),
                 builder -> {
-                    builder.onEntryUpdated(event -> {
-                        SfuStreamDTO oldDTO = event.getOldValue();
-                        SfuStreamDTO newDTO = event.getValue();
-                        updatedSfuStreams.add(RepositoryUpdatedEvent.make(oldDTO, newDTO));
+                    builder.onEntryAdded(event -> {
+                        var subject = event.getValue();
+                        addedSfuStreams.add(subject);
+                    }).onEntryRemoved(event -> {
+                        var subject = event.getOldValue();
+                        removedSfuStreams.add(subject);
+                    }).onEntryUpdated(event -> {
+                        var forwardedEvent = RepositoryUpdatedEvent.make(event.getOldValue(), event.getValue());
+                        updatedSfuStreams.add(forwardedEvent);
                     });
                 });
 
         this.add(
-                "Sfu Sinks Related Events",
+                "Sfu Sink Related Events",
                 this.hazelcastMaps.getSfuSinks(),
                 builder -> {
-                    builder.onEntryUpdated(event -> {
-                        SfuSinkDTO oldDTO = event.getOldValue();
-                        SfuSinkDTO newDTO = event.getValue();
-                        updatedSfuSinks.add(RepositoryUpdatedEvent.make(oldDTO, newDTO));
+                    builder.onEntryAdded(event -> {
+                        var subject = event.getValue();
+                        addedSfuSinks.add(subject);
+                    }).onEntryRemoved(event -> {
+                        var subject = event.getOldValue();
+                        removedSfuSinks.add(subject);
+                    }).onEntryUpdated(event -> {
+                        var forwardedEvent = RepositoryUpdatedEvent.make(event.getOldValue(), event.getValue());
+                        updatedSfuSinks.add(forwardedEvent);
                     });
                 });
 
         this.add(
                 "General Client Message Event",
-                this.hazelcastMaps.getClientMessages(),
+                this.hazelcastMaps.getGeneralEntries(),
                 builder -> {
                     builder.onEntryUpdated(event -> {
                         UUID clientId = event.getKey();
@@ -390,13 +406,33 @@ public class RepositoryEvents {
         return result;
     }
 
+    public Observable<List<SfuStreamDTO>> addedSfuStreams() {
+        var result= this.getObservableList(this.addedSfuStreams);
+        return result;
+    }
+
     public Observable<List<RepositoryUpdatedEvent<SfuStreamDTO>>> updatedSfuStreams() {
         var result= this.getObservableList(this.updatedSfuStreams);
         return result;
     }
 
-    public Observable<List<RepositoryUpdatedEvent<SfuSinkDTO>>> updatedSfuSinks() {
+    public Observable<List<SfuStreamDTO>> removedSfuStreams() {
+        var result= this.getObservableList(this.removedSfuStreams);
+        return result;
+    }
+
+    public Observable<List<SfuSinkDTO>> addedSfuSinks() {
+        var result= this.getObservableList(this.addedSfuSinks);
+        return result;
+    }
+
+    public Observable<List<RepositoryUpdatedEvent<SfuSinkDTO>>> updatedSuSinks() {
         var result= this.getObservableList(this.updatedSfuSinks);
+        return result;
+    }
+
+    public Observable<List<SfuSinkDTO>> removedSfuSinks() {
+        var result= this.getObservableList(this.removedSfuSinks);
         return result;
     }
 

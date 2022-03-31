@@ -1,16 +1,12 @@
 package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.observertc.observer.dto.SfuDTO;
+import org.junit.jupiter.api.*;
 import org.observertc.observer.repositories.HazelcastMaps;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.DTOMapGenerator;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.util.Set;
 
 @MicronautTest
 class RemoveSFUsTaskTest {
@@ -18,39 +14,42 @@ class RemoveSFUsTaskTest {
     @Inject
     HazelcastMaps hazelcastMaps;
 
-    @Inject
-    DTOGenerators generator;
+    DTOMapGenerator generator = new DTOMapGenerator().generateSingleSfuCase();
 
     @Inject
     Provider<RemoveSFUsTask> removeSFUsTaskProvider;
 
-    private SfuDTO createdSfuDTO;
-
     @BeforeEach
     void setup() {
-        this.createdSfuDTO = this.generator.getSfuDTO();
-        this.hazelcastMaps.getSFUs().put(this.createdSfuDTO.sfuId, this.createdSfuDTO);
+        this.generator.saveTo(hazelcastMaps);
+    }
+
+    @AfterEach
+    void teardown() {
+        this.generator.deleteFrom(hazelcastMaps);
     }
 
     @Test
-    public void removeSfu_1() {
-        var task = removeSFUsTaskProvider.get()
-                .whereSfuIds(Set.of(this.createdSfuDTO.sfuId))
+    public void removeSfus_1() {
+        var sfus = this.generator.getSfuDTOs();
+        removeSFUsTaskProvider.get()
+                .whereSfuIds(sfus.keySet())
                 .execute()
-                ;
+        ;
 
-        var hasSfuId = this.hazelcastMaps.getSFUs().containsKey(this.createdSfuDTO.sfuId);
-        Assertions.assertFalse(hasSfuId);
+        var allDeleted = sfus.keySet().stream().anyMatch(this.hazelcastMaps.getSFUTransports()::containsKey) == false;
+        Assertions.assertTrue(allDeleted);
     }
 
     @Test
-    public void removeSfu_2() {
-        var task = removeSFUsTaskProvider.get()
-                .addRemovedSfuDTO(this.createdSfuDTO)
-                .execute()
-                ;
+    @DisplayName("When the transport dtos are marked to be removed already Then the task does not delete the already removed one")
+    public void notTryingToDeleteSfusMarkedAsRemoved() {
+        var sfus = this.generator.getSfuDTOs();
+        var task = removeSFUsTaskProvider.get();
+        sfus.values().forEach(task::addRemovedSfuDTO);
+        task.execute();
 
-        var hasSfuId = this.hazelcastMaps.getSFUs().containsKey(this.createdSfuDTO.sfuId);
-        Assertions.assertTrue(hasSfuId);
+        var allRemained = sfus.keySet().stream().allMatch(this.hazelcastMaps.getSFUs()::containsKey);
+        Assertions.assertTrue(allRemained);
     }
 }

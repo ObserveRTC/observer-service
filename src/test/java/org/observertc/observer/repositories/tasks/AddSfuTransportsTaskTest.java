@@ -24,37 +24,40 @@ class AddSfuTransportsTaskTest {
 
     @Test
     public void inserted_1() {
-        var sfuTransportDTO = generator.getSfuTransportDTO();
+        var expected = generator.getSfuTransportDTO();
         var task = addSfuTransportsTaskProvider.get()
-                .withSfuTransportDTO(sfuTransportDTO);
+                .withSfuTransportDTO(expected);
 
         task.execute();
 
-        var insertedSfuTransportDTO = this.hazelcastMaps.getSFUTransports().get(sfuTransportDTO.transportId);
-        Assertions.assertEquals(sfuTransportDTO, insertedSfuTransportDTO);
+        var actual = this.hazelcastMaps.getSFUTransports().get(expected.transportId);
+        var equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 
     @Test
     public void inserted_2() {
-        var sfuTransportDTO = generator.getSfuTransportDTO();
+        var expected = generator.getSfuTransportDTO();
         var task = addSfuTransportsTaskProvider.get()
-                .withSfuTransportDTO(sfuTransportDTO);
+                .withSfuTransportDTO(expected);
 
         task.execute();
 
-        var insertedSfuTransportDTO = this.hazelcastMaps.getSFUTransports().get(sfuTransportDTO.transportId);
-        Assertions.assertEquals(sfuTransportDTO, insertedSfuTransportDTO);
+        var actual = this.hazelcastMaps.getSFUTransports().get(expected.transportId);
+        var equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 
     @Test
     public void inserted_3() {
-        var sfuTransportDTO = generator.getSfuTransportDTO();
+        var expected = generator.getSfuTransportDTO();
         var task = addSfuTransportsTaskProvider.get()
-                .withSfuTransportDTOs(Map.of(sfuTransportDTO.transportId, sfuTransportDTO));
+                .withSfuTransportDTOs(Map.of(expected.transportId, expected));
 
         task.execute();
 
-        var insertedSfuTransportDTO = this.hazelcastMaps.getSFUTransports().get(sfuTransportDTO.transportId);
-        Assertions.assertEquals(sfuTransportDTO, insertedSfuTransportDTO);
+        var actual = this.hazelcastMaps.getSFUTransports().get(expected.transportId);
+        var equals = expected.equals(actual);
+        Assertions.assertTrue(equals);
     }
 }

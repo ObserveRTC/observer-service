@@ -47,6 +47,9 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
             ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
                     .map(track -> track.trackId)
                     .forEach(mediaTrackIds::add);
+            if (Objects.nonNull(clientSample.clientId)) {
+                this.clientIds.add(clientSample.clientId);
+            }
             this.serviceRoomIds.add(value.getServiceRoomId());
             this.clientSamples.add(value);
             return this;

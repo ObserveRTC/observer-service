@@ -100,5 +100,4 @@ public class AddClientsTask extends ChainedTask<Void> {
         this.clientDTOs.putAll(clientDTOs);
         return this;
     }
-
 }

@@ -59,7 +59,7 @@ public class ClientJoinedReports {
                     .setMarker(clientDTO.marker)
                     .setMessage(message)
                     .build();
-            logger.info("Client with id {} is joined to call \"{}\" for service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
+            logger.info("Client with id {} is JOINED to call \"{}\" for service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
             return result;
         } catch (Exception ex) {
            logger.warn("Cannot make report for client DTO", ex);

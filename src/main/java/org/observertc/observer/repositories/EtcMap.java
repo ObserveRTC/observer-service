@@ -9,8 +9,6 @@ public class EtcMap {
 
     private static final String EXPIRING_KEY_NAME = "EXPIRING-KEY";
 
-
-
     @Inject
     HazelcastMaps hazelcastMaps;
 
@@ -21,7 +19,5 @@ public class EtcMap {
     public boolean hasExpiringKey(String key) {
         return this.hazelcastMaps.getEtcMap().containsKey(key);
     }
-
-
 
 }

@@ -144,7 +144,7 @@ public class ClientLeftReports {
                     .setMarker(clientDTO.marker)
                     .setMessage(message)
                     .build();
-            logger.info("Client {} left call \"{}\" in service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
+            logger.info("Client {} LEFT call \"{}\" in service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
             return result;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

@@ -1,195 +1,121 @@
 package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.dto.CallDTO;
-import org.observertc.observer.dto.ClientDTO;
-import org.observertc.observer.dto.MediaTrackDTO;
-import org.observertc.observer.dto.PeerConnectionDTO;
+import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.utils.DTOMapGenerator;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 @MicronautTest
 class FindParentalDTOsTaskTest {
 
+
     @Inject
-    CallMapGenerator callMapGenerator;
+    HazelcastMaps hazelcastMaps;
 
     @Inject
     Provider<FindParentalDTOsTask> findParentalDTOsTaskProvider;
 
-    private CallDTO createdCallDTO;
-    private Map<UUID, ClientDTO> createdClientDTOs;
-    private Map<UUID, PeerConnectionDTO> createdPeerConnectionDTOs;
-    private Map<UUID, MediaTrackDTO> createdMediaTrackDTOs;
+    DTOMapGenerator dtoMapGenerator = new DTOMapGenerator().generateP2pCase();
 
     @BeforeEach
     void setup() {
-        this.callMapGenerator.generate();
-        this.createdCallDTO = this.callMapGenerator.getCallDTO();
-        this.createdClientDTOs = this.callMapGenerator.getClientDTOs();
-        this.createdPeerConnectionDTOs = this.callMapGenerator.getPeerConnectionDTOs();
-        this.createdMediaTrackDTOs = this.callMapGenerator.getMediaTrackDTOs();
+        dtoMapGenerator.saveTo(hazelcastMaps);
     }
 
+    @AfterEach
+    void teardown() {
+        dtoMapGenerator.deleteFrom(hazelcastMaps);
+    }
+
+
     @Test
-    public void findCallByCallId() {
+    public void findByCallId() {
+        var call = dtoMapGenerator.getCallDTO();
         var task = findParentalDTOsTaskProvider.get()
-                .whereCallIds(Set.of(this.createdCallDTO.callId))
+                .whereCallIds(Set.of(call.callId))
                 ;
 
         var report = task.execute().getResult();
 
-        var foundDTO = report.callDTOs.get(this.createdCallDTO.callId);
-        Assertions.assertEquals(this.createdCallDTO, foundDTO);
+        var foundDTO = report.callDTOs.get(call.callId);
+        var equals = call.equals(foundDTO);
+        Assertions.assertTrue(equals);
     }
 
     @Test
-    public void findCallByClientId() {
+    public void findByClientIds() {
+        var clients = dtoMapGenerator.getClientDTOs();
         var task = findParentalDTOsTaskProvider.get()
-                .whereClientIds(this.createdClientDTOs.keySet())
+                .whereClientIds(clients.keySet())
                 ;
 
         var report = task.execute().getResult();
 
-        var foundDTO = report.callDTOs.get(this.createdCallDTO.callId);
-        Assertions.assertEquals(this.createdCallDTO, foundDTO);
+        for (var client : clients.values()) {
+
+            var foundClient = report.clientDTOs.get(client.clientId);
+            boolean equals = client.equals(foundClient);
+            Assertions.assertTrue(equals);
+
+            var foundCall = report.callDTOs.get(foundClient.callId);
+            Assertions.assertNotNull(foundCall);
+        }
     }
 
     @Test
-    public void findCallByPeerConnectionId() {
+    public void findByPeerConnectionIds() {
+        var peerConnections = dtoMapGenerator.getPeerConnectionDTOs();
         var task = findParentalDTOsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
+                .wherePeerConnectionIds(peerConnections.keySet())
                 ;
 
         var report = task.execute().getResult();
 
-        var foundDTO = report.callDTOs.get(this.createdCallDTO.callId);
-        Assertions.assertEquals(this.createdCallDTO, foundDTO);
+        for (var peerConnection : peerConnections.values()) {
+
+            var foundPeerConnection = report.peerConnectionDTOs.get(peerConnection.peerConnectionId);
+            var equals = peerConnection.equals(foundPeerConnection);
+            Assertions.assertTrue(equals);
+
+            var foundClient = report.clientDTOs.get(peerConnection.clientId);
+            Assertions.assertNotNull(foundClient);
+
+            var foundCall = report.callDTOs.get(foundClient.callId);
+            Assertions.assertNotNull(foundCall);
+        }
     }
 
     @Test
-    public void findCallByTrackId() {
+    public void findByTrackIds() {
+        var tracks = dtoMapGenerator.getMediaTrackDTOs();
         var task = findParentalDTOsTaskProvider.get()
-                .whereTrackIds(this.createdMediaTrackDTOs.keySet())
+                .whereTrackIds(tracks.keySet())
                 ;
 
         var report = task.execute().getResult();
 
-        var foundDTO = report.callDTOs.get(this.createdCallDTO.callId);
-        Assertions.assertEquals(this.createdCallDTO, foundDTO);
-    }
+        for (var track : tracks.values()) {
 
-    @Test
-    public void findClientsByClientIds() {
-        var task = findParentalDTOsTaskProvider.get()
-                .whereClientIds(this.createdClientDTOs.keySet())
-                ;
+            var foundTrack = report.mediaTrackDTOs.get(track.trackId);
+            var equals = track.equals(foundTrack);
+            Assertions.assertTrue(equals);
 
-        var report = task.execute().getResult();
+            var foundPeerConnection = report.peerConnectionDTOs.get(track.peerConnectionId);
+            Assertions.assertNotNull(foundPeerConnection);
 
-        this.createdClientDTOs.forEach((clientId, foundDTO) -> {
-            var createdDTO = report.clientDTOs.get(clientId);
-            Assertions.assertEquals(createdDTO, foundDTO);
-        });
-        Assertions.assertEquals(report.clientDTOs.size(), this.createdClientDTOs.size());
-    }
+            var foundClient = report.clientDTOs.get(track.clientId);
+            Assertions.assertNotNull(foundClient);
 
-    @Test
-    public void findClientsByPeerConnectionIds() {
-        var task = findParentalDTOsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
-                ;
+            var foundCall = report.callDTOs.get(foundClient.callId);
+            Assertions.assertNotNull(foundCall);
+        }
 
-        var report = task.execute().getResult();
-
-        this.createdClientDTOs.forEach((clientId, foundDTO) -> {
-            var createdDTO = report.clientDTOs.get(clientId);
-            Assertions.assertEquals(createdDTO, foundDTO);
-        });
-        Assertions.assertEquals(report.clientDTOs.size(), this.createdClientDTOs.size());
-    }
-
-    @Test
-    public void findClientsByTrackIds() {
-        var task = findParentalDTOsTaskProvider.get()
-                .whereTrackIds(this.createdMediaTrackDTOs.keySet())
-                ;
-
-        var report = task.execute().getResult();
-
-        this.createdClientDTOs.forEach((clientId, foundDTO) -> {
-            var createdDTO = report.clientDTOs.get(clientId);
-            Assertions.assertEquals(createdDTO, foundDTO);
-        });
-        Assertions.assertEquals(report.clientDTOs.size(), this.createdClientDTOs.size());
-    }
-
-    @Test
-    public void findPeerConnectionsByPeerConnectionIds() {
-        var task = findParentalDTOsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdPeerConnectionDTOs.keySet())
-                ;
-
-        var report = task.execute().getResult();
-
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, foundDTO) -> {
-            var createdDTO = report.peerConnectionDTOs.get(peerConnectionId);
-            Assertions.assertEquals(createdDTO, foundDTO);
-        });
-        Assertions.assertEquals(report.peerConnectionDTOs.size(), this.createdPeerConnectionDTOs.size());
-    }
-
-    @Test
-    public void findPeerConnectionsByTrackIds() {
-        var task = findParentalDTOsTaskProvider.get()
-                .whereTrackIds(this.createdMediaTrackDTOs.keySet())
-                ;
-
-        var report = task.execute().getResult();
-
-        this.createdPeerConnectionDTOs.forEach((peerConnectionId, foundDTO) -> {
-            var createdDTO = report.peerConnectionDTOs.get(peerConnectionId);
-            Assertions.assertEquals(createdDTO, foundDTO);
-        });
-        Assertions.assertEquals(report.peerConnectionDTOs.size(), this.createdPeerConnectionDTOs.size());
-    }
-
-    @Test
-    public void findMediaTracksByTrackIds() {
-        var task = findParentalDTOsTaskProvider.get()
-                .whereTrackIds(this.createdMediaTrackDTOs.keySet())
-                ;
-
-        var report = task.execute().getResult();
-
-        this.createdMediaTrackDTOs.forEach((trackId, foundDTO) -> {
-            var createdDTO = report.mediaTrackDTOs.get(trackId);
-            Assertions.assertEquals(createdDTO, foundDTO);
-        });
-        Assertions.assertEquals(report.mediaTrackDTOs.size(), this.createdMediaTrackDTOs.size());
-    }
-
-
-    /**
-     * THis negative test is placed here, because easyrandom do not give random
-     * in terms of UUID if you do not specify a randomizer
-     */
-    @Test
-    public void dontFindCallByMisplacedWhereCondition() {
-        var task = findParentalDTOsTaskProvider.get()
-                .wherePeerConnectionIds(this.createdMediaTrackDTOs.keySet())
-                ;
-
-        var report = task.execute().getResult();
-
-        var foundDTO = report.callDTOs.get(this.createdCallDTO.callId);
-        Assertions.assertNull(foundDTO);
     }
 }

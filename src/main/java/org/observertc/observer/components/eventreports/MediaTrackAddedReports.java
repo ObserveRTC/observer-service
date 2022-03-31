@@ -69,7 +69,8 @@ public class MediaTrackAddedReports {
                     .setMarker(mediaTrackDTO.marker)
                     .setMessage(message)
                     .build();
-            logger.info("Media track {} is added on Peer Connection {} at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
+            logger.info("Media track {} (sfuStreamId: {}, sfuSinkId: {}) is ADDED on Peer Connection {} at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}",
+                    mediaTrackDTO.trackId, mediaTrackDTO.sfuStreamId, mediaTrackDTO.sfuSinkId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

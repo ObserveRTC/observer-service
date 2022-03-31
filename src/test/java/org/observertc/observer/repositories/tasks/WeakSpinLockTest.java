@@ -50,7 +50,6 @@ class WeakSpinLockTest {
         Assertions.assertTrue(exceptionBranchIsTouched);
     }
 
-
     @Test
     void shouldMakeAccessExclusive() throws InterruptedException, ExecutionException, TimeoutException {
         var lockName = "shouldMakeAccessExclusive";
@@ -58,33 +57,33 @@ class WeakSpinLockTest {
         CompletableFuture<Void> done = new CompletableFuture<>();
         var alice = new Actor.Builder()
                 .withName("Alice")
-                .withWaitingTimeInMs(100)
+                .withWaitingTimeInMs(1000)
                 .withAction(() -> {
                     try (var lock = weakLockProvider.autoLock(lockName)) {
                         Assertions.assertFalse(inCriticalSection.get());
                         inCriticalSection.set(true);
-                        Thread.sleep(2000);
+                        Thread.sleep(10000);
                         inCriticalSection.set(false);
                     }
                 }).build();
 
         var bob = new Actor.Builder()
                 .withName("Bob")
-                .withWaitingTimeInMs(500)
+                .withWaitingTimeInMs(5000)
                 .withCompletableFuture(done)
                 .withAction(() -> {
                     Assertions.assertTrue(inCriticalSection.get());
                     try (var lock = weakLockProvider.autoLock(lockName)) {
                         Assertions.assertFalse(inCriticalSection.get());
                         inCriticalSection.set(true);
-                        Thread.sleep(1000);
+                        Thread.sleep(10000);
                         inCriticalSection.set(false);
                     }
                 }).build();
 
         alice.start();
         bob.start();
-        done.get(15000, TimeUnit.MILLISECONDS);
+        done.get(30000, TimeUnit.MILLISECONDS);
     }
 
     static class Actor implements Runnable {

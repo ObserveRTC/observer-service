@@ -1,10 +1,7 @@
 package org.observertc.observer.utils;
 
 import java.lang.reflect.Array;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 
 public class TestUtils {
 
@@ -222,6 +219,48 @@ public class TestUtils {
                 AUDIO_KIND,
                 VIDEO_KIND
         );
+    }
+
+    public static<T> boolean equalSets(Set<T> setA, Set<T> setB) {
+//        if (Objects.isNull(setA) && Objects.isNull(setB)) return true;
+        boolean setBContainsAllFromSetA = setA.stream().allMatch(setB::contains);
+        if (!setBContainsAllFromSetA) return false;
+        boolean setAContainsAllFromSetB = setB.stream().allMatch(setA::contains);
+        return setAContainsAllFromSetB;
+    }
+
+    public static<K, V> boolean equalMaps(Map<K, V> mapA, Map<K, V> mapB) {
+        if (Objects.isNull(mapA)) {
+            return Objects.isNull(mapB);
+        }
+        if (Objects.isNull(mapB)) {
+            return Objects.isNull(mapA);
+        }
+        boolean mapAContainsAllFromMapB = mapA.entrySet().stream().allMatch(entry -> {
+            var valueA = entry.getValue();
+            var valueB = mapB.get(entry.getKey());
+            if (Objects.isNull(valueA)) {
+                return Objects.isNull(valueB);
+            }
+            if (Objects.isNull(valueB)) {
+                return Objects.isNull(valueA);
+            }
+            return valueA.equals(valueB);
+        });
+        if (!mapAContainsAllFromMapB) return false;
+
+        boolean mapBContainsAllFromMapA = mapB.entrySet().stream().allMatch(entry -> {
+            var valueB = entry.getValue();
+            var valueA = mapA.get(entry.getKey());
+            if (Objects.isNull(valueA)) {
+                return Objects.isNull(valueB);
+            }
+            if (Objects.isNull(valueB)) {
+                return Objects.isNull(valueA);
+            }
+            return valueA.equals(valueB);
+        });
+        return mapBContainsAllFromMapA;
     }
 
     public static<T> T[] arrayOrNull(T... candidates) {

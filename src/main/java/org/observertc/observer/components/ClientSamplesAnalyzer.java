@@ -45,7 +45,7 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
             return;
         }
         var task = this.matchCallTracksTaskProvider.get()
-                .whereMediaTrackIds(observedClientSamples.getMediaTrackIds())
+                .whereInboundMediaTrackIds(observedClientSamples.getMediaTrackIds())
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("Interrupted execution of component due to unsuccessful task execution");

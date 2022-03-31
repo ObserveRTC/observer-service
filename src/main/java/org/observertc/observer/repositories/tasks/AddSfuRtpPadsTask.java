@@ -6,7 +6,6 @@ import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
-import org.observertc.observer.repositories.StoredRequests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +23,6 @@ public class AddSfuRtpPadsTask extends ChainedTask<Void> {
 
     @Inject
     HazelcastMaps hazelcastMaps;
-
-    @Inject
-    StoredRequests storedRequests;
 
     @Inject
     ExposedMetrics exposedMetrics;

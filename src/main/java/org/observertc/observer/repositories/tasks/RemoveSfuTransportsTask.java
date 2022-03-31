@@ -76,7 +76,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
                 .build();
     }
 
-    public RemoveSfuTransportsTask whereSfuIds(Set<UUID> callIds) {
+    public RemoveSfuTransportsTask whereSfuTransportIds(Set<UUID> callIds) {
         if (Objects.isNull(callIds) || callIds.size() < 1) {
             return this;
         }

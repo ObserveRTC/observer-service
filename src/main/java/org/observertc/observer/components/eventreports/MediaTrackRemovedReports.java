@@ -109,7 +109,8 @@ public class MediaTrackRemovedReports {
                     .setMarker(mediaTrackDTO.marker)
                     .setMessage(message)
                     .build();
-            logger.info("Media Track {} on Peer Connection {} is closed at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}", mediaTrackDTO.trackId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
+            logger.info("Media Track {} (sfuStreamId: {}, sfuSinkId: {}) on Peer Connection {} is REMOVED at call \"{}\" in service \"{}\" at room \"{}\". Direction: {}",
+                    mediaTrackDTO.trackId, mediaTrackDTO.sfuStreamId, mediaTrackDTO.sfuSinkId, mediaTrackDTO.peerConnectionId, mediaTrackDTO.callId, mediaTrackDTO.serviceId, mediaTrackDTO.roomId, mediaTrackDTO.direction);
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);
