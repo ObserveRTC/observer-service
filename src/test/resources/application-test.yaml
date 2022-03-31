@@ -12,6 +12,10 @@ observer:
       maxItems: 10000
       maxTimeInMs: 500
 
+    reportsCollector:
+      maxItems: 100
+      maxTimeInMs: 500
+
   repository:
     mediaTracksMaxIdleTimeInS: 5
     peerConnectionsMaxIdleTimeInS: 5

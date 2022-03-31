@@ -1,7 +1,11 @@
 package org.observertc.observer.utils;
 
+import org.observertc.observer.reports.Report;
+import org.observertc.observer.reports.ReportType;
+import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.schemas.reports.*;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ReportGenerators {
@@ -9,6 +13,32 @@ public class ReportGenerators {
     private final RandomGenerators randomGenerator = new RandomGenerators();
 
     public ReportGenerators() {
+    }
+
+    final ReportTypeVisitor<Object, Report> reportGenerator = ReportTypeVisitor.createFunctionalVisitor(
+            obj -> Report.fromObserverEventReport(this.generateObserverEventReport()),
+            obj -> Report.fromCallEventReport(this.generateCallEventReport()),
+            obj -> Report.fromCallMetaReport(this.generateCallMetaReport()),
+            obj -> Report.fromClientExtensionReport(this.generateClientExtensionReport()),
+            obj -> Report.fromClientTransportReport(this.generateClientTransportReport()),
+            obj -> Report.fromClientDataChannelReport(this.generateClientDataChannelReport()),
+            obj -> Report.fromInboundAudioTrackReport(this.generateInboundAudioTrackReport()),
+            obj -> Report.fromInboundVideoTrackReport(this.generateInboundVideoTrackReport()),
+            obj -> Report.fromOutboundAudioTrackReport(this.getnerateOutboundAudioTrackReport()),
+            obj -> Report.fromOutboundVideoTrackReport(this.generateOutboundVideoTrackReport()),
+            obj -> Report.fromSfuEventReport(this.generateSfuEventReport()),
+            obj -> Report.fromSfuMetaReport(this.generateSfuMetaReport()),
+            obj -> Report.fromSfuExtensionReport(this.generateSfuExtensionReport()),
+            obj -> Report.fromSfuTransportReport(this.generateSfuTransportReport()),
+            obj -> Report.fromSfuInboundRtpPadReport(this.generateSfuInboundRtpPadReport()),
+            obj -> Report.fromSfuOutboundRtpPadReport(this.generateSfuOutboundRtpPadReport()),
+            obj -> Report.fromSfuSctpStreamReport(this.generateSfuSctpStreamReport())
+    );
+
+    public Report generateReport() {
+        var reportType = this.randomGenerator.getRandomFromList(List.of(ReportType.values()));
+        var report = reportGenerator.apply(null, reportType);
+        return report;
     }
 
 

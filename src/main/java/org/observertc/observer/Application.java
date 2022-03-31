@@ -45,7 +45,8 @@ public class Application {
 
     public static void main(String[] args) {
         Sleeper.makeFromSystemEnv(INITIAL_WAIT_IN_S, ChronoUnit.SECONDS).run();
-        context = Micronaut.run(Application.class);
+        context = Micronaut.run(Application.class, args);
+
     }
 
 
