@@ -1,13 +1,12 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.entities.CallEntity;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOMapGenerator;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
 
 @MicronautTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -17,7 +16,7 @@ class FetchCallsTaskTest {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    Provider<FetchCallsTask> fetchCallsTaskProvider;
+    BeanProvider<FetchCallsTask> fetchCallsTaskProvider;
 
     static final DTOMapGenerator dtoMapGenerator = new DTOMapGenerator().generateP2pCase();
 

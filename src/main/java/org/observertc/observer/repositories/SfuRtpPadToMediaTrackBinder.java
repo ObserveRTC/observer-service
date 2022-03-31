@@ -1,5 +1,7 @@
 package org.observertc.observer.repositories;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuSinkDTO;
@@ -9,8 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 

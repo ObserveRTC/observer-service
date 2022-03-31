@@ -1,20 +1,20 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.Map;
 
 @MicronautTest
 class AddClientsTaskTest {
 
     @Inject
-    Provider<AddClientsTask> addClientsTaskProvider;
+    BeanProvider<AddClientsTask> addClientsTaskProvider;
 
     @Inject
     HazelcastMaps hazelcastMaps;

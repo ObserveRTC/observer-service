@@ -1,9 +1,11 @@
 package org.observertc.observer.components;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Inject;
 import org.observertc.observer.components.depots.ClientDTOsDepot;
 import org.observertc.observer.components.depots.MediaTrackDTOsDepot;
 import org.observertc.observer.components.depots.PeerConnectionDTOsDepot;
@@ -19,8 +21,6 @@ import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -31,22 +31,22 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     private static final Logger logger = LoggerFactory.getLogger(CallEntitiesUpdater.class);
 
     @Inject
-    Provider<CreateCallIfNotExistsTask> createCallIfNotExistsTaskProvider;
+    BeanProvider<CreateCallIfNotExistsTask> createCallIfNotExistsTaskProvider;
 
     @Inject
-    Provider<FindCallIdsByServiceRoomIds> findCallsTaskProvider;
+    BeanProvider<FindCallIdsByServiceRoomIds> findCallsTaskProvider;
 
     @Inject
-    Provider<RefreshCallsTask> refreshCallsTaskProvider;
+    BeanProvider<RefreshCallsTask> refreshCallsTaskProvider;
 
     @Inject
-    Provider<AddClientsTask> addClientsTaskProvider;
+    BeanProvider<AddClientsTask> addClientsTaskProvider;
 
     @Inject
-    Provider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
+    BeanProvider<AddPeerConnectionsTask> peerConnectionsTaskProvider;
 
     @Inject
-    Provider<AddMediaTracksTask> addMediaTrackTaskProvider;
+    BeanProvider<AddMediaTracksTask> addMediaTrackTaskProvider;
 
     private Subject<ObservedClientSamples> output = PublishSubject.create();
     private final ClientDTOsDepot clientsDepot = new ClientDTOsDepot();

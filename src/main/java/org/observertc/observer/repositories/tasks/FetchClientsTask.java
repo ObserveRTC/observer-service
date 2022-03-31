@@ -2,6 +2,7 @@ package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
@@ -9,7 +10,6 @@ import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 

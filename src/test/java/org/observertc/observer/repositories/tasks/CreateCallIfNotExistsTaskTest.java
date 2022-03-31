@@ -1,13 +1,13 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.RandomGenerators;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ class CreateCallIfNotExistsTaskTest {
     private final static UUID CALL_ID = UUID.randomUUID();
 
     @Inject
-    Provider<CreateCallIfNotExistsTask> createCallIfNotExistsTaskProvider;
+    BeanProvider<CreateCallIfNotExistsTask> createCallIfNotExistsTaskProvider;
 
     @Inject
     HazelcastMaps hazelcastMaps;

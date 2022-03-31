@@ -1,5 +1,7 @@
 package org.observertc.observer;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.components.*;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.sinks.ReportSinks;
@@ -11,8 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class ObserverService {

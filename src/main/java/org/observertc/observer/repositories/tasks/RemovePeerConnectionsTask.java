@@ -1,6 +1,8 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -9,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.*;
 
 @Prototype
@@ -26,7 +26,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    Provider<RemoveMediaTracksTask> removeMediaTracksTaskProvider;
+    BeanProvider<RemoveMediaTracksTask> removeMediaTracksTaskProvider;
 
     @Inject
     ExposedMetrics exposedMetrics;

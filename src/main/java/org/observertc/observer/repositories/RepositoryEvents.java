@@ -4,6 +4,8 @@ import com.hazelcast.map.IMap;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.common.ClientMessageEvent;
 import org.observertc.observer.common.ObservablePassiveCollector;
 import org.observertc.observer.configs.ObserverConfig;
@@ -13,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

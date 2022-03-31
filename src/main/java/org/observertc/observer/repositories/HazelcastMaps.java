@@ -3,13 +3,13 @@ package org.observertc.observer.repositories;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.ObserverHazelcast;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.*;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.UUID;
 
 @Singleton

@@ -1,9 +1,9 @@
 package org.observertc.observer.sources;
 
 import io.micronaut.websocket.CloseReason;
+import jakarta.inject.Singleton;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 

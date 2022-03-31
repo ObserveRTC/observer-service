@@ -244,7 +244,7 @@ micronaut:
 
 TIP: For more infromation about the configuration related to metrics, please visit the official https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/[documentation].
 
-NOTE: If you want to use different integrations, you need to compile the project with the appropriate dependency in the `build.gradle`, and use the related configuration for it.
+NOTE: If you want to use different integrations, you need to compile the project with the appropriate dependency in the `build.gradle.purgatory`, and use the related configuration for it.
 
 === Peer Connection Sample Metrics
 

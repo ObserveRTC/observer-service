@@ -1,11 +1,11 @@
 package org.observertc.observer.repositories;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public interface RepositoryUpdatedEvent<T> {
     static<U> RepositoryUpdatedEvent<U> make(U oldValue, U newValue) {
-        return new RepositoryUpdatedEvent<U>() {
+        return new RepositoryUpdatedEvent<>() {
             @Override
             public U getOldValue() {
                 return oldValue;

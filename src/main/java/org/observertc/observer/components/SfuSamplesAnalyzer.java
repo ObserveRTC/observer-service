@@ -1,9 +1,11 @@
 package org.observertc.observer.components;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Inject;
 import org.observertc.observer.components.depots.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.FetchSfuRelationsTask;
@@ -12,8 +14,6 @@ import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(SfuSamplesAnalyzer.class);
 
     @Inject
-    Provider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
+    BeanProvider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
 
     private Subject<List<Report>> output = PublishSubject.create();
     private final SfuTransportReportsDepot sfuTransportReportsDepot = new SfuTransportReportsDepot();

@@ -18,7 +18,7 @@ package org.observertc.observer.micrometer;
 
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micronaut.context.annotation.Bean;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 public class WebRTCStatsMeterFilterFactory {
 	/**

@@ -24,6 +24,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.CPSubsystem;
 import com.hazelcast.logging.LogEvent;
 import com.hazelcast.logging.LogListener;
+import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.PortableDTOFactory;
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

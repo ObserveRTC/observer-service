@@ -1,6 +1,8 @@
 package org.observertc.observer.components.eventreports;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.components.eventreports.attachments.ClientAttachment;
 import org.observertc.observer.dto.ClientDTO;
@@ -14,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,13 +26,13 @@ public class ClientLeftReports {
     private static final Logger logger = LoggerFactory.getLogger(ClientLeftReports.class);
 
     @Inject
-    Provider<RemoveClientsTask> removeClientsTaskProvider;
+    BeanProvider<RemoveClientsTask> removeClientsTaskProvider;
 
     @Inject
-    Provider<FetchCallClientsTask> fetchCallClientsTaskProvider;
+    BeanProvider<FetchCallClientsTask> fetchCallClientsTaskProvider;
 
     @Inject
-    Provider<RemoveCallsTask> removeCallsTaskProvider;
+    BeanProvider<RemoveCallsTask> removeCallsTaskProvider;
 
 
     @PostConstruct

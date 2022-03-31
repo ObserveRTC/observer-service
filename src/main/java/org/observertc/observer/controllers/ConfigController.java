@@ -5,9 +5,9 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import jakarta.inject.Inject;
 import org.observertc.observer.configs.ObserverConfig;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)

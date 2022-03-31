@@ -1,11 +1,10 @@
 package org.observertc.observer.entities;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.utils.DTOGenerators;
-
-import javax.inject.Inject;
 
 @MicronautTest
 class CallEntityTest {

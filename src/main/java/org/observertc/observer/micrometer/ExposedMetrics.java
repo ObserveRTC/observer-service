@@ -1,10 +1,10 @@
 package org.observertc.observer.micrometer;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.common.TaskAbstract;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;

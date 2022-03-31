@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import jakarta.inject.Inject;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Decoder;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 import java.util.Objects;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)

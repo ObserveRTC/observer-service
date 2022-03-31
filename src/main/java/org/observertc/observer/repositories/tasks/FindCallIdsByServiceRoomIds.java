@@ -1,13 +1,13 @@
 package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.samples.ServiceRoomId;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 

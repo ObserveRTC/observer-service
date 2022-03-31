@@ -2,6 +2,8 @@ package org.observertc.observer.components;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.components.eventreports.*;
 import org.observertc.observer.configs.ObserverConfig;
@@ -14,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;

@@ -16,14 +16,14 @@
 
 package org.observertc.observer.repositories.tasks;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.ObserverHazelcast;
 import org.observertc.observer.dto.WeakLockDTO;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Objects;
 import java.util.UUID;
 

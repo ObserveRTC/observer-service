@@ -1,12 +1,11 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOMapGenerator;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
 
 @MicronautTest
 class RemoveSfuRtpPadsTaskTest {
@@ -17,7 +16,7 @@ class RemoveSfuRtpPadsTaskTest {
     DTOMapGenerator generator = new DTOMapGenerator().generateSingleSfuCase();
 
     @Inject
-    Provider<RemoveSfuRtpPadsTask> removeSfuRtpPadsTaskProvider;
+    BeanProvider<RemoveSfuRtpPadsTask> removeSfuRtpPadsTaskProvider;
 
     @BeforeEach
     void setup() {

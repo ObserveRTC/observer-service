@@ -1,6 +1,8 @@
 package org.observertc.observer.components.eventreports;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.events.SfuEventType;
@@ -11,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ public class SfuLeftReports {
     private static final Logger logger = LoggerFactory.getLogger(SfuLeftReports.class);
 
     @Inject
-    Provider<RemoveSFUsTask> removeSfuTask;
+    BeanProvider<RemoveSFUsTask> removeSfuTask;
 
     @PostConstruct
     void setup() {

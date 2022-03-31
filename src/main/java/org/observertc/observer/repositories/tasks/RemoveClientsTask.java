@@ -1,6 +1,8 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
@@ -10,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.*;
 
 @Prototype
@@ -27,7 +27,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    Provider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
+    BeanProvider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
     private boolean unmodifiableResult = false;
 
     @Inject

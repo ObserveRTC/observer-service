@@ -1,6 +1,8 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -10,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -35,7 +35,7 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
     FindCallIdsByServiceRoomIds findCallIds;
 
     @Inject
-    Provider<RemoveClientsTask> removeClientsTaskProvider;
+    BeanProvider<RemoveClientsTask> removeClientsTaskProvider;
 
     @Inject
     WeakLockProvider weakLockProvider;

@@ -1,6 +1,7 @@
 package org.observertc.observer.repositories.tasks;
 
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -9,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.util.*;
 
 @Prototype

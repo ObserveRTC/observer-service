@@ -1,13 +1,13 @@
 package org.observertc.observer.components;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.dto.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

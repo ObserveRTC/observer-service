@@ -1,11 +1,11 @@
 package org.observertc.observer.repositories;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public interface RepositoryExpiredEvent<T> {
     static<U> RepositoryExpiredEvent<U> make(U value, Long estimatedLastTouch) {
-        return new RepositoryExpiredEvent<U>() {
+        return new RepositoryExpiredEvent<>() {
             @Override
             public U getValue() {
                 return value;

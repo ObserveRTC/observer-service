@@ -1,6 +1,8 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.dto.SfuSinkDTO;
 import org.observertc.observer.dto.SfuStreamDTO;
@@ -9,8 +11,6 @@ import org.observertc.observer.repositories.RepositoryEvents;
 import org.observertc.observer.repositories.SfuRtpPadToMediaTrackBinder;
 import org.observertc.observer.utils.DTOMapGenerator;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -33,7 +33,7 @@ class FetchSfuRelationsTaskTest {
     SfuRtpPadToMediaTrackBinder sfuRtpPadToMediaTrackBinder;
 
     @Inject
-    Provider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
+    BeanProvider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
 
     static final DTOMapGenerator dtoMapGenerator = new DTOMapGenerator().generateSingleSfuCase();
 

@@ -1,13 +1,13 @@
 package org.observertc.observer.components;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.samples.ObservedSamplesGenerator;
 import org.observertc.observer.samples.ObservedSfuSamples;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;

@@ -1,11 +1,11 @@
 package org.observertc.observer.repositories;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.GeneralEntryDTO;
 
-import javax.inject.Inject;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

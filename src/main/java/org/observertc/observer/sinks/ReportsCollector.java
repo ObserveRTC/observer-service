@@ -1,6 +1,8 @@
 package org.observertc.observer.sinks;
 
 import io.reactivex.rxjava3.core.Observable;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.reports.Report;
@@ -11,8 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

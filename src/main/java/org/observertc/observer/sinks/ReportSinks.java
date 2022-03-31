@@ -1,16 +1,16 @@
 package org.observertc.observer.sinks;
 
 import io.reactivex.rxjava3.functions.Consumer;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.reports.Report;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.*;
 
 @Singleton

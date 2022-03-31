@@ -3,6 +3,7 @@ package org.observertc.observer.sources;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.common.MinuteToTimeZoneOffsetConverter;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.configs.ObserverConfig;
@@ -10,7 +11,6 @@ import org.observertc.observer.samples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Singleton;
 import java.util.List;
 import java.util.Objects;
 

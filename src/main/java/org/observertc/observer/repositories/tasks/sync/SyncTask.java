@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories.tasks.sync;
 
+import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
@@ -7,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

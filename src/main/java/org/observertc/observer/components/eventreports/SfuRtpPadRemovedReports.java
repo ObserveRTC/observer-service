@@ -1,6 +1,8 @@
 package org.observertc.observer.components.eventreports;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.components.eventreports.attachments.RtpPadAttachment;
 import org.observertc.observer.dto.SfuRtpPadDTO;
@@ -12,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,7 +26,7 @@ public class SfuRtpPadRemovedReports {
     private static final Logger logger = LoggerFactory.getLogger(SfuRtpPadRemovedReports.class);
 
     @Inject
-    Provider<RemoveSfuRtpPadsTask> removeSfuRtpPadsTaskProvider;
+    BeanProvider<RemoveSfuRtpPadsTask> removeSfuRtpPadsTaskProvider;
 
     @PostConstruct
     void setup() {

@@ -19,8 +19,8 @@ package org.observertc.observer.micrometer;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.micronaut.configuration.metrics.aggregator.MeterRegistryConfigurer;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 
 @Singleton
 public class WebRTCStatsMeterRegistryConfigurer implements MeterRegistryConfigurer {

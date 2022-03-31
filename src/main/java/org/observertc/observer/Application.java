@@ -16,7 +16,6 @@
 
 package org.observertc.observer;
 
-import io.dekorate.prometheus.annotation.EnableServiceMonitor;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.runtime.Micronaut;
@@ -38,7 +37,7 @@ import java.time.temporal.ChronoUnit;
                 TypeHint.AccessType.ALL_DECLARED_FIELDS
         }
 )
-@EnableServiceMonitor(port = "http", path = "/prometheus")
+//@EnableServiceMonitor(port = "http", path = "/prometheus")
 public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private static final String INITIAL_WAIT_IN_S = "INITIAL_WAITING_TIME_IN_S";

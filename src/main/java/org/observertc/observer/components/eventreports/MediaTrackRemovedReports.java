@@ -1,6 +1,8 @@
 package org.observertc.observer.components.eventreports;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.components.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.dto.MediaTrackDTO;
@@ -12,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +26,7 @@ public class MediaTrackRemovedReports {
     private static final Logger logger = LoggerFactory.getLogger(MediaTrackRemovedReports.class);
 
     @Inject
-    Provider<RemoveMediaTracksTask> removeMediaTracksTaskProvider;
+    BeanProvider<RemoveMediaTracksTask> removeMediaTracksTaskProvider;
 
     @PostConstruct
     void setup() {

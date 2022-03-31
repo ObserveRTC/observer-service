@@ -2,6 +2,9 @@ package org.observertc.observer.sinks.websocket;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micronaut.websocket.annotation.OnClose;
+import io.micronaut.websocket.annotation.OnMessage;
+import io.micronaut.websocket.annotation.OnOpen;
 import io.reactivex.rxjava3.annotations.NonNull;
 import jakarta.websocket.*;
 import org.observertc.observer.reports.Report;

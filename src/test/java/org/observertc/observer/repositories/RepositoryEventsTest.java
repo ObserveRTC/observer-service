@@ -1,12 +1,12 @@
 package org.observertc.observer.repositories;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.*;
 import org.observertc.observer.utils.DTOGenerators;
 
-import javax.inject.Inject;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;

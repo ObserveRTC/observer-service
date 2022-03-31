@@ -1,9 +1,11 @@
 package org.observertc.observer.components;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.components.depots.*;
 import org.observertc.observer.events.CallMetaType;
@@ -14,8 +16,6 @@ import org.observertc.observer.samples.ObservedClientSamples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -24,7 +24,7 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
     private static final Logger logger = LoggerFactory.getLogger(ClientSamplesAnalyzer.class);
 
     @Inject
-    Provider<FetchTracksRelationsTask> matchCallTracksTaskProvider;
+    BeanProvider<FetchTracksRelationsTask> matchCallTracksTaskProvider;
 
     private Subject<List<Report>> output = PublishSubject.create();
     private final ClientTransportReportsDepot clientTransportReportsDepot = new ClientTransportReportsDepot();

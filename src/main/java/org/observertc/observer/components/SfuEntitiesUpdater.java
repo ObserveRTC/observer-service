@@ -1,9 +1,11 @@
 package org.observertc.observer.components;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Inject;
 import org.observertc.observer.components.depots.SfuDTOsDepot;
 import org.observertc.observer.components.depots.SfuRtpPadDTOsDepot;
 import org.observertc.observer.components.depots.SfuTransportDTOsDepot;
@@ -19,8 +21,6 @@ import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -30,16 +30,16 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(SfuEntitiesUpdater.class);
 
     @Inject
-    Provider<RefreshSfusTask> refreshSfusTaskProvider;
+    BeanProvider<RefreshSfusTask> refreshSfusTaskProvider;
 
     @Inject
-    Provider<AddSFUsTask> addSFUsTaskProvider;
+    BeanProvider<AddSFUsTask> addSFUsTaskProvider;
 
     @Inject
-    Provider<AddSfuTransportsTask> addSfuTransportsTaskProvider;
+    BeanProvider<AddSfuTransportsTask> addSfuTransportsTaskProvider;
 
     @Inject
-    Provider<AddSfuRtpPadsTask> addSfuRtpPadsTaskProvider;
+    BeanProvider<AddSfuRtpPadsTask> addSfuRtpPadsTaskProvider;
 
     private Subject<ObservedSfuSamples> output = PublishSubject.create();
     private final SfuDTOsDepot sfuDTOsDepot = new SfuDTOsDepot();

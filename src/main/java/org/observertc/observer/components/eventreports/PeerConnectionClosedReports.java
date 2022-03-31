@@ -1,6 +1,8 @@
 package org.observertc.observer.components.eventreports;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import jakarta.inject.Inject;
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.events.CallEventType;
@@ -11,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PeerConnectionClosedReports {
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionClosedReports.class);
 
     @Inject
-    Provider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
+    BeanProvider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
 
     @PostConstruct
     void setup() {
