@@ -3,7 +3,7 @@ plugins {
     id("io.micronaut.application") version "3.3.2"
 }
 
-version = "0.1"
+version = "1.0.0-beta"
 group = "org.observertc.observer"
 
 repositories {
