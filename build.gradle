@@ -27,7 +27,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
 
-    // Websocket
+    // ------------- Websocket -----------
     implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
 
     // ------------- Hazelcast -----------
@@ -36,6 +36,10 @@ dependencies {
     // --------- Sink dependencies -----
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.1'
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
+
+    // ------------- Protobuf -----------
+    implementation 'com.google.protobuf:protobuf-java:3.19.4'
+
 
 }
 

@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.48";
+	public static final String VERSION="2.0.0-beta.54";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -3772,6 +3772,200 @@ public class Samples {
 		}
 	}
 	/**
+	* docs
+	*/
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class TurnSample {
+		public static Builder newBuilder() {
+			return new Builder();
+		}
+		/**
+		* undefined
+		*/
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class TurnSession {
+			public static Builder newBuilder() {
+				return new Builder();
+			}
+			/**
+			* Flag indicate to not generate report from this sample
+			*/
+			@JsonProperty("sessionId")
+			public String sessionId;
+			/**
+			* The Authentication Realm (RFC 8656)
+			*/
+			@JsonProperty("realm")
+			public String realm;
+			/**
+			* The username of the used in authentication
+			*/
+			@JsonProperty("username")
+			public String username;
+			/**
+			* The id of the client the TURN session belongs to (ClientSample)
+			*/
+			@JsonProperty("clientId")
+			public UUID clientId;
+			/**
+			* The timestamp when the session has been started. Epoch in milliseconds, GMT
+			*/
+			@JsonProperty("started")
+			public Long started;
+			/**
+			* For each Allocate request, the server SHOULD generate a new random nonce when the allocation is first attempted following the randomness recommendations in [RFC4086] and SHOULD expire the nonce at least once every hour during the lifetime of the allocation.  Epoch in millis GMT
+			*/
+			@JsonProperty("nonceExpirationTime")
+			public Long nonceExpirationTime;
+			/**
+			* the transport protocol betwwen the client and the server
+			*/
+			@JsonProperty("clientTransportProtocol")
+			public String clientTransportProtocol;
+			/**
+			* the transport protocol between the server and the peer
+			*/
+			@JsonProperty("relayTransportProtocol")
+			public String relayTransportProtocol;
+			/**
+			* The address of the server the client connected to
+			*/
+			@JsonProperty("serverAddress")
+			public String serverAddress;
+			/**
+			* The portnumber the server listens the client requests
+			*/
+			@JsonProperty("serverPort")
+			public Integer serverPort;
+			/**
+			* The address of the address the serever connect to
+			*/
+			@JsonProperty("peerAddress")
+			public String peerAddress;
+			/**
+			* The portnumber the server connects to
+			*/
+			@JsonProperty("peerPort")
+			public Integer peerPort;
+			/**
+			* the bitrate the TURN server sending to the client
+			*/
+			@JsonProperty("averageSendingBitrateToClient")
+			public Integer averageSendingBitrateToClient;
+			/**
+			* the bitrate the TURN server receiving from the client
+			*/
+			@JsonProperty("averageReceivingBitrateFromClient")
+			public Integer averageReceivingBitrateFromClient;
+			/**
+			* the amount of bytes received from the client
+			*/
+			@JsonProperty("receivedBytesFromClient")
+			public Long receivedBytesFromClient;
+			/**
+			* the amount of bytes sent to the client
+			*/
+			@JsonProperty("sentBytesToClient")
+			public Long sentBytesToClient;
+			/**
+			* the amount of packets received from the client
+			*/
+			@JsonProperty("receivedPacketsFromClient")
+			public Integer receivedPacketsFromClient;
+			/**
+			* the amount of packets sent to the client
+			*/
+			@JsonProperty("sentPacketsToClient")
+			public Integer sentPacketsToClient;
+			/**
+			* the bitrate the TURN server sending to theb peer
+			*/
+			@JsonProperty("averageSendingBitrateToPeer")
+			public Integer averageSendingBitrateToPeer;
+			/**
+			* the bitrate the TURN server receiving from the peer
+			*/
+			@JsonProperty("averageReceivingBitrateFromPeer")
+			public Integer averageReceivingBitrateFromPeer;
+			/**
+			* the amount of bytes received from the peer
+			*/
+			@JsonProperty("receivedBytesFromPeer")
+			public Long receivedBytesFromPeer;
+			/**
+			* the amount of bytes sent to the peer
+			*/
+			@JsonProperty("sentBytesToPeer")
+			public Long sentBytesToPeer;
+			/**
+			* the amount of packets received from the peer
+			*/
+			@JsonProperty("receivedPacketsFromPeer")
+			public Integer receivedPacketsFromPeer;
+			/**
+			* the amount of packets sent to the peer
+			*/
+			@JsonProperty("sentPacketsToPeer")
+			public Integer sentPacketsToPeer;
+		
+
+			public static class Builder {
+		
+				private TurnSession result = new TurnSession();
+		
+				public Builder setSessionId(String value) { this.result.sessionId = value; return this; }
+				public Builder setRealm(String value) { this.result.realm = value; return this; }
+				public Builder setUsername(String value) { this.result.username = value; return this; }
+				public Builder setClientId(UUID value) { this.result.clientId = value; return this; }
+				public Builder setStarted(Long value) { this.result.started = value; return this; }
+				public Builder setNonceExpirationTime(Long value) { this.result.nonceExpirationTime = value; return this; }
+				public Builder setClientTransportProtocol(String value) { this.result.clientTransportProtocol = value; return this; }
+				public Builder setRelayTransportProtocol(String value) { this.result.relayTransportProtocol = value; return this; }
+				public Builder setServerAddress(String value) { this.result.serverAddress = value; return this; }
+				public Builder setServerPort(Integer value) { this.result.serverPort = value; return this; }
+				public Builder setPeerAddress(String value) { this.result.peerAddress = value; return this; }
+				public Builder setPeerPort(Integer value) { this.result.peerPort = value; return this; }
+				public Builder setAverageSendingBitrateToClient(Integer value) { this.result.averageSendingBitrateToClient = value; return this; }
+				public Builder setAverageReceivingBitrateFromClient(Integer value) { this.result.averageReceivingBitrateFromClient = value; return this; }
+				public Builder setReceivedBytesFromClient(Long value) { this.result.receivedBytesFromClient = value; return this; }
+				public Builder setSentBytesToClient(Long value) { this.result.sentBytesToClient = value; return this; }
+				public Builder setReceivedPacketsFromClient(Integer value) { this.result.receivedPacketsFromClient = value; return this; }
+				public Builder setSentPacketsToClient(Integer value) { this.result.sentPacketsToClient = value; return this; }
+				public Builder setAverageSendingBitrateToPeer(Integer value) { this.result.averageSendingBitrateToPeer = value; return this; }
+				public Builder setAverageReceivingBitrateFromPeer(Integer value) { this.result.averageReceivingBitrateFromPeer = value; return this; }
+				public Builder setReceivedBytesFromPeer(Long value) { this.result.receivedBytesFromPeer = value; return this; }
+				public Builder setSentBytesToPeer(Long value) { this.result.sentBytesToPeer = value; return this; }
+				public Builder setReceivedPacketsFromPeer(Integer value) { this.result.receivedPacketsFromPeer = value; return this; }
+				public Builder setSentPacketsToPeer(Integer value) { this.result.sentPacketsToPeer = value; return this; }
+				public TurnSession build() {
+					return this.result;
+				}
+			}
+		}
+		/**
+		* A unique id of the turn server
+		*/
+		@JsonProperty("serverId")
+		public String serverId;
+		/**
+		* Session data
+		*/
+		@JsonProperty("sessions")
+		public TurnSession[] sessions;
+	
+
+		public static class Builder {
+	
+			private TurnSample result = new TurnSample();
+	
+			public Builder setServerId(String value) { this.result.serverId = value; return this; }
+			public Builder setSessions(TurnSession[] value) { this.result.sessions = value; return this; }
+			public TurnSample build() {
+				return this.result;
+			}
+		}
+	}
+	/**
 	* Additional meta information about the carried payloads
 	*/
 	@JsonProperty("meta")
@@ -3791,6 +3985,11 @@ public class Samples {
 	*/
 	@JsonProperty("sfuSamples")
 	public SfuSample[] sfuSamples;
+	/**
+	* Samples taken from the TURN server
+	*/
+	@JsonProperty("turnSamples")
+	public TurnSample[] turnSamples;
 
 
 	public static class Builder {
@@ -3801,6 +4000,7 @@ public class Samples {
 		public Builder setControlFlags(ControlFlags value) { this.result.controlFlags = value; return this; }
 		public Builder setClientSamples(ClientSample[] value) { this.result.clientSamples = value; return this; }
 		public Builder setSfuSamples(SfuSample[] value) { this.result.sfuSamples = value; return this; }
+		public Builder setTurnSamples(TurnSample[] value) { this.result.turnSamples = value; return this; }
 		public Samples build() {
 			return this.result;
 		}

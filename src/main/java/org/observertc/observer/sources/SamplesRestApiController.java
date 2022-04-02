@@ -44,7 +44,7 @@ public class SamplesRestApiController {
 
 	public SamplesRestApiController(ObserverConfig observerConfig) {
 		this.config = observerConfig.sources.rest;
-		this.decoder = new SamplesDecoderBuilder()
+		this.decoder = SamplesDecoder.builder()
 				.withCodecType(this.config.decoder)
 				.build();
 	}

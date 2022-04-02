@@ -4,6 +4,7 @@ samples.meta = ASSIGNED;
 samples.controlFlags = ASSIGNED;
 samples.clientSamples = ASSIGNED;
 samples.sfuSamples = ASSIGNED;
+samples.turnSamples = ASSIGNED;
 
 SamplesMeta
 samplesMeta.schemaVersion = ASSIGNED;
@@ -600,3 +601,33 @@ sfuSctpChannel.bytesSent = ASSIGNED;
 SfuExtensionStats
 sfuExtensionStats.type = ASSIGNED;
 sfuExtensionStats.payload = ASSIGNED;
+
+TurnSample
+turnSample.serverId = ASSIGNED;
+turnSample.sessions = ASSIGNED;
+
+TurnSession
+turnSession.sessionId = ASSIGNED;
+turnSession.realm = ASSIGNED;
+turnSession.username = ASSIGNED;
+turnSession.clientId = ASSIGNED;
+turnSession.started = ASSIGNED;
+turnSession.nonceExpirationTime = ASSIGNED;
+turnSession.clientTransportProtocol = ASSIGNED;
+turnSession.relayTransportProtocol = ASSIGNED;
+turnSession.serverAddress = ASSIGNED;
+turnSession.serverPort = ASSIGNED;
+turnSession.peerAddress = ASSIGNED;
+turnSession.peerPort = ASSIGNED;
+turnSession.averageSendingBitrateToClient = ASSIGNED;
+turnSession.averageReceivingBitrateFromClient = ASSIGNED;
+turnSession.receivedBytesFromClient = ASSIGNED;
+turnSession.sentBytesToClient = ASSIGNED;
+turnSession.receivedPacketsFromClient = ASSIGNED;
+turnSession.sentPacketsToClient = ASSIGNED;
+turnSession.averageSendingBitrateToPeer = ASSIGNED;
+turnSession.averageReceivingBitrateFromPeer = ASSIGNED;
+turnSession.receivedBytesFromPeer = ASSIGNED;
+turnSession.sentBytesToPeer = ASSIGNED;
+turnSession.receivedPacketsFromPeer = ASSIGNED;
+turnSession.sentPacketsToPeer = ASSIGNED;

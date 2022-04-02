@@ -86,7 +86,7 @@ public class SamplesWebsocketController {
 
 	@PostConstruct
 	void setup() {
-		var decoder = new SamplesDecoderBuilder()
+		var decoder = SamplesDecoder.builder()
 				.withCodecType(this.config.decoder)
 				.build();
 		var messageProcessor = this.createMessageProcessor(decoder);
