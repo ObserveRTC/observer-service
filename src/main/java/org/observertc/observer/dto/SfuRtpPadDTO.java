@@ -208,8 +208,8 @@ public class SfuRtpPadDTO implements VersionedPortable {
 			return this;
 		}
 
-		public Builder withInternal(boolean value) {
-			this.result.internal = value;
+		public Builder withInternal(Boolean value) {
+			this.result.internal = value == null ? false : value.booleanValue();
 			return this;
 		}
 

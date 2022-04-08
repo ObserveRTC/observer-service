@@ -136,4 +136,13 @@ public class UUIDAdapter {
 		}
 	}
 
+	public static UUID tryParseOrDefault(String candidate, UUID defaultValue) {
+		Optional<UUID> parsed = tryParse(candidate);
+		if (parsed.isEmpty()) {
+			return defaultValue;
+		} else {
+			return parsed.get();
+		}
+	}
+
 }

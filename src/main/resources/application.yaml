@@ -30,8 +30,6 @@ endpoints:
 ---
 observer:
   security:
-    websockets:
-      expirationInMin: 0
     ipAddressConverter:
       enabled: False
       algorithm: SHA-256
@@ -46,45 +44,36 @@ observer:
       hash-algorithm: "SHA-512"
       salt: "mySuperSalt"
 
-
   sources:
 #    allowedServiceIds: []
-    rest: {}
+    rest:
+      enabled: true
+      format: PROTOBUF
 
     websocket:
       enabled: true
-      format: JSON
-      formatConfig: {}
-
+      format: PROTOBUF
 
   repository:
     mediaTracksMaxIdleTimeInS: 300
-    peerConnectionsMaxIdleTimeInS: 300
     clientMaxIdleTimeInS: 300
     sfuMaxIdleTimeInS: 60
     sfuTransportMaxIdleTimeInS: 600
     sfuRtpPadMaxIdleTimeInS: 600
+    peerConnectionsMaxIdleTime: 300
 
   buffers:
-    repositoryEventsDebouncers:
-      maxItems: 100
-      maxTimeInS: 3
-
-    clientSamples:
-      maxItems: 100
-      maxTimeInMs: 10
-
-    sfuSamples:
-      maxItems: 100
-      maxTimeInMs: 10
+    samplesCollector:
+      maxItems: 10000
+      maxTimeInMs: 10000
 
     debouncers:
       maxItems: 10000
-      maxTimeInMs: 500
+      maxTimeInMs: 1000
 
-    outboundReports:
+    reportsCollector:
       maxItems: 10000
-      maxTimeInMs: 10
+      maxTimeInMs: 1000
 
   evaluators: {}
 

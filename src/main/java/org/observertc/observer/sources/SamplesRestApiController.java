@@ -18,7 +18,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Objects;
 
-@Secured(SecurityRule.IS_AUTHENTICATED)
+//@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 @Controller("/rest")
 public class SamplesRestApiController {
 
@@ -45,7 +46,7 @@ public class SamplesRestApiController {
 	public SamplesRestApiController(ObserverConfig observerConfig) {
 		this.config = observerConfig.sources.rest;
 		this.decoder = SamplesDecoder.builder()
-				.withCodecType(this.config.decoder)
+				.withCodecType(this.config.format)
 				.build();
 	}
 

@@ -63,7 +63,7 @@ public class SfuTransportDTOsDepot implements Supplier<Map<UUID, SfuTransportDTO
                     .build();
             this.buffer.put(sfuTransportDTO.transportId, sfuTransportDTO);
         } catch (Exception ex){
-            logger.warn("Exception occurred while assembling in {}", this.getClass().getSimpleName());
+            logger.warn("Exception occurred while assembling in {}", this.getClass().getSimpleName(), ex);
         } finally {
             this.clean();
         }

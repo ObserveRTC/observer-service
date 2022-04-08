@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
 
+
     // ------------- Websocket -----------
     implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
 

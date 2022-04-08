@@ -1,49 +1,28 @@
-/** Generated Code, Do not edit! */
-
-package org.observertc.observer.sources;
-
-import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.schemas.protobuf.ProtobufSamples;
-import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.samples.Samples.*;
-import org.observertc.schemas.samples.Samples.ClientSample.*;
-import org.observertc.schemas.samples.Samples.SfuSample.*;
-import org.observertc.schemas.samples.Samples.TurnSample.*;
-
-import java.util.function.Function;
-
-public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, Samples> {
+public class ProtobufSamplesReader implements Function<ProtobufSamples, Samples> {
 
 	@Override
-	public Samples apply(ProtobufSamples.Samples source) {
-		if (source == null) return null;
+	public Samples accept(ProtobufSamples source) {
 		var result = new Samples();
 		if (source.hasMeta()) {
-			var srcItem0 = source.getMeta();
-			var dstItem0 = new SamplesMeta();
-			if (srcItem0.hasSchemaVersion()) {
-				dstItem0.schemaVersion = srcItem0.getSchemaVersion();
+			result.meta = new [object Object]();
+			if ( source.meta.hasSchemaVersion()) {
+				result.meta.schemaVersion =  source.meta.getSchemaVersion();
 			}
-			result.meta = dstItem0;
 		}
 		if (source.hasControlFlags()) {
-			var srcItem0 = source.getControlFlags();
-			var dstItem0 = new ControlFlags();
-			if (srcItem0.hasClose()) {
-				dstItem0.close = srcItem0.getClose();
+			result.controlFlags = new [object Object]();
+			if ( source.controlFlags.hasClose()) {
+				result.controlFlags.close =  source.controlFlags.getClose();
 			}
-			result.controlFlags = dstItem0;
 		}
-		if (0 < source.getClientSamplesCount()) {
-			result.clientSamples = new ClientSample[ source.getClientSamplesCount()];
-			var clientSamplesIndex = 0;
+		if (source.hasClientSamples()) {
 			for (var srcItem0 : source.getClientSamplesList()) {
-				var dstItem0 = new ClientSample();
+				var dstItem0 = new [object Object]();
 				if (srcItem0.hasCallId()) {
-					dstItem0.callId = UUIDAdapter.tryParseOrNull(srcItem0.getCallId());
+					dstItem0.callId = srcItem0.getCallId();
 				}
 				if (srcItem0.hasClientId()) {
-					dstItem0.clientId = UUIDAdapter.tryParseOrNull(srcItem0.getClientId());
+					dstItem0.clientId = srcItem0.getClientId();
 				}
 				if (srcItem0.hasSampleSeq()) {
 					dstItem0.sampleSeq = srcItem0.getSampleSeq();
@@ -55,63 +34,53 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					dstItem0.userId = srcItem0.getUserId();
 				}
 				if (srcItem0.hasEngine()) {
-					var srcItem1 = srcItem0.getEngine();
-					var dstItem1 = new Engine();
-					if (srcItem1.hasName()) {
-						dstItem1.name = srcItem1.getName();
+					dstItem0.engine = new [object Object]();
+					if ( srcItem0.engine.hasName()) {
+						dstItem0.engine.name =  srcItem0.engine.getName();
 					}
-					if (srcItem1.hasVersion()) {
-						dstItem1.version = srcItem1.getVersion();
+					if ( srcItem0.engine.hasVersion()) {
+						dstItem0.engine.version =  srcItem0.engine.getVersion();
 					}
-					dstItem0.engine = dstItem1;
 				}
 				if (srcItem0.hasPlatform()) {
-					var srcItem1 = srcItem0.getPlatform();
-					var dstItem1 = new Platform();
-					if (srcItem1.hasType()) {
-						dstItem1.type = srcItem1.getType();
+					dstItem0.platform = new [object Object]();
+					if ( srcItem0.platform.hasType()) {
+						dstItem0.platform.type =  srcItem0.platform.getType();
 					}
-					if (srcItem1.hasVendor()) {
-						dstItem1.vendor = srcItem1.getVendor();
+					if ( srcItem0.platform.hasVendor()) {
+						dstItem0.platform.vendor =  srcItem0.platform.getVendor();
 					}
-					if (srcItem1.hasModel()) {
-						dstItem1.model = srcItem1.getModel();
+					if ( srcItem0.platform.hasModel()) {
+						dstItem0.platform.model =  srcItem0.platform.getModel();
 					}
-					dstItem0.platform = dstItem1;
 				}
 				if (srcItem0.hasBrowser()) {
-					var srcItem1 = srcItem0.getBrowser();
-					var dstItem1 = new Browser();
-					if (srcItem1.hasName()) {
-						dstItem1.name = srcItem1.getName();
+					dstItem0.browser = new [object Object]();
+					if ( srcItem0.browser.hasName()) {
+						dstItem0.browser.name =  srcItem0.browser.getName();
 					}
-					if (srcItem1.hasVersion()) {
-						dstItem1.version = srcItem1.getVersion();
+					if ( srcItem0.browser.hasVersion()) {
+						dstItem0.browser.version =  srcItem0.browser.getVersion();
 					}
-					dstItem0.browser = dstItem1;
 				}
 				if (srcItem0.hasOs()) {
-					var srcItem1 = srcItem0.getOs();
-					var dstItem1 = new OperationSystem();
-					if (srcItem1.hasName()) {
-						dstItem1.name = srcItem1.getName();
+					dstItem0.os = new [object Object]();
+					if ( srcItem0.os.hasName()) {
+						dstItem0.os.name =  srcItem0.os.getName();
 					}
-					if (srcItem1.hasVersion()) {
-						dstItem1.version = srcItem1.getVersion();
+					if ( srcItem0.os.hasVersion()) {
+						dstItem0.os.version =  srcItem0.os.getVersion();
 					}
-					if (srcItem1.hasVersionName()) {
-						dstItem1.versionName = srcItem1.getVersionName();
+					if ( srcItem0.os.hasVersionName()) {
+						dstItem0.os.versionName =  srcItem0.os.getVersionName();
 					}
-					dstItem0.os = dstItem1;
 				}
-				if (0 < srcItem0.getMediaConstraintsCount()) {
-					dstItem0.mediaConstraints = srcItem0.getMediaConstraintsList().toArray(new String[0]);
+				if (srcItem0.hasMediaConstraints()) {
+					dstItem0.mediaConstraints = getMediaConstraintsList().toArray(new string[0]);
 				}
-				if (0 < srcItem0.getMediaDevicesCount()) {
-					dstItem0.mediaDevices = new MediaDevice[ srcItem0.getMediaDevicesCount()];
-					var mediaDevicesIndex = 0;
+				if (srcItem0.hasMediaDevices()) {
 					for (var srcItem1 : srcItem0.getMediaDevicesList()) {
-						var dstItem1 = new MediaDevice();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
 						}
@@ -121,36 +90,30 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasLabel()) {
 							dstItem1.label = srcItem1.getLabel();
 						}
-						dstItem0.mediaDevices[mediaDevicesIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getUserMediaErrorsCount()) {
-					dstItem0.userMediaErrors = srcItem0.getUserMediaErrorsList().toArray(new String[0]);
+				if (srcItem0.hasUserMediaErrors()) {
+					dstItem0.userMediaErrors = getUserMediaErrorsList().toArray(new string[0]);
 				}
-				if (0 < srcItem0.getExtensionStatsCount()) {
-					dstItem0.extensionStats = new ExtensionStat[ srcItem0.getExtensionStatsCount()];
-					var extensionStatsIndex = 0;
+				if (srcItem0.hasExtensionStats()) {
 					for (var srcItem1 : srcItem0.getExtensionStatsList()) {
-						var dstItem1 = new ExtensionStat();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasType()) {
 							dstItem1.type = srcItem1.getType();
 						}
 						if (srcItem1.hasPayload()) {
 							dstItem1.payload = srcItem1.getPayload();
 						}
-						dstItem0.extensionStats[extensionStatsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getIceServersCount()) {
-					dstItem0.iceServers = srcItem0.getIceServersList().toArray(new String[0]);
+				if (srcItem0.hasIceServers()) {
+					dstItem0.iceServers = getIceServersList().toArray(new string[0]);
 				}
-				if (0 < srcItem0.getPcTransportsCount()) {
-					dstItem0.pcTransports = new PeerConnectionTransport[ srcItem0.getPcTransportsCount()];
-					var pcTransportsIndex = 0;
+				if (srcItem0.hasPcTransports()) {
 					for (var srcItem1 : srcItem0.getPcTransportsList()) {
-						var dstItem1 = new PeerConnectionTransport();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasLabel()) {
 							dstItem1.label = srcItem1.getLabel();
@@ -341,14 +304,11 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSctpUnackData()) {
 							dstItem1.sctpUnackData = srcItem1.getSctpUnackData();
 						}
-						dstItem0.pcTransports[pcTransportsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getMediaSourcesCount()) {
-					dstItem0.mediaSources = new MediaSourceStat[ srcItem0.getMediaSourcesCount()];
-					var mediaSourcesIndex = 0;
+				if (srcItem0.hasMediaSources()) {
 					for (var srcItem1 : srcItem0.getMediaSourcesList()) {
-						var dstItem1 = new MediaSourceStat();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasTrackIdentifier()) {
 							dstItem1.trackIdentifier = srcItem1.getTrackIdentifier();
 						}
@@ -388,14 +348,11 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasFramesPerSecond()) {
 							dstItem1.framesPerSecond = srcItem1.getFramesPerSecond();
 						}
-						dstItem0.mediaSources[mediaSourcesIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getCodecsCount()) {
-					dstItem0.codecs = new MediaCodecStats[ srcItem0.getCodecsCount()];
-					var codecsIndex = 0;
+				if (srcItem0.hasCodecs()) {
 					for (var srcItem1 : srcItem0.getCodecsList()) {
-						var dstItem1 = new MediaCodecStats();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasPayloadType()) {
 							dstItem1.payloadType = srcItem1.getPayloadType();
 						}
@@ -414,14 +371,11 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSdpFmtpLine()) {
 							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
-						dstItem0.codecs[codecsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getCertificatesCount()) {
-					dstItem0.certificates = new Certificate[ srcItem0.getCertificatesCount()];
-					var certificatesIndex = 0;
+				if (srcItem0.hasCertificates()) {
 					for (var srcItem1 : srcItem0.getCertificatesList()) {
-						var dstItem1 = new Certificate();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasFingerprint()) {
 							dstItem1.fingerprint = srcItem1.getFingerprint();
 						}
@@ -434,25 +388,22 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasIssuerCertificateId()) {
 							dstItem1.issuerCertificateId = srcItem1.getIssuerCertificateId();
 						}
-						dstItem0.certificates[certificatesIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getInboundAudioTracksCount()) {
-					dstItem0.inboundAudioTracks = new InboundAudioTrack[ srcItem0.getInboundAudioTracksCount()];
-					var inboundAudioTracksIndex = 0;
+				if (srcItem0.hasInboundAudioTracks()) {
 					for (var srcItem1 : srcItem0.getInboundAudioTracksList()) {
-						var dstItem1 = new InboundAudioTrack();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasRemoteClientId()) {
 							dstItem1.remoteClientId = srcItem1.getRemoteClientId();
 						}
 						if (srcItem1.hasSfuSinkId()) {
-							dstItem1.sfuSinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuSinkId());
+							dstItem1.sfuSinkId = srcItem1.getSfuSinkId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -610,25 +561,22 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSdpFmtpLine()) {
 							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
-						dstItem0.inboundAudioTracks[inboundAudioTracksIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getInboundVideoTracksCount()) {
-					dstItem0.inboundVideoTracks = new InboundVideoTrack[ srcItem0.getInboundVideoTracksCount()];
-					var inboundVideoTracksIndex = 0;
+				if (srcItem0.hasInboundVideoTracks()) {
 					for (var srcItem1 : srcItem0.getInboundVideoTracksList()) {
-						var dstItem1 = new InboundVideoTrack();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasRemoteClientId()) {
 							dstItem1.remoteClientId = srcItem1.getRemoteClientId();
 						}
 						if (srcItem1.hasSfuSinkId()) {
-							dstItem1.sfuSinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuSinkId());
+							dstItem1.sfuSinkId = srcItem1.getSfuSinkId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -807,22 +755,19 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSdpFmtpLine()) {
 							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
-						dstItem0.inboundVideoTracks[inboundVideoTracksIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getOutboundAudioTracksCount()) {
-					dstItem0.outboundAudioTracks = new OutboundAudioTrack[ srcItem0.getOutboundAudioTracksCount()];
-					var outboundAudioTracksIndex = 0;
+				if (srcItem0.hasOutboundAudioTracks()) {
 					for (var srcItem1 : srcItem0.getOutboundAudioTracksList()) {
-						var dstItem1 = new OutboundAudioTrack();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -983,22 +928,19 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSdpFmtpLine()) {
 							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
-						dstItem0.outboundAudioTracks[outboundAudioTracksIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getOutboundVideoTracksCount()) {
-					dstItem0.outboundVideoTracks = new OutboundVideoTrack[ srcItem0.getOutboundVideoTracksCount()];
-					var outboundVideoTracksIndex = 0;
+				if (srcItem0.hasOutboundVideoTracks()) {
 					for (var srcItem1 : srcItem0.getOutboundVideoTracksList()) {
-						var dstItem1 = new OutboundVideoTrack();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -1213,16 +1155,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSdpFmtpLine()) {
 							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
-						dstItem0.outboundVideoTracks[outboundVideoTracksIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getIceLocalCandidatesCount()) {
-					dstItem0.iceLocalCandidates = new IceLocalCandidate[ srcItem0.getIceLocalCandidatesCount()];
-					var iceLocalCandidatesIndex = 0;
+				if (srcItem0.hasIceLocalCandidates()) {
 					for (var srcItem1 : srcItem0.getIceLocalCandidatesList()) {
-						var dstItem1 = new IceLocalCandidate();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
@@ -1248,16 +1187,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasRelayProtocol()) {
 							dstItem1.relayProtocol = srcItem1.getRelayProtocol();
 						}
-						dstItem0.iceLocalCandidates[iceLocalCandidatesIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getIceRemoteCandidatesCount()) {
-					dstItem0.iceRemoteCandidates = new IceRemoteCandidate[ srcItem0.getIceRemoteCandidatesCount()];
-					var iceRemoteCandidatesIndex = 0;
+				if (srcItem0.hasIceRemoteCandidates()) {
 					for (var srcItem1 : srcItem0.getIceRemoteCandidatesList()) {
-						var dstItem1 = new IceRemoteCandidate();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
@@ -1283,16 +1219,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasRelayProtocol()) {
 							dstItem1.relayProtocol = srcItem1.getRelayProtocol();
 						}
-						dstItem0.iceRemoteCandidates[iceRemoteCandidatesIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getDataChannelsCount()) {
-					dstItem0.dataChannels = new DataChannel[ srcItem0.getDataChannelsCount()];
-					var dataChannelsIndex = 0;
+				if (srcItem0.hasDataChannels()) {
 					for (var srcItem1 : srcItem0.getDataChannelsList()) {
-						var dstItem1 = new DataChannel();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
@@ -1327,7 +1260,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasBytesReceived()) {
 							dstItem1.bytesReceived = srcItem1.getBytesReceived();
 						}
-						dstItem0.dataChannels[dataChannelsIndex++] = dstItem1;
 					}
 				}
 				if (srcItem0.hasTimestamp()) {
@@ -1339,16 +1271,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 				if (srcItem0.hasMarker()) {
 					dstItem0.marker = srcItem0.getMarker();
 				}
-				result.clientSamples[clientSamplesIndex++] = dstItem0;
 			}
 		}
-		if (0 < source.getSfuSamplesCount()) {
-			result.sfuSamples = new SfuSample[ source.getSfuSamplesCount()];
-			var sfuSamplesIndex = 0;
+		if (source.hasSfuSamples()) {
 			for (var srcItem0 : source.getSfuSamplesList()) {
-				var dstItem0 = new SfuSample();
+				var dstItem0 = new [object Object]();
 				if (srcItem0.hasSfuId()) {
-					dstItem0.sfuId = UUIDAdapter.tryParseOrNull(srcItem0.getSfuId());
+					dstItem0.sfuId = srcItem0.getSfuId();
 				}
 				if (srcItem0.hasTimestamp()) {
 					dstItem0.timestamp = srcItem0.getTimestamp();
@@ -1359,16 +1288,14 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 				if (srcItem0.hasMarker()) {
 					dstItem0.marker = srcItem0.getMarker();
 				}
-				if (0 < srcItem0.getTransportsCount()) {
-					dstItem0.transports = new SfuTransport[ srcItem0.getTransportsCount()];
-					var transportsIndex = 0;
+				if (srcItem0.hasTransports()) {
 					for (var srcItem1 : srcItem0.getTransportsList()) {
-						var dstItem1 = new SfuTransport();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasNoReport()) {
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
@@ -1445,28 +1372,25 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSctpPacketsSent()) {
 							dstItem1.sctpPacketsSent = srcItem1.getSctpPacketsSent();
 						}
-						dstItem0.transports[transportsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getInboundRtpPadsCount()) {
-					dstItem0.inboundRtpPads = new SfuInboundRtpPad[ srcItem0.getInboundRtpPadsCount()];
-					var inboundRtpPadsIndex = 0;
+				if (srcItem0.hasInboundRtpPads()) {
 					for (var srcItem1 : srcItem0.getInboundRtpPadsList()) {
-						var dstItem1 = new SfuInboundRtpPad();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasNoReport()) {
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
 						}
 						if (srcItem1.hasStreamId()) {
-							dstItem1.streamId = UUIDAdapter.tryParseOrNull(srcItem1.getStreamId());
+							dstItem1.streamId = srcItem1.getStreamId();
 						}
 						if (srcItem1.hasPadId()) {
-							dstItem1.padId = UUIDAdapter.tryParseOrNull(srcItem1.getPadId());
+							dstItem1.padId = srcItem1.getPadId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -1567,43 +1491,40 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasRoundTripTime()) {
 							dstItem1.roundTripTime = srcItem1.getRoundTripTime();
 						}
-						dstItem0.inboundRtpPads[inboundRtpPadsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getOutboundRtpPadsCount()) {
-					dstItem0.outboundRtpPads = new SfuOutboundRtpPad[ srcItem0.getOutboundRtpPadsCount()];
-					var outboundRtpPadsIndex = 0;
+				if (srcItem0.hasOutboundRtpPads()) {
 					for (var srcItem1 : srcItem0.getOutboundRtpPadsList()) {
-						var dstItem1 = new SfuOutboundRtpPad();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasNoReport()) {
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
 						}
 						if (srcItem1.hasStreamId()) {
-							dstItem1.streamId = UUIDAdapter.tryParseOrNull(srcItem1.getStreamId());
+							dstItem1.streamId = srcItem1.getStreamId();
 						}
 						if (srcItem1.hasSinkId()) {
-							dstItem1.sinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSinkId());
+							dstItem1.sinkId = srcItem1.getSinkId();
 						}
 						if (srcItem1.hasPadId()) {
-							dstItem1.padId = UUIDAdapter.tryParseOrNull(srcItem1.getPadId());
+							dstItem1.padId = srcItem1.getPadId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
 						}
 						if (srcItem1.hasCallId()) {
-							dstItem1.callId = UUIDAdapter.tryParseOrNull(srcItem1.getCallId());
+							dstItem1.callId = srcItem1.getCallId();
 						}
 						if (srcItem1.hasClientId()) {
-							dstItem1.clientId = UUIDAdapter.tryParseOrNull(srcItem1.getClientId());
+							dstItem1.clientId = srcItem1.getClientId();
 						}
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasMediaType()) {
 							dstItem1.mediaType = srcItem1.getMediaType();
@@ -1701,25 +1622,22 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasRoundTripTime()) {
 							dstItem1.roundTripTime = srcItem1.getRoundTripTime();
 						}
-						dstItem0.outboundRtpPads[outboundRtpPadsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getSctpChannelsCount()) {
-					dstItem0.sctpChannels = new SfuSctpChannel[ srcItem0.getSctpChannelsCount()];
-					var sctpChannelsIndex = 0;
+				if (srcItem0.hasSctpChannels()) {
 					for (var srcItem1 : srcItem0.getSctpChannelsList()) {
-						var dstItem1 = new SfuSctpChannel();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasNoReport()) {
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasStreamId()) {
-							dstItem1.streamId = UUIDAdapter.tryParseOrNull(srcItem1.getStreamId());
+							dstItem1.streamId = srcItem1.getStreamId();
 						}
 						if (srcItem1.hasChannelId()) {
-							dstItem1.channelId = UUIDAdapter.tryParseOrNull(srcItem1.getChannelId());
+							dstItem1.channelId = srcItem1.getChannelId();
 						}
 						if (srcItem1.hasLabel()) {
 							dstItem1.label = srcItem1.getLabel();
@@ -1754,86 +1672,30 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasBytesSent()) {
 							dstItem1.bytesSent = srcItem1.getBytesSent();
 						}
-						dstItem0.sctpChannels[sctpChannelsIndex++] = dstItem1;
 					}
 				}
-				if (0 < srcItem0.getExtensionStatsCount()) {
-					dstItem0.extensionStats = new SfuExtensionStats[ srcItem0.getExtensionStatsCount()];
-					var extensionStatsIndex = 0;
+				if (srcItem0.hasExtensionStats()) {
 					for (var srcItem1 : srcItem0.getExtensionStatsList()) {
-						var dstItem1 = new SfuExtensionStats();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasType()) {
 							dstItem1.type = srcItem1.getType();
 						}
 						if (srcItem1.hasPayload()) {
 							dstItem1.payload = srcItem1.getPayload();
 						}
-						dstItem0.extensionStats[extensionStatsIndex++] = dstItem1;
 					}
 				}
-				result.sfuSamples[sfuSamplesIndex++] = dstItem0;
 			}
 		}
-		if (0 < source.getTurnSamplesCount()) {
-			result.turnSamples = new TurnSample[ source.getTurnSamplesCount()];
-			var turnSamplesIndex = 0;
+		if (source.hasTurnSamples()) {
 			for (var srcItem0 : source.getTurnSamplesList()) {
-				var dstItem0 = new TurnSample();
+				var dstItem0 = new [object Object]();
 				if (srcItem0.hasServerId()) {
 					dstItem0.serverId = srcItem0.getServerId();
 				}
-				if (0 < srcItem0.getAllocationsCount()) {
-					dstItem0.allocations = new TurnPeerAllocation[ srcItem0.getAllocationsCount()];
-					var allocationsIndex = 0;
-					for (var srcItem1 : srcItem0.getAllocationsList()) {
-						var dstItem1 = new TurnPeerAllocation();
-						if (srcItem1.hasPeerId()) {
-							dstItem1.peerId = srcItem1.getPeerId();
-						}
-						if (srcItem1.hasSessionId()) {
-							dstItem1.sessionId = srcItem1.getSessionId();
-						}
-						if (srcItem1.hasRelayedAddress()) {
-							dstItem1.relayedAddress = srcItem1.getRelayedAddress();
-						}
-						if (srcItem1.hasRelayedPort()) {
-							dstItem1.relayedPort = srcItem1.getRelayedPort();
-						}
-						if (srcItem1.hasTransportProtocol()) {
-							dstItem1.transportProtocol = srcItem1.getTransportProtocol();
-						}
-						if (srcItem1.hasPeerAddress()) {
-							dstItem1.peerAddress = srcItem1.getPeerAddress();
-						}
-						if (srcItem1.hasPeerPort()) {
-							dstItem1.peerPort = srcItem1.getPeerPort();
-						}
-						if (srcItem1.hasSendingBitrate()) {
-							dstItem1.sendingBitrate = srcItem1.getSendingBitrate();
-						}
-						if (srcItem1.hasReceivingBitrate()) {
-							dstItem1.receivingBitrate = srcItem1.getReceivingBitrate();
-						}
-						if (srcItem1.hasSentBytes()) {
-							dstItem1.sentBytes = srcItem1.getSentBytes();
-						}
-						if (srcItem1.hasReceivedBytes()) {
-							dstItem1.receivedBytes = srcItem1.getReceivedBytes();
-						}
-						if (srcItem1.hasSentPackets()) {
-							dstItem1.sentPackets = srcItem1.getSentPackets();
-						}
-						if (srcItem1.hasReceivedPackets()) {
-							dstItem1.receivedPackets = srcItem1.getReceivedPackets();
-						}
-						dstItem0.allocations[allocationsIndex++] = dstItem1;
-					}
-				}
-				if (0 < srcItem0.getSessionsCount()) {
-					dstItem0.sessions = new TurnSession[ srcItem0.getSessionsCount()];
-					var sessionsIndex = 0;
+				if (srcItem0.hasSessions()) {
 					for (var srcItem1 : srcItem0.getSessionsList()) {
-						var dstItem1 = new TurnSession();
+						var dstItem1 = new [object Object]();
 						if (srcItem1.hasSessionId()) {
 							dstItem1.sessionId = srcItem1.getSessionId();
 						}
@@ -1844,7 +1706,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.username = srcItem1.getUsername();
 						}
 						if (srcItem1.hasClientId()) {
-							dstItem1.clientId = UUIDAdapter.tryParseOrNull(srcItem1.getClientId());
+							dstItem1.clientId = srcItem1.getClientId();
 						}
 						if (srcItem1.hasStarted()) {
 							dstItem1.started = srcItem1.getStarted();
@@ -1852,45 +1714,63 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasNonceExpirationTime()) {
 							dstItem1.nonceExpirationTime = srcItem1.getNonceExpirationTime();
 						}
+						if (srcItem1.hasClientTransportProtocol()) {
+							dstItem1.clientTransportProtocol = srcItem1.getClientTransportProtocol();
+						}
+						if (srcItem1.hasRelayTransportProtocol()) {
+							dstItem1.relayTransportProtocol = srcItem1.getRelayTransportProtocol();
+						}
 						if (srcItem1.hasServerAddress()) {
 							dstItem1.serverAddress = srcItem1.getServerAddress();
 						}
 						if (srcItem1.hasServerPort()) {
 							dstItem1.serverPort = srcItem1.getServerPort();
 						}
-						if (srcItem1.hasTransportProtocol()) {
-							dstItem1.transportProtocol = srcItem1.getTransportProtocol();
+						if (srcItem1.hasPeerAddress()) {
+							dstItem1.peerAddress = srcItem1.getPeerAddress();
 						}
-						if (srcItem1.hasClientAddress()) {
-							dstItem1.clientAddress = srcItem1.getClientAddress();
+						if (srcItem1.hasPeerPort()) {
+							dstItem1.peerPort = srcItem1.getPeerPort();
 						}
-						if (srcItem1.hasClientPort()) {
-							dstItem1.clientPort = srcItem1.getClientPort();
+						if (srcItem1.hasAverageSendingBitrateToClient()) {
+							dstItem1.averageSendingBitrateToClient = srcItem1.getAverageSendingBitrateToClient();
 						}
-						if (srcItem1.hasSendingBitrate()) {
-							dstItem1.sendingBitrate = srcItem1.getSendingBitrate();
+						if (srcItem1.hasAverageReceivingBitrateFromClient()) {
+							dstItem1.averageReceivingBitrateFromClient = srcItem1.getAverageReceivingBitrateFromClient();
 						}
-						if (srcItem1.hasReceivingBitrate()) {
-							dstItem1.receivingBitrate = srcItem1.getReceivingBitrate();
+						if (srcItem1.hasReceivedBytesFromClient()) {
+							dstItem1.receivedBytesFromClient = srcItem1.getReceivedBytesFromClient();
 						}
-						if (srcItem1.hasSentBytes()) {
-							dstItem1.sentBytes = srcItem1.getSentBytes();
+						if (srcItem1.hasSentBytesToClient()) {
+							dstItem1.sentBytesToClient = srcItem1.getSentBytesToClient();
 						}
-						if (srcItem1.hasReceivedBytes()) {
-							dstItem1.receivedBytes = srcItem1.getReceivedBytes();
+						if (srcItem1.hasReceivedPacketsFromClient()) {
+							dstItem1.receivedPacketsFromClient = srcItem1.getReceivedPacketsFromClient();
 						}
-						if (srcItem1.hasSentPackets()) {
-							dstItem1.sentPackets = srcItem1.getSentPackets();
+						if (srcItem1.hasSentPacketsToClient()) {
+							dstItem1.sentPacketsToClient = srcItem1.getSentPacketsToClient();
 						}
-						if (srcItem1.hasReceivedPackets()) {
-							dstItem1.receivedPackets = srcItem1.getReceivedPackets();
+						if (srcItem1.hasAverageSendingBitrateToPeer()) {
+							dstItem1.averageSendingBitrateToPeer = srcItem1.getAverageSendingBitrateToPeer();
 						}
-						dstItem0.sessions[sessionsIndex++] = dstItem1;
+						if (srcItem1.hasAverageReceivingBitrateFromPeer()) {
+							dstItem1.averageReceivingBitrateFromPeer = srcItem1.getAverageReceivingBitrateFromPeer();
+						}
+						if (srcItem1.hasReceivedBytesFromPeer()) {
+							dstItem1.receivedBytesFromPeer = srcItem1.getReceivedBytesFromPeer();
+						}
+						if (srcItem1.hasSentBytesToPeer()) {
+							dstItem1.sentBytesToPeer = srcItem1.getSentBytesToPeer();
+						}
+						if (srcItem1.hasReceivedPacketsFromPeer()) {
+							dstItem1.receivedPacketsFromPeer = srcItem1.getReceivedPacketsFromPeer();
+						}
+						if (srcItem1.hasSentPacketsToPeer()) {
+							dstItem1.sentPacketsToPeer = srcItem1.getSentPacketsToPeer();
+						}
 					}
 				}
-				result.turnSamples[turnSamplesIndex++] = dstItem0;
 			}
 		}
-		return result;
 	}
 }

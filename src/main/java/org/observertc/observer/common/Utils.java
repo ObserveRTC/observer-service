@@ -54,6 +54,15 @@ public class Utils {
         return Arrays.stream(objects).anyMatch(Objects::isNull);
     }
 
+    public static<T> T firstNotNull(T... objects) {
+        if (objects == null) return null;
+        for (var item : objects) {
+            if (item == null) continue;
+            return item;
+        }
+        return null;
+    }
+
     public static boolean allNull(Object... objects) {
         Objects.requireNonNull(objects, "To determine if all object is null, we need objects");
         return Arrays.stream(objects).allMatch(Objects::isNull);

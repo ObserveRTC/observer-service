@@ -70,11 +70,9 @@ public class ObserverConfig {
 	public SourcesConfig sources;
 
 	public static class SourceConfig {
+
 		public boolean enabled = false;
-
-
-		public TransportCodecType encoder = TransportCodecType.JSON;
-        public TransportCodecType decoder = TransportCodecType.JSON;;
+		public TransportCodecType format = TransportCodecType.JSON;
     }
 
 	@ConfigurationProperties("sources")
@@ -100,25 +98,25 @@ public class ObserverConfig {
 	// Repository config
 	public RepositoryConfig repository;
 
-	@ConfigurationProperties("repositories")
+	@ConfigurationProperties("repository")
 	public static class RepositoryConfig {
 
-		@Min(60)
+		@Min(3)
 		public int mediaTracksMaxIdleTimeInS = 300;
 
-		@Min(60)
+		@Min(3)
 		public int peerConnectionsMaxIdleTime = 300;
 
-		@Min(60)
+		@Min(3)
 		public int clientMaxIdleTimeInS = 300;
 
-		@Min(60)
+		@Min(3)
 		public int sfuMaxIdleTimeInS = 600;
 
-		@Min(60)
+		@Min(3)
 		public int sfuTransportMaxIdleTimeInS = 600;
 
-		@Min(60)
+		@Min(3)
 		public int sfuRtpPadMaxIdleTimeInS = 600;
 
 	}
@@ -144,9 +142,9 @@ public class ObserverConfig {
 
 		}
 
-		public SamplesBufferCollectorConfig samplesBuffer = new SamplesBufferCollectorConfig();
+		public SamplesBufferCollectorConfig samplesCollector = new SamplesBufferCollectorConfig();
 
-		@ConfigurationProperties("samplesBuffer")
+		@ConfigurationProperties("samplesCollector")
 		public static class SamplesBufferCollectorConfig extends CollectorConfig {
 
 		}

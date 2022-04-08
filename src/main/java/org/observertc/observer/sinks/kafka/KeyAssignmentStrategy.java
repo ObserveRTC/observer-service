@@ -19,5 +19,5 @@ public enum KeyAssignmentStrategy {
     /**
      * Keys are selected in the order of the object hierarchy
      */
-//    CALL_SFU_ORIENTED,
+    OBJECT_HIERACHY_BASED,
 }

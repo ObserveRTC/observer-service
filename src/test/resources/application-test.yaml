@@ -1,10 +1,6 @@
 observer:
   buffers:
-    clientSamples:
-      maxItems: 100
-      maxTimeInMs: 10
-
-    sfuSamples:
+    samplesCollector:
       maxItems: 100
       maxTimeInMs: 10
 

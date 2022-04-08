@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.54";
+	public static final String VERSION="2.0.0-beta.55";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -3783,6 +3783,103 @@ public class Samples {
 		* undefined
 		*/
 		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class TurnPeerAllocation {
+			public static Builder newBuilder() {
+				return new Builder();
+			}
+			/**
+			* a unique id for the allocation
+			*/
+			@JsonProperty("peerId")
+			public String peerId;
+			/**
+			* The corresponded session the allocation belongs to
+			*/
+			@JsonProperty("sessionId")
+			public String sessionId;
+			/**
+			* The allocated address
+			*/
+			@JsonProperty("relayedAddress")
+			public String relayedAddress;
+			/**
+			* The allocated port
+			*/
+			@JsonProperty("relayedPort")
+			public Integer relayedPort;
+			/**
+			* protocol (TCP, UDP)
+			*/
+			@JsonProperty("transportProtocol")
+			public String transportProtocol;
+			/**
+			* The address of the address the serever connect to
+			*/
+			@JsonProperty("peerAddress")
+			public String peerAddress;
+			/**
+			* The portnumber the server connects to
+			*/
+			@JsonProperty("peerPort")
+			public Integer peerPort;
+			/**
+			* the bitrate the TURN server sending to the peer
+			*/
+			@JsonProperty("sendingBitrate")
+			public Integer sendingBitrate;
+			/**
+			* the bitrate the TURN server receiving from the peer
+			*/
+			@JsonProperty("receivingBitrate")
+			public Integer receivingBitrate;
+			/**
+			* the amount of bytes sent to the peer
+			*/
+			@JsonProperty("sentBytes")
+			public Long sentBytes;
+			/**
+			* the amount of bytes received from the peer
+			*/
+			@JsonProperty("receivedBytes")
+			public Long receivedBytes;
+			/**
+			* the amount of packets sent to the peer
+			*/
+			@JsonProperty("sentPackets")
+			public Integer sentPackets;
+			/**
+			* the amount of packets received from the peer
+			*/
+			@JsonProperty("receivedPackets")
+			public Integer receivedPackets;
+		
+
+			public static class Builder {
+		
+				private TurnPeerAllocation result = new TurnPeerAllocation();
+		
+				public Builder setPeerId(String value) { this.result.peerId = value; return this; }
+				public Builder setSessionId(String value) { this.result.sessionId = value; return this; }
+				public Builder setRelayedAddress(String value) { this.result.relayedAddress = value; return this; }
+				public Builder setRelayedPort(Integer value) { this.result.relayedPort = value; return this; }
+				public Builder setTransportProtocol(String value) { this.result.transportProtocol = value; return this; }
+				public Builder setPeerAddress(String value) { this.result.peerAddress = value; return this; }
+				public Builder setPeerPort(Integer value) { this.result.peerPort = value; return this; }
+				public Builder setSendingBitrate(Integer value) { this.result.sendingBitrate = value; return this; }
+				public Builder setReceivingBitrate(Integer value) { this.result.receivingBitrate = value; return this; }
+				public Builder setSentBytes(Long value) { this.result.sentBytes = value; return this; }
+				public Builder setReceivedBytes(Long value) { this.result.receivedBytes = value; return this; }
+				public Builder setSentPackets(Integer value) { this.result.sentPackets = value; return this; }
+				public Builder setReceivedPackets(Integer value) { this.result.receivedPackets = value; return this; }
+				public TurnPeerAllocation build() {
+					return this.result;
+				}
+			}
+		}
+		/**
+		* undefined
+		*/
+		@JsonIgnoreProperties(ignoreUnknown = true)
 		public static class TurnSession {
 			public static Builder newBuilder() {
 				return new Builder();
@@ -3818,16 +3915,6 @@ public class Samples {
 			@JsonProperty("nonceExpirationTime")
 			public Long nonceExpirationTime;
 			/**
-			* the transport protocol betwwen the client and the server
-			*/
-			@JsonProperty("clientTransportProtocol")
-			public String clientTransportProtocol;
-			/**
-			* the transport protocol between the server and the peer
-			*/
-			@JsonProperty("relayTransportProtocol")
-			public String relayTransportProtocol;
-			/**
 			* The address of the server the client connected to
 			*/
 			@JsonProperty("serverAddress")
@@ -3838,75 +3925,50 @@ public class Samples {
 			@JsonProperty("serverPort")
 			public Integer serverPort;
 			/**
-			* The address of the address the serever connect to
+			* the transport protocol betwwen the client and the server (TCP, UDP, TCPTLS, UDPTLS, SCTP, SCTPTLS)
 			*/
-			@JsonProperty("peerAddress")
-			public String peerAddress;
+			@JsonProperty("transportProtocol")
+			public String transportProtocol;
 			/**
-			* The portnumber the server connects to
+			* The address of the client connected from
 			*/
-			@JsonProperty("peerPort")
-			public Integer peerPort;
+			@JsonProperty("clientAddress")
+			public String clientAddress;
+			/**
+			* The portnumber the client requested from
+			*/
+			@JsonProperty("clientPort")
+			public Integer clientPort;
 			/**
 			* the bitrate the TURN server sending to the client
 			*/
-			@JsonProperty("averageSendingBitrateToClient")
-			public Integer averageSendingBitrateToClient;
+			@JsonProperty("sendingBitrate")
+			public Integer sendingBitrate;
 			/**
 			* the bitrate the TURN server receiving from the client
 			*/
-			@JsonProperty("averageReceivingBitrateFromClient")
-			public Integer averageReceivingBitrateFromClient;
-			/**
-			* the amount of bytes received from the client
-			*/
-			@JsonProperty("receivedBytesFromClient")
-			public Long receivedBytesFromClient;
+			@JsonProperty("receivingBitrate")
+			public Integer receivingBitrate;
 			/**
 			* the amount of bytes sent to the client
 			*/
-			@JsonProperty("sentBytesToClient")
-			public Long sentBytesToClient;
+			@JsonProperty("sentBytes")
+			public Long sentBytes;
 			/**
-			* the amount of packets received from the client
+			* the amount of bytes received from the client
 			*/
-			@JsonProperty("receivedPacketsFromClient")
-			public Integer receivedPacketsFromClient;
+			@JsonProperty("receivedBytes")
+			public Long receivedBytes;
 			/**
 			* the amount of packets sent to the client
 			*/
-			@JsonProperty("sentPacketsToClient")
-			public Integer sentPacketsToClient;
+			@JsonProperty("sentPackets")
+			public Integer sentPackets;
 			/**
-			* the bitrate the TURN server sending to theb peer
+			* the amount of packets received from the client
 			*/
-			@JsonProperty("averageSendingBitrateToPeer")
-			public Integer averageSendingBitrateToPeer;
-			/**
-			* the bitrate the TURN server receiving from the peer
-			*/
-			@JsonProperty("averageReceivingBitrateFromPeer")
-			public Integer averageReceivingBitrateFromPeer;
-			/**
-			* the amount of bytes received from the peer
-			*/
-			@JsonProperty("receivedBytesFromPeer")
-			public Long receivedBytesFromPeer;
-			/**
-			* the amount of bytes sent to the peer
-			*/
-			@JsonProperty("sentBytesToPeer")
-			public Long sentBytesToPeer;
-			/**
-			* the amount of packets received from the peer
-			*/
-			@JsonProperty("receivedPacketsFromPeer")
-			public Integer receivedPacketsFromPeer;
-			/**
-			* the amount of packets sent to the peer
-			*/
-			@JsonProperty("sentPacketsToPeer")
-			public Integer sentPacketsToPeer;
+			@JsonProperty("receivedPackets")
+			public Integer receivedPackets;
 		
 
 			public static class Builder {
@@ -3919,24 +3981,17 @@ public class Samples {
 				public Builder setClientId(UUID value) { this.result.clientId = value; return this; }
 				public Builder setStarted(Long value) { this.result.started = value; return this; }
 				public Builder setNonceExpirationTime(Long value) { this.result.nonceExpirationTime = value; return this; }
-				public Builder setClientTransportProtocol(String value) { this.result.clientTransportProtocol = value; return this; }
-				public Builder setRelayTransportProtocol(String value) { this.result.relayTransportProtocol = value; return this; }
 				public Builder setServerAddress(String value) { this.result.serverAddress = value; return this; }
 				public Builder setServerPort(Integer value) { this.result.serverPort = value; return this; }
-				public Builder setPeerAddress(String value) { this.result.peerAddress = value; return this; }
-				public Builder setPeerPort(Integer value) { this.result.peerPort = value; return this; }
-				public Builder setAverageSendingBitrateToClient(Integer value) { this.result.averageSendingBitrateToClient = value; return this; }
-				public Builder setAverageReceivingBitrateFromClient(Integer value) { this.result.averageReceivingBitrateFromClient = value; return this; }
-				public Builder setReceivedBytesFromClient(Long value) { this.result.receivedBytesFromClient = value; return this; }
-				public Builder setSentBytesToClient(Long value) { this.result.sentBytesToClient = value; return this; }
-				public Builder setReceivedPacketsFromClient(Integer value) { this.result.receivedPacketsFromClient = value; return this; }
-				public Builder setSentPacketsToClient(Integer value) { this.result.sentPacketsToClient = value; return this; }
-				public Builder setAverageSendingBitrateToPeer(Integer value) { this.result.averageSendingBitrateToPeer = value; return this; }
-				public Builder setAverageReceivingBitrateFromPeer(Integer value) { this.result.averageReceivingBitrateFromPeer = value; return this; }
-				public Builder setReceivedBytesFromPeer(Long value) { this.result.receivedBytesFromPeer = value; return this; }
-				public Builder setSentBytesToPeer(Long value) { this.result.sentBytesToPeer = value; return this; }
-				public Builder setReceivedPacketsFromPeer(Integer value) { this.result.receivedPacketsFromPeer = value; return this; }
-				public Builder setSentPacketsToPeer(Integer value) { this.result.sentPacketsToPeer = value; return this; }
+				public Builder setTransportProtocol(String value) { this.result.transportProtocol = value; return this; }
+				public Builder setClientAddress(String value) { this.result.clientAddress = value; return this; }
+				public Builder setClientPort(Integer value) { this.result.clientPort = value; return this; }
+				public Builder setSendingBitrate(Integer value) { this.result.sendingBitrate = value; return this; }
+				public Builder setReceivingBitrate(Integer value) { this.result.receivingBitrate = value; return this; }
+				public Builder setSentBytes(Long value) { this.result.sentBytes = value; return this; }
+				public Builder setReceivedBytes(Long value) { this.result.receivedBytes = value; return this; }
+				public Builder setSentPackets(Integer value) { this.result.sentPackets = value; return this; }
+				public Builder setReceivedPackets(Integer value) { this.result.receivedPackets = value; return this; }
 				public TurnSession build() {
 					return this.result;
 				}
@@ -3947,6 +4002,11 @@ public class Samples {
 		*/
 		@JsonProperty("serverId")
 		public String serverId;
+		/**
+		* Peer Alloocation data
+		*/
+		@JsonProperty("allocations")
+		public TurnPeerAllocation[] allocations;
 		/**
 		* Session data
 		*/
@@ -3959,6 +4019,7 @@ public class Samples {
 			private TurnSample result = new TurnSample();
 	
 			public Builder setServerId(String value) { this.result.serverId = value; return this; }
+			public Builder setAllocations(TurnPeerAllocation[] value) { this.result.allocations = value; return this; }
 			public Builder setSessions(TurnSession[] value) { this.result.sessions = value; return this; }
 			public TurnSample build() {
 				return this.result;

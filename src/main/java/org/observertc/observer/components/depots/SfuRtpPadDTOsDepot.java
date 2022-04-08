@@ -59,7 +59,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
             var sfuSample = observedSfuSample.getSfuSample();
             UUID transportId;
             UUID rtpPadId;
-            boolean internal;
+            Boolean internal;
             UUID streamId;
             UUID sinkId;
             StreamDirection direction;
@@ -96,7 +96,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
                     .build();
             this.buffer.put(sfuRtpPadDTO.rtpPadId, sfuRtpPadDTO);
         } catch (Exception ex){
-            logger.warn("Exception occurred while assembling in {}", this.getClass().getSimpleName());
+            logger.warn("Exception occurred while assembling in {}", this.getClass().getSimpleName(), ex);
         } finally {
             this.clean();
         }

@@ -6,13 +6,13 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.apache.kafka.common.utils.Bytes;
-import org.observertc.observer.reports.Report;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configbuilders.ConfigConverter;
 import org.observertc.observer.configs.TransportCodecType;
 import org.observertc.observer.mappings.Encoder;
 import org.observertc.observer.mappings.JsonMapper;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.Sink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,8 +87,9 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
             case INSTANCE_BASED:
                 UUID instanceId = UUID.randomUUID();
                 return report -> instanceId;
-//            case OBJECT_HIEARCHY_BASED:
-
+            case OBJECT_HIERACHY_BASED:
+                var assigner = new ObjectHierarchyKeyAssigner();
+                return report -> assigner.apply(report, report.type);
         }
     }
 

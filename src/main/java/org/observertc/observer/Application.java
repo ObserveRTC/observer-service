@@ -48,20 +48,4 @@ public class Application {
         context = Micronaut.run(Application.class, args);
 
     }
-
-
-
-
-//    @Factory
-//    @Replaces(ObjectMapperFactory.class)
-//    static class CustomObjectMapperFactory extends ObjectMapperFactory {
-//
-//        @Override
-//        @Singleton
-//        @Replaces(ObjectMapper.class)
-//        public ObjectMapper objectMapper(JacksonConfiguration jacksonConfiguration, JsonFactory jsonFactory) {
-//            final ObjectMapper mapper = super.objectMapper(jacksonConfiguration, jsonFactory);
-//            return mapper;
-//        }
-//    }
 }

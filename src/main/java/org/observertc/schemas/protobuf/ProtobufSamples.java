@@ -82727,41 +82727,65 @@ public final class ProtobufSamples {
         com.google.protobuf.MessageOrBuilder {
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation> 
+          getAllocationsList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation getAllocations(int index);
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      int getAllocationsCount();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder> 
+          getAllocationsOrBuilderList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder getAllocationsOrBuilder(
+          int index);
+
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession> 
           getSessionsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession getSessions(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       int getSessionsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder> 
           getSessionsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder getSessionsOrBuilder(
           int index);
 
       /**
-       * <code>required string serverId = 2;</code>
+       * <code>required string serverId = 3;</code>
        * @return Whether the serverId field is set.
        */
       boolean hasServerId();
       /**
-       * <code>required string serverId = 2;</code>
+       * <code>required string serverId = 3;</code>
        * @return The serverId.
        */
       java.lang.String getServerId();
       /**
-       * <code>required string serverId = 2;</code>
+       * <code>required string serverId = 3;</code>
        * @return The bytes for serverId.
        */
       com.google.protobuf.ByteString
@@ -82780,6 +82804,7 @@ public final class ProtobufSamples {
         super(builder);
       }
       private TurnSample() {
+        allocations_ = java.util.Collections.emptyList();
         sessions_ = java.util.Collections.emptyList();
         serverId_ = "";
       }
@@ -82817,14 +82842,23 @@ public final class ProtobufSamples {
                 break;
               case 10: {
                 if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                  sessions_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession>();
+                  allocations_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation>();
                   mutable_bitField0_ |= 0x00000001;
+                }
+                allocations_.add(
+                    input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.PARSER, extensionRegistry));
+                break;
+              }
+              case 18: {
+                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                  sessions_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession>();
+                  mutable_bitField0_ |= 0x00000002;
                 }
                 sessions_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.PARSER, extensionRegistry));
                 break;
               }
-              case 18: {
+              case 26: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000001;
                 serverId_ = bs;
@@ -82846,6 +82880,9 @@ public final class ProtobufSamples {
               e).setUnfinishedMessage(this);
         } finally {
           if (((mutable_bitField0_ & 0x00000001) != 0)) {
+            allocations_ = java.util.Collections.unmodifiableList(allocations_);
+          }
+          if (((mutable_bitField0_ & 0x00000002) != 0)) {
             sessions_ = java.util.Collections.unmodifiableList(sessions_);
           }
           this.unknownFields = unknownFields.build();
@@ -82863,6 +82900,2169 @@ public final class ProtobufSamples {
         return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.Builder.class);
+      }
+
+      public interface TurnPeerAllocationOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation)
+          com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required string peerId = 1;</code>
+         * @return Whether the peerId field is set.
+         */
+        boolean hasPeerId();
+        /**
+         * <code>required string peerId = 1;</code>
+         * @return The peerId.
+         */
+        java.lang.String getPeerId();
+        /**
+         * <code>required string peerId = 1;</code>
+         * @return The bytes for peerId.
+         */
+        com.google.protobuf.ByteString
+            getPeerIdBytes();
+
+        /**
+         * <code>required string relayedAddress = 2;</code>
+         * @return Whether the relayedAddress field is set.
+         */
+        boolean hasRelayedAddress();
+        /**
+         * <code>required string relayedAddress = 2;</code>
+         * @return The relayedAddress.
+         */
+        java.lang.String getRelayedAddress();
+        /**
+         * <code>required string relayedAddress = 2;</code>
+         * @return The bytes for relayedAddress.
+         */
+        com.google.protobuf.ByteString
+            getRelayedAddressBytes();
+
+        /**
+         * <code>required uint32 relayedPort = 3;</code>
+         * @return Whether the relayedPort field is set.
+         */
+        boolean hasRelayedPort();
+        /**
+         * <code>required uint32 relayedPort = 3;</code>
+         * @return The relayedPort.
+         */
+        int getRelayedPort();
+
+        /**
+         * <code>required string sessionId = 4;</code>
+         * @return Whether the sessionId field is set.
+         */
+        boolean hasSessionId();
+        /**
+         * <code>required string sessionId = 4;</code>
+         * @return The sessionId.
+         */
+        java.lang.String getSessionId();
+        /**
+         * <code>required string sessionId = 4;</code>
+         * @return The bytes for sessionId.
+         */
+        com.google.protobuf.ByteString
+            getSessionIdBytes();
+
+        /**
+         * <code>required string transportProtocol = 5;</code>
+         * @return Whether the transportProtocol field is set.
+         */
+        boolean hasTransportProtocol();
+        /**
+         * <code>required string transportProtocol = 5;</code>
+         * @return The transportProtocol.
+         */
+        java.lang.String getTransportProtocol();
+        /**
+         * <code>required string transportProtocol = 5;</code>
+         * @return The bytes for transportProtocol.
+         */
+        com.google.protobuf.ByteString
+            getTransportProtocolBytes();
+
+        /**
+         * <code>optional string peerAddress = 6;</code>
+         * @return Whether the peerAddress field is set.
+         */
+        boolean hasPeerAddress();
+        /**
+         * <code>optional string peerAddress = 6;</code>
+         * @return The peerAddress.
+         */
+        java.lang.String getPeerAddress();
+        /**
+         * <code>optional string peerAddress = 6;</code>
+         * @return The bytes for peerAddress.
+         */
+        com.google.protobuf.ByteString
+            getPeerAddressBytes();
+
+        /**
+         * <code>optional uint32 peerPort = 7;</code>
+         * @return Whether the peerPort field is set.
+         */
+        boolean hasPeerPort();
+        /**
+         * <code>optional uint32 peerPort = 7;</code>
+         * @return The peerPort.
+         */
+        int getPeerPort();
+
+        /**
+         * <code>optional uint64 receivedBytes = 8;</code>
+         * @return Whether the receivedBytes field is set.
+         */
+        boolean hasReceivedBytes();
+        /**
+         * <code>optional uint64 receivedBytes = 8;</code>
+         * @return The receivedBytes.
+         */
+        long getReceivedBytes();
+
+        /**
+         * <code>optional uint32 receivedPackets = 9;</code>
+         * @return Whether the receivedPackets field is set.
+         */
+        boolean hasReceivedPackets();
+        /**
+         * <code>optional uint32 receivedPackets = 9;</code>
+         * @return The receivedPackets.
+         */
+        int getReceivedPackets();
+
+        /**
+         * <code>optional uint32 receivingBitrate = 10;</code>
+         * @return Whether the receivingBitrate field is set.
+         */
+        boolean hasReceivingBitrate();
+        /**
+         * <code>optional uint32 receivingBitrate = 10;</code>
+         * @return The receivingBitrate.
+         */
+        int getReceivingBitrate();
+
+        /**
+         * <code>optional uint32 sendingBitrate = 11;</code>
+         * @return Whether the sendingBitrate field is set.
+         */
+        boolean hasSendingBitrate();
+        /**
+         * <code>optional uint32 sendingBitrate = 11;</code>
+         * @return The sendingBitrate.
+         */
+        int getSendingBitrate();
+
+        /**
+         * <code>optional uint64 sentBytes = 12;</code>
+         * @return Whether the sentBytes field is set.
+         */
+        boolean hasSentBytes();
+        /**
+         * <code>optional uint64 sentBytes = 12;</code>
+         * @return The sentBytes.
+         */
+        long getSentBytes();
+
+        /**
+         * <code>optional uint32 sentPackets = 13;</code>
+         * @return Whether the sentPackets field is set.
+         */
+        boolean hasSentPackets();
+        /**
+         * <code>optional uint32 sentPackets = 13;</code>
+         * @return The sentPackets.
+         */
+        int getSentPackets();
+      }
+      /**
+       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation}
+       */
+      public static final class TurnPeerAllocation extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation)
+          TurnPeerAllocationOrBuilder {
+      private static final long serialVersionUID = 0L;
+        // Use TurnPeerAllocation.newBuilder() to construct.
+        private TurnPeerAllocation(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+          super(builder);
+        }
+        private TurnPeerAllocation() {
+          peerId_ = "";
+          relayedAddress_ = "";
+          sessionId_ = "";
+          transportProtocol_ = "";
+          peerAddress_ = "";
+        }
+
+        @java.lang.Override
+        @SuppressWarnings({"unused"})
+        protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+          return new TurnPeerAllocation();
+        }
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+          return this.unknownFields;
+        }
+        private TurnPeerAllocation(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          this();
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000001;
+                  peerId_ = bs;
+                  break;
+                }
+                case 18: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000002;
+                  relayedAddress_ = bs;
+                  break;
+                }
+                case 24: {
+                  bitField0_ |= 0x00000004;
+                  relayedPort_ = input.readUInt32();
+                  break;
+                }
+                case 34: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000008;
+                  sessionId_ = bs;
+                  break;
+                }
+                case 42: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000010;
+                  transportProtocol_ = bs;
+                  break;
+                }
+                case 50: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000020;
+                  peerAddress_ = bs;
+                  break;
+                }
+                case 56: {
+                  bitField0_ |= 0x00000040;
+                  peerPort_ = input.readUInt32();
+                  break;
+                }
+                case 64: {
+                  bitField0_ |= 0x00000080;
+                  receivedBytes_ = input.readUInt64();
+                  break;
+                }
+                case 72: {
+                  bitField0_ |= 0x00000100;
+                  receivedPackets_ = input.readUInt32();
+                  break;
+                }
+                case 80: {
+                  bitField0_ |= 0x00000200;
+                  receivingBitrate_ = input.readUInt32();
+                  break;
+                }
+                case 88: {
+                  bitField0_ |= 0x00000400;
+                  sendingBitrate_ = input.readUInt32();
+                  break;
+                }
+                case 96: {
+                  bitField0_ |= 0x00000800;
+                  sentBytes_ = input.readUInt64();
+                  break;
+                }
+                case 104: {
+                  bitField0_ |= 0x00001000;
+                  sentPackets_ = input.readUInt32();
+                  break;
+                }
+                default: {
+                  if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder.class);
+        }
+
+        private int bitField0_;
+        public static final int PEERID_FIELD_NUMBER = 1;
+        private volatile java.lang.Object peerId_;
+        /**
+         * <code>required string peerId = 1;</code>
+         * @return Whether the peerId field is set.
+         */
+        @java.lang.Override
+        public boolean hasPeerId() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>required string peerId = 1;</code>
+         * @return The peerId.
+         */
+        @java.lang.Override
+        public java.lang.String getPeerId() {
+          java.lang.Object ref = peerId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              peerId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string peerId = 1;</code>
+         * @return The bytes for peerId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getPeerIdBytes() {
+          java.lang.Object ref = peerId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            peerId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int RELAYEDADDRESS_FIELD_NUMBER = 2;
+        private volatile java.lang.Object relayedAddress_;
+        /**
+         * <code>required string relayedAddress = 2;</code>
+         * @return Whether the relayedAddress field is set.
+         */
+        @java.lang.Override
+        public boolean hasRelayedAddress() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <code>required string relayedAddress = 2;</code>
+         * @return The relayedAddress.
+         */
+        @java.lang.Override
+        public java.lang.String getRelayedAddress() {
+          java.lang.Object ref = relayedAddress_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              relayedAddress_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string relayedAddress = 2;</code>
+         * @return The bytes for relayedAddress.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getRelayedAddressBytes() {
+          java.lang.Object ref = relayedAddress_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            relayedAddress_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int RELAYEDPORT_FIELD_NUMBER = 3;
+        private int relayedPort_;
+        /**
+         * <code>required uint32 relayedPort = 3;</code>
+         * @return Whether the relayedPort field is set.
+         */
+        @java.lang.Override
+        public boolean hasRelayedPort() {
+          return ((bitField0_ & 0x00000004) != 0);
+        }
+        /**
+         * <code>required uint32 relayedPort = 3;</code>
+         * @return The relayedPort.
+         */
+        @java.lang.Override
+        public int getRelayedPort() {
+          return relayedPort_;
+        }
+
+        public static final int SESSIONID_FIELD_NUMBER = 4;
+        private volatile java.lang.Object sessionId_;
+        /**
+         * <code>required string sessionId = 4;</code>
+         * @return Whether the sessionId field is set.
+         */
+        @java.lang.Override
+        public boolean hasSessionId() {
+          return ((bitField0_ & 0x00000008) != 0);
+        }
+        /**
+         * <code>required string sessionId = 4;</code>
+         * @return The sessionId.
+         */
+        @java.lang.Override
+        public java.lang.String getSessionId() {
+          java.lang.Object ref = sessionId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              sessionId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string sessionId = 4;</code>
+         * @return The bytes for sessionId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getSessionIdBytes() {
+          java.lang.Object ref = sessionId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            sessionId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int TRANSPORTPROTOCOL_FIELD_NUMBER = 5;
+        private volatile java.lang.Object transportProtocol_;
+        /**
+         * <code>required string transportProtocol = 5;</code>
+         * @return Whether the transportProtocol field is set.
+         */
+        @java.lang.Override
+        public boolean hasTransportProtocol() {
+          return ((bitField0_ & 0x00000010) != 0);
+        }
+        /**
+         * <code>required string transportProtocol = 5;</code>
+         * @return The transportProtocol.
+         */
+        @java.lang.Override
+        public java.lang.String getTransportProtocol() {
+          java.lang.Object ref = transportProtocol_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              transportProtocol_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string transportProtocol = 5;</code>
+         * @return The bytes for transportProtocol.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getTransportProtocolBytes() {
+          java.lang.Object ref = transportProtocol_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            transportProtocol_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int PEERADDRESS_FIELD_NUMBER = 6;
+        private volatile java.lang.Object peerAddress_;
+        /**
+         * <code>optional string peerAddress = 6;</code>
+         * @return Whether the peerAddress field is set.
+         */
+        @java.lang.Override
+        public boolean hasPeerAddress() {
+          return ((bitField0_ & 0x00000020) != 0);
+        }
+        /**
+         * <code>optional string peerAddress = 6;</code>
+         * @return The peerAddress.
+         */
+        @java.lang.Override
+        public java.lang.String getPeerAddress() {
+          java.lang.Object ref = peerAddress_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              peerAddress_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string peerAddress = 6;</code>
+         * @return The bytes for peerAddress.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getPeerAddressBytes() {
+          java.lang.Object ref = peerAddress_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            peerAddress_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int PEERPORT_FIELD_NUMBER = 7;
+        private int peerPort_;
+        /**
+         * <code>optional uint32 peerPort = 7;</code>
+         * @return Whether the peerPort field is set.
+         */
+        @java.lang.Override
+        public boolean hasPeerPort() {
+          return ((bitField0_ & 0x00000040) != 0);
+        }
+        /**
+         * <code>optional uint32 peerPort = 7;</code>
+         * @return The peerPort.
+         */
+        @java.lang.Override
+        public int getPeerPort() {
+          return peerPort_;
+        }
+
+        public static final int RECEIVEDBYTES_FIELD_NUMBER = 8;
+        private long receivedBytes_;
+        /**
+         * <code>optional uint64 receivedBytes = 8;</code>
+         * @return Whether the receivedBytes field is set.
+         */
+        @java.lang.Override
+        public boolean hasReceivedBytes() {
+          return ((bitField0_ & 0x00000080) != 0);
+        }
+        /**
+         * <code>optional uint64 receivedBytes = 8;</code>
+         * @return The receivedBytes.
+         */
+        @java.lang.Override
+        public long getReceivedBytes() {
+          return receivedBytes_;
+        }
+
+        public static final int RECEIVEDPACKETS_FIELD_NUMBER = 9;
+        private int receivedPackets_;
+        /**
+         * <code>optional uint32 receivedPackets = 9;</code>
+         * @return Whether the receivedPackets field is set.
+         */
+        @java.lang.Override
+        public boolean hasReceivedPackets() {
+          return ((bitField0_ & 0x00000100) != 0);
+        }
+        /**
+         * <code>optional uint32 receivedPackets = 9;</code>
+         * @return The receivedPackets.
+         */
+        @java.lang.Override
+        public int getReceivedPackets() {
+          return receivedPackets_;
+        }
+
+        public static final int RECEIVINGBITRATE_FIELD_NUMBER = 10;
+        private int receivingBitrate_;
+        /**
+         * <code>optional uint32 receivingBitrate = 10;</code>
+         * @return Whether the receivingBitrate field is set.
+         */
+        @java.lang.Override
+        public boolean hasReceivingBitrate() {
+          return ((bitField0_ & 0x00000200) != 0);
+        }
+        /**
+         * <code>optional uint32 receivingBitrate = 10;</code>
+         * @return The receivingBitrate.
+         */
+        @java.lang.Override
+        public int getReceivingBitrate() {
+          return receivingBitrate_;
+        }
+
+        public static final int SENDINGBITRATE_FIELD_NUMBER = 11;
+        private int sendingBitrate_;
+        /**
+         * <code>optional uint32 sendingBitrate = 11;</code>
+         * @return Whether the sendingBitrate field is set.
+         */
+        @java.lang.Override
+        public boolean hasSendingBitrate() {
+          return ((bitField0_ & 0x00000400) != 0);
+        }
+        /**
+         * <code>optional uint32 sendingBitrate = 11;</code>
+         * @return The sendingBitrate.
+         */
+        @java.lang.Override
+        public int getSendingBitrate() {
+          return sendingBitrate_;
+        }
+
+        public static final int SENTBYTES_FIELD_NUMBER = 12;
+        private long sentBytes_;
+        /**
+         * <code>optional uint64 sentBytes = 12;</code>
+         * @return Whether the sentBytes field is set.
+         */
+        @java.lang.Override
+        public boolean hasSentBytes() {
+          return ((bitField0_ & 0x00000800) != 0);
+        }
+        /**
+         * <code>optional uint64 sentBytes = 12;</code>
+         * @return The sentBytes.
+         */
+        @java.lang.Override
+        public long getSentBytes() {
+          return sentBytes_;
+        }
+
+        public static final int SENTPACKETS_FIELD_NUMBER = 13;
+        private int sentPackets_;
+        /**
+         * <code>optional uint32 sentPackets = 13;</code>
+         * @return Whether the sentPackets field is set.
+         */
+        @java.lang.Override
+        public boolean hasSentPackets() {
+          return ((bitField0_ & 0x00001000) != 0);
+        }
+        /**
+         * <code>optional uint32 sentPackets = 13;</code>
+         * @return The sentPackets.
+         */
+        @java.lang.Override
+        public int getSentPackets() {
+          return sentPackets_;
+        }
+
+        private byte memoizedIsInitialized = -1;
+        @java.lang.Override
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized == 1) return true;
+          if (isInitialized == 0) return false;
+
+          if (!hasPeerId()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          if (!hasRelayedAddress()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          if (!hasRelayedPort()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          if (!hasSessionId()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          if (!hasTransportProtocol()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        @java.lang.Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, peerId_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, relayedAddress_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            output.writeUInt32(3, relayedPort_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, sessionId_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, transportProtocol_);
+          }
+          if (((bitField0_ & 0x00000020) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, peerAddress_);
+          }
+          if (((bitField0_ & 0x00000040) != 0)) {
+            output.writeUInt32(7, peerPort_);
+          }
+          if (((bitField0_ & 0x00000080) != 0)) {
+            output.writeUInt64(8, receivedBytes_);
+          }
+          if (((bitField0_ & 0x00000100) != 0)) {
+            output.writeUInt32(9, receivedPackets_);
+          }
+          if (((bitField0_ & 0x00000200) != 0)) {
+            output.writeUInt32(10, receivingBitrate_);
+          }
+          if (((bitField0_ & 0x00000400) != 0)) {
+            output.writeUInt32(11, sendingBitrate_);
+          }
+          if (((bitField0_ & 0x00000800) != 0)) {
+            output.writeUInt64(12, sentBytes_);
+          }
+          if (((bitField0_ & 0x00001000) != 0)) {
+            output.writeUInt32(13, sentPackets_);
+          }
+          unknownFields.writeTo(output);
+        }
+
+        @java.lang.Override
+        public int getSerializedSize() {
+          int size = memoizedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, peerId_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, relayedAddress_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(3, relayedPort_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, sessionId_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, transportProtocol_);
+          }
+          if (((bitField0_ & 0x00000020) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, peerAddress_);
+          }
+          if (((bitField0_ & 0x00000040) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(7, peerPort_);
+          }
+          if (((bitField0_ & 0x00000080) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt64Size(8, receivedBytes_);
+          }
+          if (((bitField0_ & 0x00000100) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(9, receivedPackets_);
+          }
+          if (((bitField0_ & 0x00000200) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(10, receivingBitrate_);
+          }
+          if (((bitField0_ & 0x00000400) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(11, sendingBitrate_);
+          }
+          if (((bitField0_ & 0x00000800) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt64Size(12, sentBytes_);
+          }
+          if (((bitField0_ & 0x00001000) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(13, sentPackets_);
+          }
+          size += unknownFields.getSerializedSize();
+          memoizedSize = size;
+          return size;
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object obj) {
+          if (obj == this) {
+           return true;
+          }
+          if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation)) {
+            return super.equals(obj);
+          }
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation) obj;
+
+          if (hasPeerId() != other.hasPeerId()) return false;
+          if (hasPeerId()) {
+            if (!getPeerId()
+                .equals(other.getPeerId())) return false;
+          }
+          if (hasRelayedAddress() != other.hasRelayedAddress()) return false;
+          if (hasRelayedAddress()) {
+            if (!getRelayedAddress()
+                .equals(other.getRelayedAddress())) return false;
+          }
+          if (hasRelayedPort() != other.hasRelayedPort()) return false;
+          if (hasRelayedPort()) {
+            if (getRelayedPort()
+                != other.getRelayedPort()) return false;
+          }
+          if (hasSessionId() != other.hasSessionId()) return false;
+          if (hasSessionId()) {
+            if (!getSessionId()
+                .equals(other.getSessionId())) return false;
+          }
+          if (hasTransportProtocol() != other.hasTransportProtocol()) return false;
+          if (hasTransportProtocol()) {
+            if (!getTransportProtocol()
+                .equals(other.getTransportProtocol())) return false;
+          }
+          if (hasPeerAddress() != other.hasPeerAddress()) return false;
+          if (hasPeerAddress()) {
+            if (!getPeerAddress()
+                .equals(other.getPeerAddress())) return false;
+          }
+          if (hasPeerPort() != other.hasPeerPort()) return false;
+          if (hasPeerPort()) {
+            if (getPeerPort()
+                != other.getPeerPort()) return false;
+          }
+          if (hasReceivedBytes() != other.hasReceivedBytes()) return false;
+          if (hasReceivedBytes()) {
+            if (getReceivedBytes()
+                != other.getReceivedBytes()) return false;
+          }
+          if (hasReceivedPackets() != other.hasReceivedPackets()) return false;
+          if (hasReceivedPackets()) {
+            if (getReceivedPackets()
+                != other.getReceivedPackets()) return false;
+          }
+          if (hasReceivingBitrate() != other.hasReceivingBitrate()) return false;
+          if (hasReceivingBitrate()) {
+            if (getReceivingBitrate()
+                != other.getReceivingBitrate()) return false;
+          }
+          if (hasSendingBitrate() != other.hasSendingBitrate()) return false;
+          if (hasSendingBitrate()) {
+            if (getSendingBitrate()
+                != other.getSendingBitrate()) return false;
+          }
+          if (hasSentBytes() != other.hasSentBytes()) return false;
+          if (hasSentBytes()) {
+            if (getSentBytes()
+                != other.getSentBytes()) return false;
+          }
+          if (hasSentPackets() != other.hasSentPackets()) return false;
+          if (hasSentPackets()) {
+            if (getSentPackets()
+                != other.getSentPackets()) return false;
+          }
+          if (!unknownFields.equals(other.unknownFields)) return false;
+          return true;
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+          if (memoizedHashCode != 0) {
+            return memoizedHashCode;
+          }
+          int hash = 41;
+          hash = (19 * hash) + getDescriptor().hashCode();
+          if (hasPeerId()) {
+            hash = (37 * hash) + PEERID_FIELD_NUMBER;
+            hash = (53 * hash) + getPeerId().hashCode();
+          }
+          if (hasRelayedAddress()) {
+            hash = (37 * hash) + RELAYEDADDRESS_FIELD_NUMBER;
+            hash = (53 * hash) + getRelayedAddress().hashCode();
+          }
+          if (hasRelayedPort()) {
+            hash = (37 * hash) + RELAYEDPORT_FIELD_NUMBER;
+            hash = (53 * hash) + getRelayedPort();
+          }
+          if (hasSessionId()) {
+            hash = (37 * hash) + SESSIONID_FIELD_NUMBER;
+            hash = (53 * hash) + getSessionId().hashCode();
+          }
+          if (hasTransportProtocol()) {
+            hash = (37 * hash) + TRANSPORTPROTOCOL_FIELD_NUMBER;
+            hash = (53 * hash) + getTransportProtocol().hashCode();
+          }
+          if (hasPeerAddress()) {
+            hash = (37 * hash) + PEERADDRESS_FIELD_NUMBER;
+            hash = (53 * hash) + getPeerAddress().hashCode();
+          }
+          if (hasPeerPort()) {
+            hash = (37 * hash) + PEERPORT_FIELD_NUMBER;
+            hash = (53 * hash) + getPeerPort();
+          }
+          if (hasReceivedBytes()) {
+            hash = (37 * hash) + RECEIVEDBYTES_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+                getReceivedBytes());
+          }
+          if (hasReceivedPackets()) {
+            hash = (37 * hash) + RECEIVEDPACKETS_FIELD_NUMBER;
+            hash = (53 * hash) + getReceivedPackets();
+          }
+          if (hasReceivingBitrate()) {
+            hash = (37 * hash) + RECEIVINGBITRATE_FIELD_NUMBER;
+            hash = (53 * hash) + getReceivingBitrate();
+          }
+          if (hasSendingBitrate()) {
+            hash = (37 * hash) + SENDINGBITRATE_FIELD_NUMBER;
+            hash = (53 * hash) + getSendingBitrate();
+          }
+          if (hasSentBytes()) {
+            hash = (37 * hash) + SENTBYTES_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+                getSentBytes());
+          }
+          if (hasSentPackets()) {
+            hash = (37 * hash) + SENTPACKETS_FIELD_NUMBER;
+            hash = (53 * hash) + getSentPackets();
+          }
+          hash = (29 * hash) + unknownFields.hashCode();
+          memoizedHashCode = hash;
+          return hash;
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder() {
+          return DEFAULT_INSTANCE.toBuilder();
+        }
+        public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation prototype) {
+          return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+        }
+        @java.lang.Override
+        public Builder toBuilder() {
+          return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation)
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_descriptor;
+          }
+
+          @java.lang.Override
+          protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder.class);
+          }
+
+          // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3
+                    .alwaysUseFieldBuilders) {
+            }
+          }
+          @java.lang.Override
+          public Builder clear() {
+            super.clear();
+            peerId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000001);
+            relayedAddress_ = "";
+            bitField0_ = (bitField0_ & ~0x00000002);
+            relayedPort_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            sessionId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000008);
+            transportProtocol_ = "";
+            bitField0_ = (bitField0_ & ~0x00000010);
+            peerAddress_ = "";
+            bitField0_ = (bitField0_ & ~0x00000020);
+            peerPort_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000040);
+            receivedBytes_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000080);
+            receivedPackets_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000100);
+            receivingBitrate_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000200);
+            sendingBitrate_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000400);
+            sentBytes_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000800);
+            sentPackets_ = 0;
+            bitField0_ = (bitField0_ & ~0x00001000);
+            return this;
+          }
+
+          @java.lang.Override
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_descriptor;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation getDefaultInstanceForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.getDefaultInstance();
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation build() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation buildPartial() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) != 0)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.peerId_ = peerId_;
+            if (((from_bitField0_ & 0x00000002) != 0)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.relayedAddress_ = relayedAddress_;
+            if (((from_bitField0_ & 0x00000004) != 0)) {
+              result.relayedPort_ = relayedPort_;
+              to_bitField0_ |= 0x00000004;
+            }
+            if (((from_bitField0_ & 0x00000008) != 0)) {
+              to_bitField0_ |= 0x00000008;
+            }
+            result.sessionId_ = sessionId_;
+            if (((from_bitField0_ & 0x00000010) != 0)) {
+              to_bitField0_ |= 0x00000010;
+            }
+            result.transportProtocol_ = transportProtocol_;
+            if (((from_bitField0_ & 0x00000020) != 0)) {
+              to_bitField0_ |= 0x00000020;
+            }
+            result.peerAddress_ = peerAddress_;
+            if (((from_bitField0_ & 0x00000040) != 0)) {
+              result.peerPort_ = peerPort_;
+              to_bitField0_ |= 0x00000040;
+            }
+            if (((from_bitField0_ & 0x00000080) != 0)) {
+              result.receivedBytes_ = receivedBytes_;
+              to_bitField0_ |= 0x00000080;
+            }
+            if (((from_bitField0_ & 0x00000100) != 0)) {
+              result.receivedPackets_ = receivedPackets_;
+              to_bitField0_ |= 0x00000100;
+            }
+            if (((from_bitField0_ & 0x00000200) != 0)) {
+              result.receivingBitrate_ = receivingBitrate_;
+              to_bitField0_ |= 0x00000200;
+            }
+            if (((from_bitField0_ & 0x00000400) != 0)) {
+              result.sendingBitrate_ = sendingBitrate_;
+              to_bitField0_ |= 0x00000400;
+            }
+            if (((from_bitField0_ & 0x00000800) != 0)) {
+              result.sentBytes_ = sentBytes_;
+              to_bitField0_ |= 0x00000800;
+            }
+            if (((from_bitField0_ & 0x00001000) != 0)) {
+              result.sentPackets_ = sentPackets_;
+              to_bitField0_ |= 0x00001000;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          @java.lang.Override
+          public Builder clone() {
+            return super.clone();
+          }
+          @java.lang.Override
+          public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.setField(field, value);
+          }
+          @java.lang.Override
+          public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+          }
+          @java.lang.Override
+          public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+          }
+          @java.lang.Override
+          public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+          }
+          @java.lang.Override
+          public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+          }
+          @java.lang.Override
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation) {
+              return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation other) {
+            if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.getDefaultInstance()) return this;
+            if (other.hasPeerId()) {
+              bitField0_ |= 0x00000001;
+              peerId_ = other.peerId_;
+              onChanged();
+            }
+            if (other.hasRelayedAddress()) {
+              bitField0_ |= 0x00000002;
+              relayedAddress_ = other.relayedAddress_;
+              onChanged();
+            }
+            if (other.hasRelayedPort()) {
+              setRelayedPort(other.getRelayedPort());
+            }
+            if (other.hasSessionId()) {
+              bitField0_ |= 0x00000008;
+              sessionId_ = other.sessionId_;
+              onChanged();
+            }
+            if (other.hasTransportProtocol()) {
+              bitField0_ |= 0x00000010;
+              transportProtocol_ = other.transportProtocol_;
+              onChanged();
+            }
+            if (other.hasPeerAddress()) {
+              bitField0_ |= 0x00000020;
+              peerAddress_ = other.peerAddress_;
+              onChanged();
+            }
+            if (other.hasPeerPort()) {
+              setPeerPort(other.getPeerPort());
+            }
+            if (other.hasReceivedBytes()) {
+              setReceivedBytes(other.getReceivedBytes());
+            }
+            if (other.hasReceivedPackets()) {
+              setReceivedPackets(other.getReceivedPackets());
+            }
+            if (other.hasReceivingBitrate()) {
+              setReceivingBitrate(other.getReceivingBitrate());
+            }
+            if (other.hasSendingBitrate()) {
+              setSendingBitrate(other.getSendingBitrate());
+            }
+            if (other.hasSentBytes()) {
+              setSentBytes(other.getSentBytes());
+            }
+            if (other.hasSentPackets()) {
+              setSentPackets(other.getSentPackets());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+          }
+
+          @java.lang.Override
+          public final boolean isInitialized() {
+            if (!hasPeerId()) {
+              return false;
+            }
+            if (!hasRelayedAddress()) {
+              return false;
+            }
+            if (!hasRelayedPort()) {
+              return false;
+            }
+            if (!hasSessionId()) {
+              return false;
+            }
+            if (!hasTransportProtocol()) {
+              return false;
+            }
+            return true;
+          }
+
+          @java.lang.Override
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation) e.getUnfinishedMessage();
+              throw e.unwrapIOException();
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          private java.lang.Object peerId_ = "";
+          /**
+           * <code>required string peerId = 1;</code>
+           * @return Whether the peerId field is set.
+           */
+          public boolean hasPeerId() {
+            return ((bitField0_ & 0x00000001) != 0);
+          }
+          /**
+           * <code>required string peerId = 1;</code>
+           * @return The peerId.
+           */
+          public java.lang.String getPeerId() {
+            java.lang.Object ref = peerId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                peerId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string peerId = 1;</code>
+           * @return The bytes for peerId.
+           */
+          public com.google.protobuf.ByteString
+              getPeerIdBytes() {
+            java.lang.Object ref = peerId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              peerId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string peerId = 1;</code>
+           * @param value The peerId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            peerId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string peerId = 1;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearPeerId() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            peerId_ = getDefaultInstance().getPeerId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string peerId = 1;</code>
+           * @param value The bytes for peerId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            peerId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object relayedAddress_ = "";
+          /**
+           * <code>required string relayedAddress = 2;</code>
+           * @return Whether the relayedAddress field is set.
+           */
+          public boolean hasRelayedAddress() {
+            return ((bitField0_ & 0x00000002) != 0);
+          }
+          /**
+           * <code>required string relayedAddress = 2;</code>
+           * @return The relayedAddress.
+           */
+          public java.lang.String getRelayedAddress() {
+            java.lang.Object ref = relayedAddress_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                relayedAddress_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string relayedAddress = 2;</code>
+           * @return The bytes for relayedAddress.
+           */
+          public com.google.protobuf.ByteString
+              getRelayedAddressBytes() {
+            java.lang.Object ref = relayedAddress_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              relayedAddress_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string relayedAddress = 2;</code>
+           * @param value The relayedAddress to set.
+           * @return This builder for chaining.
+           */
+          public Builder setRelayedAddress(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            relayedAddress_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string relayedAddress = 2;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearRelayedAddress() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            relayedAddress_ = getDefaultInstance().getRelayedAddress();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string relayedAddress = 2;</code>
+           * @param value The bytes for relayedAddress to set.
+           * @return This builder for chaining.
+           */
+          public Builder setRelayedAddressBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            relayedAddress_ = value;
+            onChanged();
+            return this;
+          }
+
+          private int relayedPort_ ;
+          /**
+           * <code>required uint32 relayedPort = 3;</code>
+           * @return Whether the relayedPort field is set.
+           */
+          @java.lang.Override
+          public boolean hasRelayedPort() {
+            return ((bitField0_ & 0x00000004) != 0);
+          }
+          /**
+           * <code>required uint32 relayedPort = 3;</code>
+           * @return The relayedPort.
+           */
+          @java.lang.Override
+          public int getRelayedPort() {
+            return relayedPort_;
+          }
+          /**
+           * <code>required uint32 relayedPort = 3;</code>
+           * @param value The relayedPort to set.
+           * @return This builder for chaining.
+           */
+          public Builder setRelayedPort(int value) {
+            bitField0_ |= 0x00000004;
+            relayedPort_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required uint32 relayedPort = 3;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearRelayedPort() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            relayedPort_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object sessionId_ = "";
+          /**
+           * <code>required string sessionId = 4;</code>
+           * @return Whether the sessionId field is set.
+           */
+          public boolean hasSessionId() {
+            return ((bitField0_ & 0x00000008) != 0);
+          }
+          /**
+           * <code>required string sessionId = 4;</code>
+           * @return The sessionId.
+           */
+          public java.lang.String getSessionId() {
+            java.lang.Object ref = sessionId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                sessionId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string sessionId = 4;</code>
+           * @return The bytes for sessionId.
+           */
+          public com.google.protobuf.ByteString
+              getSessionIdBytes() {
+            java.lang.Object ref = sessionId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              sessionId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string sessionId = 4;</code>
+           * @param value The sessionId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSessionId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            sessionId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string sessionId = 4;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSessionId() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            sessionId_ = getDefaultInstance().getSessionId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string sessionId = 4;</code>
+           * @param value The bytes for sessionId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSessionIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            sessionId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object transportProtocol_ = "";
+          /**
+           * <code>required string transportProtocol = 5;</code>
+           * @return Whether the transportProtocol field is set.
+           */
+          public boolean hasTransportProtocol() {
+            return ((bitField0_ & 0x00000010) != 0);
+          }
+          /**
+           * <code>required string transportProtocol = 5;</code>
+           * @return The transportProtocol.
+           */
+          public java.lang.String getTransportProtocol() {
+            java.lang.Object ref = transportProtocol_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                transportProtocol_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string transportProtocol = 5;</code>
+           * @return The bytes for transportProtocol.
+           */
+          public com.google.protobuf.ByteString
+              getTransportProtocolBytes() {
+            java.lang.Object ref = transportProtocol_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              transportProtocol_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string transportProtocol = 5;</code>
+           * @param value The transportProtocol to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTransportProtocol(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+            transportProtocol_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string transportProtocol = 5;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearTransportProtocol() {
+            bitField0_ = (bitField0_ & ~0x00000010);
+            transportProtocol_ = getDefaultInstance().getTransportProtocol();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string transportProtocol = 5;</code>
+           * @param value The bytes for transportProtocol to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTransportProtocolBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+            transportProtocol_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object peerAddress_ = "";
+          /**
+           * <code>optional string peerAddress = 6;</code>
+           * @return Whether the peerAddress field is set.
+           */
+          public boolean hasPeerAddress() {
+            return ((bitField0_ & 0x00000020) != 0);
+          }
+          /**
+           * <code>optional string peerAddress = 6;</code>
+           * @return The peerAddress.
+           */
+          public java.lang.String getPeerAddress() {
+            java.lang.Object ref = peerAddress_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                peerAddress_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string peerAddress = 6;</code>
+           * @return The bytes for peerAddress.
+           */
+          public com.google.protobuf.ByteString
+              getPeerAddressBytes() {
+            java.lang.Object ref = peerAddress_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              peerAddress_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string peerAddress = 6;</code>
+           * @param value The peerAddress to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerAddress(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+            peerAddress_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string peerAddress = 6;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearPeerAddress() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            peerAddress_ = getDefaultInstance().getPeerAddress();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string peerAddress = 6;</code>
+           * @param value The bytes for peerAddress to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerAddressBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+            peerAddress_ = value;
+            onChanged();
+            return this;
+          }
+
+          private int peerPort_ ;
+          /**
+           * <code>optional uint32 peerPort = 7;</code>
+           * @return Whether the peerPort field is set.
+           */
+          @java.lang.Override
+          public boolean hasPeerPort() {
+            return ((bitField0_ & 0x00000040) != 0);
+          }
+          /**
+           * <code>optional uint32 peerPort = 7;</code>
+           * @return The peerPort.
+           */
+          @java.lang.Override
+          public int getPeerPort() {
+            return peerPort_;
+          }
+          /**
+           * <code>optional uint32 peerPort = 7;</code>
+           * @param value The peerPort to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerPort(int value) {
+            bitField0_ |= 0x00000040;
+            peerPort_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 peerPort = 7;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearPeerPort() {
+            bitField0_ = (bitField0_ & ~0x00000040);
+            peerPort_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private long receivedBytes_ ;
+          /**
+           * <code>optional uint64 receivedBytes = 8;</code>
+           * @return Whether the receivedBytes field is set.
+           */
+          @java.lang.Override
+          public boolean hasReceivedBytes() {
+            return ((bitField0_ & 0x00000080) != 0);
+          }
+          /**
+           * <code>optional uint64 receivedBytes = 8;</code>
+           * @return The receivedBytes.
+           */
+          @java.lang.Override
+          public long getReceivedBytes() {
+            return receivedBytes_;
+          }
+          /**
+           * <code>optional uint64 receivedBytes = 8;</code>
+           * @param value The receivedBytes to set.
+           * @return This builder for chaining.
+           */
+          public Builder setReceivedBytes(long value) {
+            bitField0_ |= 0x00000080;
+            receivedBytes_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint64 receivedBytes = 8;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearReceivedBytes() {
+            bitField0_ = (bitField0_ & ~0x00000080);
+            receivedBytes_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private int receivedPackets_ ;
+          /**
+           * <code>optional uint32 receivedPackets = 9;</code>
+           * @return Whether the receivedPackets field is set.
+           */
+          @java.lang.Override
+          public boolean hasReceivedPackets() {
+            return ((bitField0_ & 0x00000100) != 0);
+          }
+          /**
+           * <code>optional uint32 receivedPackets = 9;</code>
+           * @return The receivedPackets.
+           */
+          @java.lang.Override
+          public int getReceivedPackets() {
+            return receivedPackets_;
+          }
+          /**
+           * <code>optional uint32 receivedPackets = 9;</code>
+           * @param value The receivedPackets to set.
+           * @return This builder for chaining.
+           */
+          public Builder setReceivedPackets(int value) {
+            bitField0_ |= 0x00000100;
+            receivedPackets_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 receivedPackets = 9;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearReceivedPackets() {
+            bitField0_ = (bitField0_ & ~0x00000100);
+            receivedPackets_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private int receivingBitrate_ ;
+          /**
+           * <code>optional uint32 receivingBitrate = 10;</code>
+           * @return Whether the receivingBitrate field is set.
+           */
+          @java.lang.Override
+          public boolean hasReceivingBitrate() {
+            return ((bitField0_ & 0x00000200) != 0);
+          }
+          /**
+           * <code>optional uint32 receivingBitrate = 10;</code>
+           * @return The receivingBitrate.
+           */
+          @java.lang.Override
+          public int getReceivingBitrate() {
+            return receivingBitrate_;
+          }
+          /**
+           * <code>optional uint32 receivingBitrate = 10;</code>
+           * @param value The receivingBitrate to set.
+           * @return This builder for chaining.
+           */
+          public Builder setReceivingBitrate(int value) {
+            bitField0_ |= 0x00000200;
+            receivingBitrate_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 receivingBitrate = 10;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearReceivingBitrate() {
+            bitField0_ = (bitField0_ & ~0x00000200);
+            receivingBitrate_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private int sendingBitrate_ ;
+          /**
+           * <code>optional uint32 sendingBitrate = 11;</code>
+           * @return Whether the sendingBitrate field is set.
+           */
+          @java.lang.Override
+          public boolean hasSendingBitrate() {
+            return ((bitField0_ & 0x00000400) != 0);
+          }
+          /**
+           * <code>optional uint32 sendingBitrate = 11;</code>
+           * @return The sendingBitrate.
+           */
+          @java.lang.Override
+          public int getSendingBitrate() {
+            return sendingBitrate_;
+          }
+          /**
+           * <code>optional uint32 sendingBitrate = 11;</code>
+           * @param value The sendingBitrate to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSendingBitrate(int value) {
+            bitField0_ |= 0x00000400;
+            sendingBitrate_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 sendingBitrate = 11;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSendingBitrate() {
+            bitField0_ = (bitField0_ & ~0x00000400);
+            sendingBitrate_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private long sentBytes_ ;
+          /**
+           * <code>optional uint64 sentBytes = 12;</code>
+           * @return Whether the sentBytes field is set.
+           */
+          @java.lang.Override
+          public boolean hasSentBytes() {
+            return ((bitField0_ & 0x00000800) != 0);
+          }
+          /**
+           * <code>optional uint64 sentBytes = 12;</code>
+           * @return The sentBytes.
+           */
+          @java.lang.Override
+          public long getSentBytes() {
+            return sentBytes_;
+          }
+          /**
+           * <code>optional uint64 sentBytes = 12;</code>
+           * @param value The sentBytes to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSentBytes(long value) {
+            bitField0_ |= 0x00000800;
+            sentBytes_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint64 sentBytes = 12;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSentBytes() {
+            bitField0_ = (bitField0_ & ~0x00000800);
+            sentBytes_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private int sentPackets_ ;
+          /**
+           * <code>optional uint32 sentPackets = 13;</code>
+           * @return Whether the sentPackets field is set.
+           */
+          @java.lang.Override
+          public boolean hasSentPackets() {
+            return ((bitField0_ & 0x00001000) != 0);
+          }
+          /**
+           * <code>optional uint32 sentPackets = 13;</code>
+           * @return The sentPackets.
+           */
+          @java.lang.Override
+          public int getSentPackets() {
+            return sentPackets_;
+          }
+          /**
+           * <code>optional uint32 sentPackets = 13;</code>
+           * @param value The sentPackets to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSentPackets(int value) {
+            bitField0_ |= 0x00001000;
+            sentPackets_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 sentPackets = 13;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSentPackets() {
+            bitField0_ = (bitField0_ & ~0x00001000);
+            sentPackets_ = 0;
+            onChanged();
+            return this;
+          }
+          @java.lang.Override
+          public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+          }
+
+          @java.lang.Override
+          public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+          }
+
+
+          // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation)
+        }
+
+        // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation)
+        private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation DEFAULT_INSTANCE;
+        static {
+          DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation();
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation getDefaultInstance() {
+          return DEFAULT_INSTANCE;
+        }
+
+        @java.lang.Deprecated public static final com.google.protobuf.Parser<TurnPeerAllocation>
+            PARSER = new com.google.protobuf.AbstractParser<TurnPeerAllocation>() {
+          @java.lang.Override
+          public TurnPeerAllocation parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new TurnPeerAllocation(input, extensionRegistry);
+          }
+        };
+
+        public static com.google.protobuf.Parser<TurnPeerAllocation> parser() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<TurnPeerAllocation> getParserForType() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation getDefaultInstanceForType() {
+          return DEFAULT_INSTANCE;
+        }
+
       }
 
       public interface TurnSessionOrBuilder extends
@@ -82887,295 +85087,212 @@ public final class ProtobufSamples {
             getSessionIdBytes();
 
         /**
-         * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-         * @return Whether the averageReceivingBitrateFromClient field is set.
+         * <code>optional string clientAddress = 2;</code>
+         * @return Whether the clientAddress field is set.
          */
-        boolean hasAverageReceivingBitrateFromClient();
+        boolean hasClientAddress();
         /**
-         * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-         * @return The averageReceivingBitrateFromClient.
+         * <code>optional string clientAddress = 2;</code>
+         * @return The clientAddress.
          */
-        int getAverageReceivingBitrateFromClient();
+        java.lang.String getClientAddress();
+        /**
+         * <code>optional string clientAddress = 2;</code>
+         * @return The bytes for clientAddress.
+         */
+        com.google.protobuf.ByteString
+            getClientAddressBytes();
 
         /**
-         * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-         * @return Whether the averageReceivingBitrateFromPeer field is set.
-         */
-        boolean hasAverageReceivingBitrateFromPeer();
-        /**
-         * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-         * @return The averageReceivingBitrateFromPeer.
-         */
-        int getAverageReceivingBitrateFromPeer();
-
-        /**
-         * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-         * @return Whether the averageSendingBitrateToClient field is set.
-         */
-        boolean hasAverageSendingBitrateToClient();
-        /**
-         * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-         * @return The averageSendingBitrateToClient.
-         */
-        int getAverageSendingBitrateToClient();
-
-        /**
-         * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-         * @return Whether the averageSendingBitrateToPeer field is set.
-         */
-        boolean hasAverageSendingBitrateToPeer();
-        /**
-         * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-         * @return The averageSendingBitrateToPeer.
-         */
-        int getAverageSendingBitrateToPeer();
-
-        /**
-         * <code>optional string clientId = 6;</code>
+         * <code>optional string clientId = 3;</code>
          * @return Whether the clientId field is set.
          */
         boolean hasClientId();
         /**
-         * <code>optional string clientId = 6;</code>
+         * <code>optional string clientId = 3;</code>
          * @return The clientId.
          */
         java.lang.String getClientId();
         /**
-         * <code>optional string clientId = 6;</code>
+         * <code>optional string clientId = 3;</code>
          * @return The bytes for clientId.
          */
         com.google.protobuf.ByteString
             getClientIdBytes();
 
         /**
-         * <code>optional string clientTransportProtocol = 7;</code>
-         * @return Whether the clientTransportProtocol field is set.
+         * <code>optional uint32 clientPort = 4;</code>
+         * @return Whether the clientPort field is set.
          */
-        boolean hasClientTransportProtocol();
+        boolean hasClientPort();
         /**
-         * <code>optional string clientTransportProtocol = 7;</code>
-         * @return The clientTransportProtocol.
+         * <code>optional uint32 clientPort = 4;</code>
+         * @return The clientPort.
          */
-        java.lang.String getClientTransportProtocol();
-        /**
-         * <code>optional string clientTransportProtocol = 7;</code>
-         * @return The bytes for clientTransportProtocol.
-         */
-        com.google.protobuf.ByteString
-            getClientTransportProtocolBytes();
+        int getClientPort();
 
         /**
-         * <code>optional uint64 nonceExpirationTime = 8;</code>
+         * <code>optional uint64 nonceExpirationTime = 5;</code>
          * @return Whether the nonceExpirationTime field is set.
          */
         boolean hasNonceExpirationTime();
         /**
-         * <code>optional uint64 nonceExpirationTime = 8;</code>
+         * <code>optional uint64 nonceExpirationTime = 5;</code>
          * @return The nonceExpirationTime.
          */
         long getNonceExpirationTime();
 
         /**
-         * <code>optional string peerAddress = 9;</code>
-         * @return Whether the peerAddress field is set.
-         */
-        boolean hasPeerAddress();
-        /**
-         * <code>optional string peerAddress = 9;</code>
-         * @return The peerAddress.
-         */
-        java.lang.String getPeerAddress();
-        /**
-         * <code>optional string peerAddress = 9;</code>
-         * @return The bytes for peerAddress.
-         */
-        com.google.protobuf.ByteString
-            getPeerAddressBytes();
-
-        /**
-         * <code>optional uint32 peerPort = 10;</code>
-         * @return Whether the peerPort field is set.
-         */
-        boolean hasPeerPort();
-        /**
-         * <code>optional uint32 peerPort = 10;</code>
-         * @return The peerPort.
-         */
-        int getPeerPort();
-
-        /**
-         * <code>optional string realm = 11;</code>
+         * <code>optional string realm = 6;</code>
          * @return Whether the realm field is set.
          */
         boolean hasRealm();
         /**
-         * <code>optional string realm = 11;</code>
+         * <code>optional string realm = 6;</code>
          * @return The realm.
          */
         java.lang.String getRealm();
         /**
-         * <code>optional string realm = 11;</code>
+         * <code>optional string realm = 6;</code>
          * @return The bytes for realm.
          */
         com.google.protobuf.ByteString
             getRealmBytes();
 
         /**
-         * <code>optional uint64 receivedBytesFromClient = 12;</code>
-         * @return Whether the receivedBytesFromClient field is set.
+         * <code>optional uint64 receivedBytes = 7;</code>
+         * @return Whether the receivedBytes field is set.
          */
-        boolean hasReceivedBytesFromClient();
+        boolean hasReceivedBytes();
         /**
-         * <code>optional uint64 receivedBytesFromClient = 12;</code>
-         * @return The receivedBytesFromClient.
+         * <code>optional uint64 receivedBytes = 7;</code>
+         * @return The receivedBytes.
          */
-        long getReceivedBytesFromClient();
+        long getReceivedBytes();
 
         /**
-         * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-         * @return Whether the receivedBytesFromPeer field is set.
+         * <code>optional uint32 receivedPackets = 8;</code>
+         * @return Whether the receivedPackets field is set.
          */
-        boolean hasReceivedBytesFromPeer();
+        boolean hasReceivedPackets();
         /**
-         * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-         * @return The receivedBytesFromPeer.
+         * <code>optional uint32 receivedPackets = 8;</code>
+         * @return The receivedPackets.
          */
-        long getReceivedBytesFromPeer();
+        int getReceivedPackets();
 
         /**
-         * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-         * @return Whether the receivedPacketsFromClient field is set.
+         * <code>optional uint32 receivingBitrate = 9;</code>
+         * @return Whether the receivingBitrate field is set.
          */
-        boolean hasReceivedPacketsFromClient();
+        boolean hasReceivingBitrate();
         /**
-         * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-         * @return The receivedPacketsFromClient.
+         * <code>optional uint32 receivingBitrate = 9;</code>
+         * @return The receivingBitrate.
          */
-        int getReceivedPacketsFromClient();
+        int getReceivingBitrate();
 
         /**
-         * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-         * @return Whether the receivedPacketsFromPeer field is set.
+         * <code>optional uint32 sendingBitrate = 10;</code>
+         * @return Whether the sendingBitrate field is set.
          */
-        boolean hasReceivedPacketsFromPeer();
+        boolean hasSendingBitrate();
         /**
-         * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-         * @return The receivedPacketsFromPeer.
+         * <code>optional uint32 sendingBitrate = 10;</code>
+         * @return The sendingBitrate.
          */
-        int getReceivedPacketsFromPeer();
+        int getSendingBitrate();
 
         /**
-         * <code>optional string relayTransportProtocol = 16;</code>
-         * @return Whether the relayTransportProtocol field is set.
+         * <code>optional uint64 sentBytes = 11;</code>
+         * @return Whether the sentBytes field is set.
          */
-        boolean hasRelayTransportProtocol();
+        boolean hasSentBytes();
         /**
-         * <code>optional string relayTransportProtocol = 16;</code>
-         * @return The relayTransportProtocol.
+         * <code>optional uint64 sentBytes = 11;</code>
+         * @return The sentBytes.
          */
-        java.lang.String getRelayTransportProtocol();
-        /**
-         * <code>optional string relayTransportProtocol = 16;</code>
-         * @return The bytes for relayTransportProtocol.
-         */
-        com.google.protobuf.ByteString
-            getRelayTransportProtocolBytes();
+        long getSentBytes();
 
         /**
-         * <code>optional uint64 sentBytesToClient = 17;</code>
-         * @return Whether the sentBytesToClient field is set.
+         * <code>optional uint32 sentPackets = 12;</code>
+         * @return Whether the sentPackets field is set.
          */
-        boolean hasSentBytesToClient();
+        boolean hasSentPackets();
         /**
-         * <code>optional uint64 sentBytesToClient = 17;</code>
-         * @return The sentBytesToClient.
+         * <code>optional uint32 sentPackets = 12;</code>
+         * @return The sentPackets.
          */
-        long getSentBytesToClient();
+        int getSentPackets();
 
         /**
-         * <code>optional uint64 sentBytesToPeer = 18;</code>
-         * @return Whether the sentBytesToPeer field is set.
-         */
-        boolean hasSentBytesToPeer();
-        /**
-         * <code>optional uint64 sentBytesToPeer = 18;</code>
-         * @return The sentBytesToPeer.
-         */
-        long getSentBytesToPeer();
-
-        /**
-         * <code>optional uint32 sentPacketsToClient = 19;</code>
-         * @return Whether the sentPacketsToClient field is set.
-         */
-        boolean hasSentPacketsToClient();
-        /**
-         * <code>optional uint32 sentPacketsToClient = 19;</code>
-         * @return The sentPacketsToClient.
-         */
-        int getSentPacketsToClient();
-
-        /**
-         * <code>optional uint32 sentPacketsToPeer = 20;</code>
-         * @return Whether the sentPacketsToPeer field is set.
-         */
-        boolean hasSentPacketsToPeer();
-        /**
-         * <code>optional uint32 sentPacketsToPeer = 20;</code>
-         * @return The sentPacketsToPeer.
-         */
-        int getSentPacketsToPeer();
-
-        /**
-         * <code>optional string serverAddress = 21;</code>
+         * <code>optional string serverAddress = 13;</code>
          * @return Whether the serverAddress field is set.
          */
         boolean hasServerAddress();
         /**
-         * <code>optional string serverAddress = 21;</code>
+         * <code>optional string serverAddress = 13;</code>
          * @return The serverAddress.
          */
         java.lang.String getServerAddress();
         /**
-         * <code>optional string serverAddress = 21;</code>
+         * <code>optional string serverAddress = 13;</code>
          * @return The bytes for serverAddress.
          */
         com.google.protobuf.ByteString
             getServerAddressBytes();
 
         /**
-         * <code>optional uint32 serverPort = 22;</code>
+         * <code>optional uint32 serverPort = 14;</code>
          * @return Whether the serverPort field is set.
          */
         boolean hasServerPort();
         /**
-         * <code>optional uint32 serverPort = 22;</code>
+         * <code>optional uint32 serverPort = 14;</code>
          * @return The serverPort.
          */
         int getServerPort();
 
         /**
-         * <code>optional uint64 started = 23;</code>
+         * <code>optional uint64 started = 15;</code>
          * @return Whether the started field is set.
          */
         boolean hasStarted();
         /**
-         * <code>optional uint64 started = 23;</code>
+         * <code>optional uint64 started = 15;</code>
          * @return The started.
          */
         long getStarted();
 
         /**
-         * <code>optional string username = 24;</code>
+         * <code>optional string transportProtocol = 16;</code>
+         * @return Whether the transportProtocol field is set.
+         */
+        boolean hasTransportProtocol();
+        /**
+         * <code>optional string transportProtocol = 16;</code>
+         * @return The transportProtocol.
+         */
+        java.lang.String getTransportProtocol();
+        /**
+         * <code>optional string transportProtocol = 16;</code>
+         * @return The bytes for transportProtocol.
+         */
+        com.google.protobuf.ByteString
+            getTransportProtocolBytes();
+
+        /**
+         * <code>optional string username = 17;</code>
          * @return Whether the username field is set.
          */
         boolean hasUsername();
         /**
-         * <code>optional string username = 24;</code>
+         * <code>optional string username = 17;</code>
          * @return The username.
          */
         java.lang.String getUsername();
         /**
-         * <code>optional string username = 24;</code>
+         * <code>optional string username = 17;</code>
          * @return The bytes for username.
          */
         com.google.protobuf.ByteString
@@ -83195,12 +85312,11 @@ public final class ProtobufSamples {
         }
         private TurnSession() {
           sessionId_ = "";
+          clientAddress_ = "";
           clientId_ = "";
-          clientTransportProtocol_ = "";
-          peerAddress_ = "";
           realm_ = "";
-          relayTransportProtocol_ = "";
           serverAddress_ = "";
+          transportProtocol_ = "";
           username_ = "";
         }
 
@@ -83241,125 +85357,89 @@ public final class ProtobufSamples {
                   sessionId_ = bs;
                   break;
                 }
-                case 16: {
+                case 18: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000002;
-                  averageReceivingBitrateFromClient_ = input.readUInt32();
+                  clientAddress_ = bs;
                   break;
                 }
-                case 24: {
+                case 26: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000004;
-                  averageReceivingBitrateFromPeer_ = input.readUInt32();
+                  clientId_ = bs;
                   break;
                 }
                 case 32: {
                   bitField0_ |= 0x00000008;
-                  averageSendingBitrateToClient_ = input.readUInt32();
+                  clientPort_ = input.readUInt32();
                   break;
                 }
                 case 40: {
                   bitField0_ |= 0x00000010;
-                  averageSendingBitrateToPeer_ = input.readUInt32();
+                  nonceExpirationTime_ = input.readUInt64();
                   break;
                 }
                 case 50: {
                   com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000020;
-                  clientId_ = bs;
+                  realm_ = bs;
                   break;
                 }
-                case 58: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
+                case 56: {
                   bitField0_ |= 0x00000040;
-                  clientTransportProtocol_ = bs;
+                  receivedBytes_ = input.readUInt64();
                   break;
                 }
                 case 64: {
                   bitField0_ |= 0x00000080;
-                  nonceExpirationTime_ = input.readUInt64();
+                  receivedPackets_ = input.readUInt32();
                   break;
                 }
-                case 74: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
+                case 72: {
                   bitField0_ |= 0x00000100;
-                  peerAddress_ = bs;
+                  receivingBitrate_ = input.readUInt32();
                   break;
                 }
                 case 80: {
                   bitField0_ |= 0x00000200;
-                  peerPort_ = input.readUInt32();
+                  sendingBitrate_ = input.readUInt32();
                   break;
                 }
-                case 90: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
+                case 88: {
                   bitField0_ |= 0x00000400;
-                  realm_ = bs;
+                  sentBytes_ = input.readUInt64();
                   break;
                 }
                 case 96: {
                   bitField0_ |= 0x00000800;
-                  receivedBytesFromClient_ = input.readUInt64();
+                  sentPackets_ = input.readUInt32();
                   break;
                 }
-                case 104: {
+                case 106: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00001000;
-                  receivedBytesFromPeer_ = input.readUInt64();
+                  serverAddress_ = bs;
                   break;
                 }
                 case 112: {
                   bitField0_ |= 0x00002000;
-                  receivedPacketsFromClient_ = input.readUInt32();
+                  serverPort_ = input.readUInt32();
                   break;
                 }
                 case 120: {
                   bitField0_ |= 0x00004000;
-                  receivedPacketsFromPeer_ = input.readUInt32();
+                  started_ = input.readUInt64();
                   break;
                 }
                 case 130: {
                   com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00008000;
-                  relayTransportProtocol_ = bs;
+                  transportProtocol_ = bs;
                   break;
                 }
-                case 136: {
+                case 138: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00010000;
-                  sentBytesToClient_ = input.readUInt64();
-                  break;
-                }
-                case 144: {
-                  bitField0_ |= 0x00020000;
-                  sentBytesToPeer_ = input.readUInt64();
-                  break;
-                }
-                case 152: {
-                  bitField0_ |= 0x00040000;
-                  sentPacketsToClient_ = input.readUInt32();
-                  break;
-                }
-                case 160: {
-                  bitField0_ |= 0x00080000;
-                  sentPacketsToPeer_ = input.readUInt32();
-                  break;
-                }
-                case 170: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
-                  bitField0_ |= 0x00100000;
-                  serverAddress_ = bs;
-                  break;
-                }
-                case 176: {
-                  bitField0_ |= 0x00200000;
-                  serverPort_ = input.readUInt32();
-                  break;
-                }
-                case 184: {
-                  bitField0_ |= 0x00400000;
-                  started_ = input.readUInt64();
-                  break;
-                }
-                case 194: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
-                  bitField0_ |= 0x00800000;
                   username_ = bs;
                   break;
                 }
@@ -83444,94 +85524,66 @@ public final class ProtobufSamples {
           }
         }
 
-        public static final int AVERAGERECEIVINGBITRATEFROMCLIENT_FIELD_NUMBER = 2;
-        private int averageReceivingBitrateFromClient_;
+        public static final int CLIENTADDRESS_FIELD_NUMBER = 2;
+        private volatile java.lang.Object clientAddress_;
         /**
-         * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-         * @return Whether the averageReceivingBitrateFromClient field is set.
+         * <code>optional string clientAddress = 2;</code>
+         * @return Whether the clientAddress field is set.
          */
         @java.lang.Override
-        public boolean hasAverageReceivingBitrateFromClient() {
+        public boolean hasClientAddress() {
           return ((bitField0_ & 0x00000002) != 0);
         }
         /**
-         * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-         * @return The averageReceivingBitrateFromClient.
+         * <code>optional string clientAddress = 2;</code>
+         * @return The clientAddress.
          */
         @java.lang.Override
-        public int getAverageReceivingBitrateFromClient() {
-          return averageReceivingBitrateFromClient_;
+        public java.lang.String getClientAddress() {
+          java.lang.Object ref = clientAddress_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              clientAddress_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string clientAddress = 2;</code>
+         * @return The bytes for clientAddress.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getClientAddressBytes() {
+          java.lang.Object ref = clientAddress_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            clientAddress_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
         }
 
-        public static final int AVERAGERECEIVINGBITRATEFROMPEER_FIELD_NUMBER = 3;
-        private int averageReceivingBitrateFromPeer_;
-        /**
-         * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-         * @return Whether the averageReceivingBitrateFromPeer field is set.
-         */
-        @java.lang.Override
-        public boolean hasAverageReceivingBitrateFromPeer() {
-          return ((bitField0_ & 0x00000004) != 0);
-        }
-        /**
-         * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-         * @return The averageReceivingBitrateFromPeer.
-         */
-        @java.lang.Override
-        public int getAverageReceivingBitrateFromPeer() {
-          return averageReceivingBitrateFromPeer_;
-        }
-
-        public static final int AVERAGESENDINGBITRATETOCLIENT_FIELD_NUMBER = 4;
-        private int averageSendingBitrateToClient_;
-        /**
-         * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-         * @return Whether the averageSendingBitrateToClient field is set.
-         */
-        @java.lang.Override
-        public boolean hasAverageSendingBitrateToClient() {
-          return ((bitField0_ & 0x00000008) != 0);
-        }
-        /**
-         * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-         * @return The averageSendingBitrateToClient.
-         */
-        @java.lang.Override
-        public int getAverageSendingBitrateToClient() {
-          return averageSendingBitrateToClient_;
-        }
-
-        public static final int AVERAGESENDINGBITRATETOPEER_FIELD_NUMBER = 5;
-        private int averageSendingBitrateToPeer_;
-        /**
-         * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-         * @return Whether the averageSendingBitrateToPeer field is set.
-         */
-        @java.lang.Override
-        public boolean hasAverageSendingBitrateToPeer() {
-          return ((bitField0_ & 0x00000010) != 0);
-        }
-        /**
-         * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-         * @return The averageSendingBitrateToPeer.
-         */
-        @java.lang.Override
-        public int getAverageSendingBitrateToPeer() {
-          return averageSendingBitrateToPeer_;
-        }
-
-        public static final int CLIENTID_FIELD_NUMBER = 6;
+        public static final int CLIENTID_FIELD_NUMBER = 3;
         private volatile java.lang.Object clientId_;
         /**
-         * <code>optional string clientId = 6;</code>
+         * <code>optional string clientId = 3;</code>
          * @return Whether the clientId field is set.
          */
         @java.lang.Override
         public boolean hasClientId() {
-          return ((bitField0_ & 0x00000020) != 0);
+          return ((bitField0_ & 0x00000004) != 0);
         }
         /**
-         * <code>optional string clientId = 6;</code>
+         * <code>optional string clientId = 3;</code>
          * @return The clientId.
          */
         @java.lang.Override
@@ -83550,7 +85602,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string clientId = 6;</code>
+         * <code>optional string clientId = 3;</code>
          * @return The bytes for clientId.
          */
         @java.lang.Override
@@ -83568,66 +85620,37 @@ public final class ProtobufSamples {
           }
         }
 
-        public static final int CLIENTTRANSPORTPROTOCOL_FIELD_NUMBER = 7;
-        private volatile java.lang.Object clientTransportProtocol_;
+        public static final int CLIENTPORT_FIELD_NUMBER = 4;
+        private int clientPort_;
         /**
-         * <code>optional string clientTransportProtocol = 7;</code>
-         * @return Whether the clientTransportProtocol field is set.
+         * <code>optional uint32 clientPort = 4;</code>
+         * @return Whether the clientPort field is set.
          */
         @java.lang.Override
-        public boolean hasClientTransportProtocol() {
-          return ((bitField0_ & 0x00000040) != 0);
+        public boolean hasClientPort() {
+          return ((bitField0_ & 0x00000008) != 0);
         }
         /**
-         * <code>optional string clientTransportProtocol = 7;</code>
-         * @return The clientTransportProtocol.
+         * <code>optional uint32 clientPort = 4;</code>
+         * @return The clientPort.
          */
         @java.lang.Override
-        public java.lang.String getClientTransportProtocol() {
-          java.lang.Object ref = clientTransportProtocol_;
-          if (ref instanceof java.lang.String) {
-            return (java.lang.String) ref;
-          } else {
-            com.google.protobuf.ByteString bs = 
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              clientTransportProtocol_ = s;
-            }
-            return s;
-          }
-        }
-        /**
-         * <code>optional string clientTransportProtocol = 7;</code>
-         * @return The bytes for clientTransportProtocol.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString
-            getClientTransportProtocolBytes() {
-          java.lang.Object ref = clientTransportProtocol_;
-          if (ref instanceof java.lang.String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            clientTransportProtocol_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
+        public int getClientPort() {
+          return clientPort_;
         }
 
-        public static final int NONCEEXPIRATIONTIME_FIELD_NUMBER = 8;
+        public static final int NONCEEXPIRATIONTIME_FIELD_NUMBER = 5;
         private long nonceExpirationTime_;
         /**
-         * <code>optional uint64 nonceExpirationTime = 8;</code>
+         * <code>optional uint64 nonceExpirationTime = 5;</code>
          * @return Whether the nonceExpirationTime field is set.
          */
         @java.lang.Override
         public boolean hasNonceExpirationTime() {
-          return ((bitField0_ & 0x00000080) != 0);
+          return ((bitField0_ & 0x00000010) != 0);
         }
         /**
-         * <code>optional uint64 nonceExpirationTime = 8;</code>
+         * <code>optional uint64 nonceExpirationTime = 5;</code>
          * @return The nonceExpirationTime.
          */
         @java.lang.Override
@@ -83635,85 +85658,18 @@ public final class ProtobufSamples {
           return nonceExpirationTime_;
         }
 
-        public static final int PEERADDRESS_FIELD_NUMBER = 9;
-        private volatile java.lang.Object peerAddress_;
-        /**
-         * <code>optional string peerAddress = 9;</code>
-         * @return Whether the peerAddress field is set.
-         */
-        @java.lang.Override
-        public boolean hasPeerAddress() {
-          return ((bitField0_ & 0x00000100) != 0);
-        }
-        /**
-         * <code>optional string peerAddress = 9;</code>
-         * @return The peerAddress.
-         */
-        @java.lang.Override
-        public java.lang.String getPeerAddress() {
-          java.lang.Object ref = peerAddress_;
-          if (ref instanceof java.lang.String) {
-            return (java.lang.String) ref;
-          } else {
-            com.google.protobuf.ByteString bs = 
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              peerAddress_ = s;
-            }
-            return s;
-          }
-        }
-        /**
-         * <code>optional string peerAddress = 9;</code>
-         * @return The bytes for peerAddress.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString
-            getPeerAddressBytes() {
-          java.lang.Object ref = peerAddress_;
-          if (ref instanceof java.lang.String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            peerAddress_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-
-        public static final int PEERPORT_FIELD_NUMBER = 10;
-        private int peerPort_;
-        /**
-         * <code>optional uint32 peerPort = 10;</code>
-         * @return Whether the peerPort field is set.
-         */
-        @java.lang.Override
-        public boolean hasPeerPort() {
-          return ((bitField0_ & 0x00000200) != 0);
-        }
-        /**
-         * <code>optional uint32 peerPort = 10;</code>
-         * @return The peerPort.
-         */
-        @java.lang.Override
-        public int getPeerPort() {
-          return peerPort_;
-        }
-
-        public static final int REALM_FIELD_NUMBER = 11;
+        public static final int REALM_FIELD_NUMBER = 6;
         private volatile java.lang.Object realm_;
         /**
-         * <code>optional string realm = 11;</code>
+         * <code>optional string realm = 6;</code>
          * @return Whether the realm field is set.
          */
         @java.lang.Override
         public boolean hasRealm() {
-          return ((bitField0_ & 0x00000400) != 0);
+          return ((bitField0_ & 0x00000020) != 0);
         }
         /**
-         * <code>optional string realm = 11;</code>
+         * <code>optional string realm = 6;</code>
          * @return The realm.
          */
         @java.lang.Override
@@ -83732,7 +85688,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string realm = 11;</code>
+         * <code>optional string realm = 6;</code>
          * @return The bytes for realm.
          */
         @java.lang.Override
@@ -83750,218 +85706,132 @@ public final class ProtobufSamples {
           }
         }
 
-        public static final int RECEIVEDBYTESFROMCLIENT_FIELD_NUMBER = 12;
-        private long receivedBytesFromClient_;
+        public static final int RECEIVEDBYTES_FIELD_NUMBER = 7;
+        private long receivedBytes_;
         /**
-         * <code>optional uint64 receivedBytesFromClient = 12;</code>
-         * @return Whether the receivedBytesFromClient field is set.
+         * <code>optional uint64 receivedBytes = 7;</code>
+         * @return Whether the receivedBytes field is set.
          */
         @java.lang.Override
-        public boolean hasReceivedBytesFromClient() {
+        public boolean hasReceivedBytes() {
+          return ((bitField0_ & 0x00000040) != 0);
+        }
+        /**
+         * <code>optional uint64 receivedBytes = 7;</code>
+         * @return The receivedBytes.
+         */
+        @java.lang.Override
+        public long getReceivedBytes() {
+          return receivedBytes_;
+        }
+
+        public static final int RECEIVEDPACKETS_FIELD_NUMBER = 8;
+        private int receivedPackets_;
+        /**
+         * <code>optional uint32 receivedPackets = 8;</code>
+         * @return Whether the receivedPackets field is set.
+         */
+        @java.lang.Override
+        public boolean hasReceivedPackets() {
+          return ((bitField0_ & 0x00000080) != 0);
+        }
+        /**
+         * <code>optional uint32 receivedPackets = 8;</code>
+         * @return The receivedPackets.
+         */
+        @java.lang.Override
+        public int getReceivedPackets() {
+          return receivedPackets_;
+        }
+
+        public static final int RECEIVINGBITRATE_FIELD_NUMBER = 9;
+        private int receivingBitrate_;
+        /**
+         * <code>optional uint32 receivingBitrate = 9;</code>
+         * @return Whether the receivingBitrate field is set.
+         */
+        @java.lang.Override
+        public boolean hasReceivingBitrate() {
+          return ((bitField0_ & 0x00000100) != 0);
+        }
+        /**
+         * <code>optional uint32 receivingBitrate = 9;</code>
+         * @return The receivingBitrate.
+         */
+        @java.lang.Override
+        public int getReceivingBitrate() {
+          return receivingBitrate_;
+        }
+
+        public static final int SENDINGBITRATE_FIELD_NUMBER = 10;
+        private int sendingBitrate_;
+        /**
+         * <code>optional uint32 sendingBitrate = 10;</code>
+         * @return Whether the sendingBitrate field is set.
+         */
+        @java.lang.Override
+        public boolean hasSendingBitrate() {
+          return ((bitField0_ & 0x00000200) != 0);
+        }
+        /**
+         * <code>optional uint32 sendingBitrate = 10;</code>
+         * @return The sendingBitrate.
+         */
+        @java.lang.Override
+        public int getSendingBitrate() {
+          return sendingBitrate_;
+        }
+
+        public static final int SENTBYTES_FIELD_NUMBER = 11;
+        private long sentBytes_;
+        /**
+         * <code>optional uint64 sentBytes = 11;</code>
+         * @return Whether the sentBytes field is set.
+         */
+        @java.lang.Override
+        public boolean hasSentBytes() {
+          return ((bitField0_ & 0x00000400) != 0);
+        }
+        /**
+         * <code>optional uint64 sentBytes = 11;</code>
+         * @return The sentBytes.
+         */
+        @java.lang.Override
+        public long getSentBytes() {
+          return sentBytes_;
+        }
+
+        public static final int SENTPACKETS_FIELD_NUMBER = 12;
+        private int sentPackets_;
+        /**
+         * <code>optional uint32 sentPackets = 12;</code>
+         * @return Whether the sentPackets field is set.
+         */
+        @java.lang.Override
+        public boolean hasSentPackets() {
           return ((bitField0_ & 0x00000800) != 0);
         }
         /**
-         * <code>optional uint64 receivedBytesFromClient = 12;</code>
-         * @return The receivedBytesFromClient.
+         * <code>optional uint32 sentPackets = 12;</code>
+         * @return The sentPackets.
          */
         @java.lang.Override
-        public long getReceivedBytesFromClient() {
-          return receivedBytesFromClient_;
+        public int getSentPackets() {
+          return sentPackets_;
         }
 
-        public static final int RECEIVEDBYTESFROMPEER_FIELD_NUMBER = 13;
-        private long receivedBytesFromPeer_;
-        /**
-         * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-         * @return Whether the receivedBytesFromPeer field is set.
-         */
-        @java.lang.Override
-        public boolean hasReceivedBytesFromPeer() {
-          return ((bitField0_ & 0x00001000) != 0);
-        }
-        /**
-         * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-         * @return The receivedBytesFromPeer.
-         */
-        @java.lang.Override
-        public long getReceivedBytesFromPeer() {
-          return receivedBytesFromPeer_;
-        }
-
-        public static final int RECEIVEDPACKETSFROMCLIENT_FIELD_NUMBER = 14;
-        private int receivedPacketsFromClient_;
-        /**
-         * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-         * @return Whether the receivedPacketsFromClient field is set.
-         */
-        @java.lang.Override
-        public boolean hasReceivedPacketsFromClient() {
-          return ((bitField0_ & 0x00002000) != 0);
-        }
-        /**
-         * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-         * @return The receivedPacketsFromClient.
-         */
-        @java.lang.Override
-        public int getReceivedPacketsFromClient() {
-          return receivedPacketsFromClient_;
-        }
-
-        public static final int RECEIVEDPACKETSFROMPEER_FIELD_NUMBER = 15;
-        private int receivedPacketsFromPeer_;
-        /**
-         * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-         * @return Whether the receivedPacketsFromPeer field is set.
-         */
-        @java.lang.Override
-        public boolean hasReceivedPacketsFromPeer() {
-          return ((bitField0_ & 0x00004000) != 0);
-        }
-        /**
-         * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-         * @return The receivedPacketsFromPeer.
-         */
-        @java.lang.Override
-        public int getReceivedPacketsFromPeer() {
-          return receivedPacketsFromPeer_;
-        }
-
-        public static final int RELAYTRANSPORTPROTOCOL_FIELD_NUMBER = 16;
-        private volatile java.lang.Object relayTransportProtocol_;
-        /**
-         * <code>optional string relayTransportProtocol = 16;</code>
-         * @return Whether the relayTransportProtocol field is set.
-         */
-        @java.lang.Override
-        public boolean hasRelayTransportProtocol() {
-          return ((bitField0_ & 0x00008000) != 0);
-        }
-        /**
-         * <code>optional string relayTransportProtocol = 16;</code>
-         * @return The relayTransportProtocol.
-         */
-        @java.lang.Override
-        public java.lang.String getRelayTransportProtocol() {
-          java.lang.Object ref = relayTransportProtocol_;
-          if (ref instanceof java.lang.String) {
-            return (java.lang.String) ref;
-          } else {
-            com.google.protobuf.ByteString bs = 
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              relayTransportProtocol_ = s;
-            }
-            return s;
-          }
-        }
-        /**
-         * <code>optional string relayTransportProtocol = 16;</code>
-         * @return The bytes for relayTransportProtocol.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString
-            getRelayTransportProtocolBytes() {
-          java.lang.Object ref = relayTransportProtocol_;
-          if (ref instanceof java.lang.String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            relayTransportProtocol_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-
-        public static final int SENTBYTESTOCLIENT_FIELD_NUMBER = 17;
-        private long sentBytesToClient_;
-        /**
-         * <code>optional uint64 sentBytesToClient = 17;</code>
-         * @return Whether the sentBytesToClient field is set.
-         */
-        @java.lang.Override
-        public boolean hasSentBytesToClient() {
-          return ((bitField0_ & 0x00010000) != 0);
-        }
-        /**
-         * <code>optional uint64 sentBytesToClient = 17;</code>
-         * @return The sentBytesToClient.
-         */
-        @java.lang.Override
-        public long getSentBytesToClient() {
-          return sentBytesToClient_;
-        }
-
-        public static final int SENTBYTESTOPEER_FIELD_NUMBER = 18;
-        private long sentBytesToPeer_;
-        /**
-         * <code>optional uint64 sentBytesToPeer = 18;</code>
-         * @return Whether the sentBytesToPeer field is set.
-         */
-        @java.lang.Override
-        public boolean hasSentBytesToPeer() {
-          return ((bitField0_ & 0x00020000) != 0);
-        }
-        /**
-         * <code>optional uint64 sentBytesToPeer = 18;</code>
-         * @return The sentBytesToPeer.
-         */
-        @java.lang.Override
-        public long getSentBytesToPeer() {
-          return sentBytesToPeer_;
-        }
-
-        public static final int SENTPACKETSTOCLIENT_FIELD_NUMBER = 19;
-        private int sentPacketsToClient_;
-        /**
-         * <code>optional uint32 sentPacketsToClient = 19;</code>
-         * @return Whether the sentPacketsToClient field is set.
-         */
-        @java.lang.Override
-        public boolean hasSentPacketsToClient() {
-          return ((bitField0_ & 0x00040000) != 0);
-        }
-        /**
-         * <code>optional uint32 sentPacketsToClient = 19;</code>
-         * @return The sentPacketsToClient.
-         */
-        @java.lang.Override
-        public int getSentPacketsToClient() {
-          return sentPacketsToClient_;
-        }
-
-        public static final int SENTPACKETSTOPEER_FIELD_NUMBER = 20;
-        private int sentPacketsToPeer_;
-        /**
-         * <code>optional uint32 sentPacketsToPeer = 20;</code>
-         * @return Whether the sentPacketsToPeer field is set.
-         */
-        @java.lang.Override
-        public boolean hasSentPacketsToPeer() {
-          return ((bitField0_ & 0x00080000) != 0);
-        }
-        /**
-         * <code>optional uint32 sentPacketsToPeer = 20;</code>
-         * @return The sentPacketsToPeer.
-         */
-        @java.lang.Override
-        public int getSentPacketsToPeer() {
-          return sentPacketsToPeer_;
-        }
-
-        public static final int SERVERADDRESS_FIELD_NUMBER = 21;
+        public static final int SERVERADDRESS_FIELD_NUMBER = 13;
         private volatile java.lang.Object serverAddress_;
         /**
-         * <code>optional string serverAddress = 21;</code>
+         * <code>optional string serverAddress = 13;</code>
          * @return Whether the serverAddress field is set.
          */
         @java.lang.Override
         public boolean hasServerAddress() {
-          return ((bitField0_ & 0x00100000) != 0);
+          return ((bitField0_ & 0x00001000) != 0);
         }
         /**
-         * <code>optional string serverAddress = 21;</code>
+         * <code>optional string serverAddress = 13;</code>
          * @return The serverAddress.
          */
         @java.lang.Override
@@ -83980,7 +85850,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string serverAddress = 21;</code>
+         * <code>optional string serverAddress = 13;</code>
          * @return The bytes for serverAddress.
          */
         @java.lang.Override
@@ -83998,18 +85868,18 @@ public final class ProtobufSamples {
           }
         }
 
-        public static final int SERVERPORT_FIELD_NUMBER = 22;
+        public static final int SERVERPORT_FIELD_NUMBER = 14;
         private int serverPort_;
         /**
-         * <code>optional uint32 serverPort = 22;</code>
+         * <code>optional uint32 serverPort = 14;</code>
          * @return Whether the serverPort field is set.
          */
         @java.lang.Override
         public boolean hasServerPort() {
-          return ((bitField0_ & 0x00200000) != 0);
+          return ((bitField0_ & 0x00002000) != 0);
         }
         /**
-         * <code>optional uint32 serverPort = 22;</code>
+         * <code>optional uint32 serverPort = 14;</code>
          * @return The serverPort.
          */
         @java.lang.Override
@@ -84017,18 +85887,18 @@ public final class ProtobufSamples {
           return serverPort_;
         }
 
-        public static final int STARTED_FIELD_NUMBER = 23;
+        public static final int STARTED_FIELD_NUMBER = 15;
         private long started_;
         /**
-         * <code>optional uint64 started = 23;</code>
+         * <code>optional uint64 started = 15;</code>
          * @return Whether the started field is set.
          */
         @java.lang.Override
         public boolean hasStarted() {
-          return ((bitField0_ & 0x00400000) != 0);
+          return ((bitField0_ & 0x00004000) != 0);
         }
         /**
-         * <code>optional uint64 started = 23;</code>
+         * <code>optional uint64 started = 15;</code>
          * @return The started.
          */
         @java.lang.Override
@@ -84036,18 +85906,66 @@ public final class ProtobufSamples {
           return started_;
         }
 
-        public static final int USERNAME_FIELD_NUMBER = 24;
+        public static final int TRANSPORTPROTOCOL_FIELD_NUMBER = 16;
+        private volatile java.lang.Object transportProtocol_;
+        /**
+         * <code>optional string transportProtocol = 16;</code>
+         * @return Whether the transportProtocol field is set.
+         */
+        @java.lang.Override
+        public boolean hasTransportProtocol() {
+          return ((bitField0_ & 0x00008000) != 0);
+        }
+        /**
+         * <code>optional string transportProtocol = 16;</code>
+         * @return The transportProtocol.
+         */
+        @java.lang.Override
+        public java.lang.String getTransportProtocol() {
+          java.lang.Object ref = transportProtocol_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              transportProtocol_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string transportProtocol = 16;</code>
+         * @return The bytes for transportProtocol.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getTransportProtocolBytes() {
+          java.lang.Object ref = transportProtocol_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            transportProtocol_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int USERNAME_FIELD_NUMBER = 17;
         private volatile java.lang.Object username_;
         /**
-         * <code>optional string username = 24;</code>
+         * <code>optional string username = 17;</code>
          * @return Whether the username field is set.
          */
         @java.lang.Override
         public boolean hasUsername() {
-          return ((bitField0_ & 0x00800000) != 0);
+          return ((bitField0_ & 0x00010000) != 0);
         }
         /**
-         * <code>optional string username = 24;</code>
+         * <code>optional string username = 17;</code>
          * @return The username.
          */
         @java.lang.Override
@@ -84066,7 +85984,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string username = 24;</code>
+         * <code>optional string username = 17;</code>
          * @return The bytes for username.
          */
         @java.lang.Override
@@ -84106,73 +86024,52 @@ public final class ProtobufSamples {
             com.google.protobuf.GeneratedMessageV3.writeString(output, 1, sessionId_);
           }
           if (((bitField0_ & 0x00000002) != 0)) {
-            output.writeUInt32(2, averageReceivingBitrateFromClient_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, clientAddress_);
           }
           if (((bitField0_ & 0x00000004) != 0)) {
-            output.writeUInt32(3, averageReceivingBitrateFromPeer_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, clientId_);
           }
           if (((bitField0_ & 0x00000008) != 0)) {
-            output.writeUInt32(4, averageSendingBitrateToClient_);
+            output.writeUInt32(4, clientPort_);
           }
           if (((bitField0_ & 0x00000010) != 0)) {
-            output.writeUInt32(5, averageSendingBitrateToPeer_);
+            output.writeUInt64(5, nonceExpirationTime_);
           }
           if (((bitField0_ & 0x00000020) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, clientId_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, realm_);
           }
           if (((bitField0_ & 0x00000040) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, clientTransportProtocol_);
+            output.writeUInt64(7, receivedBytes_);
           }
           if (((bitField0_ & 0x00000080) != 0)) {
-            output.writeUInt64(8, nonceExpirationTime_);
+            output.writeUInt32(8, receivedPackets_);
           }
           if (((bitField0_ & 0x00000100) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 9, peerAddress_);
+            output.writeUInt32(9, receivingBitrate_);
           }
           if (((bitField0_ & 0x00000200) != 0)) {
-            output.writeUInt32(10, peerPort_);
+            output.writeUInt32(10, sendingBitrate_);
           }
           if (((bitField0_ & 0x00000400) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 11, realm_);
+            output.writeUInt64(11, sentBytes_);
           }
           if (((bitField0_ & 0x00000800) != 0)) {
-            output.writeUInt64(12, receivedBytesFromClient_);
+            output.writeUInt32(12, sentPackets_);
           }
           if (((bitField0_ & 0x00001000) != 0)) {
-            output.writeUInt64(13, receivedBytesFromPeer_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 13, serverAddress_);
           }
           if (((bitField0_ & 0x00002000) != 0)) {
-            output.writeUInt32(14, receivedPacketsFromClient_);
+            output.writeUInt32(14, serverPort_);
           }
           if (((bitField0_ & 0x00004000) != 0)) {
-            output.writeUInt32(15, receivedPacketsFromPeer_);
+            output.writeUInt64(15, started_);
           }
           if (((bitField0_ & 0x00008000) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 16, relayTransportProtocol_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 16, transportProtocol_);
           }
           if (((bitField0_ & 0x00010000) != 0)) {
-            output.writeUInt64(17, sentBytesToClient_);
-          }
-          if (((bitField0_ & 0x00020000) != 0)) {
-            output.writeUInt64(18, sentBytesToPeer_);
-          }
-          if (((bitField0_ & 0x00040000) != 0)) {
-            output.writeUInt32(19, sentPacketsToClient_);
-          }
-          if (((bitField0_ & 0x00080000) != 0)) {
-            output.writeUInt32(20, sentPacketsToPeer_);
-          }
-          if (((bitField0_ & 0x00100000) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 21, serverAddress_);
-          }
-          if (((bitField0_ & 0x00200000) != 0)) {
-            output.writeUInt32(22, serverPort_);
-          }
-          if (((bitField0_ & 0x00400000) != 0)) {
-            output.writeUInt64(23, started_);
-          }
-          if (((bitField0_ & 0x00800000) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 24, username_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 17, username_);
           }
           unknownFields.writeTo(output);
         }
@@ -84187,89 +86084,62 @@ public final class ProtobufSamples {
             size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, sessionId_);
           }
           if (((bitField0_ & 0x00000002) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(2, averageReceivingBitrateFromClient_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, clientAddress_);
           }
           if (((bitField0_ & 0x00000004) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(3, averageReceivingBitrateFromPeer_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, clientId_);
           }
           if (((bitField0_ & 0x00000008) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(4, averageSendingBitrateToClient_);
+              .computeUInt32Size(4, clientPort_);
           }
           if (((bitField0_ & 0x00000010) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(5, averageSendingBitrateToPeer_);
+              .computeUInt64Size(5, nonceExpirationTime_);
           }
           if (((bitField0_ & 0x00000020) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, clientId_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, realm_);
           }
           if (((bitField0_ & 0x00000040) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, clientTransportProtocol_);
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt64Size(7, receivedBytes_);
           }
           if (((bitField0_ & 0x00000080) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(8, nonceExpirationTime_);
+              .computeUInt32Size(8, receivedPackets_);
           }
           if (((bitField0_ & 0x00000100) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, peerAddress_);
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt32Size(9, receivingBitrate_);
           }
           if (((bitField0_ & 0x00000200) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(10, peerPort_);
+              .computeUInt32Size(10, sendingBitrate_);
           }
           if (((bitField0_ & 0x00000400) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, realm_);
+            size += com.google.protobuf.CodedOutputStream
+              .computeUInt64Size(11, sentBytes_);
           }
           if (((bitField0_ & 0x00000800) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(12, receivedBytesFromClient_);
+              .computeUInt32Size(12, sentPackets_);
           }
           if (((bitField0_ & 0x00001000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(13, receivedBytesFromPeer_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, serverAddress_);
           }
           if (((bitField0_ & 0x00002000) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(14, receivedPacketsFromClient_);
+              .computeUInt32Size(14, serverPort_);
           }
           if (((bitField0_ & 0x00004000) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(15, receivedPacketsFromPeer_);
+              .computeUInt64Size(15, started_);
           }
           if (((bitField0_ & 0x00008000) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, relayTransportProtocol_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, transportProtocol_);
           }
           if (((bitField0_ & 0x00010000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(17, sentBytesToClient_);
-          }
-          if (((bitField0_ & 0x00020000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(18, sentBytesToPeer_);
-          }
-          if (((bitField0_ & 0x00040000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(19, sentPacketsToClient_);
-          }
-          if (((bitField0_ & 0x00080000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(20, sentPacketsToPeer_);
-          }
-          if (((bitField0_ & 0x00100000) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, serverAddress_);
-          }
-          if (((bitField0_ & 0x00200000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt32Size(22, serverPort_);
-          }
-          if (((bitField0_ & 0x00400000) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(23, started_);
-          }
-          if (((bitField0_ & 0x00800000) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, username_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, username_);
           }
           size += unknownFields.getSerializedSize();
           memoizedSize = size;
@@ -84291,100 +86161,60 @@ public final class ProtobufSamples {
             if (!getSessionId()
                 .equals(other.getSessionId())) return false;
           }
-          if (hasAverageReceivingBitrateFromClient() != other.hasAverageReceivingBitrateFromClient()) return false;
-          if (hasAverageReceivingBitrateFromClient()) {
-            if (getAverageReceivingBitrateFromClient()
-                != other.getAverageReceivingBitrateFromClient()) return false;
-          }
-          if (hasAverageReceivingBitrateFromPeer() != other.hasAverageReceivingBitrateFromPeer()) return false;
-          if (hasAverageReceivingBitrateFromPeer()) {
-            if (getAverageReceivingBitrateFromPeer()
-                != other.getAverageReceivingBitrateFromPeer()) return false;
-          }
-          if (hasAverageSendingBitrateToClient() != other.hasAverageSendingBitrateToClient()) return false;
-          if (hasAverageSendingBitrateToClient()) {
-            if (getAverageSendingBitrateToClient()
-                != other.getAverageSendingBitrateToClient()) return false;
-          }
-          if (hasAverageSendingBitrateToPeer() != other.hasAverageSendingBitrateToPeer()) return false;
-          if (hasAverageSendingBitrateToPeer()) {
-            if (getAverageSendingBitrateToPeer()
-                != other.getAverageSendingBitrateToPeer()) return false;
+          if (hasClientAddress() != other.hasClientAddress()) return false;
+          if (hasClientAddress()) {
+            if (!getClientAddress()
+                .equals(other.getClientAddress())) return false;
           }
           if (hasClientId() != other.hasClientId()) return false;
           if (hasClientId()) {
             if (!getClientId()
                 .equals(other.getClientId())) return false;
           }
-          if (hasClientTransportProtocol() != other.hasClientTransportProtocol()) return false;
-          if (hasClientTransportProtocol()) {
-            if (!getClientTransportProtocol()
-                .equals(other.getClientTransportProtocol())) return false;
+          if (hasClientPort() != other.hasClientPort()) return false;
+          if (hasClientPort()) {
+            if (getClientPort()
+                != other.getClientPort()) return false;
           }
           if (hasNonceExpirationTime() != other.hasNonceExpirationTime()) return false;
           if (hasNonceExpirationTime()) {
             if (getNonceExpirationTime()
                 != other.getNonceExpirationTime()) return false;
           }
-          if (hasPeerAddress() != other.hasPeerAddress()) return false;
-          if (hasPeerAddress()) {
-            if (!getPeerAddress()
-                .equals(other.getPeerAddress())) return false;
-          }
-          if (hasPeerPort() != other.hasPeerPort()) return false;
-          if (hasPeerPort()) {
-            if (getPeerPort()
-                != other.getPeerPort()) return false;
-          }
           if (hasRealm() != other.hasRealm()) return false;
           if (hasRealm()) {
             if (!getRealm()
                 .equals(other.getRealm())) return false;
           }
-          if (hasReceivedBytesFromClient() != other.hasReceivedBytesFromClient()) return false;
-          if (hasReceivedBytesFromClient()) {
-            if (getReceivedBytesFromClient()
-                != other.getReceivedBytesFromClient()) return false;
+          if (hasReceivedBytes() != other.hasReceivedBytes()) return false;
+          if (hasReceivedBytes()) {
+            if (getReceivedBytes()
+                != other.getReceivedBytes()) return false;
           }
-          if (hasReceivedBytesFromPeer() != other.hasReceivedBytesFromPeer()) return false;
-          if (hasReceivedBytesFromPeer()) {
-            if (getReceivedBytesFromPeer()
-                != other.getReceivedBytesFromPeer()) return false;
+          if (hasReceivedPackets() != other.hasReceivedPackets()) return false;
+          if (hasReceivedPackets()) {
+            if (getReceivedPackets()
+                != other.getReceivedPackets()) return false;
           }
-          if (hasReceivedPacketsFromClient() != other.hasReceivedPacketsFromClient()) return false;
-          if (hasReceivedPacketsFromClient()) {
-            if (getReceivedPacketsFromClient()
-                != other.getReceivedPacketsFromClient()) return false;
+          if (hasReceivingBitrate() != other.hasReceivingBitrate()) return false;
+          if (hasReceivingBitrate()) {
+            if (getReceivingBitrate()
+                != other.getReceivingBitrate()) return false;
           }
-          if (hasReceivedPacketsFromPeer() != other.hasReceivedPacketsFromPeer()) return false;
-          if (hasReceivedPacketsFromPeer()) {
-            if (getReceivedPacketsFromPeer()
-                != other.getReceivedPacketsFromPeer()) return false;
+          if (hasSendingBitrate() != other.hasSendingBitrate()) return false;
+          if (hasSendingBitrate()) {
+            if (getSendingBitrate()
+                != other.getSendingBitrate()) return false;
           }
-          if (hasRelayTransportProtocol() != other.hasRelayTransportProtocol()) return false;
-          if (hasRelayTransportProtocol()) {
-            if (!getRelayTransportProtocol()
-                .equals(other.getRelayTransportProtocol())) return false;
+          if (hasSentBytes() != other.hasSentBytes()) return false;
+          if (hasSentBytes()) {
+            if (getSentBytes()
+                != other.getSentBytes()) return false;
           }
-          if (hasSentBytesToClient() != other.hasSentBytesToClient()) return false;
-          if (hasSentBytesToClient()) {
-            if (getSentBytesToClient()
-                != other.getSentBytesToClient()) return false;
-          }
-          if (hasSentBytesToPeer() != other.hasSentBytesToPeer()) return false;
-          if (hasSentBytesToPeer()) {
-            if (getSentBytesToPeer()
-                != other.getSentBytesToPeer()) return false;
-          }
-          if (hasSentPacketsToClient() != other.hasSentPacketsToClient()) return false;
-          if (hasSentPacketsToClient()) {
-            if (getSentPacketsToClient()
-                != other.getSentPacketsToClient()) return false;
-          }
-          if (hasSentPacketsToPeer() != other.hasSentPacketsToPeer()) return false;
-          if (hasSentPacketsToPeer()) {
-            if (getSentPacketsToPeer()
-                != other.getSentPacketsToPeer()) return false;
+          if (hasSentPackets() != other.hasSentPackets()) return false;
+          if (hasSentPackets()) {
+            if (getSentPackets()
+                != other.getSentPackets()) return false;
           }
           if (hasServerAddress() != other.hasServerAddress()) return false;
           if (hasServerAddress()) {
@@ -84400,6 +86230,11 @@ public final class ProtobufSamples {
           if (hasStarted()) {
             if (getStarted()
                 != other.getStarted()) return false;
+          }
+          if (hasTransportProtocol() != other.hasTransportProtocol()) return false;
+          if (hasTransportProtocol()) {
+            if (!getTransportProtocol()
+                .equals(other.getTransportProtocol())) return false;
           }
           if (hasUsername() != other.hasUsername()) return false;
           if (hasUsername()) {
@@ -84421,86 +86256,52 @@ public final class ProtobufSamples {
             hash = (37 * hash) + SESSIONID_FIELD_NUMBER;
             hash = (53 * hash) + getSessionId().hashCode();
           }
-          if (hasAverageReceivingBitrateFromClient()) {
-            hash = (37 * hash) + AVERAGERECEIVINGBITRATEFROMCLIENT_FIELD_NUMBER;
-            hash = (53 * hash) + getAverageReceivingBitrateFromClient();
-          }
-          if (hasAverageReceivingBitrateFromPeer()) {
-            hash = (37 * hash) + AVERAGERECEIVINGBITRATEFROMPEER_FIELD_NUMBER;
-            hash = (53 * hash) + getAverageReceivingBitrateFromPeer();
-          }
-          if (hasAverageSendingBitrateToClient()) {
-            hash = (37 * hash) + AVERAGESENDINGBITRATETOCLIENT_FIELD_NUMBER;
-            hash = (53 * hash) + getAverageSendingBitrateToClient();
-          }
-          if (hasAverageSendingBitrateToPeer()) {
-            hash = (37 * hash) + AVERAGESENDINGBITRATETOPEER_FIELD_NUMBER;
-            hash = (53 * hash) + getAverageSendingBitrateToPeer();
+          if (hasClientAddress()) {
+            hash = (37 * hash) + CLIENTADDRESS_FIELD_NUMBER;
+            hash = (53 * hash) + getClientAddress().hashCode();
           }
           if (hasClientId()) {
             hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
             hash = (53 * hash) + getClientId().hashCode();
           }
-          if (hasClientTransportProtocol()) {
-            hash = (37 * hash) + CLIENTTRANSPORTPROTOCOL_FIELD_NUMBER;
-            hash = (53 * hash) + getClientTransportProtocol().hashCode();
+          if (hasClientPort()) {
+            hash = (37 * hash) + CLIENTPORT_FIELD_NUMBER;
+            hash = (53 * hash) + getClientPort();
           }
           if (hasNonceExpirationTime()) {
             hash = (37 * hash) + NONCEEXPIRATIONTIME_FIELD_NUMBER;
             hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
                 getNonceExpirationTime());
           }
-          if (hasPeerAddress()) {
-            hash = (37 * hash) + PEERADDRESS_FIELD_NUMBER;
-            hash = (53 * hash) + getPeerAddress().hashCode();
-          }
-          if (hasPeerPort()) {
-            hash = (37 * hash) + PEERPORT_FIELD_NUMBER;
-            hash = (53 * hash) + getPeerPort();
-          }
           if (hasRealm()) {
             hash = (37 * hash) + REALM_FIELD_NUMBER;
             hash = (53 * hash) + getRealm().hashCode();
           }
-          if (hasReceivedBytesFromClient()) {
-            hash = (37 * hash) + RECEIVEDBYTESFROMCLIENT_FIELD_NUMBER;
+          if (hasReceivedBytes()) {
+            hash = (37 * hash) + RECEIVEDBYTES_FIELD_NUMBER;
             hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-                getReceivedBytesFromClient());
+                getReceivedBytes());
           }
-          if (hasReceivedBytesFromPeer()) {
-            hash = (37 * hash) + RECEIVEDBYTESFROMPEER_FIELD_NUMBER;
+          if (hasReceivedPackets()) {
+            hash = (37 * hash) + RECEIVEDPACKETS_FIELD_NUMBER;
+            hash = (53 * hash) + getReceivedPackets();
+          }
+          if (hasReceivingBitrate()) {
+            hash = (37 * hash) + RECEIVINGBITRATE_FIELD_NUMBER;
+            hash = (53 * hash) + getReceivingBitrate();
+          }
+          if (hasSendingBitrate()) {
+            hash = (37 * hash) + SENDINGBITRATE_FIELD_NUMBER;
+            hash = (53 * hash) + getSendingBitrate();
+          }
+          if (hasSentBytes()) {
+            hash = (37 * hash) + SENTBYTES_FIELD_NUMBER;
             hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-                getReceivedBytesFromPeer());
+                getSentBytes());
           }
-          if (hasReceivedPacketsFromClient()) {
-            hash = (37 * hash) + RECEIVEDPACKETSFROMCLIENT_FIELD_NUMBER;
-            hash = (53 * hash) + getReceivedPacketsFromClient();
-          }
-          if (hasReceivedPacketsFromPeer()) {
-            hash = (37 * hash) + RECEIVEDPACKETSFROMPEER_FIELD_NUMBER;
-            hash = (53 * hash) + getReceivedPacketsFromPeer();
-          }
-          if (hasRelayTransportProtocol()) {
-            hash = (37 * hash) + RELAYTRANSPORTPROTOCOL_FIELD_NUMBER;
-            hash = (53 * hash) + getRelayTransportProtocol().hashCode();
-          }
-          if (hasSentBytesToClient()) {
-            hash = (37 * hash) + SENTBYTESTOCLIENT_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-                getSentBytesToClient());
-          }
-          if (hasSentBytesToPeer()) {
-            hash = (37 * hash) + SENTBYTESTOPEER_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-                getSentBytesToPeer());
-          }
-          if (hasSentPacketsToClient()) {
-            hash = (37 * hash) + SENTPACKETSTOCLIENT_FIELD_NUMBER;
-            hash = (53 * hash) + getSentPacketsToClient();
-          }
-          if (hasSentPacketsToPeer()) {
-            hash = (37 * hash) + SENTPACKETSTOPEER_FIELD_NUMBER;
-            hash = (53 * hash) + getSentPacketsToPeer();
+          if (hasSentPackets()) {
+            hash = (37 * hash) + SENTPACKETS_FIELD_NUMBER;
+            hash = (53 * hash) + getSentPackets();
           }
           if (hasServerAddress()) {
             hash = (37 * hash) + SERVERADDRESS_FIELD_NUMBER;
@@ -84514,6 +86315,10 @@ public final class ProtobufSamples {
             hash = (37 * hash) + STARTED_FIELD_NUMBER;
             hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
                 getStarted());
+          }
+          if (hasTransportProtocol()) {
+            hash = (37 * hash) + TRANSPORTPROTOCOL_FIELD_NUMBER;
+            hash = (53 * hash) + getTransportProtocol().hashCode();
           }
           if (hasUsername()) {
             hash = (37 * hash) + USERNAME_FIELD_NUMBER;
@@ -84654,52 +86459,38 @@ public final class ProtobufSamples {
             super.clear();
             sessionId_ = "";
             bitField0_ = (bitField0_ & ~0x00000001);
-            averageReceivingBitrateFromClient_ = 0;
+            clientAddress_ = "";
             bitField0_ = (bitField0_ & ~0x00000002);
-            averageReceivingBitrateFromPeer_ = 0;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            averageSendingBitrateToClient_ = 0;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            averageSendingBitrateToPeer_ = 0;
-            bitField0_ = (bitField0_ & ~0x00000010);
             clientId_ = "";
-            bitField0_ = (bitField0_ & ~0x00000020);
-            clientTransportProtocol_ = "";
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000004);
+            clientPort_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000008);
             nonceExpirationTime_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000080);
-            peerAddress_ = "";
-            bitField0_ = (bitField0_ & ~0x00000100);
-            peerPort_ = 0;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000010);
             realm_ = "";
+            bitField0_ = (bitField0_ & ~0x00000020);
+            receivedBytes_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000040);
+            receivedPackets_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000080);
+            receivingBitrate_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000100);
+            sendingBitrate_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000200);
+            sentBytes_ = 0L;
             bitField0_ = (bitField0_ & ~0x00000400);
-            receivedBytesFromClient_ = 0L;
+            sentPackets_ = 0;
             bitField0_ = (bitField0_ & ~0x00000800);
-            receivedBytesFromPeer_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00001000);
-            receivedPacketsFromClient_ = 0;
-            bitField0_ = (bitField0_ & ~0x00002000);
-            receivedPacketsFromPeer_ = 0;
-            bitField0_ = (bitField0_ & ~0x00004000);
-            relayTransportProtocol_ = "";
-            bitField0_ = (bitField0_ & ~0x00008000);
-            sentBytesToClient_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00010000);
-            sentBytesToPeer_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00020000);
-            sentPacketsToClient_ = 0;
-            bitField0_ = (bitField0_ & ~0x00040000);
-            sentPacketsToPeer_ = 0;
-            bitField0_ = (bitField0_ & ~0x00080000);
             serverAddress_ = "";
-            bitField0_ = (bitField0_ & ~0x00100000);
+            bitField0_ = (bitField0_ & ~0x00001000);
             serverPort_ = 0;
-            bitField0_ = (bitField0_ & ~0x00200000);
+            bitField0_ = (bitField0_ & ~0x00002000);
             started_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00400000);
+            bitField0_ = (bitField0_ & ~0x00004000);
+            transportProtocol_ = "";
+            bitField0_ = (bitField0_ & ~0x00008000);
             username_ = "";
-            bitField0_ = (bitField0_ & ~0x00800000);
+            bitField0_ = (bitField0_ & ~0x00010000);
             return this;
           }
 
@@ -84733,95 +86524,67 @@ public final class ProtobufSamples {
             }
             result.sessionId_ = sessionId_;
             if (((from_bitField0_ & 0x00000002) != 0)) {
-              result.averageReceivingBitrateFromClient_ = averageReceivingBitrateFromClient_;
               to_bitField0_ |= 0x00000002;
             }
+            result.clientAddress_ = clientAddress_;
             if (((from_bitField0_ & 0x00000004) != 0)) {
-              result.averageReceivingBitrateFromPeer_ = averageReceivingBitrateFromPeer_;
               to_bitField0_ |= 0x00000004;
             }
+            result.clientId_ = clientId_;
             if (((from_bitField0_ & 0x00000008) != 0)) {
-              result.averageSendingBitrateToClient_ = averageSendingBitrateToClient_;
+              result.clientPort_ = clientPort_;
               to_bitField0_ |= 0x00000008;
             }
             if (((from_bitField0_ & 0x00000010) != 0)) {
-              result.averageSendingBitrateToPeer_ = averageSendingBitrateToPeer_;
+              result.nonceExpirationTime_ = nonceExpirationTime_;
               to_bitField0_ |= 0x00000010;
             }
             if (((from_bitField0_ & 0x00000020) != 0)) {
               to_bitField0_ |= 0x00000020;
             }
-            result.clientId_ = clientId_;
+            result.realm_ = realm_;
             if (((from_bitField0_ & 0x00000040) != 0)) {
+              result.receivedBytes_ = receivedBytes_;
               to_bitField0_ |= 0x00000040;
             }
-            result.clientTransportProtocol_ = clientTransportProtocol_;
             if (((from_bitField0_ & 0x00000080) != 0)) {
-              result.nonceExpirationTime_ = nonceExpirationTime_;
+              result.receivedPackets_ = receivedPackets_;
               to_bitField0_ |= 0x00000080;
             }
             if (((from_bitField0_ & 0x00000100) != 0)) {
+              result.receivingBitrate_ = receivingBitrate_;
               to_bitField0_ |= 0x00000100;
             }
-            result.peerAddress_ = peerAddress_;
             if (((from_bitField0_ & 0x00000200) != 0)) {
-              result.peerPort_ = peerPort_;
+              result.sendingBitrate_ = sendingBitrate_;
               to_bitField0_ |= 0x00000200;
             }
             if (((from_bitField0_ & 0x00000400) != 0)) {
+              result.sentBytes_ = sentBytes_;
               to_bitField0_ |= 0x00000400;
             }
-            result.realm_ = realm_;
             if (((from_bitField0_ & 0x00000800) != 0)) {
-              result.receivedBytesFromClient_ = receivedBytesFromClient_;
+              result.sentPackets_ = sentPackets_;
               to_bitField0_ |= 0x00000800;
             }
             if (((from_bitField0_ & 0x00001000) != 0)) {
-              result.receivedBytesFromPeer_ = receivedBytesFromPeer_;
               to_bitField0_ |= 0x00001000;
             }
+            result.serverAddress_ = serverAddress_;
             if (((from_bitField0_ & 0x00002000) != 0)) {
-              result.receivedPacketsFromClient_ = receivedPacketsFromClient_;
+              result.serverPort_ = serverPort_;
               to_bitField0_ |= 0x00002000;
             }
             if (((from_bitField0_ & 0x00004000) != 0)) {
-              result.receivedPacketsFromPeer_ = receivedPacketsFromPeer_;
+              result.started_ = started_;
               to_bitField0_ |= 0x00004000;
             }
             if (((from_bitField0_ & 0x00008000) != 0)) {
               to_bitField0_ |= 0x00008000;
             }
-            result.relayTransportProtocol_ = relayTransportProtocol_;
+            result.transportProtocol_ = transportProtocol_;
             if (((from_bitField0_ & 0x00010000) != 0)) {
-              result.sentBytesToClient_ = sentBytesToClient_;
               to_bitField0_ |= 0x00010000;
-            }
-            if (((from_bitField0_ & 0x00020000) != 0)) {
-              result.sentBytesToPeer_ = sentBytesToPeer_;
-              to_bitField0_ |= 0x00020000;
-            }
-            if (((from_bitField0_ & 0x00040000) != 0)) {
-              result.sentPacketsToClient_ = sentPacketsToClient_;
-              to_bitField0_ |= 0x00040000;
-            }
-            if (((from_bitField0_ & 0x00080000) != 0)) {
-              result.sentPacketsToPeer_ = sentPacketsToPeer_;
-              to_bitField0_ |= 0x00080000;
-            }
-            if (((from_bitField0_ & 0x00100000) != 0)) {
-              to_bitField0_ |= 0x00100000;
-            }
-            result.serverAddress_ = serverAddress_;
-            if (((from_bitField0_ & 0x00200000) != 0)) {
-              result.serverPort_ = serverPort_;
-              to_bitField0_ |= 0x00200000;
-            }
-            if (((from_bitField0_ & 0x00400000) != 0)) {
-              result.started_ = started_;
-              to_bitField0_ |= 0x00400000;
-            }
-            if (((from_bitField0_ & 0x00800000) != 0)) {
-              to_bitField0_ |= 0x00800000;
             }
             result.username_ = username_;
             result.bitField0_ = to_bitField0_;
@@ -84878,75 +86641,47 @@ public final class ProtobufSamples {
               sessionId_ = other.sessionId_;
               onChanged();
             }
-            if (other.hasAverageReceivingBitrateFromClient()) {
-              setAverageReceivingBitrateFromClient(other.getAverageReceivingBitrateFromClient());
-            }
-            if (other.hasAverageReceivingBitrateFromPeer()) {
-              setAverageReceivingBitrateFromPeer(other.getAverageReceivingBitrateFromPeer());
-            }
-            if (other.hasAverageSendingBitrateToClient()) {
-              setAverageSendingBitrateToClient(other.getAverageSendingBitrateToClient());
-            }
-            if (other.hasAverageSendingBitrateToPeer()) {
-              setAverageSendingBitrateToPeer(other.getAverageSendingBitrateToPeer());
+            if (other.hasClientAddress()) {
+              bitField0_ |= 0x00000002;
+              clientAddress_ = other.clientAddress_;
+              onChanged();
             }
             if (other.hasClientId()) {
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000004;
               clientId_ = other.clientId_;
               onChanged();
             }
-            if (other.hasClientTransportProtocol()) {
-              bitField0_ |= 0x00000040;
-              clientTransportProtocol_ = other.clientTransportProtocol_;
-              onChanged();
+            if (other.hasClientPort()) {
+              setClientPort(other.getClientPort());
             }
             if (other.hasNonceExpirationTime()) {
               setNonceExpirationTime(other.getNonceExpirationTime());
             }
-            if (other.hasPeerAddress()) {
-              bitField0_ |= 0x00000100;
-              peerAddress_ = other.peerAddress_;
-              onChanged();
-            }
-            if (other.hasPeerPort()) {
-              setPeerPort(other.getPeerPort());
-            }
             if (other.hasRealm()) {
-              bitField0_ |= 0x00000400;
+              bitField0_ |= 0x00000020;
               realm_ = other.realm_;
               onChanged();
             }
-            if (other.hasReceivedBytesFromClient()) {
-              setReceivedBytesFromClient(other.getReceivedBytesFromClient());
+            if (other.hasReceivedBytes()) {
+              setReceivedBytes(other.getReceivedBytes());
             }
-            if (other.hasReceivedBytesFromPeer()) {
-              setReceivedBytesFromPeer(other.getReceivedBytesFromPeer());
+            if (other.hasReceivedPackets()) {
+              setReceivedPackets(other.getReceivedPackets());
             }
-            if (other.hasReceivedPacketsFromClient()) {
-              setReceivedPacketsFromClient(other.getReceivedPacketsFromClient());
+            if (other.hasReceivingBitrate()) {
+              setReceivingBitrate(other.getReceivingBitrate());
             }
-            if (other.hasReceivedPacketsFromPeer()) {
-              setReceivedPacketsFromPeer(other.getReceivedPacketsFromPeer());
+            if (other.hasSendingBitrate()) {
+              setSendingBitrate(other.getSendingBitrate());
             }
-            if (other.hasRelayTransportProtocol()) {
-              bitField0_ |= 0x00008000;
-              relayTransportProtocol_ = other.relayTransportProtocol_;
-              onChanged();
+            if (other.hasSentBytes()) {
+              setSentBytes(other.getSentBytes());
             }
-            if (other.hasSentBytesToClient()) {
-              setSentBytesToClient(other.getSentBytesToClient());
-            }
-            if (other.hasSentBytesToPeer()) {
-              setSentBytesToPeer(other.getSentBytesToPeer());
-            }
-            if (other.hasSentPacketsToClient()) {
-              setSentPacketsToClient(other.getSentPacketsToClient());
-            }
-            if (other.hasSentPacketsToPeer()) {
-              setSentPacketsToPeer(other.getSentPacketsToPeer());
+            if (other.hasSentPackets()) {
+              setSentPackets(other.getSentPackets());
             }
             if (other.hasServerAddress()) {
-              bitField0_ |= 0x00100000;
+              bitField0_ |= 0x00001000;
               serverAddress_ = other.serverAddress_;
               onChanged();
             }
@@ -84956,8 +86691,13 @@ public final class ProtobufSamples {
             if (other.hasStarted()) {
               setStarted(other.getStarted());
             }
+            if (other.hasTransportProtocol()) {
+              bitField0_ |= 0x00008000;
+              transportProtocol_ = other.transportProtocol_;
+              onChanged();
+            }
             if (other.hasUsername()) {
-              bitField0_ |= 0x00800000;
+              bitField0_ |= 0x00010000;
               username_ = other.username_;
               onChanged();
             }
@@ -85078,172 +86818,100 @@ public final class ProtobufSamples {
             return this;
           }
 
-          private int averageReceivingBitrateFromClient_ ;
+          private java.lang.Object clientAddress_ = "";
           /**
-           * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-           * @return Whether the averageReceivingBitrateFromClient field is set.
+           * <code>optional string clientAddress = 2;</code>
+           * @return Whether the clientAddress field is set.
            */
-          @java.lang.Override
-          public boolean hasAverageReceivingBitrateFromClient() {
+          public boolean hasClientAddress() {
             return ((bitField0_ & 0x00000002) != 0);
           }
           /**
-           * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-           * @return The averageReceivingBitrateFromClient.
+           * <code>optional string clientAddress = 2;</code>
+           * @return The clientAddress.
            */
-          @java.lang.Override
-          public int getAverageReceivingBitrateFromClient() {
-            return averageReceivingBitrateFromClient_;
+          public java.lang.String getClientAddress() {
+            java.lang.Object ref = clientAddress_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                clientAddress_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
           }
           /**
-           * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
-           * @param value The averageReceivingBitrateFromClient to set.
+           * <code>optional string clientAddress = 2;</code>
+           * @return The bytes for clientAddress.
+           */
+          public com.google.protobuf.ByteString
+              getClientAddressBytes() {
+            java.lang.Object ref = clientAddress_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              clientAddress_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string clientAddress = 2;</code>
+           * @param value The clientAddress to set.
            * @return This builder for chaining.
            */
-          public Builder setAverageReceivingBitrateFromClient(int value) {
-            bitField0_ |= 0x00000002;
-            averageReceivingBitrateFromClient_ = value;
+          public Builder setClientAddress(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            clientAddress_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional uint32 averageReceivingBitrateFromClient = 2;</code>
+           * <code>optional string clientAddress = 2;</code>
            * @return This builder for chaining.
            */
-          public Builder clearAverageReceivingBitrateFromClient() {
+          public Builder clearClientAddress() {
             bitField0_ = (bitField0_ & ~0x00000002);
-            averageReceivingBitrateFromClient_ = 0;
-            onChanged();
-            return this;
-          }
-
-          private int averageReceivingBitrateFromPeer_ ;
-          /**
-           * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-           * @return Whether the averageReceivingBitrateFromPeer field is set.
-           */
-          @java.lang.Override
-          public boolean hasAverageReceivingBitrateFromPeer() {
-            return ((bitField0_ & 0x00000004) != 0);
-          }
-          /**
-           * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-           * @return The averageReceivingBitrateFromPeer.
-           */
-          @java.lang.Override
-          public int getAverageReceivingBitrateFromPeer() {
-            return averageReceivingBitrateFromPeer_;
-          }
-          /**
-           * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
-           * @param value The averageReceivingBitrateFromPeer to set.
-           * @return This builder for chaining.
-           */
-          public Builder setAverageReceivingBitrateFromPeer(int value) {
-            bitField0_ |= 0x00000004;
-            averageReceivingBitrateFromPeer_ = value;
+            clientAddress_ = getDefaultInstance().getClientAddress();
             onChanged();
             return this;
           }
           /**
-           * <code>optional uint32 averageReceivingBitrateFromPeer = 3;</code>
+           * <code>optional string clientAddress = 2;</code>
+           * @param value The bytes for clientAddress to set.
            * @return This builder for chaining.
            */
-          public Builder clearAverageReceivingBitrateFromPeer() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            averageReceivingBitrateFromPeer_ = 0;
-            onChanged();
-            return this;
-          }
-
-          private int averageSendingBitrateToClient_ ;
-          /**
-           * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-           * @return Whether the averageSendingBitrateToClient field is set.
-           */
-          @java.lang.Override
-          public boolean hasAverageSendingBitrateToClient() {
-            return ((bitField0_ & 0x00000008) != 0);
-          }
-          /**
-           * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-           * @return The averageSendingBitrateToClient.
-           */
-          @java.lang.Override
-          public int getAverageSendingBitrateToClient() {
-            return averageSendingBitrateToClient_;
-          }
-          /**
-           * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-           * @param value The averageSendingBitrateToClient to set.
-           * @return This builder for chaining.
-           */
-          public Builder setAverageSendingBitrateToClient(int value) {
-            bitField0_ |= 0x00000008;
-            averageSendingBitrateToClient_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 averageSendingBitrateToClient = 4;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearAverageSendingBitrateToClient() {
-            bitField0_ = (bitField0_ & ~0x00000008);
-            averageSendingBitrateToClient_ = 0;
-            onChanged();
-            return this;
-          }
-
-          private int averageSendingBitrateToPeer_ ;
-          /**
-           * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-           * @return Whether the averageSendingBitrateToPeer field is set.
-           */
-          @java.lang.Override
-          public boolean hasAverageSendingBitrateToPeer() {
-            return ((bitField0_ & 0x00000010) != 0);
-          }
-          /**
-           * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-           * @return The averageSendingBitrateToPeer.
-           */
-          @java.lang.Override
-          public int getAverageSendingBitrateToPeer() {
-            return averageSendingBitrateToPeer_;
-          }
-          /**
-           * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-           * @param value The averageSendingBitrateToPeer to set.
-           * @return This builder for chaining.
-           */
-          public Builder setAverageSendingBitrateToPeer(int value) {
-            bitField0_ |= 0x00000010;
-            averageSendingBitrateToPeer_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 averageSendingBitrateToPeer = 5;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearAverageSendingBitrateToPeer() {
-            bitField0_ = (bitField0_ & ~0x00000010);
-            averageSendingBitrateToPeer_ = 0;
+          public Builder setClientAddressBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            clientAddress_ = value;
             onChanged();
             return this;
           }
 
           private java.lang.Object clientId_ = "";
           /**
-           * <code>optional string clientId = 6;</code>
+           * <code>optional string clientId = 3;</code>
            * @return Whether the clientId field is set.
            */
           public boolean hasClientId() {
-            return ((bitField0_ & 0x00000020) != 0);
+            return ((bitField0_ & 0x00000004) != 0);
           }
           /**
-           * <code>optional string clientId = 6;</code>
+           * <code>optional string clientId = 3;</code>
            * @return The clientId.
            */
           public java.lang.String getClientId() {
@@ -85261,7 +86929,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string clientId = 6;</code>
+           * <code>optional string clientId = 3;</code>
            * @return The bytes for clientId.
            */
           public com.google.protobuf.ByteString
@@ -85278,7 +86946,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string clientId = 6;</code>
+           * <code>optional string clientId = 3;</code>
            * @param value The clientId to set.
            * @return This builder for chaining.
            */
@@ -85287,23 +86955,23 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000004;
             clientId_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string clientId = 6;</code>
+           * <code>optional string clientId = 3;</code>
            * @return This builder for chaining.
            */
           public Builder clearClientId() {
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000004);
             clientId_ = getDefaultInstance().getClientId();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string clientId = 6;</code>
+           * <code>optional string clientId = 3;</code>
            * @param value The bytes for clientId to set.
            * @return This builder for chaining.
            */
@@ -85312,107 +86980,62 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000004;
             clientId_ = value;
             onChanged();
             return this;
           }
 
-          private java.lang.Object clientTransportProtocol_ = "";
+          private int clientPort_ ;
           /**
-           * <code>optional string clientTransportProtocol = 7;</code>
-           * @return Whether the clientTransportProtocol field is set.
+           * <code>optional uint32 clientPort = 4;</code>
+           * @return Whether the clientPort field is set.
            */
-          public boolean hasClientTransportProtocol() {
-            return ((bitField0_ & 0x00000040) != 0);
+          @java.lang.Override
+          public boolean hasClientPort() {
+            return ((bitField0_ & 0x00000008) != 0);
           }
           /**
-           * <code>optional string clientTransportProtocol = 7;</code>
-           * @return The clientTransportProtocol.
+           * <code>optional uint32 clientPort = 4;</code>
+           * @return The clientPort.
            */
-          public java.lang.String getClientTransportProtocol() {
-            java.lang.Object ref = clientTransportProtocol_;
-            if (!(ref instanceof java.lang.String)) {
-              com.google.protobuf.ByteString bs =
-                  (com.google.protobuf.ByteString) ref;
-              java.lang.String s = bs.toStringUtf8();
-              if (bs.isValidUtf8()) {
-                clientTransportProtocol_ = s;
-              }
-              return s;
-            } else {
-              return (java.lang.String) ref;
-            }
+          @java.lang.Override
+          public int getClientPort() {
+            return clientPort_;
           }
           /**
-           * <code>optional string clientTransportProtocol = 7;</code>
-           * @return The bytes for clientTransportProtocol.
-           */
-          public com.google.protobuf.ByteString
-              getClientTransportProtocolBytes() {
-            java.lang.Object ref = clientTransportProtocol_;
-            if (ref instanceof String) {
-              com.google.protobuf.ByteString b = 
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                      (java.lang.String) ref);
-              clientTransportProtocol_ = b;
-              return b;
-            } else {
-              return (com.google.protobuf.ByteString) ref;
-            }
-          }
-          /**
-           * <code>optional string clientTransportProtocol = 7;</code>
-           * @param value The clientTransportProtocol to set.
+           * <code>optional uint32 clientPort = 4;</code>
+           * @param value The clientPort to set.
            * @return This builder for chaining.
            */
-          public Builder setClientTransportProtocol(
-              java.lang.String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-            clientTransportProtocol_ = value;
+          public Builder setClientPort(int value) {
+            bitField0_ |= 0x00000008;
+            clientPort_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string clientTransportProtocol = 7;</code>
+           * <code>optional uint32 clientPort = 4;</code>
            * @return This builder for chaining.
            */
-          public Builder clearClientTransportProtocol() {
-            bitField0_ = (bitField0_ & ~0x00000040);
-            clientTransportProtocol_ = getDefaultInstance().getClientTransportProtocol();
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string clientTransportProtocol = 7;</code>
-           * @param value The bytes for clientTransportProtocol to set.
-           * @return This builder for chaining.
-           */
-          public Builder setClientTransportProtocolBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-            clientTransportProtocol_ = value;
+          public Builder clearClientPort() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            clientPort_ = 0;
             onChanged();
             return this;
           }
 
           private long nonceExpirationTime_ ;
           /**
-           * <code>optional uint64 nonceExpirationTime = 8;</code>
+           * <code>optional uint64 nonceExpirationTime = 5;</code>
            * @return Whether the nonceExpirationTime field is set.
            */
           @java.lang.Override
           public boolean hasNonceExpirationTime() {
-            return ((bitField0_ & 0x00000080) != 0);
+            return ((bitField0_ & 0x00000010) != 0);
           }
           /**
-           * <code>optional uint64 nonceExpirationTime = 8;</code>
+           * <code>optional uint64 nonceExpirationTime = 5;</code>
            * @return The nonceExpirationTime.
            */
           @java.lang.Override
@@ -85420,160 +87043,37 @@ public final class ProtobufSamples {
             return nonceExpirationTime_;
           }
           /**
-           * <code>optional uint64 nonceExpirationTime = 8;</code>
+           * <code>optional uint64 nonceExpirationTime = 5;</code>
            * @param value The nonceExpirationTime to set.
            * @return This builder for chaining.
            */
           public Builder setNonceExpirationTime(long value) {
-            bitField0_ |= 0x00000080;
+            bitField0_ |= 0x00000010;
             nonceExpirationTime_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional uint64 nonceExpirationTime = 8;</code>
+           * <code>optional uint64 nonceExpirationTime = 5;</code>
            * @return This builder for chaining.
            */
           public Builder clearNonceExpirationTime() {
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000010);
             nonceExpirationTime_ = 0L;
-            onChanged();
-            return this;
-          }
-
-          private java.lang.Object peerAddress_ = "";
-          /**
-           * <code>optional string peerAddress = 9;</code>
-           * @return Whether the peerAddress field is set.
-           */
-          public boolean hasPeerAddress() {
-            return ((bitField0_ & 0x00000100) != 0);
-          }
-          /**
-           * <code>optional string peerAddress = 9;</code>
-           * @return The peerAddress.
-           */
-          public java.lang.String getPeerAddress() {
-            java.lang.Object ref = peerAddress_;
-            if (!(ref instanceof java.lang.String)) {
-              com.google.protobuf.ByteString bs =
-                  (com.google.protobuf.ByteString) ref;
-              java.lang.String s = bs.toStringUtf8();
-              if (bs.isValidUtf8()) {
-                peerAddress_ = s;
-              }
-              return s;
-            } else {
-              return (java.lang.String) ref;
-            }
-          }
-          /**
-           * <code>optional string peerAddress = 9;</code>
-           * @return The bytes for peerAddress.
-           */
-          public com.google.protobuf.ByteString
-              getPeerAddressBytes() {
-            java.lang.Object ref = peerAddress_;
-            if (ref instanceof String) {
-              com.google.protobuf.ByteString b = 
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                      (java.lang.String) ref);
-              peerAddress_ = b;
-              return b;
-            } else {
-              return (com.google.protobuf.ByteString) ref;
-            }
-          }
-          /**
-           * <code>optional string peerAddress = 9;</code>
-           * @param value The peerAddress to set.
-           * @return This builder for chaining.
-           */
-          public Builder setPeerAddress(
-              java.lang.String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-            peerAddress_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string peerAddress = 9;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearPeerAddress() {
-            bitField0_ = (bitField0_ & ~0x00000100);
-            peerAddress_ = getDefaultInstance().getPeerAddress();
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string peerAddress = 9;</code>
-           * @param value The bytes for peerAddress to set.
-           * @return This builder for chaining.
-           */
-          public Builder setPeerAddressBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-            peerAddress_ = value;
-            onChanged();
-            return this;
-          }
-
-          private int peerPort_ ;
-          /**
-           * <code>optional uint32 peerPort = 10;</code>
-           * @return Whether the peerPort field is set.
-           */
-          @java.lang.Override
-          public boolean hasPeerPort() {
-            return ((bitField0_ & 0x00000200) != 0);
-          }
-          /**
-           * <code>optional uint32 peerPort = 10;</code>
-           * @return The peerPort.
-           */
-          @java.lang.Override
-          public int getPeerPort() {
-            return peerPort_;
-          }
-          /**
-           * <code>optional uint32 peerPort = 10;</code>
-           * @param value The peerPort to set.
-           * @return This builder for chaining.
-           */
-          public Builder setPeerPort(int value) {
-            bitField0_ |= 0x00000200;
-            peerPort_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 peerPort = 10;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearPeerPort() {
-            bitField0_ = (bitField0_ & ~0x00000200);
-            peerPort_ = 0;
             onChanged();
             return this;
           }
 
           private java.lang.Object realm_ = "";
           /**
-           * <code>optional string realm = 11;</code>
+           * <code>optional string realm = 6;</code>
            * @return Whether the realm field is set.
            */
           public boolean hasRealm() {
-            return ((bitField0_ & 0x00000400) != 0);
+            return ((bitField0_ & 0x00000020) != 0);
           }
           /**
-           * <code>optional string realm = 11;</code>
+           * <code>optional string realm = 6;</code>
            * @return The realm.
            */
           public java.lang.String getRealm() {
@@ -85591,7 +87091,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string realm = 11;</code>
+           * <code>optional string realm = 6;</code>
            * @return The bytes for realm.
            */
           public com.google.protobuf.ByteString
@@ -85608,7 +87108,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string realm = 11;</code>
+           * <code>optional string realm = 6;</code>
            * @param value The realm to set.
            * @return This builder for chaining.
            */
@@ -85617,23 +87117,23 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000020;
             realm_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string realm = 11;</code>
+           * <code>optional string realm = 6;</code>
            * @return This builder for chaining.
            */
           public Builder clearRealm() {
-            bitField0_ = (bitField0_ & ~0x00000400);
+            bitField0_ = (bitField0_ & ~0x00000020);
             realm_ = getDefaultInstance().getRealm();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string realm = 11;</code>
+           * <code>optional string realm = 6;</code>
            * @param value The bytes for realm to set.
            * @return This builder for chaining.
            */
@@ -85642,418 +87142,256 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000020;
             realm_ = value;
             onChanged();
             return this;
           }
 
-          private long receivedBytesFromClient_ ;
+          private long receivedBytes_ ;
           /**
-           * <code>optional uint64 receivedBytesFromClient = 12;</code>
-           * @return Whether the receivedBytesFromClient field is set.
+           * <code>optional uint64 receivedBytes = 7;</code>
+           * @return Whether the receivedBytes field is set.
            */
           @java.lang.Override
-          public boolean hasReceivedBytesFromClient() {
+          public boolean hasReceivedBytes() {
+            return ((bitField0_ & 0x00000040) != 0);
+          }
+          /**
+           * <code>optional uint64 receivedBytes = 7;</code>
+           * @return The receivedBytes.
+           */
+          @java.lang.Override
+          public long getReceivedBytes() {
+            return receivedBytes_;
+          }
+          /**
+           * <code>optional uint64 receivedBytes = 7;</code>
+           * @param value The receivedBytes to set.
+           * @return This builder for chaining.
+           */
+          public Builder setReceivedBytes(long value) {
+            bitField0_ |= 0x00000040;
+            receivedBytes_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint64 receivedBytes = 7;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearReceivedBytes() {
+            bitField0_ = (bitField0_ & ~0x00000040);
+            receivedBytes_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private int receivedPackets_ ;
+          /**
+           * <code>optional uint32 receivedPackets = 8;</code>
+           * @return Whether the receivedPackets field is set.
+           */
+          @java.lang.Override
+          public boolean hasReceivedPackets() {
+            return ((bitField0_ & 0x00000080) != 0);
+          }
+          /**
+           * <code>optional uint32 receivedPackets = 8;</code>
+           * @return The receivedPackets.
+           */
+          @java.lang.Override
+          public int getReceivedPackets() {
+            return receivedPackets_;
+          }
+          /**
+           * <code>optional uint32 receivedPackets = 8;</code>
+           * @param value The receivedPackets to set.
+           * @return This builder for chaining.
+           */
+          public Builder setReceivedPackets(int value) {
+            bitField0_ |= 0x00000080;
+            receivedPackets_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 receivedPackets = 8;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearReceivedPackets() {
+            bitField0_ = (bitField0_ & ~0x00000080);
+            receivedPackets_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private int receivingBitrate_ ;
+          /**
+           * <code>optional uint32 receivingBitrate = 9;</code>
+           * @return Whether the receivingBitrate field is set.
+           */
+          @java.lang.Override
+          public boolean hasReceivingBitrate() {
+            return ((bitField0_ & 0x00000100) != 0);
+          }
+          /**
+           * <code>optional uint32 receivingBitrate = 9;</code>
+           * @return The receivingBitrate.
+           */
+          @java.lang.Override
+          public int getReceivingBitrate() {
+            return receivingBitrate_;
+          }
+          /**
+           * <code>optional uint32 receivingBitrate = 9;</code>
+           * @param value The receivingBitrate to set.
+           * @return This builder for chaining.
+           */
+          public Builder setReceivingBitrate(int value) {
+            bitField0_ |= 0x00000100;
+            receivingBitrate_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 receivingBitrate = 9;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearReceivingBitrate() {
+            bitField0_ = (bitField0_ & ~0x00000100);
+            receivingBitrate_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private int sendingBitrate_ ;
+          /**
+           * <code>optional uint32 sendingBitrate = 10;</code>
+           * @return Whether the sendingBitrate field is set.
+           */
+          @java.lang.Override
+          public boolean hasSendingBitrate() {
+            return ((bitField0_ & 0x00000200) != 0);
+          }
+          /**
+           * <code>optional uint32 sendingBitrate = 10;</code>
+           * @return The sendingBitrate.
+           */
+          @java.lang.Override
+          public int getSendingBitrate() {
+            return sendingBitrate_;
+          }
+          /**
+           * <code>optional uint32 sendingBitrate = 10;</code>
+           * @param value The sendingBitrate to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSendingBitrate(int value) {
+            bitField0_ |= 0x00000200;
+            sendingBitrate_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint32 sendingBitrate = 10;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSendingBitrate() {
+            bitField0_ = (bitField0_ & ~0x00000200);
+            sendingBitrate_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private long sentBytes_ ;
+          /**
+           * <code>optional uint64 sentBytes = 11;</code>
+           * @return Whether the sentBytes field is set.
+           */
+          @java.lang.Override
+          public boolean hasSentBytes() {
+            return ((bitField0_ & 0x00000400) != 0);
+          }
+          /**
+           * <code>optional uint64 sentBytes = 11;</code>
+           * @return The sentBytes.
+           */
+          @java.lang.Override
+          public long getSentBytes() {
+            return sentBytes_;
+          }
+          /**
+           * <code>optional uint64 sentBytes = 11;</code>
+           * @param value The sentBytes to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSentBytes(long value) {
+            bitField0_ |= 0x00000400;
+            sentBytes_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional uint64 sentBytes = 11;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSentBytes() {
+            bitField0_ = (bitField0_ & ~0x00000400);
+            sentBytes_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private int sentPackets_ ;
+          /**
+           * <code>optional uint32 sentPackets = 12;</code>
+           * @return Whether the sentPackets field is set.
+           */
+          @java.lang.Override
+          public boolean hasSentPackets() {
             return ((bitField0_ & 0x00000800) != 0);
           }
           /**
-           * <code>optional uint64 receivedBytesFromClient = 12;</code>
-           * @return The receivedBytesFromClient.
+           * <code>optional uint32 sentPackets = 12;</code>
+           * @return The sentPackets.
            */
           @java.lang.Override
-          public long getReceivedBytesFromClient() {
-            return receivedBytesFromClient_;
+          public int getSentPackets() {
+            return sentPackets_;
           }
           /**
-           * <code>optional uint64 receivedBytesFromClient = 12;</code>
-           * @param value The receivedBytesFromClient to set.
+           * <code>optional uint32 sentPackets = 12;</code>
+           * @param value The sentPackets to set.
            * @return This builder for chaining.
            */
-          public Builder setReceivedBytesFromClient(long value) {
+          public Builder setSentPackets(int value) {
             bitField0_ |= 0x00000800;
-            receivedBytesFromClient_ = value;
+            sentPackets_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional uint64 receivedBytesFromClient = 12;</code>
+           * <code>optional uint32 sentPackets = 12;</code>
            * @return This builder for chaining.
            */
-          public Builder clearReceivedBytesFromClient() {
+          public Builder clearSentPackets() {
             bitField0_ = (bitField0_ & ~0x00000800);
-            receivedBytesFromClient_ = 0L;
-            onChanged();
-            return this;
-          }
-
-          private long receivedBytesFromPeer_ ;
-          /**
-           * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-           * @return Whether the receivedBytesFromPeer field is set.
-           */
-          @java.lang.Override
-          public boolean hasReceivedBytesFromPeer() {
-            return ((bitField0_ & 0x00001000) != 0);
-          }
-          /**
-           * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-           * @return The receivedBytesFromPeer.
-           */
-          @java.lang.Override
-          public long getReceivedBytesFromPeer() {
-            return receivedBytesFromPeer_;
-          }
-          /**
-           * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-           * @param value The receivedBytesFromPeer to set.
-           * @return This builder for chaining.
-           */
-          public Builder setReceivedBytesFromPeer(long value) {
-            bitField0_ |= 0x00001000;
-            receivedBytesFromPeer_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint64 receivedBytesFromPeer = 13;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearReceivedBytesFromPeer() {
-            bitField0_ = (bitField0_ & ~0x00001000);
-            receivedBytesFromPeer_ = 0L;
-            onChanged();
-            return this;
-          }
-
-          private int receivedPacketsFromClient_ ;
-          /**
-           * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-           * @return Whether the receivedPacketsFromClient field is set.
-           */
-          @java.lang.Override
-          public boolean hasReceivedPacketsFromClient() {
-            return ((bitField0_ & 0x00002000) != 0);
-          }
-          /**
-           * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-           * @return The receivedPacketsFromClient.
-           */
-          @java.lang.Override
-          public int getReceivedPacketsFromClient() {
-            return receivedPacketsFromClient_;
-          }
-          /**
-           * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-           * @param value The receivedPacketsFromClient to set.
-           * @return This builder for chaining.
-           */
-          public Builder setReceivedPacketsFromClient(int value) {
-            bitField0_ |= 0x00002000;
-            receivedPacketsFromClient_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 receivedPacketsFromClient = 14;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearReceivedPacketsFromClient() {
-            bitField0_ = (bitField0_ & ~0x00002000);
-            receivedPacketsFromClient_ = 0;
-            onChanged();
-            return this;
-          }
-
-          private int receivedPacketsFromPeer_ ;
-          /**
-           * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-           * @return Whether the receivedPacketsFromPeer field is set.
-           */
-          @java.lang.Override
-          public boolean hasReceivedPacketsFromPeer() {
-            return ((bitField0_ & 0x00004000) != 0);
-          }
-          /**
-           * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-           * @return The receivedPacketsFromPeer.
-           */
-          @java.lang.Override
-          public int getReceivedPacketsFromPeer() {
-            return receivedPacketsFromPeer_;
-          }
-          /**
-           * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-           * @param value The receivedPacketsFromPeer to set.
-           * @return This builder for chaining.
-           */
-          public Builder setReceivedPacketsFromPeer(int value) {
-            bitField0_ |= 0x00004000;
-            receivedPacketsFromPeer_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 receivedPacketsFromPeer = 15;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearReceivedPacketsFromPeer() {
-            bitField0_ = (bitField0_ & ~0x00004000);
-            receivedPacketsFromPeer_ = 0;
-            onChanged();
-            return this;
-          }
-
-          private java.lang.Object relayTransportProtocol_ = "";
-          /**
-           * <code>optional string relayTransportProtocol = 16;</code>
-           * @return Whether the relayTransportProtocol field is set.
-           */
-          public boolean hasRelayTransportProtocol() {
-            return ((bitField0_ & 0x00008000) != 0);
-          }
-          /**
-           * <code>optional string relayTransportProtocol = 16;</code>
-           * @return The relayTransportProtocol.
-           */
-          public java.lang.String getRelayTransportProtocol() {
-            java.lang.Object ref = relayTransportProtocol_;
-            if (!(ref instanceof java.lang.String)) {
-              com.google.protobuf.ByteString bs =
-                  (com.google.protobuf.ByteString) ref;
-              java.lang.String s = bs.toStringUtf8();
-              if (bs.isValidUtf8()) {
-                relayTransportProtocol_ = s;
-              }
-              return s;
-            } else {
-              return (java.lang.String) ref;
-            }
-          }
-          /**
-           * <code>optional string relayTransportProtocol = 16;</code>
-           * @return The bytes for relayTransportProtocol.
-           */
-          public com.google.protobuf.ByteString
-              getRelayTransportProtocolBytes() {
-            java.lang.Object ref = relayTransportProtocol_;
-            if (ref instanceof String) {
-              com.google.protobuf.ByteString b = 
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                      (java.lang.String) ref);
-              relayTransportProtocol_ = b;
-              return b;
-            } else {
-              return (com.google.protobuf.ByteString) ref;
-            }
-          }
-          /**
-           * <code>optional string relayTransportProtocol = 16;</code>
-           * @param value The relayTransportProtocol to set.
-           * @return This builder for chaining.
-           */
-          public Builder setRelayTransportProtocol(
-              java.lang.String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00008000;
-            relayTransportProtocol_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string relayTransportProtocol = 16;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearRelayTransportProtocol() {
-            bitField0_ = (bitField0_ & ~0x00008000);
-            relayTransportProtocol_ = getDefaultInstance().getRelayTransportProtocol();
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string relayTransportProtocol = 16;</code>
-           * @param value The bytes for relayTransportProtocol to set.
-           * @return This builder for chaining.
-           */
-          public Builder setRelayTransportProtocolBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00008000;
-            relayTransportProtocol_ = value;
-            onChanged();
-            return this;
-          }
-
-          private long sentBytesToClient_ ;
-          /**
-           * <code>optional uint64 sentBytesToClient = 17;</code>
-           * @return Whether the sentBytesToClient field is set.
-           */
-          @java.lang.Override
-          public boolean hasSentBytesToClient() {
-            return ((bitField0_ & 0x00010000) != 0);
-          }
-          /**
-           * <code>optional uint64 sentBytesToClient = 17;</code>
-           * @return The sentBytesToClient.
-           */
-          @java.lang.Override
-          public long getSentBytesToClient() {
-            return sentBytesToClient_;
-          }
-          /**
-           * <code>optional uint64 sentBytesToClient = 17;</code>
-           * @param value The sentBytesToClient to set.
-           * @return This builder for chaining.
-           */
-          public Builder setSentBytesToClient(long value) {
-            bitField0_ |= 0x00010000;
-            sentBytesToClient_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint64 sentBytesToClient = 17;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearSentBytesToClient() {
-            bitField0_ = (bitField0_ & ~0x00010000);
-            sentBytesToClient_ = 0L;
-            onChanged();
-            return this;
-          }
-
-          private long sentBytesToPeer_ ;
-          /**
-           * <code>optional uint64 sentBytesToPeer = 18;</code>
-           * @return Whether the sentBytesToPeer field is set.
-           */
-          @java.lang.Override
-          public boolean hasSentBytesToPeer() {
-            return ((bitField0_ & 0x00020000) != 0);
-          }
-          /**
-           * <code>optional uint64 sentBytesToPeer = 18;</code>
-           * @return The sentBytesToPeer.
-           */
-          @java.lang.Override
-          public long getSentBytesToPeer() {
-            return sentBytesToPeer_;
-          }
-          /**
-           * <code>optional uint64 sentBytesToPeer = 18;</code>
-           * @param value The sentBytesToPeer to set.
-           * @return This builder for chaining.
-           */
-          public Builder setSentBytesToPeer(long value) {
-            bitField0_ |= 0x00020000;
-            sentBytesToPeer_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint64 sentBytesToPeer = 18;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearSentBytesToPeer() {
-            bitField0_ = (bitField0_ & ~0x00020000);
-            sentBytesToPeer_ = 0L;
-            onChanged();
-            return this;
-          }
-
-          private int sentPacketsToClient_ ;
-          /**
-           * <code>optional uint32 sentPacketsToClient = 19;</code>
-           * @return Whether the sentPacketsToClient field is set.
-           */
-          @java.lang.Override
-          public boolean hasSentPacketsToClient() {
-            return ((bitField0_ & 0x00040000) != 0);
-          }
-          /**
-           * <code>optional uint32 sentPacketsToClient = 19;</code>
-           * @return The sentPacketsToClient.
-           */
-          @java.lang.Override
-          public int getSentPacketsToClient() {
-            return sentPacketsToClient_;
-          }
-          /**
-           * <code>optional uint32 sentPacketsToClient = 19;</code>
-           * @param value The sentPacketsToClient to set.
-           * @return This builder for chaining.
-           */
-          public Builder setSentPacketsToClient(int value) {
-            bitField0_ |= 0x00040000;
-            sentPacketsToClient_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 sentPacketsToClient = 19;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearSentPacketsToClient() {
-            bitField0_ = (bitField0_ & ~0x00040000);
-            sentPacketsToClient_ = 0;
-            onChanged();
-            return this;
-          }
-
-          private int sentPacketsToPeer_ ;
-          /**
-           * <code>optional uint32 sentPacketsToPeer = 20;</code>
-           * @return Whether the sentPacketsToPeer field is set.
-           */
-          @java.lang.Override
-          public boolean hasSentPacketsToPeer() {
-            return ((bitField0_ & 0x00080000) != 0);
-          }
-          /**
-           * <code>optional uint32 sentPacketsToPeer = 20;</code>
-           * @return The sentPacketsToPeer.
-           */
-          @java.lang.Override
-          public int getSentPacketsToPeer() {
-            return sentPacketsToPeer_;
-          }
-          /**
-           * <code>optional uint32 sentPacketsToPeer = 20;</code>
-           * @param value The sentPacketsToPeer to set.
-           * @return This builder for chaining.
-           */
-          public Builder setSentPacketsToPeer(int value) {
-            bitField0_ |= 0x00080000;
-            sentPacketsToPeer_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional uint32 sentPacketsToPeer = 20;</code>
-           * @return This builder for chaining.
-           */
-          public Builder clearSentPacketsToPeer() {
-            bitField0_ = (bitField0_ & ~0x00080000);
-            sentPacketsToPeer_ = 0;
+            sentPackets_ = 0;
             onChanged();
             return this;
           }
 
           private java.lang.Object serverAddress_ = "";
           /**
-           * <code>optional string serverAddress = 21;</code>
+           * <code>optional string serverAddress = 13;</code>
            * @return Whether the serverAddress field is set.
            */
           public boolean hasServerAddress() {
-            return ((bitField0_ & 0x00100000) != 0);
+            return ((bitField0_ & 0x00001000) != 0);
           }
           /**
-           * <code>optional string serverAddress = 21;</code>
+           * <code>optional string serverAddress = 13;</code>
            * @return The serverAddress.
            */
           public java.lang.String getServerAddress() {
@@ -86071,7 +87409,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string serverAddress = 21;</code>
+           * <code>optional string serverAddress = 13;</code>
            * @return The bytes for serverAddress.
            */
           public com.google.protobuf.ByteString
@@ -86088,7 +87426,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string serverAddress = 21;</code>
+           * <code>optional string serverAddress = 13;</code>
            * @param value The serverAddress to set.
            * @return This builder for chaining.
            */
@@ -86097,23 +87435,23 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00100000;
+  bitField0_ |= 0x00001000;
             serverAddress_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string serverAddress = 21;</code>
+           * <code>optional string serverAddress = 13;</code>
            * @return This builder for chaining.
            */
           public Builder clearServerAddress() {
-            bitField0_ = (bitField0_ & ~0x00100000);
+            bitField0_ = (bitField0_ & ~0x00001000);
             serverAddress_ = getDefaultInstance().getServerAddress();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string serverAddress = 21;</code>
+           * <code>optional string serverAddress = 13;</code>
            * @param value The bytes for serverAddress to set.
            * @return This builder for chaining.
            */
@@ -86122,7 +87460,7 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00100000;
+  bitField0_ |= 0x00001000;
             serverAddress_ = value;
             onChanged();
             return this;
@@ -86130,15 +87468,15 @@ public final class ProtobufSamples {
 
           private int serverPort_ ;
           /**
-           * <code>optional uint32 serverPort = 22;</code>
+           * <code>optional uint32 serverPort = 14;</code>
            * @return Whether the serverPort field is set.
            */
           @java.lang.Override
           public boolean hasServerPort() {
-            return ((bitField0_ & 0x00200000) != 0);
+            return ((bitField0_ & 0x00002000) != 0);
           }
           /**
-           * <code>optional uint32 serverPort = 22;</code>
+           * <code>optional uint32 serverPort = 14;</code>
            * @return The serverPort.
            */
           @java.lang.Override
@@ -86146,22 +87484,22 @@ public final class ProtobufSamples {
             return serverPort_;
           }
           /**
-           * <code>optional uint32 serverPort = 22;</code>
+           * <code>optional uint32 serverPort = 14;</code>
            * @param value The serverPort to set.
            * @return This builder for chaining.
            */
           public Builder setServerPort(int value) {
-            bitField0_ |= 0x00200000;
+            bitField0_ |= 0x00002000;
             serverPort_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional uint32 serverPort = 22;</code>
+           * <code>optional uint32 serverPort = 14;</code>
            * @return This builder for chaining.
            */
           public Builder clearServerPort() {
-            bitField0_ = (bitField0_ & ~0x00200000);
+            bitField0_ = (bitField0_ & ~0x00002000);
             serverPort_ = 0;
             onChanged();
             return this;
@@ -86169,15 +87507,15 @@ public final class ProtobufSamples {
 
           private long started_ ;
           /**
-           * <code>optional uint64 started = 23;</code>
+           * <code>optional uint64 started = 15;</code>
            * @return Whether the started field is set.
            */
           @java.lang.Override
           public boolean hasStarted() {
-            return ((bitField0_ & 0x00400000) != 0);
+            return ((bitField0_ & 0x00004000) != 0);
           }
           /**
-           * <code>optional uint64 started = 23;</code>
+           * <code>optional uint64 started = 15;</code>
            * @return The started.
            */
           @java.lang.Override
@@ -86185,37 +87523,121 @@ public final class ProtobufSamples {
             return started_;
           }
           /**
-           * <code>optional uint64 started = 23;</code>
+           * <code>optional uint64 started = 15;</code>
            * @param value The started to set.
            * @return This builder for chaining.
            */
           public Builder setStarted(long value) {
-            bitField0_ |= 0x00400000;
+            bitField0_ |= 0x00004000;
             started_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional uint64 started = 23;</code>
+           * <code>optional uint64 started = 15;</code>
            * @return This builder for chaining.
            */
           public Builder clearStarted() {
-            bitField0_ = (bitField0_ & ~0x00400000);
+            bitField0_ = (bitField0_ & ~0x00004000);
             started_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object transportProtocol_ = "";
+          /**
+           * <code>optional string transportProtocol = 16;</code>
+           * @return Whether the transportProtocol field is set.
+           */
+          public boolean hasTransportProtocol() {
+            return ((bitField0_ & 0x00008000) != 0);
+          }
+          /**
+           * <code>optional string transportProtocol = 16;</code>
+           * @return The transportProtocol.
+           */
+          public java.lang.String getTransportProtocol() {
+            java.lang.Object ref = transportProtocol_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                transportProtocol_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string transportProtocol = 16;</code>
+           * @return The bytes for transportProtocol.
+           */
+          public com.google.protobuf.ByteString
+              getTransportProtocolBytes() {
+            java.lang.Object ref = transportProtocol_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              transportProtocol_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string transportProtocol = 16;</code>
+           * @param value The transportProtocol to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTransportProtocol(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+            transportProtocol_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string transportProtocol = 16;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearTransportProtocol() {
+            bitField0_ = (bitField0_ & ~0x00008000);
+            transportProtocol_ = getDefaultInstance().getTransportProtocol();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string transportProtocol = 16;</code>
+           * @param value The bytes for transportProtocol to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTransportProtocolBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+            transportProtocol_ = value;
             onChanged();
             return this;
           }
 
           private java.lang.Object username_ = "";
           /**
-           * <code>optional string username = 24;</code>
+           * <code>optional string username = 17;</code>
            * @return Whether the username field is set.
            */
           public boolean hasUsername() {
-            return ((bitField0_ & 0x00800000) != 0);
+            return ((bitField0_ & 0x00010000) != 0);
           }
           /**
-           * <code>optional string username = 24;</code>
+           * <code>optional string username = 17;</code>
            * @return The username.
            */
           public java.lang.String getUsername() {
@@ -86233,7 +87655,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string username = 24;</code>
+           * <code>optional string username = 17;</code>
            * @return The bytes for username.
            */
           public com.google.protobuf.ByteString
@@ -86250,7 +87672,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string username = 24;</code>
+           * <code>optional string username = 17;</code>
            * @param value The username to set.
            * @return This builder for chaining.
            */
@@ -86259,23 +87681,23 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00800000;
+  bitField0_ |= 0x00010000;
             username_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string username = 24;</code>
+           * <code>optional string username = 17;</code>
            * @return This builder for chaining.
            */
           public Builder clearUsername() {
-            bitField0_ = (bitField0_ & ~0x00800000);
+            bitField0_ = (bitField0_ & ~0x00010000);
             username_ = getDefaultInstance().getUsername();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string username = 24;</code>
+           * <code>optional string username = 17;</code>
            * @param value The bytes for username to set.
            * @return This builder for chaining.
            */
@@ -86284,7 +87706,7 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00800000;
+  bitField0_ |= 0x00010000;
             username_ = value;
             onChanged();
             return this;
@@ -86343,17 +87765,57 @@ public final class ProtobufSamples {
       }
 
       private int bitField0_;
-      public static final int SESSIONS_FIELD_NUMBER = 1;
+      public static final int ALLOCATIONS_FIELD_NUMBER = 1;
+      private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation> allocations_;
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      @java.lang.Override
+      public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation> getAllocationsList() {
+        return allocations_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      @java.lang.Override
+      public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder> 
+          getAllocationsOrBuilderList() {
+        return allocations_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      @java.lang.Override
+      public int getAllocationsCount() {
+        return allocations_.size();
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation getAllocations(int index) {
+        return allocations_.get(index);
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder getAllocationsOrBuilder(
+          int index) {
+        return allocations_.get(index);
+      }
+
+      public static final int SESSIONS_FIELD_NUMBER = 2;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession> sessions_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession> getSessionsList() {
         return sessions_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder> 
@@ -86361,21 +87823,21 @@ public final class ProtobufSamples {
         return sessions_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       @java.lang.Override
       public int getSessionsCount() {
         return sessions_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession getSessions(int index) {
         return sessions_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder getSessionsOrBuilder(
@@ -86383,10 +87845,10 @@ public final class ProtobufSamples {
         return sessions_.get(index);
       }
 
-      public static final int SERVERID_FIELD_NUMBER = 2;
+      public static final int SERVERID_FIELD_NUMBER = 3;
       private volatile java.lang.Object serverId_;
       /**
-       * <code>required string serverId = 2;</code>
+       * <code>required string serverId = 3;</code>
        * @return Whether the serverId field is set.
        */
       @java.lang.Override
@@ -86394,7 +87856,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>required string serverId = 2;</code>
+       * <code>required string serverId = 3;</code>
        * @return The serverId.
        */
       @java.lang.Override
@@ -86413,7 +87875,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>required string serverId = 2;</code>
+       * <code>required string serverId = 3;</code>
        * @return The bytes for serverId.
        */
       @java.lang.Override
@@ -86442,6 +87904,12 @@ public final class ProtobufSamples {
           memoizedIsInitialized = 0;
           return false;
         }
+        for (int i = 0; i < getAllocationsCount(); i++) {
+          if (!getAllocations(i).isInitialized()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+        }
         for (int i = 0; i < getSessionsCount(); i++) {
           if (!getSessions(i).isInitialized()) {
             memoizedIsInitialized = 0;
@@ -86455,11 +87923,14 @@ public final class ProtobufSamples {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
+        for (int i = 0; i < allocations_.size(); i++) {
+          output.writeMessage(1, allocations_.get(i));
+        }
         for (int i = 0; i < sessions_.size(); i++) {
-          output.writeMessage(1, sessions_.get(i));
+          output.writeMessage(2, sessions_.get(i));
         }
         if (((bitField0_ & 0x00000001) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, serverId_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, serverId_);
         }
         unknownFields.writeTo(output);
       }
@@ -86470,12 +87941,16 @@ public final class ProtobufSamples {
         if (size != -1) return size;
 
         size = 0;
+        for (int i = 0; i < allocations_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, allocations_.get(i));
+        }
         for (int i = 0; i < sessions_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(1, sessions_.get(i));
+            .computeMessageSize(2, sessions_.get(i));
         }
         if (((bitField0_ & 0x00000001) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, serverId_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, serverId_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -86492,6 +87967,8 @@ public final class ProtobufSamples {
         }
         org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample) obj;
 
+        if (!getAllocationsList()
+            .equals(other.getAllocationsList())) return false;
         if (!getSessionsList()
             .equals(other.getSessionsList())) return false;
         if (hasServerId() != other.hasServerId()) return false;
@@ -86510,6 +87987,10 @@ public final class ProtobufSamples {
         }
         int hash = 41;
         hash = (19 * hash) + getDescriptor().hashCode();
+        if (getAllocationsCount() > 0) {
+          hash = (37 * hash) + ALLOCATIONS_FIELD_NUMBER;
+          hash = (53 * hash) + getAllocationsList().hashCode();
+        }
         if (getSessionsCount() > 0) {
           hash = (37 * hash) + SESSIONS_FIELD_NUMBER;
           hash = (53 * hash) + getSessionsList().hashCode();
@@ -86646,20 +88127,27 @@ public final class ProtobufSamples {
         private void maybeForceBuilderInitialization() {
           if (com.google.protobuf.GeneratedMessageV3
                   .alwaysUseFieldBuilders) {
+            getAllocationsFieldBuilder();
             getSessionsFieldBuilder();
           }
         }
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          if (allocationsBuilder_ == null) {
+            allocations_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            allocationsBuilder_.clear();
+          }
           if (sessionsBuilder_ == null) {
             sessions_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
           } else {
             sessionsBuilder_.clear();
           }
           serverId_ = "";
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
           return this;
         }
 
@@ -86688,16 +88176,25 @@ public final class ProtobufSamples {
           org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
-          if (sessionsBuilder_ == null) {
+          if (allocationsBuilder_ == null) {
             if (((bitField0_ & 0x00000001) != 0)) {
-              sessions_ = java.util.Collections.unmodifiableList(sessions_);
+              allocations_ = java.util.Collections.unmodifiableList(allocations_);
               bitField0_ = (bitField0_ & ~0x00000001);
+            }
+            result.allocations_ = allocations_;
+          } else {
+            result.allocations_ = allocationsBuilder_.build();
+          }
+          if (sessionsBuilder_ == null) {
+            if (((bitField0_ & 0x00000002) != 0)) {
+              sessions_ = java.util.Collections.unmodifiableList(sessions_);
+              bitField0_ = (bitField0_ & ~0x00000002);
             }
             result.sessions_ = sessions_;
           } else {
             result.sessions_ = sessionsBuilder_.build();
           }
-          if (((from_bitField0_ & 0x00000002) != 0)) {
+          if (((from_bitField0_ & 0x00000004) != 0)) {
             to_bitField0_ |= 0x00000001;
           }
           result.serverId_ = serverId_;
@@ -86750,11 +88247,37 @@ public final class ProtobufSamples {
 
         public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample other) {
           if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.getDefaultInstance()) return this;
+          if (allocationsBuilder_ == null) {
+            if (!other.allocations_.isEmpty()) {
+              if (allocations_.isEmpty()) {
+                allocations_ = other.allocations_;
+                bitField0_ = (bitField0_ & ~0x00000001);
+              } else {
+                ensureAllocationsIsMutable();
+                allocations_.addAll(other.allocations_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.allocations_.isEmpty()) {
+              if (allocationsBuilder_.isEmpty()) {
+                allocationsBuilder_.dispose();
+                allocationsBuilder_ = null;
+                allocations_ = other.allocations_;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                allocationsBuilder_ = 
+                  com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                     getAllocationsFieldBuilder() : null;
+              } else {
+                allocationsBuilder_.addAllMessages(other.allocations_);
+              }
+            }
+          }
           if (sessionsBuilder_ == null) {
             if (!other.sessions_.isEmpty()) {
               if (sessions_.isEmpty()) {
                 sessions_ = other.sessions_;
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
               } else {
                 ensureSessionsIsMutable();
                 sessions_.addAll(other.sessions_);
@@ -86767,7 +88290,7 @@ public final class ProtobufSamples {
                 sessionsBuilder_.dispose();
                 sessionsBuilder_ = null;
                 sessions_ = other.sessions_;
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
                 sessionsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getSessionsFieldBuilder() : null;
@@ -86777,7 +88300,7 @@ public final class ProtobufSamples {
             }
           }
           if (other.hasServerId()) {
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000004;
             serverId_ = other.serverId_;
             onChanged();
           }
@@ -86790,6 +88313,11 @@ public final class ProtobufSamples {
         public final boolean isInitialized() {
           if (!hasServerId()) {
             return false;
+          }
+          for (int i = 0; i < getAllocationsCount(); i++) {
+            if (!getAllocations(i).isInitialized()) {
+              return false;
+            }
           }
           for (int i = 0; i < getSessionsCount(); i++) {
             if (!getSessions(i).isInitialized()) {
@@ -86819,12 +88347,252 @@ public final class ProtobufSamples {
         }
         private int bitField0_;
 
+        private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation> allocations_ =
+          java.util.Collections.emptyList();
+        private void ensureAllocationsIsMutable() {
+          if (!((bitField0_ & 0x00000001) != 0)) {
+            allocations_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation>(allocations_);
+            bitField0_ |= 0x00000001;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder> allocationsBuilder_;
+
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation> getAllocationsList() {
+          if (allocationsBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(allocations_);
+          } else {
+            return allocationsBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public int getAllocationsCount() {
+          if (allocationsBuilder_ == null) {
+            return allocations_.size();
+          } else {
+            return allocationsBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation getAllocations(int index) {
+          if (allocationsBuilder_ == null) {
+            return allocations_.get(index);
+          } else {
+            return allocationsBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder setAllocations(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation value) {
+          if (allocationsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAllocationsIsMutable();
+            allocations_.set(index, value);
+            onChanged();
+          } else {
+            allocationsBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder setAllocations(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder builderForValue) {
+          if (allocationsBuilder_ == null) {
+            ensureAllocationsIsMutable();
+            allocations_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            allocationsBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder addAllocations(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation value) {
+          if (allocationsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAllocationsIsMutable();
+            allocations_.add(value);
+            onChanged();
+          } else {
+            allocationsBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder addAllocations(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation value) {
+          if (allocationsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAllocationsIsMutable();
+            allocations_.add(index, value);
+            onChanged();
+          } else {
+            allocationsBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder addAllocations(
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder builderForValue) {
+          if (allocationsBuilder_ == null) {
+            ensureAllocationsIsMutable();
+            allocations_.add(builderForValue.build());
+            onChanged();
+          } else {
+            allocationsBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder addAllocations(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder builderForValue) {
+          if (allocationsBuilder_ == null) {
+            ensureAllocationsIsMutable();
+            allocations_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            allocationsBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder addAllAllocations(
+            java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation> values) {
+          if (allocationsBuilder_ == null) {
+            ensureAllocationsIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, allocations_);
+            onChanged();
+          } else {
+            allocationsBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder clearAllocations() {
+          if (allocationsBuilder_ == null) {
+            allocations_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000001);
+            onChanged();
+          } else {
+            allocationsBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public Builder removeAllocations(int index) {
+          if (allocationsBuilder_ == null) {
+            ensureAllocationsIsMutable();
+            allocations_.remove(index);
+            onChanged();
+          } else {
+            allocationsBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder getAllocationsBuilder(
+            int index) {
+          return getAllocationsFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder getAllocationsOrBuilder(
+            int index) {
+          if (allocationsBuilder_ == null) {
+            return allocations_.get(index);  } else {
+            return allocationsBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder> 
+             getAllocationsOrBuilderList() {
+          if (allocationsBuilder_ != null) {
+            return allocationsBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(allocations_);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder addAllocationsBuilder() {
+          return getAllocationsFieldBuilder().addBuilder(
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder addAllocationsBuilder(
+            int index) {
+          return getAllocationsFieldBuilder().addBuilder(
+              index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnPeerAllocation allocations = 1;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder> 
+             getAllocationsBuilderList() {
+          return getAllocationsFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder> 
+            getAllocationsFieldBuilder() {
+          if (allocationsBuilder_ == null) {
+            allocationsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocation.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnPeerAllocationOrBuilder>(
+                    allocations_,
+                    ((bitField0_ & 0x00000001) != 0),
+                    getParentForChildren(),
+                    isClean());
+            allocations_ = null;
+          }
+          return allocationsBuilder_;
+        }
+
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession> sessions_ =
           java.util.Collections.emptyList();
         private void ensureSessionsIsMutable() {
-          if (!((bitField0_ & 0x00000001) != 0)) {
+          if (!((bitField0_ & 0x00000002) != 0)) {
             sessions_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession>(sessions_);
-            bitField0_ |= 0x00000001;
+            bitField0_ |= 0x00000002;
            }
         }
 
@@ -86832,7 +88600,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder> sessionsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession> getSessionsList() {
           if (sessionsBuilder_ == null) {
@@ -86842,7 +88610,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public int getSessionsCount() {
           if (sessionsBuilder_ == null) {
@@ -86852,7 +88620,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession getSessions(int index) {
           if (sessionsBuilder_ == null) {
@@ -86862,7 +88630,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder setSessions(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession value) {
@@ -86879,7 +88647,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder setSessions(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder builderForValue) {
@@ -86893,7 +88661,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder addSessions(org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession value) {
           if (sessionsBuilder_ == null) {
@@ -86909,7 +88677,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder addSessions(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession value) {
@@ -86926,7 +88694,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder addSessions(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder builderForValue) {
@@ -86940,7 +88708,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder addSessions(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder builderForValue) {
@@ -86954,7 +88722,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder addAllSessions(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession> values) {
@@ -86969,12 +88737,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder clearSessions() {
           if (sessionsBuilder_ == null) {
             sessions_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
             onChanged();
           } else {
             sessionsBuilder_.clear();
@@ -86982,7 +88750,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public Builder removeSessions(int index) {
           if (sessionsBuilder_ == null) {
@@ -86995,14 +88763,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder getSessionsBuilder(
             int index) {
           return getSessionsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder getSessionsOrBuilder(
             int index) {
@@ -87012,7 +88780,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder> 
              getSessionsOrBuilderList() {
@@ -87023,14 +88791,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder addSessionsBuilder() {
           return getSessionsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder addSessionsBuilder(
             int index) {
@@ -87038,7 +88806,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.TurnSample.TurnSession sessions = 2;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder> 
              getSessionsBuilderList() {
@@ -87051,7 +88819,7 @@ public final class ProtobufSamples {
             sessionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSession.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.TurnSample.TurnSessionOrBuilder>(
                     sessions_,
-                    ((bitField0_ & 0x00000001) != 0),
+                    ((bitField0_ & 0x00000002) != 0),
                     getParentForChildren(),
                     isClean());
             sessions_ = null;
@@ -87061,14 +88829,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object serverId_ = "";
         /**
-         * <code>required string serverId = 2;</code>
+         * <code>required string serverId = 3;</code>
          * @return Whether the serverId field is set.
          */
         public boolean hasServerId() {
-          return ((bitField0_ & 0x00000002) != 0);
+          return ((bitField0_ & 0x00000004) != 0);
         }
         /**
-         * <code>required string serverId = 2;</code>
+         * <code>required string serverId = 3;</code>
          * @return The serverId.
          */
         public java.lang.String getServerId() {
@@ -87086,7 +88854,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>required string serverId = 2;</code>
+         * <code>required string serverId = 3;</code>
          * @return The bytes for serverId.
          */
         public com.google.protobuf.ByteString
@@ -87103,7 +88871,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>required string serverId = 2;</code>
+         * <code>required string serverId = 3;</code>
          * @param value The serverId to set.
          * @return This builder for chaining.
          */
@@ -87112,23 +88880,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
           serverId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required string serverId = 2;</code>
+         * <code>required string serverId = 3;</code>
          * @return This builder for chaining.
          */
         public Builder clearServerId() {
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
           serverId_ = getDefaultInstance().getServerId();
           onChanged();
           return this;
         }
         /**
-         * <code>required string serverId = 2;</code>
+         * <code>required string serverId = 3;</code>
          * @param value The bytes for serverId to set.
          * @return This builder for chaining.
          */
@@ -87137,7 +88905,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
           serverId_ = value;
           onChanged();
           return this;
@@ -89076,6 +90844,11 @@ public final class ProtobufSamples {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnSession_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -89090,414 +90863,417 @@ public final class ProtobufSamples {
   static {
     java.lang.String[] descriptorData = {
       "\n\025ProtobufSamples.proto\022\037org.observertc." +
-      "schemas.protobuf\"\242\177\n\007Samples\022L\n\rclientSa" +
-      "mples\030\001 \003(\01325.org.observertc.schemas.pro" +
-      "tobuf.Samples.ClientSample\022F\n\nsfuSamples" +
-      "\030\002 \003(\01322.org.observertc.schemas.protobuf" +
-      ".Samples.SfuSample\022H\n\013turnSamples\030\003 \003(\0132" +
-      "3.org.observertc.schemas.protobuf.Sample" +
-      "s.TurnSample\022K\n\014controlFlags\030\004 \001(\01325.org" +
-      ".observertc.schemas.protobuf.Samples.Con" +
-      "trolFlags\022B\n\004meta\030\005 \001(\01324.org.observertc" +
-      ".schemas.protobuf.Samples.SamplesMeta\032$\n" +
-      "\013SamplesMeta\022\025\n\rschemaVersion\030\001 \001(\t\032\035\n\014C" +
-      "ontrolFlags\022\r\n\005close\030\001 \001(\010\032\302[\n\014ClientSam" +
-      "ple\022W\n\014certificates\030\001 \003(\0132A.org.observer" +
-      "tc.schemas.protobuf.Samples.ClientSample" +
-      ".Certificate\022U\n\006codecs\030\002 \003(\0132E.org.obser" +
-      "vertc.schemas.protobuf.Samples.ClientSam" +
-      "ple.MediaCodecStats\022W\n\014dataChannels\030\003 \003(" +
-      "\0132A.org.observertc.schemas.protobuf.Samp" +
-      "les.ClientSample.DataChannel\022[\n\016extensio" +
-      "nStats\030\004 \003(\0132C.org.observertc.schemas.pr" +
-      "otobuf.Samples.ClientSample.ExtensionSta" +
-      "t\022c\n\022iceLocalCandidates\030\005 \003(\0132G.org.obse" +
+      "schemas.protobuf\"\212\200\001\n\007Samples\022L\n\rclientS" +
+      "amples\030\001 \003(\01325.org.observertc.schemas.pr" +
+      "otobuf.Samples.ClientSample\022F\n\nsfuSample" +
+      "s\030\002 \003(\01322.org.observertc.schemas.protobu" +
+      "f.Samples.SfuSample\022H\n\013turnSamples\030\003 \003(\013" +
+      "23.org.observertc.schemas.protobuf.Sampl" +
+      "es.TurnSample\022K\n\014controlFlags\030\004 \001(\01325.or" +
+      "g.observertc.schemas.protobuf.Samples.Co" +
+      "ntrolFlags\022B\n\004meta\030\005 \001(\01324.org.observert" +
+      "c.schemas.protobuf.Samples.SamplesMeta\032$" +
+      "\n\013SamplesMeta\022\025\n\rschemaVersion\030\001 \001(\t\032\035\n\014" +
+      "ControlFlags\022\r\n\005close\030\001 \001(\010\032\302[\n\014ClientSa" +
+      "mple\022W\n\014certificates\030\001 \003(\0132A.org.observe" +
+      "rtc.schemas.protobuf.Samples.ClientSampl" +
+      "e.Certificate\022U\n\006codecs\030\002 \003(\0132E.org.obse" +
       "rvertc.schemas.protobuf.Samples.ClientSa" +
-      "mple.IceLocalCandidate\022e\n\023iceRemoteCandi" +
-      "dates\030\006 \003(\0132H.org.observertc.schemas.pro" +
-      "tobuf.Samples.ClientSample.IceRemoteCand" +
-      "idate\022\022\n\niceServers\030\007 \003(\t\022c\n\022inboundAudi" +
-      "oTracks\030\010 \003(\0132G.org.observertc.schemas.p" +
-      "rotobuf.Samples.ClientSample.InboundAudi" +
-      "oTrack\022c\n\022inboundVideoTracks\030\t \003(\0132G.org" +
-      ".observertc.schemas.protobuf.Samples.Cli" +
-      "entSample.InboundVideoTrack\022\030\n\020mediaCons" +
-      "traints\030\n \003(\t\022W\n\014mediaDevices\030\013 \003(\0132A.or" +
+      "mple.MediaCodecStats\022W\n\014dataChannels\030\003 \003" +
+      "(\0132A.org.observertc.schemas.protobuf.Sam" +
+      "ples.ClientSample.DataChannel\022[\n\016extensi" +
+      "onStats\030\004 \003(\0132C.org.observertc.schemas.p" +
+      "rotobuf.Samples.ClientSample.ExtensionSt" +
+      "at\022c\n\022iceLocalCandidates\030\005 \003(\0132G.org.obs" +
+      "ervertc.schemas.protobuf.Samples.ClientS" +
+      "ample.IceLocalCandidate\022e\n\023iceRemoteCand" +
+      "idates\030\006 \003(\0132H.org.observertc.schemas.pr" +
+      "otobuf.Samples.ClientSample.IceRemoteCan" +
+      "didate\022\022\n\niceServers\030\007 \003(\t\022c\n\022inboundAud" +
+      "ioTracks\030\010 \003(\0132G.org.observertc.schemas." +
+      "protobuf.Samples.ClientSample.InboundAud" +
+      "ioTrack\022c\n\022inboundVideoTracks\030\t \003(\0132G.or" +
       "g.observertc.schemas.protobuf.Samples.Cl" +
-      "ientSample.MediaDevice\022[\n\014mediaSources\030\014" +
-      " \003(\0132E.org.observertc.schemas.protobuf.S" +
-      "amples.ClientSample.MediaSourceStat\022e\n\023o" +
-      "utboundAudioTracks\030\r \003(\0132H.org.observert" +
-      "c.schemas.protobuf.Samples.ClientSample." +
-      "OutboundAudioTrack\022e\n\023outboundVideoTrack" +
-      "s\030\016 \003(\0132H.org.observertc.schemas.protobu" +
-      "f.Samples.ClientSample.OutboundVideoTrac" +
-      "k\022c\n\014pcTransports\030\017 \003(\0132M.org.observertc" +
-      ".schemas.protobuf.Samples.ClientSample.P" +
-      "eerConnectionTransport\022\027\n\017userMediaError" +
-      "s\030\020 \003(\t\022\020\n\010clientId\030\021 \002(\t\022\021\n\ttimestamp\030\022" +
-      " \002(\004\022N\n\007browser\030\023 \001(\0132=.org.observertc.s" +
-      "chemas.protobuf.Samples.ClientSample.Bro" +
-      "wser\022\016\n\006callId\030\024 \001(\t\022L\n\006engine\030\025 \001(\0132<.o" +
+      "ientSample.InboundVideoTrack\022\030\n\020mediaCon" +
+      "straints\030\n \003(\t\022W\n\014mediaDevices\030\013 \003(\0132A.o" +
       "rg.observertc.schemas.protobuf.Samples.C" +
-      "lientSample.Engine\022\016\n\006marker\030\026 \001(\t\022Q\n\002os" +
-      "\030\027 \001(\0132E.org.observertc.schemas.protobuf" +
-      ".Samples.ClientSample.OperationSystem\022P\n" +
-      "\010platform\030\030 \001(\0132>.org.observertc.schemas" +
-      ".protobuf.Samples.ClientSample.Platform\022" +
-      "\016\n\006roomId\030\031 \001(\t\022\021\n\tsampleSeq\030\032 \001(\r\022\035\n\025ti" +
-      "meZoneOffsetInHours\030\033 \001(\r\022\016\n\006userId\030\034 \001(" +
-      "\t\032\'\n\006Engine\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001" +
-      "(\t\0327\n\010Platform\022\r\n\005model\030\001 \001(\t\022\014\n\004type\030\002 " +
-      "\001(\t\022\016\n\006vendor\030\003 \001(\t\032(\n\007Browser\022\014\n\004name\030\001" +
-      " \001(\t\022\017\n\007version\030\002 \001(\t\032E\n\017OperationSystem" +
-      "\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\022\023\n\013versi" +
-      "onName\030\003 \001(\t\0326\n\013MediaDevice\022\n\n\002id\030\001 \001(\t\022" +
-      "\014\n\004kind\030\002 \001(\t\022\r\n\005label\030\003 \001(\t\032.\n\rExtensio" +
-      "nStat\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\267\020\n" +
-      "\027PeerConnectionTransport\022\030\n\020peerConnecti" +
-      "onId\030\001 \002(\t\022\025\n\rbytesReceived\030\002 \001(\004\022\021\n\tbyt" +
-      "esSent\030\003 \001(\004\022-\n%candidatePairAvailableIn" +
-      "comingBitrate\030\004 \001(\001\022-\n%candidatePairAvai" +
-      "lableOutgoingBitrate\030\005 \001(\001\022)\n!candidateP" +
-      "airBytesDiscardedOnSend\030\006 \001(\004\022\"\n\032candida" +
-      "tePairBytesReceived\030\007 \001(\004\022\036\n\026candidatePa" +
-      "irBytesSent\030\010 \001(\004\022/\n\'candidatePairCircui" +
-      "tBreakerTriggerCount\030\t \001(\r\022,\n$candidateP" +
-      "airConsentExpiredTimestamp\030\n \001(\004\022,\n$cand" +
-      "idatePairConsentRequestBytesSent\030\013 \001(\004\022(" +
-      "\n candidatePairConsentRequestsSent\030\014 \001(\r" +
-      "\022)\n!candidatePairCurrentRoundTripTime\030\r " +
-      "\001(\001\022*\n\"candidatePairFirstRequestTimestam" +
-      "p\030\016 \001(\004\0220\n(candidatePairLastPacketReceiv" +
-      "edTimestamp\030\017 \001(\004\022,\n$candidatePairLastPa" +
-      "cketSentTimestamp\030\020 \001(\004\022)\n!candidatePair" +
-      "LastRequestTimestamp\030\021 \001(\004\022*\n\"candidateP" +
-      "airLastResponseTimestamp\030\022 \001(\004\022+\n#candid" +
-      "atePairPacketsDiscardedOnSend\030\023 \001(\r\022$\n\034c" +
-      "andidatePairPacketsReceived\030\024 \001(\r\022 \n\030can" +
-      "didatePairPacketsSent\030\025 \001(\r\022%\n\035candidate" +
-      "PairRequestBytesSent\030\026 \001(\004\022%\n\035candidateP" +
-      "airRequestsReceived\030\027 \001(\r\022!\n\031candidatePa" +
-      "irRequestsSent\030\030 \001(\r\022&\n\036candidatePairRes" +
-      "ponseBytesSent\030\031 \001(\004\022&\n\036candidatePairRes" +
-      "ponsesReceived\030\032 \001(\r\022\"\n\032candidatePairRes" +
-      "ponsesSent\030\033 \001(\r\022+\n#candidatePairRetrans" +
-      "missionReceived\030\034 \001(\r\022\'\n\037candidatePairRe" +
-      "transmissionSent\030\035 \001(\r\022\032\n\022candidatePairS" +
-      "tate\030\036 \001(\t\022\'\n\037candidatePairTotalRoundTri" +
-      "pTime\030\037 \001(\001\022\034\n\024dataChannelsAccepted\030  \001(" +
-      "\r\022\032\n\022dataChannelsClosed\030! \001(\r\022\032\n\022dataCha" +
-      "nnelsOpened\030\" \001(\r\022\035\n\025dataChannelsRequest" +
-      "ed\030# \001(\r\022\022\n\ndtlsCipher\030$ \001(\t\022\021\n\tdtlsStat" +
-      "e\030% \001(\t\022 \n\030iceLocalUsernameFragment\030& \001(" +
-      "\t\022\017\n\007iceRole\030\' \001(\t\022\020\n\010iceState\030( \001(\t\022\r\n\005" +
-      "label\030) \001(\t\022\024\n\014localAddress\030* \001(\t\022\"\n\032loc" +
-      "alCandidateICEServerUrl\030+ \001(\t\022#\n\033localCa" +
-      "ndidateRelayProtocol\030, \001(\t\022\032\n\022localCandi" +
-      "dateType\030- \001(\t\022\021\n\tlocalPort\030. \001(\r\022\025\n\rloc" +
-      "alProtocol\030/ \001(\t\022\027\n\017packetsReceived\0300 \001(" +
-      "\r\022\023\n\013packetsSent\0301 \001(\r\022\025\n\rremoteAddress\030" +
-      "2 \001(\t\022#\n\033remoteCandidateICEServerUrl\0303 \001" +
-      "(\t\022$\n\034remoteCandidateRelayProtocol\0304 \001(\t" +
-      "\022\033\n\023remoteCandidateType\0305 \001(\t\022\022\n\nremoteP" +
-      "ort\0306 \001(\r\022\026\n\016remoteProtocol\0307 \001(\t\022\034\n\024sct" +
-      "pCongestionWindow\0308 \001(\001\022\017\n\007sctpMtu\0309 \001(\r" +
-      "\022\032\n\022sctpReceiverWindow\030: \001(\001\022!\n\031sctpSmoo" +
-      "thedRoundTripTime\030; \001(\001\022\025\n\rsctpUnackData" +
-      "\030< \001(\r\022$\n\034selectedCandidatePairChanges\030=" +
-      " \001(\r\022\022\n\nsrtpCipher\030> \001(\t\022\020\n\010tlsGroup\030? \001" +
-      "(\t\022\022\n\ntlsVersion\030@ \001(\t\032\260\002\n\017MediaSourceSt" +
-      "at\022\022\n\naudioLevel\030\001 \001(\001\022\020\n\010bitDepth\030\002 \001(\r" +
-      "\022\026\n\016echoReturnLoss\030\003 \001(\001\022!\n\031echoReturnLo" +
-      "ssEnhancement\030\004 \001(\001\022\016\n\006frames\030\005 \001(\r\022\027\n\017f" +
-      "ramesPerSecond\030\006 \001(\001\022\016\n\006height\030\007 \001(\r\022\014\n\004" +
-      "kind\030\010 \001(\t\022\025\n\rrelayedSource\030\t \001(\010\022\030\n\020tot" +
-      "alAudioEnergy\030\n \001(\001\022\034\n\024totalSamplesDurat" +
-      "ion\030\013 \001(\001\022\027\n\017trackIdentifier\030\014 \001(\t\022\r\n\005wi" +
-      "dth\030\r \001(\r\032\205\001\n\017MediaCodecStats\022\020\n\010channel" +
-      "s\030\001 \001(\r\022\021\n\tclockRate\030\002 \001(\r\022\021\n\tcodecType\030" +
-      "\003 \001(\t\022\020\n\010mimeType\030\004 \001(\t\022\023\n\013payloadType\030\005" +
-      " \001(\t\022\023\n\013sdpFmtpLine\030\006 \001(\t\032x\n\013Certificate" +
-      "\022\031\n\021base64Certificate\030\001 \001(\t\022\023\n\013fingerpri" +
-      "nt\030\002 \001(\t\022\034\n\024fingerprintAlgorithm\030\003 \001(\t\022\033" +
-      "\n\023issuerCertificateId\030\004 \001(\t\032\303\013\n\021InboundA" +
-      "udioTrack\022\014\n\004ssrc\030\001 \002(\004\022\033\n\023averageRtcpIn" +
-      "terval\030\002 \001(\001\022\031\n\021burstDiscardCount\030\003 \001(\r\022" +
-      "\030\n\020burstDiscardRate\030\004 \001(\001\022\026\n\016burstLossCo" +
-      "unt\030\005 \001(\r\022\025\n\rburstLossRate\030\006 \001(\001\022\035\n\025burs" +
-      "tPacketsDiscarded\030\007 \001(\r\022\030\n\020burstPacketsL" +
-      "ost\030\010 \001(\r\022\025\n\rbytesReceived\030\t \001(\004\022\021\n\tbyte" +
-      "sSent\030\n \001(\004\022\020\n\010channels\030\013 \001(\r\022\021\n\tclockRa" +
-      "te\030\014 \001(\r\022\030\n\020concealedSamples\030\r \001(\r\022\031\n\021co" +
-      "ncealmentEvents\030\016 \001(\r\022\035\n\025decoderImplemen" +
-      "tation\030\017 \001(\t\022\r\n\005ended\030\020 \001(\010\022!\n\031estimated" +
-      "PlayoutTimestamp\030\021 \001(\004\022\033\n\023fecPacketsDisc" +
-      "arded\030\022 \001(\r\022\032\n\022fecPacketsReceived\030\023 \001(\r\022" +
-      "\026\n\016gapDiscardRate\030\024 \001(\001\022\023\n\013gapLossRate\030\025" +
-      " \001(\001\022\033\n\023headerBytesReceived\030\026 \001(\004\022&\n\036ins" +
-      "ertedSamplesForDeceleration\030\027 \001(\r\022\016\n\006jit" +
-      "ter\030\030 \001(\001\022\031\n\021jitterBufferDelay\030\031 \001(\001\022 \n\030" +
-      "jitterBufferEmittedCount\030\032 \001(\r\022#\n\033lastPa" +
-      "cketReceivedTimestamp\030\033 \001(\004\022\020\n\010mimeType\030" +
-      "\034 \001(\t\022\021\n\tnackCount\030\035 \001(\r\022\030\n\020packetsDisca" +
-      "rded\030\036 \001(\r\022\031\n\021packetsDuplicated\030\037 \001(\r\022\037\n" +
-      "\027packetsFailedDecryption\030  \001(\r\022\023\n\013packet" +
-      "sLost\030! \001(\r\022\027\n\017packetsReceived\030\" \001(\r\022\027\n\017" +
-      "packetsRepaired\030# \001(\r\022\023\n\013packetsSent\030$ \001" +
-      "(\r\022\023\n\013payloadType\030% \001(\r\022\030\n\020peerConnectio" +
-      "nId\030& \001(\t\022\036\n\026perDscpPacketsReceived\030\' \001(" +
-      "\r\022\026\n\016remoteClientId\030( \001(\t\022\027\n\017remoteTimes" +
-      "tamp\030) \001(\004\022%\n\035removedSamplesForAccelerat" +
-      "ion\030* \001(\r\022\023\n\013reportsSent\030+ \001(\r\022\025\n\rroundT" +
-      "ripTime\030, \001(\001\022!\n\031roundTripTimeMeasuremen" +
-      "ts\030- \001(\r\022\036\n\026samplesDecodedWithCelt\030. \001(\r" +
-      "\022\036\n\026samplesDecodedWithSilk\030/ \001(\r\022\023\n\013sdpF" +
-      "mtpLine\0300 \001(\t\022\021\n\tsfuSinkId\0301 \001(\t\022\036\n\026sile" +
-      "ntConcealedSamples\0302 \001(\r\022\034\n\024totalProcess" +
-      "ingDelay\0303 \001(\001\022\032\n\022totalRoundTripTime\0304 \001" +
-      "(\001\022\033\n\023totalSamplesDecoded\0305 \001(\r\022\034\n\024total" +
-      "SamplesReceived\0306 \001(\r\022\017\n\007trackId\0307 \001(\t\022\031" +
-      "\n\021voiceActivityFlag\0308 \001(\010\032\226\014\n\021InboundVid" +
-      "eoTrack\022\014\n\004ssrc\030\001 \002(\004\022\033\n\023averageRtcpInte" +
-      "rval\030\002 \001(\001\022\031\n\021burstDiscardCount\030\003 \001(\r\022\030\n" +
-      "\020burstDiscardRate\030\004 \001(\001\022\026\n\016burstLossCoun" +
-      "t\030\005 \001(\r\022\025\n\rburstLossRate\030\006 \001(\001\022\035\n\025burstP" +
-      "acketsDiscarded\030\007 \001(\r\022\030\n\020burstPacketsLos" +
-      "t\030\010 \001(\r\022\025\n\rbytesReceived\030\t \001(\004\022\021\n\tbytesS" +
-      "ent\030\n \001(\004\022\020\n\010channels\030\013 \001(\r\022\021\n\tclockRate" +
-      "\030\014 \001(\r\022\035\n\025decoderImplementation\030\r \001(\t\022\r\n" +
-      "\005ended\030\016 \001(\010\022!\n\031estimatedPlayoutTimestam" +
-      "p\030\017 \001(\004\022\033\n\023fecPacketsDiscarded\030\020 \001(\r\022\032\n\022" +
-      "fecPacketsReceived\030\021 \001(\r\022\020\n\010firCount\030\022 \001" +
-      "(\r\022\025\n\rframeBitDepth\030\023 \001(\r\022\023\n\013frameHeight" +
-      "\030\024 \001(\r\022\022\n\nframeWidth\030\025 \001(\r\022\025\n\rframesDeco" +
-      "ded\030\026 \001(\r\022\025\n\rframesDropped\030\027 \001(\r\022\027\n\017fram" +
-      "esPerSecond\030\030 \001(\001\022\026\n\016framesReceived\030\031 \001(" +
-      "\r\022\026\n\016fullFramesLost\030\032 \001(\r\022\026\n\016gapDiscardR" +
-      "ate\030\033 \001(\001\022\023\n\013gapLossRate\030\034 \001(\001\022\033\n\023header" +
-      "BytesReceived\030\035 \001(\004\022\016\n\006jitter\030\036 \001(\001\022\031\n\021j" +
-      "itterBufferDelay\030\037 \001(\001\022 \n\030jitterBufferEm" +
-      "ittedCount\030  \001(\r\022\030\n\020keyFramesDecoded\030! \001" +
-      "(\r\022#\n\033lastPacketReceivedTimestamp\030\" \001(\004\022" +
-      "\020\n\010mimeType\030# \001(\t\022\021\n\tnackCount\030$ \001(\r\022\030\n\020" +
-      "packetsDiscarded\030% \001(\r\022\031\n\021packetsDuplica" +
-      "ted\030& \001(\r\022\037\n\027packetsFailedDecryption\030\' \001" +
-      "(\r\022\023\n\013packetsLost\030( \001(\r\022\027\n\017packetsReceiv" +
-      "ed\030) \001(\r\022\027\n\017packetsRepaired\030* \001(\r\022\023\n\013pac" +
-      "ketsSent\030+ \001(\r\022\031\n\021partialFramesLost\030, \001(" +
-      "\r\022\023\n\013payloadType\030- \001(\r\022\030\n\020peerConnection" +
-      "Id\030. \001(\t\022\036\n\026perDscpPacketsReceived\030/ \001(\r" +
-      "\022\020\n\010pliCount\0300 \001(\r\022\r\n\005qpSum\0301 \001(\004\022\026\n\016rem" +
-      "oteClientId\0302 \001(\t\022\027\n\017remoteTimestamp\0303 \001" +
-      "(\004\022\023\n\013reportsSent\0304 \001(\r\022\025\n\rroundTripTime" +
-      "\0305 \001(\001\022!\n\031roundTripTimeMeasurements\0306 \001(" +
-      "\r\022\023\n\013sdpFmtpLine\0307 \001(\t\022\021\n\tsfuSinkId\0308 \001(" +
-      "\t\022\020\n\010sliCount\0309 \001(\r\022\027\n\017totalDecodeTime\030:" +
-      " \001(\001\022\034\n\024totalInterFrameDelay\030; \001(\001\022\034\n\024to" +
-      "talProcessingDelay\030< \001(\001\022\032\n\022totalRoundTr" +
-      "ipTime\030= \001(\001\022#\n\033totalSquaredInterFrameDe" +
-      "lay\030> \001(\001\022\017\n\007trackId\030? \001(\t\032\376\n\n\022OutboundA" +
-      "udioTrack\022\014\n\004ssrc\030\001 \002(\004\022\022\n\naudioLevel\030\002 " +
-      "\001(\001\022\033\n\023averageRtcpInterval\030\003 \001(\001\022\031\n\021burs" +
-      "tDiscardCount\030\004 \001(\r\022\030\n\020burstDiscardRate\030" +
-      "\005 \001(\001\022\026\n\016burstLossCount\030\006 \001(\r\022\025\n\rburstLo" +
-      "ssRate\030\007 \001(\001\022\035\n\025burstPacketsDiscarded\030\010 " +
-      "\001(\r\022\030\n\020burstPacketsLost\030\t \001(\r\022\034\n\024bytesDi" +
-      "scardedOnSend\030\n \001(\004\022\021\n\tbytesSent\030\013 \001(\004\022\020" +
-      "\n\010channels\030\014 \001(\r\022\021\n\tclockRate\030\r \001(\r\022\026\n\016e" +
-      "choReturnLoss\030\016 \001(\001\022!\n\031echoReturnLossEnh" +
-      "ancement\030\017 \001(\001\022\035\n\025encoderImplementation\030" +
-      "\020 \001(\t\022\r\n\005ended\030\021 \001(\010\022\026\n\016fecPacketsSent\030\022" +
-      " \001(\r\022\024\n\014fractionLost\030\023 \001(\001\022\026\n\016gapDiscard" +
-      "Rate\030\024 \001(\001\022\023\n\013gapLossRate\030\025 \001(\001\022\027\n\017heade" +
-      "rBytesSent\030\026 \001(\004\022\016\n\006jitter\030\027 \001(\001\022\037\n\027last" +
-      "PacketSentTimestamp\030\030 \001(\004\022\020\n\010mimeType\030\031 " +
-      "\001(\t\022\021\n\tnackCount\030\032 \001(\r\022\030\n\020packetsDiscard" +
-      "ed\030\033 \001(\r\022\036\n\026packetsDiscardedOnSend\030\034 \001(\r" +
-      "\022\023\n\013packetsLost\030\035 \001(\r\022\027\n\017packetsReceived" +
-      "\030\036 \001(\r\022\027\n\017packetsRepaired\030\037 \001(\r\022\023\n\013packe" +
-      "tsSent\030  \001(\r\022\023\n\013payloadType\030! \001(\r\022\030\n\020pee" +
-      "rConnectionId\030\" \001(\t\022\032\n\022perDscpPacketsSen" +
-      "t\030# \001(\r\022\025\n\rrelayedSource\030$ \001(\010\022\027\n\017report" +
-      "sReceived\030% \001(\r\022\036\n\026retransmittedBytesSen" +
-      "t\030& \001(\004\022 \n\030retransmittedPacketsSent\030\' \001(" +
-      "\r\022\013\n\003rid\030( \001(\t\022\025\n\rroundTripTime\030) \001(\001\022!\n" +
-      "\031roundTripTimeMeasurements\030* \001(\r\022\017\n\007rtxS" +
-      "src\030+ \001(\004\022\036\n\026samplesEncodedWithCelt\030, \001(" +
-      "\r\022\036\n\026samplesEncodedWithSilk\030- \001(\r\022\023\n\013sdp" +
-      "FmtpLine\030. \001(\t\022\023\n\013sfuStreamId\030/ \001(\t\022\025\n\rt" +
-      "argetBitrate\0300 \001(\r\022\030\n\020totalAudioEnergy\0301" +
-      " \001(\001\022\037\n\027totalEncodedBytesTarget\0302 \001(\004\022\034\n" +
-      "\024totalPacketSendDelay\0303 \001(\001\022\032\n\022totalRoun" +
-      "dTripTime\0304 \001(\001\022\034\n\024totalSamplesDuration\030" +
-      "5 \001(\001\022\030\n\020totalSamplesSent\0306 \001(\r\022\017\n\007track" +
-      "Id\0307 \001(\t\022\031\n\021voiceActivityFlag\0308 \001(\010\032\256\016\n\022" +
-      "OutboundVideoTrack\022\014\n\004ssrc\030\001 \002(\004\022\033\n\023aver" +
-      "ageRtcpInterval\030\002 \001(\001\022\020\n\010bitDepth\030\003 \001(\r\022" +
-      "\031\n\021burstDiscardCount\030\004 \001(\r\022\030\n\020burstDisca" +
-      "rdRate\030\005 \001(\001\022\026\n\016burstLossCount\030\006 \001(\r\022\025\n\r" +
-      "burstLossRate\030\007 \001(\001\022\035\n\025burstPacketsDisca" +
-      "rded\030\010 \001(\r\022\030\n\020burstPacketsLost\030\t \001(\r\022\034\n\024" +
-      "bytesDiscardedOnSend\030\n \001(\004\022\021\n\tbytesSent\030" +
-      "\013 \001(\004\022\020\n\010channels\030\014 \001(\r\022\021\n\tclockRate\030\r \001" +
-      "(\r\022\035\n\025encoderImplementation\030\016 \001(\t\022\r\n\005end" +
-      "ed\030\017 \001(\010\022\026\n\016fecPacketsSent\030\020 \001(\r\022\020\n\010firC" +
-      "ount\030\021 \001(\r\022\024\n\014fractionLost\030\022 \001(\001\022\025\n\rfram" +
-      "eBitDepth\030\023 \001(\r\022\023\n\013frameHeight\030\024 \001(\r\022\022\n\n" +
-      "frameWidth\030\025 \001(\r\022\016\n\006frames\030\026 \001(\r\022\035\n\025fram" +
-      "esDiscardedOnSend\030\027 \001(\r\022\025\n\rframesDropped" +
-      "\030\030 \001(\r\022\025\n\rframesEncoded\030\031 \001(\r\022\027\n\017framesP" +
-      "erSecond\030\032 \001(\001\022\022\n\nframesSent\030\033 \001(\r\022\026\n\016fu" +
-      "llFramesLost\030\034 \001(\r\022\026\n\016gapDiscardRate\030\035 \001" +
-      "(\001\022\023\n\013gapLossRate\030\036 \001(\001\022\027\n\017headerBytesSe" +
-      "nt\030\037 \001(\004\022\016\n\006height\030  \001(\r\022\026\n\016hugeFramesSe" +
-      "nt\030! \001(\r\022\016\n\006jitter\030\" \001(\001\022\030\n\020keyFramesEnc" +
-      "oded\030# \001(\r\022\037\n\027lastPacketSentTimestamp\030$ " +
-      "\001(\004\022\020\n\010mimeType\030% \001(\t\022\021\n\tnackCount\030& \001(\r" +
-      "\022\030\n\020packetsDiscarded\030\' \001(\r\022\036\n\026packetsDis" +
-      "cardedOnSend\030( \001(\r\022\023\n\013packetsLost\030) \001(\r\022" +
-      "\027\n\017packetsReceived\030* \001(\r\022\027\n\017packetsRepai" +
-      "red\030+ \001(\r\022\023\n\013packetsSent\030, \001(\r\022\031\n\021partia" +
-      "lFramesLost\030- \001(\r\022\023\n\013payloadType\030. \001(\r\022\030" +
-      "\n\020peerConnectionId\030/ \001(\t\022\032\n\022perDscpPacke" +
-      "tsSent\0300 \001(\r\022\020\n\010pliCount\0301 \001(\r\022\r\n\005qpSum\030" +
-      "2 \001(\004\022*\n\"qualityLimitationDurationBandwi" +
-      "dth\0303 \001(\001\022$\n\034qualityLimitationDurationCP" +
-      "U\0304 \001(\001\022%\n\035qualityLimitationDurationNone" +
-      "\0305 \001(\001\022&\n\036qualityLimitationDurationOther" +
-      "\0306 \001(\001\022\037\n\027qualityLimitationReason\0307 \001(\t\022" +
-      "*\n\"qualityLimitationResolutionChanges\0308 " +
-      "\001(\r\022\025\n\rrelayedSource\0309 \001(\010\022\027\n\017reportsRec" +
-      "eived\030: \001(\r\022\036\n\026retransmittedBytesSent\030; " +
-      "\001(\004\022 \n\030retransmittedPacketsSent\030< \001(\r\022\013\n" +
-      "\003rid\030= \001(\t\022\025\n\rroundTripTime\030> \001(\001\022!\n\031rou" +
-      "ndTripTimeMeasurements\030? \001(\r\022\017\n\007rtxSsrc\030" +
-      "@ \001(\004\022\023\n\013sdpFmtpLine\030A \001(\t\022\023\n\013sfuStreamI" +
-      "d\030B \001(\t\022\020\n\010sliCount\030C \001(\r\022\025\n\rtargetBitra" +
-      "te\030D \001(\r\022\027\n\017totalEncodeTime\030E \001(\001\022\037\n\027tot" +
-      "alEncodedBytesTarget\030F \001(\004\022\034\n\024totalPacke" +
-      "tSendDelay\030G \001(\001\022\032\n\022totalRoundTripTime\030H" +
-      " \001(\001\022\017\n\007trackId\030I \001(\t\022\r\n\005width\030J \001(\r\032\267\001\n" +
-      "\021IceLocalCandidate\022\017\n\007address\030\001 \001(\t\022\025\n\rc" +
-      "andidateType\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerCo" +
-      "nnectionId\030\004 \001(\t\022\014\n\004port\030\005 \001(\r\022\020\n\010priori" +
-      "ty\030\006 \001(\004\022\020\n\010protocol\030\007 \001(\t\022\025\n\rrelayProto" +
-      "col\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\270\001\n\022IceRemoteCand" +
-      "idate\022\017\n\007address\030\001 \001(\t\022\025\n\rcandidateType\030" +
-      "\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerConnectionId\030\004 " +
-      "\001(\t\022\014\n\004port\030\005 \001(\r\022\020\n\010priority\030\006 \001(\004\022\020\n\010p" +
-      "rotocol\030\007 \001(\t\022\025\n\rrelayProtocol\030\010 \001(\t\022\013\n\003" +
-      "url\030\t \001(\t\032\373\001\n\013DataChannel\022\017\n\007address\030\001 \001" +
-      "(\t\022\025\n\rbytesReceived\030\002 \001(\004\022\021\n\tbytesSent\030\003" +
-      " \001(\004\022\035\n\025dataChannelIdentifier\030\004 \001(\r\022\n\n\002i" +
-      "d\030\005 \001(\t\022\r\n\005label\030\006 \001(\t\022\030\n\020messagesReceiv" +
-      "ed\030\007 \001(\r\022\024\n\014messagesSent\030\010 \001(\r\022\030\n\020peerCo" +
-      "nnectionId\030\t \001(\t\022\014\n\004port\030\n \001(\r\022\020\n\010protoc" +
-      "ol\030\013 \001(\t\022\r\n\005state\030\014 \001(\t\032\200\032\n\tSfuSample\022\\\n" +
-      "\016extensionStats\030\001 \003(\0132D.org.observertc.s" +
-      "chemas.protobuf.Samples.SfuSample.SfuExt" +
-      "ensionStats\022[\n\016inboundRtpPads\030\002 \003(\0132C.or" +
-      "g.observertc.schemas.protobuf.Samples.Sf" +
-      "uSample.SfuInboundRtpPad\022]\n\017outboundRtpP" +
-      "ads\030\003 \003(\0132D.org.observertc.schemas.proto" +
-      "buf.Samples.SfuSample.SfuOutboundRtpPad\022" +
-      "W\n\014sctpChannels\030\004 \003(\0132A.org.observertc.s" +
-      "chemas.protobuf.Samples.SfuSample.SfuSct" +
-      "pChannel\022S\n\ntransports\030\005 \003(\0132?.org.obser" +
-      "vertc.schemas.protobuf.Samples.SfuSample" +
-      ".SfuTransport\022\r\n\005sfuId\030\006 \002(\t\022\021\n\ttimestam" +
-      "p\030\007 \002(\004\022\016\n\006marker\030\010 \001(\t\022\035\n\025timeZoneOffse" +
-      "tInHours\030\t \001(\r\032\363\004\n\014SfuTransport\022\023\n\013trans" +
-      "portId\030\001 \002(\t\022\021\n\tdtlsState\030\002 \001(\t\022\017\n\007iceRo" +
-      "le\030\003 \001(\t\022\020\n\010iceState\030\004 \001(\t\022\020\n\010internal\030\005" +
-      " \001(\010\022\024\n\014localAddress\030\006 \001(\t\022\021\n\tlocalPort\030" +
-      "\007 \001(\r\022\020\n\010noReport\030\010 \001(\010\022\020\n\010protocol\030\t \001(" +
-      "\t\022\025\n\rremoteAddress\030\n \001(\t\022\022\n\nremotePort\030\013" +
-      " \001(\r\022\030\n\020rtpBytesReceived\030\014 \001(\004\022\024\n\014rtpByt" +
-      "esSent\030\r \001(\004\022\026\n\016rtpPacketsLost\030\016 \001(\r\022\032\n\022" +
-      "rtpPacketsReceived\030\017 \001(\r\022\026\n\016rtpPacketsSe" +
-      "nt\030\020 \001(\r\022\030\n\020rtxBytesReceived\030\021 \001(\004\022\024\n\014rt" +
-      "xBytesSent\030\022 \001(\004\022\033\n\023rtxPacketsDiscarded\030" +
-      "\023 \001(\r\022\026\n\016rtxPacketsLost\030\024 \001(\r\022\032\n\022rtxPack" +
-      "etsReceived\030\025 \001(\r\022\026\n\016rtxPacketsSent\030\026 \001(" +
-      "\r\022\031\n\021sctpBytesReceived\030\027 \001(\004\022\025\n\rsctpByte" +
-      "sSent\030\030 \001(\004\022\033\n\023sctpPacketsReceived\030\031 \001(\r" +
-      "\022\027\n\017sctpPacketsSent\030\032 \001(\r\022\021\n\tsctpState\030\033" +
-      " \001(\t\032\315\006\n\020SfuInboundRtpPad\022\r\n\005padId\030\001 \002(\t" +
-      "\022\014\n\004ssrc\030\002 \002(\004\022\020\n\010streamId\030\003 \002(\t\022\023\n\013tran" +
-      "sportId\030\004 \002(\t\022\025\n\rbytesReceived\030\005 \001(\004\022\021\n\t" +
-      "clockRate\030\006 \001(\r\022\033\n\023fecPacketsDiscarded\030\007" +
-      " \001(\r\022\032\n\022fecPacketsReceived\030\010 \001(\r\022\020\n\010firC" +
-      "ount\030\t \001(\r\022\024\n\014fractionLost\030\n \001(\001\022\025\n\rfram" +
-      "esDecoded\030\013 \001(\r\022\026\n\016framesReceived\030\014 \001(\r\022" +
-      "\020\n\010internal\030\r \001(\010\022\016\n\006jitter\030\016 \001(\001\022\030\n\020key" +
-      "FramesDecoded\030\017 \001(\r\022\021\n\tmediaType\030\020 \001(\t\022\020" +
-      "\n\010mimeType\030\021 \001(\t\022\021\n\tnackCount\030\022 \001(\r\022\020\n\010n" +
-      "oReport\030\023 \001(\010\022\030\n\020packetsDiscarded\030\024 \001(\r\022" +
-      "\031\n\021packetsDuplicated\030\025 \001(\r\022\037\n\027packetsFai" +
-      "ledDecryption\030\026 \001(\r\022\023\n\013packetsLost\030\027 \001(\r" +
-      "\022\027\n\017packetsReceived\030\030 \001(\r\022\027\n\017packetsRepa" +
-      "ired\030\031 \001(\r\022\023\n\013payloadType\030\032 \001(\r\022\020\n\010pliCo" +
-      "unt\030\033 \001(\r\022\013\n\003rid\030\034 \001(\t\022\025\n\rroundTripTime\030" +
-      "\035 \001(\001\022\022\n\nrtcpRrSent\030\036 \001(\r\022\026\n\016rtcpSrRecei" +
-      "ved\030\037 \001(\r\022\033\n\023rtxPacketsDiscarded\030  \001(\r\022\032" +
-      "\n\022rtxPacketsReceived\030! \001(\r\022\017\n\007rtxSsrc\030\" " +
-      "\001(\004\022\023\n\013sdpFmtpLine\030# \001(\t\022\020\n\010sliCount\030$ \001" +
-      "(\r\022\025\n\rtargetBitrate\030% \001(\r\022\031\n\021voiceActivi" +
-      "tyFlag\030& \001(\010\032\202\007\n\021SfuOutboundRtpPad\022\r\n\005pa" +
-      "dId\030\001 \002(\t\022\016\n\006sinkId\030\002 \002(\t\022\014\n\004ssrc\030\003 \002(\004\022" +
-      "\020\n\010streamId\030\004 \002(\t\022\023\n\013transportId\030\005 \002(\t\022\021" +
-      "\n\tbytesSent\030\006 \001(\004\022\016\n\006callId\030\007 \001(\t\022\020\n\010cli" +
-      "entId\030\010 \001(\t\022\021\n\tclockRate\030\t \001(\r\022\033\n\023fecPac" +
-      "ketsDiscarded\030\n \001(\r\022\026\n\016fecPacketsSent\030\013 " +
-      "\001(\r\022\020\n\010firCount\030\014 \001(\r\022\024\n\014fractionLost\030\r " +
-      "\001(\001\022\025\n\rframesEncoded\030\016 \001(\r\022\022\n\nframesSent" +
-      "\030\017 \001(\r\022\020\n\010internal\030\020 \001(\010\022\016\n\006jitter\030\021 \001(\001" +
-      "\022\030\n\020keyFramesEncoded\030\022 \001(\r\022\021\n\tmediaType\030" +
-      "\023 \001(\t\022\020\n\010mimeType\030\024 \001(\t\022\021\n\tnackCount\030\025 \001" +
-      "(\r\022\020\n\010noReport\030\026 \001(\010\022\030\n\020packetsDiscarded" +
-      "\030\027 \001(\r\022\031\n\021packetsDuplicated\030\030 \001(\r\022\037\n\027pac" +
-      "ketsFailedEncryption\030\031 \001(\r\022\023\n\013packetsLos" +
-      "t\030\032 \001(\r\022\034\n\024packetsRetransmitted\030\033 \001(\r\022\023\n" +
-      "\013packetsSent\030\034 \001(\r\022\023\n\013payloadType\030\035 \001(\r\022" +
-      "\020\n\010pliCount\030\036 \001(\r\022\013\n\003rid\030\037 \001(\t\022\025\n\rroundT" +
-      "ripTime\030  \001(\001\022\026\n\016rtcpRrReceived\030! \001(\r\022\022\n" +
-      "\nrtcpSrSent\030\" \001(\r\022\033\n\023rtxPacketsDiscarded" +
-      "\030# \001(\r\022\026\n\016rtxPacketsSent\030$ \001(\r\022\017\n\007rtxSsr" +
-      "c\030% \001(\004\022\023\n\013sdpFmtpLine\030& \001(\t\022\020\n\010sliCount" +
-      "\030\' \001(\r\022\025\n\rtargetBitrate\030( \001(\r\022\017\n\007trackId" +
-      "\030) \001(\t\022\031\n\021voiceActivityFlag\030* \001(\010\032\332\002\n\016Sf" +
-      "uSctpChannel\022\021\n\tchannelId\030\001 \002(\t\022\020\n\010strea" +
-      "mId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\025\n\rbytesR" +
-      "eceived\030\004 \001(\004\022\021\n\tbytesSent\030\005 \001(\004\022\r\n\005labe" +
-      "l\030\006 \001(\t\022\027\n\017messageReceived\030\007 \001(\r\022\023\n\013mess" +
-      "ageSent\030\010 \001(\r\022\020\n\010noReport\030\t \001(\010\022\020\n\010proto" +
-      "col\030\n \001(\t\022\034\n\024sctpCongestionWindow\030\013 \001(\001\022" +
-      "\017\n\007sctpMtu\030\014 \001(\r\022\032\n\022sctpReceiverWindow\030\r" +
-      " \001(\001\022!\n\031sctpSmoothedRoundTripTime\030\016 \001(\001\022" +
-      "\025\n\rsctpUnackData\030\017 \001(\r\0322\n\021SfuExtensionSt" +
-      "ats\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\230\006\n\nT" +
-      "urnSample\022Q\n\010sessions\030\001 \003(\0132?.org.observ" +
-      "ertc.schemas.protobuf.Samples.TurnSample" +
-      ".TurnSession\022\020\n\010serverId\030\002 \002(\t\032\244\005\n\013TurnS" +
-      "ession\022\021\n\tsessionId\030\001 \002(\t\022)\n!averageRece" +
-      "ivingBitrateFromClient\030\002 \001(\r\022\'\n\037averageR" +
-      "eceivingBitrateFromPeer\030\003 \001(\r\022%\n\035average" +
-      "SendingBitrateToClient\030\004 \001(\r\022#\n\033averageS" +
-      "endingBitrateToPeer\030\005 \001(\r\022\020\n\010clientId\030\006 " +
-      "\001(\t\022\037\n\027clientTransportProtocol\030\007 \001(\t\022\033\n\023" +
-      "nonceExpirationTime\030\010 \001(\004\022\023\n\013peerAddress" +
-      "\030\t \001(\t\022\020\n\010peerPort\030\n \001(\r\022\r\n\005realm\030\013 \001(\t\022",
-      "\037\n\027receivedBytesFromClient\030\014 \001(\004\022\035\n\025rece" +
-      "ivedBytesFromPeer\030\r \001(\004\022!\n\031receivedPacke" +
-      "tsFromClient\030\016 \001(\r\022\037\n\027receivedPacketsFro" +
-      "mPeer\030\017 \001(\r\022\036\n\026relayTransportProtocol\030\020 " +
-      "\001(\t\022\031\n\021sentBytesToClient\030\021 \001(\004\022\027\n\017sentBy" +
-      "tesToPeer\030\022 \001(\004\022\033\n\023sentPacketsToClient\030\023" +
-      " \001(\r\022\031\n\021sentPacketsToPeer\030\024 \001(\r\022\025\n\rserve" +
-      "rAddress\030\025 \001(\t\022\022\n\nserverPort\030\026 \001(\r\022\017\n\007st" +
-      "arted\030\027 \001(\004\022\020\n\010username\030\030 \001(\t"
+      "lientSample.MediaDevice\022[\n\014mediaSources\030" +
+      "\014 \003(\0132E.org.observertc.schemas.protobuf." +
+      "Samples.ClientSample.MediaSourceStat\022e\n\023" +
+      "outboundAudioTracks\030\r \003(\0132H.org.observer" +
+      "tc.schemas.protobuf.Samples.ClientSample" +
+      ".OutboundAudioTrack\022e\n\023outboundVideoTrac" +
+      "ks\030\016 \003(\0132H.org.observertc.schemas.protob" +
+      "uf.Samples.ClientSample.OutboundVideoTra" +
+      "ck\022c\n\014pcTransports\030\017 \003(\0132M.org.observert" +
+      "c.schemas.protobuf.Samples.ClientSample." +
+      "PeerConnectionTransport\022\027\n\017userMediaErro" +
+      "rs\030\020 \003(\t\022\020\n\010clientId\030\021 \002(\t\022\021\n\ttimestamp\030" +
+      "\022 \002(\004\022N\n\007browser\030\023 \001(\0132=.org.observertc." +
+      "schemas.protobuf.Samples.ClientSample.Br" +
+      "owser\022\016\n\006callId\030\024 \001(\t\022L\n\006engine\030\025 \001(\0132<." +
+      "org.observertc.schemas.protobuf.Samples." +
+      "ClientSample.Engine\022\016\n\006marker\030\026 \001(\t\022Q\n\002o" +
+      "s\030\027 \001(\0132E.org.observertc.schemas.protobu" +
+      "f.Samples.ClientSample.OperationSystem\022P" +
+      "\n\010platform\030\030 \001(\0132>.org.observertc.schema" +
+      "s.protobuf.Samples.ClientSample.Platform" +
+      "\022\016\n\006roomId\030\031 \001(\t\022\021\n\tsampleSeq\030\032 \001(\r\022\035\n\025t" +
+      "imeZoneOffsetInHours\030\033 \001(\r\022\016\n\006userId\030\034 \001" +
+      "(\t\032\'\n\006Engine\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 " +
+      "\001(\t\0327\n\010Platform\022\r\n\005model\030\001 \001(\t\022\014\n\004type\030\002" +
+      " \001(\t\022\016\n\006vendor\030\003 \001(\t\032(\n\007Browser\022\014\n\004name\030" +
+      "\001 \001(\t\022\017\n\007version\030\002 \001(\t\032E\n\017OperationSyste" +
+      "m\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\022\023\n\013vers" +
+      "ionName\030\003 \001(\t\0326\n\013MediaDevice\022\n\n\002id\030\001 \001(\t" +
+      "\022\014\n\004kind\030\002 \001(\t\022\r\n\005label\030\003 \001(\t\032.\n\rExtensi" +
+      "onStat\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\267\020" +
+      "\n\027PeerConnectionTransport\022\030\n\020peerConnect" +
+      "ionId\030\001 \002(\t\022\025\n\rbytesReceived\030\002 \001(\004\022\021\n\tby" +
+      "tesSent\030\003 \001(\004\022-\n%candidatePairAvailableI" +
+      "ncomingBitrate\030\004 \001(\001\022-\n%candidatePairAva" +
+      "ilableOutgoingBitrate\030\005 \001(\001\022)\n!candidate" +
+      "PairBytesDiscardedOnSend\030\006 \001(\004\022\"\n\032candid" +
+      "atePairBytesReceived\030\007 \001(\004\022\036\n\026candidateP" +
+      "airBytesSent\030\010 \001(\004\022/\n\'candidatePairCircu" +
+      "itBreakerTriggerCount\030\t \001(\r\022,\n$candidate" +
+      "PairConsentExpiredTimestamp\030\n \001(\004\022,\n$can" +
+      "didatePairConsentRequestBytesSent\030\013 \001(\004\022" +
+      "(\n candidatePairConsentRequestsSent\030\014 \001(" +
+      "\r\022)\n!candidatePairCurrentRoundTripTime\030\r" +
+      " \001(\001\022*\n\"candidatePairFirstRequestTimesta" +
+      "mp\030\016 \001(\004\0220\n(candidatePairLastPacketRecei" +
+      "vedTimestamp\030\017 \001(\004\022,\n$candidatePairLastP" +
+      "acketSentTimestamp\030\020 \001(\004\022)\n!candidatePai" +
+      "rLastRequestTimestamp\030\021 \001(\004\022*\n\"candidate" +
+      "PairLastResponseTimestamp\030\022 \001(\004\022+\n#candi" +
+      "datePairPacketsDiscardedOnSend\030\023 \001(\r\022$\n\034" +
+      "candidatePairPacketsReceived\030\024 \001(\r\022 \n\030ca" +
+      "ndidatePairPacketsSent\030\025 \001(\r\022%\n\035candidat" +
+      "ePairRequestBytesSent\030\026 \001(\004\022%\n\035candidate" +
+      "PairRequestsReceived\030\027 \001(\r\022!\n\031candidateP" +
+      "airRequestsSent\030\030 \001(\r\022&\n\036candidatePairRe" +
+      "sponseBytesSent\030\031 \001(\004\022&\n\036candidatePairRe" +
+      "sponsesReceived\030\032 \001(\r\022\"\n\032candidatePairRe" +
+      "sponsesSent\030\033 \001(\r\022+\n#candidatePairRetran" +
+      "smissionReceived\030\034 \001(\r\022\'\n\037candidatePairR" +
+      "etransmissionSent\030\035 \001(\r\022\032\n\022candidatePair" +
+      "State\030\036 \001(\t\022\'\n\037candidatePairTotalRoundTr" +
+      "ipTime\030\037 \001(\001\022\034\n\024dataChannelsAccepted\030  \001" +
+      "(\r\022\032\n\022dataChannelsClosed\030! \001(\r\022\032\n\022dataCh" +
+      "annelsOpened\030\" \001(\r\022\035\n\025dataChannelsReques" +
+      "ted\030# \001(\r\022\022\n\ndtlsCipher\030$ \001(\t\022\021\n\tdtlsSta" +
+      "te\030% \001(\t\022 \n\030iceLocalUsernameFragment\030& \001" +
+      "(\t\022\017\n\007iceRole\030\' \001(\t\022\020\n\010iceState\030( \001(\t\022\r\n" +
+      "\005label\030) \001(\t\022\024\n\014localAddress\030* \001(\t\022\"\n\032lo" +
+      "calCandidateICEServerUrl\030+ \001(\t\022#\n\033localC" +
+      "andidateRelayProtocol\030, \001(\t\022\032\n\022localCand" +
+      "idateType\030- \001(\t\022\021\n\tlocalPort\030. \001(\r\022\025\n\rlo" +
+      "calProtocol\030/ \001(\t\022\027\n\017packetsReceived\0300 \001" +
+      "(\r\022\023\n\013packetsSent\0301 \001(\r\022\025\n\rremoteAddress" +
+      "\0302 \001(\t\022#\n\033remoteCandidateICEServerUrl\0303 " +
+      "\001(\t\022$\n\034remoteCandidateRelayProtocol\0304 \001(" +
+      "\t\022\033\n\023remoteCandidateType\0305 \001(\t\022\022\n\nremote" +
+      "Port\0306 \001(\r\022\026\n\016remoteProtocol\0307 \001(\t\022\034\n\024sc" +
+      "tpCongestionWindow\0308 \001(\001\022\017\n\007sctpMtu\0309 \001(" +
+      "\r\022\032\n\022sctpReceiverWindow\030: \001(\001\022!\n\031sctpSmo" +
+      "othedRoundTripTime\030; \001(\001\022\025\n\rsctpUnackDat" +
+      "a\030< \001(\r\022$\n\034selectedCandidatePairChanges\030" +
+      "= \001(\r\022\022\n\nsrtpCipher\030> \001(\t\022\020\n\010tlsGroup\030? " +
+      "\001(\t\022\022\n\ntlsVersion\030@ \001(\t\032\260\002\n\017MediaSourceS" +
+      "tat\022\022\n\naudioLevel\030\001 \001(\001\022\020\n\010bitDepth\030\002 \001(" +
+      "\r\022\026\n\016echoReturnLoss\030\003 \001(\001\022!\n\031echoReturnL" +
+      "ossEnhancement\030\004 \001(\001\022\016\n\006frames\030\005 \001(\r\022\027\n\017" +
+      "framesPerSecond\030\006 \001(\001\022\016\n\006height\030\007 \001(\r\022\014\n" +
+      "\004kind\030\010 \001(\t\022\025\n\rrelayedSource\030\t \001(\010\022\030\n\020to" +
+      "talAudioEnergy\030\n \001(\001\022\034\n\024totalSamplesDura" +
+      "tion\030\013 \001(\001\022\027\n\017trackIdentifier\030\014 \001(\t\022\r\n\005w" +
+      "idth\030\r \001(\r\032\205\001\n\017MediaCodecStats\022\020\n\010channe" +
+      "ls\030\001 \001(\r\022\021\n\tclockRate\030\002 \001(\r\022\021\n\tcodecType" +
+      "\030\003 \001(\t\022\020\n\010mimeType\030\004 \001(\t\022\023\n\013payloadType\030" +
+      "\005 \001(\t\022\023\n\013sdpFmtpLine\030\006 \001(\t\032x\n\013Certificat" +
+      "e\022\031\n\021base64Certificate\030\001 \001(\t\022\023\n\013fingerpr" +
+      "int\030\002 \001(\t\022\034\n\024fingerprintAlgorithm\030\003 \001(\t\022" +
+      "\033\n\023issuerCertificateId\030\004 \001(\t\032\303\013\n\021Inbound" +
+      "AudioTrack\022\014\n\004ssrc\030\001 \002(\004\022\033\n\023averageRtcpI" +
+      "nterval\030\002 \001(\001\022\031\n\021burstDiscardCount\030\003 \001(\r" +
+      "\022\030\n\020burstDiscardRate\030\004 \001(\001\022\026\n\016burstLossC" +
+      "ount\030\005 \001(\r\022\025\n\rburstLossRate\030\006 \001(\001\022\035\n\025bur" +
+      "stPacketsDiscarded\030\007 \001(\r\022\030\n\020burstPackets" +
+      "Lost\030\010 \001(\r\022\025\n\rbytesReceived\030\t \001(\004\022\021\n\tbyt" +
+      "esSent\030\n \001(\004\022\020\n\010channels\030\013 \001(\r\022\021\n\tclockR" +
+      "ate\030\014 \001(\r\022\030\n\020concealedSamples\030\r \001(\r\022\031\n\021c" +
+      "oncealmentEvents\030\016 \001(\r\022\035\n\025decoderImpleme" +
+      "ntation\030\017 \001(\t\022\r\n\005ended\030\020 \001(\010\022!\n\031estimate" +
+      "dPlayoutTimestamp\030\021 \001(\004\022\033\n\023fecPacketsDis" +
+      "carded\030\022 \001(\r\022\032\n\022fecPacketsReceived\030\023 \001(\r" +
+      "\022\026\n\016gapDiscardRate\030\024 \001(\001\022\023\n\013gapLossRate\030" +
+      "\025 \001(\001\022\033\n\023headerBytesReceived\030\026 \001(\004\022&\n\036in" +
+      "sertedSamplesForDeceleration\030\027 \001(\r\022\016\n\006ji" +
+      "tter\030\030 \001(\001\022\031\n\021jitterBufferDelay\030\031 \001(\001\022 \n" +
+      "\030jitterBufferEmittedCount\030\032 \001(\r\022#\n\033lastP" +
+      "acketReceivedTimestamp\030\033 \001(\004\022\020\n\010mimeType" +
+      "\030\034 \001(\t\022\021\n\tnackCount\030\035 \001(\r\022\030\n\020packetsDisc" +
+      "arded\030\036 \001(\r\022\031\n\021packetsDuplicated\030\037 \001(\r\022\037" +
+      "\n\027packetsFailedDecryption\030  \001(\r\022\023\n\013packe" +
+      "tsLost\030! \001(\r\022\027\n\017packetsReceived\030\" \001(\r\022\027\n" +
+      "\017packetsRepaired\030# \001(\r\022\023\n\013packetsSent\030$ " +
+      "\001(\r\022\023\n\013payloadType\030% \001(\r\022\030\n\020peerConnecti" +
+      "onId\030& \001(\t\022\036\n\026perDscpPacketsReceived\030\' \001" +
+      "(\r\022\026\n\016remoteClientId\030( \001(\t\022\027\n\017remoteTime" +
+      "stamp\030) \001(\004\022%\n\035removedSamplesForAccelera" +
+      "tion\030* \001(\r\022\023\n\013reportsSent\030+ \001(\r\022\025\n\rround" +
+      "TripTime\030, \001(\001\022!\n\031roundTripTimeMeasureme" +
+      "nts\030- \001(\r\022\036\n\026samplesDecodedWithCelt\030. \001(" +
+      "\r\022\036\n\026samplesDecodedWithSilk\030/ \001(\r\022\023\n\013sdp" +
+      "FmtpLine\0300 \001(\t\022\021\n\tsfuSinkId\0301 \001(\t\022\036\n\026sil" +
+      "entConcealedSamples\0302 \001(\r\022\034\n\024totalProces" +
+      "singDelay\0303 \001(\001\022\032\n\022totalRoundTripTime\0304 " +
+      "\001(\001\022\033\n\023totalSamplesDecoded\0305 \001(\r\022\034\n\024tota" +
+      "lSamplesReceived\0306 \001(\r\022\017\n\007trackId\0307 \001(\t\022" +
+      "\031\n\021voiceActivityFlag\0308 \001(\010\032\226\014\n\021InboundVi" +
+      "deoTrack\022\014\n\004ssrc\030\001 \002(\004\022\033\n\023averageRtcpInt" +
+      "erval\030\002 \001(\001\022\031\n\021burstDiscardCount\030\003 \001(\r\022\030" +
+      "\n\020burstDiscardRate\030\004 \001(\001\022\026\n\016burstLossCou" +
+      "nt\030\005 \001(\r\022\025\n\rburstLossRate\030\006 \001(\001\022\035\n\025burst" +
+      "PacketsDiscarded\030\007 \001(\r\022\030\n\020burstPacketsLo" +
+      "st\030\010 \001(\r\022\025\n\rbytesReceived\030\t \001(\004\022\021\n\tbytes" +
+      "Sent\030\n \001(\004\022\020\n\010channels\030\013 \001(\r\022\021\n\tclockRat" +
+      "e\030\014 \001(\r\022\035\n\025decoderImplementation\030\r \001(\t\022\r" +
+      "\n\005ended\030\016 \001(\010\022!\n\031estimatedPlayoutTimesta" +
+      "mp\030\017 \001(\004\022\033\n\023fecPacketsDiscarded\030\020 \001(\r\022\032\n" +
+      "\022fecPacketsReceived\030\021 \001(\r\022\020\n\010firCount\030\022 " +
+      "\001(\r\022\025\n\rframeBitDepth\030\023 \001(\r\022\023\n\013frameHeigh" +
+      "t\030\024 \001(\r\022\022\n\nframeWidth\030\025 \001(\r\022\025\n\rframesDec" +
+      "oded\030\026 \001(\r\022\025\n\rframesDropped\030\027 \001(\r\022\027\n\017fra" +
+      "mesPerSecond\030\030 \001(\001\022\026\n\016framesReceived\030\031 \001" +
+      "(\r\022\026\n\016fullFramesLost\030\032 \001(\r\022\026\n\016gapDiscard" +
+      "Rate\030\033 \001(\001\022\023\n\013gapLossRate\030\034 \001(\001\022\033\n\023heade" +
+      "rBytesReceived\030\035 \001(\004\022\016\n\006jitter\030\036 \001(\001\022\031\n\021" +
+      "jitterBufferDelay\030\037 \001(\001\022 \n\030jitterBufferE" +
+      "mittedCount\030  \001(\r\022\030\n\020keyFramesDecoded\030! " +
+      "\001(\r\022#\n\033lastPacketReceivedTimestamp\030\" \001(\004" +
+      "\022\020\n\010mimeType\030# \001(\t\022\021\n\tnackCount\030$ \001(\r\022\030\n" +
+      "\020packetsDiscarded\030% \001(\r\022\031\n\021packetsDuplic" +
+      "ated\030& \001(\r\022\037\n\027packetsFailedDecryption\030\' " +
+      "\001(\r\022\023\n\013packetsLost\030( \001(\r\022\027\n\017packetsRecei" +
+      "ved\030) \001(\r\022\027\n\017packetsRepaired\030* \001(\r\022\023\n\013pa" +
+      "cketsSent\030+ \001(\r\022\031\n\021partialFramesLost\030, \001" +
+      "(\r\022\023\n\013payloadType\030- \001(\r\022\030\n\020peerConnectio" +
+      "nId\030. \001(\t\022\036\n\026perDscpPacketsReceived\030/ \001(" +
+      "\r\022\020\n\010pliCount\0300 \001(\r\022\r\n\005qpSum\0301 \001(\004\022\026\n\016re" +
+      "moteClientId\0302 \001(\t\022\027\n\017remoteTimestamp\0303 " +
+      "\001(\004\022\023\n\013reportsSent\0304 \001(\r\022\025\n\rroundTripTim" +
+      "e\0305 \001(\001\022!\n\031roundTripTimeMeasurements\0306 \001" +
+      "(\r\022\023\n\013sdpFmtpLine\0307 \001(\t\022\021\n\tsfuSinkId\0308 \001" +
+      "(\t\022\020\n\010sliCount\0309 \001(\r\022\027\n\017totalDecodeTime\030" +
+      ": \001(\001\022\034\n\024totalInterFrameDelay\030; \001(\001\022\034\n\024t" +
+      "otalProcessingDelay\030< \001(\001\022\032\n\022totalRoundT" +
+      "ripTime\030= \001(\001\022#\n\033totalSquaredInterFrameD" +
+      "elay\030> \001(\001\022\017\n\007trackId\030? \001(\t\032\376\n\n\022Outbound" +
+      "AudioTrack\022\014\n\004ssrc\030\001 \002(\004\022\022\n\naudioLevel\030\002" +
+      " \001(\001\022\033\n\023averageRtcpInterval\030\003 \001(\001\022\031\n\021bur" +
+      "stDiscardCount\030\004 \001(\r\022\030\n\020burstDiscardRate" +
+      "\030\005 \001(\001\022\026\n\016burstLossCount\030\006 \001(\r\022\025\n\rburstL" +
+      "ossRate\030\007 \001(\001\022\035\n\025burstPacketsDiscarded\030\010" +
+      " \001(\r\022\030\n\020burstPacketsLost\030\t \001(\r\022\034\n\024bytesD" +
+      "iscardedOnSend\030\n \001(\004\022\021\n\tbytesSent\030\013 \001(\004\022" +
+      "\020\n\010channels\030\014 \001(\r\022\021\n\tclockRate\030\r \001(\r\022\026\n\016" +
+      "echoReturnLoss\030\016 \001(\001\022!\n\031echoReturnLossEn" +
+      "hancement\030\017 \001(\001\022\035\n\025encoderImplementation" +
+      "\030\020 \001(\t\022\r\n\005ended\030\021 \001(\010\022\026\n\016fecPacketsSent\030" +
+      "\022 \001(\r\022\024\n\014fractionLost\030\023 \001(\001\022\026\n\016gapDiscar" +
+      "dRate\030\024 \001(\001\022\023\n\013gapLossRate\030\025 \001(\001\022\027\n\017head" +
+      "erBytesSent\030\026 \001(\004\022\016\n\006jitter\030\027 \001(\001\022\037\n\027las" +
+      "tPacketSentTimestamp\030\030 \001(\004\022\020\n\010mimeType\030\031" +
+      " \001(\t\022\021\n\tnackCount\030\032 \001(\r\022\030\n\020packetsDiscar" +
+      "ded\030\033 \001(\r\022\036\n\026packetsDiscardedOnSend\030\034 \001(" +
+      "\r\022\023\n\013packetsLost\030\035 \001(\r\022\027\n\017packetsReceive" +
+      "d\030\036 \001(\r\022\027\n\017packetsRepaired\030\037 \001(\r\022\023\n\013pack" +
+      "etsSent\030  \001(\r\022\023\n\013payloadType\030! \001(\r\022\030\n\020pe" +
+      "erConnectionId\030\" \001(\t\022\032\n\022perDscpPacketsSe" +
+      "nt\030# \001(\r\022\025\n\rrelayedSource\030$ \001(\010\022\027\n\017repor" +
+      "tsReceived\030% \001(\r\022\036\n\026retransmittedBytesSe" +
+      "nt\030& \001(\004\022 \n\030retransmittedPacketsSent\030\' \001" +
+      "(\r\022\013\n\003rid\030( \001(\t\022\025\n\rroundTripTime\030) \001(\001\022!" +
+      "\n\031roundTripTimeMeasurements\030* \001(\r\022\017\n\007rtx" +
+      "Ssrc\030+ \001(\004\022\036\n\026samplesEncodedWithCelt\030, \001" +
+      "(\r\022\036\n\026samplesEncodedWithSilk\030- \001(\r\022\023\n\013sd" +
+      "pFmtpLine\030. \001(\t\022\023\n\013sfuStreamId\030/ \001(\t\022\025\n\r" +
+      "targetBitrate\0300 \001(\r\022\030\n\020totalAudioEnergy\030" +
+      "1 \001(\001\022\037\n\027totalEncodedBytesTarget\0302 \001(\004\022\034" +
+      "\n\024totalPacketSendDelay\0303 \001(\001\022\032\n\022totalRou" +
+      "ndTripTime\0304 \001(\001\022\034\n\024totalSamplesDuration" +
+      "\0305 \001(\001\022\030\n\020totalSamplesSent\0306 \001(\r\022\017\n\007trac" +
+      "kId\0307 \001(\t\022\031\n\021voiceActivityFlag\0308 \001(\010\032\256\016\n" +
+      "\022OutboundVideoTrack\022\014\n\004ssrc\030\001 \002(\004\022\033\n\023ave" +
+      "rageRtcpInterval\030\002 \001(\001\022\020\n\010bitDepth\030\003 \001(\r" +
+      "\022\031\n\021burstDiscardCount\030\004 \001(\r\022\030\n\020burstDisc" +
+      "ardRate\030\005 \001(\001\022\026\n\016burstLossCount\030\006 \001(\r\022\025\n" +
+      "\rburstLossRate\030\007 \001(\001\022\035\n\025burstPacketsDisc" +
+      "arded\030\010 \001(\r\022\030\n\020burstPacketsLost\030\t \001(\r\022\034\n" +
+      "\024bytesDiscardedOnSend\030\n \001(\004\022\021\n\tbytesSent" +
+      "\030\013 \001(\004\022\020\n\010channels\030\014 \001(\r\022\021\n\tclockRate\030\r " +
+      "\001(\r\022\035\n\025encoderImplementation\030\016 \001(\t\022\r\n\005en" +
+      "ded\030\017 \001(\010\022\026\n\016fecPacketsSent\030\020 \001(\r\022\020\n\010fir" +
+      "Count\030\021 \001(\r\022\024\n\014fractionLost\030\022 \001(\001\022\025\n\rfra" +
+      "meBitDepth\030\023 \001(\r\022\023\n\013frameHeight\030\024 \001(\r\022\022\n" +
+      "\nframeWidth\030\025 \001(\r\022\016\n\006frames\030\026 \001(\r\022\035\n\025fra" +
+      "mesDiscardedOnSend\030\027 \001(\r\022\025\n\rframesDroppe" +
+      "d\030\030 \001(\r\022\025\n\rframesEncoded\030\031 \001(\r\022\027\n\017frames" +
+      "PerSecond\030\032 \001(\001\022\022\n\nframesSent\030\033 \001(\r\022\026\n\016f" +
+      "ullFramesLost\030\034 \001(\r\022\026\n\016gapDiscardRate\030\035 " +
+      "\001(\001\022\023\n\013gapLossRate\030\036 \001(\001\022\027\n\017headerBytesS" +
+      "ent\030\037 \001(\004\022\016\n\006height\030  \001(\r\022\026\n\016hugeFramesS" +
+      "ent\030! \001(\r\022\016\n\006jitter\030\" \001(\001\022\030\n\020keyFramesEn" +
+      "coded\030# \001(\r\022\037\n\027lastPacketSentTimestamp\030$" +
+      " \001(\004\022\020\n\010mimeType\030% \001(\t\022\021\n\tnackCount\030& \001(" +
+      "\r\022\030\n\020packetsDiscarded\030\' \001(\r\022\036\n\026packetsDi" +
+      "scardedOnSend\030( \001(\r\022\023\n\013packetsLost\030) \001(\r" +
+      "\022\027\n\017packetsReceived\030* \001(\r\022\027\n\017packetsRepa" +
+      "ired\030+ \001(\r\022\023\n\013packetsSent\030, \001(\r\022\031\n\021parti" +
+      "alFramesLost\030- \001(\r\022\023\n\013payloadType\030. \001(\r\022" +
+      "\030\n\020peerConnectionId\030/ \001(\t\022\032\n\022perDscpPack" +
+      "etsSent\0300 \001(\r\022\020\n\010pliCount\0301 \001(\r\022\r\n\005qpSum" +
+      "\0302 \001(\004\022*\n\"qualityLimitationDurationBandw" +
+      "idth\0303 \001(\001\022$\n\034qualityLimitationDurationC" +
+      "PU\0304 \001(\001\022%\n\035qualityLimitationDurationNon" +
+      "e\0305 \001(\001\022&\n\036qualityLimitationDurationOthe" +
+      "r\0306 \001(\001\022\037\n\027qualityLimitationReason\0307 \001(\t" +
+      "\022*\n\"qualityLimitationResolutionChanges\0308" +
+      " \001(\r\022\025\n\rrelayedSource\0309 \001(\010\022\027\n\017reportsRe" +
+      "ceived\030: \001(\r\022\036\n\026retransmittedBytesSent\030;" +
+      " \001(\004\022 \n\030retransmittedPacketsSent\030< \001(\r\022\013" +
+      "\n\003rid\030= \001(\t\022\025\n\rroundTripTime\030> \001(\001\022!\n\031ro" +
+      "undTripTimeMeasurements\030? \001(\r\022\017\n\007rtxSsrc" +
+      "\030@ \001(\004\022\023\n\013sdpFmtpLine\030A \001(\t\022\023\n\013sfuStream" +
+      "Id\030B \001(\t\022\020\n\010sliCount\030C \001(\r\022\025\n\rtargetBitr" +
+      "ate\030D \001(\r\022\027\n\017totalEncodeTime\030E \001(\001\022\037\n\027to" +
+      "talEncodedBytesTarget\030F \001(\004\022\034\n\024totalPack" +
+      "etSendDelay\030G \001(\001\022\032\n\022totalRoundTripTime\030" +
+      "H \001(\001\022\017\n\007trackId\030I \001(\t\022\r\n\005width\030J \001(\r\032\267\001" +
+      "\n\021IceLocalCandidate\022\017\n\007address\030\001 \001(\t\022\025\n\r" +
+      "candidateType\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerC" +
+      "onnectionId\030\004 \001(\t\022\014\n\004port\030\005 \001(\r\022\020\n\010prior" +
+      "ity\030\006 \001(\004\022\020\n\010protocol\030\007 \001(\t\022\025\n\rrelayProt" +
+      "ocol\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\270\001\n\022IceRemoteCan" +
+      "didate\022\017\n\007address\030\001 \001(\t\022\025\n\rcandidateType" +
+      "\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerConnectionId\030\004" +
+      " \001(\t\022\014\n\004port\030\005 \001(\r\022\020\n\010priority\030\006 \001(\004\022\020\n\010" +
+      "protocol\030\007 \001(\t\022\025\n\rrelayProtocol\030\010 \001(\t\022\013\n" +
+      "\003url\030\t \001(\t\032\373\001\n\013DataChannel\022\017\n\007address\030\001 " +
+      "\001(\t\022\025\n\rbytesReceived\030\002 \001(\004\022\021\n\tbytesSent\030" +
+      "\003 \001(\004\022\035\n\025dataChannelIdentifier\030\004 \001(\r\022\n\n\002" +
+      "id\030\005 \001(\t\022\r\n\005label\030\006 \001(\t\022\030\n\020messagesRecei" +
+      "ved\030\007 \001(\r\022\024\n\014messagesSent\030\010 \001(\r\022\030\n\020peerC" +
+      "onnectionId\030\t \001(\t\022\014\n\004port\030\n \001(\r\022\020\n\010proto" +
+      "col\030\013 \001(\t\022\r\n\005state\030\014 \001(\t\032\200\032\n\tSfuSample\022\\" +
+      "\n\016extensionStats\030\001 \003(\0132D.org.observertc." +
+      "schemas.protobuf.Samples.SfuSample.SfuEx" +
+      "tensionStats\022[\n\016inboundRtpPads\030\002 \003(\0132C.o" +
+      "rg.observertc.schemas.protobuf.Samples.S" +
+      "fuSample.SfuInboundRtpPad\022]\n\017outboundRtp" +
+      "Pads\030\003 \003(\0132D.org.observertc.schemas.prot" +
+      "obuf.Samples.SfuSample.SfuOutboundRtpPad" +
+      "\022W\n\014sctpChannels\030\004 \003(\0132A.org.observertc." +
+      "schemas.protobuf.Samples.SfuSample.SfuSc" +
+      "tpChannel\022S\n\ntransports\030\005 \003(\0132?.org.obse" +
+      "rvertc.schemas.protobuf.Samples.SfuSampl" +
+      "e.SfuTransport\022\r\n\005sfuId\030\006 \002(\t\022\021\n\ttimesta" +
+      "mp\030\007 \002(\004\022\016\n\006marker\030\010 \001(\t\022\035\n\025timeZoneOffs" +
+      "etInHours\030\t \001(\r\032\363\004\n\014SfuTransport\022\023\n\013tran" +
+      "sportId\030\001 \002(\t\022\021\n\tdtlsState\030\002 \001(\t\022\017\n\007iceR" +
+      "ole\030\003 \001(\t\022\020\n\010iceState\030\004 \001(\t\022\020\n\010internal\030" +
+      "\005 \001(\010\022\024\n\014localAddress\030\006 \001(\t\022\021\n\tlocalPort" +
+      "\030\007 \001(\r\022\020\n\010noReport\030\010 \001(\010\022\020\n\010protocol\030\t \001" +
+      "(\t\022\025\n\rremoteAddress\030\n \001(\t\022\022\n\nremotePort\030" +
+      "\013 \001(\r\022\030\n\020rtpBytesReceived\030\014 \001(\004\022\024\n\014rtpBy" +
+      "tesSent\030\r \001(\004\022\026\n\016rtpPacketsLost\030\016 \001(\r\022\032\n" +
+      "\022rtpPacketsReceived\030\017 \001(\r\022\026\n\016rtpPacketsS" +
+      "ent\030\020 \001(\r\022\030\n\020rtxBytesReceived\030\021 \001(\004\022\024\n\014r" +
+      "txBytesSent\030\022 \001(\004\022\033\n\023rtxPacketsDiscarded" +
+      "\030\023 \001(\r\022\026\n\016rtxPacketsLost\030\024 \001(\r\022\032\n\022rtxPac" +
+      "ketsReceived\030\025 \001(\r\022\026\n\016rtxPacketsSent\030\026 \001" +
+      "(\r\022\031\n\021sctpBytesReceived\030\027 \001(\004\022\025\n\rsctpByt" +
+      "esSent\030\030 \001(\004\022\033\n\023sctpPacketsReceived\030\031 \001(" +
+      "\r\022\027\n\017sctpPacketsSent\030\032 \001(\r\022\021\n\tsctpState\030" +
+      "\033 \001(\t\032\315\006\n\020SfuInboundRtpPad\022\r\n\005padId\030\001 \002(" +
+      "\t\022\014\n\004ssrc\030\002 \002(\004\022\020\n\010streamId\030\003 \002(\t\022\023\n\013tra" +
+      "nsportId\030\004 \002(\t\022\025\n\rbytesReceived\030\005 \001(\004\022\021\n" +
+      "\tclockRate\030\006 \001(\r\022\033\n\023fecPacketsDiscarded\030" +
+      "\007 \001(\r\022\032\n\022fecPacketsReceived\030\010 \001(\r\022\020\n\010fir" +
+      "Count\030\t \001(\r\022\024\n\014fractionLost\030\n \001(\001\022\025\n\rfra" +
+      "mesDecoded\030\013 \001(\r\022\026\n\016framesReceived\030\014 \001(\r" +
+      "\022\020\n\010internal\030\r \001(\010\022\016\n\006jitter\030\016 \001(\001\022\030\n\020ke" +
+      "yFramesDecoded\030\017 \001(\r\022\021\n\tmediaType\030\020 \001(\t\022" +
+      "\020\n\010mimeType\030\021 \001(\t\022\021\n\tnackCount\030\022 \001(\r\022\020\n\010" +
+      "noReport\030\023 \001(\010\022\030\n\020packetsDiscarded\030\024 \001(\r" +
+      "\022\031\n\021packetsDuplicated\030\025 \001(\r\022\037\n\027packetsFa" +
+      "iledDecryption\030\026 \001(\r\022\023\n\013packetsLost\030\027 \001(" +
+      "\r\022\027\n\017packetsReceived\030\030 \001(\r\022\027\n\017packetsRep" +
+      "aired\030\031 \001(\r\022\023\n\013payloadType\030\032 \001(\r\022\020\n\010pliC" +
+      "ount\030\033 \001(\r\022\013\n\003rid\030\034 \001(\t\022\025\n\rroundTripTime" +
+      "\030\035 \001(\001\022\022\n\nrtcpRrSent\030\036 \001(\r\022\026\n\016rtcpSrRece" +
+      "ived\030\037 \001(\r\022\033\n\023rtxPacketsDiscarded\030  \001(\r\022" +
+      "\032\n\022rtxPacketsReceived\030! \001(\r\022\017\n\007rtxSsrc\030\"" +
+      " \001(\004\022\023\n\013sdpFmtpLine\030# \001(\t\022\020\n\010sliCount\030$ " +
+      "\001(\r\022\025\n\rtargetBitrate\030% \001(\r\022\031\n\021voiceActiv" +
+      "ityFlag\030& \001(\010\032\202\007\n\021SfuOutboundRtpPad\022\r\n\005p" +
+      "adId\030\001 \002(\t\022\016\n\006sinkId\030\002 \002(\t\022\014\n\004ssrc\030\003 \002(\004" +
+      "\022\020\n\010streamId\030\004 \002(\t\022\023\n\013transportId\030\005 \002(\t\022" +
+      "\021\n\tbytesSent\030\006 \001(\004\022\016\n\006callId\030\007 \001(\t\022\020\n\010cl" +
+      "ientId\030\010 \001(\t\022\021\n\tclockRate\030\t \001(\r\022\033\n\023fecPa" +
+      "cketsDiscarded\030\n \001(\r\022\026\n\016fecPacketsSent\030\013" +
+      " \001(\r\022\020\n\010firCount\030\014 \001(\r\022\024\n\014fractionLost\030\r" +
+      " \001(\001\022\025\n\rframesEncoded\030\016 \001(\r\022\022\n\nframesSen" +
+      "t\030\017 \001(\r\022\020\n\010internal\030\020 \001(\010\022\016\n\006jitter\030\021 \001(" +
+      "\001\022\030\n\020keyFramesEncoded\030\022 \001(\r\022\021\n\tmediaType" +
+      "\030\023 \001(\t\022\020\n\010mimeType\030\024 \001(\t\022\021\n\tnackCount\030\025 " +
+      "\001(\r\022\020\n\010noReport\030\026 \001(\010\022\030\n\020packetsDiscarde" +
+      "d\030\027 \001(\r\022\031\n\021packetsDuplicated\030\030 \001(\r\022\037\n\027pa" +
+      "cketsFailedEncryption\030\031 \001(\r\022\023\n\013packetsLo" +
+      "st\030\032 \001(\r\022\034\n\024packetsRetransmitted\030\033 \001(\r\022\023" +
+      "\n\013packetsSent\030\034 \001(\r\022\023\n\013payloadType\030\035 \001(\r" +
+      "\022\020\n\010pliCount\030\036 \001(\r\022\013\n\003rid\030\037 \001(\t\022\025\n\rround" +
+      "TripTime\030  \001(\001\022\026\n\016rtcpRrReceived\030! \001(\r\022\022" +
+      "\n\nrtcpSrSent\030\" \001(\r\022\033\n\023rtxPacketsDiscarde" +
+      "d\030# \001(\r\022\026\n\016rtxPacketsSent\030$ \001(\r\022\017\n\007rtxSs" +
+      "rc\030% \001(\004\022\023\n\013sdpFmtpLine\030& \001(\t\022\020\n\010sliCoun" +
+      "t\030\' \001(\r\022\025\n\rtargetBitrate\030( \001(\r\022\017\n\007trackI" +
+      "d\030) \001(\t\022\031\n\021voiceActivityFlag\030* \001(\010\032\332\002\n\016S" +
+      "fuSctpChannel\022\021\n\tchannelId\030\001 \002(\t\022\020\n\010stre" +
+      "amId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\025\n\rbytes" +
+      "Received\030\004 \001(\004\022\021\n\tbytesSent\030\005 \001(\004\022\r\n\005lab" +
+      "el\030\006 \001(\t\022\027\n\017messageReceived\030\007 \001(\r\022\023\n\013mes" +
+      "sageSent\030\010 \001(\r\022\020\n\010noReport\030\t \001(\010\022\020\n\010prot" +
+      "ocol\030\n \001(\t\022\034\n\024sctpCongestionWindow\030\013 \001(\001" +
+      "\022\017\n\007sctpMtu\030\014 \001(\r\022\032\n\022sctpReceiverWindow\030" +
+      "\r \001(\001\022!\n\031sctpSmoothedRoundTripTime\030\016 \001(\001" +
+      "\022\025\n\rsctpUnackData\030\017 \001(\r\0322\n\021SfuExtensionS" +
+      "tats\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\200\007\n\n" +
+      "TurnSample\022[\n\013allocations\030\001 \003(\0132F.org.ob" +
+      "servertc.schemas.protobuf.Samples.TurnSa" +
+      "mple.TurnPeerAllocation\022Q\n\010sessions\030\002 \003(" +
+      "\0132?.org.observertc.schemas.protobuf.Samp" +
+      "les.TurnSample.TurnSession\022\020\n\010serverId\030\003" +
+      " \002(\t\032\260\002\n\022TurnPeerAllocation\022\016\n\006peerId\030\001 " +
+      "\002(\t\022\026\n\016relayedAddress\030\002 \002(\t\022\023\n\013relayedPo" +
+      "rt\030\003 \002(\r\022\021\n\tsessionId\030\004 \002(\t\022\031\n\021transport" +
+      "Protocol\030\005 \002(\t\022\023\n\013peerAddress\030\006 \001(\t\022\020\n\010p" +
+      "eerPort\030\007 \001(\r\022\025\n\rreceivedBytes\030\010 \001(\004\022\027\n\017" +
+      "receivedPackets\030\t \001(\r\022\030\n\020receivingBitrat",
+      "e\030\n \001(\r\022\026\n\016sendingBitrate\030\013 \001(\r\022\021\n\tsentB" +
+      "ytes\030\014 \001(\004\022\023\n\013sentPackets\030\r \001(\r\032\374\002\n\013Turn" +
+      "Session\022\021\n\tsessionId\030\001 \002(\t\022\025\n\rclientAddr" +
+      "ess\030\002 \001(\t\022\020\n\010clientId\030\003 \001(\t\022\022\n\nclientPor" +
+      "t\030\004 \001(\r\022\033\n\023nonceExpirationTime\030\005 \001(\004\022\r\n\005" +
+      "realm\030\006 \001(\t\022\025\n\rreceivedBytes\030\007 \001(\004\022\027\n\017re" +
+      "ceivedPackets\030\010 \001(\r\022\030\n\020receivingBitrate\030" +
+      "\t \001(\r\022\026\n\016sendingBitrate\030\n \001(\r\022\021\n\tsentByt" +
+      "es\030\013 \001(\004\022\023\n\013sentPackets\030\014 \001(\r\022\025\n\rserverA" +
+      "ddress\030\r \001(\t\022\022\n\nserverPort\030\016 \001(\r\022\017\n\007star" +
+      "ted\030\017 \001(\004\022\031\n\021transportProtocol\030\020 \001(\t\022\020\n\010" +
+      "username\030\021 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -89670,13 +91446,19 @@ public final class ProtobufSamples {
     internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_descriptor,
-        new java.lang.String[] { "Sessions", "ServerId", });
-    internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnSession_descriptor =
+        new java.lang.String[] { "Allocations", "Sessions", "ServerId", });
+    internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_descriptor =
       internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_descriptor.getNestedTypes().get(0);
+    internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnPeerAllocation_descriptor,
+        new java.lang.String[] { "PeerId", "RelayedAddress", "RelayedPort", "SessionId", "TransportProtocol", "PeerAddress", "PeerPort", "ReceivedBytes", "ReceivedPackets", "ReceivingBitrate", "SendingBitrate", "SentBytes", "SentPackets", });
+    internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnSession_descriptor =
+      internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_descriptor.getNestedTypes().get(1);
     internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnSession_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_TurnSession_descriptor,
-        new java.lang.String[] { "SessionId", "AverageReceivingBitrateFromClient", "AverageReceivingBitrateFromPeer", "AverageSendingBitrateToClient", "AverageSendingBitrateToPeer", "ClientId", "ClientTransportProtocol", "NonceExpirationTime", "PeerAddress", "PeerPort", "Realm", "ReceivedBytesFromClient", "ReceivedBytesFromPeer", "ReceivedPacketsFromClient", "ReceivedPacketsFromPeer", "RelayTransportProtocol", "SentBytesToClient", "SentBytesToPeer", "SentPacketsToClient", "SentPacketsToPeer", "ServerAddress", "ServerPort", "Started", "Username", });
+        new java.lang.String[] { "SessionId", "ClientAddress", "ClientId", "ClientPort", "NonceExpirationTime", "Realm", "ReceivedBytes", "ReceivedPackets", "ReceivingBitrate", "SendingBitrate", "SentBytes", "SentPackets", "ServerAddress", "ServerPort", "Started", "TransportProtocol", "Username", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

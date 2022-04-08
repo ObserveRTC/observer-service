@@ -604,7 +604,23 @@ sfuExtensionStats.payload = ASSIGNED;
 
 TurnSample
 turnSample.serverId = ASSIGNED;
+turnSample.allocations = ASSIGNED;
 turnSample.sessions = ASSIGNED;
+
+TurnPeerAllocation
+turnPeerAllocation.peerId = ASSIGNED;
+turnPeerAllocation.sessionId = ASSIGNED;
+turnPeerAllocation.relayedAddress = ASSIGNED;
+turnPeerAllocation.relayedPort = ASSIGNED;
+turnPeerAllocation.transportProtocol = ASSIGNED;
+turnPeerAllocation.peerAddress = ASSIGNED;
+turnPeerAllocation.peerPort = ASSIGNED;
+turnPeerAllocation.sendingBitrate = ASSIGNED;
+turnPeerAllocation.receivingBitrate = ASSIGNED;
+turnPeerAllocation.sentBytes = ASSIGNED;
+turnPeerAllocation.receivedBytes = ASSIGNED;
+turnPeerAllocation.sentPackets = ASSIGNED;
+turnPeerAllocation.receivedPackets = ASSIGNED;
 
 TurnSession
 turnSession.sessionId = ASSIGNED;
@@ -613,21 +629,14 @@ turnSession.username = ASSIGNED;
 turnSession.clientId = ASSIGNED;
 turnSession.started = ASSIGNED;
 turnSession.nonceExpirationTime = ASSIGNED;
-turnSession.clientTransportProtocol = ASSIGNED;
-turnSession.relayTransportProtocol = ASSIGNED;
 turnSession.serverAddress = ASSIGNED;
 turnSession.serverPort = ASSIGNED;
-turnSession.peerAddress = ASSIGNED;
-turnSession.peerPort = ASSIGNED;
-turnSession.averageSendingBitrateToClient = ASSIGNED;
-turnSession.averageReceivingBitrateFromClient = ASSIGNED;
-turnSession.receivedBytesFromClient = ASSIGNED;
-turnSession.sentBytesToClient = ASSIGNED;
-turnSession.receivedPacketsFromClient = ASSIGNED;
-turnSession.sentPacketsToClient = ASSIGNED;
-turnSession.averageSendingBitrateToPeer = ASSIGNED;
-turnSession.averageReceivingBitrateFromPeer = ASSIGNED;
-turnSession.receivedBytesFromPeer = ASSIGNED;
-turnSession.sentBytesToPeer = ASSIGNED;
-turnSession.receivedPacketsFromPeer = ASSIGNED;
-turnSession.sentPacketsToPeer = ASSIGNED;
+turnSession.transportProtocol = ASSIGNED;
+turnSession.clientAddress = ASSIGNED;
+turnSession.clientPort = ASSIGNED;
+turnSession.sendingBitrate = ASSIGNED;
+turnSession.receivingBitrate = ASSIGNED;
+turnSession.sentBytes = ASSIGNED;
+turnSession.receivedBytes = ASSIGNED;
+turnSession.sentPackets = ASSIGNED;
+turnSession.receivedPackets = ASSIGNED;

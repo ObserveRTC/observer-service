@@ -24,6 +24,7 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import jakarta.inject.Inject;
+import org.bson.internal.Base64;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Decoder;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -87,7 +88,7 @@ public class SamplesWebsocketController {
 	@PostConstruct
 	void setup() {
 		var decoder = SamplesDecoder.builder()
-				.withCodecType(this.config.decoder)
+				.withCodecType(this.config.format)
 				.build();
 		var messageProcessor = this.createMessageProcessor(decoder);
 		// TODO: here create an assembler for assembling the chunks.
@@ -163,7 +164,29 @@ public class SamplesWebsocketController {
 				messageBytes
 		);
 		this.acceptor.accept(receivedMessage);
-    }
+	}
+
+	@OnMessage(maxPayloadLength = 1000000) // 1MB
+	public void onMessage(
+			String serviceId,
+			String mediaUnitId,
+			String messageString,
+			WebSocketSession session) {
+
+		try {
+			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
+		} catch (Throwable t) {
+			logger.warn("MeterRegistry just caused an error by counting samples", t);
+		}
+		var messageBytes = Base64.decode(messageString);
+		var receivedMessage = ReceivedMessage.of(
+				session.getId(),
+				serviceId,
+				mediaUnitId,
+				messageBytes
+		);
+		this.acceptor.accept(receivedMessage);
+	}
 
 
 	private Consumer<ReceivedMessage> createMessageProcessor(Decoder<byte[], Samples> decoder) {
@@ -176,20 +199,6 @@ public class SamplesWebsocketController {
 						samples
 				);
 				this.samplesCollector.accept(receivedSamples);
-//			} catch (IOException e) {
-//				this.flawMonitor.makeLogEntry()
-//						.withMessage("Exception while accepting sample")
-//						.withException(e)
-//						.complete();
-//				if (Objects.isNull(receivedMessage.sessionId)) {
-//					return;
-//				}
-//				var websocketSession = this.webSocketSessions.get(receivedMessage.sessionId);
-//				if (Objects.isNull(websocketSession)) {
-//					return;
-//				}
-//				websocketSession.close(this.customCloseReasons.getInvalidInput(e.getMessage()));
-//				return;
 			} catch (Throwable ex) {
 				this.flawMonitor.makeLogEntry()
 						.withException(ex)

@@ -4,7 +4,6 @@ import {POJO} from "./POJO.js";
 import {exec} from 'child_process';
 import {ProtobufAssigner} from "./ProtobufAssigner.js";
 
-
 const copyAvroSchema = (schema) => {
     const path = "../../src/main/avro-schemas/" + schema.name + ".avsc";
     const text = JSON.stringify(schema, null, 2);
@@ -109,6 +108,7 @@ const main = () => {
     });
     const assigner = ProtobufAssigner.from(schemas.AvroSamples, "source", "result", uuidFields);
     fs.writeFileSync("../../src/main/java/org/observertc/observer/sources/ProtobufSamplesMapper.java", assigner.toLines().join(`\n`));
+
     // console.log(protobuf)
 };
 

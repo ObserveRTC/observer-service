@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OutboundVideoTrackReport {
-	public static final String VERSION="2.0.0-beta.54";
+	public static final String VERSION="2.0.0-beta.55";
 	public static Builder newBuilder() {
 		return new Builder();
 	}

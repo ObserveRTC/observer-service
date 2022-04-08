@@ -95,8 +95,8 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     }
                     roomsToCallIds.put(serviceRoomId, callId);
                 }
-                clientSample.callId = callId;
             }
+            clientSample.callId = callId;
             if (!foundClientIds.contains(clientSample.clientId)) {
                 this.clientsDepot.addFromObservedClientSample(observedClientSample);
             }

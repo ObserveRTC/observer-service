@@ -35,8 +35,8 @@ public class SamplesCollector {
     private final ObservableCollector<ReceivedSamples> collector;
 
     public SamplesCollector(ObserverConfig observerConfig) {
-        var maxItems = observerConfig.buffers.samplesBuffer.maxItems;
-        var maxTimeInMs = observerConfig.buffers.samplesBuffer.maxTimeInMs;
+        var maxItems = observerConfig.buffers.samplesCollector.maxItems;
+        var maxTimeInMs = observerConfig.buffers.samplesCollector.maxTimeInMs;
 
         this.minuteToTimeZoneOffsetConverter = new MinuteToTimeZoneOffsetConverter();
         this.collector = ObservableCollector.<ReceivedSamples>builder()
