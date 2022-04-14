@@ -7,15 +7,15 @@ skinparam BoxPadding 60
 
 
 
-cloud "Your Cloud" #transparent {
-	component observer
-}
-() WebRTCApp as client
-() ReportProcessor as processor
+component observer
+component "Client-Monitor" as client
+component "Sfu-Monitor" as sfu
+database "Database" as database
 
-
-client ..r..> [observer] : Sample
-[observer] ..r..> processor: Report
+client -[hidden]d-> sfu
+sfu ..r..> [observer] : Samples
+client ..r.> [observer] : Samples
+[observer] ..r..> database: Reports
 
 
 @enduml

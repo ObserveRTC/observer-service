@@ -102,9 +102,9 @@ const main = () => {
     fs.writeFileSync(protoFile, schemas.ProtobufSamples);
     exec(`protoc --java_out=../../src/main/java/ ${protoFile}`, (error, stdout, stderr) => {
         if (error !== null) console.error('exec error: ' + error);
-        fs.rm(protoFile, err => {
-            if (err) throw err;
-        });
+        // fs.rm(protoFile, err => {
+        //     if (err) throw err;
+        // });
     });
     const assigner = ProtobufAssigner.from(schemas.AvroSamples, "source", "result", uuidFields);
     fs.writeFileSync("../../src/main/java/org/observertc/observer/sources/ProtobufSamplesMapper.java", assigner.toLines().join(`\n`));

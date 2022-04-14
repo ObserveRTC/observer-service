@@ -6,13 +6,15 @@ import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.samples.Samples;
+import org.slf4j.Logger;
 
+import java.util.List;
 import java.util.Objects;
 
 public class SamplesDecoder implements Decoder<byte[], Samples> {
 
-    public static Builder builder() {
-        return new Builder();
+    public static Builder builder(Logger logger) {
+        return new Builder(logger);
     }
 
     private Mapper<byte[], Samples> decoder;
@@ -29,19 +31,19 @@ public class SamplesDecoder implements Decoder<byte[], Samples> {
     public static final class Builder {
         private Mapper<byte[], byte[]> decrypter = null;
         private Mapper<byte[], Samples> decoder = null;
+        private final Logger logger;
+
+        public Builder(Logger logger) {
+            this.logger = logger;
+        }
 
         public Builder withCodecType(TransportCodecType codecType) {
-            Mapper<byte[], ProtobufSamples.Samples> protobufReader;
-            Mapper<ProtobufSamples.Samples, Samples> protobufMapper;
             switch (codecType) {
                 case PROTOBUF:
-                    protobufReader = Mapper.create(ProtobufSamples.Samples::parseFrom);
-                    var func = new ProtobufSamplesMapper();
-                    protobufMapper = Mapper.create(func::apply);
-                    this.decoder = Mapper.link(protobufReader, protobufMapper);
+                    this.decoder = this.createProtobufCodec();
                     break;
                 case JSON:
-                    this.decoder = JsonMapper.<Samples>createBytesToObjectMapper(Samples.class);
+                    this.decoder = this.createJsonCodec();
                     break;
                 default:
                 case NONE:
@@ -50,6 +52,28 @@ public class SamplesDecoder implements Decoder<byte[], Samples> {
                     };
             }
             return this;
+        }
+
+        private Mapper<byte[], Samples> createProtobufCodec() {
+            logger.info("Suppoerted schema versions: {}", Samples.VERSION);
+
+            Mapper<byte[], ProtobufSamples.Samples> protobufReader;
+            Mapper<ProtobufSamples.Samples, Samples> protobufMapper;
+            protobufReader = Mapper.create(ProtobufSamples.Samples::parseFrom);
+            var func = new ProtobufSamplesMapper();
+            protobufMapper = Mapper.create(func::apply);
+            var result = Mapper.link(protobufReader, protobufMapper);;
+            return result;
+        }
+
+        private Mapper<byte[], Samples> createJsonCodec() {
+            var supportedSchemaVersions = List.of(
+                    Samples.VERSION
+            );
+            logger.info("Suppoerted schema versions: {}", String.join(", ", supportedSchemaVersions));
+
+            var result = JsonMapper.<Samples>createBytesToObjectMapper(Samples.class);
+            return result;
         }
 
         public Decoder<byte[], Samples> build() {

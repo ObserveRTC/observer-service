@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.55";
+	public static final String VERSION="2.0.0-beta.59";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -2751,6 +2751,11 @@ public class Samples {
 		@JsonProperty("iceServers")
 		public String[] iceServers;
 		/**
+		* The local part of the Signal Description Protocol to establish connections
+		*/
+		@JsonProperty("localSDPs")
+		public String[] localSDPs;
+		/**
 		* Compound object related to Peer Connection Transport Stats
 		*/
 		@JsonProperty("pcTransports")
@@ -2840,6 +2845,7 @@ public class Samples {
 			public Builder setUserMediaErrors(String[] value) { this.result.userMediaErrors = value; return this; }
 			public Builder setExtensionStats(ExtensionStat[] value) { this.result.extensionStats = value; return this; }
 			public Builder setIceServers(String[] value) { this.result.iceServers = value; return this; }
+			public Builder setLocalSDPs(String[] value) { this.result.localSDPs = value; return this; }
 			public Builder setPcTransports(PeerConnectionTransport[] value) { this.result.pcTransports = value; return this; }
 			public Builder setMediaSources(MediaSourceStat[] value) { this.result.mediaSources = value; return this; }
 			public Builder setCodecs(MediaCodecStats[] value) { this.result.codecs = value; return this; }

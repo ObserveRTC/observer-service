@@ -1,8 +1,11 @@
 package org.observertc.observer.mappings;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import io.reactivex.rxjava3.functions.Function;
+import org.bson.internal.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.observertc.schemas.protobuf.ProtobufSamples;
 
 class MapperTest {
 
@@ -50,4 +53,6 @@ class MapperTest {
         Assertions.assertEquals(true, mapper.map("6"));
         Assertions.assertEquals(false, mapper.map("5"));
     }
+
+
 }

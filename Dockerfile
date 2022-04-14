@@ -6,6 +6,7 @@ RUN gradle build --no-daemon -x test
 RUN #gradle build --no-daemon
 
 FROM openjdk:17-ea-22-jdk-oraclelinux8
+# openjdk:19-ea-jdk
 
 WORKDIR /home/gradle
 COPY --from=BUILDER /home/gradle/build/docker/main/layers/libs /home/app/libs

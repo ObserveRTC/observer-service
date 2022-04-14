@@ -27,6 +27,7 @@ clientSample.mediaDevices = ASSIGNED;
 clientSample.userMediaErrors = ASSIGNED;
 clientSample.extensionStats = ASSIGNED;
 clientSample.iceServers = ASSIGNED;
+clientSample.localSDPs = ASSIGNED;
 clientSample.pcTransports = ASSIGNED;
 clientSample.mediaSources = ASSIGNED;
 clientSample.codecs = ASSIGNED;

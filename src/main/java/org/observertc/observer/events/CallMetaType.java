@@ -10,6 +10,7 @@ public enum CallMetaType {
     MEDIA_DEVICE,
     MEDIA_SOURCE,
     USER_MEDIA_ERROR,
+    LOCAL_SDP,
 
     OPERATION_SYSTEM,
     ENGINE,

@@ -253,6 +253,16 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
                         .assemble();
             });
 
+            // localSDP
+            if (Objects.nonNull(clientSample.localSDPs)) {
+                var payload = String.format("\n", clientSample.localSDPs);
+                this.callMetaReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setMetaType(CallMetaType.LOCAL_SDP)
+                        .setPayload(payload)
+                        .assemble();
+            }
+
             // extension stats
             ClientSampleVisitor.streamExtensionStats(clientSample).forEach(extensionStat -> {
                 this.clientExtensionReportsDepot

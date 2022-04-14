@@ -11,6 +11,7 @@ import org.observertc.observer.samples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +46,11 @@ public class SamplesCollector {
                 .build();
 
         this.collector.observableEmittedItems().subscribe(this::forward);
+    }
+
+    @PostConstruct
+    void init() {
+
     }
 
     @PreDestroy

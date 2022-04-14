@@ -48,6 +48,7 @@ public class ObservedSamplesGenerator {
                 .addMediaDevice()
                 .addMediaSource()
                 .addUserMediaError("userMediaError")
+                .addLocalSdp("a=candidate:2 1 UDP 1694498815 192.0.2.3 45664 typ srflx raddr 10.0.1.1 rport 8998")
                 .addDataChannel(peerConnectionId, UUID.randomUUID())
                 .addInboundAudioTrack(peerConnectionId, UUID.randomUUID(), clientInbAudioSSRC, audioStreamId, audioSinkId)
                 .addInboundVideoTrack(peerConnectionId, UUID.randomUUID(), clientInbVideoSSRC, videoStreamId, videoSinkId)

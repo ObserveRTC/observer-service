@@ -144,6 +144,9 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 				if (0 < srcItem0.getIceServersCount()) {
 					dstItem0.iceServers = srcItem0.getIceServersList().toArray(new String[0]);
 				}
+				if (0 < srcItem0.getLocalSDPsCount()) {
+					dstItem0.localSDPs = srcItem0.getLocalSDPsList().toArray(new String[0]);
+				}
 				if (0 < srcItem0.getPcTransportsCount()) {
 					dstItem0.pcTransports = new PeerConnectionTransport[ srcItem0.getPcTransportsCount()];
 					var pcTransportsIndex = 0;

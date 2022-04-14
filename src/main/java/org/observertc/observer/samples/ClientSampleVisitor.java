@@ -125,6 +125,13 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.userMediaErrors);
     }
 
+    static Stream<String> streamLocalSDP(@NotNull ClientSample clientSample) {
+        if (Objects.isNull(clientSample.localSDPs)) {
+            return Stream.empty();
+        }
+        return Arrays.stream(clientSample.localSDPs);
+    }
+
 
 
     @Override
@@ -149,8 +156,8 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         streamMediaSources(clientSample).forEach(mediaSource -> this.visitMediaSource(obj, clientId, mediaSource));
         streamPeerConnectionTransports(clientSample).forEach(pcTransport -> this.visitPeerConnectionTransport(obj, clientId, pcTransport));
         streamUserMediaErrors(clientSample).forEach(userMediaError -> this.visitUserMediaError(obj, clientId, userMediaError));
+        streamLocalSDP(clientSample).forEach(userMediaError -> this.visitUserMediaError(obj, clientId, userMediaError));
     }
-
 
 
 
@@ -185,5 +192,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
     void visitPeerConnectionTransport(T obj, UUID clientId, ClientSample.PeerConnectionTransport pcTransport);
 
     void visitUserMediaError(T obj, UUID clientId, String userMediaError);
+
+    void visitLocalSdp(T obj, UUID clientId, String userMediaError);
 
 }

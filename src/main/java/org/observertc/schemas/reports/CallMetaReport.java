@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CallMetaReport {
-	public static final String VERSION="2.0.0-beta.55";
+	public static final String VERSION="2.0.0-beta.59";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -68,7 +68,7 @@ public class CallMetaReport {
 	@JsonProperty("sampleSeq")
 	public Integer sampleSeq;
 	/**
-	* The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR,
+	* The type of the meta data. Possible values are: CERTIFICATE, CODEC, ICE_LOCAL_CANDIDATE, ICE_REMOTE_CANDIDATE, ICE_SERVER, MEDIA_CONSTRAINT, MEDIA_DEVICE, MEDIA_SOURCE, USER_MEDIA_ERROR, LOCAL_SDP
 	*/
 	@JsonProperty("type")
 	public String type;

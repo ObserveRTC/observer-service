@@ -1,6 +1,7 @@
 package org.observertc.observer.sources;///*
 
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
@@ -45,12 +46,12 @@ public class SamplesRestApiController {
 
 	public SamplesRestApiController(ObserverConfig observerConfig) {
 		this.config = observerConfig.sources.rest;
-		this.decoder = SamplesDecoder.builder()
+		this.decoder = SamplesDecoder.builder(logger)
 				.withCodecType(this.config.format)
 				.build();
 	}
 
-	@Post(value = "/samples/{serviceId}/{mediaUnitId}")
+	@Post(value = "/samples/{serviceId}/{mediaUnitId}", consumes = MediaType.APPLICATION_OCTET_STREAM)
 	public HttpResponse<Object> acceptSamples(String serviceId, String mediaUnitId, @Body byte[] message) {
 		if (Objects.isNull(message)) {
 			return HttpResponse.ok();

@@ -36,6 +36,7 @@ class ClientSamplesAnalyzerTest {
                 getArrayLength(clientSample.mediaConstraints) +
                 getArrayLength(clientSample.mediaDevices) +
                 getArrayLength(clientSample.userMediaErrors) +
+                getArrayLength(clientSample.localSDPs) +
                 getArrayLength(clientSample.extensionStats) +
                 getArrayLength(clientSample.iceServers) +
                 getArrayLength(clientSample.pcTransports) +

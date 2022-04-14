@@ -24,7 +24,6 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import jakarta.inject.Inject;
-import org.bson.internal.Base64;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Decoder;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -87,7 +86,7 @@ public class SamplesWebsocketController {
 
 	@PostConstruct
 	void setup() {
-		var decoder = SamplesDecoder.builder()
+		var decoder = SamplesDecoder.builder(logger)
 				.withCodecType(this.config.format)
 				.build();
 		var messageProcessor = this.createMessageProcessor(decoder);
@@ -120,7 +119,7 @@ public class SamplesWebsocketController {
 //				this.sessionToClients.put(session.getId(), clientId);
 //			}
 			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
-
+			logger.info("Session is opened");
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -140,6 +139,7 @@ public class SamplesWebsocketController {
 //				this.hazelcastMaps.getClientMessages().remove(clientId);
 //			}
 			this.webSocketSessions.remove(session.getId());
+			logger.info("Session is closed");
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -166,27 +166,27 @@ public class SamplesWebsocketController {
 		this.acceptor.accept(receivedMessage);
 	}
 
-	@OnMessage(maxPayloadLength = 1000000) // 1MB
-	public void onMessage(
-			String serviceId,
-			String mediaUnitId,
-			String messageString,
-			WebSocketSession session) {
-
-		try {
-			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
-		} catch (Throwable t) {
-			logger.warn("MeterRegistry just caused an error by counting samples", t);
-		}
-		var messageBytes = Base64.decode(messageString);
-		var receivedMessage = ReceivedMessage.of(
-				session.getId(),
-				serviceId,
-				mediaUnitId,
-				messageBytes
-		);
-		this.acceptor.accept(receivedMessage);
-	}
+//	@OnMessage(maxPayloadLength = 1000000) // 1MB
+//	public void onMessage(
+//			String serviceId,
+//			String mediaUnitId,
+//			String messageString,
+//			WebSocketSession session) {
+//
+//		try {
+//			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
+//		} catch (Throwable t) {
+//			logger.warn("MeterRegistry just caused an error by counting samples", t);
+//		}
+//		var messageBytes = Base64.decode(messageString);
+//		var receivedMessage = ReceivedMessage.of(
+//				session.getId(),
+//				serviceId,
+//				mediaUnitId,
+//				messageBytes
+//		);
+//		this.acceptor.accept(receivedMessage);
+//	}
 
 
 	private Consumer<ReceivedMessage> createMessageProcessor(Decoder<byte[], Samples> decoder) {

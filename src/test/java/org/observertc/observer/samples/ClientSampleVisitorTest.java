@@ -171,6 +171,16 @@ class ClientSampleVisitorTest {
         Assertions.assertTrue(invoked.get());
     }
 
+    @Test
+    void streamLocalSdp() {
+        var clientSample = generator.generateObservedClientSample().getClientSample();
+        var invoked = new AtomicBoolean(false);
+        ClientSampleVisitor.streamLocalSDP(clientSample)
+                .forEach(this.createConsumer(invoked));
+
+        Assertions.assertTrue(invoked.get());
+    }
+
     private<T> Consumer<T> createConsumer(AtomicBoolean atomicBoolean) {
         return input -> {
             atomicBoolean.set(true);

@@ -34,6 +34,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
     private Queue<Samples.ClientSample.MediaDevice> addedMediaDevices = new LinkedList<>();
     private Queue<Samples.ClientSample.ExtensionStat> addedExtensionStats = new LinkedList<>();
     private Queue<String> addedUserMediaErrors = new LinkedList<>();
+    private Queue<String> addedLocalSDP = new LinkedList<>();
     private Queue<Samples.ClientSample.Browser> addedBrowsers = new LinkedList<>();
     private Queue<Samples.ClientSample.MediaSourceStat> mediaSources = new LinkedList<>();
     private Queue<String> addedMediaConstraints = new LinkedList<>();
@@ -203,6 +204,11 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
 
     public ClientSideSamplesGenerator addUserMediaError(String value) {
         this.addedUserMediaErrors.add(value);
+        return this;
+    }
+
+    public ClientSideSamplesGenerator addLocalSdp(String value) {
+        this.addedLocalSDP.add(value);
         return this;
     }
 
@@ -720,6 +726,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         clientSample.mediaConstraints = arrayOrNullFromQueue(String.class, this.addedMediaConstraints);
         clientSample.mediaDevices = arrayOrNullFromQueue(Samples.ClientSample.MediaDevice.class, this.addedMediaDevices);
         clientSample.userMediaErrors = arrayOrNullFromQueue(String.class, this.addedUserMediaErrors);
+        clientSample.localSDPs = arrayOrNullFromQueue(String.class, this.addedLocalSDP);
         clientSample.extensionStats = arrayOrNullFromQueue(Samples.ClientSample.ExtensionStat.class, this.addedExtensionStats);
         clientSample.iceServers = arrayOrNullFromQueue(String.class, this.addedIceServers);
         clientSample.pcTransports = arrayOrNullFromList(Samples.ClientSample.PeerConnectionTransport.class, pcTransports);

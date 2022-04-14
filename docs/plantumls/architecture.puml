@@ -28,13 +28,13 @@ hide circle
 
 package "Collection" {
   entity "SFU" as sfu {
-    * sfu-observer-js
+    * sfu-monitor-js
     --
     ...
   }
   
   entity "WebRTC App" as client {
-    * observer-js
+    * client-monitor-js
     --
     ...
   }
