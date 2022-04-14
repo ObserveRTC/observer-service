@@ -255,7 +255,7 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
 
             // localSDP
             if (Objects.nonNull(clientSample.localSDPs)) {
-                var payload = String.format("\n", clientSample.localSDPs);
+                var payload = String.join("\n", clientSample.localSDPs);
                 this.callMetaReportsDepot
                         .setObservedClientSample(observedClientSample)
                         .setMetaType(CallMetaType.LOCAL_SDP)

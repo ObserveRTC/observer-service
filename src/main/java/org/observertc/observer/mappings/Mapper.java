@@ -50,7 +50,7 @@ public interface Mapper<U, R> {
                 try {
                     return mapper.apply(data);
                 } catch (Throwable ex) {
-                    _logger.warn("Error occurred while encoding", ex);
+                    _logger.warn("Error occurred while mapping", ex);
                     return null;
                 }
             }

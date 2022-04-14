@@ -48,11 +48,11 @@ observer:
 #    allowedServiceIds: []
     rest:
       enabled: true
-      format: PROTOBUF
+      format: JSON
 
     websocket:
       enabled: true
-      format: PROTOBUF
+      format: JSON
 
   repository:
     mediaTracksMaxIdleTimeInS: 300
