@@ -143,7 +143,7 @@ export class ProtobufAssigner {
             result.push(
                 `/** Generated Code, Do not edit! */`,
                 ``,
-                `package org.observertc.observer.sources;`,
+                `package org.observertc.schemas.protobuf;`,
                 ``,
                 `import org.observertc.observer.common.UUIDAdapter;`,
                 `import org.observertc.schemas.protobuf.ProtobufSamples;`,

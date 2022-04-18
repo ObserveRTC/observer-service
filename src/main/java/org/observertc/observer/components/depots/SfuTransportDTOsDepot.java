@@ -52,12 +52,13 @@ public class SfuTransportDTOsDepot implements Supplier<Map<UUID, SfuTransportDTO
             if (this.buffer.containsKey(sfuTransport.transportId)) {
                 return;
             }
+            var internal = Boolean.TRUE.equals(sfuTransport.internal);
             var sfuTransportDTO = SfuTransportDTO.builder()
                     .withTransportId(sfuTransport.transportId)
                     .withSfuId(sfuSample.sfuId)
                     .withServiceId(observedSfuSample.getServiceId())
                     .withMediaUnitId(observedSfuSample.getMediaUnitId())
-                    .withInternal(sfuTransport.internal)
+                    .withInternal(internal)
                     .withOpenedTimestamp(sfuSample.timestamp)
                     .withMarker(sfuSample.marker)
                     .build();

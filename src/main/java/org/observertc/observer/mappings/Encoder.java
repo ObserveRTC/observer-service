@@ -6,5 +6,5 @@ public interface Encoder<U, R> {
         return mapper::map;
     }
 
-    R encode(U data);
+    R encode(U data) throws Throwable;
 }

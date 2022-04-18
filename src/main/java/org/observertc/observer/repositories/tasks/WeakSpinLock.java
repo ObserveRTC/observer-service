@@ -21,10 +21,10 @@ import org.observertc.observer.dto.WeakLockDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 class WeakSpinLock implements AutoCloseable {
@@ -54,7 +54,7 @@ class WeakSpinLock implements AutoCloseable {
 
 	public void lock(int maxWaitingTimeInS) {
         int consecutiveNoActualLockCounter = 0;
-        Random random = new Random();
+        var random = new SecureRandom();
         AtomicReference<WeakLockDTO> actualHolder = new AtomicReference<>();
         if (this.tryLock(actualHolder)) {
             return;

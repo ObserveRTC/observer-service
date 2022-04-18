@@ -3,11 +3,14 @@ package org.observertc.observer.dto;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 import org.observertc.observer.common.UUIDAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
 
 public class SerDeUtils {
+    private static final Logger logger = LoggerFactory.getLogger(SerDeUtils.class);
     public static final String NULL_STRING = "00000000-0000-0000-0000-000000000000";
     public static final String ESCAPED_NULL_STRING = "\\00000000-0000-0000-0000-000000000000";
     public static final UUID NULL_UUID = UUID.fromString(NULL_STRING);
@@ -27,7 +30,7 @@ public class SerDeUtils {
         try {
             writer.writeLongArray(filedName, target);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("Exception occurred while executing writeLongArray", e);
         }
     }
 
@@ -36,7 +39,7 @@ public class SerDeUtils {
         try {
             array = reader.readLongArray(filedName);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("Exception occurred while executing readLongArray", e);
         }
         if (Objects.isNull(array)) {
             return;

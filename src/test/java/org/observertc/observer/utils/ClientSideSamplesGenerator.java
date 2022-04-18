@@ -744,15 +744,11 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         clientSample.timeZoneOffsetInHours = this.timeZoneOffsetInHours;
         clientSample.marker = this.marker;
 
-        var samplesMeta = new Samples.SamplesMeta();
-        samplesMeta.schemaVersion = Samples.VERSION;
-
-        var controlFlags = new Samples.ControlFlags();
-        controlFlags.close = false;
+        var controls = new Samples.Controls();
+        controls.close = false;
 
         var samples = new Samples();
-        samples.meta = samplesMeta;
-        samples.controlFlags = controlFlags;
+        samples.controls = controls;
         samples.clientSamples = new Samples.ClientSample[]{ clientSample };
         samples.sfuSamples = null;
         return samples;

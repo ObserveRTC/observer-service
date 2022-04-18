@@ -72,7 +72,7 @@ public class ObserverConfig {
 	public static class SourceConfig {
 
 		public boolean enabled = false;
-		public TransportCodecType format = TransportCodecType.JSON;
+		public TransportFormatType format = TransportFormatType.JSON;
     }
 
 	@ConfigurationProperties("sources")

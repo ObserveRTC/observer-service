@@ -1,15 +1,19 @@
 package org.observertc.observer.sources;///*
 
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import jakarta.inject.Inject;
+import org.bson.internal.Base64;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.mappings.Decoder;
+import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
@@ -33,7 +37,6 @@ public class SamplesRestApiController {
 	SamplesCollector samplesCollector;
 
     private final ObserverConfig.SourcesConfig.RestConfig config;
-	private final Decoder<byte[], Samples> decoder;
 
 	@PostConstruct
 	void setup() {
@@ -46,24 +49,33 @@ public class SamplesRestApiController {
 
 	public SamplesRestApiController(ObserverConfig observerConfig) {
 		this.config = observerConfig.sources.rest;
-		this.decoder = SamplesDecoder.builder(logger)
-				.withCodecType(this.config.format)
-				.build();
 	}
 
 	@Post(value = "/samples/{serviceId}/{mediaUnitId}", consumes = MediaType.APPLICATION_OCTET_STREAM)
-	public HttpResponse<Object> acceptSamples(String serviceId, String mediaUnitId, @Body byte[] message) {
+	public HttpResponse<Object> acceptSamples(
+			String serviceId,
+			String mediaUnitId,
+			@Body byte[] message,
+			@Nullable @QueryValue String schemaVersion,
+			@Nullable @QueryValue String format
+			)
+	{
 		if (Objects.isNull(message)) {
 			return HttpResponse.ok();
 		}
 		try {
-			var samples = this.decoder.decode(message);
-			var receivedSample = ReceivedSamples.of(
-					serviceId,
+			var version = Utils.firstNotNull(schemaVersion, Samples.VERSION);
+			var acceptedFormat = TransportFormatType.getValueOrDefault(format, TransportFormatType.JSON);
+			var acceptor = Acceptor.create(
+					logger,
 					mediaUnitId,
-					samples
+					serviceId,
+					version,
+					acceptedFormat,
+					samplesCollector::accept
 			);
-			this.samplesCollector.accept(receivedSample);
+			logger.info("\n\n\n {}", Base64.encode(message));
+			acceptor.accept(message);
 		} catch (Throwable ex) {
 			return HttpResponse.serverError(ex.getMessage());
 		}

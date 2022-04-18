@@ -1,14 +1,16 @@
 /** Generated Code, Do not edit! */
 
-package org.observertc.observer.sources;
+package org.observertc.schemas.v200beta59.protobuf;
 
 import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.samples.Samples.*;
+import org.observertc.schemas.samples.Samples.ClientSample;
 import org.observertc.schemas.samples.Samples.ClientSample.*;
+import org.observertc.schemas.samples.Samples.SfuSample;
 import org.observertc.schemas.samples.Samples.SfuSample.*;
-import org.observertc.schemas.samples.Samples.TurnSample.*;
+import org.observertc.schemas.samples.Samples.TurnSample;
+import org.observertc.schemas.samples.Samples.TurnSample.TurnPeerAllocation;
+import org.observertc.schemas.samples.Samples.TurnSample.TurnSession;
 
 import java.util.function.Function;
 
@@ -18,21 +20,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 	public Samples apply(ProtobufSamples.Samples source) {
 		if (source == null) return null;
 		var result = new Samples();
-		if (source.hasMeta()) {
-			var srcItem0 = source.getMeta();
-			var dstItem0 = new SamplesMeta();
-			if (srcItem0.hasSchemaVersion()) {
-				dstItem0.schemaVersion = srcItem0.getSchemaVersion();
-			}
-			result.meta = dstItem0;
-		}
 		if (source.hasControlFlags()) {
 			var srcItem0 = source.getControlFlags();
-			var dstItem0 = new ControlFlags();
+			var dstItem0 = new Samples.Controls();
 			if (srcItem0.hasClose()) {
 				dstItem0.close = srcItem0.getClose();
 			}
-			result.controlFlags = dstItem0;
+			result.controls = dstItem0;
 		}
 		if (0 < source.getClientSamplesCount()) {
 			result.clientSamples = new ClientSample[ source.getClientSamplesCount()];

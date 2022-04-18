@@ -48,13 +48,13 @@ public interface Codec<TInput, TOutput> extends Encoder<TInput, TOutput>, Decode
         Objects.requireNonNull(next);
         var result = new Codec<TInput, TOutput>() {
             @Override
-            public TOutput encode(TInput data) {
+            public TOutput encode(TInput data) throws Throwable {
                 var middle = prev.encode(data);
                 return next.encode(middle);
             }
 
             @Override
-            public TInput decode(TOutput data) {
+            public TInput decode(TOutput data)  throws Throwable {
                 var middle = next.decode(data);
                 return prev.decode(middle);
             }

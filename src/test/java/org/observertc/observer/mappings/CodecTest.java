@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 class CodecTest {
 
     @Test
-    void shouldCreateACodec() {
+    void shouldCreateACodec() throws Throwable {
         var codec = Codec.<Integer, String>create(
                 Integer::toUnsignedString,
                 Integer::parseInt
@@ -18,7 +18,7 @@ class CodecTest {
     }
 
     @Test
-    void shouldCreateACodecFromMapper() {
+    void shouldCreateACodecFromMapper() throws Throwable {
         var intToStr = Mapper.<Integer, String>create(Integer::toUnsignedString);
         var strToInt = Mapper.<String, Integer>create(Integer::parseInt);
         var codec = Codec.create(intToStr, strToInt);
@@ -29,7 +29,7 @@ class CodecTest {
     }
 
     @Test
-    void shouldLinkCodecs() {
+    void shouldLinkCodecs() throws Throwable {
         var strToInt = Codec.<String, Integer>create(
                 Integer::parseInt,
                 Integer::toUnsignedString

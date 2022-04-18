@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SFUTransportReport {
-	public static final String VERSION="2.0.0-beta.59";
+	public static final String VERSION="2.0.0-beta.61";
 	public static Builder newBuilder() {
 		return new Builder();
 	}

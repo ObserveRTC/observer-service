@@ -3,6 +3,7 @@ import fs from "fs";
 import {POJO} from "./POJO.js";
 import {exec} from 'child_process';
 import {ProtobufAssigner} from "./ProtobufAssigner.js";
+import {SamplesConverterHelper} from "./SamplesConverterHelper.js";
 
 const copyAvroSchema = (schema) => {
     const path = "../../src/main/avro-schemas/" + schema.name + ".avsc";
@@ -44,6 +45,7 @@ const createSamplesPojo = (path) => {
 
     assigns.push(...samplesClass.drainAssigns());
     fs.writeFileSync(`samples_assigns.txt`, assigns.join(`\n`));
+    fs.writeFileSync(`SamplesAvro_${schemas.version}.avsc`, JSON.stringify(samplesSchema, null, 2));
 }
 
 const createReportsPojo = (path) => {
@@ -102,13 +104,24 @@ const main = () => {
     fs.writeFileSync(protoFile, schemas.ProtobufSamples);
     exec(`protoc --java_out=../../src/main/java/ ${protoFile}`, (error, stdout, stderr) => {
         if (error !== null) console.error('exec error: ' + error);
-        // fs.rm(protoFile, err => {
-        //     if (err) throw err;
-        // });
+        fs.rm(protoFile, err => {
+            if (err) throw err;
+        });
     });
     const assigner = ProtobufAssigner.from(schemas.AvroSamples, "source", "result", uuidFields);
-    fs.writeFileSync("../../src/main/java/org/observertc/observer/sources/ProtobufSamplesMapper.java", assigner.toLines().join(`\n`));
+    fs.writeFileSync("../../src/main/java/org/observertc/schemas/protobuf/ProtobufSamplesMapper.java", assigner.toLines().join(`\n`));
 
+    const copier = SamplesConverterHelper.from({
+        srcClassName: `Samples`,
+        dstClassName: `Samples2`,
+        srcName: `source`,
+        dstName: `dest`,
+        srcSchema: JSON.parse(fs.readFileSync(`./SamplesAvro_2.0.0-beta.59.avsc`)),
+        dstSchema: JSON.parse(fs.readFileSync(`./SamplesAvro_2.0.0-beta.61.avsc`)),
+        level: 0
+    });
+    const copyLines = copier.toLines().join("\n");
+    fs.writeFileSync(`./from200-beta59-to-200-beta61.txt`, copyLines);
     // console.log(protobuf)
 };
 

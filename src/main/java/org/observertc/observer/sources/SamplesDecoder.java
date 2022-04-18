@@ -1,91 +1,133 @@
 package org.observertc.observer.sources;
 
-import org.observertc.observer.configs.TransportCodecType;
+import io.reactivex.rxjava3.functions.Function;
+import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.mappings.Decoder;
 import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.schemas.protobuf.ProtobufSamples;
+import org.observertc.schemas.protobuf.ProtobufSamplesMapper;
 import org.observertc.schemas.samples.Samples;
+import org.observertc.schemas.v200beta59.samples.ToV200beta61Converter;
 import org.slf4j.Logger;
 
-import java.util.List;
 import java.util.Objects;
 
-public class SamplesDecoder implements Decoder<byte[], Samples> {
+class SamplesDecoder implements Decoder<byte[], Samples> {
 
     public static Builder builder(Logger logger) {
         return new Builder(logger);
     }
 
-    private Mapper<byte[], Samples> decoder;
+    private Function<byte[], Samples> decoder;
 
     private SamplesDecoder() {
 
     }
 
     @Override
-    public Samples decode(byte[] data) {
-        return this.decoder.map(data);
+    public Samples decode(byte[] data) throws Throwable {
+        return this.decoder.apply(data);
     }
 
     public static final class Builder {
-        private Mapper<byte[], byte[]> decrypter = null;
+        private TransportFormatType format;
+        private String version;
         private Mapper<byte[], Samples> decoder = null;
         private final Logger logger;
-
         public Builder(Logger logger) {
             this.logger = logger;
         }
 
-        public Builder withCodecType(TransportCodecType codecType) {
-            switch (codecType) {
-                case PROTOBUF:
-                    this.decoder = this.createProtobufCodec();
-                    break;
-                case JSON:
-                    this.decoder = this.createJsonCodec();
-                    break;
-                default:
-                case NONE:
-                    this.decoder = data -> {
-                        throw new RuntimeException("No format type is configured to deserialize");
-                    };
+        public Builder withVersion(String version) {
+            if (!SamplesVersionVisitor.isVersionValid(version)) {
+                throw new RuntimeException("Unrecognized version: " + version);
             }
+            this.version = version;
             return this;
         }
 
-        private Mapper<byte[], Samples> createProtobufCodec() {
-            logger.info("Suppoerted schema versions: {}", Samples.VERSION);
-
-            Mapper<byte[], ProtobufSamples.Samples> protobufReader;
-            Mapper<ProtobufSamples.Samples, Samples> protobufMapper;
-            protobufReader = Mapper.create(ProtobufSamples.Samples::parseFrom);
-            var func = new ProtobufSamplesMapper();
-            protobufMapper = Mapper.create(func::apply);
-            var result = Mapper.link(protobufReader, protobufMapper);;
-            return result;
+        public Builder withFormatType(TransportFormatType formatType) {
+            this.format = formatType;
+            return this;
         }
 
-        private Mapper<byte[], Samples> createJsonCodec() {
-            var supportedSchemaVersions = List.of(
-                    Samples.VERSION
-            );
-            logger.info("Suppoerted schema versions: {}", String.join(", ", supportedSchemaVersions));
-
-            var result = JsonMapper.<Samples>createBytesToObjectMapper(Samples.class);
-            return result;
-        }
-
-        public Decoder<byte[], Samples> build() {
-            Objects.requireNonNull(this.decoder, "No Decoder is configured to build a Transport");
-            Mapper<byte[], Samples> decoder;
-            if (Objects.nonNull(this.decrypter)) {
-                decoder = Mapper.link(this.decrypter, this.decoder);
-            } else {
-                decoder = this.decoder;
-            }
+        public SamplesDecoder build() {
+            Objects.requireNonNull(this.format, "No format is configured to build a Decoder");
+            Objects.requireNonNull(this.version, "No version is configured to build a Decoder");
             var result = new SamplesDecoder();
-            result.decoder = decoder;
+            switch (this.format) {
+                case PROTOBUF:
+                    result.decoder = this.createProtobufDecoder();
+                    break;
+                case JSON:
+                    result.decoder = this.createJsonDecoder();
+                    break;
+                default:
+                case NONE:
+                    result.decoder = data -> {
+                        throw new RuntimeException("No format type is configured to deserialize");
+                    };
+            }
+            return result;
+        }
+
+
+        private Function<byte[], Samples> createProtobufDecoder() {
+            var result = SamplesVersionVisitor.<Function<byte[], Samples>>createSupplierVisitor(
+                    () -> { // latest
+                        var samplerMapper = new ProtobufSamplesMapper();
+                        return message -> {
+                            var protobufSamples = ProtobufSamples.Samples.parseFrom(message);
+                            var samples = samplerMapper.apply(protobufSamples);
+                            return samples;
+                        };
+                    },
+                    () -> { // 2.0.0-beta59
+                        var from200beta59ToV200beta61Converter = new ToV200beta61Converter();
+                        var samplerMapper = new org.observertc.schemas.v200beta59.protobuf.ProtobufSamplesMapper();
+                        return message -> {
+                            var protobufSamples = org.observertc.schemas.v200beta59.protobuf.ProtobufSamples.Samples.parseFrom(message);
+                            var samples = samplerMapper.apply(protobufSamples);
+                            return samples;
+                        };
+                    },
+                    () -> { // not recognized
+                        throw new RuntimeException("Not recognized version" + this.version);
+                    }
+            ).apply(null, this.version);
+            return result;
+        }
+
+        private Function<byte[], Samples> createJsonDecoder() {
+            var result = SamplesVersionVisitor.<Function<byte[], Samples>>createSupplierVisitor(
+                    () -> { // latest
+                        var decoder = JsonMapper.<Samples>createBytesToObjectMapper(Samples.class);
+                        return message -> {
+                            var samples = decoder.map(message);
+                            if (samples == null) {
+                                throw new RuntimeException("Failed to decode Samples");
+                            }
+                            return samples;
+                        };
+                    },
+                    () -> { // 2.0.0-beta-59
+                        var samplesV200beta59Mapper = JsonMapper.<org.observertc.schemas.v200beta59.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v200beta59.samples.Samples.class);
+                        Mapper<org.observertc.schemas.v200beta59.samples.Samples, Samples> samplesVersionAligner;
+                        var from200beta59ToV200beta61Converter = new ToV200beta61Converter();
+                        return message -> {
+                            var samplesV200beta59 = samplesV200beta59Mapper.map(message);
+                            if (samplesV200beta59 == null) {
+                                throw new RuntimeException("Failed to decode Samples");
+                            }
+                            var samples = from200beta59ToV200beta61Converter.apply(samplesV200beta59);
+                            return samples;
+                        };
+                    },
+                    () -> {
+                        throw new RuntimeException("Not recognized version" + this.version);
+                    }
+            ).apply(null, this.version);
             return result;
         }
     }

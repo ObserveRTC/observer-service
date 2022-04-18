@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 class EncoderTest {
 
     @Test
-    void shouldCreate() {
+    void shouldCreate() throws Throwable {
         var mapper = Mapper.<Integer, String>create(Integer::toUnsignedString);
         var encoder = Encoder.from(mapper);
 

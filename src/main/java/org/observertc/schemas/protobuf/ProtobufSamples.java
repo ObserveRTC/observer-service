@@ -91,34 +91,19 @@ public final class ProtobufSamples {
         int index);
 
     /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
-     * @return Whether the controlFlags field is set.
+     * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
+     * @return Whether the controls field is set.
      */
-    boolean hasControlFlags();
+    boolean hasControls();
     /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
-     * @return The controlFlags.
+     * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
+     * @return The controls.
      */
-    org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags getControlFlags();
+    org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls getControls();
     /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+     * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
      */
-    org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder getControlFlagsOrBuilder();
-
-    /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-     * @return Whether the meta field is set.
-     */
-    boolean hasMeta();
-    /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-     * @return The meta.
-     */
-    org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta getMeta();
-    /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-     */
-    org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder getMetaOrBuilder();
+    org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder getControlsOrBuilder();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.protobuf.Samples}
@@ -197,29 +182,16 @@ public final class ProtobufSamples {
               break;
             }
             case 34: {
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder subBuilder = null;
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder subBuilder = null;
               if (((bitField0_ & 0x00000001) != 0)) {
-                subBuilder = controlFlags_.toBuilder();
+                subBuilder = controls_.toBuilder();
               }
-              controlFlags_ = input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.PARSER, extensionRegistry);
+              controls_ = input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(controlFlags_);
-                controlFlags_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(controls_);
+                controls_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000001;
-              break;
-            }
-            case 42: {
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) != 0)) {
-                subBuilder = meta_.toBuilder();
-              }
-              meta_ = input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(meta_);
-                meta_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
               break;
             }
             default: {
@@ -263,48 +235,59 @@ public final class ProtobufSamples {
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.Builder.class);
     }
 
-    public interface SamplesMetaOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.SamplesMeta)
+    public interface ControlsOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.Controls)
         com.google.protobuf.MessageOrBuilder {
 
       /**
-       * <code>optional string schemaVersion = 1;</code>
-       * @return Whether the schemaVersion field is set.
+       * <code>optional string accessClaim = 1;</code>
+       * @return Whether the accessClaim field is set.
        */
-      boolean hasSchemaVersion();
+      boolean hasAccessClaim();
       /**
-       * <code>optional string schemaVersion = 1;</code>
-       * @return The schemaVersion.
+       * <code>optional string accessClaim = 1;</code>
+       * @return The accessClaim.
        */
-      java.lang.String getSchemaVersion();
+      java.lang.String getAccessClaim();
       /**
-       * <code>optional string schemaVersion = 1;</code>
-       * @return The bytes for schemaVersion.
+       * <code>optional string accessClaim = 1;</code>
+       * @return The bytes for accessClaim.
        */
       com.google.protobuf.ByteString
-          getSchemaVersionBytes();
+          getAccessClaimBytes();
+
+      /**
+       * <code>optional bool close = 2;</code>
+       * @return Whether the close field is set.
+       */
+      boolean hasClose();
+      /**
+       * <code>optional bool close = 2;</code>
+       * @return The close.
+       */
+      boolean getClose();
     }
     /**
-     * Protobuf type {@code org.observertc.schemas.protobuf.Samples.SamplesMeta}
+     * Protobuf type {@code org.observertc.schemas.protobuf.Samples.Controls}
      */
-    public static final class SamplesMeta extends
+    public static final class Controls extends
         com.google.protobuf.GeneratedMessageV3 implements
-        // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.SamplesMeta)
-        SamplesMetaOrBuilder {
+        // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.Controls)
+        ControlsOrBuilder {
     private static final long serialVersionUID = 0L;
-      // Use SamplesMeta.newBuilder() to construct.
-      private SamplesMeta(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // Use Controls.newBuilder() to construct.
+      private Controls(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
         super(builder);
       }
-      private SamplesMeta() {
-        schemaVersion_ = "";
+      private Controls() {
+        accessClaim_ = "";
       }
 
       @java.lang.Override
       @SuppressWarnings({"unused"})
       protected java.lang.Object newInstance(
           UnusedPrivateParameter unused) {
-        return new SamplesMeta();
+        return new Controls();
       }
 
       @java.lang.Override
@@ -312,7 +295,7 @@ public final class ProtobufSamples {
       getUnknownFields() {
         return this.unknownFields;
       }
-      private SamplesMeta(
+      private Controls(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
@@ -334,604 +317,11 @@ public final class ProtobufSamples {
               case 10: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000001;
-                schemaVersion_ = bs;
+                accessClaim_ = bs;
                 break;
               }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder.class);
-      }
-
-      private int bitField0_;
-      public static final int SCHEMAVERSION_FIELD_NUMBER = 1;
-      private volatile java.lang.Object schemaVersion_;
-      /**
-       * <code>optional string schemaVersion = 1;</code>
-       * @return Whether the schemaVersion field is set.
-       */
-      @java.lang.Override
-      public boolean hasSchemaVersion() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>optional string schemaVersion = 1;</code>
-       * @return The schemaVersion.
-       */
-      @java.lang.Override
-      public java.lang.String getSchemaVersion() {
-        java.lang.Object ref = schemaVersion_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            schemaVersion_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string schemaVersion = 1;</code>
-       * @return The bytes for schemaVersion.
-       */
-      @java.lang.Override
-      public com.google.protobuf.ByteString
-          getSchemaVersionBytes() {
-        java.lang.Object ref = schemaVersion_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          schemaVersion_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      private byte memoizedIsInitialized = -1;
-      @java.lang.Override
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized == 1) return true;
-        if (isInitialized == 0) return false;
-
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      @java.lang.Override
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        if (((bitField0_ & 0x00000001) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, schemaVersion_);
-        }
-        unknownFields.writeTo(output);
-      }
-
-      @java.lang.Override
-      public int getSerializedSize() {
-        int size = memoizedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, schemaVersion_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-      }
-
-      @java.lang.Override
-      public boolean equals(final java.lang.Object obj) {
-        if (obj == this) {
-         return true;
-        }
-        if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta)) {
-          return super.equals(obj);
-        }
-        org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta) obj;
-
-        if (hasSchemaVersion() != other.hasSchemaVersion()) return false;
-        if (hasSchemaVersion()) {
-          if (!getSchemaVersion()
-              .equals(other.getSchemaVersion())) return false;
-        }
-        if (!unknownFields.equals(other.unknownFields)) return false;
-        return true;
-      }
-
-      @java.lang.Override
-      public int hashCode() {
-        if (memoizedHashCode != 0) {
-          return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasSchemaVersion()) {
-          hash = (37 * hash) + SCHEMAVERSION_FIELD_NUMBER;
-          hash = (53 * hash) + getSchemaVersion().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-      }
-
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          java.nio.ByteBuffer data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          java.nio.ByteBuffer data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-
-      @java.lang.Override
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-      }
-      public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-      }
-      @java.lang.Override
-      public Builder toBuilder() {
-        return this == DEFAULT_INSTANCE
-            ? new Builder() : new Builder().mergeFrom(this);
-      }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.SamplesMeta}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.SamplesMeta)
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder.class);
-        }
-
-        // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
-        }
-        @java.lang.Override
-        public Builder clear() {
-          super.clear();
-          schemaVersion_ = "";
-          bitField0_ = (bitField0_ & ~0x00000001);
-          return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_descriptor;
-        }
-
-        @java.lang.Override
-        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta getDefaultInstanceForType() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta build() {
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        @java.lang.Override
-        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta buildPartial() {
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.schemaVersion_ = schemaVersion_;
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta) {
-            return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta other) {
-          if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance()) return this;
-          if (other.hasSchemaVersion()) {
-            bitField0_ |= 0x00000001;
-            schemaVersion_ = other.schemaVersion_;
-            onChanged();
-          }
-          this.mergeUnknownFields(other.unknownFields);
-          onChanged();
-          return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-          return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta) e.getUnfinishedMessage();
-            throw e.unwrapIOException();
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-        private int bitField0_;
-
-        private java.lang.Object schemaVersion_ = "";
-        /**
-         * <code>optional string schemaVersion = 1;</code>
-         * @return Whether the schemaVersion field is set.
-         */
-        public boolean hasSchemaVersion() {
-          return ((bitField0_ & 0x00000001) != 0);
-        }
-        /**
-         * <code>optional string schemaVersion = 1;</code>
-         * @return The schemaVersion.
-         */
-        public java.lang.String getSchemaVersion() {
-          java.lang.Object ref = schemaVersion_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              schemaVersion_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string schemaVersion = 1;</code>
-         * @return The bytes for schemaVersion.
-         */
-        public com.google.protobuf.ByteString
-            getSchemaVersionBytes() {
-          java.lang.Object ref = schemaVersion_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            schemaVersion_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string schemaVersion = 1;</code>
-         * @param value The schemaVersion to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSchemaVersion(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          schemaVersion_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string schemaVersion = 1;</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearSchemaVersion() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          schemaVersion_ = getDefaultInstance().getSchemaVersion();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string schemaVersion = 1;</code>
-         * @param value The bytes for schemaVersion to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSchemaVersionBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          schemaVersion_ = value;
-          onChanged();
-          return this;
-        }
-        @java.lang.Override
-        public final Builder setUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.mergeUnknownFields(unknownFields);
-        }
-
-
-        // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.SamplesMeta)
-      }
-
-      // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.SamplesMeta)
-      private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta DEFAULT_INSTANCE;
-      static {
-        DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta();
-      }
-
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-      }
-
-      @java.lang.Deprecated public static final com.google.protobuf.Parser<SamplesMeta>
-          PARSER = new com.google.protobuf.AbstractParser<SamplesMeta>() {
-        @java.lang.Override
-        public SamplesMeta parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SamplesMeta(input, extensionRegistry);
-        }
-      };
-
-      public static com.google.protobuf.Parser<SamplesMeta> parser() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Parser<SamplesMeta> getParserForType() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-      }
-
-    }
-
-    public interface ControlFlagsOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.ControlFlags)
-        com.google.protobuf.MessageOrBuilder {
-
-      /**
-       * <code>optional bool close = 1;</code>
-       * @return Whether the close field is set.
-       */
-      boolean hasClose();
-      /**
-       * <code>optional bool close = 1;</code>
-       * @return The close.
-       */
-      boolean getClose();
-    }
-    /**
-     * Protobuf type {@code org.observertc.schemas.protobuf.Samples.ControlFlags}
-     */
-    public static final class ControlFlags extends
-        com.google.protobuf.GeneratedMessageV3 implements
-        // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.ControlFlags)
-        ControlFlagsOrBuilder {
-    private static final long serialVersionUID = 0L;
-      // Use ControlFlags.newBuilder() to construct.
-      private ControlFlags(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-      }
-      private ControlFlags() {
-      }
-
-      @java.lang.Override
-      @SuppressWarnings({"unused"})
-      protected java.lang.Object newInstance(
-          UnusedPrivateParameter unused) {
-        return new ControlFlags();
-      }
-
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
-      private ControlFlags(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 8: {
-                bitField0_ |= 0x00000001;
+              case 16: {
+                bitField0_ |= 0x00000002;
                 close_ = input.readBool();
                 break;
               }
@@ -956,30 +346,78 @@ public final class ProtobufSamples {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_descriptor;
+        return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_Controls_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_fieldAccessorTable
+        return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_Controls_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder.class);
+                org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder.class);
       }
 
       private int bitField0_;
-      public static final int CLOSE_FIELD_NUMBER = 1;
+      public static final int ACCESSCLAIM_FIELD_NUMBER = 1;
+      private volatile java.lang.Object accessClaim_;
+      /**
+       * <code>optional string accessClaim = 1;</code>
+       * @return Whether the accessClaim field is set.
+       */
+      @java.lang.Override
+      public boolean hasAccessClaim() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional string accessClaim = 1;</code>
+       * @return The accessClaim.
+       */
+      @java.lang.Override
+      public java.lang.String getAccessClaim() {
+        java.lang.Object ref = accessClaim_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            accessClaim_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string accessClaim = 1;</code>
+       * @return The bytes for accessClaim.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getAccessClaimBytes() {
+        java.lang.Object ref = accessClaim_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          accessClaim_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int CLOSE_FIELD_NUMBER = 2;
       private boolean close_;
       /**
-       * <code>optional bool close = 1;</code>
+       * <code>optional bool close = 2;</code>
        * @return Whether the close field is set.
        */
       @java.lang.Override
       public boolean hasClose() {
-        return ((bitField0_ & 0x00000001) != 0);
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional bool close = 1;</code>
+       * <code>optional bool close = 2;</code>
        * @return The close.
        */
       @java.lang.Override
@@ -1002,7 +440,10 @@ public final class ProtobufSamples {
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
         if (((bitField0_ & 0x00000001) != 0)) {
-          output.writeBool(1, close_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, accessClaim_);
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
+          output.writeBool(2, close_);
         }
         unknownFields.writeTo(output);
       }
@@ -1014,8 +455,11 @@ public final class ProtobufSamples {
 
         size = 0;
         if (((bitField0_ & 0x00000001) != 0)) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, accessClaim_);
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBoolSize(1, close_);
+            .computeBoolSize(2, close_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -1027,11 +471,16 @@ public final class ProtobufSamples {
         if (obj == this) {
          return true;
         }
-        if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags)) {
+        if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls)) {
           return super.equals(obj);
         }
-        org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags) obj;
+        org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls) obj;
 
+        if (hasAccessClaim() != other.hasAccessClaim()) return false;
+        if (hasAccessClaim()) {
+          if (!getAccessClaim()
+              .equals(other.getAccessClaim())) return false;
+        }
         if (hasClose() != other.hasClose()) return false;
         if (hasClose()) {
           if (getClose()
@@ -1048,6 +497,10 @@ public final class ProtobufSamples {
         }
         int hash = 41;
         hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasAccessClaim()) {
+          hash = (37 * hash) + ACCESSCLAIM_FIELD_NUMBER;
+          hash = (53 * hash) + getAccessClaim().hashCode();
+        }
         if (hasClose()) {
           hash = (37 * hash) + CLOSE_FIELD_NUMBER;
           hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
@@ -1058,69 +511,69 @@ public final class ProtobufSamples {
         return hash;
       }
 
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           java.nio.ByteBuffer data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           java.nio.ByteBuffer data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           com.google.protobuf.ByteString data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(byte[] data)
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(byte[] data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           byte[] data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(java.io.InputStream input)
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseDelimitedFrom(java.io.InputStream input)
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseDelimitedFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           com.google.protobuf.CodedInputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parseFrom(
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parseFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
@@ -1133,7 +586,7 @@ public final class ProtobufSamples {
       public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
       }
-      public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags prototype) {
+      public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls prototype) {
         return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
       @java.lang.Override
@@ -1149,26 +602,26 @@ public final class ProtobufSamples {
         return builder;
       }
       /**
-       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.ControlFlags}
+       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.Controls}
        */
       public static final class Builder extends
           com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.ControlFlags)
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder {
+          // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.Controls)
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_descriptor;
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_Controls_descriptor;
         }
 
         @java.lang.Override
         protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_fieldAccessorTable
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_Controls_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder.class);
+                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder.class);
         }
 
-        // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.newBuilder()
+        // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -1186,25 +639,27 @@ public final class ProtobufSamples {
         @java.lang.Override
         public Builder clear() {
           super.clear();
-          close_ = false;
+          accessClaim_ = "";
           bitField0_ = (bitField0_ & ~0x00000001);
+          close_ = false;
+          bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
 
         @java.lang.Override
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_descriptor;
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_Controls_descriptor;
         }
 
         @java.lang.Override
-        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags getDefaultInstanceForType() {
-          return org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance();
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls getDefaultInstanceForType() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance();
         }
 
         @java.lang.Override
-        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags build() {
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags result = buildPartial();
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls build() {
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls result = buildPartial();
           if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
@@ -1212,13 +667,17 @@ public final class ProtobufSamples {
         }
 
         @java.lang.Override
-        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags buildPartial() {
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags(this);
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls buildPartial() {
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) != 0)) {
-            result.close_ = close_;
             to_bitField0_ |= 0x00000001;
+          }
+          result.accessClaim_ = accessClaim_;
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.close_ = close_;
+            to_bitField0_ |= 0x00000002;
           }
           result.bitField0_ = to_bitField0_;
           onBuilt();
@@ -1259,16 +718,21 @@ public final class ProtobufSamples {
         }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags) {
-            return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags)other);
+          if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls) {
+            return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls)other);
           } else {
             super.mergeFrom(other);
             return this;
           }
         }
 
-        public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags other) {
-          if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance()) return this;
+        public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls other) {
+          if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance()) return this;
+          if (other.hasAccessClaim()) {
+            bitField0_ |= 0x00000001;
+            accessClaim_ = other.accessClaim_;
+            onChanged();
+          }
           if (other.hasClose()) {
             setClose(other.getClose());
           }
@@ -1287,11 +751,11 @@ public final class ProtobufSamples {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags parsedMessage = null;
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls parsedMessage = null;
           try {
             parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags) e.getUnfinishedMessage();
+            parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
             if (parsedMessage != null) {
@@ -1302,17 +766,101 @@ public final class ProtobufSamples {
         }
         private int bitField0_;
 
+        private java.lang.Object accessClaim_ = "";
+        /**
+         * <code>optional string accessClaim = 1;</code>
+         * @return Whether the accessClaim field is set.
+         */
+        public boolean hasAccessClaim() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>optional string accessClaim = 1;</code>
+         * @return The accessClaim.
+         */
+        public java.lang.String getAccessClaim() {
+          java.lang.Object ref = accessClaim_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              accessClaim_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string accessClaim = 1;</code>
+         * @return The bytes for accessClaim.
+         */
+        public com.google.protobuf.ByteString
+            getAccessClaimBytes() {
+          java.lang.Object ref = accessClaim_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            accessClaim_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string accessClaim = 1;</code>
+         * @param value The accessClaim to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAccessClaim(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          accessClaim_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string accessClaim = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearAccessClaim() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          accessClaim_ = getDefaultInstance().getAccessClaim();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string accessClaim = 1;</code>
+         * @param value The bytes for accessClaim to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAccessClaimBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          accessClaim_ = value;
+          onChanged();
+          return this;
+        }
+
         private boolean close_ ;
         /**
-         * <code>optional bool close = 1;</code>
+         * <code>optional bool close = 2;</code>
          * @return Whether the close field is set.
          */
         @java.lang.Override
         public boolean hasClose() {
-          return ((bitField0_ & 0x00000001) != 0);
+          return ((bitField0_ & 0x00000002) != 0);
         }
         /**
-         * <code>optional bool close = 1;</code>
+         * <code>optional bool close = 2;</code>
          * @return The close.
          */
         @java.lang.Override
@@ -1320,22 +868,22 @@ public final class ProtobufSamples {
           return close_;
         }
         /**
-         * <code>optional bool close = 1;</code>
+         * <code>optional bool close = 2;</code>
          * @param value The close to set.
          * @return This builder for chaining.
          */
         public Builder setClose(boolean value) {
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
           close_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional bool close = 1;</code>
+         * <code>optional bool close = 2;</code>
          * @return This builder for chaining.
          */
         public Builder clearClose() {
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
           close_ = false;
           onChanged();
           return this;
@@ -1353,41 +901,41 @@ public final class ProtobufSamples {
         }
 
 
-        // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.ControlFlags)
+        // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.Controls)
       }
 
-      // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.ControlFlags)
-      private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags DEFAULT_INSTANCE;
+      // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.Controls)
+      private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls DEFAULT_INSTANCE;
       static {
-        DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags();
+        DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls();
       }
 
-      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags getDefaultInstance() {
+      public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls getDefaultInstance() {
         return DEFAULT_INSTANCE;
       }
 
-      @java.lang.Deprecated public static final com.google.protobuf.Parser<ControlFlags>
-          PARSER = new com.google.protobuf.AbstractParser<ControlFlags>() {
+      @java.lang.Deprecated public static final com.google.protobuf.Parser<Controls>
+          PARSER = new com.google.protobuf.AbstractParser<Controls>() {
         @java.lang.Override
-        public ControlFlags parsePartialFrom(
+        public Controls parsePartialFrom(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ControlFlags(input, extensionRegistry);
+          return new Controls(input, extensionRegistry);
         }
       };
 
-      public static com.google.protobuf.Parser<ControlFlags> parser() {
+      public static com.google.protobuf.Parser<Controls> parser() {
         return PARSER;
       }
 
       @java.lang.Override
-      public com.google.protobuf.Parser<ControlFlags> getParserForType() {
+      public com.google.protobuf.Parser<Controls> getParserForType() {
         return PARSER;
       }
 
       @java.lang.Override
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags getDefaultInstanceForType() {
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
       }
 
@@ -89300,56 +88848,30 @@ public final class ProtobufSamples {
       return turnSamples_.get(index);
     }
 
-    public static final int CONTROLFLAGS_FIELD_NUMBER = 4;
-    private org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags controlFlags_;
+    public static final int CONTROLS_FIELD_NUMBER = 4;
+    private org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls controls_;
     /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
-     * @return Whether the controlFlags field is set.
+     * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
+     * @return Whether the controls field is set.
      */
     @java.lang.Override
-    public boolean hasControlFlags() {
+    public boolean hasControls() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
-     * @return The controlFlags.
+     * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
+     * @return The controls.
      */
     @java.lang.Override
-    public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags getControlFlags() {
-      return controlFlags_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance() : controlFlags_;
+    public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls getControls() {
+      return controls_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance() : controls_;
     }
     /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+     * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
      */
     @java.lang.Override
-    public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder getControlFlagsOrBuilder() {
-      return controlFlags_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance() : controlFlags_;
-    }
-
-    public static final int META_FIELD_NUMBER = 5;
-    private org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta meta_;
-    /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-     * @return Whether the meta field is set.
-     */
-    @java.lang.Override
-    public boolean hasMeta() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-     * @return The meta.
-     */
-    @java.lang.Override
-    public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta getMeta() {
-      return meta_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance() : meta_;
-    }
-    /**
-     * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-     */
-    @java.lang.Override
-    public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder getMetaOrBuilder() {
-      return meta_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance() : meta_;
+    public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder getControlsOrBuilder() {
+      return controls_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance() : controls_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -89394,10 +88916,7 @@ public final class ProtobufSamples {
         output.writeMessage(3, turnSamples_.get(i));
       }
       if (((bitField0_ & 0x00000001) != 0)) {
-        output.writeMessage(4, getControlFlags());
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        output.writeMessage(5, getMeta());
+        output.writeMessage(4, getControls());
       }
       unknownFields.writeTo(output);
     }
@@ -89422,11 +88941,7 @@ public final class ProtobufSamples {
       }
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getControlFlags());
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getMeta());
+          .computeMessageSize(4, getControls());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -89449,15 +88964,10 @@ public final class ProtobufSamples {
           .equals(other.getSfuSamplesList())) return false;
       if (!getTurnSamplesList()
           .equals(other.getTurnSamplesList())) return false;
-      if (hasControlFlags() != other.hasControlFlags()) return false;
-      if (hasControlFlags()) {
-        if (!getControlFlags()
-            .equals(other.getControlFlags())) return false;
-      }
-      if (hasMeta() != other.hasMeta()) return false;
-      if (hasMeta()) {
-        if (!getMeta()
-            .equals(other.getMeta())) return false;
+      if (hasControls() != other.hasControls()) return false;
+      if (hasControls()) {
+        if (!getControls()
+            .equals(other.getControls())) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -89482,13 +88992,9 @@ public final class ProtobufSamples {
         hash = (37 * hash) + TURNSAMPLES_FIELD_NUMBER;
         hash = (53 * hash) + getTurnSamplesList().hashCode();
       }
-      if (hasControlFlags()) {
-        hash = (37 * hash) + CONTROLFLAGS_FIELD_NUMBER;
-        hash = (53 * hash) + getControlFlags().hashCode();
-      }
-      if (hasMeta()) {
-        hash = (37 * hash) + META_FIELD_NUMBER;
-        hash = (53 * hash) + getMeta().hashCode();
+      if (hasControls()) {
+        hash = (37 * hash) + CONTROLS_FIELD_NUMBER;
+        hash = (53 * hash) + getControls().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -89621,8 +89127,7 @@ public final class ProtobufSamples {
           getClientSamplesFieldBuilder();
           getSfuSamplesFieldBuilder();
           getTurnSamplesFieldBuilder();
-          getControlFlagsFieldBuilder();
-          getMetaFieldBuilder();
+          getControlsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -89646,18 +89151,12 @@ public final class ProtobufSamples {
         } else {
           turnSamplesBuilder_.clear();
         }
-        if (controlFlagsBuilder_ == null) {
-          controlFlags_ = null;
+        if (controlsBuilder_ == null) {
+          controls_ = null;
         } else {
-          controlFlagsBuilder_.clear();
+          controlsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
-        if (metaBuilder_ == null) {
-          meta_ = null;
-        } else {
-          metaBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -89714,20 +89213,12 @@ public final class ProtobufSamples {
           result.turnSamples_ = turnSamplesBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          if (controlFlagsBuilder_ == null) {
-            result.controlFlags_ = controlFlags_;
+          if (controlsBuilder_ == null) {
+            result.controls_ = controls_;
           } else {
-            result.controlFlags_ = controlFlagsBuilder_.build();
+            result.controls_ = controlsBuilder_.build();
           }
           to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          if (metaBuilder_ == null) {
-            result.meta_ = meta_;
-          } else {
-            result.meta_ = metaBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -89856,11 +89347,8 @@ public final class ProtobufSamples {
             }
           }
         }
-        if (other.hasControlFlags()) {
-          mergeControlFlags(other.getControlFlags());
-        }
-        if (other.hasMeta()) {
-          mergeMeta(other.getMeta());
+        if (other.hasControls()) {
+          mergeControls(other.getControls());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -90627,244 +90115,124 @@ public final class ProtobufSamples {
         return turnSamplesBuilder_;
       }
 
-      private org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags controlFlags_;
+      private org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls controls_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder> controlFlagsBuilder_;
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls, org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder> controlsBuilder_;
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
-       * @return Whether the controlFlags field is set.
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
+       * @return Whether the controls field is set.
        */
-      public boolean hasControlFlags() {
+      public boolean hasControls() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
-       * @return The controlFlags.
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
+       * @return The controls.
        */
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags getControlFlags() {
-        if (controlFlagsBuilder_ == null) {
-          return controlFlags_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance() : controlFlags_;
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls getControls() {
+        if (controlsBuilder_ == null) {
+          return controls_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance() : controls_;
         } else {
-          return controlFlagsBuilder_.getMessage();
+          return controlsBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
-      public Builder setControlFlags(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags value) {
-        if (controlFlagsBuilder_ == null) {
+      public Builder setControls(org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls value) {
+        if (controlsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          controlFlags_ = value;
+          controls_ = value;
           onChanged();
         } else {
-          controlFlagsBuilder_.setMessage(value);
+          controlsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000008;
         return this;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
-      public Builder setControlFlags(
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder builderForValue) {
-        if (controlFlagsBuilder_ == null) {
-          controlFlags_ = builderForValue.build();
+      public Builder setControls(
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder builderForValue) {
+        if (controlsBuilder_ == null) {
+          controls_ = builderForValue.build();
           onChanged();
         } else {
-          controlFlagsBuilder_.setMessage(builderForValue.build());
+          controlsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000008;
         return this;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
-      public Builder mergeControlFlags(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags value) {
-        if (controlFlagsBuilder_ == null) {
+      public Builder mergeControls(org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls value) {
+        if (controlsBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0) &&
-              controlFlags_ != null &&
-              controlFlags_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance()) {
-            controlFlags_ =
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.newBuilder(controlFlags_).mergeFrom(value).buildPartial();
+              controls_ != null &&
+              controls_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance()) {
+            controls_ =
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.newBuilder(controls_).mergeFrom(value).buildPartial();
           } else {
-            controlFlags_ = value;
+            controls_ = value;
           }
           onChanged();
         } else {
-          controlFlagsBuilder_.mergeFrom(value);
+          controlsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000008;
         return this;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
-      public Builder clearControlFlags() {
-        if (controlFlagsBuilder_ == null) {
-          controlFlags_ = null;
+      public Builder clearControls() {
+        if (controlsBuilder_ == null) {
+          controls_ = null;
           onChanged();
         } else {
-          controlFlagsBuilder_.clear();
+          controlsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder getControlFlagsBuilder() {
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder getControlsBuilder() {
         bitField0_ |= 0x00000008;
         onChanged();
-        return getControlFlagsFieldBuilder().getBuilder();
+        return getControlsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder getControlFlagsOrBuilder() {
-        if (controlFlagsBuilder_ != null) {
-          return controlFlagsBuilder_.getMessageOrBuilder();
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder getControlsOrBuilder() {
+        if (controlsBuilder_ != null) {
+          return controlsBuilder_.getMessageOrBuilder();
         } else {
-          return controlFlags_ == null ?
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.getDefaultInstance() : controlFlags_;
+          return controls_ == null ?
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.getDefaultInstance() : controls_;
         }
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ControlFlags controlFlags = 4;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.Controls controls = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder> 
-          getControlFlagsFieldBuilder() {
-        if (controlFlagsBuilder_ == null) {
-          controlFlagsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlags.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlFlagsOrBuilder>(
-                  getControlFlags(),
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls, org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder> 
+          getControlsFieldBuilder() {
+        if (controlsBuilder_ == null) {
+          controlsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls, org.observertc.schemas.protobuf.ProtobufSamples.Samples.Controls.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ControlsOrBuilder>(
+                  getControls(),
                   getParentForChildren(),
                   isClean());
-          controlFlags_ = null;
+          controls_ = null;
         }
-        return controlFlagsBuilder_;
-      }
-
-      private org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta meta_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder> metaBuilder_;
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       * @return Whether the meta field is set.
-       */
-      public boolean hasMeta() {
-        return ((bitField0_ & 0x00000010) != 0);
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       * @return The meta.
-       */
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta getMeta() {
-        if (metaBuilder_ == null) {
-          return meta_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance() : meta_;
-        } else {
-          return metaBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      public Builder setMeta(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta value) {
-        if (metaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          meta_ = value;
-          onChanged();
-        } else {
-          metaBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      public Builder setMeta(
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder builderForValue) {
-        if (metaBuilder_ == null) {
-          meta_ = builderForValue.build();
-          onChanged();
-        } else {
-          metaBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      public Builder mergeMeta(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta value) {
-        if (metaBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) != 0) &&
-              meta_ != null &&
-              meta_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance()) {
-            meta_ =
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.newBuilder(meta_).mergeFrom(value).buildPartial();
-          } else {
-            meta_ = value;
-          }
-          onChanged();
-        } else {
-          metaBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      public Builder clearMeta() {
-        if (metaBuilder_ == null) {
-          meta_ = null;
-          onChanged();
-        } else {
-          metaBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        return this;
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder getMetaBuilder() {
-        bitField0_ |= 0x00000010;
-        onChanged();
-        return getMetaFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder getMetaOrBuilder() {
-        if (metaBuilder_ != null) {
-          return metaBuilder_.getMessageOrBuilder();
-        } else {
-          return meta_ == null ?
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.getDefaultInstance() : meta_;
-        }
-      }
-      /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.SamplesMeta meta = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder> 
-          getMetaFieldBuilder() {
-        if (metaBuilder_ == null) {
-          metaBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMeta.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SamplesMetaOrBuilder>(
-                  getMeta(),
-                  getParentForChildren(),
-                  isClean());
-          meta_ = null;
-        }
-        return metaBuilder_;
+        return controlsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -90925,15 +90293,10 @@ public final class ProtobufSamples {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_protobuf_Samples_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_descriptor;
+    internal_static_org_observertc_schemas_protobuf_Samples_Controls_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_fieldAccessorTable;
+      internal_static_org_observertc_schemas_protobuf_Samples_Controls_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor;
   private static final 
@@ -91079,417 +90442,415 @@ public final class ProtobufSamples {
   static {
     java.lang.String[] descriptorData = {
       "\n\025ProtobufSamples.proto\022\037org.observertc." +
-      "schemas.protobuf\"\235\200\001\n\007Samples\022L\n\rclientS" +
-      "amples\030\001 \003(\01325.org.observertc.schemas.pr" +
-      "otobuf.Samples.ClientSample\022F\n\nsfuSample" +
-      "s\030\002 \003(\01322.org.observertc.schemas.protobu" +
-      "f.Samples.SfuSample\022H\n\013turnSamples\030\003 \003(\013" +
-      "23.org.observertc.schemas.protobuf.Sampl" +
-      "es.TurnSample\022K\n\014controlFlags\030\004 \001(\01325.or" +
-      "g.observertc.schemas.protobuf.Samples.Co" +
-      "ntrolFlags\022B\n\004meta\030\005 \001(\01324.org.observert" +
-      "c.schemas.protobuf.Samples.SamplesMeta\032$" +
-      "\n\013SamplesMeta\022\025\n\rschemaVersion\030\001 \001(\t\032\035\n\014" +
-      "ControlFlags\022\r\n\005close\030\001 \001(\010\032\325[\n\014ClientSa" +
-      "mple\022W\n\014certificates\030\001 \003(\0132A.org.observe" +
-      "rtc.schemas.protobuf.Samples.ClientSampl" +
-      "e.Certificate\022U\n\006codecs\030\002 \003(\0132E.org.obse" +
-      "rvertc.schemas.protobuf.Samples.ClientSa" +
-      "mple.MediaCodecStats\022W\n\014dataChannels\030\003 \003" +
-      "(\0132A.org.observertc.schemas.protobuf.Sam" +
-      "ples.ClientSample.DataChannel\022[\n\016extensi" +
-      "onStats\030\004 \003(\0132C.org.observertc.schemas.p" +
-      "rotobuf.Samples.ClientSample.ExtensionSt" +
-      "at\022c\n\022iceLocalCandidates\030\005 \003(\0132G.org.obs" +
-      "ervertc.schemas.protobuf.Samples.ClientS" +
-      "ample.IceLocalCandidate\022e\n\023iceRemoteCand" +
-      "idates\030\006 \003(\0132H.org.observertc.schemas.pr" +
-      "otobuf.Samples.ClientSample.IceRemoteCan" +
-      "didate\022\022\n\niceServers\030\007 \003(\t\022c\n\022inboundAud" +
-      "ioTracks\030\010 \003(\0132G.org.observertc.schemas." +
-      "protobuf.Samples.ClientSample.InboundAud" +
-      "ioTrack\022c\n\022inboundVideoTracks\030\t \003(\0132G.or" +
-      "g.observertc.schemas.protobuf.Samples.Cl" +
-      "ientSample.InboundVideoTrack\022\021\n\tlocalSDP" +
-      "s\030\n \003(\t\022\030\n\020mediaConstraints\030\013 \003(\t\022W\n\014med" +
-      "iaDevices\030\014 \003(\0132A.org.observertc.schemas" +
-      ".protobuf.Samples.ClientSample.MediaDevi" +
-      "ce\022[\n\014mediaSources\030\r \003(\0132E.org.observert" +
+      "schemas.protobuf\"\274\177\n\007Samples\022L\n\rclientSa" +
+      "mples\030\001 \003(\01325.org.observertc.schemas.pro" +
+      "tobuf.Samples.ClientSample\022F\n\nsfuSamples" +
+      "\030\002 \003(\01322.org.observertc.schemas.protobuf" +
+      ".Samples.SfuSample\022H\n\013turnSamples\030\003 \003(\0132" +
+      "3.org.observertc.schemas.protobuf.Sample" +
+      "s.TurnSample\022C\n\010controls\030\004 \001(\01321.org.obs" +
+      "ervertc.schemas.protobuf.Samples.Control" +
+      "s\032.\n\010Controls\022\023\n\013accessClaim\030\001 \001(\t\022\r\n\005cl" +
+      "ose\030\002 \001(\010\032\325[\n\014ClientSample\022W\n\014certificat" +
+      "es\030\001 \003(\0132A.org.observertc.schemas.protob" +
+      "uf.Samples.ClientSample.Certificate\022U\n\006c" +
+      "odecs\030\002 \003(\0132E.org.observertc.schemas.pro" +
+      "tobuf.Samples.ClientSample.MediaCodecSta" +
+      "ts\022W\n\014dataChannels\030\003 \003(\0132A.org.observert" +
       "c.schemas.protobuf.Samples.ClientSample." +
-      "MediaSourceStat\022e\n\023outboundAudioTracks\030\016" +
-      " \003(\0132H.org.observertc.schemas.protobuf.S" +
-      "amples.ClientSample.OutboundAudioTrack\022e" +
-      "\n\023outboundVideoTracks\030\017 \003(\0132H.org.observ" +
-      "ertc.schemas.protobuf.Samples.ClientSamp" +
-      "le.OutboundVideoTrack\022c\n\014pcTransports\030\020 " +
-      "\003(\0132M.org.observertc.schemas.protobuf.Sa" +
-      "mples.ClientSample.PeerConnectionTranspo" +
-      "rt\022\027\n\017userMediaErrors\030\021 \003(\t\022\020\n\010clientId\030" +
-      "\022 \002(\t\022\021\n\ttimestamp\030\023 \002(\003\022N\n\007browser\030\024 \001(" +
-      "\0132=.org.observertc.schemas.protobuf.Samp" +
-      "les.ClientSample.Browser\022\016\n\006callId\030\025 \001(\t" +
-      "\022L\n\006engine\030\026 \001(\0132<.org.observertc.schema" +
-      "s.protobuf.Samples.ClientSample.Engine\022\016" +
-      "\n\006marker\030\027 \001(\t\022Q\n\002os\030\030 \001(\0132E.org.observe" +
-      "rtc.schemas.protobuf.Samples.ClientSampl" +
-      "e.OperationSystem\022P\n\010platform\030\031 \001(\0132>.or" +
+      "DataChannel\022[\n\016extensionStats\030\004 \003(\0132C.or" +
       "g.observertc.schemas.protobuf.Samples.Cl" +
-      "ientSample.Platform\022\016\n\006roomId\030\032 \001(\t\022\021\n\ts" +
-      "ampleSeq\030\033 \001(\005\022\035\n\025timeZoneOffsetInHours\030" +
-      "\034 \001(\005\022\016\n\006userId\030\035 \001(\t\032\'\n\006Engine\022\014\n\004name\030" +
-      "\001 \001(\t\022\017\n\007version\030\002 \001(\t\0327\n\010Platform\022\r\n\005mo" +
-      "del\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\016\n\006vendor\030\003 \001(\t\032" +
-      "(\n\007Browser\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001(" +
-      "\t\032E\n\017OperationSystem\022\014\n\004name\030\001 \001(\t\022\017\n\007ve" +
-      "rsion\030\002 \001(\t\022\023\n\013versionName\030\003 \001(\t\0326\n\013Medi" +
-      "aDevice\022\n\n\002id\030\001 \001(\t\022\014\n\004kind\030\002 \001(\t\022\r\n\005lab" +
-      "el\030\003 \001(\t\032.\n\rExtensionStat\022\017\n\007payload\030\001 \002" +
-      "(\t\022\014\n\004type\030\002 \002(\t\032\267\020\n\027PeerConnectionTrans" +
-      "port\022\030\n\020peerConnectionId\030\001 \002(\t\022\025\n\rbytesR" +
-      "eceived\030\002 \001(\003\022\021\n\tbytesSent\030\003 \001(\003\022-\n%cand" +
-      "idatePairAvailableIncomingBitrate\030\004 \001(\001\022" +
-      "-\n%candidatePairAvailableOutgoingBitrate" +
-      "\030\005 \001(\001\022)\n!candidatePairBytesDiscardedOnS" +
-      "end\030\006 \001(\003\022\"\n\032candidatePairBytesReceived\030" +
-      "\007 \001(\003\022\036\n\026candidatePairBytesSent\030\010 \001(\003\022/\n" +
-      "\'candidatePairCircuitBreakerTriggerCount" +
-      "\030\t \001(\005\022,\n$candidatePairConsentExpiredTim" +
-      "estamp\030\n \001(\003\022,\n$candidatePairConsentRequ" +
-      "estBytesSent\030\013 \001(\003\022(\n candidatePairConse" +
-      "ntRequestsSent\030\014 \001(\005\022)\n!candidatePairCur" +
-      "rentRoundTripTime\030\r \001(\001\022*\n\"candidatePair" +
-      "FirstRequestTimestamp\030\016 \001(\003\0220\n(candidate" +
-      "PairLastPacketReceivedTimestamp\030\017 \001(\003\022,\n" +
-      "$candidatePairLastPacketSentTimestamp\030\020 " +
-      "\001(\003\022)\n!candidatePairLastRequestTimestamp" +
-      "\030\021 \001(\003\022*\n\"candidatePairLastResponseTimes" +
-      "tamp\030\022 \001(\003\022+\n#candidatePairPacketsDiscar" +
-      "dedOnSend\030\023 \001(\005\022$\n\034candidatePairPacketsR" +
-      "eceived\030\024 \001(\005\022 \n\030candidatePairPacketsSen" +
-      "t\030\025 \001(\005\022%\n\035candidatePairRequestBytesSent" +
-      "\030\026 \001(\003\022%\n\035candidatePairRequestsReceived\030" +
-      "\027 \001(\005\022!\n\031candidatePairRequestsSent\030\030 \001(\005" +
-      "\022&\n\036candidatePairResponseBytesSent\030\031 \001(\003" +
-      "\022&\n\036candidatePairResponsesReceived\030\032 \001(\005" +
-      "\022\"\n\032candidatePairResponsesSent\030\033 \001(\005\022+\n#" +
-      "candidatePairRetransmissionReceived\030\034 \001(" +
-      "\005\022\'\n\037candidatePairRetransmissionSent\030\035 \001" +
-      "(\005\022\032\n\022candidatePairState\030\036 \001(\t\022\'\n\037candid" +
-      "atePairTotalRoundTripTime\030\037 \001(\001\022\034\n\024dataC" +
-      "hannelsAccepted\030  \001(\005\022\032\n\022dataChannelsClo" +
-      "sed\030! \001(\005\022\032\n\022dataChannelsOpened\030\" \001(\005\022\035\n" +
-      "\025dataChannelsRequested\030# \001(\005\022\022\n\ndtlsCiph" +
-      "er\030$ \001(\t\022\021\n\tdtlsState\030% \001(\t\022 \n\030iceLocalU" +
-      "sernameFragment\030& \001(\t\022\017\n\007iceRole\030\' \001(\t\022\020" +
-      "\n\010iceState\030( \001(\t\022\r\n\005label\030) \001(\t\022\024\n\014local" +
-      "Address\030* \001(\t\022\"\n\032localCandidateICEServer" +
-      "Url\030+ \001(\t\022#\n\033localCandidateRelayProtocol" +
-      "\030, \001(\t\022\032\n\022localCandidateType\030- \001(\t\022\021\n\tlo" +
-      "calPort\030. \001(\005\022\025\n\rlocalProtocol\030/ \001(\t\022\027\n\017" +
-      "packetsReceived\0300 \001(\005\022\023\n\013packetsSent\0301 \001" +
-      "(\005\022\025\n\rremoteAddress\0302 \001(\t\022#\n\033remoteCandi" +
-      "dateICEServerUrl\0303 \001(\t\022$\n\034remoteCandidat" +
-      "eRelayProtocol\0304 \001(\t\022\033\n\023remoteCandidateT" +
-      "ype\0305 \001(\t\022\022\n\nremotePort\0306 \001(\005\022\026\n\016remoteP" +
-      "rotocol\0307 \001(\t\022\034\n\024sctpCongestionWindow\0308 " +
-      "\001(\001\022\017\n\007sctpMtu\0309 \001(\005\022\032\n\022sctpReceiverWind" +
-      "ow\030: \001(\001\022!\n\031sctpSmoothedRoundTripTime\030; " +
-      "\001(\001\022\025\n\rsctpUnackData\030< \001(\005\022$\n\034selectedCa" +
-      "ndidatePairChanges\030= \001(\005\022\022\n\nsrtpCipher\030>" +
-      " \001(\t\022\020\n\010tlsGroup\030? \001(\t\022\022\n\ntlsVersion\030@ \001" +
-      "(\t\032\260\002\n\017MediaSourceStat\022\022\n\naudioLevel\030\001 \001" +
-      "(\001\022\020\n\010bitDepth\030\002 \001(\005\022\026\n\016echoReturnLoss\030\003" +
-      " \001(\001\022!\n\031echoReturnLossEnhancement\030\004 \001(\001\022" +
-      "\016\n\006frames\030\005 \001(\005\022\027\n\017framesPerSecond\030\006 \001(\001" +
-      "\022\016\n\006height\030\007 \001(\005\022\014\n\004kind\030\010 \001(\t\022\025\n\rrelaye" +
-      "dSource\030\t \001(\010\022\030\n\020totalAudioEnergy\030\n \001(\001\022" +
-      "\034\n\024totalSamplesDuration\030\013 \001(\001\022\027\n\017trackId" +
-      "entifier\030\014 \001(\t\022\r\n\005width\030\r \001(\005\032\205\001\n\017MediaC" +
-      "odecStats\022\020\n\010channels\030\001 \001(\005\022\021\n\tclockRate" +
-      "\030\002 \001(\005\022\021\n\tcodecType\030\003 \001(\t\022\020\n\010mimeType\030\004 " +
-      "\001(\t\022\023\n\013payloadType\030\005 \001(\t\022\023\n\013sdpFmtpLine\030" +
-      "\006 \001(\t\032x\n\013Certificate\022\031\n\021base64Certificat" +
-      "e\030\001 \001(\t\022\023\n\013fingerprint\030\002 \001(\t\022\034\n\024fingerpr" +
-      "intAlgorithm\030\003 \001(\t\022\033\n\023issuerCertificateI" +
-      "d\030\004 \001(\t\032\303\013\n\021InboundAudioTrack\022\014\n\004ssrc\030\001 " +
-      "\002(\003\022\033\n\023averageRtcpInterval\030\002 \001(\001\022\031\n\021burs" +
-      "tDiscardCount\030\003 \001(\005\022\030\n\020burstDiscardRate\030" +
-      "\004 \001(\001\022\026\n\016burstLossCount\030\005 \001(\005\022\025\n\rburstLo" +
-      "ssRate\030\006 \001(\001\022\035\n\025burstPacketsDiscarded\030\007 " +
-      "\001(\005\022\030\n\020burstPacketsLost\030\010 \001(\005\022\025\n\rbytesRe" +
-      "ceived\030\t \001(\003\022\021\n\tbytesSent\030\n \001(\003\022\020\n\010chann" +
-      "els\030\013 \001(\005\022\021\n\tclockRate\030\014 \001(\005\022\030\n\020conceale" +
-      "dSamples\030\r \001(\005\022\031\n\021concealmentEvents\030\016 \001(" +
-      "\005\022\035\n\025decoderImplementation\030\017 \001(\t\022\r\n\005ende" +
-      "d\030\020 \001(\010\022!\n\031estimatedPlayoutTimestamp\030\021 \001" +
-      "(\003\022\033\n\023fecPacketsDiscarded\030\022 \001(\005\022\032\n\022fecPa" +
-      "cketsReceived\030\023 \001(\005\022\026\n\016gapDiscardRate\030\024 " +
-      "\001(\001\022\023\n\013gapLossRate\030\025 \001(\001\022\033\n\023headerBytesR" +
-      "eceived\030\026 \001(\003\022&\n\036insertedSamplesForDecel" +
-      "eration\030\027 \001(\005\022\016\n\006jitter\030\030 \001(\001\022\031\n\021jitterB" +
-      "ufferDelay\030\031 \001(\001\022 \n\030jitterBufferEmittedC" +
-      "ount\030\032 \001(\005\022#\n\033lastPacketReceivedTimestam" +
-      "p\030\033 \001(\003\022\020\n\010mimeType\030\034 \001(\t\022\021\n\tnackCount\030\035" +
-      " \001(\005\022\030\n\020packetsDiscarded\030\036 \001(\005\022\031\n\021packet" +
-      "sDuplicated\030\037 \001(\005\022\037\n\027packetsFailedDecryp" +
-      "tion\030  \001(\005\022\023\n\013packetsLost\030! \001(\005\022\027\n\017packe" +
-      "tsReceived\030\" \001(\005\022\027\n\017packetsRepaired\030# \001(" +
-      "\005\022\023\n\013packetsSent\030$ \001(\005\022\023\n\013payloadType\030% " +
-      "\001(\005\022\030\n\020peerConnectionId\030& \001(\t\022\036\n\026perDscp" +
-      "PacketsReceived\030\' \001(\005\022\026\n\016remoteClientId\030" +
-      "( \001(\t\022\027\n\017remoteTimestamp\030) \001(\003\022%\n\035remove" +
-      "dSamplesForAcceleration\030* \001(\005\022\023\n\013reports" +
-      "Sent\030+ \001(\005\022\025\n\rroundTripTime\030, \001(\001\022!\n\031rou" +
-      "ndTripTimeMeasurements\030- \001(\005\022\036\n\026samplesD" +
-      "ecodedWithCelt\030. \001(\005\022\036\n\026samplesDecodedWi" +
-      "thSilk\030/ \001(\005\022\023\n\013sdpFmtpLine\0300 \001(\t\022\021\n\tsfu" +
-      "SinkId\0301 \001(\t\022\036\n\026silentConcealedSamples\0302" +
-      " \001(\005\022\034\n\024totalProcessingDelay\0303 \001(\001\022\032\n\022to" +
-      "talRoundTripTime\0304 \001(\001\022\033\n\023totalSamplesDe" +
-      "coded\0305 \001(\005\022\034\n\024totalSamplesReceived\0306 \001(" +
-      "\005\022\017\n\007trackId\0307 \001(\t\022\031\n\021voiceActivityFlag\030" +
-      "8 \001(\010\032\226\014\n\021InboundVideoTrack\022\014\n\004ssrc\030\001 \002(" +
-      "\003\022\033\n\023averageRtcpInterval\030\002 \001(\001\022\031\n\021burstD" +
-      "iscardCount\030\003 \001(\005\022\030\n\020burstDiscardRate\030\004 " +
-      "\001(\001\022\026\n\016burstLossCount\030\005 \001(\005\022\025\n\rburstLoss" +
-      "Rate\030\006 \001(\001\022\035\n\025burstPacketsDiscarded\030\007 \001(" +
-      "\005\022\030\n\020burstPacketsLost\030\010 \001(\005\022\025\n\rbytesRece" +
-      "ived\030\t \001(\003\022\021\n\tbytesSent\030\n \001(\003\022\020\n\010channel" +
-      "s\030\013 \001(\005\022\021\n\tclockRate\030\014 \001(\005\022\035\n\025decoderImp" +
-      "lementation\030\r \001(\t\022\r\n\005ended\030\016 \001(\010\022!\n\031esti" +
-      "matedPlayoutTimestamp\030\017 \001(\003\022\033\n\023fecPacket" +
-      "sDiscarded\030\020 \001(\005\022\032\n\022fecPacketsReceived\030\021" +
-      " \001(\005\022\020\n\010firCount\030\022 \001(\005\022\025\n\rframeBitDepth\030" +
-      "\023 \001(\005\022\023\n\013frameHeight\030\024 \001(\005\022\022\n\nframeWidth" +
-      "\030\025 \001(\005\022\025\n\rframesDecoded\030\026 \001(\005\022\025\n\rframesD" +
-      "ropped\030\027 \001(\005\022\027\n\017framesPerSecond\030\030 \001(\001\022\026\n" +
-      "\016framesReceived\030\031 \001(\005\022\026\n\016fullFramesLost\030" +
-      "\032 \001(\005\022\026\n\016gapDiscardRate\030\033 \001(\001\022\023\n\013gapLoss" +
-      "Rate\030\034 \001(\001\022\033\n\023headerBytesReceived\030\035 \001(\003\022" +
-      "\016\n\006jitter\030\036 \001(\001\022\031\n\021jitterBufferDelay\030\037 \001" +
-      "(\001\022 \n\030jitterBufferEmittedCount\030  \001(\005\022\030\n\020" +
-      "keyFramesDecoded\030! \001(\005\022#\n\033lastPacketRece" +
-      "ivedTimestamp\030\" \001(\003\022\020\n\010mimeType\030# \001(\t\022\021\n" +
-      "\tnackCount\030$ \001(\005\022\030\n\020packetsDiscarded\030% \001" +
-      "(\005\022\031\n\021packetsDuplicated\030& \001(\005\022\037\n\027packets" +
-      "FailedDecryption\030\' \001(\005\022\023\n\013packetsLost\030( " +
-      "\001(\005\022\027\n\017packetsReceived\030) \001(\005\022\027\n\017packetsR" +
-      "epaired\030* \001(\005\022\023\n\013packetsSent\030+ \001(\005\022\031\n\021pa" +
-      "rtialFramesLost\030, \001(\005\022\023\n\013payloadType\030- \001" +
-      "(\005\022\030\n\020peerConnectionId\030. \001(\t\022\036\n\026perDscpP" +
-      "acketsReceived\030/ \001(\005\022\020\n\010pliCount\0300 \001(\005\022\r" +
-      "\n\005qpSum\0301 \001(\003\022\026\n\016remoteClientId\0302 \001(\t\022\027\n" +
-      "\017remoteTimestamp\0303 \001(\003\022\023\n\013reportsSent\0304 " +
-      "\001(\005\022\025\n\rroundTripTime\0305 \001(\001\022!\n\031roundTripT" +
-      "imeMeasurements\0306 \001(\005\022\023\n\013sdpFmtpLine\0307 \001" +
-      "(\t\022\021\n\tsfuSinkId\0308 \001(\t\022\020\n\010sliCount\0309 \001(\005\022" +
-      "\027\n\017totalDecodeTime\030: \001(\001\022\034\n\024totalInterFr" +
-      "ameDelay\030; \001(\001\022\034\n\024totalProcessingDelay\030<" +
-      " \001(\001\022\032\n\022totalRoundTripTime\030= \001(\001\022#\n\033tota" +
-      "lSquaredInterFrameDelay\030> \001(\001\022\017\n\007trackId" +
-      "\030? \001(\t\032\376\n\n\022OutboundAudioTrack\022\014\n\004ssrc\030\001 " +
-      "\002(\003\022\022\n\naudioLevel\030\002 \001(\001\022\033\n\023averageRtcpIn" +
-      "terval\030\003 \001(\001\022\031\n\021burstDiscardCount\030\004 \001(\005\022" +
-      "\030\n\020burstDiscardRate\030\005 \001(\001\022\026\n\016burstLossCo" +
-      "unt\030\006 \001(\005\022\025\n\rburstLossRate\030\007 \001(\001\022\035\n\025burs" +
-      "tPacketsDiscarded\030\010 \001(\005\022\030\n\020burstPacketsL" +
-      "ost\030\t \001(\005\022\034\n\024bytesDiscardedOnSend\030\n \001(\003\022" +
-      "\021\n\tbytesSent\030\013 \001(\003\022\020\n\010channels\030\014 \001(\005\022\021\n\t" +
-      "clockRate\030\r \001(\005\022\026\n\016echoReturnLoss\030\016 \001(\001\022" +
-      "!\n\031echoReturnLossEnhancement\030\017 \001(\001\022\035\n\025en" +
-      "coderImplementation\030\020 \001(\t\022\r\n\005ended\030\021 \001(\010" +
-      "\022\026\n\016fecPacketsSent\030\022 \001(\005\022\024\n\014fractionLost" +
-      "\030\023 \001(\001\022\026\n\016gapDiscardRate\030\024 \001(\001\022\023\n\013gapLos" +
-      "sRate\030\025 \001(\001\022\027\n\017headerBytesSent\030\026 \001(\003\022\016\n\006" +
-      "jitter\030\027 \001(\001\022\037\n\027lastPacketSentTimestamp\030" +
-      "\030 \001(\003\022\020\n\010mimeType\030\031 \001(\t\022\021\n\tnackCount\030\032 \001" +
-      "(\005\022\030\n\020packetsDiscarded\030\033 \001(\005\022\036\n\026packetsD" +
-      "iscardedOnSend\030\034 \001(\005\022\023\n\013packetsLost\030\035 \001(" +
-      "\005\022\027\n\017packetsReceived\030\036 \001(\005\022\027\n\017packetsRep" +
-      "aired\030\037 \001(\005\022\023\n\013packetsSent\030  \001(\005\022\023\n\013payl" +
-      "oadType\030! \001(\005\022\030\n\020peerConnectionId\030\" \001(\t\022" +
-      "\032\n\022perDscpPacketsSent\030# \001(\005\022\025\n\rrelayedSo" +
-      "urce\030$ \001(\010\022\027\n\017reportsReceived\030% \001(\005\022\036\n\026r" +
-      "etransmittedBytesSent\030& \001(\003\022 \n\030retransmi" +
-      "ttedPacketsSent\030\' \001(\005\022\013\n\003rid\030( \001(\t\022\025\n\rro" +
-      "undTripTime\030) \001(\001\022!\n\031roundTripTimeMeasur" +
-      "ements\030* \001(\005\022\017\n\007rtxSsrc\030+ \001(\003\022\036\n\026samples" +
-      "EncodedWithCelt\030, \001(\005\022\036\n\026samplesEncodedW" +
-      "ithSilk\030- \001(\005\022\023\n\013sdpFmtpLine\030. \001(\t\022\023\n\013sf" +
-      "uStreamId\030/ \001(\t\022\025\n\rtargetBitrate\0300 \001(\005\022\030" +
-      "\n\020totalAudioEnergy\0301 \001(\001\022\037\n\027totalEncoded" +
-      "BytesTarget\0302 \001(\003\022\034\n\024totalPacketSendDela" +
-      "y\0303 \001(\001\022\032\n\022totalRoundTripTime\0304 \001(\001\022\034\n\024t" +
-      "otalSamplesDuration\0305 \001(\001\022\030\n\020totalSample" +
-      "sSent\0306 \001(\005\022\017\n\007trackId\0307 \001(\t\022\031\n\021voiceAct" +
-      "ivityFlag\0308 \001(\010\032\256\016\n\022OutboundVideoTrack\022\014" +
-      "\n\004ssrc\030\001 \002(\003\022\033\n\023averageRtcpInterval\030\002 \001(" +
-      "\001\022\020\n\010bitDepth\030\003 \001(\005\022\031\n\021burstDiscardCount" +
-      "\030\004 \001(\005\022\030\n\020burstDiscardRate\030\005 \001(\001\022\026\n\016burs" +
-      "tLossCount\030\006 \001(\005\022\025\n\rburstLossRate\030\007 \001(\001\022" +
-      "\035\n\025burstPacketsDiscarded\030\010 \001(\005\022\030\n\020burstP" +
-      "acketsLost\030\t \001(\005\022\034\n\024bytesDiscardedOnSend" +
-      "\030\n \001(\003\022\021\n\tbytesSent\030\013 \001(\003\022\020\n\010channels\030\014 " +
-      "\001(\005\022\021\n\tclockRate\030\r \001(\005\022\035\n\025encoderImpleme" +
-      "ntation\030\016 \001(\t\022\r\n\005ended\030\017 \001(\010\022\026\n\016fecPacke" +
-      "tsSent\030\020 \001(\005\022\020\n\010firCount\030\021 \001(\005\022\024\n\014fracti" +
-      "onLost\030\022 \001(\001\022\025\n\rframeBitDepth\030\023 \001(\005\022\023\n\013f" +
-      "rameHeight\030\024 \001(\005\022\022\n\nframeWidth\030\025 \001(\005\022\016\n\006" +
-      "frames\030\026 \001(\005\022\035\n\025framesDiscardedOnSend\030\027 " +
-      "\001(\005\022\025\n\rframesDropped\030\030 \001(\005\022\025\n\rframesEnco" +
-      "ded\030\031 \001(\005\022\027\n\017framesPerSecond\030\032 \001(\001\022\022\n\nfr" +
-      "amesSent\030\033 \001(\005\022\026\n\016fullFramesLost\030\034 \001(\005\022\026" +
-      "\n\016gapDiscardRate\030\035 \001(\001\022\023\n\013gapLossRate\030\036 " +
-      "\001(\001\022\027\n\017headerBytesSent\030\037 \001(\003\022\016\n\006height\030 " +
-      " \001(\005\022\026\n\016hugeFramesSent\030! \001(\005\022\016\n\006jitter\030\"" +
-      " \001(\001\022\030\n\020keyFramesEncoded\030# \001(\005\022\037\n\027lastPa" +
-      "cketSentTimestamp\030$ \001(\003\022\020\n\010mimeType\030% \001(" +
-      "\t\022\021\n\tnackCount\030& \001(\005\022\030\n\020packetsDiscarded" +
-      "\030\' \001(\005\022\036\n\026packetsDiscardedOnSend\030( \001(\005\022\023" +
-      "\n\013packetsLost\030) \001(\005\022\027\n\017packetsReceived\030*" +
-      " \001(\005\022\027\n\017packetsRepaired\030+ \001(\005\022\023\n\013packets" +
-      "Sent\030, \001(\005\022\031\n\021partialFramesLost\030- \001(\005\022\023\n" +
-      "\013payloadType\030. \001(\005\022\030\n\020peerConnectionId\030/" +
-      " \001(\t\022\032\n\022perDscpPacketsSent\0300 \001(\005\022\020\n\010pliC" +
-      "ount\0301 \001(\005\022\r\n\005qpSum\0302 \001(\003\022*\n\"qualityLimi" +
-      "tationDurationBandwidth\0303 \001(\001\022$\n\034quality" +
-      "LimitationDurationCPU\0304 \001(\001\022%\n\035qualityLi" +
-      "mitationDurationNone\0305 \001(\001\022&\n\036qualityLim" +
-      "itationDurationOther\0306 \001(\001\022\037\n\027qualityLim" +
-      "itationReason\0307 \001(\t\022*\n\"qualityLimitation" +
-      "ResolutionChanges\0308 \001(\005\022\025\n\rrelayedSource" +
-      "\0309 \001(\010\022\027\n\017reportsReceived\030: \001(\005\022\036\n\026retra" +
-      "nsmittedBytesSent\030; \001(\003\022 \n\030retransmitted" +
-      "PacketsSent\030< \001(\005\022\013\n\003rid\030= \001(\t\022\025\n\rroundT" +
-      "ripTime\030> \001(\001\022!\n\031roundTripTimeMeasuremen" +
-      "ts\030? \001(\005\022\017\n\007rtxSsrc\030@ \001(\003\022\023\n\013sdpFmtpLine" +
-      "\030A \001(\t\022\023\n\013sfuStreamId\030B \001(\t\022\020\n\010sliCount\030" +
-      "C \001(\005\022\025\n\rtargetBitrate\030D \001(\005\022\027\n\017totalEnc" +
-      "odeTime\030E \001(\001\022\037\n\027totalEncodedBytesTarget" +
-      "\030F \001(\003\022\034\n\024totalPacketSendDelay\030G \001(\001\022\032\n\022" +
-      "totalRoundTripTime\030H \001(\001\022\017\n\007trackId\030I \001(" +
-      "\t\022\r\n\005width\030J \001(\005\032\267\001\n\021IceLocalCandidate\022\017" +
-      "\n\007address\030\001 \001(\t\022\025\n\rcandidateType\030\002 \001(\t\022\n" +
-      "\n\002id\030\003 \001(\t\022\030\n\020peerConnectionId\030\004 \001(\t\022\014\n\004" +
-      "port\030\005 \001(\005\022\020\n\010priority\030\006 \001(\003\022\020\n\010protocol" +
-      "\030\007 \001(\t\022\025\n\rrelayProtocol\030\010 \001(\t\022\013\n\003url\030\t \001" +
-      "(\t\032\270\001\n\022IceRemoteCandidate\022\017\n\007address\030\001 \001" +
-      "(\t\022\025\n\rcandidateType\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n" +
-      "\020peerConnectionId\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\020\n" +
-      "\010priority\030\006 \001(\003\022\020\n\010protocol\030\007 \001(\t\022\025\n\rrel" +
-      "ayProtocol\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\373\001\n\013DataCh" +
-      "annel\022\017\n\007address\030\001 \001(\t\022\025\n\rbytesReceived\030" +
-      "\002 \001(\003\022\021\n\tbytesSent\030\003 \001(\003\022\035\n\025dataChannelI" +
-      "dentifier\030\004 \001(\005\022\n\n\002id\030\005 \001(\t\022\r\n\005label\030\006 \001" +
-      "(\t\022\030\n\020messagesReceived\030\007 \001(\005\022\024\n\014messages" +
-      "Sent\030\010 \001(\005\022\030\n\020peerConnectionId\030\t \001(\t\022\014\n\004" +
-      "port\030\n \001(\005\022\020\n\010protocol\030\013 \001(\t\022\r\n\005state\030\014 " +
-      "\001(\t\032\200\032\n\tSfuSample\022\\\n\016extensionStats\030\001 \003(" +
-      "\0132D.org.observertc.schemas.protobuf.Samp" +
-      "les.SfuSample.SfuExtensionStats\022[\n\016inbou" +
-      "ndRtpPads\030\002 \003(\0132C.org.observertc.schemas" +
-      ".protobuf.Samples.SfuSample.SfuInboundRt" +
-      "pPad\022]\n\017outboundRtpPads\030\003 \003(\0132D.org.obse" +
-      "rvertc.schemas.protobuf.Samples.SfuSampl" +
-      "e.SfuOutboundRtpPad\022W\n\014sctpChannels\030\004 \003(" +
-      "\0132A.org.observertc.schemas.protobuf.Samp" +
-      "les.SfuSample.SfuSctpChannel\022S\n\ntranspor" +
-      "ts\030\005 \003(\0132?.org.observertc.schemas.protob" +
-      "uf.Samples.SfuSample.SfuTransport\022\r\n\005sfu" +
-      "Id\030\006 \002(\t\022\021\n\ttimestamp\030\007 \002(\003\022\016\n\006marker\030\010 " +
-      "\001(\t\022\035\n\025timeZoneOffsetInHours\030\t \001(\005\032\363\004\n\014S" +
-      "fuTransport\022\023\n\013transportId\030\001 \002(\t\022\021\n\tdtls" +
-      "State\030\002 \001(\t\022\017\n\007iceRole\030\003 \001(\t\022\020\n\010iceState" +
-      "\030\004 \001(\t\022\020\n\010internal\030\005 \001(\010\022\024\n\014localAddress" +
-      "\030\006 \001(\t\022\021\n\tlocalPort\030\007 \001(\005\022\020\n\010noReport\030\010 " +
-      "\001(\010\022\020\n\010protocol\030\t \001(\t\022\025\n\rremoteAddress\030\n" +
-      " \001(\t\022\022\n\nremotePort\030\013 \001(\005\022\030\n\020rtpBytesRece" +
-      "ived\030\014 \001(\003\022\024\n\014rtpBytesSent\030\r \001(\003\022\026\n\016rtpP" +
-      "acketsLost\030\016 \001(\005\022\032\n\022rtpPacketsReceived\030\017" +
-      " \001(\005\022\026\n\016rtpPacketsSent\030\020 \001(\005\022\030\n\020rtxBytes" +
-      "Received\030\021 \001(\003\022\024\n\014rtxBytesSent\030\022 \001(\003\022\033\n\023" +
-      "rtxPacketsDiscarded\030\023 \001(\005\022\026\n\016rtxPacketsL" +
-      "ost\030\024 \001(\005\022\032\n\022rtxPacketsReceived\030\025 \001(\005\022\026\n" +
-      "\016rtxPacketsSent\030\026 \001(\005\022\031\n\021sctpBytesReceiv" +
-      "ed\030\027 \001(\003\022\025\n\rsctpBytesSent\030\030 \001(\003\022\033\n\023sctpP" +
-      "acketsReceived\030\031 \001(\005\022\027\n\017sctpPacketsSent\030" +
-      "\032 \001(\005\022\021\n\tsctpState\030\033 \001(\t\032\315\006\n\020SfuInboundR" +
-      "tpPad\022\r\n\005padId\030\001 \002(\t\022\014\n\004ssrc\030\002 \002(\003\022\020\n\010st" +
-      "reamId\030\003 \002(\t\022\023\n\013transportId\030\004 \002(\t\022\025\n\rbyt" +
-      "esReceived\030\005 \001(\003\022\021\n\tclockRate\030\006 \001(\005\022\033\n\023f" +
-      "ecPacketsDiscarded\030\007 \001(\005\022\032\n\022fecPacketsRe" +
-      "ceived\030\010 \001(\005\022\020\n\010firCount\030\t \001(\005\022\024\n\014fracti" +
-      "onLost\030\n \001(\001\022\025\n\rframesDecoded\030\013 \001(\005\022\026\n\016f" +
-      "ramesReceived\030\014 \001(\005\022\020\n\010internal\030\r \001(\010\022\016\n" +
-      "\006jitter\030\016 \001(\001\022\030\n\020keyFramesDecoded\030\017 \001(\005\022" +
-      "\021\n\tmediaType\030\020 \001(\t\022\020\n\010mimeType\030\021 \001(\t\022\021\n\t" +
-      "nackCount\030\022 \001(\005\022\020\n\010noReport\030\023 \001(\010\022\030\n\020pac" +
-      "ketsDiscarded\030\024 \001(\005\022\031\n\021packetsDuplicated" +
-      "\030\025 \001(\005\022\037\n\027packetsFailedDecryption\030\026 \001(\005\022" +
-      "\023\n\013packetsLost\030\027 \001(\005\022\027\n\017packetsReceived\030" +
-      "\030 \001(\005\022\027\n\017packetsRepaired\030\031 \001(\005\022\023\n\013payloa" +
-      "dType\030\032 \001(\005\022\020\n\010pliCount\030\033 \001(\005\022\013\n\003rid\030\034 \001" +
-      "(\t\022\025\n\rroundTripTime\030\035 \001(\001\022\022\n\nrtcpRrSent\030" +
-      "\036 \001(\005\022\026\n\016rtcpSrReceived\030\037 \001(\005\022\033\n\023rtxPack" +
-      "etsDiscarded\030  \001(\005\022\032\n\022rtxPacketsReceived" +
-      "\030! \001(\005\022\017\n\007rtxSsrc\030\" \001(\003\022\023\n\013sdpFmtpLine\030#" +
-      " \001(\t\022\020\n\010sliCount\030$ \001(\005\022\025\n\rtargetBitrate\030" +
-      "% \001(\005\022\031\n\021voiceActivityFlag\030& \001(\010\032\202\007\n\021Sfu" +
-      "OutboundRtpPad\022\r\n\005padId\030\001 \002(\t\022\016\n\006sinkId\030" +
-      "\002 \002(\t\022\014\n\004ssrc\030\003 \002(\003\022\020\n\010streamId\030\004 \002(\t\022\023\n" +
-      "\013transportId\030\005 \002(\t\022\021\n\tbytesSent\030\006 \001(\003\022\016\n" +
-      "\006callId\030\007 \001(\t\022\020\n\010clientId\030\010 \001(\t\022\021\n\tclock" +
-      "Rate\030\t \001(\005\022\033\n\023fecPacketsDiscarded\030\n \001(\005\022" +
-      "\026\n\016fecPacketsSent\030\013 \001(\005\022\020\n\010firCount\030\014 \001(" +
-      "\005\022\024\n\014fractionLost\030\r \001(\001\022\025\n\rframesEncoded" +
-      "\030\016 \001(\005\022\022\n\nframesSent\030\017 \001(\005\022\020\n\010internal\030\020" +
-      " \001(\010\022\016\n\006jitter\030\021 \001(\001\022\030\n\020keyFramesEncoded" +
-      "\030\022 \001(\005\022\021\n\tmediaType\030\023 \001(\t\022\020\n\010mimeType\030\024 " +
-      "\001(\t\022\021\n\tnackCount\030\025 \001(\005\022\020\n\010noReport\030\026 \001(\010" +
-      "\022\030\n\020packetsDiscarded\030\027 \001(\005\022\031\n\021packetsDup" +
-      "licated\030\030 \001(\005\022\037\n\027packetsFailedEncryption" +
-      "\030\031 \001(\005\022\023\n\013packetsLost\030\032 \001(\005\022\034\n\024packetsRe" +
-      "transmitted\030\033 \001(\005\022\023\n\013packetsSent\030\034 \001(\005\022\023" +
-      "\n\013payloadType\030\035 \001(\005\022\020\n\010pliCount\030\036 \001(\005\022\013\n" +
-      "\003rid\030\037 \001(\t\022\025\n\rroundTripTime\030  \001(\001\022\026\n\016rtc" +
-      "pRrReceived\030! \001(\005\022\022\n\nrtcpSrSent\030\" \001(\005\022\033\n" +
-      "\023rtxPacketsDiscarded\030# \001(\005\022\026\n\016rtxPackets" +
-      "Sent\030$ \001(\005\022\017\n\007rtxSsrc\030% \001(\003\022\023\n\013sdpFmtpLi" +
-      "ne\030& \001(\t\022\020\n\010sliCount\030\' \001(\005\022\025\n\rtargetBitr" +
-      "ate\030( \001(\005\022\017\n\007trackId\030) \001(\t\022\031\n\021voiceActiv" +
-      "ityFlag\030* \001(\010\032\332\002\n\016SfuSctpChannel\022\021\n\tchan" +
-      "nelId\030\001 \002(\t\022\020\n\010streamId\030\002 \002(\t\022\023\n\013transpo" +
-      "rtId\030\003 \002(\t\022\025\n\rbytesReceived\030\004 \001(\003\022\021\n\tbyt" +
-      "esSent\030\005 \001(\003\022\r\n\005label\030\006 \001(\t\022\027\n\017messageRe" +
-      "ceived\030\007 \001(\005\022\023\n\013messageSent\030\010 \001(\005\022\020\n\010noR" +
-      "eport\030\t \001(\010\022\020\n\010protocol\030\n \001(\t\022\034\n\024sctpCon" +
-      "gestionWindow\030\013 \001(\001\022\017\n\007sctpMtu\030\014 \001(\005\022\032\n\022" +
-      "sctpReceiverWindow\030\r \001(\001\022!\n\031sctpSmoothed" +
-      "RoundTripTime\030\016 \001(\001\022\025\n\rsctpUnackData\030\017 \001" +
-      "(\005\0322\n\021SfuExtensionStats\022\017\n\007payload\030\001 \002(\t" +
-      "\022\014\n\004type\030\002 \002(\t\032\200\007\n\nTurnSample\022[\n\013allocat" +
-      "ions\030\001 \003(\0132F.org.observertc.schemas.prot" +
-      "obuf.Samples.TurnSample.TurnPeerAllocati" +
-      "on\022Q\n\010sessions\030\002 \003(\0132?.org.observertc.sc" +
-      "hemas.protobuf.Samples.TurnSample.TurnSe" +
-      "ssion\022\020\n\010serverId\030\003 \002(\t\032\260\002\n\022TurnPeerAllo" +
-      "cation\022\016\n\006peerId\030\001 \002(\t\022\026\n\016relayedAddress" +
-      "\030\002 \002(\t\022\023\n\013relayedPort\030\003 \002(\005\022\021\n\tsessionId" +
-      "\030\004 \002(\t\022\031\n\021transportProtocol\030\005 \002(\t\022\023\n\013pee" +
-      "rAddress\030\006 \001(\t\022\020\n\010peerPort\030\007 \001(\005\022\025\n\rrece" +
-      "ivedBytes\030\010 \001(\003\022\027\n\017receivedPackets\030\t \001(\005",
-      "\022\030\n\020receivingBitrate\030\n \001(\005\022\026\n\016sendingBit" +
-      "rate\030\013 \001(\005\022\021\n\tsentBytes\030\014 \001(\003\022\023\n\013sentPac" +
-      "kets\030\r \001(\005\032\374\002\n\013TurnSession\022\021\n\tsessionId\030" +
-      "\001 \002(\t\022\025\n\rclientAddress\030\002 \001(\t\022\020\n\010clientId" +
-      "\030\003 \001(\t\022\022\n\nclientPort\030\004 \001(\005\022\033\n\023nonceExpir" +
-      "ationTime\030\005 \001(\003\022\r\n\005realm\030\006 \001(\t\022\025\n\rreceiv" +
-      "edBytes\030\007 \001(\003\022\027\n\017receivedPackets\030\010 \001(\005\022\030" +
-      "\n\020receivingBitrate\030\t \001(\005\022\026\n\016sendingBitra" +
-      "te\030\n \001(\005\022\021\n\tsentBytes\030\013 \001(\003\022\023\n\013sentPacke" +
-      "ts\030\014 \001(\005\022\025\n\rserverAddress\030\r \001(\t\022\022\n\nserve" +
-      "rPort\030\016 \001(\005\022\017\n\007started\030\017 \001(\003\022\031\n\021transpor" +
-      "tProtocol\030\020 \001(\t\022\020\n\010username\030\021 \001(\t"
+      "ientSample.ExtensionStat\022c\n\022iceLocalCand" +
+      "idates\030\005 \003(\0132G.org.observertc.schemas.pr" +
+      "otobuf.Samples.ClientSample.IceLocalCand" +
+      "idate\022e\n\023iceRemoteCandidates\030\006 \003(\0132H.org" +
+      ".observertc.schemas.protobuf.Samples.Cli" +
+      "entSample.IceRemoteCandidate\022\022\n\niceServe" +
+      "rs\030\007 \003(\t\022c\n\022inboundAudioTracks\030\010 \003(\0132G.o" +
+      "rg.observertc.schemas.protobuf.Samples.C" +
+      "lientSample.InboundAudioTrack\022c\n\022inbound" +
+      "VideoTracks\030\t \003(\0132G.org.observertc.schem" +
+      "as.protobuf.Samples.ClientSample.Inbound" +
+      "VideoTrack\022\021\n\tlocalSDPs\030\n \003(\t\022\030\n\020mediaCo" +
+      "nstraints\030\013 \003(\t\022W\n\014mediaDevices\030\014 \003(\0132A." +
+      "org.observertc.schemas.protobuf.Samples." +
+      "ClientSample.MediaDevice\022[\n\014mediaSources" +
+      "\030\r \003(\0132E.org.observertc.schemas.protobuf" +
+      ".Samples.ClientSample.MediaSourceStat\022e\n" +
+      "\023outboundAudioTracks\030\016 \003(\0132H.org.observe" +
+      "rtc.schemas.protobuf.Samples.ClientSampl" +
+      "e.OutboundAudioTrack\022e\n\023outboundVideoTra" +
+      "cks\030\017 \003(\0132H.org.observertc.schemas.proto" +
+      "buf.Samples.ClientSample.OutboundVideoTr" +
+      "ack\022c\n\014pcTransports\030\020 \003(\0132M.org.observer" +
+      "tc.schemas.protobuf.Samples.ClientSample" +
+      ".PeerConnectionTransport\022\027\n\017userMediaErr" +
+      "ors\030\021 \003(\t\022\020\n\010clientId\030\022 \002(\t\022\021\n\ttimestamp" +
+      "\030\023 \002(\003\022N\n\007browser\030\024 \001(\0132=.org.observertc" +
+      ".schemas.protobuf.Samples.ClientSample.B" +
+      "rowser\022\016\n\006callId\030\025 \001(\t\022L\n\006engine\030\026 \001(\0132<" +
+      ".org.observertc.schemas.protobuf.Samples" +
+      ".ClientSample.Engine\022\016\n\006marker\030\027 \001(\t\022Q\n\002" +
+      "os\030\030 \001(\0132E.org.observertc.schemas.protob" +
+      "uf.Samples.ClientSample.OperationSystem\022" +
+      "P\n\010platform\030\031 \001(\0132>.org.observertc.schem" +
+      "as.protobuf.Samples.ClientSample.Platfor" +
+      "m\022\016\n\006roomId\030\032 \001(\t\022\021\n\tsampleSeq\030\033 \001(\005\022\035\n\025" +
+      "timeZoneOffsetInHours\030\034 \001(\005\022\016\n\006userId\030\035 " +
+      "\001(\t\032\'\n\006Engine\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002" +
+      " \001(\t\0327\n\010Platform\022\r\n\005model\030\001 \001(\t\022\014\n\004type\030" +
+      "\002 \001(\t\022\016\n\006vendor\030\003 \001(\t\032(\n\007Browser\022\014\n\004name" +
+      "\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\032E\n\017OperationSyst" +
+      "em\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\022\023\n\013ver" +
+      "sionName\030\003 \001(\t\0326\n\013MediaDevice\022\n\n\002id\030\001 \001(" +
+      "\t\022\014\n\004kind\030\002 \001(\t\022\r\n\005label\030\003 \001(\t\032.\n\rExtens" +
+      "ionStat\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\267" +
+      "\020\n\027PeerConnectionTransport\022\030\n\020peerConnec" +
+      "tionId\030\001 \002(\t\022\025\n\rbytesReceived\030\002 \001(\003\022\021\n\tb" +
+      "ytesSent\030\003 \001(\003\022-\n%candidatePairAvailable" +
+      "IncomingBitrate\030\004 \001(\001\022-\n%candidatePairAv" +
+      "ailableOutgoingBitrate\030\005 \001(\001\022)\n!candidat" +
+      "ePairBytesDiscardedOnSend\030\006 \001(\003\022\"\n\032candi" +
+      "datePairBytesReceived\030\007 \001(\003\022\036\n\026candidate" +
+      "PairBytesSent\030\010 \001(\003\022/\n\'candidatePairCirc" +
+      "uitBreakerTriggerCount\030\t \001(\005\022,\n$candidat" +
+      "ePairConsentExpiredTimestamp\030\n \001(\003\022,\n$ca" +
+      "ndidatePairConsentRequestBytesSent\030\013 \001(\003" +
+      "\022(\n candidatePairConsentRequestsSent\030\014 \001" +
+      "(\005\022)\n!candidatePairCurrentRoundTripTime\030" +
+      "\r \001(\001\022*\n\"candidatePairFirstRequestTimest" +
+      "amp\030\016 \001(\003\0220\n(candidatePairLastPacketRece" +
+      "ivedTimestamp\030\017 \001(\003\022,\n$candidatePairLast" +
+      "PacketSentTimestamp\030\020 \001(\003\022)\n!candidatePa" +
+      "irLastRequestTimestamp\030\021 \001(\003\022*\n\"candidat" +
+      "ePairLastResponseTimestamp\030\022 \001(\003\022+\n#cand" +
+      "idatePairPacketsDiscardedOnSend\030\023 \001(\005\022$\n" +
+      "\034candidatePairPacketsReceived\030\024 \001(\005\022 \n\030c" +
+      "andidatePairPacketsSent\030\025 \001(\005\022%\n\035candida" +
+      "tePairRequestBytesSent\030\026 \001(\003\022%\n\035candidat" +
+      "ePairRequestsReceived\030\027 \001(\005\022!\n\031candidate" +
+      "PairRequestsSent\030\030 \001(\005\022&\n\036candidatePairR" +
+      "esponseBytesSent\030\031 \001(\003\022&\n\036candidatePairR" +
+      "esponsesReceived\030\032 \001(\005\022\"\n\032candidatePairR" +
+      "esponsesSent\030\033 \001(\005\022+\n#candidatePairRetra" +
+      "nsmissionReceived\030\034 \001(\005\022\'\n\037candidatePair" +
+      "RetransmissionSent\030\035 \001(\005\022\032\n\022candidatePai" +
+      "rState\030\036 \001(\t\022\'\n\037candidatePairTotalRoundT" +
+      "ripTime\030\037 \001(\001\022\034\n\024dataChannelsAccepted\030  " +
+      "\001(\005\022\032\n\022dataChannelsClosed\030! \001(\005\022\032\n\022dataC" +
+      "hannelsOpened\030\" \001(\005\022\035\n\025dataChannelsReque" +
+      "sted\030# \001(\005\022\022\n\ndtlsCipher\030$ \001(\t\022\021\n\tdtlsSt" +
+      "ate\030% \001(\t\022 \n\030iceLocalUsernameFragment\030& " +
+      "\001(\t\022\017\n\007iceRole\030\' \001(\t\022\020\n\010iceState\030( \001(\t\022\r" +
+      "\n\005label\030) \001(\t\022\024\n\014localAddress\030* \001(\t\022\"\n\032l" +
+      "ocalCandidateICEServerUrl\030+ \001(\t\022#\n\033local" +
+      "CandidateRelayProtocol\030, \001(\t\022\032\n\022localCan" +
+      "didateType\030- \001(\t\022\021\n\tlocalPort\030. \001(\005\022\025\n\rl" +
+      "ocalProtocol\030/ \001(\t\022\027\n\017packetsReceived\0300 " +
+      "\001(\005\022\023\n\013packetsSent\0301 \001(\005\022\025\n\rremoteAddres" +
+      "s\0302 \001(\t\022#\n\033remoteCandidateICEServerUrl\0303" +
+      " \001(\t\022$\n\034remoteCandidateRelayProtocol\0304 \001" +
+      "(\t\022\033\n\023remoteCandidateType\0305 \001(\t\022\022\n\nremot" +
+      "ePort\0306 \001(\005\022\026\n\016remoteProtocol\0307 \001(\t\022\034\n\024s" +
+      "ctpCongestionWindow\0308 \001(\001\022\017\n\007sctpMtu\0309 \001" +
+      "(\005\022\032\n\022sctpReceiverWindow\030: \001(\001\022!\n\031sctpSm" +
+      "oothedRoundTripTime\030; \001(\001\022\025\n\rsctpUnackDa" +
+      "ta\030< \001(\005\022$\n\034selectedCandidatePairChanges" +
+      "\030= \001(\005\022\022\n\nsrtpCipher\030> \001(\t\022\020\n\010tlsGroup\030?" +
+      " \001(\t\022\022\n\ntlsVersion\030@ \001(\t\032\260\002\n\017MediaSource" +
+      "Stat\022\022\n\naudioLevel\030\001 \001(\001\022\020\n\010bitDepth\030\002 \001" +
+      "(\005\022\026\n\016echoReturnLoss\030\003 \001(\001\022!\n\031echoReturn" +
+      "LossEnhancement\030\004 \001(\001\022\016\n\006frames\030\005 \001(\005\022\027\n" +
+      "\017framesPerSecond\030\006 \001(\001\022\016\n\006height\030\007 \001(\005\022\014" +
+      "\n\004kind\030\010 \001(\t\022\025\n\rrelayedSource\030\t \001(\010\022\030\n\020t" +
+      "otalAudioEnergy\030\n \001(\001\022\034\n\024totalSamplesDur" +
+      "ation\030\013 \001(\001\022\027\n\017trackIdentifier\030\014 \001(\t\022\r\n\005" +
+      "width\030\r \001(\005\032\205\001\n\017MediaCodecStats\022\020\n\010chann" +
+      "els\030\001 \001(\005\022\021\n\tclockRate\030\002 \001(\005\022\021\n\tcodecTyp" +
+      "e\030\003 \001(\t\022\020\n\010mimeType\030\004 \001(\t\022\023\n\013payloadType" +
+      "\030\005 \001(\t\022\023\n\013sdpFmtpLine\030\006 \001(\t\032x\n\013Certifica" +
+      "te\022\031\n\021base64Certificate\030\001 \001(\t\022\023\n\013fingerp" +
+      "rint\030\002 \001(\t\022\034\n\024fingerprintAlgorithm\030\003 \001(\t" +
+      "\022\033\n\023issuerCertificateId\030\004 \001(\t\032\303\013\n\021Inboun" +
+      "dAudioTrack\022\014\n\004ssrc\030\001 \002(\003\022\033\n\023averageRtcp" +
+      "Interval\030\002 \001(\001\022\031\n\021burstDiscardCount\030\003 \001(" +
+      "\005\022\030\n\020burstDiscardRate\030\004 \001(\001\022\026\n\016burstLoss" +
+      "Count\030\005 \001(\005\022\025\n\rburstLossRate\030\006 \001(\001\022\035\n\025bu" +
+      "rstPacketsDiscarded\030\007 \001(\005\022\030\n\020burstPacket" +
+      "sLost\030\010 \001(\005\022\025\n\rbytesReceived\030\t \001(\003\022\021\n\tby" +
+      "tesSent\030\n \001(\003\022\020\n\010channels\030\013 \001(\005\022\021\n\tclock" +
+      "Rate\030\014 \001(\005\022\030\n\020concealedSamples\030\r \001(\005\022\031\n\021" +
+      "concealmentEvents\030\016 \001(\005\022\035\n\025decoderImplem" +
+      "entation\030\017 \001(\t\022\r\n\005ended\030\020 \001(\010\022!\n\031estimat" +
+      "edPlayoutTimestamp\030\021 \001(\003\022\033\n\023fecPacketsDi" +
+      "scarded\030\022 \001(\005\022\032\n\022fecPacketsReceived\030\023 \001(" +
+      "\005\022\026\n\016gapDiscardRate\030\024 \001(\001\022\023\n\013gapLossRate" +
+      "\030\025 \001(\001\022\033\n\023headerBytesReceived\030\026 \001(\003\022&\n\036i" +
+      "nsertedSamplesForDeceleration\030\027 \001(\005\022\016\n\006j" +
+      "itter\030\030 \001(\001\022\031\n\021jitterBufferDelay\030\031 \001(\001\022 " +
+      "\n\030jitterBufferEmittedCount\030\032 \001(\005\022#\n\033last" +
+      "PacketReceivedTimestamp\030\033 \001(\003\022\020\n\010mimeTyp" +
+      "e\030\034 \001(\t\022\021\n\tnackCount\030\035 \001(\005\022\030\n\020packetsDis" +
+      "carded\030\036 \001(\005\022\031\n\021packetsDuplicated\030\037 \001(\005\022" +
+      "\037\n\027packetsFailedDecryption\030  \001(\005\022\023\n\013pack" +
+      "etsLost\030! \001(\005\022\027\n\017packetsReceived\030\" \001(\005\022\027" +
+      "\n\017packetsRepaired\030# \001(\005\022\023\n\013packetsSent\030$" +
+      " \001(\005\022\023\n\013payloadType\030% \001(\005\022\030\n\020peerConnect" +
+      "ionId\030& \001(\t\022\036\n\026perDscpPacketsReceived\030\' " +
+      "\001(\005\022\026\n\016remoteClientId\030( \001(\t\022\027\n\017remoteTim" +
+      "estamp\030) \001(\003\022%\n\035removedSamplesForAcceler" +
+      "ation\030* \001(\005\022\023\n\013reportsSent\030+ \001(\005\022\025\n\rroun" +
+      "dTripTime\030, \001(\001\022!\n\031roundTripTimeMeasurem" +
+      "ents\030- \001(\005\022\036\n\026samplesDecodedWithCelt\030. \001" +
+      "(\005\022\036\n\026samplesDecodedWithSilk\030/ \001(\005\022\023\n\013sd" +
+      "pFmtpLine\0300 \001(\t\022\021\n\tsfuSinkId\0301 \001(\t\022\036\n\026si" +
+      "lentConcealedSamples\0302 \001(\005\022\034\n\024totalProce" +
+      "ssingDelay\0303 \001(\001\022\032\n\022totalRoundTripTime\0304" +
+      " \001(\001\022\033\n\023totalSamplesDecoded\0305 \001(\005\022\034\n\024tot" +
+      "alSamplesReceived\0306 \001(\005\022\017\n\007trackId\0307 \001(\t" +
+      "\022\031\n\021voiceActivityFlag\0308 \001(\010\032\226\014\n\021InboundV" +
+      "ideoTrack\022\014\n\004ssrc\030\001 \002(\003\022\033\n\023averageRtcpIn" +
+      "terval\030\002 \001(\001\022\031\n\021burstDiscardCount\030\003 \001(\005\022" +
+      "\030\n\020burstDiscardRate\030\004 \001(\001\022\026\n\016burstLossCo" +
+      "unt\030\005 \001(\005\022\025\n\rburstLossRate\030\006 \001(\001\022\035\n\025burs" +
+      "tPacketsDiscarded\030\007 \001(\005\022\030\n\020burstPacketsL" +
+      "ost\030\010 \001(\005\022\025\n\rbytesReceived\030\t \001(\003\022\021\n\tbyte" +
+      "sSent\030\n \001(\003\022\020\n\010channels\030\013 \001(\005\022\021\n\tclockRa" +
+      "te\030\014 \001(\005\022\035\n\025decoderImplementation\030\r \001(\t\022" +
+      "\r\n\005ended\030\016 \001(\010\022!\n\031estimatedPlayoutTimest" +
+      "amp\030\017 \001(\003\022\033\n\023fecPacketsDiscarded\030\020 \001(\005\022\032" +
+      "\n\022fecPacketsReceived\030\021 \001(\005\022\020\n\010firCount\030\022" +
+      " \001(\005\022\025\n\rframeBitDepth\030\023 \001(\005\022\023\n\013frameHeig" +
+      "ht\030\024 \001(\005\022\022\n\nframeWidth\030\025 \001(\005\022\025\n\rframesDe" +
+      "coded\030\026 \001(\005\022\025\n\rframesDropped\030\027 \001(\005\022\027\n\017fr" +
+      "amesPerSecond\030\030 \001(\001\022\026\n\016framesReceived\030\031 " +
+      "\001(\005\022\026\n\016fullFramesLost\030\032 \001(\005\022\026\n\016gapDiscar" +
+      "dRate\030\033 \001(\001\022\023\n\013gapLossRate\030\034 \001(\001\022\033\n\023head" +
+      "erBytesReceived\030\035 \001(\003\022\016\n\006jitter\030\036 \001(\001\022\031\n" +
+      "\021jitterBufferDelay\030\037 \001(\001\022 \n\030jitterBuffer" +
+      "EmittedCount\030  \001(\005\022\030\n\020keyFramesDecoded\030!" +
+      " \001(\005\022#\n\033lastPacketReceivedTimestamp\030\" \001(" +
+      "\003\022\020\n\010mimeType\030# \001(\t\022\021\n\tnackCount\030$ \001(\005\022\030" +
+      "\n\020packetsDiscarded\030% \001(\005\022\031\n\021packetsDupli" +
+      "cated\030& \001(\005\022\037\n\027packetsFailedDecryption\030\'" +
+      " \001(\005\022\023\n\013packetsLost\030( \001(\005\022\027\n\017packetsRece" +
+      "ived\030) \001(\005\022\027\n\017packetsRepaired\030* \001(\005\022\023\n\013p" +
+      "acketsSent\030+ \001(\005\022\031\n\021partialFramesLost\030, " +
+      "\001(\005\022\023\n\013payloadType\030- \001(\005\022\030\n\020peerConnecti" +
+      "onId\030. \001(\t\022\036\n\026perDscpPacketsReceived\030/ \001" +
+      "(\005\022\020\n\010pliCount\0300 \001(\005\022\r\n\005qpSum\0301 \001(\003\022\026\n\016r" +
+      "emoteClientId\0302 \001(\t\022\027\n\017remoteTimestamp\0303" +
+      " \001(\003\022\023\n\013reportsSent\0304 \001(\005\022\025\n\rroundTripTi" +
+      "me\0305 \001(\001\022!\n\031roundTripTimeMeasurements\0306 " +
+      "\001(\005\022\023\n\013sdpFmtpLine\0307 \001(\t\022\021\n\tsfuSinkId\0308 " +
+      "\001(\t\022\020\n\010sliCount\0309 \001(\005\022\027\n\017totalDecodeTime" +
+      "\030: \001(\001\022\034\n\024totalInterFrameDelay\030; \001(\001\022\034\n\024" +
+      "totalProcessingDelay\030< \001(\001\022\032\n\022totalRound" +
+      "TripTime\030= \001(\001\022#\n\033totalSquaredInterFrame" +
+      "Delay\030> \001(\001\022\017\n\007trackId\030? \001(\t\032\376\n\n\022Outboun" +
+      "dAudioTrack\022\014\n\004ssrc\030\001 \002(\003\022\022\n\naudioLevel\030" +
+      "\002 \001(\001\022\033\n\023averageRtcpInterval\030\003 \001(\001\022\031\n\021bu" +
+      "rstDiscardCount\030\004 \001(\005\022\030\n\020burstDiscardRat" +
+      "e\030\005 \001(\001\022\026\n\016burstLossCount\030\006 \001(\005\022\025\n\rburst" +
+      "LossRate\030\007 \001(\001\022\035\n\025burstPacketsDiscarded\030" +
+      "\010 \001(\005\022\030\n\020burstPacketsLost\030\t \001(\005\022\034\n\024bytes" +
+      "DiscardedOnSend\030\n \001(\003\022\021\n\tbytesSent\030\013 \001(\003" +
+      "\022\020\n\010channels\030\014 \001(\005\022\021\n\tclockRate\030\r \001(\005\022\026\n" +
+      "\016echoReturnLoss\030\016 \001(\001\022!\n\031echoReturnLossE" +
+      "nhancement\030\017 \001(\001\022\035\n\025encoderImplementatio" +
+      "n\030\020 \001(\t\022\r\n\005ended\030\021 \001(\010\022\026\n\016fecPacketsSent" +
+      "\030\022 \001(\005\022\024\n\014fractionLost\030\023 \001(\001\022\026\n\016gapDisca" +
+      "rdRate\030\024 \001(\001\022\023\n\013gapLossRate\030\025 \001(\001\022\027\n\017hea" +
+      "derBytesSent\030\026 \001(\003\022\016\n\006jitter\030\027 \001(\001\022\037\n\027la" +
+      "stPacketSentTimestamp\030\030 \001(\003\022\020\n\010mimeType\030" +
+      "\031 \001(\t\022\021\n\tnackCount\030\032 \001(\005\022\030\n\020packetsDisca" +
+      "rded\030\033 \001(\005\022\036\n\026packetsDiscardedOnSend\030\034 \001" +
+      "(\005\022\023\n\013packetsLost\030\035 \001(\005\022\027\n\017packetsReceiv" +
+      "ed\030\036 \001(\005\022\027\n\017packetsRepaired\030\037 \001(\005\022\023\n\013pac" +
+      "ketsSent\030  \001(\005\022\023\n\013payloadType\030! \001(\005\022\030\n\020p" +
+      "eerConnectionId\030\" \001(\t\022\032\n\022perDscpPacketsS" +
+      "ent\030# \001(\005\022\025\n\rrelayedSource\030$ \001(\010\022\027\n\017repo" +
+      "rtsReceived\030% \001(\005\022\036\n\026retransmittedBytesS" +
+      "ent\030& \001(\003\022 \n\030retransmittedPacketsSent\030\' " +
+      "\001(\005\022\013\n\003rid\030( \001(\t\022\025\n\rroundTripTime\030) \001(\001\022" +
+      "!\n\031roundTripTimeMeasurements\030* \001(\005\022\017\n\007rt" +
+      "xSsrc\030+ \001(\003\022\036\n\026samplesEncodedWithCelt\030, " +
+      "\001(\005\022\036\n\026samplesEncodedWithSilk\030- \001(\005\022\023\n\013s" +
+      "dpFmtpLine\030. \001(\t\022\023\n\013sfuStreamId\030/ \001(\t\022\025\n" +
+      "\rtargetBitrate\0300 \001(\005\022\030\n\020totalAudioEnergy" +
+      "\0301 \001(\001\022\037\n\027totalEncodedBytesTarget\0302 \001(\003\022" +
+      "\034\n\024totalPacketSendDelay\0303 \001(\001\022\032\n\022totalRo" +
+      "undTripTime\0304 \001(\001\022\034\n\024totalSamplesDuratio" +
+      "n\0305 \001(\001\022\030\n\020totalSamplesSent\0306 \001(\005\022\017\n\007tra" +
+      "ckId\0307 \001(\t\022\031\n\021voiceActivityFlag\0308 \001(\010\032\256\016" +
+      "\n\022OutboundVideoTrack\022\014\n\004ssrc\030\001 \002(\003\022\033\n\023av" +
+      "erageRtcpInterval\030\002 \001(\001\022\020\n\010bitDepth\030\003 \001(" +
+      "\005\022\031\n\021burstDiscardCount\030\004 \001(\005\022\030\n\020burstDis" +
+      "cardRate\030\005 \001(\001\022\026\n\016burstLossCount\030\006 \001(\005\022\025" +
+      "\n\rburstLossRate\030\007 \001(\001\022\035\n\025burstPacketsDis" +
+      "carded\030\010 \001(\005\022\030\n\020burstPacketsLost\030\t \001(\005\022\034" +
+      "\n\024bytesDiscardedOnSend\030\n \001(\003\022\021\n\tbytesSen" +
+      "t\030\013 \001(\003\022\020\n\010channels\030\014 \001(\005\022\021\n\tclockRate\030\r" +
+      " \001(\005\022\035\n\025encoderImplementation\030\016 \001(\t\022\r\n\005e" +
+      "nded\030\017 \001(\010\022\026\n\016fecPacketsSent\030\020 \001(\005\022\020\n\010fi" +
+      "rCount\030\021 \001(\005\022\024\n\014fractionLost\030\022 \001(\001\022\025\n\rfr" +
+      "ameBitDepth\030\023 \001(\005\022\023\n\013frameHeight\030\024 \001(\005\022\022" +
+      "\n\nframeWidth\030\025 \001(\005\022\016\n\006frames\030\026 \001(\005\022\035\n\025fr" +
+      "amesDiscardedOnSend\030\027 \001(\005\022\025\n\rframesDropp" +
+      "ed\030\030 \001(\005\022\025\n\rframesEncoded\030\031 \001(\005\022\027\n\017frame" +
+      "sPerSecond\030\032 \001(\001\022\022\n\nframesSent\030\033 \001(\005\022\026\n\016" +
+      "fullFramesLost\030\034 \001(\005\022\026\n\016gapDiscardRate\030\035" +
+      " \001(\001\022\023\n\013gapLossRate\030\036 \001(\001\022\027\n\017headerBytes" +
+      "Sent\030\037 \001(\003\022\016\n\006height\030  \001(\005\022\026\n\016hugeFrames" +
+      "Sent\030! \001(\005\022\016\n\006jitter\030\" \001(\001\022\030\n\020keyFramesE" +
+      "ncoded\030# \001(\005\022\037\n\027lastPacketSentTimestamp\030" +
+      "$ \001(\003\022\020\n\010mimeType\030% \001(\t\022\021\n\tnackCount\030& \001" +
+      "(\005\022\030\n\020packetsDiscarded\030\' \001(\005\022\036\n\026packetsD" +
+      "iscardedOnSend\030( \001(\005\022\023\n\013packetsLost\030) \001(" +
+      "\005\022\027\n\017packetsReceived\030* \001(\005\022\027\n\017packetsRep" +
+      "aired\030+ \001(\005\022\023\n\013packetsSent\030, \001(\005\022\031\n\021part" +
+      "ialFramesLost\030- \001(\005\022\023\n\013payloadType\030. \001(\005" +
+      "\022\030\n\020peerConnectionId\030/ \001(\t\022\032\n\022perDscpPac" +
+      "ketsSent\0300 \001(\005\022\020\n\010pliCount\0301 \001(\005\022\r\n\005qpSu" +
+      "m\0302 \001(\003\022*\n\"qualityLimitationDurationBand" +
+      "width\0303 \001(\001\022$\n\034qualityLimitationDuration" +
+      "CPU\0304 \001(\001\022%\n\035qualityLimitationDurationNo" +
+      "ne\0305 \001(\001\022&\n\036qualityLimitationDurationOth" +
+      "er\0306 \001(\001\022\037\n\027qualityLimitationReason\0307 \001(" +
+      "\t\022*\n\"qualityLimitationResolutionChanges\030" +
+      "8 \001(\005\022\025\n\rrelayedSource\0309 \001(\010\022\027\n\017reportsR" +
+      "eceived\030: \001(\005\022\036\n\026retransmittedBytesSent\030" +
+      "; \001(\003\022 \n\030retransmittedPacketsSent\030< \001(\005\022" +
+      "\013\n\003rid\030= \001(\t\022\025\n\rroundTripTime\030> \001(\001\022!\n\031r" +
+      "oundTripTimeMeasurements\030? \001(\005\022\017\n\007rtxSsr" +
+      "c\030@ \001(\003\022\023\n\013sdpFmtpLine\030A \001(\t\022\023\n\013sfuStrea" +
+      "mId\030B \001(\t\022\020\n\010sliCount\030C \001(\005\022\025\n\rtargetBit" +
+      "rate\030D \001(\005\022\027\n\017totalEncodeTime\030E \001(\001\022\037\n\027t" +
+      "otalEncodedBytesTarget\030F \001(\003\022\034\n\024totalPac" +
+      "ketSendDelay\030G \001(\001\022\032\n\022totalRoundTripTime" +
+      "\030H \001(\001\022\017\n\007trackId\030I \001(\t\022\r\n\005width\030J \001(\005\032\267" +
+      "\001\n\021IceLocalCandidate\022\017\n\007address\030\001 \001(\t\022\025\n" +
+      "\rcandidateType\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peer" +
+      "ConnectionId\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\020\n\010prio" +
+      "rity\030\006 \001(\003\022\020\n\010protocol\030\007 \001(\t\022\025\n\rrelayPro" +
+      "tocol\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\270\001\n\022IceRemoteCa" +
+      "ndidate\022\017\n\007address\030\001 \001(\t\022\025\n\rcandidateTyp" +
+      "e\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerConnectionId\030" +
+      "\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\020\n\010priority\030\006 \001(\003\022\020\n" +
+      "\010protocol\030\007 \001(\t\022\025\n\rrelayProtocol\030\010 \001(\t\022\013" +
+      "\n\003url\030\t \001(\t\032\373\001\n\013DataChannel\022\017\n\007address\030\001" +
+      " \001(\t\022\025\n\rbytesReceived\030\002 \001(\003\022\021\n\tbytesSent" +
+      "\030\003 \001(\003\022\035\n\025dataChannelIdentifier\030\004 \001(\005\022\n\n" +
+      "\002id\030\005 \001(\t\022\r\n\005label\030\006 \001(\t\022\030\n\020messagesRece" +
+      "ived\030\007 \001(\005\022\024\n\014messagesSent\030\010 \001(\005\022\030\n\020peer" +
+      "ConnectionId\030\t \001(\t\022\014\n\004port\030\n \001(\005\022\020\n\010prot" +
+      "ocol\030\013 \001(\t\022\r\n\005state\030\014 \001(\t\032\200\032\n\tSfuSample\022" +
+      "\\\n\016extensionStats\030\001 \003(\0132D.org.observertc" +
+      ".schemas.protobuf.Samples.SfuSample.SfuE" +
+      "xtensionStats\022[\n\016inboundRtpPads\030\002 \003(\0132C." +
+      "org.observertc.schemas.protobuf.Samples." +
+      "SfuSample.SfuInboundRtpPad\022]\n\017outboundRt" +
+      "pPads\030\003 \003(\0132D.org.observertc.schemas.pro" +
+      "tobuf.Samples.SfuSample.SfuOutboundRtpPa" +
+      "d\022W\n\014sctpChannels\030\004 \003(\0132A.org.observertc" +
+      ".schemas.protobuf.Samples.SfuSample.SfuS" +
+      "ctpChannel\022S\n\ntransports\030\005 \003(\0132?.org.obs" +
+      "ervertc.schemas.protobuf.Samples.SfuSamp" +
+      "le.SfuTransport\022\r\n\005sfuId\030\006 \002(\t\022\021\n\ttimest" +
+      "amp\030\007 \002(\003\022\016\n\006marker\030\010 \001(\t\022\035\n\025timeZoneOff" +
+      "setInHours\030\t \001(\005\032\363\004\n\014SfuTransport\022\023\n\013tra" +
+      "nsportId\030\001 \002(\t\022\021\n\tdtlsState\030\002 \001(\t\022\017\n\007ice" +
+      "Role\030\003 \001(\t\022\020\n\010iceState\030\004 \001(\t\022\020\n\010internal" +
+      "\030\005 \001(\010\022\024\n\014localAddress\030\006 \001(\t\022\021\n\tlocalPor" +
+      "t\030\007 \001(\005\022\020\n\010noReport\030\010 \001(\010\022\020\n\010protocol\030\t " +
+      "\001(\t\022\025\n\rremoteAddress\030\n \001(\t\022\022\n\nremotePort" +
+      "\030\013 \001(\005\022\030\n\020rtpBytesReceived\030\014 \001(\003\022\024\n\014rtpB" +
+      "ytesSent\030\r \001(\003\022\026\n\016rtpPacketsLost\030\016 \001(\005\022\032" +
+      "\n\022rtpPacketsReceived\030\017 \001(\005\022\026\n\016rtpPackets" +
+      "Sent\030\020 \001(\005\022\030\n\020rtxBytesReceived\030\021 \001(\003\022\024\n\014" +
+      "rtxBytesSent\030\022 \001(\003\022\033\n\023rtxPacketsDiscarde" +
+      "d\030\023 \001(\005\022\026\n\016rtxPacketsLost\030\024 \001(\005\022\032\n\022rtxPa" +
+      "cketsReceived\030\025 \001(\005\022\026\n\016rtxPacketsSent\030\026 " +
+      "\001(\005\022\031\n\021sctpBytesReceived\030\027 \001(\003\022\025\n\rsctpBy" +
+      "tesSent\030\030 \001(\003\022\033\n\023sctpPacketsReceived\030\031 \001" +
+      "(\005\022\027\n\017sctpPacketsSent\030\032 \001(\005\022\021\n\tsctpState" +
+      "\030\033 \001(\t\032\315\006\n\020SfuInboundRtpPad\022\r\n\005padId\030\001 \002" +
+      "(\t\022\014\n\004ssrc\030\002 \002(\003\022\020\n\010streamId\030\003 \002(\t\022\023\n\013tr" +
+      "ansportId\030\004 \002(\t\022\025\n\rbytesReceived\030\005 \001(\003\022\021" +
+      "\n\tclockRate\030\006 \001(\005\022\033\n\023fecPacketsDiscarded" +
+      "\030\007 \001(\005\022\032\n\022fecPacketsReceived\030\010 \001(\005\022\020\n\010fi" +
+      "rCount\030\t \001(\005\022\024\n\014fractionLost\030\n \001(\001\022\025\n\rfr" +
+      "amesDecoded\030\013 \001(\005\022\026\n\016framesReceived\030\014 \001(" +
+      "\005\022\020\n\010internal\030\r \001(\010\022\016\n\006jitter\030\016 \001(\001\022\030\n\020k" +
+      "eyFramesDecoded\030\017 \001(\005\022\021\n\tmediaType\030\020 \001(\t" +
+      "\022\020\n\010mimeType\030\021 \001(\t\022\021\n\tnackCount\030\022 \001(\005\022\020\n" +
+      "\010noReport\030\023 \001(\010\022\030\n\020packetsDiscarded\030\024 \001(" +
+      "\005\022\031\n\021packetsDuplicated\030\025 \001(\005\022\037\n\027packetsF" +
+      "ailedDecryption\030\026 \001(\005\022\023\n\013packetsLost\030\027 \001" +
+      "(\005\022\027\n\017packetsReceived\030\030 \001(\005\022\027\n\017packetsRe" +
+      "paired\030\031 \001(\005\022\023\n\013payloadType\030\032 \001(\005\022\020\n\010pli" +
+      "Count\030\033 \001(\005\022\013\n\003rid\030\034 \001(\t\022\025\n\rroundTripTim" +
+      "e\030\035 \001(\001\022\022\n\nrtcpRrSent\030\036 \001(\005\022\026\n\016rtcpSrRec" +
+      "eived\030\037 \001(\005\022\033\n\023rtxPacketsDiscarded\030  \001(\005" +
+      "\022\032\n\022rtxPacketsReceived\030! \001(\005\022\017\n\007rtxSsrc\030" +
+      "\" \001(\003\022\023\n\013sdpFmtpLine\030# \001(\t\022\020\n\010sliCount\030$" +
+      " \001(\005\022\025\n\rtargetBitrate\030% \001(\005\022\031\n\021voiceActi" +
+      "vityFlag\030& \001(\010\032\202\007\n\021SfuOutboundRtpPad\022\r\n\005" +
+      "padId\030\001 \002(\t\022\016\n\006sinkId\030\002 \002(\t\022\014\n\004ssrc\030\003 \002(" +
+      "\003\022\020\n\010streamId\030\004 \002(\t\022\023\n\013transportId\030\005 \002(\t" +
+      "\022\021\n\tbytesSent\030\006 \001(\003\022\016\n\006callId\030\007 \001(\t\022\020\n\010c" +
+      "lientId\030\010 \001(\t\022\021\n\tclockRate\030\t \001(\005\022\033\n\023fecP" +
+      "acketsDiscarded\030\n \001(\005\022\026\n\016fecPacketsSent\030" +
+      "\013 \001(\005\022\020\n\010firCount\030\014 \001(\005\022\024\n\014fractionLost\030" +
+      "\r \001(\001\022\025\n\rframesEncoded\030\016 \001(\005\022\022\n\nframesSe" +
+      "nt\030\017 \001(\005\022\020\n\010internal\030\020 \001(\010\022\016\n\006jitter\030\021 \001" +
+      "(\001\022\030\n\020keyFramesEncoded\030\022 \001(\005\022\021\n\tmediaTyp" +
+      "e\030\023 \001(\t\022\020\n\010mimeType\030\024 \001(\t\022\021\n\tnackCount\030\025" +
+      " \001(\005\022\020\n\010noReport\030\026 \001(\010\022\030\n\020packetsDiscard" +
+      "ed\030\027 \001(\005\022\031\n\021packetsDuplicated\030\030 \001(\005\022\037\n\027p" +
+      "acketsFailedEncryption\030\031 \001(\005\022\023\n\013packetsL" +
+      "ost\030\032 \001(\005\022\034\n\024packetsRetransmitted\030\033 \001(\005\022" +
+      "\023\n\013packetsSent\030\034 \001(\005\022\023\n\013payloadType\030\035 \001(" +
+      "\005\022\020\n\010pliCount\030\036 \001(\005\022\013\n\003rid\030\037 \001(\t\022\025\n\rroun" +
+      "dTripTime\030  \001(\001\022\026\n\016rtcpRrReceived\030! \001(\005\022" +
+      "\022\n\nrtcpSrSent\030\" \001(\005\022\033\n\023rtxPacketsDiscard" +
+      "ed\030# \001(\005\022\026\n\016rtxPacketsSent\030$ \001(\005\022\017\n\007rtxS" +
+      "src\030% \001(\003\022\023\n\013sdpFmtpLine\030& \001(\t\022\020\n\010sliCou" +
+      "nt\030\' \001(\005\022\025\n\rtargetBitrate\030( \001(\005\022\017\n\007track" +
+      "Id\030) \001(\t\022\031\n\021voiceActivityFlag\030* \001(\010\032\332\002\n\016" +
+      "SfuSctpChannel\022\021\n\tchannelId\030\001 \002(\t\022\020\n\010str" +
+      "eamId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\025\n\rbyte" +
+      "sReceived\030\004 \001(\003\022\021\n\tbytesSent\030\005 \001(\003\022\r\n\005la" +
+      "bel\030\006 \001(\t\022\027\n\017messageReceived\030\007 \001(\005\022\023\n\013me" +
+      "ssageSent\030\010 \001(\005\022\020\n\010noReport\030\t \001(\010\022\020\n\010pro" +
+      "tocol\030\n \001(\t\022\034\n\024sctpCongestionWindow\030\013 \001(" +
+      "\001\022\017\n\007sctpMtu\030\014 \001(\005\022\032\n\022sctpReceiverWindow" +
+      "\030\r \001(\001\022!\n\031sctpSmoothedRoundTripTime\030\016 \001(" +
+      "\001\022\025\n\rsctpUnackData\030\017 \001(\005\0322\n\021SfuExtension" +
+      "Stats\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\200\007\n" +
+      "\nTurnSample\022[\n\013allocations\030\001 \003(\0132F.org.o" +
+      "bservertc.schemas.protobuf.Samples.TurnS" +
+      "ample.TurnPeerAllocation\022Q\n\010sessions\030\002 \003" +
+      "(\0132?.org.observertc.schemas.protobuf.Sam" +
+      "ples.TurnSample.TurnSession\022\020\n\010serverId\030" +
+      "\003 \002(\t\032\260\002\n\022TurnPeerAllocation\022\016\n\006peerId\030\001" +
+      " \002(\t\022\026\n\016relayedAddress\030\002 \002(\t\022\023\n\013relayedP" +
+      "ort\030\003 \002(\005\022\021\n\tsessionId\030\004 \002(\t\022\031\n\021transpor" +
+      "tProtocol\030\005 \002(\t\022\023\n\013peerAddress\030\006 \001(\t\022\020\n\010" +
+      "peerPort\030\007 \001(\005\022\025\n\rreceivedBytes\030\010 \001(\003\022\027\n" +
+      "\017receivedPackets\030\t \001(\005\022\030\n\020receivingBitra" +
+      "te\030\n \001(\005\022\026\n\016sendingBitrate\030\013 \001(\005\022\021\n\tsent" +
+      "Bytes\030\014 \001(\003\022\023\n\013sentPackets\030\r \001(\005\032\374\002\n\013Tur",
+      "nSession\022\021\n\tsessionId\030\001 \002(\t\022\025\n\rclientAdd" +
+      "ress\030\002 \001(\t\022\020\n\010clientId\030\003 \001(\t\022\022\n\nclientPo" +
+      "rt\030\004 \001(\005\022\033\n\023nonceExpirationTime\030\005 \001(\003\022\r\n" +
+      "\005realm\030\006 \001(\t\022\025\n\rreceivedBytes\030\007 \001(\003\022\027\n\017r" +
+      "eceivedPackets\030\010 \001(\005\022\030\n\020receivingBitrate" +
+      "\030\t \001(\005\022\026\n\016sendingBitrate\030\n \001(\005\022\021\n\tsentBy" +
+      "tes\030\013 \001(\003\022\023\n\013sentPackets\030\014 \001(\005\022\025\n\rserver" +
+      "Address\030\r \001(\t\022\022\n\nserverPort\030\016 \001(\005\022\017\n\007sta" +
+      "rted\030\017 \001(\003\022\031\n\021transportProtocol\030\020 \001(\t\022\020\n" +
+      "\010username\030\021 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -91500,21 +90861,15 @@ public final class ProtobufSamples {
     internal_static_org_observertc_schemas_protobuf_Samples_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_descriptor,
-        new java.lang.String[] { "ClientSamples", "SfuSamples", "TurnSamples", "ControlFlags", "Meta", });
-    internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_descriptor =
+        new java.lang.String[] { "ClientSamples", "SfuSamples", "TurnSamples", "Controls", });
+    internal_static_org_observertc_schemas_protobuf_Samples_Controls_descriptor =
       internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(0);
-    internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_fieldAccessorTable = new
+    internal_static_org_observertc_schemas_protobuf_Samples_Controls_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_protobuf_Samples_SamplesMeta_descriptor,
-        new java.lang.String[] { "SchemaVersion", });
-    internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(1);
-    internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_protobuf_Samples_ControlFlags_descriptor,
-        new java.lang.String[] { "Close", });
+        internal_static_org_observertc_schemas_protobuf_Samples_Controls_descriptor,
+        new java.lang.String[] { "AccessClaim", "Close", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(2);
+      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(1);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor,
@@ -91622,7 +90977,7 @@ public final class ProtobufSamples {
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_DataChannel_descriptor,
         new java.lang.String[] { "Address", "BytesReceived", "BytesSent", "DataChannelIdentifier", "Id", "Label", "MessagesReceived", "MessagesSent", "PeerConnectionId", "Port", "Protocol", "State", });
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(3);
+      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(2);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor,
@@ -91658,7 +91013,7 @@ public final class ProtobufSamples {
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuExtensionStats_descriptor,
         new java.lang.String[] { "Payload", "Type", });
     internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(4);
+      internal_static_org_observertc_schemas_protobuf_Samples_descriptor.getNestedTypes().get(3);
     internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_TurnSample_descriptor,

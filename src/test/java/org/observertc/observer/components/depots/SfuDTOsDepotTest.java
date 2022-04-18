@@ -31,6 +31,17 @@ class SfuDTOsDepotTest {
     }
 
     @Test
+    void shouldBeAParanoicSandbox() {
+        var myFalse = Boolean.valueOf(false);
+        Boolean myNull = null;
+        var myTrue = Boolean.valueOf(true);
+        Assertions.assertFalse(Boolean.TRUE.equals(myFalse));
+        Assertions.assertFalse(Boolean.TRUE.equals(myNull));
+        Assertions.assertTrue(Boolean.TRUE.equals(myTrue));
+        Assertions.assertTrue(Boolean.TRUE.equals(true));
+    }
+
+    @Test
     @Order(2)
     void shouldBeEmpty() {
         Assertions.assertEquals(0, this.depot.get().size());

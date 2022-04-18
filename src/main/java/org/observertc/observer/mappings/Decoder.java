@@ -6,6 +6,6 @@ public interface Decoder<U, R> {
         return mapper::map;
     }
 
-    R decode(U data);
+    R decode(U data) throws Throwable;
 
 }

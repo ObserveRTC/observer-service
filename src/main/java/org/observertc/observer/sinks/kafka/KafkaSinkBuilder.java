@@ -9,7 +9,7 @@ import org.apache.kafka.common.utils.Bytes;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configbuilders.ConfigConverter;
-import org.observertc.observer.configs.TransportCodecType;
+import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.mappings.Encoder;
 import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.reports.Report;
@@ -18,7 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.security.SecureRandom;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -38,7 +42,12 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         Encoder<Report, byte[]> encoder = this.makeEncoder(config.encoder);
         Function<Report, ProducerRecord<UUID, Bytes>> recorder = report -> {
             var key = keyAssigner.apply(report);
-            var bytes = encoder.encode(report);
+            byte[] bytes = new byte[0];
+            try {
+                bytes = encoder.encode(report);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
             var wrappedBytes = Bytes.wrap(bytes);
             var result = new ProducerRecord<UUID, Bytes>(config.topic, key, wrappedBytes);
             return result;
@@ -62,13 +71,14 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
                 flattenedMap.put(property, defaultValue);
             }
         };
-        check.accept(ProducerConfig.CLIENT_ID_CONFIG, KafkaSink.class.getSimpleName() + new Random().nextInt(10000));
+        var random = new SecureRandom().nextInt(10000);
+        check.accept(ProducerConfig.CLIENT_ID_CONFIG, KafkaSink.class.getSimpleName() + random);
         check.accept(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
         check.accept(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, BytesSerializer.class);
     }
 
-    private Encoder<Report, byte[]> makeEncoder(TransportCodecType encoder) {
-        if (Objects.isNull(encoder) || TransportCodecType.NONE.equals(encoder)) {
+    private Encoder<Report, byte[]> makeEncoder(TransportFormatType encoder) {
+        if (Objects.isNull(encoder) || TransportFormatType.NONE.equals(encoder)) {
             throw new IllegalArgumentException("Encoder cannot be null or NONE for KafkaSink");
         }
         switch (encoder) {
@@ -105,6 +115,6 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
         public KeyAssignmentStrategy keyAssignmentStrategy = KeyAssignmentStrategy.INSTANCE_BASED;
 
-        public TransportCodecType encoder = TransportCodecType.JSON;
+        public TransportFormatType encoder = TransportFormatType.JSON;
     }
 }

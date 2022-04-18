@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.59";
+	public static final String VERSION="2.0.0-beta.61";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -17,32 +17,7 @@ public class Samples {
 	* undefined
 	*/
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class SamplesMeta {
-		public static Builder newBuilder() {
-			return new Builder();
-		}
-		/**
-		* Indicate the version of the schema for compatibility measures.
-		*/
-		@JsonProperty("schemaVersion")
-		public String schemaVersion;
-	
-
-		public static class Builder {
-	
-			private SamplesMeta result = new SamplesMeta();
-	
-			public Builder setSchemaVersion(String value) { this.result.schemaVersion = value; return this; }
-			public SamplesMeta build() {
-				return this.result;
-			}
-		}
-	}
-	/**
-	* undefined
-	*/
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class ControlFlags {
+	public static class Controls {
 		public static Builder newBuilder() {
 			return new Builder();
 		}
@@ -51,14 +26,20 @@ public class Samples {
 		*/
 		@JsonProperty("close")
 		public Boolean close;
+		/**
+		* Holds a new claim to process
+		*/
+		@JsonProperty("accessClaim")
+		public String accessClaim;
 	
 
 		public static class Builder {
 	
-			private ControlFlags result = new ControlFlags();
+			private Controls result = new Controls();
 	
 			public Builder setClose(Boolean value) { this.result.close = value; return this; }
-			public ControlFlags build() {
+			public Builder setAccessClaim(String value) { this.result.accessClaim = value; return this; }
+			public Controls build() {
 				return this.result;
 			}
 		}
@@ -4033,15 +4014,10 @@ public class Samples {
 		}
 	}
 	/**
-	* Additional meta information about the carried payloads
-	*/
-	@JsonProperty("meta")
-	public SamplesMeta meta;
-	/**
 	* Additional control flags indicate various operation has to be performed
 	*/
-	@JsonProperty("controlFlags")
-	public ControlFlags controlFlags;
+	@JsonProperty("controls")
+	public Controls controls;
 	/**
 	* Samples taken from the client
 	*/
@@ -4063,8 +4039,7 @@ public class Samples {
 
 		private Samples result = new Samples();
 
-		public Builder setMeta(SamplesMeta value) { this.result.meta = value; return this; }
-		public Builder setControlFlags(ControlFlags value) { this.result.controlFlags = value; return this; }
+		public Builder setControls(Controls value) { this.result.controls = value; return this; }
 		public Builder setClientSamples(ClientSample[] value) { this.result.clientSamples = value; return this; }
 		public Builder setSfuSamples(SfuSample[] value) { this.result.sfuSamples = value; return this; }
 		public Builder setTurnSamples(TurnSample[] value) { this.result.turnSamples = value; return this; }

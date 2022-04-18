@@ -1,5 +1,6 @@
-package org.observertc.observer.sources;
+package org.observertc.observer.sources.chunker;
 
+import org.observertc.observer.sources.ReceivedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +72,6 @@ class Chunks {
         if (!this.isReady()) {
             return null;
         }
-        String sessionId = null;
         String serviceId = null;
         String mediaUnitId = null;
         var buffer = new ByteArrayOutputStream();
@@ -81,7 +81,6 @@ class Chunks {
             buffer.write(chunk, CHUNK_HEADER_LENGTH, messageLength);
         }
         var result = ReceivedMessage.of(
-                sessionId,
                 serviceId,
                 mediaUnitId,
                 buffer.toByteArray()

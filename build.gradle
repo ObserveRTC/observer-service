@@ -1,6 +1,8 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.3.2"
+    id "jacoco"
+    id "org.sonarqube" version "3.3"
 }
 
 version = "1.0.0-beta"
@@ -60,6 +62,12 @@ micronaut {
     processing {
         incremental(true)
         annotations("org.observertc.observer.*")
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
     }
 }
 

@@ -28,7 +28,7 @@ class JsonMapperTest {
     }
 
     @Test
-    void bytesToObjectCodecShouldWork() {
+    void bytesToObjectCodecShouldWork() throws Throwable {
         var codec= JsonMapper.createBytesToObjectCodec(Foo.class);
         var expected = new Foo(); expected.bar = 2;
         var actual = codec.decode(codec.encode(expected));
@@ -38,7 +38,7 @@ class JsonMapperTest {
     }
 
     @Test
-    void stringToObjectCodecShouldWork() {
+    void stringToObjectCodecShouldWork() throws Throwable {
         var codec= JsonMapper.createStringToObjectCodec(Foo.class);
         var expected = new Foo(); expected.bar = 2;
         var actual = codec.decode(codec.encode(expected));

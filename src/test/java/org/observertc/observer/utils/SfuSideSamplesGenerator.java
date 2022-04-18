@@ -296,15 +296,11 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
         sfuSample.sctpChannels = arrayOrNullFromList(Samples.SfuSample.SfuSctpChannel.class, sctpChannels);
         sfuSample.extensionStats = arrayOrNullFromQueue(Samples.SfuSample.SfuExtensionStats.class, addedExtensionStats);
 
-        var samplesMeta = new Samples.SamplesMeta();
-        samplesMeta.schemaVersion = Samples.VERSION;
-
-        var controlFlags = new Samples.ControlFlags();
-        controlFlags.close = false;
+        var controls = new Samples.Controls();
+        controls.close = false;
 
         var samples = new Samples();
-        samples.meta = samplesMeta;
-        samples.controlFlags = controlFlags;
+        samples.controls = controls;
         samples.sfuSamples = new Samples.SfuSample[]{ sfuSample };
         samples.clientSamples = null;
         return samples;

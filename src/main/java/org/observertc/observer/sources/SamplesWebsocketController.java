@@ -24,8 +24,10 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import jakarta.inject.Inject;
+import org.bson.internal.Base64;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.mappings.Decoder;
+import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.micrometer.FlawMonitor;
 import org.observertc.observer.micrometer.MonitorProvider;
@@ -39,9 +41,7 @@ import org.slf4j.event.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 /**
  * Service should be UUId, because currently mysql stores it as
@@ -53,8 +53,7 @@ public class SamplesWebsocketController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SamplesWebsocketController.class);
 	private final FlawMonitor flawMonitor;
-//	private Map<String, UUID> sessionToClients;
-	private Map<String, WebSocketSession> webSocketSessions = new ConcurrentHashMap<>();
+	private Map<String, Input> inputs = new ConcurrentHashMap<>();
 
 	@Inject
 	ExposedMetrics exposedMetrics;
@@ -72,7 +71,6 @@ public class SamplesWebsocketController {
     SamplesCollector samplesCollector;
 
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
-	private Consumer<ReceivedMessage> acceptor;
 
 	public SamplesWebsocketController(
 	        ObserverConfig observerConfig,
@@ -80,18 +78,11 @@ public class SamplesWebsocketController {
     ) {
 		this.config = observerConfig.sources.websocket;
 		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass()).withDefaultLogger(logger).withDefaultLogLevel(Level.WARN);
-//		this.clientSessions = new ConcurrentHashMap<>();
-//		this.sessionToClients = new ConcurrentHashMap<>();
 	}
 
 	@PostConstruct
 	void setup() {
-		var decoder = SamplesDecoder.builder(logger)
-				.withCodecType(this.config.format)
-				.build();
-		var messageProcessor = this.createMessageProcessor(decoder);
-		// TODO: here create an assembler for assembling the chunks.
-		this.acceptor = messageProcessor;
+
 	}
 
 	@PreDestroy
@@ -109,17 +100,35 @@ public class SamplesWebsocketController {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
-			this.webSocketSessions.put(session.getId(), session);
-//			var requestParameters = session.getRequestParameters();
-//			String clientIdParam = requestParameters.get("clientId");
-//			if (Objects.nonNull(clientIdParam)) {
-//				UUID clientId = UUID.fromString(clientIdParam);
-//				this.hazelcastMaps.getClientMessages().put(clientId, null);
-//				this.clientSessions.put(clientId, session);
-//				this.sessionToClients.put(session.getId(), clientId);
-//			}
+			var requestParameters = session.getRequestParameters();
+			String providedSchemaVersion = requestParameters.get("schemaVersion");
+			String providedFormat = requestParameters.get("format");
+			try {
+				var format = TransportFormatType.getValueOrDefault(providedFormat, TransportFormatType.JSON);
+				var acceptor = Acceptor.create(
+						logger,
+						mediaUnitId,
+						serviceId,
+						Utils.firstNotNull(providedSchemaVersion, Samples.VERSION),
+						format,
+						samplesCollector::accept
+				).onError(ex -> {
+					if (session.isOpen()) {
+						var reason = this.customCloseReasons.getInvalidInput(ex.getMessage());
+						session.close(reason);
+						this.inputs.remove(session.getId());
+					}
+				});
+				var input = new Input(acceptor, session);
+				this.inputs.put(session.getId(), input);
+			} catch (Exception ex) {
+				var closeReason = this.customCloseReasons.getInvalidInput(ex.getMessage());
+				session.close(closeReason);
+				this.inputs.remove(session.getId());
+				return;
+			}
 			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
-			logger.info("Session is opened");
+			logger.info("Session {} is opened", session.getId());
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -133,13 +142,8 @@ public class SamplesWebsocketController {
 		try {
 
 			this.exposedMetrics.incrementSamplesOpenedWebsockets(serviceId, mediaUnitId);
-//			UUID clientId = this.sessionToClients.get(session.getId());
-//			if (Objects.nonNull(clientId)) {
-//				this.clientSessions.remove(clientId, session);
-//				this.hazelcastMaps.getClientMessages().remove(clientId);
-//			}
-			this.webSocketSessions.remove(session.getId());
-			logger.info("Session is closed");
+			this.inputs.remove(session.getId());
+			logger.info("Session {} is closed", session.getId());
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
@@ -151,72 +155,38 @@ public class SamplesWebsocketController {
 			String mediaUnitId,
 			byte[] messageBytes,
 			WebSocketSession session) {
-
 		try {
 			this.exposedMetrics.incrementSamplesClosedWebsockets(serviceId, mediaUnitId);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}
-		var receivedMessage = ReceivedMessage.of(
-				session.getId(),
-				serviceId,
-				mediaUnitId,
-				messageBytes
-		);
-		this.acceptor.accept(receivedMessage);
-	}
-
-//	@OnMessage(maxPayloadLength = 1000000) // 1MB
-//	public void onMessage(
-//			String serviceId,
-//			String mediaUnitId,
-//			String messageString,
-//			WebSocketSession session) {
-//
-//		try {
-//			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
-//		} catch (Throwable t) {
-//			logger.warn("MeterRegistry just caused an error by counting samples", t);
-//		}
-//		var messageBytes = Base64.decode(messageString);
-//		var receivedMessage = ReceivedMessage.of(
-//				session.getId(),
-//				serviceId,
-//				mediaUnitId,
-//				messageBytes
-//		);
-//		this.acceptor.accept(receivedMessage);
-//	}
-
-
-	private Consumer<ReceivedMessage> createMessageProcessor(Decoder<byte[], Samples> decoder) {
-		return receivedMessage -> {
-			try {
-				var samples = decoder.decode(receivedMessage.message);
-				var receivedSamples = ReceivedSamples.of(
-						receivedMessage.serviceId,
-						receivedMessage.mediaUnitId,
-						samples
-				);
-				this.samplesCollector.accept(receivedSamples);
-			} catch (Throwable ex) {
-				this.flawMonitor.makeLogEntry()
-						.withException(ex)
-						.withMessage("Error occured processing samples")
-						.complete();
-				if (Objects.isNull(receivedMessage.sessionId)) {
-					return;
-				}
-				var websocketSession = this.webSocketSessions.get(receivedMessage.sessionId);
-				if (Objects.isNull(websocketSession)) {
-					return;
-				}
-				websocketSession.close(
-						this.customCloseReasons.getInternalServerError(ex.getMessage())
-				);
+		var input = this.inputs.get(session.getId());
+		if (input == null) {
+			var closeReason = this.customCloseReasons.getInternalServerError("The input does not exists");
+			session.close(closeReason);
+			return;
+		}
+		logger.info("\n\n\n {}", Base64.encode(messageBytes));
+		try {
+			input.acceptor.accept(messageBytes);
+		} catch (Exception ex) {
+			logger.warn("Exception happened while accepting message");
+			if (input.session != null && input.session.isOpen()) {
+				var reason = this.customCloseReasons.getInternalServerError(ex.getMessage());
+				input.session.close(reason);
 			}
-		};
+			this.inputs.remove(session.getId());
+		}
+
 	}
 
+	private class Input {
+		final Acceptor acceptor;
+		final WebSocketSession session;
 
+		private Input(Acceptor acceptor, WebSocketSession session) {
+			this.acceptor = acceptor;
+			this.session = session;
+		}
+	}
 }

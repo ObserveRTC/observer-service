@@ -1,10 +1,11 @@
-package org.observertc.observer.sources;
+package org.observertc.observer.sources.chunker;
 
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.observertc.observer.common.TimeLimitedMap;
+import org.observertc.observer.sources.ReceivedMessage;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class ChunksAssembler implements Consumer<ReceivedMessage> {
 
     @Override
     public void accept(ReceivedMessage receivedMessage) throws Throwable {
-        var sessionId = receivedMessage.sessionId;
+        var sessionId = "sessionId";
         Chunks chunks = this.chunks.get(sessionId);
         if (Objects.isNull(chunks)) {
             chunks = new Chunks(sessionId);

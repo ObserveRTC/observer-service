@@ -1,7 +1,7 @@
 package org.observertc.observer.simulator;
 
-import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.samples.Samples.SfuSample;
+import org.observertc.schemas.v200beta59.samples.Samples;
+import org.observertc.schemas.v200beta59.samples.Samples.SfuSample;
 
 import java.time.Instant;
 import java.util.HashMap;

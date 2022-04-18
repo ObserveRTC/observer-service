@@ -1,16 +1,13 @@
 
 Samples
-samples.meta = ASSIGNED;
-samples.controlFlags = ASSIGNED;
+samples.controls = ASSIGNED;
 samples.clientSamples = ASSIGNED;
 samples.sfuSamples = ASSIGNED;
 samples.turnSamples = ASSIGNED;
 
-SamplesMeta
-samplesMeta.schemaVersion = ASSIGNED;
-
-ControlFlags
-controlFlags.close = ASSIGNED;
+Controls
+controls.close = ASSIGNED;
+controls.accessClaim = ASSIGNED;
 
 ClientSample
 clientSample.callId = ASSIGNED;
