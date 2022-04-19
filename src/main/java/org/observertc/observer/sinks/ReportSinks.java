@@ -69,7 +69,7 @@ public class ReportSinks implements Consumer<List<Report>> {
     private void fetchSinksConfig() {
         Map<String, Object> configs = this.observerConfig.sinks;
         if (Objects.isNull(configs)) {
-            configs = Collections.EMPTY_MAP;
+            logger.warn("No Sinks has been configured");
             return;
         }
         configs.forEach((sinkId, sinkConfig) -> {
@@ -85,6 +85,7 @@ public class ReportSinks implements Consumer<List<Report>> {
                     return;
                 }
                 sink.open();
+                logger.info("Sink {} with config {} has been initiated", sink.getClass().getSimpleName(), JsonUtils.objectToString(sinkConfigValue));
                 this.sinks.put(sinkId, sink);
             } catch (Exception ex) {
                 logger.error("Error occurred while setting up a Sink {} with config {}",
