@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * to minimize the effort required to implement a builder
  *
  * <p>To implement any kind of builder, it is recommended to extend this class
- * and use the {@link this#convertAndValidate(Class)} method, which validates and
+ * and use the this#convertAndValidate(Class) method, which validates and
  * converts the provided configuration (which is a {@link Map<String, Object>} type)
  * to the desired class, and throws {@link ConstraintViolationException} if
  * a validation fails.
@@ -232,7 +232,6 @@ public abstract class AbstractBuilder {
 	 * @param key   the key of the attribute we want to change. if it is in an embedded map, use "." to navigate to it.
 	 *              for exanmple: configuration.capacty will navigate to the capacity attribute inside the configuration.
 	 * @param value the value we want to set
-	 * @return {@link this} to configure the builder further
 	 */
 	public void withConfiguration(String key, Object value) {
 		this.config.put(key, value);

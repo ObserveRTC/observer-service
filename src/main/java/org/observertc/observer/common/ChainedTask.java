@@ -138,7 +138,7 @@ public class ChainedTask<T> extends TaskAbstract<T> {
         }
 
         /**
-         * This is equal to call {@link this#addStage(TaskStage)}, and then call {@link this#addTerminalPassingStage(String)}
+         * This is equal to call TaskStage and then call this#addTerminalPassingStage(String)
          *
          * @param stage
          * @return

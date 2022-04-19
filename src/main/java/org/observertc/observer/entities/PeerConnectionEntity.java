@@ -35,7 +35,7 @@ public class PeerConnectionEntity implements Iterable<MediaTrackDTO> {
         var result = new PeerConnectionEntity();
         result.peerConnectionDTO = peerConnectionDTO;
         for (var mediaTrackDTO : mediaTrackDTOMap.values()) {
-            if (mediaTrackDTO.peerConnectionId != mediaTrackDTO.peerConnectionId) continue;
+            if (mediaTrackDTO.peerConnectionId != peerConnectionDTO.peerConnectionId) continue;
             switch (mediaTrackDTO.direction) {
                 case INBOUND:
                     result.inboundTracks.put(mediaTrackDTO.trackId, mediaTrackDTO);

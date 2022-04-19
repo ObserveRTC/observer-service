@@ -71,6 +71,7 @@ public class Sleeper implements Runnable {
 		try {
 			Thread.sleep(initialWaitInMs);
 		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			logger.error("Error happened in waiting ", e);
 		}
 	}

@@ -10,7 +10,6 @@ import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import jakarta.inject.Inject;
-import org.bson.internal.Base64;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
@@ -74,7 +73,7 @@ public class SamplesRestApiController {
 					acceptedFormat,
 					samplesCollector::accept
 			);
-			logger.info("\n\n\n {}", Base64.encode(message));
+//			logger.info("\n\n\n {}", Base64.encode(message));
 			acceptor.accept(message);
 		} catch (Throwable ex) {
 			return HttpResponse.serverError(ex.getMessage());

@@ -28,6 +28,7 @@ export class POJO {
         this._uuidFields = new Set();
         this._assertations = [];
         this._assigns = [];
+        this._mongoLines = [];
     }
 
     get name() {
@@ -141,6 +142,9 @@ export class POJO {
             ];
             this._builderFields.push(...lines);
         }
+        const mongoLine = `.append("${name}", reportPayload.${name})`;
+        this._mongoLines.push(mongoLine);
+
         const assertation = `Assertions.assertEquals(expected.${name}, actual.${name}, "${name} field");`
         this._assertations.push(assertation);
 
@@ -153,7 +157,7 @@ export class POJO {
         const result = [];
         result.push(
             ``,
-            this.name,
+            this._name,
             ...this._assertations,
         )
         for (const nestedClass of this._nestedClasses) {
@@ -171,6 +175,22 @@ export class POJO {
             ``,
             this.name,
             ...this._assigns,
+        )
+        for (const nestedClass of this._nestedClasses) {
+            const assigns = nestedClass.drainAssigns();
+            result.push(
+                ...assigns
+            );
+        }
+        return result;
+    }
+
+    drainMongoLines() {
+        const result = [];
+        result.push(
+            ``,
+            `var document = new Document()`,
+            ...this._mongoLines.map(line => `\t${line}`),
         )
         for (const nestedClass of this._nestedClasses) {
             const assigns = nestedClass.drainAssigns();

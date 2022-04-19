@@ -52,6 +52,7 @@ const createReportsPojo = (path) => {
     const schemaKeys = Object.keys(schemas);
     const assertations = [];
     const assigns = [];
+    const mongoLines = [];
     for (const schemaKey of schemaKeys) {
         if (!schemaKey.startsWith("Avro")) continue;
         if (!schemaKey.endsWith("Report")) continue;
@@ -73,9 +74,10 @@ const createReportsPojo = (path) => {
 
         assertations.push(...klass.drainAssertions());
         assigns.push(...klass.drainAssigns());
+        mongoLines.push(`\n\n`,klass.name, ...klass.drainMongoLines());
     }
     fs.writeFileSync(`report_assertations.txt`, assertations.join(`\n`));
-
+    fs.writeFileSync(`report_mongoLines.txt`, mongoLines.join(`\n`));
     fs.writeFileSync(`reports_assigns.txt`, assigns.join(`\n`));
 }
 

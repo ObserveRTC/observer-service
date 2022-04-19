@@ -17,15 +17,16 @@
 package org.observertc.observer.micrometer;
 
 import io.micronaut.context.annotation.Prototype;
-import java.util.LinkedList;
-import java.util.List;
-import javax.validation.constraints.NotNull;
-
 import org.observertc.observer.common.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.MessageFormatter;
+
+import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Consumer;
 
 @Prototype
 public class LogEntry {
@@ -102,88 +103,73 @@ public class LogEntry {
 	}
 
 	private void doLog(String message) {
+		Consumer<String> myLogger = null;
 		switch (this.level) {
 			case ERROR:
-				if (this.marker != null) {
-					if (this.exception != null) {
-						logger.error(this.marker, message, this.exception);
-					} else {
-						logger.error(this.marker, message);
-					}
-				} else {
-					if (this.exception != null) {
-						logger.error(message, this.exception);
-					} else {
-						logger.error(message);
-					}
-				}
+				myLogger = this.getLogger(logger::error, logger::error, logger::error, logger::error);
 				break;
 			case TRACE:
-				if (this.marker != null) {
-					if (this.exception != null) {
-						logger.trace(this.marker, message, this.exception);
-					} else {
-						logger.trace(this.marker, message);
-					}
-				} else {
-					if (this.exception != null) {
-						logger.trace(this.marker, message, this.exception);
-					} else {
-						logger.trace(this.marker, message);
-					}
-				}
-
+				myLogger = this.getLogger(logger::trace, logger::trace, logger::trace, logger::trace);
 				break;
 			case INFO:
-				if (this.marker != null) {
-					if (this.exception != null) {
-						logger.info(this.marker, message, exception);
-					} else {
-						logger.info(this.marker, message);
-					}
-				} else {
-					if (this.exception != null) {
-						logger.info(this.marker, message, exception);
-					} else {
-						logger.info(this.marker, message);
-					}
-				}
-
+				myLogger = this.getLogger(logger::info, logger::info, logger::info, logger::info);
 				break;
 			case WARN:
-				if (this.marker != null) {
-					if (this.exception != null) {
-						logger.warn(this.marker, message, this.exception);
-					} else {
-						logger.warn(this.marker, message);
-					}
-				} else {
-					if (this.exception != null) {
-						logger.warn(this.marker, message, this.exception);
-					} else {
-						logger.warn(this.marker, message);
-					}
-				}
-
+				myLogger = this.getLogger(logger::warn, logger::warn, logger::warn, logger::warn);
 				break;
 			case DEBUG:
-				if (this.marker != null) {
-					if (this.exception != null) {
-						logger.debug(this.marker, message, this.exception);
-					} else {
-						logger.debug(this.marker, message);
-					}
-				} else {
-					if (this.exception != null) {
-						logger.debug(this.marker, message, this.exception);
-					} else {
-						logger.debug(this.marker, message);
-					}
-				}
-
+				myLogger = this.getLogger(logger::debug, logger::debug, logger::debug, logger::debug);
 				break;
 			default:
+				return;
 		}
+		if (myLogger != null) {
+			myLogger.accept(message);
+		}
+	}
+
+	private Consumer<String> getLogger(MyLogger msgLogger, MyMarkedLogger markedMsgLogger, MyExceptionLogger exceptionLogger, MyMarkedExceptionLogger markedExceptionLogger) {
+		if (this.marker != null) {
+			if (this.exception != null) {
+				return message -> {
+					markedExceptionLogger.log(this.marker, message, this.exception);
+				};
+			} else {
+				return message -> {
+					markedMsgLogger.log(this.marker, message);
+				};
+			}
+		} else {
+			if (this.exception != null) {
+				return message -> {
+					exceptionLogger.log(message, this.exception);
+				};
+			} else {
+				return message -> {
+					msgLogger.log(message);
+				};
+			}
+		}
+	}
+
+	@FunctionalInterface
+	interface MyMarkedExceptionLogger {
+		void log (Marker marker, String message, Throwable t);
+	}
+
+	@FunctionalInterface
+	interface MyMarkedLogger {
+		void log (Marker marker, String message);
+	}
+
+	@FunctionalInterface
+	interface MyExceptionLogger {
+		void log (String message, Throwable t);
+	}
+
+	@FunctionalInterface
+	interface MyLogger {
+		void log (String message);
 	}
 
 	public String toString() {

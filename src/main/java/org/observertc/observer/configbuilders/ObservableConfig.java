@@ -36,7 +36,7 @@ import java.util.Objects;
 /**
  * This class implements a yaml and json interpreter
  * to provide @link{Map} representation for
- * @link{Observable} configurations.
+ * Observable configurations.
  *
  */
 @Singleton

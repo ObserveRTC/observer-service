@@ -24,7 +24,6 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import jakarta.inject.Inject;
-import org.bson.internal.Base64;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
@@ -166,7 +165,7 @@ public class SamplesWebsocketController {
 			session.close(closeReason);
 			return;
 		}
-		logger.info("\n\n\n {}", Base64.encode(messageBytes));
+//		logger.info("\n\n\n {}", Base64.encode(messageBytes));
 		try {
 			input.acceptor.accept(messageBytes);
 		} catch (Exception ex) {

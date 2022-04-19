@@ -61,11 +61,11 @@ class WeakSpinLock implements AutoCloseable {
         }
         WeakLockDTO actual;
         do {
-            long millis = random.nextInt(1500) + 500;
+            long millis = random.nextLong(1500) + 500L;
             try {
                 Thread.sleep(millis);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
             }
 
             if (this.tryLock(actualHolder)) {
@@ -78,7 +78,7 @@ class WeakSpinLock implements AutoCloseable {
                 if (++consecutiveNoActualLockCounter < 3) {
                     continue;
                 }
-                logger.warn("The number of tries to retrieve actual lock registered is {}, and now we forcefully save our ones as no alternative has given at this point.");
+                logger.warn("The number of tries to retrieve actual lock registered is {}, and now we forcefully save our ones as no alternative has given at this point.", consecutiveNoActualLockCounter);
                 break;
             } else {
                 consecutiveNoActualLockCounter = 0;

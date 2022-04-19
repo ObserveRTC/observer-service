@@ -48,11 +48,9 @@ observer:
 #    allowedServiceIds: []
     rest:
       enabled: true
-      format: JSON
 
     websocket:
       enabled: true
-      format: JSON
 
   repository:
     mediaTracksMaxIdleTimeInS: 300
@@ -73,16 +71,24 @@ observer:
 
     reportsCollector:
       maxItems: 10000
-      maxTimeInMs: 1000
+      maxTimeInMs: 10000
 
   evaluators: {}
 
-#  sinks:
-#    MyLogger:
-#      type: LoggerSink
+  sinks:
+    MyLogger:
+      type: LoggerSink
+      config:
+        printReports: true
+        printTypeSummary: true
+
+#    MyMongo:
+#      type: MongoSink
 #      config:
-#        printReports: true
-#        printTypeSummary: true
+#        uri: "mongodb://root:password@localhost:27017"
+#        database: "reports"
+#        savingStrategy: SERVICE_ID_BASED
+#        printSummary: true
 
 #    MySocketIO:
 #      type: SocketIOSink
@@ -103,14 +109,7 @@ observer:
 #        properties:
 #          bootstrap.servers: localhost:9092
 
-#    MyMongo:
-#      type: MongoSink
-#      config:
-#        uri: "mongodb://root:password@localhost:27017"
-#        database: "reports"
-
   reports:
-    format: JSON
     sendObserverEvents: true
     sendCallEvents: true
     sendCallMeta: true
@@ -128,7 +127,6 @@ observer:
     sendSfuSctpStreams: true
     sendSfuOutboundRtpStreams: true
     sendSfuInboundRtpStreams: true
-    reportSfuRtpPadOnlyWithCallId: 10
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

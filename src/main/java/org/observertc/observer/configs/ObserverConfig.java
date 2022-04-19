@@ -70,9 +70,7 @@ public class ObserverConfig {
 	public SourcesConfig sources;
 
 	public static class SourceConfig {
-
 		public boolean enabled = false;
-		public TransportFormatType format = TransportFormatType.JSON;
     }
 
 	@ConfigurationProperties("sources")
@@ -149,7 +147,7 @@ public class ObserverConfig {
 
 		}
 
-		public ReportsCollectorConfig reportsBuffer = new ReportsCollectorConfig();
+		public ReportsCollectorConfig reportsCollector = new ReportsCollectorConfig();
 
 		@ConfigurationProperties("reportsCollector")
 		public static class ReportsCollectorConfig extends CollectorConfig {

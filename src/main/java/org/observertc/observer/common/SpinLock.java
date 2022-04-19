@@ -138,7 +138,8 @@ public class SpinLock {
 					try {
 						Thread.sleep(millis, (int) nanos);
 					} catch (InterruptedException e) {
-						//e.printStackTrace();
+						logger.warn("Interruption happened", e);
+						Thread.currentThread().interrupt();
 					}
 					timeout += BACKOFF_INT_SLEEP;
 				}

@@ -3,6 +3,8 @@ package org.observertc.observer.reports;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.schemas.reports.*;
 
+import java.util.Objects;
+
 /**
  * Collection of useful object creations for report processing
  */
@@ -28,6 +30,28 @@ public final class ReportTypeVisitors {
                 report -> Report.fromSfuInboundRtpPadReport((SfuInboundRtpPadReport) report),
                 report -> Report.fromSfuOutboundRtpPadReport((SfuOutboundRtpPadReport) report),
                 report -> Report.fromSfuSctpStreamReport((SfuSctpStreamReport) report)
+        );
+    }
+
+    public static ReportTypeVisitor<Object, String> serviceIdGetter() {
+        return ReportTypeVisitor.<Object, String>createFunctionalVisitor(
+                payload -> Objects.nonNull(payload) ? ((ObserverEventReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((CallEventReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((CallMetaReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((ClientExtensionReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((ClientTransportReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((ClientDataChannelReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((InboundAudioTrackReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((InboundVideoTrackReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((OutboundAudioTrackReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((OutboundVideoTrackReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SfuEventReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SfuMetaReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SfuExtensionReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SFUTransportReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SfuInboundRtpPadReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SfuOutboundRtpPadReport) payload).serviceId : null,
+                payload -> Objects.nonNull(payload) ? ((SfuSctpStreamReport) payload).serviceId : null
         );
     }
 

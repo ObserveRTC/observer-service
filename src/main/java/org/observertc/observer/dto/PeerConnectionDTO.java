@@ -117,7 +117,7 @@ public class PeerConnectionDTO implements VersionedPortable {
 
 	@Override
 	public boolean equals(Object other) {
-		if (Objects.isNull(other) || !this.getClass().getName().equals(other.getClass().getName())) {
+		if (Objects.isNull(other) || !this.getClass().isAssignableFrom(other.getClass())) {
 			return false;
 		}
 		PeerConnectionDTO otherDTO = (PeerConnectionDTO) other;

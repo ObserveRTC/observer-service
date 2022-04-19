@@ -71,6 +71,14 @@ jacocoTestReport {
     }
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectKey", "ObserveRTC_observer"
+        property "sonar.organization", "observertc"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
 task createVersion {
     File outputDir = file("$projectDir/src/main/resources")
     outputs.dir outputDir
@@ -83,5 +91,5 @@ task createVersion {
         }
     }
 }
-
-compileJava.dependsOn createVersion
+//
+//compileJava.dependsOn createVersion

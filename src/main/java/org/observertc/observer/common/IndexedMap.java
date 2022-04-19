@@ -14,7 +14,7 @@ public class IndexedMap<K, V> implements Map<K, V> {
 
         @Override
         public V next() {
-            return null;
+            throw new NoSuchElementException();
         }
     };
 

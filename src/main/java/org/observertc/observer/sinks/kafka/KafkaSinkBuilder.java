@@ -46,7 +46,7 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
             try {
                 bytes = encoder.encode(report);
             } catch (Throwable e) {
-                e.printStackTrace();
+                logger.warn("Cannot assign key", e);
             }
             var wrappedBytes = Bytes.wrap(bytes);
             var result = new ProducerRecord<UUID, Bytes>(config.topic, key, wrappedBytes);
@@ -71,7 +71,7 @@ public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
                 flattenedMap.put(property, defaultValue);
             }
         };
-        var random = new SecureRandom().nextInt(10000);
+        var random = new SecureRandom().nextInt();
         check.accept(ProducerConfig.CLIENT_ID_CONFIG, KafkaSink.class.getSimpleName() + random);
         check.accept(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
         check.accept(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, BytesSerializer.class);

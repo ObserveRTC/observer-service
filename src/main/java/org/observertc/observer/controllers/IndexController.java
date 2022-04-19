@@ -8,7 +8,6 @@ import io.micronaut.security.rules.SecurityRule;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.HashMap;
 import java.util.Map;
 
 @Secured(SecurityRule.IS_ANONYMOUS)
@@ -31,13 +30,6 @@ public class IndexController {
 	public HttpStatus index() {
 		return HttpStatus.OK;
 	}
-
-	@Secured(SecurityRule.IS_ANONYMOUS)
-	@Get("/home")
-	public Map<String, Object> getHome() {
-		return new HashMap<>();
-	}
-
 
 	@Secured(SecurityRule.IS_ANONYMOUS)
 	@Get("/about")

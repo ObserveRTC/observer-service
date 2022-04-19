@@ -56,7 +56,6 @@ public class ObservableCollector<T> {
      * NOTE 2: it emits all of the collected items regardless of the overflowing number it may contain.
      * @param items
      * @return
-     * @throws Throwable
      */
     public<U extends T> ObservableCollector<T> addAll(Collection<U> items) {
         if (Objects.isNull(items) || items.size() < 1) {

@@ -3,15 +3,12 @@
 package org.observertc.schemas.protobuf;
 
 import org.observertc.observer.common.UUIDAdapter;
+import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.samples.Samples.ClientSample;
+import org.observertc.schemas.samples.Samples.*;
 import org.observertc.schemas.samples.Samples.ClientSample.*;
-import org.observertc.schemas.samples.Samples.Controls;
-import org.observertc.schemas.samples.Samples.SfuSample;
 import org.observertc.schemas.samples.Samples.SfuSample.*;
-import org.observertc.schemas.samples.Samples.TurnSample;
-import org.observertc.schemas.samples.Samples.TurnSample.TurnPeerAllocation;
-import org.observertc.schemas.samples.Samples.TurnSample.TurnSession;
+import org.observertc.schemas.samples.Samples.TurnSample.*;
 
 import java.util.function.Function;
 
