@@ -6,10 +6,11 @@ skinparam arrowThickness 2
 skinparam BoxPadding 60
 
 
-package "Service" #transparent {
-    [Server]
-    [Security]
+package "Configuration" #transparent {
+    [micronaut]
+    [endpoints]
     package "Observer" #transparent {
+        [security]
         () " " as collector_1
         () " " as collector_2
     	[Sources]
@@ -40,9 +41,9 @@ collector_2 -r-> [Sinks]
 [Buffers] -u-> collector_1
 [Buffers] -u-> collector_2
 
-[Server] -[hidden]d-> [Sources]
-[Security] -[hidden]d-> [Evaluators]
-[Server] -[hidden]r-> [Security]
+[micronaut] -[hidden]d-> [Sources]
+[endpoints] -[hidden]d-> [Evaluators]
+[security] -[hidden]u-> [Sources]
 
 
 @enduml

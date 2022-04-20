@@ -6,8 +6,6 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.reports.ReportTypeVisitor;
-import org.observertc.observer.reports.ReportTypeVisitors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Singleton
 public class ReportsCollector {
@@ -25,7 +22,6 @@ public class ReportsCollector {
     @Inject
     ObserverConfig observerConfig;
     private ObservableCollector<Report> reportsCollector;
-    private ReportTypeVisitor<Void, Boolean> reportsFilter = null;
 
     @PostConstruct
     void setup() {
@@ -35,8 +31,6 @@ public class ReportsCollector {
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
                 .build();
-
-        this.reportsFilter = ReportTypeVisitors.makeTypeFilter(observerConfig.reports);
     }
 
     @PreDestroy
@@ -49,9 +43,6 @@ public class ReportsCollector {
     }
 
     public void accept(Report report) {
-        if (!this.reportsFilter.apply(null, report.type)) {
-            return;
-        }
         try {
             this.reportsCollector.add(report);
         } catch (Throwable e) {
@@ -63,11 +54,8 @@ public class ReportsCollector {
         if (Objects.isNull(reports) || reports.size() < 1) {
             return;
         }
-        var filteredReports = reports.stream()
-                .filter(report -> this.reportsFilter.apply(null, report.type))
-                .collect(Collectors.toList());
         try {
-            this.reportsCollector.addAll(filteredReports);
+            this.reportsCollector.addAll(reports);
         } catch (Throwable e) {
             logger.warn("Error occurred", e);
         }

@@ -19,17 +19,17 @@ public class ObservedClientSampleObfuscator implements Function<List<ObservedCli
     private static final Logger logger = LoggerFactory.getLogger(ObservedClientSampleObfuscator.class);
 
     private boolean enabled = false; // change if config enables it
-    private java.util.function.Function<String, String> obfuscateUserId;
-    private java.util.function.Function<String, String> obfuscateRoomId;
-    private java.util.function.Function<String, String> obfuscateIceAddresses;
+    private java.util.function.Function<String, String> userIdObfuscator;
+    private java.util.function.Function<String, String> roomIdObfuscator;
+    private java.util.function.Function<String, String> iceAddressObfuscator;
 
     public ObservedClientSampleObfuscator(ObserverConfig observerConfig, ObfuscationMethods obfuscationMethods) {
-        var config = observerConfig.obfuscations;
+        var config = observerConfig.evaluators.obfuscator;
         if (Objects.nonNull(config)) {
             this.enabled = config.enabled;
-            this.obfuscateUserId = obfuscationMethods.makeMethodForString(config.maskedUserId);
-            this.obfuscateRoomId = obfuscationMethods.makeMethodForString(config.maskedRoomId);
-            this.obfuscateIceAddresses = obfuscationMethods.makeMethodForString(config.maskedIceAddresses);
+            this.userIdObfuscator = obfuscationMethods.builder(config.userId).buildForString();
+            this.roomIdObfuscator = obfuscationMethods.builder(config.roomId).buildForString();
+            this.iceAddressObfuscator = obfuscationMethods.builder(config.iceAddresses).buildForString();
         }
     }
 
@@ -46,14 +46,14 @@ public class ObservedClientSampleObfuscator implements Function<List<ObservedCli
         }
         for (ObservedClientSample observedClientSample : observedClientSampleList) {
             ClientSample clientSample = observedClientSample.getClientSample();
-            clientSample.userId = this.obfuscateUserId.apply(clientSample.userId);
-            clientSample.roomId = this.obfuscateRoomId.apply(clientSample.roomId);
+            clientSample.userId = this.userIdObfuscator.apply(clientSample.userId);
+            clientSample.roomId = this.roomIdObfuscator.apply(clientSample.roomId);
             ClientSampleVisitor
                     .streamPeerConnectionTransports(clientSample)
                     .forEach(pcTransport -> {
                         try {
-                            pcTransport.localAddress = this.obfuscateIceAddresses.apply(pcTransport.localAddress);
-                            pcTransport.remoteAddress = this.obfuscateIceAddresses.apply(pcTransport.remoteAddress);
+                            pcTransport.localAddress = this.iceAddressObfuscator.apply(pcTransport.localAddress);
+                            pcTransport.remoteAddress = this.iceAddressObfuscator.apply(pcTransport.remoteAddress);
                         } catch (Throwable t) {
                             logger.error("Error occurred by obfuscating ice addresses", t);
                         }

@@ -1,6 +1,6 @@
 package org.observertc.observer.reports;
 
-import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.configs.ReportsConfig;
 import org.observertc.schemas.reports.*;
 
 import java.util.Objects;
@@ -55,7 +55,7 @@ public final class ReportTypeVisitors {
         );
     }
 
-    public static ReportTypeVisitor<Void, Boolean> makeTypeFilter(ObserverConfig.ReportsConfig config) {
+    public static ReportTypeVisitor<Void, Boolean> makeTypeFilter(ReportsConfig config) {
         return ReportTypeVisitor.<Boolean>createSupplierVisitor(
                 () -> config.sendObserverEvents,
                 () -> config.sendCallEvents,

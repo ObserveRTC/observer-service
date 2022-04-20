@@ -2,6 +2,7 @@ package org.observertc.observer.sources;
 
 import org.observertc.schemas.samples.Samples;
 
+import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -92,8 +93,11 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     @Override
     default TOut apply(TObj obj, String version) {
-
-        switch (version) {
+        if (version == null) {
+            return notRecognized(obj);
+        }
+        switch (version.toLowerCase(Locale.ROOT)) {
+            case "latest":
             case Samples.VERSION:
                 return visitLatest(obj);
             case org.observertc.schemas.v200beta59.samples.Samples.VERSION:

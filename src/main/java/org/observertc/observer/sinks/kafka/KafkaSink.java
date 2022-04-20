@@ -39,7 +39,7 @@ public class KafkaSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull List<Report> reports) {
+    public void process(@NonNull List<Report> reports) {
         if (reports.size() < 1) {
             if (3 < ++this.consecutiveEmptyLists) {
                 // keep the connection alive

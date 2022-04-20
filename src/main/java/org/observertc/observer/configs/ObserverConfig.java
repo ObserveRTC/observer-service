@@ -32,37 +32,14 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
-
 		public boolean allowExposeConfig = false;
 
-		public SecurityConfig.WebsocketSecurityConfig websockets = new SecurityConfig.WebsocketSecurityConfig();
+		public ObfuscationsConfig obfuscations;
 
-
-        @ConfigurationProperties("websockets")
-		public static class WebsocketSecurityConfig {
-			public int expirationInMin = 0; // 0 means the access token provided is used
-		}
-	}
-
-	public ObfuscationsConfig obfuscations;
-
-	@ConfigurationProperties("obfuscations")
-	public static class ObfuscationsConfig {
-		public enum ObfuscationType {
-			ANONYMIZATION,
-			NONE,
-		}
-		public boolean enabled = false;
-		public ObfuscationsMaskConfig maskConfig;
-
-		public ObfuscationType maskedIceAddresses = ObfuscationType.ANONYMIZATION;
-		public ObfuscationType maskedUserId = ObfuscationType.ANONYMIZATION;
-		public ObfuscationType maskedRoomId = ObfuscationType.ANONYMIZATION;
-
-		@ConfigurationProperties("anonymization")
-		public static class ObfuscationsMaskConfig {
+		@ConfigurationProperties("obfuscations")
+		public static class ObfuscationsConfig {
 			public String hashAlgorithm;
-			public String salt;
+			public String hashSalt;
 		}
 	}
 
@@ -125,6 +102,16 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
+		public Obfuscator obfuscator = new Obfuscator();
+
+		@ConfigurationProperties(("obfuscator"))
+		public static class Obfuscator {
+			public boolean enabled = false;
+			public ObfuscationType iceAddresses = ObfuscationType.ANONYMIZATION;
+			public ObfuscationType userId = ObfuscationType.ANONYMIZATION;
+			public ObfuscationType roomId = ObfuscationType.ANONYMIZATION;
+		}
+
 	}
 
 	// internal collectors config
@@ -167,33 +154,6 @@ public class ObserverConfig {
 	}
 
 	public Map<String, Object> sinks;
-
-	// Outbound Reports Config
-	public ReportsConfig reports;
-
-	@ConfigurationProperties("reports")
-	public static class ReportsConfig {
-		public boolean sendObserverEvents = true;
-		public boolean sendCallEvents = true;
-		public boolean sendCallMeta = true;
-		public boolean sendClientExtensions = true;
-		public boolean sendInboundAudioTracks = true;
-		public boolean sendInboundVideoTracks = true;
-		public boolean sendOutboundAudioTracks = true;
-		public boolean sendOutboundVideoTracks = true;
-		public boolean sendClientTransports = true;
-		public boolean sendClientDataChannels = true;
-
-		public boolean sendSfuEvents = true;
-		public boolean sendSfuMeta = true;
-		public boolean sendSfuTransports = true;
-		public boolean sendSfuSctpStreams = true;
-
-		public boolean sendSfuInboundRtpStreams = true;
-		public boolean sendSfuOutboundRtpStreams = true;
-
-        public boolean sendSfuExtensions = true;
-    }
 
 	// Hazelcast Config
 	public HazelcastConfig hazelcast;

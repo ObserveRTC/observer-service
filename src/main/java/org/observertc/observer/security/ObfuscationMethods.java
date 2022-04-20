@@ -1,13 +1,12 @@
 package org.observertc.observer.security;
 
 import jakarta.inject.Singleton;
-import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.configs.ObfuscationType;
 import org.observertc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,17 +19,15 @@ public class ObfuscationMethods {
 
     private static final Logger logger = LoggerFactory.getLogger(ObfuscationMethods.class);
 
-
     private Supplier<Function<byte[], byte[]>> hashSupplier;
 
     public ObfuscationMethods(ObserverConfig observerConfig) {
-        var config = observerConfig.obfuscations;
-        if (Objects.nonNull(observerConfig.obfuscations) && Objects.nonNull(observerConfig.obfuscations.maskConfig)) {
-            this.hashSupplier = makeHashDigesterSupplier(observerConfig.obfuscations.maskConfig);
+        var config = observerConfig.security.obfuscations;
+        if (config.hashAlgorithm != null && config.hashSalt != null) {
+            this.hashSupplier = makeHashDigesterSupplier(config.hashAlgorithm, config.hashSalt);
         } else {
             this.hashSupplier = () -> Function.identity();
         }
-
     }
 
     @PostConstruct
@@ -38,50 +35,51 @@ public class ObfuscationMethods {
 
     }
 
-    public Function<String, String> makeMethodForString(ObserverConfig.ObfuscationsConfig.ObfuscationType obfuscationType) {
-        return this.makeMethodForString(obfuscationType, StandardCharsets.UTF_8);
+    public Builder builder(ObfuscationType type) {
+        return new Builder().setType(type);
     }
 
-    public Function<String, String> makeMethodForString(ObserverConfig.ObfuscationsConfig.ObfuscationType obfuscationType, Charset charset) {
-        Function<byte[], byte[]> obfuscateBytes = this.makeMethodForBytes(obfuscationType);
-        return input -> {
-            if (Objects.isNull(input)) {
-                return null;
+    public class Builder {
+        private Function<byte[], byte[]> func = null;
+        public Builder setType(ObfuscationType value) {
+            switch (value) {
+                case ANONYMIZATION -> this.func = ObfuscationMethods.this.hashSupplier.get();
+                case NONE -> this.func = Function.identity();
             }
-            var bytesInput = input.getBytes(charset);
-            var bytesOutput = obfuscateBytes.apply(bytesInput);
-            return new String(bytesOutput, charset);
-        };
-    }
-
-    public Function<byte[], byte[]> makeMethodForBytes(ObserverConfig.ObfuscationsConfig.ObfuscationType obfuscationType) {
-        if (Objects.isNull(obfuscationType)) {
-            logger.warn("No obfuscation type has been given");
-            return Function.identity();
+            return this;
         }
-        Function<byte[], byte[]> noneSupplier = Function.identity();
-        var resultProvider = ObfuscationTypeVisitor.<Function<byte[], byte[]>>makeSupplierVisitor(
-                this.hashSupplier,
-                () -> Function.identity()
-        );
-        return resultProvider.apply(null, obfuscationType);
+
+        public Function<byte[], byte[]> buildForBytes() {
+            Objects.requireNonNull(this.func);
+            return this.func;
+        }
+
+        public Function<String, String> buildForString() {
+            Objects.requireNonNull(this.func);
+            var charset = StandardCharsets.UTF_8;
+            return input -> {
+                var bytesInput = input.getBytes(charset);
+                var bytesOutput = this.func.apply(bytesInput);
+                return new String(bytesOutput, charset);
+            };
+        }
     }
 
-    private static Supplier<Function<byte[], byte[]>> makeHashDigesterSupplier(ObserverConfig.ObfuscationsConfig.ObfuscationsMaskConfig config) {
+    private static Supplier<Function<byte[], byte[]>> makeHashDigesterSupplier(String hashAlgorithm, String saltString) {
         try {
-            Objects.requireNonNull(config.salt);
-            Objects.requireNonNull(config.hashAlgorithm);
-            byte[] salt = config.salt.getBytes(StandardCharsets.UTF_8);
+            Objects.requireNonNull(saltString);
+            Objects.requireNonNull(hashAlgorithm);
+            byte[] salt = saltString.getBytes(StandardCharsets.UTF_8);
             return () -> {
                 try {
-                    return makeHashDigester(salt, config.hashAlgorithm);
+                    return makeHashDigester(salt, hashAlgorithm);
                 } catch (Exception ex) {
-                    logger.error("Cannot make hash algorithm for obfuscator. config: {}", JsonUtils.objectToString(config), ex);
+                    logger.error("Cannot make hash algorithm for obfuscator. hashAlgorithm: {}, salt: {}", hashAlgorithm, saltString, ex);
                     return Function.identity();
                 }
             };
         } catch (Throwable t) {
-            logger.error("Cannot make hash algorithm for obfuscator. config: {}", JsonUtils.objectToString(config), t);
+            logger.error("Cannot make hash algorithm for obfuscator. hashAlgorithm: {}, salt: {}",  hashAlgorithm, saltString, t);
             return () -> Function.identity();
         }
     }

@@ -2,17 +2,23 @@ package org.observertc.observer.sinks;
 
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
+import org.observertc.observer.configs.ReportsConfig;
+import org.observertc.observer.reports.Report;
+import org.observertc.observer.reports.ReportTypeVisitors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SinkBuilder extends AbstractBuilder {
     private static final Logger logger = LoggerFactory.getLogger(SinkBuilder.class);
     private final List<String> packages;
-    private Queue<Object> subjects = new LinkedList<>();
 
     public SinkBuilder() {
         Package thisPackage = this.getClass().getPackage();
@@ -33,13 +39,14 @@ public class SinkBuilder extends AbstractBuilder {
         }
         Builder<Sink> sinkBuilder = (Builder<Sink>) builderHolder.get();
         sinkBuilder.withConfiguration(config.config);
-        while (!this.subjects.isEmpty()) {
-            Object subject = this.subjects.poll();
-            sinkBuilder.set(subject);
-        }
 
         var result = sinkBuilder.build();
         result.setEnabled(config.enabled);
+        if (config.reports != null) {
+            var reportTypeVisitor = ReportTypeVisitors.makeTypeFilter(config.reports);
+            Predicate<Report> filter = report -> reportTypeVisitor.apply(null, report.type);
+            result.setReportsFilter(filter);
+        }
         return result;
     }
 
@@ -47,6 +54,8 @@ public class SinkBuilder extends AbstractBuilder {
 
         @NotNull
         public String type;
+
+        public ReportsConfig reports = null;
 
         public boolean enabled = true;
 

@@ -73,6 +73,7 @@ public class SamplesCollector {
             if (Objects.isNull(receivedSample) || Objects.isNull(receivedSample.samples)) {
                 continue;
             }
+
             SamplesVisitor.streamClientSamples(receivedSample.samples)
                     .forEach(clientSample -> {
                         var timeZoneId = this.minuteToTimeZoneOffsetConverter.apply(clientSample.timeZoneOffsetInHours);

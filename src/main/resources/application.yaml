@@ -26,29 +26,14 @@ endpoints:
     enabled: true
     sensitive: false
   logout:
-    get-allowed: true
+    get-allowed: false
+
 ---
 observer:
-  security:
-    ipAddressConverter:
-      enabled: False
-      algorithm: SHA-256
-      salt: "MySalt"
-
-  obfuscations:
-    enabled: false
-    obfuscate-ice-addresses: ANONYMIZATION
-    obfuscate-user-id: ANONYMIZATION
-    obfuscate-room-id: NONE
-    anonymization:
-      hash-algorithm: "SHA-512"
-      salt: "mySuperSalt"
 
   sources:
-#    allowedServiceIds: []
     rest:
       enabled: true
-
     websocket:
       enabled: true
 
@@ -64,23 +49,50 @@ observer:
     samplesCollector:
       maxItems: 10000
       maxTimeInMs: 10000
-
     debouncers:
       maxItems: 10000
       maxTimeInMs: 1000
-
     reportsCollector:
       maxItems: 10000
       maxTimeInMs: 10000
 
-  evaluators: {}
+  security:
+    obfuscations:
+      hashAlgorithm: SHA-256
+      hashSalt: "MySalt"
 
-  sinks:
-    MyLogger:
-      type: LoggerSink
-      config:
-        printReports: true
-        printTypeSummary: true
+  evaluators:
+    obfuscator:
+      enabled: false
+      iceAddresses: none
+      roomId: none
+      userId: none
+
+  sinks: {}
+#    MyLogger:
+#      type: LoggerSink
+#      config:
+#        printReports: true
+#        printTypeSummary: true
+#      reports:
+#        sendObserverEvents: true
+#        sendCallEvents: true
+#        sendCallMeta: true
+#        sendClientExtensions: true
+#        sendInboundAudioTracks: true
+#        sendInboundVideoTracks: true
+#        sendOutboundAudioTracks: true
+#        sendOutboundVideoTracks: true
+#        sendClientTransports: true
+#        sendClientDataChannels: true
+#        sendMediaTracks: true
+#        sendSfuEvents: true
+#        sendSfuMeta: true
+#        sendSfuTransports: true
+#        sendSfuSctpStreams: true
+#        sendSfuOutboundRtpStreams: true
+#        sendSfuInboundRtpStreams: true
+
 
 #    MyMongo:
 #      type: MongoSink
@@ -108,25 +120,6 @@ observer:
 #        demuxTopicPrefix: "observertc-"
 #        properties:
 #          bootstrap.servers: localhost:9092
-
-  reports:
-    sendObserverEvents: true
-    sendCallEvents: true
-    sendCallMeta: true
-    sendClientExtensions: true
-    sendInboundAudioTracks: true
-    sendInboundVideoTracks: true
-    sendOutboundAudioTracks: true
-    sendOutboundVideoTracks: true
-    sendClientTransports: true
-    sendClientDataChannels: true
-    sendMediaTracks: true
-    sendSfuEvents: true
-    sendSfuMeta: true
-    sendSfuTransports: true
-    sendSfuSctpStreams: true
-    sendSfuOutboundRtpStreams: true
-    sendSfuInboundRtpStreams: true
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

@@ -28,7 +28,7 @@ public class LoggerSink extends Sink {
     }
 
     @Override
-    public void accept(@NonNull List<Report> reports) {
+    public void process(@NonNull List<Report> reports) {
         logger.info("Number of reports are: {}", reports.size());
         Map<ReportType, Integer> receivedTypes = new HashMap<>();
         for (var report : reports) {

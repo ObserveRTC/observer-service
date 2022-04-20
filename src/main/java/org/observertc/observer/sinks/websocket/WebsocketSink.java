@@ -6,7 +6,10 @@ import io.micronaut.websocket.annotation.OnClose;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.reactivex.rxjava3.annotations.NonNull;
-import jakarta.websocket.*;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.ContainerProvider;
+import jakarta.websocket.Session;
+import jakarta.websocket.WebSocketContainer;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.Sink;
 
@@ -91,7 +94,7 @@ public class WebsocketSink extends Sink {
 
 
     @Override
-    public void accept(@NonNull List<Report> reports) {
+    public void process(@NonNull List<Report> reports) {
         if (reports.size() < 1) {
             this.ping();
             return;

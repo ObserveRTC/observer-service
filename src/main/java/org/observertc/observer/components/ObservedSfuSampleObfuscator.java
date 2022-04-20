@@ -19,17 +19,13 @@ public class ObservedSfuSampleObfuscator implements Function<List<ObservedSfuSam
     private static final Logger logger = LoggerFactory.getLogger(ObservedSfuSampleObfuscator.class);
 
     private boolean enabled = false; // change if config enables it
-    private java.util.function.Function<String, String> obfuscateUserId;
-    private java.util.function.Function<String, String> obfuscateRoomId;
-    private java.util.function.Function<String, String> obfuscateIceAddresses;
+    private java.util.function.Function<String, String> iceAddressObfuscator;
 
     public ObservedSfuSampleObfuscator(ObserverConfig observerConfig, ObfuscationMethods obfuscationMethods) {
-        var config = observerConfig.obfuscations;
+        var config = observerConfig.evaluators.obfuscator;
         if (Objects.nonNull(config)) {
             this.enabled = config.enabled;
-            this.obfuscateUserId = obfuscationMethods.makeMethodForString(config.maskedUserId);
-            this.obfuscateRoomId = obfuscationMethods.makeMethodForString(config.maskedRoomId);
-            this.obfuscateIceAddresses = obfuscationMethods.makeMethodForString(config.maskedIceAddresses);
+            this.iceAddressObfuscator = obfuscationMethods.builder(config.iceAddresses).buildForString();
         }
     }
 
@@ -50,8 +46,8 @@ public class ObservedSfuSampleObfuscator implements Function<List<ObservedSfuSam
                     .streamTransports(sfuSample)
                     .forEach(sfuTransport -> {
                         try {
-                            sfuTransport.localAddress = this.obfuscateIceAddresses.apply(sfuTransport.localAddress);
-                            sfuTransport.remoteAddress = this.obfuscateIceAddresses.apply(sfuTransport.remoteAddress);
+                            sfuTransport.localAddress = this.iceAddressObfuscator.apply(sfuTransport.localAddress);
+                            sfuTransport.remoteAddress = this.iceAddressObfuscator.apply(sfuTransport.remoteAddress);
                         } catch (Throwable t) {
                             logger.error("Error occurred by obfuscating ice addresses", t);
                         }

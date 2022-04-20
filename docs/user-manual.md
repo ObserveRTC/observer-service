@@ -343,21 +343,22 @@ Repository config influences the lifetime of the object stored to ints internal 
 
 ```yaml
 repository:
-    mediaTracksMaxIdleTime: 300
+    mediaTracksMaxIdleTimeInS: 300
     peerConnectionsMaxIdleTime: 300
-    clientMaxIdleTime: 300
-    sfuRtpPadMaxIdleTime: 600
-    sfuTransportMaxIdleTime: 600
-    sfuMaxIdleTime: 60
+    clientMaxIdleTimeInS: 300
+    sfuRtpPadMaxIdleTimeInS: 600
+    sfuTransportMaxIdleTimeInS: 600
+    sfuMaxIdleTimeInS: 60
 ```
 
 where
- * `mediaTracksMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a single media track object after which it is removed from the repository
- * `peerConnectionsMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a singlepeer connection object after which it is removed from the repository together with all media track it had
- * `clientMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a single client object after which it is removed from the repository together with all peer connection it had
- * `sfuRtpPadMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a single sfu rtp pad object after which it is removed from the repository
- * `sfuTransportMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a single sfu transport object after which it is removed from the repository together with all rtp pads it had
- * `sfuMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a single sfu object after which it is removed from the repository together with all transports it had
+* `mediaTracksMaxIdleTimeInS` determines the maximum idle time (no new sample received to update that track) for a single media track object after which it is removed from the repository
+* `peerConnectionsMaxIdleTime` determines the maximum idle time (no new sample received to update that track) for a singlepeer connection object after which it is removed from the repository together with all media track it had
+* `clientMaxIdleTimeInS` determines the maximum idle time (no new sample received to update that track) for a single client object after which it is removed from the repository together with all peer connection it had
+* `sfuRtpPadMaxIdleTimeInS` determines the maximum idle time (no new sample received to update that track) for a single sfu rtp pad object after which it is removed from the repository
+* `sfuTransportMaxIdleTimeInS` determines the maximum idle time (no new sample received to update that track) for a single sfu transport object after which it is removed from the repository together with all rtp pads it had
+* `sfuMaxIdleTimeInS` determines the maximum idle time (no new sample received to update that track) for a single sfu object after which it is removed from the repository together with all transports it had
+
 
 
 ### Hazelcast

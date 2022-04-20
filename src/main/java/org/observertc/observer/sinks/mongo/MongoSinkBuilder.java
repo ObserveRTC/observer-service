@@ -84,28 +84,6 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         return result;
     }
 
-    public static class Config {
-
-        public enum SavingStrategy {
-            REPORT_TYPE_BASED,
-            SERVICE_ID_BASED,
-            ONE_COLLECTION,
-        }
-
-        @NotNull
-        public String uri;
-
-        @NotNull
-        public String database;
-
-        public SavingStrategy savingStrategy = SavingStrategy.ONE_COLLECTION;
-
-        public Map<ReportType, String> collectionNames = null;
-
-        public boolean printSummary = false;
-
-    }
-
     private Supplier<MongoClient> makeClientProvider(String uri) {
         AtomicReference<MongoClient> clientHolder = new AtomicReference<>();
         return () -> {
@@ -808,8 +786,27 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
                     .append("payload", payload)
                     ;
         };
+    }
 
+    public static class Config {
 
+        public enum SavingStrategy {
+            REPORT_TYPE_BASED,
+            SERVICE_ID_BASED,
+            ONE_COLLECTION,
+        }
+
+        @NotNull
+        public String uri;
+
+        @NotNull
+        public String database;
+
+        public SavingStrategy savingStrategy = SavingStrategy.ONE_COLLECTION;
+
+        public Map<ReportType, String> collectionNames = null;
+
+        public boolean printSummary = false;
 
     }
 }
