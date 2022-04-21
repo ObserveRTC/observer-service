@@ -5,24 +5,28 @@ WebRTC-Observer
 
 ## Quick Start
 
-Observer itself is stand-alone application. You can run it in a container with a command `docker run observertc/observer`. 
-The service itself by default is listening on the port `7080` for [Samples]() sent by [Monitors]().
+Observer is a stand-alone application. You can run it in a container with a command `docker run observertc/observer`. 
+The service by default is listening on the port `7080` for [Samples]() sent by [Monitors]().
 
 To see ObserveRTC integrations, check out the [examples](https://github.com/ObserveRTC/examples) repository.
-
 
 ### Table of Contents:
  * [Overview](#overview)
    * [Collect Samples](#collect-samples)
    * [Forward Reports](#forward-reports)
+   * [Horizontal Scaling](#horizontal-scaling)
  * [Configurations](#configurations)
+   * [Micronaut configs](#micronaut-configs)
+   * [Management Endpoints configs](#management-endpoints-configs)
+   * [Observer configs](#observer-configs)
+     * [Sinks](#sinks)
  * [Getting Involved](#getting-involved)
  * [Changelog](#changelog)
  * [License](#license)
 
 ## Overview
 
-[Overview](docs/images/superficial-overview.png)
+![Overview](docs/images/superficial-overview.png)
 
 Observer is a server-side service for monitoring WebRTC applications. The service collects [Samples]()
 from [Monitors](). The collected Samples are analyzed, and decomposed by the observer. The Observer generates [Reports]() and
@@ -59,23 +63,21 @@ The format can be `json`, or `protobuf`, by default it is `json`.
 
 ### Forward Reports
 
-The observer forward reports through [Sinks](). 
+The observer forward reports through [Sinks](#sinks). 
 Sinks are configured in the configuration file the observer fetches at startup.
 Currently, the following type of sinks are supported:
- * [WebsocketSink](): Websocket transport integration
- * [SocketSink](): Socket transport integration
- * [KafkaSink](): Apache Kafka Integration
- * [MongoSink](): Mongo Database integration
+ * [KafkaSink](#kafkasink): Apache Kafka Integration
+ * [MongoSink](#mongosink): Mongo Database integration
 
 ### Horizontal scaling
 
-Observer instances can share data through its [hazelcast](https://hazelcast.com/) 
+Observer instances can share data through their [hazelcast](https://hazelcast.com/) 
 in-memory database grid. To scale observer horizontally you need to
 configure the underlying hazelcast so that observer instances can see each other. 
 
 ## Configurations
 
-[Overview](docs/images/configuration-overview.png)
+![Overview](docs/images/configuration-overview.png)
 
 At startup time the application fetches the configuration and sets up the service. 
 The default configuration the observer starts with 
@@ -193,6 +195,7 @@ observer:
       maxItems: 10000
       # the max time the buffer can hold an item in milliseconds
       maxTimeInMs: 1000
+    # settings of the buffer collect reports from evaluators
     reportsCollector:
       # the maximum number of items of the buffer
       maxItems: 10000
@@ -210,6 +213,15 @@ observer:
 
   # settings for analysing Samples
   evaluators:
+     # settings for component responsible for updating call entity objects 
+    callUpdater:
+       # defines the strategy to assign callId to clients.
+       # possible values:
+       #  - MASTER: the Observer responsible to assign new callId to clients, 
+       #            and only the observer can end a call
+       # - SLAVE: the client is responsible to provide callId, and whenever a new callId
+       #          is provided for a room, the previous call is closed
+      callIdAssignMode: master
     # obfuscator component settings
     obfuscator:
       # indicate if it is enabled or not
@@ -235,8 +247,9 @@ observer:
 
 #### Sinks
 
-Observer sinks are the connection where the reports are forwarded to. 
-Each sink has the following configuration structure:
+The observer forward the generated reports through sinks.
+There are different type of sinks implemented to integrate different type of services.
+A sink has the following configuration structure:
 
 ```yaml
 sinks:

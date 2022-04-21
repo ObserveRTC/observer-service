@@ -112,6 +112,17 @@ public class ObserverConfig {
 			public ObfuscationType roomId = ObfuscationType.ANONYMIZATION;
 		}
 
+		public CallUpdater callUpdater = new CallUpdater();
+
+		@ConfigurationProperties(("callUpdater"))
+		public static class CallUpdater {
+			public enum CallIdAssignMode {
+				MASTER,
+				SLAVE
+			}
+			public CallIdAssignMode callIdAssignMode = CallIdAssignMode.MASTER;
+		}
+
 	}
 
 	// internal collectors config

@@ -2,7 +2,7 @@ package org.observertc.observer;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.components.*;
+import org.observertc.observer.evaluators.*;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;

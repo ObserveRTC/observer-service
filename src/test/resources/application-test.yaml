@@ -12,6 +12,10 @@ observer:
       maxItems: 100
       maxTimeInMs: 500
 
+  evaluators:
+    callUpdater:
+      callIdAssignMode: slave
+      
   repository:
     mediaTracksMaxIdleTimeInS: 5
     peerConnectionsMaxIdleTimeInS: 5

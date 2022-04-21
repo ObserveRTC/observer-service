@@ -62,6 +62,8 @@ observer:
       hashSalt: "MySalt"
 
   evaluators:
+    callUpdater:
+      callIdAssignMode: master
     obfuscator:
       enabled: false
       iceAddresses: none
@@ -69,57 +71,6 @@ observer:
       userId: none
 
   sinks: {}
-#    MyLogger:
-#      type: LoggerSink
-#      config:
-#        printReports: true
-#        printTypeSummary: true
-#      reports:
-#        sendObserverEvents: true
-#        sendCallEvents: true
-#        sendCallMeta: true
-#        sendClientExtensions: true
-#        sendInboundAudioTracks: true
-#        sendInboundVideoTracks: true
-#        sendOutboundAudioTracks: true
-#        sendOutboundVideoTracks: true
-#        sendClientTransports: true
-#        sendClientDataChannels: true
-#        sendMediaTracks: true
-#        sendSfuEvents: true
-#        sendSfuMeta: true
-#        sendSfuTransports: true
-#        sendSfuSctpStreams: true
-#        sendSfuOutboundRtpStreams: true
-#        sendSfuInboundRtpStreams: true
-
-
-#    MyMongo:
-#      type: MongoSink
-#      config:
-#        uri: "mongodb://root:password@localhost:27017"
-#        database: "reports"
-#        savingStrategy: SERVICE_ID_BASED
-#        printSummary: true
-
-#    MySocketIO:
-#      type: SocketIOSink
-#      config:
-#        uri: "http://localhost:5080"
-
-#    MyWebsocket:
-#      type: WebsocketSink
-#      config:
-#        uri: "ws://localhost:1880/ws/samples"
-
-#    MyKafka:
-#      type: KafkaSink
-#      config:
-#        muxReports: false
-##        muxTopic: "observertc-reports"
-#        demuxTopicPrefix: "observertc-"
-#        properties:
-#          bootstrap.servers: localhost:9092
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

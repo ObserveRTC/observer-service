@@ -2,6 +2,7 @@ package org.observertc.observer.samples;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.observertc.observer.utils.ObservedSamplesGenerator;
 import org.observertc.observer.utils.TestUtils;
 
 import java.util.HashSet;

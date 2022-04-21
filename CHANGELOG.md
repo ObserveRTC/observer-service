@@ -1,26 +1,19 @@
 All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
-## 1.0.0-beta
+## 1.0.0
 
-### Breaking Changes
- * New Schema for reporting ([Reports v3](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/reports/v3))
- * New Schema to accept client samples ([ClientSample](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.md))
- * New Schema to accept sfu samples ([SfuSample](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/SfuSample.md))
+The service is rewritten almost from the ground, there is no backward compatibility.
 
-### Major changes
- * All generated reports for the client contains the callId referring to the call clients are joined to.
- * No SSRC based pair matching, serviceId and roomId are required to match the calls.
- * Support SFU sampling, and SFU samples are matched with clients based on provided rtpStreamIds
-
+ * Each Report contain information about which call it belongs to
+ * Use the unified communication schema published here: https://github.com/ObserveRTC/schemas
+ * New configuration structure
  
+---
 ## 0.8.3 (H)
-
-### Added
 
 ### Removed
  * graphql package
- 
 
 ### Refactored
 

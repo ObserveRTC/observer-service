@@ -124,7 +124,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
                                 });
                             });
                         })
-                . addSupplierStage("Returning with removed Client DTOs", () -> {
+                .addSupplierStage("Returning with removed Client DTOs", () -> {
                     if (this.unmodifiableResult) {
                         return Collections.unmodifiableMap(this.removedClientDTOs);
                     } else {
