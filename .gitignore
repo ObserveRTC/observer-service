@@ -9,6 +9,7 @@ out/
 *.ipr
 *.iws
 debug_*.log
+debug_*.yaml
 .project
 .settings
 .classpath

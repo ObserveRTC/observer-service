@@ -41,7 +41,7 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
 
         public Builder withVersion(String version) {
             if (!SamplesVersionVisitor.isVersionValid(version)) {
-                throw new RuntimeException("Unrecognized version: " + version);
+                throw new RuntimeException("Not valid or not supported schema version: " + version);
             }
             this.version = version;
             return this;

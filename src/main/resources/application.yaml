@@ -71,7 +71,8 @@ observer:
       roomId: none
       userId: none
 
-  sinks: {}
+# setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
+#  sinks: {}
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

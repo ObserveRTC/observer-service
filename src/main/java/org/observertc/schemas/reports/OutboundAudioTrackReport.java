@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OutboundAudioTrackReport {
-	public static final String VERSION="2.0.0-beta.61";
+	public static final String VERSION="2.0.0-beta.64";
 	public static Builder newBuilder() {
 		return new Builder();
 	}

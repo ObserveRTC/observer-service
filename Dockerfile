@@ -12,6 +12,7 @@ WORKDIR /home/gradle
 COPY --from=BUILDER /home/gradle/build/docker/main/layers/libs /home/app/libs
 COPY --from=BUILDER /home/gradle/build/docker/main/layers/resources /home/app/resources
 COPY --from=BUILDER /home/gradle/build/docker/main/layers/application.jar /home/app/application.jar
+#ENV MICRONAUT_CONFIG_FILES=/observer-config.yaml
 
 EXPOSE 7080
 EXPOSE 7081
