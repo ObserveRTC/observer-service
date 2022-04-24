@@ -99,6 +99,10 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
         switch (version.toLowerCase(Locale.ROOT)) {
             case "latest":
             case Samples.VERSION:
+            case  "2.0.0-beta.63":
+            case  "2.0.0-beta.62":
+            case  "2.0.0-beta.61":
+            case  "2.0.0-beta.60":
                 return visitLatest(obj);
             case org.observertc.schemas.v200beta59.samples.Samples.VERSION:
                 return visitV200beta59(obj);

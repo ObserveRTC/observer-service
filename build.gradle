@@ -92,4 +92,4 @@ task createVersion {
     }
 }
 //
-//compileJava.dependsOn createVersion
+compileJava.dependsOn createVersion

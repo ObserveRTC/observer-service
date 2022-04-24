@@ -85,7 +85,9 @@ public class ReportSinks implements Consumer<List<Report>> {
                     return;
                 }
                 sink.open();
-                logger.info("Sink {} with config {} has been initiated", sink.getClass().getSimpleName(), JsonUtils.objectToString(sinkConfigValue));
+                if (observerConfig.security.printConfigs) {
+                    logger.info("Sink {} with config {} has been initiated", sink.getClass().getSimpleName(), JsonUtils.objectToString(sinkConfigValue));
+                }
                 this.sinks.put(sinkId, sink);
             } catch (Exception ex) {
                 logger.error("Error occurred while setting up a Sink {} with config {}",

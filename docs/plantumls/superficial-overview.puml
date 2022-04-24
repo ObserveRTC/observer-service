@@ -11,7 +11,7 @@ cloud "Your Cloud" #transparent {
 	component observer
 	database "Database" as processor
 }
-() "WebRTCApp" as client
+() "Monitor" as client
 
 
 client ..r..> [observer] : Samples
