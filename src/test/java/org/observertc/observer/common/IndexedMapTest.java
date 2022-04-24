@@ -28,10 +28,10 @@ class IndexedMapTest {
     public void putAndRemoveEntriesWithIndex() {
         var indexKey = "myIndex";
         var one = "1";
-        var map = new IndexedMap<Integer, String>().addIndex()
+        var map = new IndexedMap<Integer, String>().indexBuilder()
                 .withMapper(str -> Integer.parseInt(str))
                 .withName(indexKey)
-                .add();
+                .build();
 
         map.put(1, one);
 
@@ -60,10 +60,10 @@ class IndexedMapTest {
         var indexKey = "myIndex";
         var one = "1";
         var two = "1";
-        var map = new IndexedMap<Integer, String>().addIndex()
+        var map = new IndexedMap<Integer, String>().indexBuilder()
                 .withMapper(str -> Integer.parseInt(str))
                 .withName(indexKey)
-                .add();
+                .build();
 
         map.put(1, one);
         map.put(2, two);
@@ -94,10 +94,10 @@ class IndexedMapTest {
         var indexKey = "myIndex";
         var one = "1";
         var two = "2";
-        var map = new IndexedMap<Integer, String>().addIndex()
+        var map = new IndexedMap<Integer, String>().indexBuilder()
                 .withMapper(str -> Integer.parseInt(str))
                 .withName(indexKey)
-                .add();
+                .build();
 
         map.put(1, one);
         map.put(2, two);
@@ -127,10 +127,10 @@ class IndexedMapTest {
         var indexKey = "myIndex";
         var one = "1";
         var two = "1";
-        var map = new IndexedMap<Integer, String>().addIndex()
+        var map = new IndexedMap<Integer, String>().indexBuilder()
                 .withMapper(str -> Integer.parseInt(str))
                 .withName(indexKey)
-                .add();
+                .build();
 
         map.put(1, one);
         map.put(2, two);

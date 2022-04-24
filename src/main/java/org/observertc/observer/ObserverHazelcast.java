@@ -46,8 +46,10 @@ public class ObserverHazelcast {
 
 	private final HazelcastInstance instance;
 	private final String memberName;
-
-	public ObserverHazelcast(ObserverConfig.HazelcastConfig observerHazelcastConfig) {
+	private final boolean printConfig;
+	public ObserverHazelcast(ObserverConfig observerConfig) {
+		var observerHazelcastConfig = observerConfig.hazelcast;
+		this.printConfig = observerConfig.security.printConfigs;
 		Config config = this.makeConfig(observerHazelcastConfig);
 		this.instance = Hazelcast.newHazelcastInstance(config);
 		this.memberName = this.makeMemberName(observerHazelcastConfig);
@@ -58,7 +60,9 @@ public class ObserverHazelcast {
 
 	@PostConstruct
 	void setup() {
-		logger.info("Hazelcast configuration: {}", this.toString());
+		if (this.printConfig) {
+			logger.info("Hazelcast configuration: {}", this.toString());
+		}
 		logger.info("{} is ready", this.memberName);
 	}
 
@@ -101,7 +105,6 @@ public class ObserverHazelcast {
 	public String toString() {
 		var config = this.instance.getConfig().toString();
 		return config;
-//		return config.replace(", ", ", \n");
 //		return JsonUtils.beautifyJsonString(this.instance.getConfig().toString().substring(6));
 //		return this.instance.getConfig().toString();
 	}

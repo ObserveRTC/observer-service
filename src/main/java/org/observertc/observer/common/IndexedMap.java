@@ -21,8 +21,8 @@ public class IndexedMap<K, V> implements Map<K, V> {
     private final Map<K, V> entries = new HashMap<>();
     private final Map<String, Index<K, V>> indexes = new HashMap<>();
 
-    public IndexAdder addIndex() {
-        return new IndexAdder();
+    public IndexBuilder indexBuilder() {
+        return new IndexBuilder();
     }
 
     public boolean removeIndex(String indexKey) {
@@ -178,22 +178,22 @@ public class IndexedMap<K, V> implements Map<K, V> {
 
     }
 
-    public class IndexAdder {
+    public class IndexBuilder {
         private Index<K, V> result = new Index<>();
-        private IndexAdder() {
+        private IndexBuilder() {
 
         }
-        public IndexAdder withMapper(Function<V, Object> mapper) {
+        public IndexBuilder withMapper(Function<V, Object> mapper) {
             this.result.mapper = mapper;
             return this;
         }
 
-        public IndexAdder withName(String name) {
+        public IndexBuilder withName(String name) {
             this.result.name = name;
             return this;
         }
 
-        public IndexedMap<K, V> add() {
+        public IndexedMap<K, V> build() {
             Objects.requireNonNull(this.result.mapper);
             Objects.requireNonNull(this.result.name);
             IndexedMap.this.indexes.put(this.result.name, this.result);

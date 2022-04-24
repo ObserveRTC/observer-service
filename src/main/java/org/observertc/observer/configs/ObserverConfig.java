@@ -32,6 +32,8 @@ public class ObserverConfig {
 
 	@ConfigurationProperties("security")
 	public static class SecurityConfig {
+
+		public boolean printConfigs = true;
 		public boolean allowExposeConfig = false;
 
 		public ObfuscationsConfig obfuscations;

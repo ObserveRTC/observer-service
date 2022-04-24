@@ -57,6 +57,7 @@ observer:
       maxTimeInMs: 10000
 
   security:
+    printConfigs: True
     obfuscations:
       hashAlgorithm: SHA-256
       hashSalt: "MySalt"

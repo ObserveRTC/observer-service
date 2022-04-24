@@ -2,8 +2,9 @@ package org.observertc.observer;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.evaluators.*;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.evaluators.*;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;
 import org.observertc.observer.sources.SampleSources;
@@ -80,6 +81,10 @@ public class ObserverService {
 
         this.reportsCollector.getObservableReports()
                 .subscribe(this.reportSinks);
+
+        if (observerConfig.security.printConfigs) {
+            logger.info("Config {}", JsonUtils.objectToString(observerConfig));
+        }
     }
 
     @PreDestroy

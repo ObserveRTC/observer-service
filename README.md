@@ -8,7 +8,7 @@ WebRTC-Observer
 Observer is a stand-alone application. You can run it in a container with a command `docker run observertc/observer`. 
 The service by default is listening on the port `7080` for [Samples]() sent by [Monitors]().
 
-To see ObserveRTC integrations, check out the [examples](https://github.com/ObserveRTC/examples) repository.
+To see ObserveRTC integrations and examples, check out the [repository](https://github.com/ObserveRTC/examples).
 
 ### Table of Contents:
  * [Overview](#overview)
@@ -32,11 +32,13 @@ Observer is a server-side service for monitoring WebRTC applications. The servic
 from [Monitors](). The collected Samples are analyzed, and decomposed by the observer. The Observer generates [Reports]() and
 forwards them for further processing.
 
+$ MAYBE RETHINK $
+
 The analysis performed by the observer involves the following operations:
- * Identify samples belong to the same call.
+ * Identify events (call started / ended, client joined / left, etc…)
+ * Identify samples, which belongs to the same call.
  * Identify the source clients for video and audio tracks
  * Matching samples from SFUs with samples from Browser-side clients
- * Identify events (call started / ended, client joined / left, etc…)
 
 The observer decompose Samples to the following parts:
  * Meta: Various information about the monitored client (operation system, engine, media devices, etc...)
