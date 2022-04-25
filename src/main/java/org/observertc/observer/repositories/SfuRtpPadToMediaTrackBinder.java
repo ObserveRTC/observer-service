@@ -2,6 +2,7 @@ package org.observertc.observer.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuSinkDTO;
@@ -83,17 +84,17 @@ public class SfuRtpPadToMediaTrackBinder {
             return;
         }
         boolean incompleteByClientSide = Objects.isNull(sfuStream.peerConnectionId);
-        if (incompleteByClientSide) {
-            sfuStream = SfuStreamDTO.builder().from(sfuStream)
-                    .withStreamId(mediaTrackDTO.sfuStreamId)
-                    .withTrackId(mediaTrackDTO.trackId)
-                    .withPeerConnectionId(mediaTrackDTO.peerConnectionId)
-                    .withClientId(mediaTrackDTO.clientId)
-                    .withCallId(mediaTrackDTO.callId)
-                    .build();
-            this.hazelcastMaps.getSfuStreams().put(sfuStream.sfuStreamId, sfuStream);
+        if (!incompleteByClientSide) {
             return;
         }
+        sfuStream = SfuStreamDTO.builder().from(sfuStream)
+                .withTrackId(mediaTrackDTO.trackId)
+                .withPeerConnectionId(mediaTrackDTO.peerConnectionId)
+                .withClientId(mediaTrackDTO.clientId)
+                .withCallId(mediaTrackDTO.callId)
+                .build();
+        this.hazelcastMaps.getSfuStreams().put(sfuStream.sfuStreamId, sfuStream);
+        logger.debug("Sfu Stream is completed by Client Outbound Media Track update. {}", JsonUtils.objectToString(sfuStream));
     }
 
     private void bindInboundMediaTrack(Map<UUID, SfuSinkDTO> sinkDTOs, MediaTrackDTO mediaTrackDTO) {
@@ -114,17 +115,17 @@ public class SfuRtpPadToMediaTrackBinder {
             return;
         }
         boolean incompleteByClientSide = Objects.isNull(sfuSink.peerConnectionId);
-        if (incompleteByClientSide) {
-            sfuSink = SfuSinkDTO.builder().from(sfuSink)
-                    .withStreamId(mediaTrackDTO.sfuStreamId)
-                    .withTrackId(mediaTrackDTO.trackId)
-                    .withPeerConnectionId(mediaTrackDTO.peerConnectionId)
-                    .withClientId(mediaTrackDTO.clientId)
-                    .withCallId(mediaTrackDTO.callId)
-                    .build();
-            this.hazelcastMaps.getSfuSinks().put(sfuSink.sfuSinkId, sfuSink);
+        if (!incompleteByClientSide) {
             return;
         }
+        sfuSink = SfuSinkDTO.builder().from(sfuSink)
+                .withTrackId(mediaTrackDTO.trackId)
+                .withPeerConnectionId(mediaTrackDTO.peerConnectionId)
+                .withClientId(mediaTrackDTO.clientId)
+                .withCallId(mediaTrackDTO.callId)
+                .build();
+        this.hazelcastMaps.getSfuSinks().put(sfuSink.sfuSinkId, sfuSink);
+        logger.debug("Sfu Stream is completed by Client Outbound Media Track update. {}", JsonUtils.objectToString(sfuSink));
     }
 
     private void bindSfuInboundRtpPad(Map<UUID, SfuStreamDTO> streamDTOs, SfuRtpPadDTO inboundSfuRtpPad) {
@@ -143,15 +144,16 @@ public class SfuRtpPadToMediaTrackBinder {
             return;
         }
         boolean incompleteBySfuSide = Objects.isNull(sfuStream.sfuTransportId);
-        if (incompleteBySfuSide) {
-            sfuStream = SfuStreamDTO.builder().from(sfuStream)
-                    .withSfuId(inboundSfuRtpPad.sfuId)
-                    .withSfuTransportId(inboundSfuRtpPad.transportId)
-                    .build();
-            this.hazelcastMaps.getSfuStreams().put(sfuStream.sfuStreamId, sfuStream);
-            this.hazelcastMaps.getSfuStreamIdToRtpPadIds().put(sfuStream.sfuStreamId, inboundSfuRtpPad.rtpPadId);
+        if (!incompleteBySfuSide) {
             return;
         }
+        sfuStream = SfuStreamDTO.builder().from(sfuStream)
+                .withSfuId(inboundSfuRtpPad.sfuId)
+                .withSfuTransportId(inboundSfuRtpPad.transportId)
+                .build();
+        this.hazelcastMaps.getSfuStreams().put(sfuStream.sfuStreamId, sfuStream);
+        this.hazelcastMaps.getSfuStreamIdToRtpPadIds().put(sfuStream.sfuStreamId, inboundSfuRtpPad.rtpPadId);
+        logger.debug("Sfu Stream is completed by SfuRtpPad update. {}", JsonUtils.objectToString(sfuStream));
     }
 
 
@@ -173,15 +175,16 @@ public class SfuRtpPadToMediaTrackBinder {
             return;
         }
         boolean incompleteBySfuSide = Objects.isNull(sfuSink.sfuTransportId);
-        if (incompleteBySfuSide) {
-            sfuSink = SfuSinkDTO.builder().from(sfuSink)
-                    .withSfuId(outboundSfuRtpPad.sfuId)
-                    .withSfuTransportId(outboundSfuRtpPad.transportId)
-                    .withStreamId(outboundSfuRtpPad.streamId)
-                    .build();
-            this.hazelcastMaps.getSfuSinks().put(sfuSink.sfuSinkId, sfuSink);
-            this.hazelcastMaps.getSfuSinkIdToRtpPadIds().put(sfuSink.sfuSinkId, outboundSfuRtpPad.rtpPadId);
+        if (!incompleteBySfuSide) {
             return;
         }
+        sfuSink = SfuSinkDTO.builder().from(sfuSink)
+                .withSfuId(outboundSfuRtpPad.sfuId)
+                .withSfuTransportId(outboundSfuRtpPad.transportId)
+                .withStreamId(outboundSfuRtpPad.streamId)
+                .build();
+        this.hazelcastMaps.getSfuSinks().put(sfuSink.sfuSinkId, sfuSink);
+        this.hazelcastMaps.getSfuSinkIdToRtpPadIds().put(sfuSink.sfuSinkId, outboundSfuRtpPad.rtpPadId);
+        logger.debug("Sfu Sink is completed by SfuRtpPad update. {}", JsonUtils.objectToString(sfuSink));
     }
 }

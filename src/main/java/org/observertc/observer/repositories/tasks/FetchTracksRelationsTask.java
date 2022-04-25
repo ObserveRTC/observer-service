@@ -120,7 +120,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                         return;
                     }
                     var sfuStream = sfuStreams.get(sfuSink.sfuStreamId);
-                    if (Objects.isNull(sfuStream)) {
+                    if (Objects.isNull(sfuStream) || Objects.isNull(sfuStream.trackId)) {
                         return;
                     }
                     var outboundMediaTrack = this.hazelcastMaps.getMediaTracks().get(sfuStream.trackId);
@@ -157,7 +157,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                         this.hazelcastMaps
                                 .getInboundTrackIdsToOutboundTrackIds()
                                 .put(inboundMediaTrack.trackId, outboundMediaTrack.trackId);
-                        logger.info("RtpStreamId Matching: Inbound Track {} from client {} is matched to outbound track {} from client {}", inboundMediaTrack.trackId, inboundMediaTrack.clientId, outboundMediaTrack.trackId, outboundMediaTrack.clientId);
+                        logger.info("Sfu - MediaTrack matching: Inbound Track {} from client {} is matched to outbound track {} from client {}", inboundMediaTrack.trackId, inboundMediaTrack.clientId, outboundMediaTrack.trackId, outboundMediaTrack.clientId);
                     });
                 });
 

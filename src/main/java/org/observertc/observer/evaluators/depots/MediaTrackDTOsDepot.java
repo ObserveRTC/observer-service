@@ -98,10 +98,6 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
             logger.warn("Cannot create {} without peerConnectionId", MediaTrackDTO.class.getSimpleName());
             return;
         }
-        if (Objects.isNull(this.direction)) {
-            logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
-            return;
-        }
         if (this.buffer.containsKey(trackId)) {
             return;
         }
@@ -119,7 +115,7 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
                     .withTrackId(trackId)
                     .withSfuStreamId(sfuStreamId)
                     .withSfuSinkId(sfuSinkId)
-                    .withDirection(StreamDirection.INBOUND)
+                    .withDirection(this.direction)
                     .withPeerConnectionId(peerConnectionId)
                     .withSSRC(SSRC)
                     .withAddedTimestamp(clientSample.timestamp)
