@@ -73,7 +73,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
             } else {
                 transportId = sfuOutboundRtpPad.transportId;
                 rtpPadId = sfuOutboundRtpPad.padId;
-                internal = Boolean.TRUE.equals(sfuInboundRtpPad.internal);
+                internal = Boolean.TRUE.equals(sfuOutboundRtpPad.internal);
                 streamId = sfuOutboundRtpPad.streamId;
                 sinkId = sfuOutboundRtpPad.sinkId;
                 direction = StreamDirection.OUTBOUND;
