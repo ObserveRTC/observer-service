@@ -24,8 +24,8 @@ To see ObserveRTC integrations and examples, check out the [full stack examples 
 
 ![Overview](docs/images/superficial-overview.png)
 
-Observer is a server-side service for monitoring WebRTC applications. The service receives [Samples]()
-from [Monitors](). Based on the received samples, the observer:
+Observer is a server-side service for monitoring WebRTC applications. The service receives [Samples](https://observertc.org/docs/overview/schemas/#samples)
+from [Monitors](https://observertc.org/docs/overview/monitors/). Based on the received samples, the observer:
 
  * Identify calls
  * Create events (call started, call ended, client joined, client left, etc.)
@@ -42,7 +42,7 @@ The observer accepts Samples on the following endpoints:
 
 ### Sending Reports
 
-The observer create [Reports]() based on the obtained events, matched sessions and received samples.
+The observer create [Reports](https://observertc.org/docs/overview/schemas/#reports) based on the obtained events, matched sessions and received samples.
 The reports are forwarded to [Sinks](#sinks).  Currently, the following type of sinks are supported:
 * [KafkaSink](#kafkasink): Apache Kafka Integration
 * [MongoSink](#mongosink): Mongo Database integration
