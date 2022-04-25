@@ -26,7 +26,7 @@ skinparam BoxPadding 60
 ' hide the spot
 hide circle
 
-package "Collection" {
+package "Collecting" {
   entity "SFU" as sfu {
     * sfu-monitor-js
     --
@@ -58,8 +58,8 @@ package "Analysis and Reporting" {
 
 client -[hidden]u-> sfu
 
-client -r-> observer : ClientSample
-sfu -r-> observer : SFUSample
+client -r-> observer : Samples
+sfu -r-> observer : Samples
 observer -r-> kafka : Report
 hpa -[hidden]r-> bq
 hpa -[hidden]r-> rs
