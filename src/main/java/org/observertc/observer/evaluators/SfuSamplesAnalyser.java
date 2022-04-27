@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.FetchSfuRelationsTask;
@@ -21,11 +22,14 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 @Prototype
-public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
-    private static final Logger logger = LoggerFactory.getLogger(SfuSamplesAnalyzer.class);
+public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
+    private static final Logger logger = LoggerFactory.getLogger(SfuSamplesAnalyser.class);
 
     @Inject
     BeanProvider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
+
+    @Inject
+    ObserverConfig.EvaluatorsConfig.SfuSamplesAnalyserConfig config;
 
     private Subject<List<Report>> output = PublishSubject.create();
     private final SfuTransportReportsDepot sfuTransportReportsDepot = new SfuTransportReportsDepot();
@@ -72,6 +76,8 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
                                 .setTrackId(sfuStream.trackId)
                                 .setClientId(sfuStream.clientId)
                                 ;
+                    } else if (config.dropUnmatchedInboundReports) {
+                        return;
                     }
                 }
                 this.sfuInboundRtpPadReportsDepot
@@ -81,15 +87,18 @@ public class SfuSamplesAnalyzer implements Consumer<ObservedSfuSamples> {
             });
 
             SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
+
                 UUID sfuSinkId = sfuOutboundRtpPad.sinkId;
                 if (Objects.nonNull(sfuSinkId)) {
-                    var sfuStream = sfuSinks.get(sfuSinkId);
-                    if (Objects.nonNull(sfuStream)) {
+                    var sfuSink = sfuSinks.get(sfuSinkId);
+                    if (Objects.nonNull(sfuSink)) {
                         this.sfuOutboundRtpPadReportsDepot
-                                .setCallId(sfuStream.callId)
-                                .setTrackId(sfuStream.trackId)
-                                .setClientId(sfuStream.clientId)
+                                .setCallId(sfuSink.callId)
+                                .setTrackId(sfuSink.trackId)
+                                .setClientId(sfuSink.clientId)
                         ;
+                    } else if (config.dropUnmatchedOutboundReports) {
+                        return;
                     }
                 }
                 this.sfuOutboundRtpPadReportsDepot

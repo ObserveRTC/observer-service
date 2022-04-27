@@ -63,6 +63,11 @@ observer:
       hashSalt: "MySalt"
 
   evaluators:
+    clientSamplesAnalyser:
+      dropUnmatchedReports: False
+    sfuSamplesAnalyser:
+      dropUnmatchedInboundReports: False
+      dropUnmatchedOutboundReports: False
     callUpdater:
       callIdAssignMode: master
     obfuscator:

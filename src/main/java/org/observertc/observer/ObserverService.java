@@ -34,13 +34,13 @@ public class ObserverService {
     CallEntitiesUpdater callEntitiesUpdater;
 
     @Inject
-    ClientSamplesAnalyzer clientSamplesAnalyzer;
+    ClientSamplesAnalyser clientSamplesAnalyser;
 
     @Inject
     SfuEntitiesUpdater sfuEntitiesUpdater;
 
     @Inject
-    SfuSamplesAnalyzer sfuSamplesAnalyzer;
+    SfuSamplesAnalyser sfuSamplesAnalyser;
 
     @Inject
     RepositoryEventsInterpreter repositoryEventsInterpreter;
@@ -63,16 +63,16 @@ public class ObserverService {
 
         // call samples
         this.callEntitiesUpdater.observableClientSamples()
-                .subscribe(this.clientSamplesAnalyzer::accept);
+                .subscribe(this.clientSamplesAnalyser::accept);
 
-        this.clientSamplesAnalyzer.observableReports()
+        this.clientSamplesAnalyser.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
         // sfu samples
         this.sfuEntitiesUpdater.observableClientSamples()
-                .subscribe(this.sfuSamplesAnalyzer::accept);
+                .subscribe(this.sfuSamplesAnalyser::accept);
 
-        this.sfuSamplesAnalyzer.observableReports()
+        this.sfuSamplesAnalyser.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
         // repository events

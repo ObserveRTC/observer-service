@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.reports.Report;
@@ -20,11 +21,14 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Prototype
-public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
-    private static final Logger logger = LoggerFactory.getLogger(ClientSamplesAnalyzer.class);
+public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
+    private static final Logger logger = LoggerFactory.getLogger(ClientSamplesAnalyser.class);
 
     @Inject
     BeanProvider<FetchTracksRelationsTask> matchCallTracksTaskProvider;
+
+    @Inject
+    ObserverConfig.EvaluatorsConfig.ClientSamplesAnalyserConfig config;
 
     private Subject<List<Report>> output = PublishSubject.create();
     private final ClientTransportReportsDepot clientTransportReportsDepot = new ClientTransportReportsDepot();
@@ -74,6 +78,8 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
                             .setRemoteUserId(matches.outboundUserId)
                             .setRemotePeerConnectionId(matches.outboundPeerConnectionId)
                             .setRemoteTrackId(matches.outboundTrackId);
+                } else if (config.dropUnmatchedReports) {
+                    return;
                 }
                 this.inboundAudioReportsDepot
                         .setPeerConnectionLabel(peerConnectionLabel)
@@ -91,6 +97,8 @@ public class ClientSamplesAnalyzer implements Consumer<ObservedClientSamples> {
                             .setRemoteUserId(matches.outboundUserId)
                             .setRemotePeerConnectionId(matches.outboundPeerConnectionId)
                             .setRemoteTrackId(matches.outboundTrackId);
+                } else if (config.dropUnmatchedReports) {
+                    return;
                 }
                 this.inboundVideoReportsDepot
                         .setPeerConnectionLabel(peerConnectionLabel)

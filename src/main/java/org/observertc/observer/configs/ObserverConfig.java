@@ -125,6 +125,21 @@ public class ObserverConfig {
 			public CallIdAssignMode callIdAssignMode = CallIdAssignMode.MASTER;
 		}
 
+		public ClientSamplesAnalyserConfig clientSamplesAnalyser = new ClientSamplesAnalyserConfig();
+
+		@ConfigurationProperties(("clientSamplesAnalyser"))
+		public static class ClientSamplesAnalyserConfig {
+			public boolean dropUnmatchedReports = false;
+		}
+
+		public SfuSamplesAnalyserConfig sfuSamplesAnalyser = new SfuSamplesAnalyserConfig();
+
+		@ConfigurationProperties(("sfuSamplesAnalyser"))
+		public static class SfuSamplesAnalyserConfig {
+			public boolean dropUnmatchedInboundReports = false;
+			public boolean dropUnmatchedOutboundReports = false;
+		}
+
 	}
 
 	// internal collectors config

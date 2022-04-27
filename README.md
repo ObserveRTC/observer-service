@@ -196,6 +196,22 @@ observer:
        # - SLAVE: the client is responsible to provide callId, and whenever a new callId
        #          is provided for a room, the previous call is closed
       callIdAssignMode: master
+     # settings for component analyse the samples from 
+     # client applications
+    clientSamplesAnalyser:
+       # drop reports created from inbound-audio and video if 
+       # their outbound pair has not been found  
+       dropUnmatchedReports: false
+
+    # settings for component analyse the samples from SFUs
+    sfuSamplesAnalyser:
+       # drop reports created from inboundRtpPad if their sfuStreamId
+       # been not registered by a client
+       dropUnmatchedInboundReports: false
+       # drop reports created from outboundRtpPad if their sfuSInkId
+       # been not registered by a client
+       dropUnmatchedOutboundReports: false
+    
     # obfuscator component settings
     obfuscator:
       # indicate if it is enabled or not
