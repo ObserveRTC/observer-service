@@ -117,7 +117,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 this.mediaTracksDepot
                         .setObservedClientSample(observedClientSample)
                         .setTrackId(track.trackId)
-//                        .setSfuStreamId(track.sfuStreamId)
+                        .setSfuStreamId(track.sfuStreamId)
                         .setSfuSinkId(track.sfuSinkId)
                         .setStreamDirection(StreamDirection.INBOUND)
                         .setPeerConnectionId(track.peerConnectionId)
@@ -131,7 +131,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 this.mediaTracksDepot
                         .setObservedClientSample(observedClientSample)
                         .setTrackId(track.trackId)
-//                        .setSfuStreamId(track.sfuStreamId)
+                        .setSfuStreamId(track.sfuStreamId)
                         .setSfuSinkId(track.sfuSinkId)
                         .setStreamDirection(StreamDirection.INBOUND)
                         .setPeerConnectionId(track.peerConnectionId)

@@ -1,14 +1,17 @@
 /** Generated Code, Do not edit! */
 
-package org.observertc.schemas.protobuf;
+package org.observertc.schemas.v200beta64.protobuf;
 
 import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.samples.Samples.*;
+import org.observertc.schemas.samples.Samples.ClientSample;
 import org.observertc.schemas.samples.Samples.ClientSample.*;
+import org.observertc.schemas.samples.Samples.Controls;
+import org.observertc.schemas.samples.Samples.SfuSample;
 import org.observertc.schemas.samples.Samples.SfuSample.*;
-import org.observertc.schemas.samples.Samples.TurnSample.*;
+import org.observertc.schemas.samples.Samples.TurnSample;
+import org.observertc.schemas.samples.Samples.TurnSample.TurnPeerAllocation;
+import org.observertc.schemas.samples.Samples.TurnSample.TurnSession;
 
 import java.util.function.Function;
 
@@ -449,9 +452,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasRemoteClientId()) {
 							dstItem1.remoteClientId = srcItem1.getRemoteClientId();
 						}
-						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
-						}
 						if (srcItem1.hasSfuSinkId()) {
 							dstItem1.sfuSinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuSinkId());
 						}
@@ -627,9 +627,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasRemoteClientId()) {
 							dstItem1.remoteClientId = srcItem1.getRemoteClientId();
-						}
-						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
 						}
 						if (srcItem1.hasSfuSinkId()) {
 							dstItem1.sfuSinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuSinkId());

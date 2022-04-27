@@ -166,6 +166,7 @@ InboundAudioTrack
 inboundAudioTrack.trackId = ASSIGNED;
 inboundAudioTrack.peerConnectionId = ASSIGNED;
 inboundAudioTrack.remoteClientId = ASSIGNED;
+inboundAudioTrack.sfuStreamId = ASSIGNED;
 inboundAudioTrack.sfuSinkId = ASSIGNED;
 inboundAudioTrack.ssrc = ASSIGNED;
 inboundAudioTrack.packetsReceived = ASSIGNED;
@@ -224,6 +225,7 @@ InboundVideoTrack
 inboundVideoTrack.trackId = ASSIGNED;
 inboundVideoTrack.peerConnectionId = ASSIGNED;
 inboundVideoTrack.remoteClientId = ASSIGNED;
+inboundVideoTrack.sfuStreamId = ASSIGNED;
 inboundVideoTrack.sfuSinkId = ASSIGNED;
 inboundVideoTrack.ssrc = ASSIGNED;
 inboundVideoTrack.packetsReceived = ASSIGNED;

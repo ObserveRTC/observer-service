@@ -2,7 +2,7 @@ package org.observertc.schemas.v200beta59.samples;
 
 import io.reactivex.rxjava3.functions.Function;
 
-public class ToV200beta61Converter implements Function<Samples, org.observertc.schemas.samples.Samples> {
+public class Fromv200beta59ToLatestConverter implements Function<Samples, org.observertc.schemas.samples.Samples> {
 
     @Override
     public org.observertc.schemas.samples.Samples apply(Samples source) throws Throwable {

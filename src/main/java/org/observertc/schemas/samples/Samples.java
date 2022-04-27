@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.64";
+	public static final String VERSION="2.0.0-beta.65";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -878,6 +878,11 @@ public class Samples {
 			@JsonProperty("remoteClientId")
 			public String remoteClientId;
 			/**
+			* The id of the SFU stream this track is sinked from
+			*/
+			@JsonProperty("sfuStreamId")
+			public UUID sfuStreamId;
+			/**
 			* The id of the sink this track belongs to in the SFU
 			*/
 			@JsonProperty("sfuSinkId")
@@ -1151,6 +1156,7 @@ public class Samples {
 				public Builder setTrackId(UUID value) { this.result.trackId = value; return this; }
 				public Builder setPeerConnectionId(UUID value) { this.result.peerConnectionId = value; return this; }
 				public Builder setRemoteClientId(String value) { this.result.remoteClientId = value; return this; }
+				public Builder setSfuStreamId(UUID value) { this.result.sfuStreamId = value; return this; }
 				public Builder setSfuSinkId(UUID value) { this.result.sfuSinkId = value; return this; }
 				public Builder setSsrc(Long value) { this.result.ssrc = value; return this; }
 				public Builder setPacketsReceived(Integer value) { this.result.packetsReceived = value; return this; }
@@ -1232,6 +1238,11 @@ public class Samples {
 			*/
 			@JsonProperty("remoteClientId")
 			public String remoteClientId;
+			/**
+			* The id of the SFU stream this track is sinked from
+			*/
+			@JsonProperty("sfuStreamId")
+			public UUID sfuStreamId;
 			/**
 			* The id of the sink this track belongs to in the SFU
 			*/
@@ -1541,6 +1552,7 @@ public class Samples {
 				public Builder setTrackId(UUID value) { this.result.trackId = value; return this; }
 				public Builder setPeerConnectionId(UUID value) { this.result.peerConnectionId = value; return this; }
 				public Builder setRemoteClientId(String value) { this.result.remoteClientId = value; return this; }
+				public Builder setSfuStreamId(UUID value) { this.result.sfuStreamId = value; return this; }
 				public Builder setSfuSinkId(UUID value) { this.result.sfuSinkId = value; return this; }
 				public Builder setSsrc(Long value) { this.result.ssrc = value; return this; }
 				public Builder setPacketsReceived(Integer value) { this.result.packetsReceived = value; return this; }

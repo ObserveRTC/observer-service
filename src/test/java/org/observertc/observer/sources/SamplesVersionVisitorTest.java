@@ -13,6 +13,7 @@ class SamplesVersionVisitorTest {
         var notRecognized = "notRecognized";
         var visitor = SamplesVersionVisitor.<Void, String>createFunctionalVisitor(
                 VOID -> Samples.VERSION,
+                VOID -> org.observertc.schemas.v200beta64.samples.Samples.VERSION,
                 VOID -> org.observertc.schemas.v200beta59.samples.Samples.VERSION,
                 VOID -> notRecognized
         );
@@ -27,6 +28,7 @@ class SamplesVersionVisitorTest {
         var notRecognized = "notRecognized";
         var visitor = SamplesVersionVisitor.<String>createSupplierVisitor(
                 () -> Samples.VERSION,
+                () -> org.observertc.schemas.v200beta64.samples.Samples.VERSION,
                 () -> org.observertc.schemas.v200beta59.samples.Samples.VERSION,
                 () -> notRecognized
         );
