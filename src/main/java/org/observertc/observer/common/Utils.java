@@ -8,7 +8,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class Utils {
     private Utils() {
@@ -74,6 +76,24 @@ public class Utils {
 
     public static<T> boolean isCollectionEmptyOrNull(Collection<T> collection) {
         return Objects.isNull(collection) || collection.size() < 1;
+    }
+
+    public static<T> Stream<T> trash(Stream<T> origin, Predicate<T> predicate, Collection<T> trashed) {
+        var trash = makeTrash(predicate, trashed);
+        return origin.filter(trash);
+    }
+
+    public static<T> Predicate<T> makeTrash(Predicate<T> predicate, Collection<T> trashed) {
+        return new Predicate<T>() {
+            @Override
+            public boolean test(T t) {
+                var result = predicate.test(t);
+                if (!result) {
+                    trashed.add(t);
+                }
+                return result;
+            }
+        };
     }
 
     public static boolean nullOrFalse(Boolean value) {

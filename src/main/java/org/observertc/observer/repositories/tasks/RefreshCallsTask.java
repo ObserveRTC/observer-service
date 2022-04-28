@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
 public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
@@ -22,9 +24,6 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
         public Set<UUID> foundClientIds = new HashSet<>();
         public Set<UUID> foundTrackIds = new HashSet<>();
         public Set<UUID> foundPeerConnectionIds = new HashSet<>();
-//        public Map<UUID, UUID> foundPeerConnectionIdsToClientIds = new HashMap<>();
-//        public Map<UUID, UUID> foundMediaTrackIdsToPeerConnectionIds = new HashMap<>();
-//        public Map<UUID, UUID> foundInboundTrackIdToOutboundTrackIds = new HashMap<>();
     }
 
 
@@ -46,39 +45,45 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
                 .addActionStage("Check Clients",
                         // action
                         () -> {
-                            if (this.clientIds.size() < 1) {
+                            var nullIds = new HashSet<UUID>();
+                            var clientIds = Utils.trash(this.clientIds.stream(), Objects::nonNull, nullIds).collect(Collectors.toSet());
+                            if (0 < nullIds.size()) {
+                                logger.warn("There were null peer connection ids.");
+                            }
+                            if (clientIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, ClientDTO> clientDTOs = this.hazelcastMaps.getClients().getAll(this.clientIds);
+                            Map<UUID, ClientDTO> clientDTOs = this.hazelcastMaps.getClients().getAll(clientIds);
                             this.report.foundClientIds.addAll(clientDTOs.keySet());
                         })
                 .addActionStage("Check Peer Connections",
                         // action
                         () -> {
-                            if (this.peerConnectionIds.size() < 1) {
+                            var nullIds = new HashSet<UUID>();
+                            var peerConnectionIds = Utils.trash(this.peerConnectionIds.stream(), Objects::nonNull, nullIds).collect(Collectors.toSet());
+                            if (0 < nullIds.size()) {
+                                logger.warn("There were null peer connection ids.");
+                            }
+                            if (peerConnectionIds.size() < 1) {
                                 return;
                             }
-                            var peerConnectionDTOs = this.hazelcastMaps.getPeerConnections().getAll(this.peerConnectionIds);
+                            var peerConnectionDTOs = this.hazelcastMaps.getPeerConnections().getAll(peerConnectionIds);
                             this.report.foundPeerConnectionIds.addAll(peerConnectionDTOs.keySet());
                         })
                 .addActionStage("Check Media Tracks",
                         // action
                         () -> {
-                            if (this.mediaTrackIds.size() < 1) {
+                            var nullIds = new HashSet<UUID>();
+                            var mediaTrackIds = Utils.trash(this.mediaTrackIds.stream(), Objects::nonNull, nullIds).collect(Collectors.toSet());
+                            if (0 < nullIds.size()) {
+                                logger.warn("There were null media track ids.");
+                            }
+                            if (mediaTrackIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(this.mediaTrackIds);
+                            Map<UUID, MediaTrackDTO> mediaTrackDTOs = this.hazelcastMaps.getMediaTracks().getAll(mediaTrackIds);
                             this.report.foundTrackIds.addAll(mediaTrackDTOs.keySet());
                         })
-//                .addActionStage("Check Inbound TrackIds to Outbound TrackIds",
-//                        // action
-//                        () -> {
-//                            if (this.inboundTrackIds.size() < 1) {
-//                                return;
-//                            }
-//                            Map<UUID, UUID> inboundTrackIdsToOutboundTrackIds = this.hazelcastMaps.getInboundTrackToOutboundTracks().getAll(this.inboundTrackIds);
-//                            this.report.foundInboundTrackIdToOutboundTrackIds.putAll(inboundTrackIdsToOutboundTrackIds);
-//                        })
                 .<Report> addTerminalSupplier("Provide the composed report", () -> {
                     return this.report;
                 })
@@ -87,14 +92,6 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
 
 
 
-//    public RefreshCallsTask withClientIds(UUID... clientIds) {
-//        if (Objects.isNull(clientIds)) {
-//            return this;
-//        }
-//        var clientIdsArray = Arrays.asList(clientIds);
-//        this.clientIds.addAll(clientIdsArray);
-//        return this;
-//    }
 
     public RefreshCallsTask withClientIds(Set<UUID> clientIds) {
         if (Objects.isNull(clientIds)) {
@@ -104,14 +101,6 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
         return this;
     }
 
-//    public RefreshCallsTask withPeerConnectionIds(UUID... peerConnectionIds) {
-//        if (Objects.isNull(peerConnectionIds)) {
-//            return this;
-//        }
-//        var peerConnectionIdsArray = Arrays.asList(peerConnectionIds);
-//        this.peerConnectionIds.addAll(peerConnectionIdsArray);
-//        return this;
-//    }
 
     public RefreshCallsTask withPeerConnectionIds(Set<UUID> peerConnectionIds) {
         if (Objects.isNull(peerConnectionIds)) {
@@ -121,14 +110,6 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
         return this;
     }
 
-//    public RefreshCallsTask withMediaTrackIds(UUID... mediaTrackIds) {
-//        if (Objects.isNull(mediaTrackIds)) {
-//            return this;
-//        }
-//        var mediaTrackIdsArray = Arrays.asList(mediaTrackIds);
-//        this.mediaTrackIds.addAll(mediaTrackIdsArray);
-//        return this;
-//    }
 
     public RefreshCallsTask withMediaTrackIds(Set<UUID> mediaTrackIds) {
         if (Objects.isNull(mediaTrackIds)) {
