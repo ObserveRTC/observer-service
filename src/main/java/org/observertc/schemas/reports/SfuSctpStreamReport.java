@@ -118,26 +118,86 @@ public class SfuSctpStreamReport {
 
 		private SfuSctpStreamReport result = new SfuSctpStreamReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setSfuId(String value) { this.result.sfuId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setCallId(String value) { this.result.callId = value; return this; }
-		public Builder setRoomId(String value) { this.result.roomId = value; return this; }
-		public Builder setTransportId(String value) { this.result.transportId = value; return this; }
-		public Builder setStreamId(String value) { this.result.streamId = value; return this; }
-		public Builder setLabel(String value) { this.result.label = value; return this; }
-		public Builder setProtocol(String value) { this.result.protocol = value; return this; }
-		public Builder setSctpSmoothedRoundTripTime(Double value) { this.result.sctpSmoothedRoundTripTime = value; return this; }
-		public Builder setSctpCongestionWindow(Double value) { this.result.sctpCongestionWindow = value; return this; }
-		public Builder setSctpReceiverWindow(Double value) { this.result.sctpReceiverWindow = value; return this; }
-		public Builder setSctpMtu(Integer value) { this.result.sctpMtu = value; return this; }
-		public Builder setSctpUnackData(Integer value) { this.result.sctpUnackData = value; return this; }
-		public Builder setMessageReceived(Integer value) { this.result.messageReceived = value; return this; }
-		public Builder setMessageSent(Integer value) { this.result.messageSent = value; return this; }
-		public Builder setBytesReceived(Long value) { this.result.bytesReceived = value; return this; }
-		public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setSfuId(String value) {
+			this.result.sfuId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setCallId(String value) {
+			this.result.callId = value;
+			return this;
+		}
+		public Builder setRoomId(String value) {
+			this.result.roomId = value;
+			return this;
+		}
+		public Builder setTransportId(String value) {
+			this.result.transportId = value;
+			return this;
+		}
+		public Builder setStreamId(String value) {
+			this.result.streamId = value;
+			return this;
+		}
+		public Builder setLabel(String value) {
+			this.result.label = value;
+			return this;
+		}
+		public Builder setProtocol(String value) {
+			this.result.protocol = value;
+			return this;
+		}
+		public Builder setSctpSmoothedRoundTripTime(Double value) {
+			this.result.sctpSmoothedRoundTripTime = value;
+			return this;
+		}
+		public Builder setSctpCongestionWindow(Double value) {
+			this.result.sctpCongestionWindow = value;
+			return this;
+		}
+		public Builder setSctpReceiverWindow(Double value) {
+			this.result.sctpReceiverWindow = value;
+			return this;
+		}
+		public Builder setSctpMtu(Integer value) {
+			this.result.sctpMtu = value;
+			return this;
+		}
+		public Builder setSctpUnackData(Integer value) {
+			this.result.sctpUnackData = value;
+			return this;
+		}
+		public Builder setMessageReceived(Integer value) {
+			this.result.messageReceived = value;
+			return this;
+		}
+		public Builder setMessageSent(Integer value) {
+			this.result.messageSent = value;
+			return this;
+		}
+		public Builder setBytesReceived(Long value) {
+			this.result.bytesReceived = value;
+			return this;
+		}
+		public Builder setBytesSent(Long value) {
+			this.result.bytesSent = value;
+			return this;
+		}
 		public SfuSctpStreamReport build() {
 			return this.result;
 		}

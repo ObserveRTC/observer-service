@@ -53,13 +53,34 @@ public class SfuExtensionReport {
 
 		private SfuExtensionReport result = new SfuExtensionReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setSfuId(String value) { this.result.sfuId = value; return this; }
-		public Builder setExtensionType(String value) { this.result.extensionType = value; return this; }
-		public Builder setPayload(String value) { this.result.payload = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setSfuId(String value) {
+			this.result.sfuId = value;
+			return this;
+		}
+		public Builder setExtensionType(String value) {
+			this.result.extensionType = value;
+			return this;
+		}
+		public Builder setPayload(String value) {
+			this.result.payload = value;
+			return this;
+		}
 		public SfuExtensionReport build() {
 			return this.result;
 		}

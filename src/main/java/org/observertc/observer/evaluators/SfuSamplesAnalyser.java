@@ -59,6 +59,9 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
             SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {
+                if (Boolean.TRUE.equals(sfuTransport.noReport)) {
+                    return;
+                }
                 this.sfuTransportReportsDepot
 //                        .setCallId(
                         .setObservedSfuSample(observedSfuSample)
@@ -67,6 +70,9 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
             });
 
             SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuInboundRtpPad -> {
+                if (Boolean.TRUE.equals(sfuInboundRtpPad.noReport)) {
+                    return;
+                }
                 UUID sfuStreamId = sfuInboundRtpPad.streamId;
                 if (Objects.nonNull(sfuStreamId)) {
                     var sfuStream = sfuStreams.get(sfuStreamId);
@@ -87,7 +93,9 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
             });
 
             SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
-
+                if (Boolean.TRUE.equals(sfuOutboundRtpPad.noReport)) {
+                    return;
+                }
                 UUID sfuSinkId = sfuOutboundRtpPad.sinkId;
                 if (Objects.nonNull(sfuSinkId)) {
                     var sfuSink = sfuSinks.get(sfuSinkId);
@@ -108,6 +116,9 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
             });
 
             SfuSampleVisitor.streamSctpStreams(sfuSample).forEach(sctpChannel -> {
+                if (Boolean.TRUE.equals(sctpChannel.noReport)) {
+                    return;
+                }
                 this.sfuSctpStreamReportsDepot
                         .setObservedSfuSample(observedSfuSample)
                         .setSctpChannel(sctpChannel)

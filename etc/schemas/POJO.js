@@ -138,7 +138,10 @@ export class POJO {
                 // `\tpublic Builder ${methodName}(${writtenType} value) {`,
                 // `\t\tthis.result.${name} = value;`,
                 // `\t}`
-                `\tpublic Builder ${methodName}(${writtenType} value) { this.result.${name} = value; return this; }`,
+                `\tpublic Builder ${methodName}(${writtenType} value) {`,
+                `\t\tthis.result.${name} = value;`,
+                `\t\treturn this;`,
+                `\t}`,
             ];
             this._builderFields.push(...lines);
         }

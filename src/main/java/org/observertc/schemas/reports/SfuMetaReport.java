@@ -83,19 +83,58 @@ public class SfuMetaReport {
 
 		private SfuMetaReport result = new SfuMetaReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setSfuId(String value) { this.result.sfuId = value; return this; }
-		public Builder setCallId(String value) { this.result.callId = value; return this; }
-		public Builder setTransportId(String value) { this.result.transportId = value; return this; }
-		public Builder setMediaStreamId(String value) { this.result.mediaStreamId = value; return this; }
-		public Builder setMediaSinkId(String value) { this.result.mediaSinkId = value; return this; }
-		public Builder setSctpStreamId(String value) { this.result.sctpStreamId = value; return this; }
-		public Builder setRtpPadId(String value) { this.result.rtpPadId = value; return this; }
-		public Builder setType(String value) { this.result.type = value; return this; }
-		public Builder setPayload(String value) { this.result.payload = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setSfuId(String value) {
+			this.result.sfuId = value;
+			return this;
+		}
+		public Builder setCallId(String value) {
+			this.result.callId = value;
+			return this;
+		}
+		public Builder setTransportId(String value) {
+			this.result.transportId = value;
+			return this;
+		}
+		public Builder setMediaStreamId(String value) {
+			this.result.mediaStreamId = value;
+			return this;
+		}
+		public Builder setMediaSinkId(String value) {
+			this.result.mediaSinkId = value;
+			return this;
+		}
+		public Builder setSctpStreamId(String value) {
+			this.result.sctpStreamId = value;
+			return this;
+		}
+		public Builder setRtpPadId(String value) {
+			this.result.rtpPadId = value;
+			return this;
+		}
+		public Builder setType(String value) {
+			this.result.type = value;
+			return this;
+		}
+		public Builder setPayload(String value) {
+			this.result.payload = value;
+			return this;
+		}
 		public SfuMetaReport build() {
 			return this.result;
 		}

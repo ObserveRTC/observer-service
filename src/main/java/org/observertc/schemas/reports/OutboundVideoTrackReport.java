@@ -433,89 +433,338 @@ public class OutboundVideoTrackReport {
 
 		private OutboundVideoTrackReport result = new OutboundVideoTrackReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setCallId(String value) { this.result.callId = value; return this; }
-		public Builder setRoomId(String value) { this.result.roomId = value; return this; }
-		public Builder setClientId(String value) { this.result.clientId = value; return this; }
-		public Builder setUserId(String value) { this.result.userId = value; return this; }
-		public Builder setPeerConnectionId(String value) { this.result.peerConnectionId = value; return this; }
-		public Builder setLabel(String value) { this.result.label = value; return this; }
-		public Builder setTrackId(String value) { this.result.trackId = value; return this; }
-		public Builder setSfuStreamId(String value) { this.result.sfuStreamId = value; return this; }
-		public Builder setSampleSeq(Integer value) { this.result.sampleSeq = value; return this; }
-		public Builder setSsrc(Long value) { this.result.ssrc = value; return this; }
-		public Builder setPacketsSent(Integer value) { this.result.packetsSent = value; return this; }
-		public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
-		public Builder setRid(String value) { this.result.rid = value; return this; }
-		public Builder setLastPacketSentTimestamp(Long value) { this.result.lastPacketSentTimestamp = value; return this; }
-		public Builder setHeaderBytesSent(Long value) { this.result.headerBytesSent = value; return this; }
-		public Builder setPacketsDiscardedOnSend(Integer value) { this.result.packetsDiscardedOnSend = value; return this; }
-		public Builder setBytesDiscardedOnSend(Long value) { this.result.bytesDiscardedOnSend = value; return this; }
-		public Builder setFecPacketsSent(Integer value) { this.result.fecPacketsSent = value; return this; }
-		public Builder setRetransmittedPacketsSent(Integer value) { this.result.retransmittedPacketsSent = value; return this; }
-		public Builder setRetransmittedBytesSent(Long value) { this.result.retransmittedBytesSent = value; return this; }
-		public Builder setTargetBitrate(Integer value) { this.result.targetBitrate = value; return this; }
-		public Builder setTotalEncodedBytesTarget(Long value) { this.result.totalEncodedBytesTarget = value; return this; }
-		public Builder setFrameWidth(Integer value) { this.result.frameWidth = value; return this; }
-		public Builder setFrameHeight(Integer value) { this.result.frameHeight = value; return this; }
-		public Builder setFrameBitDepth(Integer value) { this.result.frameBitDepth = value; return this; }
-		public Builder setFramesPerSecond(Double value) { this.result.framesPerSecond = value; return this; }
-		public Builder setFramesSent(Integer value) { this.result.framesSent = value; return this; }
-		public Builder setHugeFramesSent(Integer value) { this.result.hugeFramesSent = value; return this; }
-		public Builder setFramesEncoded(Integer value) { this.result.framesEncoded = value; return this; }
-		public Builder setKeyFramesEncoded(Integer value) { this.result.keyFramesEncoded = value; return this; }
-		public Builder setFramesDiscardedOnSend(Integer value) { this.result.framesDiscardedOnSend = value; return this; }
-		public Builder setQpSum(Long value) { this.result.qpSum = value; return this; }
-		public Builder setTotalEncodeTime(Double value) { this.result.totalEncodeTime = value; return this; }
-		public Builder setTotalPacketSendDelay(Double value) { this.result.totalPacketSendDelay = value; return this; }
-		public Builder setAverageRtcpInterval(Double value) { this.result.averageRtcpInterval = value; return this; }
-		public Builder setQualityLimitationDurationCPU(Double value) { this.result.qualityLimitationDurationCPU = value; return this; }
-		public Builder setQualityLimitationDurationNone(Double value) { this.result.qualityLimitationDurationNone = value; return this; }
-		public Builder setQualityLimitationDurationBandwidth(Double value) { this.result.qualityLimitationDurationBandwidth = value; return this; }
-		public Builder setQualityLimitationDurationOther(Double value) { this.result.qualityLimitationDurationOther = value; return this; }
-		public Builder setQualityLimitationReason(String value) { this.result.qualityLimitationReason = value; return this; }
-		public Builder setQualityLimitationResolutionChanges(Integer value) { this.result.qualityLimitationResolutionChanges = value; return this; }
-		public Builder setPerDscpPacketsSent(Integer value) { this.result.perDscpPacketsSent = value; return this; }
-		public Builder setNackCount(Integer value) { this.result.nackCount = value; return this; }
-		public Builder setFirCount(Integer value) { this.result.firCount = value; return this; }
-		public Builder setPliCount(Integer value) { this.result.pliCount = value; return this; }
-		public Builder setSliCount(Integer value) { this.result.sliCount = value; return this; }
-		public Builder setEncoderImplementation(String value) { this.result.encoderImplementation = value; return this; }
-		public Builder setPacketsReceived(Integer value) { this.result.packetsReceived = value; return this; }
-		public Builder setPacketsLost(Integer value) { this.result.packetsLost = value; return this; }
-		public Builder setJitter(Double value) { this.result.jitter = value; return this; }
-		public Builder setPacketsDiscarded(Integer value) { this.result.packetsDiscarded = value; return this; }
-		public Builder setPacketsRepaired(Integer value) { this.result.packetsRepaired = value; return this; }
-		public Builder setBurstPacketsLost(Integer value) { this.result.burstPacketsLost = value; return this; }
-		public Builder setBurstPacketsDiscarded(Integer value) { this.result.burstPacketsDiscarded = value; return this; }
-		public Builder setBurstLossCount(Integer value) { this.result.burstLossCount = value; return this; }
-		public Builder setBurstDiscardCount(Integer value) { this.result.burstDiscardCount = value; return this; }
-		public Builder setBurstLossRate(Double value) { this.result.burstLossRate = value; return this; }
-		public Builder setBurstDiscardRate(Double value) { this.result.burstDiscardRate = value; return this; }
-		public Builder setGapLossRate(Double value) { this.result.gapLossRate = value; return this; }
-		public Builder setGapDiscardRate(Double value) { this.result.gapDiscardRate = value; return this; }
-		public Builder setFramesDropped(Integer value) { this.result.framesDropped = value; return this; }
-		public Builder setPartialFramesLost(Integer value) { this.result.partialFramesLost = value; return this; }
-		public Builder setFullFramesLost(Integer value) { this.result.fullFramesLost = value; return this; }
-		public Builder setRoundTripTime(Double value) { this.result.roundTripTime = value; return this; }
-		public Builder setTotalRoundTripTime(Double value) { this.result.totalRoundTripTime = value; return this; }
-		public Builder setFractionLost(Double value) { this.result.fractionLost = value; return this; }
-		public Builder setReportsReceived(Integer value) { this.result.reportsReceived = value; return this; }
-		public Builder setRoundTripTimeMeasurements(Integer value) { this.result.roundTripTimeMeasurements = value; return this; }
-		public Builder setRelayedSource(Boolean value) { this.result.relayedSource = value; return this; }
-		public Builder setEncodedFrameWidth(Integer value) { this.result.encodedFrameWidth = value; return this; }
-		public Builder setEncodedFrameHeight(Integer value) { this.result.encodedFrameHeight = value; return this; }
-		public Builder setEncodedFrameBitDepth(Integer value) { this.result.encodedFrameBitDepth = value; return this; }
-		public Builder setEncodedFramesPerSecond(Double value) { this.result.encodedFramesPerSecond = value; return this; }
-		public Builder setEnded(Boolean value) { this.result.ended = value; return this; }
-		public Builder setPayloadType(Integer value) { this.result.payloadType = value; return this; }
-		public Builder setMimeType(String value) { this.result.mimeType = value; return this; }
-		public Builder setClockRate(Integer value) { this.result.clockRate = value; return this; }
-		public Builder setChannels(Integer value) { this.result.channels = value; return this; }
-		public Builder setSdpFmtpLine(String value) { this.result.sdpFmtpLine = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setCallId(String value) {
+			this.result.callId = value;
+			return this;
+		}
+		public Builder setRoomId(String value) {
+			this.result.roomId = value;
+			return this;
+		}
+		public Builder setClientId(String value) {
+			this.result.clientId = value;
+			return this;
+		}
+		public Builder setUserId(String value) {
+			this.result.userId = value;
+			return this;
+		}
+		public Builder setPeerConnectionId(String value) {
+			this.result.peerConnectionId = value;
+			return this;
+		}
+		public Builder setLabel(String value) {
+			this.result.label = value;
+			return this;
+		}
+		public Builder setTrackId(String value) {
+			this.result.trackId = value;
+			return this;
+		}
+		public Builder setSfuStreamId(String value) {
+			this.result.sfuStreamId = value;
+			return this;
+		}
+		public Builder setSampleSeq(Integer value) {
+			this.result.sampleSeq = value;
+			return this;
+		}
+		public Builder setSsrc(Long value) {
+			this.result.ssrc = value;
+			return this;
+		}
+		public Builder setPacketsSent(Integer value) {
+			this.result.packetsSent = value;
+			return this;
+		}
+		public Builder setBytesSent(Long value) {
+			this.result.bytesSent = value;
+			return this;
+		}
+		public Builder setRid(String value) {
+			this.result.rid = value;
+			return this;
+		}
+		public Builder setLastPacketSentTimestamp(Long value) {
+			this.result.lastPacketSentTimestamp = value;
+			return this;
+		}
+		public Builder setHeaderBytesSent(Long value) {
+			this.result.headerBytesSent = value;
+			return this;
+		}
+		public Builder setPacketsDiscardedOnSend(Integer value) {
+			this.result.packetsDiscardedOnSend = value;
+			return this;
+		}
+		public Builder setBytesDiscardedOnSend(Long value) {
+			this.result.bytesDiscardedOnSend = value;
+			return this;
+		}
+		public Builder setFecPacketsSent(Integer value) {
+			this.result.fecPacketsSent = value;
+			return this;
+		}
+		public Builder setRetransmittedPacketsSent(Integer value) {
+			this.result.retransmittedPacketsSent = value;
+			return this;
+		}
+		public Builder setRetransmittedBytesSent(Long value) {
+			this.result.retransmittedBytesSent = value;
+			return this;
+		}
+		public Builder setTargetBitrate(Integer value) {
+			this.result.targetBitrate = value;
+			return this;
+		}
+		public Builder setTotalEncodedBytesTarget(Long value) {
+			this.result.totalEncodedBytesTarget = value;
+			return this;
+		}
+		public Builder setFrameWidth(Integer value) {
+			this.result.frameWidth = value;
+			return this;
+		}
+		public Builder setFrameHeight(Integer value) {
+			this.result.frameHeight = value;
+			return this;
+		}
+		public Builder setFrameBitDepth(Integer value) {
+			this.result.frameBitDepth = value;
+			return this;
+		}
+		public Builder setFramesPerSecond(Double value) {
+			this.result.framesPerSecond = value;
+			return this;
+		}
+		public Builder setFramesSent(Integer value) {
+			this.result.framesSent = value;
+			return this;
+		}
+		public Builder setHugeFramesSent(Integer value) {
+			this.result.hugeFramesSent = value;
+			return this;
+		}
+		public Builder setFramesEncoded(Integer value) {
+			this.result.framesEncoded = value;
+			return this;
+		}
+		public Builder setKeyFramesEncoded(Integer value) {
+			this.result.keyFramesEncoded = value;
+			return this;
+		}
+		public Builder setFramesDiscardedOnSend(Integer value) {
+			this.result.framesDiscardedOnSend = value;
+			return this;
+		}
+		public Builder setQpSum(Long value) {
+			this.result.qpSum = value;
+			return this;
+		}
+		public Builder setTotalEncodeTime(Double value) {
+			this.result.totalEncodeTime = value;
+			return this;
+		}
+		public Builder setTotalPacketSendDelay(Double value) {
+			this.result.totalPacketSendDelay = value;
+			return this;
+		}
+		public Builder setAverageRtcpInterval(Double value) {
+			this.result.averageRtcpInterval = value;
+			return this;
+		}
+		public Builder setQualityLimitationDurationCPU(Double value) {
+			this.result.qualityLimitationDurationCPU = value;
+			return this;
+		}
+		public Builder setQualityLimitationDurationNone(Double value) {
+			this.result.qualityLimitationDurationNone = value;
+			return this;
+		}
+		public Builder setQualityLimitationDurationBandwidth(Double value) {
+			this.result.qualityLimitationDurationBandwidth = value;
+			return this;
+		}
+		public Builder setQualityLimitationDurationOther(Double value) {
+			this.result.qualityLimitationDurationOther = value;
+			return this;
+		}
+		public Builder setQualityLimitationReason(String value) {
+			this.result.qualityLimitationReason = value;
+			return this;
+		}
+		public Builder setQualityLimitationResolutionChanges(Integer value) {
+			this.result.qualityLimitationResolutionChanges = value;
+			return this;
+		}
+		public Builder setPerDscpPacketsSent(Integer value) {
+			this.result.perDscpPacketsSent = value;
+			return this;
+		}
+		public Builder setNackCount(Integer value) {
+			this.result.nackCount = value;
+			return this;
+		}
+		public Builder setFirCount(Integer value) {
+			this.result.firCount = value;
+			return this;
+		}
+		public Builder setPliCount(Integer value) {
+			this.result.pliCount = value;
+			return this;
+		}
+		public Builder setSliCount(Integer value) {
+			this.result.sliCount = value;
+			return this;
+		}
+		public Builder setEncoderImplementation(String value) {
+			this.result.encoderImplementation = value;
+			return this;
+		}
+		public Builder setPacketsReceived(Integer value) {
+			this.result.packetsReceived = value;
+			return this;
+		}
+		public Builder setPacketsLost(Integer value) {
+			this.result.packetsLost = value;
+			return this;
+		}
+		public Builder setJitter(Double value) {
+			this.result.jitter = value;
+			return this;
+		}
+		public Builder setPacketsDiscarded(Integer value) {
+			this.result.packetsDiscarded = value;
+			return this;
+		}
+		public Builder setPacketsRepaired(Integer value) {
+			this.result.packetsRepaired = value;
+			return this;
+		}
+		public Builder setBurstPacketsLost(Integer value) {
+			this.result.burstPacketsLost = value;
+			return this;
+		}
+		public Builder setBurstPacketsDiscarded(Integer value) {
+			this.result.burstPacketsDiscarded = value;
+			return this;
+		}
+		public Builder setBurstLossCount(Integer value) {
+			this.result.burstLossCount = value;
+			return this;
+		}
+		public Builder setBurstDiscardCount(Integer value) {
+			this.result.burstDiscardCount = value;
+			return this;
+		}
+		public Builder setBurstLossRate(Double value) {
+			this.result.burstLossRate = value;
+			return this;
+		}
+		public Builder setBurstDiscardRate(Double value) {
+			this.result.burstDiscardRate = value;
+			return this;
+		}
+		public Builder setGapLossRate(Double value) {
+			this.result.gapLossRate = value;
+			return this;
+		}
+		public Builder setGapDiscardRate(Double value) {
+			this.result.gapDiscardRate = value;
+			return this;
+		}
+		public Builder setFramesDropped(Integer value) {
+			this.result.framesDropped = value;
+			return this;
+		}
+		public Builder setPartialFramesLost(Integer value) {
+			this.result.partialFramesLost = value;
+			return this;
+		}
+		public Builder setFullFramesLost(Integer value) {
+			this.result.fullFramesLost = value;
+			return this;
+		}
+		public Builder setRoundTripTime(Double value) {
+			this.result.roundTripTime = value;
+			return this;
+		}
+		public Builder setTotalRoundTripTime(Double value) {
+			this.result.totalRoundTripTime = value;
+			return this;
+		}
+		public Builder setFractionLost(Double value) {
+			this.result.fractionLost = value;
+			return this;
+		}
+		public Builder setReportsReceived(Integer value) {
+			this.result.reportsReceived = value;
+			return this;
+		}
+		public Builder setRoundTripTimeMeasurements(Integer value) {
+			this.result.roundTripTimeMeasurements = value;
+			return this;
+		}
+		public Builder setRelayedSource(Boolean value) {
+			this.result.relayedSource = value;
+			return this;
+		}
+		public Builder setEncodedFrameWidth(Integer value) {
+			this.result.encodedFrameWidth = value;
+			return this;
+		}
+		public Builder setEncodedFrameHeight(Integer value) {
+			this.result.encodedFrameHeight = value;
+			return this;
+		}
+		public Builder setEncodedFrameBitDepth(Integer value) {
+			this.result.encodedFrameBitDepth = value;
+			return this;
+		}
+		public Builder setEncodedFramesPerSecond(Double value) {
+			this.result.encodedFramesPerSecond = value;
+			return this;
+		}
+		public Builder setEnded(Boolean value) {
+			this.result.ended = value;
+			return this;
+		}
+		public Builder setPayloadType(Integer value) {
+			this.result.payloadType = value;
+			return this;
+		}
+		public Builder setMimeType(String value) {
+			this.result.mimeType = value;
+			return this;
+		}
+		public Builder setClockRate(Integer value) {
+			this.result.clockRate = value;
+			return this;
+		}
+		public Builder setChannels(Integer value) {
+			this.result.channels = value;
+			return this;
+		}
+		public Builder setSdpFmtpLine(String value) {
+			this.result.sdpFmtpLine = value;
+			return this;
+		}
 		public OutboundVideoTrackReport build() {
 			return this.result;
 		}

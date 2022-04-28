@@ -178,38 +178,134 @@ public class SFUTransportReport {
 
 		private SFUTransportReport result = new SFUTransportReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setSfuId(String value) { this.result.sfuId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setCallId(String value) { this.result.callId = value; return this; }
-		public Builder setRoomId(String value) { this.result.roomId = value; return this; }
-		public Builder setTransportId(String value) { this.result.transportId = value; return this; }
-		public Builder setDtlsState(String value) { this.result.dtlsState = value; return this; }
-		public Builder setIceState(String value) { this.result.iceState = value; return this; }
-		public Builder setSctpState(String value) { this.result.sctpState = value; return this; }
-		public Builder setIceRole(String value) { this.result.iceRole = value; return this; }
-		public Builder setLocalAddress(String value) { this.result.localAddress = value; return this; }
-		public Builder setLocalPort(Integer value) { this.result.localPort = value; return this; }
-		public Builder setProtocol(String value) { this.result.protocol = value; return this; }
-		public Builder setRemoteAddress(String value) { this.result.remoteAddress = value; return this; }
-		public Builder setRemotePort(Integer value) { this.result.remotePort = value; return this; }
-		public Builder setRtpBytesReceived(Long value) { this.result.rtpBytesReceived = value; return this; }
-		public Builder setRtpBytesSent(Long value) { this.result.rtpBytesSent = value; return this; }
-		public Builder setRtpPacketsReceived(Integer value) { this.result.rtpPacketsReceived = value; return this; }
-		public Builder setRtpPacketsSent(Integer value) { this.result.rtpPacketsSent = value; return this; }
-		public Builder setRtpPacketsLost(Integer value) { this.result.rtpPacketsLost = value; return this; }
-		public Builder setRtxBytesReceived(Long value) { this.result.rtxBytesReceived = value; return this; }
-		public Builder setRtxBytesSent(Long value) { this.result.rtxBytesSent = value; return this; }
-		public Builder setRtxPacketsReceived(Integer value) { this.result.rtxPacketsReceived = value; return this; }
-		public Builder setRtxPacketsSent(Integer value) { this.result.rtxPacketsSent = value; return this; }
-		public Builder setRtxPacketsLost(Integer value) { this.result.rtxPacketsLost = value; return this; }
-		public Builder setRtxPacketsDiscarded(Integer value) { this.result.rtxPacketsDiscarded = value; return this; }
-		public Builder setSctpBytesReceived(Long value) { this.result.sctpBytesReceived = value; return this; }
-		public Builder setSctpBytesSent(Long value) { this.result.sctpBytesSent = value; return this; }
-		public Builder setSctpPacketsReceived(Integer value) { this.result.sctpPacketsReceived = value; return this; }
-		public Builder setSctpPacketsSent(Integer value) { this.result.sctpPacketsSent = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setSfuId(String value) {
+			this.result.sfuId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setCallId(String value) {
+			this.result.callId = value;
+			return this;
+		}
+		public Builder setRoomId(String value) {
+			this.result.roomId = value;
+			return this;
+		}
+		public Builder setTransportId(String value) {
+			this.result.transportId = value;
+			return this;
+		}
+		public Builder setDtlsState(String value) {
+			this.result.dtlsState = value;
+			return this;
+		}
+		public Builder setIceState(String value) {
+			this.result.iceState = value;
+			return this;
+		}
+		public Builder setSctpState(String value) {
+			this.result.sctpState = value;
+			return this;
+		}
+		public Builder setIceRole(String value) {
+			this.result.iceRole = value;
+			return this;
+		}
+		public Builder setLocalAddress(String value) {
+			this.result.localAddress = value;
+			return this;
+		}
+		public Builder setLocalPort(Integer value) {
+			this.result.localPort = value;
+			return this;
+		}
+		public Builder setProtocol(String value) {
+			this.result.protocol = value;
+			return this;
+		}
+		public Builder setRemoteAddress(String value) {
+			this.result.remoteAddress = value;
+			return this;
+		}
+		public Builder setRemotePort(Integer value) {
+			this.result.remotePort = value;
+			return this;
+		}
+		public Builder setRtpBytesReceived(Long value) {
+			this.result.rtpBytesReceived = value;
+			return this;
+		}
+		public Builder setRtpBytesSent(Long value) {
+			this.result.rtpBytesSent = value;
+			return this;
+		}
+		public Builder setRtpPacketsReceived(Integer value) {
+			this.result.rtpPacketsReceived = value;
+			return this;
+		}
+		public Builder setRtpPacketsSent(Integer value) {
+			this.result.rtpPacketsSent = value;
+			return this;
+		}
+		public Builder setRtpPacketsLost(Integer value) {
+			this.result.rtpPacketsLost = value;
+			return this;
+		}
+		public Builder setRtxBytesReceived(Long value) {
+			this.result.rtxBytesReceived = value;
+			return this;
+		}
+		public Builder setRtxBytesSent(Long value) {
+			this.result.rtxBytesSent = value;
+			return this;
+		}
+		public Builder setRtxPacketsReceived(Integer value) {
+			this.result.rtxPacketsReceived = value;
+			return this;
+		}
+		public Builder setRtxPacketsSent(Integer value) {
+			this.result.rtxPacketsSent = value;
+			return this;
+		}
+		public Builder setRtxPacketsLost(Integer value) {
+			this.result.rtxPacketsLost = value;
+			return this;
+		}
+		public Builder setRtxPacketsDiscarded(Integer value) {
+			this.result.rtxPacketsDiscarded = value;
+			return this;
+		}
+		public Builder setSctpBytesReceived(Long value) {
+			this.result.sctpBytesReceived = value;
+			return this;
+		}
+		public Builder setSctpBytesSent(Long value) {
+			this.result.sctpBytesSent = value;
+			return this;
+		}
+		public Builder setSctpPacketsReceived(Integer value) {
+			this.result.sctpPacketsReceived = value;
+			return this;
+		}
+		public Builder setSctpPacketsSent(Integer value) {
+			this.result.sctpPacketsSent = value;
+			return this;
+		}
 		public SFUTransportReport build() {
 			return this.result;
 		}

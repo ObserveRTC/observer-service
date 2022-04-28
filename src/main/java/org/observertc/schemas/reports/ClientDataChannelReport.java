@@ -108,24 +108,78 @@ public class ClientDataChannelReport {
 
 		private ClientDataChannelReport result = new ClientDataChannelReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setCallId(String value) { this.result.callId = value; return this; }
-		public Builder setRoomId(String value) { this.result.roomId = value; return this; }
-		public Builder setClientId(String value) { this.result.clientId = value; return this; }
-		public Builder setUserId(String value) { this.result.userId = value; return this; }
-		public Builder setPeerConnectionId(String value) { this.result.peerConnectionId = value; return this; }
-		public Builder setPeerConnectionLabel(String value) { this.result.peerConnectionLabel = value; return this; }
-		public Builder setSampleSeq(Integer value) { this.result.sampleSeq = value; return this; }
-		public Builder setLabel(String value) { this.result.label = value; return this; }
-		public Builder setProtocol(String value) { this.result.protocol = value; return this; }
-		public Builder setState(String value) { this.result.state = value; return this; }
-		public Builder setMessagesSent(Integer value) { this.result.messagesSent = value; return this; }
-		public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
-		public Builder setMessagesReceived(Integer value) { this.result.messagesReceived = value; return this; }
-		public Builder setBytesReceived(Long value) { this.result.bytesReceived = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setCallId(String value) {
+			this.result.callId = value;
+			return this;
+		}
+		public Builder setRoomId(String value) {
+			this.result.roomId = value;
+			return this;
+		}
+		public Builder setClientId(String value) {
+			this.result.clientId = value;
+			return this;
+		}
+		public Builder setUserId(String value) {
+			this.result.userId = value;
+			return this;
+		}
+		public Builder setPeerConnectionId(String value) {
+			this.result.peerConnectionId = value;
+			return this;
+		}
+		public Builder setPeerConnectionLabel(String value) {
+			this.result.peerConnectionLabel = value;
+			return this;
+		}
+		public Builder setSampleSeq(Integer value) {
+			this.result.sampleSeq = value;
+			return this;
+		}
+		public Builder setLabel(String value) {
+			this.result.label = value;
+			return this;
+		}
+		public Builder setProtocol(String value) {
+			this.result.protocol = value;
+			return this;
+		}
+		public Builder setState(String value) {
+			this.result.state = value;
+			return this;
+		}
+		public Builder setMessagesSent(Integer value) {
+			this.result.messagesSent = value;
+			return this;
+		}
+		public Builder setBytesSent(Long value) {
+			this.result.bytesSent = value;
+			return this;
+		}
+		public Builder setMessagesReceived(Integer value) {
+			this.result.messagesReceived = value;
+			return this;
+		}
+		public Builder setBytesReceived(Long value) {
+			this.result.bytesReceived = value;
+			return this;
+		}
 		public ClientDataChannelReport build() {
 			return this.result;
 		}

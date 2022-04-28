@@ -358,74 +358,278 @@ public class ClientTransportReport {
 
 		private ClientTransportReport result = new ClientTransportReport();
 
-		public Builder setServiceId(String value) { this.result.serviceId = value; return this; }
-		public Builder setMediaUnitId(String value) { this.result.mediaUnitId = value; return this; }
-		public Builder setMarker(String value) { this.result.marker = value; return this; }
-		public Builder setTimestamp(Long value) { this.result.timestamp = value; return this; }
-		public Builder setCallId(String value) { this.result.callId = value; return this; }
-		public Builder setRoomId(String value) { this.result.roomId = value; return this; }
-		public Builder setClientId(String value) { this.result.clientId = value; return this; }
-		public Builder setUserId(String value) { this.result.userId = value; return this; }
-		public Builder setPeerConnectionId(String value) { this.result.peerConnectionId = value; return this; }
-		public Builder setLabel(String value) { this.result.label = value; return this; }
-		public Builder setPacketsSent(Integer value) { this.result.packetsSent = value; return this; }
-		public Builder setPacketsReceived(Integer value) { this.result.packetsReceived = value; return this; }
-		public Builder setBytesSent(Long value) { this.result.bytesSent = value; return this; }
-		public Builder setBytesReceived(Long value) { this.result.bytesReceived = value; return this; }
-		public Builder setIceRole(String value) { this.result.iceRole = value; return this; }
-		public Builder setIceLocalUsernameFragment(String value) { this.result.iceLocalUsernameFragment = value; return this; }
-		public Builder setDtlsState(String value) { this.result.dtlsState = value; return this; }
-		public Builder setIceTransportState(String value) { this.result.iceTransportState = value; return this; }
-		public Builder setTlsVersion(String value) { this.result.tlsVersion = value; return this; }
-		public Builder setDtlsCipher(String value) { this.result.dtlsCipher = value; return this; }
-		public Builder setSrtpCipher(String value) { this.result.srtpCipher = value; return this; }
-		public Builder setTlsGroup(String value) { this.result.tlsGroup = value; return this; }
-		public Builder setSelectedCandidatePairChanges(Integer value) { this.result.selectedCandidatePairChanges = value; return this; }
-		public Builder setLocalAddress(String value) { this.result.localAddress = value; return this; }
-		public Builder setLocalPort(Integer value) { this.result.localPort = value; return this; }
-		public Builder setLocalProtocol(String value) { this.result.localProtocol = value; return this; }
-		public Builder setLocalCandidateType(String value) { this.result.localCandidateType = value; return this; }
-		public Builder setLocalCandidateICEServerUrl(String value) { this.result.localCandidateICEServerUrl = value; return this; }
-		public Builder setLocalCandidateRelayProtocol(String value) { this.result.localCandidateRelayProtocol = value; return this; }
-		public Builder setRemoteAddress(String value) { this.result.remoteAddress = value; return this; }
-		public Builder setRemotePort(Integer value) { this.result.remotePort = value; return this; }
-		public Builder setRemoteProtocol(String value) { this.result.remoteProtocol = value; return this; }
-		public Builder setRemoteCandidateType(String value) { this.result.remoteCandidateType = value; return this; }
-		public Builder setRemoteCandidateICEServerUrl(String value) { this.result.remoteCandidateICEServerUrl = value; return this; }
-		public Builder setRemoteCandidateRelayProtocol(String value) { this.result.remoteCandidateRelayProtocol = value; return this; }
-		public Builder setCandidatePairState(String value) { this.result.candidatePairState = value; return this; }
-		public Builder setCandidatePairPacketsSent(Integer value) { this.result.candidatePairPacketsSent = value; return this; }
-		public Builder setCandidatePairPacketsReceived(Integer value) { this.result.candidatePairPacketsReceived = value; return this; }
-		public Builder setCandidatePairBytesSent(Long value) { this.result.candidatePairBytesSent = value; return this; }
-		public Builder setCandidatePairBytesReceived(Long value) { this.result.candidatePairBytesReceived = value; return this; }
-		public Builder setCandidatePairLastPacketSentTimestamp(Long value) { this.result.candidatePairLastPacketSentTimestamp = value; return this; }
-		public Builder setCandidatePairLastPacketReceivedTimestamp(Long value) { this.result.candidatePairLastPacketReceivedTimestamp = value; return this; }
-		public Builder setCandidatePairFirstRequestTimestamp(Long value) { this.result.candidatePairFirstRequestTimestamp = value; return this; }
-		public Builder setCandidatePairLastRequestTimestamp(Long value) { this.result.candidatePairLastRequestTimestamp = value; return this; }
-		public Builder setCandidatePairLastResponseTimestamp(Long value) { this.result.candidatePairLastResponseTimestamp = value; return this; }
-		public Builder setCandidatePairTotalRoundTripTime(Double value) { this.result.candidatePairTotalRoundTripTime = value; return this; }
-		public Builder setCandidatePairCurrentRoundTripTime(Double value) { this.result.candidatePairCurrentRoundTripTime = value; return this; }
-		public Builder setCandidatePairAvailableOutgoingBitrate(Double value) { this.result.candidatePairAvailableOutgoingBitrate = value; return this; }
-		public Builder setCandidatePairAvailableIncomingBitrate(Double value) { this.result.candidatePairAvailableIncomingBitrate = value; return this; }
-		public Builder setCandidatePairCircuitBreakerTriggerCount(Integer value) { this.result.candidatePairCircuitBreakerTriggerCount = value; return this; }
-		public Builder setCandidatePairRequestsReceived(Integer value) { this.result.candidatePairRequestsReceived = value; return this; }
-		public Builder setCandidatePairRequestsSent(Integer value) { this.result.candidatePairRequestsSent = value; return this; }
-		public Builder setCandidatePairResponsesReceived(Integer value) { this.result.candidatePairResponsesReceived = value; return this; }
-		public Builder setCandidatePairResponsesSent(Integer value) { this.result.candidatePairResponsesSent = value; return this; }
-		public Builder setCandidatePairRetransmissionReceived(Integer value) { this.result.candidatePairRetransmissionReceived = value; return this; }
-		public Builder setCandidatePairRetransmissionSent(Integer value) { this.result.candidatePairRetransmissionSent = value; return this; }
-		public Builder setCandidatePairConsentRequestsSent(Integer value) { this.result.candidatePairConsentRequestsSent = value; return this; }
-		public Builder setCandidatePairConsentExpiredTimestamp(Long value) { this.result.candidatePairConsentExpiredTimestamp = value; return this; }
-		public Builder setCandidatePairBytesDiscardedOnSend(Long value) { this.result.candidatePairBytesDiscardedOnSend = value; return this; }
-		public Builder setCandidatePairPacketsDiscardedOnSend(Integer value) { this.result.candidatePairPacketsDiscardedOnSend = value; return this; }
-		public Builder setCandidatePairRequestBytesSent(Long value) { this.result.candidatePairRequestBytesSent = value; return this; }
-		public Builder setCandidatePairConsentRequestBytesSent(Long value) { this.result.candidatePairConsentRequestBytesSent = value; return this; }
-		public Builder setCandidatePairResponseBytesSent(Long value) { this.result.candidatePairResponseBytesSent = value; return this; }
-		public Builder setSctpSmoothedRoundTripTime(Double value) { this.result.sctpSmoothedRoundTripTime = value; return this; }
-		public Builder setSctpCongestionWindow(Double value) { this.result.sctpCongestionWindow = value; return this; }
-		public Builder setSctpReceiverWindow(Double value) { this.result.sctpReceiverWindow = value; return this; }
-		public Builder setSctpMtu(Integer value) { this.result.sctpMtu = value; return this; }
-		public Builder setSctpUnackData(Integer value) { this.result.sctpUnackData = value; return this; }
+		public Builder setServiceId(String value) {
+			this.result.serviceId = value;
+			return this;
+		}
+		public Builder setMediaUnitId(String value) {
+			this.result.mediaUnitId = value;
+			return this;
+		}
+		public Builder setMarker(String value) {
+			this.result.marker = value;
+			return this;
+		}
+		public Builder setTimestamp(Long value) {
+			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setCallId(String value) {
+			this.result.callId = value;
+			return this;
+		}
+		public Builder setRoomId(String value) {
+			this.result.roomId = value;
+			return this;
+		}
+		public Builder setClientId(String value) {
+			this.result.clientId = value;
+			return this;
+		}
+		public Builder setUserId(String value) {
+			this.result.userId = value;
+			return this;
+		}
+		public Builder setPeerConnectionId(String value) {
+			this.result.peerConnectionId = value;
+			return this;
+		}
+		public Builder setLabel(String value) {
+			this.result.label = value;
+			return this;
+		}
+		public Builder setPacketsSent(Integer value) {
+			this.result.packetsSent = value;
+			return this;
+		}
+		public Builder setPacketsReceived(Integer value) {
+			this.result.packetsReceived = value;
+			return this;
+		}
+		public Builder setBytesSent(Long value) {
+			this.result.bytesSent = value;
+			return this;
+		}
+		public Builder setBytesReceived(Long value) {
+			this.result.bytesReceived = value;
+			return this;
+		}
+		public Builder setIceRole(String value) {
+			this.result.iceRole = value;
+			return this;
+		}
+		public Builder setIceLocalUsernameFragment(String value) {
+			this.result.iceLocalUsernameFragment = value;
+			return this;
+		}
+		public Builder setDtlsState(String value) {
+			this.result.dtlsState = value;
+			return this;
+		}
+		public Builder setIceTransportState(String value) {
+			this.result.iceTransportState = value;
+			return this;
+		}
+		public Builder setTlsVersion(String value) {
+			this.result.tlsVersion = value;
+			return this;
+		}
+		public Builder setDtlsCipher(String value) {
+			this.result.dtlsCipher = value;
+			return this;
+		}
+		public Builder setSrtpCipher(String value) {
+			this.result.srtpCipher = value;
+			return this;
+		}
+		public Builder setTlsGroup(String value) {
+			this.result.tlsGroup = value;
+			return this;
+		}
+		public Builder setSelectedCandidatePairChanges(Integer value) {
+			this.result.selectedCandidatePairChanges = value;
+			return this;
+		}
+		public Builder setLocalAddress(String value) {
+			this.result.localAddress = value;
+			return this;
+		}
+		public Builder setLocalPort(Integer value) {
+			this.result.localPort = value;
+			return this;
+		}
+		public Builder setLocalProtocol(String value) {
+			this.result.localProtocol = value;
+			return this;
+		}
+		public Builder setLocalCandidateType(String value) {
+			this.result.localCandidateType = value;
+			return this;
+		}
+		public Builder setLocalCandidateICEServerUrl(String value) {
+			this.result.localCandidateICEServerUrl = value;
+			return this;
+		}
+		public Builder setLocalCandidateRelayProtocol(String value) {
+			this.result.localCandidateRelayProtocol = value;
+			return this;
+		}
+		public Builder setRemoteAddress(String value) {
+			this.result.remoteAddress = value;
+			return this;
+		}
+		public Builder setRemotePort(Integer value) {
+			this.result.remotePort = value;
+			return this;
+		}
+		public Builder setRemoteProtocol(String value) {
+			this.result.remoteProtocol = value;
+			return this;
+		}
+		public Builder setRemoteCandidateType(String value) {
+			this.result.remoteCandidateType = value;
+			return this;
+		}
+		public Builder setRemoteCandidateICEServerUrl(String value) {
+			this.result.remoteCandidateICEServerUrl = value;
+			return this;
+		}
+		public Builder setRemoteCandidateRelayProtocol(String value) {
+			this.result.remoteCandidateRelayProtocol = value;
+			return this;
+		}
+		public Builder setCandidatePairState(String value) {
+			this.result.candidatePairState = value;
+			return this;
+		}
+		public Builder setCandidatePairPacketsSent(Integer value) {
+			this.result.candidatePairPacketsSent = value;
+			return this;
+		}
+		public Builder setCandidatePairPacketsReceived(Integer value) {
+			this.result.candidatePairPacketsReceived = value;
+			return this;
+		}
+		public Builder setCandidatePairBytesSent(Long value) {
+			this.result.candidatePairBytesSent = value;
+			return this;
+		}
+		public Builder setCandidatePairBytesReceived(Long value) {
+			this.result.candidatePairBytesReceived = value;
+			return this;
+		}
+		public Builder setCandidatePairLastPacketSentTimestamp(Long value) {
+			this.result.candidatePairLastPacketSentTimestamp = value;
+			return this;
+		}
+		public Builder setCandidatePairLastPacketReceivedTimestamp(Long value) {
+			this.result.candidatePairLastPacketReceivedTimestamp = value;
+			return this;
+		}
+		public Builder setCandidatePairFirstRequestTimestamp(Long value) {
+			this.result.candidatePairFirstRequestTimestamp = value;
+			return this;
+		}
+		public Builder setCandidatePairLastRequestTimestamp(Long value) {
+			this.result.candidatePairLastRequestTimestamp = value;
+			return this;
+		}
+		public Builder setCandidatePairLastResponseTimestamp(Long value) {
+			this.result.candidatePairLastResponseTimestamp = value;
+			return this;
+		}
+		public Builder setCandidatePairTotalRoundTripTime(Double value) {
+			this.result.candidatePairTotalRoundTripTime = value;
+			return this;
+		}
+		public Builder setCandidatePairCurrentRoundTripTime(Double value) {
+			this.result.candidatePairCurrentRoundTripTime = value;
+			return this;
+		}
+		public Builder setCandidatePairAvailableOutgoingBitrate(Double value) {
+			this.result.candidatePairAvailableOutgoingBitrate = value;
+			return this;
+		}
+		public Builder setCandidatePairAvailableIncomingBitrate(Double value) {
+			this.result.candidatePairAvailableIncomingBitrate = value;
+			return this;
+		}
+		public Builder setCandidatePairCircuitBreakerTriggerCount(Integer value) {
+			this.result.candidatePairCircuitBreakerTriggerCount = value;
+			return this;
+		}
+		public Builder setCandidatePairRequestsReceived(Integer value) {
+			this.result.candidatePairRequestsReceived = value;
+			return this;
+		}
+		public Builder setCandidatePairRequestsSent(Integer value) {
+			this.result.candidatePairRequestsSent = value;
+			return this;
+		}
+		public Builder setCandidatePairResponsesReceived(Integer value) {
+			this.result.candidatePairResponsesReceived = value;
+			return this;
+		}
+		public Builder setCandidatePairResponsesSent(Integer value) {
+			this.result.candidatePairResponsesSent = value;
+			return this;
+		}
+		public Builder setCandidatePairRetransmissionReceived(Integer value) {
+			this.result.candidatePairRetransmissionReceived = value;
+			return this;
+		}
+		public Builder setCandidatePairRetransmissionSent(Integer value) {
+			this.result.candidatePairRetransmissionSent = value;
+			return this;
+		}
+		public Builder setCandidatePairConsentRequestsSent(Integer value) {
+			this.result.candidatePairConsentRequestsSent = value;
+			return this;
+		}
+		public Builder setCandidatePairConsentExpiredTimestamp(Long value) {
+			this.result.candidatePairConsentExpiredTimestamp = value;
+			return this;
+		}
+		public Builder setCandidatePairBytesDiscardedOnSend(Long value) {
+			this.result.candidatePairBytesDiscardedOnSend = value;
+			return this;
+		}
+		public Builder setCandidatePairPacketsDiscardedOnSend(Integer value) {
+			this.result.candidatePairPacketsDiscardedOnSend = value;
+			return this;
+		}
+		public Builder setCandidatePairRequestBytesSent(Long value) {
+			this.result.candidatePairRequestBytesSent = value;
+			return this;
+		}
+		public Builder setCandidatePairConsentRequestBytesSent(Long value) {
+			this.result.candidatePairConsentRequestBytesSent = value;
+			return this;
+		}
+		public Builder setCandidatePairResponseBytesSent(Long value) {
+			this.result.candidatePairResponseBytesSent = value;
+			return this;
+		}
+		public Builder setSctpSmoothedRoundTripTime(Double value) {
+			this.result.sctpSmoothedRoundTripTime = value;
+			return this;
+		}
+		public Builder setSctpCongestionWindow(Double value) {
+			this.result.sctpCongestionWindow = value;
+			return this;
+		}
+		public Builder setSctpReceiverWindow(Double value) {
+			this.result.sctpReceiverWindow = value;
+			return this;
+		}
+		public Builder setSctpMtu(Integer value) {
+			this.result.sctpMtu = value;
+			return this;
+		}
+		public Builder setSctpUnackData(Integer value) {
+			this.result.sctpUnackData = value;
+			return this;
+		}
 		public ClientTransportReport build() {
 			return this.result;
 		}
