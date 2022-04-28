@@ -127,7 +127,7 @@ public class SamplesWebsocketController {
 				return;
 			}
 			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
-			logger.info("Session {} is opened", session.getId());
+			logger.info("Session {} is opened, providedSchemaVersion: {}, providedFormat: {}", session.getId(), providedSchemaVersion, providedFormat);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}

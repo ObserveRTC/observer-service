@@ -264,13 +264,13 @@ sinks:
         sendOutboundVideoTracks: true
         sendClientTransports: true
         sendClientDataChannels: true
-        sendMediaTracks: true
         sendSfuEvents: true
         sendSfuMeta: true
         sendSfuTransports: true
         sendSfuSctpStreams: true
         sendSfuOutboundRtpStreams: true
         sendSfuInboundRtpStreams: true
+        sendSfuExtensions: true
     
 ```
 
@@ -310,8 +310,18 @@ sinks:
   MyMongoSink:
     type: MongoSink
     config:
-      # the URI used to connect to mongo
+      # the URI used to connect to mongo. either this or the connection must be provided
       uri: "mongodb://root:password@localhost:27017"
+      # a config object describes the uri. either this or the uri must be given
+      connection:
+        # the username for mongodb
+        username: "admin"
+        # the password for mongodb
+        password: "password"
+          # list of mongodb servers
+          servers:
+            - "localhost:27017"
+      
       # the name of the database the Reports are written to
       database: "reports"
       # the strategy to save the reports

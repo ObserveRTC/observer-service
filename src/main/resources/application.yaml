@@ -78,6 +78,12 @@ observer:
 
 # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
 #  sinks: {}
+  sinks:
+    MyMongo:
+      type: MongoSink
+      config:
+        database: "database"
+
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

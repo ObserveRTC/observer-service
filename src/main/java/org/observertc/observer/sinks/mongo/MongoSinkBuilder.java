@@ -1,11 +1,14 @@
 package org.observertc.observer.sinks.mongo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import io.micronaut.context.annotation.Prototype;
 import org.bson.Document;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
+import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.reports.ReportTypeVisitor;
@@ -58,14 +61,20 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
     public Sink build() {
         Config config = this.convertAndValidate(Config.class);
-        MongoClient mongoClient;
-        try {
-            mongoClient = MongoClients.create(config.uri);
-        } catch (Throwable t) {
-            logger.error("cannot make mongo client", t);
-            return null;
+        if (config.uri == null && config.connection == null) {
+            throw new InvalidConfigurationException("uri or connection config must be given");
+        } else if (config.uri != null && config.connection != null) {
+            throw new InvalidConfigurationException("either the uri or the connection config must be given, not both");
         }
-        var clientProvider = this.makeClientProvider(config.uri);
+        ConnectionString connectionString;
+        if (config.uri != null) {
+            connectionString = new ConnectionString(config.uri);
+        } else {
+            var builder = new ConnectionStringBuilder();
+            builder.withConfiguration(config.connection);
+            connectionString = builder.build();
+        }
+        var clientProvider = this.makeClientProvider(connectionString);
         var documentMapper = this.makeReportMapper();
         var documentSorter = this.makeSorter(config.savingStrategy);
         MongoSink result;
@@ -84,13 +93,13 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         return result;
     }
 
-    private Supplier<MongoClient> makeClientProvider(String uri) {
+    private Supplier<MongoClient> makeClientProvider(ConnectionString connectionString) {
         AtomicReference<MongoClient> clientHolder = new AtomicReference<>();
         return () -> {
             var client = clientHolder.get();
             if (client == null) {
                 try {
-                    client = MongoClients.create(uri);
+                    client = MongoClients.create(connectionString);
                 } catch (Throwable t) {
                     logger.error("cannot make mongo client", t);
                     return null;
@@ -116,6 +125,32 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
             }
         }
         throw new RuntimeException("Strategy has not been recognized");
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Config {
+
+        public enum SavingStrategy {
+            REPORT_TYPE_BASED,
+            SERVICE_ID_BASED,
+            ONE_COLLECTION,
+        }
+
+        public String uri;
+
+        public Map<String, Object> connection;
+
+        @NotNull
+        public String database;
+
+        public SavingStrategy savingStrategy = SavingStrategy.ONE_COLLECTION;
+
+        public Map<ReportType, String> collectionNames = null;
+
+        public boolean printSummary = false;
+
+
+
     }
 
     private Function<Report, Document> makeReportMapper() {
@@ -788,25 +823,4 @@ public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
         };
     }
 
-    public static class Config {
-
-        public enum SavingStrategy {
-            REPORT_TYPE_BASED,
-            SERVICE_ID_BASED,
-            ONE_COLLECTION,
-        }
-
-        @NotNull
-        public String uri;
-
-        @NotNull
-        public String database;
-
-        public SavingStrategy savingStrategy = SavingStrategy.ONE_COLLECTION;
-
-        public Map<ReportType, String> collectionNames = null;
-
-        public boolean printSummary = false;
-
-    }
 }
