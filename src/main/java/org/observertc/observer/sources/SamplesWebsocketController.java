@@ -39,8 +39,10 @@ import org.slf4j.event.Level;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Service should be UUId, because currently mysql stores it as
@@ -168,6 +170,11 @@ public class SamplesWebsocketController {
 //		logger.info("\n\n\n {}", Base64.encode(messageBytes));
 		try {
 			input.acceptor.accept(messageBytes);
+			Long now = Instant.now().toEpochMilli();
+			if (input.last.get() < now - 60000) {
+				session.send("message");
+				input.last.set(now);
+			}
 		} catch (Exception ex) {
 			logger.warn("Exception happened while accepting message");
 			if (input.session != null && input.session.isOpen()) {
@@ -176,12 +183,12 @@ public class SamplesWebsocketController {
 			}
 			this.inputs.remove(session.getId());
 		}
-
 	}
 
 	private class Input {
 		final Acceptor acceptor;
 		final WebSocketSession session;
+		final AtomicLong last = new AtomicLong(Instant.now().toEpochMilli());
 
 		private Input(Acceptor acceptor, WebSocketSession session) {
 			this.acceptor = acceptor;

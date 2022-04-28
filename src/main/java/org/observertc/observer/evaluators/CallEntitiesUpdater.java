@@ -202,7 +202,12 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             var callIdsToRemove = observedClientSamples.stream()
                     .filter(observedClientSample -> observedClientSample.getClientSample().callId != null)
                     .filter(observedClientSample -> roomsToCallIds.containsKey(observedClientSample.getServiceRoomId()))
-                    .filter(observedClientSample -> roomsToCallIds.get(observedClientSample.getServiceRoomId()) != observedClientSample.getClientSample().callId)
+                    .filter(observedClientSample -> {
+                        var existingCallId = roomsToCallIds.get(observedClientSample.getServiceRoomId());
+                        var samplesCallId = observedClientSample.getClientSample().callId;
+                        var match = existingCallId.equals(samplesCallId);
+                        return match == false;
+                    })
                     .map(observedClientSample -> {
                         serviceRoomIdsToRemove.add(observedClientSample.getServiceRoomId());
                         return roomsToCallIds.get(observedClientSample.getServiceRoomId());
