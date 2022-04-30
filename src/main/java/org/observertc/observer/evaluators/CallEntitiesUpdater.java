@@ -113,7 +113,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         .assemble();
             });
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(track -> {
-                if (foundMediaTrackIds.contains(track.trackId)) return;
+                if (foundMediaTrackIds.contains(track.trackId) || track.trackId == null) return;
                 this.mediaTracksDepot
                         .setObservedClientSample(observedClientSample)
                         .setTrackId(track.trackId)
@@ -127,7 +127,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(track -> {
-                if (foundMediaTrackIds.contains(track.trackId)) return;
+                if (foundMediaTrackIds.contains(track.trackId) || track.trackId == null) return;
                 this.mediaTracksDepot
                         .setObservedClientSample(observedClientSample)
                         .setTrackId(track.trackId)
@@ -141,7 +141,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamOutboundAudioTracks(clientSample).forEach(track -> {
-                if (foundMediaTrackIds.contains(track.trackId)) return;
+                if (foundMediaTrackIds.contains(track.trackId) || track.trackId == null) return;
                 this.mediaTracksDepot
                         .setObservedClientSample(observedClientSample)
                         .setTrackId(track.trackId)
@@ -155,7 +155,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamOutboundVideoTracks(clientSample).forEach(track -> {
-                if (foundMediaTrackIds.contains(track.trackId)) return;
+                if (foundMediaTrackIds.contains(track.trackId) || track.trackId == null) return;
                 this.mediaTracksDepot
                         .setObservedClientSample(observedClientSample)
                         .setTrackId(track.trackId)
