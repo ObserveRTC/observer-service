@@ -3,7 +3,7 @@ WebRTC-Observer
 ![Build](https://github.com/ObserveRTC/observer/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/ObserveRTC/observer/actions/workflows/test.yml/badge.svg)
 
-Observer is a stand-alone application. You can run it in a docker container with a command `docker run observertc/observer`. 
+Observer is a server-side service for monitoring WebRTC applications. You can run it in a docker container with a command `docker run observertc/observer`. 
 The service by default is listening on the port `7080`.
 
 To see ObserveRTC integrations and examples, check out the [full stack examples repository](https://github.com/ObserveRTC/full-stack-examples).
