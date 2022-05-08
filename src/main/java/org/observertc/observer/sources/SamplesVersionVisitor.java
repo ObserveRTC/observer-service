@@ -120,6 +120,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             case "latest":
             case Samples.VERSION:
                 return visitLatest(obj);
+            case  "2.0.0-beta.65":
             case  "2.0.0-beta.64":
             case  "2.0.0-beta.63":
             case  "2.0.0-beta.62":

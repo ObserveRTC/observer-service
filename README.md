@@ -361,9 +361,9 @@ TBD
 
 Observer versions and compatible [schema](https://github.com/ObserveRTC/schemas) versions
 
-| schemas → <br/>observer ↓ | 2.0.0              |   |   |   |
+| schemas → <br/>observer ↓ | 2.0.y              |   |   |   |
 |---------------------------|--------------------|---|---|---|
-| 1.0.0                     | :white_check_mark: |   |   |   |
+| 1.0.x                     | :white_check_mark: |   |   |   |
 
 
 

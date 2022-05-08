@@ -201,7 +201,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             var serviceRoomIdsToRemove = new HashSet<ServiceRoomId>();
             var callIdsToRemove = observedClientSamples.stream()
                     .filter(observedClientSample -> observedClientSample.getClientSample().callId != null)
-                    .filter(observedClientSample -> roomsToCallIds.containsKey(observedClientSample.getServiceRoomId()))
+                    .filter(observedClientSample -> roomsToCallIds.get(observedClientSample.getServiceRoomId()) != null)
                     .filter(observedClientSample -> {
                         var existingCallId = roomsToCallIds.get(observedClientSample.getServiceRoomId());
                         var samplesCallId = observedClientSample.getClientSample().callId;
@@ -212,6 +212,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         serviceRoomIdsToRemove.add(observedClientSample.getServiceRoomId());
                         return roomsToCallIds.get(observedClientSample.getServiceRoomId());
                     })
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toSet());
             if (0 < callIdsToRemove.size()) {
                 if (!this.removeCallsTasks.get().whereCallIds(callIdsToRemove).execute().succeeded()) {
