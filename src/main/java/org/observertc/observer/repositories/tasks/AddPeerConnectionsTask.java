@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -96,7 +97,9 @@ public class AddPeerConnectionsTask extends ChainedTask<List<CallEventReport.Bui
             this.getLogger().info("peerConnectionDTOs was not given to be removed");
             return this;
         }
-        this.peerConnectionDTOs.putAll(peerConnectionDTOs);
+        peerConnectionDTOs.values().stream().filter(Utils::nonNull).forEach(peerConnectionDTO -> {
+            this.peerConnectionDTOs.put(peerConnectionDTO.peerConnectionId, peerConnectionDTO);
+        });
         return this;
     }
 

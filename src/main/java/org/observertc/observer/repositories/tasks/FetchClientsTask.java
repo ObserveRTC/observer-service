@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -110,7 +111,7 @@ public class FetchClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }
-        this.clientIds.addAll(Arrays.asList(values));
+        Arrays.asList(values).stream().filter(Utils::nonNull).forEach(this.clientIds::add);
         return this;
     }
 
@@ -118,7 +119,7 @@ public class FetchClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
         if (Objects.isNull(values) || values.size() < 1) {
             return this;
         }
-        this.clientIds.addAll(values);
+        values.stream().filter(Utils::nonNull).forEach(this.clientIds::add);
         return this;
     }
 

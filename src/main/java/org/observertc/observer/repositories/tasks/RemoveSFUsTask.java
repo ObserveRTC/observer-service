@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -75,11 +76,11 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
                 .build();
     }
 
-    public RemoveSFUsTask whereSfuIds(Set<UUID> callIds) {
-        if (Objects.isNull(callIds) || callIds.size() < 1) {
+    public RemoveSFUsTask whereSfuIds(Set<UUID> sfuIds) {
+        if (Objects.isNull(sfuIds) || sfuIds.size() < 1) {
             return this;
         }
-        this.sfuIds.addAll(callIds);
+        sfuIds.stream().filter(Utils::nonNull).forEach(this.sfuIds::add);
         return this;
     }
 

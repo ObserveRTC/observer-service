@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -98,7 +99,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
         if (Objects.isNull(podIds) || podIds.size() < 1) {
             return this;
         }
-        this.padIds.addAll(podIds);
+        podIds.stream().filter(Utils::nonNull).forEach(this.padIds::add);
         return this;
     }
 

@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -86,7 +87,7 @@ public class AddClientsTask extends ChainedTask<Void> {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
-        Arrays.stream(clientDTOs).forEach(clientDTO -> {
+        Arrays.stream(clientDTOs).filter(Utils::nonNull).forEach(clientDTO -> {
             this.clientDTOs.put(clientDTO.clientId, clientDTO);
         });
         return this;
@@ -97,7 +98,9 @@ public class AddClientsTask extends ChainedTask<Void> {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
-        this.clientDTOs.putAll(clientDTOs);
+        clientDTOs.values().stream().filter(Utils::nonNull).forEach(clientDTO -> {
+            this.clientDTOs.put(clientDTO.clientId, clientDTO);
+        });
         return this;
     }
 }

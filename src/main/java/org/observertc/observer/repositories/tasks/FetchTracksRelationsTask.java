@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -227,7 +228,8 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
     }
 
     public FetchTracksRelationsTask whereInboundMediaTrackIds(Set<UUID> mediaTrackIds) {
-        this.inboundTrackIds.addAll(mediaTrackIds);
+        if (mediaTrackIds == null) return this;
+        mediaTrackIds.stream().filter(Utils::nonNull).forEach(this.inboundTrackIds::add);
         return this;
     }
 

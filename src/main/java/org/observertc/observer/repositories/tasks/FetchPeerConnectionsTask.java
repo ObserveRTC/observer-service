@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.functions.Function;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.entities.PeerConnectionEntity;
@@ -125,7 +126,7 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }
-        this.peerConnectionIds.addAll(Arrays.asList(values));
+        Arrays.asList(values).stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
         return this;
     }
 
@@ -133,7 +134,7 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
         if (Objects.isNull(peerConnectionIds) || peerConnectionIds.size() < 1) {
             return this;
         }
-        this.peerConnectionIds.addAll(peerConnectionIds);
+        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
         return this;
     }
 

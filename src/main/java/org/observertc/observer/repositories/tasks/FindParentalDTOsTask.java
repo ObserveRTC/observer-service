@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.dto.MediaTrackDTO;
@@ -85,25 +86,25 @@ public class FindParentalDTOsTask extends ChainedTask<FindParentalDTOsTask.Repor
 
     public FindParentalDTOsTask whereCallIds(Set<UUID> callIds) {
         Objects.requireNonNull(callIds);
-        this.callIds.addAll(callIds);
+        callIds.stream().filter(Utils::nonNull).forEach(this.callIds::add);
         return this;
     }
 
     public FindParentalDTOsTask whereClientIds(Set<UUID> clientIds) {
         Objects.requireNonNull(clientIds);
-        this.clientIds.addAll(clientIds);
+        clientIds.stream().filter(Utils::nonNull).forEach(this.clientIds::add);
         return this;
     }
 
     public FindParentalDTOsTask wherePeerConnectionIds(Set<UUID> peerConnectionIds) {
         Objects.requireNonNull(peerConnectionIds);
-        this.peerConnectionIds.addAll(peerConnectionIds);
+        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
         return this;
     }
 
     public FindParentalDTOsTask whereTrackIds(Set<UUID> trackIds) {
         Objects.requireNonNull(trackIds);
-        this.trackIds.addAll(trackIds);
+        trackIds.stream().filter(Utils::nonNull).forEach(this.trackIds::add);
         return this;
     }
 

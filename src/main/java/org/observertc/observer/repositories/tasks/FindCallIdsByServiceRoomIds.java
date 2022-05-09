@@ -54,15 +54,16 @@ public class FindCallIdsByServiceRoomIds extends ChainedTask<Map<ServiceRoomId, 
     }
 
     public FindCallIdsByServiceRoomIds whereServiceRoomId(String serviceId, String roomId) {
-        Objects.requireNonNull(serviceId);
-        Objects.requireNonNull(roomId);
+        if (serviceId == null || roomId == null) {
+            return this;
+        }
         var serviceRoomId = ServiceRoomId.make(serviceId, roomId);
         return this.whereServiceRoomId(serviceRoomId);
     }
 
     public FindCallIdsByServiceRoomIds whereServiceRoomId(ServiceRoomId serviceRoomId) {
         Objects.requireNonNull(serviceRoomId);
-        if (Objects.isNull(serviceRoomId)) {
+        if (Objects.isNull(serviceRoomId) || serviceRoomId.serviceId == null || serviceRoomId.roomId == null) {
             return this;
         }
         this.serviceRoomIds.add(serviceRoomId);
@@ -73,7 +74,9 @@ public class FindCallIdsByServiceRoomIds extends ChainedTask<Map<ServiceRoomId, 
         if (Objects.isNull(serviceRoomIds)) {
             return this;
         }
-        this.serviceRoomIds.addAll(serviceRoomIds);
+        serviceRoomIds.stream().filter(serviceRoomId -> {
+            return serviceRoomId != null && serviceRoomId.roomId != null && serviceRoomId.serviceId != null;
+        }).forEach(this.serviceRoomIds::add);
         return this;
     }
 

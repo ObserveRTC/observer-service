@@ -97,7 +97,7 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
         if (Objects.isNull(clientIds)) {
             return this;
         }
-        this.clientIds.addAll(clientIds);
+        clientIds.stream().filter(Utils::nonNull).forEach(this.clientIds::add);
         return this;
     }
 
@@ -106,7 +106,7 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
         if (Objects.isNull(peerConnectionIds)) {
             return this;
         }
-        this.peerConnectionIds.addAll(peerConnectionIds);
+        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
         return this;
     }
 
@@ -115,7 +115,7 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
         if (Objects.isNull(mediaTrackIds)) {
             return this;
         }
-        this.mediaTrackIds.addAll(mediaTrackIds);
+        mediaTrackIds.stream().filter(Utils::nonNull).forEach(this.mediaTrackIds::add);
         return this;
     }
 

@@ -4,6 +4,7 @@ import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -139,7 +140,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
         if (Objects.isNull(clientIds) || clientIds.size() < 1) {
             return this;
         }
-        this.clientIds.addAll(clientIds);
+        clientIds.stream().filter(Utils::nonNull).forEach(this.clientIds::add);
         return this;
     }
 

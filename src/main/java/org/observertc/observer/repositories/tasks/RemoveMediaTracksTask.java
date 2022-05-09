@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -117,7 +118,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
         if (Objects.isNull(mediaTrackIds) || mediaTrackIds.size() < 1) {
             return this;
         }
-        this.mediaTrackIds.addAll(mediaTrackIds);
+        mediaTrackIds.stream().filter(Utils::nonNull).forEach(this.mediaTrackIds::add);
         return this;
     }
 

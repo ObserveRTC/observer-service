@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +35,7 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }
-        this.callIds.addAll(Arrays.asList(values));
+        Arrays.asList(values).stream().filter(Utils::nonNull).forEach(this.callIds::add);
         return this;
     }
 
@@ -42,7 +43,7 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
         if (Objects.isNull(callIds) || callIds.size() < 1) {
             return this;
         }
-        this.callIds.addAll(callIds);
+        callIds.stream().filter(Utils::nonNull).forEach(this.callIds::add);
         return this;
     }
 

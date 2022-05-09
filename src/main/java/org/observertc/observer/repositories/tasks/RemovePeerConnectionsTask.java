@@ -4,6 +4,7 @@ import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -110,7 +111,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
         if (Objects.isNull(peerConnectionIds) || peerConnectionIds.size() < 1) {
             return this;
         }
-        this.peerConnectionIds.addAll(peerConnectionIds);
+        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
         return this;
     }
 

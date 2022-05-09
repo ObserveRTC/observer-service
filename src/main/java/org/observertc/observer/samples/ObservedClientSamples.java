@@ -1,5 +1,7 @@
 package org.observertc.observer.samples;
 
+import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.common.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,106 +36,70 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
         private Set<ServiceRoomId> serviceRoomIds = new HashSet<>();
         private List<ObservedClientSample> clientSamples = new LinkedList<>();
 
-        public Builder addObservedClientSample(ObservedClientSample value) {
-            var clientSample = value.getClientSample();
-            ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
-                    .map(transport -> transport.peerConnectionId)
-                    .forEach(peerConnectionIds::add);
-            ClientSampleVisitor.streamInboundAudioTracks(clientSample)
-                    .map(track -> track.trackId)
-                    .forEach(mediaTrackIds::add);
-            ClientSampleVisitor.streamInboundVideoTracks(clientSample)
-                    .map(track -> track.trackId)
-                    .forEach(mediaTrackIds::add);
-            ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
-                    .map(track -> track.trackId)
-                    .forEach(mediaTrackIds::add);
-            ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
-                    .map(track -> track.trackId)
-                    .forEach(mediaTrackIds::add);
-            if (Objects.nonNull(clientSample.clientId)) {
-                this.clientIds.add(clientSample.clientId);
-            }
-            this.serviceRoomIds.add(value.getServiceRoomId());
-            this.clientSamples.add(value);
-            return this;
-        }
-
-        // compile this below if you want to validate all the inputs
 //        public Builder addObservedClientSample(ObservedClientSample value) {
 //            var clientSample = value.getClientSample();
-//            var nullPeerConnectionIds = new HashSet<UUID>();
-//            var nullInboundAudioTrackIds = new HashSet<UUID>();
-//            var nullInboundVideoTrackIds = new HashSet<UUID>();
-//            var nullOutboundAudioTrackIds = new HashSet<UUID>();
-//            var nullOutboundVideoTrackIds = new HashSet<UUID>();
-//            var peerConnectionIdFilter = Utils.makeTrash(Objects::nonNull, nullPeerConnectionIds);
-//            var inboundAudioTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullInboundAudioTrackIds);
-//            var inboundVideoTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullInboundVideoTrackIds);
-//            var outboundAudioTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullOutboundAudioTrackIds);
-//            var outboundVideoTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullOutboundVideoTrackIds);
 //            ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
-//                .map(transport -> transport.peerConnectionId)
-//                .filter(peerConnectionIdFilter)
-//                .forEach(peerConnectionIds::add);
+//                    .map(transport -> transport.peerConnectionId)
+//                    .forEach(peerConnectionIds::add);
 //            ClientSampleVisitor.streamInboundAudioTracks(clientSample)
 //                    .map(track -> track.trackId)
-//                    .filter(inboundAudioTrackIdFilter)
 //                    .forEach(mediaTrackIds::add);
 //            ClientSampleVisitor.streamInboundVideoTracks(clientSample)
 //                    .map(track -> track.trackId)
-//                    .filter(inboundVideoTrackIdFilter)
 //                    .forEach(mediaTrackIds::add);
 //            ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
 //                    .map(track -> track.trackId)
-//                    .filter(outboundAudioTrackIdFilter)
 //                    .forEach(mediaTrackIds::add);
 //            ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
 //                    .map(track -> track.trackId)
-//                    .filter(outboundVideoTrackIdFilter)
 //                    .forEach(mediaTrackIds::add);
 //            if (Objects.nonNull(clientSample.clientId)) {
 //                this.clientIds.add(clientSample.clientId);
-//            }
-//            if (0 < nullPeerConnectionIds.size()) {
-//                logger.warn("In service {} at room {}, client: {}, userId: {} reported a sample with null peer connectionIds",
-//                        value.getServiceId(),
-//                        clientSample.roomId,
-//                        clientSample.clientId,
-//                        clientSample.userId);
-//            }
-//            if (0 < nullInboundAudioTrackIds.size()) {
-//                logger.warn("In service {} at room {}, client: {}, userId: {} reported a sample with null inbound audio track ids",
-//                        value.getServiceId(),
-//                        clientSample.roomId,
-//                        clientSample.clientId,
-//                        clientSample.userId);
-//            }
-//            if (0 < nullInboundVideoTrackIds.size()) {
-//                logger.warn("In service {} at room {}, client: {}, userId: {} reported a sample with null inbound video track ids",
-//                        value.getServiceId(),
-//                        clientSample.roomId,
-//                        clientSample.clientId,
-//                        clientSample.userId);
-//            }
-//            if (0 < nullOutboundAudioTrackIds.size()) {
-//                logger.warn("In service {} at room {}, client: {}, userId: {} reported a sample with null outbound audio track ids",
-//                        value.getServiceId(),
-//                        clientSample.roomId,
-//                        clientSample.clientId,
-//                        clientSample.userId);
-//            }
-//            if (0 < nullOutboundVideoTrackIds.size()) {
-//                logger.warn("In service {} at room {}, client: {}, userId: {} reported a sample with null outbound video track ids",
-//                        value.getServiceId(),
-//                        clientSample.roomId,
-//                        clientSample.clientId,
-//                        clientSample.userId);
 //            }
 //            this.serviceRoomIds.add(value.getServiceRoomId());
 //            this.clientSamples.add(value);
 //            return this;
 //        }
+
+//         compile this below if you want to validate all the inputs
+        public Builder addObservedClientSample(ObservedClientSample value) {
+            var clientSample = value.getClientSample();
+            var nullIds = new HashSet<UUID>();
+            var peerConnectionIdFilter = Utils.makeTrash(Objects::nonNull, nullIds);
+            var inboundAudioTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullIds);
+            var inboundVideoTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullIds);
+            var outboundAudioTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullIds);
+            var outboundVideoTrackIdFilter = Utils.makeTrash(Objects::nonNull, nullIds);
+            ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
+                .map(transport -> transport.peerConnectionId)
+                .filter(peerConnectionIdFilter)
+                .forEach(peerConnectionIds::add);
+            ClientSampleVisitor.streamInboundAudioTracks(clientSample)
+                    .map(track -> track.trackId)
+                    .filter(inboundAudioTrackIdFilter)
+                    .forEach(mediaTrackIds::add);
+            ClientSampleVisitor.streamInboundVideoTracks(clientSample)
+                    .map(track -> track.trackId)
+                    .filter(inboundVideoTrackIdFilter)
+                    .forEach(mediaTrackIds::add);
+            ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
+                    .map(track -> track.trackId)
+                    .filter(outboundAudioTrackIdFilter)
+                    .forEach(mediaTrackIds::add);
+            ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
+                    .map(track -> track.trackId)
+                    .filter(outboundVideoTrackIdFilter)
+                    .forEach(mediaTrackIds::add);
+            if (Objects.nonNull(clientSample.clientId)) {
+                this.clientIds.add(clientSample.clientId);
+            }
+            if (0 < nullIds.size()) {
+                logger.warn("Null Identifier is detected {}", JsonUtils.objectToString(clientSample));
+            }
+            this.serviceRoomIds.add(value.getServiceRoomId());
+            this.clientSamples.add(value);
+            return this;
+        }
 
         public ObservedClientSamples build() {
             return new ObservedClientSamples() {

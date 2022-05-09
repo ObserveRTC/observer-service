@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -73,7 +74,7 @@ public class AddSFUsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu uuid was not given to be added");
             return this;
         }
-        Arrays.stream(sfuDTOs).forEach(sfuDTO -> {
+        Arrays.stream(sfuDTOs).filter(Utils::nonNull).forEach(sfuDTO -> {
             this.sfuDTOs.put(sfuDTO.sfuId, sfuDTO);
         });
         return this;
@@ -84,7 +85,9 @@ public class AddSFUsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu uuid was not given to be added");
             return this;
         }
-        this.sfuDTOs.putAll(sfuDTOs);
+        sfuDTOs.values().stream().filter(Utils::nonNull).forEach(sfuDTO -> {
+            this.sfuDTOs.put(sfuDTO.sfuId, sfuDTO);
+        });
         return this;
     }
 }

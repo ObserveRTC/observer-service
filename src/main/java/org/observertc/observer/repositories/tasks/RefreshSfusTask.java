@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuTransportDTO;
@@ -79,7 +80,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
             return this;
         }
         var sfuIdsArray = Arrays.asList(sfuIds);
-        this.sfuIds.addAll(sfuIdsArray);
+        sfuIdsArray.stream().filter(Utils::nonNull).forEach(this.sfuIds::add);
         return this;
     }
 
@@ -87,7 +88,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         if (Objects.isNull(sfuIds)) {
             return this;
         }
-        this.sfuIds.addAll(sfuIds);
+        sfuIds.stream().filter(Utils::nonNull).forEach(this.sfuIds::add);
         return this;
     }
 
@@ -96,7 +97,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
             return this;
         }
         var sfuTransportIdsArray = Arrays.asList(sfuTransportIds);
-        this.transportIds.addAll(sfuTransportIdsArray);
+        sfuTransportIdsArray.stream().filter(Utils::nonNull).forEach(this.transportIds::add);
         return this;
     }
 
@@ -104,7 +105,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         if (Objects.isNull(sfuTransportIds)) {
             return this;
         }
-        this.transportIds.addAll(sfuTransportIds);
+        sfuTransportIds.stream().filter(Utils::nonNull).forEach(this.transportIds::add);
         return this;
     }
 
@@ -113,15 +114,15 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
             return this;
         }
         var rtpStreamIdsList = Arrays.asList(rtpStreamIds);
-        this.rtpPadIds.addAll(rtpStreamIdsList);
+        rtpStreamIdsList.stream().filter(Utils::nonNull).forEach(this.rtpPadIds::add);
         return this;
     }
 
-    public RefreshSfusTask withSfuRtpPadIds(Set<UUID> rtpPodIds) {
-        if (Objects.isNull(rtpPodIds)) {
+    public RefreshSfusTask withSfuRtpPadIds(Set<UUID> rtpPadIds) {
+        if (Objects.isNull(rtpPadIds)) {
             return this;
         }
-        this.rtpPadIds.addAll(rtpPodIds);
+        rtpPadIds.stream().filter(Utils::nonNull).forEach(this.rtpPadIds::add);
         return this;
     }
 

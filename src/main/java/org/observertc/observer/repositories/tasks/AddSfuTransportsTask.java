@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
@@ -76,7 +77,9 @@ public class AddSfuTransportsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu transport DTO was not given to be added");
             return this;
         }
-        this.sfuTransports.putAll(sfuTransportDTOs);
+        sfuTransportDTOs.values().stream().filter(Utils::nonNull).forEach(sfuTransportDTO -> {
+            this.sfuTransports.put(sfuTransportDTO.transportId, sfuTransportDTO);
+        });
         return this;
     }
 }

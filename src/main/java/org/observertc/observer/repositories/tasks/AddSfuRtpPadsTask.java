@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -69,7 +70,9 @@ public class AddSfuRtpPadsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu stream DTO was not given to be added");
             return this;
         }
-        this.sfuRtpPadDTOs.putAll(sfuRtpPadDTO);
+        sfuRtpPadDTO.values().stream().filter(Utils::nonNull).forEach(sfuRtpPadDTOs -> {
+            this.sfuRtpPadDTOs.put(sfuRtpPadDTOs.rtpPadId, sfuRtpPadDTOs);
+        });
         return this;
     }
 }

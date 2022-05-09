@@ -107,4 +107,17 @@ public class Utils {
             return input;
         };
     }
+
+    public static boolean nonNull(Object subject) {
+        // TODO: change it back before release
+//        return Objects.nonNull(subject);
+
+        // for development purpose
+        if (Objects.nonNull(subject)) {
+            return true;
+        }
+        var stackTrace = Thread.currentThread().getStackTrace();
+        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrace);
+        return false;
+    }
 }

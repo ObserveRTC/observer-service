@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.micrometer.ExposedMetrics;
@@ -97,7 +98,9 @@ public class AddMediaTracksTask extends ChainedTask<Void> {
             this.getLogger().info("mediaTrackDTOs was not given");
             return this;
         }
-        this.mediaTrackDTOs.putAll(mediaTrackDTOs);
+        mediaTrackDTOs.values().stream().filter(Utils::nonNull).forEach(mediaTrackDTO -> {
+            this.mediaTrackDTOs.put(mediaTrackDTO.trackId, mediaTrackDTO);
+        });
         return this;
     }
 }

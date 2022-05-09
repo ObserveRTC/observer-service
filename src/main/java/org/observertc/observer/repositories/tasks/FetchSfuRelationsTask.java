@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuSinkDTO;
 import org.observertc.observer.dto.SfuStreamDTO;
@@ -77,7 +78,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     }
 
     public FetchSfuRelationsTask whereSfuRtpPadIds(Set<UUID> sfuRtpPadIds) {
-        this.rtpPadIds.addAll(sfuRtpPadIds);
+        sfuRtpPadIds.stream().filter(Utils::nonNull).forEach(this.rtpPadIds::add);
         return this;
     }
 
