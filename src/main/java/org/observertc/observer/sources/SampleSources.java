@@ -20,7 +20,7 @@ public class SampleSources {
 
     @PostConstruct
     void init() {
-        logger.info("Initialized");
+        logger.info("Initialized, supported schema versions \n{}", String.join("\n", SamplesVersionVisitor.getSupportedVersions()));
     }
 
     @PreDestroy

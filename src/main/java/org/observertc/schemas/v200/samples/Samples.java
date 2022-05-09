@@ -10,7 +10,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0-beta.64";
+	public static final String VERSION="2.0.0";
 	public static Builder newBuilder() {
 		return new Builder();
 	}

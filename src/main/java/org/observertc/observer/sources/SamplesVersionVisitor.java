@@ -1,7 +1,7 @@
 package org.observertc.observer.sources;
 
-import org.observertc.schemas.samples.Samples;
-
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -9,6 +9,34 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, String, TOut> {
+
+    String LATEST_VERSION = "latest";
+    String VERSION_202 = "2.0.2";
+    String VERSION_201 = "2.0.1";
+    String VERSION_200 = org.observertc.schemas.v200.samples.Samples.VERSION;
+    String VERSION_200_BETA_65 = "2.0.0-beta.65";
+    String VERSION_200_BETA_64 = "2.0.0-beta.64";
+    String VERSION_200_BETA_63 = "2.0.0-beta.63";
+    String VERSION_200_BETA_62 = "2.0.0-beta.62";
+    String VERSION_200_BETA_61 = "2.0.0-beta.61";
+    String VERSION_200_BETA_60 = "2.0.0-beta.60";
+    String VERSION_200_BETA_59 = org.observertc.schemas.v200beta59.samples.Samples.VERSION;
+
+    static List<String> getSupportedVersions() {
+        return Arrays.asList(
+                LATEST_VERSION,
+                VERSION_202,
+                VERSION_201,
+                VERSION_200,
+                VERSION_200_BETA_65,
+                VERSION_200_BETA_64,
+                VERSION_200_BETA_63,
+                VERSION_200_BETA_62,
+                VERSION_200_BETA_61,
+                VERSION_200_BETA_60,
+                VERSION_200_BETA_59
+        );
+    }
 
     static <TIn, TOut> SamplesVersionVisitor<TIn, TOut> createFunctionalVisitor(
             Function<TIn, TOut> latestVisitor,
@@ -118,19 +146,19 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             return notRecognized(obj);
         }
         switch (version.toLowerCase(Locale.ROOT)) {
-            case "latest":
-            case Samples.VERSION:
-            case "2.0.1":
+            case LATEST_VERSION:
+            case VERSION_202:
+            case VERSION_201:
                 return visitLatest(obj);
-            case  "2.0.0":
-            case  "2.0.0-beta.65":
-            case  "2.0.0-beta.64":
-            case  "2.0.0-beta.63":
-            case  "2.0.0-beta.62":
-            case  "2.0.0-beta.61":
-            case  "2.0.0-beta.60":
+            case  VERSION_200:
+            case  VERSION_200_BETA_65:
+            case  VERSION_200_BETA_64:
+            case  VERSION_200_BETA_63:
+            case  VERSION_200_BETA_62:
+            case  VERSION_200_BETA_61:
+            case  VERSION_200_BETA_60:
                 return visitV200(obj);
-            case org.observertc.schemas.v200beta59.samples.Samples.VERSION:
+            case VERSION_200_BETA_59:
                 return visitV200beta59(obj);
             default:
                 return notRecognized(obj);
