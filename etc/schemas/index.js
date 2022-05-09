@@ -118,8 +118,8 @@ const main = () => {
         dstClassName: `Samples2`,
         srcName: `source`,
         dstName: `dest`,
-        srcSchema: JSON.parse(fs.readFileSync(`./SamplesAvro_2.0.0-beta.59.avsc`)),
-        dstSchema: JSON.parse(fs.readFileSync(`./SamplesAvro_2.0.0-beta.61.avsc`)),
+        srcSchema: JSON.parse(fs.readFileSync(`./archive/SamplesAvro_2.0.0-beta.59.avsc`)),
+        dstSchema: JSON.parse(fs.readFileSync(`./archive/SamplesAvro_2.0.0-beta.61.avsc`)),
         level: 0
     });
     const copyLines = copier.toLines().join("\n");
