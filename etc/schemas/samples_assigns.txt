@@ -586,6 +586,7 @@ sfuSctpChannel.noReport = ASSIGNED;
 sfuSctpChannel.transportId = ASSIGNED;
 sfuSctpChannel.streamId = ASSIGNED;
 sfuSctpChannel.channelId = ASSIGNED;
+sfuSctpChannel.internal = ASSIGNED;
 sfuSctpChannel.label = ASSIGNED;
 sfuSctpChannel.protocol = ASSIGNED;
 sfuSctpChannel.sctpSmoothedRoundTripTime = ASSIGNED;

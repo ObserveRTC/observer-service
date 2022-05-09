@@ -9,7 +9,7 @@ import java.util.UUID;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.0.0";
+	public static final String VERSION="2.0.1";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -5157,6 +5157,11 @@ public class Samples {
 			@JsonProperty("channelId")
 			public UUID channelId;
 			/**
+			* Flag to indicate that the SCTP channel is used as an internally between SFU instances
+			*/
+			@JsonProperty("internal")
+			public Boolean internal;
+			/**
 			* The label of the sctp stream
 			*/
 			@JsonProperty("label")
@@ -5231,6 +5236,10 @@ public class Samples {
 				}
 				public Builder setChannelId(UUID value) {
 					this.result.channelId = value;
+					return this;
+				}
+				public Builder setInternal(Boolean value) {
+					this.result.internal = value;
 					return this;
 				}
 				public Builder setLabel(String value) {

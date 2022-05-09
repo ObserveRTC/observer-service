@@ -70,6 +70,7 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
+                    .setInternal(sfuTransport.internal)
 
 
                     /* Report Fields */

@@ -12,7 +12,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     static <TIn, TOut> SamplesVersionVisitor<TIn, TOut> createFunctionalVisitor(
             Function<TIn, TOut> latestVisitor,
-            Function<TIn, TOut> v200beta64Visitor,
+            Function<TIn, TOut> v200Visitor,
             Function<TIn, TOut> v200beta59Visitor,
             Function<TIn, TOut> notRecognizedVisitor
     ) {
@@ -23,8 +23,8 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             }
 
             @Override
-            public TOut visitV200beta64(TIn tIn) {
-                return v200beta64Visitor.apply(tIn);
+            public TOut visitV200(TIn tIn) {
+                return v200Visitor.apply(tIn);
             }
 
             @Override
@@ -41,7 +41,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     static <TOut> SamplesVersionVisitor<Void, TOut> createSupplierVisitor(
             Supplier<TOut> latestVisitor,
-            Supplier<TOut> v200beta64Visitor,
+            Supplier<TOut> v200Visitor,
             Supplier<TOut> v200beta59Visitor,
             Supplier<TOut> notRecognizedVisitor
     ) {
@@ -52,8 +52,8 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             }
 
             @Override
-            public TOut visitV200beta64(Void tIn) {
-                return v200beta64Visitor.get();
+            public TOut visitV200(Void tIn) {
+                return v200Visitor.get();
             }
 
             @Override
@@ -70,7 +70,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     static <TIn> SamplesVersionVisitor<TIn, Void> visitByConsumers(
             Consumer<TIn> latestVisitor,
-            Consumer<TIn> v200beta64Visitor,
+            Consumer<TIn> v200Visitor,
             Consumer<TIn> v200beta59Visitor,
             Consumer<TIn> notRecognizedVisitor
     ) {
@@ -82,10 +82,11 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             }
 
             @Override
-            public Void visitV200beta64(TIn tIn) {
-                v200beta64Visitor.accept(tIn);
+            public Void visitV200(TIn tIn) {
+                v200Visitor.accept(tIn);
                 return null;
             }
+
 
             @Override
             public Void visitV200beta59(TIn tIn) {
@@ -120,13 +121,14 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             case "latest":
             case Samples.VERSION:
                 return visitLatest(obj);
+            case  "2.0.0":
             case  "2.0.0-beta.65":
             case  "2.0.0-beta.64":
             case  "2.0.0-beta.63":
             case  "2.0.0-beta.62":
             case  "2.0.0-beta.61":
             case  "2.0.0-beta.60":
-                return visitV200beta64(obj);
+                return visitV200(obj);
             case org.observertc.schemas.v200beta59.samples.Samples.VERSION:
                 return visitV200beta59(obj);
             default:
@@ -135,7 +137,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
     }
 
     TOut visitLatest(TObj obj);
-    TOut visitV200beta64(TObj obj);
+    TOut visitV200(TObj obj);
     TOut visitV200beta59(TObj obj);
     TOut notRecognized(TObj obj);
 

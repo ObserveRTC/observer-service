@@ -104,13 +104,14 @@ public class SamplesWebsocketController {
 			var requestParameters = session.getRequestParameters();
 			String providedSchemaVersion = requestParameters.get("schemaVersion");
 			String providedFormat = requestParameters.get("format");
+			var version = Utils.firstNotNull(providedSchemaVersion, Samples.VERSION);
 			try {
 				var format = TransportFormatType.getValueOrDefault(providedFormat, TransportFormatType.JSON);
 				var acceptor = Acceptor.create(
 						logger,
 						mediaUnitId,
 						serviceId,
-						Utils.firstNotNull(providedSchemaVersion, Samples.VERSION),
+						version,
 						format,
 						samplesCollector::accept
 				).onError(ex -> {
@@ -120,7 +121,7 @@ public class SamplesWebsocketController {
 						this.inputs.remove(session.getId());
 					}
 				});
-				var input = new Input(acceptor, session);
+				var input = new Input(acceptor, session, version);
 				this.inputs.put(session.getId(), input);
 			} catch (Exception ex) {
 				var closeReason = this.customCloseReasons.getInvalidInput(ex.getMessage());
@@ -167,7 +168,7 @@ public class SamplesWebsocketController {
 			session.close(closeReason);
 			return;
 		}
-//		logger.info("\n\n\n {}", Base64.encode(messageBytes));
+//		logger.info("{}\n {}\n", input.version, Base64.encode(messageBytes));
 		try {
 			input.acceptor.accept(messageBytes);
 			Long now = Instant.now().toEpochMilli();
@@ -186,11 +187,13 @@ public class SamplesWebsocketController {
 	}
 
 	private class Input {
+		final String version;
 		final Acceptor acceptor;
 		final WebSocketSession session;
 		final AtomicLong last = new AtomicLong(Instant.now().toEpochMilli());
 
-		private Input(Acceptor acceptor, WebSocketSession session) {
+		private Input(Acceptor acceptor, WebSocketSession session, String version) {
+			this.version = version;
 			this.acceptor = acceptor;
 			this.session = session;
 		}

@@ -31,6 +31,7 @@ class SfuSctpStreamReportsDepotTest {
 
         Assertions.assertEquals(serviceId, actual.serviceId, "serviceId field");
         Assertions.assertEquals(mediaUnitId, actual.mediaUnitId, "mediaUnitId field");
+        Assertions.assertEquals(expected.internal, actual.internal, "internal field");
         Assertions.assertEquals(sfuSample.sfuId.toString(), actual.sfuId, "sfuId field");
         Assertions.assertEquals(sfuSample.marker, actual.marker, "marker field");
         Assertions.assertEquals(sfuSample.timestamp, actual.timestamp, "timestamp field");

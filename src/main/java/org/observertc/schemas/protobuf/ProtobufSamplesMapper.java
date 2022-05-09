@@ -1725,6 +1725,9 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasChannelId()) {
 							dstItem1.channelId = UUIDAdapter.tryParseOrNull(srcItem1.getChannelId());
 						}
+						if (srcItem1.hasInternal()) {
+							dstItem1.internal = srcItem1.getInternal();
+						}
 						if (srcItem1.hasLabel()) {
 							dstItem1.label = srcItem1.getLabel();
 						}

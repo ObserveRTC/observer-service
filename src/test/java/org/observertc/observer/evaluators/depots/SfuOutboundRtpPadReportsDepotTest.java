@@ -42,6 +42,7 @@ class SfuOutboundRtpPadReportsDepotTest {
         Assertions.assertEquals(expected.sinkId.toString(), actual.sfuSinkId, "sfuSinkId field");
         Assertions.assertEquals(expected.padId.toString(), actual.rtpPadId, "rtpPadId field");
         Assertions.assertEquals(expected.ssrc, actual.ssrc, "ssrc field");
+        Assertions.assertEquals(expected.internal, actual.internal, "internal field");
         Assertions.assertEquals(callId.toString(), actual.callId, "callId field");
         Assertions.assertEquals(clientId.toString(), actual.clientId, "clientId field");
         Assertions.assertEquals(trackId.toString(), actual.trackId, "trackId field");

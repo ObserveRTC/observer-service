@@ -13,7 +13,7 @@ class SamplesVersionVisitorTest {
         var notRecognized = "notRecognized";
         var visitor = SamplesVersionVisitor.<Void, String>createFunctionalVisitor(
                 VOID -> Samples.VERSION,
-                VOID -> org.observertc.schemas.v200beta64.samples.Samples.VERSION,
+                VOID -> org.observertc.schemas.v200.samples.Samples.VERSION,
                 VOID -> org.observertc.schemas.v200beta59.samples.Samples.VERSION,
                 VOID -> notRecognized
         );
@@ -28,7 +28,7 @@ class SamplesVersionVisitorTest {
         var notRecognized = "notRecognized";
         var visitor = SamplesVersionVisitor.<String>createSupplierVisitor(
                 () -> Samples.VERSION,
-                () -> org.observertc.schemas.v200beta64.samples.Samples.VERSION,
+                () -> org.observertc.schemas.v200.samples.Samples.VERSION,
                 () -> org.observertc.schemas.v200beta59.samples.Samples.VERSION,
                 () -> notRecognized
         );
@@ -41,9 +41,23 @@ class SamplesVersionVisitorTest {
     @Test
     void shouldValidateVersions() {
         var isLatestValid = SamplesVersionVisitor.isVersionValid(Samples.VERSION);
+        var isV200Valid = SamplesVersionVisitor.isVersionValid("2.0.0");
+        var isV200Beta65Valid = SamplesVersionVisitor.isVersionValid("2.0.0-beta.65");
+        var isV200Beta64Valid = SamplesVersionVisitor.isVersionValid("2.0.0-beta.64");
+        var isV200Beta63Valid = SamplesVersionVisitor.isVersionValid("2.0.0-beta.63");
+        var isV200Beta62Valid = SamplesVersionVisitor.isVersionValid("2.0.0-beta.62");
+        var isV200Beta61Valid = SamplesVersionVisitor.isVersionValid("2.0.0-beta.61");
+        var isV200Beta60Valid = SamplesVersionVisitor.isVersionValid("2.0.0-beta.60");
         var isV200Beta59Valid = SamplesVersionVisitor.isVersionValid(org.observertc.schemas.v200beta59.samples.Samples.VERSION);
         var isRandomStringValid = SamplesVersionVisitor.isVersionValid(UUID.randomUUID().toString());
         Assertions.assertTrue(isLatestValid);
+        Assertions.assertTrue(isV200Valid);
+        Assertions.assertTrue(isV200Beta65Valid);
+        Assertions.assertTrue(isV200Beta64Valid);
+        Assertions.assertTrue(isV200Beta63Valid);
+        Assertions.assertTrue(isV200Beta62Valid);
+        Assertions.assertTrue(isV200Beta61Valid);
+        Assertions.assertTrue(isV200Beta60Valid);
         Assertions.assertTrue(isV200Beta59Valid);
         Assertions.assertFalse(isRandomStringValid);
     }

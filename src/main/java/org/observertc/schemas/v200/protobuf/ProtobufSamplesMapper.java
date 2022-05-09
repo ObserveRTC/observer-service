@@ -1,6 +1,6 @@
 /** Generated Code, Do not edit! */
 
-package org.observertc.schemas.v200beta64.protobuf;
+package org.observertc.schemas.v200.protobuf;
 
 import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.schemas.samples.Samples;

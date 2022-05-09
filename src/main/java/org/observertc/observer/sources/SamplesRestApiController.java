@@ -73,7 +73,7 @@ public class SamplesRestApiController {
 					acceptedFormat,
 					samplesCollector::accept
 			);
-//			logger.info("\n\n\n {}", Base64.encode(message));
+//			logger.info("{}\n {}\n", version, Base64.encode(message));
 			acceptor.accept(message);
 		} catch (Throwable ex) {
 			return HttpResponse.serverError(ex.getMessage());

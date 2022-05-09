@@ -1,4 +1,4 @@
-package org.observertc.schemas.v200beta64.samples;
+package org.observertc.schemas.v200.samples;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

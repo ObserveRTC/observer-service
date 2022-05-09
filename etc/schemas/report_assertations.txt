@@ -447,6 +447,7 @@ Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId f
 Assertions.assertEquals(expected.sfuId, actual.sfuId, "sfuId field");
 Assertions.assertEquals(expected.marker, actual.marker, "marker field");
 Assertions.assertEquals(expected.timestamp, actual.timestamp, "timestamp field");
+Assertions.assertEquals(expected.internal, actual.internal, "internal field");
 Assertions.assertEquals(expected.callId, actual.callId, "callId field");
 Assertions.assertEquals(expected.roomId, actual.roomId, "roomId field");
 Assertions.assertEquals(expected.transportId, actual.transportId, "transportId field");
@@ -614,6 +615,7 @@ Assertions.assertEquals(expected.mediaUnitId, actual.mediaUnitId, "mediaUnitId f
 Assertions.assertEquals(expected.sfuId, actual.sfuId, "sfuId field");
 Assertions.assertEquals(expected.marker, actual.marker, "marker field");
 Assertions.assertEquals(expected.timestamp, actual.timestamp, "timestamp field");
+Assertions.assertEquals(expected.internal, actual.internal, "internal field");
 Assertions.assertEquals(expected.callId, actual.callId, "callId field");
 Assertions.assertEquals(expected.roomId, actual.roomId, "roomId field");
 Assertions.assertEquals(expected.transportId, actual.transportId, "transportId field");

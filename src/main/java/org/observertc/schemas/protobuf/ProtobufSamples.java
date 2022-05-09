@@ -77203,123 +77203,134 @@ public final class ProtobufSamples {
         long getBytesSent();
 
         /**
-         * <code>optional string label = 6;</code>
+         * <code>optional bool internal = 6;</code>
+         * @return Whether the internal field is set.
+         */
+        boolean hasInternal();
+        /**
+         * <code>optional bool internal = 6;</code>
+         * @return The internal.
+         */
+        boolean getInternal();
+
+        /**
+         * <code>optional string label = 7;</code>
          * @return Whether the label field is set.
          */
         boolean hasLabel();
         /**
-         * <code>optional string label = 6;</code>
+         * <code>optional string label = 7;</code>
          * @return The label.
          */
         java.lang.String getLabel();
         /**
-         * <code>optional string label = 6;</code>
+         * <code>optional string label = 7;</code>
          * @return The bytes for label.
          */
         com.google.protobuf.ByteString
             getLabelBytes();
 
         /**
-         * <code>optional int32 messageReceived = 7;</code>
+         * <code>optional int32 messageReceived = 8;</code>
          * @return Whether the messageReceived field is set.
          */
         boolean hasMessageReceived();
         /**
-         * <code>optional int32 messageReceived = 7;</code>
+         * <code>optional int32 messageReceived = 8;</code>
          * @return The messageReceived.
          */
         int getMessageReceived();
 
         /**
-         * <code>optional int32 messageSent = 8;</code>
+         * <code>optional int32 messageSent = 9;</code>
          * @return Whether the messageSent field is set.
          */
         boolean hasMessageSent();
         /**
-         * <code>optional int32 messageSent = 8;</code>
+         * <code>optional int32 messageSent = 9;</code>
          * @return The messageSent.
          */
         int getMessageSent();
 
         /**
-         * <code>optional bool noReport = 9;</code>
+         * <code>optional bool noReport = 10;</code>
          * @return Whether the noReport field is set.
          */
         boolean hasNoReport();
         /**
-         * <code>optional bool noReport = 9;</code>
+         * <code>optional bool noReport = 10;</code>
          * @return The noReport.
          */
         boolean getNoReport();
 
         /**
-         * <code>optional string protocol = 10;</code>
+         * <code>optional string protocol = 11;</code>
          * @return Whether the protocol field is set.
          */
         boolean hasProtocol();
         /**
-         * <code>optional string protocol = 10;</code>
+         * <code>optional string protocol = 11;</code>
          * @return The protocol.
          */
         java.lang.String getProtocol();
         /**
-         * <code>optional string protocol = 10;</code>
+         * <code>optional string protocol = 11;</code>
          * @return The bytes for protocol.
          */
         com.google.protobuf.ByteString
             getProtocolBytes();
 
         /**
-         * <code>optional double sctpCongestionWindow = 11;</code>
+         * <code>optional double sctpCongestionWindow = 12;</code>
          * @return Whether the sctpCongestionWindow field is set.
          */
         boolean hasSctpCongestionWindow();
         /**
-         * <code>optional double sctpCongestionWindow = 11;</code>
+         * <code>optional double sctpCongestionWindow = 12;</code>
          * @return The sctpCongestionWindow.
          */
         double getSctpCongestionWindow();
 
         /**
-         * <code>optional int32 sctpMtu = 12;</code>
+         * <code>optional int32 sctpMtu = 13;</code>
          * @return Whether the sctpMtu field is set.
          */
         boolean hasSctpMtu();
         /**
-         * <code>optional int32 sctpMtu = 12;</code>
+         * <code>optional int32 sctpMtu = 13;</code>
          * @return The sctpMtu.
          */
         int getSctpMtu();
 
         /**
-         * <code>optional double sctpReceiverWindow = 13;</code>
+         * <code>optional double sctpReceiverWindow = 14;</code>
          * @return Whether the sctpReceiverWindow field is set.
          */
         boolean hasSctpReceiverWindow();
         /**
-         * <code>optional double sctpReceiverWindow = 13;</code>
+         * <code>optional double sctpReceiverWindow = 14;</code>
          * @return The sctpReceiverWindow.
          */
         double getSctpReceiverWindow();
 
         /**
-         * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+         * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
          * @return Whether the sctpSmoothedRoundTripTime field is set.
          */
         boolean hasSctpSmoothedRoundTripTime();
         /**
-         * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+         * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
          * @return The sctpSmoothedRoundTripTime.
          */
         double getSctpSmoothedRoundTripTime();
 
         /**
-         * <code>optional int32 sctpUnackData = 15;</code>
+         * <code>optional int32 sctpUnackData = 16;</code>
          * @return Whether the sctpUnackData field is set.
          */
         boolean hasSctpUnackData();
         /**
-         * <code>optional int32 sctpUnackData = 15;</code>
+         * <code>optional int32 sctpUnackData = 16;</code>
          * @return The sctpUnackData.
          */
         int getSctpUnackData();
@@ -77403,55 +77414,60 @@ public final class ProtobufSamples {
                   bytesSent_ = input.readInt64();
                   break;
                 }
-                case 50: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
+                case 48: {
                   bitField0_ |= 0x00000020;
-                  label_ = bs;
+                  internal_ = input.readBool();
                   break;
                 }
-                case 56: {
+                case 58: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000040;
-                  messageReceived_ = input.readInt32();
+                  label_ = bs;
                   break;
                 }
                 case 64: {
                   bitField0_ |= 0x00000080;
-                  messageSent_ = input.readInt32();
+                  messageReceived_ = input.readInt32();
                   break;
                 }
                 case 72: {
                   bitField0_ |= 0x00000100;
+                  messageSent_ = input.readInt32();
+                  break;
+                }
+                case 80: {
+                  bitField0_ |= 0x00000200;
                   noReport_ = input.readBool();
                   break;
                 }
-                case 82: {
+                case 90: {
                   com.google.protobuf.ByteString bs = input.readBytes();
-                  bitField0_ |= 0x00000200;
+                  bitField0_ |= 0x00000400;
                   protocol_ = bs;
                   break;
                 }
-                case 89: {
-                  bitField0_ |= 0x00000400;
+                case 97: {
+                  bitField0_ |= 0x00000800;
                   sctpCongestionWindow_ = input.readDouble();
                   break;
                 }
-                case 96: {
-                  bitField0_ |= 0x00000800;
-                  sctpMtu_ = input.readInt32();
-                  break;
-                }
-                case 105: {
+                case 104: {
                   bitField0_ |= 0x00001000;
-                  sctpReceiverWindow_ = input.readDouble();
+                  sctpMtu_ = input.readInt32();
                   break;
                 }
                 case 113: {
                   bitField0_ |= 0x00002000;
+                  sctpReceiverWindow_ = input.readDouble();
+                  break;
+                }
+                case 121: {
+                  bitField0_ |= 0x00004000;
                   sctpSmoothedRoundTripTime_ = input.readDouble();
                   break;
                 }
-                case 120: {
-                  bitField0_ |= 0x00004000;
+                case 128: {
+                  bitField0_ |= 0x00008000;
                   sctpUnackData_ = input.readInt32();
                   break;
                 }
@@ -77670,18 +77686,37 @@ public final class ProtobufSamples {
           return bytesSent_;
         }
 
-        public static final int LABEL_FIELD_NUMBER = 6;
+        public static final int INTERNAL_FIELD_NUMBER = 6;
+        private boolean internal_;
+        /**
+         * <code>optional bool internal = 6;</code>
+         * @return Whether the internal field is set.
+         */
+        @java.lang.Override
+        public boolean hasInternal() {
+          return ((bitField0_ & 0x00000020) != 0);
+        }
+        /**
+         * <code>optional bool internal = 6;</code>
+         * @return The internal.
+         */
+        @java.lang.Override
+        public boolean getInternal() {
+          return internal_;
+        }
+
+        public static final int LABEL_FIELD_NUMBER = 7;
         private volatile java.lang.Object label_;
         /**
-         * <code>optional string label = 6;</code>
+         * <code>optional string label = 7;</code>
          * @return Whether the label field is set.
          */
         @java.lang.Override
         public boolean hasLabel() {
-          return ((bitField0_ & 0x00000020) != 0);
+          return ((bitField0_ & 0x00000040) != 0);
         }
         /**
-         * <code>optional string label = 6;</code>
+         * <code>optional string label = 7;</code>
          * @return The label.
          */
         @java.lang.Override
@@ -77700,7 +77735,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string label = 6;</code>
+         * <code>optional string label = 7;</code>
          * @return The bytes for label.
          */
         @java.lang.Override
@@ -77718,18 +77753,18 @@ public final class ProtobufSamples {
           }
         }
 
-        public static final int MESSAGERECEIVED_FIELD_NUMBER = 7;
+        public static final int MESSAGERECEIVED_FIELD_NUMBER = 8;
         private int messageReceived_;
         /**
-         * <code>optional int32 messageReceived = 7;</code>
+         * <code>optional int32 messageReceived = 8;</code>
          * @return Whether the messageReceived field is set.
          */
         @java.lang.Override
         public boolean hasMessageReceived() {
-          return ((bitField0_ & 0x00000040) != 0);
+          return ((bitField0_ & 0x00000080) != 0);
         }
         /**
-         * <code>optional int32 messageReceived = 7;</code>
+         * <code>optional int32 messageReceived = 8;</code>
          * @return The messageReceived.
          */
         @java.lang.Override
@@ -77737,18 +77772,18 @@ public final class ProtobufSamples {
           return messageReceived_;
         }
 
-        public static final int MESSAGESENT_FIELD_NUMBER = 8;
+        public static final int MESSAGESENT_FIELD_NUMBER = 9;
         private int messageSent_;
         /**
-         * <code>optional int32 messageSent = 8;</code>
+         * <code>optional int32 messageSent = 9;</code>
          * @return Whether the messageSent field is set.
          */
         @java.lang.Override
         public boolean hasMessageSent() {
-          return ((bitField0_ & 0x00000080) != 0);
+          return ((bitField0_ & 0x00000100) != 0);
         }
         /**
-         * <code>optional int32 messageSent = 8;</code>
+         * <code>optional int32 messageSent = 9;</code>
          * @return The messageSent.
          */
         @java.lang.Override
@@ -77756,18 +77791,18 @@ public final class ProtobufSamples {
           return messageSent_;
         }
 
-        public static final int NOREPORT_FIELD_NUMBER = 9;
+        public static final int NOREPORT_FIELD_NUMBER = 10;
         private boolean noReport_;
         /**
-         * <code>optional bool noReport = 9;</code>
+         * <code>optional bool noReport = 10;</code>
          * @return Whether the noReport field is set.
          */
         @java.lang.Override
         public boolean hasNoReport() {
-          return ((bitField0_ & 0x00000100) != 0);
+          return ((bitField0_ & 0x00000200) != 0);
         }
         /**
-         * <code>optional bool noReport = 9;</code>
+         * <code>optional bool noReport = 10;</code>
          * @return The noReport.
          */
         @java.lang.Override
@@ -77775,18 +77810,18 @@ public final class ProtobufSamples {
           return noReport_;
         }
 
-        public static final int PROTOCOL_FIELD_NUMBER = 10;
+        public static final int PROTOCOL_FIELD_NUMBER = 11;
         private volatile java.lang.Object protocol_;
         /**
-         * <code>optional string protocol = 10;</code>
+         * <code>optional string protocol = 11;</code>
          * @return Whether the protocol field is set.
          */
         @java.lang.Override
         public boolean hasProtocol() {
-          return ((bitField0_ & 0x00000200) != 0);
+          return ((bitField0_ & 0x00000400) != 0);
         }
         /**
-         * <code>optional string protocol = 10;</code>
+         * <code>optional string protocol = 11;</code>
          * @return The protocol.
          */
         @java.lang.Override
@@ -77805,7 +77840,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string protocol = 10;</code>
+         * <code>optional string protocol = 11;</code>
          * @return The bytes for protocol.
          */
         @java.lang.Override
@@ -77823,18 +77858,18 @@ public final class ProtobufSamples {
           }
         }
 
-        public static final int SCTPCONGESTIONWINDOW_FIELD_NUMBER = 11;
+        public static final int SCTPCONGESTIONWINDOW_FIELD_NUMBER = 12;
         private double sctpCongestionWindow_;
         /**
-         * <code>optional double sctpCongestionWindow = 11;</code>
+         * <code>optional double sctpCongestionWindow = 12;</code>
          * @return Whether the sctpCongestionWindow field is set.
          */
         @java.lang.Override
         public boolean hasSctpCongestionWindow() {
-          return ((bitField0_ & 0x00000400) != 0);
+          return ((bitField0_ & 0x00000800) != 0);
         }
         /**
-         * <code>optional double sctpCongestionWindow = 11;</code>
+         * <code>optional double sctpCongestionWindow = 12;</code>
          * @return The sctpCongestionWindow.
          */
         @java.lang.Override
@@ -77842,18 +77877,18 @@ public final class ProtobufSamples {
           return sctpCongestionWindow_;
         }
 
-        public static final int SCTPMTU_FIELD_NUMBER = 12;
+        public static final int SCTPMTU_FIELD_NUMBER = 13;
         private int sctpMtu_;
         /**
-         * <code>optional int32 sctpMtu = 12;</code>
+         * <code>optional int32 sctpMtu = 13;</code>
          * @return Whether the sctpMtu field is set.
          */
         @java.lang.Override
         public boolean hasSctpMtu() {
-          return ((bitField0_ & 0x00000800) != 0);
+          return ((bitField0_ & 0x00001000) != 0);
         }
         /**
-         * <code>optional int32 sctpMtu = 12;</code>
+         * <code>optional int32 sctpMtu = 13;</code>
          * @return The sctpMtu.
          */
         @java.lang.Override
@@ -77861,18 +77896,18 @@ public final class ProtobufSamples {
           return sctpMtu_;
         }
 
-        public static final int SCTPRECEIVERWINDOW_FIELD_NUMBER = 13;
+        public static final int SCTPRECEIVERWINDOW_FIELD_NUMBER = 14;
         private double sctpReceiverWindow_;
         /**
-         * <code>optional double sctpReceiverWindow = 13;</code>
+         * <code>optional double sctpReceiverWindow = 14;</code>
          * @return Whether the sctpReceiverWindow field is set.
          */
         @java.lang.Override
         public boolean hasSctpReceiverWindow() {
-          return ((bitField0_ & 0x00001000) != 0);
+          return ((bitField0_ & 0x00002000) != 0);
         }
         /**
-         * <code>optional double sctpReceiverWindow = 13;</code>
+         * <code>optional double sctpReceiverWindow = 14;</code>
          * @return The sctpReceiverWindow.
          */
         @java.lang.Override
@@ -77880,18 +77915,18 @@ public final class ProtobufSamples {
           return sctpReceiverWindow_;
         }
 
-        public static final int SCTPSMOOTHEDROUNDTRIPTIME_FIELD_NUMBER = 14;
+        public static final int SCTPSMOOTHEDROUNDTRIPTIME_FIELD_NUMBER = 15;
         private double sctpSmoothedRoundTripTime_;
         /**
-         * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+         * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
          * @return Whether the sctpSmoothedRoundTripTime field is set.
          */
         @java.lang.Override
         public boolean hasSctpSmoothedRoundTripTime() {
-          return ((bitField0_ & 0x00002000) != 0);
+          return ((bitField0_ & 0x00004000) != 0);
         }
         /**
-         * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+         * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
          * @return The sctpSmoothedRoundTripTime.
          */
         @java.lang.Override
@@ -77899,18 +77934,18 @@ public final class ProtobufSamples {
           return sctpSmoothedRoundTripTime_;
         }
 
-        public static final int SCTPUNACKDATA_FIELD_NUMBER = 15;
+        public static final int SCTPUNACKDATA_FIELD_NUMBER = 16;
         private int sctpUnackData_;
         /**
-         * <code>optional int32 sctpUnackData = 15;</code>
+         * <code>optional int32 sctpUnackData = 16;</code>
          * @return Whether the sctpUnackData field is set.
          */
         @java.lang.Override
         public boolean hasSctpUnackData() {
-          return ((bitField0_ & 0x00004000) != 0);
+          return ((bitField0_ & 0x00008000) != 0);
         }
         /**
-         * <code>optional int32 sctpUnackData = 15;</code>
+         * <code>optional int32 sctpUnackData = 16;</code>
          * @return The sctpUnackData.
          */
         @java.lang.Override
@@ -77960,34 +77995,37 @@ public final class ProtobufSamples {
             output.writeInt64(5, bytesSent_);
           }
           if (((bitField0_ & 0x00000020) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, label_);
+            output.writeBool(6, internal_);
           }
           if (((bitField0_ & 0x00000040) != 0)) {
-            output.writeInt32(7, messageReceived_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, label_);
           }
           if (((bitField0_ & 0x00000080) != 0)) {
-            output.writeInt32(8, messageSent_);
+            output.writeInt32(8, messageReceived_);
           }
           if (((bitField0_ & 0x00000100) != 0)) {
-            output.writeBool(9, noReport_);
+            output.writeInt32(9, messageSent_);
           }
           if (((bitField0_ & 0x00000200) != 0)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 10, protocol_);
+            output.writeBool(10, noReport_);
           }
           if (((bitField0_ & 0x00000400) != 0)) {
-            output.writeDouble(11, sctpCongestionWindow_);
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 11, protocol_);
           }
           if (((bitField0_ & 0x00000800) != 0)) {
-            output.writeInt32(12, sctpMtu_);
+            output.writeDouble(12, sctpCongestionWindow_);
           }
           if (((bitField0_ & 0x00001000) != 0)) {
-            output.writeDouble(13, sctpReceiverWindow_);
+            output.writeInt32(13, sctpMtu_);
           }
           if (((bitField0_ & 0x00002000) != 0)) {
-            output.writeDouble(14, sctpSmoothedRoundTripTime_);
+            output.writeDouble(14, sctpReceiverWindow_);
           }
           if (((bitField0_ & 0x00004000) != 0)) {
-            output.writeInt32(15, sctpUnackData_);
+            output.writeDouble(15, sctpSmoothedRoundTripTime_);
+          }
+          if (((bitField0_ & 0x00008000) != 0)) {
+            output.writeInt32(16, sctpUnackData_);
           }
           unknownFields.writeTo(output);
         }
@@ -78016,42 +78054,46 @@ public final class ProtobufSamples {
               .computeInt64Size(5, bytesSent_);
           }
           if (((bitField0_ & 0x00000020) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, label_);
+            size += com.google.protobuf.CodedOutputStream
+              .computeBoolSize(6, internal_);
           }
           if (((bitField0_ & 0x00000040) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeInt32Size(7, messageReceived_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, label_);
           }
           if (((bitField0_ & 0x00000080) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeInt32Size(8, messageSent_);
+              .computeInt32Size(8, messageReceived_);
           }
           if (((bitField0_ & 0x00000100) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeBoolSize(9, noReport_);
+              .computeInt32Size(9, messageSent_);
           }
           if (((bitField0_ & 0x00000200) != 0)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, protocol_);
+            size += com.google.protobuf.CodedOutputStream
+              .computeBoolSize(10, noReport_);
           }
           if (((bitField0_ & 0x00000400) != 0)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeDoubleSize(11, sctpCongestionWindow_);
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, protocol_);
           }
           if (((bitField0_ & 0x00000800) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeInt32Size(12, sctpMtu_);
+              .computeDoubleSize(12, sctpCongestionWindow_);
           }
           if (((bitField0_ & 0x00001000) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeDoubleSize(13, sctpReceiverWindow_);
+              .computeInt32Size(13, sctpMtu_);
           }
           if (((bitField0_ & 0x00002000) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeDoubleSize(14, sctpSmoothedRoundTripTime_);
+              .computeDoubleSize(14, sctpReceiverWindow_);
           }
           if (((bitField0_ & 0x00004000) != 0)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeInt32Size(15, sctpUnackData_);
+              .computeDoubleSize(15, sctpSmoothedRoundTripTime_);
+          }
+          if (((bitField0_ & 0x00008000) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(16, sctpUnackData_);
           }
           size += unknownFields.getSerializedSize();
           memoizedSize = size;
@@ -78092,6 +78134,11 @@ public final class ProtobufSamples {
           if (hasBytesSent()) {
             if (getBytesSent()
                 != other.getBytesSent()) return false;
+          }
+          if (hasInternal() != other.hasInternal()) return false;
+          if (hasInternal()) {
+            if (getInternal()
+                != other.getInternal()) return false;
           }
           if (hasLabel() != other.hasLabel()) return false;
           if (hasLabel()) {
@@ -78178,6 +78225,11 @@ public final class ProtobufSamples {
             hash = (37 * hash) + BYTESSENT_FIELD_NUMBER;
             hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
                 getBytesSent());
+          }
+          if (hasInternal()) {
+            hash = (37 * hash) + INTERNAL_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+                getInternal());
           }
           if (hasLabel()) {
             hash = (37 * hash) + LABEL_FIELD_NUMBER;
@@ -78366,26 +78418,28 @@ public final class ProtobufSamples {
             bitField0_ = (bitField0_ & ~0x00000008);
             bytesSent_ = 0L;
             bitField0_ = (bitField0_ & ~0x00000010);
-            label_ = "";
+            internal_ = false;
             bitField0_ = (bitField0_ & ~0x00000020);
-            messageReceived_ = 0;
+            label_ = "";
             bitField0_ = (bitField0_ & ~0x00000040);
-            messageSent_ = 0;
+            messageReceived_ = 0;
             bitField0_ = (bitField0_ & ~0x00000080);
-            noReport_ = false;
+            messageSent_ = 0;
             bitField0_ = (bitField0_ & ~0x00000100);
-            protocol_ = "";
+            noReport_ = false;
             bitField0_ = (bitField0_ & ~0x00000200);
-            sctpCongestionWindow_ = 0D;
+            protocol_ = "";
             bitField0_ = (bitField0_ & ~0x00000400);
-            sctpMtu_ = 0;
+            sctpCongestionWindow_ = 0D;
             bitField0_ = (bitField0_ & ~0x00000800);
-            sctpReceiverWindow_ = 0D;
+            sctpMtu_ = 0;
             bitField0_ = (bitField0_ & ~0x00001000);
-            sctpSmoothedRoundTripTime_ = 0D;
+            sctpReceiverWindow_ = 0D;
             bitField0_ = (bitField0_ & ~0x00002000);
-            sctpUnackData_ = 0;
+            sctpSmoothedRoundTripTime_ = 0D;
             bitField0_ = (bitField0_ & ~0x00004000);
+            sctpUnackData_ = 0;
+            bitField0_ = (bitField0_ & ~0x00008000);
             return this;
           }
 
@@ -78435,44 +78489,48 @@ public final class ProtobufSamples {
               to_bitField0_ |= 0x00000010;
             }
             if (((from_bitField0_ & 0x00000020) != 0)) {
+              result.internal_ = internal_;
               to_bitField0_ |= 0x00000020;
             }
-            result.label_ = label_;
             if (((from_bitField0_ & 0x00000040) != 0)) {
-              result.messageReceived_ = messageReceived_;
               to_bitField0_ |= 0x00000040;
             }
+            result.label_ = label_;
             if (((from_bitField0_ & 0x00000080) != 0)) {
-              result.messageSent_ = messageSent_;
+              result.messageReceived_ = messageReceived_;
               to_bitField0_ |= 0x00000080;
             }
             if (((from_bitField0_ & 0x00000100) != 0)) {
-              result.noReport_ = noReport_;
+              result.messageSent_ = messageSent_;
               to_bitField0_ |= 0x00000100;
             }
             if (((from_bitField0_ & 0x00000200) != 0)) {
+              result.noReport_ = noReport_;
               to_bitField0_ |= 0x00000200;
             }
-            result.protocol_ = protocol_;
             if (((from_bitField0_ & 0x00000400) != 0)) {
-              result.sctpCongestionWindow_ = sctpCongestionWindow_;
               to_bitField0_ |= 0x00000400;
             }
+            result.protocol_ = protocol_;
             if (((from_bitField0_ & 0x00000800) != 0)) {
-              result.sctpMtu_ = sctpMtu_;
+              result.sctpCongestionWindow_ = sctpCongestionWindow_;
               to_bitField0_ |= 0x00000800;
             }
             if (((from_bitField0_ & 0x00001000) != 0)) {
-              result.sctpReceiverWindow_ = sctpReceiverWindow_;
+              result.sctpMtu_ = sctpMtu_;
               to_bitField0_ |= 0x00001000;
             }
             if (((from_bitField0_ & 0x00002000) != 0)) {
-              result.sctpSmoothedRoundTripTime_ = sctpSmoothedRoundTripTime_;
+              result.sctpReceiverWindow_ = sctpReceiverWindow_;
               to_bitField0_ |= 0x00002000;
             }
             if (((from_bitField0_ & 0x00004000) != 0)) {
-              result.sctpUnackData_ = sctpUnackData_;
+              result.sctpSmoothedRoundTripTime_ = sctpSmoothedRoundTripTime_;
               to_bitField0_ |= 0x00004000;
+            }
+            if (((from_bitField0_ & 0x00008000) != 0)) {
+              result.sctpUnackData_ = sctpUnackData_;
+              to_bitField0_ |= 0x00008000;
             }
             result.bitField0_ = to_bitField0_;
             onBuilt();
@@ -78544,8 +78602,11 @@ public final class ProtobufSamples {
             if (other.hasBytesSent()) {
               setBytesSent(other.getBytesSent());
             }
+            if (other.hasInternal()) {
+              setInternal(other.getInternal());
+            }
             if (other.hasLabel()) {
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000040;
               label_ = other.label_;
               onChanged();
             }
@@ -78559,7 +78620,7 @@ public final class ProtobufSamples {
               setNoReport(other.getNoReport());
             }
             if (other.hasProtocol()) {
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000400;
               protocol_ = other.protocol_;
               onChanged();
             }
@@ -78947,16 +79008,55 @@ public final class ProtobufSamples {
             return this;
           }
 
-          private java.lang.Object label_ = "";
+          private boolean internal_ ;
           /**
-           * <code>optional string label = 6;</code>
-           * @return Whether the label field is set.
+           * <code>optional bool internal = 6;</code>
+           * @return Whether the internal field is set.
            */
-          public boolean hasLabel() {
+          @java.lang.Override
+          public boolean hasInternal() {
             return ((bitField0_ & 0x00000020) != 0);
           }
           /**
-           * <code>optional string label = 6;</code>
+           * <code>optional bool internal = 6;</code>
+           * @return The internal.
+           */
+          @java.lang.Override
+          public boolean getInternal() {
+            return internal_;
+          }
+          /**
+           * <code>optional bool internal = 6;</code>
+           * @param value The internal to set.
+           * @return This builder for chaining.
+           */
+          public Builder setInternal(boolean value) {
+            bitField0_ |= 0x00000020;
+            internal_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional bool internal = 6;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearInternal() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            internal_ = false;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object label_ = "";
+          /**
+           * <code>optional string label = 7;</code>
+           * @return Whether the label field is set.
+           */
+          public boolean hasLabel() {
+            return ((bitField0_ & 0x00000040) != 0);
+          }
+          /**
+           * <code>optional string label = 7;</code>
            * @return The label.
            */
           public java.lang.String getLabel() {
@@ -78974,7 +79074,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string label = 6;</code>
+           * <code>optional string label = 7;</code>
            * @return The bytes for label.
            */
           public com.google.protobuf.ByteString
@@ -78991,7 +79091,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string label = 6;</code>
+           * <code>optional string label = 7;</code>
            * @param value The label to set.
            * @return This builder for chaining.
            */
@@ -79000,23 +79100,23 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
             label_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string label = 6;</code>
+           * <code>optional string label = 7;</code>
            * @return This builder for chaining.
            */
           public Builder clearLabel() {
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000040);
             label_ = getDefaultInstance().getLabel();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string label = 6;</code>
+           * <code>optional string label = 7;</code>
            * @param value The bytes for label to set.
            * @return This builder for chaining.
            */
@@ -79025,7 +79125,7 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
             label_ = value;
             onChanged();
             return this;
@@ -79033,15 +79133,15 @@ public final class ProtobufSamples {
 
           private int messageReceived_ ;
           /**
-           * <code>optional int32 messageReceived = 7;</code>
+           * <code>optional int32 messageReceived = 8;</code>
            * @return Whether the messageReceived field is set.
            */
           @java.lang.Override
           public boolean hasMessageReceived() {
-            return ((bitField0_ & 0x00000040) != 0);
+            return ((bitField0_ & 0x00000080) != 0);
           }
           /**
-           * <code>optional int32 messageReceived = 7;</code>
+           * <code>optional int32 messageReceived = 8;</code>
            * @return The messageReceived.
            */
           @java.lang.Override
@@ -79049,22 +79149,22 @@ public final class ProtobufSamples {
             return messageReceived_;
           }
           /**
-           * <code>optional int32 messageReceived = 7;</code>
+           * <code>optional int32 messageReceived = 8;</code>
            * @param value The messageReceived to set.
            * @return This builder for chaining.
            */
           public Builder setMessageReceived(int value) {
-            bitField0_ |= 0x00000040;
+            bitField0_ |= 0x00000080;
             messageReceived_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional int32 messageReceived = 7;</code>
+           * <code>optional int32 messageReceived = 8;</code>
            * @return This builder for chaining.
            */
           public Builder clearMessageReceived() {
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
             messageReceived_ = 0;
             onChanged();
             return this;
@@ -79072,15 +79172,15 @@ public final class ProtobufSamples {
 
           private int messageSent_ ;
           /**
-           * <code>optional int32 messageSent = 8;</code>
+           * <code>optional int32 messageSent = 9;</code>
            * @return Whether the messageSent field is set.
            */
           @java.lang.Override
           public boolean hasMessageSent() {
-            return ((bitField0_ & 0x00000080) != 0);
+            return ((bitField0_ & 0x00000100) != 0);
           }
           /**
-           * <code>optional int32 messageSent = 8;</code>
+           * <code>optional int32 messageSent = 9;</code>
            * @return The messageSent.
            */
           @java.lang.Override
@@ -79088,22 +79188,22 @@ public final class ProtobufSamples {
             return messageSent_;
           }
           /**
-           * <code>optional int32 messageSent = 8;</code>
+           * <code>optional int32 messageSent = 9;</code>
            * @param value The messageSent to set.
            * @return This builder for chaining.
            */
           public Builder setMessageSent(int value) {
-            bitField0_ |= 0x00000080;
+            bitField0_ |= 0x00000100;
             messageSent_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional int32 messageSent = 8;</code>
+           * <code>optional int32 messageSent = 9;</code>
            * @return This builder for chaining.
            */
           public Builder clearMessageSent() {
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000100);
             messageSent_ = 0;
             onChanged();
             return this;
@@ -79111,15 +79211,15 @@ public final class ProtobufSamples {
 
           private boolean noReport_ ;
           /**
-           * <code>optional bool noReport = 9;</code>
+           * <code>optional bool noReport = 10;</code>
            * @return Whether the noReport field is set.
            */
           @java.lang.Override
           public boolean hasNoReport() {
-            return ((bitField0_ & 0x00000100) != 0);
+            return ((bitField0_ & 0x00000200) != 0);
           }
           /**
-           * <code>optional bool noReport = 9;</code>
+           * <code>optional bool noReport = 10;</code>
            * @return The noReport.
            */
           @java.lang.Override
@@ -79127,22 +79227,22 @@ public final class ProtobufSamples {
             return noReport_;
           }
           /**
-           * <code>optional bool noReport = 9;</code>
+           * <code>optional bool noReport = 10;</code>
            * @param value The noReport to set.
            * @return This builder for chaining.
            */
           public Builder setNoReport(boolean value) {
-            bitField0_ |= 0x00000100;
+            bitField0_ |= 0x00000200;
             noReport_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional bool noReport = 9;</code>
+           * <code>optional bool noReport = 10;</code>
            * @return This builder for chaining.
            */
           public Builder clearNoReport() {
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00000200);
             noReport_ = false;
             onChanged();
             return this;
@@ -79150,14 +79250,14 @@ public final class ProtobufSamples {
 
           private java.lang.Object protocol_ = "";
           /**
-           * <code>optional string protocol = 10;</code>
+           * <code>optional string protocol = 11;</code>
            * @return Whether the protocol field is set.
            */
           public boolean hasProtocol() {
-            return ((bitField0_ & 0x00000200) != 0);
+            return ((bitField0_ & 0x00000400) != 0);
           }
           /**
-           * <code>optional string protocol = 10;</code>
+           * <code>optional string protocol = 11;</code>
            * @return The protocol.
            */
           public java.lang.String getProtocol() {
@@ -79175,7 +79275,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string protocol = 10;</code>
+           * <code>optional string protocol = 11;</code>
            * @return The bytes for protocol.
            */
           public com.google.protobuf.ByteString
@@ -79192,7 +79292,7 @@ public final class ProtobufSamples {
             }
           }
           /**
-           * <code>optional string protocol = 10;</code>
+           * <code>optional string protocol = 11;</code>
            * @param value The protocol to set.
            * @return This builder for chaining.
            */
@@ -79201,23 +79301,23 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
             protocol_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string protocol = 10;</code>
+           * <code>optional string protocol = 11;</code>
            * @return This builder for chaining.
            */
           public Builder clearProtocol() {
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000400);
             protocol_ = getDefaultInstance().getProtocol();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string protocol = 10;</code>
+           * <code>optional string protocol = 11;</code>
            * @param value The bytes for protocol to set.
            * @return This builder for chaining.
            */
@@ -79226,7 +79326,7 @@ public final class ProtobufSamples {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
             protocol_ = value;
             onChanged();
             return this;
@@ -79234,15 +79334,15 @@ public final class ProtobufSamples {
 
           private double sctpCongestionWindow_ ;
           /**
-           * <code>optional double sctpCongestionWindow = 11;</code>
+           * <code>optional double sctpCongestionWindow = 12;</code>
            * @return Whether the sctpCongestionWindow field is set.
            */
           @java.lang.Override
           public boolean hasSctpCongestionWindow() {
-            return ((bitField0_ & 0x00000400) != 0);
+            return ((bitField0_ & 0x00000800) != 0);
           }
           /**
-           * <code>optional double sctpCongestionWindow = 11;</code>
+           * <code>optional double sctpCongestionWindow = 12;</code>
            * @return The sctpCongestionWindow.
            */
           @java.lang.Override
@@ -79250,22 +79350,22 @@ public final class ProtobufSamples {
             return sctpCongestionWindow_;
           }
           /**
-           * <code>optional double sctpCongestionWindow = 11;</code>
+           * <code>optional double sctpCongestionWindow = 12;</code>
            * @param value The sctpCongestionWindow to set.
            * @return This builder for chaining.
            */
           public Builder setSctpCongestionWindow(double value) {
-            bitField0_ |= 0x00000400;
+            bitField0_ |= 0x00000800;
             sctpCongestionWindow_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional double sctpCongestionWindow = 11;</code>
+           * <code>optional double sctpCongestionWindow = 12;</code>
            * @return This builder for chaining.
            */
           public Builder clearSctpCongestionWindow() {
-            bitField0_ = (bitField0_ & ~0x00000400);
+            bitField0_ = (bitField0_ & ~0x00000800);
             sctpCongestionWindow_ = 0D;
             onChanged();
             return this;
@@ -79273,15 +79373,15 @@ public final class ProtobufSamples {
 
           private int sctpMtu_ ;
           /**
-           * <code>optional int32 sctpMtu = 12;</code>
+           * <code>optional int32 sctpMtu = 13;</code>
            * @return Whether the sctpMtu field is set.
            */
           @java.lang.Override
           public boolean hasSctpMtu() {
-            return ((bitField0_ & 0x00000800) != 0);
+            return ((bitField0_ & 0x00001000) != 0);
           }
           /**
-           * <code>optional int32 sctpMtu = 12;</code>
+           * <code>optional int32 sctpMtu = 13;</code>
            * @return The sctpMtu.
            */
           @java.lang.Override
@@ -79289,22 +79389,22 @@ public final class ProtobufSamples {
             return sctpMtu_;
           }
           /**
-           * <code>optional int32 sctpMtu = 12;</code>
+           * <code>optional int32 sctpMtu = 13;</code>
            * @param value The sctpMtu to set.
            * @return This builder for chaining.
            */
           public Builder setSctpMtu(int value) {
-            bitField0_ |= 0x00000800;
+            bitField0_ |= 0x00001000;
             sctpMtu_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional int32 sctpMtu = 12;</code>
+           * <code>optional int32 sctpMtu = 13;</code>
            * @return This builder for chaining.
            */
           public Builder clearSctpMtu() {
-            bitField0_ = (bitField0_ & ~0x00000800);
+            bitField0_ = (bitField0_ & ~0x00001000);
             sctpMtu_ = 0;
             onChanged();
             return this;
@@ -79312,15 +79412,15 @@ public final class ProtobufSamples {
 
           private double sctpReceiverWindow_ ;
           /**
-           * <code>optional double sctpReceiverWindow = 13;</code>
+           * <code>optional double sctpReceiverWindow = 14;</code>
            * @return Whether the sctpReceiverWindow field is set.
            */
           @java.lang.Override
           public boolean hasSctpReceiverWindow() {
-            return ((bitField0_ & 0x00001000) != 0);
+            return ((bitField0_ & 0x00002000) != 0);
           }
           /**
-           * <code>optional double sctpReceiverWindow = 13;</code>
+           * <code>optional double sctpReceiverWindow = 14;</code>
            * @return The sctpReceiverWindow.
            */
           @java.lang.Override
@@ -79328,22 +79428,22 @@ public final class ProtobufSamples {
             return sctpReceiverWindow_;
           }
           /**
-           * <code>optional double sctpReceiverWindow = 13;</code>
+           * <code>optional double sctpReceiverWindow = 14;</code>
            * @param value The sctpReceiverWindow to set.
            * @return This builder for chaining.
            */
           public Builder setSctpReceiverWindow(double value) {
-            bitField0_ |= 0x00001000;
+            bitField0_ |= 0x00002000;
             sctpReceiverWindow_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional double sctpReceiverWindow = 13;</code>
+           * <code>optional double sctpReceiverWindow = 14;</code>
            * @return This builder for chaining.
            */
           public Builder clearSctpReceiverWindow() {
-            bitField0_ = (bitField0_ & ~0x00001000);
+            bitField0_ = (bitField0_ & ~0x00002000);
             sctpReceiverWindow_ = 0D;
             onChanged();
             return this;
@@ -79351,15 +79451,15 @@ public final class ProtobufSamples {
 
           private double sctpSmoothedRoundTripTime_ ;
           /**
-           * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+           * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
            * @return Whether the sctpSmoothedRoundTripTime field is set.
            */
           @java.lang.Override
           public boolean hasSctpSmoothedRoundTripTime() {
-            return ((bitField0_ & 0x00002000) != 0);
+            return ((bitField0_ & 0x00004000) != 0);
           }
           /**
-           * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+           * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
            * @return The sctpSmoothedRoundTripTime.
            */
           @java.lang.Override
@@ -79367,22 +79467,22 @@ public final class ProtobufSamples {
             return sctpSmoothedRoundTripTime_;
           }
           /**
-           * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+           * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
            * @param value The sctpSmoothedRoundTripTime to set.
            * @return This builder for chaining.
            */
           public Builder setSctpSmoothedRoundTripTime(double value) {
-            bitField0_ |= 0x00002000;
+            bitField0_ |= 0x00004000;
             sctpSmoothedRoundTripTime_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional double sctpSmoothedRoundTripTime = 14;</code>
+           * <code>optional double sctpSmoothedRoundTripTime = 15;</code>
            * @return This builder for chaining.
            */
           public Builder clearSctpSmoothedRoundTripTime() {
-            bitField0_ = (bitField0_ & ~0x00002000);
+            bitField0_ = (bitField0_ & ~0x00004000);
             sctpSmoothedRoundTripTime_ = 0D;
             onChanged();
             return this;
@@ -79390,15 +79490,15 @@ public final class ProtobufSamples {
 
           private int sctpUnackData_ ;
           /**
-           * <code>optional int32 sctpUnackData = 15;</code>
+           * <code>optional int32 sctpUnackData = 16;</code>
            * @return Whether the sctpUnackData field is set.
            */
           @java.lang.Override
           public boolean hasSctpUnackData() {
-            return ((bitField0_ & 0x00004000) != 0);
+            return ((bitField0_ & 0x00008000) != 0);
           }
           /**
-           * <code>optional int32 sctpUnackData = 15;</code>
+           * <code>optional int32 sctpUnackData = 16;</code>
            * @return The sctpUnackData.
            */
           @java.lang.Override
@@ -79406,22 +79506,22 @@ public final class ProtobufSamples {
             return sctpUnackData_;
           }
           /**
-           * <code>optional int32 sctpUnackData = 15;</code>
+           * <code>optional int32 sctpUnackData = 16;</code>
            * @param value The sctpUnackData to set.
            * @return This builder for chaining.
            */
           public Builder setSctpUnackData(int value) {
-            bitField0_ |= 0x00004000;
+            bitField0_ |= 0x00008000;
             sctpUnackData_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional int32 sctpUnackData = 15;</code>
+           * <code>optional int32 sctpUnackData = 16;</code>
            * @return This builder for chaining.
            */
           public Builder clearSctpUnackData() {
-            bitField0_ = (bitField0_ & ~0x00004000);
+            bitField0_ = (bitField0_ & ~0x00008000);
             sctpUnackData_ = 0;
             onChanged();
             return this;
@@ -90806,7 +90906,7 @@ public final class ProtobufSamples {
   static {
     java.lang.String[] descriptorData = {
       "\n\025ProtobufSamples.proto\022\037org.observertc." +
-      "schemas.protobuf\"\346\177\n\007Samples\022L\n\rclientSa" +
+      "schemas.protobuf\"\370\177\n\007Samples\022L\n\rclientSa" +
       "mples\030\001 \003(\01325.org.observertc.schemas.pro" +
       "tobuf.Samples.ClientSample\022F\n\nsfuSamples" +
       "\030\002 \003(\01322.org.observertc.schemas.protobuf" +
@@ -91109,7 +91209,7 @@ public final class ProtobufSamples {
       "\n\n\002id\030\005 \001(\t\022\r\n\005label\030\006 \001(\t\022\030\n\020messagesRe" +
       "ceived\030\007 \001(\005\022\024\n\014messagesSent\030\010 \001(\005\022\030\n\020pe" +
       "erConnectionId\030\t \001(\t\022\014\n\004port\030\n \001(\005\022\020\n\010pr" +
-      "otocol\030\013 \001(\t\022\r\n\005state\030\014 \001(\t\032\200\032\n\tSfuSampl" +
+      "otocol\030\013 \001(\t\022\r\n\005state\030\014 \001(\t\032\222\032\n\tSfuSampl" +
       "e\022\\\n\016extensionStats\030\001 \003(\0132D.org.observer" +
       "tc.schemas.protobuf.Samples.SfuSample.Sf" +
       "uExtensionStats\022[\n\016inboundRtpPads\030\002 \003(\0132" +
@@ -91182,40 +91282,40 @@ public final class ProtobufSamples {
       "rded\030# \001(\005\022\026\n\016rtxPacketsSent\030$ \001(\005\022\017\n\007rt" +
       "xSsrc\030% \001(\003\022\023\n\013sdpFmtpLine\030& \001(\t\022\020\n\010sliC" +
       "ount\030\' \001(\005\022\025\n\rtargetBitrate\030( \001(\005\022\017\n\007tra" +
-      "ckId\030) \001(\t\022\031\n\021voiceActivityFlag\030* \001(\010\032\332\002" +
+      "ckId\030) \001(\t\022\031\n\021voiceActivityFlag\030* \001(\010\032\354\002" +
       "\n\016SfuSctpChannel\022\021\n\tchannelId\030\001 \002(\t\022\020\n\010s" +
       "treamId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\025\n\rby" +
-      "tesReceived\030\004 \001(\003\022\021\n\tbytesSent\030\005 \001(\003\022\r\n\005" +
-      "label\030\006 \001(\t\022\027\n\017messageReceived\030\007 \001(\005\022\023\n\013" +
-      "messageSent\030\010 \001(\005\022\020\n\010noReport\030\t \001(\010\022\020\n\010p" +
-      "rotocol\030\n \001(\t\022\034\n\024sctpCongestionWindow\030\013 " +
-      "\001(\001\022\017\n\007sctpMtu\030\014 \001(\005\022\032\n\022sctpReceiverWind" +
-      "ow\030\r \001(\001\022!\n\031sctpSmoothedRoundTripTime\030\016 " +
-      "\001(\001\022\025\n\rsctpUnackData\030\017 \001(\005\0322\n\021SfuExtensi" +
-      "onStats\022\017\n\007payload\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\200" +
-      "\007\n\nTurnSample\022[\n\013allocations\030\001 \003(\0132F.org" +
-      ".observertc.schemas.protobuf.Samples.Tur" +
-      "nSample.TurnPeerAllocation\022Q\n\010sessions\030\002" +
-      " \003(\0132?.org.observertc.schemas.protobuf.S" +
-      "amples.TurnSample.TurnSession\022\020\n\010serverI" +
-      "d\030\003 \002(\t\032\260\002\n\022TurnPeerAllocation\022\016\n\006peerId" +
-      "\030\001 \002(\t\022\026\n\016relayedAddress\030\002 \002(\t\022\023\n\013relaye" +
-      "dPort\030\003 \002(\005\022\021\n\tsessionId\030\004 \002(\t\022\031\n\021transp" +
-      "ortProtocol\030\005 \002(\t\022\023\n\013peerAddress\030\006 \001(\t\022\020" +
-      "\n\010peerPort\030\007 \001(\005\022\025\n\rreceivedBytes\030\010 \001(\003\022" +
-      "\027\n\017receivedPackets\030\t \001(\005\022\030\n\020receivingBit" +
-      "rate\030\n \001(\005\022\026\n\016sendingBitrate\030\013 \001(\005\022\021\n\tse",
-      "ntBytes\030\014 \001(\003\022\023\n\013sentPackets\030\r \001(\005\032\374\002\n\013T" +
-      "urnSession\022\021\n\tsessionId\030\001 \002(\t\022\025\n\rclientA" +
-      "ddress\030\002 \001(\t\022\020\n\010clientId\030\003 \001(\t\022\022\n\nclient" +
-      "Port\030\004 \001(\005\022\033\n\023nonceExpirationTime\030\005 \001(\003\022" +
-      "\r\n\005realm\030\006 \001(\t\022\025\n\rreceivedBytes\030\007 \001(\003\022\027\n" +
-      "\017receivedPackets\030\010 \001(\005\022\030\n\020receivingBitra" +
-      "te\030\t \001(\005\022\026\n\016sendingBitrate\030\n \001(\005\022\021\n\tsent" +
-      "Bytes\030\013 \001(\003\022\023\n\013sentPackets\030\014 \001(\005\022\025\n\rserv" +
-      "erAddress\030\r \001(\t\022\022\n\nserverPort\030\016 \001(\005\022\017\n\007s" +
-      "tarted\030\017 \001(\003\022\031\n\021transportProtocol\030\020 \001(\t\022" +
-      "\020\n\010username\030\021 \001(\t"
+      "tesReceived\030\004 \001(\003\022\021\n\tbytesSent\030\005 \001(\003\022\020\n\010" +
+      "internal\030\006 \001(\010\022\r\n\005label\030\007 \001(\t\022\027\n\017message" +
+      "Received\030\010 \001(\005\022\023\n\013messageSent\030\t \001(\005\022\020\n\010n" +
+      "oReport\030\n \001(\010\022\020\n\010protocol\030\013 \001(\t\022\034\n\024sctpC" +
+      "ongestionWindow\030\014 \001(\001\022\017\n\007sctpMtu\030\r \001(\005\022\032" +
+      "\n\022sctpReceiverWindow\030\016 \001(\001\022!\n\031sctpSmooth" +
+      "edRoundTripTime\030\017 \001(\001\022\025\n\rsctpUnackData\030\020" +
+      " \001(\005\0322\n\021SfuExtensionStats\022\017\n\007payload\030\001 \002" +
+      "(\t\022\014\n\004type\030\002 \002(\t\032\200\007\n\nTurnSample\022[\n\013alloc" +
+      "ations\030\001 \003(\0132F.org.observertc.schemas.pr" +
+      "otobuf.Samples.TurnSample.TurnPeerAlloca" +
+      "tion\022Q\n\010sessions\030\002 \003(\0132?.org.observertc." +
+      "schemas.protobuf.Samples.TurnSample.Turn" +
+      "Session\022\020\n\010serverId\030\003 \002(\t\032\260\002\n\022TurnPeerAl" +
+      "location\022\016\n\006peerId\030\001 \002(\t\022\026\n\016relayedAddre" +
+      "ss\030\002 \002(\t\022\023\n\013relayedPort\030\003 \002(\005\022\021\n\tsession" +
+      "Id\030\004 \002(\t\022\031\n\021transportProtocol\030\005 \002(\t\022\023\n\013p" +
+      "eerAddress\030\006 \001(\t\022\020\n\010peerPort\030\007 \001(\005\022\025\n\rre" +
+      "ceivedBytes\030\010 \001(\003\022\027\n\017receivedPackets\030\t \001" +
+      "(\005\022\030\n\020receivingBitrate\030\n \001(\005\022\026\n\016sendingB",
+      "itrate\030\013 \001(\005\022\021\n\tsentBytes\030\014 \001(\003\022\023\n\013sentP" +
+      "ackets\030\r \001(\005\032\374\002\n\013TurnSession\022\021\n\tsessionI" +
+      "d\030\001 \002(\t\022\025\n\rclientAddress\030\002 \001(\t\022\020\n\010client" +
+      "Id\030\003 \001(\t\022\022\n\nclientPort\030\004 \001(\005\022\033\n\023nonceExp" +
+      "irationTime\030\005 \001(\003\022\r\n\005realm\030\006 \001(\t\022\025\n\rrece" +
+      "ivedBytes\030\007 \001(\003\022\027\n\017receivedPackets\030\010 \001(\005" +
+      "\022\030\n\020receivingBitrate\030\t \001(\005\022\026\n\016sendingBit" +
+      "rate\030\n \001(\005\022\021\n\tsentBytes\030\013 \001(\003\022\023\n\013sentPac" +
+      "kets\030\014 \001(\005\022\025\n\rserverAddress\030\r \001(\t\022\022\n\nser" +
+      "verPort\030\016 \001(\005\022\017\n\007started\030\017 \001(\003\022\031\n\021transp" +
+      "ortProtocol\030\020 \001(\t\022\020\n\010username\030\021 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -91370,7 +91470,7 @@ public final class ProtobufSamples {
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuSctpChannel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuSctpChannel_descriptor,
-        new java.lang.String[] { "ChannelId", "StreamId", "TransportId", "BytesReceived", "BytesSent", "Label", "MessageReceived", "MessageSent", "NoReport", "Protocol", "SctpCongestionWindow", "SctpMtu", "SctpReceiverWindow", "SctpSmoothedRoundTripTime", "SctpUnackData", });
+        new java.lang.String[] { "ChannelId", "StreamId", "TransportId", "BytesReceived", "BytesSent", "Internal", "Label", "MessageReceived", "MessageSent", "NoReport", "Protocol", "SctpCongestionWindow", "SctpMtu", "SctpReceiverWindow", "SctpSmoothedRoundTripTime", "SctpUnackData", });
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuExtensionStats_descriptor =
       internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(4);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuExtensionStats_fieldAccessorTable = new

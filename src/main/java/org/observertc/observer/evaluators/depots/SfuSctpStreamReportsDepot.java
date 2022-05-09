@@ -77,6 +77,7 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
                     .setRoomId(roomId)
                     .setTransportId(transportId)
                     .setStreamId(streamId)
+                    .setInternal(sctpChannel.internal)
 
                     /* SCTP Stats */
                     .setLabel(sctpChannel.label)

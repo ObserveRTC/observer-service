@@ -8,8 +8,8 @@ import org.observertc.observer.mappings.Mapper;
 import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.protobuf.ProtobufSamplesMapper;
 import org.observertc.schemas.samples.Samples;
+import org.observertc.schemas.v200.samples.Fromv200ToLatestConverter;
 import org.observertc.schemas.v200beta59.samples.Fromv200beta59ToLatestConverter;
-import org.observertc.schemas.v200beta64.samples.Fromv200beta64ToLatestConverter;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -84,10 +84,10 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
                             return samples;
                         };
                     },
-                    () -> { // <= 2.0.0-beta64
-                        var samplerMapper = new org.observertc.schemas.v200beta64.protobuf.ProtobufSamplesMapper();
+                    () -> { // <= 2.0.0
+                        var samplerMapper = new org.observertc.schemas.v200.protobuf.ProtobufSamplesMapper();
                         return message -> {
-                            var protobufSamples = org.observertc.schemas.v200beta64.protobuf.ProtobufSamples.Samples.parseFrom(message);
+                            var protobufSamples = org.observertc.schemas.v200.protobuf.ProtobufSamples.Samples.parseFrom(message);
                             var samples = samplerMapper.apply(protobufSamples);
                             return samples;
                         };
@@ -119,16 +119,16 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
                             return samples;
                         };
                     },
-                    () -> { // <= 2.0.0-beta-64
-                        var samplesV200beta64Mapper = JsonMapper.<org.observertc.schemas.v200beta64.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v200beta64.samples.Samples.class);
-                        Mapper<org.observertc.schemas.v200beta64.samples.Samples, Samples> samplesVersionAligner;
-                        var from200beta64ToLatestConverter = new Fromv200beta64ToLatestConverter();
+                    () -> { // <= 2.0.0
+                        var samplesV200beta64Mapper = JsonMapper.<org.observertc.schemas.v200.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v200.samples.Samples.class);
+                        Mapper<org.observertc.schemas.v200.samples.Samples, Samples> samplesVersionAligner;
+                        var from200ToLatestConverter = new Fromv200ToLatestConverter();
                         return message -> {
-                            var samplesV200beta59 = samplesV200beta64Mapper.map(message);
-                            if (samplesV200beta59 == null) {
+                            var samplesV200 = samplesV200beta64Mapper.map(message);
+                            if (samplesV200 == null) {
                                 throw new RuntimeException("Failed to decode Samples");
                             }
-                            var samples = from200beta64ToLatestConverter.apply(samplesV200beta59);
+                            var samples = from200ToLatestConverter.apply(samplesV200);
                             return samples;
                         };
                     },

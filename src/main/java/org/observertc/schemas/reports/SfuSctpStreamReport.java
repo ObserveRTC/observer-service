@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SfuSctpStreamReport {
-	public static final String VERSION="2.0.0";
+	public static final String VERSION="2.0.1";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -37,6 +37,11 @@ public class SfuSctpStreamReport {
 	*/
 	@JsonProperty("timestamp")
 	public Long timestamp;
+	/**
+	* Flag indicate if the sctp channel is used as an internal transport between SFUs
+	*/
+	@JsonProperty("internal")
+	public Boolean internal;
 	/**
 	* The generated unique identifier of the call
 	*/
@@ -136,6 +141,10 @@ public class SfuSctpStreamReport {
 		}
 		public Builder setTimestamp(Long value) {
 			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setInternal(Boolean value) {
+			this.result.internal = value;
 			return this;
 		}
 		public Builder setCallId(String value) {
