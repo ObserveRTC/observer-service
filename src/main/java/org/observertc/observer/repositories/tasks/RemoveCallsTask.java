@@ -72,7 +72,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 }
                                 CallDTO callDTO = this.hazelcastMaps.getCalls().remove(callId);
                                 if (Objects.isNull(callDTO)) {
-                                    logger.debug("Not found call for callId {}", callId);
+                                    logger.warn("Not found CallDTO for callId {}", callId);
                                     return;
                                 }
                                 this.removedCallDTOs.put(callId, callDTO);

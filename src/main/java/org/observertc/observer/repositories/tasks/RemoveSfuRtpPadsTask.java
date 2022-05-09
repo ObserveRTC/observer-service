@@ -55,7 +55,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                                 }
                                 SfuRtpPadDTO sfuPadDTO = this.hazelcastMaps.getSFURtpPads().remove(id);
                                 if (Objects.isNull(sfuPadDTO)) {
-                                    logger.debug("Not found sfuPadDTO for padId {}", id);
+                                    logger.warn("Not found SfuRtpPadDTO for padId {}", id);
                                     return;
                                 }
                                 this.removedRtpPads.put(sfuPadDTO.rtpPadId, sfuPadDTO);

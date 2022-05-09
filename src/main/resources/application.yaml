@@ -17,7 +17,10 @@ micronaut:
         step: PT1M
   security:
     enabled: false
-
+---
+logger:
+  levels:
+    root: INFO
 ---
 endpoints:
   all:

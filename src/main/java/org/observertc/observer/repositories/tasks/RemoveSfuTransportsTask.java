@@ -60,7 +60,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
                                 }
                                 SfuTransportDTO sfuTransportDTO = this.hazelcastMaps.getSFUTransports().remove(id);
                                 if (Objects.isNull(sfuTransportDTO)) {
-                                    logger.debug("Not found sfuTransportDTO for transportId {}", id);
+                                    logger.warn("Not found SfuTransportDTO for transportId {}", id);
                                     return;
                                 }
                                 this.removedSfuTransportDTOs.put(sfuTransportDTO.transportId, sfuTransportDTO);

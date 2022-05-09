@@ -4,14 +4,13 @@ import io.reactivex.rxjava3.functions.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Utils {
@@ -111,23 +110,22 @@ public class Utils {
     }
 
     public static boolean nonNull(Object subject) {
-        // TODO: change it back before release
-//        return Objects.nonNull(subject);
-
-        // for development purpose
+//        if (!logger.isDebugEnabled()) {
+//            return Objects.nonNull(subject);
+//        }
         if (Objects.nonNull(subject)) {
             return true;
         }
-        var stackTrace = Thread.currentThread().getStackTrace();
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace == null) {
             logger.warn("Null value is detected where it does not supposed to be.");
             return false;
         }
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        new Throwable().printStackTrace(pw);
-        String sStackTrace = sw.toString(); // stack trace as a string
-        logger.warn("Null value is detected where it does not supposed to be. {}", sStackTrace);
+        var stackTrackStr = Arrays.asList(Thread.currentThread().getStackTrace()).stream()
+                .map(StackTraceElement::toString)
+                .filter(str -> str.contains("observertc"))
+                .collect(Collectors.joining("\n"));
+        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrackStr);
         return false;
     }
 }

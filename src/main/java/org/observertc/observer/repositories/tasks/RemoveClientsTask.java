@@ -66,7 +66,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
                                 if (Objects.isNull(clientDTO)) {
                                     clientDTO = this.hazelcastMaps.getClients().remove(clientId);
                                     if (Objects.isNull(clientDTO)) {
-                                        logger.debug("Not found client for clientId {}", clientId);
+                                        logger.warn("Not found ClientDTO for clientId {}", clientId);
                                         continue;
                                     }
                                     this.removedClientDTOs.put(clientId, clientDTO);

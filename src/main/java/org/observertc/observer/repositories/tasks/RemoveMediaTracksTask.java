@@ -48,7 +48,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                                 }
                                 MediaTrackDTO mediaTrackDTO = this.hazelcastMaps.getMediaTracks().remove(trackId);
                                 if (Objects.isNull(mediaTrackDTO)) {
-                                    logger.debug("Cannot retrieve MediaTrackDTO for trackId: {}", trackId);
+                                    logger.warn("Not found MediaTrackDTO for trackId: {}", trackId);
                                     continue;
                                 }
                                 this.removedTrackDTOs.put(mediaTrackDTO.trackId, mediaTrackDTO);
