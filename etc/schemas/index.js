@@ -45,7 +45,7 @@ const createSamplesPojo = (path) => {
 
     assigns.push(...samplesClass.drainAssigns());
     fs.writeFileSync(`samples_assigns.txt`, assigns.join(`\n`));
-    fs.writeFileSync(`SamplesAvro_${schemas.version}.avsc`, JSON.stringify(samplesSchema, null, 2));
+    fs.writeFileSync(`archive/SamplesAvro_${schemas.version}.avsc`, JSON.stringify(samplesSchema, null, 2));
 }
 
 const createReportsPojo = (path) => {
