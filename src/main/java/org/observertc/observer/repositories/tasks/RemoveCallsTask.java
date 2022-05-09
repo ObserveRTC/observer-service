@@ -6,7 +6,6 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.CallDTO;
-import org.observertc.observer.entities.CallEntity;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.samples.ServiceRoomId;
@@ -72,6 +71,10 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                     return;
                                 }
                                 CallDTO callDTO = this.hazelcastMaps.getCalls().remove(callId);
+                                if (Objects.isNull(callDTO)) {
+                                    logger.debug("Not found call for callId {}", callId);
+                                    return;
+                                }
                                 this.removedCallDTOs.put(callId, callDTO);
                             });
                             return this.removedCallDTOs;
@@ -87,10 +90,10 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                 .<Map<UUID, CallDTO>> addConsumerStage("Remove Room relation",
                         removedCallDTOs -> {
                             removedCallDTOs.forEach((callId, callDTO) -> {
+                                if (callDTO == null) return;
                                 var serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
                                 var serviceRoomKey = ServiceRoomId.createKey(serviceRoomId);
                                 this.hazelcastMaps.getServiceRoomToCallIds().remove(serviceRoomKey);
-                                var callEntityBuilder = CallEntity.builder().withCallDTO(callDTO);
                             });
                         },
                         // rollback
@@ -100,6 +103,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 return;
                             }
                             this.removedCallDTOs.forEach((callId, callDTO) -> {
+                                if (callDTO == null) return;
                                 var serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
                                 var serviceRoomKey = ServiceRoomId.createKey(serviceRoomId);
                                 this.hazelcastMaps.getServiceRoomToCallIds().put(serviceRoomKey, callId);
@@ -109,7 +113,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                         // action
                         () -> {
                             Set<UUID> clientIds = new HashSet<>();
-                            this.removedCallDTOs.keySet().forEach(callId -> {
+                            this.removedCallDTOs.keySet().stream().filter(Utils::nonNull).forEach(callId -> {
                                 Collection<UUID> callsClientIds = this.hazelcastMaps.getCallToClientIds().remove(callId);
                                 this.removedCallClientIds.put(callId, callsClientIds);
                                 callsClientIds.forEach(clientIds::add);

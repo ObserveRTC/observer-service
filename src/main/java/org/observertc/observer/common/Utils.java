@@ -4,6 +4,8 @@ import io.reactivex.rxjava3.functions.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -117,7 +119,15 @@ public class Utils {
             return true;
         }
         var stackTrace = Thread.currentThread().getStackTrace();
-        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrace);
+        if (stackTrace == null) {
+            logger.warn("Null value is detected where it does not supposed to be.");
+            return false;
+        }
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        new Throwable().printStackTrace(pw);
+        String sStackTrace = sw.toString(); // stack trace as a string
+        logger.warn("Null value is detected where it does not supposed to be. {}", sStackTrace);
         return false;
     }
 }

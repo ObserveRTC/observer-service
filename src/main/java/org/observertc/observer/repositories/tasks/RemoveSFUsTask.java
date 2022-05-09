@@ -59,6 +59,10 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
                                     return;
                                 }
                                 SfuDTO sfuDTO = this.hazelcastMaps.getSFUs().remove(sfuId);
+                                if (Objects.isNull(sfuDTO)) {
+                                    logger.debug("Not found sfuDTO for sfuId {}", sfuId);
+                                    return;
+                                }
                                 this.removedSfuDTOs.put(sfuId, sfuDTO);
                             });
                         },

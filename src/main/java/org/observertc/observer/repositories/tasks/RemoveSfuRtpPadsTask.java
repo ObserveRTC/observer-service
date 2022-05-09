@@ -53,8 +53,12 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                                 if (this.removedRtpPads.containsKey(id)) {
                                     return;
                                 }
-                                SfuRtpPadDTO DTO = this.hazelcastMaps.getSFURtpPads().remove(id);
-                                this.removedRtpPads.put(DTO.rtpPadId, DTO);
+                                SfuRtpPadDTO sfuPadDTO = this.hazelcastMaps.getSFURtpPads().remove(id);
+                                if (Objects.isNull(sfuPadDTO)) {
+                                    logger.debug("Not found sfuPadDTO for padId {}", id);
+                                    return;
+                                }
+                                this.removedRtpPads.put(sfuPadDTO.rtpPadId, sfuPadDTO);
                             });
                             return;
                         },
