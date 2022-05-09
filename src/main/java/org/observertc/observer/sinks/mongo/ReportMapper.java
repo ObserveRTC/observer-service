@@ -687,7 +687,9 @@ class ReportMapper implements ReportTypeVisitor<Object, Document> {
                 .append("rtxPacketsDiscarded", reportPayload.rtxPacketsDiscarded)
                 .append("framesSent", reportPayload.framesSent)
                 .append("framesEncoded", reportPayload.framesEncoded)
-                .append("keyFramesEncoded", reportPayload.keyFramesEncoded);
+                .append("keyFramesEncoded", reportPayload.keyFramesEncoded)
+                .append("roundTripTime", reportPayload.roundTripTime)
+                ;
     }
 
     @Override

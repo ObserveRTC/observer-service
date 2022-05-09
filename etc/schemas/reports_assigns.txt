@@ -608,6 +608,7 @@ sfuOutboundRtpPadReport.rtxPacketsDiscarded = ASSIGNED;
 sfuOutboundRtpPadReport.framesSent = ASSIGNED;
 sfuOutboundRtpPadReport.framesEncoded = ASSIGNED;
 sfuOutboundRtpPadReport.keyFramesEncoded = ASSIGNED;
+sfuOutboundRtpPadReport.roundTripTime = ASSIGNED;
 
 SfuSctpStreamReport
 sfuSctpStreamReport.serviceId = ASSIGNED;

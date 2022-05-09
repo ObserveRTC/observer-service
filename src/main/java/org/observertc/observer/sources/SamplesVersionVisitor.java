@@ -120,6 +120,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
         switch (version.toLowerCase(Locale.ROOT)) {
             case "latest":
             case Samples.VERSION:
+            case "2.0.1":
                 return visitLatest(obj);
             case  "2.0.0":
             case  "2.0.0-beta.65":

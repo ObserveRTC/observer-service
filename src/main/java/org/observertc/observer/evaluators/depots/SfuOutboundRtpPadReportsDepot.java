@@ -127,6 +127,7 @@ public class SfuOutboundRtpPadReportsDepot implements Supplier<List<SfuOutboundR
                     .setFramesSent(sfuOutboundRtpPad.framesSent)
                     .setFramesEncoded(sfuOutboundRtpPad.framesEncoded)
                     .setKeyFramesEncoded(sfuOutboundRtpPad.keyFramesEncoded)
+                    .setRoundTripTime(sfuOutboundRtpPad.roundTripTime)
 
                     .build();
             this.buffer.add(report);

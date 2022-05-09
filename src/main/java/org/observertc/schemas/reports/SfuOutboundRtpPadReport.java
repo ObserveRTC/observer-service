@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SfuOutboundRtpPadReport {
-	public static final String VERSION="2.0.1";
+	public static final String VERSION="2.0.2";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -227,6 +227,11 @@ public class SfuOutboundRtpPadReport {
 	*/
 	@JsonProperty("keyFramesEncoded")
 	public Integer keyFramesEncoded;
+	/**
+	* The calculated RTT of the stream
+	*/
+	@JsonProperty("roundTripTime")
+	public Double roundTripTime;
 
 
 	public static class Builder {
@@ -403,6 +408,10 @@ public class SfuOutboundRtpPadReport {
 		}
 		public Builder setKeyFramesEncoded(Integer value) {
 			this.result.keyFramesEncoded = value;
+			return this;
+		}
+		public Builder setRoundTripTime(Double value) {
+			this.result.roundTripTime = value;
 			return this;
 		}
 		public SfuOutboundRtpPadReport build() {

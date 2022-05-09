@@ -608,6 +608,7 @@ Assertions.assertEquals(expected.rtxPacketsDiscarded, actual.rtxPacketsDiscarded
 Assertions.assertEquals(expected.framesSent, actual.framesSent, "framesSent field");
 Assertions.assertEquals(expected.framesEncoded, actual.framesEncoded, "framesEncoded field");
 Assertions.assertEquals(expected.keyFramesEncoded, actual.keyFramesEncoded, "keyFramesEncoded field");
+Assertions.assertEquals(expected.roundTripTime, actual.roundTripTime, "roundTripTime field");
 
 SfuSctpStreamReport
 Assertions.assertEquals(expected.serviceId, actual.serviceId, "serviceId field");
