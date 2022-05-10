@@ -66,7 +66,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
                                 if (Objects.isNull(clientDTO)) {
                                     clientDTO = this.hazelcastMaps.getClients().remove(clientId);
                                     if (Objects.isNull(clientDTO)) {
-                                        logger.warn("Not found ClientDTO for clientId {}", clientId);
+                                        logger.debug("Not found ClientDTO for clientId {}. Perhaps it was ejected before it was ordered to be removed.", clientId);
                                         continue;
                                     }
                                     this.removedClientDTOs.put(clientId, clientDTO);
@@ -144,7 +144,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
         if (Objects.isNull(clientIds) || clientIds.size() < 1) {
             return this;
         }
-        clientIds.stream().filter(Utils::nonNull).forEach(this.clientIds::add);
+        clientIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.clientIds::add);
         return this;
     }
 

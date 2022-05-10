@@ -5,6 +5,12 @@ import java.util.*;
 
 public class TestUtils {
 
+    public static<K, V> Map<K, V> nullValuedMap(K key) {
+        var result = new HashMap<K, V>();
+        result.put(key, null);
+        return result;
+    }
+
     public static List<String> getTestUserIds() {
         return List.of(
                 "Alice",

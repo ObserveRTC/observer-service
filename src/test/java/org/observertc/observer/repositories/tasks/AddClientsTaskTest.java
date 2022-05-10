@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.TestUtils;
 
 import java.util.Map;
+import java.util.UUID;
 
 @MicronautTest
 class AddClientsTaskTest {
@@ -92,5 +94,17 @@ class AddClientsTaskTest {
 
         var callClientIds = this.hazelcastMaps.getCallToClientIds().get(clientDTO.callId);
         Assertions.assertTrue(callClientIds.contains(clientDTO.clientId));
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var clientId = UUID.randomUUID();
+        var task = addClientsTaskProvider.get()
+                .withClientDTOs(TestUtils.nullValuedMap(clientId));
+
+        task.execute();
+
+        var actual = this.hazelcastMaps.getMediaTracks().get(clientId);
+        Assertions.assertNull(actual);
     }
 }

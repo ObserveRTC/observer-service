@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.TestUtils;
 
 import java.util.Map;
+import java.util.UUID;
 
 @MicronautTest
 class AddSFUsTaskTest {
@@ -59,5 +61,17 @@ class AddSFUsTaskTest {
         var actual = this.hazelcastMaps.getSFUs().get(expected.sfuId);
         boolean equals = expected.equals(actual);
         Assertions.assertTrue(equals);
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var id = UUID.randomUUID();
+        var task = addSFUsTaskProvider.get()
+                .withSfuDTOs(TestUtils.nullValuedMap(id));
+
+        task.execute();
+
+        var actual = this.hazelcastMaps.getSFUs().get(id);
+        Assertions.assertNull(actual);
     }
 }

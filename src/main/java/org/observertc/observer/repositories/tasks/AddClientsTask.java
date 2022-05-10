@@ -87,7 +87,7 @@ public class AddClientsTask extends ChainedTask<Void> {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
-        Arrays.stream(clientDTOs).filter(Utils::nonNull).forEach(clientDTO -> {
+        Arrays.stream(clientDTOs).filter(Utils::expensiveNonNullCheck).forEach(clientDTO -> {
             this.clientDTOs.put(clientDTO.clientId, clientDTO);
         });
         return this;
@@ -98,7 +98,7 @@ public class AddClientsTask extends ChainedTask<Void> {
             this.getLogger().info("call uuid was not given to be removed");
             return this;
         }
-        clientDTOs.values().stream().filter(Utils::nonNull).forEach(clientDTO -> {
+        clientDTOs.values().stream().filter(Utils::expensiveNonNullCheck).forEach(clientDTO -> {
             this.clientDTOs.put(clientDTO.clientId, clientDTO);
         });
         return this;

@@ -97,7 +97,7 @@ public class AddPeerConnectionsTask extends ChainedTask<List<CallEventReport.Bui
             this.getLogger().info("peerConnectionDTOs was not given to be removed");
             return this;
         }
-        peerConnectionDTOs.values().stream().filter(Utils::nonNull).forEach(peerConnectionDTO -> {
+        peerConnectionDTOs.values().stream().filter(Utils::expensiveNonNullCheck).forEach(peerConnectionDTO -> {
             this.peerConnectionDTOs.put(peerConnectionDTO.peerConnectionId, peerConnectionDTO);
         });
         return this;

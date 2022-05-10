@@ -80,7 +80,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
             return this;
         }
         var sfuIdsArray = Arrays.asList(sfuIds);
-        sfuIdsArray.stream().filter(Utils::nonNull).forEach(this.sfuIds::add);
+        sfuIdsArray.stream().filter(Utils::expensiveNonNullCheck).forEach(this.sfuIds::add);
         return this;
     }
 
@@ -88,7 +88,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         if (Objects.isNull(sfuIds)) {
             return this;
         }
-        sfuIds.stream().filter(Utils::nonNull).forEach(this.sfuIds::add);
+        sfuIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.sfuIds::add);
         return this;
     }
 
@@ -97,7 +97,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
             return this;
         }
         var sfuTransportIdsArray = Arrays.asList(sfuTransportIds);
-        sfuTransportIdsArray.stream().filter(Utils::nonNull).forEach(this.transportIds::add);
+        sfuTransportIdsArray.stream().filter(Utils::expensiveNonNullCheck).forEach(this.transportIds::add);
         return this;
     }
 
@@ -105,7 +105,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         if (Objects.isNull(sfuTransportIds)) {
             return this;
         }
-        sfuTransportIds.stream().filter(Utils::nonNull).forEach(this.transportIds::add);
+        sfuTransportIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.transportIds::add);
         return this;
     }
 
@@ -114,7 +114,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
             return this;
         }
         var rtpStreamIdsList = Arrays.asList(rtpStreamIds);
-        rtpStreamIdsList.stream().filter(Utils::nonNull).forEach(this.rtpPadIds::add);
+        rtpStreamIdsList.stream().filter(Utils::expensiveNonNullCheck).forEach(this.rtpPadIds::add);
         return this;
     }
 
@@ -122,7 +122,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
         if (Objects.isNull(rtpPadIds)) {
             return this;
         }
-        rtpPadIds.stream().filter(Utils::nonNull).forEach(this.rtpPadIds::add);
+        rtpPadIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.rtpPadIds::add);
         return this;
     }
 

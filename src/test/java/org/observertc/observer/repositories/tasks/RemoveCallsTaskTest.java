@@ -12,6 +12,7 @@ import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.util.Set;
+import java.util.UUID;
 
 @MicronautTest
 class RemoveCallsTaskTest {
@@ -46,6 +47,7 @@ class RemoveCallsTaskTest {
         var hasCallId = this.hazelcastMaps.getCalls().containsKey(call.callId);
         Assertions.assertFalse(hasCallId);
     }
+
 
     @Test
     public void removeCall_2() {
@@ -133,5 +135,14 @@ class RemoveCallsTaskTest {
             var hasClient = this.hazelcastMaps.getClients().containsKey(clientId);
             Assertions.assertFalse(hasClient);
         });
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var notExistingId = UUID.randomUUID();
+        var task = removeCallsTaskProvider.get()
+                .whereCallIds(Set.of(notExistingId))
+                .execute()
+                ;
     }
 }

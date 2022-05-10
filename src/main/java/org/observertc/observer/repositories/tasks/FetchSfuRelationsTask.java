@@ -78,7 +78,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     }
 
     public FetchSfuRelationsTask whereSfuRtpPadIds(Set<UUID> sfuRtpPadIds) {
-        sfuRtpPadIds.stream().filter(Utils::nonNull).forEach(this.rtpPadIds::add);
+        sfuRtpPadIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.rtpPadIds::add);
         return this;
     }
 

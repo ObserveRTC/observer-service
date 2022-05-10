@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOMapGenerator;
 
+import java.util.Set;
+import java.util.UUID;
+
 @MicronautTest
 class RemoveClientsTaskTest {
 
@@ -143,6 +146,15 @@ class RemoveClientsTaskTest {
             var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertFalse(hasPeerConnections);
         });
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var notExistingId = UUID.randomUUID();
+        var task = removeClientsTaskProvider.get()
+                .whereClientIds(Set.of(notExistingId))
+                .execute()
+                ;
     }
 
 }

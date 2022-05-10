@@ -74,7 +74,7 @@ public class AddSFUsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu uuid was not given to be added");
             return this;
         }
-        Arrays.stream(sfuDTOs).filter(Utils::nonNull).forEach(sfuDTO -> {
+        Arrays.stream(sfuDTOs).filter(Utils::expensiveNonNullCheck).forEach(sfuDTO -> {
             this.sfuDTOs.put(sfuDTO.sfuId, sfuDTO);
         });
         return this;
@@ -85,7 +85,7 @@ public class AddSFUsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu uuid was not given to be added");
             return this;
         }
-        sfuDTOs.values().stream().filter(Utils::nonNull).forEach(sfuDTO -> {
+        sfuDTOs.values().stream().filter(Utils::expensiveNonNullCheck).forEach(sfuDTO -> {
             this.sfuDTOs.put(sfuDTO.sfuId, sfuDTO);
         });
         return this;

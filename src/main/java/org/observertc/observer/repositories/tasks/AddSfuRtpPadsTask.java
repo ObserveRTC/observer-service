@@ -70,7 +70,7 @@ public class AddSfuRtpPadsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu stream DTO was not given to be added");
             return this;
         }
-        sfuRtpPadDTO.values().stream().filter(Utils::nonNull).forEach(sfuRtpPadDTOs -> {
+        sfuRtpPadDTO.values().stream().filter(Utils::expensiveNonNullCheck).forEach(sfuRtpPadDTOs -> {
             this.sfuRtpPadDTOs.put(sfuRtpPadDTOs.rtpPadId, sfuRtpPadDTOs);
         });
         return this;

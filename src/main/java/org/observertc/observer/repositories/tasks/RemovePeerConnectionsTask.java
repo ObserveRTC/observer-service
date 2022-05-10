@@ -51,7 +51,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                                 }
                                 PeerConnectionDTO peerConnectionDTO = this.hazelcastMaps.getPeerConnections().remove(peerConnectionId);
                                 if (Objects.isNull(peerConnectionDTO)) {
-                                    logger.warn("Not found PeerConnectionDTO for peerConnectionId: {}.", peerConnectionId);
+                                    logger.debug("Not found PeerConnectionDTO for peerConnectionId: {}. Perhaps it was ejected before it was ordered to be removed.", peerConnectionId);
                                     continue;
                                 }
                                 this.removedPeerConnectionDTOs.put(peerConnectionId, peerConnectionDTO);
@@ -111,7 +111,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
         if (Objects.isNull(peerConnectionIds) || peerConnectionIds.size() < 1) {
             return this;
         }
-        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
+        peerConnectionIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.peerConnectionIds::add);
         return this;
     }
 

@@ -38,18 +38,23 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
             var clientSample = value.getClientSample();
             ClientSampleVisitor.streamPeerConnectionTransports(clientSample)
                     .map(transport -> transport.peerConnectionId)
+                    .filter(Objects::nonNull)
                     .forEach(peerConnectionIds::add);
             ClientSampleVisitor.streamInboundAudioTracks(clientSample)
                     .map(track -> track.trackId)
+                    .filter(Objects::nonNull)
                     .forEach(mediaTrackIds::add);
             ClientSampleVisitor.streamInboundVideoTracks(clientSample)
                     .map(track -> track.trackId)
+                    .filter(Objects::nonNull)
                     .forEach(mediaTrackIds::add);
             ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
                     .map(track -> track.trackId)
+                    .filter(Objects::nonNull)
                     .forEach(mediaTrackIds::add);
             ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
                     .map(track -> track.trackId)
+                    .filter(Objects::nonNull)
                     .forEach(mediaTrackIds::add);
             if (Objects.nonNull(clientSample.clientId)) {
                 this.clientIds.add(clientSample.clientId);

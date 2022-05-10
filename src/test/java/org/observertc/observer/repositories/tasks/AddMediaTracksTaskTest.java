@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.TestUtils;
 
 import java.util.Map;
+import java.util.UUID;
 
 @MicronautTest
 class AddMediaTracksTaskTest {
@@ -64,5 +66,17 @@ class AddMediaTracksTaskTest {
         var outboundMediaTrackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().get(mediaTrackDTO.peerConnectionId);
         var contains = outboundMediaTrackIds.contains(mediaTrackDTO.trackId);
         Assertions.assertTrue(contains);
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var trackId = UUID.randomUUID();
+        var task = addMediaTracksTaskProvider.get()
+                .withMediaTrackDTOs(TestUtils.nullValuedMap(trackId));
+
+        task.execute();
+
+        var actual = this.hazelcastMaps.getMediaTracks().get(trackId);
+        Assertions.assertNull(actual);
     }
 }

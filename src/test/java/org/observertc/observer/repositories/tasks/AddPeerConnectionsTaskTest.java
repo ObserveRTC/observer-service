@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.TestUtils;
 
 import java.util.Map;
+import java.util.UUID;
 
 @MicronautTest
 class AddPeerConnectionsTaskTest {
@@ -46,5 +48,17 @@ class AddPeerConnectionsTaskTest {
         var peerConnectionIds = this.hazelcastMaps.getClientToPeerConnectionIds().get(peerConnectionDTO.clientId);
         var contains = peerConnectionIds.contains(peerConnectionDTO.peerConnectionId);
         Assertions.assertTrue(contains);
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var id = UUID.randomUUID();
+        var task = addPeerConnectionsTaskProvider.get()
+                .withPeerConnectionDTOs(TestUtils.nullValuedMap(id));
+
+        task.execute();
+
+        var actual = this.hazelcastMaps.getPeerConnections().get(id);
+        Assertions.assertNull(actual);
     }
 }

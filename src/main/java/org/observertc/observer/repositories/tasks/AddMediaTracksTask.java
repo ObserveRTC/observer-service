@@ -98,7 +98,7 @@ public class AddMediaTracksTask extends ChainedTask<Void> {
             this.getLogger().info("mediaTrackDTOs was not given");
             return this;
         }
-        mediaTrackDTOs.values().stream().filter(Utils::nonNull).forEach(mediaTrackDTO -> {
+        mediaTrackDTOs.values().stream().filter(Utils::expensiveNonNullCheck).forEach(mediaTrackDTO -> {
             this.mediaTrackDTOs.put(mediaTrackDTO.trackId, mediaTrackDTO);
         });
         return this;

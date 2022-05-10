@@ -229,7 +229,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
 
     public FetchTracksRelationsTask whereInboundMediaTrackIds(Set<UUID> mediaTrackIds) {
         if (mediaTrackIds == null) return this;
-        mediaTrackIds.stream().filter(Utils::nonNull).forEach(this.inboundTrackIds::add);
+        mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.inboundTrackIds::add);
         return this;
     }
 

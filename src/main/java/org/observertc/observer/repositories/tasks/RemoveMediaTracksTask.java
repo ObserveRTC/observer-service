@@ -48,7 +48,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                                 }
                                 MediaTrackDTO mediaTrackDTO = this.hazelcastMaps.getMediaTracks().remove(trackId);
                                 if (Objects.isNull(mediaTrackDTO)) {
-                                    logger.warn("Not found MediaTrackDTO for trackId: {}", trackId);
+                                    logger.debug("Not found MediaTrackDTO for trackId: {}. Perhaps it was ejected before it was ordered to be removed.", trackId);
                                     continue;
                                 }
                                 this.removedTrackDTOs.put(mediaTrackDTO.trackId, mediaTrackDTO);
@@ -118,7 +118,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
         if (Objects.isNull(mediaTrackIds) || mediaTrackIds.size() < 1) {
             return this;
         }
-        mediaTrackIds.stream().filter(Utils::nonNull).forEach(this.mediaTrackIds::add);
+        mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.mediaTrackIds::add);
         return this;
     }
 

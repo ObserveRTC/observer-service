@@ -55,7 +55,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                                 }
                                 SfuRtpPadDTO sfuPadDTO = this.hazelcastMaps.getSFURtpPads().remove(id);
                                 if (Objects.isNull(sfuPadDTO)) {
-                                    logger.warn("Not found SfuRtpPadDTO for padId {}", id);
+                                    logger.debug("Not found SfuRtpPadDTO for padId {}. Perhaps it was ejected before it was ordered to be removed.", id);
                                     return;
                                 }
                                 this.removedRtpPads.put(sfuPadDTO.rtpPadId, sfuPadDTO);
@@ -103,7 +103,7 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
         if (Objects.isNull(podIds) || podIds.size() < 1) {
             return this;
         }
-        podIds.stream().filter(Utils::nonNull).forEach(this.padIds::add);
+        podIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.padIds::add);
         return this;
     }
 

@@ -60,7 +60,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
                                 }
                                 SfuTransportDTO sfuTransportDTO = this.hazelcastMaps.getSFUTransports().remove(id);
                                 if (Objects.isNull(sfuTransportDTO)) {
-                                    logger.warn("Not found SfuTransportDTO for transportId {}", id);
+                                    logger.debug("Not found SfuTransportDTO for transportId {}. Perhaps it was ejected before it was ordered to be removed.", id);
                                     return;
                                 }
                                 this.removedSfuTransportDTOs.put(sfuTransportDTO.transportId, sfuTransportDTO);
@@ -85,7 +85,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
         if (Objects.isNull(sfuTransportIds) || sfuTransportIds.size() < 1) {
             return this;
         }
-        sfuTransportIds.stream().filter(Utils::nonNull).forEach(this.sfuTransportIds::add);
+        sfuTransportIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.sfuTransportIds::add);
         return this;
     }
 

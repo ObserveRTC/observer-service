@@ -109,10 +109,13 @@ public class Utils {
         };
     }
 
-    public static boolean nonNull(Object subject) {
-//        if (!logger.isDebugEnabled()) {
-//            return Objects.nonNull(subject);
-//        }
+    /**
+     * Check if a a value is non null. Returns true if it is NOT null.
+     * if it is null it gets the stacktrace and log as warning any related code line.
+     * @param subject
+     * @return true if the objects is not null, false otherwise
+     */
+    public static boolean expensiveNonNullCheck(Object subject) {
         if (Objects.nonNull(subject)) {
             return true;
         }

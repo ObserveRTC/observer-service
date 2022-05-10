@@ -72,7 +72,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 }
                                 CallDTO callDTO = this.hazelcastMaps.getCalls().remove(callId);
                                 if (Objects.isNull(callDTO)) {
-                                    logger.warn("Not found CallDTO for callId {}", callId);
+                                    logger.warn("Not found CallDTO for callId {}.", callId);
                                     return;
                                 }
                                 this.removedCallDTOs.put(callId, callDTO);
@@ -113,7 +113,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                         // action
                         () -> {
                             Set<UUID> clientIds = new HashSet<>();
-                            this.removedCallDTOs.keySet().stream().filter(Utils::nonNull).forEach(callId -> {
+                            this.removedCallDTOs.keySet().stream().filter(Utils::expensiveNonNullCheck).forEach(callId -> {
                                 Collection<UUID> callsClientIds = this.hazelcastMaps.getCallToClientIds().remove(callId);
                                 this.removedCallClientIds.put(callId, callsClientIds);
                                 callsClientIds.forEach(clientIds::add);
@@ -154,7 +154,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
         if (Objects.isNull(callIds) || callIds.size() < 1) {
             return this;
         }
-        callIds.stream().filter(Utils::nonNull).forEach(this.callIds::add);
+        callIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.callIds::add);
         return this;
     }
 

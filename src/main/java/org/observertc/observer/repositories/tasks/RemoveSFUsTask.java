@@ -60,7 +60,7 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
                                 }
                                 SfuDTO sfuDTO = this.hazelcastMaps.getSFUs().remove(sfuId);
                                 if (Objects.isNull(sfuDTO)) {
-                                    logger.warn("Not found SfuDTO for sfuId {}", sfuId);
+                                    logger.debug("Not found SfuDTO for sfuId {}. Perhaps it was ejected before it was ordered to be removed.", sfuId);
                                     return;
                                 }
                                 this.removedSfuDTOs.put(sfuId, sfuDTO);
@@ -84,7 +84,7 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
         if (Objects.isNull(sfuIds) || sfuIds.size() < 1) {
             return this;
         }
-        sfuIds.stream().filter(Utils::nonNull).forEach(this.sfuIds::add);
+        sfuIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.sfuIds::add);
         return this;
     }
 

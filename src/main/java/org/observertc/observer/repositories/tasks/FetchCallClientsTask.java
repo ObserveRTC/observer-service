@@ -35,7 +35,7 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }
-        Arrays.asList(values).stream().filter(Utils::nonNull).forEach(this.callIds::add);
+        Arrays.asList(values).stream().filter(Utils::expensiveNonNullCheck).forEach(this.callIds::add);
         return this;
     }
 
@@ -43,7 +43,7 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
         if (Objects.isNull(callIds) || callIds.size() < 1) {
             return this;
         }
-        callIds.stream().filter(Utils::nonNull).forEach(this.callIds::add);
+        callIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.callIds::add);
         return this;
     }
 

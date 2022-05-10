@@ -126,7 +126,7 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
         if (Objects.isNull(values) || values.length < 1) {
             return this;
         }
-        Arrays.asList(values).stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
+        Arrays.asList(values).stream().filter(Utils::expensiveNonNullCheck).forEach(this.peerConnectionIds::add);
         return this;
     }
 
@@ -134,7 +134,7 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
         if (Objects.isNull(peerConnectionIds) || peerConnectionIds.size() < 1) {
             return this;
         }
-        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
+        peerConnectionIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.peerConnectionIds::add);
         return this;
     }
 

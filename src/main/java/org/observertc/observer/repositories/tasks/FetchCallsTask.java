@@ -110,7 +110,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
         }
         Arrays.asList(values)
                 .stream()
-                .filter(Utils::nonNull).forEach(this.callIds::add);
+                .filter(Utils::expensiveNonNullCheck).forEach(this.callIds::add);
         return this;
     }
 
@@ -118,7 +118,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
         if (Objects.isNull(callIds) || callIds.size() < 1) {
             return this;
         }
-        callIds.stream().filter(Utils::nonNull).forEach(this.callIds::add);
+        callIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.callIds::add);
         return this;
     }
 

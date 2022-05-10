@@ -7,6 +7,9 @@ import org.junit.jupiter.api.*;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOMapGenerator;
 
+import java.util.Set;
+import java.util.UUID;
+
 @MicronautTest
 class RemoveSFUsTaskTest {
 
@@ -50,5 +53,14 @@ class RemoveSFUsTaskTest {
 
         var allRemained = sfus.keySet().stream().allMatch(this.hazelcastMaps.getSFUs()::containsKey);
         Assertions.assertTrue(allRemained);
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var notExistingId = UUID.randomUUID();
+        var task = removeSFUsTaskProvider.get()
+                .whereSfuIds(Set.of(notExistingId))
+                .execute()
+                ;
     }
 }

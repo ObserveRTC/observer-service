@@ -86,25 +86,25 @@ public class FindParentalDTOsTask extends ChainedTask<FindParentalDTOsTask.Repor
 
     public FindParentalDTOsTask whereCallIds(Set<UUID> callIds) {
         Objects.requireNonNull(callIds);
-        callIds.stream().filter(Utils::nonNull).forEach(this.callIds::add);
+        callIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.callIds::add);
         return this;
     }
 
     public FindParentalDTOsTask whereClientIds(Set<UUID> clientIds) {
         Objects.requireNonNull(clientIds);
-        clientIds.stream().filter(Utils::nonNull).forEach(this.clientIds::add);
+        clientIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.clientIds::add);
         return this;
     }
 
     public FindParentalDTOsTask wherePeerConnectionIds(Set<UUID> peerConnectionIds) {
         Objects.requireNonNull(peerConnectionIds);
-        peerConnectionIds.stream().filter(Utils::nonNull).forEach(this.peerConnectionIds::add);
+        peerConnectionIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.peerConnectionIds::add);
         return this;
     }
 
     public FindParentalDTOsTask whereTrackIds(Set<UUID> trackIds) {
         Objects.requireNonNull(trackIds);
-        trackIds.stream().filter(Utils::nonNull).forEach(this.trackIds::add);
+        trackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.trackIds::add);
         return this;
     }
 

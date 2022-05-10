@@ -7,6 +7,9 @@ import org.junit.jupiter.api.*;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.utils.DTOMapGenerator;
 
+import java.util.Set;
+import java.util.UUID;
+
 @MicronautTest
 class RemoveSfuRtpPadsTaskTest {
 
@@ -50,5 +53,14 @@ class RemoveSfuRtpPadsTaskTest {
 
         var allRemained = rtpPads.keySet().stream().allMatch(this.hazelcastMaps.getSFURtpPads()::containsKey);
         Assertions.assertTrue(allRemained);
+    }
+
+    @Test
+    public void notCrashed_1() {
+        var notExistingId = UUID.randomUUID();
+        var task = removeSfuRtpPadsTaskProvider.get()
+                .whereSfuRtpStreamPadIds(Set.of(notExistingId))
+                .execute()
+                ;
     }
 }

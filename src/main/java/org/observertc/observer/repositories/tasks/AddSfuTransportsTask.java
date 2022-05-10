@@ -77,7 +77,7 @@ public class AddSfuTransportsTask extends ChainedTask<Void> {
             this.getLogger().info("sfu transport DTO was not given to be added");
             return this;
         }
-        sfuTransportDTOs.values().stream().filter(Utils::nonNull).forEach(sfuTransportDTO -> {
+        sfuTransportDTOs.values().stream().filter(Utils::expensiveNonNullCheck).forEach(sfuTransportDTO -> {
             this.sfuTransports.put(sfuTransportDTO.transportId, sfuTransportDTO);
         });
         return this;
