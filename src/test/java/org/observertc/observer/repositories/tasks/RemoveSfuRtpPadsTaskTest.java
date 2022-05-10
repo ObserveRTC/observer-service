@@ -39,7 +39,7 @@ class RemoveSfuRtpPadsTaskTest {
                 .execute()
         ;
 
-        var allDeleted = rtpPads.keySet().stream().anyMatch(this.hazelcastMaps.getSFUTransports()::containsKey) == false;
+        var allDeleted = rtpPads.keySet().stream().anyMatch(this.hazelcastMaps.getSFURtpPads()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 

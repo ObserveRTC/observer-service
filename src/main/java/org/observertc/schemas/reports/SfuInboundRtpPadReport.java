@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SfuInboundRtpPadReport {
-	public static final String VERSION="2.0.2";
+	public static final String VERSION="2.0.3";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -42,6 +42,26 @@ public class SfuInboundRtpPadReport {
 	*/
 	@JsonProperty("timestamp")
 	public Long timestamp;
+	/**
+	* only added if it is internal. The id of the remote Sfu that outbound rtp pad matched with this internal inbound rtp pad
+	*/
+	@JsonProperty("remoteSfuId")
+	public String remoteSfuId;
+	/**
+	* only added if it is internal. The id of the remote transportId that outbound rtp pad matched with this internal inbound rtp pad
+	*/
+	@JsonProperty("remoteTransportId")
+	public String remoteTransportId;
+	/**
+	* only added if it is internal. The id of the remote sinkId that outbound rtp pad matched with this internal inbound rtp pad
+	*/
+	@JsonProperty("remoteSinkId")
+	public String remoteSinkId;
+	/**
+	* only added if it is internal. The id of the remote outbound rtp pad matched with this internal inbound rtp pad
+	*/
+	@JsonProperty("remoteRtpPadId")
+	public String remoteRtpPadId;
 	/**
 	* The id of the transport the RTP stream uses.
 	*/
@@ -265,6 +285,22 @@ public class SfuInboundRtpPadReport {
 		}
 		public Builder setTimestamp(Long value) {
 			this.result.timestamp = value;
+			return this;
+		}
+		public Builder setRemoteSfuId(String value) {
+			this.result.remoteSfuId = value;
+			return this;
+		}
+		public Builder setRemoteTransportId(String value) {
+			this.result.remoteTransportId = value;
+			return this;
+		}
+		public Builder setRemoteSinkId(String value) {
+			this.result.remoteSinkId = value;
+			return this;
+		}
+		public Builder setRemoteRtpPadId(String value) {
+			this.result.remoteRtpPadId = value;
 			return this;
 		}
 		public Builder setTransportId(String value) {

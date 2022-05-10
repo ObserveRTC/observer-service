@@ -15,6 +15,7 @@ class SfuRtpPadDTOTest {
     private final UUID SFU_STREAM_ID = UUID.randomUUID();
     private final UUID SFU_SINK_ID = UUID.randomUUID();
     private final UUID SFU_RTP_PAD_ID = UUID.randomUUID();
+    private final Long SFU_RTP_SSRC = UUID.randomUUID().getLeastSignificantBits();
     private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
     private final boolean SFU_RTP_INTERNAL = true;
     private final Long TIMESTAMP = Instant.now().toEpochMilli();
@@ -23,7 +24,7 @@ class SfuRtpPadDTOTest {
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
         var fields = SfuRtpPadDTO.class.getFields();
-        Assertions.assertEquals(12, fields.length);
+        Assertions.assertEquals(13, fields.length);
     }
 
     @Test
@@ -32,6 +33,7 @@ class SfuRtpPadDTOTest {
                 .withSfuRtpPadId(SFU_RTP_PAD_ID)
                 .withAddedTimestamp(TIMESTAMP)
                 .withSfuTransportId(SFU_TRANSPORT_ID)
+                .withSsrc(SFU_RTP_SSRC)
                 ;
 
         Assertions.assertThrows(Exception.class, builder::build);
@@ -43,6 +45,7 @@ class SfuRtpPadDTOTest {
                 .withSfuId(SFU_ID)
                 .withSfuRtpPadId(SFU_RTP_PAD_ID)
                 .withAddedTimestamp(TIMESTAMP)
+                .withSsrc(SFU_RTP_SSRC)
                 ;
 
         Assertions.assertThrows(Exception.class, builder::build);
@@ -54,6 +57,19 @@ class SfuRtpPadDTOTest {
                 .withSfuId(SFU_ID)
                 .withAddedTimestamp(TIMESTAMP)
                 .withSfuTransportId(SFU_TRANSPORT_ID)
+                .withSsrc(SFU_RTP_SSRC)
+                ;
+
+        Assertions.assertThrows(Exception.class, builder::build);
+    }
+
+    @Test
+    void shouldNotBuildWithoutSSRC() {
+        var builder = SfuRtpPadDTO.builder()
+                .withSfuId(SFU_ID)
+                .withSfuRtpPadId(SFU_RTP_PAD_ID)
+                .withSfuTransportId(SFU_TRANSPORT_ID)
+                .withAddedTimestamp(TIMESTAMP)
                 ;
 
         Assertions.assertThrows(Exception.class, builder::build);
@@ -65,6 +81,7 @@ class SfuRtpPadDTOTest {
                 .withSfuId(SFU_ID)
                 .withSfuRtpPadId(SFU_RTP_PAD_ID)
                 .withSfuTransportId(SFU_TRANSPORT_ID)
+                .withSsrc(SFU_RTP_SSRC)
                 ;
 
         Assertions.assertThrows(Exception.class, builder::build);
@@ -83,6 +100,7 @@ class SfuRtpPadDTOTest {
         Assertions.assertEquals(subject.rtpPadId, SFU_RTP_PAD_ID);
         Assertions.assertEquals(subject.transportId, SFU_TRANSPORT_ID);
         Assertions.assertEquals(subject.internal, SFU_RTP_INTERNAL);
+        Assertions.assertEquals(subject.ssrc, SFU_RTP_SSRC);
         Assertions.assertEquals(subject.added, TIMESTAMP);
         Assertions.assertEquals(subject.marker, MARKER);
     }
@@ -108,6 +126,7 @@ class SfuRtpPadDTOTest {
                 .withSfuRtpPadId(SFU_RTP_PAD_ID)
                 .withSfuTransportId(SFU_TRANSPORT_ID)
                 .withInternal(SFU_RTP_INTERNAL)
+                .withSsrc(SFU_RTP_SSRC)
                 .withAddedTimestamp(TIMESTAMP)
                 .withMarker(MARKER)
                 ;

@@ -159,7 +159,13 @@ public class SfuRtpPadToMediaTrackBinder {
 
 
     private void bindSfuOutboundRtpPad(Map<UUID, SfuSinkDTO> sinkDTOs, SfuRtpPadDTO outboundSfuRtpPad) {
-        if (outboundSfuRtpPad.internal || Objects.isNull(outboundSfuRtpPad.sinkId)) {
+        if (Objects.isNull(outboundSfuRtpPad.sinkId)) {
+            return;
+        }
+        if (outboundSfuRtpPad.internal) {
+//            if (outboundSfuRtpPad.streamId != null) {
+//                this.hazelcastMaps.getSfuStreamIdToInternalSfuSinkIds().put(outboundSfuRtpPad.streamId, outboundSfuRtpPad.rtpPadId);
+//            }
             return;
         }
         var sfuSink = sinkDTOs.get(outboundSfuRtpPad.sinkId);
@@ -171,7 +177,6 @@ public class SfuRtpPadToMediaTrackBinder {
                     .withStreamId(outboundSfuRtpPad.streamId)
                     .build();
             this.hazelcastMaps.getSfuSinks().put(sfuSink.sfuSinkId, sfuSink);
-            this.hazelcastMaps.getSfuSinkIdToRtpPadIds().put(sfuSink.sfuSinkId, outboundSfuRtpPad.rtpPadId);
             return;
         }
         boolean incompleteBySfuSide = Objects.isNull(sfuSink.sfuTransportId);

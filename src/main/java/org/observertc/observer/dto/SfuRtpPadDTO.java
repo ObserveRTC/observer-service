@@ -47,6 +47,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 	private static final String SFU_RTP_PAD_ID_FIELD_NAME = "rtpPadId";
 	private static final String SFU_RTP_STREAM_DIRECTION_FIELD_NAME = "sfuStreamDirection";
 	private static final String SFU_RTP_INTERNAL_FIELD_NAME = "internal";
+	private static final String SFU_RTP_SSRC_FIELD_NAME = "ssrc";
 	private static final String ADDED_FIELD_NAME = "added";
 	private static final String MARKER_FIELD_NAME = "marker";
 
@@ -57,6 +58,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 	public UUID streamId;
 	public UUID sinkId;
 	public UUID rtpPadId;
+	public Long ssrc;
 	public StreamDirection streamDirection;
 	public boolean internal;
 	public Long added;
@@ -89,6 +91,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		writer.writeBoolean(SFU_RTP_INTERNAL_FIELD_NAME, this.internal);
 		writer.writeString(SFU_RTP_STREAM_DIRECTION_FIELD_NAME, this.streamDirection.name());
 
+		writer.writeLong(SFU_RTP_SSRC_FIELD_NAME, this.ssrc);
 		writer.writeLong(ADDED_FIELD_NAME, this.added);
 
 		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
@@ -108,6 +111,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 		this.internal = reader.readBoolean(SFU_RTP_INTERNAL_FIELD_NAME);
 		this.streamDirection =  StreamDirection.valueOf(reader.readString(SFU_RTP_STREAM_DIRECTION_FIELD_NAME));
 
+		this.ssrc = reader.readLong(SFU_RTP_SSRC_FIELD_NAME);
 		this.added = reader.readLong(ADDED_FIELD_NAME);
 
 		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
@@ -139,6 +143,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 			!Objects.equals(this.rtpPadId, otherDTO.rtpPadId) ||
 			!Objects.equals(this.streamDirection, otherDTO.streamDirection) ||
 			!Objects.equals(this.internal, otherDTO.internal) ||
+			!Objects.equals(this.ssrc, otherDTO.ssrc) ||
 			!Objects.equals(this.added, otherDTO.added) ||
 			!Objects.equals(this.marker, otherDTO.marker)
 		) {
@@ -162,6 +167,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 					.withSinkId(source.sinkId)
 					.withStreamDirection(source.streamDirection)
 					.withAddedTimestamp(source.added)
+					.withSsrc(source.ssrc)
 					.withInternal(source.internal)
 					.withMarker(source.marker)
 					;
@@ -218,6 +224,11 @@ public class SfuRtpPadDTO implements VersionedPortable {
 			return this;
 		}
 
+		public Builder withSsrc(Long value) {
+			this.result.ssrc = value;
+			return this;
+		}
+
 		public Builder withMarker(String value) {
 			this.result.marker = value;
 			return this;
@@ -228,6 +239,7 @@ public class SfuRtpPadDTO implements VersionedPortable {
 			Objects.requireNonNull(this.result.transportId);
 			Objects.requireNonNull(this.result.rtpPadId);
 			Objects.requireNonNull(this.result.added);
+			Objects.requireNonNull(this.result.ssrc);
 			if (Objects.isNull(this.result.sinkId) && Objects.isNull(this.result.streamId)) {
 				throw new NullPointerException("SfuRtpPad must have a sink or streamId");
 			}

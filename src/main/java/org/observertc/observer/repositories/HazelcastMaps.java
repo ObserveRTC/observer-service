@@ -43,6 +43,8 @@ public class HazelcastMaps {
     private static final String HAZELCAST_SFU_SINKS_MAP_NAME = "observertc-sfu-sinks";
 
     private static final String HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME = "observertc-inbound-track-ids-to-outbound-track-ids";
+    private static final String HAZELCAST_SFU_STREAM_IDS_TO_INTERNAL_OUTBOUND_RTP_PAD_IDS = "observertc-sfu-stream-ids-to-internal-outbound-rtp-pad-ids";
+    private static final String HAZELCAST_SFU_INTERNAL_INBOUND_RTP_PAD_ID_TO_OUTBOUND_RTP_PAD_ID = "observertc-sfu-internal-inbound-rtp-pad-id-to-outbound-rtp-pad-id";
 
     public static final String HAZELCAST_WEAKLOCKS_MAP_NAME = "observertc-weaklocks";
 
@@ -81,7 +83,8 @@ public class HazelcastMaps {
     private IMap<UUID, SfuSinkDTO> sfuSinks;
     private MultiMap<UUID, UUID> sfuStreamIdToRtpPadIds;
     private MultiMap<UUID, UUID> sfuSinkIdToRtpPadIds;
-
+    private MultiMap<UUID, UUID> sfuStreamIdToInternalOutboundRtpPadIds;
+    private IMap<UUID, UUID> sfuInternalInboundRtpPadIdToOutboundRtpPadId;
 
 //    private MultiMap<UUID, UUID> rtpStreamIdToSfuPadIds;
     // track bindings
@@ -124,7 +127,9 @@ public class HazelcastMaps {
         this.sfuSinks = hazelcast.getMap(HAZELCAST_SFU_SINKS_MAP_NAME);
         this.sfuSinkIdToRtpPadIds = hazelcast.getMultiMap(HAZELCAST_SFU_SINK_ID_TO_RTP_PAD_IDS);
         this.sfuStreamIdToRtpPadIds = hazelcast.getMultiMap(HAZELCAST_SFU_STREAM_ID_TO_RTP_PAD_IDS);
+        this.sfuStreamIdToInternalOutboundRtpPadIds = hazelcast.getMultiMap(HAZELCAST_SFU_STREAM_IDS_TO_INTERNAL_OUTBOUND_RTP_PAD_IDS);
 
+        this.sfuInternalInboundRtpPadIdToOutboundRtpPadId = hazelcast.getMap(HAZELCAST_SFU_INTERNAL_INBOUND_RTP_PAD_ID_TO_OUTBOUND_RTP_PAD_ID);
 //        this.rtpStreamIdToSfuPadIds = hazelcast.getMultiMap(HAZELCAST_RTP_STREAM_ID_TO_SFU_PAD_IDS_MAP_NAME);
 
         this.weakLocks = hazelcast.getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
@@ -218,6 +223,8 @@ public class HazelcastMaps {
 
     public MultiMap<UUID, UUID> getSfuStreamIdToRtpPadIds() { return this.sfuStreamIdToRtpPadIds; }
     public MultiMap<UUID, UUID> getSfuSinkIdToRtpPadIds() { return this.sfuSinkIdToRtpPadIds; }
+    public MultiMap<UUID, UUID> getSfuStreamIdToInternalOutboundRtpPadIds() { return this.sfuStreamIdToInternalOutboundRtpPadIds; }
+    public IMap<UUID, UUID> getSfuInternalInboundRtpPadIdToOutboundRtpPadId() { return this.sfuInternalInboundRtpPadIdToOutboundRtpPadId; }
 
     public IMap<UUID, SfuStreamDTO> getSfuStreams() { return this.sfuStreams; }
     public IMap<UUID, SfuSinkDTO> getSfuSinks() { return this.sfuSinks; }

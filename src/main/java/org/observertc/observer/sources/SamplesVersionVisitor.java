@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, String, TOut> {
 
     String LATEST_VERSION = "latest";
+    String VERSION_203 = "2.0.3";
     String VERSION_202 = "2.0.2";
     String VERSION_201 = "2.0.1";
     String VERSION_200 = org.observertc.schemas.v200.samples.Samples.VERSION;
@@ -25,6 +26,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
     static List<String> getSupportedVersions() {
         return Arrays.asList(
                 LATEST_VERSION,
+                VERSION_203,
                 VERSION_202,
                 VERSION_201,
                 VERSION_200,
@@ -147,6 +149,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
         }
         switch (version.toLowerCase(Locale.ROOT)) {
             case LATEST_VERSION:
+            case VERSION_203:
             case VERSION_202:
             case VERSION_201:
                 return visitLatest(obj);

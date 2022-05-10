@@ -212,6 +212,9 @@ observer:
        # drop reports created from outboundRtpPad if their sfuSInkId
        # been not registered by a client
        dropUnmatchedOutboundReports: false
+       # drop reports created from internal inboundRtpPad samples if their counterpart
+       # internal outbound rtp pads are not matched
+       dropUnmatchedInternalInboundReports: false
     
     # obfuscator component settings
     obfuscator:

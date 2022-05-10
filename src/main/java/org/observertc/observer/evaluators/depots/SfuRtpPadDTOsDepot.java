@@ -1,5 +1,6 @@
 package org.observertc.observer.evaluators.depots;
 
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.samples.ObservedSfuSample;
@@ -63,6 +64,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
             UUID streamId;
             UUID sinkId;
             StreamDirection direction;
+            Long SSRC;
             if (Objects.nonNull(sfuInboundRtpPad)) {
                 transportId = sfuInboundRtpPad.transportId;
                 rtpPadId = sfuInboundRtpPad.padId;
@@ -70,6 +72,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
                 streamId = sfuInboundRtpPad.streamId;
                 sinkId = null;
                 direction = StreamDirection.INBOUND;
+                SSRC = Utils.firstNotNull(sfuInboundRtpPad.ssrc, 0xDEADBEEFL);
             } else {
                 transportId = sfuOutboundRtpPad.transportId;
                 rtpPadId = sfuOutboundRtpPad.padId;
@@ -77,7 +80,9 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
                 streamId = sfuOutboundRtpPad.streamId;
                 sinkId = sfuOutboundRtpPad.sinkId;
                 direction = StreamDirection.OUTBOUND;
+                SSRC = Utils.firstNotNull(sfuOutboundRtpPad.ssrc, 0xDEADBEEFL);
             }
+
             if (this.buffer.containsKey(rtpPadId)) {
                 return;
             }
@@ -91,6 +96,7 @@ public class SfuRtpPadDTOsDepot implements Supplier<Map<UUID, SfuRtpPadDTO>> {
                     .withStreamId(streamId)
                     .withSinkId(sinkId)
                     .withStreamDirection(direction)
+                    .withSsrc(SSRC)
                     .withAddedTimestamp(sfuSample.timestamp)
                     .withMarker(sfuSample.marker)
                     .build();

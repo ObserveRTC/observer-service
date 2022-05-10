@@ -56,6 +56,7 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
         var taskResult = task.getResult();
         var sfuStreams = taskResult.sfuStreams;
         var sfuSinks = taskResult.sfuSinks;
+        var internalInboundRtpPadMatches = taskResult.internalInboundRtpPadMatches;
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
             SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {
@@ -73,6 +74,7 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
                 if (Boolean.TRUE.equals(sfuInboundRtpPad.noReport)) {
                     return;
                 }
+
                 UUID sfuStreamId = sfuInboundRtpPad.streamId;
                 if (Objects.nonNull(sfuStreamId)) {
                     var sfuStream = sfuStreams.get(sfuStreamId);
@@ -83,8 +85,24 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
                                 .setClientId(sfuStream.clientId)
                                 ;
                     } else if (config.dropUnmatchedInboundReports) {
+                        this.sfuInboundRtpPadReportsDepot.clean();
                         return;
                     }
+                }
+                var inboundRtpPadMatch = internalInboundRtpPadMatches.get(sfuInboundRtpPad.padId);
+                if (Boolean.TRUE.equals(sfuInboundRtpPad.internal)) {
+                    if (inboundRtpPadMatch != null) {
+                        this.sfuInboundRtpPadReportsDepot
+                                .setRemoteSfuId(inboundRtpPadMatch.outboundSfuId)
+                                .setRemoteTransportId(inboundRtpPadMatch.outboundTransportId)
+                                .setRemoteSinkId(inboundRtpPadMatch.outboundSinkId)
+                                .setRemoteRtpPadId(inboundRtpPadMatch.outboundRtpPadId)
+                        ;
+                    } else if (config.dropUnmatchedInternalInboundReports) {
+                        this.sfuInboundRtpPadReportsDepot.clean();
+                        return;
+                    }
+
                 }
                 this.sfuInboundRtpPadReportsDepot
                         .setObservedSfuSample(observedSfuSample)

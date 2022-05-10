@@ -5,10 +5,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.ObservableCollector;
-import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.RepositoryEvents;
+import org.observertc.observer.repositories.SfuInternalRtpPadsBinder;
 import org.observertc.observer.repositories.SfuRtpPadToMediaTrackBinder;
 import org.observertc.schemas.reports.CallEventReport;
 import org.observertc.schemas.reports.SfuEventReport;
@@ -31,6 +32,9 @@ public class RepositoryEventsInterpreter {
 
     @Inject
     SfuRtpPadToMediaTrackBinder sfuRtpPadToMediaTrackBinder;
+
+    @Inject
+    SfuInternalRtpPadsBinder sfuInternalRtpPadsBinder;
 
     @Inject
     CallStartedReports callStartedReports;
@@ -94,6 +98,9 @@ public class RepositoryEventsInterpreter {
 
         this.repositoryEvents.addedSfuRtpPads()
                 .subscribe(this.sfuRtpPadToMediaTrackBinder::onSfuRtpPadsAdded);
+
+        this.repositoryEvents.addedSfuRtpPads()
+                .subscribe(this.sfuInternalRtpPadsBinder::onSfuRtpPadsAdded);
 
         this.repositoryEvents.addedMediaTracks()
                 .subscribe(this.sfuRtpPadToMediaTrackBinder::onMediaTracksAdded);

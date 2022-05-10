@@ -21,12 +21,20 @@ class SfuInboundRtpPadReportsDepotTest {
         var expected = sfuSample.inboundRtpPads[0];
         var clientId = UUID.randomUUID();
         var trackId = UUID.randomUUID();
+        var remoteSfuId = UUID.randomUUID();
+        var remoteTransportId = UUID.randomUUID();
+        var remoteSinkId = UUID.randomUUID();
+        var remoteRtpPadId = UUID.randomUUID();
         this.depot
                 .setSfuInboundRtpPad(expected)
                 .setObservedSfuSample(observedSfuSample)
                 .setClientId(clientId)
                 .setTrackId(trackId)
                 .setCallId(callId)
+                .setRemoteSfuId(remoteSfuId)
+                .setRemoteTransportId(remoteTransportId)
+                .setRemoteSinkId(remoteSinkId)
+                .setRemoteRtpPadId(remoteRtpPadId)
                 .assemble();
 
         var actual = depot.get().get(0);
@@ -39,6 +47,11 @@ class SfuInboundRtpPadReportsDepotTest {
         Assertions.assertEquals(sfuSample.timestamp, actual.timestamp, "timestamp field");
         Assertions.assertEquals(expected.transportId.toString(), actual.transportId, "transportId field");
         Assertions.assertEquals(expected.streamId.toString(), actual.sfuStreamId, "sfuStreamId field");
+        Assertions.assertEquals(remoteSfuId.toString(), actual.remoteSfuId, "remoteSfuId field");
+        Assertions.assertEquals(remoteTransportId.toString(), actual.remoteTransportId, "remoteTransportId field");
+        Assertions.assertEquals(remoteSinkId.toString(), actual.remoteSinkId, "remoteSinkId field");
+        Assertions.assertEquals(remoteRtpPadId.toString(), actual.remoteRtpPadId, "remoteRtpPadId field");
+
         Assertions.assertEquals(expected.padId.toString(), actual.rtpPadId, "rtpPadId field");
         Assertions.assertEquals(expected.ssrc, actual.ssrc, "ssrc field");
         Assertions.assertEquals(expected.internal, actual.internal, "internal field");

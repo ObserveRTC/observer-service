@@ -49,7 +49,7 @@ public class SfuJoinedReports {
                     .setTimestamp(sfuDTO.joined)
                     .setMarker(sfuDTO.marker)
                     ;
-            logger.info("SFU (sfuId: {}, mediaUnitId: {}) is JOINED. serviceId: {}.", sfuId, sfuDTO.serviceId, sfuDTO.mediaUnitId);
+            logger.info("SFU (sfuId: {}, mediaUnitId: {}) is JOINED. serviceId: {}.", sfuId, sfuDTO.mediaUnitId, sfuDTO.serviceId);
             return builder.build();
         } catch (Exception ex) {
             logger.error("Cannot make report for Sfu DTO", ex);

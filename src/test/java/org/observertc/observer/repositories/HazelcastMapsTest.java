@@ -29,6 +29,8 @@ class HazelcastMapsTest {
         Assertions.assertNotNull(hazelcastMaps.getSFURtpPads());
         Assertions.assertNotNull(hazelcastMaps.getSfuStreamIdToRtpPadIds());
         Assertions.assertNotNull(hazelcastMaps.getSfuSinkIdToRtpPadIds());
+        Assertions.assertNotNull(hazelcastMaps.getSfuStreamIdToInternalOutboundRtpPadIds());
+        Assertions.assertNotNull(hazelcastMaps.getSfuInternalInboundRtpPadIdToOutboundRtpPadId());
         Assertions.assertNotNull(hazelcastMaps.getSfuStreams());
         Assertions.assertNotNull(hazelcastMaps.getSfuSinks());
         Assertions.assertNotNull(hazelcastMaps.getGeneralEntries());
@@ -36,6 +38,7 @@ class HazelcastMapsTest {
         Assertions.assertNotNull(hazelcastMaps.getSyncTaskStates());
         Assertions.assertNotNull(hazelcastMaps.getRequests());
         Assertions.assertNotNull(hazelcastMaps.getEtcMap());
+
     }
 
 }

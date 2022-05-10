@@ -136,6 +136,7 @@ public class ObserverConfig {
 
 		@ConfigurationProperties(("sfuSamplesAnalyser"))
 		public static class SfuSamplesAnalyserConfig {
+			public boolean dropUnmatchedInternalInboundReports = false;
 			public boolean dropUnmatchedInboundReports = false;
 			public boolean dropUnmatchedOutboundReports = false;
 		}

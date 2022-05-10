@@ -92,7 +92,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                 var matches = inboundTrackMatchIds.get(inboundVideoTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundVideoTrack.peerConnectionId) ? peerConnectionLabels.get(inboundVideoTrack.peerConnectionId) : null;
                 if (Objects.nonNull(matches)) {
-                    this.inboundAudioReportsDepot
+                    this.inboundVideoReportsDepot
                             .setRemoteClientId(matches.outboundClientId)
                             .setRemoteUserId(matches.outboundUserId)
                             .setRemotePeerConnectionId(matches.outboundPeerConnectionId)

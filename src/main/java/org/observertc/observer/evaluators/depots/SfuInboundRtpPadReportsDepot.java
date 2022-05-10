@@ -19,6 +19,10 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
     private String callId = null;
     private String clientId = null;
     private String trackId = null;
+    private String remoteSfuId = null;
+    private String remoteTransportId = null;
+    private String remoteSinkId = null;
+    private String remoteRtpPadId = null;
     private List<SfuInboundRtpPadReport> buffer = new LinkedList<>();
 
 
@@ -50,12 +54,41 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
         return this;
     }
 
-    private SfuInboundRtpPadReportsDepot clean() {
+    public SfuInboundRtpPadReportsDepot setRemoteSfuId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteSfuId = value.toString();
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteTransportId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteTransportId = value.toString();
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteSinkId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteSinkId = value.toString();
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteRtpPadId(UUID value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteRtpPadId = value.toString();
+        return this;
+    }
+
+
+    public SfuInboundRtpPadReportsDepot clean() {
         this.observedSfuSample = null;
         this.sfuInboundRtpPad = null;
         this.callId = null;
         this.clientId = null;
         this.trackId = null;
+        this.remoteSfuId = null;
+        this.remoteTransportId = null;
+        this.remoteSinkId = null;
+        this.remoteRtpPadId = null;
         return this;
     }
 
@@ -83,6 +116,12 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                     .setSfuId(sfuId)
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
+
+                    /* Remote identifiers */
+                    .setRemoteSfuId(this.remoteSfuId)
+                    .setRemoteTransportId(this.remoteTransportId)
+                    .setRemoteSinkId(this.remoteSinkId)
+                    .setRemoteRtpPadId(this.remoteRtpPadId)
 
                     /* Report Fields */
                     .setTransportId(transportId)
@@ -146,4 +185,5 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
         this.buffer = new LinkedList<>();
         return result;
     }
+
 }

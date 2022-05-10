@@ -93,6 +93,20 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                                 }
                             });
                         })
+                .addActionStage("Remove bindings for internal outbound rtp pad ids", () -> {
+                    this.removedRtpPads.forEach((padId, sfuRtpPadDTO) -> {
+                        if (Boolean.TRUE.equals(sfuRtpPadDTO.internal) == false) return;
+                        if (sfuRtpPadDTO.streamId == null) return;
+                        switch (sfuRtpPadDTO.streamDirection) {
+                            case INBOUND -> {
+                                this.hazelcastMaps.getSfuInternalInboundRtpPadIdToOutboundRtpPadId().remove(sfuRtpPadDTO.rtpPadId);
+                            }
+                            case OUTBOUND -> {
+                                this.hazelcastMaps.getSfuStreamIdToInternalOutboundRtpPadIds().remove(sfuRtpPadDTO.streamId, sfuRtpPadDTO.rtpPadId);
+                            }
+                        }
+                    });
+                })
                 .addTerminalSupplier("Completed", () -> {
                     return this.removedRtpPads.values().stream().collect(Collectors.toList());
                 })

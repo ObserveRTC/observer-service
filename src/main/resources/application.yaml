@@ -72,6 +72,7 @@ observer:
     clientSamplesAnalyser:
       dropUnmatchedReports: False
     sfuSamplesAnalyser:
+      dropUnmatchedInternalInboundReports: False
       dropUnmatchedInboundReports: False
       dropUnmatchedOutboundReports: False
     callUpdater:
