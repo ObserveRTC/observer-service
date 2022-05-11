@@ -284,6 +284,7 @@ public class DTOGenerators {
     }
 
     public SfuRtpPadDTO.Builder getSfuRtpPadDTOBuilder() {
+        var SSRC = UUID.randomUUID().getLeastSignificantBits();
         var sfuId = UUID.randomUUID();
         var sfuStreamId = UUID.randomUUID();
         var sfuPadId = UUID.randomUUID();
@@ -305,6 +306,7 @@ public class DTOGenerators {
                 .withStreamDirection(streamDirection)
                 .withAddedTimestamp(timestamp)
                 .withMarker(marker)
+                .withSsrc(SSRC)
                 ;
         return result;
     }
