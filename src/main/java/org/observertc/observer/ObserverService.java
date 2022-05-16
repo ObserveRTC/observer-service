@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.*;
+import org.observertc.observer.micrometer.RepositoryMetrics;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;
 import org.observertc.observer.sources.SampleSources;
@@ -23,6 +24,9 @@ public class ObserverService {
 
     @Inject
     ObserverConfig observerConfig;
+
+    @Inject
+    RepositoryMetrics repositoryMetrics;
 
     @Inject
     SampleSources sampleSources;
@@ -50,6 +54,7 @@ public class ObserverService {
 
     @Inject
     ReportSinks reportSinks;
+
 
     @PostConstruct
     void setup() {

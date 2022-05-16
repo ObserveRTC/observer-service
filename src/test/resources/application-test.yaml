@@ -24,6 +24,10 @@ observer:
     sfuTransportMaxIdleTimeInS: 5
     sfuRtpPadMaxIdleTimeInS: 5
 
+    enforcedCleaningPeriodInMs: 5000000
+    expiredEntryThresholdInMs: 100000
+
+
   reports:
     format: JSON
     sendObserverEvents: true

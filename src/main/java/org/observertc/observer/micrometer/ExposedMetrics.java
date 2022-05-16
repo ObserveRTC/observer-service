@@ -24,6 +24,7 @@ public class ExposedMetrics {
 
     private static final String OBSERVERTC_GENERATED_REPORTS = String.join("_", OBSERVERTC_PREFIX, "generated_reports");
 
+
     private static final String SERVICE_TAG_NAME = "service";
     private static final String MEDIA_UNIT_TAG_NAME = "mediaunit";
     private static final String MODULE_TAG_NAME = "module";

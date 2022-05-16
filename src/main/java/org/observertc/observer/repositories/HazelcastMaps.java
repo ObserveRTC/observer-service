@@ -3,17 +3,27 @@ package org.observertc.observer.repositories;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
 import org.observertc.observer.ObserverHazelcast;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.*;
+import org.observertc.observer.repositories.tasks.CleaningCallsTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class HazelcastMaps {
+
+    private static final Logger logger = LoggerFactory.getLogger(HazelcastMaps.class);
 
     private static final String HAZELCAST_CALLS_MAP_NAME = "observertc-calls";
     private static final String HAZELCAST_CALL_TO_CLIENT_IDS_MAP_NAME = "observertc-call-to-clients";
@@ -54,8 +64,13 @@ public class HazelcastMaps {
     public static final String HAZELCAST_ETC_MAP_NAME = "observertc-distributed-map";
     public static final String HAZELCAST_REQUESTS_MAP_NAME = "observertc-requests-map-name";
 
+    private Disposable timer = null;
+
     @Inject
     ObserverHazelcast observerHazelcast;
+
+    @Inject
+    Provider<CleaningCallsTask> cleaningCallsTaskProvider;
 
     // calls
     private IMap<UUID, CallDTO> calls;
@@ -106,6 +121,83 @@ public class HazelcastMaps {
     @PostConstruct
     void setup() {
         final HazelcastInstance hazelcast = observerHazelcast.getInstance();
+
+        var perEntryStatsEnabled = 0 < this.config.enforcedCleaningPeriodInMs;
+
+        // setup expirations
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_CLIENTS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(this.config.clientMaxIdleTimeInS);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_PEER_CONNECTIONS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(this.config.peerConnectionsMaxIdleTime);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(this.config.mediaTracksMaxIdleTimeInS);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_SFU_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(this.config.sfuMaxIdleTimeInS);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_SFU_TRANSPORTS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(this.config.sfuTransportMaxIdleTimeInS);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_SFU_RTP_PADS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(this.config.sfuRtpPadMaxIdleTimeInS);
+
+        var bindingLifetime = Math.max(this.config.mediaTracksMaxIdleTimeInS, this.config.sfuRtpPadMaxIdleTimeInS);
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_SFU_STREAMS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(bindingLifetime);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_SFU_SINKS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(bindingLifetime);
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_SYNC_TASK_STATES_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(3600); // one hour
+
+        hazelcast
+                .getConfig()
+                .getMapConfig(HAZELCAST_REQUESTS_MAP_NAME)
+                .setPerEntryStatsEnabled(perEntryStatsEnabled)
+                .setMaxIdleSeconds(3600); // one hour
+
+        if (0 < this.config.enforcedCleaningPeriodInMs) {
+            var worker = Schedulers.computation().createWorker();
+            this.timer = worker.schedulePeriodically(() -> {
+                var task = cleaningCallsTaskProvider.get().withExpirationThresholdInMs(this.config.manualCleaningThresholdInMs);
+                logger.info("Executing {}", task.getClass().getSimpleName());
+                if (!task.execute().succeeded()) {
+                    logger.warn("{} did not succeeded", task.getClass().getSimpleName());
+                }
+            }, this.config.enforcedCleaningPeriodInMs, this.config.enforcedCleaningPeriodInMs, TimeUnit.MILLISECONDS);
+        }
+
+
         this.calls = hazelcast.getMap(HAZELCAST_CALLS_MAP_NAME);
         this.callToClientIds = hazelcast.getMultiMap(HAZELCAST_CALL_TO_CLIENT_IDS_MAP_NAME);
         this.serviceRoomToCallIds = hazelcast.getMap(HAZELCAST_SERVICE_ROOM_TO_CALL_ID_MAP_NAME);
@@ -138,58 +230,15 @@ public class HazelcastMaps {
         this.etcMap = hazelcast.getMap(HAZELCAST_ETC_MAP_NAME);
 
         this.generalEntries = hazelcast.getMap(HAZELCAST_GENERALENTRIES);
-        // setup expirations
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_CLIENTS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.clientMaxIdleTimeInS);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_PEER_CONNECTIONS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.peerConnectionsMaxIdleTime);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.mediaTracksMaxIdleTimeInS);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_SFU_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuMaxIdleTimeInS);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_SFU_TRANSPORTS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuTransportMaxIdleTimeInS);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_SFU_RTP_PADS_MAP_NAME)
-                .setMaxIdleSeconds(this.config.sfuRtpPadMaxIdleTimeInS);
-
-        var bindingLifetime = Math.max(this.config.mediaTracksMaxIdleTimeInS, this.config.sfuRtpPadMaxIdleTimeInS);
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_SFU_STREAMS_MAP_NAME)
-                .setMaxIdleSeconds(bindingLifetime);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_SFU_SINKS_MAP_NAME)
-                .setMaxIdleSeconds(bindingLifetime);
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_SYNC_TASK_STATES_MAP_NAME)
-                .setMaxIdleSeconds(3600); // one hour
-
-        hazelcast
-                .getConfig()
-                .getMapConfig(HAZELCAST_REQUESTS_MAP_NAME)
-                .setMaxIdleSeconds(3600); // one hour
     }
+
+    @PreDestroy
+    void teardown() {
+        if (this.timer != null && !this.timer.isDisposed()) {
+            this.timer.dispose();
+        }
+    }
+
 
     public IMap<UUID, CallDTO> getCalls(){
         return this.calls;

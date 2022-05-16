@@ -154,6 +154,16 @@ observer:
     sfuRtpPadMaxIdleTimeInS: 600
     # the maximum idle time for an peer connection object after  which it is removed from the repository
     peerConnectionsMaxIdleTime: 300
+    # sets the period for exposing metrics about the number of entries the repository holds
+    exposeMetricsPeriodInMins: 5
+
+    # sets up a timer executes an expensive cleaning task to delete all map entries accessed time is longer 
+    # than the threshold for this (below).
+    # This is mainly development purpose or for enforced cleaning to avoid
+    # ever lasting increasing memory consumption. DEFAULT is 0, means no such task is executed
+    enforcedCleaningPeriodInMs: 0
+    # Sets the threshold for the above mentioned enforced cleaning process
+    expiredEntryThresholdInMs: 3600_000
 
   buffers:
     # settings of the buffer collect samples from the sources

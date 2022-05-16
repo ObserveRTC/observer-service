@@ -96,6 +96,14 @@ public class ObserverConfig {
 		@Min(3)
 		public int sfuRtpPadMaxIdleTimeInS = 600;
 
+		@Min(-1)
+		public int exposeMetricsPeriodInMins = 0;
+
+		@Min(-1)
+		public long enforcedCleaningPeriodInMs = 0;
+
+		@Min(1)
+		public long manualCleaningThresholdInMs = 3600 * 1000;
 	}
 
 	// Evaluators Config

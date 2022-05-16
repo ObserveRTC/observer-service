@@ -50,6 +50,10 @@ observer:
     sfuTransportMaxIdleTimeInS: 600
     sfuRtpPadMaxIdleTimeInS: 600
     peerConnectionsMaxIdleTime: 300
+    exposeMetricsPeriodInMins: 5
+
+    enforcedCleaningPeriodInMs: 0
+    expiredEntryThresholdInMs: 3600000
 
   buffers:
     samplesCollector:

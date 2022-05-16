@@ -44,10 +44,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * Service should be UUId, because currently mysql stores it as
- * binary and with that type the search is fast for activestreams. thats why.
- */
 @Secured(SecurityRule.IS_ANONYMOUS)
 @ServerWebSocket("/samples/{serviceId}/{mediaUnitId}")
 public class SamplesWebsocketController {
@@ -101,6 +97,7 @@ public class SamplesWebsocketController {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
+			
 			var requestParameters = session.getRequestParameters();
 			String providedSchemaVersion = requestParameters.get("schemaVersion");
 			String providedFormat = requestParameters.get("format");
