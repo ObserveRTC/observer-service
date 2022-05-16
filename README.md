@@ -161,7 +161,7 @@ observer:
     # than the threshold for this (below).
     # This is mainly development purpose or for enforced cleaning to avoid
     # ever lasting increasing memory consumption. DEFAULT is 0, means no such task is executed
-    enforcedCleaningPeriodInMs: 0
+    enforcedCleaningPeriodInMs: 300000
     # Sets the threshold for the above mentioned enforced cleaning process
     expiredEntryThresholdInMs: 3600_000
 
