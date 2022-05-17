@@ -60,6 +60,23 @@ public class AddSfuRtpPadsTask extends ChainedTask<Void> {
                                 this.hazelcastMaps.getSFURtpPads().remove(rtpSourceId);
                             }
                         })
+                .addActionStage("Bind RTP Pad Ids to SFU Transport",
+                        // action
+                        () -> {
+                            this.sfuRtpPadDTOs.values().stream()
+                                    .filter(Objects::nonNull)
+                                    .forEach(sfuRtpPadDTO -> {
+                                        this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().put(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+                                    });
+                        },
+                        // rollback
+                        (inputHolder, thrownException) -> {
+                            this.sfuRtpPadDTOs.values().stream()
+                                    .filter(Objects::nonNull)
+                                    .forEach(sfuRtpPadDTO -> {
+                                        this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().remove(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+                                    });
+                        })
                 .addTerminalPassingStage("Completed")
                 .build();
         this.withLogger(logger);

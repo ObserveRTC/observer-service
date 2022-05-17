@@ -100,10 +100,7 @@ public class ObserverConfig {
 		public int exposeMetricsPeriodInMins = 0;
 
 		@Min(-1)
-		public long enforcedCleaningPeriodInMs = 0;
-
-		@Min(1)
-		public long manualCleaningThresholdInMs = 3600 * 1000;
+		public long evictExpiredEntriesPeriodInMs = 0;
 	}
 
 	// Evaluators Config

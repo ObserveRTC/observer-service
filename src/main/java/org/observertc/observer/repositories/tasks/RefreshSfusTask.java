@@ -13,7 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Prototype
 public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
@@ -60,6 +63,14 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             Map<UUID, SfuTransportDTO> sfuTransportDTOs = this.hazelcastMaps.getSFUTransports().getAll(this.transportIds);
                             this.report.foundSfuTransportIds.addAll(sfuTransportDTOs.keySet());
                         })
+                .addActionStage("Refresh Sfu Transport timestamps", () -> {
+                    var now = Instant.now().toEpochMilli();
+                    var refreshedSfuTransports = this.transportIds.stream().filter(Objects::nonNull).collect(Collectors.toMap(
+                            Function.identity(),
+                            id -> now
+                    ));
+                    this.hazelcastMaps.getRefreshedSfuTransports().putAll(refreshedSfuTransports);
+                })
                 .addActionStage("Check Sfus",
                         // action
                         () -> {

@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
@@ -27,6 +28,9 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
 
     @Inject
     ExposedMetrics exposedMetrics;
+
+    @Inject
+    BeanProvider<RemoveSfuRtpPadsTask> removeSfuRtpPadsTaskProvider;
 
     @PostConstruct
     void setup() {
@@ -75,6 +79,42 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
                             }
                             this.hazelcastMaps.getSFUTransports().putAll(this.removedSfuTransportDTOs);
                         })
+                .addActionStage("Remove Sfu to SfuTransport bindings", () -> {
+                    this.removedSfuTransportDTOs.values().forEach(sfuTransportDTO -> {
+                        if (sfuTransportDTO.transportId == null || sfuTransportDTO.sfuId == null) return;
+                        this.hazelcastMaps.getSfuToSfuTransportIds().remove(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+                    });
+                },
+                // rollback
+                (something, thrownException) -> {
+                    this.removedSfuTransportDTOs.values().forEach(sfuTransportDTO -> {
+                        if (sfuTransportDTO.transportId == null || sfuTransportDTO.sfuId == null) return;
+                        this.hazelcastMaps.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+                    });
+                })
+                .addActionStage("Remove Sfu Rtp Pad Entities",
+                        () -> {
+                            Set<UUID> allRtpPadIds = new HashSet<>();
+                            this.removedSfuTransportDTOs.keySet().forEach(sfuTransportId -> {
+                                Collection<UUID> rtpPadIds = this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().get(sfuTransportId);
+                                if (Objects.nonNull(rtpPadIds)) {
+                                    rtpPadIds.forEach(rtpPadId -> {
+                                        allRtpPadIds.add(rtpPadId);
+                                    });
+                                }
+                            });
+                            if (allRtpPadIds.size() < 1) {
+                                return;
+                            }
+                            var task = this.removeSfuRtpPadsTaskProvider.get();
+                            task.whereSfuRtpStreamPadIds(allRtpPadIds);
+
+                            if (!task.execute().succeeded()) {
+                                logger.warn("Remove RtpPad failed");
+                                return;
+                            }
+                        }
+                )
                 .addTerminalSupplier("Completed", () -> {
                     return this.removedSfuTransportDTOs.values().stream().collect(Collectors.toList());
                 })

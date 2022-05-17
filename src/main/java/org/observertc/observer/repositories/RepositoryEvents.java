@@ -1,15 +1,19 @@
 package org.observertc.observer.repositories;
 
 import com.hazelcast.map.IMap;
+import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.ClientMessageEvent;
 import org.observertc.observer.common.ObservablePassiveCollector;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.*;
+import org.observertc.observer.repositories.tasks.EvictOutdatedClients;
+import org.observertc.observer.repositories.tasks.EvictOutdatedSfuTransports;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,8 +78,16 @@ public class RepositoryEvents {
 
 
     private List<Runnable> destructors = new LinkedList<>();
-    private Disposable timer = null;
+    private Disposable debouncingTimer = null;
+    private Disposable evictingEntriesTimer = null;
     private Map<UUID, Runnable> debouncers = new ConcurrentHashMap<>();
+
+
+    @Inject
+    BeanProvider<EvictOutdatedClients> evictOutdatedClientsTaskProvider;
+
+    @Inject
+    BeanProvider<EvictOutdatedSfuTransports> evictOutdatedSfuTransportsTaskProvider;
 
 
     public RepositoryEvents() {
@@ -90,7 +102,8 @@ public class RepositoryEvents {
             debounceTimeInMs = 1000;
             logger.info("No debounce time is given, but {} must have one, so it uses a default 1000ms", this.getClass().getSimpleName());
         }
-        this.timer = Observable.interval(debounceTimeInMs, debounceTimeInMs, TimeUnit.MILLISECONDS).subscribe(counter -> {
+
+        this.debouncingTimer = Observable.interval(debounceTimeInMs, debounceTimeInMs, TimeUnit.MILLISECONDS).subscribe(counter -> {
             this.debouncers.values().stream().forEach(timeChecker -> {
                 try {
                     timeChecker.run();
@@ -99,6 +112,12 @@ public class RepositoryEvents {
                 }
             });
         });
+
+        var evictExpiredEntriesPeriodInMs = this.observerConfig.repository.evictExpiredEntriesPeriodInMs;
+        if (0 < evictExpiredEntriesPeriodInMs) {
+            var worker = Schedulers.io().createWorker();
+            this.evictingEntriesTimer = worker.schedulePeriodically(this::evictOutdatedEntries, evictExpiredEntriesPeriodInMs, evictExpiredEntriesPeriodInMs, TimeUnit.MILLISECONDS);
+        }
 
         ObserverConfig.RepositoryConfig repositoryConfig = this.observerConfig.repository;
         this.add(
@@ -125,6 +144,11 @@ public class RepositoryEvents {
                         ClientDTO clientDTO = event.getOldValue();
                         removedClient.add(clientDTO);
                     }).onEntryExpired(event -> {
+                        ClientDTO clientDTO = event.getOldValue();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTimeInS).toEpochMilli();
+                        var forwardedEvent = RepositoryExpiredEvent.<ClientDTO>make(clientDTO, estimatedLastTouch);
+                        expiredClient.add(forwardedEvent);
+                    }).onEntryEvicted(event -> {
                         ClientDTO clientDTO = event.getOldValue();
                         var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<ClientDTO>make(clientDTO, estimatedLastTouch);
@@ -205,6 +229,11 @@ public class RepositoryEvents {
                         var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuTransportMaxIdleTimeInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<SfuTransportDTO>make(sfuTransportDTO, estimatedLastTouch);
                         expiredSfuTransport.add(forwardedEvent);
+                    }).onEntryEvicted(event -> {
+                        SfuTransportDTO sfuTransportDTO = event.getOldValue();
+                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuTransportMaxIdleTimeInS).toEpochMilli();
+                        var forwardedEvent = RepositoryExpiredEvent.<SfuTransportDTO>make(sfuTransportDTO, estimatedLastTouch);
+                        expiredSfuTransport.add(forwardedEvent);
                     });
                 });
 
@@ -280,8 +309,11 @@ public class RepositoryEvents {
 
     @PreDestroy
     void teardown() {
-        if (Objects.nonNull(this.timer)) {
-            this.timer.dispose();
+        if (Objects.nonNull(this.debouncingTimer)) {
+            this.debouncingTimer.dispose();
+        }
+        if (this.evictingEntriesTimer != null && this.evictingEntriesTimer.isDisposed() == false) {
+            this.evictingEntriesTimer.dispose();
         }
         this.destructors.forEach(destructor -> {
             destructor.run();
@@ -470,5 +502,19 @@ public class RepositoryEvents {
             this.debouncers.put(source.getId(), debouncer);
         }
         return source.observableEmittedItems();
+    }
+
+    private void evictOutdatedEntries() {
+        var evictClientsTask = evictOutdatedClientsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.clientMaxIdleTimeInS);
+        logger.info("Executing {}", evictClientsTask.getClass().getSimpleName());
+        if (!evictClientsTask.execute().succeeded()) {
+            logger.warn("{} did not succeeded", evictClientsTask.getClass().getSimpleName());
+        }
+
+        var evictSfuTransportsTask = evictOutdatedSfuTransportsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.sfuTransportMaxIdleTimeInS);
+        logger.info("Executing {}", evictSfuTransportsTask.getClass().getSimpleName());
+        if (!evictSfuTransportsTask.execute().succeeded()) {
+            logger.warn("{} did not succeeded", evictSfuTransportsTask.getClass().getSimpleName());
+        }
     }
 }

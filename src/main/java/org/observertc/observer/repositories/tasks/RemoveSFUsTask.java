@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories.tasks;
 
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
@@ -27,6 +28,9 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
 
     @Inject
     ExposedMetrics exposedMetrics;
+
+    @Inject
+    BeanProvider<RemoveSfuTransportsTask> removeSfuTransportsTaskProvider;
 
     @PostConstruct
     void setup() {
@@ -74,6 +78,29 @@ public class RemoveSFUsTask extends ChainedTask<List<SfuDTO>> {
                             }
                             this.hazelcastMaps.getSFUs().putAll(this.removedSfuDTOs);
                         })
+                .addActionStage("Remove Sfu Transport Entities",
+                        () -> {
+                            Set<UUID> allSfuTransportIds = new HashSet<>();
+                            this.removedSfuDTOs.keySet().forEach(clientId -> {
+                                Collection<UUID> sfuTransportIds = this.hazelcastMaps.getSfuToSfuTransportIds().get(clientId);
+                                if (Objects.nonNull(sfuTransportIds)) {
+                                    sfuTransportIds.forEach(sfuTransportId -> {
+                                        allSfuTransportIds.add(sfuTransportId);
+                                    });
+                                }
+                            });
+                            if (allSfuTransportIds.size() < 1) {
+                                return;
+                            }
+                            var task = this.removeSfuTransportsTaskProvider.get();
+                            task.whereSfuTransportIds(allSfuTransportIds);
+
+                            if (!task.execute().succeeded()) {
+                                logger.warn("Remove SFU Transports failed");
+                                return;
+                            }
+                        }
+                )
                 .addTerminalSupplier("Completed", () -> {
                     return this.removedSfuDTOs.values().stream().collect(Collectors.toList());
                 })

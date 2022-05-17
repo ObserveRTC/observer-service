@@ -55,7 +55,6 @@ public class ObserverService {
     @Inject
     ReportSinks reportSinks;
 
-
     @PostConstruct
     void setup() {
         this.samplesCollector

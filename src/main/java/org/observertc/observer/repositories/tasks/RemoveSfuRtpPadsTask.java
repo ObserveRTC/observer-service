@@ -70,6 +70,19 @@ public class RemoveSfuRtpPadsTask extends ChainedTask<List<SfuRtpPadDTO>> {
                             }
                             this.hazelcastMaps.getSFURtpPads().putAll(this.removedRtpPads);
                         })
+                .addActionStage("Remove SfuTransport to SfuRtpPad bindings", () -> {
+                        this.removedRtpPads.values().forEach(sfuRtpPadDTO -> {
+                            if (sfuRtpPadDTO.rtpPadId == null || sfuRtpPadDTO.transportId == null) return;
+                            this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().remove(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+                        });
+                    },
+                    // rollback
+                    (something, thrownException) -> {
+                        this.removedRtpPads.values().forEach(sfuRtpPadDTO -> {
+                            if (sfuRtpPadDTO.rtpPadId == null || sfuRtpPadDTO.transportId == null) return;
+                            this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().put(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+                        });
+                    })
                 .addActionStage("Remove Bindings RtpPads to rtp streamIds",
                         // action
                         () -> {

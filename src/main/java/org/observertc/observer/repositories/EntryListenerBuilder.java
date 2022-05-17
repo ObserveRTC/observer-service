@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-class EntryListenerBuilder<K, V> {
+public class EntryListenerBuilder<K, V> {
 
     private static final Logger logger = LoggerFactory.getLogger(EntryListenerBuilder.class);
 

@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Prototype
@@ -49,13 +51,27 @@ public class RefreshCallsTask extends ChainedTask<RefreshCallsTask.Report> {
                             var clientIds = Utils.trash(this.clientIds.stream(), Objects::nonNull, nullIds).collect(Collectors.toSet());
                             if (0 < nullIds.size()) {
                                 logger.warn("There were null peer connection ids.");
+                                this.clientIds = clientIds;
                             }
                             if (clientIds.size() < 1) {
                                 return;
                             }
+
                             Map<UUID, ClientDTO> clientDTOs = this.hazelcastMaps.getClients().getAll(clientIds);
                             this.report.foundClientIds.addAll(clientDTOs.keySet());
                         })
+                .addActionStage("Update client touches", () -> {
+                    var now = Instant.now().toEpochMilli();
+                    var touches = clientIds.stream()
+                            .filter(Objects::nonNull)
+                            .collect(
+                                    Collectors.toMap(
+                                            Function.identity(),
+                                            id -> now
+                                    )
+                            );
+                    this.hazelcastMaps.getRefreshedClients().putAll(touches);
+                })
                 .addActionStage("Check Peer Connections",
                         // action
                         () -> {

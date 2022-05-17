@@ -10,7 +10,7 @@ import org.observertc.observer.utils.DTOMapGenerator;
 import java.util.Set;
 import java.util.UUID;
 
-@MicronautTest
+@MicronautTest(propertySources = "repository-tasks-test.yaml")
 class RemoveSfuRtpPadsTaskTest {
 
     @Inject
@@ -40,6 +40,17 @@ class RemoveSfuRtpPadsTaskTest {
         ;
 
         var allDeleted = rtpPads.keySet().stream().anyMatch(this.hazelcastMaps.getSFURtpPads()::containsKey) == false;
+        Assertions.assertTrue(allDeleted);
+    }
+
+    @Test
+    public void removeSfuRtpPadBindings_1() {
+        var rtpPads = this.generator.getSfuRtpPads();
+        removeSfuRtpPadsTaskProvider.get()
+                .whereSfuRtpStreamPadIds(rtpPads.keySet())
+                .execute()
+        ;
+        var allDeleted = rtpPads.values().stream().allMatch(entry -> this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().containsEntry(entry.transportId, entry.rtpPadId) == false);
         Assertions.assertTrue(allDeleted);
     }
 

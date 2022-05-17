@@ -10,7 +10,7 @@ import org.observertc.observer.utils.DTOMapGenerator;
 import java.util.Set;
 import java.util.UUID;
 
-@MicronautTest
+@MicronautTest(propertySources = "classpath:repository-tasks-test.yaml")
 class RemoveSfuTransportsTaskTest {
 
     @Inject
@@ -37,9 +37,33 @@ class RemoveSfuTransportsTaskTest {
         removeSfuTransportsTaskProvider.get()
                 .whereSfuTransportIds(sfuTransports.keySet())
                 .execute()
-                ;
+        ;
 
         var allDeleted = sfuTransports.keySet().stream().anyMatch(this.hazelcastMaps.getSFUTransports()::containsKey) == false;
+        Assertions.assertTrue(allDeleted);
+    }
+
+    @Test
+    public void removeSfuTransportBindings_1() {
+        var sfuTransports = this.generator.getSfuTransports();
+        removeSfuTransportsTaskProvider.get()
+                .whereSfuTransportIds(sfuTransports.keySet())
+                .execute()
+                ;
+        var allDeleted = sfuTransports.values().stream().allMatch(entry -> this.hazelcastMaps.getSfuToSfuTransportIds().containsEntry(entry.sfuId, entry.transportId) == false);
+        Assertions.assertTrue(allDeleted);
+    }
+
+    @Test
+    public void removeSfuRtpPads_1() {
+        var sfuTransports = this.generator.getSfuTransports();
+        var sfuRtpPads = this.generator.getSfuRtpPads();
+        removeSfuTransportsTaskProvider.get()
+                .whereSfuTransportIds(sfuTransports.keySet())
+                .execute()
+        ;
+
+        var allDeleted = sfuRtpPads.keySet().stream().anyMatch(this.hazelcastMaps.getSFURtpPads()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 

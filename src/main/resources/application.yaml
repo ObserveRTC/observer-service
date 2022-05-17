@@ -52,8 +52,7 @@ observer:
     peerConnectionsMaxIdleTime: 300
     exposeMetricsPeriodInMins: 5
 
-    enforcedCleaningPeriodInMs: 600000
-    expiredEntryThresholdInMs: 3600000
+    evictExpiredEntriesPeriodInMs: 300000
 
   buffers:
     samplesCollector:

@@ -3,22 +3,17 @@ package org.observertc.observer.repositories;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import com.hazelcast.multimap.MultiMap;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
-import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
 import org.observertc.observer.ObserverHazelcast;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.dto.*;
-import org.observertc.observer.repositories.tasks.CleaningCallsTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class HazelcastMaps {
@@ -45,7 +40,9 @@ public class HazelcastMaps {
     // SFU Transports
     private static final String HAZELCAST_SFU_MAP_NAME = "observertc-sfu";
     private static final String HAZELCAST_SFU_TRANSPORTS_MAP_NAME = "observertc-sfu-transports";
+    private static final String HAZELCAST_SFU_TO_TRANSPORT_SFU_IDS_MAP_NAME = "observertc-sfu-to-sfu-transport-ids";
     private static final String HAZELCAST_SFU_RTP_PADS_MAP_NAME = "observertc-sfu-rtp-pads";
+    private static final String HAZELCAST_SFU_TRANSPORT_TO_SFU_RTP_PAD_IDS_MAP_NAME = "observertc-sfu-transport-to-rtp-pad-ids";
 
     private static final String HAZELCAST_SFU_SINK_ID_TO_RTP_PAD_IDS = "observertc-sfu-sink-id-to-rtp-pad-ids";
     private static final String HAZELCAST_SFU_STREAM_ID_TO_RTP_PAD_IDS = "observertc-sfu-stream-id-to-rtp-pad-ids";
@@ -64,13 +61,12 @@ public class HazelcastMaps {
     public static final String HAZELCAST_ETC_MAP_NAME = "observertc-distributed-map";
     public static final String HAZELCAST_REQUESTS_MAP_NAME = "observertc-requests-map-name";
 
-    private Disposable timer = null;
+    public static final String HAZELCAST_REFRESHED_CLIENTS = "observertc-refreshed-clients";
+    public static final String HAZELCAST_REFRESHED_SFU_TRANSPORTS = "observertc-refreshed-sfu-transports";
 
     @Inject
     ObserverHazelcast observerHazelcast;
 
-    @Inject
-    Provider<CleaningCallsTask> cleaningCallsTaskProvider;
 
     // calls
     private IMap<UUID, CallDTO> calls;
@@ -92,10 +88,15 @@ public class HazelcastMaps {
 
     // SFU
     private IMap<UUID, SfuDTO> SFUs;
+    private MultiMap<UUID, UUID> sfuToSfuTransportIds;
+
     private IMap<UUID, SfuTransportDTO> sfuTransports;
+    private MultiMap<UUID, UUID> sfuTransportToSfuRtpPadIds;
+
     private IMap<UUID, SfuRtpPadDTO> sfuRtpPads;
     private IMap<UUID, SfuStreamDTO> sfuStreams;
     private IMap<UUID, SfuSinkDTO> sfuSinks;
+
     private MultiMap<UUID, UUID> sfuStreamIdToRtpPadIds;
     private MultiMap<UUID, UUID> sfuSinkIdToRtpPadIds;
     private MultiMap<UUID, UUID> sfuStreamIdToInternalOutboundRtpPadIds;
@@ -110,6 +111,9 @@ public class HazelcastMaps {
     private IMap<String, String> syncTaskStates;
     private IMap<String, byte[]> requests;
     private IMap<String, String> etcMap;
+
+    private IMap<UUID, Long> refreshedClients;
+    private IMap<UUID, Long> refreshedSfuTransports;
     private ObserverConfig.RepositoryConfig config;
 
     private IMap<UUID, GeneralEntryDTO> generalEntries;
@@ -122,81 +126,57 @@ public class HazelcastMaps {
     void setup() {
         final HazelcastInstance hazelcast = observerHazelcast.getInstance();
 
-        var perEntryStatsEnabled = 0 < this.config.enforcedCleaningPeriodInMs;
-
         // setup expirations
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_CLIENTS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(this.config.clientMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_PEER_CONNECTIONS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(this.config.peerConnectionsMaxIdleTime);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_MEDIA_TRACKS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(this.config.mediaTracksMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(this.config.sfuMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_TRANSPORTS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(this.config.sfuTransportMaxIdleTimeInS);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_RTP_PADS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(this.config.sfuRtpPadMaxIdleTimeInS);
 
         var bindingLifetime = Math.max(this.config.mediaTracksMaxIdleTimeInS, this.config.sfuRtpPadMaxIdleTimeInS);
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_STREAMS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(bindingLifetime);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SFU_SINKS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(bindingLifetime);
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_SYNC_TASK_STATES_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(3600); // one hour
 
         hazelcast
                 .getConfig()
                 .getMapConfig(HAZELCAST_REQUESTS_MAP_NAME)
-                .setPerEntryStatsEnabled(perEntryStatsEnabled)
                 .setMaxIdleSeconds(3600); // one hour
-
-        if (0 < this.config.enforcedCleaningPeriodInMs) {
-            var worker = Schedulers.computation().createWorker();
-            this.timer = worker.schedulePeriodically(() -> {
-                var task = cleaningCallsTaskProvider.get().withExpirationThresholdInMs(this.config.manualCleaningThresholdInMs);
-                logger.info("Executing {}", task.getClass().getSimpleName());
-                if (!task.execute().succeeded()) {
-                    logger.warn("{} did not succeeded", task.getClass().getSimpleName());
-                }
-            }, this.config.enforcedCleaningPeriodInMs, this.config.enforcedCleaningPeriodInMs, TimeUnit.MILLISECONDS);
-        }
-
 
         this.calls = hazelcast.getMap(HAZELCAST_CALLS_MAP_NAME);
         this.callToClientIds = hazelcast.getMultiMap(HAZELCAST_CALL_TO_CLIENT_IDS_MAP_NAME);
@@ -213,8 +193,13 @@ public class HazelcastMaps {
         this.inboundTrackIdsToOutboundTrackIds = hazelcast.getMap(HAZELCAST_INBOUND_TO_OUTBOUND_TRACK_IDS_MAP_NAME);
 
         this.SFUs = hazelcast.getMap(HAZELCAST_SFU_MAP_NAME);
+
         this.sfuTransports = hazelcast.getMap(HAZELCAST_SFU_TRANSPORTS_MAP_NAME);
+        this.sfuToSfuTransportIds = hazelcast.getMultiMap(HAZELCAST_SFU_TO_TRANSPORT_SFU_IDS_MAP_NAME);
+
         this.sfuRtpPads = hazelcast.getMap(HAZELCAST_SFU_RTP_PADS_MAP_NAME);
+        this.sfuTransportToSfuRtpPadIds = hazelcast.getMultiMap(HAZELCAST_SFU_TRANSPORT_TO_SFU_RTP_PAD_IDS_MAP_NAME);
+
         this.sfuStreams = hazelcast.getMap(HAZELCAST_SFU_STREAMS_MAP_NAME);
         this.sfuSinks = hazelcast.getMap(HAZELCAST_SFU_SINKS_MAP_NAME);
         this.sfuSinkIdToRtpPadIds = hazelcast.getMultiMap(HAZELCAST_SFU_SINK_ID_TO_RTP_PAD_IDS);
@@ -223,6 +208,9 @@ public class HazelcastMaps {
 
         this.sfuInternalInboundRtpPadIdToOutboundRtpPadId = hazelcast.getMap(HAZELCAST_SFU_INTERNAL_INBOUND_RTP_PAD_ID_TO_OUTBOUND_RTP_PAD_ID);
 //        this.rtpStreamIdToSfuPadIds = hazelcast.getMultiMap(HAZELCAST_RTP_STREAM_ID_TO_SFU_PAD_IDS_MAP_NAME);
+
+        this.refreshedClients = hazelcast.getMap(HAZELCAST_REFRESHED_CLIENTS);
+        this.refreshedSfuTransports = hazelcast.getMap(HAZELCAST_REFRESHED_SFU_TRANSPORTS);
 
         this.weakLocks = hazelcast.getMap(HAZELCAST_WEAKLOCKS_MAP_NAME);
         this.syncTaskStates = hazelcast.getMap(HAZELCAST_SYNC_TASK_STATES_MAP_NAME);
@@ -234,9 +222,7 @@ public class HazelcastMaps {
 
     @PreDestroy
     void teardown() {
-        if (this.timer != null && !this.timer.isDisposed()) {
-            this.timer.dispose();
-        }
+
     }
 
 
@@ -261,10 +247,12 @@ public class HazelcastMaps {
     public IMap<UUID, SfuDTO> getSFUs() {
         return this.SFUs;
     }
+    public MultiMap<UUID, UUID> getSfuToSfuTransportIds() { return this.sfuToSfuTransportIds; }
 
     public IMap<UUID, SfuTransportDTO> getSFUTransports() {
         return this.sfuTransports;
     }
+    public MultiMap<UUID, UUID> getSfuTransportToSfuRtpPadIds() { return this.sfuTransportToSfuRtpPadIds; }
 
     public IMap<UUID, SfuRtpPadDTO> getSFURtpPads() {
         return this.sfuRtpPads;
@@ -283,6 +271,9 @@ public class HazelcastMaps {
     public IMap<String, WeakLockDTO> getWeakLocks() {return this.weakLocks;}
     public IMap<String, String> getSyncTaskStates() { return this.syncTaskStates; }
     public IMap<String, byte[]> getRequests() { return this.requests; }
+
+    public IMap<UUID, Long> getRefreshedClients() { return this.refreshedClients; }
+    public IMap<UUID, Long> getRefreshedSfuTransports() { return this.refreshedSfuTransports; }
 
     public IMap<String, String> getEtcMap() { return this.etcMap; }
 

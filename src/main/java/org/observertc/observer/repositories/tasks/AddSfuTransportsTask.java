@@ -48,17 +48,35 @@ public class AddSfuTransportsTask extends ChainedTask<Void> {
                     }
                     return false;
                 })
-                .addActionStage("Add Sfu DTOs",
-                // action
-                () -> {
-                    hazelcastMaps.getSFUTransports().putAll(this.sfuTransports);
-                },
-                // rollback
-                (inputHolder, thrownException) -> {
-                    for (UUID sfuId : this.sfuTransports.keySet()) {
-                        this.hazelcastMaps.getSFUTransports().remove(sfuId);
-                    }
-                })
+                .addActionStage("Add Sfu Transport DTOs",
+                    // action
+                    () -> {
+                        hazelcastMaps.getSFUTransports().putAll(this.sfuTransports);
+                    },
+                    // rollback
+                    (inputHolder, thrownException) -> {
+                        for (UUID sfuId : this.sfuTransports.keySet()) {
+                            this.hazelcastMaps.getSFUTransports().remove(sfuId);
+                        }
+                    })
+                .addActionStage("Bind SFU Transport Ids to SFU",
+                        // action
+                        () -> {
+                            this.sfuTransports.values().stream()
+                                    .filter(Objects::nonNull)
+                                    .forEach(sfuTransportDTO -> {
+                                        this.hazelcastMaps.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+                                    });
+
+                        },
+                        // rollback
+                        (inputHolder, thrownException) -> {
+                            this.sfuTransports.values().stream()
+                                    .filter(Objects::nonNull)
+                                    .forEach(sfuTransportDTO -> {
+                                        this.hazelcastMaps.getSfuToSfuTransportIds().remove(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+                                    });
+                        })
                 .addTerminalPassingStage("Completed")
                 .build();
     }

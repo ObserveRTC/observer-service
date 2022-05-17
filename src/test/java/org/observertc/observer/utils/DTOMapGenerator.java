@@ -60,7 +60,14 @@ public class DTOMapGenerator {
             return this;
         }
         hazelcastMaps.getSFUs().putAll(this.sfuDTOs);
+        this.sfuTransports.values().stream().forEach(sfuTransportDTO -> {
+            hazelcastMaps.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+        });
         hazelcastMaps.getSFUTransports().putAll(this.sfuTransports);
+
+        this.sfuRtpPads.values().stream().forEach(sfuRtpPadDTO -> {
+            hazelcastMaps.getSfuTransportToSfuRtpPadIds().put(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+        });
         hazelcastMaps.getSFURtpPads().putAll(this.sfuRtpPads);
         return this;
     }

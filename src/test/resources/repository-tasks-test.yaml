@@ -1,0 +1,8 @@
+observer:
+  repository:
+    mediaTracksMaxIdleTimeInS: 60
+    peerConnectionsMaxIdleTimeInS: 60
+    clientMaxIdleTimeInS: 60
+    sfuMaxIdleTimeInS: 60
+    sfuTransportMaxIdleTimeInS: 60
+    sfuRtpPadMaxIdleTimeInS: 60

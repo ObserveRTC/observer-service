@@ -29,6 +29,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
 
     @Inject
     BeanProvider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;
+
     private boolean unmodifiableResult = false;
 
     @Inject
@@ -87,6 +88,14 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
                             }
                             this.hazelcastMaps.getClients().putAll(this.removedClientDTOs);
                         })
+                .addActionStage("Removes touched timestamps", () -> {
+                    for (var clientId : this.clientIds) {
+                        if (clientId == null) {
+                            continue;
+                        }
+                        this.hazelcastMaps.getRefreshedClients().delete(clientId);
+                    }
+                })
                 .addActionStage("Remove Client Binding to Calls", () -> {
                         this.removedClientDTOs.forEach((clientId, clientDTO) -> {
                             this.hazelcastMaps.getCallToClientIds().remove(clientDTO.callId, clientId);
