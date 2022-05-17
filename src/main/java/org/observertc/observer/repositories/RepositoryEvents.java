@@ -505,13 +505,13 @@ public class RepositoryEvents {
     }
 
     private void evictOutdatedEntries() {
-        var evictClientsTask = evictOutdatedClientsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.clientMaxIdleTimeInS);
+        var evictClientsTask = evictOutdatedClientsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.clientMaxIdleTimeInS * 1000);
         logger.info("Executing {}", evictClientsTask.getClass().getSimpleName());
         if (!evictClientsTask.execute().succeeded()) {
             logger.warn("{} did not succeeded", evictClientsTask.getClass().getSimpleName());
         }
 
-        var evictSfuTransportsTask = evictOutdatedSfuTransportsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.sfuTransportMaxIdleTimeInS);
+        var evictSfuTransportsTask = evictOutdatedSfuTransportsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.sfuTransportMaxIdleTimeInS * 1000);
         logger.info("Executing {}", evictSfuTransportsTask.getClass().getSimpleName());
         if (!evictSfuTransportsTask.execute().succeeded()) {
             logger.warn("{} did not succeeded", evictSfuTransportsTask.getClass().getSimpleName());
