@@ -159,6 +159,9 @@ observer:
     # sets up a timer to evict all expired sfu transport and clients 
     # DEFAULT is 5 mins (300 * 1000)
     evictExpiredEntriesPeriodInMs: 300000
+    # adds an offset to expiration thresholds in eviction. THis is due to not collide with expiration 
+    # ongoing processes
+    evictExpiredEntriesThresholdOffsetInMs: 10000
 
   buffers:
     # settings of the buffer collect samples from the sources

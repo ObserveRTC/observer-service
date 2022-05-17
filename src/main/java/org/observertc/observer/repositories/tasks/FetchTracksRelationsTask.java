@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.StreamDirection;
@@ -141,7 +142,7 @@ public class FetchTracksRelationsTask extends ChainedTask<FetchTracksRelationsTa
                     }
                     inboundTrackDTOs.forEach(inboundMediaTrack -> {
                         if (Objects.isNull(inboundMediaTrack.callId) || !inboundMediaTrack.callId.equals(outboundMediaTrack.callId)) {
-                            logger.warn("CallId for in-, and outbound media tracks ({}, {}) are null or does not match", inboundMediaTrack.callId, outboundMediaTrack.callId);
+                            logger.warn("CallId for in-, and outbound media tracks are null or does not match. {}, {}", JsonUtils.objectToString(inboundMediaTrack), JsonUtils.objectToString(outboundMediaTrack));
                             return;
                         }
                         this.result.inboundTrackMatchIds.put(inboundMediaTrack.trackId, new MatchedIds(

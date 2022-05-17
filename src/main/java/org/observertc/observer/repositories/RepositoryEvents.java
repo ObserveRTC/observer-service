@@ -150,7 +150,8 @@ public class RepositoryEvents {
                         expiredClient.add(forwardedEvent);
                     }).onEntryEvicted(event -> {
                         ClientDTO clientDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.clientMaxIdleTimeInS).toEpochMilli();
+                        var minusInS = repositoryConfig.clientMaxIdleTimeInS + repositoryConfig.evictExpiredEntriesThresholdOffsetInMs / 1000;
+                        var estimatedLastTouch = Instant.now().minusSeconds(minusInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<ClientDTO>make(clientDTO, estimatedLastTouch);
                         expiredClient.add(forwardedEvent);
                     });
@@ -231,7 +232,8 @@ public class RepositoryEvents {
                         expiredSfuTransport.add(forwardedEvent);
                     }).onEntryEvicted(event -> {
                         SfuTransportDTO sfuTransportDTO = event.getOldValue();
-                        var estimatedLastTouch = Instant.now().minusSeconds(repositoryConfig.sfuTransportMaxIdleTimeInS).toEpochMilli();
+                        var minusInS = repositoryConfig.sfuTransportMaxIdleTimeInS + repositoryConfig.evictExpiredEntriesThresholdOffsetInMs / 1000;
+                        var estimatedLastTouch = Instant.now().minusSeconds(minusInS).toEpochMilli();
                         var forwardedEvent = RepositoryExpiredEvent.<SfuTransportDTO>make(sfuTransportDTO, estimatedLastTouch);
                         expiredSfuTransport.add(forwardedEvent);
                     });
@@ -505,13 +507,16 @@ public class RepositoryEvents {
     }
 
     private void evictOutdatedEntries() {
-        var evictClientsTask = evictOutdatedClientsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.clientMaxIdleTimeInS * 1000);
+        var config = this.observerConfig.repository;
+        var evictClientThresholdInMs = config.clientMaxIdleTimeInS * 1000 + config.evictExpiredEntriesThresholdOffsetInMs;
+        var evictClientsTask = evictOutdatedClientsTaskProvider.get().withExpirationThresholdInMs(evictClientThresholdInMs);
         logger.info("Executing {}", evictClientsTask.getClass().getSimpleName());
         if (!evictClientsTask.execute().succeeded()) {
             logger.warn("{} did not succeeded", evictClientsTask.getClass().getSimpleName());
         }
 
-        var evictSfuTransportsTask = evictOutdatedSfuTransportsTaskProvider.get().withExpirationThresholdInMs(this.observerConfig.repository.sfuTransportMaxIdleTimeInS * 1000);
+        var evictTransportThresholdInMs = config.sfuTransportMaxIdleTimeInS * 1000 + config.evictExpiredEntriesThresholdOffsetInMs;
+        var evictSfuTransportsTask = evictOutdatedSfuTransportsTaskProvider.get().withExpirationThresholdInMs(evictTransportThresholdInMs);
         logger.info("Executing {}", evictSfuTransportsTask.getClass().getSimpleName());
         if (!evictSfuTransportsTask.execute().succeeded()) {
             logger.warn("{} did not succeeded", evictSfuTransportsTask.getClass().getSimpleName());

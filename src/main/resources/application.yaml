@@ -53,6 +53,7 @@ observer:
     exposeMetricsPeriodInMins: 5
 
     evictExpiredEntriesPeriodInMs: 300000
+    evictExpiredEntriesThresholdOffsetInMs: 10000
 
   buffers:
     samplesCollector:

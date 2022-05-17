@@ -101,6 +101,9 @@ public class ObserverConfig {
 
 		@Min(-1)
 		public long evictExpiredEntriesPeriodInMs = 0;
+
+		@Min(-1)
+		public long evictExpiredEntriesThresholdOffsetInMs = 0;
 	}
 
 	// Evaluators Config

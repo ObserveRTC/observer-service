@@ -6,3 +6,5 @@ observer:
     sfuMaxIdleTimeInS: 60
     sfuTransportMaxIdleTimeInS: 60
     sfuRtpPadMaxIdleTimeInS: 60
+
+    evictExpiredEntriesThresholdOffsetInMs: 0

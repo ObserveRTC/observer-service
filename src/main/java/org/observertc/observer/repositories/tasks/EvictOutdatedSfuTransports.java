@@ -3,6 +3,7 @@ package org.observertc.observer.repositories.tasks;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.micrometer.ExposedMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
@@ -53,7 +54,8 @@ public class EvictOutdatedSfuTransports extends ChainedTask<Void> {
                         evictedTransportIds.add(sfuTransportId);
                     });
                     if (0 < evictedTransportIds.size()) {
-                        logger.info("Evicted {} sfu transport ids from {} local stored sfu transport.", evictedTransportIds.size(), sfuTransportIds.size());
+                        logger.info("Evicted {} sfu transport ids from {} local stored sfu transport. evictedTransportIds: {}",
+                                evictedTransportIds.size(), sfuTransportIds.size(), JsonUtils.objectToString(evictedTransportIds));
                     }
                 })
                 .build();
