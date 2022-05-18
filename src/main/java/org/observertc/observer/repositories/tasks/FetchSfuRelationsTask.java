@@ -8,7 +8,7 @@ import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuSinkDTO;
 import org.observertc.observer.dto.SfuStreamDTO;
 import org.observertc.observer.dto.StreamDirection;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     public static class InternalRtpPadMatch {
         public UUID inboundRtpPadId;

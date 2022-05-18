@@ -14,6 +14,7 @@ import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.evaluators.depots.ClientDTOsDepot;
 import org.observertc.observer.evaluators.depots.MediaTrackDTOsDepot;
 import org.observertc.observer.evaluators.depots.PeerConnectionDTOsDepot;
+import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.repositories.tasks.*;
 import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSamples;
@@ -22,6 +23,7 @@ import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +34,10 @@ import java.util.stream.Collectors;
 @Prototype
 public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     private static final Logger logger = LoggerFactory.getLogger(CallEntitiesUpdater.class);
+    private static final String METRIC_COMPONENT_NAME = CallEntitiesUpdater.class.getSimpleName();
+
+    @Inject
+    EvaluatorMetrics exposedMetrics;
 
     @Inject
     BeanProvider<CreateCallIfNotExistsTask> createCallIfNotExistsTaskProvider;
@@ -67,6 +73,15 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     }
 
     public void accept(ObservedClientSamples observedClientSamples) {
+        Instant started = Instant.now();
+        try {
+            this.process(observedClientSamples);
+        } finally {
+            this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
+        }
+    }
+
+    private void process(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples.isEmpty()) {
             return;
         }

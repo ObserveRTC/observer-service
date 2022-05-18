@@ -6,7 +6,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class AddPeerConnectionsTask extends ChainedTask<List<CallEventReport.Bui
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     private Map<UUID, PeerConnectionDTO> peerConnectionDTOs = new HashMap<>();
 

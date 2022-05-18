@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class EvictOutdatedSfuTransports extends ChainedTask<Void> {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
 
     private final Long NOW = Instant.now().toEpochMilli();

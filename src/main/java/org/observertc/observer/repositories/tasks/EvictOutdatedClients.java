@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class EvictOutdatedClients extends ChainedTask<Void> {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     /**
      * Hazelcast by default uses system.currentTimeMillis unless configuration overrides it.

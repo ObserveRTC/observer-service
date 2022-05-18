@@ -13,7 +13,7 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.SourceMetrics;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class SamplesRestApiController {
 	private static final Logger logger = LoggerFactory.getLogger(SamplesRestApiController.class);
 
 	@Inject
-	ExposedMetrics exposedMetrics;
+	SourceMetrics exposedMetrics;
 
 	@Inject
 	SamplesCollector samplesCollector;
@@ -75,6 +75,7 @@ public class SamplesRestApiController {
 			);
 //			logger.info("{}\n {}\n", version, Base64.encode(message));
 			acceptor.accept(message);
+			this.exposedMetrics.incrementRESTReceivedSamples(serviceId, mediaUnitId);
 		} catch (Throwable ex) {
 			return HttpResponse.serverError(ex.getMessage());
 		}

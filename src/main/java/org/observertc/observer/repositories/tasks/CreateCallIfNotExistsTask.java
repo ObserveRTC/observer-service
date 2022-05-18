@@ -5,7 +5,7 @@ import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.CallDTO;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
     WeakLockProvider weakLockProvider;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     @PostConstruct
     void setup() {

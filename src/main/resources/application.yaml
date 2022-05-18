@@ -4,6 +4,8 @@ micronaut:
     read-idle-timeout: 20m
     write-idle-timeout: 20m
     port: ${APPLICATION_SERVER_PORT:7080}
+    # sets the request size to 100MB
+    max-request-size: 104857600
     application:
       name: "webrtc-observer"
   heartbeat:
@@ -36,7 +38,6 @@ endpoints:
 
 ---
 observer:
-
   sources:
     rest:
       enabled: true
@@ -50,8 +51,6 @@ observer:
     sfuTransportMaxIdleTimeInS: 600
     sfuRtpPadMaxIdleTimeInS: 600
     peerConnectionsMaxIdleTime: 300
-    exposeMetricsPeriodInMins: 5
-
     evictExpiredEntriesPeriodInMs: 300000
     evictExpiredEntriesThresholdOffsetInMs: 10000
 
@@ -71,6 +70,23 @@ observer:
     obfuscations:
       hashAlgorithm: SHA-256
       hashSalt: "MySalt"
+
+  metrics:
+    prefix: "observertc"
+    serviceIdTagName: "service"
+    mediaUnitTagName: "mediaUnit"
+    evaluatorMetrics:
+      enabled: true
+    reportMetrics:
+      enabled: true
+    sinkMetrics:
+      enabled: true
+    sourceMetrics:
+      enabled: true
+    repositoryMetrics:
+      enabled: true
+      exposePeriodInMins: 5
+
 
   evaluators:
     clientSamplesAnalyser:

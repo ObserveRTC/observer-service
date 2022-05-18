@@ -6,12 +6,13 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
-import org.observertc.observer.evaluators.depots.SfuDTOsDepot;
-import org.observertc.observer.evaluators.depots.SfuRtpPadDTOsDepot;
-import org.observertc.observer.evaluators.depots.SfuTransportDTOsDepot;
 import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuTransportDTO;
+import org.observertc.observer.evaluators.depots.SfuDTOsDepot;
+import org.observertc.observer.evaluators.depots.SfuRtpPadDTOsDepot;
+import org.observertc.observer.evaluators.depots.SfuTransportDTOsDepot;
+import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.repositories.tasks.AddSFUsTask;
 import org.observertc.observer.repositories.tasks.AddSfuRtpPadsTask;
 import org.observertc.observer.repositories.tasks.AddSfuTransportsTask;
@@ -21,6 +22,7 @@ import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -28,6 +30,10 @@ import java.util.function.Consumer;
 @Prototype
 public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(SfuEntitiesUpdater.class);
+    private static final String METRIC_COMPONENT_NAME = SfuEntitiesUpdater.class.getSimpleName();
+
+    @Inject
+    EvaluatorMetrics exposedMetrics;
 
     @Inject
     BeanProvider<RefreshSfusTask> refreshSfusTaskProvider;
@@ -50,8 +56,16 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         return this.output;
     }
 
-
     public void accept(ObservedSfuSamples observedSfuSamples) {
+        Instant started = Instant.now();
+        try {
+            this.process(observedSfuSamples);
+        } finally {
+            this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
+        }
+    }
+
+    private void process(ObservedSfuSamples observedSfuSamples) {
         if (observedSfuSamples.isEmpty()) {
             return;
         }

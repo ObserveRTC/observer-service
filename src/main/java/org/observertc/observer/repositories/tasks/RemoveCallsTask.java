@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.CallDTO;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
     WeakLockProvider weakLockProvider;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     @PostConstruct
     void setup() {

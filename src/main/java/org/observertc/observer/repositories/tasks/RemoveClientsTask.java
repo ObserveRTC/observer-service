@@ -7,7 +7,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
     private boolean unmodifiableResult = false;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     @PostConstruct
     void setup() {

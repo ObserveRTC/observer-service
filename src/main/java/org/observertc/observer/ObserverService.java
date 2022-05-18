@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.*;
-import org.observertc.observer.micrometer.RepositoryMetrics;
+import org.observertc.observer.metrics.ReportMetrics;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;
 import org.observertc.observer.sources.SampleSources;
@@ -26,7 +26,7 @@ public class ObserverService {
     ObserverConfig observerConfig;
 
     @Inject
-    RepositoryMetrics repositoryMetrics;
+    ReportMetrics reportMetrics;
 
     @Inject
     SampleSources sampleSources;
@@ -85,6 +85,11 @@ public class ObserverService {
 
         this.reportsCollector.getObservableReports()
                 .subscribe(this.reportSinks);
+
+        if (this.reportMetrics.isEnabled()) {
+            this.reportsCollector.getObservableReports()
+                    .subscribe(this.reportMetrics::process);
+        }
 
         if (observerConfig.security.printConfigs) {
             logger.info("Config {}", JsonUtils.objectToString(observerConfig));

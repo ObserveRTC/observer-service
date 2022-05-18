@@ -16,10 +16,8 @@
 
 package org.observertc.observer.common;
 
-import org.observertc.observer.micrometer.FlawMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.time.Instant;
@@ -30,11 +28,9 @@ import java.util.function.Supplier;
 public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(TaskAbstract.class);
 	private volatile boolean executed = false;
-	private FlawMonitor flawMonitor;
 	private Supplier<String> errorMessageSupplier = () -> "";
 	private Logger onLogger = DEFAULT_LOGGER;
 	private Logger defaultLogger = DEFAULT_LOGGER;
-	private Level onErrorLogLevel = Level.ERROR;
 	private boolean rethrowException = false;
 	private boolean succeeded = false;
 	private int maxRetry = 1;
@@ -73,17 +69,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 			}
 			if (Objects.nonNull(thrown)) {
 				String exceptionMessage = this.getErrorMessage();
-				if (Objects.nonNull(this.flawMonitor)) {
-					this.flawMonitor
-							.makeLogEntry()
-							.withException(thrown)
-							.withLogLevel(this.onErrorLogLevel)
-							.withMessage(exceptionMessage)
-							.withLogger(this.onLogger)
-							.complete();
-				} else {
-					this.onLogger.error(exceptionMessage, thrown);
-				}
+				this.onLogger.error(exceptionMessage, thrown);
 				try {
 					this.rollback(thrown);
 				} catch (Throwable t) {
@@ -195,11 +181,6 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	public TaskAbstract<T> withStatsConsumer(Consumer<Stats> statsConsumer) {
 		this.statsConsumer = statsConsumer;
-		return this;
-	}
-
-	public TaskAbstract<T> withFlawMonitor(FlawMonitor flawMonitor) {
-		this.flawMonitor = flawMonitor;
 		return this;
 	}
 

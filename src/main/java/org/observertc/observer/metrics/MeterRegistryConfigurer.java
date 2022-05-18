@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package org.observertc.observer.micrometer;
+package org.observertc.observer.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import io.micronaut.configuration.metrics.aggregator.MeterRegistryConfigurer;
 import jakarta.inject.Singleton;
 
 
 @Singleton
-public class WebRTCStatsMeterRegistryConfigurer implements MeterRegistryConfigurer {
+public class MeterRegistryConfigurer implements io.micronaut.configuration.metrics.aggregator.MeterRegistryConfigurer {
 
 
 	@Override
@@ -36,7 +35,7 @@ public class WebRTCStatsMeterRegistryConfigurer implements MeterRegistryConfigur
 		return meterRegistry instanceof SimpleMeterRegistry;
 	}
 
-	public Class<WebRTCStatsMeterRegistryConfigurer> getType() {
-		return WebRTCStatsMeterRegistryConfigurer.class;
+	public Class<MeterRegistryConfigurer> getType() {
+		return MeterRegistryConfigurer.class;
 	}
 }

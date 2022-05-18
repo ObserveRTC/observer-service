@@ -8,7 +8,7 @@ import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +21,7 @@ public class FindParentalDTOsTask extends ChainedTask<FindParentalDTOsTask.Repor
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     private Set<UUID> trackIds = new HashSet<>();
     private Set<UUID> peerConnectionIds = new HashSet<>();

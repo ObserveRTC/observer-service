@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.observertc.observer.micrometer;
+package org.observertc.observer.metrics;
 
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micronaut.context.annotation.Bean;
 import jakarta.inject.Singleton;
 
-public class WebRTCStatsMeterFilterFactory {
+public class MeterFilterFactory {
 	/**
 	 * Exclude metrics starting with jvm.
 	 *
@@ -29,6 +29,7 @@ public class WebRTCStatsMeterFilterFactory {
 	@Bean
 	@Singleton
 	MeterFilter exclusionFilter() {
+		var filter = MeterFilter.denyNameStartsWith("kafka");
 		return MeterFilter.denyNameStartsWith("kafka");
 	}
 

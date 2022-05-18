@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
+import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.FetchSfuRelationsTask;
 import org.observertc.observer.samples.ObservedSfuSamples;
@@ -15,6 +16,7 @@ import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +26,10 @@ import java.util.function.Consumer;
 @Prototype
 public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     private static final Logger logger = LoggerFactory.getLogger(SfuSamplesAnalyser.class);
+    private static final String METRIC_COMPONENT_NAME = SfuSamplesAnalyser.class.getSimpleName();
+
+    @Inject
+    EvaluatorMetrics exposedMetrics;
 
     @Inject
     BeanProvider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
@@ -43,6 +49,15 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     }
 
     public void accept(ObservedSfuSamples observedSfuSamples) {
+        Instant started = Instant.now();
+        try {
+            this.process(observedSfuSamples);
+        } finally {
+            this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
+        }
+    }
+
+    private void process(ObservedSfuSamples observedSfuSamples) {
         if (observedSfuSamples.isEmpty()) {
             return;
         }

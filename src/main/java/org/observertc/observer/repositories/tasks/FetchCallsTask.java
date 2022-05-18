@@ -7,7 +7,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.entities.CallEntity;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +26,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
     FetchClientsTask fetchClientsTask;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     @PostConstruct
     void setup() {

@@ -10,6 +10,7 @@ import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.events.CallMetaType;
+import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
 import org.observertc.observer.samples.ClientSampleVisitor;
@@ -17,12 +18,17 @@ import org.observertc.observer.samples.ObservedClientSamples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
 
 @Prototype
 public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     private static final Logger logger = LoggerFactory.getLogger(ClientSamplesAnalyser.class);
+    private static final String METRIC_COMPONENT_NAME = ClientSamplesAnalyser.class.getSimpleName();
+
+    @Inject
+    EvaluatorMetrics exposedMetrics;
 
     @Inject
     BeanProvider<FetchTracksRelationsTask> matchCallTracksTaskProvider;
@@ -45,6 +51,15 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     }
 
     public void accept(ObservedClientSamples observedClientSamples) {
+        Instant started = Instant.now();
+        try {
+            this.process(observedClientSamples);
+        } finally {
+            this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
+        }
+    }
+
+    private void process(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples.isEmpty()) {
             return;
         }

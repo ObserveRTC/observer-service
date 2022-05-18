@@ -1,6 +1,6 @@
 package org.observertc.observer.sinks;
 
-import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import org.observertc.observer.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +9,18 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class Sink implements Consumer<List<Report>> {
+public abstract class Sink implements Function<List<Report>, Integer> {
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(Sink.class);
     protected Logger logger = DEFAULT_LOGGER;
-    private Consumer<List<Report>> forward = this::process;
+    private Function<List<Report>, Integer> forward;
     private boolean enabled = true;
+
+    protected Sink() {
+        this.forward = reports -> {
+            this.process(reports);
+            return reports.size();
+        };
+    }
 
     Sink setEnabled(boolean value) {
         this.enabled = value;
@@ -31,8 +38,8 @@ public abstract class Sink implements Consumer<List<Report>> {
     }
 
     @Override
-    public void accept(List<Report> reports) throws Throwable{
-        this.forward.accept(reports);
+    public Integer apply(List<Report> reports) throws Throwable{
+        return this.forward.apply(reports);
     }
 
     protected abstract void process(List<Report> reports);
@@ -41,6 +48,7 @@ public abstract class Sink implements Consumer<List<Report>> {
         this.forward = reports -> {
             var filteredReports = reports.stream().filter(filter).collect(Collectors.toList());
             this.process(filteredReports);
+            return filteredReports.size();
         };
         return this;
     }

@@ -27,6 +27,55 @@ import java.util.Map;
 @ConfigurationProperties("observer")
 public class ObserverConfig {
 
+	// Metrics Configurations
+	public MetricsConfig metrics;
+
+	@ConfigurationProperties("metrics")
+	public static class MetricsConfig {
+
+		public String prefix = "observertc";
+		public String serviceIdTagName = "serviceId";
+		public String mediaUnitTagName = "mediaUnit";
+
+		public RepositoryMetricsConfig repositoryMetrics;
+
+        @ConfigurationProperties("repositoryMetrics")
+		public static class RepositoryMetricsConfig {
+			public boolean enabled;
+
+			@Min(1)
+			public int exposePeriodInMin = 5;
+		}
+
+		public SourceMetricsConfig sourceMetrics;
+
+		@ConfigurationProperties("sourceMetrics")
+		public static class SourceMetricsConfig {
+			public boolean enabled;
+		}
+
+		public SinkMetricsConfig sinkMetrics;
+
+		@ConfigurationProperties("sinkMetrics")
+		public static class SinkMetricsConfig {
+			public boolean enabled;
+		}
+
+		public ReportMetricsConfig reportMetrics;
+
+		@ConfigurationProperties("reportMetrics")
+		public static class ReportMetricsConfig {
+			public boolean enabled;
+		}
+
+		public FlawMetricsConfig flawMetrics;
+
+		@ConfigurationProperties("flawMetrics")
+		public static class FlawMetricsConfig {
+			public boolean enabled;
+		}
+	}
+
 	// Security Configurations
 	public SecurityConfig security;
 
@@ -95,9 +144,6 @@ public class ObserverConfig {
 
 		@Min(3)
 		public int sfuRtpPadMaxIdleTimeInS = 600;
-
-		@Min(-1)
-		public int exposeMetricsPeriodInMins = 0;
 
 		@Min(-1)
 		public long evictExpiredEntriesPeriodInMs = 0;

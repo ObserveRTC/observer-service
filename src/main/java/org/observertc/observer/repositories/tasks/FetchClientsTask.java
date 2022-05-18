@@ -7,7 +7,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
-import org.observertc.observer.micrometer.ExposedMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +24,7 @@ public class FetchClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
     HazelcastMaps hazelcastMaps;
 
     @Inject
-    ExposedMetrics exposedMetrics;
+    RepositoryMetrics exposedMetrics;
 
     @Inject
     FetchPeerConnectionsTask fetchPeerConnectionsTask;

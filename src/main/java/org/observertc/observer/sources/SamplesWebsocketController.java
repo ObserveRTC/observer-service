@@ -27,15 +27,12 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
-import org.observertc.observer.micrometer.ExposedMetrics;
-import org.observertc.observer.micrometer.FlawMonitor;
-import org.observertc.observer.micrometer.MonitorProvider;
+import org.observertc.observer.metrics.SourceMetrics;
 import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.repositories.RepositoryEvents;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -49,11 +46,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SamplesWebsocketController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SamplesWebsocketController.class);
-	private final FlawMonitor flawMonitor;
 	private Map<String, Input> inputs = new ConcurrentHashMap<>();
 
 	@Inject
-	ExposedMetrics exposedMetrics;
+	SourceMetrics exposedMetrics;
 
 	@Inject
     WebsocketCustomCloseReasons customCloseReasons;
@@ -70,11 +66,9 @@ public class SamplesWebsocketController {
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
 
 	public SamplesWebsocketController(
-	        ObserverConfig observerConfig,
-            MonitorProvider monitorProvider
+	        ObserverConfig observerConfig
     ) {
 		this.config = observerConfig.sources.websocket;
-		this.flawMonitor = monitorProvider.makeFlawMonitorFor(this.getClass()).withDefaultLogger(logger).withDefaultLogLevel(Level.WARN);
 	}
 
 	@PostConstruct
@@ -126,7 +120,7 @@ public class SamplesWebsocketController {
 				this.inputs.remove(session.getId());
 				return;
 			}
-			this.exposedMetrics.incrementSamplesReceived(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementOpenedWebsockets(serviceId, mediaUnitId);
 			logger.info("Session {} is opened, providedSchemaVersion: {}, providedFormat: {}", session.getId(), providedSchemaVersion, providedFormat);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -139,8 +133,7 @@ public class SamplesWebsocketController {
 			String mediaUnitId,
 			WebSocketSession session) {
 		try {
-
-			this.exposedMetrics.incrementSamplesOpenedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementClosedWebsockets(serviceId, mediaUnitId);
 			this.inputs.remove(session.getId());
 			logger.info("Session {} is closed", session.getId());
 		} catch (Throwable t) {
@@ -155,7 +148,7 @@ public class SamplesWebsocketController {
 			byte[] messageBytes,
 			WebSocketSession session) {
 		try {
-			this.exposedMetrics.incrementSamplesClosedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementWebsocketReceivedSamples(serviceId, mediaUnitId);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}

@@ -129,7 +129,34 @@ Here is an example for the observer configuration part:
 
 ```yaml
 observer:
-  
+   
+   # configuration to expose metrics
+   metrics:
+      # the prefix for metrics exposed by the observer processes
+      prefix: "observertc"
+      # the name of the tag for serviceId used where it is exposed
+      serviceIdTagName: "service"
+      # the name of the tag for mediaUnitId used where it is exposed
+      mediaUnitIdTagName: "mediaUnit"
+      # metrics exposed from evaluators
+      evaluatorMetrics:
+         # flag indicate if evaluator metrics are exposed or not
+         enabled: false
+      reportMetrics:
+         # flag indicate if report metrics are exposed or not
+         enabled: false
+      sinkMetrics:
+         # flag indicate if sink metrics are exposed or not
+         enabled: false
+      sourceMetrics:
+         # flag indicate if source metrics are exposed or not
+         enabled: false
+      repositoryMetrics:
+         # flag indicate if repository metrics are exposed or not
+         enabled: false
+         # sets the period for exposing metrics about the number of entries the repository holds
+         exposePeriodInMins: 5
+         
   sources:
     # settings related to REST API accepting Samples
     rest:
@@ -154,8 +181,6 @@ observer:
     sfuRtpPadMaxIdleTimeInS: 600
     # the maximum idle time for an peer connection object after  which it is removed from the repository
     peerConnectionsMaxIdleTime: 300
-    # sets the period for exposing metrics about the number of entries the repository holds
-    exposeMetricsPeriodInMins: 5
     # sets up a timer to evict all expired sfu transport and clients 
     # DEFAULT is 5 mins (300 * 1000)
     evictExpiredEntriesPeriodInMs: 300000

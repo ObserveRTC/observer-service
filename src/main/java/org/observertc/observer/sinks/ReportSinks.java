@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.metrics.SinkMetrics;
 import org.observertc.observer.reports.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ public class ReportSinks implements Consumer<List<Report>> {
 
     @Inject
     ObserverConfig observerConfig;
+
+    @Inject
+    SinkMetrics sinkMetrics;
 
     @PostConstruct
     void setup() {
@@ -52,7 +56,10 @@ public class ReportSinks implements Consumer<List<Report>> {
                 var sinkId = entry.getKey();
                 var sink = entry.getValue();
                 try {
-                    sink.accept(reports);
+                    int processedReports = sink.apply(reports);
+                    if (this.sinkMetrics.isEnabled()) {
+                        this.sinkMetrics.incrementReportsNum(processedReports, sinkId);
+                    }
                 } catch (Throwable ex) {
                     logger.error("Unexpected error occurred on sink {}. Sink will be closed", sinkId, ex);
                     try {
