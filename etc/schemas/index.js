@@ -89,6 +89,42 @@ const main = () => {
         // copyAvroSchema(schema);
     }
 
+    for (const key of Object.keys(schemas)) {
+        if (!key.startsWith("Csv")) continue;
+        // CsvHeaderCallEventReport
+        // CsvHeaderCallEventReport
+        const reportType = key.slice("CsvHeader".length);
+        const klassName = reportType + "ToIterable";
+        const csvHeader = schemas[key];
+        const lines = [
+            `package org.observertc.schemas.reports.csvsupport;`,
+            ``,
+            `import java.util.LinkedList;`,
+            `import org.observertc.observer.reports.Report;`,
+            `import java.util.function.Function;`,
+            `import org.observertc.schemas.reports.${reportType};`,
+            ``,
+            `public class ${klassName} implements Function<Report, Iterable<?>> {`,
+            `\t@Override`,
+            `\tpublic Iterable<?> apply(Report report) {`,
+            `\t\tvar result = new LinkedList();`,
+            `\t\tvar payload = (${reportType}) report.payload;`,
+        ]
+        for (const fieldName of csvHeader) {
+            lines.push(
+                `\t\tresult.add(payload.${fieldName});`
+            )
+        }
+        lines.push(
+            ``,
+            `\t\treturn result;`,
+            `\t}`,
+            `}`
+        );
+        fs.writeFileSync(`../../src/main/java/org/observertc/schemas/reports/csvsupport/${klassName}.java`, lines.join(`\n`));
+        // copyAvroSchema(schema);
+    }
+
     const samplesPath = "./Samples.java";
     createSamplesPojo(samplesPath);
     fs.copyFile(samplesPath, `../../src/main/java/org/observertc/schemas/samples/Samples.java`, (err) => {

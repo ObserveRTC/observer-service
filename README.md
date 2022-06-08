@@ -371,13 +371,37 @@ sinks:
       printSummary: True
 ```
 
+##### FirehoseSink
+
+Observer can send reports to [Aws Firehose](https://aws.amazon.com/kinesis/data-firehose/) via DIRECT PUT method.
+
+```yaml
+sinks:
+  MyFireHoseSink:
+    type: FirehoseSink
+    config:
+       # The encoding format of the forwarded data. Possible values are: JSON, CSV
+       # For csv format, please check the schemas repository for the headers
+       encodingType: JSON
+       # The AWS region the firehose has been configured
+       regionId: eu-west-1
+       # the name of the delivery stream
+       streamName: observertc-CALL_META_DATA-csv
+       # the name of the credential profile
+       profileName: default
+       # The path of the file for the credentials
+       profileFilePath: /my/custom/path/for/credentials
+       # the type of the file to read the credentials. Possible values are: CONFIGURATION, CREDENTIALS
+       profileFileType: CREDENTIALS
+```
+
 ##### LoggerSink
 
 Observer can print reports to the console by using `LoggerSink`
 
 ```yaml
 sinks:
-  MyMongoSink:
+  MyLoggerSink:
     type: LoggerSink
     config:
       # the level of the logger used to print information to the console

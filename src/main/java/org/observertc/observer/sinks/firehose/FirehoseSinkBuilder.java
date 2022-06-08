@@ -2,18 +2,28 @@ package org.observertc.observer.sinks.firehose;
 
 
 import io.micronaut.context.annotation.Prototype;
+import org.observertc.observer.common.CsvRecordMapper;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.mappings.JsonMapper;
+import org.observertc.observer.mappings.Mapper;
+import org.observertc.observer.reports.Report;
+import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.observer.sinks.Sink;
+import org.observertc.schemas.reports.csvsupport.*;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.profiles.ProfileFile;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.firehose.FirehoseClient;
+import software.amazon.awssdk.services.firehose.model.Record;
 
 import javax.validation.constraints.NotNull;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -37,7 +47,10 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         var result = new FirehoseSink();
         result.streamName = config.streamName;
         result.clientSupplier = clientProvider;
-        result.jsonMapper = JsonMapper.createObjectToBytesMapper();
+        switch (config.encodingType) {
+            case CSV -> result.encoder = this.makeCsvEncoder();
+            case JSON -> result.encoder = this.makeJsonEncoder();
+        }
         return result;
     }
 
@@ -56,11 +69,73 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             builder.profileFile(profileFile);
         }
         return builder.build();
+    }
+
+    private Mapper<List<Report>, List<Record>> makeJsonEncoder() {
+        var mapper = JsonMapper.createObjectToBytesMapper();
+        return Mapper.create(reports -> {
+            List<Record> records = new LinkedList<>();
+            for (var report : reports) {
+                byte[] bytes = mapper.map(report);
+                if (bytes == null) {
+                    logger.warn("Cannot map report {}", JsonUtils.objectToString(report));
+                    continue;
+                }
+
+                Record myRecord = Record.builder()
+                        .data(SdkBytes.fromByteArray(bytes))
+                        .build();
+
+                records.add(myRecord);
+            }
+            return records;
+        });
+
+
+    }
+
+    private Mapper<List<Report>, List<Record>> makeCsvEncoder() {
+        var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
+                new ObserverEventReportToIterable(),
+                new CallEventReportToIterable(),
+                new CallMetaReportToIterable(),
+                new ClientExtensionReportToIterable(),
+                new ClientTransportReportToIterable(),
+                new ClientDataChannelReportToIterable(),
+                new InboundAudioTrackReportToIterable(),
+                new InboundVideoTrackReportToIterable(),
+                new OutboundAudioTrackReportToIterable(),
+                new OutboundVideoTrackReportToIterable(),
+                new SfuEventReportToIterable(),
+                new SfuMetaReportToIterable(),
+                new SfuExtensionReportToIterable(),
+                new SFUTransportReportToIterable(),
+                new SfuInboundRtpPadReportToIterable(),
+                new SfuOutboundRtpPadReportToIterable(),
+                new SfuSctpStreamReportToIterable()
+        );
+        var csvRecordMapper = CsvRecordMapper.builder().build();
+        return Mapper.<List<Report>, List<Record>>create(reports -> {
+            var records = new LinkedList<Record>();
+            for (var report : reports) {
+                var iterable = mapper.apply(report, report.type);
+                var line = csvRecordMapper.apply(iterable);
+                logger.info("Line: {}", line);
+                var bytes = line.getBytes();
+
+                Record myRecord = Record.builder()
+                        .data(SdkBytes.fromByteArray(bytes))
+                        .build();
+
+                records.add(myRecord);
+            }
+            return records;
+        });
 
     }
 
     private static Region getRegion(String configuredRegion) {
-        var foundRegion = Region.regions().stream().filter(awsRegion -> awsRegion.id() == configuredRegion).findFirst();
+        var foundRegion = Region.regions().stream().filter(awsRegion -> awsRegion.id().equals(configuredRegion)).findFirst();
         if (foundRegion.isEmpty()) {
             String availableRegions = Region.regions().stream().map(region -> region.id()).collect(Collectors.joining(", "));
             throw new InvalidConfigurationException("Invalid AWS region: " + configuredRegion + ": " + availableRegions);
@@ -70,11 +145,18 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
 
     public static class Config {
 
+        public enum EncodingType {
+            JSON,
+            CSV
+        }
+
         @NotNull
         public String regionId;
 
         @NotNull
         public String streamName;
+
+        public EncodingType encodingType = EncodingType.CSV;
 
         public String profileFilePath;
         public String profileFileType;
