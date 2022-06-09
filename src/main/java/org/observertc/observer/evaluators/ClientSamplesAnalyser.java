@@ -289,6 +289,10 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
 
             // extension stats
             ClientSampleVisitor.streamExtensionStats(clientSample).forEach(extensionStat -> {
+                if (!JsonUtils.isValidJsonString(extensionStat.payload)) {
+                    logger.warn("The payload of the extension stat MUST be a valid json string. Report will not be created for message {}", JsonUtils.objectToString(extensionStat));
+                    return;
+                }
                 this.clientExtensionReportsDepot
                         .setObservedClientSample(observedClientSample)
                         .setExtensionType(extensionStat.type)

@@ -1,10 +1,9 @@
 package org.observertc.schemas.reports.csvsupport;
 
-import org.observertc.observer.reports.Report;
-import org.observertc.schemas.reports.ClientExtensionReport;
-
 import java.util.LinkedList;
+import org.observertc.observer.reports.Report;
 import java.util.function.Function;
+import org.observertc.schemas.reports.ClientExtensionReport;
 
 public class ClientExtensionReportToIterable implements Function<Report, Iterable<?>> {
 	@Override

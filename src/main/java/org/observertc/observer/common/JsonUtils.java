@@ -16,6 +16,7 @@
 
 package org.observertc.observer.common;
 
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -52,6 +53,15 @@ public class JsonUtils {
 		}
 	}
 
+	public static boolean isValidJsonString(String json) {
+		try {
+			OBJECT_READER.readTree(json);
+		} catch (JacksonException e) {
+			return false;
+		}
+		return true;
+	}
+
 	public static String objectToBase64OrDefault(Object subject, String defaultValue) {
 		if (Objects.isNull(subject)) {
 			return defaultValue;
@@ -67,16 +77,23 @@ public class JsonUtils {
 	}
 
 	public static String objectToString(Object subject) {
-		return objectToStringOrDefault(subject, null);
+		return objectToStringOrDefault(subject, null, false);
 	}
 
-	public static String objectToStringOrDefault(Object subject, String defaultValue) {
+	public static String objectToStringOrDefault(Object subject, String defaultValue, boolean addQuoteToStrings) {
 		if (Objects.isNull(subject)) {
 			return defaultValue;
 		}
 		try {
-			String result = OBJECT_WRITER.writeValueAsString(subject);
-			return result;
+			if (subject instanceof String) {
+				if (addQuoteToStrings) {
+					return String.format("\"%s\"", subject);
+				} else {
+					return subject.toString();
+				}
+			} else {
+				return OBJECT_WRITER.writeValueAsString(subject);
+			}
 		} catch (JsonProcessingException e) {
 			logger.warn("Exception occurred while executing method base64ToObject", e);
 			return defaultValue;

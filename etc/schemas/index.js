@@ -89,6 +89,9 @@ const main = () => {
         // copyAvroSchema(schema);
     }
 
+    const jsonFields = new Set();
+    jsonFields.add("payload");
+    jsonFields.add("attachments");
     for (const key of Object.keys(schemas)) {
         if (!key.startsWith("Csv")) continue;
         // CsvHeaderCallEventReport
@@ -111,8 +114,15 @@ const main = () => {
             `\t\tvar payload = (${reportType}) report.payload;`,
         ]
         for (const fieldName of csvHeader) {
+            // let line;
+            // if (jsonFields.has(fieldName)) {
+            //     line = `\t\tresult.add("\\\"" + payload.${fieldName} + "\\\"");`;
+            // } else {
+            //     line = `\t\tresult.add(payload.${fieldName});`;
+            // }
+            const line = `\t\tresult.add(payload.${fieldName});`;
             lines.push(
-                `\t\tresult.add(payload.${fieldName});`
+                line
             )
         }
         lines.push(

@@ -137,11 +137,17 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
 
 
     private Mapper<List<Report>, List<Record>> makeCsvEncoder2() {
+//        var clientExtensionMapper = ;
         var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
                 new ObserverEventReportToIterable(),
                 new CallEventReportToIterable(),
                 new CallMetaReportToIterable(),
                 new ClientExtensionReportToIterable(),
+//                report -> {
+//                    var payload = (ClientExtensionReport) report.payload;
+//                    payload.payload = String.format("\"%s\"", payload.payload);
+//                    return clientExtensionMapper.apply(report);
+//                },
                 new ClientTransportReportToIterable(),
                 new ClientDataChannelReportToIterable(),
                 new InboundAudioTrackReportToIterable(),
