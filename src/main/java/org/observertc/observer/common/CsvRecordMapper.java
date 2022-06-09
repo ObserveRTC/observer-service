@@ -47,6 +47,8 @@ public class CsvRecordMapper implements Function<Iterable<?>, String> {
     private char separator = DEFAULT_SEPARATOR;
     private char quotechar = DEFAULT_QUOTE_CHARACTER;
     private char escapechar = DEFAULT_ESCAPE_CHARACTER;
+    private boolean addLineSeparator = false;
+    private String lineSeparator = DEFAULT_LINE_END;
 
     public static Builder builder() {
         return new Builder();
@@ -90,7 +92,9 @@ public class CsvRecordMapper implements Function<Iterable<?>, String> {
             if (quotechar != NO_QUOTE_CHARACTER) {
                 line.append(quotechar);
             }
-
+        }
+        if (this.addLineSeparator) {
+            line.append(this.lineSeparator);
         }
         return line.toString();
     }
@@ -115,6 +119,11 @@ public class CsvRecordMapper implements Function<Iterable<?>, String> {
 
         }
 
+        public Builder addLineSeparator(boolean value) {
+            this.result.addLineSeparator = value;
+            return this;
+        }
+
         public Builder setSeparator(char value) {
             this.result.separator = value;
             return this;
@@ -127,6 +136,11 @@ public class CsvRecordMapper implements Function<Iterable<?>, String> {
 
         public Builder setEscapeCharacter(char value) {
             this.result.escapechar = value;
+            return this;
+        }
+
+        public Builder setRfc4180LineEnd() {
+            this.result.lineSeparator = RFC4180_LINE_END;
             return this;
         }
 

@@ -2,6 +2,8 @@ package org.observertc.observer.sinks.firehose;
 
 
 import io.micronaut.context.annotation.Prototype;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.observertc.observer.common.CsvRecordMapper;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configbuilders.AbstractBuilder;
@@ -45,10 +47,10 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
                     .build();
         };
         var result = new FirehoseSink();
-        result.streamName = config.streamName;
+        result.deliveryStreamId = config.deliveryStreamId;
         result.clientSupplier = clientProvider;
         switch (config.encodingType) {
-            case CSV -> result.encoder = this.makeCsvEncoder();
+            case CSV -> result.encoder = this.makeCsvEncoder2();
             case JSON -> result.encoder = this.makeJsonEncoder();
         }
         return result;
@@ -114,7 +116,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
                 new SfuOutboundRtpPadReportToIterable(),
                 new SfuSctpStreamReportToIterable()
         );
-        var csvRecordMapper = CsvRecordMapper.builder().build();
+        var csvRecordMapper = CsvRecordMapper.builder().addLineSeparator(true).build();
         return Mapper.<List<Report>, List<Record>>create(reports -> {
             var records = new LinkedList<Record>();
             for (var report : reports) {
@@ -131,7 +133,65 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             }
             return records;
         });
+    }
 
+
+    private Mapper<List<Report>, List<Record>> makeCsvEncoder2() {
+        var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
+                new ObserverEventReportToIterable(),
+                new CallEventReportToIterable(),
+                new CallMetaReportToIterable(),
+                new ClientExtensionReportToIterable(),
+                new ClientTransportReportToIterable(),
+                new ClientDataChannelReportToIterable(),
+                new InboundAudioTrackReportToIterable(),
+                new InboundVideoTrackReportToIterable(),
+                new OutboundAudioTrackReportToIterable(),
+                new OutboundVideoTrackReportToIterable(),
+                new SfuEventReportToIterable(),
+                new SfuMetaReportToIterable(),
+                new SfuExtensionReportToIterable(),
+                new SFUTransportReportToIterable(),
+                new SfuInboundRtpPadReportToIterable(),
+                new SfuOutboundRtpPadReportToIterable(),
+                new SfuSctpStreamReportToIterable()
+        );
+        return Mapper.<List<Report>, List<Record>>create(reports -> {
+            var records = new LinkedList<Record>();
+            var stringBuilder = new StringBuffer();
+            var csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
+            int chunkSize = 0;
+            for (var report : reports) {
+                var iterable = mapper.apply(report, report.type);
+                csvPrinter.printRecord(iterable);
+                if (++chunkSize < 1) {
+                    continue;
+                }
+                csvPrinter.flush();
+                var lines = stringBuilder.toString();
+                logger.info("Lines {}", lines);
+                var bytes = lines.getBytes();
+                Record myRecord = Record.builder()
+                        .data(SdkBytes.fromByteArray(bytes))
+                        .build();
+
+                records.add(myRecord);
+                stringBuilder = new StringBuffer();
+                csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
+                chunkSize = 0;
+            }
+            if (0 < chunkSize) {
+                var lines = stringBuilder.toString();
+                logger.info("Lines {}", lines);
+                var bytes = lines.getBytes();
+                Record myRecord = Record.builder()
+                        .data(SdkBytes.fromByteArray(bytes))
+                        .build();
+
+                records.add(myRecord);
+            }
+            return records;
+        });
     }
 
     private static Region getRegion(String configuredRegion) {
@@ -154,7 +214,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         public String regionId;
 
         @NotNull
-        public String streamName;
+        public String deliveryStreamId;
 
         public EncodingType encodingType = EncodingType.CSV;
 

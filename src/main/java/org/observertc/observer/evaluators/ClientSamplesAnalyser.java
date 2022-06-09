@@ -15,6 +15,7 @@ import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
 import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSamples;
+import org.observertc.schemas.reports.ClientExtensionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -296,6 +297,19 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
         }
         var reports = new LinkedList<Report>();
+        reports.add(Report.fromClientExtensionReport(ClientExtensionReport.newBuilder()
+                        .setServiceId("setServiceId")
+                        .setMediaUnitId("setMediaUnitId")
+                        .setExtensionType("CUSTOM_TYPE")
+                        .setTimestamp(Instant.EPOCH.toEpochMilli())
+                        .setCallId(UUID.randomUUID().toString())
+                        .setMarker("marker")
+                        .setRoomId("roomId")
+                        .setUserId("Dobby")
+                        .setSampleSeq(1)
+                        .setPayload(JsonUtils.objectToString(Map.of("key", "value")))
+                .build()));
+
         this.clientTransportReportsDepot.get().stream().map(Report::fromClientTransportReport).forEach(reports::add);
         this.inboundAudioReportsDepot.get().stream().map(Report::fromInboundAudioTrackReport).forEach(reports::add);
         this.inboundVideoReportsDepot.get().stream().map(Report::fromInboundVideoTrackReport).forEach(reports::add);

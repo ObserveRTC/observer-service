@@ -18,7 +18,7 @@ public class FirehoseSink extends Sink {
     private static final Logger logger = LoggerFactory.getLogger(FirehoseSink.class);
 
 
-    String streamName;
+    String deliveryStreamId;
 //    Mapper<Report, byte[]> encoder;
     Mapper<List<Report>, List<Record>> encoder;
     Supplier<FirehoseClient> clientSupplier;
@@ -43,12 +43,12 @@ public class FirehoseSink extends Sink {
             }
             try {
                 PutRecordBatchRequest recordBatchRequest = PutRecordBatchRequest.builder()
-                        .deliveryStreamName(this.streamName)
+                        .deliveryStreamName(this.deliveryStreamId)
                         .records(records)
                         .build();
 
                 PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
-                logger.info("{} records are forwarded to stream {}", recordResponse.requestResponses().size(), this.streamName);
+                logger.info("{} records are forwarded to stream {}", recordResponse.requestResponses().size(), this.deliveryStreamId);
 
                 List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
                 for (PutRecordBatchResponseEntry result: results) {
