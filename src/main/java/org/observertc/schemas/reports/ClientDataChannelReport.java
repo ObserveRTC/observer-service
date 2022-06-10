@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientDataChannelReport {
-	public static final String VERSION="2.0.3";
+	public static final String VERSION="2.0.4";
 	public static Builder newBuilder() {
 		return new Builder();
 	}

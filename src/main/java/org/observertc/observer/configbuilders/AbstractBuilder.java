@@ -16,6 +16,7 @@
 
 package org.observertc.observer.configbuilders;
 
+import org.observertc.observer.common.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,11 @@ public abstract class AbstractBuilder {
 	}
 
 	private final Map<String, Object> config = new HashMap<>();
+	private String appliedConfig = null;
 
+	public String getAppliedConfiguration() {
+		return this.appliedConfig;
+	}
 	/**
 	 * Gets a klass corresponding to the name of the class
 	 *
@@ -162,7 +167,9 @@ public abstract class AbstractBuilder {
 	}
 
 	protected <T> T convertAndValidate(Class<T> klass) {
-		return ConfigConverter.convert(klass, this.config);
+		var result = ConfigConverter.convert(klass, this.config);
+		this.appliedConfig = JsonUtils.objectToString(result);
+		return result;
 	}
 
 	/**
@@ -254,5 +261,6 @@ public abstract class AbstractBuilder {
 	public Object getConfiguration(String key) {
 		return this.config.get(key);
 	}
+
 
 }

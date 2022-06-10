@@ -40,6 +40,7 @@ public class SinkBuilder extends AbstractBuilder {
         Builder<Sink> sinkBuilder = (Builder<Sink>) builderHolder.get();
         sinkBuilder.withConfiguration(config.config);
 
+
         var result = sinkBuilder.build();
         result.setEnabled(config.enabled);
         if (config.reports != null) {
@@ -47,6 +48,7 @@ public class SinkBuilder extends AbstractBuilder {
             Predicate<Report> filter = report -> reportTypeVisitor.apply(null, report.type);
             result.setReportsFilter(filter);
         }
+
         return result;
     }
 
