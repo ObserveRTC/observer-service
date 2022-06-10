@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.utils.ReportGenerators;
-import org.observertc.schemas.reports.ClientExtensionReport;
 import org.observertc.schemas.reports.csvsupport.ClientExtensionReportToIterable;
 
 import java.io.FileReader;
@@ -15,9 +14,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Instant;
-import java.util.Map;
-import java.util.UUID;
 
 class CsvRecordMapperTest {
 
@@ -38,29 +34,6 @@ class CsvRecordMapperTest {
         var clientExtensionReport = new ReportGenerators().generateClientExtensionReport();
         clientExtensionReport.payload = JsonUtils.objectToString(new ReportGenerators().generateCallEventReport());
         var report = Report.fromClientExtensionReport(clientExtensionReport);
-        var written = new ClientExtensionReportToIterable().apply(report);
-
-        var tempFileName = writeToTempFile(written);
-
-        var read = this.readRecord(tempFileName);
-        var equals = this.equals(written, read);
-        Assertions.assertTrue(equals);
-    }
-
-    @Test
-    void shouldBeValid_3() throws IOException {
-        var report = Report.fromClientExtensionReport(ClientExtensionReport.newBuilder()
-                .setServiceId("setServiceId")
-                .setMediaUnitId("setMediaUnitId")
-                .setExtensionType("CUSTOM_TYPE")
-                .setTimestamp(Instant.EPOCH.toEpochMilli())
-                .setCallId(UUID.randomUUID().toString())
-                .setMarker("marker")
-                .setRoomId("roomId")
-                .setUserId("Dobby")
-                .setSampleSeq(1)
-                .setPayload(JsonUtils.objectToString(Map.of("key", "value")))
-                .build());
         var written = new ClientExtensionReportToIterable().apply(report);
 
         var tempFileName = writeToTempFile(written);
