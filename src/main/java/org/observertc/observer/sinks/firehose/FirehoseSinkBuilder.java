@@ -4,7 +4,6 @@ package org.observertc.observer.sinks.firehose;
 import io.micronaut.context.annotation.Prototype;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.observertc.observer.common.CsvRecordMapper;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
@@ -50,7 +49,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         result.deliveryStreamId = config.deliveryStreamId;
         result.clientSupplier = clientProvider;
         switch (config.encodingType) {
-            case CSV -> result.encoder = this.makeCsvEncoder2();
+            case CSV -> result.encoder = this.makeCsvEncoder(config.csvFormat, config.csvChunkSize);
             case JSON -> result.encoder = this.makeJsonEncoder();
         }
         return result;
@@ -70,6 +69,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             var profileFile = ProfileFile.builder().content(path).type(type).build();
             builder.profileFile(profileFile);
         }
+
         return builder.build();
     }
 
@@ -96,58 +96,12 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
 
     }
 
-    private Mapper<List<Report>, List<Record>> makeCsvEncoder() {
+    private Mapper<List<Report>, List<Record>> makeCsvEncoder(CSVFormat format, int maxChunkSize) {
         var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
                 new ObserverEventReportToIterable(),
                 new CallEventReportToIterable(),
                 new CallMetaReportToIterable(),
                 new ClientExtensionReportToIterable(),
-                new ClientTransportReportToIterable(),
-                new ClientDataChannelReportToIterable(),
-                new InboundAudioTrackReportToIterable(),
-                new InboundVideoTrackReportToIterable(),
-                new OutboundAudioTrackReportToIterable(),
-                new OutboundVideoTrackReportToIterable(),
-                new SfuEventReportToIterable(),
-                new SfuMetaReportToIterable(),
-                new SfuExtensionReportToIterable(),
-                new SFUTransportReportToIterable(),
-                new SfuInboundRtpPadReportToIterable(),
-                new SfuOutboundRtpPadReportToIterable(),
-                new SfuSctpStreamReportToIterable()
-        );
-        var csvRecordMapper = CsvRecordMapper.builder().addLineSeparator(true).build();
-        return Mapper.<List<Report>, List<Record>>create(reports -> {
-            var records = new LinkedList<Record>();
-            for (var report : reports) {
-                var iterable = mapper.apply(report, report.type);
-                var line = csvRecordMapper.apply(iterable);
-                logger.info("Line: {}", line);
-                var bytes = line.getBytes();
-
-                Record myRecord = Record.builder()
-                        .data(SdkBytes.fromByteArray(bytes))
-                        .build();
-
-                records.add(myRecord);
-            }
-            return records;
-        });
-    }
-
-
-    private Mapper<List<Report>, List<Record>> makeCsvEncoder2() {
-//        var clientExtensionMapper = ;
-        var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
-                new ObserverEventReportToIterable(),
-                new CallEventReportToIterable(),
-                new CallMetaReportToIterable(),
-                new ClientExtensionReportToIterable(),
-//                report -> {
-//                    var payload = (ClientExtensionReport) report.payload;
-//                    payload.payload = String.format("\"%s\"", payload.payload);
-//                    return clientExtensionMapper.apply(report);
-//                },
                 new ClientTransportReportToIterable(),
                 new ClientDataChannelReportToIterable(),
                 new InboundAudioTrackReportToIterable(),
@@ -165,17 +119,16 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         return Mapper.<List<Report>, List<Record>>create(reports -> {
             var records = new LinkedList<Record>();
             var stringBuilder = new StringBuffer();
-            var csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
-            int chunkSize = 0;
+            var csvPrinter = new CSVPrinter(stringBuilder, format);
+            var chunkSize = 0;
             for (var report : reports) {
                 var iterable = mapper.apply(report, report.type);
                 csvPrinter.printRecord(iterable);
-                if (++chunkSize < 1) {
+                if (++chunkSize < maxChunkSize) {
                     continue;
                 }
                 csvPrinter.flush();
                 var lines = stringBuilder.toString();
-                logger.info("Lines {}", lines);
                 var bytes = lines.getBytes();
                 Record myRecord = Record.builder()
                         .data(SdkBytes.fromByteArray(bytes))
@@ -188,7 +141,6 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             }
             if (0 < chunkSize) {
                 var lines = stringBuilder.toString();
-                logger.info("Lines {}", lines);
                 var bytes = lines.getBytes();
                 Record myRecord = Record.builder()
                         .data(SdkBytes.fromByteArray(bytes))
@@ -228,6 +180,10 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         public String profileFileType;
 
         public String profileName;
+
+        public CSVFormat csvFormat = CSVFormat.DEFAULT;
+
+        public int csvChunkSize = 100;
 
     }
 }

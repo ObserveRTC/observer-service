@@ -92,9 +92,6 @@ public class ReportSinks implements Consumer<List<Report>> {
                     return;
                 }
                 sink.open();
-                if (observerConfig.security.printConfigs) {
-                    logger.info("Sink {} with config {} has been initiated", sink.getClass().getSimpleName(), JsonUtils.objectToString(sinkConfigValue));
-                }
                 this.sinks.put(sinkId, sink);
             } catch (Exception ex) {
                 logger.error("Error occurred while setting up a Sink {} with config {}",
@@ -126,6 +123,8 @@ public class ReportSinks implements Consumer<List<Report>> {
         if (Objects.isNull(result)) {
             logger.warn("Sink for {} has not been built", sinkId, JsonUtils.objectToString(config));
             return null;
+        } else if (observerConfig.security.printConfigs) {
+            logger.info("Sink {} with config {} has been initiated", result.getClass().getSimpleName(), sinkBuilder.getAppliedConfiguration());
         }
         String sinkLoggerName = String.format("Sink-%s:", sinkId);
         var logger = LoggerFactory.getLogger(sinkLoggerName);

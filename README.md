@@ -47,6 +47,7 @@ The observer create [Reports](https://observertc.org/docs/overview/schemas/#repo
 The reports are forwarded to [Sinks](#sinks).  Currently, the following type of sinks are supported:
 * [KafkaSink](#kafkasink): Apache Kafka Integration
 * [MongoSink](#mongosink): Mongo Database integration
+* [FirehoseSink](#firehosesink): AWS Firehose integration
 
 ## Configurations
 
@@ -311,7 +312,7 @@ sinks:
     
 ```
 
-##### KafkaSink
+#### KafkaSink
 
 Observer can send reports to [Apache Kafka](https://kafka.apache.org/). by using `KafkaSink`
 
@@ -338,7 +339,7 @@ sinks:
             bootstrap.servers: localhost:9092
 ```
 
-##### MongoSink
+#### MongoSink
 
 Observer can send reports to  [Mongo Database](https://www.mongodb.com/). by using `MongoSink`
 
@@ -371,7 +372,7 @@ sinks:
       printSummary: True
 ```
 
-##### FirehoseSink
+#### FirehoseSink
 
 Observer can send reports to [Aws Firehose](https://aws.amazon.com/kinesis/data-firehose/) via DIRECT PUT method.
 
@@ -393,6 +394,14 @@ sinks:
        profileFilePath: /my/custom/path/for/credentials
        # the type of the file to read the credentials. Possible values are: CONFIGURATION, CREDENTIALS
        profileFileType: CREDENTIALS
+       # in case CSV encoding is used, this instructs the CSV format written into the records
+       # possible values are: DEFAULT, EXCEL, INFORMIX_UNLOAD, INFORMIX_UNLOAD_CSV, MONGODB_CSV, MONGODB_TSV, MYSQL, ORACLE,
+       # POSTGRESQL_CSV, POSTGRESQL_TEXT, RFC4180
+       # by default it is DEFAULT
+       csvFormat: DEFAULT
+       # The number of reports put into one Firehose PUT request.
+       # default is 100
+       csvChunkSize: 100
 ```
 
 ##### LoggerSink
