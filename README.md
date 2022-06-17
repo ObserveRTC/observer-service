@@ -383,11 +383,11 @@ sinks:
     config:
        # The encoding format of the forwarded data. Possible values are: JSON, CSV
        # For csv format, please check the schemas repository for the headers
-       encodingType: JSON
+       encodingType: CSV
        # The AWS region the firehose has been configured
        regionId: eu-west-1
        # the name of the delivery stream
-       streamName: observertc-CALL_META_DATA-csv
+       deliveryStreamId: observertc-reports-csv
        # the name of the credential profile
        profileName: default
        # The path of the file for the credentials

@@ -37,13 +37,15 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         var config = this.convertAndValidate(Config.class);
         AtomicReference<FirehoseClient> clientHolder = new AtomicReference<>(null);
         Supplier<FirehoseClient> clientProvider = () -> {
-            var client = clientHolder.get();
             var region = getRegion(config.regionId);
             var credentialsProvider = getCredentialProvider(config);
-            return FirehoseClient.builder()
-                    .region(region)
-                    .credentialsProvider(credentialsProvider)
-                    .build();
+            var builder = FirehoseClient.builder()
+                    .region(region);
+
+            if (credentialsProvider != null) {
+                builder.credentialsProvider(credentialsProvider);
+            }
+            return builder.build();
         };
         var result = new FirehoseSink();
         result.deliveryStreamId = config.deliveryStreamId;
@@ -57,7 +59,8 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
 
     private static ProfileCredentialsProvider getCredentialProvider(Config config) {
         if (config.profileFilePath == null && config.profileName == null) {
-            throw new InvalidConfigurationException("profileFile or profileId, must be given");
+            return null;
+//            throw new InvalidConfigurationException("profileFile or profileId, must be given");
         }
         var builder = ProfileCredentialsProvider.builder();
         if (config.profileName != null) {
