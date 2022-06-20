@@ -61,8 +61,8 @@ public class FirehoseSink extends Sink {
             } catch (FirehoseException firehoseException) {
                 logger.warn("Firehose error occurred while sending records to firehose", firehoseException.getLocalizedMessage());
                 this.client = null;
-            } catch (Throwable t) {
-                logger.warn("Error occurred while sending records to firehose, sink will be closed ", t);
+            } catch (Exception ex) {
+                logger.warn("Error occurred while sending records to firehose, sink will be closed. {}", ex.getLocalizedMessage(), ex);
                 this.close();
             }
         }
