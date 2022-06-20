@@ -14,6 +14,7 @@ import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.observer.sinks.Sink;
 import org.observertc.schemas.reports.csvsupport.*;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.profiles.ProfileFile;
@@ -44,6 +45,9 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
 
             if (credentialsProvider != null) {
                 builder.credentialsProvider(credentialsProvider);
+            } else if (config.fetchEnvironment) {
+                logger.info("Fetch credentials from environment");
+                builder.credentialsProvider(EnvironmentVariableCredentialsProvider.create());
             }
             return builder.build();
         };
@@ -185,6 +189,8 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         public String profileName;
 
         public CSVFormat csvFormat = CSVFormat.DEFAULT;
+
+        public boolean fetchEnvironment = true;
 
         public int csvChunkSize = 100;
 
