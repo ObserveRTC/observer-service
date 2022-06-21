@@ -47,11 +47,19 @@ public abstract class AbstractBuilder {
 	private static Logger logger = LoggerFactory.getLogger(AbstractBuilder.class);
 	private static final String BUILDER_CLASS_SUFFIX = "Builder";
 
-	public static String getBuilderClassName( String className) {
-		if (!className.endsWith(BUILDER_CLASS_SUFFIX)){
-			return className.concat(BUILDER_CLASS_SUFFIX);
+	public static String getBuilderClassName(String className) {
+		return getBuilderClassName("", className, BUILDER_CLASS_SUFFIX);
+	}
+
+	public static String getBuilderClassName(String prefix, String className, String assumedSuffix) {
+		var result = className;
+		if (prefix.isEmpty() == false && className.startsWith(prefix)) {
+			result = prefix.concat(className);
 		}
-		return className;
+		if (!result.endsWith(assumedSuffix)){
+			return result.concat(assumedSuffix);
+		}
+		return result;
 	}
 
 	private final Map<String, Object> config = new HashMap<>();

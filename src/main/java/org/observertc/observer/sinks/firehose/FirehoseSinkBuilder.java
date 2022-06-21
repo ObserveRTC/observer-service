@@ -12,44 +12,46 @@ import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitor;
+import org.observertc.observer.security.credentialbuilders.AwsCredentialsProviderBuilder;
 import org.observertc.observer.sinks.Sink;
 import org.observertc.schemas.reports.csvsupport.*;
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
-import software.amazon.awssdk.profiles.ProfileFile;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.firehose.FirehoseClient;
 import software.amazon.awssdk.services.firehose.model.Record;
 
 import javax.validation.constraints.NotNull;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Prototype
 public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
+    private static AwsCredentialsProvider getCredentialProvider(Map<String, Object> config) {
+        if (config == null) {
+            logger.info("Default AWS credential is used for sink");
+            return DefaultCredentialsProvider.create();
+        }
+        var providerBuilder = new AwsCredentialsProviderBuilder();
+        providerBuilder.withConfiguration(config);
+        return providerBuilder.build();
+    }
+
     @Override
     public Sink build() {
         var config = this.convertAndValidate(Config.class);
-        AtomicReference<FirehoseClient> clientHolder = new AtomicReference<>(null);
         Supplier<FirehoseClient> clientProvider = () -> {
             var region = getRegion(config.regionId);
-            var credentialsProvider = getCredentialProvider(config);
-            var builder = FirehoseClient.builder()
-                    .region(region);
-
-            if (credentialsProvider != null) {
-                builder.credentialsProvider(credentialsProvider);
-            } else if (config.fetchEnvironment) {
-                logger.info("Fetch credentials from environment");
-                builder.credentialsProvider(EnvironmentVariableCredentialsProvider.create());
-            }
-            return builder.build();
+            var credentialsProvider = getCredentialProvider(config.credentials);
+            return FirehoseClient.builder()
+                    .credentialsProvider(credentialsProvider)
+                    .region(region)
+                    .build();
         };
         var result = new FirehoseSink();
         result.deliveryStreamId = config.deliveryStreamId;
@@ -59,25 +61,6 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             case JSON -> result.encoder = this.makeJsonEncoder();
         }
         return result;
-    }
-
-    private static ProfileCredentialsProvider getCredentialProvider(Config config) {
-        if (config.profileFilePath == null && config.profileName == null) {
-            return null;
-//            throw new InvalidConfigurationException("profileFile or profileId, must be given");
-        }
-        var builder = ProfileCredentialsProvider.builder();
-        if (config.profileName != null) {
-            builder.profileName(config.profileName);
-        }
-        if (config.profileFilePath != null) {
-            var path = Path.of(config.profileFilePath);
-            var type = ProfileFile.Type.valueOf(config.profileFileType);
-            var profileFile = ProfileFile.builder().content(path).type(type).build();
-            builder.profileFile(profileFile);
-        }
-
-        return builder.build();
     }
 
     private Mapper<List<Report>, List<Record>> makeJsonEncoder() {
@@ -183,14 +166,9 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
 
         public EncodingType encodingType = EncodingType.CSV;
 
-        public String profileFilePath;
-        public String profileFileType;
-
-        public String profileName;
+        public Map<String, Object> credentials = null;
 
         public CSVFormat csvFormat = CSVFormat.DEFAULT;
-
-        public boolean fetchEnvironment = true;
 
         public int csvChunkSize = 100;
 

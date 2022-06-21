@@ -273,6 +273,65 @@ observer:
     
 ```
 
+#### AWS Credentials
+
+AWS service requires credentials. The credential configuration is part of the sink configuration.
+For example Firehose configuration have the `credentials` 
+
+```yaml
+sinks:
+  MyFirehose:
+    type: Firehose
+    config:
+      credentials:
+        type: AwsProfile
+        config: # necessary configuration for file based credentials
+```
+
+Possible credential types and configuration structures are the following.
+
+##### Profile
+
+```yaml
+type: AwsProfile
+config:
+  profileFilePath: /my/path/to/credential/file
+  # possible values are CONFIGURATION, and CREDENTIALS. default CREDENTIALS
+  profileFileType: CREDENTIALS
+  # the name of the profile fetched for credentials
+  profileName: myprofileName
+```
+
+##### AwsEnvironmentVariable
+
+```yaml
+type: AwsEnvironmentVariable
+```
+
+##### AwsStatic
+
+```yaml
+type: AwsStatic
+config:
+   accessKeyId: accessKey
+   secretAccessKey: secret
+```
+
+##### AwsSystemProperty
+
+```yaml
+type: AwsSystemProperty
+```
+
+##### AwsWebIdentityTokenFile
+
+```yaml
+type: AwsWebIdentityTokenFile
+config:
+  roleArn: roleArn
+  roleSessionName: roleSessionName
+```
+
 #### Sinks
 
 The observer forward the generated reports through sinks.
@@ -388,12 +447,13 @@ sinks:
        regionId: eu-west-1
        # the name of the delivery stream
        deliveryStreamId: observertc-reports-csv
-       # the name of the credential profile
-       profileName: default
-       # The path of the file for the credentials
-       profileFilePath: /my/custom/path/for/credentials
-       # the type of the file to read the credentials. Possible values are: CONFIGURATION, CREDENTIALS
-       profileFileType: CREDENTIALS
+       
+       # A provided credential to access AWS resources
+       # see detailed description in Credentials section
+       credentials:
+          type: File
+          config: {}
+          
        # in case CSV encoding is used, this instructs the CSV format written into the records
        # possible values are: DEFAULT, EXCEL, INFORMIX_UNLOAD, INFORMIX_UNLOAD_CSV, MONGODB_CSV, MONGODB_TSV, MYSQL, ORACLE,
        # POSTGRESQL_CSV, POSTGRESQL_TEXT, RFC4180
