@@ -3,6 +3,7 @@ package org.observertc.observer.security.credentialbuilders;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configbuilders.AbstractBuilder;
+import org.observertc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
@@ -13,7 +14,7 @@ import software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsPr
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-public class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractBuilder implements Builder<AwsCredentialsProvider> {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsWebIdentityTokenFileCredentialsProviderBuilder.class);
     private volatile boolean built = false;

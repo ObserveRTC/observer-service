@@ -2,6 +2,7 @@ package org.observertc.observer.security.credentialbuilders;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.configbuilders.AbstractBuilder;
+import org.observertc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -16,7 +17,7 @@ import java.util.Random;
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-public class AwsStaticCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsStaticCredentialsProviderBuilder extends AbstractBuilder implements Builder<AwsCredentialsProvider> {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsStaticCredentialsProviderBuilder.class);
     private volatile boolean built = false;

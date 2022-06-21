@@ -30,7 +30,7 @@ public class AwsCredentialsProviderBuilder extends AbstractBuilder {
     public AwsCredentialsProvider build() {
         Config config = this.convertAndValidate(Config.class);
         String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, BUILDER_CLASS_SUFFIX_NAME);
-        Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
+        Optional<Builder<AwsCredentialsProvider>> builderHolder = this.tryInvoke(builderClassName);
         if (!builderHolder.isPresent()) {
             logger.error("Cannot find aws credential builder for {} in packages: {}", config.type, String.join(",", this.packages ));
             return null;
