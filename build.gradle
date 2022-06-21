@@ -45,6 +45,7 @@ dependencies {
     // --------- AWS SDK -----
     implementation platform('software.amazon.awssdk:bom:2.15.0')
     implementation 'software.amazon.awssdk:firehose'
+    implementation 'software.amazon.awssdk:sts'
 
 
     // ------------- Protobuf -----------
