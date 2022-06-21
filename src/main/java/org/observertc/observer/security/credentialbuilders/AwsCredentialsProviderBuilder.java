@@ -5,6 +5,9 @@ import org.observertc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.services.sts.auth.StsAssumeRoleWithWebIdentityCredentialsProvider;
+import software.amazon.awssdk.services.sts.internal.StsWebIdentityCredentialsProviderFactory;
+import software.amazon.awssdk.services.sts.model.AssumeRoleWithWebIdentityRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +31,7 @@ public class AwsCredentialsProviderBuilder extends AbstractBuilder {
     }
 
     public AwsCredentialsProvider build() {
+        StsAssumeRoleWithWebIdentityCredentialsProvider.builder().build();
         Config config = this.convertAndValidate(Config.class);
         String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, BUILDER_CLASS_SUFFIX_NAME);
         Optional<Builder<AwsCredentialsProvider>> builderHolder = this.tryInvoke(builderClassName);
