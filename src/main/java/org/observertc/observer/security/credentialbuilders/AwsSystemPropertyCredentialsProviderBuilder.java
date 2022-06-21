@@ -12,7 +12,7 @@ import software.amazon.awssdk.auth.credentials.SystemPropertyCredentialsProvider
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-class AwsSystemPropertyCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsSystemPropertyCredentialsProviderBuilder extends AbstractBuilder implements Builder {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsSystemPropertyCredentialsProviderBuilder.class);
     private volatile boolean built = false;

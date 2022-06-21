@@ -13,7 +13,7 @@ import software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsPr
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractBuilder implements Builder {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsWebIdentityTokenFileCredentialsProviderBuilder.class);
     private volatile boolean built = false;
@@ -35,7 +35,7 @@ class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractBuilder 
         try {
             return builder.build();
         } finally {
-            logger.info("{} is built. Configurations: (filePath: %s, fileType: %s, profileName: %s)",
+            logger.info("{} is built. Configurations: (%s)",
                 WebIdentityTokenFileCredentialsProvider.class.getSimpleName(),
                 JsonUtils.objectToString(config)
             );

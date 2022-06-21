@@ -17,7 +17,7 @@ import java.nio.file.Path;
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-class AwsProfileCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsProfileCredentialsProviderBuilder extends AbstractBuilder implements Builder {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsProfileCredentialsProviderBuilder.class);
     private volatile boolean built = false;

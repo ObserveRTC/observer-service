@@ -12,7 +12,7 @@ import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsPro
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-class AwsEnvironmentVariableCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsEnvironmentVariableCredentialsProviderBuilder extends AbstractBuilder implements Builder {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsEnvironmentVariableCredentialsProviderBuilder.class);
     private volatile boolean built = false;

@@ -16,7 +16,7 @@ import java.util.Random;
  * and build the credential provider, so any service we implement for AWS SDK can use this
  */
 @Prototype
-class AwsStaticCredentialsProviderBuilder extends AbstractBuilder implements Builder {
+public class AwsStaticCredentialsProviderBuilder extends AbstractBuilder implements Builder {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsStaticCredentialsProviderBuilder.class);
     private volatile boolean built = false;
