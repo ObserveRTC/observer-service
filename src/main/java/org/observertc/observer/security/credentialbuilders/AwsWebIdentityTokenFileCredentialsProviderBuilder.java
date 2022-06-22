@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsProvider;
 
+import java.nio.file.Path;
+
 /**
  * Apart from the terrible name this class fetches the configuration for specific type of credentials for AWS,
  * and build the credential provider, so any service we implement for AWS SDK can use this
@@ -24,6 +26,7 @@ public class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractB
         if (this.built) {
             throw new IllegalStateException("Cannot build twice");
         }
+
         var config = this.convertAndValidate(Config.class);
         var builder = WebIdentityTokenFileCredentialsProvider.builder();
         if (config.roleArn != null) {
@@ -31,6 +34,10 @@ public class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractB
         }
         if (config.roleSessionName != null) {
             builder.roleSessionName(config.roleSessionName);
+        }
+        if (config.tokenFile != null) {
+            var path = Path.of(config.tokenFile);
+            builder.webIdentityTokenFile(path);
         }
 
         try {
@@ -47,5 +54,6 @@ public class AwsWebIdentityTokenFileCredentialsProviderBuilder extends AbstractB
     public static class Config {
         public String roleArn;
         public String roleSessionName;
+        public String tokenFile;
     }
 }

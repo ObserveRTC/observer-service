@@ -4,10 +4,10 @@ package org.observertc.observer.sinks.firehose;
 import io.micronaut.context.annotation.Prototype;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.observertc.observer.common.AwsUtils;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
-import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.reports.Report;
@@ -18,7 +18,6 @@ import org.observertc.schemas.reports.csvsupport.*;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.firehose.FirehoseClient;
 import software.amazon.awssdk.services.firehose.model.Record;
 
@@ -27,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Prototype
 public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink> {
@@ -46,7 +44,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
     public Sink build() {
         var config = this.convertAndValidate(Config.class);
         Supplier<FirehoseClient> clientProvider = () -> {
-            var region = getRegion(config.regionId);
+            var region = AwsUtils.getRegion(config.regionId);
             var credentialsProvider = getCredentialProvider(config.credentials);
             return FirehoseClient.builder()
                     .credentialsProvider(credentialsProvider)
@@ -140,15 +138,6 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             }
             return records;
         });
-    }
-
-    private static Region getRegion(String configuredRegion) {
-        var foundRegion = Region.regions().stream().filter(awsRegion -> awsRegion.id().equals(configuredRegion)).findFirst();
-        if (foundRegion.isEmpty()) {
-            String availableRegions = Region.regions().stream().map(region -> region.id()).collect(Collectors.joining(", "));
-            throw new InvalidConfigurationException("Invalid AWS region: " + configuredRegion + ": " + availableRegions);
-        }
-        return foundRegion.get();
     }
 
     public static class Config {
