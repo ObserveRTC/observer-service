@@ -1,5 +1,6 @@
 package org.observertc.observer.utils;
 
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.schemas.samples.Samples;
 
 import java.time.Instant;
@@ -145,7 +146,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
     public ClientSideSamplesGenerator addExtensionStat() {
         var extensionStat = new Samples.ClientSample.ExtensionStat();
         extensionStat.type = this.randomGenerator.getRandomString();
-        extensionStat.payload = this.randomGenerator.getRandomString(128);
+        extensionStat.payload = JsonUtils.objectToString(Map.of("key", "value"));
         this.addedExtensionStats.add(extensionStat);
         return this;
     }

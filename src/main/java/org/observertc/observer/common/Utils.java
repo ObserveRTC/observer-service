@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Utils {
+public final class Utils {
     private Utils() {
 
     }
@@ -130,5 +130,19 @@ public class Utils {
                 .collect(Collectors.joining("\n"));
         logger.warn("Null value is detected where it does not supposed to be. {}", stackTrackStr);
         return false;
+    }
+
+    public static String camelCaseToSnakeCase(String input) {
+        var buffer = new StringBuffer();
+        for (int i = 0; i < input.length(); ++i) {
+            var letter = input.charAt(i);
+            if (Character.isUpperCase(letter)) {
+                buffer.append("_");
+                buffer.append(Character.toLowerCase(letter));
+            } else {
+                buffer.append(letter);
+            }
+        }
+        return buffer.toString();
     }
 }

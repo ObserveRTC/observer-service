@@ -54,14 +54,15 @@ public class AwsStsAssumeRoleSessionCredentialsProviderBuilder extends AbstractB
         var regionId = AwsUtils.getRegion(config.regionId);
         var stsClientBuilder = StsClient.builder()
                 .region(regionId);
-        if (config.stsClientCredentials != null) {
+        if (config.credentials != null) {
             var stsCredentialsProviderBuilder = new AwsCredentialsProviderBuilder();
-            stsCredentialsProviderBuilder.withConfiguration(config.stsClientCredentials);
+            stsCredentialsProviderBuilder.withConfiguration(config.credentials);
             var stsCredentialsProvider = stsCredentialsProviderBuilder.build();
             stsClientBuilder.credentialsProvider(stsCredentialsProvider);
-            logger.info("Embedded client provider for sts client. AwsCredentials: {}, config: {}", stsCredentialsProvider.getClass().getSimpleName(), JsonUtils.objectToString(config.stsClientCredentials));
+            logger.info("Embedded client provider for sts client. AwsCredentials: {}, config: {}", stsCredentialsProvider.getClass().getSimpleName(), JsonUtils.objectToString(config.credentials));
         }
         var stsClient = stsClientBuilder.build();
+        logger.info("STS Client: {}", stsClient);
         try {
             return StsAssumeRoleCredentialsProvider.builder()
                     .stsClient(stsClient)
@@ -94,7 +95,7 @@ public class AwsStsAssumeRoleSessionCredentialsProviderBuilder extends AbstractB
 
         public String roleSessionName = "observer";
 
-        public Map<String, Object> stsClientCredentials;
+        public Map<String, Object> credentials;
 
     }
 }

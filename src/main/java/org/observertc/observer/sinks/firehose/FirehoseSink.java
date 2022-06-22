@@ -12,15 +12,13 @@ import software.amazon.awssdk.services.firehose.model.Record;
 import software.amazon.awssdk.services.firehose.model.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class FirehoseSink extends Sink {
     private static final Logger logger = LoggerFactory.getLogger(FirehoseSink.class);
 
-
-    String deliveryStreamId;
-//    Mapper<Report, byte[]> encoder;
-    Mapper<List<Report>, List<Record>> encoder;
+    Mapper<List<Report>, Map<String, List<Record>>> encoder;
     Supplier<FirehoseClient> clientSupplier;
     private FirehoseClient client;
 
@@ -42,20 +40,25 @@ public class FirehoseSink extends Sink {
                 this.client = clientSupplier.get();
             }
             try {
-                PutRecordBatchRequest recordBatchRequest = PutRecordBatchRequest.builder()
-                        .deliveryStreamName(this.deliveryStreamId)
-                        .records(records)
-                        .build();
+                for (var it = records.entrySet().iterator(); it.hasNext(); ) {
+                    var entry = it.next();
+                    var deliveryStreamId = entry.getKey();
+                    var deliveryRecords = entry.getValue();
+                    PutRecordBatchRequest recordBatchRequest = PutRecordBatchRequest.builder()
+                            .deliveryStreamName(deliveryStreamId)
+                            .records(deliveryRecords)
+                            .build();
 
-                PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
-                logger.info("{} records are forwarded to stream {}", recordResponse.requestResponses().size(), this.deliveryStreamId);
+                    PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
+                    logger.info("{} records are forwarded to stream {}", recordResponse.requestResponses().size(), deliveryStreamId);
 
-                List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
-                for (PutRecordBatchResponseEntry result: results) {
-                    if (result.errorCode() == null) {
-                        continue;
+                    List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
+                    for (PutRecordBatchResponseEntry result: results) {
+                        if (result.errorCode() == null) {
+                            continue;
+                        }
+                        logger.warn("Error indicated adding record {}. error code: {}, error message: {}", result.recordId(), result.errorCode(), result.errorMessage());
                     }
-                    logger.warn("Error indicated adding record {}. error code: {}, error message: {}", result.recordId(), result.errorCode(), result.errorMessage());
                 }
                 break;
             } catch (FirehoseException firehoseException) {

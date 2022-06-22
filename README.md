@@ -319,7 +319,9 @@ config:
    roleArn: "THE_ARN_OF_THE_ROLE"
    roleSessionName: "observer"
 
-   stsClientCredentials: # optional 
+   # give credentials to the STS client accessing to the assumed role
+   # this is an embedded credential
+   credentials: # optional 
       type: Static
       config: {}
    serialNumber: "1234-5678" # optional
@@ -464,9 +466,30 @@ sinks:
        encodingType: CSV
        # The AWS region the firehose has been configured
        regionId: eu-west-1
-       # the name of the delivery stream
-       deliveryStreamId: observertc-reports-csv
-       
+       # the name of the delivery stream the records are forwarded by default
+       defaultDeliveryStreamId: observertc-reports-csv
+       # map report types to delivery streams records are forwarded to
+       # Optional. 
+       # if both streams and the defaultDeliveryStreamId are provided than the report forwarded to the default if it is not mapped
+       streams:
+          observer-event: observertc-observer-event-reports-csv
+          call-event: observertc-call-event-reports-csv
+          call-meta-data: observertc-call-meta-data-reports-csv
+          client-extension-data: observertc-client-extension-data-reports-csv
+          peer-connection-transport: observertc-peer-connection-transport-reports-csv
+          peer-connection-data-channel: observertc-peer-connection-data-channel-reports-csv
+          inbound-audio-track: observertc-inbound-audio-track-reports-csv
+          inbound-video-track: observertc-inbound-video-track-reports-csv
+          outbound-autio-track: observertc-outbound-autio-track-reports-csv
+          outbound-video-track: observertc-outbound-video-track-reports-csv
+          sfu-event: observertc-sfu-event-reports-csv
+          sfu-meta-data: observertc-sfu-meta-data-reports-csv
+          sfu-extension-data: observertc-sfu-extension-data-reports-csv
+          sfu-transport: observertc-sfu-transport-reports-csv
+          sfu-inbound-rtp-pad: observertc-sfu-inbound-rtp-pad-reports-csv
+          sfu-outbound-rtp-pad: observertc-sfu-outbound-rtp-pad-reports-csv
+          sfu-sctp-stream: observertc-sfu-sctp-stream-reports-csv
+          
        # A provided credential to access AWS resources
        # see detailed description in Credentials section
        credentials:
