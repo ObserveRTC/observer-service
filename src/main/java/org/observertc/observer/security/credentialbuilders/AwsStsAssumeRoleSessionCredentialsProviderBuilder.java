@@ -8,12 +8,12 @@ import org.observertc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsProvider;
 import software.amazon.awssdk.services.sts.StsClient;
 import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider;
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 /**
  * Apart from the terrible name this class fetches the configuration for specific type of credentials for AWS,
@@ -52,8 +52,16 @@ public class AwsStsAssumeRoleSessionCredentialsProviderBuilder extends AbstractB
         }
         var assumeRoleRequest = assumeRoleRequestBuilder.build();
         var regionId = AwsUtils.getRegion(config.regionId);
-        final StsClient stsClient = StsClient.builder().region(regionId).build();
-
+        var stsClientBuilder = StsClient.builder()
+                .region(regionId);
+        if (config.stsClientCredentials != null) {
+            var stsCredentialsProviderBuilder = new AwsCredentialsProviderBuilder();
+            stsCredentialsProviderBuilder.withConfiguration(config.stsClientCredentials);
+            var stsCredentialsProvider = stsCredentialsProviderBuilder.build();
+            stsClientBuilder.credentialsProvider(stsCredentialsProvider);
+            logger.info("Embedded client provider for sts client. AwsCredentials: {}, config: {}", stsCredentialsProvider.getClass().getSimpleName(), JsonUtils.objectToString(config.stsClientCredentials));
+        }
+        var stsClient = stsClientBuilder.build();
         try {
             return StsAssumeRoleCredentialsProvider.builder()
                     .stsClient(stsClient)
@@ -61,7 +69,7 @@ public class AwsStsAssumeRoleSessionCredentialsProviderBuilder extends AbstractB
                     .build();
         } finally {
             logger.info("{} is built. Configurations: (%s)",
-                WebIdentityTokenFileCredentialsProvider.class.getSimpleName(),
+                StsAssumeRoleCredentialsProvider.class.getSimpleName(),
                 JsonUtils.objectToString(config)
             );
             this.built = true;
@@ -85,6 +93,8 @@ public class AwsStsAssumeRoleSessionCredentialsProviderBuilder extends AbstractB
         public String roleArn;
 
         public String roleSessionName = "observer";
+
+        public Map<String, Object> stsClientCredentials;
 
     }
 }

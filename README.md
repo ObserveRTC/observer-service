@@ -308,6 +308,25 @@ config:
 type: AwsEnvironmentVariable
 ```
 
+##### AwsStsAssumeRoleSession
+
+```yaml
+type: AwsStsAssumeRoleSession
+config:
+   # the region id of the assumed role
+   regionId: eu-west-1
+   # the ARN of the role
+   roleArn: "THE_ARN_OF_THE_ROLE"
+   roleSessionName: "observer"
+
+   stsClientCredentials: # optional 
+      type: Static
+      config: {}
+   serialNumber: "1234-5678" # optional
+   policy: "policy" # optional
+   externalId: "external" # optional
+```
+
 ##### AwsStatic
 
 ```yaml
