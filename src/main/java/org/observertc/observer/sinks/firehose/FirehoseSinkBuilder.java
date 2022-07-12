@@ -30,6 +30,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+
 @Prototype
 public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
@@ -141,34 +143,41 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             var stringBuilder = new StringBuffer();
             var csvPrinter = new CSVPrinter(stringBuilder, format);
             var chunkSize = 0;
-            for (var it = reports.iterator(); it.hasNext(); ) {
-                var report = it.next();
-                var iterable = mapper.apply(report, report.type);
-                csvPrinter.printRecord(iterable);
-                if (++chunkSize < maxChunkSize && it.hasNext()) {
-                    continue;
-                }
-                csvPrinter.flush();
-                var lines = stringBuilder.toString();
-                var bytes = lines.getBytes();
-                Record myRecord = Record.builder()
-                        .data(SdkBytes.fromByteArray(bytes))
-                        .build();
+            var reportsByTypes = reports.stream().collect(groupingBy(r -> r.type));
+            for (var it = reportsByTypes.entrySet().iterator(); it.hasNext(); ) {
+                var entry = it.next();
+                var type = entry.getKey();
+                var groupedReports = entry.getValue();
+                for (var jt = groupedReports.iterator(); jt.hasNext(); ) {
+                    var report = jt.next();
+                    var iterable = mapper.apply(report, type);
+                    csvPrinter.printRecord(iterable);
+                    if (++chunkSize < maxChunkSize && jt.hasNext()) {
+                        continue;
+                    }
+                    csvPrinter.flush();
+                    var lines = stringBuilder.toString();
+                    var bytes = lines.getBytes();
+                    Record myRecord = Record.builder()
+                            .data(SdkBytes.fromByteArray(bytes))
+                            .build();
 
-                String deliveryStreamId = getDeliveryStreamId.apply(report.type);
-                if (deliveryStreamId == null) {
-                    continue;
-                }
-                var deliveryRecords = records.get(deliveryStreamId);
-                if (deliveryRecords == null) {
-                    deliveryRecords = new LinkedList<>();
-                    records.put(deliveryStreamId, deliveryRecords);
-                }
+                    String deliveryStreamId = getDeliveryStreamId.apply(report.type);
+                    if (deliveryStreamId == null) {
+                        continue;
+                    }
+                    var deliveryRecords = records.get(deliveryStreamId);
+                    if (deliveryRecords == null) {
+                        deliveryRecords = new LinkedList<>();
+                        records.put(deliveryStreamId, deliveryRecords);
+                    }
 
-                deliveryRecords.add(myRecord);
-                stringBuilder = new StringBuffer();
-                csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
-                chunkSize = 0;
+                    deliveryRecords.add(myRecord);
+                    stringBuilder = new StringBuffer();
+                    csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
+                    chunkSize = 0;
+                }
+                logger.info("Received {} reports ({} types) mapped to {} different type of records", reports.size(), reportsByTypes.size(), records.size());
             }
             return records;
         });
