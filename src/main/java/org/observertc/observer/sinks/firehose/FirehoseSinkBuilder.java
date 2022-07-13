@@ -3,7 +3,6 @@ package org.observertc.observer.sinks.firehose;
 
 import io.micronaut.context.annotation.Prototype;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.observertc.observer.common.AwsUtils;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
@@ -11,13 +10,12 @@ import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.mappings.JsonMapper;
-import org.observertc.observer.mappings.Mapper;
-import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
-import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.observer.security.credentialbuilders.AwsCredentialsProviderBuilder;
+import org.observertc.observer.sinks.CsvFormatEncoder;
+import org.observertc.observer.sinks.FormatEncoder;
+import org.observertc.observer.sinks.JsonFormatEncoder;
 import org.observertc.observer.sinks.Sink;
-import org.observertc.schemas.reports.csvsupport.*;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
@@ -25,12 +23,11 @@ import software.amazon.awssdk.services.firehose.FirehoseClient;
 import software.amazon.awssdk.services.firehose.model.Record;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Prototype
 public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink> {
@@ -88,100 +85,103 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         return result;
     }
 
-    private Mapper<List<Report>, Map<String, List<Record>>> makeJsonEncoder(Function<ReportType, String> getDeliveryStreamId) {
+    private FormatEncoder<String, Record> makeJsonEncoder(Function<ReportType, String> getDeliveryStreamId) {
         var mapper = JsonMapper.createObjectToBytesMapper();
-        return Mapper.create(reports -> {
-            Map<String, List<Record>> records = new HashMap<>();
-            for (var report : reports) {
-                byte[] bytes = mapper.map(report.payload);
-                if (bytes == null) {
-                    logger.warn("Cannot map report {}", JsonUtils.objectToString(report));
-                    continue;
-                }
-
-                Record myRecord = Record.builder()
-                        .data(SdkBytes.fromByteArray(bytes))
-                        .build();
-
-                var deliveryStreamId = getDeliveryStreamId.apply(report.type);
-                if (deliveryStreamId == null) {
-                    continue;
-                }
-                var deliveryRecords = records.get(deliveryStreamId);
-                if (deliveryRecords == null) {
-                    deliveryRecords = new LinkedList<>();
-                    records.put(deliveryStreamId, deliveryRecords);
-                }
-                deliveryRecords.add(myRecord);
-            }
-            return records;
-        });
-    }
-
-    private Mapper<List<Report>, Map<String, List<Record>>> makeCsvEncoder(Function<ReportType, String> getDeliveryStreamId, CSVFormat format, int maxChunkSize) {
-        var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
-                new ObserverEventReportToIterable(),
-                new CallEventReportToIterable(),
-                new CallMetaReportToIterable(),
-                new ClientExtensionReportToIterable(),
-                new ClientTransportReportToIterable(),
-                new ClientDataChannelReportToIterable(),
-                new InboundAudioTrackReportToIterable(),
-                new InboundVideoTrackReportToIterable(),
-                new OutboundAudioTrackReportToIterable(),
-                new OutboundVideoTrackReportToIterable(),
-                new SfuEventReportToIterable(),
-                new SfuMetaReportToIterable(),
-                new SfuExtensionReportToIterable(),
-                new SFUTransportReportToIterable(),
-                new SfuInboundRtpPadReportToIterable(),
-                new SfuOutboundRtpPadReportToIterable(),
-                new SfuSctpStreamReportToIterable()
-        );
-        return Mapper.create(reports -> {
-            var records = new HashMap<String, List<Record>>();
-            var stringBuilder = new StringBuffer();
-            var csvPrinter = new CSVPrinter(stringBuilder, format);
-            var chunkSize = 0;
-            var reportsByTypes = reports.stream().collect(groupingBy(r -> r.type));
-            for (var it = reportsByTypes.entrySet().iterator(); it.hasNext(); ) {
-                var entry = it.next();
-                var type = entry.getKey();
-                var groupedReports = entry.getValue();
-                for (var jt = groupedReports.iterator(); jt.hasNext(); ) {
-                    var report = jt.next();
-                    var iterable = mapper.apply(report, type);
-                    csvPrinter.printRecord(iterable);
-                    if (++chunkSize < maxChunkSize && jt.hasNext()) {
-                        continue;
+        return new JsonFormatEncoder<String, Record>(
+                getDeliveryStreamId,
+                report -> {
+                    byte[] bytes = mapper.map(report.payload);
+                    if (bytes == null) {
+                        logger.warn("Cannot map report {}", JsonUtils.objectToString(report));
+                        return null;
                     }
-                    csvPrinter.flush();
-                    var lines = stringBuilder.toString();
-                    var bytes = lines.getBytes();
-                    Record myRecord = Record.builder()
+                    return Record.builder()
                             .data(SdkBytes.fromByteArray(bytes))
                             .build();
-
-                    String deliveryStreamId = getDeliveryStreamId.apply(report.type);
-                    if (deliveryStreamId == null) {
-                        continue;
-                    }
-                    var deliveryRecords = records.get(deliveryStreamId);
-                    if (deliveryRecords == null) {
-                        deliveryRecords = new LinkedList<>();
-                        records.put(deliveryStreamId, deliveryRecords);
-                    }
-
-                    deliveryRecords.add(myRecord);
-                    stringBuilder = new StringBuffer();
-                    csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
-                    chunkSize = 0;
-                }
-                logger.info("Received {} reports ({} types) mapped to {} different type of records", reports.size(), reportsByTypes.size(), records.size());
-            }
-            return records;
-        });
+                },
+                logger
+        );
     }
+
+    private FormatEncoder<String, Record> makeCsvEncoder(Function<ReportType, String> getDeliveryStreamId, CSVFormat format, int maxChunkSize) {
+        return new CsvFormatEncoder<>(
+                maxChunkSize,
+                getDeliveryStreamId,
+                lines -> {
+                    var bytes = lines.getBytes();
+                    return Record.builder()
+                            .data(SdkBytes.fromByteArray(bytes))
+                            .build();
+                },
+                format,
+                logger
+        );
+    }
+
+//    private Mapper<List<Report>, Map<String, List<Record>>> makeCsvEncoder(Function<ReportType, String> getDeliveryStreamId, CSVFormat format, int maxChunkSize) {
+//        var mapper = ReportTypeVisitor.<Report, Iterable<?>>createFunctionalVisitor(
+//                new ObserverEventReportToIterable(),
+//                new CallEventReportToIterable(),
+//                new CallMetaReportToIterable(),
+//                new ClientExtensionReportToIterable(),
+//                new ClientTransportReportToIterable(),
+//                new ClientDataChannelReportToIterable(),
+//                new InboundAudioTrackReportToIterable(),
+//                new InboundVideoTrackReportToIterable(),
+//                new OutboundAudioTrackReportToIterable(),
+//                new OutboundVideoTrackReportToIterable(),
+//                new SfuEventReportToIterable(),
+//                new SfuMetaReportToIterable(),
+//                new SfuExtensionReportToIterable(),
+//                new SFUTransportReportToIterable(),
+//                new SfuInboundRtpPadReportToIterable(),
+//                new SfuOutboundRtpPadReportToIterable(),
+//                new SfuSctpStreamReportToIterable()
+//        );
+//        return Mapper.create(reports -> {
+//            var records = new HashMap<String, List<Record>>();
+//            var stringBuilder = new StringBuffer();
+//            var csvPrinter = new CSVPrinter(stringBuilder, format);
+//            var chunkSize = 0;
+//            var reportsByTypes = reports.stream().collect(groupingBy(r -> r.type));
+//            for (var it = reportsByTypes.entrySet().iterator(); it.hasNext(); ) {
+//                var entry = it.next();
+//                var type = entry.getKey();
+//                var groupedReports = entry.getValue();
+//                for (var jt = groupedReports.iterator(); jt.hasNext(); ) {
+//                    var report = jt.next();
+//                    var iterable = mapper.apply(report, type);
+//                    csvPrinter.printRecord(iterable);
+//                    if (++chunkSize < maxChunkSize && jt.hasNext()) {
+//                        continue;
+//                    }
+//                    csvPrinter.flush();
+//                    var lines = stringBuilder.toString();
+//                    var bytes = lines.getBytes();
+//                    Record myRecord = Record.builder()
+//                            .data(SdkBytes.fromByteArray(bytes))
+//                            .build();
+//
+//                    String deliveryStreamId = getDeliveryStreamId.apply(report.type);
+//                    if (deliveryStreamId == null) {
+//                        continue;
+//                    }
+//                    var deliveryRecords = records.get(deliveryStreamId);
+//                    if (deliveryRecords == null) {
+//                        deliveryRecords = new LinkedList<>();
+//                        records.put(deliveryStreamId, deliveryRecords);
+//                    }
+//
+//                    deliveryRecords.add(myRecord);
+//                    stringBuilder = new StringBuffer();
+//                    csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);
+//                    chunkSize = 0;
+//                }
+//            }
+//            logger.info("Received {} reports ({} types) mapped to {} different type of records", reports.size(), reportsByTypes.size(), records.size());
+//            return records;
+//        });
+//    }
 
     public static class Config {
 

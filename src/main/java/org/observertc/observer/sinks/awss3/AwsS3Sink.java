@@ -1,4 +1,4 @@
-package org.observertc.observer.sinks.firehose;
+package org.observertc.observer.sinks.awss3;
 
 // https://docs.aws.amazon.com/code-samples/latest/catalog/javav2-firehose-src-main-java-com-example-firehose-PutBatchRecords.java.html
 
@@ -7,21 +7,27 @@ import org.observertc.observer.sinks.FormatEncoder;
 import org.observertc.observer.sinks.Sink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.services.firehose.FirehoseClient;
-import software.amazon.awssdk.services.firehose.model.Record;
-import software.amazon.awssdk.services.firehose.model.*;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.firehose.model.FirehoseException;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
-public class FirehoseSink extends Sink {
-    private static final Logger logger = LoggerFactory.getLogger(FirehoseSink.class);
+public class AwsS3Sink extends Sink {
+    private static final Logger logger = LoggerFactory.getLogger(AwsS3Sink.class);
 
-    FormatEncoder<String, Record> encoder;
-    Supplier<FirehoseClient> clientSupplier;
-    private FirehoseClient client;
+    FormatEncoder<String, byte[]> encoder;
+    Supplier<S3Client> clientSupplier;
+    private S3Client client;
+    private final String bucketName;
+    Map<String, String> metadata;
 
-    FirehoseSink() {
+    AwsS3Sink(String bucketName) {
+        this.bucketName = bucketName;
     }
 
     @Override
@@ -41,22 +47,24 @@ public class FirehoseSink extends Sink {
             try {
                 for (var it = records.entrySet().iterator(); it.hasNext(); ) {
                     var entry = it.next();
-                    var deliveryStreamId = entry.getKey();
-                    var deliveryRecords = entry.getValue();
-                    PutRecordBatchRequest recordBatchRequest = PutRecordBatchRequest.builder()
-                            .deliveryStreamName(deliveryStreamId)
-                            .records(deliveryRecords)
-                            .build();
-
-                    PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
-                    logger.info("{} records are forwarded to stream {}", recordResponse.requestResponses().size(), deliveryStreamId);
-
-                    List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
-                    for (PutRecordBatchResponseEntry result: results) {
-                        if (result.errorCode() == null) {
-                            continue;
+                    var prefix = entry.getKey();
+                    var objects = entry.getValue();
+                    if (objects == null || objects.size() < 1) {
+                        logger.warn("No encoded objects for prefix {}", prefix);
+                        continue;
+                    }
+                    for (var object : objects) {
+                        var objectKey = String.format("%s/%s", prefix, UUID.randomUUID());
+                        PutObjectRequest putOb = PutObjectRequest.builder()
+                                .bucket(this.bucketName)
+                                .key(objectKey)
+                                .metadata(this.metadata)
+                                .build();
+                        try {
+                            var response = this.client.putObject(putOb, RequestBody.fromBytes(object));
+                        } catch (Exception ex) {
+                            logger.warn("Exception while uploading to {}", prefix, ex);
                         }
-                        logger.warn("Error indicated adding record {}. error code: {}, error message: {}", result.recordId(), result.errorCode(), result.errorMessage());
                     }
                 }
                 break;
