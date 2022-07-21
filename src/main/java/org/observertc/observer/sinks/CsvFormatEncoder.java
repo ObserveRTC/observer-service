@@ -67,6 +67,11 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
             for (var it = reportsByTypes.entrySet().iterator(); it.hasNext(); ) {
                 var entry = it.next();
                 var type = entry.getKey();
+                K mappedType = typeMapper.apply(type);
+                if (mappedType == null) {
+                    continue;
+                }
+
                 var groupedReports = entry.getValue();
                 for (var jt = groupedReports.iterator(); jt.hasNext(); ) {
                     var report = jt.next();
@@ -77,12 +82,8 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
                     }
                     csvPrinter.flush();
                     var lines = stringBuilder.toString();
-                    K mappedType = typeMapper.apply(report.type);
                     V myRecord = this.formatMapper.apply(lines);
 
-                    if (mappedType == null) {
-                        continue;
-                    }
                     var mappedRecords = records.get(mappedType);
                     if (mappedRecords == null) {
                         mappedRecords = new LinkedList<>();
