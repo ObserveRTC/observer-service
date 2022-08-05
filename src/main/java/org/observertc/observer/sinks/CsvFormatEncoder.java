@@ -3,7 +3,6 @@ package org.observertc.observer.sinks;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.schemas.reports.csvsupport.*;
 import org.slf4j.Logger;
@@ -44,11 +43,11 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
 
     private final CSVFormat format;
     private final int maxChunkSize;
-    private final Function<ReportType, K> typeMapper;
+    private final Function<Report, K> typeMapper;
     private final Function<String, V> formatMapper;
     private final Logger logger;
 
-    public CsvFormatEncoder(int maxChunkSize, Function<ReportType, K> typeMapper, Function<String, V> formatMapper, CSVFormat format, Logger logger) {
+    public CsvFormatEncoder(int maxChunkSize, Function<Report, K> typeMapper, Function<String, V> formatMapper, CSVFormat format, Logger logger) {
         this.format = format;
         this.maxChunkSize = maxChunkSize;
         this.typeMapper = typeMapper;
@@ -77,7 +76,7 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
                     }
                     csvPrinter.flush();
                     var lines = stringBuilder.toString();
-                    K mappedType = typeMapper.apply(report.type);
+                    K mappedType = typeMapper.apply(report);
                     V myRecord = this.formatMapper.apply(lines);
 
                     if (mappedType == null) {

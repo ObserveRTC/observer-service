@@ -2,7 +2,6 @@ package org.observertc.observer.sinks;
 
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +15,11 @@ public class JsonFormatEncoder<K, V> implements FormatEncoder<K, V> {
 
     private static final Logger defaultLogger = LoggerFactory.getLogger(JsonFormatEncoder.class);
 
-    private final Function<ReportType, K> typeMapper;
+    private final Function<Report, K> typeMapper;
     private final Function<Report, V> formatMapper;
     private final Logger logger;
 
-    public JsonFormatEncoder(Function<ReportType, K> typeMapper, Function<Report, V> formatMapper, Logger logger) {
+    public JsonFormatEncoder(Function<Report, K> typeMapper, Function<Report, V> formatMapper, Logger logger) {
         this.typeMapper = typeMapper;
         this.formatMapper = formatMapper;
         this.logger = logger;
@@ -37,7 +36,7 @@ public class JsonFormatEncoder<K, V> implements FormatEncoder<K, V> {
                     continue;
                 }
 
-                var type = this.typeMapper.apply(report.type);
+                var type = this.typeMapper.apply(report);
                 if (type == null) {
                     continue;
                 }

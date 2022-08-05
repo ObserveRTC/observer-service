@@ -10,6 +10,7 @@ import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.mappings.JsonMapper;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.security.credentialbuilders.AwsCredentialsProviderBuilder;
 import org.observertc.observer.sinks.CsvFormatEncoder;
@@ -69,13 +70,13 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
             deliveryStreamIds = Collections.EMPTY_MAP;
         }
 
-        Function<ReportType, String> getDeliveryStreamId;
+        Function<Report, String> getDeliveryStreamId;
         if (config.defaultDeliveryStreamId != null && config.streams != null) {
-            getDeliveryStreamId = type -> deliveryStreamIds.getOrDefault(type, config.defaultDeliveryStreamId);
+            getDeliveryStreamId = report -> deliveryStreamIds.getOrDefault(report.type, config.defaultDeliveryStreamId);
         } else if (config.streams != null) {
-            getDeliveryStreamId = type -> deliveryStreamIds.get(type);
+            getDeliveryStreamId = report -> deliveryStreamIds.get(report.type);
         } else {
-            getDeliveryStreamId = type -> config.defaultDeliveryStreamId;
+            getDeliveryStreamId = report -> config.defaultDeliveryStreamId;
         }
         result.clientSupplier = clientProvider;
         switch (config.encodingType) {
@@ -85,7 +86,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         return result;
     }
 
-    private FormatEncoder<String, Record> makeJsonEncoder(Function<ReportType, String> getDeliveryStreamId) {
+    private FormatEncoder<String, Record> makeJsonEncoder(Function<Report, String> getDeliveryStreamId) {
         var mapper = JsonMapper.createObjectToBytesMapper();
         return new JsonFormatEncoder<String, Record>(
                 getDeliveryStreamId,
@@ -103,7 +104,7 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink
         );
     }
 
-    private FormatEncoder<String, Record> makeCsvEncoder(Function<ReportType, String> getDeliveryStreamId, CSVFormat format, int maxChunkSize) {
+    private FormatEncoder<String, Record> makeCsvEncoder(Function<Report, String> getDeliveryStreamId, CSVFormat format, int maxChunkSize) {
         return new CsvFormatEncoder<>(
                 maxChunkSize,
                 getDeliveryStreamId,

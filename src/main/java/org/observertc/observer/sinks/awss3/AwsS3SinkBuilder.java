@@ -10,6 +10,7 @@ import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.mappings.JsonMapper;
+import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.security.credentialbuilders.AwsCredentialsProviderBuilder;
 import org.observertc.observer.sinks.CsvFormatEncoder;
@@ -69,41 +70,50 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
             prefixMapper = Collections.EMPTY_MAP;
         }
 
-        Function<ReportType, String> getDeliveryStreamId;
+        Function<ReportType, String> reportTypePrefix;
         if (config.defaultPrefix != null && config.prefixes != null) {
-            getDeliveryStreamId = type -> prefixMapper.getOrDefault(type, config.defaultPrefix);
+            reportTypePrefix = type -> prefixMapper.getOrDefault(type, config.defaultPrefix);
         } else if (config.prefixes != null) {
-            getDeliveryStreamId = type -> prefixMapper.get(type);
+            reportTypePrefix = type -> prefixMapper.get(type);
         } else {
-            getDeliveryStreamId = type -> config.defaultPrefix;
+            reportTypePrefix = type -> config.defaultPrefix;
         }
+
+        Function<Report, String> s3prefix;
+        if (config.addObjectHierarchyPrefix) {
+            var objKeyAssigner = new ObjectHierarchyKeyAssignerBuilder();
+            s3prefix = objKeyAssigner.create(reportTypePrefix);
+        } else {
+            s3prefix = report -> reportTypePrefix.apply(report.type);
+        }
+
         result.clientSupplier = clientProvider;
         switch (config.encodingType) {
             case CSV -> {
-                result.encoder = this.makeCsvEncoder(getDeliveryStreamId, config.csvFormat, 450);
+                result.encoder = this.makeCsvEncoder(s3prefix, config.csvFormat, 450);
                 result.metadata = Map.of("Content-Type", "text/csv");
             }
             case JSON -> {
-                result.encoder = this.makeJsonEncoder(getDeliveryStreamId);
+                result.encoder = this.makeJsonEncoder(s3prefix);
                 result.metadata = Map.of("Content-Type", "text/plain");
             }
         }
         return result;
     }
 
-    private FormatEncoder<String, byte[]> makeJsonEncoder(Function<ReportType, String> getDeliveryStreamId) {
+    private FormatEncoder<String, byte[]> makeJsonEncoder(Function<Report, String> s3Prefix) {
         var mapper = JsonMapper.createObjectToBytesMapper();
         return new JsonFormatEncoder<String, byte[]>(
-                getDeliveryStreamId,
+                s3Prefix,
                 report -> mapper.map(report.payload),
                 logger
         );
     }
 
-    private FormatEncoder<String, byte[]> makeCsvEncoder(Function<ReportType, String> getDeliveryStreamId, CSVFormat format, int maxChunkSize) {
+    private FormatEncoder<String, byte[]> makeCsvEncoder(Function<Report, String> s3Prefix, CSVFormat format, int maxChunkSize) {
         return new CsvFormatEncoder<>(
                 maxChunkSize,
-                getDeliveryStreamId,
+                s3Prefix,
                 String::getBytes,
                 format,
                 logger
@@ -124,6 +134,8 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
         public String bucketName;
 
         public String defaultPrefix;
+
+        public boolean addObjectHierarchyPrefix = false;
 
         public Map<String, String> prefixes = null;
 
