@@ -8,14 +8,16 @@ import org.observertc.schemas.reports.*;
 import java.util.function.Function;
 
 class ObjectHierarchyKeyAssignerBuilder {
-    private static final String UNKNOWN = "unknown";
+    private static final String UNKNOWN_SERVICE = "unknown-services";
+    private static final String UNKNOWN_CALL_ID = "unknown-calls";
+    private static final String UNKNOWN_SFU_ID = "unknown-sfus";
     private static final String CALL_REPORTS = "call-reports";
     private static final String SFU_REPORTS = "sfu-reports";
     private static final String DELIMITER = "/";
 
     public Function<Report, String> create(Function<ReportType, String> typePrefixProvider) {
-        var wrongCallReports = CALL_REPORTS + DELIMITER + UNKNOWN + DELIMITER;
-        var wrongSfuReports = SFU_REPORTS + DELIMITER + UNKNOWN +  DELIMITER;
+        var wrongCallReports = UNKNOWN_SERVICE + DELIMITER + CALL_REPORTS + DELIMITER + UNKNOWN_CALL_ID + DELIMITER;
+        var wrongSfuReports = UNKNOWN_SERVICE + DELIMITER + SFU_REPORTS + DELIMITER + UNKNOWN_SFU_ID +  DELIMITER;
         var OBSERVER_EVENT = typePrefixProvider.apply(ReportType.OBSERVER_EVENT);
         var CALL_EVENT = typePrefixProvider.apply(ReportType.CALL_EVENT);
         var CALL_META_DATA = typePrefixProvider.apply(ReportType.CALL_META_DATA);
@@ -39,9 +41,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (ObserverEventReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(OBSERVER_EVENT)
                             .toString();
@@ -55,9 +59,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (CallEventReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(CALL_EVENT)
                             .toString();
@@ -71,9 +77,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (CallMetaReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(CALL_META_DATA)
                             .toString();
@@ -87,9 +95,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (ClientExtensionReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(CLIENT_EXTENSION_DATA)
                             .toString();
@@ -103,9 +113,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (ClientTransportReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(PEER_CONNECTION_TRANSPORT)
                             .toString();
@@ -119,9 +131,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (ClientDataChannelReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(PEER_CONNECTION_DATA_CHANNEL)
                             .toString();
@@ -135,9 +149,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (InboundAudioTrackReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(INBOUND_AUDIO_TRACK)
                             .toString();
@@ -151,9 +167,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (InboundVideoTrackReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(INBOUND_VIDEO_TRACK)
                             .toString();
@@ -167,9 +185,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (OutboundAudioTrackReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(OUTBOUND_AUDIO_TRACK)
                             .toString();
@@ -183,9 +203,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (OutboundVideoTrackReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(CALL_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.callId != null ? payload.callId : UNKNOWN)
+                            .append(payload.callId != null ? payload.callId : UNKNOWN_CALL_ID)
                             .append(DELIMITER)
                             .append(OUTBOUND_VIDEO_TRACK)
                             .toString();
@@ -199,9 +221,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SfuEventReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_EVENT)
                             .toString();
@@ -215,9 +239,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SfuMetaReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_META_DATA)
                             .toString();
@@ -231,9 +257,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SfuExtensionReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_EXTENSION_DATA)
                             .toString();
@@ -247,9 +275,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SFUTransportReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_TRANSPORT)
                             .toString();
@@ -263,9 +293,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SfuInboundRtpPadReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_INBOUND_RTP_PAD)
                             .toString();
@@ -279,9 +311,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SfuOutboundRtpPadReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_OUTBOUND_RTP_PAD)
                             .toString();
@@ -295,9 +329,11 @@ class ObjectHierarchyKeyAssignerBuilder {
                 try {
                     var payload = (SfuSctpStreamReport) obj.payload;
                     return new StringBuffer()
+                            .append(payload.serviceId != null ? payload.serviceId : UNKNOWN_SERVICE)
+                            .append(DELIMITER)
                             .append(SFU_REPORTS)
                             .append(DELIMITER)
-                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN)
+                            .append(payload.sfuId != null ? payload.sfuId : UNKNOWN_SFU_ID)
                             .append(DELIMITER)
                             .append(SFU_SCTP_STREAM)
                             .toString();
