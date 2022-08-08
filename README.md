@@ -527,8 +527,12 @@ sinks:
        regionId: eu-west-1
        # the name of the default prefix used if no other prefix defined
        defaultPrefix: observertc-reports-csv
-       # if true then adds call-reports/<call-id>/, and sfu-reports/<sfu-id/ prefix to the uploaded reports depending on its type
-       addObjectHierarchyPrefix: false
+       # flag indicate to add serviceId prefix for the uploaded reports
+       addServiceIdPrefix: false
+       # flag indicate to add reports category (call-reports / sfu-reports) prefix for the uploaded reports
+       addReportCategoryPrefix: false
+       # flag indicate to add sfu or call id prefix for the uploaded reports
+       addSfuOrCallIdPrefix: false
        # prefix used to upload objects to s3
        prefixes:
           observer-event: observertc-observer-event-reports-csv

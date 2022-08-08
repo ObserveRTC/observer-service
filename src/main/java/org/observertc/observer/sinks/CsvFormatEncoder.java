@@ -58,11 +58,10 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
     @Override
     public Map<K, List<V>> map(List<Report> reports) {
         try {
-            Map<K, List<V>> records = new HashMap<K, List<V>>();
-            var stringBuilder = new StringBuffer();
-            var csvPrinter = new CSVPrinter(stringBuilder, format);
-            var chunkSize = 0;
-            var reportsByTypes = reports.stream().collect(groupingBy(r -> r.type));
+//            Map<K, List<V>> records = new HashMap<K, List<V>>();
+            var iterableReports = new HashMap<K, List<Iterable<?>>>();
+            var reportsByTypes = reports.stream()
+                    .collect(groupingBy(r -> r.type));
             for (var it = reportsByTypes.entrySet().iterator(); it.hasNext(); ) {
                 var entry = it.next();
                 var type = entry.getKey();
@@ -75,8 +74,29 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
                         continue;
                     }
                     var iterable = mapper.apply(report, type);
+                    var iterables = iterableReports.get(mappedType);
+                    if (iterables == null) {
+                        iterables = new LinkedList<>();
+                        iterableReports.put(mappedType, iterables);
+                    }
+                    iterables.add(iterable);
+                }
+            }
+            var records = new HashMap<K, List<V>>();
+            var stringBuilder = new StringBuffer();
+            var csvPrinter = new CSVPrinter(stringBuilder, format);
+            var chunkSize = 0;
+            for (var it = iterableReports.entrySet().iterator(); it.hasNext(); ) {
+                var entry = it.next();
+                var mappedType = entry.getKey();
+                var iterables = entry.getValue();
+                if (iterables.size() < 1) {
+                    continue;
+                }
+                for (var jt = iterables.iterator(); jt.hasNext(); ) {
+                    var iterable = jt.next();
                     csvPrinter.printRecord(iterable);
-                    if (++chunkSize < maxChunkSize && jt.hasNext()) {
+                    if (++chunkSize < this.maxChunkSize && jt.hasNext()) {
                         continue;
                     }
                     csvPrinter.flush();
@@ -88,7 +108,6 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
                         mappedRecords = new LinkedList<>();
                         records.put(mappedType, mappedRecords);
                     }
-
                     mappedRecords.add(myRecord);
                     stringBuilder = new StringBuffer();
                     csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.DEFAULT);

@@ -80,9 +80,14 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
         }
 
         Function<Report, String> s3prefix;
-        if (config.addObjectHierarchyPrefix) {
+        if (config.addServiceIdPrefix || config.addReportCategoryPrefix || config.addSfuOrCallIdPrefix) {
             var objKeyAssigner = new ObjectHierarchyKeyAssignerBuilder();
-            s3prefix = objKeyAssigner.create(reportTypePrefix);
+            s3prefix = objKeyAssigner.create(
+                    reportTypePrefix,
+                    config.addServiceIdPrefix,
+                    config.addReportCategoryPrefix,
+                    config.addSfuOrCallIdPrefix
+            );
         } else {
             s3prefix = report -> reportTypePrefix.apply(report.type);
         }
@@ -135,7 +140,9 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
         public String defaultPrefix;
 
-        public boolean addObjectHierarchyPrefix = false;
+        public boolean addServiceIdPrefix = false;
+        public boolean addReportCategoryPrefix = false;
+        public boolean addSfuOrCallIdPrefix = false;
 
         public Map<String, String> prefixes = null;
 
