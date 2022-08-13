@@ -7,10 +7,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.dto.ClientDTO;
-import org.observertc.observer.dto.MediaTrackDTO;
-import org.observertc.observer.dto.PeerConnectionDTO;
-import org.observertc.observer.dto.StreamDirection;
+import org.observertc.observer.dto.*;
 import org.observertc.observer.evaluators.depots.ClientDTOsDepot;
 import org.observertc.observer.evaluators.depots.MediaTrackDTOsDepot;
 import org.observertc.observer.evaluators.depots.PeerConnectionDTOsDepot;
@@ -135,9 +132,11 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         .setSfuStreamId(track.sfuStreamId)
                         .setSfuSinkId(track.sfuSinkId)
                         .setStreamDirection(StreamDirection.INBOUND)
+                        .setMediaKind(MediaKind.AUDIO)
                         .setPeerConnectionId(track.peerConnectionId)
                         .setSSRC(track.ssrc)
                         .assemble();
+
 
             });
 
@@ -149,6 +148,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         .setSfuStreamId(track.sfuStreamId)
                         .setSfuSinkId(track.sfuSinkId)
                         .setStreamDirection(StreamDirection.INBOUND)
+                        .setMediaKind(MediaKind.VIDEO)
                         .setPeerConnectionId(track.peerConnectionId)
                         .setSSRC(track.ssrc)
                         .assemble();
@@ -163,6 +163,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         .setSfuStreamId(track.sfuStreamId)
 //                        .setSfuSinkId(track.sfuSinkId)
                         .setStreamDirection(StreamDirection.OUTBOUND)
+                        .setMediaKind(MediaKind.AUDIO)
                         .setPeerConnectionId(track.peerConnectionId)
                         .setSSRC(track.ssrc)
                         .assemble();
@@ -177,6 +178,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         .setSfuStreamId(track.sfuStreamId)
 //                        .setSfuSinkId(track.sfuSinkId)
                         .setStreamDirection(StreamDirection.OUTBOUND)
+                        .setMediaKind(MediaKind.VIDEO)
                         .setPeerConnectionId(track.peerConnectionId)
                         .setSSRC(track.ssrc)
                         .assemble();

@@ -33,7 +33,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(value = { "classId", "factoryId", "classId" })
 public class MediaTrackDTO implements VersionedPortable {
 	private static final Logger logger = LoggerFactory.getLogger(MediaTrackDTO.class);
-	public static final int CLASS_VERSION = 1;
+	public static final int CLASS_VERSION = 2;
 
 	private static final String CALL_ID_FIELD_NAME = "callId";
 	private static final String SERVICE_ID_FIELD_NAME = "serviceId";
@@ -50,6 +50,7 @@ public class MediaTrackDTO implements VersionedPortable {
 	private static final String SSRC_FIELD_NAME = "ssrc";
 	private static final String ADDED_FIELD_NAME = "added";
 	private static final String DIRECTION_FIELD_NAME = "direction";
+	private static final String KIND_FIELD_NAME = "kind";
 	private static final String MARKER_FIELD_NAME = "marker";
 
 	public UUID callId;
@@ -67,6 +68,7 @@ public class MediaTrackDTO implements VersionedPortable {
 	public Long ssrc;
 	public Long added;
 	public StreamDirection direction;
+	public MediaKind kind;
 	public String marker;
 
 	public static Builder builder() {
@@ -105,6 +107,12 @@ public class MediaTrackDTO implements VersionedPortable {
 		writer.writeString(DIRECTION_FIELD_NAME, direction);
 
 		SerDeUtils.writeNullableString(writer, MARKER_FIELD_NAME, this.marker);
+
+		if (this.getClassVersion() < 2) {
+			return;
+		}
+		var kind = this.kind.name();
+		writer.writeString(KIND_FIELD_NAME, kind);
 	}
 
 	@Override
@@ -127,6 +135,12 @@ public class MediaTrackDTO implements VersionedPortable {
 		this.direction = StreamDirection.valueOf(direction);
 
 		this.marker = SerDeUtils.readNullableString(reader, MARKER_FIELD_NAME);
+
+		if (this.getClassVersion() < 2) {
+			return;
+		}
+		var kind = reader.readString(KIND_FIELD_NAME);
+		this.kind = MediaKind.valueOf(kind);
 	}
 
 	@Override
@@ -161,6 +175,7 @@ public class MediaTrackDTO implements VersionedPortable {
 		if (!Objects.equals(this.added, otherDTO.added)) return false;
 		if (!Objects.equals(this.direction, otherDTO.direction)) return false;
 		if (!Objects.equals(this.marker, otherDTO.marker)) return false;
+		if (!Objects.equals(this.kind, otherDTO.kind)) return false;
 		return true;
 	}
 
@@ -188,6 +203,7 @@ public class MediaTrackDTO implements VersionedPortable {
 					.withAddedTimestamp(source.added)
 					.withDirection(source.direction)
 					.withMarker(source.marker)
+					.withMediaKind(source.kind)
 					;
 		}
 
@@ -270,6 +286,11 @@ public class MediaTrackDTO implements VersionedPortable {
 			return this;
 		}
 
+		public Builder withMediaKind(MediaKind value) {
+			this.result.kind = value;
+			return this;
+		}
+
 		public MediaTrackDTO build() {
 			Objects.requireNonNull(this.result.serviceId);
 			Objects.requireNonNull(this.result.roomId);
@@ -280,6 +301,7 @@ public class MediaTrackDTO implements VersionedPortable {
 			Objects.requireNonNull(this.result.ssrc);
 			Objects.requireNonNull(this.result.added);
 			Objects.requireNonNull(this.result.direction);
+			Objects.requireNonNull(this.result.kind);
 			return this.result;
 		}
 	}

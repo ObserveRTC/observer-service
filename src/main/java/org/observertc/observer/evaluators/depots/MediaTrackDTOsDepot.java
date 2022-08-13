@@ -1,5 +1,6 @@
 package org.observertc.observer.evaluators.depots;
 
+import org.observertc.observer.dto.MediaKind;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.samples.ObservedClientSample;
@@ -24,6 +25,7 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
     private StreamDirection direction = null;
     private Long SSRC = null;
     private UUID peerConnectionId = null;
+    private MediaKind kind = null;
 
 
     public MediaTrackDTOsDepot setObservedClientSample(ObservedClientSample value) {
@@ -53,6 +55,12 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
     public MediaTrackDTOsDepot setStreamDirection(StreamDirection value) {
         if (Objects.isNull(value)) return this;
         this.direction = value;
+        return this;
+    }
+
+    public MediaTrackDTOsDepot setMediaKind(MediaKind value) {
+        if (Objects.isNull(value)) return this;
+        this.kind = value;
         return this;
     }
 
@@ -90,6 +98,10 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
             logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
             return;
         }
+        if (Objects.isNull(this.kind)) {
+            logger.warn("Cannot create {} without media kind", MediaTrackDTO.class.getSimpleName());
+            return;
+        }
         if (Objects.isNull(this.SSRC)) {
             logger.warn("Cannot create {} without SSRC", MediaTrackDTO.class.getSimpleName());
             return;
@@ -120,6 +132,7 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
                     .withSSRC(SSRC)
                     .withAddedTimestamp(clientSample.timestamp)
                     .withMarker(clientSample.marker)
+                    .withMediaKind(kind)
                     .build();
             this.buffer.put(mediaTrackDTO.trackId, mediaTrackDTO);
         } catch (Exception ex) {

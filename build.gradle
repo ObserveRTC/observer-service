@@ -29,7 +29,6 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
 
-
     // ------------- Websocket -----------
     implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
 
@@ -41,6 +40,8 @@ dependencies {
 //    implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
     implementation group: 'com.opencsv', name: 'opencsv', version: '4.1'
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
+
+//    implementation group: 'io.github.balazskreith.hamok', name: 'vstorage', version: '1.0.0'
 
     // --------- AWS SDK -----
     implementation platform('software.amazon.awssdk:bom:2.15.0')

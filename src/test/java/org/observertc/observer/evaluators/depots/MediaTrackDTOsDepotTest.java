@@ -1,6 +1,7 @@
 package org.observertc.observer.evaluators.depots;
 
 import org.junit.jupiter.api.*;
+import org.observertc.observer.dto.MediaKind;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.utils.ObservedSamplesGenerator;
 import org.observertc.observer.utils.RandomGenerators;
@@ -27,6 +28,7 @@ class MediaTrackDTOsDepotTest {
         var peerConnectionId = UUID.randomUUID();
         var streamId = UUID.randomUUID();
         var sinkId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
                 .setObservedClientSample(observedClientSample)
                 .setSSRC(SSRC)
@@ -35,6 +37,7 @@ class MediaTrackDTOsDepotTest {
                 .setSfuSinkId(sinkId)
                 .setPeerConnectionId(peerConnectionId)
                 .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
                 .assemble();
                 ;
 
@@ -55,6 +58,7 @@ class MediaTrackDTOsDepotTest {
         Assertions.assertEquals(SSRC, actual.ssrc, "ssrc field");
         Assertions.assertEquals(clientSample.timestamp, actual.added, "added field");
         Assertions.assertEquals(streamDirection, actual.direction, "direction field");
+        Assertions.assertEquals(mediaKind, actual.kind, "direction field");
 
         Assertions.assertEquals(actual.marker, clientSample.marker, "marker field");
     }
@@ -74,12 +78,14 @@ class MediaTrackDTOsDepotTest {
         var SSRC = this.randomGenerators.getRandomSSRC();
         var trackId = UUID.randomUUID();
         var peerConnectionId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
                 .setObservedClientSample(observedClientSample)
                 .setSSRC(SSRC)
                 .setTrackId(trackId)
                 .setPeerConnectionId(peerConnectionId)
                 .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
                 .assemble();
         ;
         var actual = depot.get().get(trackId);
@@ -96,12 +102,14 @@ class MediaTrackDTOsDepotTest {
         var SSRC = this.randomGenerators.getRandomSSRC();
         var trackId = UUID.randomUUID();
         var peerConnectionId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
 //                .setObservedClientSample(observedClientSample)
                 .setSSRC(SSRC)
                 .setTrackId(trackId)
                 .setPeerConnectionId(peerConnectionId)
                 .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
                 .assemble();
         ;
 
@@ -116,12 +124,14 @@ class MediaTrackDTOsDepotTest {
         var streamDirection = StreamDirection.INBOUND;
         var trackId = UUID.randomUUID();
         var peerConnectionId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
                 .setObservedClientSample(observedClientSample)
 //                .setSSRC(SSRC)
                 .setTrackId(trackId)
                 .setPeerConnectionId(peerConnectionId)
                 .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
                 .assemble();
         ;
 
@@ -136,12 +146,14 @@ class MediaTrackDTOsDepotTest {
         var streamDirection = StreamDirection.INBOUND;
         var SSRC = this.randomGenerators.getRandomSSRC();
         var peerConnectionId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
                 .setObservedClientSample(observedClientSample)
                 .setSSRC(SSRC)
 //                .setTrackId(trackId)
                 .setPeerConnectionId(peerConnectionId)
                 .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
                 .assemble();
         ;
 
@@ -156,12 +168,14 @@ class MediaTrackDTOsDepotTest {
         var streamDirection = StreamDirection.INBOUND;
         var SSRC = this.randomGenerators.getRandomSSRC();
         var trackId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
                 .setObservedClientSample(observedClientSample)
                 .setSSRC(SSRC)
                 .setTrackId(trackId)
 //                .setPeerConnectionId(peerConnectionId)
                 .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
                 .assemble();
         ;
 
@@ -176,12 +190,36 @@ class MediaTrackDTOsDepotTest {
         var SSRC = this.randomGenerators.getRandomSSRC();
         var trackId = UUID.randomUUID();
         var peerConnectionId = UUID.randomUUID();
+        var mediaKind = MediaKind.VIDEO;
         this.depot
                 .setObservedClientSample(observedClientSample)
                 .setSSRC(SSRC)
                 .setTrackId(trackId)
                 .setPeerConnectionId(peerConnectionId)
 //                .setStreamDirection(streamDirection)
+                .setMediaKind(mediaKind)
+                .assemble();
+        ;
+
+        Assertions.assertEquals(0, depot.get().size());
+    }
+
+    @Test
+    @Order(8)
+    void shouldNotCreate_6() {
+        var callId = UUID.randomUUID();
+        var observedClientSample = this.generator.generateObservedClientSample(callId);
+        var SSRC = this.randomGenerators.getRandomSSRC();
+        var trackId = UUID.randomUUID();
+        var peerConnectionId = UUID.randomUUID();
+        var streamDirection = StreamDirection.INBOUND;
+        this.depot
+                .setObservedClientSample(observedClientSample)
+                .setSSRC(SSRC)
+                .setTrackId(trackId)
+                .setPeerConnectionId(peerConnectionId)
+                .setStreamDirection(streamDirection)
+//                .setMediaKind(mediaKind)
                 .assemble();
         ;
 

@@ -23,12 +23,13 @@ class MediaTrackDTOTest {
     private final String USER_ID = UUID.randomUUID().toString();
     private final Long SSRC = 1234L;
     private final StreamDirection DIRECTION = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? StreamDirection.OUTBOUND : StreamDirection.INBOUND;
+    private final MediaKind KIND = UUID.randomUUID().getLeastSignificantBits() % 2L == 0 ? MediaKind.AUDIO : MediaKind.VIDEO;
     private final String MARKER = SerDeUtils.NULL_STRING;
 
     @Test
     void structureShouldHasNotChangedSinceLastTestFixed() {
         var fields = MediaTrackDTO.class.getFields();
-        Assertions.assertEquals(15, fields.length);
+        Assertions.assertEquals(16, fields.length);
     }
 
     @Test
@@ -42,6 +43,7 @@ class MediaTrackDTOTest {
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
                 .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
                 ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
@@ -57,7 +59,9 @@ class MediaTrackDTOTest {
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -72,7 +76,9 @@ class MediaTrackDTOTest {
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -87,7 +93,9 @@ class MediaTrackDTOTest {
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -102,7 +110,9 @@ class MediaTrackDTOTest {
                 .withPeerConnectionId(PEER_CONNECTION_ID)
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
-                .withDirection(DIRECTION);
+                .withDirection(DIRECTION)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -117,7 +127,9 @@ class MediaTrackDTOTest {
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -132,7 +144,9 @@ class MediaTrackDTOTest {
                 .withPeerConnectionId(PEER_CONNECTION_ID)
                 .withSSRC(SSRC)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -147,7 +161,9 @@ class MediaTrackDTOTest {
                 .withPeerConnectionId(PEER_CONNECTION_ID)
                 .withTrackId(TRACK_ID)
                 .withDirection(DIRECTION)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -162,7 +178,26 @@ class MediaTrackDTOTest {
                 .withPeerConnectionId(PEER_CONNECTION_ID)
                 .withTrackId(TRACK_ID)
                 .withSSRC(SSRC)
-                .withAddedTimestamp(TIMESTAMP);
+                .withAddedTimestamp(TIMESTAMP)
+                .withMediaKind(KIND)
+                ;
+
+        Assertions.assertThrows(Exception.class, () -> builder.build());
+    }
+
+    @Test
+    void shouldNotBuildWithoutKind() {
+        var builder = MediaTrackDTO.builder()
+                .withServiceId(SERVICE_ID)
+                .withRoomId(ROOM_ID)
+                .withCallId(CALL_ID)
+                .withClientId(CLIENT_ID)
+                .withPeerConnectionId(PEER_CONNECTION_ID)
+                .withTrackId(TRACK_ID)
+                .withDirection(DIRECTION)
+                .withSSRC(SSRC)
+                .withAddedTimestamp(TIMESTAMP)
+                ;
 
         Assertions.assertThrows(Exception.class, () -> builder.build());
     }
@@ -185,6 +220,7 @@ class MediaTrackDTOTest {
         Assertions.assertEquals(subject.sfuSinkId, SFU_SINK_ID);
         Assertions.assertEquals(subject.direction, DIRECTION);
         Assertions.assertEquals(subject.marker, MARKER);
+        Assertions.assertEquals(subject.kind, KIND);
     }
 
 
@@ -218,6 +254,7 @@ class MediaTrackDTOTest {
                 .withSfuSinkId(SFU_SINK_ID)
                 .withUserId(USER_ID)
                 .withMarker(MARKER)
+                .withMediaKind(KIND)
                 ;
     }
 
