@@ -2,8 +2,8 @@ package org.observertc.observer.evaluators.eventreports;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.observer.evaluators.eventreports.attachments.ClientAttachment;
 import org.observertc.observer.dto.ClientDTO;
+import org.observertc.observer.evaluators.eventreports.attachments.ClientAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;

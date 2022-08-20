@@ -136,8 +136,6 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         .setPeerConnectionId(track.peerConnectionId)
                         .setSSRC(track.ssrc)
                         .assemble();
-
-
             });
 
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(track -> {

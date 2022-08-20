@@ -74,9 +74,13 @@ public class SamplesCollector {
                 continue;
             }
 
+
             SamplesVisitor.streamClientSamples(receivedSample.samples)
                     .forEach(clientSample -> {
                         var timeZoneId = this.minuteToTimeZoneOffsetConverter.apply(clientSample.timeZoneOffsetInHours);
+//                        if (this.useServerTimestamps) {
+//                            clientSample.timestamp = Instant.now().toEpochMilli();
+//                        }
                         var observedClientSample =  ObservedClientSample.builder()
                                 .setMediaUnitId(receivedSample.mediaUnitId)
                                 .setServiceId(receivedSample.serviceId)
@@ -89,6 +93,9 @@ public class SamplesCollector {
             SamplesVisitor.streamSfuSamples(receivedSample.samples)
                     .forEach(sfuSample -> {
                         var timeZoneId = this.minuteToTimeZoneOffsetConverter.apply(sfuSample.timeZoneOffsetInHours);
+//                        if (this.useServerTimestamps) {
+//                            sfuSample.timestamp = Instant.now().toEpochMilli();
+//                        }
                         var observedSfuSample =  ObservedSfuSample.builder()
                                 .setMediaUnitId(receivedSample.mediaUnitId)
                                 .setServiceId(receivedSample.serviceId)

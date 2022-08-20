@@ -38,6 +38,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
             if (this.callIds.size() < 1) {
                 return Collections.EMPTY_MAP;
             }
+
             return hazelcastMaps.getCalls().getAll(this.callIds);
         };
         new Builder<Map<UUID, CallEntity>>(this)

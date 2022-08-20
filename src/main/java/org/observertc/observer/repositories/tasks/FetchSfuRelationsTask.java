@@ -46,7 +46,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     public static class Report {
         public final Map<UUID, SfuStreamDTO> sfuStreams = new HashMap<>();
         public final Map<UUID, SfuSinkDTO> sfuSinks = new HashMap<>();
-        public final Map<UUID, InternalRtpPadMatch> internalInboundRtpPadMatches= new HashMap<>();
+        public final Map<UUID, InternalRtpPadMatch> internalInboundRtpPadMatches = new HashMap<>();
     }
 
     private Report result = new Report();

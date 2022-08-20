@@ -42,7 +42,7 @@ public class PeerConnectionDTOsDepot implements Supplier<Map<UUID, PeerConnectio
             logger.warn("No observed client sample");
             return;
         }
-        if (this.buffer.containsKey(pcTransport)) {
+        if (this.pcTransport == null) {
             logger.warn("Cannot assemble {} without pcTransport", this.getClass().getSimpleName());
             return;
         }
