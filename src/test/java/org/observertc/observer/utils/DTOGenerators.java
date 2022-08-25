@@ -172,6 +172,7 @@ public class DTOGenerators {
         var sfuStreamId = callId.getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID() : null;
         var direction = this.randomGenerators.getRandomStreamDirection();
         var marker = this.randomGenerators.getRandomMarker();
+        var kind = callId.getLeastSignificantBits() % 2L == 0 ? MediaKind.AUDIO : MediaKind.VIDEO;
         var result = MediaTrackDTO.builder()
                 .withServiceId(serviceId)
                 .withRoomId(roomId)
@@ -186,6 +187,7 @@ public class DTOGenerators {
                 .withSfuStreamId(sfuStreamId)
                 .withDirection(direction)
                 .withMarker(marker)
+                .withMediaKind(kind)
                 ;
         return result;
     }
