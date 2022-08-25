@@ -8,7 +8,7 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.entities.CallEntity;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -20,7 +20,7 @@ public class FetchCallsTask extends ChainedTask<Map<UUID, CallEntity>> {
     private Set<UUID> callIds = new HashSet<>();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     FetchClientsTask fetchClientsTask;

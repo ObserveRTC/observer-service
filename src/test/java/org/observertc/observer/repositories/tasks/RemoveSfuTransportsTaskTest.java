@@ -4,7 +4,7 @@ import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.UUID;
 class RemoveSfuTransportsTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     DTOMapGenerator generator = new DTOMapGenerator().generateSingleSfuCase();
 
@@ -23,12 +23,12 @@ class RemoveSfuTransportsTaskTest {
 
     @BeforeEach
     void setup() {
-        this.generator.saveTo(hazelcastMaps);
+        this.generator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        this.generator.deleteFrom(hazelcastMaps);
+        this.generator.deleteFrom(hamokStorages);
     }
 
     @Test
@@ -39,7 +39,7 @@ class RemoveSfuTransportsTaskTest {
                 .execute()
         ;
 
-        var allDeleted = sfuTransports.keySet().stream().anyMatch(this.hazelcastMaps.getSFUTransports()::containsKey) == false;
+        var allDeleted = sfuTransports.keySet().stream().anyMatch(this.hamokStorages.getSFUTransports()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 
@@ -50,7 +50,7 @@ class RemoveSfuTransportsTaskTest {
                 .whereSfuTransportIds(sfuTransports.keySet())
                 .execute()
                 ;
-        var allDeleted = sfuTransports.values().stream().allMatch(entry -> this.hazelcastMaps.getSfuToSfuTransportIds().containsEntry(entry.sfuId, entry.transportId) == false);
+        var allDeleted = sfuTransports.values().stream().allMatch(entry -> this.hamokStorages.getSfuToSfuTransportIds().containsEntry(entry.sfuId, entry.transportId) == false);
         Assertions.assertTrue(allDeleted);
     }
 
@@ -63,7 +63,7 @@ class RemoveSfuTransportsTaskTest {
                 .execute()
         ;
 
-        var allDeleted = sfuRtpPads.keySet().stream().anyMatch(this.hazelcastMaps.getSFURtpPads()::containsKey) == false;
+        var allDeleted = sfuRtpPads.keySet().stream().anyMatch(this.hamokStorages.getSFURtpPads()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 
@@ -75,7 +75,7 @@ class RemoveSfuTransportsTaskTest {
         sfuTransports.values().forEach(task::addRemovedSfuTransportDTO);
         task.execute();
 
-        var allRemained = sfuTransports.keySet().stream().allMatch(this.hazelcastMaps.getSFUTransports()::containsKey);
+        var allRemained = sfuTransports.keySet().stream().allMatch(this.hamokStorages.getSFUTransports()::containsKey);
         Assertions.assertTrue(allRemained);
     }
 

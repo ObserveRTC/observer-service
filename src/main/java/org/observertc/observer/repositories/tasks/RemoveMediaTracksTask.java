@@ -7,7 +7,7 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
     private boolean unmodifiableResult = false;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     RepositoryMetrics exposedMetrics;
@@ -46,7 +46,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                                 if (this.removedTrackDTOs.containsKey(trackId)) {
                                     continue;
                                 }
-                                MediaTrackDTO mediaTrackDTO = this.hazelcastMaps.getMediaTracks().remove(trackId);
+                                MediaTrackDTO mediaTrackDTO = this.hamokStorages.getMediaTracks().remove(trackId);
                                 if (Objects.isNull(mediaTrackDTO)) {
                                     logger.debug("Not found MediaTrackDTO for trackId: {}. Perhaps it was ejected before it was ordered to be removed.", trackId);
                                     continue;
@@ -59,17 +59,17 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                             if (this.removedTrackDTOs.size() < 1) {
                                 return;
                             }
-                            this.hazelcastMaps.getMediaTracks().putAll(this.removedTrackDTOs);
+                            this.hamokStorages.getMediaTracks().putAll(this.removedTrackDTOs);
                         })
                 .addActionStage("Remove Inbound Media Tracks",
                         () -> {
-                            this.inboundTrackIdToOutboundTrackId = this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().getAll(this.mediaTrackIds);
+                            this.inboundTrackIdToOutboundTrackId = this.hamokStorages.getInboundTrackIdsToOutboundTrackIds().getAll(this.mediaTrackIds);
                             this.removedTrackDTOs.forEach((trackId, mediaTrackDTO) -> {
                                 if (mediaTrackDTO.direction != StreamDirection.INBOUND) {
                                     return;
                                 }
-                                this.hazelcastMaps.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
-                                this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().delete(mediaTrackDTO.trackId);
+                                this.hamokStorages.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
+                                this.hamokStorages.getInboundTrackIdsToOutboundTrackIds().delete(mediaTrackDTO.trackId);
                             });
 
 
@@ -79,10 +79,10 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                                 if (mediaTrackDTO.direction != StreamDirection.INBOUND) {
                                     return;
                                 }
-                                this.hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
+                                this.hamokStorages.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
                             });
                             if (Objects.nonNull(this.inboundTrackIdToOutboundTrackId)) {
-                                this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds().putAll(this.inboundTrackIdToOutboundTrackId);
+                                this.hamokStorages.getInboundTrackIdsToOutboundTrackIds().putAll(this.inboundTrackIdToOutboundTrackId);
                             }
                         })
                 .addActionStage("Remove Outbound Media Tracks",
@@ -91,7 +91,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                                 if (mediaTrackDTO.direction != StreamDirection.OUTBOUND) {
                                     return;
                                 }
-                                this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
+                                this.hamokStorages.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, trackId);
                             });
 
                         },
@@ -100,7 +100,7 @@ public class RemoveMediaTracksTask extends ChainedTask<Map<UUID, MediaTrackDTO>>
                                 if (mediaTrackDTO.direction != StreamDirection.OUTBOUND) {
                                     return;
                                 }
-                                this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
+                                this.hamokStorages.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, trackId);
 
                             });
                         })

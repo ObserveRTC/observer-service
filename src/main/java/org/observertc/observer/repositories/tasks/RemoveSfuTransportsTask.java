@@ -7,7 +7,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
     private Map<UUID, SfuTransportDTO> removedSfuTransportDTOs = new HashMap<>();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     RepositoryMetrics exposedMetrics;
@@ -62,7 +62,7 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
                                 if (this.removedSfuTransportDTOs.containsKey(id)) {
                                     return;
                                 }
-                                SfuTransportDTO sfuTransportDTO = this.hazelcastMaps.getSFUTransports().remove(id);
+                                SfuTransportDTO sfuTransportDTO = this.hamokStorages.getSFUTransports().remove(id);
                                 if (Objects.isNull(sfuTransportDTO)) {
                                     logger.debug("Not found SfuTransportDTO for transportId {}. Perhaps it was ejected before it was ordered to be removed.", id);
                                     return;
@@ -77,26 +77,26 @@ public class RemoveSfuTransportsTask extends ChainedTask<List<SfuTransportDTO>> 
                                 this.getLogger().warn("Unexpected condition at rollback.");
                                 return;
                             }
-                            this.hazelcastMaps.getSFUTransports().putAll(this.removedSfuTransportDTOs);
+                            this.hamokStorages.getSFUTransports().putAll(this.removedSfuTransportDTOs);
                         })
                 .addActionStage("Remove Sfu to SfuTransport bindings", () -> {
                     this.removedSfuTransportDTOs.values().forEach(sfuTransportDTO -> {
                         if (sfuTransportDTO.transportId == null || sfuTransportDTO.sfuId == null) return;
-                        this.hazelcastMaps.getSfuToSfuTransportIds().remove(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+                        this.hamokStorages.getSfuToSfuTransportIds().remove(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
                     });
                 },
                 // rollback
                 (something, thrownException) -> {
                     this.removedSfuTransportDTOs.values().forEach(sfuTransportDTO -> {
                         if (sfuTransportDTO.transportId == null || sfuTransportDTO.sfuId == null) return;
-                        this.hazelcastMaps.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+                        this.hamokStorages.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
                     });
                 })
                 .addActionStage("Remove Sfu Rtp Pad Entities",
                         () -> {
                             Set<UUID> allRtpPadIds = new HashSet<>();
                             this.removedSfuTransportDTOs.keySet().forEach(sfuTransportId -> {
-                                Collection<UUID> rtpPadIds = this.hazelcastMaps.getSfuTransportToSfuRtpPadIds().get(sfuTransportId);
+                                Collection<UUID> rtpPadIds = this.hamokStorages.getSfuTransportToSfuRtpPadIds().get(sfuTransportId);
                                 if (Objects.nonNull(rtpPadIds)) {
                                     rtpPadIds.forEach(rtpPadId -> {
                                         allRtpPadIds.add(rtpPadId);

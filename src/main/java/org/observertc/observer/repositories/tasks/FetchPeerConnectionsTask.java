@@ -9,7 +9,7 @@ import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.entities.PeerConnectionEntity;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -21,7 +21,7 @@ public class FetchPeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnecti
     private Set<UUID> peerConnectionIds = new HashSet<>();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

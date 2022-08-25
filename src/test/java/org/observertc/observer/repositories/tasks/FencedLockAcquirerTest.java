@@ -4,7 +4,7 @@ import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 @MicronautTest
 class FencedLockAcquirerTest {
@@ -12,7 +12,7 @@ class FencedLockAcquirerTest {
     BeanProvider<FencedLockAcquirer> createCallIfNotExistsTaskProvider;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Test
     void shouldLock() {

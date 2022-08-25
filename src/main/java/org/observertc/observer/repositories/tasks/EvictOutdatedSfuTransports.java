@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class EvictOutdatedSfuTransports extends ChainedTask<Void> {
     private static final Logger logger = LoggerFactory.getLogger(EvictOutdatedSfuTransports.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     RepositoryMetrics exposedMetrics;
@@ -43,14 +43,14 @@ public class EvictOutdatedSfuTransports extends ChainedTask<Void> {
                     return false;
                 })
                 .addActionStage("Evict not refreshed sfu transports", () -> {
-                    var sfuTransportIds = this.hazelcastMaps.getRefreshedSfuTransports().localKeySet();
-                    var refreshedSfuTransports = this.hazelcastMaps.getRefreshedSfuTransports().getAll(sfuTransportIds);
+                    var sfuTransportIds = this.hamokStorages.getRefreshedSfuTransports().localKeySet();
+                    var refreshedSfuTransports = this.hamokStorages.getRefreshedSfuTransports().getAll(sfuTransportIds);
                     var evictedTransportIds = new HashSet<UUID>();
                     refreshedSfuTransports.forEach((sfuTransportId, lastRefreshed) -> {
                         if (NOW - lastRefreshed < this.expiredThresholdInMs) {
                             return;
                         }
-                        this.hazelcastMaps.getSFUTransports().evict(sfuTransportId);
+                        this.hamokStorages.getSFUTransports().evict(sfuTransportId);
                         evictedTransportIds.add(sfuTransportId);
                     });
                     if (0 < evictedTransportIds.size()) {

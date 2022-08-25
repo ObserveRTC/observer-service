@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -15,7 +15,7 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
     private Set<UUID> callIds = new HashSet<>();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @PostConstruct
     void setup() {
@@ -23,7 +23,7 @@ public class FetchCallClientsTask extends ChainedTask<Map<UUID, Set<UUID>>> {
                 .addTerminalSupplier("Fetch Call Clients", () -> {
                     Map<UUID, Set<UUID>> result = new HashMap<>();
                     this.callIds.forEach(callId -> {
-                        var clientIds = this.hazelcastMaps.getCallToClientIds().get(callId);
+                        var clientIds = this.hamokStorages.getCallToClientIds().get(callId);
                         result.put(callId, new HashSet<>(clientIds));
                     });
                     return result;

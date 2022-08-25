@@ -10,20 +10,22 @@ const copyAvroSchema = (schema) => {
     const text = JSON.stringify(schema, null, 2);
     fs.writeFileSync(path, text);
 }
-const uuidFields = new Set([
-    "callId",
-    "clientId",
-    "peerConnectionId",
-    "trackId",
-    "streamId",
-    "sinkId",
-    "sfuStreamId",
-    "sfuSinkId",
-    "sfuId",
-    "transportId",
-    "padId",
-    "channelId",
-]);
+const uuidFields = new Set(
+//     [
+//     "callId",
+//     "clientId",
+//     "peerConnectionId",
+//     "trackId",
+//     "streamId",
+//     "sinkId",
+//     "sfuStreamId",
+//     "sfuSinkId",
+//     "sfuId",
+//     "transportId",
+//     "padId",
+//     "channelId",
+// ]
+);
 
 const createSamplesPojo = (path) => {
     const samplesSchema = schemas.AvroSamples;

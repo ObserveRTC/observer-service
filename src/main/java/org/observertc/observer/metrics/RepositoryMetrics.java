@@ -11,7 +11,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.TaskAbstract;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class RepositoryMetrics {
     Metrics metrics;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     ObserverConfig.MetricsConfig.RepositoryMetricsConfig config;
@@ -78,10 +78,7 @@ public class RepositoryMetrics {
                 this.hazelcastMaps.getGeneralEntries(),
                 this.hazelcastMaps.getWeakLocks(),
                 this.hazelcastMaps.getSyncTaskStates(),
-                this.hazelcastMaps.getRequests(),
-                this.hazelcastMaps.getEtcMap(),
-                this.hazelcastMaps.getRefreshedClients(),
-                this.hazelcastMaps.getRefreshedSfuTransports()
+                this.hazelcastMaps.getRequests()
 
         );
         this.multiMaps = List.of(

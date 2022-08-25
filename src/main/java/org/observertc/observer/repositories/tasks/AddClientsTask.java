@@ -6,7 +6,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ public class AddClientsTask extends ChainedTask<Void> {
     private static final Logger logger = LoggerFactory.getLogger(AddClientsTask.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

@@ -29,7 +29,7 @@ public class RepositoryEvents {
     private static final Logger logger = LoggerFactory.getLogger(RepositoryEvents.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     ObserverConfig observerConfig;

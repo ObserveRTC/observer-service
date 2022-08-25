@@ -9,7 +9,7 @@ import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.dto.MediaTrackDTO;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -18,7 +18,7 @@ import java.util.*;
 public class FindParentalDTOsTask extends ChainedTask<FindParentalDTOsTask.Report> {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

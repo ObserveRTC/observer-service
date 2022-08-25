@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class CreateCallIfNotExistsTask extends ChainedTask<UUID> {
     private ServiceRoomId serviceRoomId = null;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     FindCallIdsByServiceRoomIds findCallIds;

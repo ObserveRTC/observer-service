@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.ClientDTO;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.UUID;
 class QueryTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     BeanProvider<QueryTask<Map<UUID, ClientDTO>>> queryTaskProvider;

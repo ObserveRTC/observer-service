@@ -2,7 +2,7 @@ package org.observertc.observer.repositories.tasks.sync;
 
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class SyncTask<T> extends ChainedTask<Void> {
     private static final Logger logger = LoggerFactory.getLogger(FetchTracksRelationsTask.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     private SyncTaskReducer<T> reducer;
     private Map<String, T> subjects;
@@ -41,7 +41,7 @@ public class SyncTask<T> extends ChainedTask<Void> {
                         })
                 .addActionStage("Collect Subjects", () -> {
                     Objects.requireNonNull(this.query);
-                    this.subjects = this.query.apply(this.hazelcastMaps);
+                    this.subjects = this.query.apply(this.hamokStorages);
                 })
                 .addBreakCondition((resultHolder) -> {
                     if (Objects.isNull(this.subjects) || this.subjects.size() < 1) {
@@ -52,7 +52,7 @@ public class SyncTask<T> extends ChainedTask<Void> {
                 })
                 .addActionStage("Load States", () -> {
                     Set<String> taskIds = this.subjects.keySet();
-                    this.hazelcastMaps
+                    this.hamokStorages
                             .getSyncTaskStates()
                             .getAll(taskIds)
                             .entrySet()
@@ -79,13 +79,13 @@ public class SyncTask<T> extends ChainedTask<Void> {
                         if (SyncTaskState.DONE.equals(state)) {
                             return;
                         }
-                        SyncTaskState newState = this.reducer.reduce(state, this.hazelcastMaps, subject);
+                        SyncTaskState newState = this.reducer.reduce(state, this.hamokStorages, subject);
                         Objects.requireNonNull(newState);
                         this.reducedStates.put(taskId, newState.name());
                     });
                 })
                 .addTerminalSupplier("Apply new states", () -> {
-                    this.hazelcastMaps.getSyncTaskStates().putAll(this.reducedStates);
+                    this.hamokStorages.getSyncTaskStates().putAll(this.reducedStates);
                     return null;
                 })
                 .build();

@@ -21,7 +21,7 @@ public class SfuRtpPadToMediaTrackBinder {
     private static final Logger logger = LoggerFactory.getLogger(SfuRtpPadToMediaTrackBinder.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @PostConstruct
     void setup() {

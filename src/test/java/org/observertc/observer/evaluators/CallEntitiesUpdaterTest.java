@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.utils.ObservedSamplesGenerator;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
 class CallEntitiesUpdaterTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     CallEntitiesUpdater callEntitiesUpdater;

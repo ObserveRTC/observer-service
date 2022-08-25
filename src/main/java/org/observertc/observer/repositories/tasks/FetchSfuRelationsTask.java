@@ -9,7 +9,7 @@ import org.observertc.observer.dto.SfuSinkDTO;
 import org.observertc.observer.dto.SfuStreamDTO;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class FetchSfuRelationsTask extends ChainedTask<FetchSfuRelationsTask.Rep
     public static final Report EMPTY_REPORT = new Report();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

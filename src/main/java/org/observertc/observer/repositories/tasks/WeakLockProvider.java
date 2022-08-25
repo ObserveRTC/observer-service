@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.ObserverHazelcast;
 import org.observertc.observer.dto.WeakLockDTO;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class WeakLockProvider {
     private static final Logger logger = LoggerFactory.getLogger(WeakLockProvider.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
 	@Inject
     ObserverHazelcast observerHazelcast;

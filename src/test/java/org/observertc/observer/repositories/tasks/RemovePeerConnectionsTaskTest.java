@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.UUID;
 class RemovePeerConnectionsTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     DTOMapGenerator dtoMapGenerator = new DTOMapGenerator().generateP2pCase();
 
@@ -26,12 +26,12 @@ class RemovePeerConnectionsTaskTest {
 
     @BeforeEach
     void setup() {
-        this.dtoMapGenerator.saveTo(hazelcastMaps);
+        this.dtoMapGenerator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        this.dtoMapGenerator.deleteFrom(hazelcastMaps);
+        this.dtoMapGenerator.deleteFrom(hamokStorages);
     }
 
 
@@ -44,7 +44,7 @@ class RemovePeerConnectionsTaskTest {
                 ;
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
+            var hasPeerConnections = this.hamokStorages.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertFalse(hasPeerConnections);
         });
     }
@@ -61,7 +61,7 @@ class RemovePeerConnectionsTaskTest {
         task.execute();
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
+            var hasPeerConnections = this.hamokStorages.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertTrue(hasPeerConnections);
         });
     }
@@ -75,7 +75,7 @@ class RemovePeerConnectionsTaskTest {
                 ;
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasClientBinding = this.hazelcastMaps.getClientToPeerConnectionIds().containsKey(peerConnectionDTO.clientId);
+            var hasClientBinding = this.hamokStorages.getClientToPeerConnectionIds().containsKey(peerConnectionDTO.clientId);
             Assertions.assertFalse(hasClientBinding);
         });
     }
@@ -88,7 +88,7 @@ class RemovePeerConnectionsTaskTest {
         task.execute();
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasClientBinding = this.hazelcastMaps.getClientToPeerConnectionIds().containsKey(peerConnectionDTO.clientId);
+            var hasClientBinding = this.hamokStorages.getClientToPeerConnectionIds().containsKey(peerConnectionDTO.clientId);
             Assertions.assertFalse(hasClientBinding);
         });
     }
@@ -102,7 +102,7 @@ class RemovePeerConnectionsTaskTest {
                 ;
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().containsKey(peerConnectionId);
+            var hasMediaTrackBinding = this.hamokStorages.getPeerConnectionToInboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
     }
@@ -115,7 +115,7 @@ class RemovePeerConnectionsTaskTest {
         task.execute();
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().containsKey(peerConnectionId);
+            var hasMediaTrackBinding = this.hamokStorages.getPeerConnectionToInboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
     }
@@ -129,7 +129,7 @@ class RemovePeerConnectionsTaskTest {
                 ;
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().containsKey(peerConnectionId);
+            var hasMediaTrackBinding = this.hamokStorages.getPeerConnectionToOutboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
     }
@@ -142,7 +142,7 @@ class RemovePeerConnectionsTaskTest {
         task.execute();
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasMediaTrackBinding = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().containsKey(peerConnectionId);
+            var hasMediaTrackBinding = this.hamokStorages.getPeerConnectionToOutboundTrackIds().containsKey(peerConnectionId);
             Assertions.assertFalse(hasMediaTrackBinding);
         });
     }
@@ -157,7 +157,7 @@ class RemovePeerConnectionsTaskTest {
                 ;
 
         createdMediaTrackDTOs.keySet().forEach(trackId -> {
-            var hasMediaTrack = this.hazelcastMaps.getMediaTracks().containsKey(trackId);
+            var hasMediaTrack = this.hamokStorages.getMediaTracks().containsKey(trackId);
             Assertions.assertFalse(hasMediaTrack);
         });
     }
@@ -171,7 +171,7 @@ class RemovePeerConnectionsTaskTest {
         task.execute();
 
         createdMediaTrackDTOs.keySet().forEach(trackId -> {
-            var hasMediaTrack = this.hazelcastMaps.getMediaTracks().containsKey(trackId);
+            var hasMediaTrack = this.hamokStorages.getMediaTracks().containsKey(trackId);
             Assertions.assertFalse(hasMediaTrack);
         });
     }

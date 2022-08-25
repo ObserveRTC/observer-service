@@ -8,6 +8,6 @@ import jakarta.inject.Singleton;
 public class HazelcastMapTestUtils {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
 }

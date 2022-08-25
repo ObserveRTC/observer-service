@@ -6,6 +6,7 @@ public class ReceivedMessage {
         result.serviceId = serviceId;
         result.mediaUnitId = mediaUnitId;
         result.message = message;
+
         return result;
     }
 

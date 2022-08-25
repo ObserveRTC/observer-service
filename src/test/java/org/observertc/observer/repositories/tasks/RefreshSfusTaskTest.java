@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import static org.observertc.observer.utils.TestUtils.equalSets;
@@ -16,7 +16,7 @@ import static org.observertc.observer.utils.TestUtils.equalSets;
 class RefreshSfusTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     BeanProvider<RefreshSfusTask> refreshSfusTaskProvider;
@@ -25,12 +25,12 @@ class RefreshSfusTaskTest {
 
     @BeforeEach
     void setup() {
-        dtoMapGenerator.saveTo(hazelcastMaps);
+        dtoMapGenerator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        dtoMapGenerator.deleteFrom(hazelcastMaps);
+        dtoMapGenerator.deleteFrom(hamokStorages);
     }
 
 

@@ -7,7 +7,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
     private boolean unmodifiableResult = false;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     BeanProvider<RemoveMediaTracksTask> removeMediaTracksTaskProvider;
@@ -49,7 +49,7 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                                 if (this.removedPeerConnectionDTOs.containsKey(peerConnectionId)) {
                                     continue;
                                 }
-                                PeerConnectionDTO peerConnectionDTO = this.hazelcastMaps.getPeerConnections().remove(peerConnectionId);
+                                PeerConnectionDTO peerConnectionDTO = this.hamokStorages.getPeerConnections().remove(peerConnectionId);
                                 if (Objects.isNull(peerConnectionDTO)) {
                                     logger.debug("Not found PeerConnectionDTO for peerConnectionId: {}. Perhaps it was ejected before it was ordered to be removed.", peerConnectionId);
                                     continue;
@@ -62,25 +62,25 @@ public class RemovePeerConnectionsTask extends ChainedTask<Map<UUID, PeerConnect
                             if (this.removedPeerConnectionDTOs.size() < 1) {
                                 return;
                             }
-                            this.hazelcastMaps.getPeerConnections().putAll(this.removedPeerConnectionDTOs);
+                            this.hamokStorages.getPeerConnections().putAll(this.removedPeerConnectionDTOs);
                         })
                 .addActionStage("Remove Client Bindings", () -> {
                             this.removedPeerConnectionDTOs.forEach((peerConnectionId, removedPeerConnectionDTO) -> {
-                                this.hazelcastMaps.getClientToPeerConnectionIds().remove(removedPeerConnectionDTO.clientId, peerConnectionId);
+                                this.hamokStorages.getClientToPeerConnectionIds().remove(removedPeerConnectionDTO.clientId, peerConnectionId);
                             });
                         },
                         (inputHolder, thrownException) -> {
                             this.removedPeerConnectionDTOs.forEach((peerConnectionId, removedPeerConnectionDTO) -> {
-                                this.hazelcastMaps.getClientToPeerConnectionIds().put(removedPeerConnectionDTO.clientId, peerConnectionId);
+                                this.hamokStorages.getClientToPeerConnectionIds().put(removedPeerConnectionDTO.clientId, peerConnectionId);
                             });
                         })
                 . addActionStage("Remove Media Tracks", () -> {
                     Set<UUID> trackIds = new HashSet<>();
                     this.removedPeerConnectionDTOs.keySet().forEach(peerConnectionId -> {
                         Set<UUID> peerConnectionIdMediaTrackIds = new HashSet<>();
-                        Collection<UUID> inboundTrackIds = this.hazelcastMaps.getPeerConnectionToInboundTrackIds().remove(peerConnectionId);
+                        Collection<UUID> inboundTrackIds = this.hamokStorages.getPeerConnectionToInboundTrackIds().remove(peerConnectionId);
                         inboundTrackIds.forEach(peerConnectionIdMediaTrackIds::add);
-                        Collection<UUID> outboundTrackIds = this.hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(peerConnectionId);
+                        Collection<UUID> outboundTrackIds = this.hamokStorages.getPeerConnectionToOutboundTrackIds().remove(peerConnectionId);
                         outboundTrackIds.forEach(peerConnectionIdMediaTrackIds::add);
                         this.removedPeerConnectionMediaTrackIds.put(peerConnectionId, peerConnectionIdMediaTrackIds);
                         peerConnectionIdMediaTrackIds.forEach(trackIds::add);

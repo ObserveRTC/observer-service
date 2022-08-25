@@ -16,7 +16,7 @@ public class SfuInternalRtpPadsBinder {
     private static final Logger logger = LoggerFactory.getLogger(SfuInternalRtpPadsBinder.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @PostConstruct
     void setup() {

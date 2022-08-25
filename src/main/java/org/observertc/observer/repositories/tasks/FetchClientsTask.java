@@ -8,7 +8,7 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -21,7 +21,7 @@ public class FetchClientsTask extends ChainedTask<Map<UUID, ClientEntity>> {
 
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

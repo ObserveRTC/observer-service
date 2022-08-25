@@ -25,7 +25,19 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
     private String remoteRtpPadId = null;
     private List<SfuInboundRtpPadReport> buffer = new LinkedList<>();
 
-
+    public SfuInboundRtpPadReportsDepot clean() {
+        this.observedSfuSample = null;
+        this.sfuInboundRtpPad = null;
+        this.callId = null;
+        this.clientId = null;
+        this.trackId = null;
+        this.remoteSfuId = null;
+        this.remoteTransportId = null;
+        this.remoteSinkId = null;
+        this.remoteRtpPadId = null;
+        return this;
+    }
+    
     public SfuInboundRtpPadReportsDepot setObservedSfuSample(ObservedSfuSample value) {
         this.observedSfuSample = value;
         return this;
@@ -79,18 +91,7 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
     }
 
 
-    public SfuInboundRtpPadReportsDepot clean() {
-        this.observedSfuSample = null;
-        this.sfuInboundRtpPad = null;
-        this.callId = null;
-        this.clientId = null;
-        this.trackId = null;
-        this.remoteSfuId = null;
-        this.remoteTransportId = null;
-        this.remoteSinkId = null;
-        this.remoteRtpPadId = null;
-        return this;
-    }
+
 
     public void assemble() {
         try {

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.DTOMapGenerator;
 
@@ -18,7 +18,7 @@ import java.util.UUID;
 class RemoveCallsTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     DTOMapGenerator DTOMapGenerator = new DTOMapGenerator().generateP2pCase();
 

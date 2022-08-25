@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 class EntryListenerBuilderTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Test
     void shouldAddUpdateRemove() throws InterruptedException, ExecutionException, TimeoutException {

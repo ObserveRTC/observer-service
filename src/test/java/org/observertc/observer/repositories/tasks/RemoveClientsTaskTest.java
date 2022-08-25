@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.UUID;
 class RemoveClientsTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     DTOMapGenerator dtoMapGenerator = new DTOMapGenerator().generateP2pCase();
 
@@ -27,12 +27,12 @@ class RemoveClientsTaskTest {
 
     @BeforeEach
     void setup() {
-        dtoMapGenerator.saveTo(hazelcastMaps);
+        dtoMapGenerator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        dtoMapGenerator.deleteFrom(hazelcastMaps);
+        dtoMapGenerator.deleteFrom(hamokStorages);
     }
 
 
@@ -45,7 +45,7 @@ class RemoveClientsTaskTest {
                 ;
 
         createdClientDTOs.forEach((clientId, clientDTO) -> {
-            var hasClient = this.hazelcastMaps.getClients().containsKey(clientId);
+            var hasClient = this.hamokStorages.getClients().containsKey(clientId);
             Assertions.assertFalse(hasClient);
         });
     }
@@ -62,7 +62,7 @@ class RemoveClientsTaskTest {
         task.execute();
 
         createdClientDTOs.forEach((clientId, clientDTO) -> {
-            var hasClient = this.hazelcastMaps.getClients().containsKey(clientId);
+            var hasClient = this.hamokStorages.getClients().containsKey(clientId);
             Assertions.assertTrue(hasClient);
         });
     }
@@ -76,7 +76,7 @@ class RemoveClientsTaskTest {
                 .execute()
                 ;
 
-        var hasCallId = this.hazelcastMaps.getCallToClientIds().containsKey(createdCallDTO.callId);
+        var hasCallId = this.hamokStorages.getCallToClientIds().containsKey(createdCallDTO.callId);
         Assertions.assertFalse(hasCallId);
     }
 
@@ -88,7 +88,7 @@ class RemoveClientsTaskTest {
         createdClientDTOs.values().forEach(task::addRemovedClientDTO);
         task.execute();
 
-        var hasCallId = this.hazelcastMaps.getCallToClientIds().containsKey(createdCallDTO.callId);
+        var hasCallId = this.hamokStorages.getCallToClientIds().containsKey(createdCallDTO.callId);
         Assertions.assertFalse(hasCallId);
     }
 
@@ -101,7 +101,7 @@ class RemoveClientsTaskTest {
                 ;
 
         createdClientDTOs.forEach((clientId, clientDTO) -> {
-            var hasPeerConnections = this.hazelcastMaps.getClientToPeerConnectionIds().containsKey(clientId);
+            var hasPeerConnections = this.hamokStorages.getClientToPeerConnectionIds().containsKey(clientId);
             Assertions.assertFalse(hasPeerConnections);
         });
     }
@@ -114,7 +114,7 @@ class RemoveClientsTaskTest {
         task.execute();
 
         createdClientDTOs.forEach((clientId, clientDTO) -> {
-            var hasPeerConnections = this.hazelcastMaps.getClientToPeerConnectionIds().containsKey(clientId);
+            var hasPeerConnections = this.hamokStorages.getClientToPeerConnectionIds().containsKey(clientId);
             Assertions.assertFalse(hasPeerConnections);
         });
     }
@@ -129,7 +129,7 @@ class RemoveClientsTaskTest {
                 ;
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
+            var hasPeerConnections = this.hamokStorages.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertFalse(hasPeerConnections);
         });
     }
@@ -143,7 +143,7 @@ class RemoveClientsTaskTest {
         task.execute();
 
         createdPeerConnectionDTOs.forEach((peerConnectionId, peerConnectionDTO) -> {
-            var hasPeerConnections = this.hazelcastMaps.getPeerConnections().containsKey(peerConnectionId);
+            var hasPeerConnections = this.hamokStorages.getPeerConnections().containsKey(peerConnectionId);
             Assertions.assertFalse(hasPeerConnections);
         });
     }

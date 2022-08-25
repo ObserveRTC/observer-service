@@ -35,10 +35,10 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 			for (var srcItem0 : source.getClientSamplesList()) {
 				var dstItem0 = new ClientSample();
 				if (srcItem0.hasCallId()) {
-					dstItem0.callId = UUIDAdapter.tryParseOrNull(srcItem0.getCallId());
+					dstItem0.callId = srcItem0.getCallId();
 				}
 				if (srcItem0.hasClientId()) {
-					dstItem0.clientId = UUIDAdapter.tryParseOrNull(srcItem0.getClientId());
+					dstItem0.clientId = srcItem0.getClientId();
 				}
 				if (srcItem0.hasSampleSeq()) {
 					dstItem0.sampleSeq = srcItem0.getSampleSeq();
@@ -148,7 +148,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getPcTransportsList()) {
 						var dstItem1 = new PeerConnectionTransport();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasLabel()) {
 							dstItem1.label = srcItem1.getLabel();
@@ -441,19 +441,19 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getInboundAudioTracksList()) {
 						var dstItem1 = new InboundAudioTrack();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasRemoteClientId()) {
 							dstItem1.remoteClientId = srcItem1.getRemoteClientId();
 						}
 						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
 						}
 						if (srcItem1.hasSfuSinkId()) {
-							dstItem1.sfuSinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuSinkId());
+							dstItem1.sfuSinkId = srcItem1.getSfuSinkId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -620,19 +620,19 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getInboundVideoTracksList()) {
 						var dstItem1 = new InboundVideoTrack();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasRemoteClientId()) {
 							dstItem1.remoteClientId = srcItem1.getRemoteClientId();
 						}
 						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
 						}
 						if (srcItem1.hasSfuSinkId()) {
-							dstItem1.sfuSinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuSinkId());
+							dstItem1.sfuSinkId = srcItem1.getSfuSinkId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -820,13 +820,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getOutboundAudioTracksList()) {
 						var dstItem1 = new OutboundAudioTrack();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -996,13 +996,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getOutboundVideoTracksList()) {
 						var dstItem1 = new OutboundVideoTrack();
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasSfuStreamId()) {
-							dstItem1.sfuStreamId = UUIDAdapter.tryParseOrNull(srcItem1.getSfuStreamId());
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -1226,7 +1226,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getIceLocalCandidatesList()) {
 						var dstItem1 = new IceLocalCandidate();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
@@ -1261,7 +1261,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getIceRemoteCandidatesList()) {
 						var dstItem1 = new IceRemoteCandidate();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
@@ -1296,7 +1296,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 					for (var srcItem1 : srcItem0.getDataChannelsList()) {
 						var dstItem1 = new DataChannel();
 						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = UUIDAdapter.tryParseOrNull(srcItem1.getPeerConnectionId());
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasId()) {
 							dstItem1.id = srcItem1.getId();
@@ -1352,7 +1352,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 			for (var srcItem0 : source.getSfuSamplesList()) {
 				var dstItem0 = new SfuSample();
 				if (srcItem0.hasSfuId()) {
-					dstItem0.sfuId = UUIDAdapter.tryParseOrNull(srcItem0.getSfuId());
+					dstItem0.sfuId = srcItem0.getSfuId();
 				}
 				if (srcItem0.hasTimestamp()) {
 					dstItem0.timestamp = srcItem0.getTimestamp();
@@ -1372,7 +1372,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
@@ -1461,16 +1461,16 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
 						}
 						if (srcItem1.hasStreamId()) {
-							dstItem1.streamId = UUIDAdapter.tryParseOrNull(srcItem1.getStreamId());
+							dstItem1.streamId = srcItem1.getStreamId();
 						}
 						if (srcItem1.hasPadId()) {
-							dstItem1.padId = UUIDAdapter.tryParseOrNull(srcItem1.getPadId());
+							dstItem1.padId = srcItem1.getPadId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
@@ -1583,31 +1583,31 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
 						}
 						if (srcItem1.hasStreamId()) {
-							dstItem1.streamId = UUIDAdapter.tryParseOrNull(srcItem1.getStreamId());
+							dstItem1.streamId = srcItem1.getStreamId();
 						}
 						if (srcItem1.hasSinkId()) {
-							dstItem1.sinkId = UUIDAdapter.tryParseOrNull(srcItem1.getSinkId());
+							dstItem1.sinkId = srcItem1.getSinkId();
 						}
 						if (srcItem1.hasPadId()) {
-							dstItem1.padId = UUIDAdapter.tryParseOrNull(srcItem1.getPadId());
+							dstItem1.padId = srcItem1.getPadId();
 						}
 						if (srcItem1.hasSsrc()) {
 							dstItem1.ssrc = srcItem1.getSsrc();
 						}
 						if (srcItem1.hasCallId()) {
-							dstItem1.callId = UUIDAdapter.tryParseOrNull(srcItem1.getCallId());
+							dstItem1.callId = srcItem1.getCallId();
 						}
 						if (srcItem1.hasClientId()) {
-							dstItem1.clientId = UUIDAdapter.tryParseOrNull(srcItem1.getClientId());
+							dstItem1.clientId = srcItem1.getClientId();
 						}
 						if (srcItem1.hasTrackId()) {
-							dstItem1.trackId = UUIDAdapter.tryParseOrNull(srcItem1.getTrackId());
+							dstItem1.trackId = srcItem1.getTrackId();
 						}
 						if (srcItem1.hasMediaType()) {
 							dstItem1.mediaType = srcItem1.getMediaType();
@@ -1717,13 +1717,13 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.noReport = srcItem1.getNoReport();
 						}
 						if (srcItem1.hasTransportId()) {
-							dstItem1.transportId = UUIDAdapter.tryParseOrNull(srcItem1.getTransportId());
+							dstItem1.transportId = srcItem1.getTransportId();
 						}
 						if (srcItem1.hasStreamId()) {
-							dstItem1.streamId = UUIDAdapter.tryParseOrNull(srcItem1.getStreamId());
+							dstItem1.streamId = srcItem1.getStreamId();
 						}
 						if (srcItem1.hasChannelId()) {
-							dstItem1.channelId = UUIDAdapter.tryParseOrNull(srcItem1.getChannelId());
+							dstItem1.channelId = srcItem1.getChannelId();
 						}
 						if (srcItem1.hasInternal()) {
 							dstItem1.internal = srcItem1.getInternal();
@@ -1851,7 +1851,7 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.username = srcItem1.getUsername();
 						}
 						if (srcItem1.hasClientId()) {
-							dstItem1.clientId = UUIDAdapter.tryParseOrNull(srcItem1.getClientId());
+							dstItem1.clientId = srcItem1.getClientId();
 						}
 						if (srcItem1.hasStarted()) {
 							dstItem1.started = srcItem1.getStarted();

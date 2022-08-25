@@ -319,7 +319,7 @@ public class Samples {
 			* The unique identifier of the peer connection
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The webrtc app provided label the peer connection is marked with
 			*/
@@ -641,7 +641,7 @@ public class Samples {
 		
 				private PeerConnectionTransport result = new PeerConnectionTransport();
 		
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
@@ -1178,12 +1178,12 @@ public class Samples {
 			* The id of the track
 			*/
 			@JsonProperty("trackId")
-			public UUID trackId;
+			public String trackId;
 			/**
 			*  The unique generated identifier of the peer connection the inbound audio track belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The remote clientId the source outbound track belongs to
 			*/
@@ -1193,12 +1193,12 @@ public class Samples {
 			* The id of the SFU stream this track is sinked from
 			*/
 			@JsonProperty("sfuStreamId")
-			public UUID sfuStreamId;
+			public String sfuStreamId;
 			/**
 			* The id of the sink this track belongs to in the SFU
 			*/
 			@JsonProperty("sfuSinkId")
-			public UUID sfuSinkId;
+			public String sfuSinkId;
 			/**
 			* The RTP SSRC field
 			*/
@@ -1465,11 +1465,11 @@ public class Samples {
 		
 				private InboundAudioTrack result = new InboundAudioTrack();
 		
-				public Builder setTrackId(UUID value) {
+				public Builder setTrackId(String value) {
 					this.result.trackId = value;
 					return this;
 				}
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
@@ -1477,11 +1477,11 @@ public class Samples {
 					this.result.remoteClientId = value;
 					return this;
 				}
-				public Builder setSfuStreamId(UUID value) {
+				public Builder setSfuStreamId(String value) {
 					this.result.sfuStreamId = value;
 					return this;
 				}
-				public Builder setSfuSinkId(UUID value) {
+				public Builder setSfuSinkId(String value) {
 					this.result.sfuSinkId = value;
 					return this;
 				}
@@ -1710,12 +1710,12 @@ public class Samples {
 			* The id of the track
 			*/
 			@JsonProperty("trackId")
-			public UUID trackId;
+			public String trackId;
 			/**
 			*  The unique generated identifier of the peer connection the inbound audio track belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The remote clientId the source outbound track belongs to
 			*/
@@ -1725,12 +1725,12 @@ public class Samples {
 			* The id of the SFU stream this track is sinked from
 			*/
 			@JsonProperty("sfuStreamId")
-			public UUID sfuStreamId;
+			public String sfuStreamId;
 			/**
 			* The id of the sink this track belongs to in the SFU
 			*/
 			@JsonProperty("sfuSinkId")
-			public UUID sfuSinkId;
+			public String sfuSinkId;
 			/**
 			* The RTP SSRC field
 			*/
@@ -2032,11 +2032,11 @@ public class Samples {
 		
 				private InboundVideoTrack result = new InboundVideoTrack();
 		
-				public Builder setTrackId(UUID value) {
+				public Builder setTrackId(String value) {
 					this.result.trackId = value;
 					return this;
 				}
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
@@ -2044,11 +2044,11 @@ public class Samples {
 					this.result.remoteClientId = value;
 					return this;
 				}
-				public Builder setSfuStreamId(UUID value) {
+				public Builder setSfuStreamId(String value) {
 					this.result.sfuStreamId = value;
 					return this;
 				}
-				public Builder setSfuSinkId(UUID value) {
+				public Builder setSfuSinkId(String value) {
 					this.result.sfuSinkId = value;
 					return this;
 				}
@@ -2305,17 +2305,17 @@ public class Samples {
 			* The id of the track
 			*/
 			@JsonProperty("trackId")
-			public UUID trackId;
+			public String trackId;
 			/**
 			*  The unique generated identifier of the peer connection the inbound audio track belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The id of the SFU stream this track is related to
 			*/
 			@JsonProperty("sfuStreamId")
-			public UUID sfuStreamId;
+			public String sfuStreamId;
 			/**
 			* The RTP SSRC field
 			*/
@@ -2587,15 +2587,15 @@ public class Samples {
 		
 				private OutboundAudioTrack result = new OutboundAudioTrack();
 		
-				public Builder setTrackId(UUID value) {
+				public Builder setTrackId(String value) {
 					this.result.trackId = value;
 					return this;
 				}
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
-				public Builder setSfuStreamId(UUID value) {
+				public Builder setSfuStreamId(String value) {
 					this.result.sfuStreamId = value;
 					return this;
 				}
@@ -2828,17 +2828,17 @@ public class Samples {
 			* The id of the track
 			*/
 			@JsonProperty("trackId")
-			public UUID trackId;
+			public String trackId;
 			/**
 			*  The unique generated identifier of the peer connection the inbound audio track belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The id of the SFU stream this track is related to
 			*/
 			@JsonProperty("sfuStreamId")
-			public UUID sfuStreamId;
+			public String sfuStreamId;
 			/**
 			* The RTP SSRC field
 			*/
@@ -3200,15 +3200,15 @@ public class Samples {
 		
 				private OutboundVideoTrack result = new OutboundVideoTrack();
 		
-				public Builder setTrackId(UUID value) {
+				public Builder setTrackId(String value) {
 					this.result.trackId = value;
 					return this;
 				}
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
-				public Builder setSfuStreamId(UUID value) {
+				public Builder setSfuStreamId(String value) {
 					this.result.sfuStreamId = value;
 					return this;
 				}
@@ -3513,7 +3513,7 @@ public class Samples {
 			* Refers to the peer connection the local candidate belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The unique identifier of the local candidate
 			*/
@@ -3560,7 +3560,7 @@ public class Samples {
 		
 				private IceLocalCandidate result = new IceLocalCandidate();
 		
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
@@ -3613,7 +3613,7 @@ public class Samples {
 			* Refers to the peer connection the local candidate belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* The unique identifier of the local candidate
 			*/
@@ -3660,7 +3660,7 @@ public class Samples {
 		
 				private IceRemoteCandidate result = new IceRemoteCandidate();
 		
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
@@ -3713,7 +3713,7 @@ public class Samples {
 			* Refers to the peer connection the local candidate belongs to
 			*/
 			@JsonProperty("peerConnectionId")
-			public UUID peerConnectionId;
+			public String peerConnectionId;
 			/**
 			* Unique identifier of the data channel
 			*/
@@ -3775,7 +3775,7 @@ public class Samples {
 		
 				private DataChannel result = new DataChannel();
 		
-				public Builder setPeerConnectionId(UUID value) {
+				public Builder setPeerConnectionId(String value) {
 					this.result.peerConnectionId = value;
 					return this;
 				}
@@ -3832,12 +3832,12 @@ public class Samples {
 		* If it is provided the server uses the given id to match clients in the same call. Must be a valid UUID. 
 		*/
 		@JsonProperty("callId")
-		public UUID callId;
+		public String callId;
 		/**
 		* Unique id of the client providing samples. Must be a valid UUID
 		*/
 		@JsonProperty("clientId")
-		public UUID clientId;
+		public String clientId;
 		/**
 		* The sequence number a source assigns to the sample. Every time the source make a sample at a client this number should be monothonically incremented.
 		*/
@@ -3979,11 +3979,11 @@ public class Samples {
 	
 			private ClientSample result = new ClientSample();
 	
-			public Builder setCallId(UUID value) {
+			public Builder setCallId(String value) {
 				this.result.callId = value;
 				return this;
 			}
-			public Builder setClientId(UUID value) {
+			public Builder setClientId(String value) {
 				this.result.clientId = value;
 				return this;
 			}
@@ -4125,7 +4125,7 @@ public class Samples {
 			* The generated unique identifier of the transport
 			*/
 			@JsonProperty("transportId")
-			public UUID transportId;
+			public String transportId;
 			/**
 			* Flag to indicate that the transport is used as an internal transport between SFU instances
 			*/
@@ -4261,7 +4261,7 @@ public class Samples {
 					this.result.noReport = value;
 					return this;
 				}
-				public Builder setTransportId(UUID value) {
+				public Builder setTransportId(String value) {
 					this.result.transportId = value;
 					return this;
 				}
@@ -4387,7 +4387,7 @@ public class Samples {
 			* The id of the transport the RTP Pad uses.
 			*/
 			@JsonProperty("transportId")
-			public UUID transportId;
+			public String transportId;
 			/**
 			* Flag to indicate that the rtp pad is used as an internal communication between SFU instances
 			*/
@@ -4397,12 +4397,12 @@ public class Samples {
 			* The id of the media stream the RTP pad belongs to. This id is to group rtp pads (e.g.: simulcast) carrying payloads to the same media. 
 			*/
 			@JsonProperty("streamId")
-			public UUID streamId;
+			public String streamId;
 			/**
 			* The id of Sfu pad.
 			*/
 			@JsonProperty("padId")
-			public UUID padId;
+			public String padId;
 			/**
 			* The synchronization source id of the RTP stream
 			*/
@@ -4578,7 +4578,7 @@ public class Samples {
 					this.result.noReport = value;
 					return this;
 				}
-				public Builder setTransportId(UUID value) {
+				public Builder setTransportId(String value) {
 					this.result.transportId = value;
 					return this;
 				}
@@ -4586,11 +4586,11 @@ public class Samples {
 					this.result.internal = value;
 					return this;
 				}
-				public Builder setStreamId(UUID value) {
+				public Builder setStreamId(String value) {
 					this.result.streamId = value;
 					return this;
 				}
-				public Builder setPadId(UUID value) {
+				public Builder setPadId(String value) {
 					this.result.padId = value;
 					return this;
 				}
@@ -4748,7 +4748,7 @@ public class Samples {
 			* The id of the transport the RTP stream uses.
 			*/
 			@JsonProperty("transportId")
-			public UUID transportId;
+			public String transportId;
 			/**
 			* Flag to indicate that the rtp pad is used as an internal communication between SFU instances
 			*/
@@ -4758,17 +4758,17 @@ public class Samples {
 			* The id of the stream this outbound RTP pad sinks the media from
 			*/
 			@JsonProperty("streamId")
-			public UUID streamId;
+			public String streamId;
 			/**
 			* The id of a group of RTP pad sinks the media stream out from the SFU.
 			*/
 			@JsonProperty("sinkId")
-			public UUID sinkId;
+			public String sinkId;
 			/**
 			* The id of Sfu pad.
 			*/
 			@JsonProperty("padId")
-			public UUID padId;
+			public String padId;
 			/**
 			* The synchronization source id of the RTP stream
 			*/
@@ -4778,17 +4778,17 @@ public class Samples {
 			* The callId the event belongs to
 			*/
 			@JsonProperty("callId")
-			public UUID callId;
+			public String callId;
 			/**
 			* If the track id was provided by the Sfu, the observer can fill up the information of which client it belongs to
 			*/
 			@JsonProperty("clientId")
-			public UUID clientId;
+			public String clientId;
 			/**
 			* The id of the track the RTP stream related to at the client side
 			*/
 			@JsonProperty("trackId")
-			public UUID trackId;
+			public String trackId;
 			/**
 			* the type of the media the stream carries ("audio" or "video")
 			*/
@@ -4959,7 +4959,7 @@ public class Samples {
 					this.result.noReport = value;
 					return this;
 				}
-				public Builder setTransportId(UUID value) {
+				public Builder setTransportId(String value) {
 					this.result.transportId = value;
 					return this;
 				}
@@ -4967,15 +4967,15 @@ public class Samples {
 					this.result.internal = value;
 					return this;
 				}
-				public Builder setStreamId(UUID value) {
+				public Builder setStreamId(String value) {
 					this.result.streamId = value;
 					return this;
 				}
-				public Builder setSinkId(UUID value) {
+				public Builder setSinkId(String value) {
 					this.result.sinkId = value;
 					return this;
 				}
-				public Builder setPadId(UUID value) {
+				public Builder setPadId(String value) {
 					this.result.padId = value;
 					return this;
 				}
@@ -4983,15 +4983,15 @@ public class Samples {
 					this.result.ssrc = value;
 					return this;
 				}
-				public Builder setCallId(UUID value) {
+				public Builder setCallId(String value) {
 					this.result.callId = value;
 					return this;
 				}
-				public Builder setClientId(UUID value) {
+				public Builder setClientId(String value) {
 					this.result.clientId = value;
 					return this;
 				}
-				public Builder setTrackId(UUID value) {
+				public Builder setTrackId(String value) {
 					this.result.trackId = value;
 					return this;
 				}
@@ -5145,17 +5145,17 @@ public class Samples {
 			* The id of the transport the RTP stream uses.
 			*/
 			@JsonProperty("transportId")
-			public UUID transportId;
+			public String transportId;
 			/**
 			* The id of the sctp stream
 			*/
 			@JsonProperty("streamId")
-			public UUID streamId;
+			public String streamId;
 			/**
 			* The id of the sctp stream
 			*/
 			@JsonProperty("channelId")
-			public UUID channelId;
+			public String channelId;
 			/**
 			* Flag to indicate that the SCTP channel is used as an internally between SFU instances
 			*/
@@ -5226,15 +5226,15 @@ public class Samples {
 					this.result.noReport = value;
 					return this;
 				}
-				public Builder setTransportId(UUID value) {
+				public Builder setTransportId(String value) {
 					this.result.transportId = value;
 					return this;
 				}
-				public Builder setStreamId(UUID value) {
+				public Builder setStreamId(String value) {
 					this.result.streamId = value;
 					return this;
 				}
-				public Builder setChannelId(UUID value) {
+				public Builder setChannelId(String value) {
 					this.result.channelId = value;
 					return this;
 				}
@@ -5332,7 +5332,7 @@ public class Samples {
 		* Unique generated id for the sfu samples are originated from
 		*/
 		@JsonProperty("sfuId")
-		public UUID sfuId;
+		public String sfuId;
 		/**
 		* The timestamp the sample is created in GMT
 		*/
@@ -5379,7 +5379,7 @@ public class Samples {
 	
 			private SfuSample result = new SfuSample();
 	
-			public Builder setSfuId(UUID value) {
+			public Builder setSfuId(String value) {
 				this.result.sfuId = value;
 				return this;
 			}
@@ -5591,7 +5591,7 @@ public class Samples {
 			* The id of the client the TURN session belongs to (ClientSample)
 			*/
 			@JsonProperty("clientId")
-			public UUID clientId;
+			public String clientId;
 			/**
 			* The timestamp when the session has been started. Epoch in milliseconds, GMT
 			*/
@@ -5675,7 +5675,7 @@ public class Samples {
 					this.result.username = value;
 					return this;
 				}
-				public Builder setClientId(UUID value) {
+				public Builder setClientId(String value) {
 					this.result.clientId = value;
 					return this;
 				}

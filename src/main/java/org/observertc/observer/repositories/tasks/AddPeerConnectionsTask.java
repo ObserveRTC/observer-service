@@ -7,7 +7,7 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class AddPeerConnectionsTask extends ChainedTask<List<CallEventReport.Bui
     private static final Logger logger = LoggerFactory.getLogger(AddPeerConnectionsTask.class);
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

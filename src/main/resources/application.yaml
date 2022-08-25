@@ -105,6 +105,18 @@ observer:
 
 # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
 #  sinks: {}
+  hamok:
+    endpoint:
+      type: CompositeEndpoint
+      config:
+        unicastListeningPort: 6702
+        unicastSendingPort: 6701
+        multicastPort: 6703
+        context: "My Context"
+      type: Kubernetes
+      config:
+        zsdas: asda
+
 
   hazelcast:
     configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}

@@ -7,7 +7,7 @@ import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.CallDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
     private boolean unmodifiableResult = false;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     BeanProvider<RemoveClientsTask> removeClientsTaskProvider;
@@ -70,7 +70,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 if (this.removedCallDTOs.containsKey(callId)) {
                                     return;
                                 }
-                                CallDTO callDTO = this.hazelcastMaps.getCalls().remove(callId);
+                                CallDTO callDTO = this.hamokStorages.getCalls().remove(callId);
                                 if (Objects.isNull(callDTO)) {
                                     logger.warn("Not found CallDTO for callId {}.", callId);
                                     return;
@@ -85,7 +85,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 this.getLogger().warn("Unexpected condition at rollback.");
                                 return;
                             }
-                            this.hazelcastMaps.getCalls().putAll(this.removedCallDTOs);
+                            this.hamokStorages.getCalls().putAll(this.removedCallDTOs);
                         })
                 .<Map<UUID, CallDTO>> addConsumerStage("Remove Room relation",
                         removedCallDTOs -> {
@@ -93,7 +93,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 if (callDTO == null) return;
                                 var serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
                                 var serviceRoomKey = ServiceRoomId.createKey(serviceRoomId);
-                                this.hazelcastMaps.getServiceRoomToCallIds().remove(serviceRoomKey);
+                                this.hamokStorages.getServiceRoomToCallIds().remove(serviceRoomKey);
                             });
                         },
                         // rollback
@@ -106,7 +106,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                                 if (callDTO == null) return;
                                 var serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
                                 var serviceRoomKey = ServiceRoomId.createKey(serviceRoomId);
-                                this.hazelcastMaps.getServiceRoomToCallIds().put(serviceRoomKey, callId);
+                                this.hamokStorages.getServiceRoomToCallIds().put(serviceRoomKey, callId);
                             });
                         })
                 .addActionStage("Remove Call Client Relations",
@@ -114,7 +114,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                         () -> {
                             Set<UUID> clientIds = new HashSet<>();
                             this.removedCallDTOs.keySet().stream().filter(Utils::expensiveNonNullCheck).forEach(callId -> {
-                                Collection<UUID> callsClientIds = this.hazelcastMaps.getCallToClientIds().remove(callId);
+                                Collection<UUID> callsClientIds = this.hamokStorages.getCallToClientIds().remove(callId);
                                 this.removedCallClientIds.put(callId, callsClientIds);
                                 callsClientIds.forEach(clientIds::add);
                             });
@@ -136,7 +136,7 @@ public class RemoveCallsTask extends ChainedTask<Map<UUID, CallDTO>> {
                             }
                             this.removedCallClientIds.forEach((callId, clientIds) -> {
                                 clientIds.forEach(clientId -> {
-                                    this.hazelcastMaps.getCallToClientIds().put(callId, clientId);
+                                    this.hamokStorages.getCallToClientIds().put(callId, clientId);
                                 });
                             });
                         })

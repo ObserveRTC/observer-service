@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.observertc.observer.common.Sleeper;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.repositories.EntryListenerBuilder;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.time.Instant;
@@ -27,7 +27,7 @@ class EvictOutdatedClientsTest {
     org.observertc.observer.utils.DTOMapGenerator DTOMapGenerator = new DTOMapGenerator().generateP2pCase();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     BeanProvider<EvictOutdatedClients> cleaningCallsTaskBeanProvider;

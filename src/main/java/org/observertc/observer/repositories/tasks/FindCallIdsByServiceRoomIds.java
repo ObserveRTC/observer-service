@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class FindCallIdsByServiceRoomIds extends ChainedTask<Map<ServiceRoomId, UUID>> {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryMetrics exposedMetrics;

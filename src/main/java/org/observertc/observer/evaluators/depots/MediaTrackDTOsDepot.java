@@ -77,12 +77,15 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
     }
 
     private void clean() {
+        this.observedClientSample = null;
         this.trackId = null;
         this.sfuSinkId = null;
         this.sfuStreamId = null;
         this.direction = null;
         this.SSRC = null;
         this.peerConnectionId = null;
+        this.kind = null;
+
     }
 
     public void assemble() {

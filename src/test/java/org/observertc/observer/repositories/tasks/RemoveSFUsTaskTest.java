@@ -4,7 +4,7 @@ import io.micronaut.context.BeanProvider;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.UUID;
 class RemoveSFUsTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     DTOMapGenerator generator = new DTOMapGenerator().generateSingleSfuCase();
 
@@ -23,12 +23,12 @@ class RemoveSFUsTaskTest {
 
     @BeforeEach
     void setup() {
-        this.generator.saveTo(hazelcastMaps);
+        this.generator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        this.generator.deleteFrom(hazelcastMaps);
+        this.generator.deleteFrom(hamokStorages);
     }
 
     @Test
@@ -39,7 +39,7 @@ class RemoveSFUsTaskTest {
                 .execute()
         ;
 
-        var allDeleted = sfus.keySet().stream().anyMatch(this.hazelcastMaps.getSFUs()::containsKey) == false;
+        var allDeleted = sfus.keySet().stream().anyMatch(this.hamokStorages.getSFUs()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 
@@ -52,7 +52,7 @@ class RemoveSFUsTaskTest {
                 .execute()
         ;
 
-        var allDeleted = sfuTransports.keySet().stream().anyMatch(this.hazelcastMaps.getSFUTransports()::containsKey) == false;
+        var allDeleted = sfuTransports.keySet().stream().anyMatch(this.hamokStorages.getSFUTransports()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 
@@ -65,7 +65,7 @@ class RemoveSFUsTaskTest {
                 .execute()
         ;
 
-        var allDeleted = sfuRtpPads.keySet().stream().anyMatch(this.hazelcastMaps.getSFURtpPads()::containsKey) == false;
+        var allDeleted = sfuRtpPads.keySet().stream().anyMatch(this.hamokStorages.getSFURtpPads()::containsKey) == false;
         Assertions.assertTrue(allDeleted);
     }
 
@@ -77,7 +77,7 @@ class RemoveSFUsTaskTest {
         sfus.values().forEach(task::addRemovedSfuDTO);
         task.execute();
 
-        var allRemained = sfus.keySet().stream().allMatch(this.hazelcastMaps.getSFUs()::containsKey);
+        var allRemained = sfus.keySet().stream().allMatch(this.hamokStorages.getSFUs()::containsKey);
         Assertions.assertTrue(allRemained);
     }
 

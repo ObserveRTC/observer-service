@@ -5,7 +5,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.entities.CallEntity;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 @MicronautTest
@@ -13,7 +13,7 @@ import org.observertc.observer.utils.DTOMapGenerator;
 class FetchCallsTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     BeanProvider<FetchCallsTask> fetchCallsTaskProvider;
@@ -23,12 +23,12 @@ class FetchCallsTaskTest {
 
     @BeforeEach
     void setup() {
-        dtoMapGenerator.saveTo(hazelcastMaps);
+        dtoMapGenerator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        dtoMapGenerator.deleteFrom(hazelcastMaps);
+        dtoMapGenerator.deleteFrom(hamokStorages);
     }
 
     @Test

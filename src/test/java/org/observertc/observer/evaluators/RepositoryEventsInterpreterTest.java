@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.dto.*;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOGenerators;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 class RepositoryEventsInterpreterTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     RepositoryEventsInterpreter repositoryEventsInterpreter;

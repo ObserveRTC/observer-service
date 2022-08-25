@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.StreamDirection;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOGenerators;
 import org.observertc.observer.utils.TestUtils;
 
@@ -20,7 +20,7 @@ class AddMediaTracksTaskTest {
     BeanProvider<AddMediaTracksTask> addMediaTracksTaskProvider;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     DTOGenerators generator;

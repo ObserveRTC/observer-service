@@ -7,7 +7,7 @@ import org.junit.jupiter.api.*;
 import org.observertc.observer.dto.SfuSinkDTO;
 import org.observertc.observer.dto.SfuStreamDTO;
 import org.observertc.observer.dto.StreamDirection;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.repositories.RepositoryEvents;
 import org.observertc.observer.repositories.SfuRtpPadToMediaTrackBinder;
 import org.observertc.observer.utils.DTOMapGenerator;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 class FetchTracksRelationsForSingleSfuTaskTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     RepositoryEvents repositoryEvents;
@@ -47,15 +47,15 @@ class FetchTracksRelationsForSingleSfuTaskTest {
         repositoryEvents.addedMediaTracks().subscribe(sfuRtpPadToMediaTrackBinder::onMediaTracksAdded);
         repositoryEvents.addedSfuStreams().subscribe(streamsAreAdded::complete);
         repositoryEvents.addedSfuSinks().subscribe(sinksAreAdded::complete);
-        dtoMapGenerator.saveTo(hazelcastMaps);
+        dtoMapGenerator.saveTo(hamokStorages);
         CompletableFuture.allOf(streamsAreAdded, sinksAreAdded).get(30, TimeUnit.SECONDS);
     }
 
     @AfterEach
     void teardown() {
-        dtoMapGenerator.deleteFrom(hazelcastMaps);
-        this.hazelcastMaps.getSfuStreams().clear();
-        this.hazelcastMaps.getSfuSinks().clear();
+        dtoMapGenerator.deleteFrom(hamokStorages);
+        this.hamokStorages.getSfuStreams().clear();
+        this.hamokStorages.getSfuSinks().clear();
     }
 
     @Test

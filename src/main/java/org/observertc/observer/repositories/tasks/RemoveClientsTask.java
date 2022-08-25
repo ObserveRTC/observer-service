@@ -8,7 +8,7 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.entities.ClientEntity;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class RemoveClientsTask extends ChainedTask<Map<UUID, ClientDTO>> {
     private Map<UUID, Collection<UUID>> removedClientPeerConnectionIds = new HashMap<>();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hazelcastMaps;
 
     @Inject
     BeanProvider<RemovePeerConnectionsTask> removePeerConnectionsTaskProvider;

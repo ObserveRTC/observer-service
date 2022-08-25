@@ -1,7 +1,7 @@
 package org.observertc.observer.utils;
 
 import org.observertc.observer.dto.*;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 
 import java.util.HashMap;
@@ -26,86 +26,86 @@ public class DTOMapGenerator {
 
     RandomGenerators randomGenerators = new RandomGenerators();
 
-    public DTOMapGenerator saveTo(HazelcastMaps hazelcastMaps) {
+    public DTOMapGenerator saveTo(HamokStorages hamokStorages) {
         ServiceRoomId serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
-        hazelcastMaps.getServiceRoomToCallIds().put(serviceRoomId.getKey(), callDTO.callId);
-        hazelcastMaps.getCalls().put(this.callDTO.callId, this.callDTO);
+        hamokStorages.getServiceRoomToCallIds().put(serviceRoomId.getKey(), callDTO.callId);
+        hamokStorages.getCalls().put(this.callDTO.callId, this.callDTO);
 
         // clients
         this.clientDTOs.values().stream().forEach(clientDTO -> {
-            hazelcastMaps.getCallToClientIds().put(clientDTO.callId, clientDTO.clientId);
+            hamokStorages.getCallToClientIds().put(clientDTO.callId, clientDTO.clientId);
         });
-        hazelcastMaps.getClients().putAll(this.clientDTOs);
+        hamokStorages.getClients().putAll(this.clientDTOs);
 
         // peer connections
         this.peerConnectionDTOs.values().stream().forEach(peerConnectionDTO -> {
-            hazelcastMaps.getClientToPeerConnectionIds().put(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
+            hamokStorages.getClientToPeerConnectionIds().put(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
         });
-        hazelcastMaps.getPeerConnections().putAll(this.peerConnectionDTOs);
+        hamokStorages.getPeerConnections().putAll(this.peerConnectionDTOs);
 
         // media tracks
         this.mediaTrackDTOs.values().stream().forEach(mediaTrackDTO -> {
             switch (mediaTrackDTO.direction) {
                 case INBOUND:
-                    hazelcastMaps.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
+                    hamokStorages.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
                     break;
                 case OUTBOUND:
-                    hazelcastMaps.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
+                    hamokStorages.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
                     break;
             }
         });
-        hazelcastMaps.getMediaTracks().putAll(this.mediaTrackDTOs);
+        hamokStorages.getMediaTracks().putAll(this.mediaTrackDTOs);
 
         if (this.sfuDTOs.size() < 1) {
             return this;
         }
-        hazelcastMaps.getSFUs().putAll(this.sfuDTOs);
+        hamokStorages.getSFUs().putAll(this.sfuDTOs);
         this.sfuTransports.values().stream().forEach(sfuTransportDTO -> {
-            hazelcastMaps.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+            hamokStorages.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
         });
-        hazelcastMaps.getSFUTransports().putAll(this.sfuTransports);
+        hamokStorages.getSFUTransports().putAll(this.sfuTransports);
 
         this.sfuRtpPads.values().stream().forEach(sfuRtpPadDTO -> {
-            hazelcastMaps.getSfuTransportToSfuRtpPadIds().put(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+            hamokStorages.getSfuTransportToSfuRtpPadIds().put(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
         });
-        hazelcastMaps.getSFURtpPads().putAll(this.sfuRtpPads);
+        hamokStorages.getSFURtpPads().putAll(this.sfuRtpPads);
         return this;
     }
 
-    public DTOMapGenerator deleteFrom(HazelcastMaps hazelcastMaps) {
-        hazelcastMaps.getCalls().remove(this.callDTO.callId);
+    public DTOMapGenerator deleteFrom(HamokStorages hamokStorages) {
+        hamokStorages.getCalls().remove(this.callDTO.callId);
 
         // clients
         this.clientDTOs.values().stream().forEach(clientDTO -> {
-            hazelcastMaps.getCallToClientIds().remove(clientDTO.callId, clientDTO.clientId);
+            hamokStorages.getCallToClientIds().remove(clientDTO.callId, clientDTO.clientId);
         });
-        this.clientDTOs.keySet().stream().forEach(hazelcastMaps.getClients()::remove);
+        this.clientDTOs.keySet().stream().forEach(hamokStorages.getClients()::remove);
 
         // peer connections
         this.peerConnectionDTOs.values().stream().forEach(peerConnectionDTO -> {
-            hazelcastMaps.getClientToPeerConnectionIds().remove(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
+            hamokStorages.getClientToPeerConnectionIds().remove(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
         });
-        this.peerConnectionDTOs.keySet().stream().forEach(hazelcastMaps.getPeerConnections()::remove);
+        this.peerConnectionDTOs.keySet().stream().forEach(hamokStorages.getPeerConnections()::remove);
 
         // media tracks
         this.mediaTrackDTOs.values().stream().forEach(mediaTrackDTO -> {
             switch (mediaTrackDTO.direction) {
                 case INBOUND:
-                    hazelcastMaps.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
+                    hamokStorages.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
                     break;
                 case OUTBOUND:
-                    hazelcastMaps.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
+                    hamokStorages.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
                     break;
             }
         });
-        this.mediaTrackDTOs.keySet().stream().forEach(hazelcastMaps.getMediaTracks()::remove);
+        this.mediaTrackDTOs.keySet().stream().forEach(hamokStorages.getMediaTracks()::remove);
 
         if (this.sfuDTOs.size() < 1) {
             return this;
         }
-        this.sfuDTOs.keySet().stream().forEach(hazelcastMaps.getSFUs()::remove);
-        this.sfuTransports.keySet().stream().forEach(hazelcastMaps.getSFUTransports()::remove);
-        this.sfuRtpPads.keySet().stream().forEach(hazelcastMaps.getSFURtpPads()::remove);
+        this.sfuDTOs.keySet().stream().forEach(hamokStorages.getSFUs()::remove);
+        this.sfuTransports.keySet().stream().forEach(hamokStorages.getSFUTransports()::remove);
+        this.sfuRtpPads.keySet().stream().forEach(hamokStorages.getSFURtpPads()::remove);
         return this;
     }
 

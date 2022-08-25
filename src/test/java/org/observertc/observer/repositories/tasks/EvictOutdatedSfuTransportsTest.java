@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.observertc.observer.common.Sleeper;
 import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.repositories.EntryListenerBuilder;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.time.Instant;
@@ -27,19 +27,19 @@ class EvictOutdatedSfuTransportsTest {
     org.observertc.observer.utils.DTOMapGenerator DTOMapGenerator = new DTOMapGenerator().generateSingleSfuCase();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     BeanProvider<EvictOutdatedSfuTransports> evictOutdatedSfuTransportsTaskProvider;
 
     @BeforeEach
     void setup() {
-        DTOMapGenerator.saveTo(hazelcastMaps);
+        DTOMapGenerator.saveTo(hamokStorages);
     }
 
     @AfterEach
     void teardown() {
-        DTOMapGenerator.deleteFrom(hazelcastMaps);
+        DTOMapGenerator.deleteFrom(hamokStorages);
     }
 
     @Test
@@ -50,7 +50,7 @@ class EvictOutdatedSfuTransportsTest {
         ));
         var completed = new CompletableFuture<Void>();
         var evictedSfuTransportIds = new HashSet<UUID>();
-        this.hazelcastMaps.getSFUTransports().addLocalEntryListener(EntryListenerBuilder.<UUID, SfuTransportDTO>create()
+        this.hamokStorages.getSFUTransports().addLocalEntryListener(EntryListenerBuilder.<UUID, SfuTransportDTO>create()
                 .onEntryEvicted(event -> {
                     var sfuTransportDTO = event.getOldValue();
                     evictedSfuTransportIds.add(sfuTransportDTO.transportId);
@@ -59,7 +59,7 @@ class EvictOutdatedSfuTransportsTest {
                     }
                 }).build());
         var thresholdInMs = 1000;
-        this.hazelcastMaps.getRefreshedSfuTransports().putAll(refreshedSfuTransports);
+        this.hamokStorages.getRefreshedSfuTransports().putAll(refreshedSfuTransports);
         new Sleeper(() -> thresholdInMs * 2).run();
         this.evictOutdatedSfuTransportsTaskProvider.get().withExpirationThresholdInMs(thresholdInMs).execute();
         completed.get(thresholdInMs * 10, TimeUnit.MILLISECONDS);

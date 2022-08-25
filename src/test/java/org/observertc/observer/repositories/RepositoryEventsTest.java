@@ -19,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 class RepositoryEventsTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     RepositoryEvents repositoryEvents;
@@ -36,8 +36,8 @@ class RepositoryEventsTest {
         repositoryEvents.addedCalls().subscribe(added::complete);
         repositoryEvents.removedCalls().subscribe(removed::complete);
 
-        this.hazelcastMaps.getCalls().put(subject.callId, subject);
-        this.hazelcastMaps.getCalls().remove(subject.callId);
+        this.hamokStorages.getCalls().put(subject.callId, subject);
+        this.hamokStorages.getCalls().remove(subject.callId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -51,8 +51,8 @@ class RepositoryEventsTest {
         repositoryEvents.addedClients().subscribe(added::complete);
         repositoryEvents.removedClients().subscribe(removed::complete);
 
-        this.hazelcastMaps.getClients().put(subject.clientId, subject);
-        this.hazelcastMaps.getClients().remove(subject.clientId);
+        this.hamokStorages.getClients().put(subject.clientId, subject);
+        this.hamokStorages.getClients().remove(subject.clientId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -64,7 +64,7 @@ class RepositoryEventsTest {
 
         repositoryEvents.expiredClients().subscribe(expired::complete);
 
-        this.hazelcastMaps.getClients().put(subject.clientId, subject, 100, TimeUnit.MILLISECONDS);
+        this.hamokStorages.getClients().put(subject.clientId, subject, 100, TimeUnit.MILLISECONDS);
         CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
     }
 
@@ -79,8 +79,8 @@ class RepositoryEventsTest {
         repositoryEvents.addedSfuStreams().subscribe(added::complete);
         repositoryEvents.removedSfuStreams().subscribe(removed::complete);
 
-        this.hazelcastMaps.getSfuStreams().put(subject.sfuStreamId, subject);
-        this.hazelcastMaps.getSfuStreams().remove(subject.sfuStreamId);
+        this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
+        this.hamokStorages.getSfuStreams().remove(subject.sfuStreamId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -90,10 +90,10 @@ class RepositoryEventsTest {
         var subject = dtoGenerators.getSfuStreamDTO();
         var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuStreamDTO>>>();
 
-        this.hazelcastMaps.getSfuStreams().put(subject.sfuStreamId, subject);
+        this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
         repositoryEvents.updatedSfuStreams().subscribe(updated::complete);
         subject.peerConnectionId = UUID.randomUUID();
-        this.hazelcastMaps.getSfuStreams().put(subject.sfuStreamId, subject);
+        this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
 
         CompletableFuture.allOf(updated).get(30, TimeUnit.SECONDS);
     }
@@ -108,8 +108,8 @@ class RepositoryEventsTest {
         repositoryEvents.addedSfuSinks().subscribe(added::complete);
         repositoryEvents.removedSfuSinks().subscribe(removed::complete);
 
-        this.hazelcastMaps.getSfuSinks().put(subject.sfuSinkId, subject);
-        this.hazelcastMaps.getSfuSinks().remove(subject.sfuSinkId);
+        this.hamokStorages.getSfuSinks().put(subject.sfuSinkId, subject);
+        this.hamokStorages.getSfuSinks().remove(subject.sfuSinkId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -119,10 +119,10 @@ class RepositoryEventsTest {
         var subject = dtoGenerators.getSfuSinkDTO();
         var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuSinkDTO>>>();
 
-        this.hazelcastMaps.getSfuSinks().put(subject.sfuStreamId, subject);
+        this.hamokStorages.getSfuSinks().put(subject.sfuStreamId, subject);
         repositoryEvents.updatedSuSinks().subscribe(updated::complete);
         subject.peerConnectionId = UUID.randomUUID();
-        this.hazelcastMaps.getSfuSinks().put(subject.sfuStreamId, subject);
+        this.hamokStorages.getSfuSinks().put(subject.sfuStreamId, subject);
 
         CompletableFuture.allOf(updated).get(30, TimeUnit.SECONDS);
     }
@@ -138,8 +138,8 @@ class RepositoryEventsTest {
         repositoryEvents.addedPeerConnection().subscribe(added::complete);
         repositoryEvents.removedPeerConnection().subscribe(removed::complete);
 
-        this.hazelcastMaps.getPeerConnections().put(subject.peerConnectionId, subject);
-        this.hazelcastMaps.getPeerConnections().remove(subject.peerConnectionId);
+        this.hamokStorages.getPeerConnections().put(subject.peerConnectionId, subject);
+        this.hamokStorages.getPeerConnections().remove(subject.peerConnectionId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -151,7 +151,7 @@ class RepositoryEventsTest {
 
         repositoryEvents.expiredPeerConnection().subscribe(expired::complete);
 
-        this.hazelcastMaps.getPeerConnections().put(subject.peerConnectionId, subject, 100, TimeUnit.MILLISECONDS);
+        this.hamokStorages.getPeerConnections().put(subject.peerConnectionId, subject, 100, TimeUnit.MILLISECONDS);
         CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
     }
 
@@ -165,8 +165,8 @@ class RepositoryEventsTest {
         repositoryEvents.addedMediaTracks().subscribe(added::complete);
         repositoryEvents.removedMediaTracks().subscribe(removed::complete);
 
-        this.hazelcastMaps.getMediaTracks().put(subject.trackId, subject);
-        this.hazelcastMaps.getMediaTracks().remove(subject.trackId);
+        this.hamokStorages.getMediaTracks().put(subject.trackId, subject);
+        this.hamokStorages.getMediaTracks().remove(subject.trackId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -178,7 +178,7 @@ class RepositoryEventsTest {
 
         repositoryEvents.expiredMediaTracks().subscribe(expired::complete);
 
-        this.hazelcastMaps.getMediaTracks().put(subject.trackId, subject, 100, TimeUnit.MILLISECONDS);
+        this.hamokStorages.getMediaTracks().put(subject.trackId, subject, 100, TimeUnit.MILLISECONDS);
         CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
     }
 
@@ -196,10 +196,10 @@ class RepositoryEventsTest {
         repositoryEvents.updatedSfuRtpPads().subscribe(updated::complete);
         repositoryEvents.removedSfuRtpPads().subscribe(removed::complete);
 
-        this.hazelcastMaps.getSFURtpPads().put(subject.rtpPadId, subject);
+        this.hamokStorages.getSFURtpPads().put(subject.rtpPadId, subject);
         subject.added = Instant.now().getEpochSecond();
-        this.hazelcastMaps.getSFURtpPads().put(subject.rtpPadId, subject);
-        this.hazelcastMaps.getSFURtpPads().remove(subject.rtpPadId);
+        this.hamokStorages.getSFURtpPads().put(subject.rtpPadId, subject);
+        this.hamokStorages.getSFURtpPads().remove(subject.rtpPadId);
         CompletableFuture.allOf(added, updated, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -211,7 +211,7 @@ class RepositoryEventsTest {
 
         repositoryEvents.expiredSfuRtpPads().subscribe(expired::complete);
 
-        this.hazelcastMaps.getSFURtpPads().put(subject.rtpPadId, subject, 100, TimeUnit.MILLISECONDS);
+        this.hamokStorages.getSFURtpPads().put(subject.rtpPadId, subject, 100, TimeUnit.MILLISECONDS);
         CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
     }
 
@@ -228,10 +228,10 @@ class RepositoryEventsTest {
         repositoryEvents.updatedSfuTransports().subscribe(updated::complete);
         repositoryEvents.removedSfuTransports().subscribe(removed::complete);
 
-        this.hazelcastMaps.getSFUTransports().put(subject.transportId, subject);
+        this.hamokStorages.getSFUTransports().put(subject.transportId, subject);
         subject.opened = Instant.now().getEpochSecond();
-        this.hazelcastMaps.getSFUTransports().put(subject.transportId, subject);
-        this.hazelcastMaps.getSFUTransports().remove(subject.transportId);
+        this.hamokStorages.getSFUTransports().put(subject.transportId, subject);
+        this.hamokStorages.getSFUTransports().remove(subject.transportId);
         CompletableFuture.allOf(added, updated, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -243,7 +243,7 @@ class RepositoryEventsTest {
 
         repositoryEvents.expiredSfuTransports().subscribe(expired::complete);
 
-        this.hazelcastMaps.getSFUTransports().put(subject.transportId, subject, 100, TimeUnit.MILLISECONDS);
+        this.hamokStorages.getSFUTransports().put(subject.transportId, subject, 100, TimeUnit.MILLISECONDS);
         CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
     }
 
@@ -259,10 +259,10 @@ class RepositoryEventsTest {
         repositoryEvents.addedSfu().subscribe(added::complete);
         repositoryEvents.removedSfu().subscribe(removed::complete);
 
-        this.hazelcastMaps.getSFUs().put(subject.sfuId, subject);
+        this.hamokStorages.getSFUs().put(subject.sfuId, subject);
         subject.joined = Instant.now().getEpochSecond();
-        this.hazelcastMaps.getSFUs().put(subject.sfuId, subject);
-        this.hazelcastMaps.getSFUs().remove(subject.sfuId);
+        this.hamokStorages.getSFUs().put(subject.sfuId, subject);
+        this.hamokStorages.getSFUs().remove(subject.sfuId);
         CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
     }
 
@@ -274,7 +274,7 @@ class RepositoryEventsTest {
 
         repositoryEvents.expiredSfu().subscribe(expired::complete);
 
-        this.hazelcastMaps.getSFUs().put(subject.sfuId, subject, 100, TimeUnit.MILLISECONDS);
+        this.hamokStorages.getSFUs().put(subject.sfuId, subject, 100, TimeUnit.MILLISECONDS);
         CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
     }
 }

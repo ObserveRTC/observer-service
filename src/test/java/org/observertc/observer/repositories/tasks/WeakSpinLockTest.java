@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.functions.Action;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -21,18 +21,18 @@ class WeakSpinLockTest {
     WeakLockProvider weakLockProvider;
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Test
     void shouldLockAndUnlockMaps_1() {
         var lockName = "shouldLockAndUnlockMaps_1";
         try (var lock = weakLockProvider.autoLock(lockName)) {
-            Assertions.assertNotNull(hazelcastMaps.getWeakLocks().get(lockName));
+            Assertions.assertNotNull(hamokStorages.getWeakLocks().get(lockName));
         } catch (Exception ex) {
 
         }
 
-        Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
+        Assertions.assertNull(hamokStorages.getWeakLocks().get(lockName));
     }
 
     @Test
@@ -46,7 +46,7 @@ class WeakSpinLockTest {
             exceptionBranchIsTouched = true;
         }
 
-        Assertions.assertNull(hazelcastMaps.getWeakLocks().get(lockName));
+        Assertions.assertNull(hamokStorages.getWeakLocks().get(lockName));
         Assertions.assertTrue(exceptionBranchIsTouched);
     }
 

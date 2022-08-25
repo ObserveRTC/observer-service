@@ -20,7 +20,7 @@ import java.util.concurrent.TimeoutException;
 class SfuRtpPadToMediaTrackBinderTest {
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     SfuRtpPadToMediaTrackBinder sfuRtpPadToMediaTrackBinder;

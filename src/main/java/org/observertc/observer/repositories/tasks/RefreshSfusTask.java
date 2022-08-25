@@ -8,7 +8,7 @@ import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.dto.SfuTransportDTO;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +36,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
     private final Report report = new Report();
 
     @Inject
-    HazelcastMaps hazelcastMaps;
+    HamokStorages hamokStorages;
 
     @Inject
     RepositoryMetrics exposedMetrics;
@@ -51,7 +51,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             if (this.rtpPadIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, SfuRtpPadDTO> rtpPadDTOs = this.hazelcastMaps.getSFURtpPads().getAll(this.rtpPadIds);
+                            Map<UUID, SfuRtpPadDTO> rtpPadDTOs = this.hamokStorages.getSFURtpPads().getAll(this.rtpPadIds);
                             this.report.foundRtpPadIds.addAll(rtpPadDTOs.keySet());
                         })
                 .addActionStage("Check Sfu Transports",
@@ -60,7 +60,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             if (this.transportIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, SfuTransportDTO> sfuTransportDTOs = this.hazelcastMaps.getSFUTransports().getAll(this.transportIds);
+                            Map<UUID, SfuTransportDTO> sfuTransportDTOs = this.hamokStorages.getSFUTransports().getAll(this.transportIds);
                             this.report.foundSfuTransportIds.addAll(sfuTransportDTOs.keySet());
                         })
                 .addActionStage("Refresh Sfu Transport timestamps", () -> {
@@ -69,7 +69,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             Function.identity(),
                             id -> now
                     ));
-                    this.hazelcastMaps.getRefreshedSfuTransports().putAll(refreshedSfuTransports);
+                    this.hamokStorages.getRefreshedSfuTransports().putAll(refreshedSfuTransports);
                 })
                 .addActionStage("Check Sfus",
                         // action
@@ -77,7 +77,7 @@ public class RefreshSfusTask extends ChainedTask<RefreshSfusTask.Report> {
                             if (this.sfuIds.size() < 1) {
                                 return;
                             }
-                            Map<UUID, SfuDTO> sfuDTOs = this.hazelcastMaps.getSFUs().getAll(this.sfuIds);
+                            Map<UUID, SfuDTO> sfuDTOs = this.hamokStorages.getSFUs().getAll(this.sfuIds);
                             this.report.foundSfuIds.addAll(sfuDTOs.keySet());
                         })
                 .<Report> addTerminalSupplier("Provide the composed report", () -> {
