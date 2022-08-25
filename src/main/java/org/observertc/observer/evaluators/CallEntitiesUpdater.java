@@ -99,7 +99,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         }
         var findDTOsTaskResult = findDTOs.getResult();
         var foundClientIds = findDTOsTaskResult.foundClientIds;
-        var foundPeerConnectionIds = findDTOsTaskResult.foundClientIds;
+        var foundPeerConnectionIds = findDTOsTaskResult.foundPeerConnectionIds;
         var foundMediaTrackIds = findDTOsTaskResult.foundTrackIds;
         for (var observedClientSample : observedClientSamples) {
             var serviceRoomId = observedClientSample.getServiceRoomId();
