@@ -51,18 +51,19 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
     }
 
     public void assemble() {
-        if (Objects.isNull(observedClientSample)) {
-            logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
-            return;
-        }
-        if (Objects.isNull(extensionType)) {
-            logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
-            return;
-        }
-        var clientSample = observedClientSample.getClientSample();
-        var callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-        var clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
         try {
+            if (Objects.isNull(observedClientSample)) {
+                logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
+                return;
+            }
+            if (Objects.isNull(extensionType)) {
+                logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
+                return;
+            }
+            var clientSample = observedClientSample.getClientSample();
+            var callId = UUIDAdapter.toStringOrNull(clientSample.callId);
+            var clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
+
             var report = ClientExtensionReport.newBuilder()
                     .setServiceId(observedClientSample.getServiceId())
                     .setMediaUnitId(observedClientSample.getMediaUnitId())

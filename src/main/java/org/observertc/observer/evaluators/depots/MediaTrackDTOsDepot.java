@@ -86,35 +86,36 @@ public class MediaTrackDTOsDepot implements Supplier<Map<UUID, MediaTrackDTO>> {
     }
 
     public void assemble() {
-        if (Objects.isNull(observedClientSample) || Objects.isNull(observedClientSample.getClientSample())) {
-            logger.warn("No observed client sample");
-            return;
-        }
-        if (Objects.isNull(this.trackId)) {
-            logger.warn("Cannot create {} without trackId", MediaTrackDTO.class.getSimpleName());
-            return;
-        }
-        if (Objects.isNull(this.direction)) {
-            logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
-            return;
-        }
-        if (Objects.isNull(this.kind)) {
-            logger.warn("Cannot create {} without media kind", MediaTrackDTO.class.getSimpleName());
-            return;
-        }
-        if (Objects.isNull(this.SSRC)) {
-            logger.warn("Cannot create {} without SSRC", MediaTrackDTO.class.getSimpleName());
-            return;
-        }
-        if (Objects.isNull(this.peerConnectionId)) {
-            logger.warn("Cannot create {} without peerConnectionId", MediaTrackDTO.class.getSimpleName());
-            return;
-        }
-        if (this.buffer.containsKey(trackId)) {
-            return;
-        }
-        var clientSample = observedClientSample.getClientSample();
         try {
+            if (Objects.isNull(observedClientSample) || Objects.isNull(observedClientSample.getClientSample())) {
+                logger.warn("No observed client sample");
+                return;
+            }
+            if (Objects.isNull(this.trackId)) {
+                logger.warn("Cannot create {} without trackId", MediaTrackDTO.class.getSimpleName());
+                return;
+            }
+            if (Objects.isNull(this.direction)) {
+                logger.warn("Cannot create {} without direction", MediaTrackDTO.class.getSimpleName());
+                return;
+            }
+            if (Objects.isNull(this.kind)) {
+                logger.warn("Cannot create {} without media kind", MediaTrackDTO.class.getSimpleName());
+                return;
+            }
+            if (Objects.isNull(this.SSRC)) {
+                logger.warn("Cannot create {} without SSRC", MediaTrackDTO.class.getSimpleName());
+                return;
+            }
+            if (Objects.isNull(this.peerConnectionId)) {
+                logger.warn("Cannot create {} without peerConnectionId", MediaTrackDTO.class.getSimpleName());
+                return;
+            }
+            if (this.buffer.containsKey(trackId)) {
+                return;
+            }
+            var clientSample = observedClientSample.getClientSample();
+
             var mediaTrackDTO = MediaTrackDTO.builder()
                     .withCallId(clientSample.callId)
                     .withServiceId(observedClientSample.getServiceId())

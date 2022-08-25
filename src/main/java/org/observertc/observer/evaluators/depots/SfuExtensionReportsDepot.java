@@ -51,17 +51,18 @@ public class SfuExtensionReportsDepot implements Supplier<List<SfuExtensionRepor
     }
 
     public void assemble() {
-        if (Objects.isNull(observedSfuSample)) {
-            logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
-            return;
-        }
-        if (Objects.isNull(extensionType)) {
-            logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
-            return;
-        }
-        var sfuSample = observedSfuSample.getSfuSample();
-        var sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
         try {
+            if (Objects.isNull(observedSfuSample)) {
+                logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
+                return;
+            }
+            if (Objects.isNull(extensionType)) {
+                logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
+                return;
+            }
+            var sfuSample = observedSfuSample.getSfuSample();
+            var sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
+
             var report = SfuExtensionReport.newBuilder()
                     .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())

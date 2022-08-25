@@ -38,16 +38,17 @@ public class PeerConnectionDTOsDepot implements Supplier<Map<UUID, PeerConnectio
     }
 
     public void assemble() {
-        if (Objects.isNull(observedClientSample) || Objects.isNull(observedClientSample.getClientSample())) {
-            logger.warn("No observed client sample");
-            return;
-        }
-        if (this.pcTransport == null) {
-            logger.warn("Cannot assemble {} without pcTransport", this.getClass().getSimpleName());
-            return;
-        }
-        var clientSample = observedClientSample.getClientSample();
         try {
+            if (Objects.isNull(observedClientSample) || Objects.isNull(observedClientSample.getClientSample())) {
+                logger.warn("No observed client sample");
+                return;
+            }
+            if (this.pcTransport == null) {
+                logger.warn("Cannot assemble {} without pcTransport", this.getClass().getSimpleName());
+                return;
+            }
+            var clientSample = observedClientSample.getClientSample();
+
             var peerConnection = PeerConnectionDTO.builder()
                     .withCallId(clientSample.callId)
                     .withServiceId(observedClientSample.getServiceId())
