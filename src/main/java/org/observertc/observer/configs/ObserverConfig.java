@@ -242,6 +242,12 @@ public class ObserverConfig {
 	@ConfigurationProperties("hamok")
 	public static class HamokConfig {
 		public Map<String, Object> endpoint;
+		public int raftMaxLogRetentionTimeInMs = 3600 * 1000; // 1h
+		public int applicationCommitIndexSyncTimeout = 60 * 1000; // 1 min
+		public int heartbeatInMs = 50;
+		public int followerMaxIdleInMs = 300;
+		public int peerMaxIdleInMs = 1000;
+		public int requestTimeoutInMs = 3000;
 	}
 
 }

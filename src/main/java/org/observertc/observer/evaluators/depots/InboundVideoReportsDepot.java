@@ -1,13 +1,15 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.InboundVideoTrackReport;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrackReport>> {
@@ -28,8 +30,8 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
         return this;
     }
 
-    public InboundVideoReportsDepot setRemoteClientId(UUID value) {
-        this.remoteClientId = UUIDAdapter.toStringOrNull(value);
+    public InboundVideoReportsDepot setRemoteClientId(String value) {
+        this.remoteClientId = value;
         return this;
     }
 
@@ -38,13 +40,13 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
         return this;
     }
 
-    public InboundVideoReportsDepot setRemotePeerConnectionId(UUID value) {
-        this.remotePeerConnectionId = UUIDAdapter.toStringOrNull(value);
+    public InboundVideoReportsDepot setRemotePeerConnectionId(String value) {
+        this.remotePeerConnectionId = value;
         return this;
     }
 
-    public InboundVideoReportsDepot setRemoteTrackId(UUID value) {
-        this.remoteTrackId = UUIDAdapter.toStringOrNull(value);
+    public InboundVideoReportsDepot setRemoteTrackId(String value) {
+        this.remoteTrackId = value;
         return this;
     }
 
@@ -79,12 +81,6 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-            String sfuStreamId = UUIDAdapter.toStringOrNull(inboundVideoTrack.sfuStreamId);
-            String sfuSinkId = UUIDAdapter.toStringOrNull(inboundVideoTrack.sfuSinkId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(inboundVideoTrack.peerConnectionId);
-            var trackId = UUIDAdapter.toStringOrNull(inboundVideoTrack.trackId);
             var report = InboundVideoTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -93,13 +89,13 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setRoomId(clientSample.roomId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setUserId(clientSample.userId)
-                    .setPeerConnectionId(peerConnectionId)
+                    .setPeerConnectionId(inboundVideoTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
-                    .setTrackId(trackId)
+                    .setTrackId(inboundVideoTrack.trackId)
 
                     /* Remote Identifier */
                     .setRemoteClientId(this.remoteClientId)
@@ -112,8 +108,8 @@ public class InboundVideoReportsDepot implements Supplier<List<InboundVideoTrack
 
 
                     /* Inbound RTP Video specific fields */
-                    .setSfuStreamId(sfuStreamId)
-                    .setSfuSinkId(sfuSinkId)
+                    .setSfuStreamId(inboundVideoTrack.sfuStreamId)
+                    .setSfuSinkId(inboundVideoTrack.sfuSinkId)
                     .setSsrc(inboundVideoTrack.ssrc)
                     .setPacketsReceived(inboundVideoTrack.packetsReceived)
                     .setPacketsLost(inboundVideoTrack.packetsLost)

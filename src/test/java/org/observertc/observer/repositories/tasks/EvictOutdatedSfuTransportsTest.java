@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.common.Sleeper;
 import org.observertc.observer.dto.SfuTransportDTO;
-import org.observertc.observer.repositories.EntryListenerBuilder;
-import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOMapGenerator;
 
 import java.time.Instant;

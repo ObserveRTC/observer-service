@@ -2,6 +2,7 @@ package org.observertc.observer.samples;
 
 import org.observertc.observer.common.JsonUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class ServiceRoomId {
@@ -14,6 +15,12 @@ public class ServiceRoomId {
         String[] parts = serviceRoomIdKey.split(DELIMITER);
         return new ServiceRoomId(parts[0], parts[1]);
     }
+
+    public static ServiceRoomId fromBytes(byte[] bytes) {
+        var key = new String(bytes, StandardCharsets.UTF_8);
+        return fromKey(key);
+    }
+
     public static ServiceRoomId make(String serviceId, String roomId) {
         return new ServiceRoomId(serviceId, roomId);
     }
@@ -25,6 +32,16 @@ public class ServiceRoomId {
         this.serviceId = serviceId;
         this.roomId = roomId;
     }
+
+    public byte[] toBytes() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(this.serviceId);
+        buffer.append(DELIMITER);
+        buffer.append(this.roomId);
+        return buffer.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+
 
     @Override
     public int hashCode() {

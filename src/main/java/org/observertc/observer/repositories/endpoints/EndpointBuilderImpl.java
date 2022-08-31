@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuilder {
@@ -16,8 +19,7 @@ public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuil
     public static final String ENDPOINT_ID_PARAM = "endpointId";
 
     private final List<String> packages;
-    private Map<Class, Object> beans = new HashMap<>();
-    private UUID endpointId;
+    private BuildersEssentials essentials;
 
     public EndpointBuilderImpl() {
         Package thisPackage = this.getClass().getPackage();
@@ -37,22 +39,15 @@ public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuil
             return null;
         }
         EndpointBuilder endpointBuilder = (EndpointBuilder) builderHolder.get();
-        endpointBuilder.setBeans(this.beans);
-        endpointBuilder.setEndpointId(this.endpointId);
+        endpointBuilder.setBuildingEssentials(this.essentials);
         endpointBuilder.withConfiguration(config.config);
 
         var result = endpointBuilder.build();
         return result;
     }
 
-    @Override
-    public void setEndpointId(UUID endpointId) {
-        this.endpointId = endpointId;
-    }
-
-    @Override
-    public void setBeans(Map<Class, Object> beans) {
-        this.beans = beans;
+    public void setBuildingEssentials(BuildersEssentials essentials) {
+        this.essentials = essentials;
     }
 
     public static class Config {

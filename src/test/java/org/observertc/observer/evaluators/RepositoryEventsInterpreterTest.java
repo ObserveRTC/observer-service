@@ -3,9 +3,7 @@ package org.observertc.observer.evaluators;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
-import org.observertc.observer.dto.*;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.utils.DTOGenerators;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.schemas.reports.SFUTransportReport;
 import org.observertc.schemas.samples.Samples;
@@ -61,8 +60,6 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
                 return;
             }
             var sfuSample = observedSfuSample.getSfuSample();
-            String transportId = UUIDAdapter.toStringOrNull(sfuTransport.transportId);
-            String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
             var report = SFUTransportReport.newBuilder()
 
                     /* Report MetaFields */
@@ -74,8 +71,8 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
 
 
                     /* Report Fields */
-                    .setTransportId(transportId)
-                    .setSfuId(sfuId)
+                    .setTransportId(sfuTransport.transportId)
+                    .setSfuId(sfuSample.sfuId)
                     .setCallId(callId)
                     .setRoomId(roomId)
 

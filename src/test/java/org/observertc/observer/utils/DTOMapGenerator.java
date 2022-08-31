@@ -1,7 +1,5 @@
 package org.observertc.observer.utils;
 
-import org.observertc.observer.dto.*;
-import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 
 import java.util.HashMap;

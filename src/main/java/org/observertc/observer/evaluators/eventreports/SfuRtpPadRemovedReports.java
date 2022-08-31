@@ -8,7 +8,6 @@ import org.observertc.observer.evaluators.eventreports.attachments.RtpPadAttachm
 import org.observertc.observer.dto.SfuRtpPadDTO;
 import org.observertc.observer.events.SfuEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
-import org.observertc.observer.repositories.tasks.RemoveSfuRtpPadsTask;
 import org.observertc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

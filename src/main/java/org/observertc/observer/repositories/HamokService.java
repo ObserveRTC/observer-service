@@ -6,13 +6,13 @@ import io.kubernetes.client.openapi.apis.CoreV1Api;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.repositories.endpoints.BuildersEssentials;
 import org.observertc.observer.repositories.endpoints.EndpointBuilderImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.Map;
 
 @Singleton
 public class HamokService {
@@ -20,7 +20,7 @@ public class HamokService {
     private static final Logger logger = LoggerFactory.getLogger(HamokService.class);
 
     @Inject
-    ObserverConfig config;
+    ObserverConfig.HamokConfig config;
 
     @Inject
     CoreV1Api coreV1Api;
@@ -31,16 +31,27 @@ public class HamokService {
 
     @PostConstruct
     void setup() {
-        var storageGrid = StorageGrid.builder()
-                .withContext()
+        this.storageGrid = StorageGrid.builder()
                 .withAutoDiscovery(true)
-                .withRaftMaxLogRetentionTimeInMs()
+                .withRaftMaxLogRetentionTimeInMs(this.config.raftMaxLogRetentionTimeInMs)
+                .withApplicationCommitIndexSyncTimeoutInMs(this.config.applicationCommitIndexSyncTimeout)
+                .withHeartbeatInMs(this.config.heartbeatInMs)
+                .withFollowerMaxIdleInMs(this.config.followerMaxIdleInMs)
+                .withPeerMaxIdleTimeInMs(this.config.peerMaxIdleInMs)
+                .withRequestTimeoutInMs(this.config.requestTimeoutInMs)
+                .withAutoDiscovery(true)
                 .build();
         var endpointBuilder = new EndpointBuilderImpl();
-        endpointBuilder.setBeans(Map.of(
-                coreV1Api.getClass(), coreV1Api
+        endpointBuilder.setBuildingEssentials(new BuildersEssentials(
+                coreV1Api,
+                this.storageGrid.getLocalEndpointId()
         ));
-        endpointBuilder.setEndpointId();
+        endpointBuilder.withConfiguration(this.config.endpoint);
+        this.endpoint = endpointBuilder.build();
+
+        this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
+        this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
+
         logger.info("Hamok is ready");
     }
 

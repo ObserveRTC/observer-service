@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.schemas.reports.SfuInboundRtpPadReport;
 import org.observertc.schemas.samples.Samples;
@@ -104,17 +103,13 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                 return;
             }
             var sfuSample = observedSfuSample.getSfuSample();
-            String transportId = UUIDAdapter.toStringOrNull(sfuInboundRtpPad.transportId);
-            String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
-            String padId = UUIDAdapter.toStringOrNull(sfuInboundRtpPad.padId);
-            String streamId = UUIDAdapter.toStringOrNull(sfuInboundRtpPad.streamId);
             var report = SfuInboundRtpPadReport.newBuilder()
 
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
                     .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
-                    .setSfuId(sfuId)
+                    .setSfuId(sfuSample.sfuId)
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
 
@@ -125,12 +120,12 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                     .setRemoteRtpPadId(this.remoteRtpPadId)
 
                     /* Report Fields */
-                    .setTransportId(transportId)
-                    .setSfuStreamId(streamId)
+                    .setTransportId(sfuInboundRtpPad.transportId)
+                    .setSfuStreamId(sfuInboundRtpPad.streamId)
                     .setInternal(sfuInboundRtpPad.internal)
 
                     .setSsrc(sfuInboundRtpPad.ssrc)
-                    .setRtpPadId(padId)
+                    .setRtpPadId(sfuInboundRtpPad.padId)
                     .setTrackId(trackId)
                     .setClientId(clientId)
                     .setCallId(callId)

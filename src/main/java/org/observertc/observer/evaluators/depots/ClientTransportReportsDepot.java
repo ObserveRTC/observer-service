@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.ClientTransportReport;
 import org.observertc.schemas.samples.Samples;
@@ -49,10 +48,7 @@ public class ClientTransportReportsDepot implements Supplier<List<ClientTranspor
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
 
-            String peerConnectionId = UUIDAdapter.toStringOrNull(peerConnectionTransport.peerConnectionId);
             var report = ClientTransportReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -61,11 +57,11 @@ public class ClientTransportReportsDepot implements Supplier<List<ClientTranspor
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setRoomId(clientSample.roomId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setUserId(clientSample.userId)
-                    .setPeerConnectionId(peerConnectionId)
+                    .setPeerConnectionId(peerConnectionTransport.peerConnectionId)
                     .setLabel(peerConnectionTransport.label)
 
                     /* Transport stats */

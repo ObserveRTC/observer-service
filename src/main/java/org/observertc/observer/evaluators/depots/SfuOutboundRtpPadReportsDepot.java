@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.schemas.reports.SfuOutboundRtpPadReport;
 import org.observertc.schemas.samples.Samples;
@@ -70,26 +69,21 @@ public class SfuOutboundRtpPadReportsDepot implements Supplier<List<SfuOutboundR
                 return;
             }
             var sfuSample = observedSfuSample.getSfuSample();
-            String transportId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.transportId);
-            String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
-            String padId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.padId);
-            String streamId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.streamId);
-            String sinkId = UUIDAdapter.toStringOrNull(sfuOutboundRtpPad.sinkId);
             var report = SfuOutboundRtpPadReport.newBuilder()
 
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
                     .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
-                    .setSfuId(sfuId)
+                    .setSfuId(sfuSample.sfuId)
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
 
                     /* Report Fields */
-                    .setTransportId(transportId)
-                    .setSfuStreamId(streamId)
-                    .setSfuSinkId(sinkId)
-                    .setRtpPadId(padId)
+                    .setTransportId(sfuOutboundRtpPad.transportId)
+                    .setSfuStreamId(sfuOutboundRtpPad.streamId)
+                    .setSfuSinkId(sfuOutboundRtpPad.sinkId)
+                    .setRtpPadId(sfuOutboundRtpPad.padId)
                     .setInternal(sfuOutboundRtpPad.internal)
                     .setSsrc(sfuOutboundRtpPad.ssrc)
 

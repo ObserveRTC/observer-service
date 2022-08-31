@@ -12,14 +12,17 @@ import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
+import org.observertc.observer.repositories.tasks.MatchTracks;
 import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @Prototype
@@ -31,7 +34,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     EvaluatorMetrics exposedMetrics;
 
     @Inject
-    BeanProvider<FetchTracksRelationsTask> matchCallTracksTaskProvider;
+    BeanProvider<MatchTracks> matchTracks;
 
     @Inject
     ObserverConfig.EvaluatorsConfig.ClientSamplesAnalyserConfig config;
@@ -63,16 +66,18 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         if (observedClientSamples.isEmpty()) {
             return;
         }
-        var task = this.matchCallTracksTaskProvider.get()
-                .whereInboundMediaTrackIds(observedClientSamples.getMediaTrackIds())
+        var task = this.matchTracks.get()
+                .whereOutboundAudioTrackIds(observedClientSamples.getOutboundAudioTrackIds())
+                .whereOutboundVideoTrackIds(observedClientSamples.getOutboundVideoTrackIds())
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("Interrupted execution of component due to unsuccessful task execution");
             return;
         }
-        var taskResult = task.getResult();
-        var inboundTrackMatchIds = taskResult.inboundTrackMatchIds;
-        var peerConnectionLabels = new HashMap<UUID, String>();
+        var matches = task.getResult();
+        var inboundAudioMatches = matches.inboundAudioMatches;
+        var inboundVideoMatches = matches.inboundVideoMatches;
+        var peerConnectionLabels = new HashMap<String, String>();
         for (var observedClientSample : observedClientSamples) {
             var clientSample = observedClientSample.getClientSample();
             if (Objects.isNull(clientSample)) continue;
@@ -85,14 +90,14 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(inboundAudioTrack -> {
-                var matches = inboundTrackMatchIds.get(inboundAudioTrack.trackId);
+                var match = inboundAudioMatches.get(inboundAudioTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundAudioTrack.peerConnectionId) ? peerConnectionLabels.get(inboundAudioTrack.peerConnectionId) : null;
                 if (Objects.nonNull(matches)) {
                     this.inboundAudioReportsDepot
-                            .setRemoteClientId(matches.outboundClientId)
-                            .setRemoteUserId(matches.outboundUserId)
-                            .setRemotePeerConnectionId(matches.outboundPeerConnectionId)
-                            .setRemoteTrackId(matches.outboundTrackId);
+                            .setRemoteClientId(match.outboundClientId())
+                            .setRemoteUserId(match.outboundUserId())
+                            .setRemotePeerConnectionId(match.outboundPeerConnectionId())
+                            .setRemoteTrackId(match.outboundTrackId());
                 } else if (config.dropUnmatchedReports) {
                     return;
                 }
@@ -104,14 +109,14 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(inboundVideoTrack -> {
-                var matches = inboundTrackMatchIds.get(inboundVideoTrack.trackId);
+                var match = inboundVideoMatches.get(inboundVideoTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundVideoTrack.peerConnectionId) ? peerConnectionLabels.get(inboundVideoTrack.peerConnectionId) : null;
                 if (Objects.nonNull(matches)) {
                     this.inboundVideoReportsDepot
-                            .setRemoteClientId(matches.outboundClientId)
-                            .setRemoteUserId(matches.outboundUserId)
-                            .setRemotePeerConnectionId(matches.outboundPeerConnectionId)
-                            .setRemoteTrackId(matches.outboundTrackId);
+                            .setRemoteClientId(match.outboundClientId())
+                            .setRemoteUserId(match.outboundUserId())
+                            .setRemotePeerConnectionId(match.outboundPeerConnectionId())
+                            .setRemoteTrackId(match.outboundTrackId());
                 } else if (config.dropUnmatchedReports) {
                     return;
                 }

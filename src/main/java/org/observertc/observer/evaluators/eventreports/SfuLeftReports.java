@@ -7,7 +7,6 @@ import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.dto.SfuDTO;
 import org.observertc.observer.events.SfuEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
-import org.observertc.observer.repositories.tasks.RemoveSFUsTask;
 import org.observertc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

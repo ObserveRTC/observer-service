@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.CallMetaReport;
@@ -69,8 +68,6 @@ public class CallMetaReportsDepot implements Supplier<List<CallMetaReport>> {
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            var callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            var clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
             var sampleTimestamp = Objects.nonNull(this.sampleTimestamp) ? this.sampleTimestamp : clientSample.timestamp;
             var report = CallMetaReport.newBuilder()
                     .setType(this.metaType.name())
@@ -78,10 +75,10 @@ public class CallMetaReportsDepot implements Supplier<List<CallMetaReport>> {
                     .setServiceId(observedClientSample.getServiceId())
                     .setMediaUnitId(observedClientSample.getMediaUnitId())
                     .setRoomId(clientSample.roomId)
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setPeerConnectionId(this.peerConnectionId)
                     .setUserId(clientSample.userId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setTimestamp(clientSample.timestamp)
                     .setSampleSeq(clientSample.sampleSeq)
                     .setSampleTimestamp(sampleTimestamp)

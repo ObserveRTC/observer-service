@@ -35,37 +35,60 @@ message PeerConnection {
   required string userId = 4;
   required string clientId = 5;
   required string peerConnectionId = 6;
-  required uint64 created = 7;
+  required uint64 opened = 7;
 
   optional string mediaUnitId = 8;
   optional string marker = 9;
 
-  repeated string inboundTrackIds = 10;
-  repeated string outboundTrackIds = 11;
+  repeated string inboundAudioTrackIds = 10;
+  repeated string inboundVideoTrackIds = 11;
+  repeated string outboundAudioTrackIds = 12;
+  repeated string outboundVideoTrackIds = 13;
+}
+
+
+message InboundAudioTrack {
+  required string serviceId = 1;
+  required string roomId = 2;
+  required string callId = 3;
+  required string userId = 4;
+  required string clientId = 5;
+  required string peerConnectionId = 6;
+  required string trackId = 7;
+  required uint64 added = 8;
+
+  optional string mediaUnitId = 9;
+  optional string marker = 10;
+
+  optional string sfuSinkId = 11;
+  optional string sfuStreamId = 12;
+
+  repeated int64 ssrc = 13;
 }
 
 message InboundTrack {
   required string serviceId = 1;
   required string roomId = 2;
-
   required string callId = 3;
   required string userId = 4;
   required string clientId = 5;
   required string peerConnectionId = 6;
   required string trackId = 7;
-  required uint64 added = 8;
-  required string kind = 9;
+  required string kind = 8;
+  required uint64 added = 9;
 
   optional string mediaUnitId = 10;
   optional string marker = 11;
+
   optional string sfuSinkId = 12;
   optional string sfuStreamId = 13;
+
+  repeated int64 ssrc = 14;
 }
 
 message OutboundTrack {
   required string serviceId = 1;
   required string roomId = 2;
-
   required string callId = 3;
   required string userId = 4;
   required string clientId = 5;
@@ -76,36 +99,67 @@ message OutboundTrack {
 
   optional string mediaUnitId = 10;
   optional string marker = 11;
+
   optional string sfuStreamId = 12;
+
+  repeated int64 ssrc = 13;
 }
 
-message SfuSink {
-  required string sfuSinkId = 1;
-  required string sfuStreamId = 2;
 
-  optional string sfuId = 3;
-  optional string sfuTransportId = 4;
 
-  optional string peerConnectionId = 5;
-  optional string trackId = 6;
-  optional string clientId = 7;
-  optional string callId = 8;
+message InboundVideoTrack {
+  required string serviceId = 1;
+  required string roomId = 2;
+  required string callId = 3;
+  required string userId = 4;
+  required string clientId = 5;
+  required string peerConnectionId = 6;
+  required string trackId = 7;
+  required uint64 added = 8;
 
-  repeated string outboundSfuRtpPadIds = 9;
+  optional string mediaUnitId = 9;
+  optional string marker = 10;
+
+  optional string sfuSinkId = 11;
+  optional string sfuStreamId = 12;
+
+  repeated int64 ssrc = 13;
 }
 
-message SfuStream {
-  required string sfuStreamId = 1;
+message OutboundAudioTrack {
+  required string serviceId = 1;
+  required string roomId = 2;
+  required string callId = 3;
+  required string userId = 4;
+  required string clientId = 5;
+  required string peerConnectionId = 6;
+  required string trackId = 7;
+  required uint64 added = 8;
 
-  optional string sfuId = 2;
-  optional string sfuTransportId = 3;
+  optional string mediaUnitId = 9;
+  optional string marker = 10;
 
-  optional string peerConnectionId = 4;
-  optional string trackId = 5;
-  optional string clientId = 6;
-  optional string callId = 7;
+  optional string sfuStreamId = 11;
 
-  repeated string inboundSfuRtpPadIds = 8;
+  repeated int64 ssrc = 12;
+}
+
+message OutboundVideoTrack {
+  required string serviceId = 1;
+  required string roomId = 2;
+  required string callId = 3;
+  required string userId = 4;
+  required string clientId = 5;
+  required string peerConnectionId = 6;
+  required string trackId = 7;
+  required uint64 added = 8;
+
+  optional string mediaUnitId = 9;
+  optional string marker = 10;
+
+  optional string sfuStreamId = 11;
+
+  repeated int64 ssrc = 12;
 }
 
 message Sfu {
@@ -132,18 +186,55 @@ message SfuTransport {
   optional string mediaUnitId = 6;
   optional string marker = 7;
 
-  repeated string sfuInboundRtpPadIds = 8;
-  repeated string sfuOutboundRtpPadIds = 9;
+  repeated string inboundRtpPadIds = 8;
+  repeated string outboundRtpPadIds = 9;
 }
+
+message SfuMediaSink {
+  required string serviceId = 1;
+
+  required string sfuId = 2;
+  required string sfuTransportId = 3;
+  required string sfuStreamId = 4;
+  required string sfuSinkId = 5;
+
+  repeated string outboundSfuRtpPadIds = 6;
+}
+
+message SfuMediaStream {
+  required string serviceId = 1;
+  required string sfuStreamId = 2;
+  required string trackId = 3;
+  required string kind = 4;
+
+  repeated string sfuInboundSfuRtpPadIds = 5;
+
+}
+
+//message SfuMediaStream {
+//  required string serviceId = 1;
+//
+//  required string sfuId = 2;
+//  required string sfuTransportId = 3;
+//  required string sfuStreamId = 4;
+//  required uint64 added = 5;
+//
+//  optional string mediaUnitId = 6;
+//  optional string marker = 7;
+//
+//  repeated string inboundSfuRtpPadIds = 8;
+//  repeated string sfuSinkIds = 9;
+//
+//}
 
 message SfuInboundRtpPad {
   required string serviceId = 1;
 
   required string sfuId = 2;
-  required string transportId = 3;
+  required string sfuTransportId = 3;
   required string sfuStreamId = 4;
   required string rtpPadId = 5;
-  required uint32 ssrc = 6;
+  required int64 ssrc = 6;
   required bool internal = 7 [default = false];
   required uint64 added = 8;
 
@@ -155,14 +246,28 @@ message SfuOutboundRtpPad {
   required string serviceId = 1;
 
   required string sfuId = 2;
-  required string transportId = 3;
+  required string sfuTransportId = 3;
   required string sfuStreamId = 4;
   required string sfuSinkId = 5;
   required string rtpPadId = 6;
-  required uint32 ssrc = 7;
+  required int64 ssrc = 7;
   required bool internal = 8 [default = false];
   required uint64 added = 9;
 
   optional string mediaUnitId = 10;
   optional string marker = 11;
+}
+
+message SfuSctpStream {
+  required string serviceId = 1;
+
+  required string sfuId = 2;
+  required string sfuTransportId = 3;
+  required string sfuSctpStreamId = 4;
+  required uint64 opened = 5;
+
+  optional string mediaUnitId = 6;
+  optional string marker = 7;
+
+
 }

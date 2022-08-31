@@ -9,8 +9,6 @@ import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.RepositoryEvents;
-import org.observertc.observer.repositories.SfuInternalRtpPadsBinder;
-import org.observertc.observer.repositories.SfuRtpPadToMediaTrackBinder;
 import org.observertc.schemas.reports.CallEventReport;
 import org.observertc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
@@ -31,12 +29,6 @@ public class RepositoryEventsInterpreter {
     RepositoryEvents repositoryEvents;
 
     @Inject
-    SfuRtpPadToMediaTrackBinder sfuRtpPadToMediaTrackBinder;
-
-    @Inject
-    SfuInternalRtpPadsBinder sfuInternalRtpPadsBinder;
-
-    @Inject
     CallStartedReports callStartedReports;
 
     @Inject
@@ -55,10 +47,28 @@ public class RepositoryEventsInterpreter {
     PeerConnectionClosedReports peerConnectionClosedReports;
 
     @Inject
-    MediaTrackAddedReports mediaTrackAddedReports;
+    InboundAudioTrackAddedReports inboundAudioTrackAddedReports;
 
     @Inject
-    MediaTrackRemovedReports mediaTrackRemovedReports;
+    InboundAudioTrackRemovedReports inboundAudioTrackRemovedReports;
+
+    @Inject
+    InboundVideoTrackAddedReports inboundVideoTrackAddedReports;
+
+    @Inject
+    InboundVideoTrackRemovedReports inboundVideoTrackRemovedReports;
+
+    @Inject
+    OutboundAudioTrackAddedReports outboundAudioTrackAddedReports;
+
+    @Inject
+    OutboundAudioTrackRemovedReports outboundAudioTrackRemovedReports;
+
+    @Inject
+    OutboundVideoTrackAddedReports outboundVideoTrackAddedReports;
+
+    @Inject
+    OutboundVideoTrackRemovedReports outboundVideoTrackRemovedReports;
 
     @Inject
     SfuJoinedReports sfuJoinedReports;
@@ -96,21 +106,12 @@ public class RepositoryEventsInterpreter {
     @PostConstruct
     void setup() {
 
-        this.repositoryEvents.addedSfuRtpPads()
-                .subscribe(this.sfuRtpPadToMediaTrackBinder::onSfuRtpPadsAdded);
-
-        this.repositoryEvents.addedSfuRtpPads()
-                .subscribe(this.sfuInternalRtpPadsBinder::onSfuRtpPadsAdded);
-
-        this.repositoryEvents.addedMediaTracks()
-                .subscribe(this.sfuRtpPadToMediaTrackBinder::onMediaTracksAdded);
-
-        this.repositoryEvents.addedCalls()
-                .map(this.callStartedReports::mapAddedCalls)
+        this.callStartedReports.getOutput()
+                .map(List::of)
                 .subscribe(this::collectCallEventReports);
 
-        this.repositoryEvents.removedCalls()
-                .map(this.callEndedReports::mapCallDTOs)
+        this.callEndedReports.getOutput()
+                .map(List::of)
                 .subscribe(this::collectCallEventReports);
 
         this.repositoryEvents.addedClients()
@@ -137,16 +138,54 @@ public class RepositoryEventsInterpreter {
                 .map(this.peerConnectionClosedReports::mapExpiredPeerConnections)
                 .subscribe(this::collectCallEventReports);
 
-        this.repositoryEvents.addedMediaTracks()
-                .map(this.mediaTrackAddedReports::mapAddedMediaTracks)
+        this.repositoryEvents.addedInboundAudioTrack()
+                .map(this.inboundAudioTrackAddedReports::mapAddedInboundAudioTrack)
                 .subscribe(this::collectCallEventReports);
 
-        this.repositoryEvents.removedMediaTracks()
-                .map(this.mediaTrackRemovedReports::mapRemovedMediaTracks)
+        this.repositoryEvents.removedInboundAudioTrack()
+                .map(this.inboundAudioTrackRemovedReports::mapRemovedInboundAudioTrack)
                 .subscribe(this::collectCallEventReports);
 
-        this.repositoryEvents.expiredMediaTracks()
-                .map(this.mediaTrackRemovedReports::mapExpiredMediaTracks)
+        this.repositoryEvents.expiredInboundAudioTrack()
+                .map(this.inboundAudioTrackRemovedReports::mapExpiredInboundAudioTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.addedInboundVideoTrack()
+                .map(this.inboundVideoTrackAddedReports::mapAddedInboundVideoTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.removedInboundVideoTrack()
+                .map(this.inboundVideoTrackRemovedReports::mapRemovedInboundVideoTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.expiredInboundVideoTrack()
+                .map(this.inboundVideoTrackRemovedReports::mapExpiredInboundVideoTrack)
+                .subscribe(this::collectCallEventReports);
+
+
+        this.repositoryEvents.addedOutboundAudioTrack()
+                .map(this.outboundAudioTrackAddedReports::mapAddedOutboundAudioTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.removedOutboundAudioTrack()
+                .map(this.outboundAudioTrackRemovedReports::mapRemovedOutboundAudioTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.expiredOutboundAudioTrack()
+                .map(this.outboundAudioTrackRemovedReports::mapExpiredOutboundAudioTrack)
+                .subscribe(this::collectCallEventReports);
+
+
+        this.repositoryEvents.addedOutboundVideoTrack()
+                .map(this.outboundVideoTrackAddedReports::mapAddedOutboundVideoTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.removedOutboundVideoTrack()
+                .map(this.outboundVideoTrackRemovedReports::mapRemovedOutboundVideoTrack)
+                .subscribe(this::collectCallEventReports);
+
+        this.repositoryEvents.expiredOutboundVideoTrack()
+                .map(this.outboundVideoTrackRemovedReports::mapExpiredOutboundVideoTrack)
                 .subscribe(this::collectCallEventReports);
 
         this.repositoryEvents.addedSfu()
@@ -171,10 +210,6 @@ public class RepositoryEventsInterpreter {
 
         this.repositoryEvents.expiredSfuTransports()
                 .map(this.sfuTransportClosedReports::mapExpiredSfuTransport)
-                .subscribe(this::collectSfuEventReports);
-
-        this.repositoryEvents.addedSfuRtpPads()
-                .map(this.sfuRtpPadAddedReports::mapAddedSfuRtpPads)
                 .subscribe(this::collectSfuEventReports);
 
         this.repositoryEvents.removedSfuRtpPads()

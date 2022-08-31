@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
 import org.observertc.observer.utils.DTOGenerators;
 

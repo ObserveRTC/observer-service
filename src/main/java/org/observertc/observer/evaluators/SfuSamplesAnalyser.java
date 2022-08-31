@@ -10,7 +10,6 @@ import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.tasks.FetchSfuRelationsTask;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;

@@ -11,7 +11,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.TaskAbstract;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.repositories.HamokStorages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

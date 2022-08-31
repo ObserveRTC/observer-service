@@ -45,7 +45,7 @@ dependencies {
     implementation group: 'com.opencsv', name: 'opencsv', version: '4.1'
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
 
-    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.11-SNAPSHOT'
+    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.17-SNAPSHOT'
 
     // --------- AWS SDK -----
     implementation platform('software.amazon.awssdk:bom:2.15.0')

@@ -1,23 +1,24 @@
 package org.observertc.observer.evaluators.eventreports;
 
-import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import jakarta.inject.Inject;
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.evaluators.eventreports.attachments.ClientAttachment;
-import org.observertc.observer.dto.ClientDTO;
 import org.observertc.observer.events.CallEventType;
+import org.observertc.observer.repositories.Call;
+import org.observertc.observer.repositories.CallsRepository;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
-import org.observertc.observer.repositories.tasks.FetchCallClientsTask;
-import org.observertc.observer.repositories.tasks.RemoveCallsTask;
-import org.observertc.observer.repositories.tasks.RemoveClientsTask;
+import org.observertc.observer.samples.ServiceRoomId;
+import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Prototype
@@ -26,125 +27,101 @@ public class ClientLeftReports {
     private static final Logger logger = LoggerFactory.getLogger(ClientLeftReports.class);
 
     @Inject
-    BeanProvider<RemoveClientsTask> removeClientsTaskProvider;
+    CallsRepository callsRepository;
 
     @Inject
-    BeanProvider<FetchCallClientsTask> fetchCallClientsTaskProvider;
-
-    @Inject
-    BeanProvider<RemoveCallsTask> removeCallsTaskProvider;
-
+    CallEndedReports callEndedReports;
 
     @PostConstruct
     void setup() {
 
     }
 
-    public List<CallEventReport> mapRemovedClients(List<ClientDTO> clientDTOs) {
+    public List<CallEventReport> mapRemovedClients(List<Models.Client> clientDTOs) {
         if (Objects.isNull(clientDTOs) || clientDTOs.size() < 1) {
             return Collections.EMPTY_LIST;
         }
 
-        var reports = clientDTOs.stream()
-                .map(this::makeReport)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
+        var serviceRoomIds = clientDTOs.stream()
+                .map(model -> ServiceRoomId.make(model.getServiceId(), model.getRoomId()))
+                .collect(Collectors.toSet());
+        var calls = this.callsRepository.getAllMappedByCallIds(serviceRoomIds);
+        var reports = new LinkedList<CallEventReport>();
+        var now = Instant.now().toEpochMilli();
+        for (var clientModel : clientDTOs) {
+            var call = calls.get(clientModel.getClientId());
+            var report = this.perform(call, clientModel, now);
+            if (report != null) {
+                reports.add(report);
+            }
+        }
+        this.callsRepository.save();
         return reports;
     }
 
-    public List<CallEventReport> mapExpiredClients(List<RepositoryExpiredEvent<ClientDTO>> expiredClientDTOs) {
+
+    public List<CallEventReport> mapExpiredClients(List<RepositoryExpiredEvent<Models.Client>> expiredClientDTOs) {
         if (Objects.isNull(expiredClientDTOs) || expiredClientDTOs.size() < 1) {
             return Collections.EMPTY_LIST;
         }
-        var removeClientsTask = removeClientsTaskProvider.get();
-        expiredClientDTOs.stream()
-                .map(expiredDTO -> expiredDTO.getValue())
-                .filter(Objects::nonNull)
-                .forEach(removeClientsTask::addRemovedClientDTO);
-
-        if (!removeClientsTask.execute().succeeded()) {
-            logger.warn("Remove Client Entities are failed");
-            return Collections.EMPTY_LIST;
+        var serviceRoomIds = expiredClientDTOs.stream()
+                .map(event -> ServiceRoomId.make(event.getValue().getServiceId(), event.getValue().getRoomId()))
+                .collect(Collectors.toSet());
+        var calls = this.callsRepository.getAllMappedByCallIds(serviceRoomIds);
+        var reports = new LinkedList<CallEventReport>();
+        for (var event : expiredClientDTOs) {
+            var clientModel = event.getValue();
+            var call = calls.get(clientModel.getClientId());
+            var report = this.perform(call, clientModel, event.estimatedLastTouch());
+            if (report != null) {
+                reports.add(report);
+            }
         }
-        var affectedCallIds = new HashSet<UUID>();
-        var reports = expiredClientDTOs.stream()
-                .filter(Objects::nonNull)
-                .map(expiredClientDTO -> {
-                    var timestamp = expiredClientDTO.estimatedLastTouch();
-                    var clientDTO = expiredClientDTO.getValue();
-                    if (Objects.isNull(clientDTO) || Objects.isNull(clientDTO.callId)) {
-                        return null;
-                    }
-                    affectedCallIds.add(clientDTO.callId);
-                    var report = this.makeReport(clientDTO, timestamp);
-                    return report;
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        this.removeAbandonedCallIds(affectedCallIds);
+        this.callsRepository.save();
         return reports;
     }
 
-    private CallEventReport makeReport(ClientDTO clientDTO) {
-        Long now = Instant.now().toEpochMilli();
-        return this.makeReport(clientDTO, now);
+    private CallEventReport perform(Call call, Models.Client clientModel, Long timestamp) {
+        if (call == null) {
+            logger.warn("Did not found call for client {}", clientModel.getClientId());
+            return null;
+        }
+        var removed = call.removeClient(clientModel.getClientId());
+        if (call.getClientIds().size() < 1) {
+            var model = call.getModel();
+            if (this.callsRepository.remove(call.getServiceRoomId())) {
+                // end the call here
+                this.callEndedReports.accept(model);
+            }
+        }
+        if (!removed) {
+            logger.warn("Did not removed client {} from call {}. Already removed?", clientModel.getClientId(), call.getCallId());
+            return null;
+        }
+
+        return this.makeReport(clientModel, timestamp);
     }
 
-    private void removeAbandonedCallIds(Set<UUID> affectedCallIds) {
-        var fetchCallsClientIds = fetchCallClientsTaskProvider.get();
-        fetchCallsClientIds.whereCallIds(affectedCallIds);
-        if (!fetchCallsClientIds.execute().succeeded()) {
-            return;
-        }
-        Set<UUID> abandonedCallIds = new HashSet<>();
-        Map<UUID, Set<UUID>> remainedCallClientIds = fetchCallsClientIds.getResult();
-        affectedCallIds.stream()
-                .forEach(affectedCallId -> {
-                    Set<UUID> remainedClientIds = remainedCallClientIds.get(affectedCallId);
-                    if (Objects.isNull(remainedClientIds)) {
-                        abandonedCallIds.add(affectedCallId);
-                    }
-                    if (remainedClientIds.size() < 1) {
-                        abandonedCallIds.add(affectedCallId);
-                    }
-                });
-        if (abandonedCallIds.size() < 1) {
-            return;
-        }
-
-        var removeCallsTask = this.removeCallsTaskProvider.get()
-                .whereCallIds(abandonedCallIds);
-
-        if (!removeCallsTask.execute().succeeded()) {
-            logger.warn("Remove calls task has failed");
-        }
-    }
-
-
-    private CallEventReport makeReport(ClientDTO clientDTO, Long timestamp) {
+    private CallEventReport makeReport(Models.Client clientDTO, Long timestamp) {
         try {
-            String callId = UUIDAdapter.toStringOrNull(clientDTO.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientDTO.clientId);
             ClientAttachment attachment = ClientAttachment.builder()
-                    .withTimeZoneId(clientDTO.timeZoneId)
+                    .withTimeZoneId(clientDTO.getTimeZoneId())
                     .build();
             String message = String.format("Client left");
             var result = CallEventReport.newBuilder()
                     .setName(CallEventType.CLIENT_LEFT.name())
-                    .setCallId(callId)
-                    .setServiceId(clientDTO.serviceId)
-                    .setRoomId(clientDTO.roomId)
-                    .setClientId(clientId)
-                    .setMediaUnitId(clientDTO.mediaUnitId)
-                    .setUserId(clientDTO.userId)
+                    .setCallId(clientDTO.getCallId())
+                    .setServiceId(clientDTO.getServiceId())
+                    .setRoomId(clientDTO.getRoomId())
+                    .setClientId(clientDTO.getClientId())
+                    .setMediaUnitId(clientDTO.getMediaUnitId())
+                    .setUserId(clientDTO.getUserId())
                     .setTimestamp(timestamp)
                     .setAttachments(attachment.toBase64())
-                    .setMarker(clientDTO.marker)
+                    .setMarker(clientDTO.getMarker())
                     .setMessage(message)
                     .build();
-            logger.info("Client {} LEFT call \"{}\" in service \"{}\" at room \"{}\"", clientDTO.clientId, clientDTO.callId, clientDTO.serviceId, clientDTO.roomId);
+            logger.info("Client {} LEFT call \"{}\" in service \"{}\" at room \"{}\"", clientDTO.getClientId(), clientDTO.getCallId(), clientDTO.getServiceId(), clientDTO.getRoomId());
             return result;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

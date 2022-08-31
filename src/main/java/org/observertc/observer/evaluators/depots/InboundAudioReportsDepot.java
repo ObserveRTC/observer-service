@@ -1,13 +1,15 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.InboundAudioTrackReport;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrackReport>> {
@@ -27,8 +29,8 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
         this.peerConnectionLabel = value;
         return this;
     }
-    public InboundAudioReportsDepot setRemoteClientId(UUID value) {
-        this.remoteClientId = UUIDAdapter.toStringOrNull(value);
+    public InboundAudioReportsDepot setRemoteClientId(String value) {
+        this.remoteClientId = value;
         return this;
     }
 
@@ -37,13 +39,13 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
         return this;
     }
 
-    public InboundAudioReportsDepot setRemotePeerConnectionId(UUID value) {
-        this.remotePeerConnectionId = UUIDAdapter.toStringOrNull(value);
+    public InboundAudioReportsDepot setRemotePeerConnectionId(String value) {
+        this.remotePeerConnectionId = value;
         return this;
     }
 
-    public InboundAudioReportsDepot setRemoteTrackId(UUID value) {
-        this.remoteTrackId = UUIDAdapter.toStringOrNull(value);
+    public InboundAudioReportsDepot setRemoteTrackId(String value) {
+        this.remoteTrackId = value;
         return this;
     }
 
@@ -78,12 +80,6 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-            String sfuStreamId = UUIDAdapter.toStringOrNull(inboundAudioTrack.sfuStreamId);
-            String sfuSinkId = UUIDAdapter.toStringOrNull(inboundAudioTrack.sfuSinkId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(inboundAudioTrack.peerConnectionId);
-            var trackId = UUIDAdapter.toStringOrNull(inboundAudioTrack.trackId);
             var report = InboundAudioTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -92,13 +88,13 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setRoomId(clientSample.roomId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setUserId(clientSample.userId)
-                    .setPeerConnectionId(peerConnectionId)
+                    .setPeerConnectionId(inboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
-                    .setTrackId(trackId)
+                    .setTrackId(inboundAudioTrack.trackId)
 
                     /* Remote Identifier */
                     .setRemoteClientId(this.remoteClientId)
@@ -110,8 +106,8 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* Inbound RTP Audio specific fields */
-                    .setSfuStreamId(sfuStreamId)
-                    .setSfuSinkId(sfuSinkId)
+                    .setSfuStreamId(inboundAudioTrack.sfuStreamId)
+                    .setSfuSinkId(inboundAudioTrack.sfuSinkId)
                     .setSsrc(inboundAudioTrack.ssrc)
                     .setPacketsReceived(inboundAudioTrack.packetsReceived)
                     .setPacketsSent(inboundAudioTrack.packetsSent)

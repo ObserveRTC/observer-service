@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.OutboundAudioTrackReport;
 import org.observertc.schemas.samples.Samples;
@@ -55,11 +54,6 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(outboundAudioTrack.peerConnectionId);
-            var trackId = UUIDAdapter.toStringOrNull(outboundAudioTrack.trackId);
-            var sfuStreamId = UUIDAdapter.toStringOrNull(outboundAudioTrack.sfuStreamId);
             var report = OutboundAudioTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -68,19 +62,19 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setRoomId(clientSample.roomId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setUserId(clientSample.userId)
-                    .setPeerConnectionId(peerConnectionId)
+                    .setPeerConnectionId(outboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
-                    .setTrackId(trackId)
+                    .setTrackId(outboundAudioTrack.trackId)
 
                     /* Sample Based Report Fields */
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* OutboundRTP related fields specific for Audio*/
-                    .setSfuStreamId(sfuStreamId)
+                    .setSfuStreamId(outboundAudioTrack.sfuStreamId)
                     .setSsrc(outboundAudioTrack.ssrc)
                     .setPacketsSent(outboundAudioTrack.packetsSent)
                     .setBytesSent(outboundAudioTrack.bytesSent)

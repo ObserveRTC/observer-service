@@ -1,9 +1,8 @@
 package org.observertc.observer.evaluators.eventreports;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.observer.dto.PeerConnectionDTO;
 import org.observertc.observer.events.CallEventType;
+import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,7 @@ public class PeerConnectionOpenedReports {
 
     }
 
-    public List<CallEventReport> mapAddedPeerConnections(List<PeerConnectionDTO> peerConnectionDTOs) {
+    public List<CallEventReport> mapAddedPeerConnections(List<Models.PeerConnection> peerConnectionDTOs) {
         if (Objects.isNull(peerConnectionDTOs) || peerConnectionDTOs.size() < 1) {
             return Collections.EMPTY_LIST;
         }
@@ -37,26 +36,23 @@ public class PeerConnectionOpenedReports {
         return reports;
     }
 
-    private CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO) {
+    private CallEventReport makeReport(Models.PeerConnection peerConnectionDTO) {
         try {
-            String callId = UUIDAdapter.toStringOrNull(peerConnectionDTO.callId);
-            String clientId = UUIDAdapter.toStringOrNull(peerConnectionDTO.clientId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(peerConnectionDTO.peerConnectionId);
-            String message = String.format("PeerConnection (%s) is opened", peerConnectionId);
+            String message = String.format("PeerConnection (%s) is opened", peerConnectionDTO.getPeerConnectionId());
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.PEER_CONNECTION_OPENED.name())
-                    .setCallId(callId)
-                    .setServiceId(peerConnectionDTO.serviceId)
-                    .setRoomId(peerConnectionDTO.roomId)
-                    .setClientId(clientId)
-                    .setMediaUnitId(peerConnectionDTO.mediaUnitId)
-                    .setUserId(peerConnectionDTO.userId)
-                    .setPeerConnectionId(peerConnectionId)
-                    .setTimestamp(peerConnectionDTO.created)
-                    .setMarker(peerConnectionDTO.marker)
+                    .setCallId(peerConnectionDTO.getCallId())
+                    .setServiceId(peerConnectionDTO.getServiceId())
+                    .setRoomId(peerConnectionDTO.getRoomId())
+                    .setClientId(peerConnectionDTO.getClientId())
+                    .setMediaUnitId(peerConnectionDTO.getMediaUnitId())
+                    .setUserId(peerConnectionDTO.getUserId())
+                    .setPeerConnectionId(peerConnectionDTO.getPeerConnectionId())
+                    .setTimestamp(peerConnectionDTO.getOpened())
+                    .setMarker(peerConnectionDTO.getMarker())
                     .setMessage(message)
                     .build();
-            logger.info("Peer Connection {} is OPENED at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.peerConnectionId, peerConnectionDTO.callId, peerConnectionDTO.serviceId, peerConnectionDTO.roomId);
+            logger.info("Peer Connection {} is OPENED at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.getPeerConnectionId(), peerConnectionDTO.getCallId(), peerConnectionDTO.getServiceId(), peerConnectionDTO.getRoomId());
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);
