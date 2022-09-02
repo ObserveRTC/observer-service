@@ -6,7 +6,10 @@ import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class SfuTransportReportsDepot implements Supplier<List<SFUTransportReport>> {
@@ -30,7 +33,7 @@ public class SfuTransportReportsDepot implements Supplier<List<SFUTransportRepor
         return this;
     }
 
-    public SfuTransportReportsDepot setCallId(UUID value) {
+    public SfuTransportReportsDepot setCallId(String value) {
         if (Objects.isNull(value)) return this;
         this.callId = value.toString();
         return this;

@@ -1,6 +1,9 @@
 package org.observertc.observer.evaluators.eventreports;
 
-import io.micronaut.context.annotation.Prototype;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.evaluators.eventreports.attachments.ClientAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.schemas.dtos.Models;
@@ -9,24 +12,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Prototype
+@Singleton
 public class ClientJoinedReports {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientJoinedReports.class);
+
+    private Subject<List<CallEventReport>> output = PublishSubject.<List<CallEventReport>>create().toSerialized();
 
     @PostConstruct
     void setup() {
 
     }
 
-    public List<CallEventReport> mapAddedClient(List<Models.Client> clientDTOs) {
+    public void accept(List<Models.Client> clientDTOs) {
         if (Objects.isNull(clientDTOs) || clientDTOs.size() < 1) {
-            return Collections.EMPTY_LIST;
+            return;
         }
 
         var reports = clientDTOs.stream()
@@ -34,8 +38,11 @@ public class ClientJoinedReports {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        return reports;
+        if (0 < reports.size()) {
+            this.output.onNext(reports);
+        }
     }
+
 
     private CallEventReport makeReport(Models.Client clientDTO) {
         try {
@@ -62,5 +69,9 @@ public class ClientJoinedReports {
            logger.warn("Cannot make report for client DTO", ex);
            return null;
         }
+    }
+
+    public Observable<List<CallEventReport>> getOutput() {
+        return this.output;
     }
 }

@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfuOutboundRtpPadsRepository {
+public class SfuOutboundRtpPadsRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuOutboundRtpPadsRepository.class);
 
@@ -80,7 +81,10 @@ public class SfuOutboundRtpPadsRepository {
         }
     }
 
-    synchronized void deleteAll(Set<String> rtpPadIds) {
+    public synchronized void deleteAll(Set<String> rtpPadIds) {
+        if (rtpPadIds == null || rtpPadIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(rtpPadIds);
         rtpPadIds.forEach(rtpPadId -> {
             var removed = this.updated.remove(rtpPadId);
@@ -100,6 +104,16 @@ public class SfuOutboundRtpPadsRepository {
             this.updated.clear();
         }
         this.fetched.clear();
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     Observable<List<ModifiedStorageEntry<String, Models.SfuOutboundRtpPad>>> observableDeletedEntries() {

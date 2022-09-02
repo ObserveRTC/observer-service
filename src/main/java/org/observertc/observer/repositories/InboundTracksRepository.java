@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class InboundTracksRepository {
+public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(InboundTracksRepository.class);
 
@@ -48,7 +49,7 @@ public class InboundTracksRepository {
         var baseStorage = new MemoryStorageBuilder<String, Models.InboundTrack>()
                 .setId(STORAGE_ID)
                 .setConcurrency(true)
-                .setExpiration(config.mediaTracksMaxIdleTimeInS * 1000)
+//                .setExpiration(config.mediaTracksMaxIdleTimeInS * 1000)
                 .build();
         this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
@@ -92,6 +93,9 @@ public class InboundTracksRepository {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, InboundTrack> fetchRecursively(Set<String> inboundTrackIds) {
+        return this.getAll(inboundTrackIds);
+    }
 
     synchronized void update(Models.InboundTrack inboundTrack) {
         this.updated.put(inboundTrack.getTrackId(), inboundTrack);
@@ -110,6 +114,9 @@ public class InboundTracksRepository {
     }
 
     synchronized void deleteAll(Set<String> trackIds) {
+        if (trackIds == null || trackIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(trackIds);
         trackIds.forEach(trackId -> {
             var removed = this.updated.remove(trackId);
@@ -131,7 +138,17 @@ public class InboundTracksRepository {
         this.fetched.clear();
     }
 
-    InboundTrack wrapInboundVideoTrack(Models.InboundTrack model) {
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
+    }
+
+    InboundTrack wrapInboundTrack(Models.InboundTrack model) {
         var result =  new InboundTrack(
                 this.peerConnectionsRepositoryBeanProvider.get(),
                 model,
@@ -146,7 +163,7 @@ public class InboundTracksRepository {
         if (model == null) {
             return null;
         }
-        return this.wrapInboundVideoTrack(model);
+        return this.wrapInboundTrack(model);
     }
 
     private Map<String, InboundTrack> fetchAll(Set<String> trackIds) {
@@ -159,8 +176,9 @@ public class InboundTracksRepository {
                 Map.Entry::getKey,
                 entry -> {
                     var model = entry.getValue();
-                    return this.wrapInboundVideoTrack(model);
+                    return this.wrapInboundTrack(model);
                 }
         ));
     }
+
 }

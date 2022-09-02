@@ -5,7 +5,6 @@ import org.observertc.schemas.samples.Samples.SfuSample;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
@@ -52,7 +51,7 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
         if (Objects.isNull(sfuSample)) {
             return;
         }
-        UUID sfuId = sfuSample.sfuId;
+        String sfuId = sfuSample.sfuId;
         streamTransports(sfuSample).forEach(transport -> this.visitSfuTransport(obj, sfuId, transport));
         streamOutboundRtpPads(sfuSample).forEach(sfuRtpSource -> this.visitSfuOutboundRtpPads(obj, sfuId, sfuRtpSource));
         streamInboundRtpPads(sfuSample).forEach(sfuRtpSink -> this.visitSfuInboundRtpPads(obj, sfuId, sfuRtpSink));
@@ -60,12 +59,12 @@ public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
     }
 
 
-    void visitSfuTransport(T obj, UUID sfuId, SfuSample.SfuTransport sfuTransport);
+    void visitSfuTransport(T obj, String sfuId, SfuSample.SfuTransport sfuTransport);
 
-    void visitSfuOutboundRtpPads(T obj, UUID sfuId, SfuSample.SfuOutboundRtpPad sfuRtpSource);
+    void visitSfuOutboundRtpPads(T obj, String sfuId, SfuSample.SfuOutboundRtpPad sfuRtpSource);
 
-    void visitSfuInboundRtpPads(T obj, UUID sfuId, SfuSample.SfuInboundRtpPad sfuRtpSink);
+    void visitSfuInboundRtpPads(T obj, String sfuId, SfuSample.SfuInboundRtpPad sfuRtpSink);
 
-    void visitSctpStream(T obj, UUID sfuId, SfuSample.SfuSctpChannel sctpStream);
+    void visitSctpStream(T obj, String sfuId, SfuSample.SfuSctpChannel sctpStream);
 
 }

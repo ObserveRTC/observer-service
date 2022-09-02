@@ -6,7 +6,10 @@ import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtpPadReport>> {
@@ -47,45 +50,45 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setCallId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setCallId(String value) {
         if (Objects.isNull(value)) return this;
-        this.callId = value.toString();
+        this.callId = value;
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setClientId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setClientId(String value) {
         if (Objects.isNull(value)) return this;
-        this.clientId = value.toString();
+        this.clientId = value;
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setTrackId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setTrackId(String value) {
         if (Objects.isNull(value)) return this;
-        this.trackId = value.toString();
+        this.trackId = value;
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setRemoteSfuId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setRemoteSfuId(String value) {
         if (Objects.isNull(value)) return this;
-        this.remoteSfuId = value.toString();
+        this.remoteSfuId = value;
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setRemoteTransportId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setRemoteTransportId(String value) {
         if (Objects.isNull(value)) return this;
-        this.remoteTransportId = value.toString();
+        this.remoteTransportId = value;
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setRemoteSinkId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setRemoteSinkId(String value) {
         if (Objects.isNull(value)) return this;
-        this.remoteSinkId = value.toString();
+        this.remoteSinkId = value;
         return this;
     }
 
-    public SfuInboundRtpPadReportsDepot setRemoteRtpPadId(UUID value) {
+    public SfuInboundRtpPadReportsDepot setRemoteRtpPadId(String value) {
         if (Objects.isNull(value)) return this;
-        this.remoteRtpPadId = value.toString();
+        this.remoteRtpPadId = value;
         return this;
     }
 

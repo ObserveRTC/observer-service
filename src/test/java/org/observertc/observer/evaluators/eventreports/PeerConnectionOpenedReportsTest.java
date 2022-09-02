@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ import java.util.List;
 class PeerConnectionOpenedReportsTest {
 
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     PeerConnectionOpenedReports peerConnectionOpenedReports;
 
     @Test
     void shouldHasExpectedValues() throws Throwable {
-        var expected = dtoGenerators.getPeerConnectionDTO();
+        var expected = modelsGenerator.getPeerConnectionDTO();
 
         var reports = this.peerConnectionOpenedReports.mapAddedPeerConnections(List.of(expected));
         var actual = reports.get(0);

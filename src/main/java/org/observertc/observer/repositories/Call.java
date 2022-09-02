@@ -40,6 +40,10 @@ public class Call {
         return this.model.getCallId();
     }
 
+    public Long getStarted() {
+        return this.model.getStarted();
+    }
+
     public String getMarker() {
         return this.model.getMarker();
     }
@@ -72,7 +76,7 @@ public class Call {
         return this.clientsRepo.get(clientId);
     }
 
-    public Client addClient(String clientId, String mediaUnitId, String timeZoneId, Long timestamp) throws AlreadyCreatedException {
+    public Client addClient(String clientId, String userId, String mediaUnitId, String timeZoneId, Long timestamp) throws AlreadyCreatedException {
         var clientIds = this.clientIdsHolder.get();
         if (clientIds.contains(clientId)) {
             throw AlreadyCreatedException.wrapClientId(clientId);
@@ -84,6 +88,8 @@ public class Call {
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
+                .setUserId(userId)
+                .setTouched(timestamp)
                 .setMediaUnitId(mediaUnitId)
                 .setJoined(timestamp)
                 .setTimeZoneId(timeZoneId)

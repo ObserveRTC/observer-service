@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories;
 
+import org.observertc.observer.common.MediaKind;
 import org.observertc.schemas.dtos.Models;
 
 import java.util.List;
@@ -41,6 +42,11 @@ public class InboundTrack {
         return model.getCallId();
     }
 
+    public String getUserId() {
+        var model = modelHolder.get();
+        return model.getUserId();
+    }
+
     public String getClientId() {
         var model = modelHolder.get();
         return model.getClientId();
@@ -54,6 +60,32 @@ public class InboundTrack {
     public String getTrackId() {
         var model = modelHolder.get();
         return model.getTrackId();
+    }
+
+    public MediaKind getKind() {
+        var model = modelHolder.get();
+        return MediaKind.valueOf(model.getKind());
+    }
+
+    public Long getAdded() {
+        var model = modelHolder.get();
+        return model.getAdded();
+    }
+
+    public Long getTouched() {
+        var model = modelHolder.get();
+        if (!model.hasTouched()) {
+            return null;
+        }
+        return model.getTouched();
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.InboundTrack.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
     }
 
     public String getMediaUnitId() {
@@ -127,6 +159,10 @@ public class InboundTrack {
                 .build();
         this.updateModel(newModel);
         return true;
+    }
+
+    public Models.InboundTrack getModel() {
+        return this.modelHolder.get();
     }
 
     private void updateModel(Models.InboundTrack newModel) {

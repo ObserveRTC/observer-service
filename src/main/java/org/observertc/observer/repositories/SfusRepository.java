@@ -6,6 +6,7 @@ import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -18,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfusRepository {
+public class SfusRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(SfusRepository.class);
 
@@ -83,6 +84,9 @@ public class SfusRepository {
     }
 
     synchronized void deleteAll(Set<String> sfuIds) {
+        if (sfuIds == null || sfuIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(sfuIds);
         sfuIds.forEach(sfuId -> {
             var removed = this.updated.remove(sfuId);
@@ -94,6 +98,12 @@ public class SfusRepository {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var sfus = this.getAll(this.deleted);
+            var sfuTransportIds = sfus.values().stream()
+                    .map(Sfu::getSfuTransportIds)
+                    .flatMap(s -> s.stream())
+                    .collect(Collectors.toSet());
+            this.sfuTransportsRepository.deleteAll(sfuTransportIds);
             this.storage.deleteAll(this.deleted);
             this.deleted.clear();
         }
@@ -144,6 +154,16 @@ public class SfusRepository {
         }
         var set = Set.copyOf(sfuIds);
         return this.fetched.getAll(set);
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     private Sfu fetchOne(String sfuId) {

@@ -25,6 +25,10 @@ public class Client {
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
+    public ServiceRoomId getServiceRoomId() {
+        return this.serviceRoomId;
+    }
+
     public Call getCall() {
         return this.callsRepo.get(this.serviceRoomId);
     }
@@ -44,14 +48,40 @@ public class Client {
         return model.getCallId();
     }
 
+    public String getUserId() {
+        var model = modelHolder.get();
+        return model.getUserId();
+    }
+
     public String getClientId() {
         var model = modelHolder.get();
         return model.getClientId();
     }
 
-    public String getUserId() {
+    public String getTimeZoneId() {
         var model = modelHolder.get();
-        return model.getUserId();
+        return model.getTimeZoneId();
+    }
+
+    public Long getJoined() {
+        var model = modelHolder.get();
+        return model.getJoined();
+    }
+
+    public Long getTouched() {
+        var model = modelHolder.get();
+        if (!model.hasTouched()) {
+            return null;
+        }
+        return model.getTouched();
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.Client.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
     }
 
     public String getMediaUnitId() {
@@ -100,6 +130,7 @@ public class Client {
                 .setPeerConnectionId(peerConnectionId)
                 .setMediaUnitId(model.getMediaUnitId())
                 .setOpened(timestamp)
+                .setTouched(timestamp)
                 .setMarker(model.getMarker())
                 .build();
 
@@ -134,6 +165,10 @@ public class Client {
         this.updateModel(newModel);
         this.peerConnectionsRepositoryRepo.delete(peerConnectionId);
         return true;
+    }
+
+    public Models.Client getModel() {
+        return this.modelHolder.get();
     }
 
     private void updateModel(Models.Client newModel) {

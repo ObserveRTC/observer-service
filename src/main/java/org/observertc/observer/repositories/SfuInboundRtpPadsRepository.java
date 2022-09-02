@@ -3,10 +3,10 @@ package org.observertc.observer.repositories;
 import io.github.balazskreith.hamok.ModifiedStorageEntry;
 import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
-import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfuInboundRtpPadsRepository {
+public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuInboundRtpPadsRepository.class);
 
@@ -35,7 +35,7 @@ public class SfuInboundRtpPadsRepository {
     private ObserverConfig.InternalBuffersConfig bufferConfig;
 
     @Inject
-    BeanProvider<SfuMediaStreamsRepository> sfuMediaStreamsRepositoryBeanProvider;
+    SfuMediaStreamsRepository sfuMediaStreamsRepository;
 
     private Map<String, Models.SfuInboundRtpPad> updated;
     private Set<String> deleted;
@@ -80,7 +80,10 @@ public class SfuInboundRtpPadsRepository {
         }
     }
 
-    synchronized void deleteAll(Set<String> rtpPadIds) {
+    public synchronized void deleteAll(Set<String> rtpPadIds) {
+        if (rtpPadIds == null || rtpPadIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(rtpPadIds);
         rtpPadIds.forEach(rtpPadId -> {
             var removed = this.updated.remove(rtpPadId);
@@ -100,6 +103,16 @@ public class SfuInboundRtpPadsRepository {
             this.updated.clear();
         }
         this.fetched.clear();
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     Observable<List<ModifiedStorageEntry<String, Models.SfuInboundRtpPad>>> observableDeletedEntries() {
@@ -155,7 +168,8 @@ public class SfuInboundRtpPadsRepository {
     SfuInboundRtpPad wrapInboundRtpPad(Models.SfuInboundRtpPad model) {
         var result = new SfuInboundRtpPad(
                 model,
-                this.sfuMediaStreamsRepositoryBeanProvider.get()
+                this,
+                this.sfuMediaStreamsRepository
         );
         this.fetched.add(result.getRtpPadId(), result);
         return result;

@@ -8,7 +8,7 @@ import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.evaluators.eventreports.attachments.ClientAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 class ClientLeftReportsTest {
 
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     ClientLeftReports clientLeftReports;
@@ -27,7 +27,7 @@ class ClientLeftReportsTest {
 
     @Test
     void shouldHasExpectedValuesWhenRemoved() throws Throwable {
-        var expected = dtoGenerators.getClientDTO();
+        var expected = modelsGenerator.getClientDTO();
 
         var reports = this.clientLeftReports.mapRemovedClients(List.of(expected));
         var actual = reports.get(0);
@@ -57,7 +57,7 @@ class ClientLeftReportsTest {
 
     @Test
     void shouldHasExpectedValuesWhenExpired() throws Throwable {
-        var expected = dtoGenerators.getClientDTO();
+        var expected = modelsGenerator.getClientDTO();
         var lastTouched = Instant.now().minusMillis(6000).toEpochMilli();
         var expired = RepositoryExpiredEvent.make(expected, lastTouched);
 
@@ -69,15 +69,15 @@ class ClientLeftReportsTest {
 
     @Test
     void shouldRemoveAbandonedCall() {
-        var callDTO = this.dtoGenerators.getCallDTO();
-        var clientDTO = this.dtoGenerators.getClientDTOBuilder()
+        var callDTO = this.modelsGenerator.getCallDTO();
+        var clientDTO = this.modelsGenerator.getClientDTOBuilder()
                 .withCallId(callDTO.callId)
                 .build();
-        var peerConnectionDTO = this.dtoGenerators.getPeerConnectionDTOBuilder()
+        var peerConnectionDTO = this.modelsGenerator.getPeerConnectionDTOBuilder()
                 .withCallId(callDTO.callId)
                 .withClientId(clientDTO.clientId)
                 .build();
-        var mediaTrackDTO = this.dtoGenerators.getMediaTrackDTOBuilder()
+        var mediaTrackDTO = this.modelsGenerator.getMediaTrackDTOBuilder()
                 .withCallId(callDTO.callId)
                 .withClientId(clientDTO.clientId)
                 .withPeerConnectionId(peerConnectionDTO.peerConnectionId)

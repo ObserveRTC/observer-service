@@ -50,6 +50,22 @@ public class SfuSctpStream {
         return model.getOpened();
     }
 
+    public Long getTouched() {
+        var model = modelHolder.get();
+        if (!model.hasTouched()) {
+            return null;
+        }
+        return model.getTouched();
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuSctpStream.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
     public String getMediaUnitId() {
         var model = this.modelHolder.get();
         return model.getMediaUnitId();
@@ -58,5 +74,14 @@ public class SfuSctpStream {
     public String getMarker() {
         var model = this.modelHolder.get();
         return model.getMarker();
+    }
+
+    public Models.SfuSctpStream getModel() {
+        return this.modelHolder.get();
+    }
+
+    private void updateModel(Models.SfuSctpStream newModel) {
+        this.modelHolder.set(newModel);
+        this.sfuSctpStreamsRepository.update(newModel);
     }
 }

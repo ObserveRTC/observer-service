@@ -4,8 +4,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.dto.*;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.time.Instant;
 import java.util.List;
@@ -24,12 +23,12 @@ class RepositoryEventsTest {
     @Inject
     RepositoryEvents repositoryEvents;
 
-    DTOGenerators dtoGenerators = new DTOGenerators();
+    ModelsGenerator modelsGenerator = new ModelsGenerator();
 
     @Test
     @DisplayName("When callDTO is added and removed Then corresponding events are triggered")
     void test_1() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getCallDTO();
+        var subject = modelsGenerator.getCallDTO();
         var added = new CompletableFuture<List<CallDTO>>();
         var removed = new CompletableFuture<List<CallDTO>>();
 
@@ -44,12 +43,12 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When clientDTO is added and removed Then corresponding events are triggered")
     void test_2() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getClientDTO();
+        var subject = modelsGenerator.getClientDTO();
         var added = new CompletableFuture<List<ClientDTO>>();
         var removed = new CompletableFuture<List<ClientDTO>>();
 
         repositoryEvents.addedClients().subscribe(added::complete);
-        repositoryEvents.removedClients().subscribe(removed::complete);
+        repositoryEvents.deletedClients().subscribe(removed::complete);
 
         this.hamokStorages.getClients().put(subject.clientId, subject);
         this.hamokStorages.getClients().remove(subject.clientId);
@@ -59,7 +58,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When clientDTO is added and waited to expire Then corresponding events are triggered")
     void test_3() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getClientDTO();
+        var subject = modelsGenerator.getClientDTO();
         var expired = new CompletableFuture<List<RepositoryExpiredEvent<ClientDTO>>>();
 
         repositoryEvents.expiredClients().subscribe(expired::complete);
@@ -72,7 +71,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuStreamDTO is added and removed Then corresponding events are triggered")
     void test_4() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuStreamDTO();
+        var subject = modelsGenerator.getSfuStreamDTO();
         var added = new CompletableFuture<List<SfuStreamDTO>>();
         var removed = new CompletableFuture<List<SfuStreamDTO>>();
 
@@ -87,7 +86,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuStreamDTO is added and waited to expire Then corresponding events are triggered")
     void test_5() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuStreamDTO();
+        var subject = modelsGenerator.getSfuStreamDTO();
         var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuStreamDTO>>>();
 
         this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
@@ -101,7 +100,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuSinkDTO is added and removed Then corresponding events are triggered")
     void test_6() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuSinkDTO();
+        var subject = modelsGenerator.getSfuSinkDTO();
         var added = new CompletableFuture<List<SfuSinkDTO>>();
         var removed = new CompletableFuture<List<SfuSinkDTO>>();
 
@@ -116,7 +115,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuSinkDTO is added and waited to expire Then corresponding events are triggered")
     void test_7() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuSinkDTO();
+        var subject = modelsGenerator.getSfuSinkDTO();
         var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuSinkDTO>>>();
 
         this.hamokStorages.getSfuSinks().put(subject.sfuStreamId, subject);
@@ -131,7 +130,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When PeerConnectionDTO is added and removed Then corresponding events are triggered")
     void test_8() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getPeerConnectionDTO();
+        var subject = modelsGenerator.getPeerConnectionDTO();
         var added = new CompletableFuture<List<PeerConnectionDTO>>();
         var removed = new CompletableFuture<List<PeerConnectionDTO>>();
 
@@ -146,7 +145,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When PeerConnectionDTO is added and waited to expire Then corresponding events are triggered")
     void test_9() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getPeerConnectionDTO();
+        var subject = modelsGenerator.getPeerConnectionDTO();
         var expired = new CompletableFuture<List<RepositoryExpiredEvent<PeerConnectionDTO>>>();
 
         repositoryEvents.expiredPeerConnection().subscribe(expired::complete);
@@ -158,7 +157,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When PeerConnectionDTO is added and removed Then corresponding events are triggered")
     void test_10() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getMediaTrackDTO();
+        var subject = modelsGenerator.getMediaTrackDTO();
         var added = new CompletableFuture<List<MediaTrackDTO>>();
         var removed = new CompletableFuture<List<MediaTrackDTO>>();
 
@@ -173,7 +172,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When PeerConnectionDTO is added and waited to expire Then corresponding events are triggered")
     void test_11() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getMediaTrackDTO();
+        var subject = modelsGenerator.getMediaTrackDTO();
         var expired = new CompletableFuture<List<RepositoryExpiredEvent<MediaTrackDTO>>>();
 
         repositoryEvents.expiredMediaTracks().subscribe(expired::complete);
@@ -186,7 +185,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuRtpPad is added, changed or removed Then corresponding events are triggered")
     void test_12() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuRtpPadDTO();
+        var subject = modelsGenerator.getSfuRtpPadDTO();
         var added = new CompletableFuture<List<SfuRtpPadDTO>>();
         var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuRtpPadDTO>>>();
         var removed = new CompletableFuture<List<SfuRtpPadDTO>>();
@@ -206,7 +205,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuRtpPad is added and waited to expire Then corresponding events are triggered")
     void test_13() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuRtpPadDTO();
+        var subject = modelsGenerator.getSfuRtpPadDTO();
         var expired = new CompletableFuture<List<RepositoryExpiredEvent<SfuRtpPadDTO>>>();
 
         repositoryEvents.expiredSfuRtpPads().subscribe(expired::complete);
@@ -218,7 +217,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuTransport is added, changed or removed Then corresponding events are triggered")
     void test_14() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuTransportDTO();
+        var subject = modelsGenerator.getSfuTransportDTO();
         var added = new CompletableFuture<List<SfuTransportDTO>>();
         var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuTransportDTO>>>();
         var removed = new CompletableFuture<List<SfuTransportDTO>>();
@@ -238,7 +237,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuTransport is added and waited to expire Then corresponding events are triggered")
     void test_15() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuTransportDTO();
+        var subject = modelsGenerator.getSfuTransportDTO();
         var expired = new CompletableFuture<List<RepositoryExpiredEvent<SfuTransportDTO>>>();
 
         repositoryEvents.expiredSfuTransports().subscribe(expired::complete);
@@ -251,7 +250,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuDTO is added, changed or removed Then corresponding events are triggered")
     void test_16() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuDTO();
+        var subject = modelsGenerator.getSfuDTO();
         var added = new CompletableFuture<List<SfuDTO>>();
         var removed = new CompletableFuture<List<SfuDTO>>();
 
@@ -269,7 +268,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuDTO is added and waited to expire Then corresponding events are triggered")
     void test_17() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = dtoGenerators.getSfuDTO();
+        var subject = modelsGenerator.getSfuDTO();
         var expired = new CompletableFuture<List<RepositoryExpiredEvent<SfuDTO>>>();
 
         repositoryEvents.expiredSfu().subscribe(expired::complete);

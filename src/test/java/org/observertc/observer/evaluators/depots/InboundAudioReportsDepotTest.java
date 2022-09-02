@@ -15,15 +15,15 @@ class InboundAudioReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var serviceId = observedClientSample.getServiceId();
         var mediaUnitId = observedClientSample.getMediaUnitId();
         var clientSample = observedClientSample.getClientSample();
         var label = UUID.randomUUID().toString();
-        var remoteClientId = UUID.randomUUID();
-        var remotePeerConnectionId = UUID.randomUUID();
-        var remoteTrackId = UUID.randomUUID();
+        var remoteClientId = UUID.randomUUID().toString();
+        var remotePeerConnectionId = UUID.randomUUID().toString();
+        var remoteTrackId = UUID.randomUUID().toString();
         var remoteUserId = randomGenerators.getRandomTestUserIds();
         var expected = clientSample.inboundAudioTracks[0];
         this.depot
@@ -106,7 +106,7 @@ class InboundAudioReportsDepotTest {
     @Test
     @Order(3)
     void shouldBeCleaned() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var expected = observedClientSample.getClientSample().inboundAudioTracks[0];
         this.depot

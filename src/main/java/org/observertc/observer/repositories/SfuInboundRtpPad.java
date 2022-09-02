@@ -7,13 +7,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SfuInboundRtpPad {
 
     private final AtomicReference<Models.SfuInboundRtpPad> modelHolder;
+    private final SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
     private final SfuMediaStreamsRepository sfuMediaStreamsRepository;
 
     SfuInboundRtpPad(
             Models.SfuInboundRtpPad model,
+            SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
             SfuMediaStreamsRepository sfuMediaStreamsRepository
     ) {
         this.modelHolder = new AtomicReference<>(model);
+        this.sfuInboundRtpPadsRepository = sfuInboundRtpPadsRepository;
         this.sfuMediaStreamsRepository = sfuMediaStreamsRepository;
     }
 
@@ -62,6 +65,22 @@ public class SfuInboundRtpPad {
         return model.getAdded();
     }
 
+    public Long getTouched() {
+        var model = modelHolder.get();
+        if (!model.hasTouched()) {
+            return null;
+        }
+        return model.getTouched();
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuInboundRtpPad.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
     public String getMediaUnitId() {
         var model = this.modelHolder.get();
         return model.getMediaUnitId();
@@ -70,6 +89,15 @@ public class SfuInboundRtpPad {
     public String getMarker() {
         var model = this.modelHolder.get();
         return model.getMarker();
+    }
+
+    private void updateModel(Models.SfuInboundRtpPad newModel) {
+        this.modelHolder.set(newModel);
+        this.sfuInboundRtpPadsRepository.update(newModel);
+    }
+
+    public Models.SfuInboundRtpPad getModel() {
+        return this.modelHolder.get();
     }
 
 }

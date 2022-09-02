@@ -22,12 +22,12 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
     private String marker = null;
     private String remoteClientId = null;
     private Integer timeZoneOffsetInHours = null;
-    private Set<UUID> peerConnectionIds = new HashSet<>();
-    private Map<UUID, RtpSession> inboundAudioTracks = new HashMap<>();
-    private Map<UUID, RtpSession> inboundVideoTracks = new HashMap<>();
-    private Map<UUID, RtpSession> outboundAudioTracks = new HashMap<>();
-    private Map<UUID, RtpSession> outboundVideoTracks = new HashMap<>();
-    private Map<UUID, DataChannelSession> dataChannels = new HashMap<>();
+    private Set<String> peerConnectionIds = new HashSet<>();
+    private Map<String, RtpSession> inboundAudioTracks = new HashMap<>();
+    private Map<String, RtpSession> inboundVideoTracks = new HashMap<>();
+    private Map<String, RtpSession> outboundAudioTracks = new HashMap<>();
+    private Map<String, RtpSession> outboundVideoTracks = new HashMap<>();
+    private Map<String, DataChannelSession> dataChannels = new HashMap<>();
 
     private Queue<Samples.ClientSample.Engine> addedEngines = new LinkedList<>();
     private Queue<Samples.ClientSample.Platform> addedPlatforms = new LinkedList<>();
@@ -223,7 +223,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public ClientSideSamplesGenerator addPeerConnection(UUID value) {
+    public ClientSideSamplesGenerator addPeerConnection(String value) {
         this.peerConnectionIds.add(value);
         return this;
     }
@@ -268,18 +268,18 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public ClientSideSamplesGenerator addDataChannel(UUID peerConnectionId, UUID channelId) {
+    public ClientSideSamplesGenerator addDataChannel(String peerConnectionId, String channelId) {
         var session = new DataChannelSession(peerConnectionId);
         this.dataChannels.put(channelId, session);
         return this;
     }
 
 
-    public ClientSideSamplesGenerator addInboundAudioTrack(UUID peerConnectionId, UUID trackId, Long SSRC) {
+    public ClientSideSamplesGenerator addInboundAudioTrack(String peerConnectionId, String trackId, Long SSRC) {
         return this.addInboundAudioTrack(peerConnectionId, trackId, SSRC, null, null);
     }
 
-    public ClientSideSamplesGenerator addInboundAudioTrack(UUID peerConnectionId, UUID trackId, Long SSRC, UUID sfuStreamId, UUID sfuSinkId) {
+    public ClientSideSamplesGenerator addInboundAudioTrack(String peerConnectionId, String trackId, Long SSRC, String sfuStreamId, String sfuSinkId) {
         if (!this.peerConnectionIds.contains(peerConnectionId)) {
             throw new RuntimeException("Add the peer connection id to the generator before you add any session related to it");
         }
@@ -288,16 +288,16 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public ClientSideSamplesGenerator removeInboundAudioTrack(UUID trackId) {
+    public ClientSideSamplesGenerator removeInboundAudioTrack(String trackId) {
         this.inboundAudioTracks.remove(trackId);
         return this;
     }
 
-    public ClientSideSamplesGenerator addInboundVideoTrack(UUID peerConnectionId, UUID trackId, Long SSRC) {
+    public ClientSideSamplesGenerator addInboundVideoTrack(String peerConnectionId, String trackId, Long SSRC) {
         return this.addInboundVideoTrack(peerConnectionId, trackId, SSRC, null, null);
     }
 
-    public ClientSideSamplesGenerator addInboundVideoTrack(UUID peerConnectionId, UUID trackId, Long SSRC, UUID sfuStreamId, UUID sfuSinkId) {
+    public ClientSideSamplesGenerator addInboundVideoTrack(String peerConnectionId, String trackId, Long SSRC, String sfuStreamId, String sfuSinkId) {
         if (!this.peerConnectionIds.contains(peerConnectionId)) {
             throw new RuntimeException("Add the peer connection id to the generator before you add any session related to it");
         }
@@ -306,16 +306,16 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public ClientSideSamplesGenerator removeInboundVideoTrack(UUID trackId) {
+    public ClientSideSamplesGenerator removeInboundVideoTrack(String trackId) {
         this.outboundVideoTracks.remove(trackId);
         return this;
     }
 
-    public ClientSideSamplesGenerator addOutboundAudioTrack(UUID peerConnectionId, UUID trackId, Long SSRC) {
+    public ClientSideSamplesGenerator addOutboundAudioTrack(String peerConnectionId, String trackId, Long SSRC) {
         return this.addOutboundAudioTrack(peerConnectionId, trackId, SSRC, null);
     }
 
-    public ClientSideSamplesGenerator addOutboundAudioTrack(UUID peerConnectionId, UUID trackId, Long SSRC, UUID sfuStreamId) {
+    public ClientSideSamplesGenerator addOutboundAudioTrack(String peerConnectionId, String trackId, Long SSRC, String sfuStreamId) {
         if (!this.peerConnectionIds.contains(peerConnectionId)) {
             throw new RuntimeException("Add the peer connection id to the generator before you add any session related to it");
         }
@@ -324,16 +324,16 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public ClientSideSamplesGenerator removeOutboundAudioTrack(UUID trackId) {
+    public ClientSideSamplesGenerator removeOutboundAudioTrack(String trackId) {
         this.outboundAudioTracks.remove(trackId);
         return this;
     }
 
-    public ClientSideSamplesGenerator addOutboundVideoTrack(UUID peerConnectionId, UUID trackId, Long SSRC) {
+    public ClientSideSamplesGenerator addOutboundVideoTrack(String peerConnectionId, String trackId, Long SSRC) {
         return this.addOutboundVideoTrack(peerConnectionId, trackId, SSRC, null);
     }
 
-    public ClientSideSamplesGenerator addOutboundVideoTrack(UUID peerConnectionId, UUID trackId, Long SSRC, UUID sfuStreamId) {
+    public ClientSideSamplesGenerator addOutboundVideoTrack(String peerConnectionId, String trackId, Long SSRC, String sfuStreamId) {
         if (!this.peerConnectionIds.contains(peerConnectionId)) {
             throw new RuntimeException("Add the peer connection id to the generator before you add any session related to it");
         }
@@ -756,12 +756,12 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
     }
 
     private class RtpSession {
-        final UUID sfuStreamId;
-        final UUID sfuSinkId;
+        final String sfuStreamId;
+        final String sfuSinkId;
         final Long SSRC;
-        final UUID peerConnectionId;
+        final String peerConnectionId;
 
-        RtpSession(UUID sfuStreamId, UUID sfuSinkId, Long ssrc, UUID peerConnectionId) {
+        RtpSession(String sfuStreamId, String sfuSinkId, Long ssrc, String peerConnectionId) {
             this.sfuStreamId = sfuStreamId;
             this.sfuSinkId = sfuSinkId;
             SSRC = ssrc;
@@ -771,9 +771,9 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
 
     private class DataChannelSession {
 
-        public final UUID peerConnectionId;
+        public final String peerConnectionId;
 
-        private DataChannelSession(UUID peerConnectionId) {
+        private DataChannelSession(String peerConnectionId) {
             this.peerConnectionId = peerConnectionId;
         }
     }

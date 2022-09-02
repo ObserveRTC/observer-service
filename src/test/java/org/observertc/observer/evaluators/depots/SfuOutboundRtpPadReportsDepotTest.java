@@ -13,14 +13,14 @@ class SfuOutboundRtpPadReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedSfuSample = this.generator.generateObservedSfuSample();
         var serviceId = observedSfuSample.getServiceId();
         var mediaUnitId = observedSfuSample.getMediaUnitId();
         var sfuSample = observedSfuSample.getSfuSample();
         var expected = sfuSample.outboundRtpPads[0];
-        var clientId = UUID.randomUUID();
-        var trackId = UUID.randomUUID();
+        var clientId = UUID.randomUUID().toString();
+        var trackId = UUID.randomUUID().toString();
         this.depot
                 .setSfuOutboundRtpPad(expected)
                 .setObservedSfuSample(observedSfuSample)

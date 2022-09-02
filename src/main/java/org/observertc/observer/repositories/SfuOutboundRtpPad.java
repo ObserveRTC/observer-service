@@ -70,6 +70,22 @@ public class SfuOutboundRtpPad {
         return model.getAdded();
     }
 
+    public Long getTouched() {
+        var model = modelHolder.get();
+        if (!model.hasTouched()) {
+            return null;
+        }
+        return model.getTouched();
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuOutboundRtpPad.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
     public String getMediaUnitId() {
         var model = this.modelHolder.get();
         return model.getMediaUnitId();
@@ -78,5 +94,14 @@ public class SfuOutboundRtpPad {
     public String getMarker() {
         var model = this.modelHolder.get();
         return model.getMarker();
+    }
+
+    public Models.SfuOutboundRtpPad getModel() {
+        return this.modelHolder.get();
+    }
+
+    private void updateModel(Models.SfuOutboundRtpPad newModel) {
+        this.modelHolder.set(newModel);
+        this.sfuOutboundRtpPadsRepository.update(newModel);
     }
 }

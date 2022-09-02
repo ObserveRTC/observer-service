@@ -1,27 +1,28 @@
 package org.observertc.observer.evaluators.eventreports;
 
-import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Prototype
+@Singleton
 public class CallStartedReports {
 
     private static final Logger logger = LoggerFactory.getLogger(CallStartedReports.class);
 
-    private Subject<CallEventReport> subject = PublishSubject.<CallEventReport>create().toSerialized();
+    private Subject<List<CallEventReport>> subject = PublishSubject.<List<CallEventReport>>create().toSerialized();
 
-    public void accept(List<Models.Call> callDTOs) {
+    public void accept(Collection<Models.Call> callDTOs) {
         if (Objects.isNull(callDTOs) || callDTOs.size() < 1) {
             return;
         }
@@ -31,7 +32,7 @@ public class CallStartedReports {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        reports.forEach(this.subject::onNext);
+        this.subject.onNext(reports);
     }
 
     private CallEventReport makeReport(Models.Call callDTO) {
@@ -54,7 +55,7 @@ public class CallStartedReports {
         }
     }
 
-    public Observable<CallEventReport> getOutput() {
+    public Observable<List<CallEventReport>> getOutput() {
         return this.subject;
     }
 }

@@ -13,7 +13,7 @@ class SfuSctpStreamReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedSfuSample = this.generator.generateObservedSfuSample();
         var serviceId = observedSfuSample.getServiceId();
         var roomId = UUID.randomUUID().toString();

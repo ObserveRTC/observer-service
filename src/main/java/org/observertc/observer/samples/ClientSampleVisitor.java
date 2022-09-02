@@ -5,7 +5,6 @@ import org.observertc.schemas.samples.Samples.ClientSample;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
@@ -139,7 +138,7 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         if (Objects.isNull(clientSample)) {
             return;
         }
-        UUID clientId = clientSample.clientId;
+        String clientId = clientSample.clientId;
         streamCertificates(clientSample).forEach(certificate -> this.visitCertificate(obj, clientId, certificate));
         streamCodecs(clientSample).forEach(codec -> this.visitCodec(obj, clientId, codec));
         streamDataChannels(clientSample).forEach(dataChannel -> this.visitDataChannel(obj, clientId, dataChannel));
@@ -161,38 +160,38 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
 
 
 
-    void visitCertificate(T obj, UUID clientId, ClientSample.Certificate certificate);
+    void visitCertificate(T obj, String clientId, ClientSample.Certificate certificate);
 
-    void visitCodec(T obj, UUID clientId, ClientSample.MediaCodecStats codec);
+    void visitCodec(T obj, String clientId, ClientSample.MediaCodecStats codec);
 
-    void visitDataChannel(T obj, UUID clientId, ClientSample.DataChannel dataChannel);
+    void visitDataChannel(T obj, String clientId, ClientSample.DataChannel dataChannel);
 
-    void visitExtensionStat(T obj, UUID clientId, ClientSample.ExtensionStat extensionStat);
+    void visitExtensionStat(T obj, String clientId, ClientSample.ExtensionStat extensionStat);
 
-    void visitIceLocalCandidate(T obj, UUID clientId, ClientSample.IceLocalCandidate iceLocalCandidate);
+    void visitIceLocalCandidate(T obj, String clientId, ClientSample.IceLocalCandidate iceLocalCandidate);
 
-    void visitIceRemoteCandidate(T obj, UUID clientId, ClientSample.IceRemoteCandidate iceRemoteCandidate);
+    void visitIceRemoteCandidate(T obj, String clientId, ClientSample.IceRemoteCandidate iceRemoteCandidate);
 
-    void visitIceServer(T obj, UUID clientId, String iceServer);
+    void visitIceServer(T obj, String clientId, String iceServer);
 
-    void visitInboundAudioTrack(T obj, UUID clientId, ClientSample.InboundAudioTrack inboundAudioTrack);
+    void visitInboundAudioTrack(T obj, String clientId, ClientSample.InboundAudioTrack inboundAudioTrack);
 
-    void visitInboundVideoTrack(T obj, UUID clientId, ClientSample.InboundVideoTrack inboundVideoTrack);
+    void visitInboundVideoTrack(T obj, String clientId, ClientSample.InboundVideoTrack inboundVideoTrack);
 
-    void visitOutboundAudioTrack(T obj, UUID clientId, ClientSample.OutboundAudioTrack outboundAudioTrack);
+    void visitOutboundAudioTrack(T obj, String clientId, ClientSample.OutboundAudioTrack outboundAudioTrack);
 
-    void visitOutboundVideoTrack(T obj, UUID clientId, ClientSample.OutboundVideoTrack outboundVideoTrack);
+    void visitOutboundVideoTrack(T obj, String clientId, ClientSample.OutboundVideoTrack outboundVideoTrack);
 
-    void visitMediaConstraint(T obj, UUID clientId, String mediaConstraint);
+    void visitMediaConstraint(T obj, String clientId, String mediaConstraint);
 
-    void visitMediaDevice(T obj, UUID clientId, ClientSample.MediaDevice mediaDevice);
+    void visitMediaDevice(T obj, String clientId, ClientSample.MediaDevice mediaDevice);
 
-    void visitMediaSource(T obj, UUID clientId, ClientSample.MediaSourceStat mediaSource);
+    void visitMediaSource(T obj, String clientId, ClientSample.MediaSourceStat mediaSource);
 
-    void visitPeerConnectionTransport(T obj, UUID clientId, ClientSample.PeerConnectionTransport pcTransport);
+    void visitPeerConnectionTransport(T obj, String clientId, ClientSample.PeerConnectionTransport pcTransport);
 
-    void visitUserMediaError(T obj, UUID clientId, String userMediaError);
+    void visitUserMediaError(T obj, String clientId, String userMediaError);
 
-    void visitLocalSdp(T obj, UUID clientId, String userMediaError);
+    void visitLocalSdp(T obj, String clientId, String userMediaError);
 
 }

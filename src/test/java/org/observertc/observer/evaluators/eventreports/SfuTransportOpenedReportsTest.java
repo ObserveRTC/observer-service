@@ -5,21 +5,21 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.events.SfuEventType;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.util.List;
 
 @MicronautTest
 class SfuTransportOpenedReportsTest {
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     SfuTransportOpenedReports sfuTransportOpenedReports;
 
     @Test
     void shouldHasExpectedValues() throws Throwable {
-        var expected = dtoGenerators.getSfuTransportDTO();
+        var expected = modelsGenerator.getSfuTransportDTO();
 
         var reports = this.sfuTransportOpenedReports.mapAddedSfuTransport(List.of(expected));
         var actual = reports.get(0);

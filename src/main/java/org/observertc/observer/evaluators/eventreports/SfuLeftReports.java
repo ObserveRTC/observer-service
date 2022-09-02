@@ -1,93 +1,70 @@
 package org.observertc.observer.evaluators.eventreports;
 
-import io.micronaut.context.BeanProvider;
-import io.micronaut.context.annotation.Prototype;
-import jakarta.inject.Inject;
-import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.observer.dto.SfuDTO;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.events.SfuEventType;
-import org.observertc.observer.repositories.RepositoryExpiredEvent;
+import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.SfuEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Prototype
+@Singleton
 public class SfuLeftReports {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuLeftReports.class);
 
-    @Inject
-    BeanProvider<RemoveSFUsTask> removeSfuTask;
+    private Subject<List<SfuEventReport>> output = PublishSubject.<List<SfuEventReport>>create().toSerialized();
 
     @PostConstruct
     void setup() {
 
     }
 
-    public List<SfuEventReport> mapExpiredSfuDTOs(List<RepositoryExpiredEvent<SfuDTO>> expiredSfuDTOs) {
-        if (Objects.isNull(expiredSfuDTOs) || expiredSfuDTOs.size() < 1) {
-            return Collections.EMPTY_LIST;
+    public void accept(List<Models.Sfu> sfuModels) {
+        if (Objects.isNull(sfuModels) || sfuModels.size() < 1) {
+            return;
         }
-        var task = this.removeSfuTask.get();
-        Map<UUID, Long> estimatedRemovals = new HashMap<>();
-        expiredSfuDTOs.stream().forEach(expiredSfuTransport -> {
-            var sfuDTO = expiredSfuTransport.getValue();
-            var estimatedRemoval = expiredSfuTransport.estimatedLastTouch();
-            estimatedRemovals.put(sfuDTO.sfuId, estimatedRemoval);
-            task.addRemovedSfuDTO(sfuDTO);
-        });
-
-        if (!task.execute().succeeded()) {
-            logger.warn("Removing expired SfuLeft was unsuccessful");
-            return Collections.EMPTY_LIST;
-        }
-        var reports = task.getResult().stream().map(removedSfu -> {
-            Long estimatedRemoval = estimatedRemovals.getOrDefault(removedSfu.sfuId, Instant.now().toEpochMilli());
-            var report = this.makeReport(removedSfu, estimatedRemoval);
-            return report;
-        }).filter(Objects::nonNull).collect(Collectors.toList());
-
-        return reports;
-    }
-
-    public List<SfuEventReport> mapRemovedSfuDTOs(List<SfuDTO> sfuDTOs) {
-        if (Objects.isNull(sfuDTOs) || sfuDTOs.size() < 1) {
-            return Collections.EMPTY_LIST;
-        }
-        var reports = sfuDTOs.stream()
+        var reports = sfuModels.stream()
                 .map(this::makeReport)
                 .collect(Collectors.toList());
 
-        return reports;
+        if (0 < reports.size()) {
+            this.output.onNext(reports);
+        }
     }
 
-    private SfuEventReport makeReport(SfuDTO sfuDTO) {
-        Long now = Instant.now().toEpochMilli();
-        return this.makeReport(sfuDTO, now);
-    }
-
-    protected SfuEventReport makeReport(SfuDTO sfuDTO, Long timestamp) {
+    protected SfuEventReport makeReport(Models.Sfu sfuDTO) {
         try {
-            String sfuId = UUIDAdapter.toStringOrNull(sfuDTO.sfuId);
+            var timestamp = sfuDTO.hasTouched() ? sfuDTO.getTouched() : Instant.now().toEpochMilli();
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_LEFT.name())
-                    .setSfuId(sfuId)
+                    .setSfuId(sfuDTO.getSfuId())
                     .setMessage("Sfu is left")
-                    .setServiceId(sfuDTO.serviceId)
-                    .setMediaUnitId(sfuDTO.mediaUnitId)
+                    .setServiceId(sfuDTO.getServiceId())
+                    .setMediaUnitId(sfuDTO.getMediaUnitId())
                     .setTimestamp(timestamp)
-                    .setMarker(sfuDTO.marker)
+                    .setMarker(sfuDTO.getMarker())
                     ;
-            logger.info("SFU (sfuId: {}, mediaUnitId: {}) is LEFT. serviceId: {}.", sfuId, sfuDTO.serviceId, sfuDTO.mediaUnitId);
+            logger.info("SFU (sfuId: {}, mediaUnitId: {}) is LEFT. serviceId: {}.",
+                    sfuDTO.getSfuId(),
+                    sfuDTO.getServiceId(),
+                    sfuDTO.getMediaUnitId());
             return builder.build();
         } catch (Exception ex) {
             logger.error("Cannot make report for Sfu DTO", ex);
             return null;
         }
+    }
+
+    public Observable<List<SfuEventReport>> getOutput() {
+        return this.output;
     }
 }

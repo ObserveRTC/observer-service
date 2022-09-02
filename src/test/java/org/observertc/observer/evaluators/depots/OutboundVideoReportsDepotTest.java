@@ -15,7 +15,7 @@ class OutboundVideoReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var serviceId = observedClientSample.getServiceId();
         var mediaUnitId = observedClientSample.getMediaUnitId();
@@ -123,7 +123,7 @@ class OutboundVideoReportsDepotTest {
     @Test
     @Order(3)
     void shouldBeCleaned() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var expected = observedClientSample.getClientSample().outboundVideoTracks[0];
         this.depot

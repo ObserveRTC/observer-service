@@ -1,23 +1,24 @@
 package org.observertc.observer.evaluators;
 
-import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
-import org.observertc.observer.dto.SfuDTO;
-import org.observertc.observer.dto.SfuRtpPadDTO;
-import org.observertc.observer.dto.SfuTransportDTO;
+import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
+import org.observertc.observer.repositories.*;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.observer.samples.SfuSampleVisitor;
+import org.observertc.schemas.dtos.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 @Prototype
@@ -29,21 +30,36 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     EvaluatorMetrics exposedMetrics;
 
     @Inject
-    BeanProvider<RefreshSfusTask> refreshSfusTaskProvider;
+    SfusRepository sfusRepository;
 
     @Inject
-    BeanProvider<AddSFUsTask> addSFUsTaskProvider;
+    SfuTransportsRepository sfuTransportsRepository;
 
     @Inject
-    BeanProvider<AddSfuTransportsTask> addSfuTransportsTaskProvider;
+    SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
 
     @Inject
-    BeanProvider<AddSfuRtpPadsTask> addSfuRtpPadsTaskProvider;
+    SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
+
+    @Inject
+    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+
+    @Inject
+    SfuJoinedReports sfuJoinedReports;
+
+    @Inject
+    SfuTransportOpenedReports sfuTransportOpenedReports;
+
+    @Inject
+    SfuInboundRtpPadAddedReports sfuInboundRtpPadAddedReports;
+
+    @Inject
+    SfuOutboundRtpPadAddedReports sfuOutboundRtpPadAddedReports;
+
+    @Inject
+    SfuSctpStreamAddedReports sfuSctpStreamAddedReports;
 
     private Subject<ObservedSfuSamples> output = PublishSubject.create();
-    private final SfuDTOsDepot sfuDTOsDepot = new SfuDTOsDepot();
-    private final SfuTransportDTOsDepot sfuTransportDTOsDepot = new SfuTransportDTOsDepot();
-    private final SfuRtpPadDTOsDepot sfuRtpPadDTOsDepot = new SfuRtpPadDTOsDepot();
 
     public Observable<ObservedSfuSamples> observableClientSamples() {
         return this.output;
@@ -62,99 +78,173 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         if (observedSfuSamples.isEmpty()) {
             return;
         }
-        var findDTOs = this.refreshSfusTaskProvider.get()
-                .withSfuIds(observedSfuSamples.getSfuIds())
-                .withSfuTransportIds(observedSfuSamples.getTransportIds())
-                .withSfuRtpPadIds(observedSfuSamples.getRtpPadIds())
-                ;
-        if (!findDTOs.execute().succeeded()) {
-            logger.warn("Interrupted execution of component due to unsuccessful task execution");
-            return;
-        }
-        var findDTOsTaskResult = findDTOs.getResult();
-        var foundSfuIds = findDTOsTaskResult.foundSfuIds;
-        var foundTransportIds = findDTOsTaskResult.foundSfuTransportIds;
-        var foundRtpPadIds = findDTOsTaskResult.foundRtpPadIds;
+        var sfus = this.fetchExistingSfus(observedSfuSamples);
+        var sfuTransports = this.fetchExistingSfuTransports(observedSfuSamples);
+        var sfuInboundRtpPads = this.fetchExistingInboundRtpPads(observedSfuSamples);
+        var sfuOutboundRtpPads = this.fetchExistingOutboundRtpPads(observedSfuSamples);
+        var sfuSctpStreams = this.fetchExistingSfuSctpStreams(observedSfuSamples);
+        var newSfuModels = new LinkedList<Models.Sfu>();
+        var newSfuTransportModels = new LinkedList<Models.SfuTransport>();
+        var newSfuInboundRtpPadModels = new LinkedList<Models.SfuInboundRtpPad>();
+        var newSfuOutboundRtpPadModels = new LinkedList<Models.SfuOutboundRtpPad>();
+        var newSfuSctpStreamModels = new LinkedList<Models.SfuSctpStream>();
+
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
-            if (!foundSfuIds.contains(sfuSample.sfuId)) {
-                sfuDTOsDepot.addFromObservedSfuSample(observedSfuSample);
+            var timestamp = sfuSample.timestamp;
+            var marker = sfuSample.marker;
+            var sfu = sfus.get(sfuSample.sfuId);
+            if (sfu == null) {
+                sfu = this.sfusRepository.add(
+                        observedSfuSample.getServiceId(),
+                        observedSfuSample.getMediaUnitId(),
+                        sfuSample.sfuId,
+                        sfuSample.timestamp,
+                        observedSfuSample.getTimeZoneId(),
+                        marker
+                );
+                sfus.put(sfu.getSfuId(), sfu);
+                newSfuModels.add(sfu.getModel());
             }
+
+            Sfu finalSfu = sfu;
+            BiFunction<String, Boolean, SfuTransport> getOrCreateTransport = (sfuTransportId, internal) -> {
+                if (sfuTransportId == null) {
+                    return null;
+                }
+                var result = finalSfu.getSfuTransport(sfuTransportId);
+                if (result == null) {
+                    finalSfu.addSfuTransport(
+                            sfuTransportId,
+                            internal,
+                            timestamp
+                    );
+                    sfuTransports.put(result.getSfuTransportId(), result);
+                    newSfuTransportModels.add(result.getModel());
+                } else {
+                    result.touch(timestamp);
+                }
+                return result;
+            };
             SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {
-                if (foundTransportIds.contains(sfuTransport.transportId)) return;
-                this.sfuTransportDTOsDepot
-                        .setObservedSfuSample(observedSfuSample)
-                        .setSfuTransport(sfuTransport)
-                        .assemble()
-                ;
+                getOrCreateTransport.apply(sfuTransport.transportId, Boolean.TRUE.equals(sfuTransport.internal));
             });
             SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuInboundRtpPad -> {
-                if (foundRtpPadIds.contains(sfuInboundRtpPad.padId)) return;
-                this.sfuRtpPadDTOsDepot
-                        .setObservedSfuSample(observedSfuSample)
-                        .setSfuInboundRtpPad(sfuInboundRtpPad)
-                        .assemble()
-                ;
+                var sfuTransport = getOrCreateTransport.apply(sfuInboundRtpPad.transportId, Boolean.TRUE.equals(sfuInboundRtpPad.internal));
+                var sfuInboundRtpPadObject = sfuInboundRtpPads.get(sfuInboundRtpPad.padId);
+                if (sfuInboundRtpPadObject == null) {
+                    sfuInboundRtpPadObject = sfuTransport.addInboundRtpPad(
+                            sfuInboundRtpPad.padId,
+                            sfuInboundRtpPad.ssrc,
+                            sfuInboundRtpPad.streamId,
+                            timestamp,
+                            marker
+                    );
+                    sfuInboundRtpPads.put(sfuInboundRtpPadObject.getRtpPadId(), sfuInboundRtpPadObject);
+                    newSfuInboundRtpPadModels.add(sfuInboundRtpPadObject.getModel());
+                } else {
+                    sfuInboundRtpPadObject.touch(timestamp);
+                }
             });
             SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
-                if (foundRtpPadIds.contains(sfuOutboundRtpPad.padId)) return;
-                this.sfuRtpPadDTOsDepot
-                        .setObservedSfuSample(observedSfuSample)
-                        .setOutboundRtpPad(sfuOutboundRtpPad)
-                        .assemble()
-                ;
+                var sfuTransport = getOrCreateTransport.apply(sfuOutboundRtpPad.transportId, Boolean.TRUE.equals(sfuOutboundRtpPad.internal));
+                var sfuOutboundRtpPadObject = sfuOutboundRtpPads.get(sfuOutboundRtpPad.padId);
+                if (sfuOutboundRtpPadObject == null) {
+                    sfuOutboundRtpPadObject = sfuTransport.addOutboundRtpPad(
+                            sfuOutboundRtpPad.padId,
+                            sfuOutboundRtpPad.ssrc,
+                            sfuOutboundRtpPad.streamId,
+                            sfuOutboundRtpPad.sinkId,
+                            timestamp,
+                            marker
+                    );
+                    sfuOutboundRtpPads.put(sfuOutboundRtpPadObject.getRtpPadId(), sfuOutboundRtpPadObject);
+                    newSfuOutboundRtpPadModels.add(sfuOutboundRtpPadObject.getModel());
+                } else {
+                    sfuOutboundRtpPadObject.touch(timestamp);
+                }
+            });
+            SfuSampleVisitor.streamSctpStreams(sfuSample).forEach(sfuSctpStreamSample -> {
+                var sfuTransport = getOrCreateTransport.apply(sfuSctpStreamSample.transportId, Boolean.TRUE.equals(sfuSctpStreamSample.internal));
+                var sfuSctpStream = sfuTransport.getSctpStream(sfuSctpStreamSample.streamId);
+                if (sfuSctpStream == null) {
+                    sfuSctpStream = sfuTransport.addSctpStream(
+                            sfuSctpStreamSample.streamId,
+                            timestamp,
+                            marker
+                    );
+                    newSfuSctpStreamModels.add(sfuSctpStream.getModel());
+                    sfuSctpStreams.put(sfuSctpStream.getSfuSctpStreamId(), sfuSctpStream);
+                } else {
+                    sfuSctpStream.touch(timestamp);
+                }
             });
         }
-
-        var newSfuDTOs = this.sfuDTOsDepot.get();
-        if (0 < newSfuDTOs.size()) {
-            this.addNewSfus(newSfuDTOs);
+        this.sfusRepository.save();
+        if (0 < newSfuModels.size()) {
+            this.sfuJoinedReports.accept(newSfuModels);
         }
-        var newSfuTransportDTOs = this.sfuTransportDTOsDepot.get();
-        if (0 < newSfuTransportDTOs.size()) {
-            this.addNewTransports(newSfuTransportDTOs);
+        if (0 < newSfuTransportModels.size()) {
+            this.sfuTransportOpenedReports.accept(newSfuTransportModels);
         }
-        var newSfuRtpPadDTOs = this.sfuRtpPadDTOsDepot.get();
-        if (0 < newSfuRtpPadDTOs.size()) {
-            this.addNewRtpPads(newSfuRtpPadDTOs);
+        if (0 < newSfuInboundRtpPadModels.size()) {
+            this.sfuInboundRtpPadAddedReports.accept(newSfuInboundRtpPadModels);
+        }
+        if (0 < newSfuOutboundRtpPadModels.size()) {
+            this.sfuOutboundRtpPadAddedReports.accept(newSfuOutboundRtpPadModels);
+        }
+        if (0 < newSfuSctpStreamModels.size()) {
+            this.sfuSctpStreamAddedReports.accept(newSfuSctpStreamModels);
         }
         if (0 < observedSfuSamples.size()) {
             synchronized (this) {
                 this.output.onNext(observedSfuSamples);
             }
         }
-
     }
 
-    private void addNewSfus(Map<UUID, SfuDTO> DTOs) {
-        var task = addSFUsTaskProvider.get()
-                .withSfuDTOs(DTOs)
-                ;
-
-        if (!task.execute().succeeded()) {
-            logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
-            return;
+    private Map<String, Sfu> fetchExistingSfus(ObservedSfuSamples samples) {
+        var result = new HashMap<String, Sfu>();
+        var existing = this.sfusRepository.getAll(samples.getSfuIds());
+        if (existing != null && 0 < existing.size()) {
+            result.putAll(existing);
         }
+        return result;
     }
 
-    private void addNewTransports(Map<UUID, SfuTransportDTO> DTOs) {
-        var task = addSfuTransportsTaskProvider.get()
-                .withSfuTransportDTOs(DTOs)
-                ;
-        if (!task.execute().succeeded()) {
-            logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
-            return;
+    private Map<String, SfuTransport> fetchExistingSfuTransports(ObservedSfuSamples samples) {
+        var result = new HashMap<String, SfuTransport>();
+        var existing = this.sfuTransportsRepository.getAll(samples.getTransportIds());
+        if (existing != null && 0 < existing.size()) {
+            result.putAll(existing);
         }
+        return result;
     }
 
-    private void addNewRtpPads(Map<UUID, SfuRtpPadDTO> DTOs) {
-        var task = addSfuRtpPadsTaskProvider.get()
-                .withSfuRtpPadDTOs(DTOs);
-
-        if (!task.execute().succeeded()) {
-            logger.warn("{} task execution failed, repository may become inconsistent!", task.getClass().getSimpleName());
-            return;
+    private Map<String, SfuInboundRtpPad> fetchExistingInboundRtpPads(ObservedSfuSamples samples) {
+        var result = new HashMap<String, SfuInboundRtpPad>();
+        var existing = this.sfuInboundRtpPadsRepository.getAll(samples.getInboundRtpPadIds());
+        if (existing != null && 0 < existing.size()) {
+            result.putAll(existing);
         }
+        return result;
     }
 
+    private Map<String, SfuOutboundRtpPad> fetchExistingOutboundRtpPads(ObservedSfuSamples samples) {
+        var result = new HashMap<String, SfuOutboundRtpPad>();
+        var existing = this.sfuOutboundRtpPadsRepository.getAll(samples.getOutboundRtpPadIds());
+        if (existing != null && 0 < existing.size()) {
+            result.putAll(existing);
+        }
+        return result;
+    }
+
+    private Map<String, SfuSctpStream> fetchExistingSfuSctpStreams(ObservedSfuSamples samples) {
+        var result = new HashMap<String, SfuSctpStream>();
+        var existing = this.sfuSctpStreamsRepository.getAll(samples.getSctpStreamIds());
+        if (existing != null && 0 < existing.size()) {
+            result.putAll(existing);
+        }
+        return result;
+    }
 }

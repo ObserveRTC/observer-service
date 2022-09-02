@@ -75,8 +75,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             return;
         }
         var matches = task.getResult();
-        var inboundAudioMatches = matches.inboundAudioMatches;
-        var inboundVideoMatches = matches.inboundVideoMatches;
+        var inboundMatches = matches.inboundMatches;
         var peerConnectionLabels = new HashMap<String, String>();
         for (var observedClientSample : observedClientSamples) {
             var clientSample = observedClientSample.getClientSample();
@@ -90,7 +89,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(inboundAudioTrack -> {
-                var match = inboundAudioMatches.get(inboundAudioTrack.trackId);
+                var match = inboundMatches.get(inboundAudioTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundAudioTrack.peerConnectionId) ? peerConnectionLabels.get(inboundAudioTrack.peerConnectionId) : null;
                 if (Objects.nonNull(matches)) {
                     this.inboundAudioReportsDepot
@@ -109,7 +108,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(inboundVideoTrack -> {
-                var match = inboundVideoMatches.get(inboundVideoTrack.trackId);
+                var match = inboundMatches.get(inboundVideoTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundVideoTrack.peerConnectionId) ? peerConnectionLabels.get(inboundVideoTrack.peerConnectionId) : null;
                 if (Objects.nonNull(matches)) {
                     this.inboundVideoReportsDepot

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.evaluators.eventreports.attachments.ClientAttachment;
 import org.observertc.observer.events.CallEventType;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ import java.util.List;
 class ClientJoinedReportsTest {
 
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     ClientJoinedReports clientJoinedReports;
 
     @Test
     void shouldHasExpectedValues() throws Throwable {
-        var expected = dtoGenerators.getClientDTO();
+        var expected = modelsGenerator.getClientDTO();
 
         var reports = this.clientJoinedReports.mapAddedClient(List.of(expected));
         var actual = reports.get(0);

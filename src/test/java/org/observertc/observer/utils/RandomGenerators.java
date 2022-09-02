@@ -1,6 +1,6 @@
 package org.observertc.observer.utils;
 
-import org.observertc.observer.dto.StreamDirection;
+import org.observertc.observer.common.StreamDirection;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.events.SfuEventType;
 

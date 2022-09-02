@@ -13,7 +13,7 @@ class ClientTransportReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var serviceId = observedClientSample.getServiceId();
         var mediaUnitId = observedClientSample.getMediaUnitId();

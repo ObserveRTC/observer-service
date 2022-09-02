@@ -20,7 +20,7 @@ public class DTOMapGenerator {
     private Map<UUID, SfuTransportDTO> sfuTransports = new HashMap<>();
     private Map<UUID, SfuRtpPadDTO> sfuRtpPads = new HashMap<>();
 
-    DTOGenerators dtoGenerators = new DTOGenerators();
+    ModelsGenerator modelsGenerator = new ModelsGenerator();
 
     RandomGenerators randomGenerators = new RandomGenerators();
 
@@ -109,7 +109,7 @@ public class DTOMapGenerator {
 
     public DTOMapGenerator generateP2pCase() {
         if (Objects.nonNull(this.callDTO)) throw new RuntimeException("cannot generate two calls");
-        this.callDTO = this.dtoGenerators.getCallDTO();
+        this.callDTO = this.modelsGenerator.getCallDTO();
         var alice = this.generateClientSide(ALICE_USER_ID);
         var bob = this.generateClientSide(BOB_USER_ID);
         alice.inboundTrack.ssrc = bob.outboundTrack.ssrc;
@@ -120,7 +120,7 @@ public class DTOMapGenerator {
 
     public DTOMapGenerator generateSingleSfuCase() {
         if (Objects.nonNull(this.callDTO)) throw new RuntimeException("cannot generate two calls");
-        this.callDTO = this.dtoGenerators.getCallDTO();
+        this.callDTO = this.modelsGenerator.getCallDTO();
         var alice = this.generateClientSide(ALICE_USER_ID);
         var bob = this.generateClientSide(BOB_USER_ID);
         var asiaSFU = this.generateSFUSide(ASIA_SFU_MEDIA_UNIT_ID);
@@ -210,14 +210,14 @@ public class DTOMapGenerator {
 
     private ClientSide generateClientSide(String userId) {
         if (Objects.isNull(callDTO)) throw new RuntimeException("Cannot generate client side without callDTO");
-        var client = this.dtoGenerators.getClientDTOBuilderFromCallDTO(callDTO)
+        var client = this.modelsGenerator.getClientDTOBuilderFromCallDTO(callDTO)
                 .withUserId(userId)
                 .build();
-        var peerConnection = this.dtoGenerators.getPeerConnectionDTOFromClientDTO(client);
-        var outboundTrack = this.dtoGenerators.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnection)
+        var peerConnection = this.modelsGenerator.getPeerConnectionDTOFromClientDTO(client);
+        var outboundTrack = this.modelsGenerator.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnection)
                 .withDirection(StreamDirection.OUTBOUND)
                 .build();
-        var inboundTrack = this.dtoGenerators.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnection)
+        var inboundTrack = this.modelsGenerator.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnection)
                 .withDirection(StreamDirection.INBOUND)
                 .build();
         var result = new ClientSide(client, peerConnection, outboundTrack, inboundTrack);
@@ -226,34 +226,34 @@ public class DTOMapGenerator {
 
     private SfuSide generateSFUSide(String mediaUnitId) {
         if (Objects.isNull(callDTO)) throw new RuntimeException("Cannot generate client side without callDTO");
-        var sfu = this.dtoGenerators.getSfuDTOBuilder()
+        var sfu = this.modelsGenerator.getSfuDTOBuilder()
                 .withServiceId(callDTO.serviceId)
                 .withMediaUnitId(mediaUnitId)
                 .build();
-        var alice_transport = this.dtoGenerators.getSfuTransportDTOBuilderFromSfuDTO(sfu)
+        var alice_transport = this.modelsGenerator.getSfuTransportDTOBuilderFromSfuDTO(sfu)
                 .build();
-        var bob_transport = this.dtoGenerators.getSfuTransportDTOBuilderFromSfuDTO(sfu)
+        var bob_transport = this.modelsGenerator.getSfuTransportDTOBuilderFromSfuDTO(sfu)
                 .build();
         UUID alice_stream = UUID.randomUUID();
         UUID bob_stream = UUID.randomUUID();
         UUID alice_sink = UUID.randomUUID();
         UUID bob_sink = UUID.randomUUID();
-        var alice_to_sfu_inboundRtpPad = this.dtoGenerators.getSfuRtpPadDTOBuilderFromSfuTransportDTO(alice_transport)
+        var alice_to_sfu_inboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(alice_transport)
                 .withStreamDirection(StreamDirection.INBOUND)
                 .withStreamId(alice_stream)
                 .withSinkId(null)
                 .build();
-        var bob_to_sfu_inboundRtpPad = this.dtoGenerators.getSfuRtpPadDTOBuilderFromSfuTransportDTO(bob_transport)
+        var bob_to_sfu_inboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(bob_transport)
                 .withStreamDirection(StreamDirection.INBOUND)
                 .withStreamId(bob_stream)
                 .withSinkId(null)
                 .build();
-        var sfu_to_alice_outboundRtpPad = this.dtoGenerators.getSfuRtpPadDTOBuilderFromSfuTransportDTO(alice_transport)
+        var sfu_to_alice_outboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(alice_transport)
                 .withStreamDirection(StreamDirection.OUTBOUND)
                 .withStreamId(bob_stream)
                 .withSinkId(bob_sink)
                 .build();
-        var sfu_to_bob_outboundRtpPad = this.dtoGenerators.getSfuRtpPadDTOBuilderFromSfuTransportDTO(bob_transport)
+        var sfu_to_bob_outboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(bob_transport)
                 .withStreamDirection(StreamDirection.OUTBOUND)
                 .withStreamId(alice_stream)
                 .withSinkId(alice_sink)

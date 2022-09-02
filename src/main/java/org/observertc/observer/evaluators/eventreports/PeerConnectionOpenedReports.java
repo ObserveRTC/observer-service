@@ -1,6 +1,9 @@
 package org.observertc.observer.evaluators.eventreports;
 
-import io.micronaut.context.annotation.Prototype;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
@@ -8,24 +11,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Prototype
+@Singleton
 public class PeerConnectionOpenedReports {
 
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionOpenedReports.class);
+
+    private Subject<List<CallEventReport>> output = PublishSubject.<List<CallEventReport>>create().toSerialized();
 
     @PostConstruct
     void setup() {
 
     }
 
-    public List<CallEventReport> mapAddedPeerConnections(List<Models.PeerConnection> peerConnectionDTOs) {
+    public void accept(List<Models.PeerConnection> peerConnectionDTOs) {
         if (Objects.isNull(peerConnectionDTOs) || peerConnectionDTOs.size() < 1) {
-            return Collections.EMPTY_LIST;
+            return;
         }
 
         var reports = peerConnectionDTOs.stream()
@@ -33,7 +37,9 @@ public class PeerConnectionOpenedReports {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        return reports;
+        if (0 < reports.size()) {
+            this.output.onNext(reports);
+        }
     }
 
     private CallEventReport makeReport(Models.PeerConnection peerConnectionDTO) {
@@ -58,5 +64,9 @@ public class PeerConnectionOpenedReports {
             logger.warn("Unexpected exception occurred while making report", ex);
             return null;
         }
+    }
+
+    public Observable<List<CallEventReport>> getOutput() {
+        return this.output;
     }
 }

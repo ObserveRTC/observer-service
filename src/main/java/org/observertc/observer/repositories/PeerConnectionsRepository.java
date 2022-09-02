@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class PeerConnectionsRepository {
+public class PeerConnectionsRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientsRepository.class);
 
@@ -35,16 +36,10 @@ public class PeerConnectionsRepository {
     BeanProvider<ClientsRepository> clientsProvider;
 
     @Inject
-    InboundAudioTracksRepository inboundAudioTracksRepository;
+    InboundTracksRepository inboundTracksRepository;
 
     @Inject
-    InboundVideoTracksRepository inboundVideoTracksRepository;
-
-    @Inject
-    OutboundAudioTracksRepository outboundAudioTracksRepository;
-
-    @Inject
-    OutboundVideoTracksRepository outboundVideoTracksRepository;
+    OutboundTracksRepository outboundTracksRepository;
 
     @Inject
     private ObserverConfig.RepositoryConfig config;
@@ -61,7 +56,7 @@ public class PeerConnectionsRepository {
         var baseStorage = new MemoryStorageBuilder<String, Models.PeerConnection>()
                 .setId(STORAGE_ID)
                 .setConcurrency(true)
-                .setExpiration(config.peerConnectionsMaxIdleTime * 1000)
+//                .setExpiration(config.peerConnectionsMaxIdleTime * 1000)
                 .build();
         this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
@@ -121,7 +116,10 @@ public class PeerConnectionsRepository {
         }
     }
 
-    synchronized void deleteAll(Set<String> peerConnectionIds) {
+    public synchronized void deleteAll(Set<String> peerConnectionIds) {
+        if (peerConnectionIds == null || peerConnectionIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(peerConnectionIds);
         peerConnectionIds.forEach(peerConnectionId -> {
             var removed = this.updated.remove(peerConnectionId);
@@ -134,36 +132,22 @@ public class PeerConnectionsRepository {
     public synchronized void save() {
         if (0 < this.deleted.size()) {
             this.storage.deleteAll(this.deleted);
-            var inboundAudioTrackIds = new HashSet<String>();
-            var inboundVideoTrackIds = new HashSet<String>();
-            var outboundAudioTrackIds = new HashSet<String>();
-            var outboundVideoTrackIds = new HashSet<String>();
+            var inboundTrackIds = new HashSet<String>();
+            var outboundTrackIds = new HashSet<String>();
             var peerConnections = this.getAll(this.deleted);
             peerConnections.values().forEach(peerConnection -> {
-                if (0 < peerConnection.getInboundAudioTrackIds().size()) {
-                    inboundAudioTrackIds.addAll(peerConnection.getInboundVideoTrackIds());
+                if (0 < peerConnection.getInboundTrackIds().size()) {
+                    inboundTrackIds.addAll(peerConnection.getInboundTrackIds());
                 }
-                if (0 < peerConnection.getInboundVideoTrackIds().size()) {
-                    inboundVideoTrackIds.addAll(peerConnection.getInboundVideoTrackIds());
-                }
-                if (0 < peerConnection.getOutboundAudioTrackIds().size()) {
-                    outboundAudioTrackIds.addAll(peerConnection.getOutboundAudioTrackIds());
-                }
-                if (0 < peerConnection.getOutboundVideoTrackIds().size()) {
-                    outboundVideoTrackIds.addAll(peerConnection.getOutboundVideoTrackIds());
+                if (0 < peerConnection.getOutboundTrackIds().size()) {
+                    outboundTrackIds.addAll(peerConnection.getOutboundTrackIds());
                 }
             });
-            if (0 < inboundAudioTrackIds.size()) {
-                this.inboundAudioTracksRepository.deleteAll(inboundAudioTrackIds);
+            if (0 < inboundTrackIds.size()) {
+                this.inboundTracksRepository.deleteAll(inboundTrackIds);
             }
-            if (0 < inboundVideoTrackIds.size()) {
-                this.inboundVideoTracksRepository.deleteAll(inboundVideoTrackIds);
-            }
-            if (0 < outboundAudioTrackIds.size()) {
-                this.outboundAudioTracksRepository.deleteAll(outboundAudioTrackIds);
-            }
-            if (0 < outboundVideoTrackIds.size()) {
-                this.outboundVideoTracksRepository.deleteAll(outboundVideoTrackIds);
+            if (0 < outboundTrackIds.size()) {
+                this.outboundTracksRepository.deleteAll(outboundTrackIds);
             }
             this.deleted.clear();
         }
@@ -171,11 +155,34 @@ public class PeerConnectionsRepository {
             this.storage.setAll(this.updated);
             this.updated.clear();
         }
-        this.inboundAudioTracksRepository.save();
-        this.inboundVideoTracksRepository.save();
-        this.outboundAudioTracksRepository.save();
-        this.outboundVideoTracksRepository.save();
+        this.inboundTracksRepository.save();
+        this.outboundTracksRepository.save();
         this.fetched.clear();
+    }
+
+    public Map<String, PeerConnection> fetchRecursively(Collection<String> peerConnectionIds) {
+        var result = this.getAll(peerConnectionIds);
+        var inboundTrackIds = result.values().stream()
+                .map(PeerConnection::getInboundTrackIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        this.inboundTracksRepository.fetchRecursively(inboundTrackIds);
+        var outboundTrackIds = result.values().stream()
+                .map(PeerConnection::getOutboundTrackIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        this.outboundTracksRepository.fetchRecursively(outboundTrackIds);
+        return result;
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     PeerConnection wrapPeerConnection(Models.PeerConnection model) {
@@ -183,10 +190,8 @@ public class PeerConnectionsRepository {
                 this.clientsProvider.get(),
                 model,
                 this,
-                this.inboundAudioTracksRepository,
-                this.inboundVideoTracksRepository,
-                this.outboundAudioTracksRepository,
-                this.outboundVideoTracksRepository
+                this.inboundTracksRepository,
+                this.outboundTracksRepository
         );
         this.fetched.add(result.getPeerConnectionId(), result);
         return result;

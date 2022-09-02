@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class ClientsRepository {
+public class ClientsRepository implements RepositoryStorageMetrics  {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientsRepository.class);
 
@@ -71,11 +72,11 @@ public class ClientsRepository {
         this.deleted = new HashSet<>();
     }
 
-    Observable<List<ModifiedStorageEntry<String, Models.Client>>> observableDeletedEntries() {
+    public Observable<List<ModifiedStorageEntry<String, Models.Client>>> observableDeletedEntries() {
         return this.storage.collectedEvents().deletedEntries();
     }
 
-    Observable<List<ModifiedStorageEntry<String, Models.Client>>> observableExpiredEntries() {
+    public Observable<List<ModifiedStorageEntry<String, Models.Client>>> observableExpiredEntries() {
         return this.storage.collectedEvents().expiredEntries();
     }
 
@@ -100,6 +101,9 @@ public class ClientsRepository {
     }
 
     synchronized void deleteAll(Set<String> clientIds) {
+        if (clientIds == null || clientIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(clientIds);
         clientIds.forEach(clientId -> {
             var removed = this.updated.remove(clientId);
@@ -142,6 +146,26 @@ public class ClientsRepository {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, Client> fetchRecursively(Collection<String> clientIds) {
+        var clients = this.getAll(clientIds);
+        var peerConnectionIds = clients.values().stream()
+                .map(Client::getPeerConnectionIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        this.peerConnectionsRepositoryRepo.fetchRecursively(peerConnectionIds);
+        return clients;
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
+    }
+
     private Client fetchOne(String clientId) {
         var model = this.storage.get(clientId);
         if (model == null) {
@@ -175,4 +199,6 @@ public class ClientsRepository {
         this.fetched.add(result.getClientId(), result);
         return result;
     }
+
+
 }

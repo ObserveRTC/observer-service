@@ -5,6 +5,7 @@ import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.FederatedStorage;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.mappings.SerDeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Singleton
-public class CallClientIdsRepository {
+public class CallClientIdsRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(CallClientIdsRepository.class);
 
@@ -68,6 +69,19 @@ public class CallClientIdsRepository {
         }
     }
 
+    synchronized void deleteAll(Set<String> clientIds) {
+        if (clientIds == null || clientIds.size() < 1) {
+            return;
+        }
+        this.deleted.addAll(clientIds);
+        clientIds.forEach(clientId -> {
+            var removed = this.updated.remove(clientId);
+            if (removed != null) {
+                logger.debug("In this transaction, Client was updated before it was deleted");
+            }
+        });
+    }
+
     public Map<String, Set<String>> getAll(Collection<String> callIds) {
         if (callIds == null || callIds.size() < 1) {
             return Collections.emptyMap();
@@ -94,6 +108,17 @@ public class CallClientIdsRepository {
             this.storage.setAll(this.updated);
             this.updated.clear();
         }
+        this.clientsRepository.save();
         // this is a leaf
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 }

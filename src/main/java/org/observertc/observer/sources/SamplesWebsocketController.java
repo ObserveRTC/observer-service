@@ -57,9 +57,6 @@ public class SamplesWebsocketController {
 	RepositoryEvents repositoryEvents;
 
 	@Inject
-    HamokStorages hazelcastMaps;
-
-	@Inject
     SamplesCollector samplesCollector;
 
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;

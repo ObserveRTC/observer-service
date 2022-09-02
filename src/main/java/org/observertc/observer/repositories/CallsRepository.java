@@ -6,6 +6,7 @@ import io.github.balazskreith.hamok.storagegrid.ReplicatedStorage;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -15,12 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
-public class CallsRepository {
+public class CallsRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(CallsRepository.class);
 
@@ -40,7 +42,6 @@ public class CallsRepository {
 
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
-
 
     @PostConstruct
     void setup() {
@@ -69,29 +70,64 @@ public class CallsRepository {
         return this.storage.collectedEvents().deletedEntries();
     }
 
-    Observable<List<ModifiedStorageEntry<ServiceRoomId, Models.Call>>> observableExpiredEntries() {
-        return this.storage.collectedEvents().expiredEntries();
-    }
-
     Observable<List<ModifiedStorageEntry<ServiceRoomId, Models.Call>>> observableCreatedEntries() {
         return this.storage.collectedEvents().createdEntries();
     }
 
-    public Call add(ServiceRoomId serviceRoomId, Long timestamp, String marker, String providedCallId) {
-        var callId = providedCallId != null ? providedCallId : UUID.randomUUID().toString();
-        this.storage.insert(serviceRoomId, Models.Call.newBuilder()
-                .setServiceId(serviceRoomId.serviceId)
-                .setRoomId(serviceRoomId.roomId)
-                .setCallId(callId)
-                .setMarker(marker)
-                .setStarted(timestamp)
-                .build());
-        var model = this.storage.get(serviceRoomId);
-        return this.wrapCall(model, Collections.emptySet());
+    public Map<ServiceRoomId, Call> fetchRecursively(Set<ServiceRoomId> serviceRoomIds) {
+        var result = this.getAll(serviceRoomIds);
+        var clientIds = result.values().stream()
+                .map(Call::getClientIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        this.clientsRepositoryRepo.fetchRecursively(clientIds);
+        return result;
     }
 
-    public boolean remove(ServiceRoomId serviceRoomId) {
-        return this.storage.delete(serviceRoomId);
+    /**
+     * Tries to insert calls, and returns with the NOT inserted one if it is already inserted
+     * @param createCallInfo
+     * @return
+     */
+    public Map<ServiceRoomId, Call> insertAll(Collection<CreateCallInfo> createCallInfo) {
+        if (createCallInfo == null || createCallInfo.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var timestamp = Instant.now().toEpochMilli();
+        var proposedModels = createCallInfo.stream().collect(Collectors.toMap(
+                info -> info.serviceRoomId,
+                info -> {
+                    var proposedCallId = Utils.firstNotNull(info.providedCallId, UUID.randomUUID().toString());
+                    var serviceRoomId = info.serviceRoomId();
+                    return Models.Call.newBuilder()
+                            .setServiceId(serviceRoomId.serviceId)
+                            .setRoomId(serviceRoomId.roomId)
+                            .setCallId(proposedCallId)
+                            .setMarker(info.marker())
+                            .setStarted(timestamp)
+                            .build();
+                }
+        ));
+        var notInsertedModels = this.storage.insertAll(proposedModels);
+        if (notInsertedModels == null) {
+            return Collections.emptyMap();
+        }
+        return notInsertedModels.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                entry -> this.wrapCall(entry.getValue(), Collections.emptySet())
+        ));
+    }
+
+    public Set<ServiceRoomId> removeAll(Set<ServiceRoomId> serviceRoomIds) {
+        var calls = this.getAll(serviceRoomIds);
+        var clientIds = calls.values().stream().map(call -> call.getClientIds())
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        var result = this.storage.deleteAll(serviceRoomIds);
+        this.callClientIds.deleteAll(clientIds);
+        this.callClientIds.save();
+        this.fetched.clear();
+        return result;
     }
 
     public Call get(ServiceRoomId serviceRoomId) {
@@ -114,7 +150,6 @@ public class CallsRepository {
 
     public void save() {
         this.callClientIds.save();
-        this.clientsRepositoryRepo.save();
         this.fetched.clear();
     }
 
@@ -155,5 +190,19 @@ public class CallsRepository {
                     return this.wrapCall(model, clientIds);
                 }
         ));
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
+    }
+
+    public record CreateCallInfo(ServiceRoomId serviceRoomId, String marker, String providedCallId) {
+
     }
 }

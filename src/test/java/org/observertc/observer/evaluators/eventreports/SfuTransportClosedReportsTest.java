@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.events.SfuEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,14 +15,14 @@ import java.util.List;
 class SfuTransportClosedReportsTest {
 
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     SfuTransportClosedReports sfuTransportClosedReports;
 
     @Test
     void shouldHasExpectedValuesWhenRemoved() throws Throwable {
-        var expected = dtoGenerators.getSfuTransportDTO();
+        var expected = modelsGenerator.getSfuTransportDTO();
 
         var reports = this.sfuTransportClosedReports.mapRemovedSfuTransport(List.of(expected));
         var actual = reports.get(0);
@@ -47,7 +47,7 @@ class SfuTransportClosedReportsTest {
 
     @Test
     void shouldHasExpectedValuesWhenExpired() throws Throwable {
-        var expected = dtoGenerators.getSfuTransportDTO();
+        var expected = modelsGenerator.getSfuTransportDTO();
         var lastTouch = Instant.now().minusSeconds(1232).toEpochMilli();
         var expired = RepositoryExpiredEvent.make(expected, lastTouch);
         var reports = this.sfuTransportClosedReports.mapExpiredSfuTransport(List.of(expired));

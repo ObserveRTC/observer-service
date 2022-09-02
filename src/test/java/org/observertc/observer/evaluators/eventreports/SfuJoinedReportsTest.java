@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.events.SfuEventType;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ import java.util.List;
 class SfuJoinedReportsTest {
 
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     SfuJoinedReports sfuJoinedReports;
 
     @Test
     void shouldHasExpectedValues() throws Throwable {
-        var expected = dtoGenerators.getSfuDTO();
+        var expected = modelsGenerator.getSfuDTO();
 
         var reports = this.sfuJoinedReports.mapSfuDTOs(List.of(expected));
         var actual = reports.get(0);

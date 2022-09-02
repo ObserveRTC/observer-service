@@ -35,6 +35,22 @@ public class Sfu {
         return model.getJoined();
     }
 
+    public Long getTouched() {
+        var model = modelHolder.get();
+        if (!model.hasTouched()) {
+            return null;
+        }
+        return model.getTouched();
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.Sfu.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
     public String getMediaUnitId() {
         var model = this.modelHolder.get();
         return model.getMediaUnitId();
@@ -68,7 +84,11 @@ public class Sfu {
     }
 
     public Map<String, SfuTransport> getSfuTransports() {
-        return this.sfuTransportsRepository.getAllForSfu(this);
+        var sfuTransportIds = this.getSfuTransportIds();
+        if (sfuTransportIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.sfuTransportsRepository.getAll(sfuTransportIds);
     }
 
     public SfuTransport getSfuTransport(String sfuTransportId) {
@@ -79,7 +99,7 @@ public class Sfu {
         if (!model.getSfuTransportIdsList().contains(sfuTransportId)) {
             return null;
         }
-        return this.sfuTransportsRepository.getOneForSfu(sfuTransportId, this);
+        return this.sfuTransportsRepository.get(sfuTransportId);
     }
 
     public SfuTransport addSfuTransport(String sfuTransportId, boolean internal, Long timestamp) throws AlreadyCreatedException {
@@ -94,6 +114,7 @@ public class Sfu {
                 .setTransportId(sfuTransportId)
                 .setInternal(internal)
                 .setOpened(timestamp)
+                .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 .setMarker(model.getMarker())
                 .build();
@@ -104,7 +125,7 @@ public class Sfu {
 
         this.updateModel(newModel);
         this.sfuTransportsRepository.update(sfuTransportModel);
-        return this.sfuTransportsRepository.createSfuTransport(this, sfuTransportModel);
+        return this.sfuTransportsRepository.wrapSfuTransport(sfuTransportModel);
     }
 
     public boolean removeSfuTransport(String sfuTransportId) {
@@ -129,6 +150,10 @@ public class Sfu {
         this.updateModel(newModel);
         this.sfuTransportsRepository.delete(sfuTransportId);
         return true;
+    }
+
+    public Models.Sfu getModel() {
+        return this.modelHolder.get();
     }
 
     private void updateModel(Models.Sfu newModel) {

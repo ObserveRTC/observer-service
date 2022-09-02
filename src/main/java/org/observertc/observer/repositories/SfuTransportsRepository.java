@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfuTransportsRepository {
+public class SfuTransportsRepository implements RepositoryStorageMetrics{
 
     private static final Logger logger = LoggerFactory.getLogger(SfuTransportsRepository.class);
 
@@ -35,6 +36,15 @@ public class SfuTransportsRepository {
 
     @Inject
     BeanProvider<SfusRepository> sfusRepositoryBeanProvider;
+
+    @Inject
+    SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
+
+    @Inject
+    SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
+
+    @Inject
+    SfuSctpStreamsRepository sfuSctpStreamsRepository;
 
     private Map<String, Models.SfuTransport> updated;
     private Set<String> deleted;
@@ -81,7 +91,10 @@ public class SfuTransportsRepository {
         }
     }
 
-    synchronized void deleteAll(Set<String> sfuTransportIds) {
+    public synchronized void deleteAll(Set<String> sfuTransportIds) {
+        if (sfuTransportIds == null || sfuTransportIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(sfuTransportIds);
         sfuTransportIds.forEach(sfuTransportId -> {
             var removed = this.updated.remove(sfuTransportId);
@@ -93,6 +106,24 @@ public class SfuTransportsRepository {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var sfuTransports = this.getAll(this.deleted);
+            var sfuInboundRtpPadIds = new HashSet<String>();
+            var sfuOutboundRtpPadIds = new HashSet<String>();
+            var sfuSctpStreamIds = new HashSet<String>();
+            for (var sfuTransport : sfuTransports.values()) {
+                sfuInboundRtpPadIds.addAll(sfuTransport.getInboundRtpPadIds());
+                sfuOutboundRtpPadIds.addAll(sfuTransport.getOutboundRtpPadIds());
+                sfuSctpStreamIds.addAll(sfuTransport.getSctpStreamIds());
+            }
+            if (0 < sfuInboundRtpPadIds.size()) {
+                this.sfuInboundRtpPadsRepository.deleteAll(sfuInboundRtpPadIds);
+            }
+            if (0 < sfuOutboundRtpPadIds.size()) {
+                this.sfuOutboundRtpPadsRepository.deleteAll(sfuOutboundRtpPadIds);
+            }
+            if (0 < sfuSctpStreamIds.size()) {
+                this.sfuSctpStreamsRepository.deleteAll(sfuSctpStreamIds);
+            }
             this.storage.deleteAll(this.deleted);
             this.deleted.clear();
         }
@@ -100,6 +131,9 @@ public class SfuTransportsRepository {
             this.storage.setAll(this.updated);
             this.updated.clear();
         }
+        this.sfuInboundRtpPadsRepository.save();
+        this.sfuOutboundRtpPadsRepository.save();
+        this.sfuSctpStreamsRepository.save();
         this.fetched.clear();
     }
 
@@ -125,6 +159,16 @@ public class SfuTransportsRepository {
         }
         var set = Set.copyOf(sfuTransportIds);
         return this.fetched.getAll(set);
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     private SfuTransport fetchOne(String sfuTransportId) {
@@ -154,7 +198,10 @@ public class SfuTransportsRepository {
         var result = new SfuTransport(
                 model,
                 this.sfusRepositoryBeanProvider.get(),
-                this
+                this,
+                this.sfuInboundRtpPadsRepository,
+                this.sfuOutboundRtpPadsRepository,
+                this.sfuSctpStreamsRepository
         );
         this.fetched.add(result.getSfuTransportId(), result);
         return result;

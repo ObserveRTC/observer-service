@@ -1402,75 +1402,86 @@ public final class Models {
     long getJoined();
 
     /**
-     * <code>optional string timeZoneId = 7;</code>
+     * <code>optional uint64 touched = 7;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 7;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string timeZoneId = 8;</code>
      * @return Whether the timeZoneId field is set.
      */
     boolean hasTimeZoneId();
     /**
-     * <code>optional string timeZoneId = 7;</code>
+     * <code>optional string timeZoneId = 8;</code>
      * @return The timeZoneId.
      */
     java.lang.String getTimeZoneId();
     /**
-     * <code>optional string timeZoneId = 7;</code>
+     * <code>optional string timeZoneId = 8;</code>
      * @return The bytes for timeZoneId.
      */
     com.google.protobuf.ByteString
         getTimeZoneIdBytes();
 
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
 
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @return A list containing the peerConnectionIds.
      */
     java.util.List<java.lang.String>
         getPeerConnectionIdsList();
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @return The count of peerConnectionIds.
      */
     int getPeerConnectionIdsCount();
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @param index The index of the element to return.
      * @return The peerConnectionIds at the given index.
      */
     java.lang.String getPeerConnectionIds(int index);
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @param index The index of the value to return.
      * @return The bytes of the peerConnectionIds at the given index.
      */
@@ -1567,29 +1578,34 @@ public final class Models {
               joined_ = input.readUInt64();
               break;
             }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 56: {
               bitField0_ |= 0x00000040;
-              timeZoneId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 66: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              mediaUnitId_ = bs;
+              timeZoneId_ = bs;
               break;
             }
             case 74: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              marker_ = bs;
+              mediaUnitId_ = bs;
               break;
             }
             case 82: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+              bitField0_ |= 0x00000200;
+              marker_ = bs;
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000400) != 0)) {
                 peerConnectionIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000200;
+                mutable_bitField0_ |= 0x00000400;
               }
               peerConnectionIds_.add(bs);
               break;
@@ -1609,7 +1625,7 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000200) != 0)) {
+        if (((mutable_bitField0_ & 0x00000400) != 0)) {
           peerConnectionIds_ = peerConnectionIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -1889,18 +1905,37 @@ public final class Models {
       return joined_;
     }
 
-    public static final int TIMEZONEID_FIELD_NUMBER = 7;
+    public static final int TOUCHED_FIELD_NUMBER = 7;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 7;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 7;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int TIMEZONEID_FIELD_NUMBER = 8;
     private volatile java.lang.Object timeZoneId_;
     /**
-     * <code>optional string timeZoneId = 7;</code>
+     * <code>optional string timeZoneId = 8;</code>
      * @return Whether the timeZoneId field is set.
      */
     @java.lang.Override
     public boolean hasTimeZoneId() {
-      return ((bitField0_ & 0x00000040) != 0);
+      return ((bitField0_ & 0x00000080) != 0);
     }
     /**
-     * <code>optional string timeZoneId = 7;</code>
+     * <code>optional string timeZoneId = 8;</code>
      * @return The timeZoneId.
      */
     @java.lang.Override
@@ -1919,7 +1954,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string timeZoneId = 7;</code>
+     * <code>optional string timeZoneId = 8;</code>
      * @return The bytes for timeZoneId.
      */
     @java.lang.Override
@@ -1937,18 +1972,18 @@ public final class Models {
       }
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 8;
+    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000080) != 0);
+      return ((bitField0_ & 0x00000100) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -1967,7 +2002,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -1985,18 +2020,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 9;
+    public static final int MARKER_FIELD_NUMBER = 10;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000100) != 0);
+      return ((bitField0_ & 0x00000200) != 0);
     }
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -2015,7 +2050,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -2033,10 +2068,10 @@ public final class Models {
       }
     }
 
-    public static final int PEERCONNECTIONIDS_FIELD_NUMBER = 10;
+    public static final int PEERCONNECTIONIDS_FIELD_NUMBER = 11;
     private com.google.protobuf.LazyStringList peerConnectionIds_;
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @return A list containing the peerConnectionIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -2044,14 +2079,14 @@ public final class Models {
       return peerConnectionIds_;
     }
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @return The count of peerConnectionIds.
      */
     public int getPeerConnectionIdsCount() {
       return peerConnectionIds_.size();
     }
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @param index The index of the element to return.
      * @return The peerConnectionIds at the given index.
      */
@@ -2059,7 +2094,7 @@ public final class Models {
       return peerConnectionIds_.get(index);
     }
     /**
-     * <code>repeated string peerConnectionIds = 10;</code>
+     * <code>repeated string peerConnectionIds = 11;</code>
      * @param index The index of the value to return.
      * @return The bytes of the peerConnectionIds at the given index.
      */
@@ -2125,16 +2160,19 @@ public final class Models {
         output.writeUInt64(6, joined_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, timeZoneId_);
+        output.writeUInt64(7, touched_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, mediaUnitId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, timeZoneId_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
       }
       for (int i = 0; i < peerConnectionIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, peerConnectionIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, peerConnectionIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -2165,13 +2203,17 @@ public final class Models {
           .computeUInt64Size(6, joined_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, timeZoneId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(7, touched_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, mediaUnitId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, timeZoneId_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
       }
       {
         int dataSize = 0;
@@ -2226,6 +2268,11 @@ public final class Models {
         if (getJoined()
             != other.getJoined()) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasTimeZoneId() != other.hasTimeZoneId()) return false;
       if (hasTimeZoneId()) {
         if (!getTimeZoneId()
@@ -2278,6 +2325,11 @@ public final class Models {
         hash = (37 * hash) + JOINED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getJoined());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasTimeZoneId()) {
         hash = (37 * hash) + TIMEZONEID_FIELD_NUMBER;
@@ -2440,14 +2492,16 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000010);
         joined_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        timeZoneId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
-        mediaUnitId_ = "";
+        timeZoneId_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
-        peerConnectionIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
+        peerConnectionIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -2501,20 +2555,24 @@ public final class Models {
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000040;
         }
-        result.timeZoneId_ = timeZoneId_;
         if (((from_bitField0_ & 0x00000080) != 0)) {
           to_bitField0_ |= 0x00000080;
         }
-        result.mediaUnitId_ = mediaUnitId_;
+        result.timeZoneId_ = timeZoneId_;
         if (((from_bitField0_ & 0x00000100) != 0)) {
           to_bitField0_ |= 0x00000100;
         }
+        result.mediaUnitId_ = mediaUnitId_;
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          to_bitField0_ |= 0x00000200;
+        }
         result.marker_ = marker_;
-        if (((bitField0_ & 0x00000200) != 0)) {
+        if (((bitField0_ & 0x00000400) != 0)) {
           peerConnectionIds_ = peerConnectionIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000200);
+          bitField0_ = (bitField0_ & ~0x00000400);
         }
         result.peerConnectionIds_ = peerConnectionIds_;
         result.bitField0_ = to_bitField0_;
@@ -2594,25 +2652,28 @@ public final class Models {
         if (other.hasJoined()) {
           setJoined(other.getJoined());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasTimeZoneId()) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
           timeZoneId_ = other.timeZoneId_;
           onChanged();
         }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
           marker_ = other.marker_;
           onChanged();
         }
         if (!other.peerConnectionIds_.isEmpty()) {
           if (peerConnectionIds_.isEmpty()) {
             peerConnectionIds_ = other.peerConnectionIds_;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000400);
           } else {
             ensurePeerConnectionIdsIsMutable();
             peerConnectionIds_.addAll(other.peerConnectionIds_);
@@ -3126,16 +3187,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object timeZoneId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string timeZoneId = 7;</code>
-       * @return Whether the timeZoneId field is set.
+       * <code>optional uint64 touched = 7;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasTimeZoneId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>optional string timeZoneId = 7;</code>
+       * <code>optional uint64 touched = 7;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 7;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000040;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object timeZoneId_ = "";
+      /**
+       * <code>optional string timeZoneId = 8;</code>
+       * @return Whether the timeZoneId field is set.
+       */
+      public boolean hasTimeZoneId() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <code>optional string timeZoneId = 8;</code>
        * @return The timeZoneId.
        */
       public java.lang.String getTimeZoneId() {
@@ -3153,7 +3253,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string timeZoneId = 7;</code>
+       * <code>optional string timeZoneId = 8;</code>
        * @return The bytes for timeZoneId.
        */
       public com.google.protobuf.ByteString
@@ -3170,7 +3270,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string timeZoneId = 7;</code>
+       * <code>optional string timeZoneId = 8;</code>
        * @param value The timeZoneId to set.
        * @return This builder for chaining.
        */
@@ -3179,23 +3279,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         timeZoneId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string timeZoneId = 7;</code>
+       * <code>optional string timeZoneId = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearTimeZoneId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         timeZoneId_ = getDefaultInstance().getTimeZoneId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string timeZoneId = 7;</code>
+       * <code>optional string timeZoneId = 8;</code>
        * @param value The bytes for timeZoneId to set.
        * @return This builder for chaining.
        */
@@ -3204,7 +3304,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         timeZoneId_ = value;
         onChanged();
         return this;
@@ -3212,14 +3312,14 @@ public final class Models {
 
       private java.lang.Object mediaUnitId_ = "";
       /**
-       * <code>optional string mediaUnitId = 8;</code>
+       * <code>optional string mediaUnitId = 9;</code>
        * @return Whether the mediaUnitId field is set.
        */
       public boolean hasMediaUnitId() {
-        return ((bitField0_ & 0x00000080) != 0);
+        return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 8;</code>
+       * <code>optional string mediaUnitId = 9;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -3237,7 +3337,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 8;</code>
+       * <code>optional string mediaUnitId = 9;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -3254,7 +3354,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 8;</code>
+       * <code>optional string mediaUnitId = 9;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -3263,23 +3363,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 8;</code>
+       * <code>optional string mediaUnitId = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 8;</code>
+       * <code>optional string mediaUnitId = 9;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -3288,7 +3388,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -3296,14 +3396,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 9;</code>
+       * <code>optional string marker = 10;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000100) != 0);
+        return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional string marker = 9;</code>
+       * <code>optional string marker = 10;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -3321,7 +3421,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 9;</code>
+       * <code>optional string marker = 10;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -3338,7 +3438,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 9;</code>
+       * <code>optional string marker = 10;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -3347,23 +3447,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000100;
+  bitField0_ |= 0x00000200;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 9;</code>
+       * <code>optional string marker = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 9;</code>
+       * <code>optional string marker = 10;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -3372,7 +3472,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000100;
+  bitField0_ |= 0x00000200;
         marker_ = value;
         onChanged();
         return this;
@@ -3380,13 +3480,13 @@ public final class Models {
 
       private com.google.protobuf.LazyStringList peerConnectionIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensurePeerConnectionIdsIsMutable() {
-        if (!((bitField0_ & 0x00000200) != 0)) {
+        if (!((bitField0_ & 0x00000400) != 0)) {
           peerConnectionIds_ = new com.google.protobuf.LazyStringArrayList(peerConnectionIds_);
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
          }
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @return A list containing the peerConnectionIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -3394,14 +3494,14 @@ public final class Models {
         return peerConnectionIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @return The count of peerConnectionIds.
        */
       public int getPeerConnectionIdsCount() {
         return peerConnectionIds_.size();
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @param index The index of the element to return.
        * @return The peerConnectionIds at the given index.
        */
@@ -3409,7 +3509,7 @@ public final class Models {
         return peerConnectionIds_.get(index);
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @param index The index of the value to return.
        * @return The bytes of the peerConnectionIds at the given index.
        */
@@ -3418,7 +3518,7 @@ public final class Models {
         return peerConnectionIds_.getByteString(index);
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @param index The index to set the value at.
        * @param value The peerConnectionIds to set.
        * @return This builder for chaining.
@@ -3434,7 +3534,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @param value The peerConnectionIds to add.
        * @return This builder for chaining.
        */
@@ -3449,7 +3549,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @param values The peerConnectionIds to add.
        * @return This builder for chaining.
        */
@@ -3462,17 +3562,17 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearPeerConnectionIds() {
         peerConnectionIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string peerConnectionIds = 10;</code>
+       * <code>repeated string peerConnectionIds = 11;</code>
        * @param value The bytes of the peerConnectionIds to add.
        * @return This builder for chaining.
        */
@@ -3657,58 +3757,69 @@ public final class Models {
     long getOpened();
 
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional uint64 touched = 8;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 8;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 9;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
 
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @return A list containing the inboundAudioTrackIds.
      */
     java.util.List<java.lang.String>
         getInboundAudioTrackIdsList();
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @return The count of inboundAudioTrackIds.
      */
     int getInboundAudioTrackIdsCount();
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @param index The index of the element to return.
      * @return The inboundAudioTrackIds at the given index.
      */
     java.lang.String getInboundAudioTrackIds(int index);
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @param index The index of the value to return.
      * @return The bytes of the inboundAudioTrackIds at the given index.
      */
@@ -3716,24 +3827,24 @@ public final class Models {
         getInboundAudioTrackIdsBytes(int index);
 
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @return A list containing the inboundVideoTrackIds.
      */
     java.util.List<java.lang.String>
         getInboundVideoTrackIdsList();
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @return The count of inboundVideoTrackIds.
      */
     int getInboundVideoTrackIdsCount();
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @param index The index of the element to return.
      * @return The inboundVideoTrackIds at the given index.
      */
     java.lang.String getInboundVideoTrackIds(int index);
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @param index The index of the value to return.
      * @return The bytes of the inboundVideoTrackIds at the given index.
      */
@@ -3741,24 +3852,24 @@ public final class Models {
         getInboundVideoTrackIdsBytes(int index);
 
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @return A list containing the outboundAudioTrackIds.
      */
     java.util.List<java.lang.String>
         getOutboundAudioTrackIdsList();
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @return The count of outboundAudioTrackIds.
      */
     int getOutboundAudioTrackIdsCount();
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @param index The index of the element to return.
      * @return The outboundAudioTrackIds at the given index.
      */
     java.lang.String getOutboundAudioTrackIds(int index);
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundAudioTrackIds at the given index.
      */
@@ -3766,24 +3877,24 @@ public final class Models {
         getOutboundAudioTrackIdsBytes(int index);
 
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @return A list containing the outboundVideoTrackIds.
      */
     java.util.List<java.lang.String>
         getOutboundVideoTrackIdsList();
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @return The count of outboundVideoTrackIds.
      */
     int getOutboundVideoTrackIdsCount();
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @param index The index of the element to return.
      * @return The outboundVideoTrackIds at the given index.
      */
     java.lang.String getOutboundVideoTrackIds(int index);
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundVideoTrackIds at the given index.
      */
@@ -3889,50 +4000,55 @@ public final class Models {
               opened_ = input.readUInt64();
               break;
             }
-            case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 64: {
               bitField0_ |= 0x00000080;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 74: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              marker_ = bs;
+              mediaUnitId_ = bs;
               break;
             }
             case 82: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000200) != 0)) {
-                inboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000200;
-              }
-              inboundAudioTrackIds_.add(bs);
+              bitField0_ |= 0x00000200;
+              marker_ = bs;
               break;
             }
             case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000400) != 0)) {
-                inboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList();
+                inboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000400;
               }
-              inboundVideoTrackIds_.add(bs);
+              inboundAudioTrackIds_.add(bs);
               break;
             }
             case 98: {
               com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000800) != 0)) {
-                outboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList();
+                inboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000800;
               }
-              outboundAudioTrackIds_.add(bs);
+              inboundVideoTrackIds_.add(bs);
               break;
             }
             case 106: {
               com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00001000) != 0)) {
-                outboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList();
+                outboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00001000;
+              }
+              outboundAudioTrackIds_.add(bs);
+              break;
+            }
+            case 114: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00002000) != 0)) {
+                outboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00002000;
               }
               outboundVideoTrackIds_.add(bs);
               break;
@@ -3952,16 +4068,16 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000200) != 0)) {
+        if (((mutable_bitField0_ & 0x00000400) != 0)) {
           inboundAudioTrackIds_ = inboundAudioTrackIds_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00000400) != 0)) {
+        if (((mutable_bitField0_ & 0x00000800) != 0)) {
           inboundVideoTrackIds_ = inboundVideoTrackIds_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00000800) != 0)) {
+        if (((mutable_bitField0_ & 0x00001000) != 0)) {
           outboundAudioTrackIds_ = outboundAudioTrackIds_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00001000) != 0)) {
+        if (((mutable_bitField0_ & 0x00002000) != 0)) {
           outboundVideoTrackIds_ = outboundVideoTrackIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -4289,18 +4405,37 @@ public final class Models {
       return opened_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 8;
+    public static final int TOUCHED_FIELD_NUMBER = 8;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 8;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 8;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000080) != 0);
+      return ((bitField0_ & 0x00000100) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -4319,7 +4454,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 8;</code>
+     * <code>optional string mediaUnitId = 9;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -4337,18 +4472,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 9;
+    public static final int MARKER_FIELD_NUMBER = 10;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000100) != 0);
+      return ((bitField0_ & 0x00000200) != 0);
     }
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -4367,7 +4502,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 9;</code>
+     * <code>optional string marker = 10;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -4385,10 +4520,10 @@ public final class Models {
       }
     }
 
-    public static final int INBOUNDAUDIOTRACKIDS_FIELD_NUMBER = 10;
+    public static final int INBOUNDAUDIOTRACKIDS_FIELD_NUMBER = 11;
     private com.google.protobuf.LazyStringList inboundAudioTrackIds_;
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @return A list containing the inboundAudioTrackIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -4396,14 +4531,14 @@ public final class Models {
       return inboundAudioTrackIds_;
     }
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @return The count of inboundAudioTrackIds.
      */
     public int getInboundAudioTrackIdsCount() {
       return inboundAudioTrackIds_.size();
     }
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @param index The index of the element to return.
      * @return The inboundAudioTrackIds at the given index.
      */
@@ -4411,7 +4546,7 @@ public final class Models {
       return inboundAudioTrackIds_.get(index);
     }
     /**
-     * <code>repeated string inboundAudioTrackIds = 10;</code>
+     * <code>repeated string inboundAudioTrackIds = 11;</code>
      * @param index The index of the value to return.
      * @return The bytes of the inboundAudioTrackIds at the given index.
      */
@@ -4420,10 +4555,10 @@ public final class Models {
       return inboundAudioTrackIds_.getByteString(index);
     }
 
-    public static final int INBOUNDVIDEOTRACKIDS_FIELD_NUMBER = 11;
+    public static final int INBOUNDVIDEOTRACKIDS_FIELD_NUMBER = 12;
     private com.google.protobuf.LazyStringList inboundVideoTrackIds_;
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @return A list containing the inboundVideoTrackIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -4431,14 +4566,14 @@ public final class Models {
       return inboundVideoTrackIds_;
     }
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @return The count of inboundVideoTrackIds.
      */
     public int getInboundVideoTrackIdsCount() {
       return inboundVideoTrackIds_.size();
     }
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @param index The index of the element to return.
      * @return The inboundVideoTrackIds at the given index.
      */
@@ -4446,7 +4581,7 @@ public final class Models {
       return inboundVideoTrackIds_.get(index);
     }
     /**
-     * <code>repeated string inboundVideoTrackIds = 11;</code>
+     * <code>repeated string inboundVideoTrackIds = 12;</code>
      * @param index The index of the value to return.
      * @return The bytes of the inboundVideoTrackIds at the given index.
      */
@@ -4455,10 +4590,10 @@ public final class Models {
       return inboundVideoTrackIds_.getByteString(index);
     }
 
-    public static final int OUTBOUNDAUDIOTRACKIDS_FIELD_NUMBER = 12;
+    public static final int OUTBOUNDAUDIOTRACKIDS_FIELD_NUMBER = 13;
     private com.google.protobuf.LazyStringList outboundAudioTrackIds_;
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @return A list containing the outboundAudioTrackIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -4466,14 +4601,14 @@ public final class Models {
       return outboundAudioTrackIds_;
     }
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @return The count of outboundAudioTrackIds.
      */
     public int getOutboundAudioTrackIdsCount() {
       return outboundAudioTrackIds_.size();
     }
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @param index The index of the element to return.
      * @return The outboundAudioTrackIds at the given index.
      */
@@ -4481,7 +4616,7 @@ public final class Models {
       return outboundAudioTrackIds_.get(index);
     }
     /**
-     * <code>repeated string outboundAudioTrackIds = 12;</code>
+     * <code>repeated string outboundAudioTrackIds = 13;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundAudioTrackIds at the given index.
      */
@@ -4490,10 +4625,10 @@ public final class Models {
       return outboundAudioTrackIds_.getByteString(index);
     }
 
-    public static final int OUTBOUNDVIDEOTRACKIDS_FIELD_NUMBER = 13;
+    public static final int OUTBOUNDVIDEOTRACKIDS_FIELD_NUMBER = 14;
     private com.google.protobuf.LazyStringList outboundVideoTrackIds_;
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @return A list containing the outboundVideoTrackIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -4501,14 +4636,14 @@ public final class Models {
       return outboundVideoTrackIds_;
     }
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @return The count of outboundVideoTrackIds.
      */
     public int getOutboundVideoTrackIdsCount() {
       return outboundVideoTrackIds_.size();
     }
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @param index The index of the element to return.
      * @return The outboundVideoTrackIds at the given index.
      */
@@ -4516,7 +4651,7 @@ public final class Models {
       return outboundVideoTrackIds_.get(index);
     }
     /**
-     * <code>repeated string outboundVideoTrackIds = 13;</code>
+     * <code>repeated string outboundVideoTrackIds = 14;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundVideoTrackIds at the given index.
      */
@@ -4589,22 +4724,25 @@ public final class Models {
         output.writeUInt64(7, opened_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, mediaUnitId_);
+        output.writeUInt64(8, touched_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
       }
       for (int i = 0; i < inboundAudioTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, inboundAudioTrackIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, inboundAudioTrackIds_.getRaw(i));
       }
       for (int i = 0; i < inboundVideoTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, inboundVideoTrackIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, inboundVideoTrackIds_.getRaw(i));
       }
       for (int i = 0; i < outboundAudioTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, outboundAudioTrackIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, outboundAudioTrackIds_.getRaw(i));
       }
       for (int i = 0; i < outboundVideoTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, outboundVideoTrackIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 14, outboundVideoTrackIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -4638,10 +4776,14 @@ public final class Models {
           .computeUInt64Size(7, opened_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, touched_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
       }
       {
         int dataSize = 0;
@@ -4725,6 +4867,11 @@ public final class Models {
         if (getOpened()
             != other.getOpened()) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
         if (!getMediaUnitId()
@@ -4782,6 +4929,11 @@ public final class Models {
         hash = (37 * hash) + OPENED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getOpened());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -4954,18 +5106,20 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000020);
         opened_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
-        inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
-        inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
-        outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000800);
-        outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00001000);
+        outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -5023,31 +5177,35 @@ public final class Models {
           to_bitField0_ |= 0x00000040;
         }
         if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000080;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000100) != 0)) {
           to_bitField0_ |= 0x00000100;
         }
-        result.marker_ = marker_;
-        if (((bitField0_ & 0x00000200) != 0)) {
-          inboundAudioTrackIds_ = inboundAudioTrackIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000200);
+        result.mediaUnitId_ = mediaUnitId_;
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          to_bitField0_ |= 0x00000200;
         }
-        result.inboundAudioTrackIds_ = inboundAudioTrackIds_;
+        result.marker_ = marker_;
         if (((bitField0_ & 0x00000400) != 0)) {
-          inboundVideoTrackIds_ = inboundVideoTrackIds_.getUnmodifiableView();
+          inboundAudioTrackIds_ = inboundAudioTrackIds_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000400);
         }
-        result.inboundVideoTrackIds_ = inboundVideoTrackIds_;
+        result.inboundAudioTrackIds_ = inboundAudioTrackIds_;
         if (((bitField0_ & 0x00000800) != 0)) {
-          outboundAudioTrackIds_ = outboundAudioTrackIds_.getUnmodifiableView();
+          inboundVideoTrackIds_ = inboundVideoTrackIds_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000800);
         }
-        result.outboundAudioTrackIds_ = outboundAudioTrackIds_;
+        result.inboundVideoTrackIds_ = inboundVideoTrackIds_;
         if (((bitField0_ & 0x00001000) != 0)) {
-          outboundVideoTrackIds_ = outboundVideoTrackIds_.getUnmodifiableView();
+          outboundAudioTrackIds_ = outboundAudioTrackIds_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00001000);
+        }
+        result.outboundAudioTrackIds_ = outboundAudioTrackIds_;
+        if (((bitField0_ & 0x00002000) != 0)) {
+          outboundVideoTrackIds_ = outboundVideoTrackIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00002000);
         }
         result.outboundVideoTrackIds_ = outboundVideoTrackIds_;
         result.bitField0_ = to_bitField0_;
@@ -5132,20 +5290,23 @@ public final class Models {
         if (other.hasOpened()) {
           setOpened(other.getOpened());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
           marker_ = other.marker_;
           onChanged();
         }
         if (!other.inboundAudioTrackIds_.isEmpty()) {
           if (inboundAudioTrackIds_.isEmpty()) {
             inboundAudioTrackIds_ = other.inboundAudioTrackIds_;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000400);
           } else {
             ensureInboundAudioTrackIdsIsMutable();
             inboundAudioTrackIds_.addAll(other.inboundAudioTrackIds_);
@@ -5155,7 +5316,7 @@ public final class Models {
         if (!other.inboundVideoTrackIds_.isEmpty()) {
           if (inboundVideoTrackIds_.isEmpty()) {
             inboundVideoTrackIds_ = other.inboundVideoTrackIds_;
-            bitField0_ = (bitField0_ & ~0x00000400);
+            bitField0_ = (bitField0_ & ~0x00000800);
           } else {
             ensureInboundVideoTrackIdsIsMutable();
             inboundVideoTrackIds_.addAll(other.inboundVideoTrackIds_);
@@ -5165,7 +5326,7 @@ public final class Models {
         if (!other.outboundAudioTrackIds_.isEmpty()) {
           if (outboundAudioTrackIds_.isEmpty()) {
             outboundAudioTrackIds_ = other.outboundAudioTrackIds_;
-            bitField0_ = (bitField0_ & ~0x00000800);
+            bitField0_ = (bitField0_ & ~0x00001000);
           } else {
             ensureOutboundAudioTrackIdsIsMutable();
             outboundAudioTrackIds_.addAll(other.outboundAudioTrackIds_);
@@ -5175,7 +5336,7 @@ public final class Models {
         if (!other.outboundVideoTrackIds_.isEmpty()) {
           if (outboundVideoTrackIds_.isEmpty()) {
             outboundVideoTrackIds_ = other.outboundVideoTrackIds_;
-            bitField0_ = (bitField0_ & ~0x00001000);
+            bitField0_ = (bitField0_ & ~0x00002000);
           } else {
             ensureOutboundVideoTrackIdsIsMutable();
             outboundVideoTrackIds_.addAll(other.outboundVideoTrackIds_);
@@ -5776,2956 +5937,41 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 8;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 8;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000080) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 8;</code>
-       * @return The mediaUnitId.
-       */
-      public java.lang.String getMediaUnitId() {
-        java.lang.Object ref = mediaUnitId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mediaUnitId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 8;</code>
-       * @return The bytes for mediaUnitId.
-       */
-      public com.google.protobuf.ByteString
-          getMediaUnitIdBytes() {
-        java.lang.Object ref = mediaUnitId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          mediaUnitId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 8;</code>
-       * @param value The mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        mediaUnitId_ = getDefaultInstance().getMediaUnitId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 8;</code>
-       * @param value The bytes for mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object marker_ = "";
-      /**
-       * <code>optional string marker = 9;</code>
-       * @return Whether the marker field is set.
-       */
-      public boolean hasMarker() {
-        return ((bitField0_ & 0x00000100) != 0);
-      }
-      /**
-       * <code>optional string marker = 9;</code>
-       * @return The marker.
-       */
-      public java.lang.String getMarker() {
-        java.lang.Object ref = marker_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            marker_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 9;</code>
-       * @return The bytes for marker.
-       */
-      public com.google.protobuf.ByteString
-          getMarkerBytes() {
-        java.lang.Object ref = marker_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          marker_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 9;</code>
-       * @param value The marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarker(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 9;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        marker_ = getDefaultInstance().getMarker();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 9;</code>
-       * @param value The bytes for marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarkerBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureInboundAudioTrackIdsIsMutable() {
-        if (!((bitField0_ & 0x00000200) != 0)) {
-          inboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundAudioTrackIds_);
-          bitField0_ |= 0x00000200;
-         }
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @return A list containing the inboundAudioTrackIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getInboundAudioTrackIdsList() {
-        return inboundAudioTrackIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @return The count of inboundAudioTrackIds.
-       */
-      public int getInboundAudioTrackIdsCount() {
-        return inboundAudioTrackIds_.size();
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @param index The index of the element to return.
-       * @return The inboundAudioTrackIds at the given index.
-       */
-      public java.lang.String getInboundAudioTrackIds(int index) {
-        return inboundAudioTrackIds_.get(index);
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the inboundAudioTrackIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getInboundAudioTrackIdsBytes(int index) {
-        return inboundAudioTrackIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @param index The index to set the value at.
-       * @param value The inboundAudioTrackIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInboundAudioTrackIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInboundAudioTrackIdsIsMutable();
-        inboundAudioTrackIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @param value The inboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addInboundAudioTrackIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInboundAudioTrackIdsIsMutable();
-        inboundAudioTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @param values The inboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllInboundAudioTrackIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureInboundAudioTrackIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, inboundAudioTrackIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearInboundAudioTrackIds() {
-        inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundAudioTrackIds = 10;</code>
-       * @param value The bytes of the inboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addInboundAudioTrackIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInboundAudioTrackIdsIsMutable();
-        inboundAudioTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureInboundVideoTrackIdsIsMutable() {
-        if (!((bitField0_ & 0x00000400) != 0)) {
-          inboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundVideoTrackIds_);
-          bitField0_ |= 0x00000400;
-         }
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @return A list containing the inboundVideoTrackIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getInboundVideoTrackIdsList() {
-        return inboundVideoTrackIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @return The count of inboundVideoTrackIds.
-       */
-      public int getInboundVideoTrackIdsCount() {
-        return inboundVideoTrackIds_.size();
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @param index The index of the element to return.
-       * @return The inboundVideoTrackIds at the given index.
-       */
-      public java.lang.String getInboundVideoTrackIds(int index) {
-        return inboundVideoTrackIds_.get(index);
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the inboundVideoTrackIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getInboundVideoTrackIdsBytes(int index) {
-        return inboundVideoTrackIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @param index The index to set the value at.
-       * @param value The inboundVideoTrackIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInboundVideoTrackIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInboundVideoTrackIdsIsMutable();
-        inboundVideoTrackIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @param value The inboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addInboundVideoTrackIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInboundVideoTrackIdsIsMutable();
-        inboundVideoTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @param values The inboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllInboundVideoTrackIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureInboundVideoTrackIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, inboundVideoTrackIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearInboundVideoTrackIds() {
-        inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000400);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string inboundVideoTrackIds = 11;</code>
-       * @param value The bytes of the inboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addInboundVideoTrackIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInboundVideoTrackIdsIsMutable();
-        inboundVideoTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureOutboundAudioTrackIdsIsMutable() {
-        if (!((bitField0_ & 0x00000800) != 0)) {
-          outboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundAudioTrackIds_);
-          bitField0_ |= 0x00000800;
-         }
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @return A list containing the outboundAudioTrackIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getOutboundAudioTrackIdsList() {
-        return outboundAudioTrackIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @return The count of outboundAudioTrackIds.
-       */
-      public int getOutboundAudioTrackIdsCount() {
-        return outboundAudioTrackIds_.size();
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @param index The index of the element to return.
-       * @return The outboundAudioTrackIds at the given index.
-       */
-      public java.lang.String getOutboundAudioTrackIds(int index) {
-        return outboundAudioTrackIds_.get(index);
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the outboundAudioTrackIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getOutboundAudioTrackIdsBytes(int index) {
-        return outboundAudioTrackIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @param index The index to set the value at.
-       * @param value The outboundAudioTrackIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setOutboundAudioTrackIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundAudioTrackIdsIsMutable();
-        outboundAudioTrackIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @param value The outboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundAudioTrackIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundAudioTrackIdsIsMutable();
-        outboundAudioTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @param values The outboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllOutboundAudioTrackIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureOutboundAudioTrackIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, outboundAudioTrackIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearOutboundAudioTrackIds() {
-        outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000800);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 12;</code>
-       * @param value The bytes of the outboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundAudioTrackIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundAudioTrackIdsIsMutable();
-        outboundAudioTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureOutboundVideoTrackIdsIsMutable() {
-        if (!((bitField0_ & 0x00001000) != 0)) {
-          outboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundVideoTrackIds_);
-          bitField0_ |= 0x00001000;
-         }
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @return A list containing the outboundVideoTrackIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getOutboundVideoTrackIdsList() {
-        return outboundVideoTrackIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @return The count of outboundVideoTrackIds.
-       */
-      public int getOutboundVideoTrackIdsCount() {
-        return outboundVideoTrackIds_.size();
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @param index The index of the element to return.
-       * @return The outboundVideoTrackIds at the given index.
-       */
-      public java.lang.String getOutboundVideoTrackIds(int index) {
-        return outboundVideoTrackIds_.get(index);
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the outboundVideoTrackIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getOutboundVideoTrackIdsBytes(int index) {
-        return outboundVideoTrackIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @param index The index to set the value at.
-       * @param value The outboundVideoTrackIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setOutboundVideoTrackIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundVideoTrackIdsIsMutable();
-        outboundVideoTrackIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @param value The outboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundVideoTrackIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundVideoTrackIdsIsMutable();
-        outboundVideoTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @param values The outboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllOutboundVideoTrackIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureOutboundVideoTrackIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, outboundVideoTrackIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearOutboundVideoTrackIds() {
-        outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00001000);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 13;</code>
-       * @param value The bytes of the outboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundVideoTrackIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundVideoTrackIdsIsMutable();
-        outboundVideoTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.PeerConnection)
-    }
-
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.PeerConnection)
-    private static final org.observertc.schemas.dtos.Models.PeerConnection DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.PeerConnection();
-    }
-
-    public static org.observertc.schemas.dtos.Models.PeerConnection getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<PeerConnection>
-        PARSER = new com.google.protobuf.AbstractParser<PeerConnection>() {
-      @java.lang.Override
-      public PeerConnection parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new PeerConnection(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<PeerConnection> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<PeerConnection> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public org.observertc.schemas.dtos.Models.PeerConnection getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface InboundAudioTrackOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.InboundAudioTrack)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    boolean hasServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    java.lang.String getServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    com.google.protobuf.ByteString
-        getServiceIdBytes();
-
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
-     */
-    boolean hasRoomId();
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
-     */
-    java.lang.String getRoomId();
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
-     */
-    com.google.protobuf.ByteString
-        getRoomIdBytes();
-
-    /**
-     * <code>required string callId = 3;</code>
-     * @return Whether the callId field is set.
-     */
-    boolean hasCallId();
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The callId.
-     */
-    java.lang.String getCallId();
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The bytes for callId.
-     */
-    com.google.protobuf.ByteString
-        getCallIdBytes();
-
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    boolean hasUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    java.lang.String getUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    com.google.protobuf.ByteString
-        getUserIdBytes();
-
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return Whether the clientId field is set.
-     */
-    boolean hasClientId();
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The clientId.
-     */
-    java.lang.String getClientId();
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The bytes for clientId.
-     */
-    com.google.protobuf.ByteString
-        getClientIdBytes();
-
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return Whether the peerConnectionId field is set.
-     */
-    boolean hasPeerConnectionId();
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The peerConnectionId.
-     */
-    java.lang.String getPeerConnectionId();
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The bytes for peerConnectionId.
-     */
-    com.google.protobuf.ByteString
-        getPeerConnectionIdBytes();
-
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return Whether the trackId field is set.
-     */
-    boolean hasTrackId();
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The trackId.
-     */
-    java.lang.String getTrackId();
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The bytes for trackId.
-     */
-    com.google.protobuf.ByteString
-        getTrackIdBytes();
-
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
-     */
-    boolean hasAdded();
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
-     */
-    long getAdded();
-
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    boolean hasMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    java.lang.String getMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    com.google.protobuf.ByteString
-        getMediaUnitIdBytes();
-
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    boolean hasMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    java.lang.String getMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    com.google.protobuf.ByteString
-        getMarkerBytes();
-
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return Whether the sfuSinkId field is set.
-     */
-    boolean hasSfuSinkId();
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return The sfuSinkId.
-     */
-    java.lang.String getSfuSinkId();
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return The bytes for sfuSinkId.
-     */
-    com.google.protobuf.ByteString
-        getSfuSinkIdBytes();
-
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    boolean hasSfuStreamId();
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return The sfuStreamId.
-     */
-    java.lang.String getSfuStreamId();
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    com.google.protobuf.ByteString
-        getSfuStreamIdBytes();
-
-    /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return A list containing the ssrc.
-     */
-    java.util.List<java.lang.Long> getSsrcList();
-    /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return The count of ssrc.
-     */
-    int getSsrcCount();
-    /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @param index The index of the element to return.
-     * @return The ssrc at the given index.
-     */
-    long getSsrc(int index);
-  }
-  /**
-   * Protobuf type {@code org.observertc.schemas.dtos.InboundAudioTrack}
-   */
-  public static final class InboundAudioTrack extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.InboundAudioTrack)
-      InboundAudioTrackOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use InboundAudioTrack.newBuilder() to construct.
-    private InboundAudioTrack(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private InboundAudioTrack() {
-      serviceId_ = "";
-      roomId_ = "";
-      callId_ = "";
-      userId_ = "";
-      clientId_ = "";
-      peerConnectionId_ = "";
-      trackId_ = "";
-      mediaUnitId_ = "";
-      marker_ = "";
-      sfuSinkId_ = "";
-      sfuStreamId_ = "";
-      ssrc_ = emptyLongList();
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new InboundAudioTrack();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private InboundAudioTrack(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              serviceId_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              roomId_ = bs;
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              callId_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              userId_ = bs;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              clientId_ = bs;
-              break;
-            }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000020;
-              peerConnectionId_ = bs;
-              break;
-            }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000040;
-              trackId_ = bs;
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000080;
-              added_ = input.readUInt64();
-              break;
-            }
-            case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              mediaUnitId_ = bs;
-              break;
-            }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000200;
-              marker_ = bs;
-              break;
-            }
-            case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000400;
-              sfuSinkId_ = bs;
-              break;
-            }
-            case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000800;
-              sfuStreamId_ = bs;
-              break;
-            }
-            case 104: {
-              if (!((mutable_bitField0_ & 0x00001000) != 0)) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00001000;
-              }
-              ssrc_.addLong(input.readInt64());
-              break;
-            }
-            case 106: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00001000) != 0) && input.getBytesUntilLimit() > 0) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00001000;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                ssrc_.addLong(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00001000) != 0)) {
-          ssrc_.makeImmutable(); // C
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundAudioTrack_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundAudioTrack_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.observertc.schemas.dtos.Models.InboundAudioTrack.class, org.observertc.schemas.dtos.Models.InboundAudioTrack.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int SERVICEID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object serviceId_;
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    @java.lang.Override
-    public boolean hasServiceId() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    @java.lang.Override
-    public java.lang.String getServiceId() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          serviceId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getServiceIdBytes() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        serviceId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ROOMID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object roomId_;
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
-     */
-    @java.lang.Override
-    public boolean hasRoomId() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
-     */
-    @java.lang.Override
-    public java.lang.String getRoomId() {
-      java.lang.Object ref = roomId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roomId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getRoomIdBytes() {
-      java.lang.Object ref = roomId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roomId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CALLID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object callId_;
-    /**
-     * <code>required string callId = 3;</code>
-     * @return Whether the callId field is set.
-     */
-    @java.lang.Override
-    public boolean hasCallId() {
-      return ((bitField0_ & 0x00000004) != 0);
-    }
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The callId.
-     */
-    @java.lang.Override
-    public java.lang.String getCallId() {
-      java.lang.Object ref = callId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          callId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The bytes for callId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getCallIdBytes() {
-      java.lang.Object ref = callId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        callId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int USERID_FIELD_NUMBER = 4;
-    private volatile java.lang.Object userId_;
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    @java.lang.Override
-    public boolean hasUserId() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          userId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CLIENTID_FIELD_NUMBER = 5;
-    private volatile java.lang.Object clientId_;
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return Whether the clientId field is set.
-     */
-    @java.lang.Override
-    public boolean hasClientId() {
-      return ((bitField0_ & 0x00000010) != 0);
-    }
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The clientId.
-     */
-    @java.lang.Override
-    public java.lang.String getClientId() {
-      java.lang.Object ref = clientId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          clientId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The bytes for clientId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getClientIdBytes() {
-      java.lang.Object ref = clientId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        clientId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PEERCONNECTIONID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object peerConnectionId_;
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return Whether the peerConnectionId field is set.
-     */
-    @java.lang.Override
-    public boolean hasPeerConnectionId() {
-      return ((bitField0_ & 0x00000020) != 0);
-    }
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The peerConnectionId.
-     */
-    @java.lang.Override
-    public java.lang.String getPeerConnectionId() {
-      java.lang.Object ref = peerConnectionId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          peerConnectionId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The bytes for peerConnectionId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getPeerConnectionIdBytes() {
-      java.lang.Object ref = peerConnectionId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        peerConnectionId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TRACKID_FIELD_NUMBER = 7;
-    private volatile java.lang.Object trackId_;
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return Whether the trackId field is set.
-     */
-    @java.lang.Override
-    public boolean hasTrackId() {
-      return ((bitField0_ & 0x00000040) != 0);
-    }
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The trackId.
-     */
-    @java.lang.Override
-    public java.lang.String getTrackId() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          trackId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The bytes for trackId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTrackIdBytes() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        trackId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ADDED_FIELD_NUMBER = 8;
-    private long added_;
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
-     */
-    @java.lang.Override
-    public boolean hasAdded() {
-      return ((bitField0_ & 0x00000080) != 0);
-    }
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
-     */
-    @java.lang.Override
-    public long getAdded() {
-      return added_;
-    }
-
-    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
-    private volatile java.lang.Object mediaUnitId_;
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    @java.lang.Override
-    public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000100) != 0);
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    @java.lang.Override
-    public java.lang.String getMediaUnitId() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          mediaUnitId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMediaUnitIdBytes() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        mediaUnitId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int MARKER_FIELD_NUMBER = 10;
-    private volatile java.lang.Object marker_;
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    @java.lang.Override
-    public boolean hasMarker() {
-      return ((bitField0_ & 0x00000200) != 0);
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    @java.lang.Override
-    public java.lang.String getMarker() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          marker_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMarkerBytes() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        marker_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSINKID_FIELD_NUMBER = 11;
-    private volatile java.lang.Object sfuSinkId_;
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return Whether the sfuSinkId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuSinkId() {
-      return ((bitField0_ & 0x00000400) != 0);
-    }
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return The sfuSinkId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuSinkId() {
-      java.lang.Object ref = sfuSinkId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuSinkId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return The bytes for sfuSinkId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuSinkIdBytes() {
-      java.lang.Object ref = sfuSinkId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuSinkId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSTREAMID_FIELD_NUMBER = 12;
-    private volatile java.lang.Object sfuStreamId_;
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000800) != 0);
-    }
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return The sfuStreamId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuStreamId() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuStreamId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuStreamIdBytes() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuStreamId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SSRC_FIELD_NUMBER = 13;
-    private com.google.protobuf.Internal.LongList ssrc_;
-    /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return A list containing the ssrc.
-     */
-    @java.lang.Override
-    public java.util.List<java.lang.Long>
-        getSsrcList() {
-      return ssrc_;
-    }
-    /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return The count of ssrc.
-     */
-    public int getSsrcCount() {
-      return ssrc_.size();
-    }
-    /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @param index The index of the element to return.
-     * @return The ssrc at the given index.
-     */
-    public long getSsrc(int index) {
-      return ssrc_.getLong(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasServiceId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasRoomId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasCallId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUserId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasClientId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPeerConnectionId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTrackId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasAdded()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, roomId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, callId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, userId_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, clientId_);
-      }
-      if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, peerConnectionId_);
-      }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, trackId_);
-      }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        output.writeUInt64(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, sfuSinkId_);
-      }
-      if (((bitField0_ & 0x00000800) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, sfuStreamId_);
-      }
-      for (int i = 0; i < ssrc_.size(); i++) {
-        output.writeInt64(13, ssrc_.getLong(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, roomId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, callId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, userId_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, clientId_);
-      }
-      if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, peerConnectionId_);
-      }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, trackId_);
-      }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, sfuSinkId_);
-      }
-      if (((bitField0_ & 0x00000800) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, sfuStreamId_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < ssrc_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(ssrc_.getLong(i));
-        }
-        size += dataSize;
-        size += 1 * getSsrcList().size();
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof org.observertc.schemas.dtos.Models.InboundAudioTrack)) {
-        return super.equals(obj);
-      }
-      org.observertc.schemas.dtos.Models.InboundAudioTrack other = (org.observertc.schemas.dtos.Models.InboundAudioTrack) obj;
-
-      if (hasServiceId() != other.hasServiceId()) return false;
-      if (hasServiceId()) {
-        if (!getServiceId()
-            .equals(other.getServiceId())) return false;
-      }
-      if (hasRoomId() != other.hasRoomId()) return false;
-      if (hasRoomId()) {
-        if (!getRoomId()
-            .equals(other.getRoomId())) return false;
-      }
-      if (hasCallId() != other.hasCallId()) return false;
-      if (hasCallId()) {
-        if (!getCallId()
-            .equals(other.getCallId())) return false;
-      }
-      if (hasUserId() != other.hasUserId()) return false;
-      if (hasUserId()) {
-        if (!getUserId()
-            .equals(other.getUserId())) return false;
-      }
-      if (hasClientId() != other.hasClientId()) return false;
-      if (hasClientId()) {
-        if (!getClientId()
-            .equals(other.getClientId())) return false;
-      }
-      if (hasPeerConnectionId() != other.hasPeerConnectionId()) return false;
-      if (hasPeerConnectionId()) {
-        if (!getPeerConnectionId()
-            .equals(other.getPeerConnectionId())) return false;
-      }
-      if (hasTrackId() != other.hasTrackId()) return false;
-      if (hasTrackId()) {
-        if (!getTrackId()
-            .equals(other.getTrackId())) return false;
-      }
-      if (hasAdded() != other.hasAdded()) return false;
-      if (hasAdded()) {
-        if (getAdded()
-            != other.getAdded()) return false;
-      }
-      if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
-      if (hasMediaUnitId()) {
-        if (!getMediaUnitId()
-            .equals(other.getMediaUnitId())) return false;
-      }
-      if (hasMarker() != other.hasMarker()) return false;
-      if (hasMarker()) {
-        if (!getMarker()
-            .equals(other.getMarker())) return false;
-      }
-      if (hasSfuSinkId() != other.hasSfuSinkId()) return false;
-      if (hasSfuSinkId()) {
-        if (!getSfuSinkId()
-            .equals(other.getSfuSinkId())) return false;
-      }
-      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
-      if (hasSfuStreamId()) {
-        if (!getSfuStreamId()
-            .equals(other.getSfuStreamId())) return false;
-      }
-      if (!getSsrcList()
-          .equals(other.getSsrcList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasServiceId()) {
-        hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
-        hash = (53 * hash) + getServiceId().hashCode();
-      }
-      if (hasRoomId()) {
-        hash = (37 * hash) + ROOMID_FIELD_NUMBER;
-        hash = (53 * hash) + getRoomId().hashCode();
-      }
-      if (hasCallId()) {
-        hash = (37 * hash) + CALLID_FIELD_NUMBER;
-        hash = (53 * hash) + getCallId().hashCode();
-      }
-      if (hasUserId()) {
-        hash = (37 * hash) + USERID_FIELD_NUMBER;
-        hash = (53 * hash) + getUserId().hashCode();
-      }
-      if (hasClientId()) {
-        hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
-        hash = (53 * hash) + getClientId().hashCode();
-      }
-      if (hasPeerConnectionId()) {
-        hash = (37 * hash) + PEERCONNECTIONID_FIELD_NUMBER;
-        hash = (53 * hash) + getPeerConnectionId().hashCode();
-      }
-      if (hasTrackId()) {
-        hash = (37 * hash) + TRACKID_FIELD_NUMBER;
-        hash = (53 * hash) + getTrackId().hashCode();
-      }
-      if (hasAdded()) {
-        hash = (37 * hash) + ADDED_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getAdded());
-      }
-      if (hasMediaUnitId()) {
-        hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
-        hash = (53 * hash) + getMediaUnitId().hashCode();
-      }
-      if (hasMarker()) {
-        hash = (37 * hash) + MARKER_FIELD_NUMBER;
-        hash = (53 * hash) + getMarker().hashCode();
-      }
-      if (hasSfuSinkId()) {
-        hash = (37 * hash) + SFUSINKID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuSinkId().hashCode();
-      }
-      if (hasSfuStreamId()) {
-        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuStreamId().hashCode();
-      }
-      if (getSsrcCount() > 0) {
-        hash = (37 * hash) + SSRC_FIELD_NUMBER;
-        hash = (53 * hash) + getSsrcList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(org.observertc.schemas.dtos.Models.InboundAudioTrack prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code org.observertc.schemas.dtos.InboundAudioTrack}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.InboundAudioTrack)
-        org.observertc.schemas.dtos.Models.InboundAudioTrackOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundAudioTrack_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundAudioTrack_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.InboundAudioTrack.class, org.observertc.schemas.dtos.Models.InboundAudioTrack.Builder.class);
-      }
-
-      // Construct using org.observertc.schemas.dtos.Models.InboundAudioTrack.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        serviceId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        roomId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        callId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        userId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        clientId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        peerConnectionId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        trackId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        added_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        mediaUnitId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        marker_ = "";
-        bitField0_ = (bitField0_ & ~0x00000200);
-        sfuSinkId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000400);
-        sfuStreamId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000800);
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00001000);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundAudioTrack_descriptor;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.InboundAudioTrack getDefaultInstanceForType() {
-        return org.observertc.schemas.dtos.Models.InboundAudioTrack.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.InboundAudioTrack build() {
-        org.observertc.schemas.dtos.Models.InboundAudioTrack result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.InboundAudioTrack buildPartial() {
-        org.observertc.schemas.dtos.Models.InboundAudioTrack result = new org.observertc.schemas.dtos.Models.InboundAudioTrack(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.serviceId_ = serviceId_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.roomId_ = roomId_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.callId_ = callId_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.userId_ = userId_;
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.clientId_ = clientId_;
-        if (((from_bitField0_ & 0x00000020) != 0)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.peerConnectionId_ = peerConnectionId_;
-        if (((from_bitField0_ & 0x00000040) != 0)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.trackId_ = trackId_;
-        if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.added_ = added_;
-          to_bitField0_ |= 0x00000080;
-        }
-        if (((from_bitField0_ & 0x00000100) != 0)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.mediaUnitId_ = mediaUnitId_;
-        if (((from_bitField0_ & 0x00000200) != 0)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.marker_ = marker_;
-        if (((from_bitField0_ & 0x00000400) != 0)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.sfuSinkId_ = sfuSinkId_;
-        if (((from_bitField0_ & 0x00000800) != 0)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.sfuStreamId_ = sfuStreamId_;
-        if (((bitField0_ & 0x00001000) != 0)) {
-          ssrc_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00001000);
-        }
-        result.ssrc_ = ssrc_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.observertc.schemas.dtos.Models.InboundAudioTrack) {
-          return mergeFrom((org.observertc.schemas.dtos.Models.InboundAudioTrack)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(org.observertc.schemas.dtos.Models.InboundAudioTrack other) {
-        if (other == org.observertc.schemas.dtos.Models.InboundAudioTrack.getDefaultInstance()) return this;
-        if (other.hasServiceId()) {
-          bitField0_ |= 0x00000001;
-          serviceId_ = other.serviceId_;
-          onChanged();
-        }
-        if (other.hasRoomId()) {
-          bitField0_ |= 0x00000002;
-          roomId_ = other.roomId_;
-          onChanged();
-        }
-        if (other.hasCallId()) {
-          bitField0_ |= 0x00000004;
-          callId_ = other.callId_;
-          onChanged();
-        }
-        if (other.hasUserId()) {
-          bitField0_ |= 0x00000008;
-          userId_ = other.userId_;
-          onChanged();
-        }
-        if (other.hasClientId()) {
-          bitField0_ |= 0x00000010;
-          clientId_ = other.clientId_;
-          onChanged();
-        }
-        if (other.hasPeerConnectionId()) {
-          bitField0_ |= 0x00000020;
-          peerConnectionId_ = other.peerConnectionId_;
-          onChanged();
-        }
-        if (other.hasTrackId()) {
-          bitField0_ |= 0x00000040;
-          trackId_ = other.trackId_;
-          onChanged();
-        }
-        if (other.hasAdded()) {
-          setAdded(other.getAdded());
-        }
-        if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000100;
-          mediaUnitId_ = other.mediaUnitId_;
-          onChanged();
-        }
-        if (other.hasMarker()) {
-          bitField0_ |= 0x00000200;
-          marker_ = other.marker_;
-          onChanged();
-        }
-        if (other.hasSfuSinkId()) {
-          bitField0_ |= 0x00000400;
-          sfuSinkId_ = other.sfuSinkId_;
-          onChanged();
-        }
-        if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000800;
-          sfuStreamId_ = other.sfuStreamId_;
-          onChanged();
-        }
-        if (!other.ssrc_.isEmpty()) {
-          if (ssrc_.isEmpty()) {
-            ssrc_ = other.ssrc_;
-            bitField0_ = (bitField0_ & ~0x00001000);
-          } else {
-            ensureSsrcIsMutable();
-            ssrc_.addAll(other.ssrc_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        if (!hasServiceId()) {
-          return false;
-        }
-        if (!hasRoomId()) {
-          return false;
-        }
-        if (!hasCallId()) {
-          return false;
-        }
-        if (!hasUserId()) {
-          return false;
-        }
-        if (!hasClientId()) {
-          return false;
-        }
-        if (!hasPeerConnectionId()) {
-          return false;
-        }
-        if (!hasTrackId()) {
-          return false;
-        }
-        if (!hasAdded()) {
-          return false;
-        }
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        org.observertc.schemas.dtos.Models.InboundAudioTrack parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.observertc.schemas.dtos.Models.InboundAudioTrack) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object serviceId_ = "";
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return Whether the serviceId field is set.
-       */
-      public boolean hasServiceId() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The serviceId.
-       */
-      public java.lang.String getServiceId() {
-        java.lang.Object ref = serviceId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The bytes for serviceId.
-       */
-      public com.google.protobuf.ByteString
-          getServiceIdBytes() {
-        java.lang.Object ref = serviceId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          serviceId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearServiceId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        serviceId_ = getDefaultInstance().getServiceId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The bytes for serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object roomId_ = "";
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return Whether the roomId field is set.
-       */
-      public boolean hasRoomId() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return The roomId.
-       */
-      public java.lang.String getRoomId() {
-        java.lang.Object ref = roomId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            roomId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return The bytes for roomId.
-       */
-      public com.google.protobuf.ByteString
-          getRoomIdBytes() {
-        java.lang.Object ref = roomId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roomId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @param value The roomId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setRoomId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearRoomId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        roomId_ = getDefaultInstance().getRoomId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @param value The bytes for roomId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setRoomIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object callId_ = "";
-      /**
-       * <code>required string callId = 3;</code>
-       * @return Whether the callId field is set.
-       */
-      public boolean hasCallId() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return The callId.
-       */
-      public java.lang.String getCallId() {
-        java.lang.Object ref = callId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            callId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return The bytes for callId.
-       */
-      public com.google.protobuf.ByteString
-          getCallIdBytes() {
-        java.lang.Object ref = callId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          callId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @param value The callId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCallId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        callId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCallId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        callId_ = getDefaultInstance().getCallId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @param value The bytes for callId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCallIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        callId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object userId_ = "";
-      /**
-       * <code>required string userId = 4;</code>
-       * @return Whether the userId field is set.
-       */
-      public boolean hasUserId() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The userId.
-       */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            userId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The bytes for userId.
-       */
-      public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        userId_ = getDefaultInstance().getUserId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The bytes for userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object clientId_ = "";
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return Whether the clientId field is set.
-       */
-      public boolean hasClientId() {
-        return ((bitField0_ & 0x00000010) != 0);
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return The clientId.
-       */
-      public java.lang.String getClientId() {
-        java.lang.Object ref = clientId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            clientId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return The bytes for clientId.
-       */
-      public com.google.protobuf.ByteString
-          getClientIdBytes() {
-        java.lang.Object ref = clientId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          clientId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @param value The clientId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setClientId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearClientId() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        clientId_ = getDefaultInstance().getClientId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @param value The bytes for clientId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setClientIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object peerConnectionId_ = "";
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return Whether the peerConnectionId field is set.
-       */
-      public boolean hasPeerConnectionId() {
-        return ((bitField0_ & 0x00000020) != 0);
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return The peerConnectionId.
-       */
-      public java.lang.String getPeerConnectionId() {
-        java.lang.Object ref = peerConnectionId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            peerConnectionId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return The bytes for peerConnectionId.
-       */
-      public com.google.protobuf.ByteString
-          getPeerConnectionIdBytes() {
-        java.lang.Object ref = peerConnectionId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          peerConnectionId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @param value The peerConnectionId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPeerConnectionId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        peerConnectionId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPeerConnectionId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        peerConnectionId_ = getDefaultInstance().getPeerConnectionId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @param value The bytes for peerConnectionId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPeerConnectionIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        peerConnectionId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object trackId_ = "";
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return Whether the trackId field is set.
-       */
-      public boolean hasTrackId() {
-        return ((bitField0_ & 0x00000040) != 0);
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return The trackId.
-       */
-      public java.lang.String getTrackId() {
-        java.lang.Object ref = trackId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            trackId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return The bytes for trackId.
-       */
-      public com.google.protobuf.ByteString
-          getTrackIdBytes() {
-        java.lang.Object ref = trackId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          trackId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @param value The trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTrackId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        trackId_ = getDefaultInstance().getTrackId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @param value The bytes for trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long added_ ;
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return Whether the added field is set.
+       * <code>optional uint64 touched = 8;</code>
+       * @return The touched.
        */
       @java.lang.Override
-      public boolean hasAdded() {
-        return ((bitField0_ & 0x00000080) != 0);
+      public long getTouched() {
+        return touched_;
       }
       /**
-       * <code>required uint64 added = 8;</code>
-       * @return The added.
-       */
-      @java.lang.Override
-      public long getAdded() {
-        return added_;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @param value The added to set.
+       * <code>optional uint64 touched = 8;</code>
+       * @param value The touched to set.
        * @return This builder for chaining.
        */
-      public Builder setAdded(long value) {
+      public Builder setTouched(long value) {
         bitField0_ |= 0x00000080;
-        added_ = value;
+        touched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required uint64 added = 8;</code>
+       * <code>optional uint64 touched = 8;</code>
        * @return This builder for chaining.
        */
-      public Builder clearAdded() {
+      public Builder clearTouched() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        added_ = 0L;
+        touched_ = 0L;
         onChanged();
         return this;
       }
@@ -8898,249 +6144,438 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object sfuSinkId_ = "";
-      /**
-       * <code>optional string sfuSinkId = 11;</code>
-       * @return Whether the sfuSinkId field is set.
-       */
-      public boolean hasSfuSinkId() {
-        return ((bitField0_ & 0x00000400) != 0);
+      private com.google.protobuf.LazyStringList inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureInboundAudioTrackIdsIsMutable() {
+        if (!((bitField0_ & 0x00000400) != 0)) {
+          inboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundAudioTrackIds_);
+          bitField0_ |= 0x00000400;
+         }
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
-       * @return The sfuSinkId.
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @return A list containing the inboundAudioTrackIds.
        */
-      public java.lang.String getSfuSinkId() {
-        java.lang.Object ref = sfuSinkId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuSinkId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public com.google.protobuf.ProtocolStringList
+          getInboundAudioTrackIdsList() {
+        return inboundAudioTrackIds_.getUnmodifiableView();
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
-       * @return The bytes for sfuSinkId.
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @return The count of inboundAudioTrackIds.
+       */
+      public int getInboundAudioTrackIdsCount() {
+        return inboundAudioTrackIds_.size();
+      }
+      /**
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @param index The index of the element to return.
+       * @return The inboundAudioTrackIds at the given index.
+       */
+      public java.lang.String getInboundAudioTrackIds(int index) {
+        return inboundAudioTrackIds_.get(index);
+      }
+      /**
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the inboundAudioTrackIds at the given index.
        */
       public com.google.protobuf.ByteString
-          getSfuSinkIdBytes() {
-        java.lang.Object ref = sfuSinkId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuSinkId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+          getInboundAudioTrackIdsBytes(int index) {
+        return inboundAudioTrackIds_.getByteString(index);
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
-       * @param value The sfuSinkId to set.
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @param index The index to set the value at.
+       * @param value The inboundAudioTrackIds to set.
        * @return This builder for chaining.
        */
-      public Builder setSfuSinkId(
-          java.lang.String value) {
+      public Builder setInboundAudioTrackIds(
+          int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
-        sfuSinkId_ = value;
+  ensureInboundAudioTrackIdsIsMutable();
+        inboundAudioTrackIds_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @param value The inboundAudioTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder clearSfuSinkId() {
+      public Builder addInboundAudioTrackIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureInboundAudioTrackIdsIsMutable();
+        inboundAudioTrackIds_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @param values The inboundAudioTrackIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllInboundAudioTrackIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureInboundAudioTrackIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, inboundAudioTrackIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInboundAudioTrackIds() {
+        inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
-        sfuSinkId_ = getDefaultInstance().getSfuSinkId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
-       * @param value The bytes for sfuSinkId to set.
+       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * @param value The bytes of the inboundAudioTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder setSfuSinkIdBytes(
+      public Builder addInboundAudioTrackIdsBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
-        sfuSinkId_ = value;
+  ensureInboundAudioTrackIdsIsMutable();
+        inboundAudioTrackIds_.add(value);
         onChanged();
         return this;
       }
 
-      private java.lang.Object sfuStreamId_ = "";
-      /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @return Whether the sfuStreamId field is set.
-       */
-      public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000800) != 0);
+      private com.google.protobuf.LazyStringList inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureInboundVideoTrackIdsIsMutable() {
+        if (!((bitField0_ & 0x00000800) != 0)) {
+          inboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundVideoTrackIds_);
+          bitField0_ |= 0x00000800;
+         }
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @return The sfuStreamId.
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @return A list containing the inboundVideoTrackIds.
        */
-      public java.lang.String getSfuStreamId() {
-        java.lang.Object ref = sfuStreamId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuStreamId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public com.google.protobuf.ProtocolStringList
+          getInboundVideoTrackIdsList() {
+        return inboundVideoTrackIds_.getUnmodifiableView();
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @return The bytes for sfuStreamId.
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @return The count of inboundVideoTrackIds.
+       */
+      public int getInboundVideoTrackIdsCount() {
+        return inboundVideoTrackIds_.size();
+      }
+      /**
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @param index The index of the element to return.
+       * @return The inboundVideoTrackIds at the given index.
+       */
+      public java.lang.String getInboundVideoTrackIds(int index) {
+        return inboundVideoTrackIds_.get(index);
+      }
+      /**
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the inboundVideoTrackIds at the given index.
        */
       public com.google.protobuf.ByteString
-          getSfuStreamIdBytes() {
-        java.lang.Object ref = sfuStreamId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuStreamId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+          getInboundVideoTrackIdsBytes(int index) {
+        return inboundVideoTrackIds_.getByteString(index);
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @param value The sfuStreamId to set.
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @param index The index to set the value at.
+       * @param value The inboundVideoTrackIds to set.
        * @return This builder for chaining.
        */
-      public Builder setSfuStreamId(
+      public Builder setInboundVideoTrackIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureInboundVideoTrackIdsIsMutable();
+        inboundVideoTrackIds_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @param value The inboundVideoTrackIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addInboundVideoTrackIds(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
-        sfuStreamId_ = value;
+  ensureInboundVideoTrackIdsIsMutable();
+        inboundVideoTrackIds_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @param values The inboundVideoTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder clearSfuStreamId() {
+      public Builder addAllInboundVideoTrackIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureInboundVideoTrackIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, inboundVideoTrackIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInboundVideoTrackIds() {
+        inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000800);
-        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @param value The bytes for sfuStreamId to set.
+       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * @param value The bytes of the inboundVideoTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder setSfuStreamIdBytes(
+      public Builder addInboundVideoTrackIdsBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
-        sfuStreamId_ = value;
+  ensureInboundVideoTrackIdsIsMutable();
+        inboundVideoTrackIds_.add(value);
         onChanged();
         return this;
       }
 
-      private com.google.protobuf.Internal.LongList ssrc_ = emptyLongList();
-      private void ensureSsrcIsMutable() {
+      private com.google.protobuf.LazyStringList outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureOutboundAudioTrackIdsIsMutable() {
         if (!((bitField0_ & 0x00001000) != 0)) {
-          ssrc_ = mutableCopy(ssrc_);
+          outboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundAudioTrackIds_);
           bitField0_ |= 0x00001000;
          }
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @return A list containing the ssrc.
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
+       * @return A list containing the outboundAudioTrackIds.
        */
-      public java.util.List<java.lang.Long>
-          getSsrcList() {
-        return ((bitField0_ & 0x00001000) != 0) ?
-                 java.util.Collections.unmodifiableList(ssrc_) : ssrc_;
+      public com.google.protobuf.ProtocolStringList
+          getOutboundAudioTrackIdsList() {
+        return outboundAudioTrackIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @return The count of ssrc.
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
+       * @return The count of outboundAudioTrackIds.
        */
-      public int getSsrcCount() {
-        return ssrc_.size();
+      public int getOutboundAudioTrackIdsCount() {
+        return outboundAudioTrackIds_.size();
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
        * @param index The index of the element to return.
-       * @return The ssrc at the given index.
+       * @return The outboundAudioTrackIds at the given index.
        */
-      public long getSsrc(int index) {
-        return ssrc_.getLong(index);
+      public java.lang.String getOutboundAudioTrackIds(int index) {
+        return outboundAudioTrackIds_.get(index);
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the outboundAudioTrackIds at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getOutboundAudioTrackIdsBytes(int index) {
+        return outboundAudioTrackIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
        * @param index The index to set the value at.
-       * @param value The ssrc to set.
+       * @param value The outboundAudioTrackIds to set.
        * @return This builder for chaining.
        */
-      public Builder setSsrc(
-          int index, long value) {
-        ensureSsrcIsMutable();
-        ssrc_.setLong(index, value);
+      public Builder setOutboundAudioTrackIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundAudioTrackIdsIsMutable();
+        outboundAudioTrackIds_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @param value The ssrc to add.
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
+       * @param value The outboundAudioTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addSsrc(long value) {
-        ensureSsrcIsMutable();
-        ssrc_.addLong(value);
+      public Builder addOutboundAudioTrackIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundAudioTrackIdsIsMutable();
+        outboundAudioTrackIds_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @param values The ssrc to add.
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
+       * @param values The outboundAudioTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addAllSsrc(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureSsrcIsMutable();
+      public Builder addAllOutboundAudioTrackIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureOutboundAudioTrackIdsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, ssrc_);
+            values, outboundAudioTrackIds_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSsrc() {
-        ssrc_ = emptyLongList();
+      public Builder clearOutboundAudioTrackIds() {
+        outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00001000);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outboundAudioTrackIds = 13;</code>
+       * @param value The bytes of the outboundAudioTrackIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addOutboundAudioTrackIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundAudioTrackIdsIsMutable();
+        outboundAudioTrackIds_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureOutboundVideoTrackIdsIsMutable() {
+        if (!((bitField0_ & 0x00002000) != 0)) {
+          outboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundVideoTrackIds_);
+          bitField0_ |= 0x00002000;
+         }
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @return A list containing the outboundVideoTrackIds.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getOutboundVideoTrackIdsList() {
+        return outboundVideoTrackIds_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @return The count of outboundVideoTrackIds.
+       */
+      public int getOutboundVideoTrackIdsCount() {
+        return outboundVideoTrackIds_.size();
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @param index The index of the element to return.
+       * @return The outboundVideoTrackIds at the given index.
+       */
+      public java.lang.String getOutboundVideoTrackIds(int index) {
+        return outboundVideoTrackIds_.get(index);
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the outboundVideoTrackIds at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getOutboundVideoTrackIdsBytes(int index) {
+        return outboundVideoTrackIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @param index The index to set the value at.
+       * @param value The outboundVideoTrackIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOutboundVideoTrackIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundVideoTrackIdsIsMutable();
+        outboundVideoTrackIds_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @param value The outboundVideoTrackIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addOutboundVideoTrackIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundVideoTrackIdsIsMutable();
+        outboundVideoTrackIds_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @param values The outboundVideoTrackIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllOutboundVideoTrackIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureOutboundVideoTrackIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, outboundVideoTrackIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOutboundVideoTrackIds() {
+        outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outboundVideoTrackIds = 14;</code>
+       * @param value The bytes of the outboundVideoTrackIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addOutboundVideoTrackIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundVideoTrackIdsIsMutable();
+        outboundVideoTrackIds_.add(value);
         onChanged();
         return this;
       }
@@ -9157,41 +6592,41 @@ public final class Models {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.InboundAudioTrack)
+      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.PeerConnection)
     }
 
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.InboundAudioTrack)
-    private static final org.observertc.schemas.dtos.Models.InboundAudioTrack DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.PeerConnection)
+    private static final org.observertc.schemas.dtos.Models.PeerConnection DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.InboundAudioTrack();
+      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.PeerConnection();
     }
 
-    public static org.observertc.schemas.dtos.Models.InboundAudioTrack getDefaultInstance() {
+    public static org.observertc.schemas.dtos.Models.PeerConnection getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<InboundAudioTrack>
-        PARSER = new com.google.protobuf.AbstractParser<InboundAudioTrack>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<PeerConnection>
+        PARSER = new com.google.protobuf.AbstractParser<PeerConnection>() {
       @java.lang.Override
-      public InboundAudioTrack parsePartialFrom(
+      public PeerConnection parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new InboundAudioTrack(input, extensionRegistry);
+        return new PeerConnection(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<InboundAudioTrack> parser() {
+    public static com.google.protobuf.Parser<PeerConnection> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<InboundAudioTrack> getParserForType() {
+    public com.google.protobuf.Parser<PeerConnection> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public org.observertc.schemas.dtos.Models.InboundAudioTrack getDefaultInstanceForType() {
+    public org.observertc.schemas.dtos.Models.PeerConnection getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -9349,85 +6784,96 @@ public final class Models {
     long getAdded();
 
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional uint64 touched = 10;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 11;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
 
     /**
-     * <code>optional string sfuSinkId = 12;</code>
+     * <code>optional string sfuSinkId = 13;</code>
      * @return Whether the sfuSinkId field is set.
      */
     boolean hasSfuSinkId();
     /**
-     * <code>optional string sfuSinkId = 12;</code>
+     * <code>optional string sfuSinkId = 13;</code>
      * @return The sfuSinkId.
      */
     java.lang.String getSfuSinkId();
     /**
-     * <code>optional string sfuSinkId = 12;</code>
+     * <code>optional string sfuSinkId = 13;</code>
      * @return The bytes for sfuSinkId.
      */
     com.google.protobuf.ByteString
         getSfuSinkIdBytes();
 
     /**
-     * <code>optional string sfuStreamId = 13;</code>
+     * <code>optional string sfuStreamId = 14;</code>
      * @return Whether the sfuStreamId field is set.
      */
     boolean hasSfuStreamId();
     /**
-     * <code>optional string sfuStreamId = 13;</code>
+     * <code>optional string sfuStreamId = 14;</code>
      * @return The sfuStreamId.
      */
     java.lang.String getSfuStreamId();
     /**
-     * <code>optional string sfuStreamId = 13;</code>
+     * <code>optional string sfuStreamId = 14;</code>
      * @return The bytes for sfuStreamId.
      */
     com.google.protobuf.ByteString
         getSfuStreamIdBytes();
 
     /**
-     * <code>repeated int64 ssrc = 14;</code>
+     * <code>repeated int64 ssrc = 15;</code>
      * @return A list containing the ssrc.
      */
     java.util.List<java.lang.Long> getSsrcList();
     /**
-     * <code>repeated int64 ssrc = 14;</code>
+     * <code>repeated int64 ssrc = 15;</code>
      * @return The count of ssrc.
      */
     int getSsrcCount();
     /**
-     * <code>repeated int64 ssrc = 14;</code>
+     * <code>repeated int64 ssrc = 15;</code>
      * @param index The index of the element to return.
      * @return The ssrc at the given index.
      */
@@ -9545,44 +6991,49 @@ public final class Models {
               added_ = input.readUInt64();
               break;
             }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 80: {
               bitField0_ |= 0x00000200;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
-              marker_ = bs;
+              mediaUnitId_ = bs;
               break;
             }
             case 98: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
-              sfuSinkId_ = bs;
+              marker_ = bs;
               break;
             }
             case 106: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00001000;
+              sfuSinkId_ = bs;
+              break;
+            }
+            case 114: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00002000;
               sfuStreamId_ = bs;
               break;
             }
-            case 112: {
-              if (!((mutable_bitField0_ & 0x00002000) != 0)) {
+            case 120: {
+              if (!((mutable_bitField0_ & 0x00004000) != 0)) {
                 ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00002000;
+                mutable_bitField0_ |= 0x00004000;
               }
               ssrc_.addLong(input.readInt64());
               break;
             }
-            case 114: {
+            case 122: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00002000) != 0) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00004000) != 0) && input.getBytesUntilLimit() > 0) {
                 ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00002000;
+                mutable_bitField0_ |= 0x00004000;
               }
               while (input.getBytesUntilLimit() > 0) {
                 ssrc_.addLong(input.readInt64());
@@ -9605,7 +7056,7 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00002000) != 0)) {
+        if (((mutable_bitField0_ & 0x00004000) != 0)) {
           ssrc_.makeImmutable(); // C
         }
         this.unknownFields = unknownFields.build();
@@ -10029,18 +7480,37 @@ public final class Models {
       return added_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 10;
+    public static final int TOUCHED_FIELD_NUMBER = 10;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 11;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000200) != 0);
+      return ((bitField0_ & 0x00000400) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -10059,7 +7529,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -10077,18 +7547,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 11;
+    public static final int MARKER_FIELD_NUMBER = 12;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000400) != 0);
+      return ((bitField0_ & 0x00000800) != 0);
     }
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -10107,7 +7577,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -10125,18 +7595,18 @@ public final class Models {
       }
     }
 
-    public static final int SFUSINKID_FIELD_NUMBER = 12;
+    public static final int SFUSINKID_FIELD_NUMBER = 13;
     private volatile java.lang.Object sfuSinkId_;
     /**
-     * <code>optional string sfuSinkId = 12;</code>
+     * <code>optional string sfuSinkId = 13;</code>
      * @return Whether the sfuSinkId field is set.
      */
     @java.lang.Override
     public boolean hasSfuSinkId() {
-      return ((bitField0_ & 0x00000800) != 0);
+      return ((bitField0_ & 0x00001000) != 0);
     }
     /**
-     * <code>optional string sfuSinkId = 12;</code>
+     * <code>optional string sfuSinkId = 13;</code>
      * @return The sfuSinkId.
      */
     @java.lang.Override
@@ -10155,7 +7625,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string sfuSinkId = 12;</code>
+     * <code>optional string sfuSinkId = 13;</code>
      * @return The bytes for sfuSinkId.
      */
     @java.lang.Override
@@ -10173,18 +7643,18 @@ public final class Models {
       }
     }
 
-    public static final int SFUSTREAMID_FIELD_NUMBER = 13;
+    public static final int SFUSTREAMID_FIELD_NUMBER = 14;
     private volatile java.lang.Object sfuStreamId_;
     /**
-     * <code>optional string sfuStreamId = 13;</code>
+     * <code>optional string sfuStreamId = 14;</code>
      * @return Whether the sfuStreamId field is set.
      */
     @java.lang.Override
     public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00001000) != 0);
+      return ((bitField0_ & 0x00002000) != 0);
     }
     /**
-     * <code>optional string sfuStreamId = 13;</code>
+     * <code>optional string sfuStreamId = 14;</code>
      * @return The sfuStreamId.
      */
     @java.lang.Override
@@ -10203,7 +7673,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string sfuStreamId = 13;</code>
+     * <code>optional string sfuStreamId = 14;</code>
      * @return The bytes for sfuStreamId.
      */
     @java.lang.Override
@@ -10221,10 +7691,10 @@ public final class Models {
       }
     }
 
-    public static final int SSRC_FIELD_NUMBER = 14;
+    public static final int SSRC_FIELD_NUMBER = 15;
     private com.google.protobuf.Internal.LongList ssrc_;
     /**
-     * <code>repeated int64 ssrc = 14;</code>
+     * <code>repeated int64 ssrc = 15;</code>
      * @return A list containing the ssrc.
      */
     @java.lang.Override
@@ -10233,14 +7703,14 @@ public final class Models {
       return ssrc_;
     }
     /**
-     * <code>repeated int64 ssrc = 14;</code>
+     * <code>repeated int64 ssrc = 15;</code>
      * @return The count of ssrc.
      */
     public int getSsrcCount() {
       return ssrc_.size();
     }
     /**
-     * <code>repeated int64 ssrc = 14;</code>
+     * <code>repeated int64 ssrc = 15;</code>
      * @param index The index of the element to return.
      * @return The ssrc at the given index.
      */
@@ -10326,19 +7796,22 @@ public final class Models {
         output.writeUInt64(9, added_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
+        output.writeUInt64(10, touched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000800) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, sfuSinkId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, marker_);
       }
       if (((bitField0_ & 0x00001000) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, sfuStreamId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, sfuSinkId_);
+      }
+      if (((bitField0_ & 0x00002000) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 14, sfuStreamId_);
       }
       for (int i = 0; i < ssrc_.size(); i++) {
-        output.writeInt64(14, ssrc_.getLong(i));
+        output.writeInt64(15, ssrc_.getLong(i));
       }
       unknownFields.writeTo(output);
     }
@@ -10378,16 +7851,20 @@ public final class Models {
           .computeUInt64Size(9, added_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, touched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000800) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, sfuSinkId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, marker_);
       }
       if (((bitField0_ & 0x00001000) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, sfuStreamId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, sfuSinkId_);
+      }
+      if (((bitField0_ & 0x00002000) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, sfuStreamId_);
       }
       {
         int dataSize = 0;
@@ -10458,6 +7935,11 @@ public final class Models {
         if (getAdded()
             != other.getAdded()) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
         if (!getMediaUnitId()
@@ -10527,6 +8009,11 @@ public final class Models {
         hash = (37 * hash) + ADDED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getAdded());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -10699,16 +8186,18 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000080);
         added_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000200);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
-        sfuSinkId_ = "";
+        marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000800);
-        sfuStreamId_ = "";
+        sfuSinkId_ = "";
         bitField0_ = (bitField0_ & ~0x00001000);
-        ssrc_ = emptyLongList();
+        sfuStreamId_ = "";
         bitField0_ = (bitField0_ & ~0x00002000);
+        ssrc_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -10774,24 +8263,28 @@ public final class Models {
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000200;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000400) != 0)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.marker_ = marker_;
+        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000800) != 0)) {
           to_bitField0_ |= 0x00000800;
         }
-        result.sfuSinkId_ = sfuSinkId_;
+        result.marker_ = marker_;
         if (((from_bitField0_ & 0x00001000) != 0)) {
           to_bitField0_ |= 0x00001000;
         }
+        result.sfuSinkId_ = sfuSinkId_;
+        if (((from_bitField0_ & 0x00002000) != 0)) {
+          to_bitField0_ |= 0x00002000;
+        }
         result.sfuStreamId_ = sfuStreamId_;
-        if (((bitField0_ & 0x00002000) != 0)) {
+        if (((bitField0_ & 0x00004000) != 0)) {
           ssrc_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00002000);
+          bitField0_ = (bitField0_ & ~0x00004000);
         }
         result.ssrc_ = ssrc_;
         result.bitField0_ = to_bitField0_;
@@ -10886,30 +8379,33 @@ public final class Models {
         if (other.hasAdded()) {
           setAdded(other.getAdded());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000400;
+          bitField0_ |= 0x00000800;
           marker_ = other.marker_;
           onChanged();
         }
         if (other.hasSfuSinkId()) {
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           sfuSinkId_ = other.sfuSinkId_;
           onChanged();
         }
         if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00001000;
+          bitField0_ |= 0x00002000;
           sfuStreamId_ = other.sfuStreamId_;
           onChanged();
         }
         if (!other.ssrc_.isEmpty()) {
           if (ssrc_.isEmpty()) {
             ssrc_ = other.ssrc_;
-            bitField0_ = (bitField0_ & ~0x00002000);
+            bitField0_ = (bitField0_ & ~0x00004000);
           } else {
             ensureSsrcIsMutable();
             ssrc_.addAll(other.ssrc_);
@@ -11684,16 +9180,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 10;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 10;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional uint64 touched = 10;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 10;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000200;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 11;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000400) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 11;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -11711,7 +9246,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -11728,7 +9263,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -11737,23 +9272,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -11762,7 +9297,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -11770,14 +9305,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000400) != 0);
+        return ((bitField0_ & 0x00000800) != 0);
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -11795,7 +9330,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -11812,7 +9347,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -11821,23 +9356,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000800;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -11846,7 +9381,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000800;
         marker_ = value;
         onChanged();
         return this;
@@ -11854,14 +9389,14 @@ public final class Models {
 
       private java.lang.Object sfuSinkId_ = "";
       /**
-       * <code>optional string sfuSinkId = 12;</code>
+       * <code>optional string sfuSinkId = 13;</code>
        * @return Whether the sfuSinkId field is set.
        */
       public boolean hasSfuSinkId() {
-        return ((bitField0_ & 0x00000800) != 0);
+        return ((bitField0_ & 0x00001000) != 0);
       }
       /**
-       * <code>optional string sfuSinkId = 12;</code>
+       * <code>optional string sfuSinkId = 13;</code>
        * @return The sfuSinkId.
        */
       public java.lang.String getSfuSinkId() {
@@ -11879,7 +9414,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuSinkId = 12;</code>
+       * <code>optional string sfuSinkId = 13;</code>
        * @return The bytes for sfuSinkId.
        */
       public com.google.protobuf.ByteString
@@ -11896,7 +9431,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuSinkId = 12;</code>
+       * <code>optional string sfuSinkId = 13;</code>
        * @param value The sfuSinkId to set.
        * @return This builder for chaining.
        */
@@ -11905,23 +9440,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
+  bitField0_ |= 0x00001000;
         sfuSinkId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuSinkId = 12;</code>
+       * <code>optional string sfuSinkId = 13;</code>
        * @return This builder for chaining.
        */
       public Builder clearSfuSinkId() {
-        bitField0_ = (bitField0_ & ~0x00000800);
+        bitField0_ = (bitField0_ & ~0x00001000);
         sfuSinkId_ = getDefaultInstance().getSfuSinkId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuSinkId = 12;</code>
+       * <code>optional string sfuSinkId = 13;</code>
        * @param value The bytes for sfuSinkId to set.
        * @return This builder for chaining.
        */
@@ -11930,7 +9465,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
+  bitField0_ |= 0x00001000;
         sfuSinkId_ = value;
         onChanged();
         return this;
@@ -11938,14 +9473,14 @@ public final class Models {
 
       private java.lang.Object sfuStreamId_ = "";
       /**
-       * <code>optional string sfuStreamId = 13;</code>
+       * <code>optional string sfuStreamId = 14;</code>
        * @return Whether the sfuStreamId field is set.
        */
       public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00001000) != 0);
+        return ((bitField0_ & 0x00002000) != 0);
       }
       /**
-       * <code>optional string sfuStreamId = 13;</code>
+       * <code>optional string sfuStreamId = 14;</code>
        * @return The sfuStreamId.
        */
       public java.lang.String getSfuStreamId() {
@@ -11963,7 +9498,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuStreamId = 13;</code>
+       * <code>optional string sfuStreamId = 14;</code>
        * @return The bytes for sfuStreamId.
        */
       public com.google.protobuf.ByteString
@@ -11980,7 +9515,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuStreamId = 13;</code>
+       * <code>optional string sfuStreamId = 14;</code>
        * @param value The sfuStreamId to set.
        * @return This builder for chaining.
        */
@@ -11989,23 +9524,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00001000;
+  bitField0_ |= 0x00002000;
         sfuStreamId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 13;</code>
+       * <code>optional string sfuStreamId = 14;</code>
        * @return This builder for chaining.
        */
       public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         sfuStreamId_ = getDefaultInstance().getSfuStreamId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 13;</code>
+       * <code>optional string sfuStreamId = 14;</code>
        * @param value The bytes for sfuStreamId to set.
        * @return This builder for chaining.
        */
@@ -12014,7 +9549,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00001000;
+  bitField0_ |= 0x00002000;
         sfuStreamId_ = value;
         onChanged();
         return this;
@@ -12022,29 +9557,29 @@ public final class Models {
 
       private com.google.protobuf.Internal.LongList ssrc_ = emptyLongList();
       private void ensureSsrcIsMutable() {
-        if (!((bitField0_ & 0x00002000) != 0)) {
+        if (!((bitField0_ & 0x00004000) != 0)) {
           ssrc_ = mutableCopy(ssrc_);
-          bitField0_ |= 0x00002000;
+          bitField0_ |= 0x00004000;
          }
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @return A list containing the ssrc.
        */
       public java.util.List<java.lang.Long>
           getSsrcList() {
-        return ((bitField0_ & 0x00002000) != 0) ?
+        return ((bitField0_ & 0x00004000) != 0) ?
                  java.util.Collections.unmodifiableList(ssrc_) : ssrc_;
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @return The count of ssrc.
        */
       public int getSsrcCount() {
         return ssrc_.size();
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @param index The index of the element to return.
        * @return The ssrc at the given index.
        */
@@ -12052,7 +9587,7 @@ public final class Models {
         return ssrc_.getLong(index);
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @param index The index to set the value at.
        * @param value The ssrc to set.
        * @return This builder for chaining.
@@ -12065,7 +9600,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @param value The ssrc to add.
        * @return This builder for chaining.
        */
@@ -12076,7 +9611,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @param values The ssrc to add.
        * @return This builder for chaining.
        */
@@ -12089,12 +9624,12 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 14;</code>
+       * <code>repeated int64 ssrc = 15;</code>
        * @return This builder for chaining.
        */
       public Builder clearSsrc() {
         ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         onChanged();
         return this;
       }
@@ -12303,68 +9838,79 @@ public final class Models {
         getKindBytes();
 
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional uint64 touched = 10;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 11;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
 
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>optional string sfuStreamId = 13;</code>
      * @return Whether the sfuStreamId field is set.
      */
     boolean hasSfuStreamId();
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>optional string sfuStreamId = 13;</code>
      * @return The sfuStreamId.
      */
     java.lang.String getSfuStreamId();
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>optional string sfuStreamId = 13;</code>
      * @return The bytes for sfuStreamId.
      */
     com.google.protobuf.ByteString
         getSfuStreamIdBytes();
 
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>repeated int64 ssrc = 14;</code>
      * @return A list containing the ssrc.
      */
     java.util.List<java.lang.Long> getSsrcList();
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>repeated int64 ssrc = 14;</code>
      * @return The count of ssrc.
      */
     int getSsrcCount();
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>repeated int64 ssrc = 14;</code>
      * @param index The index of the element to return.
      * @return The ssrc at the given index.
      */
@@ -12481,38 +10027,43 @@ public final class Models {
               kind_ = bs;
               break;
             }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 80: {
               bitField0_ |= 0x00000200;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
-              marker_ = bs;
+              mediaUnitId_ = bs;
               break;
             }
             case 98: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
+              marker_ = bs;
+              break;
+            }
+            case 106: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00001000;
               sfuStreamId_ = bs;
               break;
             }
-            case 104: {
-              if (!((mutable_bitField0_ & 0x00001000) != 0)) {
+            case 112: {
+              if (!((mutable_bitField0_ & 0x00002000) != 0)) {
                 ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00001000;
+                mutable_bitField0_ |= 0x00002000;
               }
               ssrc_.addLong(input.readInt64());
               break;
             }
-            case 106: {
+            case 114: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00001000) != 0) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00002000) != 0) && input.getBytesUntilLimit() > 0) {
                 ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00001000;
+                mutable_bitField0_ |= 0x00002000;
               }
               while (input.getBytesUntilLimit() > 0) {
                 ssrc_.addLong(input.readInt64());
@@ -12535,7 +10086,7 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00001000) != 0)) {
+        if (((mutable_bitField0_ & 0x00002000) != 0)) {
           ssrc_.makeImmutable(); // C
         }
         this.unknownFields = unknownFields.build();
@@ -12959,18 +10510,37 @@ public final class Models {
       }
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 10;
+    public static final int TOUCHED_FIELD_NUMBER = 10;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 11;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000200) != 0);
+      return ((bitField0_ & 0x00000400) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -12989,7 +10559,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -13007,18 +10577,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 11;
+    public static final int MARKER_FIELD_NUMBER = 12;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000400) != 0);
+      return ((bitField0_ & 0x00000800) != 0);
     }
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -13037,7 +10607,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -13055,18 +10625,18 @@ public final class Models {
       }
     }
 
-    public static final int SFUSTREAMID_FIELD_NUMBER = 12;
+    public static final int SFUSTREAMID_FIELD_NUMBER = 13;
     private volatile java.lang.Object sfuStreamId_;
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>optional string sfuStreamId = 13;</code>
      * @return Whether the sfuStreamId field is set.
      */
     @java.lang.Override
     public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000800) != 0);
+      return ((bitField0_ & 0x00001000) != 0);
     }
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>optional string sfuStreamId = 13;</code>
      * @return The sfuStreamId.
      */
     @java.lang.Override
@@ -13085,7 +10655,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>optional string sfuStreamId = 13;</code>
      * @return The bytes for sfuStreamId.
      */
     @java.lang.Override
@@ -13103,10 +10673,10 @@ public final class Models {
       }
     }
 
-    public static final int SSRC_FIELD_NUMBER = 13;
+    public static final int SSRC_FIELD_NUMBER = 14;
     private com.google.protobuf.Internal.LongList ssrc_;
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>repeated int64 ssrc = 14;</code>
      * @return A list containing the ssrc.
      */
     @java.lang.Override
@@ -13115,14 +10685,14 @@ public final class Models {
       return ssrc_;
     }
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>repeated int64 ssrc = 14;</code>
      * @return The count of ssrc.
      */
     public int getSsrcCount() {
       return ssrc_.size();
     }
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>repeated int64 ssrc = 14;</code>
      * @param index The index of the element to return.
      * @return The ssrc at the given index.
      */
@@ -13208,16 +10778,19 @@ public final class Models {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, kind_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
+        output.writeUInt64(10, touched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000800) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, sfuStreamId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, marker_);
+      }
+      if (((bitField0_ & 0x00001000) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, sfuStreamId_);
       }
       for (int i = 0; i < ssrc_.size(); i++) {
-        output.writeInt64(13, ssrc_.getLong(i));
+        output.writeInt64(14, ssrc_.getLong(i));
       }
       unknownFields.writeTo(output);
     }
@@ -13257,13 +10830,17 @@ public final class Models {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, kind_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, touched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000800) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, sfuStreamId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, marker_);
+      }
+      if (((bitField0_ & 0x00001000) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, sfuStreamId_);
       }
       {
         int dataSize = 0;
@@ -13334,6 +10911,11 @@ public final class Models {
         if (!getKind()
             .equals(other.getKind())) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
         if (!getMediaUnitId()
@@ -13398,6 +10980,11 @@ public final class Models {
       if (hasKind()) {
         hash = (37 * hash) + KIND_FIELD_NUMBER;
         hash = (53 * hash) + getKind().hashCode();
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -13566,14 +11153,16 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000080);
         kind_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000200);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
-        sfuStreamId_ = "";
+        marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000800);
-        ssrc_ = emptyLongList();
+        sfuStreamId_ = "";
         bitField0_ = (bitField0_ & ~0x00001000);
+        ssrc_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -13639,20 +11228,24 @@ public final class Models {
         }
         result.kind_ = kind_;
         if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000200;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000400) != 0)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.marker_ = marker_;
+        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000800) != 0)) {
           to_bitField0_ |= 0x00000800;
         }
+        result.marker_ = marker_;
+        if (((from_bitField0_ & 0x00001000) != 0)) {
+          to_bitField0_ |= 0x00001000;
+        }
         result.sfuStreamId_ = sfuStreamId_;
-        if (((bitField0_ & 0x00001000) != 0)) {
+        if (((bitField0_ & 0x00002000) != 0)) {
           ssrc_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00001000);
+          bitField0_ = (bitField0_ & ~0x00002000);
         }
         result.ssrc_ = ssrc_;
         result.bitField0_ = to_bitField0_;
@@ -13747,25 +11340,28 @@ public final class Models {
           kind_ = other.kind_;
           onChanged();
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000400;
+          bitField0_ |= 0x00000800;
           marker_ = other.marker_;
           onChanged();
         }
         if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           sfuStreamId_ = other.sfuStreamId_;
           onChanged();
         }
         if (!other.ssrc_.isEmpty()) {
           if (ssrc_.isEmpty()) {
             ssrc_ = other.ssrc_;
-            bitField0_ = (bitField0_ & ~0x00001000);
+            bitField0_ = (bitField0_ & ~0x00002000);
           } else {
             ensureSsrcIsMutable();
             ssrc_.addAll(other.ssrc_);
@@ -14540,16 +12136,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 10;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 10;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional uint64 touched = 10;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 10;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000200;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 11;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000400) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 11;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -14567,7 +12202,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -14584,7 +12219,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -14593,23 +12228,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -14618,7 +12253,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -14626,14 +12261,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000400) != 0);
+        return ((bitField0_ & 0x00000800) != 0);
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -14651,7 +12286,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -14668,7 +12303,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -14677,23 +12312,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000800;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -14702,7 +12337,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000800;
         marker_ = value;
         onChanged();
         return this;
@@ -14710,14 +12345,14 @@ public final class Models {
 
       private java.lang.Object sfuStreamId_ = "";
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>optional string sfuStreamId = 13;</code>
        * @return Whether the sfuStreamId field is set.
        */
       public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000800) != 0);
+        return ((bitField0_ & 0x00001000) != 0);
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>optional string sfuStreamId = 13;</code>
        * @return The sfuStreamId.
        */
       public java.lang.String getSfuStreamId() {
@@ -14735,7 +12370,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>optional string sfuStreamId = 13;</code>
        * @return The bytes for sfuStreamId.
        */
       public com.google.protobuf.ByteString
@@ -14752,7 +12387,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>optional string sfuStreamId = 13;</code>
        * @param value The sfuStreamId to set.
        * @return This builder for chaining.
        */
@@ -14761,23 +12396,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
+  bitField0_ |= 0x00001000;
         sfuStreamId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>optional string sfuStreamId = 13;</code>
        * @return This builder for chaining.
        */
       public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00000800);
+        bitField0_ = (bitField0_ & ~0x00001000);
         sfuStreamId_ = getDefaultInstance().getSfuStreamId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>optional string sfuStreamId = 13;</code>
        * @param value The bytes for sfuStreamId to set.
        * @return This builder for chaining.
        */
@@ -14786,7 +12421,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
+  bitField0_ |= 0x00001000;
         sfuStreamId_ = value;
         onChanged();
         return this;
@@ -14794,29 +12429,29 @@ public final class Models {
 
       private com.google.protobuf.Internal.LongList ssrc_ = emptyLongList();
       private void ensureSsrcIsMutable() {
-        if (!((bitField0_ & 0x00001000) != 0)) {
+        if (!((bitField0_ & 0x00002000) != 0)) {
           ssrc_ = mutableCopy(ssrc_);
-          bitField0_ |= 0x00001000;
+          bitField0_ |= 0x00002000;
          }
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @return A list containing the ssrc.
        */
       public java.util.List<java.lang.Long>
           getSsrcList() {
-        return ((bitField0_ & 0x00001000) != 0) ?
+        return ((bitField0_ & 0x00002000) != 0) ?
                  java.util.Collections.unmodifiableList(ssrc_) : ssrc_;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @return The count of ssrc.
        */
       public int getSsrcCount() {
         return ssrc_.size();
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @param index The index of the element to return.
        * @return The ssrc at the given index.
        */
@@ -14824,7 +12459,7 @@ public final class Models {
         return ssrc_.getLong(index);
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @param index The index to set the value at.
        * @param value The ssrc to set.
        * @return This builder for chaining.
@@ -14837,7 +12472,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @param value The ssrc to add.
        * @return This builder for chaining.
        */
@@ -14848,7 +12483,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @param values The ssrc to add.
        * @return This builder for chaining.
        */
@@ -14861,12 +12496,12 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated int64 ssrc = 14;</code>
        * @return This builder for chaining.
        */
       public Builder clearSsrc() {
         ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         onChanged();
         return this;
       }
@@ -14923,8 +12558,8 @@ public final class Models {
 
   }
 
-  public interface InboundVideoTrackOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.InboundVideoTrack)
+  public interface SfuMediaSinkOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.SfuMediaSink)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -14945,235 +12580,178 @@ public final class Models {
         getServiceIdBytes();
 
     /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
-     */
-    boolean hasRoomId();
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
-     */
-    java.lang.String getRoomId();
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
-     */
-    com.google.protobuf.ByteString
-        getRoomIdBytes();
-
-    /**
-     * <code>required string callId = 3;</code>
-     * @return Whether the callId field is set.
-     */
-    boolean hasCallId();
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The callId.
-     */
-    java.lang.String getCallId();
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The bytes for callId.
-     */
-    com.google.protobuf.ByteString
-        getCallIdBytes();
-
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    boolean hasUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    java.lang.String getUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    com.google.protobuf.ByteString
-        getUserIdBytes();
-
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return Whether the clientId field is set.
-     */
-    boolean hasClientId();
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The clientId.
-     */
-    java.lang.String getClientId();
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The bytes for clientId.
-     */
-    com.google.protobuf.ByteString
-        getClientIdBytes();
-
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return Whether the peerConnectionId field is set.
-     */
-    boolean hasPeerConnectionId();
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The peerConnectionId.
-     */
-    java.lang.String getPeerConnectionId();
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The bytes for peerConnectionId.
-     */
-    com.google.protobuf.ByteString
-        getPeerConnectionIdBytes();
-
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return Whether the trackId field is set.
-     */
-    boolean hasTrackId();
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The trackId.
-     */
-    java.lang.String getTrackId();
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The bytes for trackId.
-     */
-    com.google.protobuf.ByteString
-        getTrackIdBytes();
-
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
-     */
-    boolean hasAdded();
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
-     */
-    long getAdded();
-
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    boolean hasMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    java.lang.String getMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    com.google.protobuf.ByteString
-        getMediaUnitIdBytes();
-
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    boolean hasMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    java.lang.String getMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    com.google.protobuf.ByteString
-        getMarkerBytes();
-
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return Whether the sfuSinkId field is set.
-     */
-    boolean hasSfuSinkId();
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return The sfuSinkId.
-     */
-    java.lang.String getSfuSinkId();
-    /**
-     * <code>optional string sfuSinkId = 11;</code>
-     * @return The bytes for sfuSinkId.
-     */
-    com.google.protobuf.ByteString
-        getSfuSinkIdBytes();
-
-    /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>required string sfuStreamId = 2;</code>
      * @return Whether the sfuStreamId field is set.
      */
     boolean hasSfuStreamId();
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>required string sfuStreamId = 2;</code>
      * @return The sfuStreamId.
      */
     java.lang.String getSfuStreamId();
     /**
-     * <code>optional string sfuStreamId = 12;</code>
+     * <code>required string sfuStreamId = 2;</code>
      * @return The bytes for sfuStreamId.
      */
     com.google.protobuf.ByteString
         getSfuStreamIdBytes();
 
     /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return A list containing the ssrc.
+     * <code>required string sfuSinkId = 3;</code>
+     * @return Whether the sfuSinkId field is set.
      */
-    java.util.List<java.lang.Long> getSsrcList();
+    boolean hasSfuSinkId();
     /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return The count of ssrc.
+     * <code>required string sfuSinkId = 3;</code>
+     * @return The sfuSinkId.
      */
-    int getSsrcCount();
+    java.lang.String getSfuSinkId();
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>required string sfuSinkId = 3;</code>
+     * @return The bytes for sfuSinkId.
+     */
+    com.google.protobuf.ByteString
+        getSfuSinkIdBytes();
+
+    /**
+     * <code>required string kind = 4;</code>
+     * @return Whether the kind field is set.
+     */
+    boolean hasKind();
+    /**
+     * <code>required string kind = 4;</code>
+     * @return The kind.
+     */
+    java.lang.String getKind();
+    /**
+     * <code>required string kind = 4;</code>
+     * @return The bytes for kind.
+     */
+    com.google.protobuf.ByteString
+        getKindBytes();
+
+    /**
+     * <code>required string callId = 5;</code>
+     * @return Whether the callId field is set.
+     */
+    boolean hasCallId();
+    /**
+     * <code>required string callId = 5;</code>
+     * @return The callId.
+     */
+    java.lang.String getCallId();
+    /**
+     * <code>required string callId = 5;</code>
+     * @return The bytes for callId.
+     */
+    com.google.protobuf.ByteString
+        getCallIdBytes();
+
+    /**
+     * <code>required string clientId = 6;</code>
+     * @return Whether the clientId field is set.
+     */
+    boolean hasClientId();
+    /**
+     * <code>required string clientId = 6;</code>
+     * @return The clientId.
+     */
+    java.lang.String getClientId();
+    /**
+     * <code>required string clientId = 6;</code>
+     * @return The bytes for clientId.
+     */
+    com.google.protobuf.ByteString
+        getClientIdBytes();
+
+    /**
+     * <code>required string peerConnectionId = 7;</code>
+     * @return Whether the peerConnectionId field is set.
+     */
+    boolean hasPeerConnectionId();
+    /**
+     * <code>required string peerConnectionId = 7;</code>
+     * @return The peerConnectionId.
+     */
+    java.lang.String getPeerConnectionId();
+    /**
+     * <code>required string peerConnectionId = 7;</code>
+     * @return The bytes for peerConnectionId.
+     */
+    com.google.protobuf.ByteString
+        getPeerConnectionIdBytes();
+
+    /**
+     * <code>required string trackId = 8;</code>
+     * @return Whether the trackId field is set.
+     */
+    boolean hasTrackId();
+    /**
+     * <code>required string trackId = 8;</code>
+     * @return The trackId.
+     */
+    java.lang.String getTrackId();
+    /**
+     * <code>required string trackId = 8;</code>
+     * @return The bytes for trackId.
+     */
+    com.google.protobuf.ByteString
+        getTrackIdBytes();
+
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+     * @return A list containing the outboundSfuRtpPadIds.
+     */
+    java.util.List<java.lang.String>
+        getOutboundSfuRtpPadIdsList();
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+     * @return The count of outboundSfuRtpPadIds.
+     */
+    int getOutboundSfuRtpPadIdsCount();
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
      * @param index The index of the element to return.
-     * @return The ssrc at the given index.
+     * @return The outboundSfuRtpPadIds at the given index.
      */
-    long getSsrc(int index);
+    java.lang.String getOutboundSfuRtpPadIds(int index);
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the outboundSfuRtpPadIds at the given index.
+     */
+    com.google.protobuf.ByteString
+        getOutboundSfuRtpPadIdsBytes(int index);
   }
   /**
-   * Protobuf type {@code org.observertc.schemas.dtos.InboundVideoTrack}
+   * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaSink}
    */
-  public static final class InboundVideoTrack extends
+  public static final class SfuMediaSink extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.InboundVideoTrack)
-      InboundVideoTrackOrBuilder {
+      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.SfuMediaSink)
+      SfuMediaSinkOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use InboundVideoTrack.newBuilder() to construct.
-    private InboundVideoTrack(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use SfuMediaSink.newBuilder() to construct.
+    private SfuMediaSink(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private InboundVideoTrack() {
+    private SfuMediaSink() {
       serviceId_ = "";
-      roomId_ = "";
+      sfuStreamId_ = "";
+      sfuSinkId_ = "";
+      kind_ = "";
       callId_ = "";
-      userId_ = "";
       clientId_ = "";
       peerConnectionId_ = "";
       trackId_ = "";
-      mediaUnitId_ = "";
-      marker_ = "";
-      sfuSinkId_ = "";
-      sfuStreamId_ = "";
-      ssrc_ = emptyLongList();
+      outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new InboundVideoTrack();
+      return new SfuMediaSink();
     }
 
     @java.lang.Override
@@ -15181,7 +12759,7 @@ public final class Models {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private InboundVideoTrack(
+    private SfuMediaSink(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -15209,87 +12787,52 @@ public final class Models {
             case 18: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              roomId_ = bs;
+              sfuStreamId_ = bs;
               break;
             }
             case 26: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              callId_ = bs;
+              sfuSinkId_ = bs;
               break;
             }
             case 34: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              userId_ = bs;
+              kind_ = bs;
               break;
             }
             case 42: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              clientId_ = bs;
+              callId_ = bs;
               break;
             }
             case 50: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              peerConnectionId_ = bs;
+              clientId_ = bs;
               break;
             }
             case 58: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              trackId_ = bs;
+              peerConnectionId_ = bs;
               break;
             }
-            case 64: {
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              added_ = input.readUInt64();
+              trackId_ = bs;
               break;
             }
             case 74: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              mediaUnitId_ = bs;
-              break;
-            }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000200;
-              marker_ = bs;
-              break;
-            }
-            case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000400;
-              sfuSinkId_ = bs;
-              break;
-            }
-            case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000800;
-              sfuStreamId_ = bs;
-              break;
-            }
-            case 104: {
-              if (!((mutable_bitField0_ & 0x00001000) != 0)) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00001000;
+              if (!((mutable_bitField0_ & 0x00000100) != 0)) {
+                outboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000100;
               }
-              ssrc_.addLong(input.readInt64());
-              break;
-            }
-            case 106: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00001000) != 0) && input.getBytesUntilLimit() > 0) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00001000;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                ssrc_.addLong(input.readInt64());
-              }
-              input.popLimit(limit);
+              outboundSfuRtpPadIds_.add(bs);
               break;
             }
             default: {
@@ -15307,8 +12850,8 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00001000) != 0)) {
-          ssrc_.makeImmutable(); // C
+        if (((mutable_bitField0_ & 0x00000100) != 0)) {
+          outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -15316,15 +12859,15 @@ public final class Models {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundVideoTrack_descriptor;
+      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundVideoTrack_fieldAccessorTable
+      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              org.observertc.schemas.dtos.Models.InboundVideoTrack.class, org.observertc.schemas.dtos.Models.InboundVideoTrack.Builder.class);
+              org.observertc.schemas.dtos.Models.SfuMediaSink.class, org.observertc.schemas.dtos.Models.SfuMediaSink.Builder.class);
     }
 
     private int bitField0_;
@@ -15376,23 +12919,23 @@ public final class Models {
       }
     }
 
-    public static final int ROOMID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object roomId_;
+    public static final int SFUSTREAMID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object sfuStreamId_;
     /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return Whether the sfuStreamId field is set.
      */
     @java.lang.Override
-    public boolean hasRoomId() {
+    public boolean hasSfuStreamId() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return The sfuStreamId.
      */
     @java.lang.Override
-    public java.lang.String getRoomId() {
-      java.lang.Object ref = roomId_;
+    public java.lang.String getSfuStreamId() {
+      java.lang.Object ref = sfuStreamId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -15400,397 +12943,42 @@ public final class Models {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          roomId_ = s;
+          sfuStreamId_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return The bytes for sfuStreamId.
      */
     @java.lang.Override
     public com.google.protobuf.ByteString
-        getRoomIdBytes() {
-      java.lang.Object ref = roomId_;
+        getSfuStreamIdBytes() {
+      java.lang.Object ref = sfuStreamId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        roomId_ = b;
+        sfuStreamId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int CALLID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object callId_;
-    /**
-     * <code>required string callId = 3;</code>
-     * @return Whether the callId field is set.
-     */
-    @java.lang.Override
-    public boolean hasCallId() {
-      return ((bitField0_ & 0x00000004) != 0);
-    }
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The callId.
-     */
-    @java.lang.Override
-    public java.lang.String getCallId() {
-      java.lang.Object ref = callId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          callId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The bytes for callId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getCallIdBytes() {
-      java.lang.Object ref = callId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        callId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int USERID_FIELD_NUMBER = 4;
-    private volatile java.lang.Object userId_;
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    @java.lang.Override
-    public boolean hasUserId() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          userId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CLIENTID_FIELD_NUMBER = 5;
-    private volatile java.lang.Object clientId_;
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return Whether the clientId field is set.
-     */
-    @java.lang.Override
-    public boolean hasClientId() {
-      return ((bitField0_ & 0x00000010) != 0);
-    }
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The clientId.
-     */
-    @java.lang.Override
-    public java.lang.String getClientId() {
-      java.lang.Object ref = clientId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          clientId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The bytes for clientId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getClientIdBytes() {
-      java.lang.Object ref = clientId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        clientId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PEERCONNECTIONID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object peerConnectionId_;
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return Whether the peerConnectionId field is set.
-     */
-    @java.lang.Override
-    public boolean hasPeerConnectionId() {
-      return ((bitField0_ & 0x00000020) != 0);
-    }
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The peerConnectionId.
-     */
-    @java.lang.Override
-    public java.lang.String getPeerConnectionId() {
-      java.lang.Object ref = peerConnectionId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          peerConnectionId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The bytes for peerConnectionId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getPeerConnectionIdBytes() {
-      java.lang.Object ref = peerConnectionId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        peerConnectionId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TRACKID_FIELD_NUMBER = 7;
-    private volatile java.lang.Object trackId_;
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return Whether the trackId field is set.
-     */
-    @java.lang.Override
-    public boolean hasTrackId() {
-      return ((bitField0_ & 0x00000040) != 0);
-    }
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The trackId.
-     */
-    @java.lang.Override
-    public java.lang.String getTrackId() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          trackId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The bytes for trackId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTrackIdBytes() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        trackId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ADDED_FIELD_NUMBER = 8;
-    private long added_;
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
-     */
-    @java.lang.Override
-    public boolean hasAdded() {
-      return ((bitField0_ & 0x00000080) != 0);
-    }
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
-     */
-    @java.lang.Override
-    public long getAdded() {
-      return added_;
-    }
-
-    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
-    private volatile java.lang.Object mediaUnitId_;
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    @java.lang.Override
-    public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000100) != 0);
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    @java.lang.Override
-    public java.lang.String getMediaUnitId() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          mediaUnitId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMediaUnitIdBytes() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        mediaUnitId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int MARKER_FIELD_NUMBER = 10;
-    private volatile java.lang.Object marker_;
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    @java.lang.Override
-    public boolean hasMarker() {
-      return ((bitField0_ & 0x00000200) != 0);
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    @java.lang.Override
-    public java.lang.String getMarker() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          marker_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMarkerBytes() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        marker_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSINKID_FIELD_NUMBER = 11;
+    public static final int SFUSINKID_FIELD_NUMBER = 3;
     private volatile java.lang.Object sfuSinkId_;
     /**
-     * <code>optional string sfuSinkId = 11;</code>
+     * <code>required string sfuSinkId = 3;</code>
      * @return Whether the sfuSinkId field is set.
      */
     @java.lang.Override
     public boolean hasSfuSinkId() {
-      return ((bitField0_ & 0x00000400) != 0);
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional string sfuSinkId = 11;</code>
+     * <code>required string sfuSinkId = 3;</code>
      * @return The sfuSinkId.
      */
     @java.lang.Override
@@ -15809,7 +12997,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string sfuSinkId = 11;</code>
+     * <code>required string sfuSinkId = 3;</code>
      * @return The bytes for sfuSinkId.
      */
     @java.lang.Override
@@ -15827,23 +13015,23 @@ public final class Models {
       }
     }
 
-    public static final int SFUSTREAMID_FIELD_NUMBER = 12;
-    private volatile java.lang.Object sfuStreamId_;
+    public static final int KIND_FIELD_NUMBER = 4;
+    private volatile java.lang.Object kind_;
     /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return Whether the sfuStreamId field is set.
+     * <code>required string kind = 4;</code>
+     * @return Whether the kind field is set.
      */
     @java.lang.Override
-    public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000800) != 0);
+    public boolean hasKind() {
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return The sfuStreamId.
+     * <code>required string kind = 4;</code>
+     * @return The kind.
      */
     @java.lang.Override
-    public java.lang.String getSfuStreamId() {
-      java.lang.Object ref = sfuStreamId_;
+    public java.lang.String getKind() {
+      java.lang.Object ref = kind_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -15851,55 +13039,255 @@ public final class Models {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          sfuStreamId_ = s;
+          kind_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>optional string sfuStreamId = 12;</code>
-     * @return The bytes for sfuStreamId.
+     * <code>required string kind = 4;</code>
+     * @return The bytes for kind.
      */
     @java.lang.Override
     public com.google.protobuf.ByteString
-        getSfuStreamIdBytes() {
-      java.lang.Object ref = sfuStreamId_;
+        getKindBytes() {
+      java.lang.Object ref = kind_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        sfuStreamId_ = b;
+        kind_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int SSRC_FIELD_NUMBER = 13;
-    private com.google.protobuf.Internal.LongList ssrc_;
+    public static final int CALLID_FIELD_NUMBER = 5;
+    private volatile java.lang.Object callId_;
     /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return A list containing the ssrc.
+     * <code>required string callId = 5;</code>
+     * @return Whether the callId field is set.
      */
     @java.lang.Override
-    public java.util.List<java.lang.Long>
-        getSsrcList() {
-      return ssrc_;
+    public boolean hasCallId() {
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>repeated int64 ssrc = 13;</code>
-     * @return The count of ssrc.
+     * <code>required string callId = 5;</code>
+     * @return The callId.
      */
-    public int getSsrcCount() {
-      return ssrc_.size();
+    @java.lang.Override
+    public java.lang.String getCallId() {
+      java.lang.Object ref = callId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          callId_ = s;
+        }
+        return s;
+      }
     }
     /**
-     * <code>repeated int64 ssrc = 13;</code>
+     * <code>required string callId = 5;</code>
+     * @return The bytes for callId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getCallIdBytes() {
+      java.lang.Object ref = callId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        callId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CLIENTID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object clientId_;
+    /**
+     * <code>required string clientId = 6;</code>
+     * @return Whether the clientId field is set.
+     */
+    @java.lang.Override
+    public boolean hasClientId() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <code>required string clientId = 6;</code>
+     * @return The clientId.
+     */
+    @java.lang.Override
+    public java.lang.String getClientId() {
+      java.lang.Object ref = clientId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          clientId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string clientId = 6;</code>
+     * @return The bytes for clientId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getClientIdBytes() {
+      java.lang.Object ref = clientId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        clientId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PEERCONNECTIONID_FIELD_NUMBER = 7;
+    private volatile java.lang.Object peerConnectionId_;
+    /**
+     * <code>required string peerConnectionId = 7;</code>
+     * @return Whether the peerConnectionId field is set.
+     */
+    @java.lang.Override
+    public boolean hasPeerConnectionId() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>required string peerConnectionId = 7;</code>
+     * @return The peerConnectionId.
+     */
+    @java.lang.Override
+    public java.lang.String getPeerConnectionId() {
+      java.lang.Object ref = peerConnectionId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          peerConnectionId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string peerConnectionId = 7;</code>
+     * @return The bytes for peerConnectionId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPeerConnectionIdBytes() {
+      java.lang.Object ref = peerConnectionId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        peerConnectionId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TRACKID_FIELD_NUMBER = 8;
+    private volatile java.lang.Object trackId_;
+    /**
+     * <code>required string trackId = 8;</code>
+     * @return Whether the trackId field is set.
+     */
+    @java.lang.Override
+    public boolean hasTrackId() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <code>required string trackId = 8;</code>
+     * @return The trackId.
+     */
+    @java.lang.Override
+    public java.lang.String getTrackId() {
+      java.lang.Object ref = trackId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          trackId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string trackId = 8;</code>
+     * @return The bytes for trackId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTrackIdBytes() {
+      java.lang.Object ref = trackId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        trackId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int OUTBOUNDSFURTPPADIDS_FIELD_NUMBER = 9;
+    private com.google.protobuf.LazyStringList outboundSfuRtpPadIds_;
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+     * @return A list containing the outboundSfuRtpPadIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getOutboundSfuRtpPadIdsList() {
+      return outboundSfuRtpPadIds_;
+    }
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+     * @return The count of outboundSfuRtpPadIds.
+     */
+    public int getOutboundSfuRtpPadIdsCount() {
+      return outboundSfuRtpPadIds_.size();
+    }
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
      * @param index The index of the element to return.
-     * @return The ssrc at the given index.
+     * @return The outboundSfuRtpPadIds at the given index.
      */
-    public long getSsrc(int index) {
-      return ssrc_.getLong(index);
+    public java.lang.String getOutboundSfuRtpPadIds(int index) {
+      return outboundSfuRtpPadIds_.get(index);
+    }
+    /**
+     * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the outboundSfuRtpPadIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getOutboundSfuRtpPadIdsBytes(int index) {
+      return outboundSfuRtpPadIds_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -15913,15 +13301,19 @@ public final class Models {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasRoomId()) {
+      if (!hasSfuStreamId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSfuSinkId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasKind()) {
         memoizedIsInitialized = 0;
         return false;
       }
       if (!hasCallId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUserId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -15937,10 +13329,6 @@ public final class Models {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasAdded()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -15952,40 +13340,28 @@ public final class Models {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, roomId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sfuStreamId_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, callId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, sfuSinkId_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, userId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, kind_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, clientId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, callId_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, peerConnectionId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, clientId_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, trackId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, peerConnectionId_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        output.writeUInt64(8, added_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, trackId_);
       }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, sfuSinkId_);
-      }
-      if (((bitField0_ & 0x00000800) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, sfuStreamId_);
-      }
-      for (int i = 0; i < ssrc_.size(); i++) {
-        output.writeInt64(13, ssrc_.getLong(i));
+      for (int i = 0; i < outboundSfuRtpPadIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, outboundSfuRtpPadIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -16000,47 +13376,33 @@ public final class Models {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, roomId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sfuStreamId_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, callId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, sfuSinkId_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, userId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, kind_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, clientId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, callId_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, peerConnectionId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, clientId_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, trackId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, peerConnectionId_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, sfuSinkId_);
-      }
-      if (((bitField0_ & 0x00000800) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, sfuStreamId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, trackId_);
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < ssrc_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(ssrc_.getLong(i));
+        for (int i = 0; i < outboundSfuRtpPadIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(outboundSfuRtpPadIds_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getSsrcList().size();
+        size += 1 * getOutboundSfuRtpPadIdsList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -16052,30 +13414,35 @@ public final class Models {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof org.observertc.schemas.dtos.Models.InboundVideoTrack)) {
+      if (!(obj instanceof org.observertc.schemas.dtos.Models.SfuMediaSink)) {
         return super.equals(obj);
       }
-      org.observertc.schemas.dtos.Models.InboundVideoTrack other = (org.observertc.schemas.dtos.Models.InboundVideoTrack) obj;
+      org.observertc.schemas.dtos.Models.SfuMediaSink other = (org.observertc.schemas.dtos.Models.SfuMediaSink) obj;
 
       if (hasServiceId() != other.hasServiceId()) return false;
       if (hasServiceId()) {
         if (!getServiceId()
             .equals(other.getServiceId())) return false;
       }
-      if (hasRoomId() != other.hasRoomId()) return false;
-      if (hasRoomId()) {
-        if (!getRoomId()
-            .equals(other.getRoomId())) return false;
+      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
+      if (hasSfuStreamId()) {
+        if (!getSfuStreamId()
+            .equals(other.getSfuStreamId())) return false;
+      }
+      if (hasSfuSinkId() != other.hasSfuSinkId()) return false;
+      if (hasSfuSinkId()) {
+        if (!getSfuSinkId()
+            .equals(other.getSfuSinkId())) return false;
+      }
+      if (hasKind() != other.hasKind()) return false;
+      if (hasKind()) {
+        if (!getKind()
+            .equals(other.getKind())) return false;
       }
       if (hasCallId() != other.hasCallId()) return false;
       if (hasCallId()) {
         if (!getCallId()
             .equals(other.getCallId())) return false;
-      }
-      if (hasUserId() != other.hasUserId()) return false;
-      if (hasUserId()) {
-        if (!getUserId()
-            .equals(other.getUserId())) return false;
       }
       if (hasClientId() != other.hasClientId()) return false;
       if (hasClientId()) {
@@ -16092,33 +13459,8 @@ public final class Models {
         if (!getTrackId()
             .equals(other.getTrackId())) return false;
       }
-      if (hasAdded() != other.hasAdded()) return false;
-      if (hasAdded()) {
-        if (getAdded()
-            != other.getAdded()) return false;
-      }
-      if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
-      if (hasMediaUnitId()) {
-        if (!getMediaUnitId()
-            .equals(other.getMediaUnitId())) return false;
-      }
-      if (hasMarker() != other.hasMarker()) return false;
-      if (hasMarker()) {
-        if (!getMarker()
-            .equals(other.getMarker())) return false;
-      }
-      if (hasSfuSinkId() != other.hasSfuSinkId()) return false;
-      if (hasSfuSinkId()) {
-        if (!getSfuSinkId()
-            .equals(other.getSfuSinkId())) return false;
-      }
-      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
-      if (hasSfuStreamId()) {
-        if (!getSfuStreamId()
-            .equals(other.getSfuStreamId())) return false;
-      }
-      if (!getSsrcList()
-          .equals(other.getSsrcList())) return false;
+      if (!getOutboundSfuRtpPadIdsList()
+          .equals(other.getOutboundSfuRtpPadIdsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -16134,17 +13476,21 @@ public final class Models {
         hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
         hash = (53 * hash) + getServiceId().hashCode();
       }
-      if (hasRoomId()) {
-        hash = (37 * hash) + ROOMID_FIELD_NUMBER;
-        hash = (53 * hash) + getRoomId().hashCode();
+      if (hasSfuStreamId()) {
+        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
+        hash = (53 * hash) + getSfuStreamId().hashCode();
+      }
+      if (hasSfuSinkId()) {
+        hash = (37 * hash) + SFUSINKID_FIELD_NUMBER;
+        hash = (53 * hash) + getSfuSinkId().hashCode();
+      }
+      if (hasKind()) {
+        hash = (37 * hash) + KIND_FIELD_NUMBER;
+        hash = (53 * hash) + getKind().hashCode();
       }
       if (hasCallId()) {
         hash = (37 * hash) + CALLID_FIELD_NUMBER;
         hash = (53 * hash) + getCallId().hashCode();
-      }
-      if (hasUserId()) {
-        hash = (37 * hash) + USERID_FIELD_NUMBER;
-        hash = (53 * hash) + getUserId().hashCode();
       }
       if (hasClientId()) {
         hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
@@ -16158,99 +13504,78 @@ public final class Models {
         hash = (37 * hash) + TRACKID_FIELD_NUMBER;
         hash = (53 * hash) + getTrackId().hashCode();
       }
-      if (hasAdded()) {
-        hash = (37 * hash) + ADDED_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getAdded());
-      }
-      if (hasMediaUnitId()) {
-        hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
-        hash = (53 * hash) + getMediaUnitId().hashCode();
-      }
-      if (hasMarker()) {
-        hash = (37 * hash) + MARKER_FIELD_NUMBER;
-        hash = (53 * hash) + getMarker().hashCode();
-      }
-      if (hasSfuSinkId()) {
-        hash = (37 * hash) + SFUSINKID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuSinkId().hashCode();
-      }
-      if (hasSfuStreamId()) {
-        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuStreamId().hashCode();
-      }
-      if (getSsrcCount() > 0) {
-        hash = (37 * hash) + SSRC_FIELD_NUMBER;
-        hash = (53 * hash) + getSsrcList().hashCode();
+      if (getOutboundSfuRtpPadIdsCount() > 0) {
+        hash = (37 * hash) + OUTBOUNDSFURTPPADIDS_FIELD_NUMBER;
+        hash = (53 * hash) + getOutboundSfuRtpPadIdsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(byte[] data)
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(java.io.InputStream input)
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseDelimitedFrom(java.io.InputStream input)
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseDelimitedFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -16263,7 +13588,7 @@ public final class Models {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(org.observertc.schemas.dtos.Models.InboundVideoTrack prototype) {
+    public static Builder newBuilder(org.observertc.schemas.dtos.Models.SfuMediaSink prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -16279,26 +13604,26 @@ public final class Models {
       return builder;
     }
     /**
-     * Protobuf type {@code org.observertc.schemas.dtos.InboundVideoTrack}
+     * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaSink}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.InboundVideoTrack)
-        org.observertc.schemas.dtos.Models.InboundVideoTrackOrBuilder {
+        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.SfuMediaSink)
+        org.observertc.schemas.dtos.Models.SfuMediaSinkOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundVideoTrack_descriptor;
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundVideoTrack_fieldAccessorTable
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.InboundVideoTrack.class, org.observertc.schemas.dtos.Models.InboundVideoTrack.Builder.class);
+                org.observertc.schemas.dtos.Models.SfuMediaSink.class, org.observertc.schemas.dtos.Models.SfuMediaSink.Builder.class);
       }
 
-      // Construct using org.observertc.schemas.dtos.Models.InboundVideoTrack.newBuilder()
+      // Construct using org.observertc.schemas.dtos.Models.SfuMediaSink.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -16318,47 +13643,39 @@ public final class Models {
         super.clear();
         serviceId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        roomId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        callId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        userId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        clientId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        peerConnectionId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        trackId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        added_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        mediaUnitId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        marker_ = "";
-        bitField0_ = (bitField0_ & ~0x00000200);
-        sfuSinkId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000400);
         sfuStreamId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000800);
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sfuSinkId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        kind_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        callId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        clientId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        peerConnectionId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        trackId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_InboundVideoTrack_descriptor;
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
       }
 
       @java.lang.Override
-      public org.observertc.schemas.dtos.Models.InboundVideoTrack getDefaultInstanceForType() {
-        return org.observertc.schemas.dtos.Models.InboundVideoTrack.getDefaultInstance();
+      public org.observertc.schemas.dtos.Models.SfuMediaSink getDefaultInstanceForType() {
+        return org.observertc.schemas.dtos.Models.SfuMediaSink.getDefaultInstance();
       }
 
       @java.lang.Override
-      public org.observertc.schemas.dtos.Models.InboundVideoTrack build() {
-        org.observertc.schemas.dtos.Models.InboundVideoTrack result = buildPartial();
+      public org.observertc.schemas.dtos.Models.SfuMediaSink build() {
+        org.observertc.schemas.dtos.Models.SfuMediaSink result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -16366,8 +13683,8 @@ public final class Models {
       }
 
       @java.lang.Override
-      public org.observertc.schemas.dtos.Models.InboundVideoTrack buildPartial() {
-        org.observertc.schemas.dtos.Models.InboundVideoTrack result = new org.observertc.schemas.dtos.Models.InboundVideoTrack(this);
+      public org.observertc.schemas.dtos.Models.SfuMediaSink buildPartial() {
+        org.observertc.schemas.dtos.Models.SfuMediaSink result = new org.observertc.schemas.dtos.Models.SfuMediaSink(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -16377,52 +13694,36 @@ public final class Models {
         if (((from_bitField0_ & 0x00000002) != 0)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.roomId_ = roomId_;
+        result.sfuStreamId_ = sfuStreamId_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.callId_ = callId_;
+        result.sfuSinkId_ = sfuSinkId_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.userId_ = userId_;
+        result.kind_ = kind_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.clientId_ = clientId_;
+        result.callId_ = callId_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.peerConnectionId_ = peerConnectionId_;
+        result.clientId_ = clientId_;
         if (((from_bitField0_ & 0x00000040) != 0)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.trackId_ = trackId_;
+        result.peerConnectionId_ = peerConnectionId_;
         if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.added_ = added_;
           to_bitField0_ |= 0x00000080;
         }
-        if (((from_bitField0_ & 0x00000100) != 0)) {
-          to_bitField0_ |= 0x00000100;
+        result.trackId_ = trackId_;
+        if (((bitField0_ & 0x00000100) != 0)) {
+          outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000100);
         }
-        result.mediaUnitId_ = mediaUnitId_;
-        if (((from_bitField0_ & 0x00000200) != 0)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.marker_ = marker_;
-        if (((from_bitField0_ & 0x00000400) != 0)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.sfuSinkId_ = sfuSinkId_;
-        if (((from_bitField0_ & 0x00000800) != 0)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.sfuStreamId_ = sfuStreamId_;
-        if (((bitField0_ & 0x00001000) != 0)) {
-          ssrc_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00001000);
-        }
-        result.ssrc_ = ssrc_;
+        result.outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -16462,81 +13763,63 @@ public final class Models {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.observertc.schemas.dtos.Models.InboundVideoTrack) {
-          return mergeFrom((org.observertc.schemas.dtos.Models.InboundVideoTrack)other);
+        if (other instanceof org.observertc.schemas.dtos.Models.SfuMediaSink) {
+          return mergeFrom((org.observertc.schemas.dtos.Models.SfuMediaSink)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(org.observertc.schemas.dtos.Models.InboundVideoTrack other) {
-        if (other == org.observertc.schemas.dtos.Models.InboundVideoTrack.getDefaultInstance()) return this;
+      public Builder mergeFrom(org.observertc.schemas.dtos.Models.SfuMediaSink other) {
+        if (other == org.observertc.schemas.dtos.Models.SfuMediaSink.getDefaultInstance()) return this;
         if (other.hasServiceId()) {
           bitField0_ |= 0x00000001;
           serviceId_ = other.serviceId_;
           onChanged();
         }
-        if (other.hasRoomId()) {
+        if (other.hasSfuStreamId()) {
           bitField0_ |= 0x00000002;
-          roomId_ = other.roomId_;
+          sfuStreamId_ = other.sfuStreamId_;
+          onChanged();
+        }
+        if (other.hasSfuSinkId()) {
+          bitField0_ |= 0x00000004;
+          sfuSinkId_ = other.sfuSinkId_;
+          onChanged();
+        }
+        if (other.hasKind()) {
+          bitField0_ |= 0x00000008;
+          kind_ = other.kind_;
           onChanged();
         }
         if (other.hasCallId()) {
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000010;
           callId_ = other.callId_;
           onChanged();
         }
-        if (other.hasUserId()) {
-          bitField0_ |= 0x00000008;
-          userId_ = other.userId_;
-          onChanged();
-        }
         if (other.hasClientId()) {
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
           clientId_ = other.clientId_;
           onChanged();
         }
         if (other.hasPeerConnectionId()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           peerConnectionId_ = other.peerConnectionId_;
           onChanged();
         }
         if (other.hasTrackId()) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
           trackId_ = other.trackId_;
           onChanged();
         }
-        if (other.hasAdded()) {
-          setAdded(other.getAdded());
-        }
-        if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000100;
-          mediaUnitId_ = other.mediaUnitId_;
-          onChanged();
-        }
-        if (other.hasMarker()) {
-          bitField0_ |= 0x00000200;
-          marker_ = other.marker_;
-          onChanged();
-        }
-        if (other.hasSfuSinkId()) {
-          bitField0_ |= 0x00000400;
-          sfuSinkId_ = other.sfuSinkId_;
-          onChanged();
-        }
-        if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000800;
-          sfuStreamId_ = other.sfuStreamId_;
-          onChanged();
-        }
-        if (!other.ssrc_.isEmpty()) {
-          if (ssrc_.isEmpty()) {
-            ssrc_ = other.ssrc_;
-            bitField0_ = (bitField0_ & ~0x00001000);
+        if (!other.outboundSfuRtpPadIds_.isEmpty()) {
+          if (outboundSfuRtpPadIds_.isEmpty()) {
+            outboundSfuRtpPadIds_ = other.outboundSfuRtpPadIds_;
+            bitField0_ = (bitField0_ & ~0x00000100);
           } else {
-            ensureSsrcIsMutable();
-            ssrc_.addAll(other.ssrc_);
+            ensureOutboundSfuRtpPadIdsIsMutable();
+            outboundSfuRtpPadIds_.addAll(other.outboundSfuRtpPadIds_);
           }
           onChanged();
         }
@@ -16550,13 +13833,16 @@ public final class Models {
         if (!hasServiceId()) {
           return false;
         }
-        if (!hasRoomId()) {
+        if (!hasSfuStreamId()) {
+          return false;
+        }
+        if (!hasSfuSinkId()) {
+          return false;
+        }
+        if (!hasKind()) {
           return false;
         }
         if (!hasCallId()) {
-          return false;
-        }
-        if (!hasUserId()) {
           return false;
         }
         if (!hasClientId()) {
@@ -16568,9 +13854,6 @@ public final class Models {
         if (!hasTrackId()) {
           return false;
         }
-        if (!hasAdded()) {
-          return false;
-        }
         return true;
       }
 
@@ -16579,11 +13862,11 @@ public final class Models {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        org.observertc.schemas.dtos.Models.InboundVideoTrack parsedMessage = null;
+        org.observertc.schemas.dtos.Models.SfuMediaSink parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.observertc.schemas.dtos.Models.InboundVideoTrack) e.getUnfinishedMessage();
+          parsedMessage = (org.observertc.schemas.dtos.Models.SfuMediaSink) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -16678,26 +13961,26 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object roomId_ = "";
+      private java.lang.Object sfuStreamId_ = "";
       /**
-       * <code>required string roomId = 2;</code>
-       * @return Whether the roomId field is set.
+       * <code>required string sfuStreamId = 2;</code>
+       * @return Whether the sfuStreamId field is set.
        */
-      public boolean hasRoomId() {
+      public boolean hasSfuStreamId() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @return The roomId.
+       * <code>required string sfuStreamId = 2;</code>
+       * @return The sfuStreamId.
        */
-      public java.lang.String getRoomId() {
-        java.lang.Object ref = roomId_;
+      public java.lang.String getSfuStreamId() {
+        java.lang.Object ref = sfuStreamId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            roomId_ = s;
+            sfuStreamId_ = s;
           }
           return s;
         } else {
@@ -16705,700 +13988,73 @@ public final class Models {
         }
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @return The bytes for roomId.
+       * <code>required string sfuStreamId = 2;</code>
+       * @return The bytes for sfuStreamId.
        */
       public com.google.protobuf.ByteString
-          getRoomIdBytes() {
-        java.lang.Object ref = roomId_;
+          getSfuStreamIdBytes() {
+        java.lang.Object ref = sfuStreamId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          roomId_ = b;
+          sfuStreamId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @param value The roomId to set.
+       * <code>required string sfuStreamId = 2;</code>
+       * @param value The sfuStreamId to set.
        * @return This builder for chaining.
        */
-      public Builder setRoomId(
+      public Builder setSfuStreamId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        roomId_ = value;
+        sfuStreamId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string roomId = 2;</code>
+       * <code>required string sfuStreamId = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearRoomId() {
+      public Builder clearSfuStreamId() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        roomId_ = getDefaultInstance().getRoomId();
+        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @param value The bytes for roomId to set.
+       * <code>required string sfuStreamId = 2;</code>
+       * @param value The bytes for sfuStreamId to set.
        * @return This builder for chaining.
        */
-      public Builder setRoomIdBytes(
+      public Builder setSfuStreamIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object callId_ = "";
-      /**
-       * <code>required string callId = 3;</code>
-       * @return Whether the callId field is set.
-       */
-      public boolean hasCallId() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return The callId.
-       */
-      public java.lang.String getCallId() {
-        java.lang.Object ref = callId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            callId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return The bytes for callId.
-       */
-      public com.google.protobuf.ByteString
-          getCallIdBytes() {
-        java.lang.Object ref = callId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          callId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @param value The callId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCallId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        callId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCallId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        callId_ = getDefaultInstance().getCallId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @param value The bytes for callId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCallIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        callId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object userId_ = "";
-      /**
-       * <code>required string userId = 4;</code>
-       * @return Whether the userId field is set.
-       */
-      public boolean hasUserId() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The userId.
-       */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            userId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The bytes for userId.
-       */
-      public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        userId_ = getDefaultInstance().getUserId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The bytes for userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object clientId_ = "";
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return Whether the clientId field is set.
-       */
-      public boolean hasClientId() {
-        return ((bitField0_ & 0x00000010) != 0);
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return The clientId.
-       */
-      public java.lang.String getClientId() {
-        java.lang.Object ref = clientId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            clientId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return The bytes for clientId.
-       */
-      public com.google.protobuf.ByteString
-          getClientIdBytes() {
-        java.lang.Object ref = clientId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          clientId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @param value The clientId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setClientId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearClientId() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        clientId_ = getDefaultInstance().getClientId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @param value The bytes for clientId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setClientIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object peerConnectionId_ = "";
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return Whether the peerConnectionId field is set.
-       */
-      public boolean hasPeerConnectionId() {
-        return ((bitField0_ & 0x00000020) != 0);
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return The peerConnectionId.
-       */
-      public java.lang.String getPeerConnectionId() {
-        java.lang.Object ref = peerConnectionId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            peerConnectionId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return The bytes for peerConnectionId.
-       */
-      public com.google.protobuf.ByteString
-          getPeerConnectionIdBytes() {
-        java.lang.Object ref = peerConnectionId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          peerConnectionId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @param value The peerConnectionId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPeerConnectionId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        peerConnectionId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPeerConnectionId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        peerConnectionId_ = getDefaultInstance().getPeerConnectionId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @param value The bytes for peerConnectionId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPeerConnectionIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        peerConnectionId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object trackId_ = "";
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return Whether the trackId field is set.
-       */
-      public boolean hasTrackId() {
-        return ((bitField0_ & 0x00000040) != 0);
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return The trackId.
-       */
-      public java.lang.String getTrackId() {
-        java.lang.Object ref = trackId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            trackId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return The bytes for trackId.
-       */
-      public com.google.protobuf.ByteString
-          getTrackIdBytes() {
-        java.lang.Object ref = trackId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          trackId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @param value The trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTrackId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        trackId_ = getDefaultInstance().getTrackId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @param value The bytes for trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long added_ ;
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return Whether the added field is set.
-       */
-      @java.lang.Override
-      public boolean hasAdded() {
-        return ((bitField0_ & 0x00000080) != 0);
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return The added.
-       */
-      @java.lang.Override
-      public long getAdded() {
-        return added_;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @param value The added to set.
-       * @return This builder for chaining.
-       */
-      public Builder setAdded(long value) {
-        bitField0_ |= 0x00000080;
-        added_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearAdded() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        added_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object mediaUnitId_ = "";
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return Whether the mediaUnitId field is set.
-       */
-      public boolean hasMediaUnitId() {
-        return ((bitField0_ & 0x00000100) != 0);
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return The mediaUnitId.
-       */
-      public java.lang.String getMediaUnitId() {
-        java.lang.Object ref = mediaUnitId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mediaUnitId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return The bytes for mediaUnitId.
-       */
-      public com.google.protobuf.ByteString
-          getMediaUnitIdBytes() {
-        java.lang.Object ref = mediaUnitId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          mediaUnitId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @param value The mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        mediaUnitId_ = getDefaultInstance().getMediaUnitId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @param value The bytes for mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object marker_ = "";
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return Whether the marker field is set.
-       */
-      public boolean hasMarker() {
-        return ((bitField0_ & 0x00000200) != 0);
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return The marker.
-       */
-      public java.lang.String getMarker() {
-        java.lang.Object ref = marker_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            marker_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return The bytes for marker.
-       */
-      public com.google.protobuf.ByteString
-          getMarkerBytes() {
-        java.lang.Object ref = marker_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          marker_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @param value The marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarker(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        marker_ = getDefaultInstance().getMarker();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @param value The bytes for marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarkerBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        marker_ = value;
+        sfuStreamId_ = value;
         onChanged();
         return this;
       }
 
       private java.lang.Object sfuSinkId_ = "";
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>required string sfuSinkId = 3;</code>
        * @return Whether the sfuSinkId field is set.
        */
       public boolean hasSfuSinkId() {
-        return ((bitField0_ & 0x00000400) != 0);
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>required string sfuSinkId = 3;</code>
        * @return The sfuSinkId.
        */
       public java.lang.String getSfuSinkId() {
@@ -17416,7 +14072,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>required string sfuSinkId = 3;</code>
        * @return The bytes for sfuSinkId.
        */
       public com.google.protobuf.ByteString
@@ -17433,7 +14089,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>required string sfuSinkId = 3;</code>
        * @param value The sfuSinkId to set.
        * @return This builder for chaining.
        */
@@ -17442,23 +14098,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000004;
         sfuSinkId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>required string sfuSinkId = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearSfuSinkId() {
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000004);
         sfuSinkId_ = getDefaultInstance().getSfuSinkId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuSinkId = 11;</code>
+       * <code>required string sfuSinkId = 3;</code>
        * @param value The bytes for sfuSinkId to set.
        * @return This builder for chaining.
        */
@@ -17467,32 +14123,32 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000004;
         sfuSinkId_ = value;
         onChanged();
         return this;
       }
 
-      private java.lang.Object sfuStreamId_ = "";
+      private java.lang.Object kind_ = "";
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @return Whether the sfuStreamId field is set.
+       * <code>required string kind = 4;</code>
+       * @return Whether the kind field is set.
        */
-      public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000800) != 0);
+      public boolean hasKind() {
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @return The sfuStreamId.
+       * <code>required string kind = 4;</code>
+       * @return The kind.
        */
-      public java.lang.String getSfuStreamId() {
-        java.lang.Object ref = sfuStreamId_;
+      public java.lang.String getKind() {
+        java.lang.Object ref = kind_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            sfuStreamId_ = s;
+            kind_ = s;
           }
           return s;
         } else {
@@ -17500,138 +14156,504 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @return The bytes for sfuStreamId.
+       * <code>required string kind = 4;</code>
+       * @return The bytes for kind.
        */
       public com.google.protobuf.ByteString
-          getSfuStreamIdBytes() {
-        java.lang.Object ref = sfuStreamId_;
+          getKindBytes() {
+        java.lang.Object ref = kind_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          sfuStreamId_ = b;
+          kind_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @param value The sfuStreamId to set.
+       * <code>required string kind = 4;</code>
+       * @param value The kind to set.
        * @return This builder for chaining.
        */
-      public Builder setSfuStreamId(
+      public Builder setKind(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
-        sfuStreamId_ = value;
+  bitField0_ |= 0x00000008;
+        kind_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
+       * <code>required string kind = 4;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
+      public Builder clearKind() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        kind_ = getDefaultInstance().getKind();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sfuStreamId = 12;</code>
-       * @param value The bytes for sfuStreamId to set.
+       * <code>required string kind = 4;</code>
+       * @param value The bytes for kind to set.
        * @return This builder for chaining.
        */
-      public Builder setSfuStreamIdBytes(
+      public Builder setKindBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
-        sfuStreamId_ = value;
+  bitField0_ |= 0x00000008;
+        kind_ = value;
         onChanged();
         return this;
       }
 
-      private com.google.protobuf.Internal.LongList ssrc_ = emptyLongList();
-      private void ensureSsrcIsMutable() {
-        if (!((bitField0_ & 0x00001000) != 0)) {
-          ssrc_ = mutableCopy(ssrc_);
-          bitField0_ |= 0x00001000;
+      private java.lang.Object callId_ = "";
+      /**
+       * <code>required string callId = 5;</code>
+       * @return Whether the callId field is set.
+       */
+      public boolean hasCallId() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>required string callId = 5;</code>
+       * @return The callId.
+       */
+      public java.lang.String getCallId() {
+        java.lang.Object ref = callId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            callId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string callId = 5;</code>
+       * @return The bytes for callId.
+       */
+      public com.google.protobuf.ByteString
+          getCallIdBytes() {
+        java.lang.Object ref = callId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          callId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string callId = 5;</code>
+       * @param value The callId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCallId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        callId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string callId = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCallId() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        callId_ = getDefaultInstance().getCallId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string callId = 5;</code>
+       * @param value The bytes for callId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCallIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        callId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object clientId_ = "";
+      /**
+       * <code>required string clientId = 6;</code>
+       * @return Whether the clientId field is set.
+       */
+      public boolean hasClientId() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>required string clientId = 6;</code>
+       * @return The clientId.
+       */
+      public java.lang.String getClientId() {
+        java.lang.Object ref = clientId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string clientId = 6;</code>
+       * @return The bytes for clientId.
+       */
+      public com.google.protobuf.ByteString
+          getClientIdBytes() {
+        java.lang.Object ref = clientId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          clientId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string clientId = 6;</code>
+       * @param value The clientId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setClientId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        clientId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string clientId = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearClientId() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        clientId_ = getDefaultInstance().getClientId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string clientId = 6;</code>
+       * @param value The bytes for clientId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setClientIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        clientId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object peerConnectionId_ = "";
+      /**
+       * <code>required string peerConnectionId = 7;</code>
+       * @return Whether the peerConnectionId field is set.
+       */
+      public boolean hasPeerConnectionId() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <code>required string peerConnectionId = 7;</code>
+       * @return The peerConnectionId.
+       */
+      public java.lang.String getPeerConnectionId() {
+        java.lang.Object ref = peerConnectionId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            peerConnectionId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string peerConnectionId = 7;</code>
+       * @return The bytes for peerConnectionId.
+       */
+      public com.google.protobuf.ByteString
+          getPeerConnectionIdBytes() {
+        java.lang.Object ref = peerConnectionId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          peerConnectionId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string peerConnectionId = 7;</code>
+       * @param value The peerConnectionId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPeerConnectionId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        peerConnectionId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string peerConnectionId = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPeerConnectionId() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        peerConnectionId_ = getDefaultInstance().getPeerConnectionId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string peerConnectionId = 7;</code>
+       * @param value The bytes for peerConnectionId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPeerConnectionIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        peerConnectionId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object trackId_ = "";
+      /**
+       * <code>required string trackId = 8;</code>
+       * @return Whether the trackId field is set.
+       */
+      public boolean hasTrackId() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <code>required string trackId = 8;</code>
+       * @return The trackId.
+       */
+      public java.lang.String getTrackId() {
+        java.lang.Object ref = trackId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            trackId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string trackId = 8;</code>
+       * @return The bytes for trackId.
+       */
+      public com.google.protobuf.ByteString
+          getTrackIdBytes() {
+        java.lang.Object ref = trackId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          trackId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string trackId = 8;</code>
+       * @param value The trackId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        trackId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackId = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTrackId() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        trackId_ = getDefaultInstance().getTrackId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackId = 8;</code>
+       * @param value The bytes for trackId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        trackId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureOutboundSfuRtpPadIdsIsMutable() {
+        if (!((bitField0_ & 0x00000100) != 0)) {
+          outboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(outboundSfuRtpPadIds_);
+          bitField0_ |= 0x00000100;
          }
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @return A list containing the ssrc.
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+       * @return A list containing the outboundSfuRtpPadIds.
        */
-      public java.util.List<java.lang.Long>
-          getSsrcList() {
-        return ((bitField0_ & 0x00001000) != 0) ?
-                 java.util.Collections.unmodifiableList(ssrc_) : ssrc_;
+      public com.google.protobuf.ProtocolStringList
+          getOutboundSfuRtpPadIdsList() {
+        return outboundSfuRtpPadIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @return The count of ssrc.
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+       * @return The count of outboundSfuRtpPadIds.
        */
-      public int getSsrcCount() {
-        return ssrc_.size();
+      public int getOutboundSfuRtpPadIdsCount() {
+        return outboundSfuRtpPadIds_.size();
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
        * @param index The index of the element to return.
-       * @return The ssrc at the given index.
+       * @return The outboundSfuRtpPadIds at the given index.
        */
-      public long getSsrc(int index) {
-        return ssrc_.getLong(index);
+      public java.lang.String getOutboundSfuRtpPadIds(int index) {
+        return outboundSfuRtpPadIds_.get(index);
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the outboundSfuRtpPadIds at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getOutboundSfuRtpPadIdsBytes(int index) {
+        return outboundSfuRtpPadIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
        * @param index The index to set the value at.
-       * @param value The ssrc to set.
+       * @param value The outboundSfuRtpPadIds to set.
        * @return This builder for chaining.
        */
-      public Builder setSsrc(
-          int index, long value) {
-        ensureSsrcIsMutable();
-        ssrc_.setLong(index, value);
+      public Builder setOutboundSfuRtpPadIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundSfuRtpPadIdsIsMutable();
+        outboundSfuRtpPadIds_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @param value The ssrc to add.
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+       * @param value The outboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
-      public Builder addSsrc(long value) {
-        ensureSsrcIsMutable();
-        ssrc_.addLong(value);
+      public Builder addOutboundSfuRtpPadIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundSfuRtpPadIdsIsMutable();
+        outboundSfuRtpPadIds_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
-       * @param values The ssrc to add.
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+       * @param values The outboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
-      public Builder addAllSsrc(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureSsrcIsMutable();
+      public Builder addAllOutboundSfuRtpPadIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureOutboundSfuRtpPadIdsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, ssrc_);
+            values, outboundSfuRtpPadIds_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 13;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSsrc() {
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00001000);
+      public Builder clearOutboundSfuRtpPadIds() {
+        outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outboundSfuRtpPadIds = 9;</code>
+       * @param value The bytes of the outboundSfuRtpPadIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addOutboundSfuRtpPadIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutboundSfuRtpPadIdsIsMutable();
+        outboundSfuRtpPadIds_.add(value);
         onChanged();
         return this;
       }
@@ -17648,48 +14670,48 @@ public final class Models {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.InboundVideoTrack)
+      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.SfuMediaSink)
     }
 
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.InboundVideoTrack)
-    private static final org.observertc.schemas.dtos.Models.InboundVideoTrack DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.SfuMediaSink)
+    private static final org.observertc.schemas.dtos.Models.SfuMediaSink DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.InboundVideoTrack();
+      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.SfuMediaSink();
     }
 
-    public static org.observertc.schemas.dtos.Models.InboundVideoTrack getDefaultInstance() {
+    public static org.observertc.schemas.dtos.Models.SfuMediaSink getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<InboundVideoTrack>
-        PARSER = new com.google.protobuf.AbstractParser<InboundVideoTrack>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<SfuMediaSink>
+        PARSER = new com.google.protobuf.AbstractParser<SfuMediaSink>() {
       @java.lang.Override
-      public InboundVideoTrack parsePartialFrom(
+      public SfuMediaSink parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new InboundVideoTrack(input, extensionRegistry);
+        return new SfuMediaSink(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<InboundVideoTrack> parser() {
+    public static com.google.protobuf.Parser<SfuMediaSink> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<InboundVideoTrack> getParserForType() {
+    public com.google.protobuf.Parser<SfuMediaSink> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public org.observertc.schemas.dtos.Models.InboundVideoTrack getDefaultInstanceForType() {
+    public org.observertc.schemas.dtos.Models.SfuMediaSink getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface OutboundAudioTrackOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.OutboundAudioTrack)
+  public interface SfuMediaStreamOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.SfuMediaStream)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -17710,55 +14732,55 @@ public final class Models {
         getServiceIdBytes();
 
     /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return Whether the sfuStreamId field is set.
      */
-    boolean hasRoomId();
+    boolean hasSfuStreamId();
     /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return The sfuStreamId.
      */
-    java.lang.String getRoomId();
+    java.lang.String getSfuStreamId();
     /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return The bytes for sfuStreamId.
      */
     com.google.protobuf.ByteString
-        getRoomIdBytes();
+        getSfuStreamIdBytes();
 
     /**
-     * <code>required string callId = 3;</code>
+     * <code>required string kind = 3;</code>
+     * @return Whether the kind field is set.
+     */
+    boolean hasKind();
+    /**
+     * <code>required string kind = 3;</code>
+     * @return The kind.
+     */
+    java.lang.String getKind();
+    /**
+     * <code>required string kind = 3;</code>
+     * @return The bytes for kind.
+     */
+    com.google.protobuf.ByteString
+        getKindBytes();
+
+    /**
+     * <code>required string callId = 4;</code>
      * @return Whether the callId field is set.
      */
     boolean hasCallId();
     /**
-     * <code>required string callId = 3;</code>
+     * <code>required string callId = 4;</code>
      * @return The callId.
      */
     java.lang.String getCallId();
     /**
-     * <code>required string callId = 3;</code>
+     * <code>required string callId = 4;</code>
      * @return The bytes for callId.
      */
     com.google.protobuf.ByteString
         getCallIdBytes();
-
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    boolean hasUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    java.lang.String getUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    com.google.protobuf.ByteString
-        getUserIdBytes();
 
     /**
      * <code>required string clientId = 5;</code>
@@ -17812,115 +14834,58 @@ public final class Models {
         getTrackIdBytes();
 
     /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+     * @return A list containing the sfuInboundSfuRtpPadIds.
      */
-    boolean hasAdded();
+    java.util.List<java.lang.String>
+        getSfuInboundSfuRtpPadIdsList();
     /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+     * @return The count of sfuInboundSfuRtpPadIds.
      */
-    long getAdded();
-
+    int getSfuInboundSfuRtpPadIdsCount();
     /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    boolean hasMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    java.lang.String getMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    com.google.protobuf.ByteString
-        getMediaUnitIdBytes();
-
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    boolean hasMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    java.lang.String getMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    com.google.protobuf.ByteString
-        getMarkerBytes();
-
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    boolean hasSfuStreamId();
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The sfuStreamId.
-     */
-    java.lang.String getSfuStreamId();
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    com.google.protobuf.ByteString
-        getSfuStreamIdBytes();
-
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return A list containing the ssrc.
-     */
-    java.util.List<java.lang.Long> getSsrcList();
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return The count of ssrc.
-     */
-    int getSsrcCount();
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
      * @param index The index of the element to return.
-     * @return The ssrc at the given index.
+     * @return The sfuInboundSfuRtpPadIds at the given index.
      */
-    long getSsrc(int index);
+    java.lang.String getSfuInboundSfuRtpPadIds(int index);
+    /**
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the sfuInboundSfuRtpPadIds at the given index.
+     */
+    com.google.protobuf.ByteString
+        getSfuInboundSfuRtpPadIdsBytes(int index);
   }
   /**
-   * Protobuf type {@code org.observertc.schemas.dtos.OutboundAudioTrack}
+   * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaStream}
    */
-  public static final class OutboundAudioTrack extends
+  public static final class SfuMediaStream extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.OutboundAudioTrack)
-      OutboundAudioTrackOrBuilder {
+      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.SfuMediaStream)
+      SfuMediaStreamOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use OutboundAudioTrack.newBuilder() to construct.
-    private OutboundAudioTrack(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use SfuMediaStream.newBuilder() to construct.
+    private SfuMediaStream(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private OutboundAudioTrack() {
+    private SfuMediaStream() {
       serviceId_ = "";
-      roomId_ = "";
+      sfuStreamId_ = "";
+      kind_ = "";
       callId_ = "";
-      userId_ = "";
       clientId_ = "";
       peerConnectionId_ = "";
       trackId_ = "";
-      mediaUnitId_ = "";
-      marker_ = "";
-      sfuStreamId_ = "";
-      ssrc_ = emptyLongList();
+      sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new OutboundAudioTrack();
+      return new SfuMediaStream();
     }
 
     @java.lang.Override
@@ -17928,7 +14893,7 @@ public final class Models {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private OutboundAudioTrack(
+    private SfuMediaStream(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -17956,19 +14921,19 @@ public final class Models {
             case 18: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              roomId_ = bs;
+              sfuStreamId_ = bs;
               break;
             }
             case 26: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              callId_ = bs;
+              kind_ = bs;
               break;
             }
             case 34: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              userId_ = bs;
+              callId_ = bs;
               break;
             }
             case 42: {
@@ -17989,48 +14954,13 @@ public final class Models {
               trackId_ = bs;
               break;
             }
-            case 64: {
-              bitField0_ |= 0x00000080;
-              added_ = input.readUInt64();
-              break;
-            }
-            case 74: {
+            case 66: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              mediaUnitId_ = bs;
-              break;
-            }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000200;
-              marker_ = bs;
-              break;
-            }
-            case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000400;
-              sfuStreamId_ = bs;
-              break;
-            }
-            case 96: {
-              if (!((mutable_bitField0_ & 0x00000800) != 0)) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00000800;
+              if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+                sfuInboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000080;
               }
-              ssrc_.addLong(input.readInt64());
-              break;
-            }
-            case 98: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000800) != 0) && input.getBytesUntilLimit() > 0) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00000800;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                ssrc_.addLong(input.readInt64());
-              }
-              input.popLimit(limit);
+              sfuInboundSfuRtpPadIds_.add(bs);
               break;
             }
             default: {
@@ -18048,8 +14978,8 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000800) != 0)) {
-          ssrc_.makeImmutable(); // C
+        if (((mutable_bitField0_ & 0x00000080) != 0)) {
+          sfuInboundSfuRtpPadIds_ = sfuInboundSfuRtpPadIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -18057,15 +14987,15 @@ public final class Models {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_descriptor;
+      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_fieldAccessorTable
+      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              org.observertc.schemas.dtos.Models.OutboundAudioTrack.class, org.observertc.schemas.dtos.Models.OutboundAudioTrack.Builder.class);
+              org.observertc.schemas.dtos.Models.SfuMediaStream.class, org.observertc.schemas.dtos.Models.SfuMediaStream.Builder.class);
     }
 
     private int bitField0_;
@@ -18117,23 +15047,23 @@ public final class Models {
       }
     }
 
-    public static final int ROOMID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object roomId_;
+    public static final int SFUSTREAMID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object sfuStreamId_;
     /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return Whether the sfuStreamId field is set.
      */
     @java.lang.Override
-    public boolean hasRoomId() {
+    public boolean hasSfuStreamId() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return The sfuStreamId.
      */
     @java.lang.Override
-    public java.lang.String getRoomId() {
-      java.lang.Object ref = roomId_;
+    public java.lang.String getSfuStreamId() {
+      java.lang.Object ref = sfuStreamId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -18141,42 +15071,90 @@ public final class Models {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          roomId_ = s;
+          sfuStreamId_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
+     * <code>required string sfuStreamId = 2;</code>
+     * @return The bytes for sfuStreamId.
      */
     @java.lang.Override
     public com.google.protobuf.ByteString
-        getRoomIdBytes() {
-      java.lang.Object ref = roomId_;
+        getSfuStreamIdBytes() {
+      java.lang.Object ref = sfuStreamId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        roomId_ = b;
+        sfuStreamId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int CALLID_FIELD_NUMBER = 3;
+    public static final int KIND_FIELD_NUMBER = 3;
+    private volatile java.lang.Object kind_;
+    /**
+     * <code>required string kind = 3;</code>
+     * @return Whether the kind field is set.
+     */
+    @java.lang.Override
+    public boolean hasKind() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>required string kind = 3;</code>
+     * @return The kind.
+     */
+    @java.lang.Override
+    public java.lang.String getKind() {
+      java.lang.Object ref = kind_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          kind_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string kind = 3;</code>
+     * @return The bytes for kind.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getKindBytes() {
+      java.lang.Object ref = kind_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        kind_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CALLID_FIELD_NUMBER = 4;
     private volatile java.lang.Object callId_;
     /**
-     * <code>required string callId = 3;</code>
+     * <code>required string callId = 4;</code>
      * @return Whether the callId field is set.
      */
     @java.lang.Override
     public boolean hasCallId() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>required string callId = 3;</code>
+     * <code>required string callId = 4;</code>
      * @return The callId.
      */
     @java.lang.Override
@@ -18195,7 +15173,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string callId = 3;</code>
+     * <code>required string callId = 4;</code>
      * @return The bytes for callId.
      */
     @java.lang.Override
@@ -18207,54 +15185,6 @@ public final class Models {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         callId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int USERID_FIELD_NUMBER = 4;
-    private volatile java.lang.Object userId_;
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    @java.lang.Override
-    public boolean hasUserId() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          userId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -18405,194 +15335,39 @@ public final class Models {
       }
     }
 
-    public static final int ADDED_FIELD_NUMBER = 8;
-    private long added_;
+    public static final int SFUINBOUNDSFURTPPADIDS_FIELD_NUMBER = 8;
+    private com.google.protobuf.LazyStringList sfuInboundSfuRtpPadIds_;
     /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+     * @return A list containing the sfuInboundSfuRtpPadIds.
      */
-    @java.lang.Override
-    public boolean hasAdded() {
-      return ((bitField0_ & 0x00000080) != 0);
+    public com.google.protobuf.ProtocolStringList
+        getSfuInboundSfuRtpPadIdsList() {
+      return sfuInboundSfuRtpPadIds_;
     }
     /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+     * @return The count of sfuInboundSfuRtpPadIds.
      */
-    @java.lang.Override
-    public long getAdded() {
-      return added_;
-    }
-
-    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
-    private volatile java.lang.Object mediaUnitId_;
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    @java.lang.Override
-    public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000100) != 0);
+    public int getSfuInboundSfuRtpPadIdsCount() {
+      return sfuInboundSfuRtpPadIds_.size();
     }
     /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    @java.lang.Override
-    public java.lang.String getMediaUnitId() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          mediaUnitId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMediaUnitIdBytes() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        mediaUnitId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int MARKER_FIELD_NUMBER = 10;
-    private volatile java.lang.Object marker_;
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    @java.lang.Override
-    public boolean hasMarker() {
-      return ((bitField0_ & 0x00000200) != 0);
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    @java.lang.Override
-    public java.lang.String getMarker() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          marker_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMarkerBytes() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        marker_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSTREAMID_FIELD_NUMBER = 11;
-    private volatile java.lang.Object sfuStreamId_;
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000400) != 0);
-    }
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The sfuStreamId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuStreamId() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuStreamId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuStreamIdBytes() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuStreamId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SSRC_FIELD_NUMBER = 12;
-    private com.google.protobuf.Internal.LongList ssrc_;
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return A list containing the ssrc.
-     */
-    @java.lang.Override
-    public java.util.List<java.lang.Long>
-        getSsrcList() {
-      return ssrc_;
-    }
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return The count of ssrc.
-     */
-    public int getSsrcCount() {
-      return ssrc_.size();
-    }
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
      * @param index The index of the element to return.
-     * @return The ssrc at the given index.
+     * @return The sfuInboundSfuRtpPadIds at the given index.
      */
-    public long getSsrc(int index) {
-      return ssrc_.getLong(index);
+    public java.lang.String getSfuInboundSfuRtpPadIds(int index) {
+      return sfuInboundSfuRtpPadIds_.get(index);
+    }
+    /**
+     * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the sfuInboundSfuRtpPadIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getSfuInboundSfuRtpPadIdsBytes(int index) {
+      return sfuInboundSfuRtpPadIds_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -18606,15 +15381,15 @@ public final class Models {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasRoomId()) {
+      if (!hasSfuStreamId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasKind()) {
         memoizedIsInitialized = 0;
         return false;
       }
       if (!hasCallId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUserId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -18630,10 +15405,6 @@ public final class Models {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasAdded()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -18645,13 +15416,13 @@ public final class Models {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, roomId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sfuStreamId_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, callId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, kind_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, userId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, callId_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, clientId_);
@@ -18662,20 +15433,8 @@ public final class Models {
       if (((bitField0_ & 0x00000040) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, trackId_);
       }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        output.writeUInt64(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, sfuStreamId_);
-      }
-      for (int i = 0; i < ssrc_.size(); i++) {
-        output.writeInt64(12, ssrc_.getLong(i));
+      for (int i = 0; i < sfuInboundSfuRtpPadIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, sfuInboundSfuRtpPadIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -18690,13 +15449,13 @@ public final class Models {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, roomId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sfuStreamId_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, callId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, kind_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, userId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, callId_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, clientId_);
@@ -18707,27 +15466,13 @@ public final class Models {
       if (((bitField0_ & 0x00000040) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, trackId_);
       }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, sfuStreamId_);
-      }
       {
         int dataSize = 0;
-        for (int i = 0; i < ssrc_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(ssrc_.getLong(i));
+        for (int i = 0; i < sfuInboundSfuRtpPadIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(sfuInboundSfuRtpPadIds_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getSsrcList().size();
+        size += 1 * getSfuInboundSfuRtpPadIdsList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -18739,30 +15484,30 @@ public final class Models {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof org.observertc.schemas.dtos.Models.OutboundAudioTrack)) {
+      if (!(obj instanceof org.observertc.schemas.dtos.Models.SfuMediaStream)) {
         return super.equals(obj);
       }
-      org.observertc.schemas.dtos.Models.OutboundAudioTrack other = (org.observertc.schemas.dtos.Models.OutboundAudioTrack) obj;
+      org.observertc.schemas.dtos.Models.SfuMediaStream other = (org.observertc.schemas.dtos.Models.SfuMediaStream) obj;
 
       if (hasServiceId() != other.hasServiceId()) return false;
       if (hasServiceId()) {
         if (!getServiceId()
             .equals(other.getServiceId())) return false;
       }
-      if (hasRoomId() != other.hasRoomId()) return false;
-      if (hasRoomId()) {
-        if (!getRoomId()
-            .equals(other.getRoomId())) return false;
+      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
+      if (hasSfuStreamId()) {
+        if (!getSfuStreamId()
+            .equals(other.getSfuStreamId())) return false;
+      }
+      if (hasKind() != other.hasKind()) return false;
+      if (hasKind()) {
+        if (!getKind()
+            .equals(other.getKind())) return false;
       }
       if (hasCallId() != other.hasCallId()) return false;
       if (hasCallId()) {
         if (!getCallId()
             .equals(other.getCallId())) return false;
-      }
-      if (hasUserId() != other.hasUserId()) return false;
-      if (hasUserId()) {
-        if (!getUserId()
-            .equals(other.getUserId())) return false;
       }
       if (hasClientId() != other.hasClientId()) return false;
       if (hasClientId()) {
@@ -18779,28 +15524,8 @@ public final class Models {
         if (!getTrackId()
             .equals(other.getTrackId())) return false;
       }
-      if (hasAdded() != other.hasAdded()) return false;
-      if (hasAdded()) {
-        if (getAdded()
-            != other.getAdded()) return false;
-      }
-      if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
-      if (hasMediaUnitId()) {
-        if (!getMediaUnitId()
-            .equals(other.getMediaUnitId())) return false;
-      }
-      if (hasMarker() != other.hasMarker()) return false;
-      if (hasMarker()) {
-        if (!getMarker()
-            .equals(other.getMarker())) return false;
-      }
-      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
-      if (hasSfuStreamId()) {
-        if (!getSfuStreamId()
-            .equals(other.getSfuStreamId())) return false;
-      }
-      if (!getSsrcList()
-          .equals(other.getSsrcList())) return false;
+      if (!getSfuInboundSfuRtpPadIdsList()
+          .equals(other.getSfuInboundSfuRtpPadIdsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -18816,17 +15541,17 @@ public final class Models {
         hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
         hash = (53 * hash) + getServiceId().hashCode();
       }
-      if (hasRoomId()) {
-        hash = (37 * hash) + ROOMID_FIELD_NUMBER;
-        hash = (53 * hash) + getRoomId().hashCode();
+      if (hasSfuStreamId()) {
+        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
+        hash = (53 * hash) + getSfuStreamId().hashCode();
+      }
+      if (hasKind()) {
+        hash = (37 * hash) + KIND_FIELD_NUMBER;
+        hash = (53 * hash) + getKind().hashCode();
       }
       if (hasCallId()) {
         hash = (37 * hash) + CALLID_FIELD_NUMBER;
         hash = (53 * hash) + getCallId().hashCode();
-      }
-      if (hasUserId()) {
-        hash = (37 * hash) + USERID_FIELD_NUMBER;
-        hash = (53 * hash) + getUserId().hashCode();
       }
       if (hasClientId()) {
         hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
@@ -18840,95 +15565,78 @@ public final class Models {
         hash = (37 * hash) + TRACKID_FIELD_NUMBER;
         hash = (53 * hash) + getTrackId().hashCode();
       }
-      if (hasAdded()) {
-        hash = (37 * hash) + ADDED_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getAdded());
-      }
-      if (hasMediaUnitId()) {
-        hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
-        hash = (53 * hash) + getMediaUnitId().hashCode();
-      }
-      if (hasMarker()) {
-        hash = (37 * hash) + MARKER_FIELD_NUMBER;
-        hash = (53 * hash) + getMarker().hashCode();
-      }
-      if (hasSfuStreamId()) {
-        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuStreamId().hashCode();
-      }
-      if (getSsrcCount() > 0) {
-        hash = (37 * hash) + SSRC_FIELD_NUMBER;
-        hash = (53 * hash) + getSsrcList().hashCode();
+      if (getSfuInboundSfuRtpPadIdsCount() > 0) {
+        hash = (37 * hash) + SFUINBOUNDSFURTPPADIDS_FIELD_NUMBER;
+        hash = (53 * hash) + getSfuInboundSfuRtpPadIdsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(byte[] data)
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(java.io.InputStream input)
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseDelimitedFrom(java.io.InputStream input)
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseDelimitedFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack parseFrom(
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -18941,7 +15649,7 @@ public final class Models {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(org.observertc.schemas.dtos.Models.OutboundAudioTrack prototype) {
+    public static Builder newBuilder(org.observertc.schemas.dtos.Models.SfuMediaStream prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -18957,26 +15665,26 @@ public final class Models {
       return builder;
     }
     /**
-     * Protobuf type {@code org.observertc.schemas.dtos.OutboundAudioTrack}
+     * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaStream}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.OutboundAudioTrack)
-        org.observertc.schemas.dtos.Models.OutboundAudioTrackOrBuilder {
+        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.SfuMediaStream)
+        org.observertc.schemas.dtos.Models.SfuMediaStreamOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_descriptor;
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_fieldAccessorTable
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.OutboundAudioTrack.class, org.observertc.schemas.dtos.Models.OutboundAudioTrack.Builder.class);
+                org.observertc.schemas.dtos.Models.SfuMediaStream.class, org.observertc.schemas.dtos.Models.SfuMediaStream.Builder.class);
       }
 
-      // Construct using org.observertc.schemas.dtos.Models.OutboundAudioTrack.newBuilder()
+      // Construct using org.observertc.schemas.dtos.Models.SfuMediaStream.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -18996,11 +15704,11 @@ public final class Models {
         super.clear();
         serviceId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        roomId_ = "";
+        sfuStreamId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        callId_ = "";
+        kind_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        userId_ = "";
+        callId_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
         clientId_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -19008,33 +15716,25 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000020);
         trackId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
-        added_ = 0L;
+        sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000080);
-        mediaUnitId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        marker_ = "";
-        bitField0_ = (bitField0_ & ~0x00000200);
-        sfuStreamId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000400);
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_descriptor;
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
       }
 
       @java.lang.Override
-      public org.observertc.schemas.dtos.Models.OutboundAudioTrack getDefaultInstanceForType() {
-        return org.observertc.schemas.dtos.Models.OutboundAudioTrack.getDefaultInstance();
+      public org.observertc.schemas.dtos.Models.SfuMediaStream getDefaultInstanceForType() {
+        return org.observertc.schemas.dtos.Models.SfuMediaStream.getDefaultInstance();
       }
 
       @java.lang.Override
-      public org.observertc.schemas.dtos.Models.OutboundAudioTrack build() {
-        org.observertc.schemas.dtos.Models.OutboundAudioTrack result = buildPartial();
+      public org.observertc.schemas.dtos.Models.SfuMediaStream build() {
+        org.observertc.schemas.dtos.Models.SfuMediaStream result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -19042,8 +15742,8 @@ public final class Models {
       }
 
       @java.lang.Override
-      public org.observertc.schemas.dtos.Models.OutboundAudioTrack buildPartial() {
-        org.observertc.schemas.dtos.Models.OutboundAudioTrack result = new org.observertc.schemas.dtos.Models.OutboundAudioTrack(this);
+      public org.observertc.schemas.dtos.Models.SfuMediaStream buildPartial() {
+        org.observertc.schemas.dtos.Models.SfuMediaStream result = new org.observertc.schemas.dtos.Models.SfuMediaStream(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -19053,15 +15753,15 @@ public final class Models {
         if (((from_bitField0_ & 0x00000002) != 0)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.roomId_ = roomId_;
+        result.sfuStreamId_ = sfuStreamId_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.callId_ = callId_;
+        result.kind_ = kind_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.userId_ = userId_;
+        result.callId_ = callId_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -19074,27 +15774,11 @@ public final class Models {
           to_bitField0_ |= 0x00000040;
         }
         result.trackId_ = trackId_;
-        if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.added_ = added_;
-          to_bitField0_ |= 0x00000080;
+        if (((bitField0_ & 0x00000080) != 0)) {
+          sfuInboundSfuRtpPadIds_ = sfuInboundSfuRtpPadIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000080);
         }
-        if (((from_bitField0_ & 0x00000100) != 0)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.mediaUnitId_ = mediaUnitId_;
-        if (((from_bitField0_ & 0x00000200) != 0)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.marker_ = marker_;
-        if (((from_bitField0_ & 0x00000400) != 0)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.sfuStreamId_ = sfuStreamId_;
-        if (((bitField0_ & 0x00000800) != 0)) {
-          ssrc_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00000800);
-        }
-        result.ssrc_ = ssrc_;
+        result.sfuInboundSfuRtpPadIds_ = sfuInboundSfuRtpPadIds_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -19134,34 +15818,34 @@ public final class Models {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.observertc.schemas.dtos.Models.OutboundAudioTrack) {
-          return mergeFrom((org.observertc.schemas.dtos.Models.OutboundAudioTrack)other);
+        if (other instanceof org.observertc.schemas.dtos.Models.SfuMediaStream) {
+          return mergeFrom((org.observertc.schemas.dtos.Models.SfuMediaStream)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(org.observertc.schemas.dtos.Models.OutboundAudioTrack other) {
-        if (other == org.observertc.schemas.dtos.Models.OutboundAudioTrack.getDefaultInstance()) return this;
+      public Builder mergeFrom(org.observertc.schemas.dtos.Models.SfuMediaStream other) {
+        if (other == org.observertc.schemas.dtos.Models.SfuMediaStream.getDefaultInstance()) return this;
         if (other.hasServiceId()) {
           bitField0_ |= 0x00000001;
           serviceId_ = other.serviceId_;
           onChanged();
         }
-        if (other.hasRoomId()) {
+        if (other.hasSfuStreamId()) {
           bitField0_ |= 0x00000002;
-          roomId_ = other.roomId_;
+          sfuStreamId_ = other.sfuStreamId_;
+          onChanged();
+        }
+        if (other.hasKind()) {
+          bitField0_ |= 0x00000004;
+          kind_ = other.kind_;
           onChanged();
         }
         if (other.hasCallId()) {
-          bitField0_ |= 0x00000004;
-          callId_ = other.callId_;
-          onChanged();
-        }
-        if (other.hasUserId()) {
           bitField0_ |= 0x00000008;
-          userId_ = other.userId_;
+          callId_ = other.callId_;
           onChanged();
         }
         if (other.hasClientId()) {
@@ -19179,31 +15863,13 @@ public final class Models {
           trackId_ = other.trackId_;
           onChanged();
         }
-        if (other.hasAdded()) {
-          setAdded(other.getAdded());
-        }
-        if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000100;
-          mediaUnitId_ = other.mediaUnitId_;
-          onChanged();
-        }
-        if (other.hasMarker()) {
-          bitField0_ |= 0x00000200;
-          marker_ = other.marker_;
-          onChanged();
-        }
-        if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000400;
-          sfuStreamId_ = other.sfuStreamId_;
-          onChanged();
-        }
-        if (!other.ssrc_.isEmpty()) {
-          if (ssrc_.isEmpty()) {
-            ssrc_ = other.ssrc_;
-            bitField0_ = (bitField0_ & ~0x00000800);
+        if (!other.sfuInboundSfuRtpPadIds_.isEmpty()) {
+          if (sfuInboundSfuRtpPadIds_.isEmpty()) {
+            sfuInboundSfuRtpPadIds_ = other.sfuInboundSfuRtpPadIds_;
+            bitField0_ = (bitField0_ & ~0x00000080);
           } else {
-            ensureSsrcIsMutable();
-            ssrc_.addAll(other.ssrc_);
+            ensureSfuInboundSfuRtpPadIdsIsMutable();
+            sfuInboundSfuRtpPadIds_.addAll(other.sfuInboundSfuRtpPadIds_);
           }
           onChanged();
         }
@@ -19217,13 +15883,13 @@ public final class Models {
         if (!hasServiceId()) {
           return false;
         }
-        if (!hasRoomId()) {
+        if (!hasSfuStreamId()) {
+          return false;
+        }
+        if (!hasKind()) {
           return false;
         }
         if (!hasCallId()) {
-          return false;
-        }
-        if (!hasUserId()) {
           return false;
         }
         if (!hasClientId()) {
@@ -19235,9 +15901,6 @@ public final class Models {
         if (!hasTrackId()) {
           return false;
         }
-        if (!hasAdded()) {
-          return false;
-        }
         return true;
       }
 
@@ -19246,11 +15909,11 @@ public final class Models {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        org.observertc.schemas.dtos.Models.OutboundAudioTrack parsedMessage = null;
+        org.observertc.schemas.dtos.Models.SfuMediaStream parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.observertc.schemas.dtos.Models.OutboundAudioTrack) e.getUnfinishedMessage();
+          parsedMessage = (org.observertc.schemas.dtos.Models.SfuMediaStream) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -19345,26 +16008,26 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object roomId_ = "";
+      private java.lang.Object sfuStreamId_ = "";
       /**
-       * <code>required string roomId = 2;</code>
-       * @return Whether the roomId field is set.
+       * <code>required string sfuStreamId = 2;</code>
+       * @return Whether the sfuStreamId field is set.
        */
-      public boolean hasRoomId() {
+      public boolean hasSfuStreamId() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @return The roomId.
+       * <code>required string sfuStreamId = 2;</code>
+       * @return The sfuStreamId.
        */
-      public java.lang.String getRoomId() {
-        java.lang.Object ref = roomId_;
+      public java.lang.String getSfuStreamId() {
+        java.lang.Object ref = sfuStreamId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            roomId_ = s;
+            sfuStreamId_ = s;
           }
           return s;
         } else {
@@ -19372,73 +16035,157 @@ public final class Models {
         }
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @return The bytes for roomId.
+       * <code>required string sfuStreamId = 2;</code>
+       * @return The bytes for sfuStreamId.
        */
       public com.google.protobuf.ByteString
-          getRoomIdBytes() {
-        java.lang.Object ref = roomId_;
+          getSfuStreamIdBytes() {
+        java.lang.Object ref = sfuStreamId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          roomId_ = b;
+          sfuStreamId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @param value The roomId to set.
+       * <code>required string sfuStreamId = 2;</code>
+       * @param value The sfuStreamId to set.
        * @return This builder for chaining.
        */
-      public Builder setRoomId(
+      public Builder setSfuStreamId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        roomId_ = value;
+        sfuStreamId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string roomId = 2;</code>
+       * <code>required string sfuStreamId = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearRoomId() {
+      public Builder clearSfuStreamId() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        roomId_ = getDefaultInstance().getRoomId();
+        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string roomId = 2;</code>
-       * @param value The bytes for roomId to set.
+       * <code>required string sfuStreamId = 2;</code>
+       * @param value The bytes for sfuStreamId to set.
        * @return This builder for chaining.
        */
-      public Builder setRoomIdBytes(
+      public Builder setSfuStreamIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        roomId_ = value;
+        sfuStreamId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object kind_ = "";
+      /**
+       * <code>required string kind = 3;</code>
+       * @return Whether the kind field is set.
+       */
+      public boolean hasKind() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>required string kind = 3;</code>
+       * @return The kind.
+       */
+      public java.lang.String getKind() {
+        java.lang.Object ref = kind_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            kind_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string kind = 3;</code>
+       * @return The bytes for kind.
+       */
+      public com.google.protobuf.ByteString
+          getKindBytes() {
+        java.lang.Object ref = kind_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          kind_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string kind = 3;</code>
+       * @param value The kind to set.
+       * @return This builder for chaining.
+       */
+      public Builder setKind(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        kind_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string kind = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearKind() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        kind_ = getDefaultInstance().getKind();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string kind = 3;</code>
+       * @param value The bytes for kind to set.
+       * @return This builder for chaining.
+       */
+      public Builder setKindBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        kind_ = value;
         onChanged();
         return this;
       }
 
       private java.lang.Object callId_ = "";
       /**
-       * <code>required string callId = 3;</code>
+       * <code>required string callId = 4;</code>
        * @return Whether the callId field is set.
        */
       public boolean hasCallId() {
-        return ((bitField0_ & 0x00000004) != 0);
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>required string callId = 3;</code>
+       * <code>required string callId = 4;</code>
        * @return The callId.
        */
       public java.lang.String getCallId() {
@@ -19456,7 +16203,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string callId = 3;</code>
+       * <code>required string callId = 4;</code>
        * @return The bytes for callId.
        */
       public com.google.protobuf.ByteString
@@ -19473,7 +16220,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string callId = 3;</code>
+       * <code>required string callId = 4;</code>
        * @param value The callId to set.
        * @return This builder for chaining.
        */
@@ -19482,23 +16229,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         callId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string callId = 3;</code>
+       * <code>required string callId = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearCallId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         callId_ = getDefaultInstance().getCallId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string callId = 3;</code>
+       * <code>required string callId = 4;</code>
        * @param value The bytes for callId to set.
        * @return This builder for chaining.
        */
@@ -19507,92 +16254,8 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         callId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object userId_ = "";
-      /**
-       * <code>required string userId = 4;</code>
-       * @return Whether the userId field is set.
-       */
-      public boolean hasUserId() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The userId.
-       */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            userId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The bytes for userId.
-       */
-      public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        userId_ = getDefaultInstance().getUserId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The bytes for userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
         onChanged();
         return this;
       }
@@ -19849,372 +16512,111 @@ public final class Models {
         return this;
       }
 
-      private long added_ ;
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return Whether the added field is set.
-       */
-      @java.lang.Override
-      public boolean hasAdded() {
-        return ((bitField0_ & 0x00000080) != 0);
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return The added.
-       */
-      @java.lang.Override
-      public long getAdded() {
-        return added_;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @param value The added to set.
-       * @return This builder for chaining.
-       */
-      public Builder setAdded(long value) {
-        bitField0_ |= 0x00000080;
-        added_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearAdded() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        added_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object mediaUnitId_ = "";
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return Whether the mediaUnitId field is set.
-       */
-      public boolean hasMediaUnitId() {
-        return ((bitField0_ & 0x00000100) != 0);
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return The mediaUnitId.
-       */
-      public java.lang.String getMediaUnitId() {
-        java.lang.Object ref = mediaUnitId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mediaUnitId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return The bytes for mediaUnitId.
-       */
-      public com.google.protobuf.ByteString
-          getMediaUnitIdBytes() {
-        java.lang.Object ref = mediaUnitId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          mediaUnitId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @param value The mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        mediaUnitId_ = getDefaultInstance().getMediaUnitId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @param value The bytes for mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object marker_ = "";
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return Whether the marker field is set.
-       */
-      public boolean hasMarker() {
-        return ((bitField0_ & 0x00000200) != 0);
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return The marker.
-       */
-      public java.lang.String getMarker() {
-        java.lang.Object ref = marker_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            marker_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return The bytes for marker.
-       */
-      public com.google.protobuf.ByteString
-          getMarkerBytes() {
-        java.lang.Object ref = marker_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          marker_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @param value The marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarker(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        marker_ = getDefaultInstance().getMarker();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @param value The bytes for marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarkerBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuStreamId_ = "";
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return Whether the sfuStreamId field is set.
-       */
-      public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000400) != 0);
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return The sfuStreamId.
-       */
-      public java.lang.String getSfuStreamId() {
-        java.lang.Object ref = sfuStreamId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuStreamId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return The bytes for sfuStreamId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuStreamIdBytes() {
-        java.lang.Object ref = sfuStreamId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuStreamId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @param value The sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @param value The bytes for sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.Internal.LongList ssrc_ = emptyLongList();
-      private void ensureSsrcIsMutable() {
-        if (!((bitField0_ & 0x00000800) != 0)) {
-          ssrc_ = mutableCopy(ssrc_);
-          bitField0_ |= 0x00000800;
+      private com.google.protobuf.LazyStringList sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureSfuInboundSfuRtpPadIdsIsMutable() {
+        if (!((bitField0_ & 0x00000080) != 0)) {
+          sfuInboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(sfuInboundSfuRtpPadIds_);
+          bitField0_ |= 0x00000080;
          }
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @return A list containing the ssrc.
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+       * @return A list containing the sfuInboundSfuRtpPadIds.
        */
-      public java.util.List<java.lang.Long>
-          getSsrcList() {
-        return ((bitField0_ & 0x00000800) != 0) ?
-                 java.util.Collections.unmodifiableList(ssrc_) : ssrc_;
+      public com.google.protobuf.ProtocolStringList
+          getSfuInboundSfuRtpPadIdsList() {
+        return sfuInboundSfuRtpPadIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @return The count of ssrc.
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+       * @return The count of sfuInboundSfuRtpPadIds.
        */
-      public int getSsrcCount() {
-        return ssrc_.size();
+      public int getSfuInboundSfuRtpPadIdsCount() {
+        return sfuInboundSfuRtpPadIds_.size();
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
        * @param index The index of the element to return.
-       * @return The ssrc at the given index.
+       * @return The sfuInboundSfuRtpPadIds at the given index.
        */
-      public long getSsrc(int index) {
-        return ssrc_.getLong(index);
+      public java.lang.String getSfuInboundSfuRtpPadIds(int index) {
+        return sfuInboundSfuRtpPadIds_.get(index);
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the sfuInboundSfuRtpPadIds at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getSfuInboundSfuRtpPadIdsBytes(int index) {
+        return sfuInboundSfuRtpPadIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
        * @param index The index to set the value at.
-       * @param value The ssrc to set.
+       * @param value The sfuInboundSfuRtpPadIds to set.
        * @return This builder for chaining.
        */
-      public Builder setSsrc(
-          int index, long value) {
-        ensureSsrcIsMutable();
-        ssrc_.setLong(index, value);
+      public Builder setSfuInboundSfuRtpPadIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSfuInboundSfuRtpPadIdsIsMutable();
+        sfuInboundSfuRtpPadIds_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @param value The ssrc to add.
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+       * @param value The sfuInboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
-      public Builder addSsrc(long value) {
-        ensureSsrcIsMutable();
-        ssrc_.addLong(value);
+      public Builder addSfuInboundSfuRtpPadIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSfuInboundSfuRtpPadIdsIsMutable();
+        sfuInboundSfuRtpPadIds_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @param values The ssrc to add.
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+       * @param values The sfuInboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
-      public Builder addAllSsrc(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureSsrcIsMutable();
+      public Builder addAllSfuInboundSfuRtpPadIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureSfuInboundSfuRtpPadIdsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, ssrc_);
+            values, sfuInboundSfuRtpPadIds_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 ssrc = 12;</code>
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSsrc() {
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00000800);
+      public Builder clearSfuInboundSfuRtpPadIds() {
+        sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string sfuInboundSfuRtpPadIds = 8;</code>
+       * @param value The bytes of the sfuInboundSfuRtpPadIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addSfuInboundSfuRtpPadIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSfuInboundSfuRtpPadIdsIsMutable();
+        sfuInboundSfuRtpPadIds_.add(value);
         onChanged();
         return this;
       }
@@ -20231,2624 +16633,41 @@ public final class Models {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.OutboundAudioTrack)
+      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.SfuMediaStream)
     }
 
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.OutboundAudioTrack)
-    private static final org.observertc.schemas.dtos.Models.OutboundAudioTrack DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.SfuMediaStream)
+    private static final org.observertc.schemas.dtos.Models.SfuMediaStream DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.OutboundAudioTrack();
+      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.SfuMediaStream();
     }
 
-    public static org.observertc.schemas.dtos.Models.OutboundAudioTrack getDefaultInstance() {
+    public static org.observertc.schemas.dtos.Models.SfuMediaStream getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<OutboundAudioTrack>
-        PARSER = new com.google.protobuf.AbstractParser<OutboundAudioTrack>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<SfuMediaStream>
+        PARSER = new com.google.protobuf.AbstractParser<SfuMediaStream>() {
       @java.lang.Override
-      public OutboundAudioTrack parsePartialFrom(
+      public SfuMediaStream parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OutboundAudioTrack(input, extensionRegistry);
+        return new SfuMediaStream(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<OutboundAudioTrack> parser() {
+    public static com.google.protobuf.Parser<SfuMediaStream> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<OutboundAudioTrack> getParserForType() {
+    public com.google.protobuf.Parser<SfuMediaStream> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public org.observertc.schemas.dtos.Models.OutboundAudioTrack getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface OutboundVideoTrackOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.OutboundVideoTrack)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    boolean hasServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    java.lang.String getServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    com.google.protobuf.ByteString
-        getServiceIdBytes();
-
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
-     */
-    boolean hasRoomId();
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
-     */
-    java.lang.String getRoomId();
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
-     */
-    com.google.protobuf.ByteString
-        getRoomIdBytes();
-
-    /**
-     * <code>required string callId = 3;</code>
-     * @return Whether the callId field is set.
-     */
-    boolean hasCallId();
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The callId.
-     */
-    java.lang.String getCallId();
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The bytes for callId.
-     */
-    com.google.protobuf.ByteString
-        getCallIdBytes();
-
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    boolean hasUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    java.lang.String getUserId();
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    com.google.protobuf.ByteString
-        getUserIdBytes();
-
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return Whether the clientId field is set.
-     */
-    boolean hasClientId();
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The clientId.
-     */
-    java.lang.String getClientId();
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The bytes for clientId.
-     */
-    com.google.protobuf.ByteString
-        getClientIdBytes();
-
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return Whether the peerConnectionId field is set.
-     */
-    boolean hasPeerConnectionId();
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The peerConnectionId.
-     */
-    java.lang.String getPeerConnectionId();
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The bytes for peerConnectionId.
-     */
-    com.google.protobuf.ByteString
-        getPeerConnectionIdBytes();
-
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return Whether the trackId field is set.
-     */
-    boolean hasTrackId();
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The trackId.
-     */
-    java.lang.String getTrackId();
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The bytes for trackId.
-     */
-    com.google.protobuf.ByteString
-        getTrackIdBytes();
-
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
-     */
-    boolean hasAdded();
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
-     */
-    long getAdded();
-
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    boolean hasMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    java.lang.String getMediaUnitId();
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    com.google.protobuf.ByteString
-        getMediaUnitIdBytes();
-
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    boolean hasMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    java.lang.String getMarker();
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    com.google.protobuf.ByteString
-        getMarkerBytes();
-
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    boolean hasSfuStreamId();
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The sfuStreamId.
-     */
-    java.lang.String getSfuStreamId();
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    com.google.protobuf.ByteString
-        getSfuStreamIdBytes();
-
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return A list containing the ssrc.
-     */
-    java.util.List<java.lang.Long> getSsrcList();
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return The count of ssrc.
-     */
-    int getSsrcCount();
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @param index The index of the element to return.
-     * @return The ssrc at the given index.
-     */
-    long getSsrc(int index);
-  }
-  /**
-   * Protobuf type {@code org.observertc.schemas.dtos.OutboundVideoTrack}
-   */
-  public static final class OutboundVideoTrack extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.OutboundVideoTrack)
-      OutboundVideoTrackOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use OutboundVideoTrack.newBuilder() to construct.
-    private OutboundVideoTrack(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private OutboundVideoTrack() {
-      serviceId_ = "";
-      roomId_ = "";
-      callId_ = "";
-      userId_ = "";
-      clientId_ = "";
-      peerConnectionId_ = "";
-      trackId_ = "";
-      mediaUnitId_ = "";
-      marker_ = "";
-      sfuStreamId_ = "";
-      ssrc_ = emptyLongList();
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new OutboundVideoTrack();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private OutboundVideoTrack(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              serviceId_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              roomId_ = bs;
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              callId_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              userId_ = bs;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              clientId_ = bs;
-              break;
-            }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000020;
-              peerConnectionId_ = bs;
-              break;
-            }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000040;
-              trackId_ = bs;
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000080;
-              added_ = input.readUInt64();
-              break;
-            }
-            case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              mediaUnitId_ = bs;
-              break;
-            }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000200;
-              marker_ = bs;
-              break;
-            }
-            case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000400;
-              sfuStreamId_ = bs;
-              break;
-            }
-            case 96: {
-              if (!((mutable_bitField0_ & 0x00000800) != 0)) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00000800;
-              }
-              ssrc_.addLong(input.readInt64());
-              break;
-            }
-            case 98: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000800) != 0) && input.getBytesUntilLimit() > 0) {
-                ssrc_ = newLongList();
-                mutable_bitField0_ |= 0x00000800;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                ssrc_.addLong(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000800) != 0)) {
-          ssrc_.makeImmutable(); // C
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.observertc.schemas.dtos.Models.OutboundVideoTrack.class, org.observertc.schemas.dtos.Models.OutboundVideoTrack.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int SERVICEID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object serviceId_;
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    @java.lang.Override
-    public boolean hasServiceId() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    @java.lang.Override
-    public java.lang.String getServiceId() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          serviceId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getServiceIdBytes() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        serviceId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ROOMID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object roomId_;
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return Whether the roomId field is set.
-     */
-    @java.lang.Override
-    public boolean hasRoomId() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The roomId.
-     */
-    @java.lang.Override
-    public java.lang.String getRoomId() {
-      java.lang.Object ref = roomId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roomId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string roomId = 2;</code>
-     * @return The bytes for roomId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getRoomIdBytes() {
-      java.lang.Object ref = roomId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roomId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CALLID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object callId_;
-    /**
-     * <code>required string callId = 3;</code>
-     * @return Whether the callId field is set.
-     */
-    @java.lang.Override
-    public boolean hasCallId() {
-      return ((bitField0_ & 0x00000004) != 0);
-    }
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The callId.
-     */
-    @java.lang.Override
-    public java.lang.String getCallId() {
-      java.lang.Object ref = callId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          callId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string callId = 3;</code>
-     * @return The bytes for callId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getCallIdBytes() {
-      java.lang.Object ref = callId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        callId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int USERID_FIELD_NUMBER = 4;
-    private volatile java.lang.Object userId_;
-    /**
-     * <code>required string userId = 4;</code>
-     * @return Whether the userId field is set.
-     */
-    @java.lang.Override
-    public boolean hasUserId() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          userId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string userId = 4;</code>
-     * @return The bytes for userId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CLIENTID_FIELD_NUMBER = 5;
-    private volatile java.lang.Object clientId_;
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return Whether the clientId field is set.
-     */
-    @java.lang.Override
-    public boolean hasClientId() {
-      return ((bitField0_ & 0x00000010) != 0);
-    }
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The clientId.
-     */
-    @java.lang.Override
-    public java.lang.String getClientId() {
-      java.lang.Object ref = clientId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          clientId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string clientId = 5;</code>
-     * @return The bytes for clientId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getClientIdBytes() {
-      java.lang.Object ref = clientId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        clientId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PEERCONNECTIONID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object peerConnectionId_;
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return Whether the peerConnectionId field is set.
-     */
-    @java.lang.Override
-    public boolean hasPeerConnectionId() {
-      return ((bitField0_ & 0x00000020) != 0);
-    }
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The peerConnectionId.
-     */
-    @java.lang.Override
-    public java.lang.String getPeerConnectionId() {
-      java.lang.Object ref = peerConnectionId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          peerConnectionId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string peerConnectionId = 6;</code>
-     * @return The bytes for peerConnectionId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getPeerConnectionIdBytes() {
-      java.lang.Object ref = peerConnectionId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        peerConnectionId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TRACKID_FIELD_NUMBER = 7;
-    private volatile java.lang.Object trackId_;
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return Whether the trackId field is set.
-     */
-    @java.lang.Override
-    public boolean hasTrackId() {
-      return ((bitField0_ & 0x00000040) != 0);
-    }
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The trackId.
-     */
-    @java.lang.Override
-    public java.lang.String getTrackId() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          trackId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string trackId = 7;</code>
-     * @return The bytes for trackId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTrackIdBytes() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        trackId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ADDED_FIELD_NUMBER = 8;
-    private long added_;
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return Whether the added field is set.
-     */
-    @java.lang.Override
-    public boolean hasAdded() {
-      return ((bitField0_ & 0x00000080) != 0);
-    }
-    /**
-     * <code>required uint64 added = 8;</code>
-     * @return The added.
-     */
-    @java.lang.Override
-    public long getAdded() {
-      return added_;
-    }
-
-    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
-    private volatile java.lang.Object mediaUnitId_;
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return Whether the mediaUnitId field is set.
-     */
-    @java.lang.Override
-    public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000100) != 0);
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The mediaUnitId.
-     */
-    @java.lang.Override
-    public java.lang.String getMediaUnitId() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          mediaUnitId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string mediaUnitId = 9;</code>
-     * @return The bytes for mediaUnitId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMediaUnitIdBytes() {
-      java.lang.Object ref = mediaUnitId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        mediaUnitId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int MARKER_FIELD_NUMBER = 10;
-    private volatile java.lang.Object marker_;
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return Whether the marker field is set.
-     */
-    @java.lang.Override
-    public boolean hasMarker() {
-      return ((bitField0_ & 0x00000200) != 0);
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The marker.
-     */
-    @java.lang.Override
-    public java.lang.String getMarker() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          marker_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string marker = 10;</code>
-     * @return The bytes for marker.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getMarkerBytes() {
-      java.lang.Object ref = marker_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        marker_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSTREAMID_FIELD_NUMBER = 11;
-    private volatile java.lang.Object sfuStreamId_;
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000400) != 0);
-    }
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The sfuStreamId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuStreamId() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuStreamId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string sfuStreamId = 11;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuStreamIdBytes() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuStreamId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SSRC_FIELD_NUMBER = 12;
-    private com.google.protobuf.Internal.LongList ssrc_;
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return A list containing the ssrc.
-     */
-    @java.lang.Override
-    public java.util.List<java.lang.Long>
-        getSsrcList() {
-      return ssrc_;
-    }
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @return The count of ssrc.
-     */
-    public int getSsrcCount() {
-      return ssrc_.size();
-    }
-    /**
-     * <code>repeated int64 ssrc = 12;</code>
-     * @param index The index of the element to return.
-     * @return The ssrc at the given index.
-     */
-    public long getSsrc(int index) {
-      return ssrc_.getLong(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasServiceId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasRoomId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasCallId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUserId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasClientId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPeerConnectionId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTrackId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasAdded()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, roomId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, callId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, userId_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, clientId_);
-      }
-      if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, peerConnectionId_);
-      }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, trackId_);
-      }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        output.writeUInt64(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, sfuStreamId_);
-      }
-      for (int i = 0; i < ssrc_.size(); i++) {
-        output.writeInt64(12, ssrc_.getLong(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, roomId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, callId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, userId_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, clientId_);
-      }
-      if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, peerConnectionId_);
-      }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, trackId_);
-      }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, added_);
-      }
-      if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
-      }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
-      }
-      if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, sfuStreamId_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < ssrc_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(ssrc_.getLong(i));
-        }
-        size += dataSize;
-        size += 1 * getSsrcList().size();
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof org.observertc.schemas.dtos.Models.OutboundVideoTrack)) {
-        return super.equals(obj);
-      }
-      org.observertc.schemas.dtos.Models.OutboundVideoTrack other = (org.observertc.schemas.dtos.Models.OutboundVideoTrack) obj;
-
-      if (hasServiceId() != other.hasServiceId()) return false;
-      if (hasServiceId()) {
-        if (!getServiceId()
-            .equals(other.getServiceId())) return false;
-      }
-      if (hasRoomId() != other.hasRoomId()) return false;
-      if (hasRoomId()) {
-        if (!getRoomId()
-            .equals(other.getRoomId())) return false;
-      }
-      if (hasCallId() != other.hasCallId()) return false;
-      if (hasCallId()) {
-        if (!getCallId()
-            .equals(other.getCallId())) return false;
-      }
-      if (hasUserId() != other.hasUserId()) return false;
-      if (hasUserId()) {
-        if (!getUserId()
-            .equals(other.getUserId())) return false;
-      }
-      if (hasClientId() != other.hasClientId()) return false;
-      if (hasClientId()) {
-        if (!getClientId()
-            .equals(other.getClientId())) return false;
-      }
-      if (hasPeerConnectionId() != other.hasPeerConnectionId()) return false;
-      if (hasPeerConnectionId()) {
-        if (!getPeerConnectionId()
-            .equals(other.getPeerConnectionId())) return false;
-      }
-      if (hasTrackId() != other.hasTrackId()) return false;
-      if (hasTrackId()) {
-        if (!getTrackId()
-            .equals(other.getTrackId())) return false;
-      }
-      if (hasAdded() != other.hasAdded()) return false;
-      if (hasAdded()) {
-        if (getAdded()
-            != other.getAdded()) return false;
-      }
-      if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
-      if (hasMediaUnitId()) {
-        if (!getMediaUnitId()
-            .equals(other.getMediaUnitId())) return false;
-      }
-      if (hasMarker() != other.hasMarker()) return false;
-      if (hasMarker()) {
-        if (!getMarker()
-            .equals(other.getMarker())) return false;
-      }
-      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
-      if (hasSfuStreamId()) {
-        if (!getSfuStreamId()
-            .equals(other.getSfuStreamId())) return false;
-      }
-      if (!getSsrcList()
-          .equals(other.getSsrcList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasServiceId()) {
-        hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
-        hash = (53 * hash) + getServiceId().hashCode();
-      }
-      if (hasRoomId()) {
-        hash = (37 * hash) + ROOMID_FIELD_NUMBER;
-        hash = (53 * hash) + getRoomId().hashCode();
-      }
-      if (hasCallId()) {
-        hash = (37 * hash) + CALLID_FIELD_NUMBER;
-        hash = (53 * hash) + getCallId().hashCode();
-      }
-      if (hasUserId()) {
-        hash = (37 * hash) + USERID_FIELD_NUMBER;
-        hash = (53 * hash) + getUserId().hashCode();
-      }
-      if (hasClientId()) {
-        hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
-        hash = (53 * hash) + getClientId().hashCode();
-      }
-      if (hasPeerConnectionId()) {
-        hash = (37 * hash) + PEERCONNECTIONID_FIELD_NUMBER;
-        hash = (53 * hash) + getPeerConnectionId().hashCode();
-      }
-      if (hasTrackId()) {
-        hash = (37 * hash) + TRACKID_FIELD_NUMBER;
-        hash = (53 * hash) + getTrackId().hashCode();
-      }
-      if (hasAdded()) {
-        hash = (37 * hash) + ADDED_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getAdded());
-      }
-      if (hasMediaUnitId()) {
-        hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
-        hash = (53 * hash) + getMediaUnitId().hashCode();
-      }
-      if (hasMarker()) {
-        hash = (37 * hash) + MARKER_FIELD_NUMBER;
-        hash = (53 * hash) + getMarker().hashCode();
-      }
-      if (hasSfuStreamId()) {
-        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuStreamId().hashCode();
-      }
-      if (getSsrcCount() > 0) {
-        hash = (37 * hash) + SSRC_FIELD_NUMBER;
-        hash = (53 * hash) + getSsrcList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(org.observertc.schemas.dtos.Models.OutboundVideoTrack prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code org.observertc.schemas.dtos.OutboundVideoTrack}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.OutboundVideoTrack)
-        org.observertc.schemas.dtos.Models.OutboundVideoTrackOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.OutboundVideoTrack.class, org.observertc.schemas.dtos.Models.OutboundVideoTrack.Builder.class);
-      }
-
-      // Construct using org.observertc.schemas.dtos.Models.OutboundVideoTrack.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        serviceId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        roomId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        callId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        userId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        clientId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        peerConnectionId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        trackId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        added_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        mediaUnitId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        marker_ = "";
-        bitField0_ = (bitField0_ & ~0x00000200);
-        sfuStreamId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000400);
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00000800);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_descriptor;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.OutboundVideoTrack getDefaultInstanceForType() {
-        return org.observertc.schemas.dtos.Models.OutboundVideoTrack.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.OutboundVideoTrack build() {
-        org.observertc.schemas.dtos.Models.OutboundVideoTrack result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.OutboundVideoTrack buildPartial() {
-        org.observertc.schemas.dtos.Models.OutboundVideoTrack result = new org.observertc.schemas.dtos.Models.OutboundVideoTrack(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.serviceId_ = serviceId_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.roomId_ = roomId_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.callId_ = callId_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.userId_ = userId_;
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.clientId_ = clientId_;
-        if (((from_bitField0_ & 0x00000020) != 0)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.peerConnectionId_ = peerConnectionId_;
-        if (((from_bitField0_ & 0x00000040) != 0)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.trackId_ = trackId_;
-        if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.added_ = added_;
-          to_bitField0_ |= 0x00000080;
-        }
-        if (((from_bitField0_ & 0x00000100) != 0)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.mediaUnitId_ = mediaUnitId_;
-        if (((from_bitField0_ & 0x00000200) != 0)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.marker_ = marker_;
-        if (((from_bitField0_ & 0x00000400) != 0)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.sfuStreamId_ = sfuStreamId_;
-        if (((bitField0_ & 0x00000800) != 0)) {
-          ssrc_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00000800);
-        }
-        result.ssrc_ = ssrc_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.observertc.schemas.dtos.Models.OutboundVideoTrack) {
-          return mergeFrom((org.observertc.schemas.dtos.Models.OutboundVideoTrack)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(org.observertc.schemas.dtos.Models.OutboundVideoTrack other) {
-        if (other == org.observertc.schemas.dtos.Models.OutboundVideoTrack.getDefaultInstance()) return this;
-        if (other.hasServiceId()) {
-          bitField0_ |= 0x00000001;
-          serviceId_ = other.serviceId_;
-          onChanged();
-        }
-        if (other.hasRoomId()) {
-          bitField0_ |= 0x00000002;
-          roomId_ = other.roomId_;
-          onChanged();
-        }
-        if (other.hasCallId()) {
-          bitField0_ |= 0x00000004;
-          callId_ = other.callId_;
-          onChanged();
-        }
-        if (other.hasUserId()) {
-          bitField0_ |= 0x00000008;
-          userId_ = other.userId_;
-          onChanged();
-        }
-        if (other.hasClientId()) {
-          bitField0_ |= 0x00000010;
-          clientId_ = other.clientId_;
-          onChanged();
-        }
-        if (other.hasPeerConnectionId()) {
-          bitField0_ |= 0x00000020;
-          peerConnectionId_ = other.peerConnectionId_;
-          onChanged();
-        }
-        if (other.hasTrackId()) {
-          bitField0_ |= 0x00000040;
-          trackId_ = other.trackId_;
-          onChanged();
-        }
-        if (other.hasAdded()) {
-          setAdded(other.getAdded());
-        }
-        if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000100;
-          mediaUnitId_ = other.mediaUnitId_;
-          onChanged();
-        }
-        if (other.hasMarker()) {
-          bitField0_ |= 0x00000200;
-          marker_ = other.marker_;
-          onChanged();
-        }
-        if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000400;
-          sfuStreamId_ = other.sfuStreamId_;
-          onChanged();
-        }
-        if (!other.ssrc_.isEmpty()) {
-          if (ssrc_.isEmpty()) {
-            ssrc_ = other.ssrc_;
-            bitField0_ = (bitField0_ & ~0x00000800);
-          } else {
-            ensureSsrcIsMutable();
-            ssrc_.addAll(other.ssrc_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        if (!hasServiceId()) {
-          return false;
-        }
-        if (!hasRoomId()) {
-          return false;
-        }
-        if (!hasCallId()) {
-          return false;
-        }
-        if (!hasUserId()) {
-          return false;
-        }
-        if (!hasClientId()) {
-          return false;
-        }
-        if (!hasPeerConnectionId()) {
-          return false;
-        }
-        if (!hasTrackId()) {
-          return false;
-        }
-        if (!hasAdded()) {
-          return false;
-        }
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        org.observertc.schemas.dtos.Models.OutboundVideoTrack parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.observertc.schemas.dtos.Models.OutboundVideoTrack) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object serviceId_ = "";
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return Whether the serviceId field is set.
-       */
-      public boolean hasServiceId() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The serviceId.
-       */
-      public java.lang.String getServiceId() {
-        java.lang.Object ref = serviceId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The bytes for serviceId.
-       */
-      public com.google.protobuf.ByteString
-          getServiceIdBytes() {
-        java.lang.Object ref = serviceId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          serviceId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearServiceId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        serviceId_ = getDefaultInstance().getServiceId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The bytes for serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object roomId_ = "";
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return Whether the roomId field is set.
-       */
-      public boolean hasRoomId() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return The roomId.
-       */
-      public java.lang.String getRoomId() {
-        java.lang.Object ref = roomId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            roomId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return The bytes for roomId.
-       */
-      public com.google.protobuf.ByteString
-          getRoomIdBytes() {
-        java.lang.Object ref = roomId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roomId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @param value The roomId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setRoomId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearRoomId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        roomId_ = getDefaultInstance().getRoomId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomId = 2;</code>
-       * @param value The bytes for roomId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setRoomIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object callId_ = "";
-      /**
-       * <code>required string callId = 3;</code>
-       * @return Whether the callId field is set.
-       */
-      public boolean hasCallId() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return The callId.
-       */
-      public java.lang.String getCallId() {
-        java.lang.Object ref = callId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            callId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return The bytes for callId.
-       */
-      public com.google.protobuf.ByteString
-          getCallIdBytes() {
-        java.lang.Object ref = callId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          callId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @param value The callId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCallId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        callId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCallId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        callId_ = getDefaultInstance().getCallId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string callId = 3;</code>
-       * @param value The bytes for callId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCallIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        callId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object userId_ = "";
-      /**
-       * <code>required string userId = 4;</code>
-       * @return Whether the userId field is set.
-       */
-      public boolean hasUserId() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The userId.
-       */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            userId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return The bytes for userId.
-       */
-      public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        userId_ = getDefaultInstance().getUserId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string userId = 4;</code>
-       * @param value The bytes for userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object clientId_ = "";
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return Whether the clientId field is set.
-       */
-      public boolean hasClientId() {
-        return ((bitField0_ & 0x00000010) != 0);
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return The clientId.
-       */
-      public java.lang.String getClientId() {
-        java.lang.Object ref = clientId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            clientId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return The bytes for clientId.
-       */
-      public com.google.protobuf.ByteString
-          getClientIdBytes() {
-        java.lang.Object ref = clientId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          clientId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @param value The clientId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setClientId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearClientId() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        clientId_ = getDefaultInstance().getClientId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string clientId = 5;</code>
-       * @param value The bytes for clientId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setClientIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object peerConnectionId_ = "";
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return Whether the peerConnectionId field is set.
-       */
-      public boolean hasPeerConnectionId() {
-        return ((bitField0_ & 0x00000020) != 0);
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return The peerConnectionId.
-       */
-      public java.lang.String getPeerConnectionId() {
-        java.lang.Object ref = peerConnectionId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            peerConnectionId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return The bytes for peerConnectionId.
-       */
-      public com.google.protobuf.ByteString
-          getPeerConnectionIdBytes() {
-        java.lang.Object ref = peerConnectionId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          peerConnectionId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @param value The peerConnectionId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPeerConnectionId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        peerConnectionId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPeerConnectionId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        peerConnectionId_ = getDefaultInstance().getPeerConnectionId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string peerConnectionId = 6;</code>
-       * @param value The bytes for peerConnectionId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPeerConnectionIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        peerConnectionId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object trackId_ = "";
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return Whether the trackId field is set.
-       */
-      public boolean hasTrackId() {
-        return ((bitField0_ & 0x00000040) != 0);
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return The trackId.
-       */
-      public java.lang.String getTrackId() {
-        java.lang.Object ref = trackId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            trackId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return The bytes for trackId.
-       */
-      public com.google.protobuf.ByteString
-          getTrackIdBytes() {
-        java.lang.Object ref = trackId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          trackId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @param value The trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTrackId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        trackId_ = getDefaultInstance().getTrackId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 7;</code>
-       * @param value The bytes for trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long added_ ;
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return Whether the added field is set.
-       */
-      @java.lang.Override
-      public boolean hasAdded() {
-        return ((bitField0_ & 0x00000080) != 0);
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return The added.
-       */
-      @java.lang.Override
-      public long getAdded() {
-        return added_;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @param value The added to set.
-       * @return This builder for chaining.
-       */
-      public Builder setAdded(long value) {
-        bitField0_ |= 0x00000080;
-        added_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 added = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearAdded() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        added_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object mediaUnitId_ = "";
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return Whether the mediaUnitId field is set.
-       */
-      public boolean hasMediaUnitId() {
-        return ((bitField0_ & 0x00000100) != 0);
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return The mediaUnitId.
-       */
-      public java.lang.String getMediaUnitId() {
-        java.lang.Object ref = mediaUnitId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mediaUnitId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return The bytes for mediaUnitId.
-       */
-      public com.google.protobuf.ByteString
-          getMediaUnitIdBytes() {
-        java.lang.Object ref = mediaUnitId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          mediaUnitId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @param value The mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        mediaUnitId_ = getDefaultInstance().getMediaUnitId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @param value The bytes for mediaUnitId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMediaUnitIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        mediaUnitId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object marker_ = "";
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return Whether the marker field is set.
-       */
-      public boolean hasMarker() {
-        return ((bitField0_ & 0x00000200) != 0);
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return The marker.
-       */
-      public java.lang.String getMarker() {
-        java.lang.Object ref = marker_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            marker_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return The bytes for marker.
-       */
-      public com.google.protobuf.ByteString
-          getMarkerBytes() {
-        java.lang.Object ref = marker_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          marker_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @param value The marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarker(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        marker_ = getDefaultInstance().getMarker();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string marker = 10;</code>
-       * @param value The bytes for marker to set.
-       * @return This builder for chaining.
-       */
-      public Builder setMarkerBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        marker_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuStreamId_ = "";
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return Whether the sfuStreamId field is set.
-       */
-      public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000400) != 0);
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return The sfuStreamId.
-       */
-      public java.lang.String getSfuStreamId() {
-        java.lang.Object ref = sfuStreamId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuStreamId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return The bytes for sfuStreamId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuStreamIdBytes() {
-        java.lang.Object ref = sfuStreamId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuStreamId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @param value The sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string sfuStreamId = 11;</code>
-       * @param value The bytes for sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.Internal.LongList ssrc_ = emptyLongList();
-      private void ensureSsrcIsMutable() {
-        if (!((bitField0_ & 0x00000800) != 0)) {
-          ssrc_ = mutableCopy(ssrc_);
-          bitField0_ |= 0x00000800;
-         }
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @return A list containing the ssrc.
-       */
-      public java.util.List<java.lang.Long>
-          getSsrcList() {
-        return ((bitField0_ & 0x00000800) != 0) ?
-                 java.util.Collections.unmodifiableList(ssrc_) : ssrc_;
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @return The count of ssrc.
-       */
-      public int getSsrcCount() {
-        return ssrc_.size();
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @param index The index of the element to return.
-       * @return The ssrc at the given index.
-       */
-      public long getSsrc(int index) {
-        return ssrc_.getLong(index);
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @param index The index to set the value at.
-       * @param value The ssrc to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSsrc(
-          int index, long value) {
-        ensureSsrcIsMutable();
-        ssrc_.setLong(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @param value The ssrc to add.
-       * @return This builder for chaining.
-       */
-      public Builder addSsrc(long value) {
-        ensureSsrcIsMutable();
-        ssrc_.addLong(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @param values The ssrc to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllSsrc(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureSsrcIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, ssrc_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 ssrc = 12;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSsrc() {
-        ssrc_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00000800);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.OutboundVideoTrack)
-    }
-
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.OutboundVideoTrack)
-    private static final org.observertc.schemas.dtos.Models.OutboundVideoTrack DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.OutboundVideoTrack();
-    }
-
-    public static org.observertc.schemas.dtos.Models.OutboundVideoTrack getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<OutboundVideoTrack>
-        PARSER = new com.google.protobuf.AbstractParser<OutboundVideoTrack>() {
-      @java.lang.Override
-      public OutboundVideoTrack parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OutboundVideoTrack(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<OutboundVideoTrack> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<OutboundVideoTrack> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public org.observertc.schemas.dtos.Models.OutboundVideoTrack getDefaultInstanceForType() {
+    public org.observertc.schemas.dtos.Models.SfuMediaStream getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -22904,75 +16723,86 @@ public final class Models {
     long getJoined();
 
     /**
-     * <code>optional string mediaUnitId = 4;</code>
+     * <code>optional uint64 touched = 4;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 4;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 5;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 4;</code>
+     * <code>optional string mediaUnitId = 5;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 4;</code>
+     * <code>optional string mediaUnitId = 5;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string timeZoneId = 5;</code>
+     * <code>optional string timeZoneId = 6;</code>
      * @return Whether the timeZoneId field is set.
      */
     boolean hasTimeZoneId();
     /**
-     * <code>optional string timeZoneId = 5;</code>
+     * <code>optional string timeZoneId = 6;</code>
      * @return The timeZoneId.
      */
     java.lang.String getTimeZoneId();
     /**
-     * <code>optional string timeZoneId = 5;</code>
+     * <code>optional string timeZoneId = 6;</code>
      * @return The bytes for timeZoneId.
      */
     com.google.protobuf.ByteString
         getTimeZoneIdBytes();
 
     /**
-     * <code>optional string marker = 6;</code>
+     * <code>optional string marker = 7;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 6;</code>
+     * <code>optional string marker = 7;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 6;</code>
+     * <code>optional string marker = 7;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
 
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @return A list containing the sfuTransportIds.
      */
     java.util.List<java.lang.String>
         getSfuTransportIdsList();
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @return The count of sfuTransportIds.
      */
     int getSfuTransportIdsCount();
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @param index The index of the element to return.
      * @return The sfuTransportIds at the given index.
      */
     java.lang.String getSfuTransportIds(int index);
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the sfuTransportIds at the given index.
      */
@@ -23048,29 +16878,34 @@ public final class Models {
               joined_ = input.readUInt64();
               break;
             }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 32: {
               bitField0_ |= 0x00000008;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 42: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              timeZoneId_ = bs;
+              mediaUnitId_ = bs;
               break;
             }
             case 50: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              marker_ = bs;
+              timeZoneId_ = bs;
               break;
             }
             case 58: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+              bitField0_ |= 0x00000040;
+              marker_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000080) != 0)) {
                 sfuTransportIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000080;
               }
               sfuTransportIds_.add(bs);
               break;
@@ -23090,7 +16925,7 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000040) != 0)) {
+        if (((mutable_bitField0_ & 0x00000080) != 0)) {
           sfuTransportIds_ = sfuTransportIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -23226,18 +17061,37 @@ public final class Models {
       return joined_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 4;
+    public static final int TOUCHED_FIELD_NUMBER = 4;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 4;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 4;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 5;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 4;</code>
+     * <code>optional string mediaUnitId = 5;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000008) != 0);
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 4;</code>
+     * <code>optional string mediaUnitId = 5;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -23256,7 +17110,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 4;</code>
+     * <code>optional string mediaUnitId = 5;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -23274,18 +17128,18 @@ public final class Models {
       }
     }
 
-    public static final int TIMEZONEID_FIELD_NUMBER = 5;
+    public static final int TIMEZONEID_FIELD_NUMBER = 6;
     private volatile java.lang.Object timeZoneId_;
     /**
-     * <code>optional string timeZoneId = 5;</code>
+     * <code>optional string timeZoneId = 6;</code>
      * @return Whether the timeZoneId field is set.
      */
     @java.lang.Override
     public boolean hasTimeZoneId() {
-      return ((bitField0_ & 0x00000010) != 0);
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional string timeZoneId = 5;</code>
+     * <code>optional string timeZoneId = 6;</code>
      * @return The timeZoneId.
      */
     @java.lang.Override
@@ -23304,7 +17158,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string timeZoneId = 5;</code>
+     * <code>optional string timeZoneId = 6;</code>
      * @return The bytes for timeZoneId.
      */
     @java.lang.Override
@@ -23322,18 +17176,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 6;
+    public static final int MARKER_FIELD_NUMBER = 7;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 6;</code>
+     * <code>optional string marker = 7;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional string marker = 6;</code>
+     * <code>optional string marker = 7;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -23352,7 +17206,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 6;</code>
+     * <code>optional string marker = 7;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -23370,10 +17224,10 @@ public final class Models {
       }
     }
 
-    public static final int SFUTRANSPORTIDS_FIELD_NUMBER = 7;
+    public static final int SFUTRANSPORTIDS_FIELD_NUMBER = 8;
     private com.google.protobuf.LazyStringList sfuTransportIds_;
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @return A list containing the sfuTransportIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -23381,14 +17235,14 @@ public final class Models {
       return sfuTransportIds_;
     }
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @return The count of sfuTransportIds.
      */
     public int getSfuTransportIdsCount() {
       return sfuTransportIds_.size();
     }
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @param index The index of the element to return.
      * @return The sfuTransportIds at the given index.
      */
@@ -23396,7 +17250,7 @@ public final class Models {
       return sfuTransportIds_.get(index);
     }
     /**
-     * <code>repeated string sfuTransportIds = 7;</code>
+     * <code>repeated string sfuTransportIds = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the sfuTransportIds at the given index.
      */
@@ -23441,16 +17295,19 @@ public final class Models {
         output.writeUInt64(3, joined_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, mediaUnitId_);
+        output.writeUInt64(4, touched_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, timeZoneId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, timeZoneId_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, marker_);
       }
       for (int i = 0; i < sfuTransportIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, sfuTransportIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, sfuTransportIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -23472,13 +17329,17 @@ public final class Models {
           .computeUInt64Size(3, joined_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, touched_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, timeZoneId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, timeZoneId_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, marker_);
       }
       {
         int dataSize = 0;
@@ -23517,6 +17378,11 @@ public final class Models {
       if (hasJoined()) {
         if (getJoined()
             != other.getJoined()) return false;
+      }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -23558,6 +17424,11 @@ public final class Models {
         hash = (37 * hash) + JOINED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getJoined());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -23714,14 +17585,16 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000002);
         joined_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
-        timeZoneId_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
-        marker_ = "";
+        timeZoneId_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
-        sfuTransportIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        sfuTransportIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -23763,20 +17636,24 @@ public final class Models {
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000008;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.timeZoneId_ = timeZoneId_;
+        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
           to_bitField0_ |= 0x00000020;
         }
+        result.timeZoneId_ = timeZoneId_;
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          to_bitField0_ |= 0x00000040;
+        }
         result.marker_ = marker_;
-        if (((bitField0_ & 0x00000040) != 0)) {
+        if (((bitField0_ & 0x00000080) != 0)) {
           sfuTransportIds_ = sfuTransportIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
         }
         result.sfuTransportIds_ = sfuTransportIds_;
         result.bitField0_ = to_bitField0_;
@@ -23841,25 +17718,28 @@ public final class Models {
         if (other.hasJoined()) {
           setJoined(other.getJoined());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasTimeZoneId()) {
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
           timeZoneId_ = other.timeZoneId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           marker_ = other.marker_;
           onChanged();
         }
         if (!other.sfuTransportIds_.isEmpty()) {
           if (sfuTransportIds_.isEmpty()) {
             sfuTransportIds_ = other.sfuTransportIds_;
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
           } else {
             ensureSfuTransportIdsIsMutable();
             sfuTransportIds_.addAll(other.sfuTransportIds_);
@@ -24112,16 +17992,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 4;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 4;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 4;</code>
+       * <code>optional uint64 touched = 4;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 4;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000008;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 5;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 5;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -24139,7 +18058,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 4;</code>
+       * <code>optional string mediaUnitId = 5;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -24156,7 +18075,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 4;</code>
+       * <code>optional string mediaUnitId = 5;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -24165,23 +18084,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 4;</code>
+       * <code>optional string mediaUnitId = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 4;</code>
+       * <code>optional string mediaUnitId = 5;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -24190,7 +18109,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -24198,14 +18117,14 @@ public final class Models {
 
       private java.lang.Object timeZoneId_ = "";
       /**
-       * <code>optional string timeZoneId = 5;</code>
+       * <code>optional string timeZoneId = 6;</code>
        * @return Whether the timeZoneId field is set.
        */
       public boolean hasTimeZoneId() {
-        return ((bitField0_ & 0x00000010) != 0);
+        return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional string timeZoneId = 5;</code>
+       * <code>optional string timeZoneId = 6;</code>
        * @return The timeZoneId.
        */
       public java.lang.String getTimeZoneId() {
@@ -24223,7 +18142,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string timeZoneId = 5;</code>
+       * <code>optional string timeZoneId = 6;</code>
        * @return The bytes for timeZoneId.
        */
       public com.google.protobuf.ByteString
@@ -24240,7 +18159,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string timeZoneId = 5;</code>
+       * <code>optional string timeZoneId = 6;</code>
        * @param value The timeZoneId to set.
        * @return This builder for chaining.
        */
@@ -24249,23 +18168,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000010;
+  bitField0_ |= 0x00000020;
         timeZoneId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string timeZoneId = 5;</code>
+       * <code>optional string timeZoneId = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearTimeZoneId() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         timeZoneId_ = getDefaultInstance().getTimeZoneId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string timeZoneId = 5;</code>
+       * <code>optional string timeZoneId = 6;</code>
        * @param value The bytes for timeZoneId to set.
        * @return This builder for chaining.
        */
@@ -24274,7 +18193,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000010;
+  bitField0_ |= 0x00000020;
         timeZoneId_ = value;
         onChanged();
         return this;
@@ -24282,14 +18201,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 6;</code>
+       * <code>optional string marker = 7;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000020) != 0);
+        return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>optional string marker = 6;</code>
+       * <code>optional string marker = 7;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -24307,7 +18226,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 6;</code>
+       * <code>optional string marker = 7;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -24324,7 +18243,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 6;</code>
+       * <code>optional string marker = 7;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -24333,23 +18252,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 6;</code>
+       * <code>optional string marker = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 6;</code>
+       * <code>optional string marker = 7;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -24358,7 +18277,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         marker_ = value;
         onChanged();
         return this;
@@ -24366,13 +18285,13 @@ public final class Models {
 
       private com.google.protobuf.LazyStringList sfuTransportIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureSfuTransportIdsIsMutable() {
-        if (!((bitField0_ & 0x00000040) != 0)) {
+        if (!((bitField0_ & 0x00000080) != 0)) {
           sfuTransportIds_ = new com.google.protobuf.LazyStringArrayList(sfuTransportIds_);
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
          }
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @return A list containing the sfuTransportIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -24380,14 +18299,14 @@ public final class Models {
         return sfuTransportIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @return The count of sfuTransportIds.
        */
       public int getSfuTransportIdsCount() {
         return sfuTransportIds_.size();
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @param index The index of the element to return.
        * @return The sfuTransportIds at the given index.
        */
@@ -24395,7 +18314,7 @@ public final class Models {
         return sfuTransportIds_.get(index);
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @param index The index of the value to return.
        * @return The bytes of the sfuTransportIds at the given index.
        */
@@ -24404,7 +18323,7 @@ public final class Models {
         return sfuTransportIds_.getByteString(index);
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @param index The index to set the value at.
        * @param value The sfuTransportIds to set.
        * @return This builder for chaining.
@@ -24420,7 +18339,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @param value The sfuTransportIds to add.
        * @return This builder for chaining.
        */
@@ -24435,7 +18354,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @param values The sfuTransportIds to add.
        * @return This builder for chaining.
        */
@@ -24448,17 +18367,17 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearSfuTransportIds() {
         sfuTransportIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string sfuTransportIds = 7;</code>
+       * <code>repeated string sfuTransportIds = 8;</code>
        * @param value The bytes of the sfuTransportIds to add.
        * @return This builder for chaining.
        */
@@ -24603,58 +18522,69 @@ public final class Models {
     long getOpened();
 
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional uint64 touched = 6;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 6;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 7;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
 
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @return A list containing the inboundRtpPadIds.
      */
     java.util.List<java.lang.String>
         getInboundRtpPadIdsList();
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @return The count of inboundRtpPadIds.
      */
     int getInboundRtpPadIdsCount();
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @param index The index of the element to return.
      * @return The inboundRtpPadIds at the given index.
      */
     java.lang.String getInboundRtpPadIds(int index);
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the inboundRtpPadIds at the given index.
      */
@@ -24662,29 +18592,54 @@ public final class Models {
         getInboundRtpPadIdsBytes(int index);
 
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @return A list containing the outboundRtpPadIds.
      */
     java.util.List<java.lang.String>
         getOutboundRtpPadIdsList();
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @return The count of outboundRtpPadIds.
      */
     int getOutboundRtpPadIdsCount();
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @param index The index of the element to return.
      * @return The outboundRtpPadIds at the given index.
      */
     java.lang.String getOutboundRtpPadIds(int index);
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundRtpPadIds at the given index.
      */
     com.google.protobuf.ByteString
         getOutboundRtpPadIdsBytes(int index);
+
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @return A list containing the sctpStreamIds.
+     */
+    java.util.List<java.lang.String>
+        getSctpStreamIdsList();
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @return The count of sctpStreamIds.
+     */
+    int getSctpStreamIdsCount();
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @param index The index of the element to return.
+     * @return The sctpStreamIds at the given index.
+     */
+    java.lang.String getSctpStreamIds(int index);
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the sctpStreamIds at the given index.
+     */
+    com.google.protobuf.ByteString
+        getSctpStreamIdsBytes(int index);
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuTransport}
@@ -24706,6 +18661,7 @@ public final class Models {
       marker_ = "";
       inboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       outboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      sctpStreamIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -24767,34 +18723,48 @@ public final class Models {
               opened_ = input.readUInt64();
               break;
             }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 48: {
               bitField0_ |= 0x00000020;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 58: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              marker_ = bs;
+              mediaUnitId_ = bs;
               break;
             }
             case 66: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000080) != 0)) {
-                inboundRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000080;
-              }
-              inboundRtpPadIds_.add(bs);
+              bitField0_ |= 0x00000080;
+              marker_ = bs;
               break;
             }
             case 74: {
               com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000100) != 0)) {
-                outboundRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
+                inboundRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000100;
               }
+              inboundRtpPadIds_.add(bs);
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+                outboundRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000200;
+              }
               outboundRtpPadIds_.add(bs);
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000400) != 0)) {
+                sctpStreamIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000400;
+              }
+              sctpStreamIds_.add(bs);
               break;
             }
             default: {
@@ -24812,11 +18782,14 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000080) != 0)) {
+        if (((mutable_bitField0_ & 0x00000100) != 0)) {
           inboundRtpPadIds_ = inboundRtpPadIds_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00000100) != 0)) {
+        if (((mutable_bitField0_ & 0x00000200) != 0)) {
           outboundRtpPadIds_ = outboundRtpPadIds_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00000400) != 0)) {
+          sctpStreamIds_ = sctpStreamIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -25018,18 +18991,37 @@ public final class Models {
       return opened_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 6;
+    public static final int TOUCHED_FIELD_NUMBER = 6;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 6;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 6;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 7;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -25048,7 +19040,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -25066,18 +19058,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 7;
+    public static final int MARKER_FIELD_NUMBER = 8;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000040) != 0);
+      return ((bitField0_ & 0x00000080) != 0);
     }
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -25096,7 +19088,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -25114,10 +19106,10 @@ public final class Models {
       }
     }
 
-    public static final int INBOUNDRTPPADIDS_FIELD_NUMBER = 8;
+    public static final int INBOUNDRTPPADIDS_FIELD_NUMBER = 9;
     private com.google.protobuf.LazyStringList inboundRtpPadIds_;
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @return A list containing the inboundRtpPadIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -25125,14 +19117,14 @@ public final class Models {
       return inboundRtpPadIds_;
     }
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @return The count of inboundRtpPadIds.
      */
     public int getInboundRtpPadIdsCount() {
       return inboundRtpPadIds_.size();
     }
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @param index The index of the element to return.
      * @return The inboundRtpPadIds at the given index.
      */
@@ -25140,7 +19132,7 @@ public final class Models {
       return inboundRtpPadIds_.get(index);
     }
     /**
-     * <code>repeated string inboundRtpPadIds = 8;</code>
+     * <code>repeated string inboundRtpPadIds = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the inboundRtpPadIds at the given index.
      */
@@ -25149,10 +19141,10 @@ public final class Models {
       return inboundRtpPadIds_.getByteString(index);
     }
 
-    public static final int OUTBOUNDRTPPADIDS_FIELD_NUMBER = 9;
+    public static final int OUTBOUNDRTPPADIDS_FIELD_NUMBER = 10;
     private com.google.protobuf.LazyStringList outboundRtpPadIds_;
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @return A list containing the outboundRtpPadIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -25160,14 +19152,14 @@ public final class Models {
       return outboundRtpPadIds_;
     }
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @return The count of outboundRtpPadIds.
      */
     public int getOutboundRtpPadIdsCount() {
       return outboundRtpPadIds_.size();
     }
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @param index The index of the element to return.
      * @return The outboundRtpPadIds at the given index.
      */
@@ -25175,13 +19167,48 @@ public final class Models {
       return outboundRtpPadIds_.get(index);
     }
     /**
-     * <code>repeated string outboundRtpPadIds = 9;</code>
+     * <code>repeated string outboundRtpPadIds = 10;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundRtpPadIds at the given index.
      */
     public com.google.protobuf.ByteString
         getOutboundRtpPadIdsBytes(int index) {
       return outboundRtpPadIds_.getByteString(index);
+    }
+
+    public static final int SCTPSTREAMIDS_FIELD_NUMBER = 11;
+    private com.google.protobuf.LazyStringList sctpStreamIds_;
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @return A list containing the sctpStreamIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getSctpStreamIdsList() {
+      return sctpStreamIds_;
+    }
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @return The count of sctpStreamIds.
+     */
+    public int getSctpStreamIdsCount() {
+      return sctpStreamIds_.size();
+    }
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @param index The index of the element to return.
+     * @return The sctpStreamIds at the given index.
+     */
+    public java.lang.String getSctpStreamIds(int index) {
+      return sctpStreamIds_.get(index);
+    }
+    /**
+     * <code>repeated string sctpStreamIds = 11;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the sctpStreamIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getSctpStreamIdsBytes(int index) {
+      return sctpStreamIds_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -25234,16 +19261,22 @@ public final class Models {
         output.writeUInt64(5, opened_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, mediaUnitId_);
+        output.writeUInt64(6, touched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, marker_);
       }
       for (int i = 0; i < inboundRtpPadIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, inboundRtpPadIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, inboundRtpPadIds_.getRaw(i));
       }
       for (int i = 0; i < outboundRtpPadIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, outboundRtpPadIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, outboundRtpPadIds_.getRaw(i));
+      }
+      for (int i = 0; i < sctpStreamIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, sctpStreamIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -25272,10 +19305,14 @@ public final class Models {
           .computeUInt64Size(5, opened_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, touched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, marker_);
       }
       {
         int dataSize = 0;
@@ -25292,6 +19329,14 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getOutboundRtpPadIdsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < sctpStreamIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(sctpStreamIds_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getSctpStreamIdsList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -25333,6 +19378,11 @@ public final class Models {
         if (getOpened()
             != other.getOpened()) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
         if (!getMediaUnitId()
@@ -25347,6 +19397,8 @@ public final class Models {
           .equals(other.getInboundRtpPadIdsList())) return false;
       if (!getOutboundRtpPadIdsList()
           .equals(other.getOutboundRtpPadIdsList())) return false;
+      if (!getSctpStreamIdsList()
+          .equals(other.getSctpStreamIdsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -25380,6 +19432,11 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getOpened());
       }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
+      }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
         hash = (53 * hash) + getMediaUnitId().hashCode();
@@ -25395,6 +19452,10 @@ public final class Models {
       if (getOutboundRtpPadIdsCount() > 0) {
         hash = (37 * hash) + OUTBOUNDRTPPADIDS_FIELD_NUMBER;
         hash = (53 * hash) + getOutboundRtpPadIdsList().hashCode();
+      }
+      if (getSctpStreamIdsCount() > 0) {
+        hash = (37 * hash) + SCTPSTREAMIDS_FIELD_NUMBER;
+        hash = (53 * hash) + getSctpStreamIdsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -25539,14 +19600,18 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000008);
         opened_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
-        inboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
-        outboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        inboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000100);
+        outboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        sctpStreamIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -25596,23 +19661,32 @@ public final class Models {
           to_bitField0_ |= 0x00000010;
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000020;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000040) != 0)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.marker_ = marker_;
-        if (((bitField0_ & 0x00000080) != 0)) {
-          inboundRtpPadIds_ = inboundRtpPadIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000080);
+        result.mediaUnitId_ = mediaUnitId_;
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          to_bitField0_ |= 0x00000080;
         }
-        result.inboundRtpPadIds_ = inboundRtpPadIds_;
+        result.marker_ = marker_;
         if (((bitField0_ & 0x00000100) != 0)) {
-          outboundRtpPadIds_ = outboundRtpPadIds_.getUnmodifiableView();
+          inboundRtpPadIds_ = inboundRtpPadIds_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000100);
         }
+        result.inboundRtpPadIds_ = inboundRtpPadIds_;
+        if (((bitField0_ & 0x00000200) != 0)) {
+          outboundRtpPadIds_ = outboundRtpPadIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000200);
+        }
         result.outboundRtpPadIds_ = outboundRtpPadIds_;
+        if (((bitField0_ & 0x00000400) != 0)) {
+          sctpStreamIds_ = sctpStreamIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000400);
+        }
+        result.sctpStreamIds_ = sctpStreamIds_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -25683,20 +19757,23 @@ public final class Models {
         if (other.hasOpened()) {
           setOpened(other.getOpened());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
           marker_ = other.marker_;
           onChanged();
         }
         if (!other.inboundRtpPadIds_.isEmpty()) {
           if (inboundRtpPadIds_.isEmpty()) {
             inboundRtpPadIds_ = other.inboundRtpPadIds_;
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000100);
           } else {
             ensureInboundRtpPadIdsIsMutable();
             inboundRtpPadIds_.addAll(other.inboundRtpPadIds_);
@@ -25706,10 +19783,20 @@ public final class Models {
         if (!other.outboundRtpPadIds_.isEmpty()) {
           if (outboundRtpPadIds_.isEmpty()) {
             outboundRtpPadIds_ = other.outboundRtpPadIds_;
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00000200);
           } else {
             ensureOutboundRtpPadIdsIsMutable();
             outboundRtpPadIds_.addAll(other.outboundRtpPadIds_);
+          }
+          onChanged();
+        }
+        if (!other.sctpStreamIds_.isEmpty()) {
+          if (sctpStreamIds_.isEmpty()) {
+            sctpStreamIds_ = other.sctpStreamIds_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            ensureSctpStreamIdsIsMutable();
+            sctpStreamIds_.addAll(other.sctpStreamIds_);
           }
           onChanged();
         }
@@ -26088,16 +20175,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 6;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 6;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional uint64 touched = 6;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000020;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 7;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 7;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -26115,7 +20241,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -26132,7 +20258,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -26141,23 +20267,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -26166,7 +20292,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -26174,14 +20300,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000040) != 0);
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -26199,7 +20325,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -26216,7 +20342,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -26225,23 +20351,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -26250,7 +20376,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         marker_ = value;
         onChanged();
         return this;
@@ -26258,13 +20384,13 @@ public final class Models {
 
       private com.google.protobuf.LazyStringList inboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureInboundRtpPadIdsIsMutable() {
-        if (!((bitField0_ & 0x00000080) != 0)) {
+        if (!((bitField0_ & 0x00000100) != 0)) {
           inboundRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(inboundRtpPadIds_);
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
          }
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @return A list containing the inboundRtpPadIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -26272,14 +20398,14 @@ public final class Models {
         return inboundRtpPadIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @return The count of inboundRtpPadIds.
        */
       public int getInboundRtpPadIdsCount() {
         return inboundRtpPadIds_.size();
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @param index The index of the element to return.
        * @return The inboundRtpPadIds at the given index.
        */
@@ -26287,7 +20413,7 @@ public final class Models {
         return inboundRtpPadIds_.get(index);
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @param index The index of the value to return.
        * @return The bytes of the inboundRtpPadIds at the given index.
        */
@@ -26296,7 +20422,7 @@ public final class Models {
         return inboundRtpPadIds_.getByteString(index);
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @param index The index to set the value at.
        * @param value The inboundRtpPadIds to set.
        * @return This builder for chaining.
@@ -26312,7 +20438,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @param value The inboundRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -26327,7 +20453,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @param values The inboundRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -26340,17 +20466,17 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearInboundRtpPadIds() {
         inboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundRtpPadIds = 8;</code>
+       * <code>repeated string inboundRtpPadIds = 9;</code>
        * @param value The bytes of the inboundRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -26367,13 +20493,13 @@ public final class Models {
 
       private com.google.protobuf.LazyStringList outboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureOutboundRtpPadIdsIsMutable() {
-        if (!((bitField0_ & 0x00000100) != 0)) {
+        if (!((bitField0_ & 0x00000200) != 0)) {
           outboundRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(outboundRtpPadIds_);
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
          }
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @return A list containing the outboundRtpPadIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -26381,14 +20507,14 @@ public final class Models {
         return outboundRtpPadIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @return The count of outboundRtpPadIds.
        */
       public int getOutboundRtpPadIdsCount() {
         return outboundRtpPadIds_.size();
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @param index The index of the element to return.
        * @return The outboundRtpPadIds at the given index.
        */
@@ -26396,7 +20522,7 @@ public final class Models {
         return outboundRtpPadIds_.get(index);
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @param index The index of the value to return.
        * @return The bytes of the outboundRtpPadIds at the given index.
        */
@@ -26405,7 +20531,7 @@ public final class Models {
         return outboundRtpPadIds_.getByteString(index);
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @param index The index to set the value at.
        * @param value The outboundRtpPadIds to set.
        * @return This builder for chaining.
@@ -26421,7 +20547,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @param value The outboundRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -26436,7 +20562,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @param values The outboundRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -26449,17 +20575,17 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearOutboundRtpPadIds() {
         outboundRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string outboundRtpPadIds = 9;</code>
+       * <code>repeated string outboundRtpPadIds = 10;</code>
        * @param value The bytes of the outboundRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -26470,6 +20596,115 @@ public final class Models {
   }
   ensureOutboundRtpPadIdsIsMutable();
         outboundRtpPadIds_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList sctpStreamIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureSctpStreamIdsIsMutable() {
+        if (!((bitField0_ & 0x00000400) != 0)) {
+          sctpStreamIds_ = new com.google.protobuf.LazyStringArrayList(sctpStreamIds_);
+          bitField0_ |= 0x00000400;
+         }
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @return A list containing the sctpStreamIds.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getSctpStreamIdsList() {
+        return sctpStreamIds_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @return The count of sctpStreamIds.
+       */
+      public int getSctpStreamIdsCount() {
+        return sctpStreamIds_.size();
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @param index The index of the element to return.
+       * @return The sctpStreamIds at the given index.
+       */
+      public java.lang.String getSctpStreamIds(int index) {
+        return sctpStreamIds_.get(index);
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the sctpStreamIds at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getSctpStreamIdsBytes(int index) {
+        return sctpStreamIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @param index The index to set the value at.
+       * @param value The sctpStreamIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSctpStreamIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSctpStreamIdsIsMutable();
+        sctpStreamIds_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @param value The sctpStreamIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addSctpStreamIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSctpStreamIdsIsMutable();
+        sctpStreamIds_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @param values The sctpStreamIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllSctpStreamIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureSctpStreamIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, sctpStreamIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSctpStreamIds() {
+        sctpStreamIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string sctpStreamIds = 11;</code>
+       * @param value The bytes of the sctpStreamIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addSctpStreamIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSctpStreamIdsIsMutable();
+        sctpStreamIds_.add(value);
         onChanged();
         return this;
       }
@@ -26521,2987 +20756,6 @@ public final class Models {
 
     @java.lang.Override
     public org.observertc.schemas.dtos.Models.SfuTransport getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface SfuMediaSinkOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.SfuMediaSink)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    boolean hasServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    java.lang.String getServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    com.google.protobuf.ByteString
-        getServiceIdBytes();
-
-    /**
-     * <code>required string sfuId = 2;</code>
-     * @return Whether the sfuId field is set.
-     */
-    boolean hasSfuId();
-    /**
-     * <code>required string sfuId = 2;</code>
-     * @return The sfuId.
-     */
-    java.lang.String getSfuId();
-    /**
-     * <code>required string sfuId = 2;</code>
-     * @return The bytes for sfuId.
-     */
-    com.google.protobuf.ByteString
-        getSfuIdBytes();
-
-    /**
-     * <code>required string sfuTransportId = 3;</code>
-     * @return Whether the sfuTransportId field is set.
-     */
-    boolean hasSfuTransportId();
-    /**
-     * <code>required string sfuTransportId = 3;</code>
-     * @return The sfuTransportId.
-     */
-    java.lang.String getSfuTransportId();
-    /**
-     * <code>required string sfuTransportId = 3;</code>
-     * @return The bytes for sfuTransportId.
-     */
-    com.google.protobuf.ByteString
-        getSfuTransportIdBytes();
-
-    /**
-     * <code>required string sfuStreamId = 4;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    boolean hasSfuStreamId();
-    /**
-     * <code>required string sfuStreamId = 4;</code>
-     * @return The sfuStreamId.
-     */
-    java.lang.String getSfuStreamId();
-    /**
-     * <code>required string sfuStreamId = 4;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    com.google.protobuf.ByteString
-        getSfuStreamIdBytes();
-
-    /**
-     * <code>required string sfuSinkId = 5;</code>
-     * @return Whether the sfuSinkId field is set.
-     */
-    boolean hasSfuSinkId();
-    /**
-     * <code>required string sfuSinkId = 5;</code>
-     * @return The sfuSinkId.
-     */
-    java.lang.String getSfuSinkId();
-    /**
-     * <code>required string sfuSinkId = 5;</code>
-     * @return The bytes for sfuSinkId.
-     */
-    com.google.protobuf.ByteString
-        getSfuSinkIdBytes();
-
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @return A list containing the outboundSfuRtpPadIds.
-     */
-    java.util.List<java.lang.String>
-        getOutboundSfuRtpPadIdsList();
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @return The count of outboundSfuRtpPadIds.
-     */
-    int getOutboundSfuRtpPadIdsCount();
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @param index The index of the element to return.
-     * @return The outboundSfuRtpPadIds at the given index.
-     */
-    java.lang.String getOutboundSfuRtpPadIds(int index);
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the outboundSfuRtpPadIds at the given index.
-     */
-    com.google.protobuf.ByteString
-        getOutboundSfuRtpPadIdsBytes(int index);
-  }
-  /**
-   * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaSink}
-   */
-  public static final class SfuMediaSink extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.SfuMediaSink)
-      SfuMediaSinkOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use SfuMediaSink.newBuilder() to construct.
-    private SfuMediaSink(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private SfuMediaSink() {
-      serviceId_ = "";
-      sfuId_ = "";
-      sfuTransportId_ = "";
-      sfuStreamId_ = "";
-      sfuSinkId_ = "";
-      outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new SfuMediaSink();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private SfuMediaSink(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              serviceId_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              sfuId_ = bs;
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              sfuTransportId_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              sfuStreamId_ = bs;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              sfuSinkId_ = bs;
-              break;
-            }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-                outboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000020;
-              }
-              outboundSfuRtpPadIds_.add(bs);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000020) != 0)) {
-          outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_.getUnmodifiableView();
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.observertc.schemas.dtos.Models.SfuMediaSink.class, org.observertc.schemas.dtos.Models.SfuMediaSink.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int SERVICEID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object serviceId_;
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    @java.lang.Override
-    public boolean hasServiceId() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    @java.lang.Override
-    public java.lang.String getServiceId() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          serviceId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getServiceIdBytes() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        serviceId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object sfuId_;
-    /**
-     * <code>required string sfuId = 2;</code>
-     * @return Whether the sfuId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuId() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>required string sfuId = 2;</code>
-     * @return The sfuId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuId() {
-      java.lang.Object ref = sfuId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string sfuId = 2;</code>
-     * @return The bytes for sfuId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuIdBytes() {
-      java.lang.Object ref = sfuId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUTRANSPORTID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object sfuTransportId_;
-    /**
-     * <code>required string sfuTransportId = 3;</code>
-     * @return Whether the sfuTransportId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuTransportId() {
-      return ((bitField0_ & 0x00000004) != 0);
-    }
-    /**
-     * <code>required string sfuTransportId = 3;</code>
-     * @return The sfuTransportId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuTransportId() {
-      java.lang.Object ref = sfuTransportId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuTransportId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string sfuTransportId = 3;</code>
-     * @return The bytes for sfuTransportId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuTransportIdBytes() {
-      java.lang.Object ref = sfuTransportId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuTransportId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSTREAMID_FIELD_NUMBER = 4;
-    private volatile java.lang.Object sfuStreamId_;
-    /**
-     * <code>required string sfuStreamId = 4;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string sfuStreamId = 4;</code>
-     * @return The sfuStreamId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuStreamId() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuStreamId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string sfuStreamId = 4;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuStreamIdBytes() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuStreamId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSINKID_FIELD_NUMBER = 5;
-    private volatile java.lang.Object sfuSinkId_;
-    /**
-     * <code>required string sfuSinkId = 5;</code>
-     * @return Whether the sfuSinkId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuSinkId() {
-      return ((bitField0_ & 0x00000010) != 0);
-    }
-    /**
-     * <code>required string sfuSinkId = 5;</code>
-     * @return The sfuSinkId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuSinkId() {
-      java.lang.Object ref = sfuSinkId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuSinkId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string sfuSinkId = 5;</code>
-     * @return The bytes for sfuSinkId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuSinkIdBytes() {
-      java.lang.Object ref = sfuSinkId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuSinkId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int OUTBOUNDSFURTPPADIDS_FIELD_NUMBER = 6;
-    private com.google.protobuf.LazyStringList outboundSfuRtpPadIds_;
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @return A list containing the outboundSfuRtpPadIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getOutboundSfuRtpPadIdsList() {
-      return outboundSfuRtpPadIds_;
-    }
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @return The count of outboundSfuRtpPadIds.
-     */
-    public int getOutboundSfuRtpPadIdsCount() {
-      return outboundSfuRtpPadIds_.size();
-    }
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @param index The index of the element to return.
-     * @return The outboundSfuRtpPadIds at the given index.
-     */
-    public java.lang.String getOutboundSfuRtpPadIds(int index) {
-      return outboundSfuRtpPadIds_.get(index);
-    }
-    /**
-     * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the outboundSfuRtpPadIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getOutboundSfuRtpPadIdsBytes(int index) {
-      return outboundSfuRtpPadIds_.getByteString(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasServiceId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSfuId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSfuTransportId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSfuStreamId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSfuSinkId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sfuId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, sfuTransportId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, sfuStreamId_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, sfuSinkId_);
-      }
-      for (int i = 0; i < outboundSfuRtpPadIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, outboundSfuRtpPadIds_.getRaw(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sfuId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, sfuTransportId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, sfuStreamId_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, sfuSinkId_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < outboundSfuRtpPadIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(outboundSfuRtpPadIds_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getOutboundSfuRtpPadIdsList().size();
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof org.observertc.schemas.dtos.Models.SfuMediaSink)) {
-        return super.equals(obj);
-      }
-      org.observertc.schemas.dtos.Models.SfuMediaSink other = (org.observertc.schemas.dtos.Models.SfuMediaSink) obj;
-
-      if (hasServiceId() != other.hasServiceId()) return false;
-      if (hasServiceId()) {
-        if (!getServiceId()
-            .equals(other.getServiceId())) return false;
-      }
-      if (hasSfuId() != other.hasSfuId()) return false;
-      if (hasSfuId()) {
-        if (!getSfuId()
-            .equals(other.getSfuId())) return false;
-      }
-      if (hasSfuTransportId() != other.hasSfuTransportId()) return false;
-      if (hasSfuTransportId()) {
-        if (!getSfuTransportId()
-            .equals(other.getSfuTransportId())) return false;
-      }
-      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
-      if (hasSfuStreamId()) {
-        if (!getSfuStreamId()
-            .equals(other.getSfuStreamId())) return false;
-      }
-      if (hasSfuSinkId() != other.hasSfuSinkId()) return false;
-      if (hasSfuSinkId()) {
-        if (!getSfuSinkId()
-            .equals(other.getSfuSinkId())) return false;
-      }
-      if (!getOutboundSfuRtpPadIdsList()
-          .equals(other.getOutboundSfuRtpPadIdsList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasServiceId()) {
-        hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
-        hash = (53 * hash) + getServiceId().hashCode();
-      }
-      if (hasSfuId()) {
-        hash = (37 * hash) + SFUID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuId().hashCode();
-      }
-      if (hasSfuTransportId()) {
-        hash = (37 * hash) + SFUTRANSPORTID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuTransportId().hashCode();
-      }
-      if (hasSfuStreamId()) {
-        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuStreamId().hashCode();
-      }
-      if (hasSfuSinkId()) {
-        hash = (37 * hash) + SFUSINKID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuSinkId().hashCode();
-      }
-      if (getOutboundSfuRtpPadIdsCount() > 0) {
-        hash = (37 * hash) + OUTBOUNDSFURTPPADIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getOutboundSfuRtpPadIdsList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(org.observertc.schemas.dtos.Models.SfuMediaSink prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaSink}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.SfuMediaSink)
-        org.observertc.schemas.dtos.Models.SfuMediaSinkOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.SfuMediaSink.class, org.observertc.schemas.dtos.Models.SfuMediaSink.Builder.class);
-      }
-
-      // Construct using org.observertc.schemas.dtos.Models.SfuMediaSink.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        serviceId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        sfuId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        sfuTransportId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        sfuStreamId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        sfuSinkId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.SfuMediaSink getDefaultInstanceForType() {
-        return org.observertc.schemas.dtos.Models.SfuMediaSink.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.SfuMediaSink build() {
-        org.observertc.schemas.dtos.Models.SfuMediaSink result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.SfuMediaSink buildPartial() {
-        org.observertc.schemas.dtos.Models.SfuMediaSink result = new org.observertc.schemas.dtos.Models.SfuMediaSink(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.serviceId_ = serviceId_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.sfuId_ = sfuId_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.sfuTransportId_ = sfuTransportId_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.sfuStreamId_ = sfuStreamId_;
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.sfuSinkId_ = sfuSinkId_;
-        if (((bitField0_ & 0x00000020) != 0)) {
-          outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000020);
-        }
-        result.outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.observertc.schemas.dtos.Models.SfuMediaSink) {
-          return mergeFrom((org.observertc.schemas.dtos.Models.SfuMediaSink)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(org.observertc.schemas.dtos.Models.SfuMediaSink other) {
-        if (other == org.observertc.schemas.dtos.Models.SfuMediaSink.getDefaultInstance()) return this;
-        if (other.hasServiceId()) {
-          bitField0_ |= 0x00000001;
-          serviceId_ = other.serviceId_;
-          onChanged();
-        }
-        if (other.hasSfuId()) {
-          bitField0_ |= 0x00000002;
-          sfuId_ = other.sfuId_;
-          onChanged();
-        }
-        if (other.hasSfuTransportId()) {
-          bitField0_ |= 0x00000004;
-          sfuTransportId_ = other.sfuTransportId_;
-          onChanged();
-        }
-        if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000008;
-          sfuStreamId_ = other.sfuStreamId_;
-          onChanged();
-        }
-        if (other.hasSfuSinkId()) {
-          bitField0_ |= 0x00000010;
-          sfuSinkId_ = other.sfuSinkId_;
-          onChanged();
-        }
-        if (!other.outboundSfuRtpPadIds_.isEmpty()) {
-          if (outboundSfuRtpPadIds_.isEmpty()) {
-            outboundSfuRtpPadIds_ = other.outboundSfuRtpPadIds_;
-            bitField0_ = (bitField0_ & ~0x00000020);
-          } else {
-            ensureOutboundSfuRtpPadIdsIsMutable();
-            outboundSfuRtpPadIds_.addAll(other.outboundSfuRtpPadIds_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        if (!hasServiceId()) {
-          return false;
-        }
-        if (!hasSfuId()) {
-          return false;
-        }
-        if (!hasSfuTransportId()) {
-          return false;
-        }
-        if (!hasSfuStreamId()) {
-          return false;
-        }
-        if (!hasSfuSinkId()) {
-          return false;
-        }
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        org.observertc.schemas.dtos.Models.SfuMediaSink parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.observertc.schemas.dtos.Models.SfuMediaSink) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object serviceId_ = "";
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return Whether the serviceId field is set.
-       */
-      public boolean hasServiceId() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The serviceId.
-       */
-      public java.lang.String getServiceId() {
-        java.lang.Object ref = serviceId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The bytes for serviceId.
-       */
-      public com.google.protobuf.ByteString
-          getServiceIdBytes() {
-        java.lang.Object ref = serviceId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          serviceId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearServiceId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        serviceId_ = getDefaultInstance().getServiceId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The bytes for serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuId_ = "";
-      /**
-       * <code>required string sfuId = 2;</code>
-       * @return Whether the sfuId field is set.
-       */
-      public boolean hasSfuId() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required string sfuId = 2;</code>
-       * @return The sfuId.
-       */
-      public java.lang.String getSfuId() {
-        java.lang.Object ref = sfuId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string sfuId = 2;</code>
-       * @return The bytes for sfuId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuIdBytes() {
-        java.lang.Object ref = sfuId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string sfuId = 2;</code>
-       * @param value The sfuId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        sfuId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuId = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        sfuId_ = getDefaultInstance().getSfuId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuId = 2;</code>
-       * @param value The bytes for sfuId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        sfuId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuTransportId_ = "";
-      /**
-       * <code>required string sfuTransportId = 3;</code>
-       * @return Whether the sfuTransportId field is set.
-       */
-      public boolean hasSfuTransportId() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required string sfuTransportId = 3;</code>
-       * @return The sfuTransportId.
-       */
-      public java.lang.String getSfuTransportId() {
-        java.lang.Object ref = sfuTransportId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuTransportId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string sfuTransportId = 3;</code>
-       * @return The bytes for sfuTransportId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuTransportIdBytes() {
-        java.lang.Object ref = sfuTransportId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuTransportId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string sfuTransportId = 3;</code>
-       * @param value The sfuTransportId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuTransportId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        sfuTransportId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuTransportId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuTransportId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        sfuTransportId_ = getDefaultInstance().getSfuTransportId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuTransportId = 3;</code>
-       * @param value The bytes for sfuTransportId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuTransportIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        sfuTransportId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuStreamId_ = "";
-      /**
-       * <code>required string sfuStreamId = 4;</code>
-       * @return Whether the sfuStreamId field is set.
-       */
-      public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required string sfuStreamId = 4;</code>
-       * @return The sfuStreamId.
-       */
-      public java.lang.String getSfuStreamId() {
-        java.lang.Object ref = sfuStreamId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuStreamId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string sfuStreamId = 4;</code>
-       * @return The bytes for sfuStreamId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuStreamIdBytes() {
-        java.lang.Object ref = sfuStreamId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuStreamId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string sfuStreamId = 4;</code>
-       * @param value The sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuStreamId = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuStreamId = 4;</code>
-       * @param value The bytes for sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuSinkId_ = "";
-      /**
-       * <code>required string sfuSinkId = 5;</code>
-       * @return Whether the sfuSinkId field is set.
-       */
-      public boolean hasSfuSinkId() {
-        return ((bitField0_ & 0x00000010) != 0);
-      }
-      /**
-       * <code>required string sfuSinkId = 5;</code>
-       * @return The sfuSinkId.
-       */
-      public java.lang.String getSfuSinkId() {
-        java.lang.Object ref = sfuSinkId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuSinkId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string sfuSinkId = 5;</code>
-       * @return The bytes for sfuSinkId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuSinkIdBytes() {
-        java.lang.Object ref = sfuSinkId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuSinkId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string sfuSinkId = 5;</code>
-       * @param value The sfuSinkId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuSinkId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        sfuSinkId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuSinkId = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuSinkId() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        sfuSinkId_ = getDefaultInstance().getSfuSinkId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuSinkId = 5;</code>
-       * @param value The bytes for sfuSinkId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuSinkIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        sfuSinkId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureOutboundSfuRtpPadIdsIsMutable() {
-        if (!((bitField0_ & 0x00000020) != 0)) {
-          outboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(outboundSfuRtpPadIds_);
-          bitField0_ |= 0x00000020;
-         }
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @return A list containing the outboundSfuRtpPadIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getOutboundSfuRtpPadIdsList() {
-        return outboundSfuRtpPadIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @return The count of outboundSfuRtpPadIds.
-       */
-      public int getOutboundSfuRtpPadIdsCount() {
-        return outboundSfuRtpPadIds_.size();
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @param index The index of the element to return.
-       * @return The outboundSfuRtpPadIds at the given index.
-       */
-      public java.lang.String getOutboundSfuRtpPadIds(int index) {
-        return outboundSfuRtpPadIds_.get(index);
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the outboundSfuRtpPadIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getOutboundSfuRtpPadIdsBytes(int index) {
-        return outboundSfuRtpPadIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @param index The index to set the value at.
-       * @param value The outboundSfuRtpPadIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setOutboundSfuRtpPadIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundSfuRtpPadIdsIsMutable();
-        outboundSfuRtpPadIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @param value The outboundSfuRtpPadIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundSfuRtpPadIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundSfuRtpPadIdsIsMutable();
-        outboundSfuRtpPadIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @param values The outboundSfuRtpPadIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllOutboundSfuRtpPadIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureOutboundSfuRtpPadIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, outboundSfuRtpPadIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearOutboundSfuRtpPadIds() {
-        outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundSfuRtpPadIds = 6;</code>
-       * @param value The bytes of the outboundSfuRtpPadIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundSfuRtpPadIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundSfuRtpPadIdsIsMutable();
-        outboundSfuRtpPadIds_.add(value);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.SfuMediaSink)
-    }
-
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.SfuMediaSink)
-    private static final org.observertc.schemas.dtos.Models.SfuMediaSink DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.SfuMediaSink();
-    }
-
-    public static org.observertc.schemas.dtos.Models.SfuMediaSink getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<SfuMediaSink>
-        PARSER = new com.google.protobuf.AbstractParser<SfuMediaSink>() {
-      @java.lang.Override
-      public SfuMediaSink parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SfuMediaSink(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<SfuMediaSink> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<SfuMediaSink> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public org.observertc.schemas.dtos.Models.SfuMediaSink getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface SfuMediaStreamOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.SfuMediaStream)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    boolean hasServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    java.lang.String getServiceId();
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    com.google.protobuf.ByteString
-        getServiceIdBytes();
-
-    /**
-     * <code>required string sfuStreamId = 2;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    boolean hasSfuStreamId();
-    /**
-     * <code>required string sfuStreamId = 2;</code>
-     * @return The sfuStreamId.
-     */
-    java.lang.String getSfuStreamId();
-    /**
-     * <code>required string sfuStreamId = 2;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    com.google.protobuf.ByteString
-        getSfuStreamIdBytes();
-
-    /**
-     * <code>required string trackId = 3;</code>
-     * @return Whether the trackId field is set.
-     */
-    boolean hasTrackId();
-    /**
-     * <code>required string trackId = 3;</code>
-     * @return The trackId.
-     */
-    java.lang.String getTrackId();
-    /**
-     * <code>required string trackId = 3;</code>
-     * @return The bytes for trackId.
-     */
-    com.google.protobuf.ByteString
-        getTrackIdBytes();
-
-    /**
-     * <code>required string kind = 4;</code>
-     * @return Whether the kind field is set.
-     */
-    boolean hasKind();
-    /**
-     * <code>required string kind = 4;</code>
-     * @return The kind.
-     */
-    java.lang.String getKind();
-    /**
-     * <code>required string kind = 4;</code>
-     * @return The bytes for kind.
-     */
-    com.google.protobuf.ByteString
-        getKindBytes();
-
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @return A list containing the sfuInboundSfuRtpPadIds.
-     */
-    java.util.List<java.lang.String>
-        getSfuInboundSfuRtpPadIdsList();
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @return The count of sfuInboundSfuRtpPadIds.
-     */
-    int getSfuInboundSfuRtpPadIdsCount();
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @param index The index of the element to return.
-     * @return The sfuInboundSfuRtpPadIds at the given index.
-     */
-    java.lang.String getSfuInboundSfuRtpPadIds(int index);
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the sfuInboundSfuRtpPadIds at the given index.
-     */
-    com.google.protobuf.ByteString
-        getSfuInboundSfuRtpPadIdsBytes(int index);
-  }
-  /**
-   * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaStream}
-   */
-  public static final class SfuMediaStream extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.SfuMediaStream)
-      SfuMediaStreamOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use SfuMediaStream.newBuilder() to construct.
-    private SfuMediaStream(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private SfuMediaStream() {
-      serviceId_ = "";
-      sfuStreamId_ = "";
-      trackId_ = "";
-      kind_ = "";
-      sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new SfuMediaStream();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private SfuMediaStream(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              serviceId_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              sfuStreamId_ = bs;
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              trackId_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              kind_ = bs;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-                sfuInboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000010;
-              }
-              sfuInboundSfuRtpPadIds_.add(bs);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000010) != 0)) {
-          sfuInboundSfuRtpPadIds_ = sfuInboundSfuRtpPadIds_.getUnmodifiableView();
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.observertc.schemas.dtos.Models.SfuMediaStream.class, org.observertc.schemas.dtos.Models.SfuMediaStream.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int SERVICEID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object serviceId_;
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return Whether the serviceId field is set.
-     */
-    @java.lang.Override
-    public boolean hasServiceId() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The serviceId.
-     */
-    @java.lang.Override
-    public java.lang.String getServiceId() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          serviceId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string serviceId = 1;</code>
-     * @return The bytes for serviceId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getServiceIdBytes() {
-      java.lang.Object ref = serviceId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        serviceId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUSTREAMID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object sfuStreamId_;
-    /**
-     * <code>required string sfuStreamId = 2;</code>
-     * @return Whether the sfuStreamId field is set.
-     */
-    @java.lang.Override
-    public boolean hasSfuStreamId() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>required string sfuStreamId = 2;</code>
-     * @return The sfuStreamId.
-     */
-    @java.lang.Override
-    public java.lang.String getSfuStreamId() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          sfuStreamId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string sfuStreamId = 2;</code>
-     * @return The bytes for sfuStreamId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSfuStreamIdBytes() {
-      java.lang.Object ref = sfuStreamId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sfuStreamId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TRACKID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object trackId_;
-    /**
-     * <code>required string trackId = 3;</code>
-     * @return Whether the trackId field is set.
-     */
-    @java.lang.Override
-    public boolean hasTrackId() {
-      return ((bitField0_ & 0x00000004) != 0);
-    }
-    /**
-     * <code>required string trackId = 3;</code>
-     * @return The trackId.
-     */
-    @java.lang.Override
-    public java.lang.String getTrackId() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          trackId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string trackId = 3;</code>
-     * @return The bytes for trackId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTrackIdBytes() {
-      java.lang.Object ref = trackId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        trackId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int KIND_FIELD_NUMBER = 4;
-    private volatile java.lang.Object kind_;
-    /**
-     * <code>required string kind = 4;</code>
-     * @return Whether the kind field is set.
-     */
-    @java.lang.Override
-    public boolean hasKind() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string kind = 4;</code>
-     * @return The kind.
-     */
-    @java.lang.Override
-    public java.lang.String getKind() {
-      java.lang.Object ref = kind_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          kind_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string kind = 4;</code>
-     * @return The bytes for kind.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getKindBytes() {
-      java.lang.Object ref = kind_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        kind_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SFUINBOUNDSFURTPPADIDS_FIELD_NUMBER = 5;
-    private com.google.protobuf.LazyStringList sfuInboundSfuRtpPadIds_;
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @return A list containing the sfuInboundSfuRtpPadIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getSfuInboundSfuRtpPadIdsList() {
-      return sfuInboundSfuRtpPadIds_;
-    }
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @return The count of sfuInboundSfuRtpPadIds.
-     */
-    public int getSfuInboundSfuRtpPadIdsCount() {
-      return sfuInboundSfuRtpPadIds_.size();
-    }
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @param index The index of the element to return.
-     * @return The sfuInboundSfuRtpPadIds at the given index.
-     */
-    public java.lang.String getSfuInboundSfuRtpPadIds(int index) {
-      return sfuInboundSfuRtpPadIds_.get(index);
-    }
-    /**
-     * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the sfuInboundSfuRtpPadIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getSfuInboundSfuRtpPadIdsBytes(int index) {
-      return sfuInboundSfuRtpPadIds_.getByteString(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasServiceId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSfuStreamId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTrackId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasKind()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sfuStreamId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, trackId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, kind_);
-      }
-      for (int i = 0; i < sfuInboundSfuRtpPadIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, sfuInboundSfuRtpPadIds_.getRaw(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sfuStreamId_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, trackId_);
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, kind_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < sfuInboundSfuRtpPadIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(sfuInboundSfuRtpPadIds_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getSfuInboundSfuRtpPadIdsList().size();
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof org.observertc.schemas.dtos.Models.SfuMediaStream)) {
-        return super.equals(obj);
-      }
-      org.observertc.schemas.dtos.Models.SfuMediaStream other = (org.observertc.schemas.dtos.Models.SfuMediaStream) obj;
-
-      if (hasServiceId() != other.hasServiceId()) return false;
-      if (hasServiceId()) {
-        if (!getServiceId()
-            .equals(other.getServiceId())) return false;
-      }
-      if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
-      if (hasSfuStreamId()) {
-        if (!getSfuStreamId()
-            .equals(other.getSfuStreamId())) return false;
-      }
-      if (hasTrackId() != other.hasTrackId()) return false;
-      if (hasTrackId()) {
-        if (!getTrackId()
-            .equals(other.getTrackId())) return false;
-      }
-      if (hasKind() != other.hasKind()) return false;
-      if (hasKind()) {
-        if (!getKind()
-            .equals(other.getKind())) return false;
-      }
-      if (!getSfuInboundSfuRtpPadIdsList()
-          .equals(other.getSfuInboundSfuRtpPadIdsList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasServiceId()) {
-        hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
-        hash = (53 * hash) + getServiceId().hashCode();
-      }
-      if (hasSfuStreamId()) {
-        hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuStreamId().hashCode();
-      }
-      if (hasTrackId()) {
-        hash = (37 * hash) + TRACKID_FIELD_NUMBER;
-        hash = (53 * hash) + getTrackId().hashCode();
-      }
-      if (hasKind()) {
-        hash = (37 * hash) + KIND_FIELD_NUMBER;
-        hash = (53 * hash) + getKind().hashCode();
-      }
-      if (getSfuInboundSfuRtpPadIdsCount() > 0) {
-        hash = (37 * hash) + SFUINBOUNDSFURTPPADIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getSfuInboundSfuRtpPadIdsList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(org.observertc.schemas.dtos.Models.SfuMediaStream prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaStream}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.SfuMediaStream)
-        org.observertc.schemas.dtos.Models.SfuMediaStreamOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.SfuMediaStream.class, org.observertc.schemas.dtos.Models.SfuMediaStream.Builder.class);
-      }
-
-      // Construct using org.observertc.schemas.dtos.Models.SfuMediaStream.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        serviceId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        sfuStreamId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        trackId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        kind_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.SfuMediaStream getDefaultInstanceForType() {
-        return org.observertc.schemas.dtos.Models.SfuMediaStream.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.SfuMediaStream build() {
-        org.observertc.schemas.dtos.Models.SfuMediaStream result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.SfuMediaStream buildPartial() {
-        org.observertc.schemas.dtos.Models.SfuMediaStream result = new org.observertc.schemas.dtos.Models.SfuMediaStream(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.serviceId_ = serviceId_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.sfuStreamId_ = sfuStreamId_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.trackId_ = trackId_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.kind_ = kind_;
-        if (((bitField0_ & 0x00000010) != 0)) {
-          sfuInboundSfuRtpPadIds_ = sfuInboundSfuRtpPadIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000010);
-        }
-        result.sfuInboundSfuRtpPadIds_ = sfuInboundSfuRtpPadIds_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.observertc.schemas.dtos.Models.SfuMediaStream) {
-          return mergeFrom((org.observertc.schemas.dtos.Models.SfuMediaStream)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(org.observertc.schemas.dtos.Models.SfuMediaStream other) {
-        if (other == org.observertc.schemas.dtos.Models.SfuMediaStream.getDefaultInstance()) return this;
-        if (other.hasServiceId()) {
-          bitField0_ |= 0x00000001;
-          serviceId_ = other.serviceId_;
-          onChanged();
-        }
-        if (other.hasSfuStreamId()) {
-          bitField0_ |= 0x00000002;
-          sfuStreamId_ = other.sfuStreamId_;
-          onChanged();
-        }
-        if (other.hasTrackId()) {
-          bitField0_ |= 0x00000004;
-          trackId_ = other.trackId_;
-          onChanged();
-        }
-        if (other.hasKind()) {
-          bitField0_ |= 0x00000008;
-          kind_ = other.kind_;
-          onChanged();
-        }
-        if (!other.sfuInboundSfuRtpPadIds_.isEmpty()) {
-          if (sfuInboundSfuRtpPadIds_.isEmpty()) {
-            sfuInboundSfuRtpPadIds_ = other.sfuInboundSfuRtpPadIds_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-          } else {
-            ensureSfuInboundSfuRtpPadIdsIsMutable();
-            sfuInboundSfuRtpPadIds_.addAll(other.sfuInboundSfuRtpPadIds_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        if (!hasServiceId()) {
-          return false;
-        }
-        if (!hasSfuStreamId()) {
-          return false;
-        }
-        if (!hasTrackId()) {
-          return false;
-        }
-        if (!hasKind()) {
-          return false;
-        }
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        org.observertc.schemas.dtos.Models.SfuMediaStream parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.observertc.schemas.dtos.Models.SfuMediaStream) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object serviceId_ = "";
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return Whether the serviceId field is set.
-       */
-      public boolean hasServiceId() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The serviceId.
-       */
-      public java.lang.String getServiceId() {
-        java.lang.Object ref = serviceId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return The bytes for serviceId.
-       */
-      public com.google.protobuf.ByteString
-          getServiceIdBytes() {
-        java.lang.Object ref = serviceId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          serviceId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearServiceId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        serviceId_ = getDefaultInstance().getServiceId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceId = 1;</code>
-       * @param value The bytes for serviceId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServiceIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        serviceId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sfuStreamId_ = "";
-      /**
-       * <code>required string sfuStreamId = 2;</code>
-       * @return Whether the sfuStreamId field is set.
-       */
-      public boolean hasSfuStreamId() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required string sfuStreamId = 2;</code>
-       * @return The sfuStreamId.
-       */
-      public java.lang.String getSfuStreamId() {
-        java.lang.Object ref = sfuStreamId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sfuStreamId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string sfuStreamId = 2;</code>
-       * @return The bytes for sfuStreamId.
-       */
-      public com.google.protobuf.ByteString
-          getSfuStreamIdBytes() {
-        java.lang.Object ref = sfuStreamId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sfuStreamId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string sfuStreamId = 2;</code>
-       * @param value The sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuStreamId = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuStreamId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        sfuStreamId_ = getDefaultInstance().getSfuStreamId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string sfuStreamId = 2;</code>
-       * @param value The bytes for sfuStreamId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuStreamIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        sfuStreamId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object trackId_ = "";
-      /**
-       * <code>required string trackId = 3;</code>
-       * @return Whether the trackId field is set.
-       */
-      public boolean hasTrackId() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required string trackId = 3;</code>
-       * @return The trackId.
-       */
-      public java.lang.String getTrackId() {
-        java.lang.Object ref = trackId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            trackId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 3;</code>
-       * @return The bytes for trackId.
-       */
-      public com.google.protobuf.ByteString
-          getTrackIdBytes() {
-        java.lang.Object ref = trackId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          trackId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string trackId = 3;</code>
-       * @param value The trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTrackId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        trackId_ = getDefaultInstance().getTrackId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string trackId = 3;</code>
-       * @param value The bytes for trackId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTrackIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        trackId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object kind_ = "";
-      /**
-       * <code>required string kind = 4;</code>
-       * @return Whether the kind field is set.
-       */
-      public boolean hasKind() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required string kind = 4;</code>
-       * @return The kind.
-       */
-      public java.lang.String getKind() {
-        java.lang.Object ref = kind_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            kind_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string kind = 4;</code>
-       * @return The bytes for kind.
-       */
-      public com.google.protobuf.ByteString
-          getKindBytes() {
-        java.lang.Object ref = kind_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          kind_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string kind = 4;</code>
-       * @param value The kind to set.
-       * @return This builder for chaining.
-       */
-      public Builder setKind(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        kind_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string kind = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearKind() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        kind_ = getDefaultInstance().getKind();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string kind = 4;</code>
-       * @param value The bytes for kind to set.
-       * @return This builder for chaining.
-       */
-      public Builder setKindBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        kind_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureSfuInboundSfuRtpPadIdsIsMutable() {
-        if (!((bitField0_ & 0x00000010) != 0)) {
-          sfuInboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(sfuInboundSfuRtpPadIds_);
-          bitField0_ |= 0x00000010;
-         }
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @return A list containing the sfuInboundSfuRtpPadIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getSfuInboundSfuRtpPadIdsList() {
-        return sfuInboundSfuRtpPadIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @return The count of sfuInboundSfuRtpPadIds.
-       */
-      public int getSfuInboundSfuRtpPadIdsCount() {
-        return sfuInboundSfuRtpPadIds_.size();
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @param index The index of the element to return.
-       * @return The sfuInboundSfuRtpPadIds at the given index.
-       */
-      public java.lang.String getSfuInboundSfuRtpPadIds(int index) {
-        return sfuInboundSfuRtpPadIds_.get(index);
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the sfuInboundSfuRtpPadIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getSfuInboundSfuRtpPadIdsBytes(int index) {
-        return sfuInboundSfuRtpPadIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @param index The index to set the value at.
-       * @param value The sfuInboundSfuRtpPadIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSfuInboundSfuRtpPadIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSfuInboundSfuRtpPadIdsIsMutable();
-        sfuInboundSfuRtpPadIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @param value The sfuInboundSfuRtpPadIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addSfuInboundSfuRtpPadIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSfuInboundSfuRtpPadIdsIsMutable();
-        sfuInboundSfuRtpPadIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @param values The sfuInboundSfuRtpPadIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllSfuInboundSfuRtpPadIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureSfuInboundSfuRtpPadIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, sfuInboundSfuRtpPadIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSfuInboundSfuRtpPadIds() {
-        sfuInboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string sfuInboundSfuRtpPadIds = 5;</code>
-       * @param value The bytes of the sfuInboundSfuRtpPadIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addSfuInboundSfuRtpPadIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSfuInboundSfuRtpPadIdsIsMutable();
-        sfuInboundSfuRtpPadIds_.add(value);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.SfuMediaStream)
-    }
-
-    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.SfuMediaStream)
-    private static final org.observertc.schemas.dtos.Models.SfuMediaStream DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.SfuMediaStream();
-    }
-
-    public static org.observertc.schemas.dtos.Models.SfuMediaStream getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<SfuMediaStream>
-        PARSER = new com.google.protobuf.AbstractParser<SfuMediaStream>() {
-      @java.lang.Override
-      public SfuMediaStream parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SfuMediaStream(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<SfuMediaStream> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<SfuMediaStream> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public org.observertc.schemas.dtos.Models.SfuMediaStream getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -29630,34 +20884,45 @@ public final class Models {
     long getAdded();
 
     /**
-     * <code>optional string mediaUnitId = 9;</code>
+     * <code>optional uint64 touched = 9;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 9;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 10;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 9;</code>
+     * <code>optional string mediaUnitId = 10;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 9;</code>
+     * <code>optional string mediaUnitId = 10;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 10;</code>
+     * <code>optional string marker = 11;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 10;</code>
+     * <code>optional string marker = 11;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 10;</code>
+     * <code>optional string marker = 11;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
@@ -29761,15 +21026,20 @@ public final class Models {
               added_ = input.readUInt64();
               break;
             }
-            case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 72: {
               bitField0_ |= 0x00000100;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 82: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
+              mediaUnitId_ = bs;
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000400;
               marker_ = bs;
               break;
             }
@@ -30103,18 +21373,37 @@ public final class Models {
       return added_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 9;
+    public static final int TOUCHED_FIELD_NUMBER = 9;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 9;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 9;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 10;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 9;</code>
+     * <code>optional string mediaUnitId = 10;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000100) != 0);
+      return ((bitField0_ & 0x00000200) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 9;</code>
+     * <code>optional string mediaUnitId = 10;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -30133,7 +21422,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 9;</code>
+     * <code>optional string mediaUnitId = 10;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -30151,18 +21440,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 10;
+    public static final int MARKER_FIELD_NUMBER = 11;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 10;</code>
+     * <code>optional string marker = 11;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000200) != 0);
+      return ((bitField0_ & 0x00000400) != 0);
     }
     /**
-     * <code>optional string marker = 10;</code>
+     * <code>optional string marker = 11;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -30181,7 +21470,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 10;</code>
+     * <code>optional string marker = 11;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -30270,10 +21559,13 @@ public final class Models {
         output.writeUInt64(8, added_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, mediaUnitId_);
+        output.writeUInt64(9, touched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000400) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, marker_);
       }
       unknownFields.writeTo(output);
     }
@@ -30312,10 +21604,14 @@ public final class Models {
           .computeUInt64Size(8, added_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(9, touched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000400) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, marker_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -30372,6 +21668,11 @@ public final class Models {
         if (getAdded()
             != other.getAdded()) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
         if (!getMediaUnitId()
@@ -30427,6 +21728,11 @@ public final class Models {
         hash = (37 * hash) + ADDED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getAdded());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -30585,10 +21891,12 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000040);
         added_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
+        marker_ = "";
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -30650,11 +21958,15 @@ public final class Models {
           to_bitField0_ |= 0x00000080;
         }
         if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000100;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000200) != 0)) {
           to_bitField0_ |= 0x00000200;
+        }
+        result.mediaUnitId_ = mediaUnitId_;
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          to_bitField0_ |= 0x00000400;
         }
         result.marker_ = marker_;
         result.bitField0_ = to_bitField0_;
@@ -30740,13 +22052,16 @@ public final class Models {
         if (other.hasAdded()) {
           setAdded(other.getAdded());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
           marker_ = other.marker_;
           onChanged();
         }
@@ -31341,16 +22656,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 9;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 9;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 9;</code>
+       * <code>optional uint64 touched = 9;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 9;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000100;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 10;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000200) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 10;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -31368,7 +22722,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 9;</code>
+       * <code>optional string mediaUnitId = 10;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -31385,7 +22739,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 9;</code>
+       * <code>optional string mediaUnitId = 10;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -31394,23 +22748,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000100;
+  bitField0_ |= 0x00000200;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 9;</code>
+       * <code>optional string mediaUnitId = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 9;</code>
+       * <code>optional string mediaUnitId = 10;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -31419,7 +22773,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000100;
+  bitField0_ |= 0x00000200;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -31427,14 +22781,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 10;</code>
+       * <code>optional string marker = 11;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000200) != 0);
+        return ((bitField0_ & 0x00000400) != 0);
       }
       /**
-       * <code>optional string marker = 10;</code>
+       * <code>optional string marker = 11;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -31452,7 +22806,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 10;</code>
+       * <code>optional string marker = 11;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -31469,7 +22823,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 10;</code>
+       * <code>optional string marker = 11;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -31478,23 +22832,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 10;</code>
+       * <code>optional string marker = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 10;</code>
+       * <code>optional string marker = 11;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -31503,7 +22857,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         marker_ = value;
         onChanged();
         return this;
@@ -31701,34 +23055,45 @@ public final class Models {
     long getAdded();
 
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional uint64 touched = 10;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 11;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
@@ -31839,15 +23204,20 @@ public final class Models {
               added_ = input.readUInt64();
               break;
             }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 80: {
               bitField0_ |= 0x00000200;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
+              mediaUnitId_ = bs;
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000800;
               marker_ = bs;
               break;
             }
@@ -32229,18 +23599,37 @@ public final class Models {
       return added_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 10;
+    public static final int TOUCHED_FIELD_NUMBER = 10;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 10;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 11;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000200) != 0);
+      return ((bitField0_ & 0x00000400) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -32259,7 +23648,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 10;</code>
+     * <code>optional string mediaUnitId = 11;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -32277,18 +23666,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 11;
+    public static final int MARKER_FIELD_NUMBER = 12;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000400) != 0);
+      return ((bitField0_ & 0x00000800) != 0);
     }
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -32307,7 +23696,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 11;</code>
+     * <code>optional string marker = 12;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -32403,10 +23792,13 @@ public final class Models {
         output.writeUInt64(9, added_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
+        output.writeUInt64(10, touched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000800) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, marker_);
       }
       unknownFields.writeTo(output);
     }
@@ -32448,10 +23840,14 @@ public final class Models {
           .computeUInt64Size(9, added_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, touched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000800) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, marker_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -32513,6 +23909,11 @@ public final class Models {
         if (getAdded()
             != other.getAdded()) return false;
       }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
         if (!getMediaUnitId()
@@ -32572,6 +23973,11 @@ public final class Models {
         hash = (37 * hash) + ADDED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getAdded());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -32732,10 +24138,12 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000080);
         added_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000200);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
+        marker_ = "";
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -32801,11 +24209,15 @@ public final class Models {
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000200;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000400) != 0)) {
           to_bitField0_ |= 0x00000400;
+        }
+        result.mediaUnitId_ = mediaUnitId_;
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          to_bitField0_ |= 0x00000800;
         }
         result.marker_ = marker_;
         result.bitField0_ = to_bitField0_;
@@ -32896,13 +24308,16 @@ public final class Models {
         if (other.hasAdded()) {
           setAdded(other.getAdded());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000400;
+          bitField0_ |= 0x00000800;
           marker_ = other.marker_;
           onChanged();
         }
@@ -33584,16 +24999,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 10;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 10;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional uint64 touched = 10;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 10;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000200;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 11;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000400) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 11;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -33611,7 +25065,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -33628,7 +25082,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -33637,23 +25091,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 10;</code>
+       * <code>optional string mediaUnitId = 11;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -33662,7 +25116,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -33670,14 +25124,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000400) != 0);
+        return ((bitField0_ & 0x00000800) != 0);
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -33695,7 +25149,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -33712,7 +25166,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -33721,23 +25175,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000800;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 11;</code>
+       * <code>optional string marker = 12;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -33746,7 +25200,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000400;
+  bitField0_ |= 0x00000800;
         marker_ = value;
         onChanged();
         return this;
@@ -33888,34 +25342,45 @@ public final class Models {
     long getOpened();
 
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional uint64 touched = 6;</code>
+     * @return Whether the touched field is set.
+     */
+    boolean hasTouched();
+    /**
+     * <code>optional uint64 touched = 6;</code>
+     * @return The touched.
+     */
+    long getTouched();
+
+    /**
+     * <code>optional string mediaUnitId = 7;</code>
      * @return Whether the mediaUnitId field is set.
      */
     boolean hasMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The mediaUnitId.
      */
     java.lang.String getMediaUnitId();
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The bytes for mediaUnitId.
      */
     com.google.protobuf.ByteString
         getMediaUnitIdBytes();
 
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
@@ -34002,15 +25467,20 @@ public final class Models {
               opened_ = input.readUInt64();
               break;
             }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 48: {
               bitField0_ |= 0x00000020;
-              mediaUnitId_ = bs;
+              touched_ = input.readUInt64();
               break;
             }
             case 58: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
+              mediaUnitId_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
               marker_ = bs;
               break;
             }
@@ -34258,18 +25728,37 @@ public final class Models {
       return opened_;
     }
 
-    public static final int MEDIAUNITID_FIELD_NUMBER = 6;
+    public static final int TOUCHED_FIELD_NUMBER = 6;
+    private long touched_;
+    /**
+     * <code>optional uint64 touched = 6;</code>
+     * @return Whether the touched field is set.
+     */
+    @java.lang.Override
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <code>optional uint64 touched = 6;</code>
+     * @return The touched.
+     */
+    @java.lang.Override
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int MEDIAUNITID_FIELD_NUMBER = 7;
     private volatile java.lang.Object mediaUnitId_;
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return Whether the mediaUnitId field is set.
      */
     @java.lang.Override
     public boolean hasMediaUnitId() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The mediaUnitId.
      */
     @java.lang.Override
@@ -34288,7 +25777,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string mediaUnitId = 6;</code>
+     * <code>optional string mediaUnitId = 7;</code>
      * @return The bytes for mediaUnitId.
      */
     @java.lang.Override
@@ -34306,18 +25795,18 @@ public final class Models {
       }
     }
 
-    public static final int MARKER_FIELD_NUMBER = 7;
+    public static final int MARKER_FIELD_NUMBER = 8;
     private volatile java.lang.Object marker_;
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
     public boolean hasMarker() {
-      return ((bitField0_ & 0x00000040) != 0);
+      return ((bitField0_ & 0x00000080) != 0);
     }
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -34336,7 +25825,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string marker = 7;</code>
+     * <code>optional string marker = 8;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -34404,10 +25893,13 @@ public final class Models {
         output.writeUInt64(5, opened_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, mediaUnitId_);
+        output.writeUInt64(6, touched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, marker_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, marker_);
       }
       unknownFields.writeTo(output);
     }
@@ -34435,10 +25927,14 @@ public final class Models {
           .computeUInt64Size(5, opened_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, mediaUnitId_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, touched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, marker_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, mediaUnitId_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, marker_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -34479,6 +25975,11 @@ public final class Models {
       if (hasOpened()) {
         if (getOpened()
             != other.getOpened()) return false;
+      }
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -34521,6 +26022,11 @@ public final class Models {
         hash = (37 * hash) + OPENED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getOpened());
+      }
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -34673,10 +26179,12 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000008);
         opened_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
-        mediaUnitId_ = "";
+        touched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        marker_ = "";
+        mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        marker_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -34726,11 +26234,15 @@ public final class Models {
           to_bitField0_ |= 0x00000010;
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.touched_ = touched_;
           to_bitField0_ |= 0x00000020;
         }
-        result.mediaUnitId_ = mediaUnitId_;
         if (((from_bitField0_ & 0x00000040) != 0)) {
           to_bitField0_ |= 0x00000040;
+        }
+        result.mediaUnitId_ = mediaUnitId_;
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          to_bitField0_ |= 0x00000080;
         }
         result.marker_ = marker_;
         result.bitField0_ = to_bitField0_;
@@ -34805,13 +26317,16 @@ public final class Models {
         if (other.hasOpened()) {
           setOpened(other.getOpened());
         }
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
         if (other.hasMediaUnitId()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           mediaUnitId_ = other.mediaUnitId_;
           onChanged();
         }
         if (other.hasMarker()) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
           marker_ = other.marker_;
           onChanged();
         }
@@ -35235,16 +26750,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object mediaUnitId_ = "";
+      private long touched_ ;
       /**
-       * <code>optional string mediaUnitId = 6;</code>
-       * @return Whether the mediaUnitId field is set.
+       * <code>optional uint64 touched = 6;</code>
+       * @return Whether the touched field is set.
        */
-      public boolean hasMediaUnitId() {
+      @java.lang.Override
+      public boolean hasTouched() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional uint64 touched = 6;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000020;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mediaUnitId_ = "";
+      /**
+       * <code>optional string mediaUnitId = 7;</code>
+       * @return Whether the mediaUnitId field is set.
+       */
+      public boolean hasMediaUnitId() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <code>optional string mediaUnitId = 7;</code>
        * @return The mediaUnitId.
        */
       public java.lang.String getMediaUnitId() {
@@ -35262,7 +26816,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @return The bytes for mediaUnitId.
        */
       public com.google.protobuf.ByteString
@@ -35279,7 +26833,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @param value The mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -35288,23 +26842,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         mediaUnitId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearMediaUnitId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         mediaUnitId_ = getDefaultInstance().getMediaUnitId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string mediaUnitId = 6;</code>
+       * <code>optional string mediaUnitId = 7;</code>
        * @param value The bytes for mediaUnitId to set.
        * @return This builder for chaining.
        */
@@ -35313,7 +26867,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         mediaUnitId_ = value;
         onChanged();
         return this;
@@ -35321,14 +26875,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
-        return ((bitField0_ & 0x00000040) != 0);
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -35346,7 +26900,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -35363,7 +26917,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -35372,23 +26926,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         marker_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         marker_ = getDefaultInstance().getMarker();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string marker = 7;</code>
+       * <code>optional string marker = 8;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -35397,7 +26951,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         marker_ = value;
         onChanged();
         return this;
@@ -35471,11 +27025,6 @@ public final class Models {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_dtos_PeerConnection_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_InboundAudioTrack_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_InboundAudioTrack_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -35486,20 +27035,15 @@ public final class Models {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_dtos_OutboundTrack_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_InboundVideoTrack_descriptor;
+    internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_InboundVideoTrack_fieldAccessorTable;
+      internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_descriptor;
+    internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_fieldAccessorTable;
+      internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_dtos_Sfu_descriptor;
   private static final 
@@ -35510,16 +27054,6 @@ public final class Models {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_dtos_SfuTransport_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor;
   private static final 
@@ -35547,87 +27081,70 @@ public final class Models {
       "\n\023protos/models.proto\022\033org.observertc.sc" +
       "hemas.dtos\"Z\n\004Call\022\021\n\tserviceId\030\001 \002(\t\022\016\n" +
       "\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\017\n\007started" +
-      "\030\004 \002(\004\022\016\n\006marker\030\005 \002(\t\"\301\001\n\006Client\022\021\n\tser" +
+      "\030\004 \002(\004\022\016\n\006marker\030\005 \002(\t\"\322\001\n\006Client\022\021\n\tser" +
       "viceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003" +
       " \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\016" +
-      "\n\006joined\030\006 \002(\004\022\022\n\ntimeZoneId\030\007 \001(\t\022\023\n\013me" +
-      "diaUnitId\030\010 \001(\t\022\016\n\006marker\030\t \001(\t\022\031\n\021peerC" +
-      "onnectionIds\030\n \003(\t\"\256\002\n\016PeerConnection\022\021\n" +
-      "\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006call" +
-      "Id\030\003 \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002" +
-      "(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\016\n\006opened\030\007" +
-      " \002(\004\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006marker\030\t \001(" +
-      "\t\022\034\n\024inboundAudioTrackIds\030\n \003(\t\022\034\n\024inbou" +
-      "ndVideoTrackIds\030\013 \003(\t\022\035\n\025outboundAudioTr" +
-      "ackIds\030\014 \003(\t\022\035\n\025outboundVideoTrackIds\030\r " +
-      "\003(\t\"\375\001\n\021InboundAudioTrack\022\021\n\tserviceId\030\001" +
-      " \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006" +
-      "userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerCo" +
-      "nnectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\r\n\005add" +
-      "ed\030\010 \002(\004\022\023\n\013mediaUnitId\030\t \001(\t\022\016\n\006marker\030" +
-      "\n \001(\t\022\021\n\tsfuSinkId\030\013 \001(\t\022\023\n\013sfuStreamId\030" +
-      "\014 \001(\t\022\014\n\004ssrc\030\r \003(\003\"\206\002\n\014InboundTrack\022\021\n\t" +
-      "serviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callI" +
-      "d\030\003 \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(" +
-      "\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007trackId\030\007" +
-      " \002(\t\022\014\n\004kind\030\010 \002(\t\022\r\n\005added\030\t \002(\004\022\023\n\013med" +
-      "iaUnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\022\021\n\tsfuSin" +
-      "kId\030\014 \001(\t\022\023\n\013sfuStreamId\030\r \001(\t\022\014\n\004ssrc\030\016" +
-      " \003(\003\"\364\001\n\rOutboundTrack\022\021\n\tserviceId\030\001 \002(" +
-      "\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006use" +
-      "rId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConne" +
-      "ctionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\r\n\005added\030" +
-      "\010 \002(\004\022\014\n\004kind\030\t \002(\t\022\023\n\013mediaUnitId\030\n \001(\t" +
-      "\022\016\n\006marker\030\013 \001(\t\022\023\n\013sfuStreamId\030\014 \001(\t\022\014\n" +
-      "\004ssrc\030\r \003(\003\"\375\001\n\021InboundVideoTrack\022\021\n\tser" +
-      "viceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003" +
-      " \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030" +
-      "\n\020peerConnectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(" +
-      "\t\022\r\n\005added\030\010 \002(\004\022\023\n\013mediaUnitId\030\t \001(\t\022\016\n" +
-      "\006marker\030\n \001(\t\022\021\n\tsfuSinkId\030\013 \001(\t\022\023\n\013sfuS" +
-      "treamId\030\014 \001(\t\022\014\n\004ssrc\030\r \003(\003\"\353\001\n\022Outbound" +
-      "AudioTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030" +
-      "\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n" +
-      "\010clientId\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(" +
-      "\t\022\017\n\007trackId\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\023\n\013med" +
-      "iaUnitId\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\023\n\013sfuStr" +
-      "eamId\030\013 \001(\t\022\014\n\004ssrc\030\014 \003(\003\"\353\001\n\022OutboundVi" +
-      "deoTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 " +
-      "\002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n\010c" +
-      "lientId\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022" +
-      "\017\n\007trackId\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\023\n\013media" +
-      "UnitId\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\023\n\013sfuStrea" +
-      "mId\030\013 \001(\t\022\014\n\004ssrc\030\014 \003(\003\"\211\001\n\003Sfu\022\021\n\tservi" +
-      "ceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\016\n\006joined\030\003 \002(" +
-      "\004\022\023\n\013mediaUnitId\030\004 \001(\t\022\022\n\ntimeZoneId\030\005 \001" +
-      "(\t\022\016\n\006marker\030\006 \001(\t\022\027\n\017sfuTransportIds\030\007 " +
-      "\003(\t\"\310\001\n\014SfuTransport\022\021\n\tserviceId\030\001 \002(\t\022" +
-      "\r\n\005sfuId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n\010i" +
-      "nternal\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\023\n\013" +
-      "mediaUnitId\030\006 \001(\t\022\016\n\006marker\030\007 \001(\t\022\030\n\020inb" +
-      "oundRtpPadIds\030\010 \003(\t\022\031\n\021outboundRtpPadIds" +
-      "\030\t \003(\t\"\216\001\n\014SfuMediaSink\022\021\n\tserviceId\030\001 \002" +
+      "\n\006joined\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\022\n\ntimeZ" +
+      "oneId\030\010 \001(\t\022\023\n\013mediaUnitId\030\t \001(\t\022\016\n\006mark" +
+      "er\030\n \001(\t\022\031\n\021peerConnectionIds\030\013 \003(\t\"\277\002\n\016" +
+      "PeerConnection\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roo" +
+      "mId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004 \002(" +
+      "\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConnectionId\030" +
+      "\006 \002(\t\022\016\n\006opened\030\007 \002(\004\022\017\n\007touched\030\010 \001(\004\022\023" +
+      "\n\013mediaUnitId\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\034\n\024i" +
+      "nboundAudioTrackIds\030\013 \003(\t\022\034\n\024inboundVide" +
+      "oTrackIds\030\014 \003(\t\022\035\n\025outboundAudioTrackIds" +
+      "\030\r \003(\t\022\035\n\025outboundVideoTrackIds\030\016 \003(\t\"\227\002" +
+      "\n\014InboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roo" +
+      "mId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004 \002(" +
+      "\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConnectionId\030" +
+      "\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\014\n\004kind\030\010 \002(\t\022\r\n\005" +
+      "added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013mediaUni" +
+      "tId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r" +
+      " \001(\t\022\023\n\013sfuStreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"" +
+      "\205\002\n\rOutboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006" +
+      "roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004" +
+      " \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConnection" +
+      "Id\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\r\n\005added\030\010 \002(\004" +
+      "\022\014\n\004kind\030\t \002(\t\022\017\n\007touched\030\n \001(\004\022\023\n\013media" +
+      "UnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStrea" +
+      "mId\030\r \001(\t\022\014\n\004ssrc\030\016 \003(\003\"\302\001\n\014SfuMediaSink" +
+      "\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t" +
+      "\022\021\n\tsfuSinkId\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006cal" +
+      "lId\030\005 \002(\t\022\020\n\010clientId\030\006 \002(\t\022\030\n\020peerConne" +
+      "ctionId\030\007 \002(\t\022\017\n\007trackId\030\010 \002(\t\022\034\n\024outbou" +
+      "ndSfuRtpPadIds\030\t \003(\t\"\263\001\n\016SfuMediaStream\022" +
+      "\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022" +
+      "\014\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clientI" +
+      "d\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007tra" +
+      "ckId\030\007 \002(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\010 \003" +
+      "(\t\"\232\001\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002" +
+      " \002(\t\022\016\n\006joined\030\003 \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n" +
+      "\013mediaUnitId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016" +
+      "\n\006marker\030\007 \001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\"" +
+      "\360\001\n\014SfuTransport\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005s" +
+      "fuId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n\010inter" +
+      "nal\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\017\n\007touc" +
+      "hed\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker" +
+      "\030\010 \001(\t\022\030\n\020inboundRtpPadIds\030\t \003(\t\022\031\n\021outb" +
+      "oundRtpPadIds\030\n \003(\t\022\025\n\rsctpStreamIds\030\013 \003" +
+      "(\t\"\337\001\n\020SfuInboundRtpPad\022\021\n\tserviceId\030\001 \002" +
       "(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(" +
-      "\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(" +
-      "\t\022\034\n\024outboundSfuRtpPadIds\030\006 \003(\t\"w\n\016SfuMe" +
-      "diaStream\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStrea" +
-      "mId\030\002 \002(\t\022\017\n\007trackId\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t" +
-      "\022\036\n\026sfuInboundSfuRtpPadIds\030\005 \003(\t\"\316\001\n\020Sfu" +
-      "InboundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuI" +
-      "d\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuSt" +
-      "reamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022\014\n\004ssrc\030\006" +
-      " \002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022\r\n\005added\030\010" +
-      " \002(\004\022\023\n\013mediaUnitId\030\t \001(\t\022\016\n\006marker\030\n \001(" +
-      "\t\"\342\001\n\021SfuOutboundRtpPad\022\021\n\tserviceId\030\001 \002" +
-      "(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(" +
-      "\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(" +
-      "\t\022\020\n\010rtpPadId\030\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010int" +
-      "ernal\030\010 \002(\010:\005false\022\r\n\005added\030\t \002(\004\022\023\n\013med" +
-      "iaUnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\227\001\n\rSfuSc" +
-      "tpStream\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002" +
-      "(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027\n\017sfuSctpStr" +
-      "eamId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004\022\023\n\013mediaUnit" +
-      "Id\030\006 \001(\t\022\016\n\006marker\030\007 \001(\t"
+      "\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t" +
+      "\022\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022" +
+      "\r\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(\004\022\023\n\013media" +
+      "UnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021SfuOutb" +
+      "oundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002" +
+      " \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStrea" +
+      "mId\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId" +
+      "\030\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005" +
+      "false\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n" +
+      "\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\"\250\001\n\rS" +
+      "fuSctpStream\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId" +
+      "\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027\n\017sfuSct" +
+      "pStreamId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004\022\017\n\007touch" +
+      "ed\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030" +
+      "\010 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -35644,91 +27161,67 @@ public final class Models {
     internal_static_org_observertc_schemas_dtos_Client_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Client_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "Joined", "TimeZoneId", "MediaUnitId", "Marker", "PeerConnectionIds", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "Joined", "Touched", "TimeZoneId", "MediaUnitId", "Marker", "PeerConnectionIds", });
     internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_org_observertc_schemas_dtos_PeerConnection_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "Opened", "MediaUnitId", "Marker", "InboundAudioTrackIds", "InboundVideoTrackIds", "OutboundAudioTrackIds", "OutboundVideoTrackIds", });
-    internal_static_org_observertc_schemas_dtos_InboundAudioTrack_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_org_observertc_schemas_dtos_InboundAudioTrack_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_InboundAudioTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Added", "MediaUnitId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "Opened", "Touched", "MediaUnitId", "Marker", "InboundAudioTrackIds", "InboundVideoTrackIds", "OutboundAudioTrackIds", "OutboundVideoTrackIds", });
     internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_org_observertc_schemas_dtos_InboundTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Kind", "Added", "MediaUnitId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Kind", "Added", "Touched", "MediaUnitId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", });
     internal_static_org_observertc_schemas_dtos_OutboundTrack_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_org_observertc_schemas_dtos_OutboundTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_OutboundTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Added", "Kind", "MediaUnitId", "Marker", "SfuStreamId", "Ssrc", });
-    internal_static_org_observertc_schemas_dtos_InboundVideoTrack_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_org_observertc_schemas_dtos_InboundVideoTrack_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_InboundVideoTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Added", "MediaUnitId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", });
-    internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_OutboundAudioTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Added", "MediaUnitId", "Marker", "SfuStreamId", "Ssrc", });
-    internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_OutboundVideoTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Added", "MediaUnitId", "Marker", "SfuStreamId", "Ssrc", });
-    internal_static_org_observertc_schemas_dtos_Sfu_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_org_observertc_schemas_dtos_Sfu_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_Sfu_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "Joined", "MediaUnitId", "TimeZoneId", "Marker", "SfuTransportIds", });
-    internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor =
-      getDescriptor().getMessageTypes().get(10);
-    internal_static_org_observertc_schemas_dtos_SfuTransport_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "TransportId", "Internal", "Opened", "MediaUnitId", "Marker", "InboundRtpPadIds", "OutboundRtpPadIds", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "TrackId", "Added", "Kind", "Touched", "MediaUnitId", "Marker", "SfuStreamId", "Ssrc", });
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "SfuSinkId", "OutboundSfuRtpPadIds", });
+        new java.lang.String[] { "ServiceId", "SfuStreamId", "SfuSinkId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "OutboundSfuRtpPadIds", });
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuStreamId", "TrackId", "Kind", "SfuInboundSfuRtpPadIds", });
+        new java.lang.String[] { "ServiceId", "SfuStreamId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "SfuInboundSfuRtpPadIds", });
+    internal_static_org_observertc_schemas_dtos_Sfu_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_org_observertc_schemas_dtos_Sfu_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_dtos_Sfu_descriptor,
+        new java.lang.String[] { "ServiceId", "SfuId", "Joined", "Touched", "MediaUnitId", "TimeZoneId", "Marker", "SfuTransportIds", });
+    internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_org_observertc_schemas_dtos_SfuTransport_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor,
+        new java.lang.String[] { "ServiceId", "SfuId", "TransportId", "Internal", "Opened", "Touched", "MediaUnitId", "Marker", "InboundRtpPadIds", "OutboundRtpPadIds", "SctpStreamIds", });
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "RtpPadId", "Ssrc", "Internal", "Added", "MediaUnitId", "Marker", });
+        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "RtpPadId", "Ssrc", "Internal", "Added", "Touched", "MediaUnitId", "Marker", });
     internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "SfuSinkId", "RtpPadId", "Ssrc", "Internal", "Added", "MediaUnitId", "Marker", });
+        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "SfuSinkId", "RtpPadId", "Ssrc", "Internal", "Added", "Touched", "MediaUnitId", "Marker", });
     internal_static_org_observertc_schemas_dtos_SfuSctpStream_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_org_observertc_schemas_dtos_SfuSctpStream_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuSctpStream_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuSctpStreamId", "Opened", "MediaUnitId", "Marker", });
+        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuSctpStreamId", "Opened", "Touched", "MediaUnitId", "Marker", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

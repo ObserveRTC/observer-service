@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.observertc.observer.dto.StreamDirection;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.repositories.RepositoryExpiredEvent;
-import org.observertc.observer.utils.DTOGenerators;
+import org.observertc.observer.utils.ModelsGenerator;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @MicronautTest
 class PeerConnectionClosedReportsTest {
     @Inject
-    DTOGenerators dtoGenerators;
+    ModelsGenerator modelsGenerator;
 
     @Inject
     PeerConnectionClosedReports peerConnectionClosedReports;
@@ -26,7 +26,7 @@ class PeerConnectionClosedReportsTest {
 
     @Test
     void shouldHasExpectedValuesWhenRemoved() throws Throwable {
-        var expected = dtoGenerators.getPeerConnectionDTO();
+        var expected = modelsGenerator.getPeerConnectionDTO();
 
         var reports = this.peerConnectionClosedReports.mapRemovedPeerConnections(List.of(expected));
         var actual = reports.get(0);
@@ -56,14 +56,14 @@ class PeerConnectionClosedReportsTest {
     @Test
     void shouldHasExpectedValuesWhenExpired() {
         UUID callId = UUID.randomUUID();
-        var clientDTO = this.dtoGenerators.getClientDTOBuilder()
+        var clientDTO = this.modelsGenerator.getClientDTOBuilder()
                 .withCallId(callId)
                 .build();
-        var peerConnectionDTO = this.dtoGenerators.getPeerConnectionDTOBuilder()
+        var peerConnectionDTO = this.modelsGenerator.getPeerConnectionDTOBuilder()
                 .withCallId(callId)
                 .withClientId(clientDTO.clientId)
                 .build();
-        var mediaTrackDTO = this.dtoGenerators.getMediaTrackDTOBuilder()
+        var mediaTrackDTO = this.modelsGenerator.getMediaTrackDTOBuilder()
                 .withCallId(callId)
                 .withClientId(clientDTO.clientId)
                 .withPeerConnectionId(peerConnectionDTO.peerConnectionId)

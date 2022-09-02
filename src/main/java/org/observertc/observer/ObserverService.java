@@ -41,13 +41,16 @@ public class ObserverService {
     ClientSamplesAnalyser clientSamplesAnalyser;
 
     @Inject
+    CallEventReportsAdder callEventReportsAdder;
+
+    @Inject
     SfuEntitiesUpdater sfuEntitiesUpdater;
 
     @Inject
     SfuSamplesAnalyser sfuSamplesAnalyser;
 
     @Inject
-    RepositoryEventsInterpreter repositoryEventsInterpreter;
+    SfuEventReportsAdder sfuEventReportsAdder;
 
     @Inject
     ReportsCollector reportsCollector;
@@ -70,6 +73,9 @@ public class ObserverService {
                 .subscribe(this.clientSamplesAnalyser::accept);
 
         this.clientSamplesAnalyser.observableReports()
+                .subscribe(this.callEventReportsAdder.reportsObserver());
+
+        this.callEventReportsAdder.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
         // sfu samples
@@ -77,12 +83,12 @@ public class ObserverService {
                 .subscribe(this.sfuSamplesAnalyser::accept);
 
         this.sfuSamplesAnalyser.observableReports()
+                .subscribe(this.sfuEventReportsAdder.reportsObserver());
+
+        this.sfuEventReportsAdder.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
-        // repository events
-        this.repositoryEventsInterpreter.observableReports()
-                .subscribe(this.reportsCollector::acceptAll);
-
+        // funneled reports
         this.reportsCollector.getObservableReports()
                 .subscribe(this.reportSinks);
 

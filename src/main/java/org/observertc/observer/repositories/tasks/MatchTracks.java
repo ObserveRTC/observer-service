@@ -5,8 +5,8 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.OutboundAudioTracksRepository;
-import org.observertc.observer.repositories.OutboundVideoTracksRepository;
+import org.observertc.observer.repositories.InboundTracksRepository;
+import org.observertc.observer.repositories.OutboundTracksRepository;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,20 +18,18 @@ import java.util.*;
 public class MatchTracks extends ChainedTask<MatchTracks.Report> {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchTracks.class);
-    public static final Report EMPTY_REPORT = new Report();
 
     @Inject
     RepositoryMetrics exposedMetrics;
 
     @Inject
-    OutboundAudioTracksRepository outboundAudioTracksRepository;
+    OutboundTracksRepository outboundTracksRepository;
 
     @Inject
-    OutboundVideoTracksRepository outboundVideoTracksRepository;
+    InboundTracksRepository inboundTracksRepository;
 
     public static class Report {
-        public final Map<String, Match> inboundAudioMatches = new HashMap<>();
-        public final Map<String, Match> inboundVideoMatches = new HashMap<>();
+        public final Map<String, Match> inboundMatches = new HashMap<>();
     }
 
     private Report result = new Report();
@@ -43,22 +41,23 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
     void setup() {
         this.withStatsConsumer(this.exposedMetrics::processTaskStats);
         new Builder<>(this)
-            .<Set<ServiceRoomId>> addConsumerEntry("Merge all provided inputs",
+            .<Set<String>> addConsumerEntry("Merge all provided inputs",
                     () -> {}, // no input was invoked
-                    input -> { // input was invoked, so we may got some names through that
-                    if (Objects.isNull(input)) {
-                        return;
-                    }
+                    input -> {
+                        if (Objects.isNull(input)) {
+                            return;
+                        }
+                        logger.error("This Task cannot be chained!");
             })
-            .addActionStage("Fetch Inbound To Outbound Audio Tracks", () -> {
+            .addActionStage("Fetch Inbound To Outbound Tracks", () -> {
                 if (this.outboundAudioTrackIds == null || this.outboundAudioTrackIds.size() < 1) {
                     return;
                 }
-                var outboundAudioTracks = this.outboundAudioTracksRepository.getAll(this.outboundAudioTrackIds);
+                var outboundAudioTracks = this.outboundTracksRepository.getAll(this.outboundAudioTrackIds);
                 for (var entry : outboundAudioTracks.entrySet()) {
-                    var outboundAudioTrackId = entry.getKey();
-                    var outboundAudioTrack = entry.getValue();
-                    var outboundPeerConnection = outboundAudioTrack.getPeerConnection();
+                    var outboundTrackId = entry.getKey();
+                    var outboundTrack = entry.getValue();
+                    var outboundPeerConnection = outboundTrack.getPeerConnection();
                     var outboundClient = outboundPeerConnection.getClient();
                     var call = outboundClient.getCall();
                     var allClients = call.getClients();
@@ -68,27 +67,26 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         }
                         var remoteClient = clientEntry.getValue();
                         for (var inboundPeerConnection : remoteClient.getPeerConnections().values()) {
-                            for (var inboundAudioTrack : inboundPeerConnection.getInboundAudioTracks().values()) {
+                            for (var inboundTrack : inboundPeerConnection.getInboundTracks().values()) {
                                 var matched = false;
-                                if (outboundAudioTrack.getSfuStreamId() != null) {
-                                    if (inboundAudioTrack.getSfuStreamId() == outboundAudioTrack.getSfuStreamId()) {
+                                if (outboundTrack.getSfuStreamId() != null) {
+                                    if (inboundTrack.getSfuStreamId() == outboundTrack.getSfuStreamId()) {
                                         matched = true;
                                     } else {
                                         continue;
                                     }
                                 }
                                 // match by ssrcs
-                                for (var ssrc : outboundAudioTrack.getSSSRCs()) {
-                                    if (inboundAudioTrack.hasSSRC(ssrc)) {
+                                for (var ssrc : outboundTrack.getSSSRCs()) {
+                                    if (inboundTrack.hasSSRC(ssrc)) {
                                         matched = true;
                                         // that is a match
                                         break;
                                     }
                                 }
                                 if (matched) {
-                                    // thats a match
                                     var match = new Match(
-                                            inboundAudioTrack.getTrackId(),
+                                            inboundTrack.getTrackId(),
                                             inboundPeerConnection.getPeerConnectionId(),
                                             remoteClient.getClientId(),
                                             remoteClient.getUserId(),
@@ -97,66 +95,9 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                                             outboundClient.getClientId(),
                                             outboundClient.getUserId(),
                                             outboundPeerConnection.getPeerConnectionId(),
-                                            outboundAudioTrackId
+                                            outboundTrackId
                                     );
-                                    this.result.inboundAudioMatches.put(match.inboundTrackId, match);
-                                }
-                            }
-                        }
-                    }
-                }
-            })
-
-            .addActionStage("Fetch Inbound To Outbound Video Tracks", () -> {
-                if (this.outboundVideoTrackIds == null || this.outboundVideoTrackIds.size() < 1) {
-                    return;
-                }
-                var outboundVideoTracks = this.outboundVideoTracksRepository.getAll(this.outboundVideoTrackIds);
-                for (var entry : outboundVideoTracks.entrySet()) {
-                    var outboundVideoTrackId = entry.getKey();
-                    var outboundVideoTrack = entry.getValue();
-                    var outboundPeerConnection = outboundVideoTrack.getPeerConnection();
-                    var outboundClient = outboundPeerConnection.getClient();
-                    var call = outboundClient.getCall();
-                    var allClients = call.getClients();
-                    for (var clientEntry : allClients.entrySet()) {
-                        if (clientEntry.getKey() == outboundClient.getClientId()) {
-                            continue;
-                        }
-                        var remoteClient = clientEntry.getValue();
-                        for (var inboundPeerConnection : remoteClient.getPeerConnections().values()) {
-                            for (var inboundVideoTrack : inboundPeerConnection.getInboundVideoTracks().values()) {
-                                var matched = false;
-                                if (outboundVideoTrack.getSfuStreamId() != null) {
-                                    if (inboundVideoTrack.getSfuStreamId() == outboundVideoTrack.getSfuStreamId()) {
-                                        matched = true;
-                                    } else {
-                                        continue;
-                                    }
-                                }
-                                // match by ssrcs
-                                for (var ssrc : outboundVideoTrack.getSSSRCs()) {
-                                    if (inboundVideoTrack.hasSSRC(ssrc)) {
-                                        matched = true;
-                                        // that is a match
-                                        break;
-                                    }
-                                }
-                                if (matched) {
-                                    // thats a match
-                                    var match = new Match(
-                                            inboundVideoTrack.getTrackId(),
-                                            inboundPeerConnection.getPeerConnectionId(),
-                                            remoteClient.getClientId(),
-                                            remoteClient.getUserId(),
-                                            call.getCallId(),
-                                            call.getServiceRoomId(),
-                                            outboundClient.getClientId(),
-                                            outboundClient.getUserId(),
-                                            outboundPeerConnection.getPeerConnectionId(),
-                                            outboundVideoTrackId
-                                    );
-                                    this.result.inboundVideoMatches.put(match.inboundTrackId, match);
+                                    this.result.inboundMatches.put(match.inboundTrackId, match);
                                 }
                             }
                         }

@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfuMediaSinksRepository {
+public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuMediaSinksRepository.class);
 
@@ -84,6 +85,9 @@ public class SfuMediaSinksRepository {
     }
 
     synchronized void deleteAll(Set<String> sfuSinkIds) {
+        if (sfuSinkIds == null || sfuSinkIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(sfuSinkIds);
         sfuSinkIds.forEach(sfuSinkId -> {
             var removed = this.updated.remove(sfuSinkId);
@@ -96,12 +100,6 @@ public class SfuMediaSinksRepository {
     public synchronized void save() {
         if (0 < this.deleted.size()) {
             this.storage.deleteAll(this.deleted);
-            var outboundRtpPadIds = this.getAll(this.deleted).values()
-                    .stream()
-                    .map(SfuMediaSink::getOutboundRtpPadIds)
-                    .flatMap(set -> set.stream())
-                    .collect(Collectors.toSet());
-            this.sfuOutboundRtpPadsRepository.deleteAll(outboundRtpPadIds);
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
@@ -109,6 +107,16 @@ public class SfuMediaSinksRepository {
             this.updated.clear();
         }
         this.fetched.clear();
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     Observable<List<ModifiedStorageEntry<String, Models.SfuMediaSink>>> observableDeletedEntries() {

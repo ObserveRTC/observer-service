@@ -7,6 +7,7 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfuMediaStreamsRepository {
+public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(SfuMediaStreamsRepository.class);
 
@@ -89,6 +90,9 @@ public class SfuMediaStreamsRepository {
     }
 
     synchronized void deleteAll(Set<String> sfuMediaStreamIds) {
+        if (sfuMediaStreamIds == null || sfuMediaStreamIds.size() < 1) {
+            return;
+        }
         this.deleted.addAll(sfuMediaStreamIds);
         sfuMediaStreamIds.forEach(sfuMediaStreamId -> {
             var removed = this.updated.remove(sfuMediaStreamId);
@@ -108,6 +112,16 @@ public class SfuMediaStreamsRepository {
             this.updated.clear();
         }
         this.fetched.clear();
+    }
+
+    @Override
+    public String storageId() {
+        return this.storage.getId();
+    }
+
+    @Override
+    public int localSize() {
+        return this.storage.localSize();
     }
 
     Observable<List<ModifiedStorageEntry<String, Models.SfuMediaStream>>> observableDeletedEntries() {
