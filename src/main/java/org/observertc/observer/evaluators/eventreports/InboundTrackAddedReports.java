@@ -44,34 +44,35 @@ public class InboundTrackAddedReports {
         }
     }
 
-    private CallEventReport makeReport(Models.InboundTrack inboundTrack) {
+    private CallEventReport makeReport(Models.InboundTrack inboundTrackModel) {
         try {
             var streamDirection = StreamDirection.INBOUND.name();
             MediaTrackAttachment attachment = MediaTrackAttachment.builder()
-                    .withSfuStreamId(inboundTrack.getSfuStreamId())
-                    .withSfuSinkId(inboundTrack.getSfuSinkId())
+                    .withSfuStreamId(inboundTrackModel.getSfuStreamId())
+                    .withSfuSinkId(inboundTrackModel.getSfuSinkId())
                     .withStreamDirection(streamDirection)
-                    .withMediaKind(inboundTrack.getKind())
+                    .withMediaKind(inboundTrackModel.getKind())
                     .build();
-            String message = String.format("Media Track is added. streamId: %s, sinkId: %s, direction: %s, kind: %s", inboundTrack.getSfuStreamId(), inboundTrack.getSfuSinkId(), streamDirection, inboundTrack.getKind());
+            String message = String.format("Media Track is added. streamId: %s, sinkId: %s, direction: %s, kind: %s", inboundTrackModel.getSfuStreamId(), inboundTrackModel.getSfuSinkId(), streamDirection, inboundTrackModel.getKind());
+            var ssrc = inboundTrackModel.getSsrcCount() != 1 ? null : inboundTrackModel.getSsrc(0);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_ADDED.name())
-                    .setCallId(inboundTrack.getCallId())
-                    .setServiceId(inboundTrack.getServiceId())
-                    .setRoomId(inboundTrack.getRoomId())
-                    .setClientId(inboundTrack.getClientId())
-                    .setMediaUnitId(inboundTrack.getMediaUnitId())
-                    .setUserId(inboundTrack.getUserId())
-//                    .setSSRC(inboundAudioTrack.getS)
-                    .setPeerConnectionId(inboundTrack.getPeerConnectionId())
-                    .setMediaTrackId(inboundTrack.getTrackId())
+                    .setCallId(inboundTrackModel.getCallId())
+                    .setServiceId(inboundTrackModel.getServiceId())
+                    .setRoomId(inboundTrackModel.getRoomId())
+                    .setClientId(inboundTrackModel.getClientId())
+                    .setMediaUnitId(inboundTrackModel.getMediaUnitId())
+                    .setUserId(inboundTrackModel.getUserId())
+                    .setSSRC(ssrc)
+                    .setPeerConnectionId(inboundTrackModel.getPeerConnectionId())
+                    .setMediaTrackId(inboundTrackModel.getTrackId())
                     .setAttachments(attachment.toBase64())
-                    .setTimestamp(inboundTrack.getAdded())
-                    .setMarker(inboundTrack.getMarker())
+                    .setTimestamp(inboundTrackModel.getAdded())
+                    .setMarker(inboundTrackModel.getMarker())
                     .setMessage(message)
                     .build();
             logger.info("Media track {}, kind: {} (sfuStreamId: {}, sfuSinkId: {}) is ADDED on Peer Connection {} at call \"{}\" in service \"{}\" at room \"{}\"",
-                    inboundTrack.getTrackId(), inboundTrack.getKind(), inboundTrack.getSfuStreamId(), inboundTrack.getSfuSinkId(), inboundTrack.getPeerConnectionId(), inboundTrack.getCallId(), inboundTrack.getServiceId(), inboundTrack.getRoomId());
+                    inboundTrackModel.getTrackId(), inboundTrackModel.getKind(), inboundTrackModel.getSfuStreamId(), inboundTrackModel.getSfuSinkId(), inboundTrackModel.getPeerConnectionId(), inboundTrackModel.getCallId(), inboundTrackModel.getServiceId(), inboundTrackModel.getRoomId());
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);

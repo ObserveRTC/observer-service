@@ -1,6 +1,6 @@
 package org.observertc.observer.simulator;
 
-import org.observertc.observer.dto.StreamDirection;
+import org.observertc.observer.common.StreamDirection;
 import org.observertc.observer.utils.RandomGenerators;
 import org.observertc.observer.utils.TestUtils;
 

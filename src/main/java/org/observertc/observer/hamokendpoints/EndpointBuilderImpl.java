@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuilder {
     private static final Logger logger = LoggerFactory.getLogger(EndpointBuilderImpl.class);
 
-    public static final String ENDPOINT_ID_PARAM = "endpointId";
-
     private final List<String> packages;
     private BuildersEssentials essentials;
 
@@ -32,7 +30,7 @@ public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuil
 
     public Endpoint build() {
         Config config = this.convertAndValidate(Config.class);
-        String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, "EndpointBuilder");
+        String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, "Builder");
         Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
         if (!builderHolder.isPresent()) {
             logger.error("Cannot find endpoint builder for {} in packages: {}", config.type, String.join(",", this.packages ));

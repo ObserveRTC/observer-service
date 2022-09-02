@@ -59,7 +59,7 @@ export class ProtobufAssigner {
         const getList = makeMethodName("get", fieldName, listPostfix);
         const countPostfix = (fieldName.charAt(fieldName.length - 1) !== 's' ? 's' : '') + "Count()"
         const getListCount = makeMethodName("get", fieldName, countPostfix)
-        const makeAssignee = (fieldName, base) => this._uuidFields.has(fieldName) ? `UUIDAdapter.tryParseOrNull(${base})`: `${base}`;
+        const makeAssignee = (fieldName, base) => this._uuidFields.has(fieldName) ? `UUIDAdapter.toStringOrNull(${base})`: `${base}`;
         if (isObject && type.type === "enum") {
             const assignee = makeAssignee(fieldName, `${this._srcName}.${getField}`);
             if (required) {

@@ -110,13 +110,7 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
         .build();
     }
 
-    public MatchTracks whereOutboundAudioTrackIds(Set<String> mediaTrackIds) {
-        if (mediaTrackIds == null) return this;
-        mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.outboundAudioTrackIds::add);
-        return this;
-    }
-
-    public MatchTracks whereOutboundVideoTrackIds(Set<String> mediaTrackIds) {
+    public MatchTracks whereOutboundTrackIds(Set<String> mediaTrackIds) {
         if (mediaTrackIds == null) return this;
         mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.outboundAudioTrackIds::add);
         return this;

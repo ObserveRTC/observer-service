@@ -99,13 +99,16 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 info -> {
                     var proposedCallId = Utils.firstNotNull(info.providedCallId, UUID.randomUUID().toString());
                     var serviceRoomId = info.serviceRoomId();
-                    return Models.Call.newBuilder()
+                    var builder = Models.Call.newBuilder()
                             .setServiceId(serviceRoomId.serviceId)
                             .setRoomId(serviceRoomId.roomId)
                             .setCallId(proposedCallId)
-                            .setMarker(info.marker())
                             .setStarted(timestamp)
-                            .build();
+                            ;
+                    if (info.marker != null) {
+                        builder.setMarker(info.marker);
+                    }
+                    return builder.build();
                 }
         ));
         var notInsertedModels = this.storage.insertAll(proposedModels);

@@ -37,8 +37,8 @@ public class ObservedSamplesGenerator {
         var peerConnectionId = UUID.randomUUID().toString();
         var transportId = UUID.randomUUID().toString();
         this.clientSamples = new ClientSideSamplesGenerator()
-                .setClientId(UUID.randomUUID())
-                .setCallId(UUID.randomUUID())
+                .setClientId(UUID.randomUUID().toString())
+                .setCallId(UUID.randomUUID().toString())
                 .setMarker(this.randomGenerators.getRandomString())
                 .setRoomId(this.randomGenerators.getRandomTestRoomIds())
                 .setUserId(this.randomGenerators.getRandomTestUserIds())

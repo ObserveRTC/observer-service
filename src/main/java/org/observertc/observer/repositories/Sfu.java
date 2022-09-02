@@ -102,13 +102,13 @@ public class Sfu {
         return this.sfuTransportsRepository.get(sfuTransportId);
     }
 
-    public SfuTransport addSfuTransport(String sfuTransportId, boolean internal, Long timestamp) throws AlreadyCreatedException {
+    public SfuTransport addSfuTransport(String sfuTransportId, boolean internal, Long timestamp, String marker) throws AlreadyCreatedException {
         var model = modelHolder.get();
         var sfuTransportIds = model.getSfuTransportIdsList();
         if (sfuTransportIds.contains(sfuTransportId)) {
             throw AlreadyCreatedException.wrapSfuTransport(sfuTransportId);
         }
-        var sfuTransportModel = Models.SfuTransport.newBuilder()
+        var sfuTransportModelBuilder = Models.SfuTransport.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuId(model.getSfuId())
                 .setTransportId(sfuTransportId)
@@ -116,9 +116,12 @@ public class Sfu {
                 .setOpened(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
-                .setMarker(model.getMarker())
-                .build();
+                ;
 
+        if (marker != null) {
+            sfuTransportModelBuilder.setMarker(marker);
+        }
+        var sfuTransportModel = sfuTransportModelBuilder.build();
         var newModel = Models.Sfu.newBuilder(model)
                 .addSfuTransportIds(sfuTransportId)
                 .build();

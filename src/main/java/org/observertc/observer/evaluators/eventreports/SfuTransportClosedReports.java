@@ -51,7 +51,7 @@ public class SfuTransportClosedReports {
                     .build().toBase64();
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_TRANSPORT_CLOSED.name())
-                    .setSfuId(sfuTransportDTO.getTransportId())
+                    .setSfuId(sfuTransportDTO.getSfuId())
 //                    .setCallId(callId)
                     .setTransportId(sfuTransportDTO.getTransportId())
                     .setMessage("Sfu Transport is closed")

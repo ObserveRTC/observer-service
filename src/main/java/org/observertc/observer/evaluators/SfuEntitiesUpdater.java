@@ -114,10 +114,11 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 }
                 var result = finalSfu.getSfuTransport(sfuTransportId);
                 if (result == null) {
-                    finalSfu.addSfuTransport(
+                    result = finalSfu.addSfuTransport(
                             sfuTransportId,
                             internal,
-                            timestamp
+                            timestamp,
+                            marker
                     );
                     sfuTransports.put(result.getSfuTransportId(), result);
                     newSfuTransportModels.add(result.getModel());

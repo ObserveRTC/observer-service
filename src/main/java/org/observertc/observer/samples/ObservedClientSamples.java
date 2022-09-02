@@ -27,18 +27,14 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
 
 //    Set<String> getMediaTrackIds();
 
-    Set<String> getInboundAudioTrackIds();
-    Set<String> getInboundVideoTrackIds();
-    Set<String> getOutboundAudioTrackIds();
-    Set<String> getOutboundVideoTrackIds();
+    Set<String> getInboundTrackIds();
+    Set<String> getOutboundTrackIds();
 
     class Builder {
         private Set<String> clientIds = new HashSet<>();
         private Set<String> peerConnectionIds = new HashSet<>();
-        private Set<String> inboundAudioTrackIds = new HashSet<>();
-        private Set<String> inboundVideoTrackIds = new HashSet<>();
-        private Set<String> outboundAudioTrackIds = new HashSet<>();
-        private Set<String> outboundVideoTrackIds = new HashSet<>();
+        private Set<String> inboundTrackIds = new HashSet<>();
+        private Set<String> outboundTrackIds = new HashSet<>();
 
         private Set<ServiceRoomId> serviceRoomIds = new HashSet<>();
         private List<ObservedClientSample> clientSamples = new LinkedList<>();
@@ -52,19 +48,19 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
             ClientSampleVisitor.streamInboundAudioTracks(clientSample)
                     .map(track -> track.trackId)
                     .filter(Objects::nonNull)
-                    .forEach(inboundAudioTrackIds::add);
+                    .forEach(inboundTrackIds::add);
             ClientSampleVisitor.streamInboundVideoTracks(clientSample)
                     .map(track -> track.trackId)
                     .filter(Objects::nonNull)
-                    .forEach(inboundVideoTrackIds::add);
+                    .forEach(inboundTrackIds::add);
             ClientSampleVisitor.streamOutboundAudioTracks(clientSample)
                     .map(track -> track.trackId)
                     .filter(Objects::nonNull)
-                    .forEach(outboundAudioTrackIds::add);
+                    .forEach(outboundTrackIds::add);
             ClientSampleVisitor.streamOutboundVideoTracks(clientSample)
                     .map(track -> track.trackId)
                     .filter(Objects::nonNull)
-                    .forEach(outboundVideoTrackIds::add);
+                    .forEach(outboundTrackIds::add);
             if (Objects.nonNull(clientSample.clientId)) {
                 this.clientIds.add(clientSample.clientId);
             }
@@ -151,23 +147,13 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
                 }
 
                 @Override
-                public Set<String> getInboundAudioTrackIds() {
-                    return inboundAudioTrackIds;
+                public Set<String> getInboundTrackIds() {
+                    return inboundTrackIds;
                 }
 
                 @Override
-                public Set<String> getInboundVideoTrackIds() {
-                    return inboundVideoTrackIds;
-                }
-
-                @Override
-                public Set<String> getOutboundAudioTrackIds() {
-                    return outboundAudioTrackIds;
-                }
-
-                @Override
-                public Set<String> getOutboundVideoTrackIds() {
-                    return outboundVideoTrackIds;
+                public Set<String> getOutboundTrackIds() {
+                    return outboundTrackIds;
                 }
 
 

@@ -50,16 +50,16 @@ class SfuSamplesAnalyserTest {
 
     @Test
     void shouldNotCreateUnmatchedReports() throws ExecutionException, InterruptedException, TimeoutException {
-        this.sfuSamplesAnalyser.config.dropUnmatchedOutboundReports = true;
-        this.sfuSamplesAnalyser.config.dropUnmatchedInboundReports = true;
+        this.sfuSamplesAnalyser.config.dropUnmatchedOutboundReports = false;
+        this.sfuSamplesAnalyser.config.dropUnmatchedInboundReports = false;
         var observedSfuSample = observedSamplesGenerator.generateObservedSfuSample();
         var observedSfuSamples = ObservedSfuSamples.builder().addObservedSfuSample(observedSfuSample).build();
         var reportsPromise = new CompletableFuture<List<Report>>();
         var sfuSample = observedSfuSample.getSfuSample();
         int expectedNumberOfReports =
                 getArrayLength(sfuSample.transports) +
-//                        getArrayLength(sfuSample.inboundRtpPads) +
-//                        getArrayLength(sfuSample.outboundRtpPads) +
+                        getArrayLength(sfuSample.inboundRtpPads) +
+                        getArrayLength(sfuSample.outboundRtpPads) +
                         getArrayLength(sfuSample.sctpChannels) +
                         getArrayLength(sfuSample.extensionStats) +
                         0

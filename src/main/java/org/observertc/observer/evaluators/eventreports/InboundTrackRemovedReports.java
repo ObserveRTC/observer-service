@@ -54,6 +54,7 @@ public class InboundTrackRemovedReports {
                     .withMediaKind(mediaTrackDTO.getKind())
                     .build();
             String message = String.format("Media Track is removed. sfuStreamId: %s, sfuSinkId: %s, direction: %s, kind: %s", mediaTrackDTO.getSfuStreamId(), mediaTrackDTO.getSfuSinkId(), streamDirection, mediaTrackDTO.getKind());
+            var ssrc = mediaTrackDTO.getSsrcCount() != 1 ? null : mediaTrackDTO.getSsrc(0);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_REMOVED.name())
                     .setCallId(mediaTrackDTO.getCallId())
@@ -62,7 +63,7 @@ public class InboundTrackRemovedReports {
                     .setClientId(mediaTrackDTO.getClientId())
                     .setMediaUnitId(mediaTrackDTO.getMediaUnitId())
                     .setUserId(mediaTrackDTO.getUserId())
-//                    .setSSRC(mediaTrackDTO.ssrc)
+                    .setSSRC(ssrc)
                     .setPeerConnectionId(mediaTrackDTO.getPeerConnectionId())
                     .setMediaTrackId(mediaTrackDTO.getTrackId())
                     .setAttachments(attachment.toBase64())

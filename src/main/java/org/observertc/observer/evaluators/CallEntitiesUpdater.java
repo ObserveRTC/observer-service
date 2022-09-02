@@ -108,6 +108,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             }
             var clientSample = observedClientSample.getClientSample();
             var timestamp = clientSample.timestamp;
+            var marker = clientSample.marker;
             var client = call.getClient(clientSample.clientId);
             clientSample.callId = call.getCallId();
             if (client == null) {
@@ -116,7 +117,8 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         clientSample.userId,
                         observedClientSample.getMediaUnitId(),
                         observedClientSample.getTimeZoneId(),
-                        timestamp
+                        timestamp,
+                        marker
                 );
                 client.touch(timestamp);
                 clients.put(client.getClientId(), client);
@@ -130,14 +132,21 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 }
                 var result = peerConnections.get(peerConnectionId);
                 if (result == null) {
-                    finalClient.addPeerConnection(
+                    result = finalClient.addPeerConnection(
                             peerConnectionId,
-                            timestamp);
+                            timestamp,
+                            marker
+                    );
                     peerConnections.put(result.getPeerConnectionId(), result);
                     newPeerConnectionModels.add(result.getModel());
+                } else {
+                    result.touch(timestamp);
                 }
                 return result;
             };
+            ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(pcTransport -> {
+                var peerConnection = getPeerConnection.apply(pcTransport.peerConnectionId);
+            });
 
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(track -> {
                 var peerConnection = getPeerConnection.apply(track.peerConnectionId);
@@ -153,12 +162,18 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             track.sfuStreamId,
                             track.sfuSinkId,
                             MediaKind.AUDIO,
-                            track.ssrc
+                            track.ssrc,
+                            marker
                     );
                     inboundTracks.put(inboundAudioTrack.getTrackId(), inboundAudioTrack);
                     newInboundTrackModels.add(inboundAudioTrack.getModel());
+                } else {
+                    inboundAudioTrack.touch(timestamp);
+                    if (!inboundAudioTrack.hasSSRC(track.ssrc)) {
+                        inboundAudioTrack.addSSRC(track.ssrc);
+                    }
                 }
-                inboundAudioTrack.touch(timestamp);
+
             });
 
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(track -> {
@@ -175,12 +190,17 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             track.sfuStreamId,
                             track.sfuSinkId,
                             MediaKind.VIDEO,
-                            track.ssrc
+                            track.ssrc,
+                            marker
                     );
                     inboundTracks.put(inboundVideoTrack.getTrackId(), inboundVideoTrack);
                     newInboundTrackModels.add(inboundVideoTrack.getModel());
+                } else {
+                    inboundVideoTrack.touch(timestamp);
+                    if (!inboundVideoTrack.hasSSRC(track.ssrc)) {
+                        inboundVideoTrack.addSSRC(track.ssrc);
+                    }
                 }
-                inboundVideoTrack.touch(timestamp);
             });
 
             ClientSampleVisitor.streamOutboundAudioTracks(clientSample).forEach(track -> {
@@ -196,12 +216,17 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             timestamp,
                             track.sfuStreamId,
                             MediaKind.AUDIO,
-                            track.ssrc
+                            track.ssrc,
+                            marker
                     );
                     outboundTracks.put(outboundAudioTrack.getTrackId(), outboundAudioTrack);
                     newOutboundTrackModels.add(outboundAudioTrack.getModel());
+                } else {
+                    outboundAudioTrack.touch(timestamp);
+                    if (!outboundAudioTrack.hasSSRC(track.ssrc)) {
+                        outboundAudioTrack.addSSRC(track.ssrc);
+                    }
                 }
-                outboundAudioTrack.touch(timestamp);
             });
 
             ClientSampleVisitor.streamOutboundVideoTracks(clientSample).forEach(track -> {
@@ -217,12 +242,18 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             timestamp,
                             track.sfuStreamId,
                             MediaKind.VIDEO,
-                            track.ssrc
+                            track.ssrc,
+                            marker
                     );
                     outboundTracks.put(outboundVideoTrack.getTrackId(), outboundVideoTrack);
                     newOutboundTrackModels.add(outboundVideoTrack.getModel());
+                } else {
+                    outboundVideoTrack.touch(timestamp);
+                    if (!outboundVideoTrack.hasSSRC(track.ssrc)) {
+                        outboundVideoTrack.addSSRC(track.ssrc);
+                    }
                 }
-                outboundVideoTrack.touch(timestamp);
+
             });
         }
         this.callsRepository.save();
@@ -248,18 +279,18 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
 
     private Map<String, InboundTrack> fetchExistingInboundTracks(ObservedClientSamples samples) {
         var result = new HashMap<String, InboundTrack>();
-        var existingInboundAudioTracks = this.inboundTracksRepository.getAll(samples.getInboundVideoTrackIds());
-        if (existingInboundAudioTracks != null && 0 < existingInboundAudioTracks.size()) {
-            result.putAll(existingInboundAudioTracks);
+        var existingInboundTracks = this.inboundTracksRepository.getAll(samples.getInboundTrackIds());
+        if (existingInboundTracks != null && 0 < existingInboundTracks.size()) {
+            result.putAll(existingInboundTracks);
         }
         return result;
     }
 
     private Map<String, OutboundTrack> fetchExistingOutboundTracks(ObservedClientSamples samples) {
         var result = new HashMap<String, OutboundTrack>();
-        var existingInboundAudioTracks = this.outboundTracksRepository.getAll(samples.getInboundAudioTrackIds());
-        if (existingInboundAudioTracks != null && 0 < existingInboundAudioTracks.size()) {
-            result.putAll(existingInboundAudioTracks);
+        var existingOutboundTracks = this.outboundTracksRepository.getAll(samples.getOutboundTrackIds());
+        if (existingOutboundTracks != null && 0 < existingOutboundTracks.size()) {
+            result.putAll(existingOutboundTracks);
         }
         return result;
     }

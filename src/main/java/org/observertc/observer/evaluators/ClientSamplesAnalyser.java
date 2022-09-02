@@ -67,8 +67,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             return;
         }
         var task = this.matchTracks.get()
-                .whereOutboundAudioTrackIds(observedClientSamples.getOutboundAudioTrackIds())
-                .whereOutboundVideoTrackIds(observedClientSamples.getOutboundVideoTrackIds())
+                .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("Interrupted execution of component due to unsuccessful task execution");
@@ -91,7 +90,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(inboundAudioTrack -> {
                 var match = inboundMatches.get(inboundAudioTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundAudioTrack.peerConnectionId) ? peerConnectionLabels.get(inboundAudioTrack.peerConnectionId) : null;
-                if (Objects.nonNull(matches)) {
+                if (Objects.nonNull(match)) {
                     this.inboundAudioReportsDepot
                             .setRemoteClientId(match.outboundClientId())
                             .setRemoteUserId(match.outboundUserId())
@@ -110,7 +109,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(inboundVideoTrack -> {
                 var match = inboundMatches.get(inboundVideoTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundVideoTrack.peerConnectionId) ? peerConnectionLabels.get(inboundVideoTrack.peerConnectionId) : null;
-                if (Objects.nonNull(matches)) {
+                if (Objects.nonNull(match)) {
                     this.inboundVideoReportsDepot
                             .setRemoteClientId(match.outboundClientId())
                             .setRemoteUserId(match.outboundUserId())

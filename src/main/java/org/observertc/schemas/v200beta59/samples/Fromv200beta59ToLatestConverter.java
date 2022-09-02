@@ -1,6 +1,7 @@
 package org.observertc.schemas.v200beta59.samples;
 
 import io.reactivex.rxjava3.functions.Function;
+import org.observertc.observer.common.UUIDAdapter;
 
 public class Fromv200beta59ToLatestConverter implements Function<Samples, org.observertc.schemas.samples.Samples> {
 
@@ -26,8 +27,8 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
         for (int index = 0; index < srcClientSamples.length; ++index) {
             var srcClientSample = srcClientSamples[index];
             var dstClientSample = new org.observertc.schemas.samples.Samples.ClientSample();
-            dstClientSample.callId = srcClientSample.callId.toString();
-            dstClientSample.clientId = srcClientSample.clientId.toString();
+            dstClientSample.callId = UUIDAdapter.toStringOrNull(srcClientSample.callId);
+            dstClientSample.clientId = UUIDAdapter.toStringOrNull(srcClientSample.clientId);
             dstClientSample.sampleSeq = srcClientSample.sampleSeq;
             dstClientSample.roomId = srcClientSample.roomId;
             dstClientSample.userId = srcClientSample.userId;
@@ -103,7 +104,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcPeerConnectionTransports.length; ++j) {
                     var srcPeerConnectionTransport = srcPeerConnectionTransports[j];
                     var dstPeerConnectionTransport = new org.observertc.schemas.samples.Samples.ClientSample.PeerConnectionTransport();
-                    dstPeerConnectionTransport.peerConnectionId = srcPeerConnectionTransport.peerConnectionId.toString();
+                    dstPeerConnectionTransport.peerConnectionId = UUIDAdapter.toStringOrNull(srcPeerConnectionTransport.peerConnectionId);
                     dstPeerConnectionTransport.label = srcPeerConnectionTransport.label;
                     dstPeerConnectionTransport.dataChannelsOpened = srcPeerConnectionTransport.dataChannelsOpened;
                     dstPeerConnectionTransport.dataChannelsClosed = srcPeerConnectionTransport.dataChannelsClosed;
@@ -234,10 +235,10 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcInboundAudioTracks.length; ++j) {
                     var srcInboundAudioTrack = srcInboundAudioTracks[j];
                     var dstInboundAudioTrack = new org.observertc.schemas.samples.Samples.ClientSample.InboundAudioTrack();
-                    dstInboundAudioTrack.trackId = srcInboundAudioTrack.trackId.toString();
-                    dstInboundAudioTrack.peerConnectionId = srcInboundAudioTrack.peerConnectionId.toString();
+                    dstInboundAudioTrack.trackId = UUIDAdapter.toStringOrNull(srcInboundAudioTrack.trackId);
+                    dstInboundAudioTrack.peerConnectionId = UUIDAdapter.toStringOrNull(srcInboundAudioTrack.peerConnectionId);
                     dstInboundAudioTrack.remoteClientId = srcInboundAudioTrack.remoteClientId;
-                    dstInboundAudioTrack.sfuSinkId = srcInboundAudioTrack.sfuSinkId.toString();
+                    dstInboundAudioTrack.sfuSinkId = UUIDAdapter.toStringOrNull(srcInboundAudioTrack.sfuSinkId);
                     dstInboundAudioTrack.ssrc = srcInboundAudioTrack.ssrc;
                     dstInboundAudioTrack.packetsReceived = srcInboundAudioTrack.packetsReceived;
                     dstInboundAudioTrack.packetsLost = srcInboundAudioTrack.packetsLost;
@@ -301,10 +302,10 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcInboundVideoTracks.length; ++j) {
                     var srcInboundVideoTrack = srcInboundVideoTracks[j];
                     var dstInboundVideoTrack = new org.observertc.schemas.samples.Samples.ClientSample.InboundVideoTrack();
-                    dstInboundVideoTrack.trackId = srcInboundVideoTrack.trackId.toString();
-                    dstInboundVideoTrack.peerConnectionId = srcInboundVideoTrack.peerConnectionId.toString();
+                    dstInboundVideoTrack.trackId = UUIDAdapter.toStringOrNull(srcInboundVideoTrack.trackId);
+                    dstInboundVideoTrack.peerConnectionId = UUIDAdapter.toStringOrNull(srcInboundVideoTrack.peerConnectionId);
                     dstInboundVideoTrack.remoteClientId = srcInboundVideoTrack.remoteClientId;
-                    dstInboundVideoTrack.sfuSinkId = srcInboundVideoTrack.sfuSinkId.toString();
+                    dstInboundVideoTrack.sfuSinkId = UUIDAdapter.toStringOrNull(srcInboundVideoTrack.sfuSinkId);
                     dstInboundVideoTrack.ssrc = srcInboundVideoTrack.ssrc;
                     dstInboundVideoTrack.packetsReceived = srcInboundVideoTrack.packetsReceived;
                     dstInboundVideoTrack.packetsLost = srcInboundVideoTrack.packetsLost;
@@ -375,9 +376,9 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcOutboundAudioTracks.length; ++j) {
                     var srcOutboundAudioTrack = srcOutboundAudioTracks[j];
                     var dstOutboundAudioTrack = new org.observertc.schemas.samples.Samples.ClientSample.OutboundAudioTrack();
-                    dstOutboundAudioTrack.trackId = srcOutboundAudioTrack.trackId.toString();
-                    dstOutboundAudioTrack.peerConnectionId = srcOutboundAudioTrack.peerConnectionId.toString();
-                    dstOutboundAudioTrack.sfuStreamId = srcOutboundAudioTrack.sfuStreamId.toString();
+                    dstOutboundAudioTrack.trackId = UUIDAdapter.toStringOrNull(srcOutboundAudioTrack.trackId);
+                    dstOutboundAudioTrack.peerConnectionId = UUIDAdapter.toStringOrNull(srcOutboundAudioTrack.peerConnectionId);
+                    dstOutboundAudioTrack.sfuStreamId = UUIDAdapter.toStringOrNull(srcOutboundAudioTrack.sfuStreamId);
                     dstOutboundAudioTrack.ssrc = srcOutboundAudioTrack.ssrc;
                     dstOutboundAudioTrack.packetsSent = srcOutboundAudioTrack.packetsSent;
                     dstOutboundAudioTrack.bytesSent = srcOutboundAudioTrack.bytesSent;
@@ -442,9 +443,9 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcOutboundVideoTracks.length; ++j) {
                     var srcOutboundVideoTrack = srcOutboundVideoTracks[j];
                     var dstOutboundVideoTrack = new org.observertc.schemas.samples.Samples.ClientSample.OutboundVideoTrack();
-                    dstOutboundVideoTrack.trackId = srcOutboundVideoTrack.trackId.toString();
-                    dstOutboundVideoTrack.peerConnectionId = srcOutboundVideoTrack.peerConnectionId.toString();
-                    dstOutboundVideoTrack.sfuStreamId = srcOutboundVideoTrack.sfuStreamId.toString();
+                    dstOutboundVideoTrack.trackId = UUIDAdapter.toStringOrNull(srcOutboundVideoTrack.trackId);
+                    dstOutboundVideoTrack.peerConnectionId = UUIDAdapter.toStringOrNull(srcOutboundVideoTrack.peerConnectionId);
+                    dstOutboundVideoTrack.sfuStreamId = UUIDAdapter.toStringOrNull(srcOutboundVideoTrack.sfuStreamId);
                     dstOutboundVideoTrack.ssrc = srcOutboundVideoTrack.ssrc;
                     dstOutboundVideoTrack.packetsSent = srcOutboundVideoTrack.packetsSent;
                     dstOutboundVideoTrack.bytesSent = srcOutboundVideoTrack.bytesSent;
@@ -527,7 +528,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcIceLocalCandidates.length; ++j) {
                     var srcIceLocalCandidate = srcIceLocalCandidates[j];
                     var dstIceLocalCandidate = new org.observertc.schemas.samples.Samples.ClientSample.IceLocalCandidate();
-                    dstIceLocalCandidate.peerConnectionId = srcIceLocalCandidate.peerConnectionId.toString();
+                    dstIceLocalCandidate.peerConnectionId = UUIDAdapter.toStringOrNull(srcIceLocalCandidate.peerConnectionId);
                     dstIceLocalCandidate.id = srcIceLocalCandidate.id;
                     dstIceLocalCandidate.address = srcIceLocalCandidate.address;
                     dstIceLocalCandidate.port = srcIceLocalCandidate.port;
@@ -547,7 +548,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcIceRemoteCandidates.length; ++j) {
                     var srcIceRemoteCandidate = srcIceRemoteCandidates[j];
                     var dstIceRemoteCandidate = new org.observertc.schemas.samples.Samples.ClientSample.IceRemoteCandidate();
-                    dstIceRemoteCandidate.peerConnectionId = srcIceRemoteCandidate.peerConnectionId.toString();
+                    dstIceRemoteCandidate.peerConnectionId = UUIDAdapter.toStringOrNull(srcIceRemoteCandidate.peerConnectionId);
                     dstIceRemoteCandidate.id = srcIceRemoteCandidate.id;
                     dstIceRemoteCandidate.address = srcIceRemoteCandidate.address;
                     dstIceRemoteCandidate.port = srcIceRemoteCandidate.port;
@@ -567,7 +568,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                 for (int j = 0; j < srcDataChannels.length; ++j) {
                     var srcDataChannel = srcDataChannels[j];
                     var dstDataChannel = new org.observertc.schemas.samples.Samples.ClientSample.DataChannel();
-                    dstDataChannel.peerConnectionId = srcDataChannel.peerConnectionId.toString();
+                    dstDataChannel.peerConnectionId = UUIDAdapter.toStringOrNull(srcDataChannel.peerConnectionId);
                     dstDataChannel.id = srcDataChannel.id;
                     dstDataChannel.label = srcDataChannel.label;
                     dstDataChannel.address = srcDataChannel.address;
@@ -597,7 +598,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
             var srcSfuSample = srcSfuSamples[index];
             var dstSfuSample = new org.observertc.schemas.samples.Samples.SfuSample();
 
-            dstSfuSample.sfuId = srcSfuSample.sfuId.toString();
+            dstSfuSample.sfuId = UUIDAdapter.toStringOrNull(srcSfuSample.sfuId);
             dstSfuSample.timestamp = srcSfuSample.timestamp;
             dstSfuSample.timeZoneOffsetInHours = srcSfuSample.timeZoneOffsetInHours;
             dstSfuSample.marker = srcSfuSample.marker;
@@ -609,7 +610,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                     var srcSfuTransport = srcSfuTransports[j];
                     var dstSfuTransport = new org.observertc.schemas.samples.Samples.SfuSample.SfuTransport();
                     dstSfuTransport.noReport = srcSfuTransport.noReport;
-                    dstSfuTransport.transportId = srcSfuTransport.transportId.toString();
+                    dstSfuTransport.transportId = UUIDAdapter.toStringOrNull(srcSfuTransport.transportId);
                     dstSfuTransport.internal = srcSfuTransport.internal;
                     dstSfuTransport.dtlsState = srcSfuTransport.dtlsState;
                     dstSfuTransport.iceState = srcSfuTransport.iceState;
@@ -647,10 +648,10 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                     var srcSfuInboundRtpPad = srcSfuInboundRtpPads[j];
                     var dstSfuInboundRtpPad = new org.observertc.schemas.samples.Samples.SfuSample.SfuInboundRtpPad();
                     dstSfuInboundRtpPad.noReport = srcSfuInboundRtpPad.noReport;
-                    dstSfuInboundRtpPad.transportId = srcSfuInboundRtpPad.transportId.toString();
+                    dstSfuInboundRtpPad.transportId = UUIDAdapter.toStringOrNull(srcSfuInboundRtpPad.transportId);
                     dstSfuInboundRtpPad.internal = srcSfuInboundRtpPad.internal;
-                    dstSfuInboundRtpPad.streamId = srcSfuInboundRtpPad.streamId.toString();
-                    dstSfuInboundRtpPad.padId = srcSfuInboundRtpPad.padId.toString();
+                    dstSfuInboundRtpPad.streamId = UUIDAdapter.toStringOrNull(srcSfuInboundRtpPad.streamId);
+                    dstSfuInboundRtpPad.padId = UUIDAdapter.toStringOrNull(srcSfuInboundRtpPad.padId);
                     dstSfuInboundRtpPad.ssrc = srcSfuInboundRtpPad.ssrc;
                     dstSfuInboundRtpPad.mediaType = srcSfuInboundRtpPad.mediaType;
                     dstSfuInboundRtpPad.payloadType = srcSfuInboundRtpPad.payloadType;
@@ -696,15 +697,15 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                     var srcSfuOutboundRtpPad = srcSfuOutboundRtpPads[j];
                     var dstSfuOutboundRtpPad = new org.observertc.schemas.samples.Samples.SfuSample.SfuOutboundRtpPad();
                     dstSfuOutboundRtpPad.noReport = srcSfuOutboundRtpPad.noReport;
-                    dstSfuOutboundRtpPad.transportId = srcSfuOutboundRtpPad.transportId.toString();
+                    dstSfuOutboundRtpPad.transportId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.transportId);
                     dstSfuOutboundRtpPad.internal = srcSfuOutboundRtpPad.internal;
-                    dstSfuOutboundRtpPad.streamId = srcSfuOutboundRtpPad.streamId.toString();
-                    dstSfuOutboundRtpPad.sinkId = srcSfuOutboundRtpPad.sinkId.toString();
-                    dstSfuOutboundRtpPad.padId = srcSfuOutboundRtpPad.padId.toString();
+                    dstSfuOutboundRtpPad.streamId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.streamId);
+                    dstSfuOutboundRtpPad.sinkId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.sinkId);
+                    dstSfuOutboundRtpPad.padId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.padId);
                     dstSfuOutboundRtpPad.ssrc = srcSfuOutboundRtpPad.ssrc;
-                    dstSfuOutboundRtpPad.callId = srcSfuOutboundRtpPad.callId.toString();
-                    dstSfuOutboundRtpPad.clientId = srcSfuOutboundRtpPad.clientId.toString();
-                    dstSfuOutboundRtpPad.trackId = srcSfuOutboundRtpPad.trackId.toString();
+                    dstSfuOutboundRtpPad.callId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.callId);
+                    dstSfuOutboundRtpPad.clientId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.clientId);
+                    dstSfuOutboundRtpPad.trackId = UUIDAdapter.toStringOrNull(srcSfuOutboundRtpPad.trackId);
                     dstSfuOutboundRtpPad.mediaType = srcSfuOutboundRtpPad.mediaType;
                     dstSfuOutboundRtpPad.payloadType = srcSfuOutboundRtpPad.payloadType;
                     dstSfuOutboundRtpPad.mimeType = srcSfuOutboundRtpPad.mimeType;
@@ -749,9 +750,9 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                     var srcSfuSctpChannel = srcSfuSctpChannels[j];
                     var dstSfuSctpChannel = new org.observertc.schemas.samples.Samples.SfuSample.SfuSctpChannel();
                     dstSfuSctpChannel.noReport = srcSfuSctpChannel.noReport;
-                    dstSfuSctpChannel.transportId = srcSfuSctpChannel.transportId.toString();
-                    dstSfuSctpChannel.streamId = srcSfuSctpChannel.streamId.toString();
-                    dstSfuSctpChannel.channelId = srcSfuSctpChannel.channelId.toString();
+                    dstSfuSctpChannel.transportId = UUIDAdapter.toStringOrNull(srcSfuSctpChannel.transportId);
+                    dstSfuSctpChannel.streamId = UUIDAdapter.toStringOrNull(srcSfuSctpChannel.streamId);
+                    dstSfuSctpChannel.channelId = UUIDAdapter.toStringOrNull(srcSfuSctpChannel.channelId);
                     dstSfuSctpChannel.label = srcSfuSctpChannel.label;
                     dstSfuSctpChannel.protocol = srcSfuSctpChannel.protocol;
                     dstSfuSctpChannel.sctpSmoothedRoundTripTime = srcSfuSctpChannel.sctpSmoothedRoundTripTime;
@@ -827,7 +828,7 @@ public class Fromv200beta59ToLatestConverter implements Function<Samples, org.ob
                     dstTurnSession.sessionId = srcTurnSession.sessionId;
                     dstTurnSession.realm = srcTurnSession.realm;
                     dstTurnSession.username = srcTurnSession.username;
-                    dstTurnSession.clientId = srcTurnSession.clientId.toString();
+                    dstTurnSession.clientId = UUIDAdapter.toStringOrNull(srcTurnSession.clientId);
                     dstTurnSession.started = srcTurnSession.started;
                     dstTurnSession.nonceExpirationTime = srcTurnSession.nonceExpirationTime;
                     dstTurnSession.serverAddress = srcTurnSession.serverAddress;

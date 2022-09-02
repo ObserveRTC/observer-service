@@ -1,109 +1,140 @@
 package org.observertc.observer.utils;
 
+import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.repositories.CallsRepository;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
+import org.observertc.schemas.dtos.Models;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
 
 public class DTOMapGenerator {
     private static final String ALICE_USER_ID = "Alice";
     private static final String BOB_USER_ID = "Bob";
     private static final String ASIA_SFU_MEDIA_UNIT_ID = "asia-sfu";
 
-    private CallDTO callDTO;
-    private Map<UUID, ClientDTO> clientDTOs = new HashMap<>();
-    private Map<UUID, PeerConnectionDTO> peerConnectionDTOs = new HashMap<>();
-    private Map<UUID, MediaTrackDTO> mediaTrackDTOs = new HashMap<>();
-    private Map<UUID, SfuDTO> sfuDTOs = new HashMap<>();
-    private Map<UUID, SfuTransportDTO> sfuTransports = new HashMap<>();
-    private Map<UUID, SfuRtpPadDTO> sfuRtpPads = new HashMap<>();
+    private Models.Call callDTO;
+    private Map<String, Models.Client> clientDTOs = new HashMap<>();
+    private Map<String, Models.PeerConnection> peerConnectionDTOs = new HashMap<>();
+    private Map<String, Models.InboundTrack> inboundTracks = new HashMap<>();
+    private Map<String, Models.OutboundTrack> outboundTracks = new HashMap<>();
+    private Map<String, Models.Sfu> sfuDTOs = new HashMap<>();
+    private Map<String, Models.SfuTransport> sfuTransports = new HashMap<>();
+    private Map<String, Models.SfuInboundRtpPad> sfuInboundRtpPads = new HashMap<>();
+    private Map<String, Models.SfuOutboundRtpPad> sfuOutboundRtpPads = new HashMap<>();
 
     ModelsGenerator modelsGenerator = new ModelsGenerator();
 
     RandomGenerators randomGenerators = new RandomGenerators();
 
     public DTOMapGenerator saveTo(HamokStorages hamokStorages) {
-        ServiceRoomId serviceRoomId = ServiceRoomId.make(callDTO.serviceId, callDTO.roomId);
-        hamokStorages.getServiceRoomToCallIds().put(serviceRoomId.getKey(), callDTO.callId);
-        hamokStorages.getCalls().put(this.callDTO.callId, this.callDTO);
+        ServiceRoomId serviceRoomId = ServiceRoomId.make(callDTO.getServiceId(), callDTO.getRoomId());
+        hamokStorages.getCallsRepository().insertAll(List.of(
+                new CallsRepository.CreateCallInfo(
+                        serviceRoomId,
+                        "test",
+                        this.callDTO.getCallId()
+                )
+        ));
+        var call = hamokStorages.getCallsRepository().get(serviceRoomId);
 
         // clients
+
         this.clientDTOs.values().stream().forEach(clientDTO -> {
-            hamokStorages.getCallToClientIds().put(clientDTO.callId, clientDTO.clientId);
+            var timestamp = Instant.now().toEpochMilli();
+            call.addClient(
+                    clientDTO.getClientId(),
+                    clientDTO.getUserId(),
+                    clientDTO.getMediaUnitId(),
+                    clientDTO.getTimeZoneId(),
+                    timestamp,
+                    clientDTO.getMarker()
+            );
         });
-        hamokStorages.getClients().putAll(this.clientDTOs);
+
+        var clients = call.getClients();
 
         // peer connections
         this.peerConnectionDTOs.values().stream().forEach(peerConnectionDTO -> {
-            hamokStorages.getClientToPeerConnectionIds().put(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
+            var timestamp = Instant.now().toEpochMilli();
+            var client = clients.get(peerConnectionDTO.getClientId());
+            client.addPeerConnection(
+                    peerConnectionDTO.getPeerConnectionId(),
+                    timestamp,
+                    peerConnectionDTO.getMarker()
+            );
         });
-        hamokStorages.getPeerConnections().putAll(this.peerConnectionDTOs);
+        var peerConnections = hamokStorages.getPeerConnectionsRepository().getAll(this.peerConnectionDTOs.keySet());
 
         // media tracks
-        this.mediaTrackDTOs.values().stream().forEach(mediaTrackDTO -> {
-            switch (mediaTrackDTO.direction) {
-                case INBOUND:
-                    hamokStorages.getPeerConnectionToInboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
-                    break;
-                case OUTBOUND:
-                    hamokStorages.getPeerConnectionToOutboundTrackIds().put(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
-                    break;
-            }
+        this.inboundTracks.values().stream().forEach(mediaTrackDTO -> {
+            var timestamp = Instant.now().toEpochMilli();
+            var peerConnection = peerConnections.get(mediaTrackDTO.getTrackId());
+            peerConnection.addInboundTrack(
+                    mediaTrackDTO.getServiceId(),
+                    timestamp,
+                    mediaTrackDTO.getSfuStreamId(),
+                    mediaTrackDTO.getSfuSinkId(),
+                    MediaKind.valueOf(mediaTrackDTO.getKind()),
+                    mediaTrackDTO.getSsrc(0),
+                    mediaTrackDTO.getMarker()
+            );
         });
-        hamokStorages.getMediaTracks().putAll(this.mediaTrackDTOs);
 
         if (this.sfuDTOs.size() < 1) {
             return this;
         }
-        hamokStorages.getSFUs().putAll(this.sfuDTOs);
-        this.sfuTransports.values().stream().forEach(sfuTransportDTO -> {
-            hamokStorages.getSfuToSfuTransportIds().put(sfuTransportDTO.sfuId, sfuTransportDTO.transportId);
+        this.sfuDTOs.values().forEach(sfuModel -> {
+            hamokStorages.getSfusRepository().add(
+                    sfuModel.getServiceId(),
+                    sfuModel.getMediaUnitId(),
+                    sfuModel.getSfuId(),
+                    sfuModel.getJoined(),
+                    sfuModel.getTimeZoneId(),
+                    sfuModel.getMarker()
+            );
         });
-        hamokStorages.getSFUTransports().putAll(this.sfuTransports);
 
-        this.sfuRtpPads.values().stream().forEach(sfuRtpPadDTO -> {
-            hamokStorages.getSfuTransportToSfuRtpPadIds().put(sfuRtpPadDTO.transportId, sfuRtpPadDTO.rtpPadId);
+        var sfus = hamokStorages.getSfusRepository().getAll(this.sfuDTOs.keySet());
+
+        this.sfuTransports.values().forEach(sfuTransport -> {
+            var sfu = sfus.get(sfuTransport.getSfuId());
+            sfu.addSfuTransport(
+                    sfuTransport.getTransportId(),
+                    sfuTransport.getInternal(),
+                    sfuTransport.getOpened(),
+                    sfuTransport.getMarker()
+            );
         });
-        hamokStorages.getSFURtpPads().putAll(this.sfuRtpPads);
+
+        var sfuTransports = hamokStorages.getSfuTransportsRepository().getAll(this.sfuTransports.keySet());
+        this.sfuInboundRtpPads.values().forEach(sfuInboundRtpPad -> {
+            var sfuTransport = sfuTransports.get(sfuInboundRtpPad.getSfuTransportId());
+            sfuTransport.addInboundRtpPad(
+                    sfuInboundRtpPad.getRtpPadId(),
+                    sfuInboundRtpPad.getSsrc(),
+                    sfuInboundRtpPad.getSfuStreamId(),
+                    sfuInboundRtpPad.getAdded(),
+                    sfuInboundRtpPad.getMarker()
+            );
+        });
+        hamokStorages.getCallsRepository().save();
+        hamokStorages.getSfusRepository().save();
         return this;
     }
 
     public DTOMapGenerator deleteFrom(HamokStorages hamokStorages) {
-        hamokStorages.getCalls().remove(this.callDTO.callId);
-
-        // clients
-        this.clientDTOs.values().stream().forEach(clientDTO -> {
-            hamokStorages.getCallToClientIds().remove(clientDTO.callId, clientDTO.clientId);
-        });
-        this.clientDTOs.keySet().stream().forEach(hamokStorages.getClients()::remove);
-
-        // peer connections
-        this.peerConnectionDTOs.values().stream().forEach(peerConnectionDTO -> {
-            hamokStorages.getClientToPeerConnectionIds().remove(peerConnectionDTO.clientId, peerConnectionDTO.peerConnectionId);
-        });
-        this.peerConnectionDTOs.keySet().stream().forEach(hamokStorages.getPeerConnections()::remove);
-
-        // media tracks
-        this.mediaTrackDTOs.values().stream().forEach(mediaTrackDTO -> {
-            switch (mediaTrackDTO.direction) {
-                case INBOUND:
-                    hamokStorages.getPeerConnectionToInboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
-                    break;
-                case OUTBOUND:
-                    hamokStorages.getPeerConnectionToOutboundTrackIds().remove(mediaTrackDTO.peerConnectionId, mediaTrackDTO.trackId);
-                    break;
-            }
-        });
-        this.mediaTrackDTOs.keySet().stream().forEach(hamokStorages.getMediaTracks()::remove);
+        if (this.callDTO != null) {
+            ServiceRoomId serviceRoomId = ServiceRoomId.make(this.callDTO.getServiceId(), this.callDTO.getRoomId());
+            hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        }
 
         if (this.sfuDTOs.size() < 1) {
-            return this;
+            this.sfuDTOs.keySet().stream().forEach(hamokStorages.getSfusRepository()::remove);
         }
-        this.sfuDTOs.keySet().stream().forEach(hamokStorages.getSFUs()::remove);
-        this.sfuTransports.keySet().stream().forEach(hamokStorages.getSFUTransports()::remove);
-        this.sfuRtpPads.keySet().stream().forEach(hamokStorages.getSFURtpPads()::remove);
+        hamokStorages.getCallsRepository().save();
+        hamokStorages.getSfusRepository().save();
         return this;
     }
 
@@ -112,8 +143,14 @@ public class DTOMapGenerator {
         this.callDTO = this.modelsGenerator.getCallDTO();
         var alice = this.generateClientSide(ALICE_USER_ID);
         var bob = this.generateClientSide(BOB_USER_ID);
-        alice.inboundTrack.ssrc = bob.outboundTrack.ssrc;
-        bob.inboundTrack.ssrc = alice.outboundTrack.ssrc;
+        alice.inboundTrack = Models.InboundTrack.newBuilder(alice.inboundTrack)
+                .clearSsrc()
+                .addSsrc(bob.outboundTrack.getSsrc(0))
+                .build();
+        bob.inboundTrack = Models.InboundTrack.newBuilder(bob.inboundTrack)
+                .clearSsrc()
+                .addSsrc(alice.outboundTrack.getSsrc(0))
+                .build();
         this.putClientSides(alice, bob);
         return this;
     }
@@ -124,15 +161,23 @@ public class DTOMapGenerator {
         var alice = this.generateClientSide(ALICE_USER_ID);
         var bob = this.generateClientSide(BOB_USER_ID);
         var asiaSFU = this.generateSFUSide(ASIA_SFU_MEDIA_UNIT_ID);
-        alice.outboundTrack.sfuStreamId = asiaSFU.alice_to_sfu_inboundRtpPad.streamId;
-        alice.outboundTrack.sfuSinkId = null;
-        alice.inboundTrack.sfuStreamId = asiaSFU.sfu_to_alice_outboundRtpPad.streamId;
-        alice.inboundTrack.sfuSinkId = asiaSFU.sfu_to_alice_outboundRtpPad.sinkId;
+        alice.outboundTrack = Models.OutboundTrack.newBuilder(alice.outboundTrack)
+                .clearSsrc()
+                .setSfuStreamId(asiaSFU.alice_to_sfu_inboundRtpPad.getSfuStreamId())
+                .build();
 
-        bob.outboundTrack.sfuStreamId = asiaSFU.bob_to_sfu_inboundRtpPad.streamId;
-        bob.outboundTrack.sfuSinkId = null;
-        bob.inboundTrack.sfuStreamId = asiaSFU.sfu_to_bob_outboundRtpPad.streamId;
-        bob.inboundTrack.sfuSinkId = asiaSFU.sfu_to_bob_outboundRtpPad.sinkId;
+        alice.inboundTrack = Models.InboundTrack.newBuilder(alice.inboundTrack)
+                .setSfuStreamId(asiaSFU.sfu_to_alice_outboundRtpPad.getSfuStreamId())
+                .setSfuSinkId(asiaSFU.sfu_to_alice_outboundRtpPad.getSfuSinkId())
+                .build();
+
+        bob.outboundTrack = Models.OutboundTrack.newBuilder(bob.outboundTrack)
+                .setSfuStreamId(asiaSFU.bob_to_sfu_inboundRtpPad.getSfuStreamId())
+                .build();
+        bob.inboundTrack = Models.InboundTrack.newBuilder(bob.inboundTrack)
+                .setSfuStreamId(asiaSFU.sfu_to_bob_outboundRtpPad.getSfuStreamId())
+                .setSfuSinkId(asiaSFU.sfu_to_bob_outboundRtpPad.getSfuSinkId())
+                .build();
         this.putClientSides(alice, bob);
         this.putSfuSides(asiaSFU);
         return this;
@@ -146,57 +191,63 @@ public class DTOMapGenerator {
         throw new RuntimeException("Not implemented");
     }
 
-    public CallDTO getCallDTO() {
+    public Models.Call getCallDTO() {
         return this.callDTO;
     }
 
-    public Map<UUID, ClientDTO> getClientDTOs() {
+    public Map<String, Models.Client> getClientModels() {
         return this.clientDTOs;
     }
-    public Map<UUID, PeerConnectionDTO> getPeerConnectionDTOs() {
+    public Map<String, Models.PeerConnection> getPeerConnectionModels() {
         return this.peerConnectionDTOs;
     }
-    public Map<UUID, MediaTrackDTO> getMediaTrackDTOs() {
-        return this.mediaTrackDTOs;
+    public Map<String, Models.InboundTrack> getInboundTrackModels() {
+        return this.inboundTracks;
     }
-    public Map<UUID, SfuDTO> getSfuDTOs() {
+    public Map<String, Models.OutboundTrack> getOutboundTrackModels() {
+        return this.outboundTracks;
+    }
+    public Map<String, Models.Sfu> getSfuModels() {
         return this.sfuDTOs;
     }
-    public Map<UUID, SfuTransportDTO> getSfuTransports() {
+    public Map<String, Models.SfuTransport> getSfuTransports() {
         return this.sfuTransports;
     }
-    public Map<UUID, SfuRtpPadDTO> getSfuRtpPads() {
-        return this.sfuRtpPads;
+    public Map<String, Models.SfuInboundRtpPad> getSfuInboundRtpPads() {
+        return this.sfuInboundRtpPads;
+    }
+    public Map<String, Models.SfuOutboundRtpPad> getSfuOutboundRtpPads() {
+        return this.sfuOutboundRtpPads;
     }
 
     private void putSfuSides(SfuSide... sfuSides) {
         for (var sfuSide : sfuSides) {
-            this.sfuDTOs.put(sfuSide.sfu.sfuId, sfuSide.sfu);
-            this.sfuTransports.put(sfuSide.alice_transport.transportId, sfuSide.alice_transport);
-            this.sfuTransports.put(sfuSide.bob_transport.transportId, sfuSide.bob_transport);
-            this.sfuRtpPads.put(sfuSide.alice_to_sfu_inboundRtpPad.rtpPadId, sfuSide.alice_to_sfu_inboundRtpPad);
-            this.sfuRtpPads.put(sfuSide.sfu_to_alice_outboundRtpPad.rtpPadId, sfuSide.sfu_to_alice_outboundRtpPad);
-            this.sfuRtpPads.put(sfuSide.bob_to_sfu_inboundRtpPad.rtpPadId, sfuSide.bob_to_sfu_inboundRtpPad);
-            this.sfuRtpPads.put(sfuSide.sfu_to_bob_outboundRtpPad.rtpPadId, sfuSide.sfu_to_bob_outboundRtpPad);
+            this.sfuDTOs.put(sfuSide.sfu.getSfuId(), sfuSide.sfu);
+            this.sfuTransports.put(sfuSide.alice_transport.getTransportId(), sfuSide.alice_transport);
+            this.sfuTransports.put(sfuSide.bob_transport.getTransportId(), sfuSide.bob_transport);
+            this.sfuInboundRtpPads.put(sfuSide.alice_to_sfu_inboundRtpPad.getRtpPadId(), sfuSide.alice_to_sfu_inboundRtpPad);
+            this.sfuOutboundRtpPads.put(sfuSide.sfu_to_alice_outboundRtpPad.getRtpPadId(), sfuSide.sfu_to_alice_outboundRtpPad);
+            this.sfuInboundRtpPads.put(sfuSide.bob_to_sfu_inboundRtpPad.getRtpPadId(), sfuSide.bob_to_sfu_inboundRtpPad);
+            this.sfuOutboundRtpPads.put(sfuSide.sfu_to_bob_outboundRtpPad.getRtpPadId(), sfuSide.sfu_to_bob_outboundRtpPad);
         }
     }
 
     private class SfuSide {
-        final SfuDTO sfu;
-        final SfuTransportDTO alice_transport;
-        final SfuTransportDTO bob_transport;
-        final SfuRtpPadDTO alice_to_sfu_inboundRtpPad;
-        final SfuRtpPadDTO sfu_to_alice_outboundRtpPad;
-        final SfuRtpPadDTO bob_to_sfu_inboundRtpPad;
-        final SfuRtpPadDTO sfu_to_bob_outboundRtpPad;
+        final Models.Sfu sfu;
+        final Models.SfuTransport alice_transport;
+        final Models.SfuTransport bob_transport;
+        final Models.SfuInboundRtpPad alice_to_sfu_inboundRtpPad;
+        final Models.SfuOutboundRtpPad sfu_to_alice_outboundRtpPad;
+        final Models.SfuInboundRtpPad bob_to_sfu_inboundRtpPad;
+        final Models.SfuOutboundRtpPad sfu_to_bob_outboundRtpPad;
 
-        private SfuSide(SfuDTO sfu,
-                        SfuTransportDTO alice_transport,
-                        SfuTransportDTO bob_transport,
-                        SfuRtpPadDTO alice_to_sfu_inboundRtpPad,
-                        SfuRtpPadDTO sfu_to_alice_outboundRtpPad,
-                        SfuRtpPadDTO bob_to_sfu_inboundRtpPad,
-                        SfuRtpPadDTO sfu_to_bob_outboundRtpPad
+        private SfuSide(Models.Sfu sfu,
+                        Models.SfuTransport alice_transport,
+                        Models.SfuTransport bob_transport,
+                        Models.SfuInboundRtpPad alice_to_sfu_inboundRtpPad,
+                        Models.SfuOutboundRtpPad sfu_to_alice_outboundRtpPad,
+                        Models.SfuInboundRtpPad bob_to_sfu_inboundRtpPad,
+                        Models.SfuOutboundRtpPad sfu_to_bob_outboundRtpPad
         ) {
             this.sfu = sfu;
             this.alice_transport = alice_transport;
@@ -210,15 +261,13 @@ public class DTOMapGenerator {
 
     private ClientSide generateClientSide(String userId) {
         if (Objects.isNull(callDTO)) throw new RuntimeException("Cannot generate client side without callDTO");
-        var client = this.modelsGenerator.getClientDTOBuilderFromCallDTO(callDTO)
-                .withUserId(userId)
+        var client = this.modelsGenerator.getClientModelBuilderFromCallModel(callDTO)
+                .setUserId(userId)
                 .build();
-        var peerConnection = this.modelsGenerator.getPeerConnectionDTOFromClientDTO(client);
-        var outboundTrack = this.modelsGenerator.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnection)
-                .withDirection(StreamDirection.OUTBOUND)
+        var peerConnection = this.modelsGenerator.getPeerConnectionModelFromClientModel(client);
+        var outboundTrack = this.modelsGenerator.getOutboundTrackBuilderFromPeerConnectionModel(peerConnection)
                 .build();
-        var inboundTrack = this.modelsGenerator.getMediaTrackDTOBuilderFromPeerConnectionDTO(peerConnection)
-                .withDirection(StreamDirection.INBOUND)
+        var inboundTrack = this.modelsGenerator.getInboundTrackBuilderFromPeerConnectionModel(peerConnection)
                 .build();
         var result = new ClientSide(client, peerConnection, outboundTrack, inboundTrack);
         return result;
@@ -226,37 +275,31 @@ public class DTOMapGenerator {
 
     private SfuSide generateSFUSide(String mediaUnitId) {
         if (Objects.isNull(callDTO)) throw new RuntimeException("Cannot generate client side without callDTO");
-        var sfu = this.modelsGenerator.getSfuDTOBuilder()
-                .withServiceId(callDTO.serviceId)
-                .withMediaUnitId(mediaUnitId)
+        var sfu = this.modelsGenerator.getSfuModelBuilder()
+                .setServiceId(callDTO.getServiceId())
+                .setMediaUnitId(mediaUnitId)
                 .build();
-        var alice_transport = this.modelsGenerator.getSfuTransportDTOBuilderFromSfuDTO(sfu)
+        var alice_transport = this.modelsGenerator.getSfuTransportModelBuilderFromSfuModel(sfu)
                 .build();
-        var bob_transport = this.modelsGenerator.getSfuTransportDTOBuilderFromSfuDTO(sfu)
+        var bob_transport = this.modelsGenerator.getSfuTransportModelBuilderFromSfuModel(sfu)
                 .build();
-        UUID alice_stream = UUID.randomUUID();
-        UUID bob_stream = UUID.randomUUID();
-        UUID alice_sink = UUID.randomUUID();
-        UUID bob_sink = UUID.randomUUID();
-        var alice_to_sfu_inboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(alice_transport)
-                .withStreamDirection(StreamDirection.INBOUND)
-                .withStreamId(alice_stream)
-                .withSinkId(null)
+        var alice_stream = UUID.randomUUID().toString();
+        var bob_stream = UUID.randomUUID().toString();
+        var alice_sink = UUID.randomUUID().toString();
+        var bob_sink = UUID.randomUUID().toString();
+        var alice_to_sfu_inboundRtpPad = this.modelsGenerator.getSfuInboundRtpPadBuilderFromSfuTransportModel(alice_transport)
+                .setSfuStreamId(alice_stream)
                 .build();
-        var bob_to_sfu_inboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(bob_transport)
-                .withStreamDirection(StreamDirection.INBOUND)
-                .withStreamId(bob_stream)
-                .withSinkId(null)
+        var bob_to_sfu_inboundRtpPad = this.modelsGenerator.getSfuInboundRtpPadBuilderFromSfuTransportModel(bob_transport)
+                .setSfuStreamId(bob_stream)
                 .build();
-        var sfu_to_alice_outboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(alice_transport)
-                .withStreamDirection(StreamDirection.OUTBOUND)
-                .withStreamId(bob_stream)
-                .withSinkId(bob_sink)
+        var sfu_to_alice_outboundRtpPad = this.modelsGenerator.getSfuOutboundRtpPadBuilderFromSfuTransportModel(alice_transport)
+                .setSfuStreamId(bob_stream)
+                .setSfuSinkId(bob_sink)
                 .build();
-        var sfu_to_bob_outboundRtpPad = this.modelsGenerator.getSfuRtpPadDTOBuilderFromSfuTransportDTO(bob_transport)
-                .withStreamDirection(StreamDirection.OUTBOUND)
-                .withStreamId(alice_stream)
-                .withSinkId(alice_sink)
+        var sfu_to_bob_outboundRtpPad = this.modelsGenerator.getSfuOutboundRtpPadBuilderFromSfuTransportModel(bob_transport)
+                .setSfuStreamId(alice_stream)
+                .setSfuSinkId(alice_sink)
                 .build();
         var result = new SfuSide(
                 sfu,
@@ -272,20 +315,20 @@ public class DTOMapGenerator {
 
     private void putClientSides(ClientSide... clientSides) {
         for (var clientSide : clientSides) {
-            this.clientDTOs.put(clientSide.clientDTO.clientId, clientSide.clientDTO);
-            this.peerConnectionDTOs.put(clientSide.peerConnectionDTO.peerConnectionId, clientSide.peerConnectionDTO);
-            this.mediaTrackDTOs.put(clientSide.outboundTrack.trackId, clientSide.outboundTrack);
-            this.mediaTrackDTOs.put(clientSide.inboundTrack.trackId, clientSide.inboundTrack);
+            this.clientDTOs.put(clientSide.clientDTO.getClientId(), clientSide.clientDTO);
+            this.peerConnectionDTOs.put(clientSide.peerConnectionDTO.getPeerConnectionId(), clientSide.peerConnectionDTO);
+            this.outboundTracks.put(clientSide.outboundTrack.getTrackId(), clientSide.outboundTrack);
+            this.inboundTracks.put(clientSide.inboundTrack.getTrackId(), clientSide.inboundTrack);
         }
     }
 
     private class ClientSide {
-        final ClientDTO clientDTO;
-        final PeerConnectionDTO peerConnectionDTO;
-        final MediaTrackDTO outboundTrack;
-        final MediaTrackDTO inboundTrack;
+        Models.Client clientDTO;
+        Models.PeerConnection peerConnectionDTO;
+        Models.OutboundTrack outboundTrack;
+        Models.InboundTrack inboundTrack;
 
-        private ClientSide(ClientDTO clientDTO, PeerConnectionDTO peerConnectionDTO, MediaTrackDTO outboundTrack, MediaTrackDTO inboundTrack) {
+        private ClientSide(Models.Client clientDTO, Models.PeerConnection peerConnectionDTO, Models.OutboundTrack outboundTrack, Models.InboundTrack inboundTrack) {
             this.clientDTO = clientDTO;
             this.peerConnectionDTO = peerConnectionDTO;
             this.outboundTrack = outboundTrack;

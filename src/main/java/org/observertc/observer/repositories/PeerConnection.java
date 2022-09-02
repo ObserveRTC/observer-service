@@ -101,13 +101,13 @@ public class PeerConnection {
         return this.inboundTracksRepository.getAll(trackIds);
     }
 
-    public InboundTrack addInboundTrack(String trackId, Long timestamp, String sfuStreamId, String sfuSinkId, MediaKind kind, Long ssrc) {
+    public InboundTrack addInboundTrack(String trackId, Long timestamp, String sfuStreamId, String sfuSinkId, MediaKind kind, Long ssrc, String marker) {
         var model = modelHolder.get();
         var trackIds = model.getInboundAudioTrackIdsList();
         if (trackIds.contains(trackId)) {
             throw AlreadyCreatedException.wrapInboundAudioTrack(trackId);
         }
-        var inboundTrackModel = Models.InboundTrack.newBuilder()
+        var inboundTrackModelBuilder = Models.InboundTrack.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
@@ -115,15 +115,26 @@ public class PeerConnection {
                 .setClientId(model.getClientId())
                 .setPeerConnectionId(model.getPeerConnectionId())
                 .setTrackId(trackId)
-                .setAdded(timestamp)
                 .setKind(kind.name())
+                .setAdded(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
-                .setMarker(model.getMarker())
-                .setSfuStreamId(sfuStreamId)
-                .setSfuSinkId(sfuSinkId)
+                // marker
+                // sfu stream id
+                // sfu sink id
                 .addSsrc(ssrc)
-                .build();
+                ;
+
+        if (marker != null) {
+            inboundTrackModelBuilder.setMarker(marker);
+        }
+        if (sfuStreamId != null) {
+            inboundTrackModelBuilder.setSfuSinkId(sfuStreamId);
+        }
+        if (sfuSinkId != null) {
+            inboundTrackModelBuilder.setSfuSinkId(sfuSinkId);
+        }
+        var inboundTrackModel = inboundTrackModelBuilder.build();
 
         var newModel = Models.PeerConnection.newBuilder(model)
                 .addInboundAudioTrackIds(trackId)
@@ -167,13 +178,13 @@ public class PeerConnection {
         return this.outboundTracksRepository.getAll(trackIds);
     }
 
-    public OutboundTrack addOutboundTrack(String trackId, Long timestamp, String sfuStreamId, MediaKind kind, Long ssrc) {
+    public OutboundTrack addOutboundTrack(String trackId, Long timestamp, String sfuStreamId, MediaKind kind, Long ssrc, String marker) {
         var model = modelHolder.get();
         var trackIds = model.getOutboundAudioTrackIdsList();
         if (trackIds.contains(trackId)) {
             throw AlreadyCreatedException.wrapOutboundAudioTrack(trackId);
         }
-        var outboundAudioTrackModel = Models.OutboundTrack.newBuilder()
+        var outboundTrackModelBuilder = Models.OutboundTrack.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
@@ -183,21 +194,29 @@ public class PeerConnection {
                 .setTrackId(trackId)
                 .setAdded(timestamp)
                 .setKind(kind.name())
+
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
-                .setMarker(model.getMarker())
+                // marker
                 .setSfuStreamId(sfuStreamId)
                 .addSsrc(ssrc)
-                .build();
+                ;
+        if (marker != null) {
+            outboundTrackModelBuilder.setMarker(marker);
+        }
+        if (sfuStreamId != null) {
+            outboundTrackModelBuilder.setSfuStreamId(sfuStreamId);
+        }
 
+        var outboundTrackModel = outboundTrackModelBuilder.build();
         var newModel = Models.PeerConnection.newBuilder(model)
                 .addOutboundAudioTrackIds(trackId)
                 .build();
 
         this.updateModel(newModel);
-        this.outboundTracksRepository.update(outboundAudioTrackModel);
+        this.outboundTracksRepository.update(outboundTrackModel);
 
-        return this.outboundTracksRepository.wrapOutboundAudioTrack(outboundAudioTrackModel);
+        return this.outboundTracksRepository.wrapOutboundAudioTrack(outboundTrackModel);
     }
 
     public boolean removeOutboundTrack(String trackId) {

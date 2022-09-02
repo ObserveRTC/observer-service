@@ -6,10 +6,14 @@ import io.github.balazskreith.hamok.storagegrid.messages.Message;
 import io.github.balazskreith.hamok.transports.CompositeEndpoint;
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.configbuilders.AbstractBuilder;
+import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.hamokendpoints.BuildersEssentials;
 import org.observertc.observer.hamokendpoints.EndpointBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -39,11 +43,23 @@ public class CompositeEndpointBuilder extends AbstractBuilder implements Endpoin
                 return null;
             }
         };
+        InetAddress multicastAddress;
+        try {
+            multicastAddress = InetAddress.getByName(config.multicastAddress);
+        } catch (UnknownHostException e) {
+            logger.error("Cannot convert {} to a multicastAddress", config.multicastAddress, e);
+            return null;
+        }
+        if (!multicastAddress.isMulticastAddress()) {
+            throw new InvalidConfigurationException("The provided address " + config.multicastAddress + " is not a multicast address");
+        }
         var endpoint = CompositeEndpoint.builder()
-                .setUnicastListenerPort(config.unicastListenerPort)
+                .setUnicastListenerPort(config.unicastListeningPort)
                 .setUnicastSendingPort(config.unicastSendingPort)
                 .setMulticastPort(config.multicastPort)
                 .setEndpointId(this.endpointId)
+                .setContext(config.context)
+                .setMulticastAddress(multicastAddress)
                 .setEncoder(encoder)
                 .setDecoder(decoder)
                 .build();
@@ -56,10 +72,19 @@ public class CompositeEndpointBuilder extends AbstractBuilder implements Endpoin
 
     public static class Config {
 
-        public int unicastListenerPort = 5601;
+        @NotNull
+        public int unicastListeningPort = 5601;
 
+        @NotNull
         public int unicastSendingPort = 5602;
 
+        @NotNull
         public int multicastPort = 5600;
+
+        @NotNull
+        public String multicastAddress;
+
+        public String context = "Composite Endpoint";
+
     }
 }

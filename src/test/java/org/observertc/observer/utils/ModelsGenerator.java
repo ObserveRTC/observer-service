@@ -1,7 +1,7 @@
 package org.observertc.observer.utils;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.dto.*;
+import org.observertc.observer.common.MediaKind;
 import org.observertc.schemas.dtos.Models;
 
 import java.util.UUID;
@@ -38,35 +38,35 @@ public class ModelsGenerator {
         return result;
     }
 
-    public Models.Client getClientDTO() {
-        var result = this.getClientDTOBuilder()
+    public Models.Client getClientModel() {
+        var result = this.getClientModelBuilder()
                 .build();
         return result;
     }
 
-    public Models.Client.Builder getClientDTOFromCallDTO(Models.Call callDTO) {
-        var result = this.getClientDTOBuilderFromCallDTO(callDTO)
+    public Models.Client getClientModelFromCallDTO(Models.Call callDTO) {
+        var result = this.getClientModelBuilderFromCallModel(callDTO)
                 .build()
                 ;
         return result;
     }
 
-    public Models.Client.Builder getClientDTOBuilderFromCallDTO(Models.Call callDTO) {
-        var result = this.getClientDTOBuilder()
-                .setCallId(callDTO.callId)
-                .setServiceId(callDTO.serviceId)
-                .setRoomId(callDTO.roomId)
+    public Models.Client.Builder getClientModelBuilderFromCallModel(Models.Call callDTO) {
+        var result = this.getClientModelBuilder()
+                .setCallId(callDTO.getCallId())
+                .setServiceId(callDTO.getServiceId())
+                .setRoomId(callDTO.getRoomId())
                 ;
         return result;
     }
 
-    public Models.Client.Builder getClientDTOBuilder() {
+    public Models.Client.Builder getClientModelBuilder() {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var roomId = this.randomGenerators.getRandomTestRoomIds();
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var mediaUnitId = this.randomGenerators.getRandomClientSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
-        var clientId = UUID.randomUUID();
+        var clientId = UUID.randomUUID().toString();
         var userId = this.randomGenerators.getRandomTestUserIds();
         var timeZoneId = this.randomGenerators.getRandomTimeZoneId();
         var marker = this.randomGenerators.getRandomMarker();
@@ -77,47 +77,47 @@ public class ModelsGenerator {
                 .setMediaUnitId(mediaUnitId)
                 .setClientId(clientId)
                 .setUserId(userId)
-                .setJoinedTimestamp(timestamp)
+                .setJoined(timestamp)
                 .setTimeZoneId(timeZoneId)
                 .setMarker(marker)
                 ;
         return result;
     }
 
-    public Models.PeerConnection getPeerConnectionDTO() {
-        var result = this.getPeerConnectionDTOBuilder()
+    public Models.PeerConnection getPeerConnectionModel() {
+        var result = this.getPeerConnectionModelBuilder()
                 .build()
                 ;
         return result;
     }
 
-    public Models.PeerConnection getPeerConnectionDTOFromClientDTO(ClientDTO clientDTO) {
-        var result = this.getPeerConnectionDTOBuilderFromClientDTO(clientDTO)
+    public Models.PeerConnection getPeerConnectionModelFromClientModel(Models.Client clientDTO) {
+        var result = this.getPeerConnectionModelBuilderFromClientModel(clientDTO)
                 .build()
                 ;
         return result;
     }
 
-    public Models.PeerConnection.Builder getPeerConnectionDTOBuilderFromClientDTO(ClientDTO clientDTO) {
-        var result = this.getPeerConnectionDTOBuilder()
-                .setCallId(clientDTO.callId)
-                .setServiceId(clientDTO.serviceId)
-                .setRoomId(clientDTO.roomId)
-                .setMediaUnitId(clientDTO.mediaUnitId)
-                .setClientId(clientDTO.clientId)
-                .setUserId(clientDTO.userId)
+    public Models.PeerConnection.Builder getPeerConnectionModelBuilderFromClientModel(Models.Client clientDTO) {
+        var result = this.getPeerConnectionModelBuilder()
+                .setCallId(clientDTO.getCallId())
+                .setServiceId(clientDTO.getServiceId())
+                .setRoomId(clientDTO.getRoomId())
+                .setMediaUnitId(clientDTO.getMediaUnitId())
+                .setClientId(clientDTO.getClientId())
+                .setUserId(clientDTO.getUserId())
                 ;
         return result;
     }
 
-    public Models.PeerConnection.Builder getPeerConnectionDTOBuilder() {
+    public Models.PeerConnection.Builder getPeerConnectionModelBuilder() {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var roomId = this.randomGenerators.getRandomTestRoomIds();
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var mediaUnitId = this.randomGenerators.getRandomClientSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
-        var clientId = UUID.randomUUID();
-        var peerConnectionId = UUID.randomUUID();
+        var clientId = UUID.randomUUID().toString();
+        var peerConnectionId = UUID.randomUUID().toString();
         var userId = this.randomGenerators.getRandomTestUserIds();
         var marker = this.randomGenerators.getRandomMarker();
         var result = Models.PeerConnection.newBuilder()
@@ -128,14 +128,14 @@ public class ModelsGenerator {
                 .setClientId(clientId)
                 .setPeerConnectionId(peerConnectionId)
                 .setUserId(userId)
-                .setCreatedTimestamp(timestamp)
+                .setOpened(timestamp)
                 .setMarker(marker)
                 ;
         return result;
     }
 
     public Models.InboundTrack getInboundTrackModel() {
-        var result = this.getMediaTrackDTOBuilder().build();
+        var result = this.getInboundTrackModelBuilder().build();
         return result;
     }
 
@@ -148,13 +148,13 @@ public class ModelsGenerator {
 
     public Models.InboundTrack.Builder getInboundTrackBuilderFromPeerConnectionModel(Models.PeerConnection peerConnectionDTO) {
         var result = this.getInboundTrackModelBuilder()
-                .setCallId(peerConnectionDTO.callId)
-                .setServiceId(peerConnectionDTO.serviceId)
-                .setRoomId(peerConnectionDTO.roomId)
-                .setMediaUnitId(peerConnectionDTO.mediaUnitId)
-                .setClientId(peerConnectionDTO.clientId)
-                .setUserId(peerConnectionDTO.userId)
-                .setPeerConnectionId(peerConnectionDTO.peerConnectionId)
+                .setCallId(peerConnectionDTO.getCallId())
+                .setServiceId(peerConnectionDTO.getServiceId())
+                .setRoomId(peerConnectionDTO.getRoomId())
+                .setMediaUnitId(peerConnectionDTO.getMediaUnitId())
+                .setClientId(peerConnectionDTO.getClientId())
+                .setUserId(peerConnectionDTO.getUserId())
+                .setPeerConnectionId(peerConnectionDTO.getPeerConnectionId())
                 ;
         return result;
     }
@@ -162,18 +162,19 @@ public class ModelsGenerator {
     public Models.InboundTrack.Builder getInboundTrackModelBuilder() {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var roomId = this.randomGenerators.getRandomTestRoomIds();
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var mediaUnitId = this.randomGenerators.getRandomClientSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
-        var clientId = UUID.randomUUID();
-        var peerConnectionId = UUID.randomUUID();
-        var trackId = UUID.randomUUID();
+        var clientId = UUID.randomUUID().toString();
+        var peerConnectionId = UUID.randomUUID().toString();
+        var trackId = UUID.randomUUID().toString();
         var userId = this.randomGenerators.getRandomTestUserIds();
         var ssrc = this.randomGenerators.getRandomSSRC();
-        var sfuStreamId = callId.getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID() : null;
-        var direction = this.randomGenerators.getRandomStreamDirection();
+        var sfuStreamId = UUID.fromString(callId).getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID().toString() : null;
+        var sfuSinkId = UUID.fromString(callId).getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID().toString() : null;
         var marker = this.randomGenerators.getRandomMarker();
-        var result = MediaTrackDTO.builder()
+        var kind = UUID.fromString(callId).getMostSignificantBits() % 2L == 0 ? MediaKind.AUDIO : MediaKind.VIDEO;
+        var result = Models.InboundTrack.newBuilder()
                 .setServiceId(serviceId)
                 .setRoomId(roomId)
                 .setCallId(callId)
@@ -182,182 +183,246 @@ public class ModelsGenerator {
                 .setPeerConnectionId(peerConnectionId)
                 .setTrackId(trackId)
                 .setUserId(userId)
-                .setAddedTimestamp(timestamp)
-                .setSSRC(ssrc)
+                .setAdded(timestamp)
+                .addSsrc(ssrc)
+                .setKind(kind.name())
+                .setMarker(marker)
+                ;
+        if (sfuStreamId != null) {
+            result.setSfuStreamId(sfuStreamId);
+        }
+        if (sfuSinkId != null) {
+            result.setSfuSinkId(sfuSinkId);
+        }
+        return result;
+    }
+
+
+
+    public Models.OutboundTrack getOutboundTrackModel() {
+        var result = this.getOutboundTrackModelBuilder().build();
+        return result;
+    }
+
+    public Models.OutboundTrack getOutboundTrackFromPeerConnectionModel(Models.PeerConnection peerConnectionDTO) {
+        var result = this.getOutboundTrackBuilderFromPeerConnectionModel(peerConnectionDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public Models.OutboundTrack.Builder getOutboundTrackBuilderFromPeerConnectionModel(Models.PeerConnection peerConnectionDTO) {
+        var result = this.getOutboundTrackModelBuilder()
+                .setCallId(peerConnectionDTO.getCallId())
+                .setServiceId(peerConnectionDTO.getServiceId())
+                .setRoomId(peerConnectionDTO.getRoomId())
+                .setMediaUnitId(peerConnectionDTO.getMediaUnitId())
+                .setClientId(peerConnectionDTO.getClientId())
+                .setUserId(peerConnectionDTO.getUserId())
+                .setPeerConnectionId(peerConnectionDTO.getPeerConnectionId())
+                ;
+        return result;
+    }
+
+    public Models.OutboundTrack.Builder getOutboundTrackModelBuilder() {
+        var serviceId = this.randomGenerators.getRandomServiceId();
+        var roomId = this.randomGenerators.getRandomTestRoomIds();
+        var callId = UUID.randomUUID().toString();
+        var mediaUnitId = this.randomGenerators.getRandomClientSideMediaUnitId();
+        var timestamp = this.randomGenerators.getRandomTimestamp();
+        var clientId = UUID.randomUUID().toString();
+        var peerConnectionId = UUID.randomUUID().toString();
+        var trackId = UUID.randomUUID().toString();
+        var userId = this.randomGenerators.getRandomTestUserIds();
+        var ssrc = this.randomGenerators.getRandomSSRC();
+        var sfuStreamId = UUID.fromString(callId).getLeastSignificantBits() % 2L == 0 ? UUID.randomUUID().toString() : null;
+        var marker = this.randomGenerators.getRandomMarker();
+        var kind = UUID.fromString(callId).getMostSignificantBits() % 2L == 0 ? MediaKind.AUDIO : MediaKind.VIDEO;
+        var result = Models.OutboundTrack.newBuilder()
+                .setServiceId(serviceId)
+                .setRoomId(roomId)
+                .setCallId(callId)
+                .setMediaUnitId(mediaUnitId)
+                .setClientId(clientId)
+                .setPeerConnectionId(peerConnectionId)
+                .setTrackId(trackId)
+                .setUserId(userId)
+                .setAdded(timestamp)
+                .addSsrc(ssrc)
+                .setKind(kind.name())
                 .setSfuStreamId(sfuStreamId)
-                .setDirection(direction)
                 .setMarker(marker)
                 ;
         return result;
     }
 
-    public SfuDTO getSfuDTO() {
-        var result = this.getSfuDTOBuilder().build();
+
+    public Models.Sfu getSfuModel() {
+        var result = this.getSfuModelBuilder().build();
         return result;
     }
 
 
 
-    public SfuDTO.Builder getSfuDTOBuilder() {
-        var sfuId = UUID.randomUUID();
+    public Models.Sfu.Builder getSfuModelBuilder() {
+        var sfuId = UUID.randomUUID().toString();
         var serviceId = this.randomGenerators.getRandomServiceId();
         var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
         var timeZoneId = this.randomGenerators.getRandomTimeZoneId();
         var marker = this.randomGenerators.getRandomMarker();
-        var result = SfuDTO.builder()
+        var result = Models.Sfu.newBuilder()
                 .setSfuId(sfuId)
                 .setServiceId(serviceId)
                 .setMediaUnitId(mediaUnitId)
-                .setConnectedTimestamp(timestamp)
+                .setJoined(timestamp)
                 .setTimeZoneId(timeZoneId)
                 .setMarker(marker)
                 ;
         return result;
     }
 
-    public SfuTransportDTO getSfuTransportDTOFromSfuDTO(SfuDTO sfuDTO) {
-        var result = this.getSfuTransportDTOBuilderFromSfuDTO(sfuDTO)
+    public Models.SfuTransport getSfuTransportDTOFromSfuDTO(Models.Sfu sfuDTO) {
+        var result = this.getSfuTransportModelBuilderFromSfuModel(sfuDTO)
                 .build()
                 ;
         return result;
     }
 
-    public SfuTransportDTO.Builder getSfuTransportDTOBuilderFromSfuDTO(SfuDTO sfuDTO) {
-        var result = this.getSfuTransportDTOBuilder()
-                .setSfuId(sfuDTO.sfuId)
-                .setServiceId(sfuDTO.serviceId)
-                .setMediaUnitId(sfuDTO.mediaUnitId)
+    public Models.SfuTransport.Builder getSfuTransportModelBuilderFromSfuModel(Models.Sfu sfuDTO) {
+        var result = this.getSfuTransportModelBuilder()
+                .setSfuId(sfuDTO.getSfuId())
+                .setServiceId(sfuDTO.getServiceId())
+                .setMediaUnitId(sfuDTO.getMediaUnitId())
                 ;
         return result;
     }
 
-    public SfuTransportDTO getSfuTransportDTO() {
-        var result = this.getSfuTransportDTOBuilder()
+    public Models.SfuTransport getSfuTransportModel() {
+        var result = this.getSfuTransportModelBuilder()
                 .build();
         return result;
     }
 
-    public SfuTransportDTO.Builder getSfuTransportDTOBuilder() {
-        var sfuId = UUID.randomUUID();
-        var callId = UUID.randomUUID();
-        var transportId = UUID.randomUUID();
+    public Models.SfuTransport.Builder getSfuTransportModelBuilder() {
+        var sfuId = UUID.randomUUID().toString();
+        var transportId = UUID.randomUUID().toString();
         var internal = this.randomGenerators.getRandomPort() % 2 == 0;
         var serviceId = this.randomGenerators.getRandomServiceId();
         var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
         var marker = this.randomGenerators.getRandomMarker();
-        var result = SfuTransportDTO.builder()
+        var result = Models.SfuTransport.newBuilder()
                 .setSfuId(sfuId)
                 .setServiceId(serviceId)
                 .setInternal(internal)
                 .setTransportId(transportId)
                 .setMediaUnitId(mediaUnitId)
-                .setOpenedTimestamp(timestamp)
+                .setOpened(timestamp)
                 .setMarker(marker)
                 ;
         return result;
     }
 
-    public SfuRtpPadDTO getSfuRtpPadDTO() {
-        var result = this.getSfuRtpPadDTOBuilder()
+    public Models.SfuInboundRtpPad getSfuInboundRtpPad() {
+        var result = this.getSfuInboundRtpPadModelBuilder()
                 .build()
                 ;
         return result;
     }
 
-    public SfuRtpPadDTO getSfuRtpPadDTOFromSfuTransportDTO(SfuTransportDTO sfuTransportDTO) {
-        var result = this.getSfuRtpPadDTOBuilderFromSfuTransportDTO(sfuTransportDTO)
+    public Models.SfuInboundRtpPad getSfuInboundRtpPadModelFromSfuTransportModel(Models.SfuTransport sfuTransportDTO) {
+        var result = this.getSfuInboundRtpPadBuilderFromSfuTransportModel(sfuTransportDTO)
                 .build()
                 ;
         return result;
     }
 
-    public SfuRtpPadDTO.Builder getSfuRtpPadDTOBuilderFromSfuTransportDTO(SfuTransportDTO sfuTransportDTO) {
-        var result = this.getSfuRtpPadDTOBuilder()
-                .setSfuId(sfuTransportDTO.sfuId)
-                .setServiceId(sfuTransportDTO.serviceId)
-                .setMediaUnitId(sfuTransportDTO.mediaUnitId)
-                .setSfuTransportId(sfuTransportDTO.transportId)
-                .setInternal(sfuTransportDTO.internal)
+    public Models.SfuInboundRtpPad.Builder getSfuInboundRtpPadBuilderFromSfuTransportModel(Models.SfuTransport sfuTransportDTO) {
+        var result = this.getSfuInboundRtpPadModelBuilder()
+                .setSfuId(sfuTransportDTO.getSfuId())
+                .setServiceId(sfuTransportDTO.getServiceId())
+                .setMediaUnitId(sfuTransportDTO.getMediaUnitId())
+                .setSfuTransportId(sfuTransportDTO.getTransportId())
+                .setInternal(sfuTransportDTO.getInternal())
                 ;
         return result;
     }
 
-    public SfuRtpPadDTO.Builder getSfuRtpPadDTOBuilder() {
+    public Models.SfuOutboundRtpPad getSfuOutboundRtpPad() {
+        var result = this.getSfuOutboundRtpPadModelBuilder()
+                .build()
+                ;
+        return result;
+    }
+
+    public Models.SfuOutboundRtpPad getSfuOutboundRtpPadModelFromSfuTransportModel(Models.SfuTransport sfuTransportDTO) {
+        var result = this.getSfuOutboundRtpPadBuilderFromSfuTransportModel(sfuTransportDTO)
+                .build()
+                ;
+        return result;
+    }
+
+    public Models.SfuOutboundRtpPad.Builder getSfuOutboundRtpPadBuilderFromSfuTransportModel(Models.SfuTransport sfuTransportDTO) {
+        var result = this.getSfuOutboundRtpPadModelBuilder()
+                .setSfuId(sfuTransportDTO.getSfuId())
+                .setServiceId(sfuTransportDTO.getServiceId())
+                .setMediaUnitId(sfuTransportDTO.getMediaUnitId())
+                .setSfuTransportId(sfuTransportDTO.getTransportId())
+                .setInternal(sfuTransportDTO.getInternal())
+                ;
+        return result;
+    }
+
+
+    public Models.SfuInboundRtpPad.Builder getSfuInboundRtpPadModelBuilder() {
         var SSRC = UUID.randomUUID().getLeastSignificantBits();
-        var sfuId = UUID.randomUUID();
-        var sfuStreamId = UUID.randomUUID();
-        var sfuPadId = UUID.randomUUID();
-        var sfuTransportId = UUID.randomUUID();
+        var sfuId = UUID.randomUUID().toString();
+        var sfuStreamId = UUID.randomUUID().toString();
+        var sfuPadId = UUID.randomUUID().toString();
+        var sfuTransportId = UUID.randomUUID().toString();
         var serviceId = this.randomGenerators.getRandomServiceId();
         var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
         var timestamp = this.randomGenerators.getRandomTimestamp();
-        var streamDirection = this.randomGenerators.getRandomStreamDirection();
         var marker = this.randomGenerators.getRandomMarker();
-        var sinkId = StreamDirection.OUTBOUND.equals(streamDirection) ? UUID.randomUUID() : null;
-        var result = SfuRtpPadDTO.builder()
+        var result = Models.SfuInboundRtpPad.newBuilder()
                 .setServiceId(serviceId)
                 .setMediaUnitId(mediaUnitId)
                 .setSfuId(sfuId)
                 .setSfuTransportId(sfuTransportId)
-                .setStreamId(sfuStreamId)
-                .setSinkId(sinkId)
-                .setSfuRtpPadId(sfuPadId)
-                .setStreamDirection(streamDirection)
-                .setAddedTimestamp(timestamp)
+                .setSfuStreamId(sfuStreamId)
+                .setRtpPadId(sfuPadId)
+                .setAdded(timestamp)
                 .setMarker(marker)
+                .setInternal(false)
                 .setSsrc(SSRC)
                 ;
         return result;
     }
 
-    public SfuStreamDTO getSfuStreamDTO() {
-        var result = this.getSfuStreamDTOBuilder()
-                .build();
-        return result;
-    }
-
-    public SfuStreamDTO.Builder getSfuStreamDTOBuilder() {
-        var sfuId = UUID.randomUUID();
-        var sfuStreamId = UUID.randomUUID();
-        var trackId = UUID.randomUUID();
-        var clientId = UUID.randomUUID();
-        var callId = UUID.randomUUID();
-        var sfuTransportId = UUID.randomUUID();
-        var result = SfuStreamDTO.builder()
+    public Models.SfuOutboundRtpPad.Builder getSfuOutboundRtpPadModelBuilder() {
+        var SSRC = UUID.randomUUID().getLeastSignificantBits();
+        var sfuId = UUID.randomUUID().toString();
+        var sfuStreamId = UUID.randomUUID().toString();
+        var sfuSinkId = UUID.randomUUID().toString();
+        var sfuPadId = UUID.randomUUID().toString();
+        var sfuTransportId = UUID.randomUUID().toString();
+        var serviceId = this.randomGenerators.getRandomServiceId();
+        var mediaUnitId = this.randomGenerators.getRandomSFUSideMediaUnitId();
+        var timestamp = this.randomGenerators.getRandomTimestamp();
+        var marker = this.randomGenerators.getRandomMarker();
+        var result = Models.SfuOutboundRtpPad.newBuilder()
+                .setServiceId(serviceId)
+                .setMediaUnitId(mediaUnitId)
                 .setSfuId(sfuId)
                 .setSfuTransportId(sfuTransportId)
-                .setStreamId(sfuStreamId)
-                .setTrackId(trackId)
-                .setClientId(clientId)
-                .setCallId(callId)
-                ;
-        return result;
-    }
-
-    public SfuSinkDTO getSfuSinkDTO() {
-        var result = this.getSfuSinkDTOBuilder()
-                .build();
-        return result;
-    }
-
-    public SfuSinkDTO.Builder getSfuSinkDTOBuilder() {
-        var sfuId = UUID.randomUUID();
-        var sfuStreamId = UUID.randomUUID();
-        var sfuSinkId = UUID.randomUUID();
-        var trackId = UUID.randomUUID();
-        var clientId = UUID.randomUUID();
-        var callId = UUID.randomUUID();
-        var sfuTransportId = UUID.randomUUID();
-        var result = SfuSinkDTO.builder()
-                .setSfuId(sfuId)
-                .setSfuTransportId(sfuTransportId)
-                .setStreamId(sfuStreamId)
-                .setSinkId(sfuSinkId)
-                .setTrackId(trackId)
-                .setClientId(clientId)
-                .setCallId(callId)
+                .setSfuStreamId(sfuStreamId)
+                .setSfuSinkId(sfuSinkId)
+                .setRtpPadId(sfuPadId)
+                .setAdded(timestamp)
+                .setMarker(marker)
+                .setInternal(false)
+                .setSsrc(SSRC)
                 ;
         return result;
     }

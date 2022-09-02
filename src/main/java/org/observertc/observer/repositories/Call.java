@@ -76,7 +76,7 @@ public class Call {
         return this.clientsRepo.get(clientId);
     }
 
-    public Client addClient(String clientId, String userId, String mediaUnitId, String timeZoneId, Long timestamp) throws AlreadyCreatedException {
+    public Client addClient(String clientId, String userId, String mediaUnitId, String timeZoneId, Long timestamp, String marker) throws AlreadyCreatedException {
         var clientIds = this.clientIdsHolder.get();
         if (clientIds.contains(clientId)) {
             throw AlreadyCreatedException.wrapClientId(clientId);
@@ -84,17 +84,25 @@ public class Call {
         var newClientIds = Stream.concat(clientIds.stream(), Stream.of(clientId))
                 .collect(Collectors.toSet());
 
-        var clientModel = Models.Client.newBuilder()
+        var clientModelBuilder = Models.Client.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
+                .setClientId(clientId)
                 .setUserId(userId)
-                .setTouched(timestamp)
-                .setMediaUnitId(mediaUnitId)
                 .setJoined(timestamp)
-                .setTimeZoneId(timeZoneId)
-                .setMarker(model.getMarker())
-                .build();
+                .setTouched(timestamp)
+                // timeZoneId
+                .setMediaUnitId(mediaUnitId)
+                // marker
+                ;
+        if (timeZoneId != null) {
+            clientModelBuilder.setTimeZoneId(timeZoneId);
+        }
+        if (marker != null) {
+            clientModelBuilder.setMarker(marker);
+        }
+        var clientModel = clientModelBuilder.build();
         this.clientIdsHolder.set(newClientIds);
         this.callClientIdsRepo.update(this.model.getCallId(), newClientIds);
         this.clientsRepo.update(clientModel);

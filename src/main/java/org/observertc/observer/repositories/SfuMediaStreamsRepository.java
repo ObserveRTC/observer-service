@@ -38,7 +38,7 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
     private BeanProvider<SfuTransportsRepository> sfuTransportsRepositoryBeanProvider;
 
     @Inject
-    private SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
+    private BeanProvider<SfuInboundRtpPadsRepository> sfuInboundRtpPadsRepositoryBeanProvider;
 
     @Inject
     private BeanProvider<SfuMediaSinksRepository> sfuMediaSinksRepositoryBeanProvider;
@@ -154,7 +154,7 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
                 this,
                 this.sfuMediaSinksRepositoryBeanProvider.get(),
                 this.sfuTransportsRepositoryBeanProvider.get(),
-                this.sfuInboundRtpPadsRepository
+                this.sfuInboundRtpPadsRepositoryBeanProvider.get()
 
         );
         this.fetched.add(result.getSfuStreamId(), result);

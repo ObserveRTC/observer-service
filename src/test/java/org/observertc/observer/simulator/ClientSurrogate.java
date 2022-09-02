@@ -31,7 +31,7 @@ public class ClientSurrogate implements NetworkLinkProvider {
         this.userId = this.randomGenerators.getRandomTestUserIds();
         this.clientId = UUID.randomUUID();
         this.samplesGenerator = new ClientSideSamplesGenerator()
-                .setClientId(this.clientId)
+                .setClientId(this.clientId.toString())
                 .setRoomId(this.roomId)
                 .setUserId(this.userId)
                 ;

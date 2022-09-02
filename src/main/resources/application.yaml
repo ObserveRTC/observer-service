@@ -113,9 +113,7 @@ observer:
         unicastSendingPort: 6701
         multicastPort: 6703
         context: "My Context"
-      type: Kubernetes
-      config:
-        zsdas: asda
+        multicastAddress: "225.1.1.1"
 
 
   hazelcast:

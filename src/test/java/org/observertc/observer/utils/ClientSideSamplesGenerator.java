@@ -14,8 +14,8 @@ import static org.observertc.observer.utils.TestUtils.arrayOrNullFromQueue;
 public class ClientSideSamplesGenerator implements Supplier<Samples> {
 
     private RandomGenerators randomGenerator = new RandomGenerators();
-    private UUID callId = null;
-    private UUID clientId = UUID.randomUUID();
+    private String callId = null;
+    private String clientId = UUID.randomUUID().toString();
     private int samplesSeq = 0;
     private String roomId = null;
     private String userId = null;
@@ -46,12 +46,12 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
     private Queue<Samples.ClientSample.IceRemoteCandidate> addedIceRemoteCandidates = new LinkedList<>();
 
 
-    public ClientSideSamplesGenerator setClientId(UUID value) {
+    public ClientSideSamplesGenerator setClientId(String value) {
         this.clientId = value;
         return this;
     }
 
-    public ClientSideSamplesGenerator setCallId(UUID value) {
+    public ClientSideSamplesGenerator setCallId(String value) {
         this.clientId = value;
         return this;
     }

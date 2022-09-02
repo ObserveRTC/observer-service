@@ -44,35 +44,35 @@ public class SfuInboundRtpPadRemovedReports {
         }
     }
 
-    private SfuEventReport makeReport(Models.SfuInboundRtpPad trackModel) {
+    private SfuEventReport makeReport(Models.SfuInboundRtpPad sfuInboundRtpPadModel) {
         try {
-            var timestamp = trackModel.hasTouched() ? trackModel.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = sfuInboundRtpPadModel.hasTouched() ? sfuInboundRtpPadModel.getTouched() : Instant.now().toEpochMilli();
             var streamDirection = StreamDirection.INBOUND;
             var attachment = RtpPadAttachment.builder()
                     .withStreamDirection(streamDirection)
-                    .withInternal(trackModel.getInternal())
+                    .withInternal(sfuInboundRtpPadModel.getInternal())
                     .build().toBase64();
-            var sfuStreamId = trackModel.hasSfuStreamId() ? trackModel.getSfuStreamId() : null;
+            var sfuStreamId = sfuInboundRtpPadModel.hasSfuStreamId() ? sfuInboundRtpPadModel.getSfuStreamId() : null;
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_RTP_PAD_REMOVED.name())
-                    .setSfuId(trackModel.getSfuId())
+                    .setSfuId(sfuInboundRtpPadModel.getSfuId())
 //                    .setCallId(callId)
-                    .setTransportId(trackModel.getSfuTransportId())
+                    .setTransportId(sfuInboundRtpPadModel.getSfuTransportId())
                     .setMediaStreamId(sfuStreamId)
 //                    .setMediaSinkId(trackModel)
-                    .setRtpPadId(trackModel.getRtpPadId())
+                    .setRtpPadId(sfuInboundRtpPadModel.getRtpPadId())
                     .setAttachments(attachment)
                     .setMessage("Sfu Rtp Pad is removed")
-                    .setServiceId(trackModel.getServiceId())
-                    .setMediaUnitId(trackModel.getMediaUnitId())
+                    .setServiceId(sfuInboundRtpPadModel.getServiceId())
+                    .setMediaUnitId(sfuInboundRtpPadModel.getMediaUnitId())
                     .setTimestamp(timestamp)
-                    .setMarker(trackModel.getMarker())
+                    .setMarker(sfuInboundRtpPadModel.getMarker())
                     ;
             logger.info("SFU Pad (id: {}, streamId: {}) is REMOVED (mediaUnitId: {}, serviceId {}), direction is {}",
-                    trackModel.getRtpPadId(),
+                    sfuInboundRtpPadModel.getRtpPadId(),
                     sfuStreamId,
-                    trackModel.getMediaUnitId(),
-                    trackModel.getServiceId(),
+                    sfuInboundRtpPadModel.getMediaUnitId(),
+                    sfuInboundRtpPadModel.getServiceId(),
                     streamDirection
             );
             return builder.build();

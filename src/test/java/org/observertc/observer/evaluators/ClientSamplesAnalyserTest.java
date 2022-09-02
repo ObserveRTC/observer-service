@@ -71,8 +71,8 @@ class ClientSamplesAnalyserTest {
         var reportsPromise = new CompletableFuture<List<Report>>();
         var clientSample = observedClientSample.getClientSample();
 
-        ClientSampleVisitor.streamInboundAudioTracks(observedClientSample.getClientSample()).forEach(track -> track.sfuSinkId = UUID.randomUUID());
-        ClientSampleVisitor.streamInboundVideoTracks(observedClientSample.getClientSample()).forEach(track -> track.sfuSinkId = UUID.randomUUID());
+        ClientSampleVisitor.streamInboundAudioTracks(observedClientSample.getClientSample()).forEach(track -> track.sfuSinkId = UUID.randomUUID().toString());
+        ClientSampleVisitor.streamInboundVideoTracks(observedClientSample.getClientSample()).forEach(track -> track.sfuSinkId = UUID.randomUUID().toString());
         int expectedNumberOfReports = getOneIfNotNull(clientSample.engine) +
                 getOneIfNotNull(clientSample.platform) +
                 getOneIfNotNull(clientSample.browser) +

@@ -128,14 +128,20 @@ public class SfusRepository implements RepositoryStorageMetrics {
     }
 
     public Sfu add(String serviceId, String mediaUnitId, String sfuId, Long timestamp, String timeZoneId, String marker) {
-        var model = Models.Sfu.newBuilder()
+        var modelBuilder = Models.Sfu.newBuilder()
                 .setServiceId(serviceId)
                 .setSfuId(sfuId)
-                .setMediaUnitId(mediaUnitId)
-                .setMarker(marker)
                 .setJoined(timestamp)
+
+                .setTouched(timestamp)
+                .setMediaUnitId(mediaUnitId)
+                // marker
                 .setTimeZoneId(timeZoneId)
-                .build();
+                ;
+        if (marker != null) {
+            modelBuilder.setMarker(marker);
+        }
+        var model = modelBuilder.build();
         this.updated.put(model.getSfuId(), model);
         return this.wrapSfu(model);
     }

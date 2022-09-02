@@ -113,7 +113,7 @@ public class Client {
         return this.peerConnectionsRepositoryRepo.getAll(peerConnectionIds);
     }
 
-    public PeerConnection addPeerConnection(String peerConnectionId, Long timestamp) throws AlreadyCreatedException {
+    public PeerConnection addPeerConnection(String peerConnectionId, Long timestamp, String marker) throws AlreadyCreatedException {
         var model = modelHolder.get();
         if (0 < model.getPeerConnectionIdsCount()) {
             var peerConnectionIds = model.getPeerConnectionIdsList();
@@ -122,18 +122,23 @@ public class Client {
             }
         }
 
-        var peerConnectionModel = Models.PeerConnection.newBuilder()
+        var peerConnectionModelBuilder = Models.PeerConnection.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
+                .setUserId(model.getUserId())
                 .setClientId(model.getClientId())
                 .setPeerConnectionId(peerConnectionId)
-                .setMediaUnitId(model.getMediaUnitId())
                 .setOpened(timestamp)
                 .setTouched(timestamp)
-                .setMarker(model.getMarker())
-                .build();
+                .setMediaUnitId(model.getMediaUnitId())
+                // marker
+                ;
 
+        if (marker != null) {
+            peerConnectionModelBuilder.setMarker(marker);
+        }
+        var peerConnectionModel = peerConnectionModelBuilder.build();
         var newModel = Models.Client.newBuilder(model)
                 .addPeerConnectionIds(peerConnectionId)
                 .build();

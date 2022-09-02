@@ -131,20 +131,25 @@ public class SfuTransport {
             }
         }
 
-        var inboundRtpPadModel = Models.SfuInboundRtpPad.newBuilder()
+        var inboundRtpPadModelBuilder = Models.SfuInboundRtpPad.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuId(model.getSfuId())
                 .setSfuTransportId(model.getTransportId())
-                .setSfuStreamId(sfuStreamId)
+                // sfuStreamId
                 .setRtpPadId(rtpPadId)
                 .setSsrc(ssrc)
                 .setInternal(model.getInternal())
                 .setAdded(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
-                .setMarker(marker)
-                .build();
-
+                ;
+        if (sfuStreamId != null) {
+            inboundRtpPadModelBuilder.setSfuStreamId(sfuStreamId);
+        }
+        if (marker != null) {
+            inboundRtpPadModelBuilder.setMarker(marker);
+        }
+        var inboundRtpPadModel = inboundRtpPadModelBuilder.build();
         var newModel = Models.SfuTransport.newBuilder(model)
                 .addInboundRtpPadIds(rtpPadId)
                 .build();
@@ -212,21 +217,30 @@ public class SfuTransport {
             }
         }
 
-        var sfuOutboundRtpPadModel = Models.SfuOutboundRtpPad.newBuilder()
+        var sfuOutboundRtpPadModelBuilder = Models.SfuOutboundRtpPad.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuId(model.getSfuId())
                 .setSfuTransportId(model.getTransportId())
-                .setSfuStreamId(sfuStreamId)
-                .setSfuSinkId(sfuSinkId)
+                // sfuStreamId
+                // sfuSinkId
                 .setRtpPadId(rtpPadId)
                 .setSsrc(ssrc)
                 .setInternal(model.getInternal())
                 .setAdded(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
-                .setMarker(marker)
-                .build();
+                ;
 
+        if (sfuStreamId != null) {
+            sfuOutboundRtpPadModelBuilder.setSfuStreamId(sfuStreamId);
+        }
+        if (sfuSinkId != null) {
+            sfuOutboundRtpPadModelBuilder.setSfuSinkId(sfuSinkId);
+        }
+        if (marker != null) {
+            sfuOutboundRtpPadModelBuilder.setMarker(marker);
+        }
+        var sfuOutboundRtpPadModel = sfuOutboundRtpPadModelBuilder.build();
         var newModel = Models.SfuTransport.newBuilder(model)
                 .addOutboundRtpPadIds(rtpPadId)
                 .build();
@@ -257,12 +271,6 @@ public class SfuTransport {
         this.sfuOutboundRtpPadsRepository.delete(rtpPadId);
         return true;
     }
-
-
-
-
-
-
 
 
     public Collection<String> getSctpStreamIds() {
@@ -299,7 +307,7 @@ public class SfuTransport {
             }
         }
 
-        var sctpStreamModel = Models.SfuSctpStream.newBuilder()
+        var sctpStreamModelBuilder = Models.SfuSctpStream.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuId(model.getSfuId())
                 .setSfuTransportId(model.getTransportId())
@@ -307,9 +315,12 @@ public class SfuTransport {
                 .setOpened(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
-                .setMarker(marker)
-                .build();
+                ;
 
+        if (marker != null) {
+            sctpStreamModelBuilder.setMarker(marker);
+        }
+        var sctpStreamModel = sctpStreamModelBuilder.build();
         var newModel = Models.SfuTransport.newBuilder(model)
                 .addSctpStreamIds(sctpStreamId)
                 .build();

@@ -45,39 +45,40 @@ public class OutboundTrackRemovedReports {
         }
     }
 
-    private CallEventReport makeReport(Models.OutboundTrack mediaTrackDTO) {
+    private CallEventReport makeReport(Models.OutboundTrack outboundTrackModel) {
         try {
-            var timestamp = mediaTrackDTO.hasTouched() ? mediaTrackDTO.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = outboundTrackModel.hasTouched() ? outboundTrackModel.getTouched() : Instant.now().toEpochMilli();
             var streamDirection = StreamDirection.OUTBOUND.name();
             MediaTrackAttachment attachment = MediaTrackAttachment.builder()
-                    .withSfuStreamId(mediaTrackDTO.getSfuStreamId())
+                    .withSfuStreamId(outboundTrackModel.getSfuStreamId())
                     .withStreamDirection(streamDirection)
                     .withMediaKind(MediaKind.AUDIO.name())
                     .build();
-            String message = String.format("Media Track is removed. sfuStreamId: %s, sfuSinkId: %s, direction: %s", mediaTrackDTO.getSfuStreamId(), streamDirection);
+            String message = String.format("Media Track is removed. sfuStreamId: %s, sfuSinkId: %s, direction: %s", outboundTrackModel.getSfuStreamId(), streamDirection);
+            var ssrc = outboundTrackModel.getSsrcCount() != 1 ? null : outboundTrackModel.getSsrc(0);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_REMOVED.name())
-                    .setCallId(mediaTrackDTO.getCallId())
-                    .setServiceId(mediaTrackDTO.getServiceId())
-                    .setRoomId(mediaTrackDTO.getRoomId())
-                    .setClientId(mediaTrackDTO.getClientId())
-                    .setMediaUnitId(mediaTrackDTO.getMediaUnitId())
-                    .setUserId(mediaTrackDTO.getUserId())
-//                    .setSSRC(mediaTrackDTO.ssrc)
-                    .setPeerConnectionId(mediaTrackDTO.getPeerConnectionId())
-                    .setMediaTrackId(mediaTrackDTO.getTrackId())
+                    .setCallId(outboundTrackModel.getCallId())
+                    .setServiceId(outboundTrackModel.getServiceId())
+                    .setRoomId(outboundTrackModel.getRoomId())
+                    .setClientId(outboundTrackModel.getClientId())
+                    .setMediaUnitId(outboundTrackModel.getMediaUnitId())
+                    .setUserId(outboundTrackModel.getUserId())
+                    .setSSRC(ssrc)
+                    .setPeerConnectionId(outboundTrackModel.getPeerConnectionId())
+                    .setMediaTrackId(outboundTrackModel.getTrackId())
                     .setAttachments(attachment.toBase64())
                     .setTimestamp(timestamp)
-                    .setMarker(mediaTrackDTO.getMarker())
+                    .setMarker(outboundTrackModel.getMarker())
                     .setMessage(message)
                     .build();
             logger.info("Media Track {} (sfuStreamId: {}) on Peer Connection {} is REMOVED at call \"{}\" in service \"{}\" at room \"{}\"",
-                    mediaTrackDTO.getTrackId(),
-                    mediaTrackDTO.getSfuStreamId(),
-                    mediaTrackDTO.getPeerConnectionId(),
-                    mediaTrackDTO.getCallId(),
-                    mediaTrackDTO.getServiceId(),
-                    mediaTrackDTO.getRoomId());
+                    outboundTrackModel.getTrackId(),
+                    outboundTrackModel.getSfuStreamId(),
+                    outboundTrackModel.getPeerConnectionId(),
+                    outboundTrackModel.getCallId(),
+                    outboundTrackModel.getServiceId(),
+                    outboundTrackModel.getRoomId());
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);
