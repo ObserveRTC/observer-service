@@ -109,7 +109,7 @@ public class RepositoryEvents {
     public Observable<List<Models.Sfu>> deletedSfu() {
         return this.sfusRepository.observableDeletedEntries()
                 .map(events ->
-                        events.stream().map(ModifiedStorageEntry::getNewValue).collect(Collectors.toList())
+                        events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );
     }
 
@@ -123,28 +123,28 @@ public class RepositoryEvents {
     public Observable<List<Models.SfuTransport>> deletedSfuTransports() {
         return this.sfuTransportsRepository.observableDeletedEntries()
                 .map(events ->
-                        events.stream().map(ModifiedStorageEntry::getNewValue).collect(Collectors.toList())
+                        events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );
     }
 
     public Observable<List<Models.SfuInboundRtpPad>> deletedSfuInboundRtpPads() {
         return this.sfuInboundRtpPadsRepository.observableDeletedEntries()
                 .map(events ->
-                        events.stream().map(ModifiedStorageEntry::getNewValue).collect(Collectors.toList())
+                        events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );
     }
 
     public Observable<List<Models.SfuOutboundRtpPad>> deletedSfuOutboundRtpPads() {
         return this.sfuOutboundRtpPadsRepository.observableDeletedEntries()
                 .map(events ->
-                        events.stream().map(ModifiedStorageEntry::getNewValue).collect(Collectors.toList())
+                        events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );
     }
 
     public Observable<List<Models.SfuSctpStream>> deletedSfuSctpStream() {
         return this.sfuSctpStreamsRepository.observableDeletedEntries()
                 .map(events ->
-                        events.stream().map(ModifiedStorageEntry::getNewValue).collect(Collectors.toList())
+                        events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );
     }
 }

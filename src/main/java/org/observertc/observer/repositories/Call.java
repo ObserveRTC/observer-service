@@ -15,16 +15,16 @@ public class Call {
     private final ServiceRoomId serviceRoomId;
     private final Models.Call model;
     private final CallsRepository callsRepositoryRepo;
+    private final CallClientIdsRepository callClientIdsRepository;
     private final ClientsRepository clientsRepo;
-    private final CallClientIdsRepository callClientIdsRepo;
     private final AtomicReference<Set<String>> clientIdsHolder;
 
-    Call(Models.Call model, CallsRepository callsRepositoryRepo, ClientsRepository clientsRepo, CallClientIdsRepository callClientIdsRepo, Set<String> clientIds) {
+    Call(Models.Call model, CallsRepository callsRepositoryRepo, ClientsRepository clientsRepo, CallClientIdsRepository callClientIdsRepository, Set<String> clientIds) {
         this.model = model;
         this.callsRepositoryRepo = callsRepositoryRepo;
         this.clientsRepo = clientsRepo;
         this.clientIdsHolder = new AtomicReference<>(clientIds);
-        this.callClientIdsRepo = callClientIdsRepo;
+        this.callClientIdsRepository = callClientIdsRepository;
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
@@ -104,7 +104,7 @@ public class Call {
         }
         var clientModel = clientModelBuilder.build();
         this.clientIdsHolder.set(newClientIds);
-        this.callClientIdsRepo.update(this.model.getCallId(), newClientIds);
+        this.callClientIdsRepository.add(this.model.getCallId(), clientId);
         this.clientsRepo.update(clientModel);
         return this.clientsRepo.wrapClient(clientModel);
     }
@@ -117,7 +117,7 @@ public class Call {
         var newClientIds = clientIds.stream().filter(savedClientId -> savedClientId != clientId)
                 .collect(Collectors.toSet());
         this.clientIdsHolder.set(newClientIds);
-        this.callClientIdsRepo.delete(clientId);
+        this.callClientIdsRepository.delete(this.model.getCallId(), clientId);
         this.clientsRepo.delete(clientId);
         return true;
     }

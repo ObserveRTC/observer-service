@@ -123,6 +123,11 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 client.touch(timestamp);
                 clients.put(client.getClientId(), client);
                 newClientModels.add(client.getModel());
+            } else {
+                var lastTouch = client.getTouched();
+                if (lastTouch == null || lastTouch < timestamp) {
+                    client.touch(timestamp);
+                }
             }
 
             Client finalClient = client;
@@ -140,6 +145,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     peerConnections.put(result.getPeerConnectionId(), result);
                     newPeerConnectionModels.add(result.getModel());
                 } else {
+                    var lastTouch = result.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        result.touch(timestamp);
+                    }
                     result.touch(timestamp);
                 }
                 return result;
@@ -168,7 +177,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     inboundTracks.put(inboundAudioTrack.getTrackId(), inboundAudioTrack);
                     newInboundTrackModels.add(inboundAudioTrack.getModel());
                 } else {
-                    inboundAudioTrack.touch(timestamp);
+                    var lastTouch = inboundAudioTrack.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        inboundAudioTrack.touch(timestamp);
+                    }
                     if (!inboundAudioTrack.hasSSRC(track.ssrc)) {
                         inboundAudioTrack.addSSRC(track.ssrc);
                     }
@@ -196,7 +208,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     inboundTracks.put(inboundVideoTrack.getTrackId(), inboundVideoTrack);
                     newInboundTrackModels.add(inboundVideoTrack.getModel());
                 } else {
-                    inboundVideoTrack.touch(timestamp);
+                    var lastTouch = inboundVideoTrack.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        inboundVideoTrack.touch(timestamp);
+                    }
                     if (!inboundVideoTrack.hasSSRC(track.ssrc)) {
                         inboundVideoTrack.addSSRC(track.ssrc);
                     }
@@ -222,7 +237,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     outboundTracks.put(outboundAudioTrack.getTrackId(), outboundAudioTrack);
                     newOutboundTrackModels.add(outboundAudioTrack.getModel());
                 } else {
-                    outboundAudioTrack.touch(timestamp);
+                    var lastTouch = outboundAudioTrack.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        outboundAudioTrack.touch(timestamp);
+                    }
                     if (!outboundAudioTrack.hasSSRC(track.ssrc)) {
                         outboundAudioTrack.addSSRC(track.ssrc);
                     }
@@ -248,7 +266,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     outboundTracks.put(outboundVideoTrack.getTrackId(), outboundVideoTrack);
                     newOutboundTrackModels.add(outboundVideoTrack.getModel());
                 } else {
-                    outboundVideoTrack.touch(timestamp);
+                    var lastTouch = outboundVideoTrack.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        outboundVideoTrack.touch(timestamp);
+                    }
                     if (!outboundVideoTrack.hasSSRC(track.ssrc)) {
                         outboundVideoTrack.addSSRC(track.ssrc);
                     }

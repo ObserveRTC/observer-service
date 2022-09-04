@@ -5,7 +5,9 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.metrics.RepositoryMetrics;
+import org.observertc.observer.repositories.CallsRepository;
 import org.observertc.observer.repositories.InboundTracksRepository;
+import org.observertc.observer.repositories.OutboundTrack;
 import org.observertc.observer.repositories.OutboundTracksRepository;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Prototype
 public class MatchTracks extends ChainedTask<MatchTracks.Report> {
@@ -28,13 +31,17 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
     @Inject
     InboundTracksRepository inboundTracksRepository;
 
+    @Inject
+    CallsRepository callsRepository;
+
+
     public static class Report {
         public final Map<String, Match> inboundMatches = new HashMap<>();
     }
 
     private Report result = new Report();
 
-    private Set<String> outboundAudioTrackIds = new HashSet<>();
+    private Set<String> outboundTrackIds = new HashSet<>();
     private Set<String> outboundVideoTrackIds = new HashSet<>();
 
     @PostConstruct
@@ -50,11 +57,15 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         logger.error("This Task cannot be chained!");
             })
             .addActionStage("Fetch Inbound To Outbound Tracks", () -> {
-                if (this.outboundAudioTrackIds == null || this.outboundAudioTrackIds.size() < 1) {
+                if (this.outboundTrackIds == null || this.outboundTrackIds.size() < 1) {
                     return;
                 }
-                var outboundAudioTracks = this.outboundTracksRepository.getAll(this.outboundAudioTrackIds);
-                for (var entry : outboundAudioTracks.entrySet()) {
+                var outboundTracks = this.outboundTracksRepository.getAll(this.outboundTrackIds);
+                var serviceRoomIds = outboundTracks.values().stream()
+                        .map(OutboundTrack::getServiceRoomId)
+                        .collect(Collectors.toSet());
+                this.callsRepository.fetchRecursively(serviceRoomIds);
+                for (var entry : outboundTracks.entrySet()) {
                     var outboundTrackId = entry.getKey();
                     var outboundTrack = entry.getValue();
                     var outboundPeerConnection = outboundTrack.getPeerConnection();
@@ -69,8 +80,10 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         for (var inboundPeerConnection : remoteClient.getPeerConnections().values()) {
                             for (var inboundTrack : inboundPeerConnection.getInboundTracks().values()) {
                                 var matched = false;
-                                if (outboundTrack.getSfuStreamId() != null) {
-                                    if (inboundTrack.getSfuStreamId() == outboundTrack.getSfuStreamId()) {
+                                var outboundTrackSfuStreamId = outboundTrack.getSfuStreamId();
+                                // match by sfuStreamId
+                                if (outboundTrackSfuStreamId != null && !outboundTrackSfuStreamId.isBlank()) {
+                                    if (outboundTrackSfuStreamId == outboundTrack.getSfuStreamId()) {
                                         matched = true;
                                     } else {
                                         continue;
@@ -112,7 +125,7 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
 
     public MatchTracks whereOutboundTrackIds(Set<String> mediaTrackIds) {
         if (mediaTrackIds == null) return this;
-        mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.outboundAudioTrackIds::add);
+        mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.outboundTrackIds::add);
         return this;
     }
 

@@ -98,7 +98,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
     }
 
     synchronized void update(Models.OutboundTrack OutboundAudioTrack) {
-        this.updated.put(OutboundAudioTrack.getPeerConnectionId(), OutboundAudioTrack);
+        this.updated.put(OutboundAudioTrack.getTrackId(), OutboundAudioTrack);
         var removed = this.deleted.remove(OutboundAudioTrack.getTrackId());
         if (removed) {
             logger.debug("In this transaction OutboundAudioTrack is deleted before it was updated");

@@ -30,7 +30,9 @@ class CachedFetches<K, V> {
             return result;
         }
         result = this.fetchOne.apply(key);
-        this.cache.put(key, result);
+        if (result != null) {
+            this.cache.put(key, result);
+        }
         return result;
     }
 
@@ -53,7 +55,9 @@ class CachedFetches<K, V> {
         }
         if (remaining != null) {
             var values = this.fetchAll.apply(remaining);
-            result.putAll(values);
+            if (values != null && 0 < values.size()) {
+                result.putAll(values);
+            }
             // the add puts into the cache, should be in the createXXXX in the repositories
 //            this.cache.putAll(values);
         }

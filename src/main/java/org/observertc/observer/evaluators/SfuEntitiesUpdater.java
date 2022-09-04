@@ -105,6 +105,11 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 );
                 sfus.put(sfu.getSfuId(), sfu);
                 newSfuModels.add(sfu.getModel());
+            } else {
+                var lastTouch = sfu.getTouched();
+                if (lastTouch == null || lastTouch < timestamp) {
+                    sfu.touch(timestamp);
+                }
             }
 
             Sfu finalSfu = sfu;
@@ -123,7 +128,10 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                     sfuTransports.put(result.getSfuTransportId(), result);
                     newSfuTransportModels.add(result.getModel());
                 } else {
-                    result.touch(timestamp);
+                    var lastTouch = result.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        result.touch(timestamp);
+                    }
                 }
                 return result;
             };
@@ -144,7 +152,10 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                     sfuInboundRtpPads.put(sfuInboundRtpPadObject.getRtpPadId(), sfuInboundRtpPadObject);
                     newSfuInboundRtpPadModels.add(sfuInboundRtpPadObject.getModel());
                 } else {
-                    sfuInboundRtpPadObject.touch(timestamp);
+                    var lastTouch = sfuInboundRtpPadObject.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        sfuInboundRtpPadObject.touch(timestamp);
+                    }
                 }
             });
             SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
@@ -162,7 +173,10 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                     sfuOutboundRtpPads.put(sfuOutboundRtpPadObject.getRtpPadId(), sfuOutboundRtpPadObject);
                     newSfuOutboundRtpPadModels.add(sfuOutboundRtpPadObject.getModel());
                 } else {
-                    sfuOutboundRtpPadObject.touch(timestamp);
+                    var lastTouch = sfuOutboundRtpPadObject.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        sfuOutboundRtpPadObject.touch(timestamp);
+                    }
                 }
             });
             SfuSampleVisitor.streamSctpStreams(sfuSample).forEach(sfuSctpStreamSample -> {
@@ -177,7 +191,10 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                     newSfuSctpStreamModels.add(sfuSctpStream.getModel());
                     sfuSctpStreams.put(sfuSctpStream.getSfuSctpStreamId(), sfuSctpStream);
                 } else {
-                    sfuSctpStream.touch(timestamp);
+                    var lastTouch = sfuSctpStream.getTouched();
+                    if (lastTouch == null || lastTouch < timestamp) {
+                        sfuSctpStream.touch(timestamp);
+                    }
                 }
             });
         }

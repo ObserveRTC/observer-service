@@ -6,10 +6,9 @@ import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 
-import java.time.Instant;
 import java.util.*;
 
-public class DTOMapGenerator {
+public class ModelsMapGenerator {
     private static final String ALICE_USER_ID = "Alice";
     private static final String BOB_USER_ID = "Bob";
     private static final String ASIA_SFU_MEDIA_UNIT_ID = "asia-sfu";
@@ -28,7 +27,7 @@ public class DTOMapGenerator {
 
     RandomGenerators randomGenerators = new RandomGenerators();
 
-    public DTOMapGenerator saveTo(HamokStorages hamokStorages) {
+    public ModelsMapGenerator saveTo(HamokStorages hamokStorages) {
         ServiceRoomId serviceRoomId = ServiceRoomId.make(callDTO.getServiceId(), callDTO.getRoomId());
         hamokStorages.getCallsRepository().insertAll(List.of(
                 new CallsRepository.CreateCallInfo(
@@ -41,48 +40,59 @@ public class DTOMapGenerator {
 
         // clients
 
-        this.clientDTOs.values().stream().forEach(clientDTO -> {
-            var timestamp = Instant.now().toEpochMilli();
+        this.clientDTOs.values().stream().forEach(clientModel -> {
             call.addClient(
-                    clientDTO.getClientId(),
-                    clientDTO.getUserId(),
-                    clientDTO.getMediaUnitId(),
-                    clientDTO.getTimeZoneId(),
-                    timestamp,
-                    clientDTO.getMarker()
+                    clientModel.getClientId(),
+                    clientModel.getUserId(),
+                    clientModel.getMediaUnitId(),
+                    clientModel.getTimeZoneId(),
+                    clientModel.getJoined(),
+                    clientModel.getMarker()
             );
         });
 
         var clients = call.getClients();
 
         // peer connections
-        this.peerConnectionDTOs.values().stream().forEach(peerConnectionDTO -> {
-            var timestamp = Instant.now().toEpochMilli();
-            var client = clients.get(peerConnectionDTO.getClientId());
+        this.peerConnectionDTOs.values().stream().forEach(peerConnectionModel -> {
+            var client = clients.get(peerConnectionModel.getClientId());
             client.addPeerConnection(
-                    peerConnectionDTO.getPeerConnectionId(),
-                    timestamp,
-                    peerConnectionDTO.getMarker()
+                    peerConnectionModel.getPeerConnectionId(),
+                    peerConnectionModel.getOpened(),
+                    peerConnectionModel.getMarker()
             );
         });
         var peerConnections = hamokStorages.getPeerConnectionsRepository().getAll(this.peerConnectionDTOs.keySet());
 
         // media tracks
-        this.inboundTracks.values().stream().forEach(mediaTrackDTO -> {
-            var timestamp = Instant.now().toEpochMilli();
-            var peerConnection = peerConnections.get(mediaTrackDTO.getTrackId());
+        this.inboundTracks.values().stream().forEach(inboundTrackModel -> {
+            var peerConnection = peerConnections.get(inboundTrackModel.getPeerConnectionId());
             peerConnection.addInboundTrack(
-                    mediaTrackDTO.getServiceId(),
-                    timestamp,
-                    mediaTrackDTO.getSfuStreamId(),
-                    mediaTrackDTO.getSfuSinkId(),
-                    MediaKind.valueOf(mediaTrackDTO.getKind()),
-                    mediaTrackDTO.getSsrc(0),
-                    mediaTrackDTO.getMarker()
+                    inboundTrackModel.getTrackId(),
+                    inboundTrackModel.getAdded(),
+                    inboundTrackModel.getSfuStreamId(),
+                    inboundTrackModel.getSfuSinkId(),
+                    MediaKind.valueOf(inboundTrackModel.getKind()),
+                    inboundTrackModel.getSsrc(0),
+                    inboundTrackModel.getMarker()
+            );
+        });
+
+        this.outboundTracks.values().stream().forEach(outboundTrackModel -> {
+            var peerConnection = peerConnections.get(outboundTrackModel.getPeerConnectionId());
+            peerConnection.addOutboundTrack(
+                    outboundTrackModel.getTrackId(),
+                    outboundTrackModel.getAdded(),
+                    outboundTrackModel.getSfuStreamId(),
+                    MediaKind.valueOf(outboundTrackModel.getKind()),
+                    outboundTrackModel.getSsrc(0),
+                    outboundTrackModel.getMarker()
             );
         });
 
         if (this.sfuDTOs.size() < 1) {
+            hamokStorages.getCallsRepository().save();
+            hamokStorages.getSfusRepository().save();
             return this;
         }
         this.sfuDTOs.values().forEach(sfuModel -> {
@@ -119,12 +129,23 @@ public class DTOMapGenerator {
                     sfuInboundRtpPad.getMarker()
             );
         });
+        this.sfuOutboundRtpPads.values().forEach(sfuOutboundRtpPad -> {
+            var sfuTransport = sfuTransports.get(sfuOutboundRtpPad.getSfuTransportId());
+            sfuTransport.addOutboundRtpPad(
+                    sfuOutboundRtpPad.getRtpPadId(),
+                    sfuOutboundRtpPad.getSsrc(),
+                    sfuOutboundRtpPad.getSfuStreamId(),
+                    sfuOutboundRtpPad.getSfuSinkId(),
+                    sfuOutboundRtpPad.getAdded(),
+                    sfuOutboundRtpPad.getMarker()
+            );
+        });
         hamokStorages.getCallsRepository().save();
         hamokStorages.getSfusRepository().save();
         return this;
     }
 
-    public DTOMapGenerator deleteFrom(HamokStorages hamokStorages) {
+    public ModelsMapGenerator deleteFrom(HamokStorages hamokStorages) {
         if (this.callDTO != null) {
             ServiceRoomId serviceRoomId = ServiceRoomId.make(this.callDTO.getServiceId(), this.callDTO.getRoomId());
             hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
@@ -138,31 +159,40 @@ public class DTOMapGenerator {
         return this;
     }
 
-    public DTOMapGenerator generateP2pCase() {
+    public ModelsMapGenerator generateP2pCase() {
         if (Objects.nonNull(this.callDTO)) throw new RuntimeException("cannot generate two calls");
-        this.callDTO = this.modelsGenerator.getCallDTO();
+        this.callDTO = this.modelsGenerator.getCallModel();
         var alice = this.generateClientSide(ALICE_USER_ID);
         var bob = this.generateClientSide(BOB_USER_ID);
         alice.inboundTrack = Models.InboundTrack.newBuilder(alice.inboundTrack)
+                .clearSfuSinkId()
+                .clearSfuStreamId()
                 .clearSsrc()
                 .addSsrc(bob.outboundTrack.getSsrc(0))
                 .build();
+        alice.outboundTrack = Models.OutboundTrack.newBuilder(alice.outboundTrack)
+                .clearSfuStreamId()
+                .build();
         bob.inboundTrack = Models.InboundTrack.newBuilder(bob.inboundTrack)
                 .clearSsrc()
+                .clearSfuSinkId()
+                .clearSfuStreamId()
                 .addSsrc(alice.outboundTrack.getSsrc(0))
+                .build();
+        bob.outboundTrack = Models.OutboundTrack.newBuilder(bob.outboundTrack)
+                .clearSfuStreamId()
                 .build();
         this.putClientSides(alice, bob);
         return this;
     }
 
-    public DTOMapGenerator generateSingleSfuCase() {
+    public ModelsMapGenerator generateSingleSfuCase() {
         if (Objects.nonNull(this.callDTO)) throw new RuntimeException("cannot generate two calls");
-        this.callDTO = this.modelsGenerator.getCallDTO();
+        this.callDTO = this.modelsGenerator.getCallModel();
         var alice = this.generateClientSide(ALICE_USER_ID);
         var bob = this.generateClientSide(BOB_USER_ID);
         var asiaSFU = this.generateSFUSide(ASIA_SFU_MEDIA_UNIT_ID);
         alice.outboundTrack = Models.OutboundTrack.newBuilder(alice.outboundTrack)
-                .clearSsrc()
                 .setSfuStreamId(asiaSFU.alice_to_sfu_inboundRtpPad.getSfuStreamId())
                 .build();
 
@@ -186,12 +216,12 @@ public class DTOMapGenerator {
 
 
 
-    public DTOMapGenerator generateMultipleSfu() {
+    public ModelsMapGenerator generateMultipleSfu() {
         if (Objects.nonNull(this.callDTO)) throw new RuntimeException("cannot generate two calls");
         throw new RuntimeException("Not implemented");
     }
 
-    public Models.Call getCallDTO() {
+    public Models.Call getCallModel() {
         return this.callDTO;
     }
 

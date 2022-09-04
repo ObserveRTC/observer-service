@@ -230,7 +230,7 @@ public class ObserverConfig {
 		public int maxItems = 2000;
 
 		@Min(0)
-		public int maxTimeInMs = 0;
+		public int maxTimeInMs = 100;
 
 	}
 

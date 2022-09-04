@@ -1,6 +1,5 @@
 package org.observertc.observer.hamokendpoints;
 
-import io.github.balazskreith.hamok.transports.Endpoint;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.slf4j.Logger;
@@ -28,7 +27,7 @@ public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuil
                 .collect(Collectors.toList());
     }
 
-    public Endpoint build() {
+    public HamokEndpoint build() {
         Config config = this.convertAndValidate(Config.class);
         String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, "Builder");
         Optional<Builder> builderHolder = this.tryInvoke(builderClassName);

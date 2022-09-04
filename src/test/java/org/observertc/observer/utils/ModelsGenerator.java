@@ -16,13 +16,13 @@ public class ModelsGenerator {
 
     }
 
-    public Models.Call getCallDTO() {
-        var result = this.getCallDTOBuilder()
+    public Models.Call getCallModel() {
+        var result = this.getCallModelBuilder()
                 .build();
         return result;
     }
 
-    public Models.Call.Builder getCallDTOBuilder() {
+    public Models.Call.Builder getCallModelBuilder() {
         var serviceId = this.randomGenerators.getRandomServiceId();
         var roomId = this.randomGenerators.getRandomTestRoomIds();
         var callId = UUID.randomUUID().toString();
@@ -33,8 +33,10 @@ public class ModelsGenerator {
                 .setRoomId(roomId)
                 .setCallId(callId)
                 .setStarted(timestamp)
-                .setMarker(marker)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -79,8 +81,10 @@ public class ModelsGenerator {
                 .setUserId(userId)
                 .setJoined(timestamp)
                 .setTimeZoneId(timeZoneId)
-                .setMarker(marker)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -129,8 +133,10 @@ public class ModelsGenerator {
                 .setPeerConnectionId(peerConnectionId)
                 .setUserId(userId)
                 .setOpened(timestamp)
-                .setMarker(marker)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -186,8 +192,10 @@ public class ModelsGenerator {
                 .setAdded(timestamp)
                 .addSsrc(ssrc)
                 .setKind(kind.name())
-                .setMarker(marker)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         if (sfuStreamId != null) {
             result.setSfuStreamId(sfuStreamId);
         }
@@ -250,9 +258,15 @@ public class ModelsGenerator {
                 .setAdded(timestamp)
                 .addSsrc(ssrc)
                 .setKind(kind.name())
-                .setSfuStreamId(sfuStreamId)
-                .setMarker(marker)
+//                .setSfuStreamId(sfuStreamId)
+//                .setMarker(marker)
                 ;
+        if (sfuStreamId != null) {
+            result.setSfuStreamId(sfuStreamId);
+        }
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -277,8 +291,10 @@ public class ModelsGenerator {
                 .setMediaUnitId(mediaUnitId)
                 .setJoined(timestamp)
                 .setTimeZoneId(timeZoneId)
-                .setMarker(marker)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -319,8 +335,10 @@ public class ModelsGenerator {
                 .setTransportId(transportId)
                 .setMediaUnitId(mediaUnitId)
                 .setOpened(timestamp)
-                .setMarker(marker)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -393,10 +411,12 @@ public class ModelsGenerator {
                 .setSfuStreamId(sfuStreamId)
                 .setRtpPadId(sfuPadId)
                 .setAdded(timestamp)
-                .setMarker(marker)
                 .setInternal(false)
                 .setSsrc(SSRC)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 
@@ -416,14 +436,25 @@ public class ModelsGenerator {
                 .setMediaUnitId(mediaUnitId)
                 .setSfuId(sfuId)
                 .setSfuTransportId(sfuTransportId)
-                .setSfuStreamId(sfuStreamId)
-                .setSfuSinkId(sfuSinkId)
+//                .setSfuStreamId(sfuStreamId)
+//                .setSfuSinkId(sfuSinkId)
                 .setRtpPadId(sfuPadId)
                 .setAdded(timestamp)
-                .setMarker(marker)
                 .setInternal(false)
                 .setSsrc(SSRC)
                 ;
+        if (marker != null) {
+            result.setMarker(marker);
+        }
+        if (sfuStreamId != null) {
+            result.setSfuStreamId(sfuStreamId);
+        }
+        if (sfuSinkId != null) {
+            result.setSfuSinkId(sfuSinkId);
+        }
+        if (marker != null) {
+            result.setMarker(marker);
+        }
         return result;
     }
 }

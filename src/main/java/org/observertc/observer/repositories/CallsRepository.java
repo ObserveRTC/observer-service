@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.balazskreith.hamok.ModifiedStorageEntry;
 import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.ReplicatedStorage;
@@ -59,6 +60,9 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageValues(1000)
                 .build();
+
+
+        var mapper = new ObjectMapper();
 
         this.fetched = CachedFetches.<ServiceRoomId, Call>builder()
                 .onFetchOne(this::fetchOne)
@@ -127,8 +131,8 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
         var result = this.storage.deleteAll(serviceRoomIds);
-        this.callClientIds.deleteAll(clientIds);
-        this.callClientIds.save();
+        this.clientsRepositoryRepo.deleteAll(clientIds);
+        this.clientsRepositoryRepo.save();
         this.fetched.clear();
         return result;
     }

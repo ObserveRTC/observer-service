@@ -131,10 +131,9 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
-            this.storage.deleteAll(this.deleted);
+            var peerConnections = this.getAll(this.deleted);
             var inboundTrackIds = new HashSet<String>();
             var outboundTrackIds = new HashSet<String>();
-            var peerConnections = this.getAll(this.deleted);
             peerConnections.values().forEach(peerConnection -> {
                 if (0 < peerConnection.getInboundTrackIds().size()) {
                     inboundTrackIds.addAll(peerConnection.getInboundTrackIds());
@@ -149,6 +148,7 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
             if (0 < outboundTrackIds.size()) {
                 this.outboundTracksRepository.deleteAll(outboundTrackIds);
             }
+            this.storage.deleteAll(this.deleted);
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {

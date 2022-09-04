@@ -55,7 +55,7 @@ public class KubernetesEndpointBuilder extends AbstractBuilder implements Endpoi
         var k8sApplicationPods = new K8sApplicationPodsDiscovery(
                 config.namespace,
                 config.podsName,
-                this.essentials.coreV1Api()
+                this.essentials.coreV1ApiProvider().get()
         );
 
        return new K8sEndpoint(k8sApplicationPods, endpoint);

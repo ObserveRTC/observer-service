@@ -108,6 +108,13 @@ public class Client {
         return model.getPeerConnectionIdsList();
     }
 
+    public PeerConnection getPeerConnection(String peerConnectionId) {
+        if (peerConnectionId == null) {
+            return null;
+        }
+        return this.peerConnectionsRepositoryRepo.get(peerConnectionId);
+    }
+
     public Map<String, PeerConnection> getPeerConnections() {
         var peerConnectionIds = this.getPeerConnectionIds();
         return this.peerConnectionsRepositoryRepo.getAll(peerConnectionIds);

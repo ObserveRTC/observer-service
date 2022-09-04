@@ -1,6 +1,7 @@
 package org.observertc.observer.repositories;
 
 import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class OutboundTrack {
 
+    private final ServiceRoomId serviceRoomId;
     private final PeerConnectionsRepository peerConnectionsRepository;
     private final AtomicReference<Models.OutboundTrack> modelHolder;
     private final OutboundTracksRepository outboundTracksRepository;
@@ -20,6 +22,11 @@ public class OutboundTrack {
         this.peerConnectionsRepository = peerConnectionsRepository;
         this.modelHolder = new AtomicReference<>(model);
         this.outboundTracksRepository = outboundTracksRepository;
+        this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
+    }
+
+    public ServiceRoomId getServiceRoomId() {
+        return serviceRoomId;
     }
 
     public PeerConnection getPeerConnection() {

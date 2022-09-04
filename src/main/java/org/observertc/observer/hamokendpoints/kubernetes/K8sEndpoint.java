@@ -1,15 +1,15 @@
 package org.observertc.observer.hamokendpoints.kubernetes;
 
 import io.github.balazskreith.hamok.storagegrid.messages.Message;
-import io.github.balazskreith.hamok.transports.Endpoint;
 import io.github.balazskreith.hamok.transports.UdpSocketEndpoint;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
+import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class K8sEndpoint implements Endpoint {
+public class K8sEndpoint implements HamokEndpoint {
 
     private static final Logger logger = LoggerFactory.getLogger(K8sEndpoint.class);
 
@@ -54,5 +54,10 @@ public class K8sEndpoint implements Endpoint {
     public void stop() {
         this.endpoint.stop();
         this.k8SApplicationPodsDiscovery.stop();
+    }
+
+    @Override
+    public boolean isReady() {
+        return this.k8SApplicationPodsDiscovery.isReady();
     }
 }

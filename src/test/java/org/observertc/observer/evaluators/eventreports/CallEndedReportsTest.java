@@ -23,7 +23,7 @@ class CallEndedReportsTest {
 
     @Test
     void shouldHasExpectedValues() throws Throwable {
-        var expected = modelsGenerator.getCallDTO();
+        var expected = modelsGenerator.getCallModel();
 
         var promise = new CompletableFuture<List<CallEventReport>>();
         this.callEndedReports.getOutput().subscribe(promise::complete);

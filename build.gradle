@@ -46,7 +46,7 @@ dependencies {
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
 
     // --------- Hamok -----
-    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.17-SNAPSHOT'
+    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.18-SNAPSHOT'
 
     // --------- AWS SDK -----
     implementation platform('software.amazon.awssdk:bom:2.15.0')

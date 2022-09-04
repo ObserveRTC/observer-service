@@ -33,6 +33,7 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
     private final CoreV1Api api;
 
     private volatile boolean run = true;
+    private volatile boolean ready = false;
     private List<InetAddress> localAddresses = Collections.emptyList();
     private AtomicReference<Thread> thread = new AtomicReference<>(null);
 
@@ -51,17 +52,26 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
         });
     }
 
-    public void start() {
-        logger.info("started");
+    public boolean isReady() {
+        return this.ready;
+    }
 
+    public void start() {
+        if (this.run) {
+            logger.warn("Attempted to start twice");
+            return;
+        }
+        this.ready = false;
         this.thread.set(new Thread(this::process));
         this.thread.get().start();
     }
 
     public void stop() {
-        this.run = false;
+        if (!this.run) {
+            return;
+        }
         var thread = this.thread.getAndSet(null);
-        if (thread == null) {
+        if (thread != null) {
             try {
                 thread.join(10000);
                 if (thread.isAlive()) {
@@ -71,7 +81,8 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
                 logger.warn("Exception while stopping thread", e);
             }
         }
-        logger.info("stopped");
+        this.run = false;
+        this.ready = false;
     }
 
     private List<InetAddress> getLocalAddresses() {
@@ -101,6 +112,7 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
                     sleep = 10;
                 } else {
                     sleep = Math.min(30000, sleep * sleep);
+                    this.ready = true;
                 }
             } catch (InterruptedException e) {
                 break;

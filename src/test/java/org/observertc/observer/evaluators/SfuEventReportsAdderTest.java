@@ -24,7 +24,7 @@ class SfuEventReportsAdderTest {
 
     private static final ModelsGenerator MODELS_GENERATOR = new ModelsGenerator();
 
-    private static final Models.Call callDTO = MODELS_GENERATOR.getCallDTO();
+    private static final Models.Call callDTO = MODELS_GENERATOR.getCallModel();
     private static final Models.Client clientDTO = MODELS_GENERATOR.getClientModel();
     private static final Models.PeerConnection peerConnectionDTO = MODELS_GENERATOR.getPeerConnectionModel();
     private static final Models.InboundTrack inboundTrack = MODELS_GENERATOR.getInboundTrackModel();

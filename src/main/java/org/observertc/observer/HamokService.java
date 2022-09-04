@@ -3,6 +3,7 @@ package org.observertc.observer;
 import io.github.balazskreith.hamok.storagegrid.StorageGrid;
 import io.github.balazskreith.hamok.transports.Endpoint;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.micronaut.context.BeanProvider;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
@@ -23,7 +24,7 @@ public class HamokService {
     ObserverConfig.HamokConfig config;
 
     @Inject
-    CoreV1Api coreV1Api;
+    BeanProvider<CoreV1Api> coreV1ApiProvider;
 
     private volatile boolean running = false;
     private Endpoint endpoint;
@@ -43,7 +44,7 @@ public class HamokService {
                 .build();
         var endpointBuilder = new EndpointBuilderImpl();
         endpointBuilder.setBuildingEssentials(new BuildersEssentials(
-                coreV1Api,
+                this.coreV1ApiProvider,
                 this.storageGrid.getLocalEndpointId()
         ));
         endpointBuilder.withConfiguration(this.config.endpoint);

@@ -1,15 +1,18 @@
 package org.observertc.observer.repositories;
 
 import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class PeerConnection {
 
+    private final ServiceRoomId serviceRoomId;
     private final ClientsRepository clientsRepository;
     private final AtomicReference<Models.PeerConnection> modelHolder;
     private final PeerConnectionsRepository peerConnectionsRepository;
@@ -28,6 +31,11 @@ public class PeerConnection {
         this.peerConnectionsRepository = peerConnectionsRepository;
         this.inboundTracksRepository = inboundTracksRepository;
         this.outboundTracksRepository = outboundTracksRepository;
+        this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
+    }
+
+    public ServiceRoomId getServiceRoomId() {
+        return serviceRoomId;
     }
 
     public Client getClient() {
@@ -48,6 +56,11 @@ public class PeerConnection {
     public String getCallId() {
         var model = modelHolder.get();
         return model.getCallId();
+    }
+
+    public String getUserId() {
+        var model = modelHolder.get();
+        return model.getUserId();
     }
 
     public String getClientId() {
@@ -93,7 +106,10 @@ public class PeerConnection {
 
     public Collection<String> getInboundTrackIds() {
         var model = this.modelHolder.get();
-        return model.getInboundAudioTrackIdsList();
+        if (model.getInboundTrackIdsCount() < 1) {
+            return Collections.emptyList();
+        }
+        return model.getInboundTrackIdsList();
     }
 
     public Map<String, InboundTrack> getInboundTracks() {
@@ -101,9 +117,18 @@ public class PeerConnection {
         return this.inboundTracksRepository.getAll(trackIds);
     }
 
+    public InboundTrack getInboundTrack(String trackId) {
+        return this.inboundTracksRepository.get(trackId);
+    }
+
+    public boolean hasInboundTrack(String trackId) {
+        var inboundTrackIds = this.getInboundTrackIds();
+        return inboundTrackIds.contains(trackId);
+    }
+
     public InboundTrack addInboundTrack(String trackId, Long timestamp, String sfuStreamId, String sfuSinkId, MediaKind kind, Long ssrc, String marker) {
         var model = modelHolder.get();
-        var trackIds = model.getInboundAudioTrackIdsList();
+        var trackIds = this.getInboundTrackIds();
         if (trackIds.contains(trackId)) {
             throw AlreadyCreatedException.wrapInboundAudioTrack(trackId);
         }
@@ -137,7 +162,7 @@ public class PeerConnection {
         var inboundTrackModel = inboundTrackModelBuilder.build();
 
         var newModel = Models.PeerConnection.newBuilder(model)
-                .addInboundAudioTrackIds(trackId)
+                .addInboundTrackIds(trackId)
                 .build();
 
         this.updateModel(newModel);
@@ -151,16 +176,16 @@ public class PeerConnection {
 
     public boolean removeInboundTrack(String trackId) {
         var model = modelHolder.get();
-        var trackIds = model.getInboundAudioTrackIdsList();
+        var trackIds = this.getInboundTrackIds();
         if (!trackIds.contains(trackId)) {
             return false;
         }
-        var newInboundAudioTrackIds = trackIds.stream().filter(actualTrackId -> actualTrackId != trackId)
+        var newInboundTrackIds = trackIds.stream().filter(actualTrackId -> actualTrackId != trackId)
                 .collect(Collectors.toSet());
 
         var newModel = Models.PeerConnection.newBuilder(model)
-                .clearInboundAudioTrackIds()
-                .addAllInboundAudioTrackIds(newInboundAudioTrackIds)
+                .clearInboundTrackIds()
+                .addAllInboundTrackIds(newInboundTrackIds)
                 .build();
 
         this.updateModel(newModel);
@@ -170,7 +195,10 @@ public class PeerConnection {
 
     public Collection<String> getOutboundTrackIds() {
         var model = this.modelHolder.get();
-        return model.getOutboundAudioTrackIdsList();
+        if (model.getOutboundTrackIdsCount() < 1) {
+            return Collections.emptyList();
+        }
+        return model.getOutboundTrackIdsList();
     }
 
     public Map<String, OutboundTrack> getOutboundTracks() {
@@ -178,9 +206,18 @@ public class PeerConnection {
         return this.outboundTracksRepository.getAll(trackIds);
     }
 
+    public OutboundTrack getOutboundTrack(String trackId) {
+        return this.outboundTracksRepository.get(trackId);
+    }
+
+    public boolean hasOutboundTrack(String trackId) {
+        var outboundTrackIds = this.getOutboundTrackIds();
+        return outboundTrackIds.contains(trackId);
+    }
+
     public OutboundTrack addOutboundTrack(String trackId, Long timestamp, String sfuStreamId, MediaKind kind, Long ssrc, String marker) {
         var model = modelHolder.get();
-        var trackIds = model.getOutboundAudioTrackIdsList();
+        var trackIds = this.getOutboundTrackIds();
         if (trackIds.contains(trackId)) {
             throw AlreadyCreatedException.wrapOutboundAudioTrack(trackId);
         }
@@ -198,7 +235,7 @@ public class PeerConnection {
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 // marker
-                .setSfuStreamId(sfuStreamId)
+                // sfuStreamId
                 .addSsrc(ssrc)
                 ;
         if (marker != null) {
@@ -210,7 +247,7 @@ public class PeerConnection {
 
         var outboundTrackModel = outboundTrackModelBuilder.build();
         var newModel = Models.PeerConnection.newBuilder(model)
-                .addOutboundAudioTrackIds(trackId)
+                .addOutboundTrackIds(trackId)
                 .build();
 
         this.updateModel(newModel);
@@ -221,16 +258,16 @@ public class PeerConnection {
 
     public boolean removeOutboundTrack(String trackId) {
         var model = modelHolder.get();
-        var trackIds = model.getOutboundAudioTrackIdsList();
+        var trackIds = this.getOutboundTrackIds();
         if (!trackIds.contains(trackId)) {
             return false;
         }
-        var newOutboundAudioTrackIds = trackIds.stream().filter(actualTrackId -> actualTrackId != trackId)
+        var newOutboundTrackIds = trackIds.stream().filter(actualTrackId -> actualTrackId != trackId)
                 .collect(Collectors.toSet());
 
         var newModel = Models.PeerConnection.newBuilder(model)
-                .clearOutboundAudioTrackIds()
-                .addAllOutboundAudioTrackIds(newOutboundAudioTrackIds)
+                .clearOutboundTrackIds()
+                .addAllOutboundTrackIds(newOutboundTrackIds)
                 .build();
 
         this.updateModel(newModel);
@@ -246,4 +283,6 @@ public class PeerConnection {
         this.modelHolder.set(newModel);
         this.peerConnectionsRepository.update(newModel);
     }
+
+
 }

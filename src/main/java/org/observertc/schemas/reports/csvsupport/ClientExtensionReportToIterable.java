@@ -1,9 +1,10 @@
 package org.observertc.schemas.reports.csvsupport;
 
-import java.util.LinkedList;
 import org.observertc.observer.reports.Report;
-import java.util.function.Function;
 import org.observertc.schemas.reports.ClientExtensionReport;
+
+import java.util.LinkedList;
+import java.util.function.Function;
 
 public class ClientExtensionReportToIterable implements Function<Report, Iterable<?>> {
 	@Override
@@ -15,6 +16,7 @@ public class ClientExtensionReportToIterable implements Function<Report, Iterabl
 		result.add(payload.extensionType);
 		result.add(payload.callId);
 		result.add(payload.clientId);
+//		result.add(Utils.firstNotNull(payload.marker, ""));
 		result.add(payload.marker);
 		result.add(payload.mediaUnitId);
 		result.add(payload.payload);

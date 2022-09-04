@@ -81,17 +81,17 @@ public final class Models {
     long getStarted();
 
     /**
-     * <code>required string marker = 5;</code>
+     * <code>optional string marker = 5;</code>
      * @return Whether the marker field is set.
      */
     boolean hasMarker();
     /**
-     * <code>required string marker = 5;</code>
+     * <code>optional string marker = 5;</code>
      * @return The marker.
      */
     java.lang.String getMarker();
     /**
-     * <code>required string marker = 5;</code>
+     * <code>optional string marker = 5;</code>
      * @return The bytes for marker.
      */
     com.google.protobuf.ByteString
@@ -375,7 +375,7 @@ public final class Models {
     public static final int MARKER_FIELD_NUMBER = 5;
     private volatile java.lang.Object marker_;
     /**
-     * <code>required string marker = 5;</code>
+     * <code>optional string marker = 5;</code>
      * @return Whether the marker field is set.
      */
     @java.lang.Override
@@ -383,7 +383,7 @@ public final class Models {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>required string marker = 5;</code>
+     * <code>optional string marker = 5;</code>
      * @return The marker.
      */
     @java.lang.Override
@@ -402,7 +402,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string marker = 5;</code>
+     * <code>optional string marker = 5;</code>
      * @return The bytes for marker.
      */
     @java.lang.Override
@@ -440,10 +440,6 @@ public final class Models {
         return false;
       }
       if (!hasStarted()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasMarker()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -848,9 +844,6 @@ public final class Models {
         if (!hasStarted()) {
           return false;
         }
-        if (!hasMarker()) {
-          return false;
-        }
         return true;
       }
 
@@ -1167,14 +1160,14 @@ public final class Models {
 
       private java.lang.Object marker_ = "";
       /**
-       * <code>required string marker = 5;</code>
+       * <code>optional string marker = 5;</code>
        * @return Whether the marker field is set.
        */
       public boolean hasMarker() {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>required string marker = 5;</code>
+       * <code>optional string marker = 5;</code>
        * @return The marker.
        */
       public java.lang.String getMarker() {
@@ -1192,7 +1185,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string marker = 5;</code>
+       * <code>optional string marker = 5;</code>
        * @return The bytes for marker.
        */
       public com.google.protobuf.ByteString
@@ -1209,7 +1202,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string marker = 5;</code>
+       * <code>optional string marker = 5;</code>
        * @param value The marker to set.
        * @return This builder for chaining.
        */
@@ -1224,7 +1217,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>required string marker = 5;</code>
+       * <code>optional string marker = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearMarker() {
@@ -1234,7 +1227,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>required string marker = 5;</code>
+       * <code>optional string marker = 5;</code>
        * @param value The bytes for marker to set.
        * @return This builder for chaining.
        */
@@ -3802,104 +3795,54 @@ public final class Models {
         getMarkerBytes();
 
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
-     * @return A list containing the inboundAudioTrackIds.
+     * <code>repeated string inboundTrackIds = 11;</code>
+     * @return A list containing the inboundTrackIds.
      */
     java.util.List<java.lang.String>
-        getInboundAudioTrackIdsList();
+        getInboundTrackIdsList();
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
-     * @return The count of inboundAudioTrackIds.
+     * <code>repeated string inboundTrackIds = 11;</code>
+     * @return The count of inboundTrackIds.
      */
-    int getInboundAudioTrackIdsCount();
+    int getInboundTrackIdsCount();
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
+     * <code>repeated string inboundTrackIds = 11;</code>
      * @param index The index of the element to return.
-     * @return The inboundAudioTrackIds at the given index.
+     * @return The inboundTrackIds at the given index.
      */
-    java.lang.String getInboundAudioTrackIds(int index);
+    java.lang.String getInboundTrackIds(int index);
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
+     * <code>repeated string inboundTrackIds = 11;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the inboundAudioTrackIds at the given index.
+     * @return The bytes of the inboundTrackIds at the given index.
      */
     com.google.protobuf.ByteString
-        getInboundAudioTrackIdsBytes(int index);
+        getInboundTrackIdsBytes(int index);
 
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
-     * @return A list containing the inboundVideoTrackIds.
+     * <code>repeated string outboundTrackIds = 13;</code>
+     * @return A list containing the outboundTrackIds.
      */
     java.util.List<java.lang.String>
-        getInboundVideoTrackIdsList();
+        getOutboundTrackIdsList();
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
-     * @return The count of inboundVideoTrackIds.
+     * <code>repeated string outboundTrackIds = 13;</code>
+     * @return The count of outboundTrackIds.
      */
-    int getInboundVideoTrackIdsCount();
+    int getOutboundTrackIdsCount();
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
+     * <code>repeated string outboundTrackIds = 13;</code>
      * @param index The index of the element to return.
-     * @return The inboundVideoTrackIds at the given index.
+     * @return The outboundTrackIds at the given index.
      */
-    java.lang.String getInboundVideoTrackIds(int index);
+    java.lang.String getOutboundTrackIds(int index);
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
+     * <code>repeated string outboundTrackIds = 13;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the inboundVideoTrackIds at the given index.
+     * @return The bytes of the outboundTrackIds at the given index.
      */
     com.google.protobuf.ByteString
-        getInboundVideoTrackIdsBytes(int index);
-
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @return A list containing the outboundAudioTrackIds.
-     */
-    java.util.List<java.lang.String>
-        getOutboundAudioTrackIdsList();
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @return The count of outboundAudioTrackIds.
-     */
-    int getOutboundAudioTrackIdsCount();
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @param index The index of the element to return.
-     * @return The outboundAudioTrackIds at the given index.
-     */
-    java.lang.String getOutboundAudioTrackIds(int index);
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the outboundAudioTrackIds at the given index.
-     */
-    com.google.protobuf.ByteString
-        getOutboundAudioTrackIdsBytes(int index);
-
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @return A list containing the outboundVideoTrackIds.
-     */
-    java.util.List<java.lang.String>
-        getOutboundVideoTrackIdsList();
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @return The count of outboundVideoTrackIds.
-     */
-    int getOutboundVideoTrackIdsCount();
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @param index The index of the element to return.
-     * @return The outboundVideoTrackIds at the given index.
-     */
-    java.lang.String getOutboundVideoTrackIds(int index);
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the outboundVideoTrackIds at the given index.
-     */
-    com.google.protobuf.ByteString
-        getOutboundVideoTrackIdsBytes(int index);
+        getOutboundTrackIdsBytes(int index);
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.PeerConnection}
@@ -3922,10 +3865,8 @@ public final class Models {
       peerConnectionId_ = "";
       mediaUnitId_ = "";
       marker_ = "";
-      inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      inboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      outboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -4020,37 +3961,19 @@ public final class Models {
             case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000400) != 0)) {
-                inboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList();
+                inboundTrackIds_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000400;
               }
-              inboundAudioTrackIds_.add(bs);
-              break;
-            }
-            case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000800) != 0)) {
-                inboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000800;
-              }
-              inboundVideoTrackIds_.add(bs);
+              inboundTrackIds_.add(bs);
               break;
             }
             case 106: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00001000) != 0)) {
-                outboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00001000;
+              if (!((mutable_bitField0_ & 0x00000800) != 0)) {
+                outboundTrackIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000800;
               }
-              outboundAudioTrackIds_.add(bs);
-              break;
-            }
-            case 114: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00002000) != 0)) {
-                outboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00002000;
-              }
-              outboundVideoTrackIds_.add(bs);
+              outboundTrackIds_.add(bs);
               break;
             }
             default: {
@@ -4069,16 +3992,10 @@ public final class Models {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000400) != 0)) {
-          inboundAudioTrackIds_ = inboundAudioTrackIds_.getUnmodifiableView();
+          inboundTrackIds_ = inboundTrackIds_.getUnmodifiableView();
         }
         if (((mutable_bitField0_ & 0x00000800) != 0)) {
-          inboundVideoTrackIds_ = inboundVideoTrackIds_.getUnmodifiableView();
-        }
-        if (((mutable_bitField0_ & 0x00001000) != 0)) {
-          outboundAudioTrackIds_ = outboundAudioTrackIds_.getUnmodifiableView();
-        }
-        if (((mutable_bitField0_ & 0x00002000) != 0)) {
-          outboundVideoTrackIds_ = outboundVideoTrackIds_.getUnmodifiableView();
+          outboundTrackIds_ = outboundTrackIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -4520,144 +4437,74 @@ public final class Models {
       }
     }
 
-    public static final int INBOUNDAUDIOTRACKIDS_FIELD_NUMBER = 11;
-    private com.google.protobuf.LazyStringList inboundAudioTrackIds_;
+    public static final int INBOUNDTRACKIDS_FIELD_NUMBER = 11;
+    private com.google.protobuf.LazyStringList inboundTrackIds_;
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
-     * @return A list containing the inboundAudioTrackIds.
+     * <code>repeated string inboundTrackIds = 11;</code>
+     * @return A list containing the inboundTrackIds.
      */
     public com.google.protobuf.ProtocolStringList
-        getInboundAudioTrackIdsList() {
-      return inboundAudioTrackIds_;
+        getInboundTrackIdsList() {
+      return inboundTrackIds_;
     }
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
-     * @return The count of inboundAudioTrackIds.
+     * <code>repeated string inboundTrackIds = 11;</code>
+     * @return The count of inboundTrackIds.
      */
-    public int getInboundAudioTrackIdsCount() {
-      return inboundAudioTrackIds_.size();
+    public int getInboundTrackIdsCount() {
+      return inboundTrackIds_.size();
     }
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
+     * <code>repeated string inboundTrackIds = 11;</code>
      * @param index The index of the element to return.
-     * @return The inboundAudioTrackIds at the given index.
+     * @return The inboundTrackIds at the given index.
      */
-    public java.lang.String getInboundAudioTrackIds(int index) {
-      return inboundAudioTrackIds_.get(index);
+    public java.lang.String getInboundTrackIds(int index) {
+      return inboundTrackIds_.get(index);
     }
     /**
-     * <code>repeated string inboundAudioTrackIds = 11;</code>
+     * <code>repeated string inboundTrackIds = 11;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the inboundAudioTrackIds at the given index.
+     * @return The bytes of the inboundTrackIds at the given index.
      */
     public com.google.protobuf.ByteString
-        getInboundAudioTrackIdsBytes(int index) {
-      return inboundAudioTrackIds_.getByteString(index);
+        getInboundTrackIdsBytes(int index) {
+      return inboundTrackIds_.getByteString(index);
     }
 
-    public static final int INBOUNDVIDEOTRACKIDS_FIELD_NUMBER = 12;
-    private com.google.protobuf.LazyStringList inboundVideoTrackIds_;
+    public static final int OUTBOUNDTRACKIDS_FIELD_NUMBER = 13;
+    private com.google.protobuf.LazyStringList outboundTrackIds_;
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
-     * @return A list containing the inboundVideoTrackIds.
+     * <code>repeated string outboundTrackIds = 13;</code>
+     * @return A list containing the outboundTrackIds.
      */
     public com.google.protobuf.ProtocolStringList
-        getInboundVideoTrackIdsList() {
-      return inboundVideoTrackIds_;
+        getOutboundTrackIdsList() {
+      return outboundTrackIds_;
     }
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
-     * @return The count of inboundVideoTrackIds.
+     * <code>repeated string outboundTrackIds = 13;</code>
+     * @return The count of outboundTrackIds.
      */
-    public int getInboundVideoTrackIdsCount() {
-      return inboundVideoTrackIds_.size();
+    public int getOutboundTrackIdsCount() {
+      return outboundTrackIds_.size();
     }
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
+     * <code>repeated string outboundTrackIds = 13;</code>
      * @param index The index of the element to return.
-     * @return The inboundVideoTrackIds at the given index.
+     * @return The outboundTrackIds at the given index.
      */
-    public java.lang.String getInboundVideoTrackIds(int index) {
-      return inboundVideoTrackIds_.get(index);
+    public java.lang.String getOutboundTrackIds(int index) {
+      return outboundTrackIds_.get(index);
     }
     /**
-     * <code>repeated string inboundVideoTrackIds = 12;</code>
+     * <code>repeated string outboundTrackIds = 13;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the inboundVideoTrackIds at the given index.
+     * @return The bytes of the outboundTrackIds at the given index.
      */
     public com.google.protobuf.ByteString
-        getInboundVideoTrackIdsBytes(int index) {
-      return inboundVideoTrackIds_.getByteString(index);
-    }
-
-    public static final int OUTBOUNDAUDIOTRACKIDS_FIELD_NUMBER = 13;
-    private com.google.protobuf.LazyStringList outboundAudioTrackIds_;
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @return A list containing the outboundAudioTrackIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getOutboundAudioTrackIdsList() {
-      return outboundAudioTrackIds_;
-    }
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @return The count of outboundAudioTrackIds.
-     */
-    public int getOutboundAudioTrackIdsCount() {
-      return outboundAudioTrackIds_.size();
-    }
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @param index The index of the element to return.
-     * @return The outboundAudioTrackIds at the given index.
-     */
-    public java.lang.String getOutboundAudioTrackIds(int index) {
-      return outboundAudioTrackIds_.get(index);
-    }
-    /**
-     * <code>repeated string outboundAudioTrackIds = 13;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the outboundAudioTrackIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getOutboundAudioTrackIdsBytes(int index) {
-      return outboundAudioTrackIds_.getByteString(index);
-    }
-
-    public static final int OUTBOUNDVIDEOTRACKIDS_FIELD_NUMBER = 14;
-    private com.google.protobuf.LazyStringList outboundVideoTrackIds_;
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @return A list containing the outboundVideoTrackIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getOutboundVideoTrackIdsList() {
-      return outboundVideoTrackIds_;
-    }
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @return The count of outboundVideoTrackIds.
-     */
-    public int getOutboundVideoTrackIdsCount() {
-      return outboundVideoTrackIds_.size();
-    }
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @param index The index of the element to return.
-     * @return The outboundVideoTrackIds at the given index.
-     */
-    public java.lang.String getOutboundVideoTrackIds(int index) {
-      return outboundVideoTrackIds_.get(index);
-    }
-    /**
-     * <code>repeated string outboundVideoTrackIds = 14;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the outboundVideoTrackIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getOutboundVideoTrackIdsBytes(int index) {
-      return outboundVideoTrackIds_.getByteString(index);
+        getOutboundTrackIdsBytes(int index) {
+      return outboundTrackIds_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4732,17 +4579,11 @@ public final class Models {
       if (((bitField0_ & 0x00000200) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, marker_);
       }
-      for (int i = 0; i < inboundAudioTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, inboundAudioTrackIds_.getRaw(i));
+      for (int i = 0; i < inboundTrackIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, inboundTrackIds_.getRaw(i));
       }
-      for (int i = 0; i < inboundVideoTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, inboundVideoTrackIds_.getRaw(i));
-      }
-      for (int i = 0; i < outboundAudioTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, outboundAudioTrackIds_.getRaw(i));
-      }
-      for (int i = 0; i < outboundVideoTrackIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 14, outboundVideoTrackIds_.getRaw(i));
+      for (int i = 0; i < outboundTrackIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, outboundTrackIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -4787,35 +4628,19 @@ public final class Models {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < inboundAudioTrackIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(inboundAudioTrackIds_.getRaw(i));
+        for (int i = 0; i < inboundTrackIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(inboundTrackIds_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getInboundAudioTrackIdsList().size();
+        size += 1 * getInboundTrackIdsList().size();
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < inboundVideoTrackIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(inboundVideoTrackIds_.getRaw(i));
+        for (int i = 0; i < outboundTrackIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(outboundTrackIds_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getInboundVideoTrackIdsList().size();
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < outboundAudioTrackIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(outboundAudioTrackIds_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getOutboundAudioTrackIdsList().size();
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < outboundVideoTrackIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(outboundVideoTrackIds_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getOutboundVideoTrackIdsList().size();
+        size += 1 * getOutboundTrackIdsList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4882,14 +4707,10 @@ public final class Models {
         if (!getMarker()
             .equals(other.getMarker())) return false;
       }
-      if (!getInboundAudioTrackIdsList()
-          .equals(other.getInboundAudioTrackIdsList())) return false;
-      if (!getInboundVideoTrackIdsList()
-          .equals(other.getInboundVideoTrackIdsList())) return false;
-      if (!getOutboundAudioTrackIdsList()
-          .equals(other.getOutboundAudioTrackIdsList())) return false;
-      if (!getOutboundVideoTrackIdsList()
-          .equals(other.getOutboundVideoTrackIdsList())) return false;
+      if (!getInboundTrackIdsList()
+          .equals(other.getInboundTrackIdsList())) return false;
+      if (!getOutboundTrackIdsList()
+          .equals(other.getOutboundTrackIdsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4943,21 +4764,13 @@ public final class Models {
         hash = (37 * hash) + MARKER_FIELD_NUMBER;
         hash = (53 * hash) + getMarker().hashCode();
       }
-      if (getInboundAudioTrackIdsCount() > 0) {
-        hash = (37 * hash) + INBOUNDAUDIOTRACKIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getInboundAudioTrackIdsList().hashCode();
+      if (getInboundTrackIdsCount() > 0) {
+        hash = (37 * hash) + INBOUNDTRACKIDS_FIELD_NUMBER;
+        hash = (53 * hash) + getInboundTrackIdsList().hashCode();
       }
-      if (getInboundVideoTrackIdsCount() > 0) {
-        hash = (37 * hash) + INBOUNDVIDEOTRACKIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getInboundVideoTrackIdsList().hashCode();
-      }
-      if (getOutboundAudioTrackIdsCount() > 0) {
-        hash = (37 * hash) + OUTBOUNDAUDIOTRACKIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getOutboundAudioTrackIdsList().hashCode();
-      }
-      if (getOutboundVideoTrackIdsCount() > 0) {
-        hash = (37 * hash) + OUTBOUNDVIDEOTRACKIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getOutboundVideoTrackIdsList().hashCode();
+      if (getOutboundTrackIdsCount() > 0) {
+        hash = (37 * hash) + OUTBOUNDTRACKIDS_FIELD_NUMBER;
+        hash = (53 * hash) + getOutboundTrackIdsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -5112,14 +4925,10 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000100);
         marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
-        inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        inboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
-        inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        outboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000800);
-        outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00001000);
-        outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -5189,25 +4998,15 @@ public final class Models {
         }
         result.marker_ = marker_;
         if (((bitField0_ & 0x00000400) != 0)) {
-          inboundAudioTrackIds_ = inboundAudioTrackIds_.getUnmodifiableView();
+          inboundTrackIds_ = inboundTrackIds_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000400);
         }
-        result.inboundAudioTrackIds_ = inboundAudioTrackIds_;
+        result.inboundTrackIds_ = inboundTrackIds_;
         if (((bitField0_ & 0x00000800) != 0)) {
-          inboundVideoTrackIds_ = inboundVideoTrackIds_.getUnmodifiableView();
+          outboundTrackIds_ = outboundTrackIds_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000800);
         }
-        result.inboundVideoTrackIds_ = inboundVideoTrackIds_;
-        if (((bitField0_ & 0x00001000) != 0)) {
-          outboundAudioTrackIds_ = outboundAudioTrackIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00001000);
-        }
-        result.outboundAudioTrackIds_ = outboundAudioTrackIds_;
-        if (((bitField0_ & 0x00002000) != 0)) {
-          outboundVideoTrackIds_ = outboundVideoTrackIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00002000);
-        }
-        result.outboundVideoTrackIds_ = outboundVideoTrackIds_;
+        result.outboundTrackIds_ = outboundTrackIds_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5303,43 +5102,23 @@ public final class Models {
           marker_ = other.marker_;
           onChanged();
         }
-        if (!other.inboundAudioTrackIds_.isEmpty()) {
-          if (inboundAudioTrackIds_.isEmpty()) {
-            inboundAudioTrackIds_ = other.inboundAudioTrackIds_;
+        if (!other.inboundTrackIds_.isEmpty()) {
+          if (inboundTrackIds_.isEmpty()) {
+            inboundTrackIds_ = other.inboundTrackIds_;
             bitField0_ = (bitField0_ & ~0x00000400);
           } else {
-            ensureInboundAudioTrackIdsIsMutable();
-            inboundAudioTrackIds_.addAll(other.inboundAudioTrackIds_);
+            ensureInboundTrackIdsIsMutable();
+            inboundTrackIds_.addAll(other.inboundTrackIds_);
           }
           onChanged();
         }
-        if (!other.inboundVideoTrackIds_.isEmpty()) {
-          if (inboundVideoTrackIds_.isEmpty()) {
-            inboundVideoTrackIds_ = other.inboundVideoTrackIds_;
+        if (!other.outboundTrackIds_.isEmpty()) {
+          if (outboundTrackIds_.isEmpty()) {
+            outboundTrackIds_ = other.outboundTrackIds_;
             bitField0_ = (bitField0_ & ~0x00000800);
           } else {
-            ensureInboundVideoTrackIdsIsMutable();
-            inboundVideoTrackIds_.addAll(other.inboundVideoTrackIds_);
-          }
-          onChanged();
-        }
-        if (!other.outboundAudioTrackIds_.isEmpty()) {
-          if (outboundAudioTrackIds_.isEmpty()) {
-            outboundAudioTrackIds_ = other.outboundAudioTrackIds_;
-            bitField0_ = (bitField0_ & ~0x00001000);
-          } else {
-            ensureOutboundAudioTrackIdsIsMutable();
-            outboundAudioTrackIds_.addAll(other.outboundAudioTrackIds_);
-          }
-          onChanged();
-        }
-        if (!other.outboundVideoTrackIds_.isEmpty()) {
-          if (outboundVideoTrackIds_.isEmpty()) {
-            outboundVideoTrackIds_ = other.outboundVideoTrackIds_;
-            bitField0_ = (bitField0_ & ~0x00002000);
-          } else {
-            ensureOutboundVideoTrackIdsIsMutable();
-            outboundVideoTrackIds_.addAll(other.outboundVideoTrackIds_);
+            ensureOutboundTrackIdsIsMutable();
+            outboundTrackIds_.addAll(other.outboundTrackIds_);
           }
           onChanged();
         }
@@ -6144,438 +5923,220 @@ public final class Models {
         return this;
       }
 
-      private com.google.protobuf.LazyStringList inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureInboundAudioTrackIdsIsMutable() {
+      private com.google.protobuf.LazyStringList inboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureInboundTrackIdsIsMutable() {
         if (!((bitField0_ & 0x00000400) != 0)) {
-          inboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundAudioTrackIds_);
+          inboundTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundTrackIds_);
           bitField0_ |= 0x00000400;
          }
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
-       * @return A list containing the inboundAudioTrackIds.
+       * <code>repeated string inboundTrackIds = 11;</code>
+       * @return A list containing the inboundTrackIds.
        */
       public com.google.protobuf.ProtocolStringList
-          getInboundAudioTrackIdsList() {
-        return inboundAudioTrackIds_.getUnmodifiableView();
+          getInboundTrackIdsList() {
+        return inboundTrackIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
-       * @return The count of inboundAudioTrackIds.
+       * <code>repeated string inboundTrackIds = 11;</code>
+       * @return The count of inboundTrackIds.
        */
-      public int getInboundAudioTrackIdsCount() {
-        return inboundAudioTrackIds_.size();
+      public int getInboundTrackIdsCount() {
+        return inboundTrackIds_.size();
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * <code>repeated string inboundTrackIds = 11;</code>
        * @param index The index of the element to return.
-       * @return The inboundAudioTrackIds at the given index.
+       * @return The inboundTrackIds at the given index.
        */
-      public java.lang.String getInboundAudioTrackIds(int index) {
-        return inboundAudioTrackIds_.get(index);
+      public java.lang.String getInboundTrackIds(int index) {
+        return inboundTrackIds_.get(index);
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * <code>repeated string inboundTrackIds = 11;</code>
        * @param index The index of the value to return.
-       * @return The bytes of the inboundAudioTrackIds at the given index.
+       * @return The bytes of the inboundTrackIds at the given index.
        */
       public com.google.protobuf.ByteString
-          getInboundAudioTrackIdsBytes(int index) {
-        return inboundAudioTrackIds_.getByteString(index);
+          getInboundTrackIdsBytes(int index) {
+        return inboundTrackIds_.getByteString(index);
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * <code>repeated string inboundTrackIds = 11;</code>
        * @param index The index to set the value at.
-       * @param value The inboundAudioTrackIds to set.
+       * @param value The inboundTrackIds to set.
        * @return This builder for chaining.
        */
-      public Builder setInboundAudioTrackIds(
+      public Builder setInboundTrackIds(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureInboundAudioTrackIdsIsMutable();
-        inboundAudioTrackIds_.set(index, value);
+  ensureInboundTrackIdsIsMutable();
+        inboundTrackIds_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
-       * @param value The inboundAudioTrackIds to add.
+       * <code>repeated string inboundTrackIds = 11;</code>
+       * @param value The inboundTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addInboundAudioTrackIds(
+      public Builder addInboundTrackIds(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureInboundAudioTrackIdsIsMutable();
-        inboundAudioTrackIds_.add(value);
+  ensureInboundTrackIdsIsMutable();
+        inboundTrackIds_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
-       * @param values The inboundAudioTrackIds to add.
+       * <code>repeated string inboundTrackIds = 11;</code>
+       * @param values The inboundTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addAllInboundAudioTrackIds(
+      public Builder addAllInboundTrackIds(
           java.lang.Iterable<java.lang.String> values) {
-        ensureInboundAudioTrackIdsIsMutable();
+        ensureInboundTrackIdsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, inboundAudioTrackIds_);
+            values, inboundTrackIds_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
+       * <code>repeated string inboundTrackIds = 11;</code>
        * @return This builder for chaining.
        */
-      public Builder clearInboundAudioTrackIds() {
-        inboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearInboundTrackIds() {
+        inboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundAudioTrackIds = 11;</code>
-       * @param value The bytes of the inboundAudioTrackIds to add.
+       * <code>repeated string inboundTrackIds = 11;</code>
+       * @param value The bytes of the inboundTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addInboundAudioTrackIdsBytes(
+      public Builder addInboundTrackIdsBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureInboundAudioTrackIdsIsMutable();
-        inboundAudioTrackIds_.add(value);
+  ensureInboundTrackIdsIsMutable();
+        inboundTrackIds_.add(value);
         onChanged();
         return this;
       }
 
-      private com.google.protobuf.LazyStringList inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureInboundVideoTrackIdsIsMutable() {
+      private com.google.protobuf.LazyStringList outboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureOutboundTrackIdsIsMutable() {
         if (!((bitField0_ & 0x00000800) != 0)) {
-          inboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList(inboundVideoTrackIds_);
+          outboundTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundTrackIds_);
           bitField0_ |= 0x00000800;
          }
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
-       * @return A list containing the inboundVideoTrackIds.
+       * <code>repeated string outboundTrackIds = 13;</code>
+       * @return A list containing the outboundTrackIds.
        */
       public com.google.protobuf.ProtocolStringList
-          getInboundVideoTrackIdsList() {
-        return inboundVideoTrackIds_.getUnmodifiableView();
+          getOutboundTrackIdsList() {
+        return outboundTrackIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
-       * @return The count of inboundVideoTrackIds.
+       * <code>repeated string outboundTrackIds = 13;</code>
+       * @return The count of outboundTrackIds.
        */
-      public int getInboundVideoTrackIdsCount() {
-        return inboundVideoTrackIds_.size();
+      public int getOutboundTrackIdsCount() {
+        return outboundTrackIds_.size();
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * <code>repeated string outboundTrackIds = 13;</code>
        * @param index The index of the element to return.
-       * @return The inboundVideoTrackIds at the given index.
+       * @return The outboundTrackIds at the given index.
        */
-      public java.lang.String getInboundVideoTrackIds(int index) {
-        return inboundVideoTrackIds_.get(index);
+      public java.lang.String getOutboundTrackIds(int index) {
+        return outboundTrackIds_.get(index);
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * <code>repeated string outboundTrackIds = 13;</code>
        * @param index The index of the value to return.
-       * @return The bytes of the inboundVideoTrackIds at the given index.
+       * @return The bytes of the outboundTrackIds at the given index.
        */
       public com.google.protobuf.ByteString
-          getInboundVideoTrackIdsBytes(int index) {
-        return inboundVideoTrackIds_.getByteString(index);
+          getOutboundTrackIdsBytes(int index) {
+        return outboundTrackIds_.getByteString(index);
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * <code>repeated string outboundTrackIds = 13;</code>
        * @param index The index to set the value at.
-       * @param value The inboundVideoTrackIds to set.
+       * @param value The outboundTrackIds to set.
        * @return This builder for chaining.
        */
-      public Builder setInboundVideoTrackIds(
+      public Builder setOutboundTrackIds(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureInboundVideoTrackIdsIsMutable();
-        inboundVideoTrackIds_.set(index, value);
+  ensureOutboundTrackIdsIsMutable();
+        outboundTrackIds_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
-       * @param value The inboundVideoTrackIds to add.
+       * <code>repeated string outboundTrackIds = 13;</code>
+       * @param value The outboundTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addInboundVideoTrackIds(
+      public Builder addOutboundTrackIds(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureInboundVideoTrackIdsIsMutable();
-        inboundVideoTrackIds_.add(value);
+  ensureOutboundTrackIdsIsMutable();
+        outboundTrackIds_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
-       * @param values The inboundVideoTrackIds to add.
+       * <code>repeated string outboundTrackIds = 13;</code>
+       * @param values The outboundTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addAllInboundVideoTrackIds(
+      public Builder addAllOutboundTrackIds(
           java.lang.Iterable<java.lang.String> values) {
-        ensureInboundVideoTrackIdsIsMutable();
+        ensureOutboundTrackIdsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, inboundVideoTrackIds_);
+            values, outboundTrackIds_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
+       * <code>repeated string outboundTrackIds = 13;</code>
        * @return This builder for chaining.
        */
-      public Builder clearInboundVideoTrackIds() {
-        inboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearOutboundTrackIds() {
+        outboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000800);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string inboundVideoTrackIds = 12;</code>
-       * @param value The bytes of the inboundVideoTrackIds to add.
+       * <code>repeated string outboundTrackIds = 13;</code>
+       * @param value The bytes of the outboundTrackIds to add.
        * @return This builder for chaining.
        */
-      public Builder addInboundVideoTrackIdsBytes(
+      public Builder addOutboundTrackIdsBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureInboundVideoTrackIdsIsMutable();
-        inboundVideoTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureOutboundAudioTrackIdsIsMutable() {
-        if (!((bitField0_ & 0x00001000) != 0)) {
-          outboundAudioTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundAudioTrackIds_);
-          bitField0_ |= 0x00001000;
-         }
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @return A list containing the outboundAudioTrackIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getOutboundAudioTrackIdsList() {
-        return outboundAudioTrackIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @return The count of outboundAudioTrackIds.
-       */
-      public int getOutboundAudioTrackIdsCount() {
-        return outboundAudioTrackIds_.size();
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @param index The index of the element to return.
-       * @return The outboundAudioTrackIds at the given index.
-       */
-      public java.lang.String getOutboundAudioTrackIds(int index) {
-        return outboundAudioTrackIds_.get(index);
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the outboundAudioTrackIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getOutboundAudioTrackIdsBytes(int index) {
-        return outboundAudioTrackIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @param index The index to set the value at.
-       * @param value The outboundAudioTrackIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setOutboundAudioTrackIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundAudioTrackIdsIsMutable();
-        outboundAudioTrackIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @param value The outboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundAudioTrackIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundAudioTrackIdsIsMutable();
-        outboundAudioTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @param values The outboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllOutboundAudioTrackIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureOutboundAudioTrackIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, outboundAudioTrackIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearOutboundAudioTrackIds() {
-        outboundAudioTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00001000);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundAudioTrackIds = 13;</code>
-       * @param value The bytes of the outboundAudioTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundAudioTrackIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundAudioTrackIdsIsMutable();
-        outboundAudioTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureOutboundVideoTrackIdsIsMutable() {
-        if (!((bitField0_ & 0x00002000) != 0)) {
-          outboundVideoTrackIds_ = new com.google.protobuf.LazyStringArrayList(outboundVideoTrackIds_);
-          bitField0_ |= 0x00002000;
-         }
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @return A list containing the outboundVideoTrackIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getOutboundVideoTrackIdsList() {
-        return outboundVideoTrackIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @return The count of outboundVideoTrackIds.
-       */
-      public int getOutboundVideoTrackIdsCount() {
-        return outboundVideoTrackIds_.size();
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @param index The index of the element to return.
-       * @return The outboundVideoTrackIds at the given index.
-       */
-      public java.lang.String getOutboundVideoTrackIds(int index) {
-        return outboundVideoTrackIds_.get(index);
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the outboundVideoTrackIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getOutboundVideoTrackIdsBytes(int index) {
-        return outboundVideoTrackIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @param index The index to set the value at.
-       * @param value The outboundVideoTrackIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setOutboundVideoTrackIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundVideoTrackIdsIsMutable();
-        outboundVideoTrackIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @param value The outboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundVideoTrackIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundVideoTrackIdsIsMutable();
-        outboundVideoTrackIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @param values The outboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllOutboundVideoTrackIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureOutboundVideoTrackIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, outboundVideoTrackIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearOutboundVideoTrackIds() {
-        outboundVideoTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00002000);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string outboundVideoTrackIds = 14;</code>
-       * @param value The bytes of the outboundVideoTrackIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addOutboundVideoTrackIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOutboundVideoTrackIdsIsMutable();
-        outboundVideoTrackIds_.add(value);
+  ensureOutboundTrackIdsIsMutable();
+        outboundTrackIds_.add(value);
         onChanged();
         return this;
       }
@@ -27081,70 +26642,68 @@ public final class Models {
       "\n\023protos/models.proto\022\033org.observertc.sc" +
       "hemas.dtos\"Z\n\004Call\022\021\n\tserviceId\030\001 \002(\t\022\016\n" +
       "\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\017\n\007started" +
-      "\030\004 \002(\004\022\016\n\006marker\030\005 \002(\t\"\322\001\n\006Client\022\021\n\tser" +
+      "\030\004 \002(\004\022\016\n\006marker\030\005 \001(\t\"\322\001\n\006Client\022\021\n\tser" +
       "viceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003" +
       " \002(\t\022\016\n\006userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\016" +
       "\n\006joined\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\022\n\ntimeZ" +
       "oneId\030\010 \001(\t\022\023\n\013mediaUnitId\030\t \001(\t\022\016\n\006mark" +
-      "er\030\n \001(\t\022\031\n\021peerConnectionIds\030\013 \003(\t\"\277\002\n\016" +
+      "er\030\n \001(\t\022\031\n\021peerConnectionIds\030\013 \003(\t\"\370\001\n\016" +
       "PeerConnection\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roo" +
       "mId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004 \002(" +
       "\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConnectionId\030" +
       "\006 \002(\t\022\016\n\006opened\030\007 \002(\004\022\017\n\007touched\030\010 \001(\004\022\023" +
-      "\n\013mediaUnitId\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\034\n\024i" +
-      "nboundAudioTrackIds\030\013 \003(\t\022\034\n\024inboundVide" +
-      "oTrackIds\030\014 \003(\t\022\035\n\025outboundAudioTrackIds" +
-      "\030\r \003(\t\022\035\n\025outboundVideoTrackIds\030\016 \003(\t\"\227\002" +
-      "\n\014InboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roo" +
-      "mId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004 \002(" +
-      "\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConnectionId\030" +
-      "\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\014\n\004kind\030\010 \002(\t\022\r\n\005" +
-      "added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013mediaUni" +
-      "tId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r" +
-      " \001(\t\022\023\n\013sfuStreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"" +
-      "\205\002\n\rOutboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006" +
-      "roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006userId\030\004" +
-      " \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConnection" +
-      "Id\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\r\n\005added\030\010 \002(\004" +
-      "\022\014\n\004kind\030\t \002(\t\022\017\n\007touched\030\n \001(\004\022\023\n\013media" +
-      "UnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStrea" +
-      "mId\030\r \001(\t\022\014\n\004ssrc\030\016 \003(\003\"\302\001\n\014SfuMediaSink" +
-      "\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t" +
-      "\022\021\n\tsfuSinkId\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006cal" +
-      "lId\030\005 \002(\t\022\020\n\010clientId\030\006 \002(\t\022\030\n\020peerConne" +
-      "ctionId\030\007 \002(\t\022\017\n\007trackId\030\010 \002(\t\022\034\n\024outbou" +
-      "ndSfuRtpPadIds\030\t \003(\t\"\263\001\n\016SfuMediaStream\022" +
-      "\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022" +
-      "\014\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clientI" +
-      "d\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007tra" +
-      "ckId\030\007 \002(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\010 \003" +
-      "(\t\"\232\001\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002" +
-      " \002(\t\022\016\n\006joined\030\003 \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n" +
-      "\013mediaUnitId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016" +
-      "\n\006marker\030\007 \001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\"" +
-      "\360\001\n\014SfuTransport\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005s" +
-      "fuId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n\010inter" +
-      "nal\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\017\n\007touc" +
-      "hed\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker" +
-      "\030\010 \001(\t\022\030\n\020inboundRtpPadIds\030\t \003(\t\022\031\n\021outb" +
-      "oundRtpPadIds\030\n \003(\t\022\025\n\rsctpStreamIds\030\013 \003" +
-      "(\t\"\337\001\n\020SfuInboundRtpPad\022\021\n\tserviceId\030\001 \002" +
-      "(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(" +
-      "\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t" +
-      "\022\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022" +
-      "\r\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(\004\022\023\n\013media" +
-      "UnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021SfuOutb" +
-      "oundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002" +
-      " \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStrea" +
-      "mId\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId" +
-      "\030\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005" +
-      "false\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n" +
-      "\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\"\250\001\n\rS" +
-      "fuSctpStream\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId" +
-      "\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027\n\017sfuSct" +
-      "pStreamId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004\022\017\n\007touch" +
-      "ed\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030" +
-      "\010 \001(\t"
+      "\n\013mediaUnitId\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\027\n\017i" +
+      "nboundTrackIds\030\013 \003(\t\022\030\n\020outboundTrackIds" +
+      "\030\r \003(\t\"\227\002\n\014InboundTrack\022\021\n\tserviceId\030\001 \002" +
+      "(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n\006us" +
+      "erId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerConn" +
+      "ectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\014\n\004kind\030" +
+      "\010 \002(\t\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n" +
+      "\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\021\n\tsf" +
+      "uSinkId\030\r \001(\t\022\023\n\013sfuStreamId\030\016 \001(\t\022\014\n\004ss" +
+      "rc\030\017 \003(\003\"\205\002\n\rOutboundTrack\022\021\n\tserviceId\030" +
+      "\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\016\n" +
+      "\006userId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerC" +
+      "onnectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\r\n\005ad" +
+      "ded\030\010 \002(\004\022\014\n\004kind\030\t \002(\t\022\017\n\007touched\030\n \001(\004" +
+      "\022\023\n\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n" +
+      "\013sfuStreamId\030\r \001(\t\022\014\n\004ssrc\030\016 \003(\003\"\302\001\n\014Sfu" +
+      "MediaSink\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStrea" +
+      "mId\030\002 \002(\t\022\021\n\tsfuSinkId\030\003 \002(\t\022\014\n\004kind\030\004 \002" +
+      "(\t\022\016\n\006callId\030\005 \002(\t\022\020\n\010clientId\030\006 \002(\t\022\030\n\020" +
+      "peerConnectionId\030\007 \002(\t\022\017\n\007trackId\030\010 \002(\t\022" +
+      "\034\n\024outboundSfuRtpPadIds\030\t \003(\t\"\263\001\n\016SfuMed" +
+      "iaStream\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStream" +
+      "Id\030\002 \002(\t\022\014\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020" +
+      "\n\010clientId\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002" +
+      "(\t\022\017\n\007trackId\030\007 \002(\t\022\036\n\026sfuInboundSfuRtpP" +
+      "adIds\030\010 \003(\t\"\232\001\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r" +
+      "\n\005sfuId\030\002 \002(\t\022\016\n\006joined\030\003 \002(\004\022\017\n\007touched" +
+      "\030\004 \001(\004\022\023\n\013mediaUnitId\030\005 \001(\t\022\022\n\ntimeZoneI" +
+      "d\030\006 \001(\t\022\016\n\006marker\030\007 \001(\t\022\027\n\017sfuTransportI" +
+      "ds\030\010 \003(\t\"\360\001\n\014SfuTransport\022\021\n\tserviceId\030\001" +
+      " \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t" +
+      "\022\027\n\010internal\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(" +
+      "\004\022\017\n\007touched\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022" +
+      "\016\n\006marker\030\010 \001(\t\022\030\n\020inboundRtpPadIds\030\t \003(" +
+      "\t\022\031\n\021outboundRtpPadIds\030\n \003(\t\022\025\n\rsctpStre" +
+      "amIds\030\013 \003(\t\"\337\001\n\020SfuInboundRtpPad\022\021\n\tserv" +
+      "iceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTranspo" +
+      "rtId\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPa" +
+      "dId\030\005 \002(\t\022\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(" +
+      "\010:\005false\022\r\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(\004" +
+      "\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001" +
+      "\n\021SfuOutboundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r" +
+      "\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n" +
+      "\013sfuStreamId\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n" +
+      "\010rtpPadId\030\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010interna" +
+      "l\030\010 \002(\010:\005false\022\r\n\005added\030\t \002(\004\022\017\n\007touched" +
+      "\030\n \001(\004\022\023\n\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 " +
+      "\001(\t\"\250\001\n\rSfuSctpStream\022\021\n\tserviceId\030\001 \002(\t" +
+      "\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022" +
+      "\027\n\017sfuSctpStreamId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004" +
+      "\022\017\n\007touched\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016" +
+      "\n\006marker\030\010 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -27167,7 +26726,7 @@ public final class Models {
     internal_static_org_observertc_schemas_dtos_PeerConnection_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "Opened", "Touched", "MediaUnitId", "Marker", "InboundAudioTrackIds", "InboundVideoTrackIds", "OutboundAudioTrackIds", "OutboundVideoTrackIds", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "UserId", "ClientId", "PeerConnectionId", "Opened", "Touched", "MediaUnitId", "Marker", "InboundTrackIds", "OutboundTrackIds", });
     internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_org_observertc_schemas_dtos_InboundTrack_fieldAccessorTable = new

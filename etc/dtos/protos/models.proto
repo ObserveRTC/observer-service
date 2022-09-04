@@ -8,7 +8,7 @@ message Call {
   required string roomId = 2;
   required string callId = 3;
   required uint64 started = 4;
-  required string marker = 5;
+  optional string marker = 5;
 }
 
 message Client {
@@ -42,10 +42,8 @@ message PeerConnection {
   optional string mediaUnitId = 9;
   optional string marker = 10;
 
-  repeated string inboundAudioTrackIds = 11;
-  repeated string inboundVideoTrackIds = 12;
-  repeated string outboundAudioTrackIds = 13;
-  repeated string outboundVideoTrackIds = 14;
+  repeated string inboundTrackIds = 11;
+  repeated string outboundTrackIds = 13;
 }
 
 

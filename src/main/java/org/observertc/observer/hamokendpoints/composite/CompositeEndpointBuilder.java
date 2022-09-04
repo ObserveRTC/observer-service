@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.balazskreith.hamok.storagegrid.messages.Message;
 import io.github.balazskreith.hamok.transports.CompositeEndpoint;
 import io.micronaut.context.annotation.Prototype;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.hamokendpoints.BuildersEssentials;
 import org.observertc.observer.hamokendpoints.EndpointBuilder;
+import org.observertc.observer.hamokendpoints.HamokEndpoint;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -24,7 +27,7 @@ public class CompositeEndpointBuilder extends AbstractBuilder implements Endpoin
     private BuildersEssentials essentials;
 
     @Override
-    public CompositeEndpoint build() {
+    public HamokEndpoint build() {
         var config = this.convertAndValidate(Config.class);
         var mapper = new ObjectMapper();
         Function<Message, byte[]> encoder = message -> {
@@ -63,7 +66,37 @@ public class CompositeEndpointBuilder extends AbstractBuilder implements Endpoin
                 .setEncoder(encoder)
                 .setDecoder(decoder)
                 .build();
-        return endpoint;
+        return new HamokEndpoint() {
+            @Override
+            public boolean isReady() {
+                return true;
+            }
+
+            @Override
+            public Observable<Message> inboundChannel() {
+                return endpoint.inboundChannel();
+            }
+
+            @Override
+            public Observer<Message> outboundChannel() {
+                return endpoint.outboundChannel();
+            }
+
+            @Override
+            public void start() {
+                endpoint.start();
+            }
+
+            @Override
+            public boolean isRunning() {
+                return endpoint.isRunning();
+            }
+
+            @Override
+            public void stop() {
+                endpoint.stop();
+            }
+        };
     }
 
     public void setBuildingEssentials(BuildersEssentials essentials) {

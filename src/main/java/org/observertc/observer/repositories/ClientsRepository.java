@@ -115,7 +115,6 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
-            this.storage.deleteAll(this.deleted);
             var deletedClients = this.getAll(this.deleted);
             var peerConnectionIds = deletedClients.values().stream()
                     .map(Client::getPeerConnectionIds)
@@ -124,6 +123,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
             if (0 < peerConnectionIds.size()) {
                 this.peerConnectionsRepositoryRepo.deleteAll(peerConnectionIds);
             }
+            this.storage.deleteAll(this.deleted);
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {

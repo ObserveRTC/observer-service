@@ -2,11 +2,18 @@ package org.observertc.observer.repositories;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.utils.ModelsGenerator;
+import org.observertc.observer.samples.ServiceRoomId;
+import org.observertc.observer.utils.ModelsMapGenerator;
+import org.observertc.schemas.dtos.Models;
 
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @MicronautTest
@@ -18,123 +25,169 @@ class RepositoryEventsTest {
     @Inject
     RepositoryEvents repositoryEvents;
 
-    ModelsGenerator modelsGenerator = new ModelsGenerator();
+    ModelsMapGenerator modelsMapGenerator = new ModelsMapGenerator();
+
+//    ModelsGenerator modelsGenerator = new ModelsGenerator();
 
     @Test
-    @DisplayName("When callDTO is added and removed Then corresponding events are triggered")
+    @DisplayName("Scenario: a p2p is added to the hamok. When a call is removed Then corresponding clients are removed as well and events are triggered")
     void test_1() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = modelsGenerator.getCallDTO();
-//        var added = new CompletableFuture<List<CallDTO>>();
-//        var removed = new CompletableFuture<List<CallDTO>>();
+        modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
 
-//        repositoryEvents.addedCalls().subscribe(added::complete);
-//        repositoryEvents.removedCalls().subscribe(removed::complete);
-//
-//        this.hamokStorages.getCalls().put(subject.callId, subject);
-//        this.hamokStorages.getCalls().remove(subject.callId);
-//        CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
+        var addedClientModels = modelsMapGenerator.getClientModels();
+        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var promise = new CompletableFuture<List<Models.Client>>();
+
+        repositoryEvents.deletedClients().subscribe(promise::complete);
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        var deletedClientModels = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedClientModels.size(), deletedClientModels.size());
+        for (var deletedClient : deletedClientModels) {
+            var addedClient = addedClientModels.get(deletedClient.getClientId());
+            Assertions.assertNotNull(addedClient);
+        }
     }
 
     @Test
-    @DisplayName("When clientDTO is added and removed Then corresponding events are triggered")
+    @DisplayName("Scenario: a p2p is added to the hamok. When a call is removed Then corresponding peer connections are removed as well and events are triggered")
     void test_2() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = modelsGenerator.getClientModel();
-//        var added = new CompletableFuture<List<ClientDTO>>();
-//        var removed = new CompletableFuture<List<ClientDTO>>();
+        modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
+
+        var addedPeerConnectionModels = modelsMapGenerator.getPeerConnectionModels();
+        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var promise = new CompletableFuture<List<Models.PeerConnection>>();
+        repositoryEvents.deletedPeerConnections().subscribe(promise::complete);
 //
-//        repositoryEvents.addedClients().subscribe(added::complete);
-//        repositoryEvents.deletedClients().subscribe(removed::complete);
-//
-//        this.hamokStorages.getClients().put(subject.clientId, subject);
-//        this.hamokStorages.getClients().remove(subject.clientId);
-//        CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        var deletedPeerConnectionModels = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedPeerConnectionModels.size(), deletedPeerConnectionModels.size());
+        for (var deletedClient : deletedPeerConnectionModels) {
+            var deletedPeerConnection = addedPeerConnectionModels.get(deletedClient.getPeerConnectionId());
+            Assertions.assertNotNull(deletedPeerConnection);
+        }
     }
 
     @Test
-    @DisplayName("When clientDTO is added and waited to expire Then corresponding events are triggered")
+    @DisplayName("Scenario: a p2p is added to the hamok. When a call is removed Then corresponding inbound tracks are removed as well and events are triggered")
     void test_3() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = modelsGenerator.getClientModel();
-//        var expired = new CompletableFuture<List<RepositoryExpiredEvent<ClientDTO>>>();
+        modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
+        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var promise = new CompletableFuture<List<Models.InboundTrack>>();
+        repositoryEvents.deletedInboundTrack().subscribe(promise::complete);
 //
-//        repositoryEvents.expiredClients().subscribe(expired::complete);
-//
-//        this.hamokStorages.getClients().put(subject.clientId, subject, 100, TimeUnit.MILLISECONDS);
-//        CompletableFuture.allOf(expired).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        var addedInboundTrackModels = modelsMapGenerator.getInboundTrackModels();
+        var deletedInboundTrackModels = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedInboundTrackModels.size(), deletedInboundTrackModels.size());
+        for (var deletedClient : deletedInboundTrackModels) {
+            var deletedInboundTrack = addedInboundTrackModels.get(deletedClient.getTrackId());
+            Assertions.assertNotNull(deletedInboundTrack);
+        }
     }
 
 
     @Test
-    @DisplayName("When SfuStreamDTO is added and removed Then corresponding events are triggered")
+    @DisplayName("Scenario: a p2p is added to the hamok. When a call is removed Then corresponding outbound tracks are removed as well and events are triggered")
     void test_4() throws ExecutionException, InterruptedException, TimeoutException {
-//        var subject = modelsGenerator.getSfuStreamDTO();
-//        var added = new CompletableFuture<List<SfuStreamDTO>>();
-//        var removed = new CompletableFuture<List<SfuStreamDTO>>();
+        modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
+
+        var addedOutboundTrackModels = modelsMapGenerator.getOutboundTrackModels();
+        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var promise = new CompletableFuture<List<Models.OutboundTrack>>();
+        repositoryEvents.deletedOutboundTrack().subscribe(promise::complete);
 //
-//        repositoryEvents.addedSfuStreams().subscribe(added::complete);
-//        repositoryEvents.removedSfuStreams().subscribe(removed::complete);
-//
-//        this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
-//        this.hamokStorages.getSfuStreams().remove(subject.sfuStreamId);
-//        CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        var deletedOutboundTrackModels = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedOutboundTrackModels.size(), deletedOutboundTrackModels.size());
+        for (var deletedClient : deletedOutboundTrackModels) {
+            var deletedInboundTrack = addedOutboundTrackModels.get(deletedClient.getTrackId());
+            Assertions.assertNotNull(deletedInboundTrack);
+        }
     }
 
     @Test
-    @DisplayName("When SfuStreamDTO is added and waited to expire Then corresponding events are triggered")
+    @DisplayName("Scenario: a single sfu for 2 participants are added to the hamok. When a call is removed Then corresponding sfu is removed as well and events are triggered")
     void test_5() throws ExecutionException, InterruptedException, TimeoutException {
-//        var subject = modelsGenerator.getSfuStreamDTO();
-//        var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuStreamDTO>>>();
+        modelsMapGenerator.generateSingleSfuCase().saveTo(hamokStorages);
+
+        var addedSfus = modelsMapGenerator.getSfuModels();
+        var promise = new CompletableFuture<List<Models.Sfu>>();
+        repositoryEvents.deletedSfu().subscribe(promise::complete);
 //
-//        this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
-//        repositoryEvents.updatedSfuStreams().subscribe(updated::complete);
-//        subject.peerConnectionId = UUID.randomUUID();
-//        this.hamokStorages.getSfuStreams().put(subject.sfuStreamId, subject);
-//
-//        CompletableFuture.allOf(updated).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getSfusRepository().deleteAll(addedSfus.keySet());
+        this.hamokStorages.getSfusRepository().save();
+        var deletedSfus = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedSfus.size(), deletedSfus.size());
+        for (var deletedModel : deletedSfus) {
+            var addedSfu = addedSfus.get(deletedModel.getSfuId());
+            Assertions.assertNotNull(addedSfu);
+        }
     }
 
     @Test
-    @DisplayName("When SfuSinkDTO is added and removed Then corresponding events are triggered")
+    @DisplayName("Scenario: a single sfu for 2 participants are added to the hamok. When a call is removed Then corresponding sfu transports are removed as well and events are triggered")
     void test_6() throws ExecutionException, InterruptedException, TimeoutException {
-//        var subject = modelsGenerator.getSfuSinkDTO();
-//        var added = new CompletableFuture<List<SfuSinkDTO>>();
-//        var removed = new CompletableFuture<List<SfuSinkDTO>>();
+        modelsMapGenerator.generateSingleSfuCase().saveTo(hamokStorages);
+
+        var addedSfuTransports = modelsMapGenerator.getSfuTransports();
+        var promise = new CompletableFuture<List<Models.SfuTransport>>();
+        repositoryEvents.deletedSfuTransports().subscribe(promise::complete);
 //
-//        repositoryEvents.addedSfuSinks().subscribe(added::complete);
-//        repositoryEvents.removedSfuSinks().subscribe(removed::complete);
-//
-//        this.hamokStorages.getSfuSinks().put(subject.sfuSinkId, subject);
-//        this.hamokStorages.getSfuSinks().remove(subject.sfuSinkId);
-//        CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getSfuTransportsRepository().deleteAll(addedSfuTransports.keySet());
+        this.hamokStorages.getSfusRepository().save();
+        var deletedSfuTransports = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedSfuTransports.size(), deletedSfuTransports.size());
+        for (var deletedModel : deletedSfuTransports) {
+            var addedSfuTransport = addedSfuTransports.get(deletedModel.getTransportId());
+            Assertions.assertNotNull(addedSfuTransport);
+        }
     }
 
     @Test
-    @DisplayName("When SfuSinkDTO is added and waited to expire Then corresponding events are triggered")
+    @DisplayName("Scenario: a single sfu for 2 participants are added to the hamok. When a call is removed Then corresponding sfu inbound rtp pads are removed as well and events are triggered")
     void test_7() throws ExecutionException, InterruptedException, TimeoutException {
-//        var subject = modelsGenerator.getSfuSinkDTO();
-//        var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuSinkDTO>>>();
+        modelsMapGenerator.generateSingleSfuCase().saveTo(hamokStorages);
+
+        var addedSfuInboundRtpPads = modelsMapGenerator.getSfuInboundRtpPads();
+        var promise = new CompletableFuture<List<Models.SfuInboundRtpPad>>();
+        repositoryEvents.deletedSfuInboundRtpPads().subscribe(promise::complete);
 //
-//        this.hamokStorages.getSfuSinks().put(subject.sfuStreamId, subject);
-//        repositoryEvents.updatedSuSinks().subscribe(updated::complete);
-//        subject.peerConnectionId = UUID.randomUUID();
-//        this.hamokStorages.getSfuSinks().put(subject.sfuStreamId, subject);
-//
-//        CompletableFuture.allOf(updated).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getSfuInboundRtpPadsRepository().deleteAll(addedSfuInboundRtpPads.keySet());
+        this.hamokStorages.getSfusRepository().save();
+        var deletedSfuInboundRtpPads = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedSfuInboundRtpPads.size(), deletedSfuInboundRtpPads.size());
+        for (var deletedModel : deletedSfuInboundRtpPads) {
+            var addedSfuInboundRtpPad = addedSfuInboundRtpPads.get(deletedModel.getRtpPadId());
+            Assertions.assertNotNull(addedSfuInboundRtpPad);
+        }
     }
 
 
     @Test
-    @DisplayName("When PeerConnectionDTO is added and removed Then corresponding events are triggered")
+    @DisplayName("Scenario: a single sfu for 2 participants are added to the hamok. When a call is removed Then corresponding sfu outbound rtp pads are removed as well and events are triggered")
     void test_8() throws ExecutionException, InterruptedException, TimeoutException {
-//        var subject = modelsGenerator.getPeerConnectionModel();
-//        var added = new CompletableFuture<List<PeerConnectionDTO>>();
-//        var removed = new CompletableFuture<List<PeerConnectionDTO>>();
+        modelsMapGenerator.generateSingleSfuCase().saveTo(hamokStorages);
+
+        var addedSfOutboundRtpPads = modelsMapGenerator.getSfuOutboundRtpPads();
+        var promise = new CompletableFuture<List<Models.SfuOutboundRtpPad>>();
+        repositoryEvents.deletedSfuOutboundRtpPads().subscribe(promise::complete);
 //
-//        repositoryEvents.addedPeerConnection().subscribe(added::complete);
-//        repositoryEvents.removedPeerConnection().subscribe(removed::complete);
-//
-//        this.hamokStorages.getPeerConnections().put(subject.peerConnectionId, subject);
-//        this.hamokStorages.getPeerConnections().remove(subject.peerConnectionId);
-//        CompletableFuture.allOf(added, removed).get(30, TimeUnit.SECONDS);
+        this.hamokStorages.getSfuOutboundRtpPadsRepository().deleteAll(addedSfOutboundRtpPads.keySet());
+        this.hamokStorages.getSfusRepository().save();
+        var deletedSfuOutboundRtpPads = promise.get(30, TimeUnit.SECONDS);
+
+        Assertions.assertEquals(addedSfOutboundRtpPads.size(), deletedSfuOutboundRtpPads.size());
+        for (var deletedModel : deletedSfuOutboundRtpPads) {
+            var addedSfuInboundRtpPad = addedSfOutboundRtpPads.get(deletedModel.getRtpPadId());
+            Assertions.assertNotNull(addedSfuInboundRtpPad);
+        }
     }
 
     @Test
@@ -180,7 +233,7 @@ class RepositoryEventsTest {
     @Test
     @DisplayName("When SfuRtpPad is added, changed or removed Then corresponding events are triggered")
     void test_12() throws ExecutionException, InterruptedException, TimeoutException {
-        var subject = modelsGenerator.getSfuInboundRtpPad();
+//        var subject = modelsGenerator.getSfuInboundRtpPad();
 //        var added = new CompletableFuture<List<SfuRtpPadDTO>>();
 //        var updated = new CompletableFuture<List<RepositoryUpdatedEvent<SfuRtpPadDTO>>>();
 //        var removed = new CompletableFuture<List<SfuRtpPadDTO>>();
