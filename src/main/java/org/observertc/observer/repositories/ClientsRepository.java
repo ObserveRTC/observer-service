@@ -5,6 +5,7 @@ import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
 import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
@@ -52,7 +53,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
         var baseStorage = new MemoryStorageBuilder<String, Models.Client>()
                 .setId(STORAGE_ID)
                 .setConcurrency(true)
-                .setExpiration(config.clientMaxIdleTimeInS * 1000)
+                .setExpiration(config.clientMaxIdleTimeInS * 1000, Schedulers.io())
                 .build();
         this.storage = this.hamokService.getStorageGrid().<String, Models.Client>separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
@@ -154,6 +155,10 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
                 .collect(Collectors.toSet());
         this.peerConnectionsRepositoryRepo.fetchRecursively(peerConnectionIds);
         return clients;
+    }
+
+    public void clearStorage() {
+        this.storage.clear();
     }
 
     @Override

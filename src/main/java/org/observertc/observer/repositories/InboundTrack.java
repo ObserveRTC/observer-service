@@ -51,6 +51,9 @@ public class InboundTrack {
 
     public String getUserId() {
         var model = modelHolder.get();
+        if (!model.hasUserId()) {
+            return null;
+        }
         return model.getUserId();
     }
 
@@ -170,6 +173,12 @@ public class InboundTrack {
 
     public Models.InboundTrack getModel() {
         return this.modelHolder.get();
+    }
+
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
     }
 
     private void updateModel(Models.InboundTrack newModel) {

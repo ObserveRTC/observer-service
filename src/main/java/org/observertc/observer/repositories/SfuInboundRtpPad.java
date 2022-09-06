@@ -100,4 +100,10 @@ public class SfuInboundRtpPad {
         return this.modelHolder.get();
     }
 
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
+
 }

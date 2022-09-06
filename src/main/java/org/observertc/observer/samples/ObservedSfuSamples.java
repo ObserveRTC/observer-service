@@ -5,6 +5,8 @@ import java.util.stream.Stream;
 
 public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
 
+    static ObservedSfuSamples EMPTY_SAMPLES = ObservedSfuSamples.builder().build();
+
     static Builder builder() {
         return new Builder();
     }

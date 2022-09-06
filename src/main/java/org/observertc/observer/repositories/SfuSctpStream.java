@@ -80,6 +80,12 @@ public class SfuSctpStream {
         return this.modelHolder.get();
     }
 
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
+
     private void updateModel(Models.SfuSctpStream newModel) {
         this.modelHolder.set(newModel);
         this.sfuSctpStreamsRepository.update(newModel);

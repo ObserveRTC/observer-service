@@ -38,6 +38,12 @@ public class SfuMediaSink {
         return model.getSfuSinkId();
     }
 
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
+
     private void updateModel(Models.SfuMediaSink newModel) {
         this.modelHolder.set(newModel);
         this.sfuMediaSinksRepository.update(newModel);

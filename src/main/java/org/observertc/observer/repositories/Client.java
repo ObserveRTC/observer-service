@@ -50,6 +50,9 @@ public class Client {
 
     public String getUserId() {
         var model = modelHolder.get();
+        if (!model.hasUserId()) {
+            return null;
+        }
         return model.getUserId();
     }
 
@@ -133,15 +136,17 @@ public class Client {
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
-                .setUserId(model.getUserId())
                 .setClientId(model.getClientId())
                 .setPeerConnectionId(peerConnectionId)
                 .setOpened(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
+                // userId
                 // marker
                 ;
-
+        if (model.hasUserId()) {
+            peerConnectionModelBuilder.setUserId(model.getUserId());
+        }
         if (marker != null) {
             peerConnectionModelBuilder.setMarker(marker);
         }
@@ -181,6 +186,12 @@ public class Client {
 
     public Models.Client getModel() {
         return this.modelHolder.get();
+    }
+
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
     }
 
     private void updateModel(Models.Client newModel) {

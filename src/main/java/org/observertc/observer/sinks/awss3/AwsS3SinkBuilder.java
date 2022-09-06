@@ -100,14 +100,14 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
             }
             case JSON -> {
                 result.encoder = this.makeJsonEncoder(s3prefix);
-                result.metadata = Map.of("Content-Type", "text/plain");
+                result.metadata = Map.of("Content-Type", "text/json");
             }
         }
         return result;
     }
 
     private FormatEncoder<String, byte[]> makeJsonEncoder(Function<Report, String> s3Prefix) {
-        var mapper = JsonMapper.createObjectToBytesMapper();
+        var mapper = JsonMapper.createObjectToBytesMapper(true);
         return new JsonFormatEncoder<String, byte[]>(
                 s3Prefix,
                 report -> mapper.map(report.payload),

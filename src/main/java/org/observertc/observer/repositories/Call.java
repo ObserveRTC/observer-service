@@ -89,13 +89,16 @@ public class Call {
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
                 .setClientId(clientId)
-                .setUserId(userId)
                 .setJoined(timestamp)
                 .setTouched(timestamp)
                 // timeZoneId
                 .setMediaUnitId(mediaUnitId)
+                // userId
                 // marker
                 ;
+        if (userId != null) {
+            clientModelBuilder.setUserId(userId);
+        }
         if (timeZoneId != null) {
             clientModelBuilder.setTimeZoneId(timeZoneId);
         }
@@ -128,6 +131,11 @@ public class Call {
 
     public Models.Call getModel() {
         return this.model;
+    }
+
+    @Override
+    public String toString() {
+        return this.model.toString();
     }
 
 }

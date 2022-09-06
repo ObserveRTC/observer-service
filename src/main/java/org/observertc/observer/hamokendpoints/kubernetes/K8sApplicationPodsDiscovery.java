@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +37,7 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
     private volatile boolean ready = false;
     private List<InetAddress> localAddresses = Collections.emptyList();
     private AtomicReference<Thread> thread = new AtomicReference<>(null);
+    private Long readyTimestampInSec = null;
 
     public K8sApplicationPodsDiscovery(
             String namespace,
@@ -54,6 +56,13 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
 
     public boolean isReady() {
         return this.ready;
+    }
+
+    public int elapsedSecSinceReady() {
+        if (!this.ready) {
+            return 0;
+        }
+        return (int) (Instant.now().getEpochSecond() - this.readyTimestampInSec);
     }
 
     public void start() {
@@ -112,7 +121,10 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
                     sleep = 10;
                 } else {
                     sleep = Math.min(30000, sleep * sleep);
-                    this.ready = true;
+                    if (!this.ready) {
+                        this.readyTimestampInSec = Instant.now().getEpochSecond();
+                        this.ready = true;
+                    }
                 }
             } catch (InterruptedException e) {
                 break;

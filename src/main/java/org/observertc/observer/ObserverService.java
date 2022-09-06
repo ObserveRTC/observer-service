@@ -23,6 +23,9 @@ public class ObserverService {
     private volatile boolean run = false;
 
     @Inject
+    HamokService hamokService;
+
+    @Inject
     ObserverConfig observerConfig;
 
     @Inject
@@ -127,5 +130,10 @@ public class ObserverService {
 
     public boolean isStarted() {
         return this.run;
+    }
+
+    public boolean isReady() {
+        boolean hamokIsReady = this.hamokService.isReady();
+        return hamokIsReady;
     }
 }

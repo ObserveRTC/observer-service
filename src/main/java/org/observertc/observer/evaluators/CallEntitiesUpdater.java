@@ -77,9 +77,18 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     }
 
     public void accept(ObservedClientSamples observedClientSamples) {
+        if (observedClientSamples == null) {
+            return;
+        }
+        if (observedClientSamples.isEmpty()) {
+            this.output.onNext(observedClientSamples);
+            return;
+        }
         Instant started = Instant.now();
         try {
             this.process(observedClientSamples);
+        } catch(Exception ex) {
+            logger.warn("Exception occurred while processing clientsamples", ex);
         } finally {
             this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
         }
@@ -94,10 +103,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         var newPeerConnectionModels = new LinkedList<Models.PeerConnection>();
         var newInboundTrackModels = new LinkedList<Models.InboundTrack>();
         var newOutboundTrackModels = new LinkedList<Models.OutboundTrack>();
-        Map<String, Client> clients = this.fetchExistingClients(observedClientSamples);
-        Map<String, PeerConnection> peerConnections = this.fetchExistingPeerConnections(observedClientSamples);
-        Map<String, InboundTrack> inboundTracks = this.fetchExistingInboundTracks(observedClientSamples);
-        Map<String, OutboundTrack> outboundTracks = this.fetchExistingOutboundTracks(observedClientSamples);
+//        Map<String, Client> clients = this.fetchExistingClients(observedClientSamples);
+//        Map<String, PeerConnection> peerConnections = this.fetchExistingPeerConnections(observedClientSamples);
+//        Map<String, InboundTrack> inboundTracks = this.fetchExistingInboundTracks(observedClientSamples);
+//        Map<String, OutboundTrack> outboundTracks = this.fetchExistingOutboundTracks(observedClientSamples);
 
         for (var observedClientSample : observedClientSamples) {
             var serviceRoomId = observedClientSample.getServiceRoomId();
@@ -112,17 +121,25 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             var client = call.getClient(clientSample.clientId);
             clientSample.callId = call.getCallId();
             if (client == null) {
-                client = call.addClient(
-                        clientSample.clientId,
-                        clientSample.userId,
-                        observedClientSample.getMediaUnitId(),
-                        observedClientSample.getTimeZoneId(),
-                        timestamp,
-                        marker
-                );
-                client.touch(timestamp);
-                clients.put(client.getClientId(), client);
-                newClientModels.add(client.getModel());
+                try {
+                    client = call.addClient(
+                            clientSample.clientId,
+                            clientSample.userId,
+                            observedClientSample.getMediaUnitId(),
+                            observedClientSample.getTimeZoneId(),
+                            timestamp,
+                            marker
+                    );
+                    newClientModels.add(client.getModel());
+                } catch (AlreadyCreatedException ex) {
+                    logger.warn("Client {} for call {} in room {} (service: {}) is already created",
+                            clientSample.clientId,
+                            call.getCallId(),
+                            call.getServiceRoomId().roomId,
+                            call.getServiceRoomId().serviceId
+                    );
+                }
+
             } else {
                 var lastTouch = client.getTouched();
                 if (lastTouch == null || lastTouch < timestamp) {
@@ -135,15 +152,28 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 if (peerConnectionId == null) {
                     return null;
                 }
-                var result = peerConnections.get(peerConnectionId);
+                if (finalClient == null) {
+                    logger.warn("No client we have to retrieve for peer connection. why?");
+                    return null;
+                }
+                var result = finalClient.getPeerConnection(peerConnectionId);
                 if (result == null) {
-                    result = finalClient.addPeerConnection(
-                            peerConnectionId,
-                            timestamp,
-                            marker
-                    );
-                    peerConnections.put(result.getPeerConnectionId(), result);
-                    newPeerConnectionModels.add(result.getModel());
+                    try {
+                        result = finalClient.addPeerConnection(
+                                peerConnectionId,
+                                timestamp,
+                                marker
+                        );
+                        newPeerConnectionModels.add(result.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("PeerConnection {} for call {} in room {} (service: {}) is already created",
+                                peerConnectionId,
+                                call.getCallId(),
+                                call.getServiceRoomId().roomId,
+                                call.getServiceRoomId().serviceId
+                        );
+                    }
+
                 } else {
                     var lastTouch = result.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -163,19 +193,27 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
                     return;
                 }
-                var inboundAudioTrack = inboundTracks.get(track.trackId);
+                var inboundAudioTrack = peerConnection.getInboundTrack(track.trackId);
                 if (inboundAudioTrack == null) {
-                    inboundAudioTrack = peerConnection.addInboundTrack(
-                            track.trackId,
-                            timestamp,
-                            track.sfuStreamId,
-                            track.sfuSinkId,
-                            MediaKind.AUDIO,
-                            track.ssrc,
-                            marker
-                    );
-                    inboundTracks.put(inboundAudioTrack.getTrackId(), inboundAudioTrack);
-                    newInboundTrackModels.add(inboundAudioTrack.getModel());
+                    try {
+                        inboundAudioTrack = peerConnection.addInboundTrack(
+                                track.trackId,
+                                timestamp,
+                                track.sfuStreamId,
+                                track.sfuSinkId,
+                                MediaKind.AUDIO,
+                                track.ssrc,
+                                marker
+                        );
+                        newInboundTrackModels.add(inboundAudioTrack.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("inboundAudioTrack {} for call {} in room {} (service: {}) is already created",
+                                track.trackId,
+                                call.getCallId(),
+                                call.getServiceRoomId().roomId,
+                                call.getServiceRoomId().serviceId
+                        );
+                    }
                 } else {
                     var lastTouch = inboundAudioTrack.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -194,19 +232,27 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
                     return;
                 }
-                var inboundVideoTrack = inboundTracks.get(track.trackId);
+                var inboundVideoTrack = peerConnection.getInboundTrack(track.trackId);
                 if (inboundVideoTrack == null) {
-                    inboundVideoTrack = peerConnection.addInboundTrack(
-                            track.trackId,
-                            timestamp,
-                            track.sfuStreamId,
-                            track.sfuSinkId,
-                            MediaKind.VIDEO,
-                            track.ssrc,
-                            marker
-                    );
-                    inboundTracks.put(inboundVideoTrack.getTrackId(), inboundVideoTrack);
-                    newInboundTrackModels.add(inboundVideoTrack.getModel());
+                    try {
+                        inboundVideoTrack = peerConnection.addInboundTrack(
+                                track.trackId,
+                                timestamp,
+                                track.sfuStreamId,
+                                track.sfuSinkId,
+                                MediaKind.VIDEO,
+                                track.ssrc,
+                                marker
+                        );
+                        newInboundTrackModels.add(inboundVideoTrack.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("inboundVideoTrack {} for call {} in room {} (service: {}) is already created",
+                                track.trackId,
+                                call.getCallId(),
+                                call.getServiceRoomId().roomId,
+                                call.getServiceRoomId().serviceId
+                        );
+                    }
                 } else {
                     var lastTouch = inboundVideoTrack.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -224,18 +270,27 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
                     return;
                 }
-                var outboundAudioTrack = outboundTracks.get(track.trackId);
+                var outboundAudioTrack = peerConnection.getOutboundTrack(track.trackId);
+
                 if (outboundAudioTrack == null) {
-                    outboundAudioTrack = peerConnection.addOutboundTrack(
-                            track.trackId,
-                            timestamp,
-                            track.sfuStreamId,
-                            MediaKind.AUDIO,
-                            track.ssrc,
-                            marker
-                    );
-                    outboundTracks.put(outboundAudioTrack.getTrackId(), outboundAudioTrack);
-                    newOutboundTrackModels.add(outboundAudioTrack.getModel());
+                    try {
+                        outboundAudioTrack = peerConnection.addOutboundTrack(
+                                track.trackId,
+                                timestamp,
+                                track.sfuStreamId,
+                                MediaKind.AUDIO,
+                                track.ssrc,
+                                marker
+                        );
+                        newOutboundTrackModels.add(outboundAudioTrack.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("outboundAudioTrack {} for call {} in room {} (service: {}) is already created",
+                                track.trackId,
+                                call.getCallId(),
+                                call.getServiceRoomId().roomId,
+                                call.getServiceRoomId().serviceId
+                        );
+                    }
                 } else {
                     var lastTouch = outboundAudioTrack.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -253,18 +308,26 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
                     return;
                 }
-                var outboundVideoTrack = outboundTracks.get(track.trackId);
+                var outboundVideoTrack = peerConnection.getOutboundTrack(track.trackId);
                 if (outboundVideoTrack == null) {
-                    outboundVideoTrack = peerConnection.addOutboundTrack(
-                            track.trackId,
-                            timestamp,
-                            track.sfuStreamId,
-                            MediaKind.VIDEO,
-                            track.ssrc,
-                            marker
-                    );
-                    outboundTracks.put(outboundVideoTrack.getTrackId(), outboundVideoTrack);
-                    newOutboundTrackModels.add(outboundVideoTrack.getModel());
+                    try {
+                        outboundVideoTrack = peerConnection.addOutboundTrack(
+                                track.trackId,
+                                timestamp,
+                                track.sfuStreamId,
+                                MediaKind.VIDEO,
+                                track.ssrc,
+                                marker
+                        );
+                        newOutboundTrackModels.add(outboundVideoTrack.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("OutboundVideoTrack {} for call {} in room {} (service: {}) is already created",
+                                track.trackId,
+                                call.getCallId(),
+                                call.getServiceRoomId().roomId,
+                                call.getServiceRoomId().serviceId
+                        );
+                    }
                 } else {
                     var lastTouch = outboundVideoTrack.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -298,41 +361,41 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         }
     }
 
-    private Map<String, InboundTrack> fetchExistingInboundTracks(ObservedClientSamples samples) {
-        var result = new HashMap<String, InboundTrack>();
-        var existingInboundTracks = this.inboundTracksRepository.getAll(samples.getInboundTrackIds());
-        if (existingInboundTracks != null && 0 < existingInboundTracks.size()) {
-            result.putAll(existingInboundTracks);
-        }
-        return result;
-    }
+//    private Map<String, InboundTrack> fetchExistingInboundTracks(ObservedClientSamples samples) {
+//        var result = new HashMap<String, InboundTrack>();
+//        var existingInboundTracks = this.inboundTracksRepository.getAll(samples.getInboundTrackIds());
+//        if (existingInboundTracks != null && 0 < existingInboundTracks.size()) {
+//            result.putAll(existingInboundTracks);
+//        }
+//        return result;
+//    }
+//
+//    private Map<String, OutboundTrack> fetchExistingOutboundTracks(ObservedClientSamples samples) {
+//        var result = new HashMap<String, OutboundTrack>();
+//        var existingOutboundTracks = this.outboundTracksRepository.getAll(samples.getOutboundTrackIds());
+//        if (existingOutboundTracks != null && 0 < existingOutboundTracks.size()) {
+//            result.putAll(existingOutboundTracks);
+//        }
+//        return result;
+//    }
 
-    private Map<String, OutboundTrack> fetchExistingOutboundTracks(ObservedClientSamples samples) {
-        var result = new HashMap<String, OutboundTrack>();
-        var existingOutboundTracks = this.outboundTracksRepository.getAll(samples.getOutboundTrackIds());
-        if (existingOutboundTracks != null && 0 < existingOutboundTracks.size()) {
-            result.putAll(existingOutboundTracks);
-        }
-        return result;
-    }
-
-    private Map<String, PeerConnection> fetchExistingPeerConnections(ObservedClientSamples samples) {
-        var result = new HashMap<String, PeerConnection>();
-        var existingPeerConnections = this.peerConnectionsRepository.getAll(samples.getPeerConnectionIds());
-        if (existingPeerConnections != null && 0 < existingPeerConnections.size()) {
-            result.putAll(existingPeerConnections);
-        }
-        return result;
-    }
-
-    private Map<String, Client> fetchExistingClients(ObservedClientSamples samples) {
-        var result = new HashMap<String, Client>();
-        var existingClients = this.clientsRepository.getAll(samples.getClientIds());
-        if (existingClients != null && 0 < existingClients.size()) {
-            result.putAll(existingClients);
-        }
-        return result;
-    }
+//    private Map<String, PeerConnection> fetchExistingPeerConnections(ObservedClientSamples samples) {
+//        var result = new HashMap<String, PeerConnection>();
+//        var existingPeerConnections = this.peerConnectionsRepository.getAll(samples.getPeerConnectionIds());
+//        if (existingPeerConnections != null && 0 < existingPeerConnections.size()) {
+//            result.putAll(existingPeerConnections);
+//        }
+//        return result;
+//    }
+//
+//    private Map<String, Client> fetchExistingClients(ObservedClientSamples samples) {
+//        var result = new HashMap<String, Client>();
+//        var existingClients = this.clientsRepository.getAll(samples.getClientIds());
+//        if (existingClients != null && 0 < existingClients.size()) {
+//            result.putAll(existingClients);
+//        }
+//        return result;
+//    }
 
     private Map<ServiceRoomId, Call> fetchCalls(ObservedClientSamples observedClientSamples) {
         var serviceRoomIds = observedClientSamples.getServiceRoomIds();
@@ -365,10 +428,15 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 result.put(call.getServiceRoomId(), call);
                 continue;
             }
-            if (clientSample.callId == call.getCallId()) {
+            if (clientSample.callId == null) {
+                logger.warn("Observer callIdAssignMode is in slave mode, but callId for room {} in samples did not provided. The observer ignores it and stick with the current callId {}", serviceRoomId, call.getCallId());
+                continue;
+            }
+            if (clientSample.callId.equalsIgnoreCase(call.getCallId())) {
                 // all good, this is the call we are in
                 continue;
             }
+            logger.info("Call \"{}\" must be removed in service {}, room: {}, because a new call with id \"{}\" is received", call.getCallId(), serviceRoomId.serviceId, serviceRoomId.roomId, clientSample.callId);
             toRemove.put(serviceRoomId, call.getModel());
             missingCalls.add(new CallsRepository.CreateCallInfo(
                     serviceRoomId,

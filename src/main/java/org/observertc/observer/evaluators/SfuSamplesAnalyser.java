@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -47,6 +48,13 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     }
 
     public void accept(ObservedSfuSamples observedSfuSamples) {
+        if (observedSfuSamples == null) {
+            return;
+        }
+        if (observedSfuSamples.isEmpty()) {
+            this.output.onNext(Collections.emptyList());
+            return;
+        }
         Instant started = Instant.now();
         try {
             this.process(observedSfuSamples);

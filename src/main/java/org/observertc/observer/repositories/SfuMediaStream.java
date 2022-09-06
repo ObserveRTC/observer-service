@@ -36,6 +36,12 @@ public class SfuMediaStream {
         return model.getSfuStreamId();
     }
 
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
+
     private void updateModel(Models.SfuMediaStream newModel) {
         this.modelHolder.set(newModel);
         this.sfuMediaStreamsRepository.update(newModel);

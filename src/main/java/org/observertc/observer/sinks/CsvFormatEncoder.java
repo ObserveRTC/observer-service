@@ -115,6 +115,9 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
                 }
             }
             logger.info("Received {} reports ({} types) mapped to {} different type of records", reports.size(), reportsByTypes.size(), records.size());
+//            for (var reportsByType : reportsByTypes.entrySet()) {
+//                logger.info("Report Type {} size: {}", reportsByType.getKey(), reportsByType.getValue().size());
+//            }
             return records;
         } catch (IOException e) {
             this.logger.warn("Exception occurred while encoding", e);

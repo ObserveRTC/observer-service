@@ -159,6 +159,12 @@ public class Sfu {
         return this.modelHolder.get();
     }
 
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
+
     private void updateModel(Models.Sfu newModel) {
         this.modelHolder.set(newModel);
         this.sfusRepository.update(newModel);

@@ -69,8 +69,17 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                     var outboundTrackId = entry.getKey();
                     var outboundTrack = entry.getValue();
                     var outboundPeerConnection = outboundTrack.getPeerConnection();
+                    if (outboundPeerConnection == null) {
+                        logger.warn("Peer Connection is null for outbound track {}", outboundTrack);
+                        continue;
+                    }
                     var outboundClient = outboundPeerConnection.getClient();
+                    if (outboundClient == null) {
+                        logger.warn("Client is null for peer connection {}", outboundPeerConnection);
+                        continue;
+                    }
                     var call = outboundClient.getCall();
+
                     var allClients = call.getClients();
                     for (var clientEntry : allClients.entrySet()) {
                         if (clientEntry.getKey() == outboundClient.getClientId()) {
@@ -83,7 +92,7 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                                 var outboundTrackSfuStreamId = outboundTrack.getSfuStreamId();
                                 // match by sfuStreamId
                                 if (outboundTrackSfuStreamId != null && !outboundTrackSfuStreamId.isBlank()) {
-                                    if (outboundTrackSfuStreamId == outboundTrack.getSfuStreamId()) {
+                                    if (outboundTrackSfuStreamId == inboundTrack.getSfuStreamId()) {
                                         matched = true;
                                     } else {
                                         continue;

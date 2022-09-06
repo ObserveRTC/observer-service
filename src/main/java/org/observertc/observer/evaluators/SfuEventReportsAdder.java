@@ -133,7 +133,9 @@ public class SfuEventReportsAdder {
 
         this.input.subscribe(incomingReports -> {
             var forwardedReports = new LinkedList<Report>();
-            forwardedReports.addAll(incomingReports);
+            if (incomingReports != null && 0 < incomingReports.size()) {
+                forwardedReports.addAll(incomingReports);
+            }
             synchronized (this) {
                 forwardedReports.addAll(this.collectedReports);
                 this.collectedReports.clear();

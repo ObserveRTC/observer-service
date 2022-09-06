@@ -60,6 +60,9 @@ public class PeerConnection {
 
     public String getUserId() {
         var model = modelHolder.get();
+        if (!model.hasUserId()) {
+            return null;
+        }
         return model.getUserId();
     }
 
@@ -136,7 +139,6 @@ public class PeerConnection {
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
-                .setUserId(model.getUserId())
                 .setClientId(model.getClientId())
                 .setPeerConnectionId(model.getPeerConnectionId())
                 .setTrackId(trackId)
@@ -145,16 +147,19 @@ public class PeerConnection {
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 // marker
+                // userId
                 // sfu stream id
                 // sfu sink id
                 .addSsrc(ssrc)
                 ;
-
+        if (model.hasUserId()) {
+            inboundTrackModelBuilder.setUserId(model.getUserId());
+        }
         if (marker != null) {
             inboundTrackModelBuilder.setMarker(marker);
         }
         if (sfuStreamId != null) {
-            inboundTrackModelBuilder.setSfuSinkId(sfuStreamId);
+            inboundTrackModelBuilder.setSfuStreamId(sfuStreamId);
         }
         if (sfuSinkId != null) {
             inboundTrackModelBuilder.setSfuSinkId(sfuSinkId);
@@ -225,7 +230,6 @@ public class PeerConnection {
                 .setServiceId(model.getServiceId())
                 .setRoomId(model.getRoomId())
                 .setCallId(model.getCallId())
-                .setUserId(model.getUserId())
                 .setClientId(model.getClientId())
                 .setPeerConnectionId(model.getPeerConnectionId())
                 .setTrackId(trackId)
@@ -234,10 +238,14 @@ public class PeerConnection {
 
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
+                // userId
                 // marker
                 // sfuStreamId
                 .addSsrc(ssrc)
                 ;
+        if (model.hasUserId()) {
+            outboundTrackModelBuilder.setUserId(model.getUserId());
+        }
         if (marker != null) {
             outboundTrackModelBuilder.setMarker(marker);
         }
@@ -284,5 +292,9 @@ public class PeerConnection {
         this.peerConnectionsRepository.update(newModel);
     }
 
-
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
 }

@@ -136,10 +136,13 @@ public class SfusRepository implements RepositoryStorageMetrics {
                 .setTouched(timestamp)
                 .setMediaUnitId(mediaUnitId)
                 // marker
-                .setTimeZoneId(timeZoneId)
+                // timeZoneId
                 ;
         if (marker != null) {
             modelBuilder.setMarker(marker);
+        }
+        if (timeZoneId != null) {
+            modelBuilder.setTimeZoneId(timeZoneId);
         }
         var model = modelBuilder.build();
         this.updated.put(model.getSfuId(), model);

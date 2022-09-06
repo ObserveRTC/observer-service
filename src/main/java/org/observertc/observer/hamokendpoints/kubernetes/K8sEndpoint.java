@@ -60,4 +60,9 @@ public class K8sEndpoint implements HamokEndpoint {
     public boolean isReady() {
         return this.k8SApplicationPodsDiscovery.isReady();
     }
+
+    @Override
+    public int elapsedSecSinceReady() {
+        return this.k8SApplicationPodsDiscovery.elapsedSecSinceReady();
+    }
 }

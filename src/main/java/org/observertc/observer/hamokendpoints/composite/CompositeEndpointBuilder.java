@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -66,10 +67,16 @@ public class CompositeEndpointBuilder extends AbstractBuilder implements Endpoin
                 .setEncoder(encoder)
                 .setDecoder(decoder)
                 .build();
+        var createdInSec = Instant.now().getEpochSecond();
         return new HamokEndpoint() {
             @Override
             public boolean isReady() {
                 return true;
+            }
+
+            @Override
+            public int elapsedSecSinceReady() {
+                return (int) (Instant.now().getEpochSecond() - createdInSec);
             }
 
             @Override

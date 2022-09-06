@@ -16,9 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -96,7 +98,6 @@ public class CallEventReportsAdder {
         this.repositoryEvents.deletedOutboundTrack()
                 .subscribe(outboundTrackModels -> this.outboundTrackRemovedReports.accept(outboundTrackModels));
 
-
         this.callStartedReports.getOutput()
                 .subscribe(this::collectCallEventReports);
 
@@ -129,13 +130,25 @@ public class CallEventReportsAdder {
 
         this.input.subscribe(incomingReports -> {
             var forwardedReports = new LinkedList<Report>();
-            forwardedReports.addAll(incomingReports);
-            synchronized (this) {
-                forwardedReports.addAll(this.collectedReports);
-                this.collectedReports.clear();
+            if (incomingReports != null && 0 < incomingReports.size()) {
+                forwardedReports.addAll(incomingReports);
             }
+            this.drainCollectedReports(forwardedReports);
             this.output.onNext(forwardedReports);
         });
+    }
+
+    @PreDestroy
+    void teardown() {
+        this.flush();
+    }
+
+    void flush() {
+        var remainingReports = new LinkedList<Report>();
+        this.drainCollectedReports(remainingReports);
+        if (0 < remainingReports.size()) {
+            this.output.onNext(remainingReports);
+        }
     }
 
     public Observer<List<Report>> reportsObserver() {
@@ -163,9 +176,13 @@ public class CallEventReportsAdder {
         }
         this.clientLeftReports.accept(expiredClientModels);
 
-        var serviceRoomIds = expiredClientModels.stream()
+        var serviceRoomIdsToClientNums = expiredClientModels.stream()
                 .map(clientModel -> ServiceRoomId.make(clientModel.getServiceId(), clientModel.getRoomId()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        s -> 1,
+                        (num1, num2) -> num1 + num2
+                ));
         var peerConnectionIds = expiredClientModels.stream()
                 .filter(model -> 0 < model.getPeerConnectionIdsCount())
                 .map(Models.Client::getPeerConnectionIdsList)
@@ -175,10 +192,11 @@ public class CallEventReportsAdder {
         this.peerConnectionsRepository.deleteAll(peerConnectionIds);
         this.peerConnectionsRepository.save();
 
-        var calls = this.callsRepository.getAll(serviceRoomIds);
+        var calls = this.callsRepository.getAll(serviceRoomIdsToClientNums.keySet());
         var toRemove = new HashMap<ServiceRoomId, Models.Call>();
         for (var call : calls.values()) {
-            if (call.getClientIds().size() < 1) {
+            var remainingClientsNum = call.getClientIds().size() - serviceRoomIdsToClientNums.getOrDefault(call.getServiceRoomId(), 0);
+            if (remainingClientsNum < 1) {
                 toRemove.put(call.getServiceRoomId(), call.getModel());
             }
         }
@@ -197,4 +215,15 @@ public class CallEventReportsAdder {
             this.callEndedReports.accept(removedCallModels);
         }
     }
+
+    private void drainCollectedReports(List<Report> target) {
+        synchronized (this) {
+            if (this.collectedReports.size() < 1) {
+                return;
+            }
+            target.addAll(this.collectedReports);
+            this.collectedReports.clear();
+        }
+    }
+
 }

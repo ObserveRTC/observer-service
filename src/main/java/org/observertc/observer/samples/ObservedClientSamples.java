@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
     static final Logger logger = LoggerFactory.getLogger(ObservedClientSamples.class);
 
+    static ObservedClientSamples EMPTY_SAMPLES = ObservedClientSamples.builder().build();
+
     static Builder builder() {
         return new Builder();
     }

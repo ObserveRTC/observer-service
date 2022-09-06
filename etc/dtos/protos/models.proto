@@ -16,13 +16,14 @@ message Client {
   required string roomId = 2;
 
   required string callId = 3;
-  required string userId = 4;
-  required string clientId = 5;
-  required uint64 joined = 6;
+  required string clientId = 4;
+  required uint64 joined = 5;
 
-  optional uint64 touched = 7;
-  optional string timeZoneId = 8;
-  optional string mediaUnitId = 9;
+  optional uint64 touched = 6;
+  optional string timeZoneId = 7;
+  optional string mediaUnitId = 8;
+
+  optional string userId = 9;
   optional string marker = 10;
 
   repeated string peerConnectionIds = 11;
@@ -33,13 +34,14 @@ message PeerConnection {
   required string roomId = 2;
 
   required string callId = 3;
-  required string userId = 4;
-  required string clientId = 5;
-  required string peerConnectionId = 6;
-  required uint64 opened = 7;
+  required string clientId = 4;
+  required string peerConnectionId = 5;
+  required uint64 opened = 6;
 
-  optional uint64 touched = 8;
-  optional string mediaUnitId = 9;
+  optional uint64 touched = 7;
+  optional string mediaUnitId = 8;
+
+  optional string userId = 9;
   optional string marker = 10;
 
   repeated string inboundTrackIds = 11;
@@ -51,15 +53,16 @@ message InboundTrack {
   required string serviceId = 1;
   required string roomId = 2;
   required string callId = 3;
-  required string userId = 4;
-  required string clientId = 5;
-  required string peerConnectionId = 6;
-  required string trackId = 7;
-  required string kind = 8;
-  required uint64 added = 9;
+  required string clientId = 4;
+  required string peerConnectionId = 5;
+  required string trackId = 6;
+  required string kind = 7;
+  required uint64 added = 8;
 
-  optional uint64 touched = 10;
-  optional string mediaUnitId = 11;
+  optional uint64 touched = 9;
+  optional string mediaUnitId = 10;
+
+  optional string userId = 11;
   optional string marker = 12;
 
   optional string sfuSinkId = 13;
@@ -72,15 +75,15 @@ message OutboundTrack {
   required string serviceId = 1;
   required string roomId = 2;
   required string callId = 3;
-  required string userId = 4;
-  required string clientId = 5;
-  required string peerConnectionId = 6;
-  required string trackId = 7;
-  required uint64 added = 8;
-  required string kind = 9;
+  required string clientId = 4;
+  required string peerConnectionId = 5;
+  required string trackId = 6;
+  required uint64 added = 7;
+  required string kind = 8;
 
-  optional uint64 touched = 10;
-  optional string mediaUnitId = 11;
+  optional uint64 touched = 9;
+  optional string mediaUnitId = 10;
+  optional string userId = 11;
   optional string marker = 12;
 
   optional string sfuStreamId = 13;

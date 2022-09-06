@@ -19,10 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Prototype
@@ -54,6 +51,13 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     }
 
     public void accept(ObservedClientSamples observedClientSamples) {
+        if (observedClientSamples == null) {
+            return;
+        }
+        if (observedClientSamples.isEmpty()) {
+            this.output.onNext(Collections.emptyList());
+            return;
+        }
         Instant started = Instant.now();
         try {
             this.process(observedClientSamples);

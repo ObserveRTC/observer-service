@@ -66,6 +66,13 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     }
 
     public void accept(ObservedSfuSamples observedSfuSamples) {
+        if (observedSfuSamples == null) {
+            return;
+        }
+        if (observedSfuSamples.isEmpty()) {
+            this.output.onNext(observedSfuSamples);
+            return;
+        }
         Instant started = Instant.now();
         try {
             this.process(observedSfuSamples);

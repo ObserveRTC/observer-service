@@ -54,7 +54,7 @@ public class OutboundTrackRemovedReports {
                     .withStreamDirection(streamDirection)
                     .withMediaKind(MediaKind.AUDIO.name())
                     .build();
-            String message = String.format("Media Track is removed. sfuStreamId: %s, sfuSinkId: %s, direction: %s", outboundTrackModel.getSfuStreamId(), streamDirection);
+            String message = String.format("Media Track is removed. sfuStreamId: %s, direction: %s", outboundTrackModel.getSfuStreamId(), streamDirection);
             var ssrc = outboundTrackModel.getSsrcCount() != 1 ? null : outboundTrackModel.getSsrc(0);
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.MEDIA_TRACK_REMOVED.name())

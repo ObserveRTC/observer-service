@@ -356,6 +356,12 @@ public class SfuTransport {
         return this.modelHolder.get();
     }
 
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
+    }
+
     private void updateModel(Models.SfuTransport newModel) {
         this.modelHolder.set(newModel);
         this.sfuTransportsRepository.update(newModel);

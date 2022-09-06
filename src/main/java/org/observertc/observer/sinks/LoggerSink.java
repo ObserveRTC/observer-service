@@ -4,15 +4,14 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.functions.Consumer;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.reports.ReportType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class LoggerSink extends Sink {
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(LoggerSink.class);
@@ -30,22 +29,19 @@ public class LoggerSink extends Sink {
     @Override
     public void process(@NonNull List<Report> reports) {
         logger.info("Number of reports are: {}", reports.size());
-        Map<ReportType, Integer> receivedTypes = new HashMap<>();
-        for (var report : reports) {
-            ReportType reportType = report.type;
-            receivedTypes.put(reportType, receivedTypes.getOrDefault(reportType, 0) + 1);
-            this.printer.accept(report);
-        }
-
-        if (this.typeSummary) {
-            receivedTypes.forEach((reportType, numberOfReports) -> {
-                String message = String.format("Received number of reports of %s: %d", reportType, numberOfReports);
+        var reportsByTypes = reports.stream()
+                .collect(groupingBy(r -> r.type));
+        for (var entry : reportsByTypes.entrySet()) {
+            var reportType = entry.getKey();
+            var typeReports = entry.getValue();
+            if (this.typeSummary) {
+                String message = String.format("Received number of reports of %s: %d", reportType, typeReports.size());
                 try {
                     this.sink.accept(message);
                 } catch (Throwable throwable) {
                     DEFAULT_LOGGER.error("Unexpected error occurred", throwable);
                 }
-            });
+            }
         }
     }
 

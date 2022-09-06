@@ -51,6 +51,9 @@ public class OutboundTrack {
 
     public String getUserId() {
         var model = modelHolder.get();
+        if (!model.hasUserId()) {
+            return null;
+        }
         return model.getUserId();
     }
 
@@ -162,6 +165,12 @@ public class OutboundTrack {
 
     public Models.OutboundTrack getModel() {
         return this.modelHolder.get();
+    }
+
+    @Override
+    public String toString() {
+        var model = this.modelHolder.get();
+        return model.toString();
     }
 
     private void updateModel(Models.OutboundTrack newModel) {
