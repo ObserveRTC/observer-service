@@ -25,6 +25,8 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
     private static final Logger logger = LoggerFactory.getLogger(InboundTracksRepository.class);
 
     private static final String STORAGE_ID = "observertc-inbound-video-tracks";
+    private static final int MAX_KEYS = 1000;
+    private static final int MAX_VALUES = 100;
 
     private Set<String> deleted;
     private Map<String, Models.InboundTrack> updated;
@@ -59,7 +61,8 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
                 )
                 .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
-                .setMaxMessageValues(1000)
+                .setMaxMessageKeys(MAX_KEYS)
+                .setMaxMessageValues(MAX_VALUES)
                 .build();
         this.fetched = CachedFetches.<String, InboundTrack>builder()
                 .onFetchOne(this::fetchOne)

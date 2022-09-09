@@ -42,7 +42,9 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
     private Report result = new Report();
 
     private Set<String> outboundTrackIds = new HashSet<>();
-    private Set<String> outboundVideoTrackIds = new HashSet<>();
+    private Set<String> inboundTrackIds = new HashSet<>();
+
+    private Set<String> matchedOutboundTrackIds = new HashSet<>();
 
     @PostConstruct
     void setup() {
@@ -56,11 +58,54 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         }
                         logger.error("This Task cannot be chained!");
             })
-            .addActionStage("Fetch Inbound To Outbound Tracks", () -> {
-                if (this.outboundTrackIds == null || this.outboundTrackIds.size() < 1) {
+            .addActionStage("Match By Sfu StreamId", () -> {
+                var outboundTracks = this.outboundTracksRepository.getAll(this.outboundTrackIds);
+                if (outboundTracks == null || outboundTracks.size() < 1) {
                     return;
                 }
-                var outboundTracks = this.outboundTracksRepository.getAll(this.outboundTrackIds);
+                var outboundTracksBySfuStreamIds = this.mapOutboundTracksBySfuStreamIds(outboundTracks.values());
+                if (outboundTracksBySfuStreamIds == null || outboundTracksBySfuStreamIds.size() < 1) {
+                    return;
+                }
+                var inboundTracks = this.inboundTracksRepository.getAll(this.inboundTrackIds);
+                if (inboundTracks == null || inboundTracks.size() < 1) {
+                    return;
+                }
+                for (var inboundTrack : inboundTracks.values()) {
+                    var sfuStreamId = inboundTrack.getSfuStreamId();
+                    if (sfuStreamId == null) {
+                        continue;
+                    }
+                    var outboundTrack = outboundTracksBySfuStreamIds.get(sfuStreamId);
+                    if (outboundTrack == null) {
+                        return;
+                    }
+                    if (outboundTrack.getCallId() != inboundTrack.getCallId()) {
+                        logger.warn("CallId must be equal to match outbound tracks to inbound tracks. InboundTrack: {}, OutboundTrack: {}", inboundTrack, outboundTrack);
+                        continue;
+                    }
+                    // match
+                    var match = new Match(
+                            inboundTrack.getTrackId(),
+                            inboundTrack.getPeerConnectionId(),
+                            inboundTrack.getClientId(),
+                            inboundTrack.getUserId(),
+                            inboundTrack.getCallId(),
+                            inboundTrack.getServiceRoomId(),
+                            outboundTrack.getClientId(),
+                            outboundTrack.getUserId(),
+                            outboundTrack.getPeerConnectionId(),
+                            outboundTrack.getTrackId()
+                    );
+                    this.result.inboundMatches.put(match.inboundTrackId, match);
+                    this.matchedOutboundTrackIds.add(outboundTrack.getTrackId());
+                }
+            })
+            .addActionStage("Match By SSRC", () -> {
+                var unmatchedOutboundTrackIds = this.outboundTrackIds.stream()
+                        .filter(trackId -> this.matchedOutboundTrackIds.contains(trackId) == false)
+                        .collect(Collectors.toSet());
+                var outboundTracks = this.outboundTracksRepository.getAll(unmatchedOutboundTrackIds);
                 var serviceRoomIds = outboundTracks.values().stream()
                         .map(OutboundTrack::getServiceRoomId)
                         .collect(Collectors.toSet());
@@ -68,6 +113,11 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                 for (var entry : outboundTracks.entrySet()) {
                     var outboundTrackId = entry.getKey();
                     var outboundTrack = entry.getValue();
+                    var outboundTrackSfuStreamId = outboundTrack.getSfuStreamId();
+                    if (outboundTrackSfuStreamId == null || outboundTrackSfuStreamId.isBlank()) {
+                        // these outbound tracks were not matched by sfu stream before
+                        continue;
+                    }
                     var outboundPeerConnection = outboundTrack.getPeerConnection();
                     if (outboundPeerConnection == null) {
                         logger.warn("Peer Connection is null for outbound track {}", outboundTrack);
@@ -86,19 +136,10 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                             continue;
                         }
                         var remoteClient = clientEntry.getValue();
-                        for (var inboundPeerConnection : remoteClient.getPeerConnections().values()) {
-                            for (var inboundTrack : inboundPeerConnection.getInboundTracks().values()) {
+                        for (var remotePeerConnection : remoteClient.getPeerConnections().values()) {
+                            for (var inboundTrack : remotePeerConnection.getInboundTracks().values()) {
                                 var matched = false;
-                                var outboundTrackSfuStreamId = outboundTrack.getSfuStreamId();
                                 // match by sfuStreamId
-                                if (outboundTrackSfuStreamId != null && !outboundTrackSfuStreamId.isBlank()) {
-                                    if (outboundTrackSfuStreamId == inboundTrack.getSfuStreamId()) {
-                                        matched = true;
-                                    } else {
-                                        continue;
-                                    }
-                                }
-                                // match by ssrcs
                                 for (var ssrc : outboundTrack.getSSSRCs()) {
                                     if (inboundTrack.hasSSRC(ssrc)) {
                                         matched = true;
@@ -106,21 +147,22 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                                         break;
                                     }
                                 }
-                                if (matched) {
-                                    var match = new Match(
-                                            inboundTrack.getTrackId(),
-                                            inboundPeerConnection.getPeerConnectionId(),
-                                            remoteClient.getClientId(),
-                                            remoteClient.getUserId(),
-                                            call.getCallId(),
-                                            call.getServiceRoomId(),
-                                            outboundClient.getClientId(),
-                                            outboundClient.getUserId(),
-                                            outboundPeerConnection.getPeerConnectionId(),
-                                            outboundTrackId
-                                    );
-                                    this.result.inboundMatches.put(match.inboundTrackId, match);
+                                if (!matched) {
+                                    continue;
                                 }
+                                var match = new Match(
+                                        inboundTrack.getTrackId(),
+                                        remotePeerConnection.getPeerConnectionId(),
+                                        remoteClient.getClientId(),
+                                        remoteClient.getUserId(),
+                                        call.getCallId(),
+                                        call.getServiceRoomId(),
+                                        outboundClient.getClientId(),
+                                        outboundClient.getUserId(),
+                                        outboundPeerConnection.getPeerConnectionId(),
+                                        outboundTrackId
+                                );
+                                this.result.inboundMatches.put(match.inboundTrackId, match);
                             }
                         }
                     }
@@ -137,6 +179,34 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
         mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.outboundTrackIds::add);
         return this;
     }
+
+    public MatchTracks whereInboundTrackIds(Set<String> mediaTrackIds) {
+        if (mediaTrackIds == null) return this;
+        mediaTrackIds.stream().filter(Utils::expensiveNonNullCheck).forEach(this.inboundTrackIds::add);
+        return this;
+    }
+
+    private Map<String, OutboundTrack> mapOutboundTracksBySfuStreamIds(Collection<OutboundTrack> outboundTracks) {
+        if (outboundTracks == null || outboundTracks.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = new HashMap<String, OutboundTrack>();
+        for (var outboundTrack : outboundTracks) {
+            var sfuStreamId = outboundTrack.getSfuStreamId();
+            if (sfuStreamId == null || sfuStreamId.isBlank()) {
+                continue;
+            }
+            if (result.containsKey(sfuStreamId)) {
+                var alreadyExistingOutboundTrack = result.get(sfuStreamId);
+                logger.warn("Duplicated sfu stream id for outbound tracks: {}, {}", alreadyExistingOutboundTrack, outboundTrack);
+                continue;
+            }
+            result.put(sfuStreamId, outboundTrack);
+        }
+        return Collections.unmodifiableMap(result);
+    }
+
+
 
 
     @Override

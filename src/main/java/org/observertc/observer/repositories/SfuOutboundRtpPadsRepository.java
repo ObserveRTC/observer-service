@@ -27,6 +27,8 @@ public class SfuOutboundRtpPadsRepository implements RepositoryStorageMetrics {
     private static final String STORAGE_ID = "observertc-sfu-outbound-rtp-pads";
 
     private SeparatedStorage<String, Models.SfuOutboundRtpPad> storage;
+    private static final int MAX_KEYS = 1000;
+    private static final int MAX_VALUES = 100;
 
     @Inject
     private HamokService service;
@@ -55,7 +57,8 @@ public class SfuOutboundRtpPadsRepository implements RepositoryStorageMetrics {
                 )
                 .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
-                .setMaxMessageValues(1000)
+                .setMaxMessageKeys(MAX_KEYS)
+                .setMaxMessageValues(MAX_VALUES)
                 .build();
         this.fetched = CachedFetches.<String, SfuOutboundRtpPad>builder()
                 .onFetchOne(this::fetchOne)

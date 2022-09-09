@@ -27,6 +27,8 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
     private static final String STORAGE_ID = "observertc-sfu-media-sinks";
 
     private SeparatedStorage<String, Models.SfuMediaSink> storage;
+    private static final int MAX_KEYS = 1000;
+    private static final int MAX_VALUES = 100;
 
     @Inject
     private HamokService service;
@@ -58,7 +60,8 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                 )
                 .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
-                .setMaxMessageValues(1000)
+                .setMaxMessageKeys(MAX_KEYS)
+                .setMaxMessageValues(MAX_VALUES)
                 .build();
         this.fetched = CachedFetches.<String, SfuMediaSink>builder()
                 .onFetchOne(this::fetchOne)

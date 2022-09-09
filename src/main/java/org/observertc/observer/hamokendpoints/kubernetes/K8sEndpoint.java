@@ -20,12 +20,12 @@ public class K8sEndpoint implements HamokEndpoint {
         this.endpoint = endpoint;
         this.k8SApplicationPodsDiscovery = k8SApplicationPodsDiscovery;
 
-        this.k8SApplicationPodsDiscovery.subscribe(applicationPod -> {
+        this.k8SApplicationPodsDiscovery.events().subscribe(applicationPod -> {
+            logger.info("Endpoint {} is {}", applicationPod.address(), applicationPod.eventType());
             switch (applicationPod.eventType()) {
                 case ADDED -> this.endpoint.addRemoteAddress(applicationPod.address());
                 case REMOVED -> this.endpoint.removeRemoteAddress(applicationPod.address());
             }
-            logger.info("Event {} inetaddress: {}", applicationPod.eventType(), applicationPod.address());
         });
     }
 

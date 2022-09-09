@@ -72,6 +72,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         }
         var task = this.matchTracks.get()
                 .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
+                .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("Interrupted execution of component due to unsuccessful task execution");

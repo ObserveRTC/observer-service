@@ -27,7 +27,7 @@ public class KubernetesEndpointBuilder extends AbstractBuilder implements Endpoi
 
     @Override
     public K8sEndpoint build() {
-        var config = this.convertAndValidate(Config.class);
+        var config = this.convertAndValidate(KubernetesEndpointConfig.class);
         var mapper = new ObjectMapper();
         Function<Message, byte[]> encoder = message -> {
             try {
@@ -46,10 +46,11 @@ public class KubernetesEndpointBuilder extends AbstractBuilder implements Endpoi
             }
         };
         var endpoint = UdpSocketEndpoint.builder()
-                .setUnicastListenerPort(config.unicastListenerPort)
+                .setUnicastListenerPort(config.unicastListeningPort)
                 .setUnicastSendingPort(config.unicastSendingPort)
                 .setEncoder(encoder)
                 .setDecoder(decoder)
+                .setContext(config.context)
                 .build();
 
         var k8sApplicationPods = new K8sApplicationPodsDiscovery(
@@ -65,14 +66,4 @@ public class KubernetesEndpointBuilder extends AbstractBuilder implements Endpoi
         this.essentials = essentials;
     }
 
-    public static class Config {
-
-        public String namespace;
-
-        public String podsName;
-
-        public int unicastListenerPort = 5602;
-
-        public int unicastSendingPort = 5602;
-    }
 }

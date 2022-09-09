@@ -5,10 +5,18 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.observertc.observer.reports.Report;
+import org.observertc.observer.reports.ReportType;
+import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.utils.ObservedSamplesGenerator;
+import org.observertc.observer.utils.SamplesGeneratorForSingleSfu;
+import org.observertc.schemas.reports.InboundAudioTrackReport;
+import org.observertc.schemas.reports.InboundVideoTrackReport;
+import org.observertc.schemas.reports.OutboundAudioTrackReport;
+import org.observertc.schemas.reports.OutboundVideoTrackReport;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -16,12 +24,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 @MicronautTest
 class ClientSamplesAnalyserTest {
 
     @Inject
     ClientSamplesAnalyser clientSamplesAnalyser;
+
+    @Inject
+    HamokStorages hamokStorages;
 
     ObservedSamplesGenerator observedSamplesGenerator = new ObservedSamplesGenerator();
 
@@ -61,6 +73,55 @@ class ClientSamplesAnalyserTest {
         var reports = reportsPromise.get(5, TimeUnit.SECONDS);
 
         Assertions.assertEquals(expectedNumberOfReports, reports.size(), "Number of reports");
+    }
+
+
+    @Test
+    void shouldMatchReports() throws ExecutionException, InterruptedException, TimeoutException {
+        this.clientSamplesAnalyser.config.dropUnmatchedReports = false;
+        var samplesGeneratorForSingleSfu = new SamplesGeneratorForSingleSfu();
+        samplesGeneratorForSingleSfu.saveTo(this.hamokStorages);
+        var observedClientSamples = samplesGeneratorForSingleSfu.getObservedClientSamples();
+
+        var reports = new LinkedList<Report>();
+        this.clientSamplesAnalyser.observableReports().subscribe(reports::addAll);
+        this.clientSamplesAnalyser.accept(observedClientSamples);
+
+        var inboundAudioReports = reports.stream()
+                .filter(report -> ReportType.INBOUND_AUDIO_TRACK.equals(report.type))
+                .map(report -> (InboundAudioTrackReport) report.payload)
+                .collect(Collectors.toList());
+        var inboundVideoReports = reports.stream()
+                .filter(report -> ReportType.INBOUND_VIDEO_TRACK.equals(report.type))
+                .map(report -> (InboundVideoTrackReport) report.payload)
+                .collect(Collectors.toList());
+        var outboundAudioReports = reports.stream()
+                .filter(report -> ReportType.OUTBOUND_AUDIO_TRACK.equals(report.type))
+                .map(report -> (OutboundAudioTrackReport) report.payload)
+                .collect(Collectors.toList());
+        var outboundVideoReports = reports.stream()
+                .filter(report -> ReportType.OUTBOUND_VIDEO_TRACK.equals(report.type))
+                .map(report -> (OutboundVideoTrackReport) report.payload)
+                .collect(Collectors.toList());
+
+        for (var inboundAudioReport : inboundAudioReports) {
+            var found = false;
+            for (var outboundAudioReport : outboundAudioReports) {
+                if (outboundAudioReport.sfuStreamId == inboundAudioReport.sfuStreamId) {
+                    found = true;
+                }
+            }
+            Assertions.assertTrue(found);
+        }
+        for (var outboundVideoReport : outboundVideoReports) {
+            var found = false;
+            for (var inboundVideoReport : inboundVideoReports) {
+                if (inboundVideoReport.sfuStreamId == outboundVideoReport.sfuStreamId) {
+                    found = true;
+                }
+            }
+            Assertions.assertTrue(found);
+        }
     }
 
     @Test

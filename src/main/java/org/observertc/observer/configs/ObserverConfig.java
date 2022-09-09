@@ -129,25 +129,25 @@ public class ObserverConfig {
 	public static class RepositoryConfig {
 
 		@Min(3)
-		public int mediaTracksMaxIdleTimeInS = 300;
+		public int mediaTracksMaxIdleTimeInS;
 
 		@Min(3)
-		public int peerConnectionsMaxIdleTime = 300;
+		public int peerConnectionsMaxIdleTime;
 
 		@Min(3)
-		public int clientMaxIdleTimeInS = 300;
+		public int clientMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuMaxIdleTimeInS = 600;
+		public int sfuMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuTransportMaxIdleTimeInS = 600;
+		public int sfuTransportMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuRtpPadMaxIdleTimeInS = 600;
+		public int sfuRtpPadMaxIdleTimeInS;
 
 		@Min(-1)
-		public long evictExpiredEntriesPeriodInMs = 0;
+		public long evictExpiredEntriesPeriodInMs;
 
 		@Min(-1)
 		public long evictExpiredEntriesThresholdOffsetInMs = 0;
@@ -259,14 +259,6 @@ public class ObserverConfig {
 			public int applicationCommitIndexSyncTimeoutInMs = 60 * 1000;
 			public int requestTimeoutInMs = 3000;
 		}
-
-
-
-
-
-
-
 	}
-
 }
 

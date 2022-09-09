@@ -2,6 +2,7 @@ package org.observertc.observer.hamokendpoints;
 
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
+import org.observertc.observer.hamokendpoints.composite.CompositeEndpointBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,12 @@ public class EndpointBuilderImpl extends AbstractBuilder implements EndpointBuil
 
         var result = endpointBuilder.build();
         return result;
+    }
+
+    public HamokEndpoint defaultEndpoint() {
+        var builder = new CompositeEndpointBuilder();
+        builder.setBuildingEssentials(this.essentials);
+        return builder.build();
     }
 
     public void setBuildingEssentials(BuildersEssentials essentials) {

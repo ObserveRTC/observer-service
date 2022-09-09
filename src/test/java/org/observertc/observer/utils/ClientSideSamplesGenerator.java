@@ -425,6 +425,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
             inboundAudioTrack.trackId = trackId;
             inboundAudioTrack.peerConnectionId = session.peerConnectionId;
             inboundAudioTrack.remoteClientId = this.remoteClientId;
+            inboundAudioTrack.sfuStreamId = session.sfuStreamId;
             inboundAudioTrack.sfuSinkId = session.sfuSinkId;
             inboundAudioTrack.ssrc = session.SSRC;
             inboundAudioTrack.packetsReceived = this.randomGenerator.getRandomPositiveInteger();
@@ -488,6 +489,7 @@ public class ClientSideSamplesGenerator implements Supplier<Samples> {
             inboundVideoTrack.trackId = trackId;
             inboundVideoTrack.peerConnectionId = session.peerConnectionId;
             inboundVideoTrack.remoteClientId = this.remoteClientId;
+            inboundVideoTrack.sfuStreamId = session.sfuStreamId;
             inboundVideoTrack.sfuSinkId = session.sfuSinkId;
             inboundVideoTrack.ssrc = session.SSRC;
             inboundVideoTrack.packetsReceived = this.randomGenerator.getRandomPositiveInteger();

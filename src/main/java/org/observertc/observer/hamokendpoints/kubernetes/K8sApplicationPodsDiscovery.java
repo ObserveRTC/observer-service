@@ -4,9 +4,7 @@ import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.slf4j.Logger;
@@ -22,18 +20,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDiscovery.K8sApplicationPodIpEvent> {
+public class K8sApplicationPodsDiscovery implements RemotePeerDiscovery {
 
     private static final Logger logger = LoggerFactory.getLogger(K8sApplicationPodsDiscovery.class);
 
-    private Subject<K8sApplicationPodIpEvent> subject = PublishSubject.create();
+    private Subject<RemotePeerDiscoveryEvent> subject = PublishSubject.create();
 
     private Map<String, InetAddress> inetAddresses = new ConcurrentHashMap<>();
     private final String namespace;
     private final String namePrefix;
     private final CoreV1Api api;
 
-    private volatile boolean run = true;
+    private volatile boolean run = false;
     private volatile boolean ready = false;
     private List<InetAddress> localAddresses = Collections.emptyList();
     private AtomicReference<Thread> thread = new AtomicReference<>(null);
@@ -54,6 +52,11 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
         });
     }
 
+    @Override
+    public Observable<RemotePeerDiscoveryEvent> events() {
+        return this.subject;
+    }
+
     public boolean isReady() {
         return this.ready;
     }
@@ -70,6 +73,7 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
             logger.warn("Attempted to start twice");
             return;
         }
+        this.run = true;
         this.ready = false;
         this.thread.set(new Thread(this::process));
         this.thread.get().start();
@@ -94,7 +98,7 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
         this.ready = false;
     }
 
-    private List<InetAddress> getLocalAddresses() {
+    public List<InetAddress> getLocalAddresses() {
         var result = new LinkedList<InetAddress>();
         try {
             for (var it = NetworkInterface.getNetworkInterfaces(); it.hasMoreElements(); ) {
@@ -169,8 +173,8 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
                 if (ipAddress == null) {
                     var removedAddress = this.inetAddresses.remove(id);
                     if (removedAddress != null) {
-                        this.subject.onNext(new K8sApplicationPodIpEvent(
-                                EventType.REMOVED,
+                        this.subject.onNext(new RemotePeerDiscoveryEvent(
+                                RemotePeerDiscoveryEventTypes.REMOVED,
                                 removedAddress
                         ));
                         result = true;
@@ -189,18 +193,18 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
                 visitedIds.add(id);
                 var savedAddress = this.inetAddresses.put(id, ipAddress);
                 if (savedAddress == null) {
-                    this.subject.onNext(new K8sApplicationPodIpEvent(
-                            EventType.ADDED,
+                    this.subject.onNext(new RemotePeerDiscoveryEvent(
+                            RemotePeerDiscoveryEventTypes.ADDED,
                             ipAddress
                     ));
                     result = true;
                 } else if (!Arrays.equals(savedAddress.getAddress(), ipAddress.getAddress())) {
-                    this.subject.onNext(new K8sApplicationPodIpEvent(
-                            EventType.REMOVED,
+                    this.subject.onNext(new RemotePeerDiscoveryEvent(
+                            RemotePeerDiscoveryEventTypes.REMOVED,
                             savedAddress
                     ));
-                    this.subject.onNext(new K8sApplicationPodIpEvent(
-                            EventType.ADDED,
+                    this.subject.onNext(new RemotePeerDiscoveryEvent(
+                            RemotePeerDiscoveryEventTypes.ADDED,
                             ipAddress
                     ));
                     result = true;
@@ -216,29 +220,13 @@ public class K8sApplicationPodsDiscovery extends Observable<K8sApplicationPodsDi
 
         for (var id : idsToRemove) {
             var removedAddress = this.inetAddresses.remove(id);
-            this.subject.onNext(new K8sApplicationPodIpEvent(
-                    EventType.REMOVED,
+            this.subject.onNext(new RemotePeerDiscoveryEvent(
+                    RemotePeerDiscoveryEventTypes.REMOVED,
                     removedAddress
             ));
             result = true;
         }
         return result;
-    }
-
-    @Override
-    protected void subscribeActual(@NonNull Observer<? super K8sApplicationPodIpEvent> observer) {
-        this.subject.subscribe(observer);
-    }
-
-    public enum EventType {
-        REMOVED,
-        ADDED
-    }
-
-    public record K8sApplicationPodIpEvent(
-            EventType eventType,
-            InetAddress address) {
-
     }
 
     private static InetAddress getPodIp(V1Pod pod) {

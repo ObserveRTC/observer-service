@@ -214,8 +214,6 @@ public class ModelsMapGenerator {
     }
 
 
-
-
     public ModelsMapGenerator generateMultipleSfu() {
         if (Objects.nonNull(this.callDTO)) throw new RuntimeException("cannot generate two calls");
         throw new RuntimeException("Not implemented");
@@ -294,10 +292,13 @@ public class ModelsMapGenerator {
         var client = this.modelsGenerator.getClientModelBuilderFromCallModel(callDTO)
                 .setUserId(userId)
                 .build();
+
         var peerConnection = this.modelsGenerator.getPeerConnectionModelFromClientModel(client);
         var outboundTrack = this.modelsGenerator.getOutboundTrackBuilderFromPeerConnectionModel(peerConnection)
+                .setKind(MediaKind.VIDEO.name())
                 .build();
         var inboundTrack = this.modelsGenerator.getInboundTrackBuilderFromPeerConnectionModel(peerConnection)
+                .setKind(MediaKind.VIDEO.name())
                 .build();
         var result = new ClientSide(client, peerConnection, outboundTrack, inboundTrack);
         return result;

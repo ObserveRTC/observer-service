@@ -53,10 +53,11 @@ public class Application {
     public static void main(String[] args) {
         Sleeper.makeFromSystemEnv(INITIAL_WAIT_IN_S, ChronoUnit.SECONDS).run();
         logger.info("Micronaut config file: {}", System.getenv(MICRONAUT_CONFIG_FILES));
-        var customObserverConfig = loadCustomObserverConfig();
+        var observerConfig = loadCustomObserverConfig();
         context = Micronaut.build(args)
                 .banner(false)
-                .properties(customObserverConfig)
+                .properties(observerConfig)
+                .include()
                 .start();
 //        context = Micronaut.run(Application.class, args);
 

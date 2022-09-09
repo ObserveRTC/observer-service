@@ -42,7 +42,6 @@ public class HamokService  implements InfoSource {
         var storageGridConfig = this.config.storageGrid;
         var memberName = this.getRandomMemberName();
         this.storageGrid = StorageGrid.builder()
-                .withAutoDiscovery(true)
                 .withContext(memberName)
                 .withRaftMaxLogRetentionTimeInMs(storageGridConfig.raftMaxLogEntriesRetentionTimeInMinutes * 60 * 1000)
                 .withApplicationCommitIndexSyncTimeoutInMs(storageGridConfig.applicationCommitIndexSyncTimeoutInMs)
@@ -56,24 +55,14 @@ public class HamokService  implements InfoSource {
 
         this.storageGrid.joinedRemoteEndpoints()
                 .subscribe(endpointId -> {
+                    logger.info("Endpoint {} joined to StorageGrid", endpointId);
                     remotePeers.add(endpointId);
                 });
         this.storageGrid.detachedRemoteEndpoints()
                 .subscribe(endpointId -> {
+                    logger.info("Endpoint {} detached from StorageGrid", endpointId);
                     remotePeers.remove(endpointId);
                 });
-        var endpointBuilder = new EndpointBuilderImpl();
-        endpointBuilder.setBuildingEssentials(new BuildersEssentials(
-                this.coreV1ApiProvider,
-                this.storageGrid.getLocalEndpointId()
-        ));
-        endpointBuilder.withConfiguration(this.config.endpoint);
-        this.endpoint = endpointBuilder.build();
-
-        this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
-        this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
-
-        logger.info("Hamok is ready");
     }
 
     @PreDestroy
@@ -87,7 +76,18 @@ public class HamokService  implements InfoSource {
             return;
         }
         this.running = true;
+        if (this.endpoint == null) {
+            this.endpoint = this.buildEndpoint(this.config.endpoint);
+
+            if (this.endpoint == null) {
+                logger.error("Hamok has not been built, no endpoint and distributed storage grid is available.");
+                return;
+            }
+            this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
+            this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
+        }
         this.endpoint.start();
+        logger.info("Hamok is started");
     }
 
     boolean isRunning() {
@@ -116,17 +116,54 @@ public class HamokService  implements InfoSource {
         );
     }
 
+    private HamokEndpoint buildEndpoint(Map<String, Object> config) {
+        var endpointBuilder = new EndpointBuilderImpl();
+        if (config == null) {
+            logger.info("No Endpoint is specified, the default is used");
+            return endpointBuilder.defaultEndpoint();
+        }
+        endpointBuilder.setBuildingEssentials(new BuildersEssentials(
+                this.coreV1ApiProvider,
+                this.storageGrid.getLocalEndpointId()
+        ));
+        endpointBuilder.withConfiguration(config);
+        return endpointBuilder.build();
+    }
+
+    private int alreadyLoggedFlags = 0;
     public boolean isReady() {
         if (!this.endpoint.isReady()) {
+            if ((this.alreadyLoggedFlags & 1) == 0) {
+                logger.info("Waiting for endpoint to be ready");
+                this.alreadyLoggedFlags = 1;
+            }
             return false;
         }
+
         var sentTwoTimesHello = (2 * this.config.storageGrid.sendingHelloTimeoutInMs) / 1000;
-        if (this.endpoint.elapsedSecSinceReady() < sentTwoTimesHello) {
+        var elapsedSecSinceReady = this.endpoint.elapsedSecSinceReady();
+        if ((this.alreadyLoggedFlags & 2) == 0) {
+            logger.info("Observer service endpoint is ready");
+            logger.info("Elapsed secs since endpoint is ready {}s, we must wait for two HELLO packets ({}s) before we check the next stage ", elapsedSecSinceReady, sentTwoTimesHello);
+            this.alreadyLoggedFlags += 2;
+        }
+
+        if (elapsedSecSinceReady < sentTwoTimesHello) {
             return false;
         }
+        if ((this.alreadyLoggedFlags & 4) == 0) {
+            logger.info("Number of remote endpoints {}, leader {}", this.remotePeers.size(), this.storageGrid.getLeaderId());
+            this.alreadyLoggedFlags += 4;
+        }
+
         if (0 < this.remotePeers.size() && this.storageGrid.getLeaderId() == null) {
             return false;
         }
+        if ((this.alreadyLoggedFlags & 8) == 0) {
+            logger.info("Ready");
+            this.alreadyLoggedFlags += 8;
+        }
+        this.alreadyLoggedFlags = this.alreadyLoggedFlags & 0xFE;
         return true;
     }
 

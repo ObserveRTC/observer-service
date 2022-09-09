@@ -20,6 +20,7 @@ public class CallClientIdsRepository implements RepositoryStorageMetrics {
     private static final Logger logger = LoggerFactory.getLogger(CallClientIdsRepository.class);
 
     private static final String PROPAGATED_COLLECTION_ID = "observertc-calls-client-ids";
+    private static final int MAX_VALUES = 100;
 
     private PropagatedCollections<String, String, Set<String>> collections;
 
@@ -42,6 +43,7 @@ public class CallClientIdsRepository implements RepositoryStorageMetrics {
                         Mapper.<Set, byte[]>create(mapper::writeValueAsBytes, logger)::map,
                         Mapper.<byte[], Set>create(bytes -> mapper.readValue(bytes, Set.class), logger)::map
                 )
+                .setMaxMessageValues(MAX_VALUES)
                 .build();
 
     }

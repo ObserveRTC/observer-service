@@ -2,8 +2,6 @@ package org.observertc.observer;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.*;
 import org.observertc.observer.metrics.ReportMetrics;
 import org.observertc.observer.sinks.ReportSinks;
@@ -24,9 +22,6 @@ public class ObserverService {
 
     @Inject
     HamokService hamokService;
-
-    @Inject
-    ObserverConfig observerConfig;
 
     @Inject
     ReportMetrics reportMetrics;
@@ -98,10 +93,6 @@ public class ObserverService {
         if (this.reportMetrics.isEnabled()) {
             this.reportsCollector.getObservableReports()
                     .subscribe(this.reportMetrics::process);
-        }
-
-        if (observerConfig.security.printConfigs) {
-            logger.info("Config {}", JsonUtils.objectToString(observerConfig));
         }
     }
 

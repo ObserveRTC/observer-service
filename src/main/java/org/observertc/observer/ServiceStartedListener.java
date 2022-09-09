@@ -22,6 +22,8 @@ import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.runtime.server.event.ServerStartupEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,14 +45,19 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 	HamokService hamokService;
 
 	@Inject
+	ObserverConfig observerConfig;
+
+	@Inject
 	ObserverService observerService;
 
 	private Properties properties;
 
 	@PostConstruct
 	void setup() {
+		if (observerConfig.security.printConfigs) {
+			logger.info("Config {}", JsonUtils.objectToString(observerConfig));
+		}
 		this.properties = this.fetch();
-		hamokService.start();
 	}
 
 	@PreDestroy
@@ -72,6 +79,7 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 	public void onApplicationEvent(ServerStartupEvent event) {
 		observerService.start();
 		renderLogoAndVersion();
+		hamokService.start();
 		// TODO: websocket status message
 		// TODO: rest api status page
 		// TODO: sinks status

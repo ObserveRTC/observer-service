@@ -44,7 +44,7 @@ observer:
   sources:
     acceptSfuSamples: true
     acceptClientSamples: true
-    useServerTimestamp: true
+    useServerTimestamp: false
     rest:
       enabled: true
     websocket:
@@ -109,8 +109,8 @@ observer:
       roomId: none
       userId: none
 
-# setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
-#  sinks: {}
+  # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
+  #  sinks: {}
   hamok:
     storageGrid:
       raftMaxLogEntriesRetentionTimeInMinutes: 5
@@ -120,15 +120,6 @@ observer:
       sendingHelloTimeoutInMs: 1500
       applicationCommitIndexSyncTimeoutInMs: 60_000
       requestTimeoutInMs: 3000
-
-    endpoint:
-      type: CompositeEndpoint
-      config:
-        unicastListeningPort: 6702
-        unicastSendingPort: 6701
-        multicastPort: 6703
-        context: "My Context"
-        multicastAddress: "225.1.1.1"
     memberNamesPool:
       - "Lisa"
       - "Bart"
@@ -146,4 +137,3 @@ observer:
       - "Tony"
       - "Jacqueline"
       - "Nelson"
-
