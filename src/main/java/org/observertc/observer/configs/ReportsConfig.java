@@ -30,7 +30,8 @@ public class ReportsConfig {
     public boolean sendInboundVideoTracks = false;
     public boolean sendOutboundAudioTracks = false;
     public boolean sendOutboundVideoTracks = false;
-    public boolean sendClientTransports = false;
+    public boolean sendPeerConnectionTransports = false;
+    public boolean sendIceCandidatePairs = false;
     public boolean sendClientDataChannels = false;
 
     public boolean sendSfuEvents = false;
@@ -53,7 +54,8 @@ public class ReportsConfig {
         result.sendInboundVideoTracks = true;
         result.sendOutboundAudioTracks = true;
         result.sendOutboundVideoTracks = true;
-        result.sendClientTransports = true;
+        result.sendPeerConnectionTransports = true;
+        result.sendIceCandidatePairs = true;
         result.sendClientDataChannels = true;
 
         result.sendSfuEvents = true;

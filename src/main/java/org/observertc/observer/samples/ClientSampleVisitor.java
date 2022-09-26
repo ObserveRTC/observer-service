@@ -117,6 +117,13 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.pcTransports);
     }
 
+    static Stream<ClientSample.IceCandidatePair> streamIceCandidatePairs(@NotNull ClientSample clientSample) {
+        if (Objects.isNull(clientSample.iceCandidatePairs)) {
+            return Stream.empty();
+        }
+        return Arrays.stream(clientSample.iceCandidatePairs);
+    }
+
     static Stream<String> streamUserMediaErrors(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.userMediaErrors)) {
             return Stream.empty();

@@ -44,9 +44,26 @@ public class Report {
                 .build();
     }
 
+    @Deprecated
     public static Report fromClientTransportReport(ClientTransportReport report) {
         return builder()
                 .setType(ReportType.PEER_CONNECTION_TRANSPORT)
+                .setSchemaVersion(ClientTransportReport.VERSION)
+                .setPayload(report)
+                .build();
+    }
+
+    public static Report fromPeerConnectionTransportReport(PeerConnectionTransportReport report) {
+        return builder()
+                .setType(ReportType.PEER_CONNECTION_TRANSPORT)
+                .setSchemaVersion(ClientTransportReport.VERSION)
+                .setPayload(report)
+                .build();
+    }
+
+    public static Report fromIceCandidatePairReport(IceCandidatePairReport report) {
+        return builder()
+                .setType(ReportType.ICE_CANDIDATE_PAIR)
                 .setSchemaVersion(ClientTransportReport.VERSION)
                 .setPayload(report)
                 .build();

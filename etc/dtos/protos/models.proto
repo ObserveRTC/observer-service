@@ -9,6 +9,14 @@ message Call {
   required string callId = 3;
   required uint64 started = 4;
   optional string marker = 5;
+
+  message ClientLog {
+    required string clientId = 1;
+    required uint64 timestamp = 2;
+    required string event = 3;
+  }
+
+  repeated ClientLog clientLogs = 6;
 }
 
 message Client {

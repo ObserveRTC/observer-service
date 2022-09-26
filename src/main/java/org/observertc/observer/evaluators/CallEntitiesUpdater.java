@@ -361,42 +361,6 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         }
     }
 
-//    private Map<String, InboundTrack> fetchExistingInboundTracks(ObservedClientSamples samples) {
-//        var result = new HashMap<String, InboundTrack>();
-//        var existingInboundTracks = this.inboundTracksRepository.getAll(samples.getInboundTrackIds());
-//        if (existingInboundTracks != null && 0 < existingInboundTracks.size()) {
-//            result.putAll(existingInboundTracks);
-//        }
-//        return result;
-//    }
-//
-//    private Map<String, OutboundTrack> fetchExistingOutboundTracks(ObservedClientSamples samples) {
-//        var result = new HashMap<String, OutboundTrack>();
-//        var existingOutboundTracks = this.outboundTracksRepository.getAll(samples.getOutboundTrackIds());
-//        if (existingOutboundTracks != null && 0 < existingOutboundTracks.size()) {
-//            result.putAll(existingOutboundTracks);
-//        }
-//        return result;
-//    }
-
-//    private Map<String, PeerConnection> fetchExistingPeerConnections(ObservedClientSamples samples) {
-//        var result = new HashMap<String, PeerConnection>();
-//        var existingPeerConnections = this.peerConnectionsRepository.getAll(samples.getPeerConnectionIds());
-//        if (existingPeerConnections != null && 0 < existingPeerConnections.size()) {
-//            result.putAll(existingPeerConnections);
-//        }
-//        return result;
-//    }
-//
-//    private Map<String, Client> fetchExistingClients(ObservedClientSamples samples) {
-//        var result = new HashMap<String, Client>();
-//        var existingClients = this.clientsRepository.getAll(samples.getClientIds());
-//        if (existingClients != null && 0 < existingClients.size()) {
-//            result.putAll(existingClients);
-//        }
-//        return result;
-//    }
-
     private Map<ServiceRoomId, Call> fetchCalls(ObservedClientSamples observedClientSamples) {
         var serviceRoomIds = observedClientSamples.getServiceRoomIds();
         var existingCalls = this.callsRepository.getAll(serviceRoomIds);

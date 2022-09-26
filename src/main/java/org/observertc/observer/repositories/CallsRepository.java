@@ -1,6 +1,5 @@
 package org.observertc.observer.repositories;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.balazskreith.hamok.ModifiedStorageEntry;
 import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.ReplicatedStorage;
@@ -32,13 +31,11 @@ public class CallsRepository implements RepositoryStorageMetrics {
     private static final String STORAGE_ID = "observertc-calls";
 
     private ReplicatedStorage<ServiceRoomId, Models.Call> storage;
+    private Map<ServiceRoomId, Models.Call> updated;
     private CachedFetches<ServiceRoomId, Call> fetched;
 
     @Inject
     private HamokService service;
-
-    @Inject
-    private CallClientIdsRepository callClientIds;
 
     @Inject
     private ClientsRepository clientsRepositoryRepo;
@@ -51,6 +48,30 @@ public class CallsRepository implements RepositoryStorageMetrics {
         var baseStorage = new MemoryStorageBuilder<ServiceRoomId, Models.Call>()
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
+                .setMergeOp((oldValue, newValue) -> {
+                    var clientLogs_1 = oldValue.getClientLogsList();
+                    var clientLogs_2 = newValue.getClientLogsList();
+                    var clientLogs = new HashMap<String, Models.Call.ClientLog>();
+                    for (var clientLog : clientLogs_1) {
+                        clientLogs.put(clientLog.getClientId(), clientLog);
+                    }
+                    for (var clientLog_2 : clientLogs_2) {
+                        var clientLog_1 = clientLogs.get(clientLog_2.getClientId());
+                        if (clientLog_1 == null) {
+                            clientLogs.put(clientLog_2.getClientId(), clientLog_2);
+                            continue;
+                        }
+                        if (clientLog_2.getTimestamp() <= clientLog_1.getTimestamp()) {
+                            continue;
+                        }
+                        clientLogs.put(clientLog_2.getClientId(), clientLog_2);
+                    }
+                    var builder = Models.Call.newBuilder(newValue)
+                            .clearClientLogs()
+                            .addAllClientLogs(clientLogs.values())
+                            ;
+                    return builder.build();
+                })
                 .build();
         this.storage = this.service.getStorageGrid().replicatedStorage(baseStorage)
                 .setKeyCodec(ServiceRoomId::toBytes, ServiceRoomId::fromBytes)
@@ -65,12 +86,11 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .build();
 
 
-        var mapper = new ObjectMapper();
-
         this.fetched = CachedFetches.<ServiceRoomId, Call>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
                 .build();
+        this.updated = new HashMap<>();
     }
 
     Observable<List<ModifiedStorageEntry<ServiceRoomId, Models.Call>>> observableDeletedEntries() {
@@ -124,7 +144,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
         }
         return notInsertedModels.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
-                entry -> this.wrapCall(entry.getValue(), Collections.emptySet())
+                entry -> this.wrapCall(entry.getValue())
         ));
     }
 
@@ -134,6 +154,9 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
         var result = this.storage.deleteAll(serviceRoomIds);
+        synchronized (this) {
+            serviceRoomIds.forEach(this.updated::remove);
+        }
         this.clientsRepositoryRepo.deleteAll(clientIds);
         this.clientsRepositoryRepo.save();
         this.fetched.clear();
@@ -159,20 +182,29 @@ public class CallsRepository implements RepositoryStorageMetrics {
     }
 
     public void save() {
-        this.callClientIds.save();
+        synchronized (this) {
+            if (0 < this.updated.size()) {
+                this.storage.setAll(this.updated);
+            }
+            this.updated.clear();
+        }
+        this.clientsRepositoryRepo.save();
         this.fetched.clear();
     }
 
-    private Call wrapCall(Models.Call model, Set<String> prefetchedClientIds) {
+    private Call wrapCall(Models.Call model) {
         var result = new Call(
                 model,
                 this,
-                this.clientsRepositoryRepo,
-                this.callClientIds,
-                prefetchedClientIds
+                this.clientsRepositoryRepo
         );
         this.fetched.add(result.getServiceRoomId(), result);
         return result;
+    }
+
+    synchronized void update(Models.Call call) {
+        var serviceRoomId = ServiceRoomId.make(call.getServiceId(), call.getRoomId());
+        this.updated.put(serviceRoomId, call);
     }
 
     private Call fetchOne(ServiceRoomId serviceRoomId) {
@@ -180,8 +212,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
         if (model == null) {
             return null;
         }
-        Set<String> fetchedClientIds = Utils.firstNotNull(this.callClientIds.get(model.getCallId()), Collections.emptySet());
-        return this.wrapCall(model, fetchedClientIds);
+        return this.wrapCall(model);
     }
 
     private Map<ServiceRoomId, Call> fetchAll(Set<ServiceRoomId> serviceRoomIds) {
@@ -190,14 +221,11 @@ public class CallsRepository implements RepositoryStorageMetrics {
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();
         }
-        var callIds = models.values().stream().map(model -> model.getCallId()).collect(Collectors.toSet());
-        var fetchedClientIds = this.callClientIds.getAll(callIds);
         return models.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 entry -> {
                     var model = entry.getValue();
-                    var clientIds = fetchedClientIds.getOrDefault(model.getCallId(), Collections.emptySet());
-                    return this.wrapCall(model, clientIds);
+                    return this.wrapCall(model);
                 }
         ));
     }

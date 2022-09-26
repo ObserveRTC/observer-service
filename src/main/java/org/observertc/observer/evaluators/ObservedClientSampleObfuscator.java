@@ -49,11 +49,19 @@ public class ObservedClientSampleObfuscator implements Function<List<ObservedCli
             clientSample.userId = this.userIdObfuscator.apply(clientSample.userId);
             clientSample.roomId = this.roomIdObfuscator.apply(clientSample.roomId);
             ClientSampleVisitor
-                    .streamPeerConnectionTransports(clientSample)
-                    .forEach(pcTransport -> {
+                    .streamIceLocalCandidates(clientSample)
+                    .forEach(localCandidate -> {
                         try {
-                            pcTransport.localAddress = this.iceAddressObfuscator.apply(pcTransport.localAddress);
-                            pcTransport.remoteAddress = this.iceAddressObfuscator.apply(pcTransport.remoteAddress);
+                            localCandidate.address = this.iceAddressObfuscator.apply(localCandidate.address);
+                        } catch (Throwable t) {
+                            logger.error("Error occurred by obfuscating ice addresses", t);
+                        }
+                    });
+            ClientSampleVisitor
+                    .streamIceRemoteCandidates(clientSample)
+                    .forEach(remoteCandidate -> {
+                        try {
+                            remoteCandidate.address = this.iceAddressObfuscator.apply(remoteCandidate.address);
                         } catch (Throwable t) {
                             logger.error("Error occurred by obfuscating ice addresses", t);
                         }

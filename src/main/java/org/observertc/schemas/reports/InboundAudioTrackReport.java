@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InboundAudioTrackReport {
-	public static final String VERSION="2.0.4";
+	public static final String VERSION="2.1.8";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -123,75 +123,20 @@ public class InboundAudioTrackReport {
 	@JsonProperty("jitter")
 	public Double jitter;
 	/**
-	* The total number of packets missed the playout point and therefore discarded by the jitterbuffer
-	*/
-	@JsonProperty("packetsDiscarded")
-	public Integer packetsDiscarded;
-	/**
-	* The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source
-	*/
-	@JsonProperty("packetsRepaired")
-	public Integer packetsRepaired;
-	/**
-	* The total number of packets lost in burst (RFC6958)
-	*/
-	@JsonProperty("burstPacketsLost")
-	public Integer burstPacketsLost;
-	/**
-	* The total number of packets discarded in burst (RFC6958)
-	*/
-	@JsonProperty("burstPacketsDiscarded")
-	public Integer burstPacketsDiscarded;
-	/**
-	* The total number of burst happened causes burstPacketsLost on the corresponding synchronization source
-	*/
-	@JsonProperty("burstLossCount")
-	public Integer burstLossCount;
-	/**
-	* The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source
-	*/
-	@JsonProperty("burstDiscardCount")
-	public Integer burstDiscardCount;
-	/**
-	* The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("burstLossRate")
-	public Double burstLossRate;
-	/**
-	* The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("burstDiscardRate")
-	public Double burstDiscardRate;
-	/**
-	* The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("gapLossRate")
-	public Double gapLossRate;
-	/**
-	* The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("gapDiscardRate")
-	public Double gapDiscardRate;
-	/**
-	* Indicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header
-	*/
-	@JsonProperty("voiceActivityFlag")
-	public Boolean voiceActivityFlag;
-	/**
 	* Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 	*/
 	@JsonProperty("lastPacketReceivedTimestamp")
 	public Long lastPacketReceivedTimestamp;
 	/**
-	* The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
-	*/
-	@JsonProperty("averageRtcpInterval")
-	public Double averageRtcpInterval;
-	/**
 	* Total number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)
 	*/
 	@JsonProperty("headerBytesReceived")
 	public Long headerBytesReceived;
+	/**
+	* The total number of packets missed the playout point and therefore discarded by the jitterbuffer
+	*/
+	@JsonProperty("packetsDiscarded")
+	public Integer packetsDiscarded;
 	/**
 	* Total number of FEC packets received over the corresponding synchronization source (ssrc)
 	*/
@@ -207,21 +152,6 @@ public class InboundAudioTrackReport {
 	*/
 	@JsonProperty("bytesReceived")
 	public Long bytesReceived;
-	/**
-	* Total number of packets received and failed to decrypt over the corresponding synchronization source (ssrc) due to 1) late arrive; 2) the target RTP packet has already been repaired.
-	*/
-	@JsonProperty("packetsFailedDecryption")
-	public Integer packetsFailedDecryption;
-	/**
-	* Total number of packets identified as duplicated over the corresponding synchronization source (ssrc).
-	*/
-	@JsonProperty("packetsDuplicated")
-	public Integer packetsDuplicated;
-	/**
-	* The total number of DSCP flagged RTP packets received over the corresponding synchronization source (ssrc)
-	*/
-	@JsonProperty("perDscpPacketsReceived")
-	public Integer perDscpPacketsReceived;
 	/**
 	* Count the total number of Negative ACKnowledgement (NACK) packets sent and belongs to the corresponded synchronization source (ssrc)
 	*/
@@ -243,10 +173,65 @@ public class InboundAudioTrackReport {
 	@JsonProperty("jitterBufferDelay")
 	public Double jitterBufferDelay;
 	/**
+	* This value is increased by the target jitter buffer delay every time a sample is emitted by the jitter buffer. The added target is the target delay, in seconds, at the time that the sample was emitted from the jitter buffer. 
+	*/
+	@JsonProperty("jitterBufferTargetDelay")
+	public Double jitterBufferTargetDelay;
+	/**
 	* The total number of audio samples or video frames that have come out of the jitter buffer on the corresponded synchronization source (ssrc)
 	*/
 	@JsonProperty("jitterBufferEmittedCount")
 	public Integer jitterBufferEmittedCount;
+	/**
+	* This metric is purely based on the network characteristics such as jitter and packet loss, and can be seen as the minimum obtainable jitter buffer delay if no external factors would affect it
+	*/
+	@JsonProperty("jitterBufferMinimumDelay")
+	public Double jitterBufferMinimumDelay;
+	/**
+	* The total number of audio samples received on the corresponded RTP stream
+	*/
+	@JsonProperty("totalSamplesReceived")
+	public Integer totalSamplesReceived;
+	/**
+	* The total number of samples decoded by the media decoder from the corresponded RTP stream
+	*/
+	@JsonProperty("concealedSamples")
+	public Integer concealedSamples;
+	/**
+	* The total number of samples concealed from the corresponded RTP stream
+	*/
+	@JsonProperty("silentConcealedSamples")
+	public Integer silentConcealedSamples;
+	/**
+	* The total number of concealed event emitted to the media codec by the corresponded jitterbuffer
+	*/
+	@JsonProperty("concealmentEvents")
+	public Integer concealmentEvents;
+	/**
+	* The total number of samples inserted to decelarete the audio playout (happens when the jitterbuffer detects a shrinking buffer and need to increase the jitter buffer delay)
+	*/
+	@JsonProperty("insertedSamplesForDeceleration")
+	public Integer insertedSamplesForDeceleration;
+	/**
+	* The total number of samples inserted to accelerate the audio playout (happens when the jitterbuffer detects a growing buffer and need to shrink the jitter buffer delay)
+	*/
+	@JsonProperty("removedSamplesForAcceleration")
+	public Integer removedSamplesForAcceleration;
+	/**
+	* The current audio level
+	*/
+	@JsonProperty("audioLevel")
+	public Integer audioLevel;
+	/**
+	* Represents the energy level reported by the media source
+	*/
+	@JsonProperty("totalAudioEnergy")
+	public Integer totalAudioEnergy;
+	/**
+	* Represents the total duration of the audio samples the media source actually transconverted in seconds
+	*/
+	@JsonProperty("totalSamplesDuration")
+	public Integer totalSamplesDuration;
 	/**
 	* Indicate the name of the decoder implementation library
 	*/
@@ -273,35 +258,40 @@ public class InboundAudioTrackReport {
 	@JsonProperty("reportsSent")
 	public Integer reportsSent;
 	/**
-	* Flag represents if the receiver ended the media stream track or not.
+	* Estimated round trip time for the SR reports based on DLRR reports on the corresponded RTP stream
 	*/
-	@JsonProperty("ended")
-	public Boolean ended;
+	@JsonProperty("roundTripTime")
+	public Double roundTripTime;
 	/**
-	* The type of the payload the RTP packet SSRC belongs to
+	*  Represents the cumulative sum of all round trip time measurements performed on the corresponded RTP stream
 	*/
-	@JsonProperty("payloadType")
-	public Integer payloadType;
+	@JsonProperty("totalRoundTripTime")
+	public Double totalRoundTripTime;
 	/**
-	* the MIME type of the codec (e.g.: video/vp8)
+	* Represents the total number of SR reports received with DLRR reports to be able to calculate the round trip time on the corresponded RTP stream
 	*/
-	@JsonProperty("mimeType")
-	public String mimeType;
+	@JsonProperty("roundTripTimeMeasurements")
+	public Integer roundTripTimeMeasurements;
 	/**
-	* The negotiated clock rate the RTP timestamp is generated of
+	* This metric can be used together with totalSamplesDuration to calculate the percentage of played out media being synthesized
 	*/
-	@JsonProperty("clockRate")
-	public Integer clockRate;
+	@JsonProperty("synthesizedSamplesDuration")
+	public Integer synthesizedSamplesDuration;
 	/**
-	* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
+	* The number of synthesized samples events.
 	*/
-	@JsonProperty("channels")
-	public Integer channels;
+	@JsonProperty("synthesizedSamplesEvents")
+	public Integer synthesizedSamplesEvents;
 	/**
-	* The a=fmtp line in the SDP corresponding to the codec
+	*  The playout delay includes the delay from being emitted to the actual time of playout on the device
 	*/
-	@JsonProperty("sdpFmtpLine")
-	public String sdpFmtpLine;
+	@JsonProperty("totalPlayoutDelay")
+	public Double totalPlayoutDelay;
+	/**
+	* When audio samples are pulled by the playout device, this counter is incremented with the number of samples emitted for playout
+	*/
+	@JsonProperty("totalSamplesCount")
+	public Integer totalSamplesCount;
 
 
 	public static class Builder {
@@ -396,60 +386,16 @@ public class InboundAudioTrackReport {
 			this.result.jitter = value;
 			return this;
 		}
-		public Builder setPacketsDiscarded(Integer value) {
-			this.result.packetsDiscarded = value;
-			return this;
-		}
-		public Builder setPacketsRepaired(Integer value) {
-			this.result.packetsRepaired = value;
-			return this;
-		}
-		public Builder setBurstPacketsLost(Integer value) {
-			this.result.burstPacketsLost = value;
-			return this;
-		}
-		public Builder setBurstPacketsDiscarded(Integer value) {
-			this.result.burstPacketsDiscarded = value;
-			return this;
-		}
-		public Builder setBurstLossCount(Integer value) {
-			this.result.burstLossCount = value;
-			return this;
-		}
-		public Builder setBurstDiscardCount(Integer value) {
-			this.result.burstDiscardCount = value;
-			return this;
-		}
-		public Builder setBurstLossRate(Double value) {
-			this.result.burstLossRate = value;
-			return this;
-		}
-		public Builder setBurstDiscardRate(Double value) {
-			this.result.burstDiscardRate = value;
-			return this;
-		}
-		public Builder setGapLossRate(Double value) {
-			this.result.gapLossRate = value;
-			return this;
-		}
-		public Builder setGapDiscardRate(Double value) {
-			this.result.gapDiscardRate = value;
-			return this;
-		}
-		public Builder setVoiceActivityFlag(Boolean value) {
-			this.result.voiceActivityFlag = value;
-			return this;
-		}
 		public Builder setLastPacketReceivedTimestamp(Long value) {
 			this.result.lastPacketReceivedTimestamp = value;
 			return this;
 		}
-		public Builder setAverageRtcpInterval(Double value) {
-			this.result.averageRtcpInterval = value;
-			return this;
-		}
 		public Builder setHeaderBytesReceived(Long value) {
 			this.result.headerBytesReceived = value;
+			return this;
+		}
+		public Builder setPacketsDiscarded(Integer value) {
+			this.result.packetsDiscarded = value;
 			return this;
 		}
 		public Builder setFecPacketsReceived(Integer value) {
@@ -462,18 +408,6 @@ public class InboundAudioTrackReport {
 		}
 		public Builder setBytesReceived(Long value) {
 			this.result.bytesReceived = value;
-			return this;
-		}
-		public Builder setPacketsFailedDecryption(Integer value) {
-			this.result.packetsFailedDecryption = value;
-			return this;
-		}
-		public Builder setPacketsDuplicated(Integer value) {
-			this.result.packetsDuplicated = value;
-			return this;
-		}
-		public Builder setPerDscpPacketsReceived(Integer value) {
-			this.result.perDscpPacketsReceived = value;
 			return this;
 		}
 		public Builder setNackCount(Integer value) {
@@ -492,8 +426,52 @@ public class InboundAudioTrackReport {
 			this.result.jitterBufferDelay = value;
 			return this;
 		}
+		public Builder setJitterBufferTargetDelay(Double value) {
+			this.result.jitterBufferTargetDelay = value;
+			return this;
+		}
 		public Builder setJitterBufferEmittedCount(Integer value) {
 			this.result.jitterBufferEmittedCount = value;
+			return this;
+		}
+		public Builder setJitterBufferMinimumDelay(Double value) {
+			this.result.jitterBufferMinimumDelay = value;
+			return this;
+		}
+		public Builder setTotalSamplesReceived(Integer value) {
+			this.result.totalSamplesReceived = value;
+			return this;
+		}
+		public Builder setConcealedSamples(Integer value) {
+			this.result.concealedSamples = value;
+			return this;
+		}
+		public Builder setSilentConcealedSamples(Integer value) {
+			this.result.silentConcealedSamples = value;
+			return this;
+		}
+		public Builder setConcealmentEvents(Integer value) {
+			this.result.concealmentEvents = value;
+			return this;
+		}
+		public Builder setInsertedSamplesForDeceleration(Integer value) {
+			this.result.insertedSamplesForDeceleration = value;
+			return this;
+		}
+		public Builder setRemovedSamplesForAcceleration(Integer value) {
+			this.result.removedSamplesForAcceleration = value;
+			return this;
+		}
+		public Builder setAudioLevel(Integer value) {
+			this.result.audioLevel = value;
+			return this;
+		}
+		public Builder setTotalAudioEnergy(Integer value) {
+			this.result.totalAudioEnergy = value;
+			return this;
+		}
+		public Builder setTotalSamplesDuration(Integer value) {
+			this.result.totalSamplesDuration = value;
 			return this;
 		}
 		public Builder setDecoderImplementation(String value) {
@@ -516,28 +494,32 @@ public class InboundAudioTrackReport {
 			this.result.reportsSent = value;
 			return this;
 		}
-		public Builder setEnded(Boolean value) {
-			this.result.ended = value;
+		public Builder setRoundTripTime(Double value) {
+			this.result.roundTripTime = value;
 			return this;
 		}
-		public Builder setPayloadType(Integer value) {
-			this.result.payloadType = value;
+		public Builder setTotalRoundTripTime(Double value) {
+			this.result.totalRoundTripTime = value;
 			return this;
 		}
-		public Builder setMimeType(String value) {
-			this.result.mimeType = value;
+		public Builder setRoundTripTimeMeasurements(Integer value) {
+			this.result.roundTripTimeMeasurements = value;
 			return this;
 		}
-		public Builder setClockRate(Integer value) {
-			this.result.clockRate = value;
+		public Builder setSynthesizedSamplesDuration(Integer value) {
+			this.result.synthesizedSamplesDuration = value;
 			return this;
 		}
-		public Builder setChannels(Integer value) {
-			this.result.channels = value;
+		public Builder setSynthesizedSamplesEvents(Integer value) {
+			this.result.synthesizedSamplesEvents = value;
 			return this;
 		}
-		public Builder setSdpFmtpLine(String value) {
-			this.result.sdpFmtpLine = value;
+		public Builder setTotalPlayoutDelay(Double value) {
+			this.result.totalPlayoutDelay = value;
+			return this;
+		}
+		public Builder setTotalSamplesCount(Integer value) {
+			this.result.totalSamplesCount = value;
 			return this;
 		}
 		public InboundAudioTrackReport build() {

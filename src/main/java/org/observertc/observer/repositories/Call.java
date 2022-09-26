@@ -3,62 +3,76 @@ package org.observertc.observer.repositories;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 
+import java.time.Instant;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Call {
+    static final String CLIENT_JOINED_EVENT_NAME = "joined";
+    static final String CLIENT_DETACHED_EVENT_NAME = "detached";
 
     private final ServiceRoomId serviceRoomId;
-    private final Models.Call model;
+    private final AtomicReference<Models.Call> modelHolder;
     private final CallsRepository callsRepositoryRepo;
-    private final CallClientIdsRepository callClientIdsRepository;
     private final ClientsRepository clientsRepo;
-    private final AtomicReference<Set<String>> clientIdsHolder;
 
-    Call(Models.Call model, CallsRepository callsRepositoryRepo, ClientsRepository clientsRepo, CallClientIdsRepository callClientIdsRepository, Set<String> clientIds) {
-        this.model = model;
+    Call(Models.Call model, CallsRepository callsRepositoryRepo, ClientsRepository clientsRepo) {
+        this.modelHolder = new AtomicReference<>(model);
         this.callsRepositoryRepo = callsRepositoryRepo;
         this.clientsRepo = clientsRepo;
-        this.clientIdsHolder = new AtomicReference<>(clientIds);
-        this.callClientIdsRepository = callClientIdsRepository;
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
     public String getServiceId() {
-        return this.model.getServiceId();
+        return this.modelHolder.get().getServiceId();
     }
 
     public String getRoomId() {
-        return this.model.getRoomId();
+        return this.modelHolder.get().getRoomId();
     }
 
     public String getCallId() {
-        return this.model.getCallId();
+        return this.modelHolder.get().getCallId();
     }
 
     public Long getStarted() {
-        return this.model.getStarted();
+        return this.modelHolder.get().getStarted();
     }
 
     public String getMarker() {
-        return this.model.getMarker();
+        return this.modelHolder.get().getMarker();
     }
 
     public boolean hasClient(String clientId) {
-        var clientIds = this.clientIdsHolder.get();
-        return clientIds.contains(clientId);
+        var clientLogs = this.modelHolder.get().getClientLogsList();
+        if (clientLogs.size() < 1) {
+            return false;
+        }
+        var hasClient = clientLogs.stream()
+                .filter(clientLog -> {
+                    return clientLog.getClientId().equals(clientId) && clientLog.getEvent().equals(CLIENT_JOINED_EVENT_NAME);
+                })
+                .findFirst();
+        return hasClient.isPresent();
     }
 
     public Set<String> getClientIds() {
-        return this.clientIdsHolder.get();
+        var clientLogs = this.modelHolder.get().getClientLogsList();
+        if (clientLogs.size() < 1) {
+            return Collections.emptySet();
+        }
+        return clientLogs.stream()
+                .filter(clientLog -> clientLog.getEvent().equals(CLIENT_JOINED_EVENT_NAME))
+                .map(clientLog -> clientLog.getClientId())
+                .collect(Collectors.toSet());
     }
 
     public Map<String, Client> getClients() {
-        var clientIds = this.clientIdsHolder.get();
+        var clientIds = this.getClientIds();
         if (clientIds.size() < 1) {
             return Collections.emptyMap();
         }
@@ -66,7 +80,7 @@ public class Call {
     }
 
     public Client getClient(String clientId) {
-        var clientIds = this.clientIdsHolder.get();
+        var clientIds = this.getClientIds();
         if (clientIds.size() < 1) {
             return null;
         }
@@ -77,12 +91,12 @@ public class Call {
     }
 
     public Client addClient(String clientId, String userId, String mediaUnitId, String timeZoneId, Long timestamp, String marker) throws AlreadyCreatedException {
-        var clientIds = this.clientIdsHolder.get();
+        var clientIds = this.getClientIds();
         if (clientIds.contains(clientId)) {
             throw AlreadyCreatedException.wrapClientId(clientId);
         }
-        var newClientIds = Stream.concat(clientIds.stream(), Stream.of(clientId))
-                .collect(Collectors.toSet());
+        var model = this.modelHolder.get();
+        this.updateClientLog(clientId, CLIENT_JOINED_EVENT_NAME);
 
         var clientModelBuilder = Models.Client.newBuilder()
                 .setServiceId(model.getServiceId())
@@ -106,21 +120,16 @@ public class Call {
             clientModelBuilder.setMarker(marker);
         }
         var clientModel = clientModelBuilder.build();
-        this.clientIdsHolder.set(newClientIds);
-        this.callClientIdsRepository.add(this.model.getCallId(), clientId);
         this.clientsRepo.update(clientModel);
         return this.clientsRepo.wrapClient(clientModel);
     }
 
     public boolean removeClient(String clientId) {
-        var clientIds = this.clientIdsHolder.get();
+        var clientIds = this.getClientIds();
         if (!clientIds.contains(clientId)) {
             return false;
         }
-        var newClientIds = clientIds.stream().filter(savedClientId -> savedClientId != clientId)
-                .collect(Collectors.toSet());
-        this.clientIdsHolder.set(newClientIds);
-        this.callClientIdsRepository.delete(this.model.getCallId(), clientId);
+        this.updateClientLog(clientId, CLIENT_DETACHED_EVENT_NAME);
         this.clientsRepo.delete(clientId);
         return true;
     }
@@ -130,12 +139,39 @@ public class Call {
     }
 
     public Models.Call getModel() {
-        return this.model;
+        return this.modelHolder.get();
+    }
+
+    private void updateModel(Models.Call newModel) {
+        this.modelHolder.set(newModel);
+        this.callsRepositoryRepo.update(newModel);
+    }
+
+    private void updateClientLog(String clientId, String event) {
+        var clientLogMap = new HashMap<String, Models.Call.ClientLog>();
+        var model = this.modelHolder.get();
+        if (0 < model.getClientLogsCount()) {
+            var clientLogs = model.getClientLogsList();
+            for (var clientLog : clientLogs) {
+                clientLogMap.put(clientLog.getClientId(), clientLog);
+            }
+        }
+
+        clientLogMap.put(clientId, Models.Call.ClientLog.newBuilder()
+                .setClientId(clientId)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .setEvent(event)
+                .build());
+        var newCallModel = Models.Call.newBuilder(model)
+                .clearClientLogs()
+                .addAllClientLogs(clientLogMap.values())
+                .build();
+        this.updateModel(newCallModel);
     }
 
     @Override
     public String toString() {
-        return this.model.toString();
+        return this.modelHolder.get().toString();
     }
 
 }

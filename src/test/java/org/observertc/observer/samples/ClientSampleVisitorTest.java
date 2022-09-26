@@ -163,6 +163,16 @@ class ClientSampleVisitorTest {
     }
 
     @Test
+    void streamIceCandidatePair() {
+        var clientSample = generator.generateObservedClientSample().getClientSample();
+        var invoked = new AtomicBoolean(false);
+        ClientSampleVisitor.streamIceCandidatePairs(clientSample)
+                .forEach(this.createConsumer(invoked));
+
+        Assertions.assertTrue(invoked.get());
+    }
+
+    @Test
     void streamUserMediaErrors() {
         var clientSample = generator.generateObservedClientSample().getClientSample();
         var invoked = new AtomicBoolean(false);

@@ -8,8 +8,6 @@ import org.observertc.observer.mappings.Mapper;
 import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.protobuf.ProtobufSamplesMapper;
 import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.v200.samples.Fromv200ToLatestConverter;
-import org.observertc.schemas.v200beta59.samples.Fromv200beta59ToLatestConverter;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -84,22 +82,6 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
                             return samples;
                         };
                     },
-                    () -> { // <= 2.0.0
-                        var samplerMapper = new org.observertc.schemas.v200.protobuf.ProtobufSamplesMapper();
-                        return message -> {
-                            var protobufSamples = org.observertc.schemas.v200.protobuf.ProtobufSamples.Samples.parseFrom(message);
-                            var samples = samplerMapper.apply(protobufSamples);
-                            return samples;
-                        };
-                    },
-                    () -> { // <= 2.0.0-beta59
-                        var samplerMapper = new org.observertc.schemas.v200beta59.protobuf.ProtobufSamplesMapper();
-                        return message -> {
-                            var protobufSamples = org.observertc.schemas.v200beta59.protobuf.ProtobufSamples.Samples.parseFrom(message);
-                            var samples = samplerMapper.apply(protobufSamples);
-                            return samples;
-                        };
-                    },
                     () -> { // not recognized
                         throw new RuntimeException("Not recognized version" + this.version);
                     }
@@ -116,32 +98,6 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
                             if (samples == null) {
                                 throw new RuntimeException("Failed to decode Samples");
                             }
-                            return samples;
-                        };
-                    },
-                    () -> { // <= 2.0.0
-                        var samplesV200beta64Mapper = JsonMapper.<org.observertc.schemas.v200.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v200.samples.Samples.class);
-                        Mapper<org.observertc.schemas.v200.samples.Samples, Samples> samplesVersionAligner;
-                        var from200ToLatestConverter = new Fromv200ToLatestConverter();
-                        return message -> {
-                            var samplesV200 = samplesV200beta64Mapper.map(message);
-                            if (samplesV200 == null) {
-                                throw new RuntimeException("Failed to decode Samples");
-                            }
-                            var samples = from200ToLatestConverter.apply(samplesV200);
-                            return samples;
-                        };
-                    },
-                    () -> { // <= 2.0.0-beta-59
-                        var samplesV200beta59Mapper = JsonMapper.<org.observertc.schemas.v200beta59.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v200beta59.samples.Samples.class);
-                        Mapper<org.observertc.schemas.v200beta59.samples.Samples, Samples> samplesVersionAligner;
-                        var from200beta59ToLatestConverter = new Fromv200beta59ToLatestConverter();
-                        return message -> {
-                            var samplesV200beta59 = samplesV200beta59Mapper.map(message);
-                            if (samplesV200beta59 == null) {
-                                throw new RuntimeException("Failed to decode Samples");
-                            }
-                            var samples = from200beta59ToLatestConverter.apply(samplesV200beta59);
                             return samples;
                         };
                     },

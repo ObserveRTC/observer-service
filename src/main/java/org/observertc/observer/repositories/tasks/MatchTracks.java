@@ -114,7 +114,7 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                     var outboundTrackId = entry.getKey();
                     var outboundTrack = entry.getValue();
                     var outboundTrackSfuStreamId = outboundTrack.getSfuStreamId();
-                    if (outboundTrackSfuStreamId == null || outboundTrackSfuStreamId.isBlank()) {
+                    if (outboundTrackSfuStreamId == null || !outboundTrackSfuStreamId.isBlank()) {
                         // these outbound tracks were not matched by sfu stream before
                         continue;
                     }

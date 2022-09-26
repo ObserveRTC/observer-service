@@ -55,6 +55,7 @@ class ClientSamplesAnalyserTest {
                 getArrayLength(clientSample.extensionStats) +
                 getArrayLength(clientSample.iceServers) +
                 getArrayLength(clientSample.pcTransports) +
+                getArrayLength(clientSample.iceCandidatePairs) +
                 getArrayLength(clientSample.mediaSources) +
                 getArrayLength(clientSample.codecs) +
                 getArrayLength(clientSample.certificates) +
@@ -145,6 +146,7 @@ class ClientSamplesAnalyserTest {
                 getArrayLength(clientSample.extensionStats) +
                 getArrayLength(clientSample.iceServers) +
                 getArrayLength(clientSample.pcTransports) +
+                getArrayLength(clientSample.iceCandidatePairs) +
                 getArrayLength(clientSample.mediaSources) +
                 getArrayLength(clientSample.codecs) +
                 getArrayLength(clientSample.certificates) +

@@ -20,6 +20,8 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
     private String remoteUserId = null;
     private String remotePeerConnectionId = null;
     private String remoteTrackId = null;
+    private String label = null;
+
     private ObservedClientSample observedClientSample = null;
     private Samples.ClientSample.InboundAudioTrack inboundAudioTrack = null;
     private List<InboundAudioTrackReport> buffer = new LinkedList<>();
@@ -66,6 +68,7 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
         this.remoteTrackId = null;
         this.observedClientSample = null;
         this.inboundAudioTrack = null;
+        this.peerConnectionLabel = null;
         return this;
     }
 
@@ -106,57 +109,55 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* Inbound RTP Audio specific fields */
+                    .setPeerConnectionId(inboundAudioTrack.peerConnectionId)
+                    .setTrackId(inboundAudioTrack.trackId)
                     .setSfuStreamId(inboundAudioTrack.sfuStreamId)
                     .setSfuSinkId(inboundAudioTrack.sfuSinkId)
+                    .setRemoteTrackId(this.remoteTrackId)
+                    .setRemoteUserId(this.remoteUserId)
+                    .setRemoteClientId(this.remoteClientId)
+                    .setRemotePeerConnectionId(this.remotePeerConnectionId)
+                    .setSampleSeq(clientSample.sampleSeq)
                     .setSsrc(inboundAudioTrack.ssrc)
                     .setPacketsReceived(inboundAudioTrack.packetsReceived)
-                    .setPacketsSent(inboundAudioTrack.packetsSent)
                     .setPacketsLost(inboundAudioTrack.packetsLost)
                     .setJitter(inboundAudioTrack.jitter)
-                    .setPacketsDiscarded(inboundAudioTrack.packetsDiscarded)
-                    .setPacketsRepaired(inboundAudioTrack.packetsRepaired)
-                    .setBurstPacketsLost(inboundAudioTrack.burstPacketsLost)
-                    .setBurstPacketsDiscarded(inboundAudioTrack.burstPacketsDiscarded)
-                    .setBurstLossCount(inboundAudioTrack.burstLossCount)
-                    .setBurstDiscardCount(inboundAudioTrack.burstDiscardCount)
-                    .setBurstLossRate(inboundAudioTrack.burstLossRate)
-                    .setBurstDiscardRate(inboundAudioTrack.burstDiscardRate)
-                    .setGapLossRate(inboundAudioTrack.gapLossRate)
-                    .setGapDiscardRate(inboundAudioTrack.gapLossRate)
-                    .setGapDiscardRate(inboundAudioTrack.gapDiscardRate)
-                    .setVoiceActivityFlag(inboundAudioTrack.voiceActivityFlag)
                     .setLastPacketReceivedTimestamp(inboundAudioTrack.lastPacketReceivedTimestamp)
-                    .setAverageRtcpInterval(inboundAudioTrack.averageRtcpInterval)
                     .setHeaderBytesReceived(inboundAudioTrack.headerBytesReceived)
+                    .setPacketsDiscarded(inboundAudioTrack.packetsDiscarded)
                     .setFecPacketsReceived(inboundAudioTrack.fecPacketsReceived)
                     .setFecPacketsDiscarded(inboundAudioTrack.fecPacketsDiscarded)
                     .setBytesReceived(inboundAudioTrack.bytesReceived)
-                    .setPacketsFailedDecryption(inboundAudioTrack.packetsFailedDecryption)
-                    .setPacketsDuplicated(inboundAudioTrack.packetsDuplicated)
-                    .setPerDscpPacketsReceived(inboundAudioTrack.perDscpPacketsReceived)
                     .setNackCount(inboundAudioTrack.nackCount)
                     .setTotalProcessingDelay(inboundAudioTrack.totalProcessingDelay)
                     .setEstimatedPlayoutTimestamp(inboundAudioTrack.estimatedPlayoutTimestamp)
                     .setJitterBufferDelay(inboundAudioTrack.jitterBufferDelay)
+                    .setJitterBufferTargetDelay(inboundAudioTrack.jitterBufferTargetDelay)
                     .setJitterBufferEmittedCount(inboundAudioTrack.jitterBufferEmittedCount)
+                    .setJitterBufferMinimumDelay(inboundAudioTrack.jitterBufferMinimumDelay)
+                    .setTotalSamplesReceived(inboundAudioTrack.totalSamplesReceived)
+                    .setConcealedSamples(inboundAudioTrack.concealedSamples)
+                    .setSilentConcealedSamples(inboundAudioTrack.silentConcealedSamples)
+                    .setConcealmentEvents(inboundAudioTrack.concealmentEvents)
+                    .setInsertedSamplesForDeceleration(inboundAudioTrack.insertedSamplesForDeceleration)
+                    .setRemovedSamplesForAcceleration(inboundAudioTrack.removedSamplesForAcceleration)
+                    .setAudioLevel(inboundAudioTrack.audioLevel)
+                    .setTotalAudioEnergy(inboundAudioTrack.totalAudioEnergy)
+                    .setTotalSamplesDuration(inboundAudioTrack.totalSamplesDuration)
                     .setDecoderImplementation(inboundAudioTrack.decoderImplementation)
-
 
                     /* Remote Outbound RTP Audio specific fields */
                     .setPacketsSent(inboundAudioTrack.packetsSent)
                     .setBytesSent(inboundAudioTrack.bytesSent)
                     .setRemoteTimestamp(inboundAudioTrack.remoteTimestamp)
                     .setReportsSent(inboundAudioTrack.reportsSent)
-
-                    /* Receiver related stats */
-                    .setEnded(inboundAudioTrack.ended)
-
-                    /* Codec Specific fields  */
-                    .setPayloadType(inboundAudioTrack.payloadType)
-                    .setMimeType(inboundAudioTrack.mimeType)
-                    .setClockRate(inboundAudioTrack.clockRate)
-                    .setChannels(inboundAudioTrack.channels)
-                    .setSdpFmtpLine(inboundAudioTrack.sdpFmtpLine)
+                    .setRoundTripTime(inboundAudioTrack.roundTripTime)
+                    .setTotalRoundTripTime(inboundAudioTrack.totalRoundTripTime)
+                    .setRoundTripTimeMeasurements(inboundAudioTrack.roundTripTimeMeasurements)
+                    .setSynthesizedSamplesDuration(inboundAudioTrack.synthesizedSamplesDuration)
+                    .setSynthesizedSamplesEvents(inboundAudioTrack.synthesizedSamplesEvents)
+                    .setTotalPlayoutDelay(inboundAudioTrack.totalPlayoutDelay)
+                    .setTotalSamplesCount(inboundAudioTrack.totalSamplesCount)
 
                     .build();
             this.buffer.add(report);

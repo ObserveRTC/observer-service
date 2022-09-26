@@ -11,12 +11,12 @@ public class SfuExtensionReportToIterable implements Function<Report, Iterable<?
 		var result = new LinkedList();
 		var payload = (SfuExtensionReport) report.payload;
 		result.add(payload.serviceId);
-		result.add(payload.timestamp);
-		result.add(payload.extensionType);
-		result.add(payload.marker);
-		result.add(payload.mediaUnitId);
-		result.add(payload.payload);
-		result.add(payload.sfuId);
+		result.add(payload. timestamp);
+		result.add(payload. extensionType);
+		result.add(payload. marker);
+		result.add(payload. mediaUnitId);
+		result.add(payload. payload);
+		result.add(payload. sfuId);
 
 		return result;
 	}

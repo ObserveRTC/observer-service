@@ -5,13 +5,12 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.ModelsMapGenerator;
-import org.observertc.observer.utils.TestUtils;
-import org.observertc.schemas.dtos.Models;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @MicronautTest
@@ -24,10 +23,6 @@ class CallsRepositoryTest {
 
     @Inject
     ClientsRepository clientsRepository;
-
-    @Inject
-    CallClientIdsRepository callClientIdsRepository;
-
 
     private ModelsMapGenerator modelsMapGenerator = new ModelsMapGenerator().generateP2pCase();
 
@@ -173,13 +168,19 @@ class CallsRepositoryTest {
 
     @Test
     @Order(9)
-    @DisplayName("Client identifiers can be accessed through the callclients repository ")
+    @DisplayName("Clients are found in callModel clientLogs")
     void test_9() {
         var clientModels = modelsMapGenerator.getClientModels();
-        var callId = clientModels.values().stream().map(Models.Client::getCallId).collect(Collectors.toList()).get(0);
-        var callClientIds = this.callClientIdsRepository.get(callId);
-        boolean equalSets = TestUtils.equalSets(callClientIds, clientModels.keySet());
-        Assertions.assertTrue(equalSets);
+        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var call = this.callsRepository.get(serviceRoomId);
+        var clientLogs = call.getModel().getClientLogsList().stream().collect(Collectors.toMap(
+                clientLog -> clientLog.getClientId(),
+                Function.identity()
+        ));
+        for (var clientModel : clientModels.values()) {
+            var clientLog = clientLogs.get(clientModel.getClientId());
+            Assertions.assertEquals(clientLog.getEvent(), Call.CLIENT_JOINED_EVENT_NAME);
+        }
     }
 
     @Test
@@ -203,12 +204,19 @@ class CallsRepositoryTest {
 
     @Test
     @Order(11)
-    @DisplayName("Removed clients are not available though call clients repo")
+    @DisplayName("Removed clients are logged as detached in logs")
     void test_11() {
         var clientModels = modelsMapGenerator.getClientModels();
-        var callId = clientModels.values().stream().map(Models.Client::getCallId).collect(Collectors.toList()).get(0);
-        var callClientIds = this.callClientIdsRepository.get(callId);
-        Assertions.assertNull(callClientIds);
+        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var call = this.callsRepository.get(serviceRoomId);
+        var clientLogs = call.getModel().getClientLogsList().stream().collect(Collectors.toMap(
+                clientLog -> clientLog.getClientId(),
+                Function.identity()
+        ));
+        for (var clientModel : clientModels.values()) {
+            var clientLog = clientLogs.get(clientModel.getClientId());
+            Assertions.assertEquals(clientLog.getEvent(), Call.CLIENT_DETACHED_EVENT_NAME);
+        }
     }
 
     @Test

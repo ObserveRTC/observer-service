@@ -381,7 +381,8 @@ sinks:
         sendInboundVideoTracks: true
         sendOutboundAudioTracks: true
         sendOutboundVideoTracks: true
-        sendClientTransports: true
+        sendPeerConnectionTransports: true
+        sendIceCanddiatePairs: true
         sendClientDataChannels: true
         sendSfuEvents: true
         sendSfuMeta: true

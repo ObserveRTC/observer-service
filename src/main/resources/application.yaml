@@ -114,12 +114,12 @@ observer:
   hamok:
     storageGrid:
       raftMaxLogEntriesRetentionTimeInMinutes: 5
-      heartbeatInMs: 50
-      followerMaxIdleInMs: 300
-      peerMaxIdleInMs: 1000
+      heartbeatInMs: 150
+      followerMaxIdleInMs: 30000
+      peerMaxIdleInMs: 50000
       sendingHelloTimeoutInMs: 1500
       applicationCommitIndexSyncTimeoutInMs: 60_000
-      requestTimeoutInMs: 3000
+      requestTimeoutInMs: 90000
     memberNamesPool:
       - "Lisa"
       - "Bart"

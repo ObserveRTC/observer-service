@@ -30,6 +30,7 @@ class MatchTracksTest {
 
         var matches = this.matchTracksBeanProvider.get()
                 .whereOutboundTrackIds(outboundTrackModels.keySet())
+                .whereInboundTrackIds(inboundTrackModels.keySet())
                 .execute()
                 .getResult();
 
@@ -44,6 +45,7 @@ class MatchTracksTest {
 
         var matches = this.matchTracksBeanProvider.get()
                 .whereOutboundTrackIds(outboundTrackModels.keySet())
+                .whereInboundTrackIds(inboundTrackModels.keySet())
                 .execute()
                 .getResult();
 

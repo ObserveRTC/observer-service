@@ -101,7 +101,14 @@ public class ReportMetrics {
             }
 
             @Override
-            public Void visitClientTransportReport(Object payload) {
+            public Void visitPeerConnectionTransportReport(Object payload) {
+//        var reportPayload = ((ClientTransportReport) payload);
+                return null;
+
+            }
+
+            @Override
+            public Void visitIceCandidatePairReport(Object payload) {
 //        var reportPayload = ((ClientTransportReport) payload);
                 return null;
 

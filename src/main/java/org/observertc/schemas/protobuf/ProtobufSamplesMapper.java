@@ -142,28 +142,54 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 				if (0 < srcItem0.getLocalSDPsCount()) {
 					dstItem0.localSDPs = srcItem0.getLocalSDPsList().toArray(new String[0]);
 				}
+				if (0 < srcItem0.getDataChannelsCount()) {
+					dstItem0.dataChannels = new DataChannel[ srcItem0.getDataChannelsCount()];
+					var dataChannelsIndex = 0;
+					for (var srcItem1 : srcItem0.getDataChannelsList()) {
+						var dstItem1 = new DataChannel();
+						if (srcItem1.hasPeerConnectionId()) {
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
+						}
+						if (srcItem1.hasDataChannelIdentifier()) {
+							dstItem1.dataChannelIdentifier = srcItem1.getDataChannelIdentifier();
+						}
+						if (srcItem1.hasLabel()) {
+							dstItem1.label = srcItem1.getLabel();
+						}
+						if (srcItem1.hasProtocol()) {
+							dstItem1.protocol = srcItem1.getProtocol();
+						}
+						if (srcItem1.hasState()) {
+							dstItem1.state = srcItem1.getState();
+						}
+						if (srcItem1.hasMessageSent()) {
+							dstItem1.messageSent = srcItem1.getMessageSent();
+						}
+						if (srcItem1.hasBytesSent()) {
+							dstItem1.bytesSent = srcItem1.getBytesSent();
+						}
+						if (srcItem1.hasMessageReceived()) {
+							dstItem1.messageReceived = srcItem1.getMessageReceived();
+						}
+						if (srcItem1.hasBytesReceived()) {
+							dstItem1.bytesReceived = srcItem1.getBytesReceived();
+						}
+						dstItem0.dataChannels[dataChannelsIndex++] = dstItem1;
+					}
+				}
 				if (0 < srcItem0.getPcTransportsCount()) {
 					dstItem0.pcTransports = new PeerConnectionTransport[ srcItem0.getPcTransportsCount()];
 					var pcTransportsIndex = 0;
 					for (var srcItem1 : srcItem0.getPcTransportsList()) {
 						var dstItem1 = new PeerConnectionTransport();
+						if (srcItem1.hasTransportId()) {
+							dstItem1.transportId = srcItem1.getTransportId();
+						}
 						if (srcItem1.hasPeerConnectionId()) {
 							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
 						}
 						if (srcItem1.hasLabel()) {
 							dstItem1.label = srcItem1.getLabel();
-						}
-						if (srcItem1.hasDataChannelsOpened()) {
-							dstItem1.dataChannelsOpened = srcItem1.getDataChannelsOpened();
-						}
-						if (srcItem1.hasDataChannelsClosed()) {
-							dstItem1.dataChannelsClosed = srcItem1.getDataChannelsClosed();
-						}
-						if (srcItem1.hasDataChannelsRequested()) {
-							dstItem1.dataChannelsRequested = srcItem1.getDataChannelsRequested();
-						}
-						if (srcItem1.hasDataChannelsAccepted()) {
-							dstItem1.dataChannelsAccepted = srcItem1.getDataChannelsAccepted();
 						}
 						if (srcItem1.hasPacketsSent()) {
 							dstItem1.packetsSent = srcItem1.getPacketsSent();
@@ -186,14 +212,26 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasDtlsState()) {
 							dstItem1.dtlsState = srcItem1.getDtlsState();
 						}
+						if (srcItem1.hasSelectedCandidatePairId()) {
+							dstItem1.selectedCandidatePairId = srcItem1.getSelectedCandidatePairId();
+						}
 						if (srcItem1.hasIceState()) {
 							dstItem1.iceState = srcItem1.getIceState();
+						}
+						if (srcItem1.hasLocalCertificateId()) {
+							dstItem1.localCertificateId = srcItem1.getLocalCertificateId();
+						}
+						if (srcItem1.hasRemoteCertificateId()) {
+							dstItem1.remoteCertificateId = srcItem1.getRemoteCertificateId();
 						}
 						if (srcItem1.hasTlsVersion()) {
 							dstItem1.tlsVersion = srcItem1.getTlsVersion();
 						}
 						if (srcItem1.hasDtlsCipher()) {
 							dstItem1.dtlsCipher = srcItem1.getDtlsCipher();
+						}
+						if (srcItem1.hasDtlsRole()) {
+							dstItem1.dtlsRole = srcItem1.getDtlsRole();
 						}
 						if (srcItem1.hasSrtpCipher()) {
 							dstItem1.srtpCipher = srcItem1.getSrtpCipher();
@@ -204,142 +242,90 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasSelectedCandidatePairChanges()) {
 							dstItem1.selectedCandidatePairChanges = srcItem1.getSelectedCandidatePairChanges();
 						}
-						if (srcItem1.hasLocalAddress()) {
-							dstItem1.localAddress = srcItem1.getLocalAddress();
-						}
-						if (srcItem1.hasLocalPort()) {
-							dstItem1.localPort = srcItem1.getLocalPort();
-						}
-						if (srcItem1.hasLocalProtocol()) {
-							dstItem1.localProtocol = srcItem1.getLocalProtocol();
-						}
-						if (srcItem1.hasLocalCandidateType()) {
-							dstItem1.localCandidateType = srcItem1.getLocalCandidateType();
-						}
-						if (srcItem1.hasLocalCandidateICEServerUrl()) {
-							dstItem1.localCandidateICEServerUrl = srcItem1.getLocalCandidateICEServerUrl();
-						}
-						if (srcItem1.hasLocalCandidateRelayProtocol()) {
-							dstItem1.localCandidateRelayProtocol = srcItem1.getLocalCandidateRelayProtocol();
-						}
-						if (srcItem1.hasRemoteAddress()) {
-							dstItem1.remoteAddress = srcItem1.getRemoteAddress();
-						}
-						if (srcItem1.hasRemotePort()) {
-							dstItem1.remotePort = srcItem1.getRemotePort();
-						}
-						if (srcItem1.hasRemoteProtocol()) {
-							dstItem1.remoteProtocol = srcItem1.getRemoteProtocol();
-						}
-						if (srcItem1.hasRemoteCandidateType()) {
-							dstItem1.remoteCandidateType = srcItem1.getRemoteCandidateType();
-						}
-						if (srcItem1.hasRemoteCandidateICEServerUrl()) {
-							dstItem1.remoteCandidateICEServerUrl = srcItem1.getRemoteCandidateICEServerUrl();
-						}
-						if (srcItem1.hasRemoteCandidateRelayProtocol()) {
-							dstItem1.remoteCandidateRelayProtocol = srcItem1.getRemoteCandidateRelayProtocol();
-						}
-						if (srcItem1.hasCandidatePairState()) {
-							dstItem1.candidatePairState = srcItem1.getCandidatePairState();
-						}
-						if (srcItem1.hasCandidatePairPacketsSent()) {
-							dstItem1.candidatePairPacketsSent = srcItem1.getCandidatePairPacketsSent();
-						}
-						if (srcItem1.hasCandidatePairPacketsReceived()) {
-							dstItem1.candidatePairPacketsReceived = srcItem1.getCandidatePairPacketsReceived();
-						}
-						if (srcItem1.hasCandidatePairBytesSent()) {
-							dstItem1.candidatePairBytesSent = srcItem1.getCandidatePairBytesSent();
-						}
-						if (srcItem1.hasCandidatePairBytesReceived()) {
-							dstItem1.candidatePairBytesReceived = srcItem1.getCandidatePairBytesReceived();
-						}
-						if (srcItem1.hasCandidatePairLastPacketSentTimestamp()) {
-							dstItem1.candidatePairLastPacketSentTimestamp = srcItem1.getCandidatePairLastPacketSentTimestamp();
-						}
-						if (srcItem1.hasCandidatePairLastPacketReceivedTimestamp()) {
-							dstItem1.candidatePairLastPacketReceivedTimestamp = srcItem1.getCandidatePairLastPacketReceivedTimestamp();
-						}
-						if (srcItem1.hasCandidatePairFirstRequestTimestamp()) {
-							dstItem1.candidatePairFirstRequestTimestamp = srcItem1.getCandidatePairFirstRequestTimestamp();
-						}
-						if (srcItem1.hasCandidatePairLastRequestTimestamp()) {
-							dstItem1.candidatePairLastRequestTimestamp = srcItem1.getCandidatePairLastRequestTimestamp();
-						}
-						if (srcItem1.hasCandidatePairLastResponseTimestamp()) {
-							dstItem1.candidatePairLastResponseTimestamp = srcItem1.getCandidatePairLastResponseTimestamp();
-						}
-						if (srcItem1.hasCandidatePairTotalRoundTripTime()) {
-							dstItem1.candidatePairTotalRoundTripTime = srcItem1.getCandidatePairTotalRoundTripTime();
-						}
-						if (srcItem1.hasCandidatePairCurrentRoundTripTime()) {
-							dstItem1.candidatePairCurrentRoundTripTime = srcItem1.getCandidatePairCurrentRoundTripTime();
-						}
-						if (srcItem1.hasCandidatePairAvailableOutgoingBitrate()) {
-							dstItem1.candidatePairAvailableOutgoingBitrate = srcItem1.getCandidatePairAvailableOutgoingBitrate();
-						}
-						if (srcItem1.hasCandidatePairAvailableIncomingBitrate()) {
-							dstItem1.candidatePairAvailableIncomingBitrate = srcItem1.getCandidatePairAvailableIncomingBitrate();
-						}
-						if (srcItem1.hasCandidatePairCircuitBreakerTriggerCount()) {
-							dstItem1.candidatePairCircuitBreakerTriggerCount = srcItem1.getCandidatePairCircuitBreakerTriggerCount();
-						}
-						if (srcItem1.hasCandidatePairRequestsReceived()) {
-							dstItem1.candidatePairRequestsReceived = srcItem1.getCandidatePairRequestsReceived();
-						}
-						if (srcItem1.hasCandidatePairRequestsSent()) {
-							dstItem1.candidatePairRequestsSent = srcItem1.getCandidatePairRequestsSent();
-						}
-						if (srcItem1.hasCandidatePairResponsesReceived()) {
-							dstItem1.candidatePairResponsesReceived = srcItem1.getCandidatePairResponsesReceived();
-						}
-						if (srcItem1.hasCandidatePairResponsesSent()) {
-							dstItem1.candidatePairResponsesSent = srcItem1.getCandidatePairResponsesSent();
-						}
-						if (srcItem1.hasCandidatePairRetransmissionReceived()) {
-							dstItem1.candidatePairRetransmissionReceived = srcItem1.getCandidatePairRetransmissionReceived();
-						}
-						if (srcItem1.hasCandidatePairRetransmissionSent()) {
-							dstItem1.candidatePairRetransmissionSent = srcItem1.getCandidatePairRetransmissionSent();
-						}
-						if (srcItem1.hasCandidatePairConsentRequestsSent()) {
-							dstItem1.candidatePairConsentRequestsSent = srcItem1.getCandidatePairConsentRequestsSent();
-						}
-						if (srcItem1.hasCandidatePairConsentExpiredTimestamp()) {
-							dstItem1.candidatePairConsentExpiredTimestamp = srcItem1.getCandidatePairConsentExpiredTimestamp();
-						}
-						if (srcItem1.hasCandidatePairBytesDiscardedOnSend()) {
-							dstItem1.candidatePairBytesDiscardedOnSend = srcItem1.getCandidatePairBytesDiscardedOnSend();
-						}
-						if (srcItem1.hasCandidatePairPacketsDiscardedOnSend()) {
-							dstItem1.candidatePairPacketsDiscardedOnSend = srcItem1.getCandidatePairPacketsDiscardedOnSend();
-						}
-						if (srcItem1.hasCandidatePairRequestBytesSent()) {
-							dstItem1.candidatePairRequestBytesSent = srcItem1.getCandidatePairRequestBytesSent();
-						}
-						if (srcItem1.hasCandidatePairConsentRequestBytesSent()) {
-							dstItem1.candidatePairConsentRequestBytesSent = srcItem1.getCandidatePairConsentRequestBytesSent();
-						}
-						if (srcItem1.hasCandidatePairResponseBytesSent()) {
-							dstItem1.candidatePairResponseBytesSent = srcItem1.getCandidatePairResponseBytesSent();
-						}
-						if (srcItem1.hasSctpSmoothedRoundTripTime()) {
-							dstItem1.sctpSmoothedRoundTripTime = srcItem1.getSctpSmoothedRoundTripTime();
-						}
-						if (srcItem1.hasSctpCongestionWindow()) {
-							dstItem1.sctpCongestionWindow = srcItem1.getSctpCongestionWindow();
-						}
-						if (srcItem1.hasSctpReceiverWindow()) {
-							dstItem1.sctpReceiverWindow = srcItem1.getSctpReceiverWindow();
-						}
-						if (srcItem1.hasSctpMtu()) {
-							dstItem1.sctpMtu = srcItem1.getSctpMtu();
-						}
-						if (srcItem1.hasSctpUnackData()) {
-							dstItem1.sctpUnackData = srcItem1.getSctpUnackData();
-						}
 						dstItem0.pcTransports[pcTransportsIndex++] = dstItem1;
+					}
+				}
+				if (0 < srcItem0.getIceCandidatePairsCount()) {
+					dstItem0.iceCandidatePairs = new IceCandidatePair[ srcItem0.getIceCandidatePairsCount()];
+					var iceCandidatePairsIndex = 0;
+					for (var srcItem1 : srcItem0.getIceCandidatePairsList()) {
+						var dstItem1 = new IceCandidatePair();
+						if (srcItem1.hasCandidatePairId()) {
+							dstItem1.candidatePairId = srcItem1.getCandidatePairId();
+						}
+						if (srcItem1.hasPeerConnectionId()) {
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
+						}
+						if (srcItem1.hasLabel()) {
+							dstItem1.label = srcItem1.getLabel();
+						}
+						if (srcItem1.hasTransportId()) {
+							dstItem1.transportId = srcItem1.getTransportId();
+						}
+						if (srcItem1.hasLocalCandidateId()) {
+							dstItem1.localCandidateId = srcItem1.getLocalCandidateId();
+						}
+						if (srcItem1.hasRemoteCandidateId()) {
+							dstItem1.remoteCandidateId = srcItem1.getRemoteCandidateId();
+						}
+						if (srcItem1.hasState()) {
+							dstItem1.state = srcItem1.getState();
+						}
+						if (srcItem1.hasNominated()) {
+							dstItem1.nominated = srcItem1.getNominated();
+						}
+						if (srcItem1.hasPacketsSent()) {
+							dstItem1.packetsSent = srcItem1.getPacketsSent();
+						}
+						if (srcItem1.hasPacketsReceived()) {
+							dstItem1.packetsReceived = srcItem1.getPacketsReceived();
+						}
+						if (srcItem1.hasBytesSent()) {
+							dstItem1.bytesSent = srcItem1.getBytesSent();
+						}
+						if (srcItem1.hasBytesReceived()) {
+							dstItem1.bytesReceived = srcItem1.getBytesReceived();
+						}
+						if (srcItem1.hasLastPacketSentTimestamp()) {
+							dstItem1.lastPacketSentTimestamp = srcItem1.getLastPacketSentTimestamp();
+						}
+						if (srcItem1.hasLastPacketReceivedTimestamp()) {
+							dstItem1.lastPacketReceivedTimestamp = srcItem1.getLastPacketReceivedTimestamp();
+						}
+						if (srcItem1.hasTotalRoundTripTime()) {
+							dstItem1.totalRoundTripTime = srcItem1.getTotalRoundTripTime();
+						}
+						if (srcItem1.hasCurrentRoundTripTime()) {
+							dstItem1.currentRoundTripTime = srcItem1.getCurrentRoundTripTime();
+						}
+						if (srcItem1.hasAvailableOutgoingBitrate()) {
+							dstItem1.availableOutgoingBitrate = srcItem1.getAvailableOutgoingBitrate();
+						}
+						if (srcItem1.hasAvailableIncomingBitrate()) {
+							dstItem1.availableIncomingBitrate = srcItem1.getAvailableIncomingBitrate();
+						}
+						if (srcItem1.hasRequestsReceived()) {
+							dstItem1.requestsReceived = srcItem1.getRequestsReceived();
+						}
+						if (srcItem1.hasRequestsSent()) {
+							dstItem1.requestsSent = srcItem1.getRequestsSent();
+						}
+						if (srcItem1.hasResponsesReceived()) {
+							dstItem1.responsesReceived = srcItem1.getResponsesReceived();
+						}
+						if (srcItem1.hasResponsesSent()) {
+							dstItem1.responsesSent = srcItem1.getResponsesSent();
+						}
+						if (srcItem1.hasConsentRequestsSent()) {
+							dstItem1.consentRequestsSent = srcItem1.getConsentRequestsSent();
+						}
+						if (srcItem1.hasPacketsDiscardedOnSend()) {
+							dstItem1.packetsDiscardedOnSend = srcItem1.getPacketsDiscardedOnSend();
+						}
+						if (srcItem1.hasBytesDiscardedOnSend()) {
+							dstItem1.bytesDiscardedOnSend = srcItem1.getBytesDiscardedOnSend();
+						}
+						dstItem0.iceCandidatePairs[iceCandidatePairsIndex++] = dstItem1;
 					}
 				}
 				if (0 < srcItem0.getMediaSourcesCount()) {
@@ -371,14 +357,23 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasEchoReturnLossEnhancement()) {
 							dstItem1.echoReturnLossEnhancement = srcItem1.getEchoReturnLossEnhancement();
 						}
+						if (srcItem1.hasDroppedSamplesDuration()) {
+							dstItem1.droppedSamplesDuration = srcItem1.getDroppedSamplesDuration();
+						}
+						if (srcItem1.hasDroppedSamplesEvents()) {
+							dstItem1.droppedSamplesEvents = srcItem1.getDroppedSamplesEvents();
+						}
+						if (srcItem1.hasTotalCaptureDelay()) {
+							dstItem1.totalCaptureDelay = srcItem1.getTotalCaptureDelay();
+						}
+						if (srcItem1.hasTotalSamplesCaptured()) {
+							dstItem1.totalSamplesCaptured = srcItem1.getTotalSamplesCaptured();
+						}
 						if (srcItem1.hasWidth()) {
 							dstItem1.width = srcItem1.getWidth();
 						}
 						if (srcItem1.hasHeight()) {
 							dstItem1.height = srcItem1.getHeight();
-						}
-						if (srcItem1.hasBitDepth()) {
-							dstItem1.bitDepth = srcItem1.getBitDepth();
 						}
 						if (srcItem1.hasFrames()) {
 							dstItem1.frames = srcItem1.getFrames();
@@ -467,44 +462,14 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasJitter()) {
 							dstItem1.jitter = srcItem1.getJitter();
 						}
-						if (srcItem1.hasPacketsDiscarded()) {
-							dstItem1.packetsDiscarded = srcItem1.getPacketsDiscarded();
-						}
-						if (srcItem1.hasPacketsRepaired()) {
-							dstItem1.packetsRepaired = srcItem1.getPacketsRepaired();
-						}
-						if (srcItem1.hasBurstPacketsLost()) {
-							dstItem1.burstPacketsLost = srcItem1.getBurstPacketsLost();
-						}
-						if (srcItem1.hasBurstPacketsDiscarded()) {
-							dstItem1.burstPacketsDiscarded = srcItem1.getBurstPacketsDiscarded();
-						}
-						if (srcItem1.hasBurstLossCount()) {
-							dstItem1.burstLossCount = srcItem1.getBurstLossCount();
-						}
-						if (srcItem1.hasBurstDiscardCount()) {
-							dstItem1.burstDiscardCount = srcItem1.getBurstDiscardCount();
-						}
-						if (srcItem1.hasBurstLossRate()) {
-							dstItem1.burstLossRate = srcItem1.getBurstLossRate();
-						}
-						if (srcItem1.hasBurstDiscardRate()) {
-							dstItem1.burstDiscardRate = srcItem1.getBurstDiscardRate();
-						}
-						if (srcItem1.hasGapLossRate()) {
-							dstItem1.gapLossRate = srcItem1.getGapLossRate();
-						}
-						if (srcItem1.hasGapDiscardRate()) {
-							dstItem1.gapDiscardRate = srcItem1.getGapDiscardRate();
-						}
 						if (srcItem1.hasLastPacketReceivedTimestamp()) {
 							dstItem1.lastPacketReceivedTimestamp = srcItem1.getLastPacketReceivedTimestamp();
 						}
-						if (srcItem1.hasAverageRtcpInterval()) {
-							dstItem1.averageRtcpInterval = srcItem1.getAverageRtcpInterval();
-						}
 						if (srcItem1.hasHeaderBytesReceived()) {
 							dstItem1.headerBytesReceived = srcItem1.getHeaderBytesReceived();
+						}
+						if (srcItem1.hasPacketsDiscarded()) {
+							dstItem1.packetsDiscarded = srcItem1.getPacketsDiscarded();
 						}
 						if (srcItem1.hasFecPacketsReceived()) {
 							dstItem1.fecPacketsReceived = srcItem1.getFecPacketsReceived();
@@ -514,15 +479,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasBytesReceived()) {
 							dstItem1.bytesReceived = srcItem1.getBytesReceived();
-						}
-						if (srcItem1.hasPacketsFailedDecryption()) {
-							dstItem1.packetsFailedDecryption = srcItem1.getPacketsFailedDecryption();
-						}
-						if (srcItem1.hasPacketsDuplicated()) {
-							dstItem1.packetsDuplicated = srcItem1.getPacketsDuplicated();
-						}
-						if (srcItem1.hasPerDscpPacketsReceived()) {
-							dstItem1.perDscpPacketsReceived = srcItem1.getPerDscpPacketsReceived();
 						}
 						if (srcItem1.hasNackCount()) {
 							dstItem1.nackCount = srcItem1.getNackCount();
@@ -536,26 +492,17 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasJitterBufferDelay()) {
 							dstItem1.jitterBufferDelay = srcItem1.getJitterBufferDelay();
 						}
+						if (srcItem1.hasJitterBufferTargetDelay()) {
+							dstItem1.jitterBufferTargetDelay = srcItem1.getJitterBufferTargetDelay();
+						}
 						if (srcItem1.hasJitterBufferEmittedCount()) {
 							dstItem1.jitterBufferEmittedCount = srcItem1.getJitterBufferEmittedCount();
 						}
-						if (srcItem1.hasDecoderImplementation()) {
-							dstItem1.decoderImplementation = srcItem1.getDecoderImplementation();
-						}
-						if (srcItem1.hasVoiceActivityFlag()) {
-							dstItem1.voiceActivityFlag = srcItem1.getVoiceActivityFlag();
+						if (srcItem1.hasJitterBufferMinimumDelay()) {
+							dstItem1.jitterBufferMinimumDelay = srcItem1.getJitterBufferMinimumDelay();
 						}
 						if (srcItem1.hasTotalSamplesReceived()) {
 							dstItem1.totalSamplesReceived = srcItem1.getTotalSamplesReceived();
-						}
-						if (srcItem1.hasTotalSamplesDecoded()) {
-							dstItem1.totalSamplesDecoded = srcItem1.getTotalSamplesDecoded();
-						}
-						if (srcItem1.hasSamplesDecodedWithSilk()) {
-							dstItem1.samplesDecodedWithSilk = srcItem1.getSamplesDecodedWithSilk();
-						}
-						if (srcItem1.hasSamplesDecodedWithCelt()) {
-							dstItem1.samplesDecodedWithCelt = srcItem1.getSamplesDecodedWithCelt();
 						}
 						if (srcItem1.hasConcealedSamples()) {
 							dstItem1.concealedSamples = srcItem1.getConcealedSamples();
@@ -571,6 +518,18 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasRemovedSamplesForAcceleration()) {
 							dstItem1.removedSamplesForAcceleration = srcItem1.getRemovedSamplesForAcceleration();
+						}
+						if (srcItem1.hasAudioLevel()) {
+							dstItem1.audioLevel = srcItem1.getAudioLevel();
+						}
+						if (srcItem1.hasTotalAudioEnergy()) {
+							dstItem1.totalAudioEnergy = srcItem1.getTotalAudioEnergy();
+						}
+						if (srcItem1.hasTotalSamplesDuration()) {
+							dstItem1.totalSamplesDuration = srcItem1.getTotalSamplesDuration();
+						}
+						if (srcItem1.hasDecoderImplementation()) {
+							dstItem1.decoderImplementation = srcItem1.getDecoderImplementation();
 						}
 						if (srcItem1.hasPacketsSent()) {
 							dstItem1.packetsSent = srcItem1.getPacketsSent();
@@ -593,23 +552,17 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasRoundTripTimeMeasurements()) {
 							dstItem1.roundTripTimeMeasurements = srcItem1.getRoundTripTimeMeasurements();
 						}
-						if (srcItem1.hasEnded()) {
-							dstItem1.ended = srcItem1.getEnded();
+						if (srcItem1.hasSynthesizedSamplesDuration()) {
+							dstItem1.synthesizedSamplesDuration = srcItem1.getSynthesizedSamplesDuration();
 						}
-						if (srcItem1.hasPayloadType()) {
-							dstItem1.payloadType = srcItem1.getPayloadType();
+						if (srcItem1.hasSynthesizedSamplesEvents()) {
+							dstItem1.synthesizedSamplesEvents = srcItem1.getSynthesizedSamplesEvents();
 						}
-						if (srcItem1.hasMimeType()) {
-							dstItem1.mimeType = srcItem1.getMimeType();
+						if (srcItem1.hasTotalPlayoutDelay()) {
+							dstItem1.totalPlayoutDelay = srcItem1.getTotalPlayoutDelay();
 						}
-						if (srcItem1.hasClockRate()) {
-							dstItem1.clockRate = srcItem1.getClockRate();
-						}
-						if (srcItem1.hasChannels()) {
-							dstItem1.channels = srcItem1.getChannels();
-						}
-						if (srcItem1.hasSdpFmtpLine()) {
-							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
+						if (srcItem1.hasTotalSamplesCount()) {
+							dstItem1.totalSamplesCount = srcItem1.getTotalSamplesCount();
 						}
 						dstItem0.inboundAudioTracks[inboundAudioTracksIndex++] = dstItem1;
 					}
@@ -646,44 +599,17 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasJitter()) {
 							dstItem1.jitter = srcItem1.getJitter();
 						}
-						if (srcItem1.hasPacketsDiscarded()) {
-							dstItem1.packetsDiscarded = srcItem1.getPacketsDiscarded();
-						}
-						if (srcItem1.hasPacketsRepaired()) {
-							dstItem1.packetsRepaired = srcItem1.getPacketsRepaired();
-						}
-						if (srcItem1.hasBurstPacketsLost()) {
-							dstItem1.burstPacketsLost = srcItem1.getBurstPacketsLost();
-						}
-						if (srcItem1.hasBurstPacketsDiscarded()) {
-							dstItem1.burstPacketsDiscarded = srcItem1.getBurstPacketsDiscarded();
-						}
-						if (srcItem1.hasBurstLossCount()) {
-							dstItem1.burstLossCount = srcItem1.getBurstLossCount();
-						}
-						if (srcItem1.hasBurstDiscardCount()) {
-							dstItem1.burstDiscardCount = srcItem1.getBurstDiscardCount();
-						}
-						if (srcItem1.hasBurstLossRate()) {
-							dstItem1.burstLossRate = srcItem1.getBurstLossRate();
-						}
-						if (srcItem1.hasBurstDiscardRate()) {
-							dstItem1.burstDiscardRate = srcItem1.getBurstDiscardRate();
-						}
-						if (srcItem1.hasGapLossRate()) {
-							dstItem1.gapLossRate = srcItem1.getGapLossRate();
-						}
-						if (srcItem1.hasGapDiscardRate()) {
-							dstItem1.gapDiscardRate = srcItem1.getGapDiscardRate();
+						if (srcItem1.hasFramesDropped()) {
+							dstItem1.framesDropped = srcItem1.getFramesDropped();
 						}
 						if (srcItem1.hasLastPacketReceivedTimestamp()) {
 							dstItem1.lastPacketReceivedTimestamp = srcItem1.getLastPacketReceivedTimestamp();
 						}
-						if (srcItem1.hasAverageRtcpInterval()) {
-							dstItem1.averageRtcpInterval = srcItem1.getAverageRtcpInterval();
-						}
 						if (srcItem1.hasHeaderBytesReceived()) {
 							dstItem1.headerBytesReceived = srcItem1.getHeaderBytesReceived();
+						}
+						if (srcItem1.hasPacketsDiscarded()) {
+							dstItem1.packetsDiscarded = srcItem1.getPacketsDiscarded();
 						}
 						if (srcItem1.hasFecPacketsReceived()) {
 							dstItem1.fecPacketsReceived = srcItem1.getFecPacketsReceived();
@@ -693,15 +619,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasBytesReceived()) {
 							dstItem1.bytesReceived = srcItem1.getBytesReceived();
-						}
-						if (srcItem1.hasPacketsFailedDecryption()) {
-							dstItem1.packetsFailedDecryption = srcItem1.getPacketsFailedDecryption();
-						}
-						if (srcItem1.hasPacketsDuplicated()) {
-							dstItem1.packetsDuplicated = srcItem1.getPacketsDuplicated();
-						}
-						if (srcItem1.hasPerDscpPacketsReceived()) {
-							dstItem1.perDscpPacketsReceived = srcItem1.getPerDscpPacketsReceived();
 						}
 						if (srcItem1.hasNackCount()) {
 							dstItem1.nackCount = srcItem1.getNackCount();
@@ -715,23 +632,20 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasJitterBufferDelay()) {
 							dstItem1.jitterBufferDelay = srcItem1.getJitterBufferDelay();
 						}
+						if (srcItem1.hasJitterBufferTargetDelay()) {
+							dstItem1.jitterBufferTargetDelay = srcItem1.getJitterBufferTargetDelay();
+						}
 						if (srcItem1.hasJitterBufferEmittedCount()) {
 							dstItem1.jitterBufferEmittedCount = srcItem1.getJitterBufferEmittedCount();
+						}
+						if (srcItem1.hasJitterBufferMinimumDelay()) {
+							dstItem1.jitterBufferMinimumDelay = srcItem1.getJitterBufferMinimumDelay();
 						}
 						if (srcItem1.hasDecoderImplementation()) {
 							dstItem1.decoderImplementation = srcItem1.getDecoderImplementation();
 						}
-						if (srcItem1.hasFramesDropped()) {
-							dstItem1.framesDropped = srcItem1.getFramesDropped();
-						}
 						if (srcItem1.hasFramesDecoded()) {
 							dstItem1.framesDecoded = srcItem1.getFramesDecoded();
-						}
-						if (srcItem1.hasPartialFramesLost()) {
-							dstItem1.partialFramesLost = srcItem1.getPartialFramesLost();
-						}
-						if (srcItem1.hasFullFramesLost()) {
-							dstItem1.fullFramesLost = srcItem1.getFullFramesLost();
 						}
 						if (srcItem1.hasKeyFramesDecoded()) {
 							dstItem1.keyFramesDecoded = srcItem1.getKeyFramesDecoded();
@@ -741,9 +655,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasFrameHeight()) {
 							dstItem1.frameHeight = srcItem1.getFrameHeight();
-						}
-						if (srcItem1.hasFrameBitDepth()) {
-							dstItem1.frameBitDepth = srcItem1.getFrameBitDepth();
 						}
 						if (srcItem1.hasFramesPerSecond()) {
 							dstItem1.framesPerSecond = srcItem1.getFramesPerSecond();
@@ -765,9 +676,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasPliCount()) {
 							dstItem1.pliCount = srcItem1.getPliCount();
-						}
-						if (srcItem1.hasSliCount()) {
-							dstItem1.sliCount = srcItem1.getSliCount();
 						}
 						if (srcItem1.hasFramesReceived()) {
 							dstItem1.framesReceived = srcItem1.getFramesReceived();
@@ -792,24 +700,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasRoundTripTimeMeasurements()) {
 							dstItem1.roundTripTimeMeasurements = srcItem1.getRoundTripTimeMeasurements();
-						}
-						if (srcItem1.hasEnded()) {
-							dstItem1.ended = srcItem1.getEnded();
-						}
-						if (srcItem1.hasPayloadType()) {
-							dstItem1.payloadType = srcItem1.getPayloadType();
-						}
-						if (srcItem1.hasMimeType()) {
-							dstItem1.mimeType = srcItem1.getMimeType();
-						}
-						if (srcItem1.hasClockRate()) {
-							dstItem1.clockRate = srcItem1.getClockRate();
-						}
-						if (srcItem1.hasChannels()) {
-							dstItem1.channels = srcItem1.getChannels();
-						}
-						if (srcItem1.hasSdpFmtpLine()) {
-							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
 						dstItem0.inboundVideoTracks[inboundVideoTracksIndex++] = dstItem1;
 					}
@@ -837,26 +727,11 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasBytesSent()) {
 							dstItem1.bytesSent = srcItem1.getBytesSent();
 						}
-						if (srcItem1.hasRtxSsrc()) {
-							dstItem1.rtxSsrc = srcItem1.getRtxSsrc();
-						}
 						if (srcItem1.hasRid()) {
 							dstItem1.rid = srcItem1.getRid();
 						}
-						if (srcItem1.hasLastPacketSentTimestamp()) {
-							dstItem1.lastPacketSentTimestamp = srcItem1.getLastPacketSentTimestamp();
-						}
 						if (srcItem1.hasHeaderBytesSent()) {
 							dstItem1.headerBytesSent = srcItem1.getHeaderBytesSent();
-						}
-						if (srcItem1.hasPacketsDiscardedOnSend()) {
-							dstItem1.packetsDiscardedOnSend = srcItem1.getPacketsDiscardedOnSend();
-						}
-						if (srcItem1.hasBytesDiscardedOnSend()) {
-							dstItem1.bytesDiscardedOnSend = srcItem1.getBytesDiscardedOnSend();
-						}
-						if (srcItem1.hasFecPacketsSent()) {
-							dstItem1.fecPacketsSent = srcItem1.getFecPacketsSent();
 						}
 						if (srcItem1.hasRetransmittedPacketsSent()) {
 							dstItem1.retransmittedPacketsSent = srcItem1.getRetransmittedPacketsSent();
@@ -876,26 +751,14 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasAverageRtcpInterval()) {
 							dstItem1.averageRtcpInterval = srcItem1.getAverageRtcpInterval();
 						}
-						if (srcItem1.hasPerDscpPacketsSent()) {
-							dstItem1.perDscpPacketsSent = srcItem1.getPerDscpPacketsSent();
-						}
 						if (srcItem1.hasNackCount()) {
 							dstItem1.nackCount = srcItem1.getNackCount();
 						}
 						if (srcItem1.hasEncoderImplementation()) {
 							dstItem1.encoderImplementation = srcItem1.getEncoderImplementation();
 						}
-						if (srcItem1.hasTotalSamplesSent()) {
-							dstItem1.totalSamplesSent = srcItem1.getTotalSamplesSent();
-						}
-						if (srcItem1.hasSamplesEncodedWithSilk()) {
-							dstItem1.samplesEncodedWithSilk = srcItem1.getSamplesEncodedWithSilk();
-						}
-						if (srcItem1.hasSamplesEncodedWithCelt()) {
-							dstItem1.samplesEncodedWithCelt = srcItem1.getSamplesEncodedWithCelt();
-						}
-						if (srcItem1.hasVoiceActivityFlag()) {
-							dstItem1.voiceActivityFlag = srcItem1.getVoiceActivityFlag();
+						if (srcItem1.hasActive()) {
+							dstItem1.active = srcItem1.getActive();
 						}
 						if (srcItem1.hasPacketsReceived()) {
 							dstItem1.packetsReceived = srcItem1.getPacketsReceived();
@@ -906,36 +769,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasJitter()) {
 							dstItem1.jitter = srcItem1.getJitter();
 						}
-						if (srcItem1.hasPacketsDiscarded()) {
-							dstItem1.packetsDiscarded = srcItem1.getPacketsDiscarded();
-						}
-						if (srcItem1.hasPacketsRepaired()) {
-							dstItem1.packetsRepaired = srcItem1.getPacketsRepaired();
-						}
-						if (srcItem1.hasBurstPacketsLost()) {
-							dstItem1.burstPacketsLost = srcItem1.getBurstPacketsLost();
-						}
-						if (srcItem1.hasBurstPacketsDiscarded()) {
-							dstItem1.burstPacketsDiscarded = srcItem1.getBurstPacketsDiscarded();
-						}
-						if (srcItem1.hasBurstLossCount()) {
-							dstItem1.burstLossCount = srcItem1.getBurstLossCount();
-						}
-						if (srcItem1.hasBurstDiscardCount()) {
-							dstItem1.burstDiscardCount = srcItem1.getBurstDiscardCount();
-						}
-						if (srcItem1.hasBurstLossRate()) {
-							dstItem1.burstLossRate = srcItem1.getBurstLossRate();
-						}
-						if (srcItem1.hasBurstDiscardRate()) {
-							dstItem1.burstDiscardRate = srcItem1.getBurstDiscardRate();
-						}
-						if (srcItem1.hasGapLossRate()) {
-							dstItem1.gapLossRate = srcItem1.getGapLossRate();
-						}
-						if (srcItem1.hasGapDiscardRate()) {
-							dstItem1.gapDiscardRate = srcItem1.getGapDiscardRate();
-						}
 						if (srcItem1.hasRoundTripTime()) {
 							dstItem1.roundTripTime = srcItem1.getRoundTripTime();
 						}
@@ -944,9 +777,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasFractionLost()) {
 							dstItem1.fractionLost = srcItem1.getFractionLost();
-						}
-						if (srcItem1.hasReportsReceived()) {
-							dstItem1.reportsReceived = srcItem1.getReportsReceived();
 						}
 						if (srcItem1.hasRoundTripTimeMeasurements()) {
 							dstItem1.roundTripTimeMeasurements = srcItem1.getRoundTripTimeMeasurements();
@@ -969,23 +799,17 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasEchoReturnLossEnhancement()) {
 							dstItem1.echoReturnLossEnhancement = srcItem1.getEchoReturnLossEnhancement();
 						}
-						if (srcItem1.hasEnded()) {
-							dstItem1.ended = srcItem1.getEnded();
+						if (srcItem1.hasDroppedSamplesDuration()) {
+							dstItem1.droppedSamplesDuration = srcItem1.getDroppedSamplesDuration();
 						}
-						if (srcItem1.hasPayloadType()) {
-							dstItem1.payloadType = srcItem1.getPayloadType();
+						if (srcItem1.hasDroppedSamplesEvents()) {
+							dstItem1.droppedSamplesEvents = srcItem1.getDroppedSamplesEvents();
 						}
-						if (srcItem1.hasMimeType()) {
-							dstItem1.mimeType = srcItem1.getMimeType();
+						if (srcItem1.hasTotalCaptureDelay()) {
+							dstItem1.totalCaptureDelay = srcItem1.getTotalCaptureDelay();
 						}
-						if (srcItem1.hasClockRate()) {
-							dstItem1.clockRate = srcItem1.getClockRate();
-						}
-						if (srcItem1.hasChannels()) {
-							dstItem1.channels = srcItem1.getChannels();
-						}
-						if (srcItem1.hasSdpFmtpLine()) {
-							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
+						if (srcItem1.hasTotalSamplesCaptured()) {
+							dstItem1.totalSamplesCaptured = srcItem1.getTotalSamplesCaptured();
 						}
 						dstItem0.outboundAudioTracks[outboundAudioTracksIndex++] = dstItem1;
 					}
@@ -1013,26 +837,11 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasBytesSent()) {
 							dstItem1.bytesSent = srcItem1.getBytesSent();
 						}
-						if (srcItem1.hasRtxSsrc()) {
-							dstItem1.rtxSsrc = srcItem1.getRtxSsrc();
-						}
 						if (srcItem1.hasRid()) {
 							dstItem1.rid = srcItem1.getRid();
 						}
-						if (srcItem1.hasLastPacketSentTimestamp()) {
-							dstItem1.lastPacketSentTimestamp = srcItem1.getLastPacketSentTimestamp();
-						}
 						if (srcItem1.hasHeaderBytesSent()) {
 							dstItem1.headerBytesSent = srcItem1.getHeaderBytesSent();
-						}
-						if (srcItem1.hasPacketsDiscardedOnSend()) {
-							dstItem1.packetsDiscardedOnSend = srcItem1.getPacketsDiscardedOnSend();
-						}
-						if (srcItem1.hasBytesDiscardedOnSend()) {
-							dstItem1.bytesDiscardedOnSend = srcItem1.getBytesDiscardedOnSend();
-						}
-						if (srcItem1.hasFecPacketsSent()) {
-							dstItem1.fecPacketsSent = srcItem1.getFecPacketsSent();
 						}
 						if (srcItem1.hasRetransmittedPacketsSent()) {
 							dstItem1.retransmittedPacketsSent = srcItem1.getRetransmittedPacketsSent();
@@ -1052,32 +861,20 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasAverageRtcpInterval()) {
 							dstItem1.averageRtcpInterval = srcItem1.getAverageRtcpInterval();
 						}
-						if (srcItem1.hasPerDscpPacketsSent()) {
-							dstItem1.perDscpPacketsSent = srcItem1.getPerDscpPacketsSent();
-						}
 						if (srcItem1.hasNackCount()) {
 							dstItem1.nackCount = srcItem1.getNackCount();
 						}
-						if (srcItem1.hasFirCount()) {
-							dstItem1.firCount = srcItem1.getFirCount();
-						}
-						if (srcItem1.hasPliCount()) {
-							dstItem1.pliCount = srcItem1.getPliCount();
-						}
-						if (srcItem1.hasSliCount()) {
-							dstItem1.sliCount = srcItem1.getSliCount();
-						}
 						if (srcItem1.hasEncoderImplementation()) {
 							dstItem1.encoderImplementation = srcItem1.getEncoderImplementation();
+						}
+						if (srcItem1.hasActive()) {
+							dstItem1.active = srcItem1.getActive();
 						}
 						if (srcItem1.hasFrameWidth()) {
 							dstItem1.frameWidth = srcItem1.getFrameWidth();
 						}
 						if (srcItem1.hasFrameHeight()) {
 							dstItem1.frameHeight = srcItem1.getFrameHeight();
-						}
-						if (srcItem1.hasFrameBitDepth()) {
-							dstItem1.frameBitDepth = srcItem1.getFrameBitDepth();
 						}
 						if (srcItem1.hasFramesPerSecond()) {
 							dstItem1.framesPerSecond = srcItem1.getFramesPerSecond();
@@ -1093,9 +890,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasKeyFramesEncoded()) {
 							dstItem1.keyFramesEncoded = srcItem1.getKeyFramesEncoded();
-						}
-						if (srcItem1.hasFramesDiscardedOnSend()) {
-							dstItem1.framesDiscardedOnSend = srcItem1.getFramesDiscardedOnSend();
 						}
 						if (srcItem1.hasQpSum()) {
 							dstItem1.qpSum = srcItem1.getQpSum();
@@ -1121,6 +915,12 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasQualityLimitationResolutionChanges()) {
 							dstItem1.qualityLimitationResolutionChanges = srcItem1.getQualityLimitationResolutionChanges();
 						}
+						if (srcItem1.hasFirCount()) {
+							dstItem1.firCount = srcItem1.getFirCount();
+						}
+						if (srcItem1.hasPliCount()) {
+							dstItem1.pliCount = srcItem1.getPliCount();
+						}
 						if (srcItem1.hasPacketsReceived()) {
 							dstItem1.packetsReceived = srcItem1.getPacketsReceived();
 						}
@@ -1129,36 +929,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						}
 						if (srcItem1.hasJitter()) {
 							dstItem1.jitter = srcItem1.getJitter();
-						}
-						if (srcItem1.hasPacketsDiscarded()) {
-							dstItem1.packetsDiscarded = srcItem1.getPacketsDiscarded();
-						}
-						if (srcItem1.hasPacketsRepaired()) {
-							dstItem1.packetsRepaired = srcItem1.getPacketsRepaired();
-						}
-						if (srcItem1.hasBurstPacketsLost()) {
-							dstItem1.burstPacketsLost = srcItem1.getBurstPacketsLost();
-						}
-						if (srcItem1.hasBurstPacketsDiscarded()) {
-							dstItem1.burstPacketsDiscarded = srcItem1.getBurstPacketsDiscarded();
-						}
-						if (srcItem1.hasBurstLossCount()) {
-							dstItem1.burstLossCount = srcItem1.getBurstLossCount();
-						}
-						if (srcItem1.hasBurstDiscardCount()) {
-							dstItem1.burstDiscardCount = srcItem1.getBurstDiscardCount();
-						}
-						if (srcItem1.hasBurstLossRate()) {
-							dstItem1.burstLossRate = srcItem1.getBurstLossRate();
-						}
-						if (srcItem1.hasBurstDiscardRate()) {
-							dstItem1.burstDiscardRate = srcItem1.getBurstDiscardRate();
-						}
-						if (srcItem1.hasGapLossRate()) {
-							dstItem1.gapLossRate = srcItem1.getGapLossRate();
-						}
-						if (srcItem1.hasGapDiscardRate()) {
-							dstItem1.gapDiscardRate = srcItem1.getGapDiscardRate();
 						}
 						if (srcItem1.hasRoundTripTime()) {
 							dstItem1.roundTripTime = srcItem1.getRoundTripTime();
@@ -1169,20 +939,11 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasFractionLost()) {
 							dstItem1.fractionLost = srcItem1.getFractionLost();
 						}
-						if (srcItem1.hasReportsReceived()) {
-							dstItem1.reportsReceived = srcItem1.getReportsReceived();
-						}
 						if (srcItem1.hasRoundTripTimeMeasurements()) {
 							dstItem1.roundTripTimeMeasurements = srcItem1.getRoundTripTimeMeasurements();
 						}
 						if (srcItem1.hasFramesDropped()) {
 							dstItem1.framesDropped = srcItem1.getFramesDropped();
-						}
-						if (srcItem1.hasPartialFramesLost()) {
-							dstItem1.partialFramesLost = srcItem1.getPartialFramesLost();
-						}
-						if (srcItem1.hasFullFramesLost()) {
-							dstItem1.fullFramesLost = srcItem1.getFullFramesLost();
 						}
 						if (srcItem1.hasRelayedSource()) {
 							dstItem1.relayedSource = srcItem1.getRelayedSource();
@@ -1193,29 +954,8 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						if (srcItem1.hasHeight()) {
 							dstItem1.height = srcItem1.getHeight();
 						}
-						if (srcItem1.hasBitDepth()) {
-							dstItem1.bitDepth = srcItem1.getBitDepth();
-						}
 						if (srcItem1.hasFrames()) {
 							dstItem1.frames = srcItem1.getFrames();
-						}
-						if (srcItem1.hasEnded()) {
-							dstItem1.ended = srcItem1.getEnded();
-						}
-						if (srcItem1.hasPayloadType()) {
-							dstItem1.payloadType = srcItem1.getPayloadType();
-						}
-						if (srcItem1.hasMimeType()) {
-							dstItem1.mimeType = srcItem1.getMimeType();
-						}
-						if (srcItem1.hasClockRate()) {
-							dstItem1.clockRate = srcItem1.getClockRate();
-						}
-						if (srcItem1.hasChannels()) {
-							dstItem1.channels = srcItem1.getChannels();
-						}
-						if (srcItem1.hasSdpFmtpLine()) {
-							dstItem1.sdpFmtpLine = srcItem1.getSdpFmtpLine();
 						}
 						dstItem0.outboundVideoTracks[outboundVideoTracksIndex++] = dstItem1;
 					}
@@ -1288,50 +1028,6 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 							dstItem1.relayProtocol = srcItem1.getRelayProtocol();
 						}
 						dstItem0.iceRemoteCandidates[iceRemoteCandidatesIndex++] = dstItem1;
-					}
-				}
-				if (0 < srcItem0.getDataChannelsCount()) {
-					dstItem0.dataChannels = new DataChannel[ srcItem0.getDataChannelsCount()];
-					var dataChannelsIndex = 0;
-					for (var srcItem1 : srcItem0.getDataChannelsList()) {
-						var dstItem1 = new DataChannel();
-						if (srcItem1.hasPeerConnectionId()) {
-							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
-						}
-						if (srcItem1.hasId()) {
-							dstItem1.id = srcItem1.getId();
-						}
-						if (srcItem1.hasLabel()) {
-							dstItem1.label = srcItem1.getLabel();
-						}
-						if (srcItem1.hasAddress()) {
-							dstItem1.address = srcItem1.getAddress();
-						}
-						if (srcItem1.hasPort()) {
-							dstItem1.port = srcItem1.getPort();
-						}
-						if (srcItem1.hasProtocol()) {
-							dstItem1.protocol = srcItem1.getProtocol();
-						}
-						if (srcItem1.hasDataChannelIdentifier()) {
-							dstItem1.dataChannelIdentifier = srcItem1.getDataChannelIdentifier();
-						}
-						if (srcItem1.hasState()) {
-							dstItem1.state = srcItem1.getState();
-						}
-						if (srcItem1.hasMessagesSent()) {
-							dstItem1.messagesSent = srcItem1.getMessagesSent();
-						}
-						if (srcItem1.hasBytesSent()) {
-							dstItem1.bytesSent = srcItem1.getBytesSent();
-						}
-						if (srcItem1.hasMessagesReceived()) {
-							dstItem1.messagesReceived = srcItem1.getMessagesReceived();
-						}
-						if (srcItem1.hasBytesReceived()) {
-							dstItem1.bytesReceived = srcItem1.getBytesReceived();
-						}
-						dstItem0.dataChannels[dataChannelsIndex++] = dstItem1;
 					}
 				}
 				if (srcItem0.hasTimestamp()) {

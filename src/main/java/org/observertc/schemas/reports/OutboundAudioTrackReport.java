@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OutboundAudioTrackReport {
-	public static final String VERSION="2.0.4";
+	public static final String VERSION="2.1.8";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -98,30 +98,10 @@ public class OutboundAudioTrackReport {
 	@JsonProperty("rid")
 	public String rid;
 	/**
-	*  the timestamp the last packet was sent. (UTC epoch in ms)
-	*/
-	@JsonProperty("lastPacketSentTimestamp")
-	public Long lastPacketSentTimestamp;
-	/**
 	* Total number of RTP header and padding bytes sent over the corresponding synchronization source (ssrc)
 	*/
 	@JsonProperty("headerBytesSent")
 	public Long headerBytesSent;
-	/**
-	* Total number of RTP packets discarded at sender side over the corresponding synchronization source (ssrc)
-	*/
-	@JsonProperty("packetsDiscardedOnSend")
-	public Integer packetsDiscardedOnSend;
-	/**
-	* Total number of RTP bytes discarded at sender side over the corresponding synchronization source (ssrc)
-	*/
-	@JsonProperty("bytesDiscardedOnSend")
-	public Long bytesDiscardedOnSend;
-	/**
-	* Total number of FEC packets sent over the corresponding synchronization source (ssrc)
-	*/
-	@JsonProperty("fecPacketsSent")
-	public Integer fecPacketsSent;
 	/**
 	* Total number of retransmitted packets sent over the corresponding synchronization source (ssrc).
 	*/
@@ -143,26 +123,6 @@ public class OutboundAudioTrackReport {
 	@JsonProperty("totalEncodedBytesTarget")
 	public Long totalEncodedBytesTarget;
 	/**
-	* The total number of samples sent over the corresponding synchronization source
-	*/
-	@JsonProperty("totalSamplesSent")
-	public Integer totalSamplesSent;
-	/**
-	* The total number of samples encoded by SILK portion in opus sent over the corresponding synchronization source
-	*/
-	@JsonProperty("samplesEncodedWithSilk")
-	public Integer samplesEncodedWithSilk;
-	/**
-	* The total number of samples encoded by CELT portion in opus sent over the corresponding synchronization source
-	*/
-	@JsonProperty("samplesEncodedWithCelt")
-	public Integer samplesEncodedWithCelt;
-	/**
-	* Indicate if the last RTP packet sent contained voice activity based on the presence of the V bit in the extension header
-	*/
-	@JsonProperty("voiceActivityFlag")
-	public Boolean voiceActivityFlag;
-	/**
 	* The total number of delay packets buffered at the sender side in seconds over the corresponding synchronization source
 	*/
 	@JsonProperty("totalPacketSendDelay")
@@ -173,11 +133,6 @@ public class OutboundAudioTrackReport {
 	@JsonProperty("averageRtcpInterval")
 	public Double averageRtcpInterval;
 	/**
-	* The total number of DSCP flagged RTP packets sent over the corresponding synchronization source (ssrc)
-	*/
-	@JsonProperty("perDscpPacketsSent")
-	public Integer perDscpPacketsSent;
-	/**
 	* Count the total number of Negative ACKnowledgement (NACK) packets received over the corresponding synchronization source (ssrc)
 	*/
 	@JsonProperty("nackCount")
@@ -187,6 +142,11 @@ public class OutboundAudioTrackReport {
 	*/
 	@JsonProperty("encoderImplementation")
 	public String encoderImplementation;
+	/**
+	* Indicates whether this RTP stream is configured to be sent or disabled
+	*/
+	@JsonProperty("active")
+	public Boolean active;
 	/**
 	* The total number of packets received on the corresponded synchronization source
 	*/
@@ -203,56 +163,6 @@ public class OutboundAudioTrackReport {
 	@JsonProperty("jitter")
 	public Double jitter;
 	/**
-	* The total number of packets missed the playout point and therefore discarded by the jitterbuffer
-	*/
-	@JsonProperty("packetsDiscarded")
-	public Integer packetsDiscarded;
-	/**
-	* The total number of packets repaired by either FEC or due to retransmission on the corresponded synchronization source
-	*/
-	@JsonProperty("packetsRepaired")
-	public Integer packetsRepaired;
-	/**
-	* The total number of packets lost in burst (RFC6958)
-	*/
-	@JsonProperty("burstPacketsLost")
-	public Integer burstPacketsLost;
-	/**
-	* The total number of packets discarded in burst (RFC6958)
-	*/
-	@JsonProperty("burstPacketsDiscarded")
-	public Integer burstPacketsDiscarded;
-	/**
-	* The total number of burst happened causes burstPacketsLost on the corresponding synchronization source
-	*/
-	@JsonProperty("burstLossCount")
-	public Integer burstLossCount;
-	/**
-	* The total number of burst happened causes burstPacketsDiscarded on the corresponding synchronization source
-	*/
-	@JsonProperty("burstDiscardCount")
-	public Integer burstDiscardCount;
-	/**
-	* The fraction of RTP packets lost during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("burstLossRate")
-	public Double burstLossRate;
-	/**
-	* The fraction of RTP packets discarded during bursts proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("burstDiscardRate")
-	public Double burstDiscardRate;
-	/**
-	* The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("gapLossRate")
-	public Double gapLossRate;
-	/**
-	* The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
-	*/
-	@JsonProperty("gapDiscardRate")
-	public Double gapDiscardRate;
-	/**
 	* RTT measurement in seconds based on (most likely) SR, and RR belongs to the corresponded synchronization source
 	*/
 	@JsonProperty("roundTripTime")
@@ -267,11 +177,6 @@ public class OutboundAudioTrackReport {
 	*/
 	@JsonProperty("fractionLost")
 	public Double fractionLost;
-	/**
-	* The total number of RR reports received, which is the base of the remote inbound calculation on this source
-	*/
-	@JsonProperty("reportsReceived")
-	public Integer reportsReceived;
 	/**
 	* The total number of calculated RR measurements received on this source
 	*/
@@ -308,35 +213,25 @@ public class OutboundAudioTrackReport {
 	@JsonProperty("echoReturnLossEnhancement")
 	public Double echoReturnLossEnhancement;
 	/**
-	* Flag represents if the sender ended the media stream track or not.
+	* . The total duration, in seconds, of samples produced by the device that got dropped before reaching the media source
 	*/
-	@JsonProperty("ended")
-	public Boolean ended;
+	@JsonProperty("droppedSamplesDuration")
+	public Double droppedSamplesDuration;
 	/**
-	* The type of the payload the RTP packet SSRC belongs to
+	* A counter increases every time a sample is dropped after a non-dropped sample
 	*/
-	@JsonProperty("payloadType")
-	public Integer payloadType;
+	@JsonProperty("droppedSamplesEvents")
+	public Integer droppedSamplesEvents;
 	/**
-	* the MIME type of the codec (e.g.: video/vp8)
+	* Total delay, in seconds, for each audio sample between the time the sample was emitted by the capture device and the sample reaching the source
 	*/
-	@JsonProperty("mimeType")
-	public String mimeType;
+	@JsonProperty("totalCaptureDelay")
+	public Double totalCaptureDelay;
 	/**
-	* The negotiated clock rate the RTP timestamp is generated of
+	* The total number of captured samples reaching the audio source
 	*/
-	@JsonProperty("clockRate")
-	public Integer clockRate;
-	/**
-	* The number of channels for audio is used (in stereo it is 2, otherwise it is most likely null)
-	*/
-	@JsonProperty("channels")
-	public Integer channels;
-	/**
-	* The a=fmtp line in the SDP corresponding to the codec
-	*/
-	@JsonProperty("sdpFmtpLine")
-	public String sdpFmtpLine;
+	@JsonProperty("totalSamplesCaptured")
+	public Double totalSamplesCaptured;
 
 
 	public static class Builder {
@@ -411,24 +306,8 @@ public class OutboundAudioTrackReport {
 			this.result.rid = value;
 			return this;
 		}
-		public Builder setLastPacketSentTimestamp(Long value) {
-			this.result.lastPacketSentTimestamp = value;
-			return this;
-		}
 		public Builder setHeaderBytesSent(Long value) {
 			this.result.headerBytesSent = value;
-			return this;
-		}
-		public Builder setPacketsDiscardedOnSend(Integer value) {
-			this.result.packetsDiscardedOnSend = value;
-			return this;
-		}
-		public Builder setBytesDiscardedOnSend(Long value) {
-			this.result.bytesDiscardedOnSend = value;
-			return this;
-		}
-		public Builder setFecPacketsSent(Integer value) {
-			this.result.fecPacketsSent = value;
 			return this;
 		}
 		public Builder setRetransmittedPacketsSent(Integer value) {
@@ -447,22 +326,6 @@ public class OutboundAudioTrackReport {
 			this.result.totalEncodedBytesTarget = value;
 			return this;
 		}
-		public Builder setTotalSamplesSent(Integer value) {
-			this.result.totalSamplesSent = value;
-			return this;
-		}
-		public Builder setSamplesEncodedWithSilk(Integer value) {
-			this.result.samplesEncodedWithSilk = value;
-			return this;
-		}
-		public Builder setSamplesEncodedWithCelt(Integer value) {
-			this.result.samplesEncodedWithCelt = value;
-			return this;
-		}
-		public Builder setVoiceActivityFlag(Boolean value) {
-			this.result.voiceActivityFlag = value;
-			return this;
-		}
 		public Builder setTotalPacketSendDelay(Double value) {
 			this.result.totalPacketSendDelay = value;
 			return this;
@@ -471,16 +334,16 @@ public class OutboundAudioTrackReport {
 			this.result.averageRtcpInterval = value;
 			return this;
 		}
-		public Builder setPerDscpPacketsSent(Integer value) {
-			this.result.perDscpPacketsSent = value;
-			return this;
-		}
 		public Builder setNackCount(Integer value) {
 			this.result.nackCount = value;
 			return this;
 		}
 		public Builder setEncoderImplementation(String value) {
 			this.result.encoderImplementation = value;
+			return this;
+		}
+		public Builder setActive(Boolean value) {
+			this.result.active = value;
 			return this;
 		}
 		public Builder setPacketsReceived(Integer value) {
@@ -495,46 +358,6 @@ public class OutboundAudioTrackReport {
 			this.result.jitter = value;
 			return this;
 		}
-		public Builder setPacketsDiscarded(Integer value) {
-			this.result.packetsDiscarded = value;
-			return this;
-		}
-		public Builder setPacketsRepaired(Integer value) {
-			this.result.packetsRepaired = value;
-			return this;
-		}
-		public Builder setBurstPacketsLost(Integer value) {
-			this.result.burstPacketsLost = value;
-			return this;
-		}
-		public Builder setBurstPacketsDiscarded(Integer value) {
-			this.result.burstPacketsDiscarded = value;
-			return this;
-		}
-		public Builder setBurstLossCount(Integer value) {
-			this.result.burstLossCount = value;
-			return this;
-		}
-		public Builder setBurstDiscardCount(Integer value) {
-			this.result.burstDiscardCount = value;
-			return this;
-		}
-		public Builder setBurstLossRate(Double value) {
-			this.result.burstLossRate = value;
-			return this;
-		}
-		public Builder setBurstDiscardRate(Double value) {
-			this.result.burstDiscardRate = value;
-			return this;
-		}
-		public Builder setGapLossRate(Double value) {
-			this.result.gapLossRate = value;
-			return this;
-		}
-		public Builder setGapDiscardRate(Double value) {
-			this.result.gapDiscardRate = value;
-			return this;
-		}
 		public Builder setRoundTripTime(Double value) {
 			this.result.roundTripTime = value;
 			return this;
@@ -545,10 +368,6 @@ public class OutboundAudioTrackReport {
 		}
 		public Builder setFractionLost(Double value) {
 			this.result.fractionLost = value;
-			return this;
-		}
-		public Builder setReportsReceived(Integer value) {
-			this.result.reportsReceived = value;
 			return this;
 		}
 		public Builder setRoundTripTimeMeasurements(Integer value) {
@@ -579,28 +398,20 @@ public class OutboundAudioTrackReport {
 			this.result.echoReturnLossEnhancement = value;
 			return this;
 		}
-		public Builder setEnded(Boolean value) {
-			this.result.ended = value;
+		public Builder setDroppedSamplesDuration(Double value) {
+			this.result.droppedSamplesDuration = value;
 			return this;
 		}
-		public Builder setPayloadType(Integer value) {
-			this.result.payloadType = value;
+		public Builder setDroppedSamplesEvents(Integer value) {
+			this.result.droppedSamplesEvents = value;
 			return this;
 		}
-		public Builder setMimeType(String value) {
-			this.result.mimeType = value;
+		public Builder setTotalCaptureDelay(Double value) {
+			this.result.totalCaptureDelay = value;
 			return this;
 		}
-		public Builder setClockRate(Integer value) {
-			this.result.clockRate = value;
-			return this;
-		}
-		public Builder setChannels(Integer value) {
-			this.result.channels = value;
-			return this;
-		}
-		public Builder setSdpFmtpLine(String value) {
-			this.result.sdpFmtpLine = value;
+		public Builder setTotalSamplesCaptured(Double value) {
+			this.result.totalSamplesCaptured = value;
 			return this;
 		}
 		public OutboundAudioTrackReport build() {

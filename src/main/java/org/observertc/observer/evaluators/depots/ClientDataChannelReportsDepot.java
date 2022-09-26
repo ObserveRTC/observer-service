@@ -76,9 +76,9 @@ public class ClientDataChannelReportsDepot implements Supplier<List<ClientDataCh
                     /* Data Channel stats */
                     .setLabel(dataChannel.label)
                     .setProtocol(dataChannel.protocol)
-                    .setMessagesSent(dataChannel.messagesSent)
+                    .setMessagesSent(dataChannel.messageSent)
                     .setBytesSent(dataChannel.bytesSent)
-                    .setMessagesReceived(dataChannel.messagesReceived)
+                    .setMessagesReceived(dataChannel.messageReceived)
                     .setBytesReceived(dataChannel.bytesReceived)
                     .setState(dataChannel.state)
                     .build();

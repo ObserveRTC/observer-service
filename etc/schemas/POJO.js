@@ -148,7 +148,9 @@ export class POJO {
         const mongoLine = `.append("${name}", reportPayload.${name})`;
         this._mongoLines.push(mongoLine);
 
-        const assertation = `Assertions.assertEquals(expected.${name}, actual.${name}, "${name} field");`
+        // const assertation = `Assertions.assertEquals(expected.${name}, actual.${name}, "${name} field");`
+        const methodName = `set` + name.charAt(0).toUpperCase() + name.slice(1);
+        const assertation = `.${methodName}(${this._name.charAt(0).toLowerCase()}${this._name.slice(1).replace("Report", "")}.${name})`
         this._assertations.push(assertation);
 
         const varName =  this.name.charAt(0).toLowerCase() + this.name.slice(1);

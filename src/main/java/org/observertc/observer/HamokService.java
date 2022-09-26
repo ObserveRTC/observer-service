@@ -10,9 +10,8 @@ import io.micronaut.management.endpoint.info.InfoSource;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.hamokendpoints.BuildersEssentials;
-import org.observertc.observer.hamokendpoints.EndpointBuilderImpl;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
+import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,8 @@ import java.util.*;
 @Singleton
 public class HamokService  implements InfoSource {
 
+    public static final UUID localEndpointId = UUID.randomUUID();
+
     private static final Logger logger = LoggerFactory.getLogger(HamokService.class);
 
     @Inject
@@ -31,6 +32,9 @@ public class HamokService  implements InfoSource {
 
     @Inject
     BeanProvider<CoreV1Api> coreV1ApiProvider;
+
+    @Inject
+    HamokEndpointBuilderService hamokEndpointBuilderService;
 
     private volatile boolean running = false;
     private HamokEndpoint endpoint;
@@ -50,6 +54,7 @@ public class HamokService  implements InfoSource {
                 .withPeerMaxIdleTimeInMs(storageGridConfig.peerMaxIdleInMs)
                 .withRequestTimeoutInMs(storageGridConfig.requestTimeoutInMs)
                 .withSendingHelloTimeoutInMs(storageGridConfig.sendingHelloTimeoutInMs)
+                .withLocalEndpointId(localEndpointId)
                 .withAutoDiscovery(true)
                 .build();
 
@@ -77,16 +82,19 @@ public class HamokService  implements InfoSource {
         }
         this.running = true;
         if (this.endpoint == null) {
-            this.endpoint = this.buildEndpoint(this.config.endpoint);
+            this.endpoint = this.hamokEndpointBuilderService.build(this.config.endpoint);
 
-            if (this.endpoint == null) {
-                logger.error("Hamok has not been built, no endpoint and distributed storage grid is available.");
-                return;
+            if (this.endpoint != null) {
+                this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
+                this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
+                this.endpoint.start();
+            } else {
+                logger.warn("Endpoint for hamok has not been built, the server cannot share its internal data with other instances in the grid");
             }
-            this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
-            this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
+        } else {
+            this.endpoint.start();
         }
-        this.endpoint.start();
+
         logger.info("Hamok is started");
     }
 
@@ -114,20 +122,6 @@ public class HamokService  implements InfoSource {
         return Publishers.just(
             propertySource
         );
-    }
-
-    private HamokEndpoint buildEndpoint(Map<String, Object> config) {
-        var endpointBuilder = new EndpointBuilderImpl();
-        if (config == null) {
-            logger.info("No Endpoint is specified, the default is used");
-            return endpointBuilder.defaultEndpoint();
-        }
-        endpointBuilder.setBuildingEssentials(new BuildersEssentials(
-                this.coreV1ApiProvider,
-                this.storageGrid.getLocalEndpointId()
-        ));
-        endpointBuilder.withConfiguration(config);
-        return endpointBuilder.build();
     }
 
     private int alreadyLoggedFlags = 0;

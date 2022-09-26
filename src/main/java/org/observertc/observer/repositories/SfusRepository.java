@@ -24,6 +24,8 @@ public class SfusRepository implements RepositoryStorageMetrics {
     private static final Logger logger = LoggerFactory.getLogger(SfusRepository.class);
 
     private static final String STORAGE_ID = "observertc-sfus";
+    private static final int MAX_KEYS = 1000;
+    private static final int MAX_VALUES = 100;
 
     private SeparatedStorage<String, Models.Sfu> storage;
 
@@ -56,7 +58,8 @@ public class SfusRepository implements RepositoryStorageMetrics {
                 )
                 .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
-                .setMaxMessageValues(1000)
+                .setMaxMessageKeys(MAX_KEYS)
+                .setMaxMessageValues(MAX_VALUES)
                 .build();
 
         this.fetched = CachedFetches.<String, Sfu>builder()
