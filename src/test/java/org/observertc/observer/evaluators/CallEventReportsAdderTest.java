@@ -94,26 +94,26 @@ class CallEventReportsAdderTest {
         Assertions.assertEquals(1, actualNumberOfReports);
     }
 
-    @Test
-    void shouldReportStoppedCalls_1() throws ExecutionException, InterruptedException, TimeoutException {
-        var observedClientSamples = this.generateObservedClientSamples();
-        var promise = new CompletableFuture<List<ModifiedStorageEntry<String, Models.Client>>>();
-        var reports = new LinkedList<Report>();
-        this.callEventReportsAdder.observableReports().subscribe(reports::addAll);
-        this.clientsRepository.observableExpiredEntries().subscribe(promise::complete);
-
-        this.callEntitiesUpdater.accept(observedClientSamples);
-        promise.get(config.repository.clientMaxIdleTimeInS * 10, TimeUnit.SECONDS);
-
-        this.callEventReportsAdder.flush();
-
-        var actualNumberOfReports = reports.stream()
-                .filter(r -> ReportType.CALL_EVENT.equals(r.type))
-                .map(r -> (CallEventReport) r.payload)
-                .filter(r -> CallEventType.CALL_ENDED.name().equals(r.name))
-                .count();
-        Assertions.assertEquals(1, actualNumberOfReports);
-    }
+//    @Test
+//    void shouldReportStoppedCalls_1() throws ExecutionException, InterruptedException, TimeoutException {
+//        var observedClientSamples = this.generateObservedClientSamples();
+//        var promise = new CompletableFuture<List<ModifiedStorageEntry<String, Models.Client>>>();
+//        var reports = new LinkedList<Report>();
+//        this.callEventReportsAdder.observableReports().subscribe(reports::addAll);
+//        this.clientsRepository.observableExpiredEntries().subscribe(promise::complete);
+//
+//        this.callEntitiesUpdater.accept(observedClientSamples);
+//        promise.get(config.repository.clientMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+//
+//        this.callEventReportsAdder.flush();
+//
+//        var actualNumberOfReports = reports.stream()
+//                .filter(r -> ReportType.CALL_EVENT.equals(r.type))
+//                .map(r -> (CallEventReport) r.payload)
+//                .filter(r -> CallEventType.CALL_ENDED.name().equals(r.name))
+//                .count();
+//        Assertions.assertEquals(1, actualNumberOfReports);
+//    }
 
     @Test
     void shouldReportJoinedClients() throws ExecutionException, InterruptedException, TimeoutException {
