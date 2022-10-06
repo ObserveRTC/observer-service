@@ -65,6 +65,10 @@ class CsvRecordMapperTest {
         int i;
         for (i = 0; sourceIt.hasNext(); ++i) {
             var item = sourceIt.next();
+            if (item == null) {
+                var read = record.get(i);
+                return read == null || read.isBlank();
+            }
             var written = item.toString();
             var read = record.get(i);
 //            System.out.println(read + " <-> " + written);

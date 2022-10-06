@@ -44,6 +44,7 @@ class ObjectHierarchyKeyAssignerBuilder {
         var CALL_META_DATA = typePrefixProvider.apply(ReportType.CALL_META_DATA);
         var CLIENT_EXTENSION_DATA = typePrefixProvider.apply(ReportType.CLIENT_EXTENSION_DATA);
         var PEER_CONNECTION_TRANSPORT = typePrefixProvider.apply(ReportType.PEER_CONNECTION_TRANSPORT);
+        var ICE_CANDIDATE_PAIR = typePrefixProvider.apply(ReportType.ICE_CANDIDATE_PAIR);
         var PEER_CONNECTION_DATA_CHANNEL = typePrefixProvider.apply(ReportType.PEER_CONNECTION_DATA_CHANNEL);
         var INBOUND_AUDIO_TRACK = typePrefixProvider.apply(ReportType.INBOUND_AUDIO_TRACK);
         var INBOUND_VIDEO_TRACK = typePrefixProvider.apply(ReportType.INBOUND_VIDEO_TRACK);
@@ -132,11 +133,23 @@ class ObjectHierarchyKeyAssignerBuilder {
             }
 
             @Override
-            public String visitClientTransportReport(Report obj) {
+            public String visitPeerConnectionTransportReport(Report obj) {
                 try {
-                    var payload = (ClientTransportReport) obj.payload;
+                    var payload = (PeerConnectionTransportReport) obj.payload;
                     return createStringBufferForCallReports.apply(payload.serviceId, payload.callId)
                             .append(PEER_CONNECTION_TRANSPORT)
+                            .toString();
+                } catch (Exception ex) {
+                    return wrongCallReports;
+                }
+            }
+
+            @Override
+            public String visitIceCandidatePairReport(Report obj) {
+                try {
+                    var payload = (IceCandidatePairReport) obj.payload;
+                    return createStringBufferForCallReports.apply(payload.serviceId, payload.callId)
+                            .append(ICE_CANDIDATE_PAIR)
                             .toString();
                 } catch (Exception ex) {
                     return wrongCallReports;

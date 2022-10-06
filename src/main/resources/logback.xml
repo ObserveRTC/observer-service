@@ -9,6 +9,8 @@
         </encoder>
     </appender>
 
+    <logger name="io.github.balazskreith.hamok" level="info" />
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>

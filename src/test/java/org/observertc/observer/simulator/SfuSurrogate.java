@@ -1,7 +1,7 @@
 package org.observertc.observer.simulator;
 
-import org.observertc.schemas.v200beta59.samples.Samples;
-import org.observertc.schemas.v200beta59.samples.Samples.SfuSample;
+
+import org.observertc.schemas.samples.Samples;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -49,17 +49,14 @@ public class SfuSurrogate implements NetworkLinkProvider {
 
     public Samples getSamples() {
         var result = new Samples();
-        var meta = new Samples.SamplesMeta();
-        meta.schemaVersion = Samples.VERSION;
-        result.meta = meta;
-        result.sfuSamples = new SfuSample[]{ this.generateSfuSample() };
+        result.sfuSamples = new Samples.SfuSample[]{ this.generateSfuSample() };
         return result;
     }
 
-    private SfuSample generateSfuSample() {
-        var result = new SfuSample();
+    private Samples.SfuSample generateSfuSample() {
+        var result = new Samples.SfuSample();
 //        result.sctpChannels = this.generateSctpChannels();
-        result.sfuId = this.sfuId;
+        result.sfuId = this.sfuId.toString();
         result.timestamp = Instant.now().toEpochMilli();
         result.marker = this.marker;
         result.timeZoneOffsetInHours = this.timeZoneOffsetInHour;

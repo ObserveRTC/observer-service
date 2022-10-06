@@ -17,7 +17,7 @@ class CallMetaReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var serviceId = observedClientSample.getServiceId();
         var mediaUnitId = observedClientSample.getMediaUnitId();
@@ -59,7 +59,7 @@ class CallMetaReportsDepotTest {
     @Test
     @Order(3)
     void shouldBeCleaned() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var payload = this.randomGenerators.getRandomString();
         var metaType = CallMetaType.ICE_LOCAL_CANDIDATE;

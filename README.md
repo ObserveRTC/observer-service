@@ -1,5 +1,6 @@
 WebRTC-Observer
 ==
+
 ![Build](https://github.com/ObserveRTC/observer/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/ObserveRTC/observer/actions/workflows/test.yml/badge.svg)
 
@@ -381,7 +382,8 @@ sinks:
         sendInboundVideoTracks: true
         sendOutboundAudioTracks: true
         sendOutboundVideoTracks: true
-        sendClientTransports: true
+        sendPeerConnectionTransports: true
+        sendIceCanddiatePairs: true
         sendClientDataChannels: true
         sendSfuEvents: true
         sendSfuMeta: true
@@ -478,6 +480,7 @@ sinks:
             call-meta-data: observertc-call-meta-data-reports-csv
             client-extension-data: observertc-client-extension-data-reports-csv
             peer-connection-transport: observertc-peer-connection-transport-reports-csv
+            ice-candidate-pair: observertc-ice-candidate-pair-reports-csv
             peer-connection-data-channel: observertc-peer-connection-data-channel-reports-csv
             inbound-audio-track: observertc-inbound-audio-track-reports-csv
             inbound-video-track: observertc-inbound-video-track-reports-csv
@@ -540,6 +543,7 @@ sinks:
           call-meta-data: observertc-call-meta-data-reports-csv
           client-extension-data: observertc-client-extension-data-reports-csv
           peer-connection-transport: observertc-peer-connection-transport-reports-csv
+          ice-candidate-pair: observertc-ice-candidate-pair-reports-csv
           peer-connection-data-channel: observertc-peer-connection-data-channel-reports-csv
           inbound-audio-track: observertc-inbound-audio-track-reports-csv
           inbound-video-track: observertc-inbound-video-track-reports-csv

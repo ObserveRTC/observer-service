@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.OutboundAudioTrackReport;
 import org.observertc.schemas.samples.Samples;
@@ -20,6 +19,7 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
     private String peerConnectionLabel = null;
     private ObservedClientSample observedClientSample = null;
     private Samples.ClientSample.OutboundAudioTrack outboundAudioTrack = null;
+
     private List<OutboundAudioTrackReport> buffer = new LinkedList<>();
 
     public OutboundAudioReportsDepot setPeerConnectionLabel(String value) {
@@ -55,11 +55,6 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(outboundAudioTrack.peerConnectionId);
-            var trackId = UUIDAdapter.toStringOrNull(outboundAudioTrack.trackId);
-            var sfuStreamId = UUIDAdapter.toStringOrNull(outboundAudioTrack.sfuStreamId);
             var report = OutboundAudioTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -68,62 +63,44 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setRoomId(clientSample.roomId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setUserId(clientSample.userId)
-                    .setPeerConnectionId(peerConnectionId)
+                    .setPeerConnectionId(outboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
-                    .setTrackId(trackId)
+                    .setTrackId(outboundAudioTrack.trackId)
 
                     /* Sample Based Report Fields */
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* OutboundRTP related fields specific for Audio*/
-                    .setSfuStreamId(sfuStreamId)
+                    .setPeerConnectionId(outboundAudioTrack.peerConnectionId)
+                    .setTrackId(outboundAudioTrack.trackId)
+                    .setSfuStreamId(outboundAudioTrack.sfuStreamId)
+                    .setSampleSeq(clientSample.sampleSeq)
                     .setSsrc(outboundAudioTrack.ssrc)
                     .setPacketsSent(outboundAudioTrack.packetsSent)
                     .setBytesSent(outboundAudioTrack.bytesSent)
                     .setRid(outboundAudioTrack.rid)
-                    .setLastPacketSentTimestamp(outboundAudioTrack.lastPacketSentTimestamp)
                     .setHeaderBytesSent(outboundAudioTrack.headerBytesSent)
-                    .setPacketsDiscardedOnSend(outboundAudioTrack.packetsDiscardedOnSend)
-                    .setPacketsDiscarded(outboundAudioTrack.packetsDiscarded)
-                    .setBytesDiscardedOnSend(outboundAudioTrack.bytesDiscardedOnSend)
-                    .setFecPacketsSent(outboundAudioTrack.fecPacketsSent)
                     .setRetransmittedPacketsSent(outboundAudioTrack.retransmittedPacketsSent)
                     .setRetransmittedBytesSent(outboundAudioTrack.retransmittedBytesSent)
                     .setTargetBitrate(outboundAudioTrack.targetBitrate)
                     .setTotalEncodedBytesTarget(outboundAudioTrack.totalEncodedBytesTarget)
-                    .setTotalSamplesSent(outboundAudioTrack.totalSamplesSent)
-                    .setSamplesEncodedWithSilk(outboundAudioTrack.samplesEncodedWithSilk)
-                    .setSamplesEncodedWithCelt(outboundAudioTrack.samplesEncodedWithCelt)
-                    .setVoiceActivityFlag(outboundAudioTrack.voiceActivityFlag)
                     .setTotalPacketSendDelay(outboundAudioTrack.totalPacketSendDelay)
                     .setAverageRtcpInterval(outboundAudioTrack.averageRtcpInterval)
-                    .setPerDscpPacketsSent(outboundAudioTrack.perDscpPacketsSent)
                     .setNackCount(outboundAudioTrack.nackCount)
                     .setEncoderImplementation(outboundAudioTrack.encoderImplementation)
+                    .setActive(outboundAudioTrack.active)
 
                     /* Remote Inbound specific fields related to Audio */
                     .setPacketsReceived(outboundAudioTrack.packetsReceived)
                     .setPacketsLost(outboundAudioTrack.packetsLost)
                     .setJitter(outboundAudioTrack.jitter)
-                    .setPacketsDiscarded(outboundAudioTrack.packetsDiscarded)
-                    .setPacketsRepaired(outboundAudioTrack.packetsRepaired)
-                    .setBurstPacketsLost(outboundAudioTrack.burstPacketsLost)
-                    .setBurstPacketsDiscarded(outboundAudioTrack.burstPacketsDiscarded)
-                    .setBurstPacketsLost(outboundAudioTrack.burstPacketsLost)
-                    .setBurstDiscardCount(outboundAudioTrack.burstDiscardCount)
-                    .setBurstLossCount(outboundAudioTrack.burstLossCount)
-                    .setBurstLossRate(outboundAudioTrack.burstLossRate)
-                    .setBurstDiscardRate(outboundAudioTrack.burstDiscardRate)
-                    .setGapLossRate(outboundAudioTrack.gapLossRate)
-                    .setGapDiscardRate(outboundAudioTrack.gapDiscardRate)
                     .setRoundTripTime(outboundAudioTrack.roundTripTime)
                     .setTotalRoundTripTime(outboundAudioTrack.totalRoundTripTime)
                     .setFractionLost(outboundAudioTrack.fractionLost)
-                    .setReportsReceived(outboundAudioTrack.reportsReceived)
                     .setRoundTripTimeMeasurements(outboundAudioTrack.roundTripTimeMeasurements)
 
                     /* MediaSource related stats */
@@ -133,16 +110,10 @@ public class OutboundAudioReportsDepot implements Supplier<List<OutboundAudioTra
                     .setTotalSamplesDuration(outboundAudioTrack.totalSamplesDuration)
                     .setEchoReturnLoss(outboundAudioTrack.echoReturnLoss)
                     .setEchoReturnLossEnhancement(outboundAudioTrack.echoReturnLossEnhancement)
-
-                    /* Sender related stats */
-                    .setEnded(outboundAudioTrack.ended)
-
-                    /* Codec Specific fields  */
-                    .setPayloadType(outboundAudioTrack.payloadType)
-                    .setMimeType(outboundAudioTrack.mimeType)
-                    .setClockRate(outboundAudioTrack.clockRate)
-                    .setChannels(outboundAudioTrack.channels)
-                    .setSdpFmtpLine(outboundAudioTrack.sdpFmtpLine)
+                    .setDroppedSamplesDuration(outboundAudioTrack.droppedSamplesDuration)
+                    .setDroppedSamplesEvents(outboundAudioTrack.droppedSamplesEvents)
+                    .setTotalCaptureDelay(outboundAudioTrack.totalCaptureDelay)
+                    .setTotalSamplesCaptured(outboundAudioTrack.totalSamplesCaptured)
 
                     .build();
             this.buffer.add(report);

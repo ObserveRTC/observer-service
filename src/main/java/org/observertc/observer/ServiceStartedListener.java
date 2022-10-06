@@ -16,13 +16,14 @@
 
 package org.observertc.observer;
 
-import com.hazelcast.map.IMap;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.runtime.server.event.ServerStartupEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.configs.ObserverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +33,6 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -43,7 +42,10 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStartedListener.class);
 
 	@Inject
-	ObserverHazelcast observerHazelcast;
+	HamokService hamokService;
+
+	@Inject
+	ObserverConfig observerConfig;
 
 	@Inject
 	ObserverService observerService;
@@ -52,8 +54,10 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 
 	@PostConstruct
 	void setup() {
+		if (observerConfig.security.printConfigs) {
+			logger.info("Config {}", JsonUtils.objectToString(observerConfig));
+		}
 		this.properties = this.fetch();
-		this.deployCheck();
 	}
 
 	@PreDestroy
@@ -61,9 +65,9 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 		if (observerService.isStarted()) {
 			observerService.stop();
 		}
-		observerHazelcast.getInstance().getCluster().getMembers().stream().forEach(member -> {
-			member.getUuid();
-		});
+		if (this.hamokService.isRunning()) {
+			hamokService.stop();
+		}
 	}
 
 	public ServiceStartedListener() {
@@ -75,34 +79,10 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 	public void onApplicationEvent(ServerStartupEvent event) {
 		observerService.start();
 		renderLogoAndVersion();
+		hamokService.start();
 		// TODO: websocket status message
 		// TODO: rest api status page
 		// TODO: sinks status
-	}
-
-	/**
-	 * Check if the hazelcast contains a value previously
-	 * added to the cluster automatically whenever this application was part.
-	 *
-	 */
-	private void deployCheck() {
-		final String KEY = ObserverService.class.getSimpleName() + "STAMP";
-		IMap<String, String> configMap = observerHazelcast.getInstance().getMap(KEY);
-
-		if (!configMap.containsKey(KEY)) {
-			logger.info("It seems this is the first time the service is deployed. " +
-					"If you have done RollingUpdate, and you see this message, then you have a problem, " +
-					"as the backup did not transitioned while you had shutdown the app");
-		} else {
-			String prevStamp = configMap.get(KEY);
-			logger.info("The service is successfully rolled up. Previous stamp: {}", prevStamp);
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
-		Date dt = new Date();
-		String humanReadableNow = sdf.format(dt); // formats to 09/23/2009 13:53:28.238
-		String stamp = String.format("Version %s, deployed at: %s, cluster member: %s", properties.getOrDefault("version", "unknown").toString(), humanReadableNow, observerHazelcast.getMemberName());
-		configMap.set(KEY, stamp);
-		logger.info("Deploy stamp ({}) is added", stamp);
 	}
 
 	private void renderLogoAndVersion() {

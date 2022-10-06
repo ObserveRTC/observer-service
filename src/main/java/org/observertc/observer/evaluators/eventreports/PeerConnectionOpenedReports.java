@@ -1,32 +1,35 @@
 package org.observertc.observer.evaluators.eventreports;
 
-import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.observer.dto.PeerConnectionDTO;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Singleton;
 import org.observertc.observer.events.CallEventType;
+import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Prototype
+@Singleton
 public class PeerConnectionOpenedReports {
 
     private static final Logger logger = LoggerFactory.getLogger(PeerConnectionOpenedReports.class);
+
+    private Subject<List<CallEventReport>> output = PublishSubject.<List<CallEventReport>>create().toSerialized();
 
     @PostConstruct
     void setup() {
 
     }
 
-    public List<CallEventReport> mapAddedPeerConnections(List<PeerConnectionDTO> peerConnectionDTOs) {
+    public void accept(List<Models.PeerConnection> peerConnectionDTOs) {
         if (Objects.isNull(peerConnectionDTOs) || peerConnectionDTOs.size() < 1) {
-            return Collections.EMPTY_LIST;
+            return;
         }
 
         var reports = peerConnectionDTOs.stream()
@@ -34,33 +37,36 @@ public class PeerConnectionOpenedReports {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        return reports;
+        if (0 < reports.size()) {
+            this.output.onNext(reports);
+        }
     }
 
-    private CallEventReport makeReport(PeerConnectionDTO peerConnectionDTO) {
+    private CallEventReport makeReport(Models.PeerConnection peerConnectionDTO) {
         try {
-            String callId = UUIDAdapter.toStringOrNull(peerConnectionDTO.callId);
-            String clientId = UUIDAdapter.toStringOrNull(peerConnectionDTO.clientId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(peerConnectionDTO.peerConnectionId);
-            String message = String.format("PeerConnection (%s) is opened", peerConnectionId);
+            String message = String.format("PeerConnection (%s) is opened", peerConnectionDTO.getPeerConnectionId());
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.PEER_CONNECTION_OPENED.name())
-                    .setCallId(callId)
-                    .setServiceId(peerConnectionDTO.serviceId)
-                    .setRoomId(peerConnectionDTO.roomId)
-                    .setClientId(clientId)
-                    .setMediaUnitId(peerConnectionDTO.mediaUnitId)
-                    .setUserId(peerConnectionDTO.userId)
-                    .setPeerConnectionId(peerConnectionId)
-                    .setTimestamp(peerConnectionDTO.created)
-                    .setMarker(peerConnectionDTO.marker)
+                    .setCallId(peerConnectionDTO.getCallId())
+                    .setServiceId(peerConnectionDTO.getServiceId())
+                    .setRoomId(peerConnectionDTO.getRoomId())
+                    .setClientId(peerConnectionDTO.getClientId())
+                    .setMediaUnitId(peerConnectionDTO.getMediaUnitId())
+                    .setUserId(peerConnectionDTO.getUserId())
+                    .setPeerConnectionId(peerConnectionDTO.getPeerConnectionId())
+                    .setTimestamp(peerConnectionDTO.getOpened())
+                    .setMarker(peerConnectionDTO.getMarker())
                     .setMessage(message)
                     .build();
-            logger.info("Peer Connection {} is OPENED at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.peerConnectionId, peerConnectionDTO.callId, peerConnectionDTO.serviceId, peerConnectionDTO.roomId);
+            logger.info("Peer Connection {} is OPENED at call \"{}\" in service \"{}\" at room \"{}\"", peerConnectionDTO.getPeerConnectionId(), peerConnectionDTO.getCallId(), peerConnectionDTO.getServiceId(), peerConnectionDTO.getRoomId());
             return report;
         } catch (Exception ex) {
             logger.warn("Unexpected exception occurred while making report", ex);
             return null;
         }
+    }
+
+    public Observable<List<CallEventReport>> getOutput() {
+        return this.output;
     }
 }

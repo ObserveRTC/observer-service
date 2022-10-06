@@ -41,11 +41,19 @@ class ReportTest {
     }
 
     @Test
-    public void shouldGenerateFromClientTransportReport() {
-        var payload = generator.generateClientTransportReport();
-        var report = Report.fromClientTransportReport(payload);
+    public void shouldGenerateFromPeerConnectionTransportReport() {
+        var payload = generator.generatePeerConnectionTransport();
+        var report = Report.fromPeerConnectionTransportReport(payload);
 
         Assertions.assertEquals(ReportType.PEER_CONNECTION_TRANSPORT, report.type);
+    }
+
+    @Test
+    public void shouldGenerateFromIceCandidatePairReport() {
+        var payload = generator.generateIceCandidatePairReport();
+        var report = Report.fromIceCandidatePairReport(payload);
+
+        Assertions.assertEquals(ReportType.ICE_CANDIDATE_PAIR, report.type);
     }
 
     @Test

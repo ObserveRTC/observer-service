@@ -10,6 +10,9 @@ group = "org.observertc.observer"
 
 repositories {
     mavenCentral()
+//    maven {
+//        url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+//    }
 }
 
 dependencies {
@@ -28,12 +31,13 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut.kubernetes:micronaut-kubernetes-client:3.4.0")
 
     // ------------- Websocket -----------
     implementation 'jakarta.websocket:jakarta.websocket-api:2.0.0'
 
     // ------------- Hazelcast -----------
-    implementation group: 'com.hazelcast', name: 'hazelcast', version: '5.1'
+//    implementation group: 'com.hazelcast', name: 'hazelcast', version: '5.1'
 
     // --------- Sink dependencies -----
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.1'
@@ -41,7 +45,12 @@ dependencies {
     implementation group: 'com.opencsv', name: 'opencsv', version: '4.1'
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
 
-//    implementation group: 'io.github.balazskreith.hamok', name: 'vstorage', version: '1.0.0'
+    // --------- Hamok -----
+//    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.0-SNAPSHOT'
+    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.0-beta'
+
+
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
 
     // --------- AWS SDK -----
     implementation platform('software.amazon.awssdk:bom:2.15.0')

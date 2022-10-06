@@ -1,6 +1,6 @@
 package org.observertc.observer.utils;
 
-import org.observertc.observer.dto.StreamDirection;
+import org.observertc.observer.common.StreamDirection;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.observer.events.SfuEventType;
 
@@ -246,6 +246,10 @@ public class RandomGenerators {
 
     private List<String> markers = TestUtils.getMarkers();
     public String getRandomMarker() {
+//        return null;
+        if (Instant.now().getEpochSecond() % 2 == 0) {
+            return null;
+        }
         return this.getRandomFromList(markers);
     }
 

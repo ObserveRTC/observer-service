@@ -3,7 +3,7 @@ package org.observertc.observer.evaluators.eventreports.attachments;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.dto.StreamDirection;
+import org.observertc.observer.common.StreamDirection;
 
 import java.util.Objects;
 

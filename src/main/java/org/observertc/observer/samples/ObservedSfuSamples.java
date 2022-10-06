@@ -5,6 +5,8 @@ import java.util.stream.Stream;
 
 public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
 
+    static ObservedSfuSamples EMPTY_SAMPLES = ObservedSfuSamples.builder().build();
+
     static Builder builder() {
         return new Builder();
     }
@@ -15,19 +17,22 @@ public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
 
     int size();
 
-    Set<UUID> getSfuIds();
+    Set<String> getSfuIds();
 
-    Set<UUID> getRtpPadIds();
+    Set<String> getInboundRtpPadIds();
 
-    Set<UUID> getTransportIds();
+    Set<String> getOutboundRtpPadIds();
 
-    Set<UUID> getChannelIds();
+    Set<String> getTransportIds();
+
+    Set<String> getSctpStreamIds();
 
     class Builder {
-        private Set<UUID> sfuIds = new HashSet<>();
-        private Set<UUID> rtpPadIds = new HashSet<>();
-        private Set<UUID> transportIds = new HashSet<>();
-        private Set<UUID> channelIds = new HashSet<>();
+        private Set<String> sfuIds = new HashSet<>();
+        private Set<String> inboundRtpPadIds = new HashSet<>();
+        private Set<String> outboundRtpPadIds = new HashSet<>();
+        private Set<String> transportIds = new HashSet<>();
+        private Set<String> sctpStreamIds = new HashSet<>();
         private List<ObservedSfuSample> sfuSamples = new LinkedList<>();
 
         public Builder addObservedSfuSample(ObservedSfuSample value) {
@@ -37,13 +42,13 @@ public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
                     .forEach(transportIds::add);
             SfuSampleVisitor.streamInboundRtpPads(sfuSample)
                     .map(rtpPad -> rtpPad.padId)
-                    .forEach(rtpPadIds::add);
+                    .forEach(inboundRtpPadIds::add);
             SfuSampleVisitor.streamOutboundRtpPads(sfuSample)
                     .map(rtpPad -> rtpPad.padId)
-                    .forEach(rtpPadIds::add);
+                    .forEach(outboundRtpPadIds::add);
             SfuSampleVisitor.streamSctpStreams(sfuSample)
                     .map(channel -> channel.channelId)
-                    .forEach(channelIds::add);
+                    .forEach(sctpStreamIds::add);
             sfuIds.add(sfuSample.sfuId);
             sfuSamples.add(value);
             return this;
@@ -73,23 +78,28 @@ public interface ObservedSfuSamples extends Iterable<ObservedSfuSample> {
                 }
 
                 @Override
-                public Set<UUID> getSfuIds() {
+                public Set<String> getSfuIds() {
                     return sfuIds;
                 }
 
                 @Override
-                public Set<UUID> getRtpPadIds() {
-                    return rtpPadIds;
+                public Set<String> getInboundRtpPadIds() {
+                    return inboundRtpPadIds;
                 }
 
                 @Override
-                public Set<UUID> getTransportIds() {
+                public Set<String> getOutboundRtpPadIds() {
+                    return outboundRtpPadIds;
+                }
+
+                @Override
+                public Set<String> getTransportIds() {
                     return transportIds;
                 }
 
                 @Override
-                public Set<UUID> getChannelIds() {
-                    return channelIds;
+                public Set<String> getSctpStreamIds() {
+                    return sctpStreamIds;
                 }
             };
         }

@@ -13,17 +13,17 @@ import static org.observertc.observer.utils.TestUtils.arrayOrNullFromQueue;
 public class SfuSideSamplesGenerator implements Supplier<Samples> {
 
     private RandomGenerators randomGenerator = new RandomGenerators();
-    private UUID callId = null;
-    private UUID sfuId = UUID.randomUUID();
+    private String callId = null;
+    private String sfuId = UUID.randomUUID().toString();
     private String marker = null;
     private Integer timeZoneOffsetInHours = null;
-    private Map<UUID, TransportSession> transports = new HashMap<>();
-    private Map<UUID, RtpSession> inboundRtpPads = new HashMap<>();
-    private Map<UUID, RtpSession> outboundRtpPads = new HashMap<>();
-    private Map<UUID, DataChannelSession> sctpChannels = new HashMap<>();
+    private Map<String, TransportSession> transports = new HashMap<>();
+    private Map<String, RtpSession> inboundRtpPads = new HashMap<>();
+    private Map<String, RtpSession> outboundRtpPads = new HashMap<>();
+    private Map<String, DataChannelSession> sctpChannels = new HashMap<>();
     private Queue<Samples.SfuSample.SfuExtensionStats> addedExtensionStats = new LinkedList<>();
 
-    public SfuSideSamplesGenerator setSfuId(UUID value) {
+    public SfuSideSamplesGenerator setSfuId(String value) {
         this.sfuId = value;
         return this;
     }
@@ -46,17 +46,17 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public SfuSideSamplesGenerator addTransport(UUID value) {
+    public SfuSideSamplesGenerator addTransport(String value) {
         return this.addTransport(value, false);
     }
 
-    public SfuSideSamplesGenerator addTransport(UUID value, boolean internal) {
+    public SfuSideSamplesGenerator addTransport(String value, boolean internal) {
         var session = new TransportSession(internal);
         this.transports.put(value, session);
         return this;
     }
 
-    public SfuSideSamplesGenerator removeTransport(UUID value) {
+    public SfuSideSamplesGenerator removeTransport(String value) {
         if (!this.transports.containsKey(value)) return this;
         this.inboundRtpPads.entrySet().stream()
                 .filter(entry -> entry.getValue().transportId.equals(value))
@@ -81,22 +81,22 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public SfuSideSamplesGenerator addDataChannel(UUID transportId, UUID streamId, UUID channelId) {
+    public SfuSideSamplesGenerator addDataChannel(String transportId, String streamId, String channelId) {
         var session = new DataChannelSession(transportId, streamId);
         this.sctpChannels.put(channelId, session);
         return this;
     }
 
-    public SfuSideSamplesGenerator removeDataChannel(UUID channelId) {
+    public SfuSideSamplesGenerator removeDataChannel(String channelId) {
         this.sctpChannels.remove(channelId);
         return this;
     }
 
-    public SfuSideSamplesGenerator addInboundRtpPad(UUID transportId, UUID rtpPadId, Long SSRC, UUID sfuStreamId) {
+    public SfuSideSamplesGenerator addInboundRtpPad(String transportId, String rtpPadId, Long SSRC, String sfuStreamId) {
         return this.addInboundRtpPad(transportId, rtpPadId, SSRC, sfuStreamId, false);
     }
 
-    public SfuSideSamplesGenerator addInboundRtpPad(UUID transportId, UUID rtpPadId, Long SSRC, UUID sfuStreamId, boolean internal) {
+    public SfuSideSamplesGenerator addInboundRtpPad(String transportId, String rtpPadId, Long SSRC, String sfuStreamId, boolean internal) {
         if (!this.transports.containsKey(transportId)) {
             throw new RuntimeException("Add the peer connection id to the generator before you add any session related to it");
         }
@@ -105,20 +105,20 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
         return this;
     }
 
-    public SfuSideSamplesGenerator removeInboundRtpPad(UUID rtpPadId) {
+    public SfuSideSamplesGenerator removeInboundRtpPad(String rtpPadId) {
         this.inboundRtpPads.remove(rtpPadId);
         return this;
     }
 
-    public SfuSideSamplesGenerator addOutboundRtpPad(UUID transportId, UUID rtpPadId, Long SSRC, UUID sfuStreamId, UUID sfuSinkId)  {
+    public SfuSideSamplesGenerator addOutboundRtpPad(String transportId, String rtpPadId, Long SSRC, String sfuStreamId, String sfuSinkId)  {
         return this.addOutboundRtpPad(transportId, rtpPadId, SSRC, sfuStreamId, sfuSinkId, false);
     }
-    public SfuSideSamplesGenerator addOutboundRtpPad(UUID transportId, UUID rtpPadId, Long SSRC, UUID sfuStreamId, UUID sfuSinkId, boolean internal) {
+    public SfuSideSamplesGenerator addOutboundRtpPad(String transportId, String rtpPadId, Long SSRC, String sfuStreamId, String sfuSinkId, boolean internal) {
         return this.addOutboundRtpPad(transportId, rtpPadId, SSRC, sfuStreamId, sfuSinkId, internal, null, null);
     }
 
 
-    public SfuSideSamplesGenerator addOutboundRtpPad(UUID transportId, UUID rtpPadId, Long SSRC, UUID sfuStreamId, UUID sfuSinkId, boolean internal, UUID remoteClientId, UUID remoteTrackId) {
+    public SfuSideSamplesGenerator addOutboundRtpPad(String transportId, String rtpPadId, Long SSRC, String sfuStreamId, String sfuSinkId, boolean internal, String remoteClientId, String remoteTrackId) {
         if (!this.transports.containsKey(transportId)) {
             throw new RuntimeException("Add the peer connection id to the generator before you add any session related to it");
         }
@@ -307,16 +307,16 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
     }
 
     private class RtpSession {
-        final UUID sfuStreamId;
-        final UUID sfuSinkId;
+        final String sfuStreamId;
+        final String sfuSinkId;
         final Long SSRC;
-        final UUID transportId;
-        final UUID rtpPadId;
+        final String transportId;
+        final String rtpPadId;
         final boolean internal;
-        final UUID remoteClientId;
-        final UUID remoteTrackId;
+        final String remoteClientId;
+        final String remoteTrackId;
 
-        private RtpSession(UUID sfuStreamId, UUID sfuSinkId, Long ssrc, UUID transportId, UUID rtpPadId, boolean internal, UUID remoteClientId, UUID remoteTrackId) {
+        private RtpSession(String sfuStreamId, String sfuSinkId, Long ssrc, String transportId, String rtpPadId, boolean internal, String remoteClientId, String remoteTrackId) {
             this.sfuStreamId = sfuStreamId;
             this.sfuSinkId = sfuSinkId;
             SSRC = ssrc;
@@ -330,10 +330,10 @@ public class SfuSideSamplesGenerator implements Supplier<Samples> {
 
     private class DataChannelSession {
 
-        public final UUID transportId;
-        public final UUID streamId;
+        public final String transportId;
+        public final String streamId;
 
-        private DataChannelSession(UUID transportId, UUID streamId) {
+        private DataChannelSession(String transportId, String streamId) {
             this.transportId = transportId;
             this.streamId = streamId;
         }

@@ -1,13 +1,15 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.schemas.reports.SfuInboundRtpPadReport;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtpPadReport>> {
@@ -25,60 +27,6 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
     private String remoteRtpPadId = null;
     private List<SfuInboundRtpPadReport> buffer = new LinkedList<>();
 
-
-    public SfuInboundRtpPadReportsDepot setObservedSfuSample(ObservedSfuSample value) {
-        this.observedSfuSample = value;
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setSfuInboundRtpPad(Samples.SfuSample.SfuInboundRtpPad value) {
-        this.sfuInboundRtpPad = value;
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setCallId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.callId = value.toString();
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setClientId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.clientId = value.toString();
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setTrackId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.trackId = value.toString();
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setRemoteSfuId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.remoteSfuId = value.toString();
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setRemoteTransportId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.remoteTransportId = value.toString();
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setRemoteSinkId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.remoteSinkId = value.toString();
-        return this;
-    }
-
-    public SfuInboundRtpPadReportsDepot setRemoteRtpPadId(UUID value) {
-        if (Objects.isNull(value)) return this;
-        this.remoteRtpPadId = value.toString();
-        return this;
-    }
-
-
     public SfuInboundRtpPadReportsDepot clean() {
         this.observedSfuSample = null;
         this.sfuInboundRtpPad = null;
@@ -91,6 +39,61 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
         this.remoteRtpPadId = null;
         return this;
     }
+    
+    public SfuInboundRtpPadReportsDepot setObservedSfuSample(ObservedSfuSample value) {
+        this.observedSfuSample = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setSfuInboundRtpPad(Samples.SfuSample.SfuInboundRtpPad value) {
+        this.sfuInboundRtpPad = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setCallId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.callId = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setClientId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.clientId = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setTrackId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.trackId = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteSfuId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteSfuId = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteTransportId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteTransportId = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteSinkId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteSinkId = value;
+        return this;
+    }
+
+    public SfuInboundRtpPadReportsDepot setRemoteRtpPadId(String value) {
+        if (Objects.isNull(value)) return this;
+        this.remoteRtpPadId = value;
+        return this;
+    }
+
+
+
 
     public void assemble() {
         try {
@@ -103,17 +106,13 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                 return;
             }
             var sfuSample = observedSfuSample.getSfuSample();
-            String transportId = UUIDAdapter.toStringOrNull(sfuInboundRtpPad.transportId);
-            String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
-            String padId = UUIDAdapter.toStringOrNull(sfuInboundRtpPad.padId);
-            String streamId = UUIDAdapter.toStringOrNull(sfuInboundRtpPad.streamId);
             var report = SfuInboundRtpPadReport.newBuilder()
 
                     /* Report MetaFields */
                     /* .setServiceId() // not given */
                     .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
-                    .setSfuId(sfuId)
+                    .setSfuId(sfuSample.sfuId)
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
 
@@ -124,12 +123,12 @@ public class SfuInboundRtpPadReportsDepot implements Supplier<List<SfuInboundRtp
                     .setRemoteRtpPadId(this.remoteRtpPadId)
 
                     /* Report Fields */
-                    .setTransportId(transportId)
-                    .setSfuStreamId(streamId)
+                    .setTransportId(sfuInboundRtpPad.transportId)
+                    .setSfuStreamId(sfuInboundRtpPad.streamId)
                     .setInternal(sfuInboundRtpPad.internal)
 
                     .setSsrc(sfuInboundRtpPad.ssrc)
-                    .setRtpPadId(padId)
+                    .setRtpPadId(sfuInboundRtpPad.padId)
                     .setTrackId(trackId)
                     .setClientId(clientId)
                     .setCallId(callId)

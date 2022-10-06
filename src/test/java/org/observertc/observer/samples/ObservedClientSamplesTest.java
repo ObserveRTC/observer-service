@@ -7,7 +7,6 @@ import org.observertc.observer.utils.TestUtils;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 class ObservedClientSamplesTest {
@@ -56,25 +55,29 @@ class ObservedClientSamplesTest {
     @Test
     void getMediaTrackIds() {
         var observedSample = observedSamplesGenerator.generateObservedClientSample();
-        var expectedIds = new HashSet<UUID>();
+        var expectedInboundIds = new HashSet<String>();
+        var expectedOutboundIds = new HashSet<String>();
         ClientSampleVisitor.streamInboundAudioTracks(observedSample.getClientSample())
                 .map(track -> track.trackId)
-                .forEach(expectedIds::add);
+                .forEach(expectedInboundIds::add);
         ClientSampleVisitor.streamInboundVideoTracks(observedSample.getClientSample())
                 .map(track -> track.trackId)
-                .forEach(expectedIds::add);
+                .forEach(expectedInboundIds::add);
         ClientSampleVisitor.streamOutboundAudioTracks(observedSample.getClientSample())
                 .map(track -> track.trackId)
-                .forEach(expectedIds::add);
+                .forEach(expectedOutboundIds::add);
         ClientSampleVisitor.streamOutboundVideoTracks(observedSample.getClientSample())
                 .map(track -> track.trackId)
-                .forEach(expectedIds::add);
+                .forEach(expectedOutboundIds::add);
         var observedSamples = ObservedClientSamples.builder()
                 .addObservedClientSample(observedSample)
                 .build();
 
-        boolean equals = TestUtils.equalSets(expectedIds, observedSamples.getMediaTrackIds());
-        Assertions.assertTrue(equals);
+        boolean equals_inbound = TestUtils.equalSets(expectedInboundIds, observedSamples.getInboundTrackIds());
+        Assertions.assertTrue(equals_inbound);
+
+        boolean equals_outbound = TestUtils.equalSets(expectedOutboundIds, observedSamples.getOutboundTrackIds());
+        Assertions.assertTrue(equals_outbound);
     }
 
 

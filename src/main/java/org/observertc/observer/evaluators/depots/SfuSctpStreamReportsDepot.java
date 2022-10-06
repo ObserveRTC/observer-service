@@ -1,13 +1,15 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.schemas.reports.SfuSctpStreamReport;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamReport>> {
@@ -17,7 +19,7 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
     private ObservedSfuSample observedSfuSample = null;
     private Samples.SfuSample.SfuSctpChannel sctpChannel = null;
     private List<SfuSctpStreamReport> buffer = new LinkedList<>();
-    private UUID callId = null;
+    private String callId = null;
     private String roomId = null;
 
     public SfuSctpStreamReportsDepot setObservedSfuSample(ObservedSfuSample value) {
@@ -25,7 +27,7 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
         return this;
     }
 
-    public SfuSctpStreamReportsDepot setCallId(UUID value) {
+    public SfuSctpStreamReportsDepot setCallId(String value) {
         this.callId = value;
         return this;
     }
@@ -59,24 +61,20 @@ public class SfuSctpStreamReportsDepot implements Supplier<List<SfuSctpStreamRep
                 return;
             }
             var sfuSample = observedSfuSample.getSfuSample();
-            String transportId = UUIDAdapter.toStringOrNull(sctpChannel.transportId);
-            String sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
-            String streamId = UUIDAdapter.toStringOrNull(sctpChannel.streamId);
-            String callId = UUIDAdapter.toStringOrNull(this.callId);
             var report = SfuSctpStreamReport.newBuilder()
 
                     /* Report MetaFields */
                     .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
-                    .setSfuId(sfuId)
+                    .setSfuId(sfuSample.sfuId)
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
 
                     /* Helper field */
-                    .setCallId(callId)
+                    .setCallId(this.callId)
                     .setRoomId(roomId)
-                    .setTransportId(transportId)
-                    .setStreamId(streamId)
+                    .setTransportId(sctpChannel.transportId)
+                    .setStreamId(sctpChannel.streamId)
                     .setInternal(sctpChannel.internal)
 
                     /* SCTP Stats */

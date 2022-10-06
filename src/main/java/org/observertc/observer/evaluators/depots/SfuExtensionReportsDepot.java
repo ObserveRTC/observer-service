@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.schemas.reports.CallMetaReport;
 import org.observertc.schemas.reports.SfuExtensionReport;
@@ -51,24 +50,22 @@ public class SfuExtensionReportsDepot implements Supplier<List<SfuExtensionRepor
     }
 
     public void assemble() {
+        if (Objects.isNull(observedSfuSample)) {
+            logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
+            return;
+        }
+        if (Objects.isNull(extensionType)) {
+            logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
+            return;
+        }
+        var sfuSample = observedSfuSample.getSfuSample();
         try {
-            if (Objects.isNull(observedSfuSample)) {
-                logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
-                return;
-            }
-            if (Objects.isNull(extensionType)) {
-                logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
-                return;
-            }
-            var sfuSample = observedSfuSample.getSfuSample();
-            var sfuId = UUIDAdapter.toStringOrNull(sfuSample.sfuId);
-
             var report = SfuExtensionReport.newBuilder()
                     .setServiceId(observedSfuSample.getServiceId())
                     .setMediaUnitId(observedSfuSample.getMediaUnitId())
                     .setMarker(sfuSample.marker)
                     .setTimestamp(sfuSample.timestamp)
-                    .setSfuId(sfuId)
+                    .setSfuId(sfuSample.sfuId)
                     .setExtensionType(extensionType)
                     .setPayload(payload)
                     .build();

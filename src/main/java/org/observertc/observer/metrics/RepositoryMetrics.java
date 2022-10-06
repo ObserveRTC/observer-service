@@ -1,9 +1,5 @@
 package org.observertc.observer.metrics;
 
-import com.hazelcast.core.DistributedObject;
-import com.hazelcast.core.DistributedObjectUtil;
-import com.hazelcast.map.IMap;
-import com.hazelcast.multimap.MultiMap;
 import io.micrometer.core.instrument.Tag;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -11,7 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.TaskAbstract;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.repositories.HazelcastMaps;
+import org.observertc.observer.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +30,11 @@ public class RepositoryMetrics {
     private static final String TASK_TAG_NAME = "task";
     private static final String ENTRIES_METRIC_NAME = "entries";
     private static final String TASK_SUCCEEDED_TAG_NAME = "succeeded";
-    private static final String MAP_TAG_NAME = "map";
+
+    private static final String STORAGE_ID_TAG_NAME = "storageId";
 
     @Inject
     Metrics metrics;
-
-    @Inject
-    HazelcastMaps hazelcastMaps;
 
     @Inject
     ObserverConfig.MetricsConfig.RepositoryMetricsConfig config;
@@ -49,9 +43,34 @@ public class RepositoryMetrics {
     private String taskExecutionsMetricName;
     private String entriesMetricName;
 
-    private List<IMap> maps;
-    private List<MultiMap> multiMaps;
+    private List<RepositoryStorageMetrics> storageMetrics;
     private Disposable timer = null;
+
+    public RepositoryMetrics(
+                    CallsRepository callsRepository,
+                    ClientsRepository clientsRepository,
+                    PeerConnectionsRepository peerConnectionsRepository,
+                    InboundTracksRepository inboundTracksRepository,
+                    OutboundTracksRepository outboundTracksRepository,
+                    SfusRepository sfusRepository,
+                    SfuTransportsRepository sfuTransportsRepository,
+                    SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
+                    SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository,
+                    SfuSctpStreamsRepository sfuSctpStreamsRepository
+    ) {
+        this.storageMetrics = List.of(
+                callsRepository,
+                clientsRepository,
+                peerConnectionsRepository,
+                inboundTracksRepository,
+                outboundTracksRepository,
+                sfusRepository,
+                sfuTransportsRepository,
+                sfuInboundRtpPadsRepository,
+                sfuOutboundRtpPadsRepository,
+                sfuSctpStreamsRepository
+        );
+    }
 
     @PostConstruct
     void init() {
@@ -63,36 +82,6 @@ public class RepositoryMetrics {
             this.timer = worker.schedulePeriodically(this::expose, this.config.exposePeriodInMin, this.config.exposePeriodInMin, TimeUnit.MINUTES);
             logger.info("Scheduler is added to expose metrics in every {} minutes", this.config.exposePeriodInMin);
         }
-        this.maps = List.of(
-                this.hazelcastMaps.getCalls(),
-                this.hazelcastMaps.getServiceRoomToCallIds(),
-                this.hazelcastMaps.getClients(),
-                this.hazelcastMaps.getPeerConnections(),
-                this.hazelcastMaps.getMediaTracks(),
-                this.hazelcastMaps.getInboundTrackIdsToOutboundTrackIds(),
-                this.hazelcastMaps.getSFUs(),
-                this.hazelcastMaps.getSFUTransports(),
-                this.hazelcastMaps.getSfuInternalInboundRtpPadIdToOutboundRtpPadId(),
-                this.hazelcastMaps.getSfuStreams(),
-                this.hazelcastMaps.getSfuSinks(),
-                this.hazelcastMaps.getGeneralEntries(),
-                this.hazelcastMaps.getWeakLocks(),
-                this.hazelcastMaps.getSyncTaskStates(),
-                this.hazelcastMaps.getRequests(),
-                this.hazelcastMaps.getEtcMap(),
-                this.hazelcastMaps.getRefreshedClients(),
-                this.hazelcastMaps.getRefreshedSfuTransports()
-
-        );
-        this.multiMaps = List.of(
-                this.hazelcastMaps.getCallToClientIds(),
-                this.hazelcastMaps.getClientToPeerConnectionIds(),
-                this.hazelcastMaps.getPeerConnectionToInboundTrackIds(),
-                this.hazelcastMaps.getPeerConnectionToOutboundTrackIds(),
-                this.hazelcastMaps.getSfuStreamIdToRtpPadIds(),
-                this.hazelcastMaps.getSfuSinkIdToRtpPadIds(),
-                this.hazelcastMaps.getSfuStreamIdToInternalOutboundRtpPadIds()
-        );
     }
 
     public void processTaskStats(TaskAbstract.Stats stats) {
@@ -126,13 +115,10 @@ public class RepositoryMetrics {
     }
 
     private void expose() {
-        this.maps.forEach(map -> this.report(map, map.size()));
-        this.multiMaps.forEach(multimap -> this.report(multimap, multimap.size()));
+        for (var storageMetrics : this.storageMetrics) {
+            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageMetrics.storageId()));
+            this.metrics.registry.gauge(this.entriesMetricName, tags, storageMetrics.localSize());
+        }
     }
 
-    private void report(DistributedObject distributedObject, Integer size) {
-        var mapName = DistributedObjectUtil.getName(distributedObject);
-        var tags = List.of(Tag.of(MAP_TAG_NAME, mapName));
-        this.metrics.registry.gauge(this.entriesMetricName, tags, size);
-    }
 }

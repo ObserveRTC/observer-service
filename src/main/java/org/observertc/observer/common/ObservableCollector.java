@@ -9,10 +9,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -37,11 +34,21 @@ public class ObservableCollector<T> {
     private final int maxItems;
     private final Scheduler scheduler;
     private Disposable timer = null;
+    private final boolean forwardIfEmpty;
+    private final boolean createTimerAfterEmit;
 
-    private ObservableCollector(int maxTimeInMs, int maxItems, Scheduler scheduler) {
+    private ObservableCollector(int maxTimeInMs, int maxItems, Scheduler scheduler, boolean forwardIfEmpty, boolean createTimerAfterEmit) {
         this.maxTimeInMs = maxTimeInMs;
         this.maxItems = maxItems;
         this.scheduler = scheduler;
+        this.forwardIfEmpty = forwardIfEmpty;
+        this.createTimerAfterEmit = createTimerAfterEmit;
+        if (this.createTimerAfterEmit) {
+            synchronized (this) {
+                this.setupTimer();
+            }
+        }
+
     }
 
     /**
@@ -61,16 +68,9 @@ public class ObservableCollector<T> {
         if (Objects.isNull(items) || items.size() < 1) {
             return this;
         }
-        if (0 < this.maxTimeInMs) {
-            if (Objects.isNull(this.timer)) {
-                synchronized (this) {
-                    if (Objects.isNull(this.timer)) {
-                        this.timer = this.scheduler.scheduleDirect(() -> {
-                            this.timer = null;
-                            this.emit();
-                        }, this.maxTimeInMs, TimeUnit.MILLISECONDS);
-                    }
-                }
+        if (0 < this.maxTimeInMs && this.timer == null) {
+            synchronized (this) {
+                this.setupTimer();
             }
         }
 
@@ -110,12 +110,31 @@ public class ObservableCollector<T> {
             }
             List<T> collectedItems;
             if (this.queue.size() < 1) {
+                if (this.forwardIfEmpty) {
+                    this.output.onNext(Collections.emptyList());
+                }
+                if (this.createTimerAfterEmit && this.timer == null && 0 < this.maxTimeInMs) {
+                    this.setupTimer();
+                }
                 return;
             }
             collectedItems = new LinkedList<>();
             this.queue.drainTo(collectedItems);
             this.output.onNext(collectedItems);
+            if (this.createTimerAfterEmit && this.timer == null && 0 < this.maxTimeInMs) {
+                this.setupTimer();
+            }
         }
+    }
+
+    private void setupTimer() {
+        if (this.maxTimeInMs < 1 || this.timer != null) {
+            return;
+        }
+        this.timer = this.scheduler.scheduleDirect(() -> {
+            this.timer = null;
+            this.emit();
+        }, this.maxTimeInMs, TimeUnit.MILLISECONDS);
     }
 
 
@@ -123,6 +142,8 @@ public class ObservableCollector<T> {
         private int maxTimeInMs = 0;
         private int maxItems = 0;
         private Scheduler scheduler = null;
+        private boolean forwardIfEmpty = false;
+        private boolean createTimerAfterEmit = false;
 
         public Builder<U> withScheduler(Scheduler scheduler) {
             this.scheduler = scheduler;
@@ -139,6 +160,16 @@ public class ObservableCollector<T> {
             return this;
         }
 
+        public Builder<U> withEmptyForward(boolean forwardIfEmpty) {
+            this.forwardIfEmpty = forwardIfEmpty;
+            return this;
+        }
+
+        public Builder<U> withCreateTimerAfterEmitFlag(boolean createTimerAfterEmit) {
+            this.createTimerAfterEmit = createTimerAfterEmit;
+            return this;
+        }
+
 
         public ObservableCollector<U> build() {
             if (this.maxItems < 1 && this.maxTimeInMs < 1) {
@@ -147,7 +178,7 @@ public class ObservableCollector<T> {
             if (0 < this.maxTimeInMs && Objects.isNull(this.scheduler)) {
                 this.scheduler = Schedulers.computation();
             }
-            var result = new ObservableCollector<U>(this.maxTimeInMs, this.maxItems, this.scheduler);
+            var result = new ObservableCollector<U>(this.maxTimeInMs, this.maxItems, this.scheduler, this.forwardIfEmpty, this.createTimerAfterEmit);
             return result;
         }
 

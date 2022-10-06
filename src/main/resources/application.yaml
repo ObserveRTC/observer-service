@@ -33,12 +33,18 @@ endpoints:
   health:
     enabled: true
     sensitive: false
+  info:
+    enabled: true
+    sensitive: false
   logout:
     get-allowed: false
 
 ---
 observer:
   sources:
+    acceptSfuSamples: true
+    acceptClientSamples: true
+    useServerTimestamp: false
     rest:
       enabled: true
     websocket:
@@ -103,19 +109,17 @@ observer:
       roomId: none
       userId: none
 
-# setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
-#  sinks: {}
-
-  hazelcast:
-    configFile: ${HAZELCAST_CONFIG_FILE:`classpath:hazelcast.yaml`}
-    # for more information which level what represent take a look: java.util.logging.Level
-    # Possible values are: ALL, FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE
-#    logs:
-#      - "CONFIG"
-#      - "WARNING"
-#      - "SEVERE"
-    config:
-      cluster-name: my-hz-cluster
+  # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
+  #  sinks: {}
+  hamok:
+    storageGrid:
+      raftMaxLogEntriesRetentionTimeInMinutes: 5
+      heartbeatInMs: 150
+      followerMaxIdleInMs: 30000
+      peerMaxIdleInMs: 50000
+      sendingHelloTimeoutInMs: 1500
+      applicationCommitIndexSyncTimeoutInMs: 60_000
+      requestTimeoutInMs: 90000
     memberNamesPool:
       - "Lisa"
       - "Bart"
@@ -133,4 +137,3 @@ observer:
       - "Tony"
       - "Jacqueline"
       - "Nelson"
-

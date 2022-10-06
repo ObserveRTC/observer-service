@@ -16,7 +16,8 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Function<RIn, ROut> callEventFuncProcess,
             Function<RIn, ROut> callMetaDataFuncProcess,
             Function<RIn, ROut> clientExtensionDataFuncProcess,
-            Function<RIn, ROut> clientTransportFuncProcess,
+            Function<RIn, ROut> peerConnectionTransportFuncProcess,
+            Function<RIn, ROut> iceCandidatePairFuncProcess,
             Function<RIn, ROut> clientDataChannelFuncProcess,
             Function<RIn, ROut> inboundAudioTrackFuncProcess,
             Function<RIn, ROut> inboundVideoTrackFuncProcess,
@@ -52,8 +53,13 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
-            public ROut visitClientTransportReport(RIn obj) {
-                return clientTransportFuncProcess.apply(obj);
+            public ROut visitPeerConnectionTransportReport(RIn obj) {
+                return peerConnectionTransportFuncProcess.apply(obj);
+            }
+
+            @Override
+            public ROut visitIceCandidatePairReport(RIn obj) {
+                return iceCandidatePairFuncProcess.apply(obj);
             }
 
             @Override
@@ -124,7 +130,8 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Consumer<RIn> callEventConsumer,
             Consumer<RIn> callMetaDataConsumer,
             Consumer<RIn> clientExtensionDataConsumer,
-            Consumer<RIn> clientTransportConsumer,
+            Consumer<RIn> peerConnectionTransportConsumer,
+            Consumer<RIn> iceCandidatePairConsumer,
             Consumer<RIn> clientDataChannelConsumer,
             Consumer<RIn> inboundAudioTrackConsumer,
             Consumer<RIn> inboundVideoTrackConsumer,
@@ -164,8 +171,14 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
-            public Void visitClientTransportReport(RIn obj) {
-                clientTransportConsumer.accept(obj);
+            public Void visitPeerConnectionTransportReport(RIn obj) {
+                peerConnectionTransportConsumer.accept(obj);
+                return null;
+            }
+
+            @Override
+            public Void visitIceCandidatePairReport(RIn obj) {
+                iceCandidatePairConsumer.accept(obj);
                 return null;
             }
 
@@ -248,7 +261,8 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Supplier<ROut> callEventSupplier,
             Supplier<ROut> callMetaDataSupplier,
             Supplier<ROut> clientExtensionDataSupplier,
-            Supplier<ROut> clientTransportSupplier,
+            Supplier<ROut> peerConnectionTransportSupplier,
+            Supplier<ROut> iceCandidatePairSupplier,
             Supplier<ROut> clientDataChannelSupplier,
             Supplier<ROut> inboundAudioTrackSupplier,
             Supplier<ROut> inboundVideoTrackSupplier,
@@ -285,8 +299,13 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
-            public ROut visitClientTransportReport(Void obj) {
-                return clientTransportSupplier.get();
+            public ROut visitPeerConnectionTransportReport(Void obj) {
+                return peerConnectionTransportSupplier.get();
+            }
+
+            @Override
+            public ROut visitIceCandidatePairReport(Void obj) {
+                return iceCandidatePairSupplier.get();
             }
 
             @Override
@@ -356,7 +375,8 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             Runnable callEventCallback,
             Runnable callMetaDataCallback,
             Runnable clientExtensionDataCallback,
-            Runnable clientTransportCallback,
+            Runnable peerConnectionTransportCallback,
+            Runnable iceCandidatePairCallback,
             Runnable clientDataChannelCallback,
             Runnable inboundAudioTrackCallback,
             Runnable inboundVideoTrackCallback,
@@ -396,8 +416,14 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             }
 
             @Override
-            public Void visitClientTransportReport(Void obj) {
-                clientTransportCallback.run();
+            public Void visitPeerConnectionTransportReport(Void obj) {
+                peerConnectionTransportCallback.run();
+                return null;
+            }
+
+            @Override
+            public Void visitIceCandidatePairReport(Void obj) {
+                iceCandidatePairCallback.run();
                 return null;
             }
 
@@ -487,7 +513,9 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
             case CLIENT_EXTENSION_DATA:
                 return this.visitClientExtensionDataReport(obj);
             case PEER_CONNECTION_TRANSPORT:
-                return this.visitClientTransportReport(obj);
+                return this.visitPeerConnectionTransportReport(obj);
+            case ICE_CANDIDATE_PAIR:
+                return this.visitIceCandidatePairReport(obj);
             case PEER_CONNECTION_DATA_CHANNEL:
                 return this.visitClientDataChannelReport(obj);
             case INBOUND_AUDIO_TRACK:
@@ -523,7 +551,8 @@ public interface ReportTypeVisitor<TIn, TOut> extends BiFunction<TIn, ReportType
     TOut visitCallEventReport(TIn obj);
     TOut visitCallMetaDataReport(TIn obj);
     TOut visitClientExtensionDataReport(TIn obj);
-    TOut visitClientTransportReport(TIn obj);
+    TOut visitPeerConnectionTransportReport(TIn obj);
+    TOut visitIceCandidatePairReport(TIn obj);
     TOut visitClientDataChannelReport(TIn obj);
     TOut visitInboundAudioTrackReport(TIn obj);
     TOut visitInboundVideoTrackReport(TIn obj);

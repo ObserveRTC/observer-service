@@ -17,13 +17,24 @@ public class JsonMapper {
         return createObjectToStringMapper(new ObjectMapper());
     }
 
-    public static<U> Mapper<U, byte[]> createObjectToBytesMapper(ObjectMapper mapper) {
-        var result = Mapper.<U, byte[]>create(mapper::writeValueAsBytes, logger);
+
+    public static<U> Mapper<U, byte[]> createObjectToBytesMapper(ObjectMapper mapper, boolean printPretty) {
+        Mapper<U, byte[]> result;
+        if (printPretty) {
+            result = Mapper.<U, byte[]>create(obj -> mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(obj), logger);
+        } else {
+            result = Mapper.<U, byte[]>create(mapper::writeValueAsBytes, logger);
+        }
         return result;
     }
 
+    public static<U> Mapper<U, byte[]> createObjectToBytesMapper(boolean prettyPrint) {
+        return createObjectToBytesMapper(new ObjectMapper(), prettyPrint);
+    }
+
+
     public static<U> Mapper<U, byte[]> createObjectToBytesMapper() {
-        return createObjectToBytesMapper(new ObjectMapper());
+        return createObjectToBytesMapper(false);
     }
 
     public static<U> Mapper<String, U> createStringToObjectMapper(Class<U> klass, ObjectMapper mapper) {
@@ -52,7 +63,7 @@ public class JsonMapper {
 
     public static<U> Codec<U, byte[]> createBytesToObjectCodec(Class<U> klass, ObjectMapper mapper) {
         Mapper<byte[], U> decoder = createBytesToObjectMapper(klass, mapper);
-        Mapper<U, byte[]> encoder = createObjectToBytesMapper(mapper);
+        Mapper<U, byte[]> encoder = createObjectToBytesMapper(mapper, false);
         var result = Codec.create(encoder, decoder);
         return result;
     }

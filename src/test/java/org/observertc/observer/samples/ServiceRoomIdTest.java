@@ -3,6 +3,9 @@ package org.observertc.observer.samples;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class ServiceRoomIdTest {
 
     private String serviceId = "serviceId";
@@ -60,6 +63,16 @@ class ServiceRoomIdTest {
         var key = ServiceRoomId.createKey(serviceRoomId_1);
         var serviceRoomId_2 = ServiceRoomId.fromKey(key);
 
+        Assertions.assertEquals(serviceRoomId_1, serviceRoomId_2);
+    }
+
+    @Test
+    public void canBeRetrieved() {
+        var serviceRoomId_1 = ServiceRoomId.make(this.serviceId, this.roomId);
+        var set = new HashMap<ServiceRoomId, ServiceRoomId>(Map.of(serviceRoomId_1, serviceRoomId_1));
+        var serviceRoomId_2 = set.remove(serviceRoomId_1);
+
+        var equals = serviceRoomId_1.equals(serviceRoomId_2);
         Assertions.assertEquals(serviceRoomId_1, serviceRoomId_2);
     }
 }

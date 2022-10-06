@@ -30,15 +30,15 @@ public class ObservedSamplesGenerator {
         Long clientInbVideoSSRC = this.randomGenerators.getRandomSSRC();
         Long clientOutbAudioSSRC = this.randomGenerators.getRandomSSRC();
         Long clientOutbVideoSSRC = this.randomGenerators.getRandomSSRC();
-        UUID audioStreamId = UUID.randomUUID();
-        UUID videoStreamId = UUID.randomUUID();
-        UUID audioSinkId = UUID.randomUUID();
-        UUID videoSinkId = UUID.randomUUID();
-        UUID peerConnectionId = UUID.randomUUID();
-        UUID transportId = UUID.randomUUID();
+        var audioStreamId = UUID.randomUUID().toString();
+        var videoStreamId = UUID.randomUUID().toString();
+        var audioSinkId = UUID.randomUUID().toString();
+        var videoSinkId = UUID.randomUUID().toString();
+        var peerConnectionId = UUID.randomUUID().toString();
+        var transportId = UUID.randomUUID().toString();
         this.clientSamples = new ClientSideSamplesGenerator()
-                .setClientId(UUID.randomUUID())
-                .setCallId(UUID.randomUUID())
+                .setClientId(UUID.randomUUID().toString())
+                .setCallId(UUID.randomUUID().toString())
                 .setMarker(this.randomGenerators.getRandomString())
                 .setRoomId(this.randomGenerators.getRandomTestRoomIds())
                 .setUserId(this.randomGenerators.getRandomTestUserIds())
@@ -59,23 +59,23 @@ public class ObservedSamplesGenerator {
                 .addMediaSource()
                 .addUserMediaError("userMediaError")
                 .addLocalSdp("a=candidate:2 1 UDP 1694498815 192.0.2.3 45664 typ srflx raddr 10.0.1.1 rport 8998")
-                .addDataChannel(peerConnectionId, UUID.randomUUID())
-                .addInboundAudioTrack(peerConnectionId, UUID.randomUUID(), clientInbAudioSSRC, audioStreamId, audioSinkId)
-                .addInboundVideoTrack(peerConnectionId, UUID.randomUUID(), clientInbVideoSSRC, videoStreamId, videoSinkId)
-                .addOutboundAudioTrack(peerConnectionId, UUID.randomUUID(), clientOutbAudioSSRC, audioStreamId)
-                .addOutboundVideoTrack(peerConnectionId, UUID.randomUUID(), clientOutbVideoSSRC, videoStreamId)
+                .addDataChannel(peerConnectionId, UUID.randomUUID().toString())
+                .addInboundAudioTrack(peerConnectionId, UUID.randomUUID().toString(), clientInbAudioSSRC, audioStreamId, audioSinkId)
+                .addInboundVideoTrack(peerConnectionId, UUID.randomUUID().toString(), clientInbVideoSSRC, videoStreamId, videoSinkId)
+                .addOutboundAudioTrack(peerConnectionId, UUID.randomUUID().toString(), clientOutbAudioSSRC, audioStreamId)
+                .addOutboundVideoTrack(peerConnectionId, UUID.randomUUID().toString(), clientOutbVideoSSRC, videoStreamId)
                 ;
 
         this.sfuSamples = new SfuSideSamplesGenerator()
-                .setSfuId(UUID.randomUUID())
+                .setSfuId(UUID.randomUUID().toString())
                 .setMarker(this.randomGenerators.getRandomString())
                 .setTimeZoneOffsetInHours( -2)
                 .addTransport(transportId)
-                .addDataChannel(transportId, UUID.randomUUID(), UUID.randomUUID())
-                .addInboundRtpPad(transportId, UUID.randomUUID(), clientOutbAudioSSRC, audioStreamId)
-                .addInboundRtpPad(transportId, UUID.randomUUID(), clientOutbVideoSSRC, videoStreamId)
-                .addOutboundRtpPad(transportId, UUID.randomUUID(), clientInbAudioSSRC, audioStreamId, audioSinkId)
-                .addOutboundRtpPad(transportId, UUID.randomUUID(), clientInbVideoSSRC, videoStreamId, videoSinkId)
+                .addDataChannel(transportId, UUID.randomUUID().toString(), UUID.randomUUID().toString())
+                .addInboundRtpPad(transportId, UUID.randomUUID().toString(), clientOutbAudioSSRC, audioStreamId)
+                .addInboundRtpPad(transportId, UUID.randomUUID().toString(), clientOutbVideoSSRC, videoStreamId)
+                .addOutboundRtpPad(transportId, UUID.randomUUID().toString(), clientInbAudioSSRC, audioStreamId, audioSinkId)
+                .addOutboundRtpPad(transportId, UUID.randomUUID().toString(), clientInbVideoSSRC, videoStreamId, videoSinkId)
                 .addExtensionStat()
                 ;
     }
@@ -84,7 +84,7 @@ public class ObservedSamplesGenerator {
         return generateObservedClientSample(null);
     }
 
-    public ObservedClientSample generateObservedClientSample(UUID callId) {
+    public ObservedClientSample generateObservedClientSample(String callId) {
         var samples = this.clientSamples.get();
         var clientSample = samples.clientSamples[0];
         clientSample.callId = callId;

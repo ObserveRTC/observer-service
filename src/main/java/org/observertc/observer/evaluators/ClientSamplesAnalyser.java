@@ -12,7 +12,7 @@ import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.tasks.FetchTracksRelationsTask;
+import org.observertc.observer.repositories.tasks.MatchTracks;
 import org.observertc.observer.samples.ClientSampleVisitor;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.slf4j.Logger;
@@ -31,13 +31,14 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     EvaluatorMetrics exposedMetrics;
 
     @Inject
-    BeanProvider<FetchTracksRelationsTask> matchCallTracksTaskProvider;
+    BeanProvider<MatchTracks> matchTracks;
 
     @Inject
     ObserverConfig.EvaluatorsConfig.ClientSamplesAnalyserConfig config;
 
     private Subject<List<Report>> output = PublishSubject.create();
-    private final ClientTransportReportsDepot clientTransportReportsDepot = new ClientTransportReportsDepot();
+    private final PeerConnectionTransportReportsDepot peerConnectionTransportReportsDepot = new PeerConnectionTransportReportsDepot();
+    private final IceCandidatePairReportsDepot iceCandidatePairReportsDepot = new IceCandidatePairReportsDepot();
     private final InboundAudioReportsDepot inboundAudioReportsDepot = new InboundAudioReportsDepot();
     private final InboundVideoReportsDepot inboundVideoReportsDepot = new InboundVideoReportsDepot();
     private final OutboundAudioReportsDepot outboundAudioReportsDepot = new OutboundAudioReportsDepot();
@@ -51,6 +52,13 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     }
 
     public void accept(ObservedClientSamples observedClientSamples) {
+        if (observedClientSamples == null) {
+            return;
+        }
+        if (observedClientSamples.isEmpty()) {
+            this.output.onNext(Collections.emptyList());
+            return;
+        }
         Instant started = Instant.now();
         try {
             this.process(observedClientSamples);
@@ -63,36 +71,50 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         if (observedClientSamples.isEmpty()) {
             return;
         }
-        var task = this.matchCallTracksTaskProvider.get()
-                .whereInboundMediaTrackIds(observedClientSamples.getMediaTrackIds())
+        var task = this.matchTracks.get()
+                .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
+                .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("Interrupted execution of component due to unsuccessful task execution");
             return;
         }
-        var taskResult = task.getResult();
-        var inboundTrackMatchIds = taskResult.inboundTrackMatchIds;
-        var peerConnectionLabels = new HashMap<UUID, String>();
+        var matches = task.getResult();
+        var inboundMatches = matches.inboundMatches;
+        var peerConnectionLabels = new HashMap<String, String>();
         for (var observedClientSample : observedClientSamples) {
             var clientSample = observedClientSample.getClientSample();
             if (Objects.isNull(clientSample)) continue;
             ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(peerConnectionTransport -> {
-                this.clientTransportReportsDepot
+                this.peerConnectionTransportReportsDepot
                         .setObservedClientSample(observedClientSample)
                         .setPeerConnectionTransport(peerConnectionTransport)
                         .assemble();
-                peerConnectionLabels.put(peerConnectionTransport.peerConnectionId, peerConnectionTransport.label);
+                if (peerConnectionTransport.peerConnectionId != null && peerConnectionTransport.label != null) {
+                    peerConnectionLabels.put(peerConnectionTransport.peerConnectionId, peerConnectionTransport.label);
+                }
+            });
+
+            ClientSampleVisitor.streamIceCandidatePairs(clientSample).forEach(iceCandidatePair -> {
+                this.iceCandidatePairReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setIceCandidatePair(iceCandidatePair)
+                        .assemble();
+                if (iceCandidatePair.peerConnectionId != null && iceCandidatePair.label != null) {
+                    peerConnectionLabels.put(iceCandidatePair.peerConnectionId, iceCandidatePair.label);
+                }
             });
 
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(inboundAudioTrack -> {
-                var matches = inboundTrackMatchIds.get(inboundAudioTrack.trackId);
+                var match = inboundMatches.get(inboundAudioTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundAudioTrack.peerConnectionId) ? peerConnectionLabels.get(inboundAudioTrack.peerConnectionId) : null;
-                if (Objects.nonNull(matches)) {
+                if (Objects.nonNull(match)) {
                     this.inboundAudioReportsDepot
-                            .setRemoteClientId(matches.outboundClientId)
-                            .setRemoteUserId(matches.outboundUserId)
-                            .setRemotePeerConnectionId(matches.outboundPeerConnectionId)
-                            .setRemoteTrackId(matches.outboundTrackId);
+                            .setRemoteClientId(match.outboundClientId())
+                            .setRemoteUserId(match.outboundUserId())
+                            .setRemotePeerConnectionId(match.outboundPeerConnectionId())
+                            .setRemoteTrackId(match.outboundTrackId())
+                    ;
                 } else if (config.dropUnmatchedReports) {
                     return;
                 }
@@ -104,14 +126,15 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
 
             ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(inboundVideoTrack -> {
-                var matches = inboundTrackMatchIds.get(inboundVideoTrack.trackId);
+                var match = inboundMatches.get(inboundVideoTrack.trackId);
                 var peerConnectionLabel = Objects.nonNull(inboundVideoTrack.peerConnectionId) ? peerConnectionLabels.get(inboundVideoTrack.peerConnectionId) : null;
-                if (Objects.nonNull(matches)) {
+                if (Objects.nonNull(match)) {
                     this.inboundVideoReportsDepot
-                            .setRemoteClientId(matches.outboundClientId)
-                            .setRemoteUserId(matches.outboundUserId)
-                            .setRemotePeerConnectionId(matches.outboundPeerConnectionId)
-                            .setRemoteTrackId(matches.outboundTrackId);
+                            .setRemoteClientId(match.outboundClientId())
+                            .setRemoteUserId(match.outboundUserId())
+                            .setRemotePeerConnectionId(match.outboundPeerConnectionId())
+                            .setRemoteTrackId(match.outboundTrackId())
+                    ;
                 } else if (config.dropUnmatchedReports) {
                     return;
                 }
@@ -300,7 +323,8 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
             });
         }
         var reports = new LinkedList<Report>();
-        this.clientTransportReportsDepot.get().stream().map(Report::fromClientTransportReport).forEach(reports::add);
+        this.peerConnectionTransportReportsDepot.get().stream().map(Report::fromPeerConnectionTransportReport).forEach(reports::add);
+        this.iceCandidatePairReportsDepot.get().stream().map(Report::fromIceCandidatePairReport).forEach(reports::add);
         this.inboundAudioReportsDepot.get().stream().map(Report::fromInboundAudioTrackReport).forEach(reports::add);
         this.inboundVideoReportsDepot.get().stream().map(Report::fromInboundVideoTrackReport).forEach(reports::add);
         this.outboundAudioReportsDepot.get().stream().map(Report::fromOutboundAudioTrackReport).forEach(reports::add);

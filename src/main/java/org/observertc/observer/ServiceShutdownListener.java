@@ -34,9 +34,6 @@ public class ServiceShutdownListener implements ApplicationEventListener<Service
 	@Inject
 	ObserverService observerService;
 
-	@Inject
-	ObserverHazelcast observerHazelcast;
-
 	public ServiceShutdownListener() {
 		
 	}
@@ -50,8 +47,6 @@ public class ServiceShutdownListener implements ApplicationEventListener<Service
 	public void onApplicationEvent(ServiceStoppedEvent event) {
 		logger.info("Shutdown started");
 		observerService.stop();
-//		this.observerHazelcast.getInstance().getConfig().getMapConfig("whatever").getMapStoreConfig().setEnabled(false);
-		this.observerHazelcast.getInstance().getLifecycleService().shutdown();
 		logger.info("Shutdown ended");
 	}
 }

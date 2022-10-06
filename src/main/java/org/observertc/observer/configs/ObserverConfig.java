@@ -19,7 +19,6 @@ package org.observertc.observer.configs;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 import javax.validation.constraints.Min;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +104,8 @@ public class ObserverConfig {
 	public static class SourcesConfig {
 
 		public List<String> allowedServiceIds = null;
+		public boolean acceptSfuSamples = true;
+		public boolean acceptClientSamples = true;
 
 		public RestConfig rest = new RestConfig();
 
@@ -128,25 +129,25 @@ public class ObserverConfig {
 	public static class RepositoryConfig {
 
 		@Min(3)
-		public int mediaTracksMaxIdleTimeInS = 300;
+		public int mediaTracksMaxIdleTimeInS;
 
 		@Min(3)
-		public int peerConnectionsMaxIdleTime = 300;
+		public int peerConnectionsMaxIdleTime;
 
 		@Min(3)
-		public int clientMaxIdleTimeInS = 300;
+		public int clientMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuMaxIdleTimeInS = 600;
+		public int sfuMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuTransportMaxIdleTimeInS = 600;
+		public int sfuTransportMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuRtpPadMaxIdleTimeInS = 600;
+		public int sfuRtpPadMaxIdleTimeInS;
 
 		@Min(-1)
-		public long evictExpiredEntriesPeriodInMs = 0;
+		public long evictExpiredEntriesPeriodInMs;
 
 		@Min(-1)
 		public long evictExpiredEntriesThresholdOffsetInMs = 0;
@@ -232,22 +233,32 @@ public class ObserverConfig {
 		public int maxItems = 2000;
 
 		@Min(0)
-		public int maxTimeInMs = 0;
+		public int maxTimeInMs = 100;
 
 	}
 
 	public Map<String, Object> sinks;
 
 	// Hazelcast Config
-	public HazelcastConfig hazelcast;
+	public HamokConfig hamok;
 
-	@ConfigurationProperties("hazelcast")
-	public static class HazelcastConfig {
-		public String configFile = null;
-//		public Map<String, Object> config;
-		public List<String> memberNamesPool = new ArrayList<>();
-		public List<String> logs = new LinkedList<>();
+	@ConfigurationProperties("hamok")
+	public static class HamokConfig {
+		public List<String> memberNamesPool = new LinkedList<>();
+		public Map<String, Object> endpoint;
+
+		public StorageGridConfig storageGrid = new StorageGridConfig();
+
+		@ConfigurationProperties(("storageGrid"))
+		public static class StorageGridConfig {
+			public int raftMaxLogEntriesRetentionTimeInMinutes = 30;
+			public int heartbeatInMs = 50;
+			public int followerMaxIdleInMs = 300;
+			public int peerMaxIdleInMs = 1000;
+			public int sendingHelloTimeoutInMs = 1500;
+			public int applicationCommitIndexSyncTimeoutInMs = 60 * 1000;
+			public int requestTimeoutInMs = 3000;
+		}
 	}
-
 }
 

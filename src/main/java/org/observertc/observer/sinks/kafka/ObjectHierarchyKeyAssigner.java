@@ -57,8 +57,19 @@ class ObjectHierarchyKeyAssigner implements ReportTypeVisitor<Report, UUID> {
     }
 
     @Override
-    public UUID visitClientTransportReport(Report obj) {
-        var payload = (ClientTransportReport) obj.payload;
+    public UUID visitPeerConnectionTransportReport(Report obj) {
+        var payload = (PeerConnectionTransportReport) obj.payload;
+        var value = Utils.<String>firstNotNull(
+                payload.callId,
+                payload.clientId,
+                payload.peerConnectionId
+        );
+        return UUIDAdapter.tryParseOrDefault(value, defaultValue);
+    }
+
+    @Override
+    public UUID visitIceCandidatePairReport(Report obj) {
+        var payload = (IceCandidatePairReport) obj.payload;
         var value = Utils.<String>firstNotNull(
                 payload.callId,
                 payload.clientId,

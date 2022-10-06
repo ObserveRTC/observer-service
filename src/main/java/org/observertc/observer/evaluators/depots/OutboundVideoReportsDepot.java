@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.OutboundVideoTrackReport;
 import org.observertc.schemas.samples.Samples;
@@ -20,6 +19,7 @@ public class OutboundVideoReportsDepot implements Supplier<List<OutboundVideoTra
     private String peerConnectionLabel = null;
     private ObservedClientSample observedClientSample = null;
     private Samples.ClientSample.OutboundVideoTrack outboundVideoTrack = null;
+
     private List<OutboundVideoTrackReport> buffer = new LinkedList<>();
 
     public OutboundVideoReportsDepot setPeerConnectionLabel(String value) {
@@ -55,11 +55,6 @@ public class OutboundVideoReportsDepot implements Supplier<List<OutboundVideoTra
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
-            String callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            String clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-            String peerConnectionId = UUIDAdapter.toStringOrNull(outboundVideoTrack.peerConnectionId);
-            var trackId = UUIDAdapter.toStringOrNull(outboundVideoTrack.trackId);
-            var sfuStreamId = UUIDAdapter.toStringOrNull(outboundVideoTrack.sfuStreamId);
             var report = OutboundVideoTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -68,99 +63,69 @@ public class OutboundVideoReportsDepot implements Supplier<List<OutboundVideoTra
                     .setTimestamp(clientSample.timestamp)
 
                     /* Peer Connection Report Fields */
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setRoomId(clientSample.roomId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setUserId(clientSample.userId)
-                    .setPeerConnectionId(peerConnectionId)
+                    .setPeerConnectionId(outboundVideoTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
-                    .setTrackId(trackId)
+                    .setTrackId(outboundVideoTrack.trackId)
 
                     /* Sample Based Report Fields */
                     .setSampleSeq(clientSample.sampleSeq)
 
                     /* OutboundRTP related fields specific for Audio*/
-                    .setSfuStreamId(sfuStreamId)
+                    .setPeerConnectionId(outboundVideoTrack.peerConnectionId)
+                    .setTrackId(outboundVideoTrack.trackId)
+                    .setSfuStreamId(outboundVideoTrack.sfuStreamId)
+                    .setSampleSeq(clientSample.sampleSeq)
                     .setSsrc(outboundVideoTrack.ssrc)
                     .setPacketsSent(outboundVideoTrack.packetsSent)
                     .setBytesSent(outboundVideoTrack.bytesSent)
                     .setRid(outboundVideoTrack.rid)
-                    .setLastPacketSentTimestamp(outboundVideoTrack.lastPacketSentTimestamp)
                     .setHeaderBytesSent(outboundVideoTrack.headerBytesSent)
-                    .setPacketsDiscardedOnSend(outboundVideoTrack.packetsDiscardedOnSend)
-                    .setPacketsDiscarded(outboundVideoTrack.packetsDiscarded)
-                    .setBytesDiscardedOnSend(outboundVideoTrack.bytesDiscardedOnSend)
-                    .setFecPacketsSent(outboundVideoTrack.fecPacketsSent)
                     .setRetransmittedPacketsSent(outboundVideoTrack.retransmittedPacketsSent)
                     .setRetransmittedBytesSent(outboundVideoTrack.retransmittedBytesSent)
                     .setTargetBitrate(outboundVideoTrack.targetBitrate)
                     .setTotalEncodedBytesTarget(outboundVideoTrack.totalEncodedBytesTarget)
+                    .setTotalPacketSendDelay(outboundVideoTrack.totalPacketSendDelay)
+                    .setAverageRtcpInterval(outboundVideoTrack.averageRtcpInterval)
+                    .setNackCount(outboundVideoTrack.nackCount)
+                    .setEncoderImplementation(outboundVideoTrack.encoderImplementation)
+                    .setActive(outboundVideoTrack.active)
                     .setFrameWidth(outboundVideoTrack.frameWidth)
                     .setFrameHeight(outboundVideoTrack.frameHeight)
-                    .setFrameBitDepth(outboundVideoTrack.frameBitDepth)
                     .setFramesPerSecond(outboundVideoTrack.framesPerSecond)
                     .setFramesSent(outboundVideoTrack.framesSent)
                     .setHugeFramesSent(outboundVideoTrack.hugeFramesSent)
                     .setFramesEncoded(outboundVideoTrack.framesEncoded)
                     .setKeyFramesEncoded(outboundVideoTrack.keyFramesEncoded)
-                    .setFramesDiscardedOnSend(outboundVideoTrack.framesDiscardedOnSend)
                     .setQpSum(outboundVideoTrack.qpSum)
                     .setTotalEncodeTime(outboundVideoTrack.totalEncodeTime)
-                    .setTotalPacketSendDelay(outboundVideoTrack.totalPacketSendDelay)
-                    .setAverageRtcpInterval(outboundVideoTrack.averageRtcpInterval)
-                    .setQualityLimitationReason(outboundVideoTrack.qualityLimitationReason)
                     .setQualityLimitationDurationNone(outboundVideoTrack.qualityLimitationDurationNone)
                     .setQualityLimitationDurationCPU(outboundVideoTrack.qualityLimitationDurationCPU)
                     .setQualityLimitationDurationBandwidth(outboundVideoTrack.qualityLimitationDurationBandwidth)
                     .setQualityLimitationDurationOther(outboundVideoTrack.qualityLimitationDurationOther)
+                    .setQualityLimitationReason(outboundVideoTrack.qualityLimitationReason)
                     .setQualityLimitationResolutionChanges(outboundVideoTrack.qualityLimitationResolutionChanges)
-                    .setPerDscpPacketsSent(outboundVideoTrack.perDscpPacketsSent)
-                    .setNackCount(outboundVideoTrack.nackCount)
                     .setFirCount(outboundVideoTrack.firCount)
                     .setPliCount(outboundVideoTrack.pliCount)
-                    .setSliCount(outboundVideoTrack.sliCount)
-                    .setEncoderImplementation(outboundVideoTrack.encoderImplementation)
-
 
                     /* Remote Inbound specific fields related to Video */
                     .setPacketsReceived(outboundVideoTrack.packetsReceived)
                     .setPacketsLost(outboundVideoTrack.packetsLost)
                     .setJitter(outboundVideoTrack.jitter)
-                    .setPacketsDiscarded(outboundVideoTrack.packetsDiscarded)
-                    .setPacketsRepaired(outboundVideoTrack.packetsRepaired)
-                    .setBurstPacketsLost(outboundVideoTrack.burstPacketsLost)
-                    .setBurstPacketsDiscarded(outboundVideoTrack.burstPacketsDiscarded)
-                    .setBurstLossCount(outboundVideoTrack.burstLossCount)
-                    .setBurstDiscardCount(outboundVideoTrack.burstDiscardCount)
-                    .setBurstLossRate(outboundVideoTrack.burstLossRate)
-                    .setBurstDiscardRate(outboundVideoTrack.burstDiscardRate)
-                    .setGapLossRate(outboundVideoTrack.gapLossRate)
-                    .setGapDiscardRate(outboundVideoTrack.gapDiscardRate)
-                    .setFramesDropped(outboundVideoTrack.framesDropped)
-                    .setPartialFramesLost(outboundVideoTrack.partialFramesLost)
-                    .setFullFramesLost(outboundVideoTrack.fullFramesLost)
                     .setRoundTripTime(outboundVideoTrack.roundTripTime)
                     .setTotalRoundTripTime(outboundVideoTrack.totalRoundTripTime)
                     .setFractionLost(outboundVideoTrack.fractionLost)
-                    .setReportsReceived(outboundVideoTrack.reportsReceived)
                     .setRoundTripTimeMeasurements(outboundVideoTrack.roundTripTimeMeasurements)
+                    .setFramesDropped(outboundVideoTrack.framesDropped)
 
                     /* MediaSource related stats */
                     .setRelayedSource(outboundVideoTrack.relayedSource)
-                    .setEncodedFrameWidth(outboundVideoTrack.width)
-                    .setEncodedFrameHeight(outboundVideoTrack.height)
-                    .setEncodedFrameBitDepth(outboundVideoTrack.bitDepth)
-                    .setEncodedFramesPerSecond(outboundVideoTrack.framesPerSecond)
-
-                    /* Sender related stats */
-                    .setEnded(outboundVideoTrack.ended)
-
-                    /* Codec Specific fields  */
-                    .setPayloadType(outboundVideoTrack.payloadType)
-                    .setMimeType(outboundVideoTrack.mimeType)
-                    .setClockRate(outboundVideoTrack.clockRate)
-                    .setChannels(outboundVideoTrack.channels)
-                    .setSdpFmtpLine(outboundVideoTrack.sdpFmtpLine)
+                    .setWidth(outboundVideoTrack.width)
+                    .setHeight(outboundVideoTrack.height)
+                    .setFrames(outboundVideoTrack.frames)
 
                     .build();
             this.buffer.add(report);

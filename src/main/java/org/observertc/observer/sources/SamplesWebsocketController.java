@@ -28,7 +28,6 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.metrics.SourceMetrics;
-import org.observertc.observer.repositories.HazelcastMaps;
 import org.observertc.observer.repositories.RepositoryEvents;
 import org.observertc.schemas.samples.Samples;
 import org.slf4j.Logger;
@@ -56,9 +55,6 @@ public class SamplesWebsocketController {
 
 	@Inject
 	RepositoryEvents repositoryEvents;
-
-	@Inject
-	HazelcastMaps hazelcastMaps;
 
 	@Inject
     SamplesCollector samplesCollector;

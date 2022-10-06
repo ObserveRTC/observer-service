@@ -7,7 +7,6 @@ import org.observertc.observer.utils.TestUtils;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 class ObservedSfuSamplesTest {
@@ -32,25 +31,29 @@ class ObservedSfuSamplesTest {
     @Test
     void getRtpPadIds() {
         var observedSample = observedSamplesGenerator.generateObservedSfuSample();
-        var expectedIds = new HashSet<UUID>();
+        var expectedInboundPadIds = new HashSet<String>();
+        var expectedOutboundPadIds = new HashSet<String>();
         SfuSampleVisitor.streamInboundRtpPads(observedSample.getSfuSample())
                 .map(rtpPad -> rtpPad.padId)
-                .forEach(expectedIds::add);
+                .forEach(expectedInboundPadIds::add);
         SfuSampleVisitor.streamOutboundRtpPads(observedSample.getSfuSample())
                 .map(rtpPad -> rtpPad.padId)
-                .forEach(expectedIds::add);
+                .forEach(expectedOutboundPadIds::add);
         var observedSamples = ObservedSfuSamples.builder()
                 .addObservedSfuSample(observedSample)
                 .build();
 
-        boolean equals = TestUtils.equalSets(expectedIds, observedSamples.getRtpPadIds());
-        Assertions.assertTrue(equals);
+        boolean equals_inbound = TestUtils.equalSets(expectedInboundPadIds, observedSamples.getInboundRtpPadIds());
+        Assertions.assertTrue(equals_inbound);
+
+        boolean equals_outbound = TestUtils.equalSets(expectedOutboundPadIds, observedSamples.getOutboundRtpPadIds());
+        Assertions.assertTrue(equals_outbound);
     }
 
     @Test
     void getChannelIds() {
         var observedSample = observedSamplesGenerator.generateObservedSfuSample();
-        var expectedIds = new HashSet<UUID>();
+        var expectedIds = new HashSet<String>();
         SfuSampleVisitor.streamSctpStreams(observedSample.getSfuSample())
                 .map(rtpPad -> rtpPad.channelId)
                 .forEach(expectedIds::add);
@@ -58,7 +61,7 @@ class ObservedSfuSamplesTest {
                 .addObservedSfuSample(observedSample)
                 .build();
 
-        boolean equals = TestUtils.equalSets(expectedIds, observedSamples.getChannelIds());
+        boolean equals = TestUtils.equalSets(expectedIds, observedSamples.getSctpStreamIds());
         Assertions.assertTrue(equals);
     }
 

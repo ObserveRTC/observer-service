@@ -2,8 +2,6 @@ package org.observertc.observer;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.*;
 import org.observertc.observer.metrics.ReportMetrics;
 import org.observertc.observer.sinks.ReportSinks;
@@ -23,7 +21,7 @@ public class ObserverService {
     private volatile boolean run = false;
 
     @Inject
-    ObserverConfig observerConfig;
+    HamokService hamokService;
 
     @Inject
     ReportMetrics reportMetrics;
@@ -41,13 +39,16 @@ public class ObserverService {
     ClientSamplesAnalyser clientSamplesAnalyser;
 
     @Inject
+    CallEventReportsAdder callEventReportsAdder;
+
+    @Inject
     SfuEntitiesUpdater sfuEntitiesUpdater;
 
     @Inject
     SfuSamplesAnalyser sfuSamplesAnalyser;
 
     @Inject
-    RepositoryEventsInterpreter repositoryEventsInterpreter;
+    SfuEventReportsAdder sfuEventReportsAdder;
 
     @Inject
     ReportsCollector reportsCollector;
@@ -70,6 +71,9 @@ public class ObserverService {
                 .subscribe(this.clientSamplesAnalyser::accept);
 
         this.clientSamplesAnalyser.observableReports()
+                .subscribe(this.callEventReportsAdder.reportsObserver());
+
+        this.callEventReportsAdder.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
         // sfu samples
@@ -77,22 +81,18 @@ public class ObserverService {
                 .subscribe(this.sfuSamplesAnalyser::accept);
 
         this.sfuSamplesAnalyser.observableReports()
+                .subscribe(this.sfuEventReportsAdder.reportsObserver());
+
+        this.sfuEventReportsAdder.observableReports()
                 .subscribe(this.reportsCollector::acceptAll);
 
-        // repository events
-        this.repositoryEventsInterpreter.observableReports()
-                .subscribe(this.reportsCollector::acceptAll);
-
+        // funneled reports
         this.reportsCollector.getObservableReports()
                 .subscribe(this.reportSinks);
 
         if (this.reportMetrics.isEnabled()) {
             this.reportsCollector.getObservableReports()
                     .subscribe(this.reportMetrics::process);
-        }
-
-        if (observerConfig.security.printConfigs) {
-            logger.info("Config {}", JsonUtils.objectToString(observerConfig));
         }
     }
 
@@ -121,5 +121,10 @@ public class ObserverService {
 
     public boolean isStarted() {
         return this.run;
+    }
+
+    public boolean isReady() {
+        boolean hamokIsReady = this.hamokService.isReady();
+        return hamokIsReady;
     }
 }

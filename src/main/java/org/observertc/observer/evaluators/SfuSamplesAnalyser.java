@@ -10,17 +10,16 @@ import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.tasks.FetchSfuRelationsTask;
+import org.observertc.observer.repositories.tasks.MatchInternalSfuRtpPads;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 @Prototype
@@ -32,7 +31,7 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     EvaluatorMetrics exposedMetrics;
 
     @Inject
-    BeanProvider<FetchSfuRelationsTask> fetchSfuRelationsTaskProvider;
+    BeanProvider<MatchInternalSfuRtpPads> matchInternalSfuRtpPads;
 
     @Inject
     ObserverConfig.EvaluatorsConfig.SfuSamplesAnalyserConfig config;
@@ -49,6 +48,13 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     }
 
     public void accept(ObservedSfuSamples observedSfuSamples) {
+        if (observedSfuSamples == null) {
+            return;
+        }
+        if (observedSfuSamples.isEmpty()) {
+            this.output.onNext(Collections.emptyList());
+            return;
+        }
         Instant started = Instant.now();
         try {
             this.process(observedSfuSamples);
@@ -61,16 +67,14 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
         if (observedSfuSamples.isEmpty()) {
             return;
         }
-        var task = this.fetchSfuRelationsTaskProvider.get()
-                .whereSfuRtpPadIds(observedSfuSamples.getRtpPadIds())
+        var task = this.matchInternalSfuRtpPads.get()
+                .whereSfuInboundRtpPadIds(observedSfuSamples.getInboundRtpPadIds())
                 ;
         if (!task.execute().succeeded()) {
             logger.warn("Interrupted execution of component due to unsuccessful task execution");
             return;
         }
         var taskResult = task.getResult();
-        var sfuStreams = taskResult.sfuStreams;
-        var sfuSinks = taskResult.sfuSinks;
         var internalInboundRtpPadMatches = taskResult.internalInboundRtpPadMatches;
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
@@ -90,34 +94,33 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
                     return;
                 }
 
-                UUID sfuStreamId = sfuInboundRtpPad.streamId;
-                if (Objects.nonNull(sfuStreamId)) {
-                    var sfuStream = sfuStreams.get(sfuStreamId);
-                    if (Objects.nonNull(sfuStream)) {
-                        this.sfuInboundRtpPadReportsDepot
-                                .setCallId(sfuStream.callId)
-                                .setTrackId(sfuStream.trackId)
-                                .setClientId(sfuStream.clientId)
-                                ;
-                    } else if (config.dropUnmatchedInboundReports) {
-                        this.sfuInboundRtpPadReportsDepot.clean();
-                        return;
-                    }
-                }
+//                UUID sfuStreamId = sfuInboundRtpPad.streamId;
+//                if (Objects.nonNull(sfuStreamId)) {
+//                    var sfuStream = sfuStreams.get(sfuStreamId);
+//                    if (Objects.nonNull(sfuStream)) {
+//                        this.sfuInboundRtpPadReportsDepot
+//                                .setCallId(sfuStream.callId)
+//                                .setTrackId(sfuStream.trackId)
+//                                .setClientId(sfuStream.clientId)
+//                                ;
+//                    } else if (config.dropUnmatchedInboundReports) {
+//                        this.sfuInboundRtpPadReportsDepot.clean();
+//                        return;
+//                    }
+//                }
                 var inboundRtpPadMatch = internalInboundRtpPadMatches.get(sfuInboundRtpPad.padId);
                 if (Boolean.TRUE.equals(sfuInboundRtpPad.internal)) {
                     if (inboundRtpPadMatch != null) {
                         this.sfuInboundRtpPadReportsDepot
-                                .setRemoteSfuId(inboundRtpPadMatch.outboundSfuId)
-                                .setRemoteTransportId(inboundRtpPadMatch.outboundTransportId)
-                                .setRemoteSinkId(inboundRtpPadMatch.outboundSinkId)
-                                .setRemoteRtpPadId(inboundRtpPadMatch.outboundRtpPadId)
+                                .setRemoteSfuId(inboundRtpPadMatch.remoteSfuId())
+                                .setRemoteTransportId(inboundRtpPadMatch.remoteSfuTransportId())
+                                .setRemoteSinkId(inboundRtpPadMatch.remoteSinkId())
+                                .setRemoteRtpPadId(inboundRtpPadMatch.remoteOutboundRtpPadId())
                         ;
                     } else if (config.dropUnmatchedInternalInboundReports) {
                         this.sfuInboundRtpPadReportsDepot.clean();
                         return;
                     }
-
                 }
                 this.sfuInboundRtpPadReportsDepot
                         .setObservedSfuSample(observedSfuSample)
@@ -129,19 +132,19 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
                 if (Boolean.TRUE.equals(sfuOutboundRtpPad.noReport)) {
                     return;
                 }
-                UUID sfuSinkId = sfuOutboundRtpPad.sinkId;
-                if (Objects.nonNull(sfuSinkId)) {
-                    var sfuSink = sfuSinks.get(sfuSinkId);
-                    if (Objects.nonNull(sfuSink)) {
-                        this.sfuOutboundRtpPadReportsDepot
-                                .setCallId(sfuSink.callId)
-                                .setTrackId(sfuSink.trackId)
-                                .setClientId(sfuSink.clientId)
-                        ;
-                    } else if (config.dropUnmatchedOutboundReports) {
-                        return;
-                    }
-                }
+//                UUID sfuSinkId = sfuOutboundRtpPad.sinkId;
+//                if (Objects.nonNull(sfuSinkId)) {
+//                    var sfuSink = sfuSinks.get(sfuSinkId);
+//                    if (Objects.nonNull(sfuSink)) {
+//                        this.sfuOutboundRtpPadReportsDepot
+//                                .setCallId(sfuSink.callId)
+//                                .setTrackId(sfuSink.trackId)
+//                                .setClientId(sfuSink.clientId)
+//                        ;
+//                    } else if (config.dropUnmatchedOutboundReports) {
+//                        return;
+//                    }
+//                }
                 this.sfuOutboundRtpPadReportsDepot
                         .setObservedSfuSample(observedSfuSample)
                         .setSfuOutboundRtpPad(sfuOutboundRtpPad)

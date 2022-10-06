@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators.depots;
 
-import org.observertc.observer.common.UUIDAdapter;
 import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.schemas.reports.CallMetaReport;
 import org.observertc.schemas.reports.ClientExtensionReport;
@@ -51,26 +50,23 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
     }
 
     public void assemble() {
+        if (Objects.isNull(observedClientSample)) {
+            logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
+            return;
+        }
+        if (Objects.isNull(extensionType)) {
+            logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
+            return;
+        }
+        var clientSample = observedClientSample.getClientSample();
         try {
-            if (Objects.isNull(observedClientSample)) {
-                logger.warn("Cannot assemble {} without observedClientSample", this.getClass().getSimpleName());
-                return;
-            }
-            if (Objects.isNull(extensionType)) {
-                logger.warn("Cannot assemble {} without extensionType", this.getClass().getSimpleName());
-                return;
-            }
-            var clientSample = observedClientSample.getClientSample();
-            var callId = UUIDAdapter.toStringOrNull(clientSample.callId);
-            var clientId = UUIDAdapter.toStringOrNull(clientSample.clientId);
-
             var report = ClientExtensionReport.newBuilder()
                     .setServiceId(observedClientSample.getServiceId())
                     .setMediaUnitId(observedClientSample.getMediaUnitId())
                     .setRoomId(clientSample.roomId)
-                    .setCallId(callId)
+                    .setCallId(clientSample.callId)
                     .setUserId(clientSample.userId)
-                    .setClientId(clientId)
+                    .setClientId(clientSample.clientId)
                     .setTimestamp(clientSample.timestamp)
                     .setSampleSeq(clientSample.sampleSeq)
                     .setPeerConnectionId(peerConnectionId)

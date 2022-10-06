@@ -16,7 +16,7 @@ class ClientDataChannelReportsDepotTest {
     @Test
     @Order(1)
     void shouldMakeReport() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var serviceId = observedClientSample.getServiceId();
         var mediaUnitId = observedClientSample.getMediaUnitId();
@@ -45,9 +45,9 @@ class ClientDataChannelReportsDepotTest {
         Assertions.assertEquals(expected.label, actual.label, "label field");
         Assertions.assertEquals(expected.protocol, actual.protocol, "protocol field");
         Assertions.assertEquals(expected.state, actual.state, "state field");
-        Assertions.assertEquals(expected.messagesSent, actual.messagesSent, "messagesSent field");
+        Assertions.assertEquals(expected.messageSent, actual.messagesSent, "messagesSent field");
         Assertions.assertEquals(expected.bytesSent, actual.bytesSent, "bytesSent field");
-        Assertions.assertEquals(expected.messagesReceived, actual.messagesReceived, "messagesReceived field");
+        Assertions.assertEquals(expected.messageReceived, actual.messagesReceived, "messagesReceived field");
         Assertions.assertEquals(expected.bytesReceived, actual.bytesReceived, "bytesReceived field");
     }
 
@@ -60,7 +60,7 @@ class ClientDataChannelReportsDepotTest {
     @Test
     @Order(3)
     void shouldBeCleaned() {
-        var callId = UUID.randomUUID();
+        var callId = UUID.randomUUID().toString();
         var observedClientSample = this.generator.generateObservedClientSample(callId);
         var clientSample = observedClientSample.getClientSample();
         var dataChannel = clientSample.dataChannels[0];
