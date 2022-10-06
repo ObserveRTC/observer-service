@@ -240,6 +240,45 @@ public class CallsRepository implements RepositoryStorageMetrics {
         return this.storage.localSize();
     }
 
+    public Map<ServiceRoomId, Models.Call> removeExpiredCalls() {
+        var threshold = Instant.now().toEpochMilli() - 5 * 60 * 1000;
+        var toRemove = new HashMap<ServiceRoomId, Models.Call>();
+        for (var it = this.storage.iterator(); it.hasNext(); ) {
+            var entry = it.next();
+            var call = entry.getValue();
+            if (call == null) {
+                continue;
+            }
+            if (call.getClientLogsCount() < 1) {
+                toRemove.put(entry.getKey(), call);
+                continue;
+            }
+            var logList = call.getClientLogsList();
+            var hasActiveClient = logList.stream().anyMatch(log -> Call.CLIENT_JOINED_EVENT_NAME.equals(log.getEvent()));
+            if (hasActiveClient) {
+                continue;
+            }
+            var allExpired = logList.stream().allMatch(log -> log.getTimestamp() < threshold);
+            if (allExpired) {
+                toRemove.put(entry.getKey(), call);
+            }
+        }
+        if (toRemove.size() < 1) {
+            return Collections.emptyMap();
+        }
+        synchronized (this) {
+            toRemove.keySet().stream().forEach(this.updated::remove);
+            var removed = this.storage.deleteAll(toRemove.keySet());
+            if (removed == null || removed.size() < 1) {
+                return Collections.emptyMap();
+            }
+            return toRemove.entrySet().stream().filter(entry -> removed.contains(entry.getKey())).collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    Map.Entry::getValue
+            ));
+        }
+    }
+
     public record CreateCallInfo(ServiceRoomId serviceRoomId, String marker, String providedCallId) {
 
     }

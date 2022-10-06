@@ -5,6 +5,7 @@ package org.observertc.observer.sinks.awss3;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.FormatEncoder;
 import org.observertc.observer.sinks.Sink;
+import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -19,6 +20,7 @@ import java.util.function.Supplier;
 
 public class AwsS3Sink extends Sink {
     private static final Logger logger = LoggerFactory.getLogger(AwsS3Sink.class);
+    private static final String SCHEMA_VERSION = "schema_" + CallEventReport.VERSION.replace(".", "");
 
     FormatEncoder<String, byte[]> encoder;
     Supplier<S3Client> clientSupplier;
@@ -39,6 +41,7 @@ public class AwsS3Sink extends Sink {
         if (records == null || records.size() < 1) {
             return;
         }
+
         int retried = 0;
         for (; retried < 3; ++retried) {
             if (this.client == null) {
@@ -54,7 +57,7 @@ public class AwsS3Sink extends Sink {
                         continue;
                     }
                     for (var object : objects) {
-                        var objectKey = String.format("%s/%s", prefix, UUID.randomUUID());
+                        var objectKey = String.format("%s/%s/%s", prefix, SCHEMA_VERSION, UUID.randomUUID());
                         PutObjectRequest putOb = PutObjectRequest.builder()
                                 .bucket(this.bucketName)
                                 .key(objectKey)

@@ -51,8 +51,9 @@ message PeerConnection {
 
   optional string userId = 9;
   optional string marker = 10;
+  optional string label = 11;
 
-  repeated string inboundTrackIds = 11;
+  repeated string inboundTrackIds = 12;
   repeated string outboundTrackIds = 13;
 }
 

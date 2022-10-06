@@ -26,7 +26,7 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
                 new CallEventReportToIterable(),
                 new CallMetaReportToIterable(),
                 new ClientExtensionReportToIterable(),
-                new PeerConnectionTransportReportToIterate(),
+                new PeerConnectionTransportReportToIterable(),
                 new IceCandidatePairReportToIterable(),
                 new ClientDataChannelReportToIterable(),
                 new InboundAudioTrackReportToIterable(),

@@ -48,6 +48,14 @@ public class PeerConnection {
         return model.getServiceId();
     }
 
+    public String getLabel(){
+        var model = modelHolder.get();
+        if (!model.hasLabel()) {
+            return null;
+        }
+        return model.getLabel();
+    }
+
     public String getRoomId() {
         var model = modelHolder.get();
         return model.getRoomId();

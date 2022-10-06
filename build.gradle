@@ -10,9 +10,9 @@ group = "org.observertc.observer"
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-    }
+//    maven {
+//        url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+//    }
 }
 
 dependencies {
@@ -46,7 +46,8 @@ dependencies {
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
 
     // --------- Hamok -----
-    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.66-SNAPSHOT'
+//    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.0-SNAPSHOT'
+    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.0-beta'
 
 
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'

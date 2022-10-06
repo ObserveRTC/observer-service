@@ -150,6 +150,9 @@ public class Client {
         if (marker != null) {
             peerConnectionModelBuilder.setMarker(marker);
         }
+//        if (label != null) {
+//            peerConnectionModelBuilder.setLabel(label);
+//        }
         var peerConnectionModel = peerConnectionModelBuilder.build();
         var newModel = Models.Client.newBuilder(model)
                 .addPeerConnectionIds(peerConnectionId)

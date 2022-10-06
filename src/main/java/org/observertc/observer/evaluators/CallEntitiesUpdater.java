@@ -138,8 +138,8 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             call.getServiceRoomId().roomId,
                             call.getServiceRoomId().serviceId
                     );
+                    client = call.getClient(clientSample.clientId);
                 }
-
             } else {
                 var lastTouch = client.getTouched();
                 if (lastTouch == null || lastTouch < timestamp) {
@@ -185,6 +185,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             };
             ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(pcTransport -> {
                 var peerConnection = getPeerConnection.apply(pcTransport.peerConnectionId);
+
             });
 
             ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(track -> {

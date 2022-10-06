@@ -5,10 +5,7 @@ import jakarta.inject.Inject;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.metrics.RepositoryMetrics;
-import org.observertc.observer.repositories.CallsRepository;
-import org.observertc.observer.repositories.InboundTracksRepository;
-import org.observertc.observer.repositories.OutboundTrack;
-import org.observertc.observer.repositories.OutboundTracksRepository;
+import org.observertc.observer.repositories.*;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +27,9 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
 
     @Inject
     InboundTracksRepository inboundTracksRepository;
+
+    @Inject
+    ClientsRepository clientsRepository;
 
     @Inject
     CallsRepository callsRepository;
@@ -59,10 +59,24 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         logger.error("This Task cannot be chained!");
             })
             .addActionStage("Match By Sfu StreamId", () -> {
-                var outboundTracks = this.outboundTracksRepository.getAll(this.outboundTrackIds);
-                if (outboundTracks == null || outboundTracks.size() < 1) {
+                var localOutboundTracks = this.outboundTracksRepository.getAll(this.outboundTrackIds);
+                if (localOutboundTracks == null || localOutboundTracks.size() < 1) {
                     return;
                 }
+                var clientIds = localOutboundTracks.values().stream().map(t -> t.getClientId()).collect(Collectors.toSet());
+                var peerConnections = this.clientsRepository.fetchRecursively(clientIds).values().stream()
+                        .flatMap(c -> c.getPeerConnections().entrySet().stream()).collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (oldV, newV) -> newV
+                        ));
+                var outboundTracks = peerConnections.values().stream()
+                        .flatMap(p -> p.getOutboundTracks().entrySet().stream()).collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (oldV, newV) -> newV
+                        ));
+
                 var outboundTracksBySfuStreamIds = this.mapOutboundTracksBySfuStreamIds(outboundTracks.values());
                 if (outboundTracksBySfuStreamIds == null || outboundTracksBySfuStreamIds.size() < 1) {
                     return;
@@ -80,7 +94,7 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                     if (outboundTrack == null) {
                         return;
                     }
-                    if (outboundTrack.getCallId() != inboundTrack.getCallId()) {
+                    if (!outboundTrack.getCallId().equals(inboundTrack.getCallId())) {
                         logger.warn("CallId must be equal to match outbound tracks to inbound tracks. InboundTrack: {}, OutboundTrack: {}", inboundTrack, outboundTrack);
                         continue;
                     }

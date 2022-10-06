@@ -17,10 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -176,13 +174,6 @@ public class CallEventReportsAdder {
         }
         this.clientLeftReports.accept(expiredClientModels);
 
-        var serviceRoomIdsToClientNums = expiredClientModels.stream()
-                .map(clientModel -> ServiceRoomId.make(clientModel.getServiceId(), clientModel.getRoomId()))
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        s -> 1,
-                        (num1, num2) -> num1 + num2
-                ));
         var peerConnectionIds = expiredClientModels.stream()
                 .filter(model -> 0 < model.getPeerConnectionIdsCount())
                 .map(Models.Client::getPeerConnectionIdsList)
@@ -190,31 +181,23 @@ public class CallEventReportsAdder {
                 .collect(Collectors.toSet());
         this.peerConnectionsRepository.fetchRecursively(peerConnectionIds);
         this.peerConnectionsRepository.deleteAll(peerConnectionIds);
-        this.peerConnectionsRepository.save();
 
-        var calls = this.callsRepository.getAll(serviceRoomIdsToClientNums.keySet());
-        var toRemove = new HashMap<ServiceRoomId, Models.Call>();
-        for (var call : calls.values()) {
-            var remainingClientsNum = call.getClientIds().size() - serviceRoomIdsToClientNums.getOrDefault(call.getServiceRoomId(), 0);
-            if (remainingClientsNum < 1) {
-                toRemove.put(call.getServiceRoomId(), call.getModel());
-            }
-        }
-        var removedServiceRoomIds = this.callsRepository.removeAll(toRemove.keySet());
-        var removedCallModels = new LinkedList<Models.Call>();
-        for (var entry : toRemove.entrySet()) {
-            var serviceRoomId = entry.getKey();
-            var calLModel = entry.getValue();
-            if (!removedServiceRoomIds.contains(serviceRoomId)) {
-                logger.debug("Call is already removed?");
+        for (var clientModel : expiredClientModels) {
+            var serviceRoomId = ServiceRoomId.make(clientModel.getServiceId(), clientModel.getRoomId());
+            var call = this.callsRepository.get(serviceRoomId);
+            if (call == null) {
                 continue;
             }
-            removedCallModels.add(calLModel);
+            call.removeClient(clientModel.getClientId());
         }
+
+        this.callsRepository.save();
+        var removedCallModels = this.callsRepository.removeExpiredCalls();
         if (0 < removedCallModels.size()) {
-            this.callEndedReports.accept(removedCallModels);
+            this.callEndedReports.accept(removedCallModels.values());
         }
     }
+
 
     private void drainCollectedReports(List<Report> target) {
         synchronized (this) {

@@ -39,7 +39,12 @@ public class CallEndedReports {
     }
 
     private CallEventReport makeReport(Models.Call callModel) {
-        Long timestamp = Instant.now().toEpochMilli();
+        Long timestamp;
+        if (0 < callModel.getClientLogsCount()) {
+            timestamp = callModel.getClientLogsList().stream().map(Models.Call.ClientLog::getTimestamp).max(Long::compare).get();
+        } else {
+            timestamp = Instant.now().toEpochMilli();
+        }
         try {
             String message = String.format("Call (%s) is ended", callModel.getCallId());
             var result = CallEventReport.newBuilder()

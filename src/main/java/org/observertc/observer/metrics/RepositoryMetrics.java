@@ -115,7 +115,6 @@ public class RepositoryMetrics {
     }
 
     private void expose() {
-
         for (var storageMetrics : this.storageMetrics) {
             var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageMetrics.storageId()));
             this.metrics.registry.gauge(this.entriesMetricName, tags, storageMetrics.localSize());
