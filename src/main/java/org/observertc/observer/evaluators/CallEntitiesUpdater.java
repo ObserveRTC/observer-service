@@ -385,7 +385,8 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 missingCalls.add(new CallsRepository.CreateCallInfo(
                         serviceRoomId,
                         clientSample.marker,
-                        clientSample.callId
+                        clientSample.callId,
+                        clientSample.timestamp
                 ));
                 continue;
             }
@@ -406,7 +407,8 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             missingCalls.add(new CallsRepository.CreateCallInfo(
                     serviceRoomId,
                     clientSample.marker,
-                    clientSample.callId
+                    clientSample.callId,
+                    clientSample.timestamp
             ));
             result.remove(serviceRoomId);
         }

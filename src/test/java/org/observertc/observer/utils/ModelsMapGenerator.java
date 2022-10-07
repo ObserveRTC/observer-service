@@ -33,7 +33,8 @@ public class ModelsMapGenerator {
                 new CallsRepository.CreateCallInfo(
                         serviceRoomId,
                         "test",
-                        this.callDTO.getCallId()
+                        this.callDTO.getCallId(),
+                        this.callDTO.getStarted()
                 )
         ));
         var call = hamokStorages.getCallsRepository().get(serviceRoomId);

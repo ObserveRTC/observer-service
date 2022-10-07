@@ -36,7 +36,8 @@ class CallsRepositoryTest {
                 new CallsRepository.CreateCallInfo(
                         serviceRoomId,
                         callModel.hasMarker() ? callModel.getMarker() : null,
-                        callModel.getCallId()
+                        callModel.getCallId(),
+                        callModel.getStarted()
                 )
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
@@ -53,7 +54,8 @@ class CallsRepositoryTest {
                 new CallsRepository.CreateCallInfo(
                         serviceRoomId,
                         marker,
-                        UUID.randomUUID().toString()
+                        UUID.randomUUID().toString(),
+                        callModel.getStarted()
                 )
         ));
         Assertions.assertEquals(1, alreadyInsertedCalls.size());

@@ -120,7 +120,6 @@ public class CallsRepository implements RepositoryStorageMetrics {
         if (createCallInfo == null || createCallInfo.size() < 1) {
             return Collections.emptyMap();
         }
-        var timestamp = Instant.now().toEpochMilli();
         var proposedModels = createCallInfo.stream().collect(Collectors.toMap(
                 info -> info.serviceRoomId,
                 info -> {
@@ -130,7 +129,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
                             .setServiceId(serviceRoomId.serviceId)
                             .setRoomId(serviceRoomId.roomId)
                             .setCallId(proposedCallId)
-                            .setStarted(timestamp)
+                            .setStarted(info.timestamp)
                             ;
                     if (info.marker != null) {
                         builder.setMarker(info.marker);
@@ -279,7 +278,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
         }
     }
 
-    public record CreateCallInfo(ServiceRoomId serviceRoomId, String marker, String providedCallId) {
+    public record CreateCallInfo(ServiceRoomId serviceRoomId, String marker, String providedCallId, Long timestamp) {
 
     }
 }

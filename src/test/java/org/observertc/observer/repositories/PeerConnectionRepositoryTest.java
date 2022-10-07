@@ -41,7 +41,8 @@ class PeerConnectionRepositoryTest {
                 new CallsRepository.CreateCallInfo(
                         serviceRoomId,
                         callModel.hasMarker() ? callModel.getMarker() : null,
-                        callModel.getCallId()
+                        callModel.getCallId(),
+                        callModel.getStarted()
                 )
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
