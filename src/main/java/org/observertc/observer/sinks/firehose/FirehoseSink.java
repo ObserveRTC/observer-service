@@ -2,6 +2,7 @@ package org.observertc.observer.sinks.firehose;
 
 // https://docs.aws.amazon.com/code-samples/latest/catalog/javav2-firehose-src-main-java-com-example-firehose-PutBatchRecords.java.html
 
+import org.observertc.observer.common.CollectionChunker;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.FormatEncoder;
@@ -35,6 +36,12 @@ public class FirehoseSink extends Sink {
         if (records == null || records.size() < 1) {
             return;
         }
+        var chunker = CollectionChunker.<Record>builder()
+                .setLimit(4 * 1000 * 1000) // 4MByte because of Firehose limitation
+                .setSizeFn(record -> record.data().asByteArrayUnsafe().length)
+                .setCanOverflowFlag(false)
+                .build();
+
         int retried = 0;
         for (; retried < 3; ++retried) {
             if (this.client == null) {
@@ -44,24 +51,26 @@ public class FirehoseSink extends Sink {
                 for (var it = records.entrySet().iterator(); it.hasNext(); ) {
                     var entry = it.next();
                     var deliveryStreamId = entry.getKey();
-                    var deliveryRecords = entry.getValue();
-                    PutRecordBatchRequest recordBatchRequest = PutRecordBatchRequest.builder()
-                            .deliveryStreamName(deliveryStreamId)
-                            .records(deliveryRecords)
-                            .build();
+                    for (var jt = chunker.iterate(entry.getValue()); jt.hasNext(); ) {
+                        var deliveryRecords = jt.next();
+                        PutRecordBatchRequest recordBatchRequest = PutRecordBatchRequest.builder()
+                                .deliveryStreamName(deliveryStreamId)
+                                .records(deliveryRecords)
+                                .build();
 
-                    PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
-                    logger.info("{} batch ({} records) are forwarded to stream {}",
-                            recordResponse.requestResponses().size(),
-                            Utils.firstNotNull(deliveryRecords, Collections.EMPTY_LIST).size(),
-                            deliveryStreamId);
+                        PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
+                        logger.info("{} batch ({} records) are forwarded to stream {}",
+                                recordResponse.requestResponses().size(),
+                                Utils.firstNotNull(deliveryRecords, Collections.EMPTY_LIST).size(),
+                                deliveryStreamId);
 
-                    List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
-                    for (PutRecordBatchResponseEntry result: results) {
-                        if (result.errorCode() == null) {
-                            continue;
+                        List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
+                        for (PutRecordBatchResponseEntry result: results) {
+                            if (result.errorCode() == null) {
+                                continue;
+                            }
+                            logger.warn("Error indicated adding record {}. error code: {}, error message: {}", result.recordId(), result.errorCode(), result.errorMessage());
                         }
-                        logger.warn("Error indicated adding record {}. error code: {}, error message: {}", result.recordId(), result.errorCode(), result.errorMessage());
                     }
                 }
                 break;
