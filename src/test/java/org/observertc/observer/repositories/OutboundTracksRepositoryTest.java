@@ -3,7 +3,7 @@ package org.observertc.observer.repositories;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
-import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.ModelsMapGenerator;
 

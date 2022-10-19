@@ -1,4 +1,4 @@
-package org.observertc.observer.common;
+package org.observertc.observer.configs;
 
 public enum MediaKind {
     AUDIO,

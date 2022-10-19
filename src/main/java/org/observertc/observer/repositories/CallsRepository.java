@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -137,7 +138,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
                     return builder.build();
                 }
         ));
-        var notInsertedModels = this.storage.insertAll(proposedModels);
+        var notInsertedModels = Try.wrap(() -> this.storage.insertAll(proposedModels), null);
         if (notInsertedModels == null) {
             return Collections.emptyMap();
         }
@@ -152,7 +153,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
         var clientIds = calls.values().stream().map(call -> call.getClientIds())
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
-        var result = this.storage.deleteAll(serviceRoomIds);
+        var result = Try.<Set<ServiceRoomId>>wrap(() -> this.storage.deleteAll(serviceRoomIds), Collections.emptySet());
         synchronized (this) {
             serviceRoomIds.forEach(this.updated::remove);
         }
@@ -183,7 +184,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
     public void save() {
         synchronized (this) {
             if (0 < this.updated.size()) {
-                this.storage.setAll(this.updated);
+                Try.wrap(() -> this.storage.setAll(this.updated));
             }
             this.updated.clear();
         }
@@ -207,7 +208,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
     }
 
     private Call fetchOne(ServiceRoomId serviceRoomId) {
-        var model = this.storage.get(serviceRoomId);
+        var model = Try.wrap(() -> this.storage.get(serviceRoomId), null);
         if (model == null) {
             return null;
         }
@@ -215,7 +216,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
     }
 
     private Map<ServiceRoomId, Call> fetchAll(Set<ServiceRoomId> serviceRoomIds) {
-        var models = this.storage.getAll(serviceRoomIds);
+        var models = Try.wrap(() -> this.storage.getAll(serviceRoomIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();
@@ -242,32 +243,34 @@ public class CallsRepository implements RepositoryStorageMetrics {
     public Map<ServiceRoomId, Models.Call> removeExpiredCalls() {
         var threshold = Instant.now().toEpochMilli() - 5 * 60 * 1000;
         var toRemove = new HashMap<ServiceRoomId, Models.Call>();
-        for (var it = this.storage.iterator(); it.hasNext(); ) {
-            var entry = it.next();
-            var call = entry.getValue();
-            if (call == null) {
-                continue;
+        var executed = Try.wrap(() -> {
+            for (var it = this.storage.iterator(); it.hasNext(); ) {
+                var entry = it.next();
+                var call = entry.getValue();
+                if (call == null) {
+                    continue;
+                }
+                if (call.getClientLogsCount() < 1) {
+                    toRemove.put(entry.getKey(), call);
+                    continue;
+                }
+                var logList = call.getClientLogsList();
+                var hasActiveClient = logList.stream().anyMatch(log -> Call.CLIENT_JOINED_EVENT_NAME.equals(log.getEvent()));
+                if (hasActiveClient) {
+                    continue;
+                }
+                var allExpired = logList.stream().allMatch(log -> log.getTimestamp() < threshold);
+                if (allExpired) {
+                    toRemove.put(entry.getKey(), call);
+                }
             }
-            if (call.getClientLogsCount() < 1) {
-                toRemove.put(entry.getKey(), call);
-                continue;
-            }
-            var logList = call.getClientLogsList();
-            var hasActiveClient = logList.stream().anyMatch(log -> Call.CLIENT_JOINED_EVENT_NAME.equals(log.getEvent()));
-            if (hasActiveClient) {
-                continue;
-            }
-            var allExpired = logList.stream().allMatch(log -> log.getTimestamp() < threshold);
-            if (allExpired) {
-                toRemove.put(entry.getKey(), call);
-            }
-        }
-        if (toRemove.size() < 1) {
+        });
+        if (toRemove.size() < 1 || !executed) {
             return Collections.emptyMap();
         }
         synchronized (this) {
             toRemove.keySet().stream().forEach(this.updated::remove);
-            var removed = this.storage.deleteAll(toRemove.keySet());
+            var removed = Try.wrap(() -> this.storage.deleteAll(toRemove.keySet()), null);
             if (removed == null || removed.size() < 1) {
                 return Collections.emptyMap();
             }

@@ -102,16 +102,25 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
             var marker = sfuSample.marker;
             var sfu = sfus.get(sfuSample.sfuId);
             if (sfu == null) {
-                sfu = this.sfusRepository.add(
-                        observedSfuSample.getServiceId(),
-                        observedSfuSample.getMediaUnitId(),
-                        sfuSample.sfuId,
-                        sfuSample.timestamp,
-                        observedSfuSample.getTimeZoneId(),
-                        marker
-                );
-                sfus.put(sfu.getSfuId(), sfu);
-                newSfuModels.add(sfu.getModel());
+                try {
+                    sfu = this.sfusRepository.add(
+                            observedSfuSample.getServiceId(),
+                            observedSfuSample.getMediaUnitId(),
+                            sfuSample.sfuId,
+                            sfuSample.timestamp,
+                            observedSfuSample.getTimeZoneId(),
+                            marker
+                    );
+                    sfus.put(sfu.getSfuId(), sfu);
+                    newSfuModels.add(sfu.getModel());
+                } catch (AlreadyCreatedException ex) {
+                    logger.warn("sfu for sfuId {}(service: {}, mediaUnit: {}) is already created",
+                            sfuSample.sfuId,
+                            observedSfuSample.getServiceId(),
+                            observedSfuSample.getMediaUnitId()
+                    );
+                }
+
             } else {
                 var lastTouch = sfu.getTouched();
                 if (lastTouch == null || lastTouch < timestamp) {
@@ -126,14 +135,24 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 }
                 var result = finalSfu.getSfuTransport(sfuTransportId);
                 if (result == null) {
-                    result = finalSfu.addSfuTransport(
-                            sfuTransportId,
-                            internal,
-                            timestamp,
-                            marker
-                    );
-                    sfuTransports.put(result.getSfuTransportId(), result);
-                    newSfuTransportModels.add(result.getModel());
+                    try {
+                        result = finalSfu.addSfuTransport(
+                                sfuTransportId,
+                                internal,
+                                timestamp,
+                                marker
+                        );
+                        sfuTransports.put(result.getSfuTransportId(), result);
+                        newSfuTransportModels.add(result.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("sfuTransport for sfuTransportId {}, internal {} (service: {}, mediaUnit: {}) is already created",
+                                sfuTransportId,
+                                internal,
+                                observedSfuSample.getServiceId(),
+                                observedSfuSample.getMediaUnitId()
+                        );
+                    }
+
                 } else {
                     var lastTouch = result.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -149,15 +168,25 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 var sfuTransport = getOrCreateTransport.apply(sfuInboundRtpPad.transportId, Boolean.TRUE.equals(sfuInboundRtpPad.internal));
                 var sfuInboundRtpPadObject = sfuInboundRtpPads.get(sfuInboundRtpPad.padId);
                 if (sfuInboundRtpPadObject == null) {
-                    sfuInboundRtpPadObject = sfuTransport.addInboundRtpPad(
-                            sfuInboundRtpPad.padId,
-                            sfuInboundRtpPad.ssrc,
-                            sfuInboundRtpPad.streamId,
-                            timestamp,
-                            marker
-                    );
-                    sfuInboundRtpPads.put(sfuInboundRtpPadObject.getRtpPadId(), sfuInboundRtpPadObject);
-                    newSfuInboundRtpPadModels.add(sfuInboundRtpPadObject.getModel());
+                    try {
+                        sfuInboundRtpPadObject = sfuTransport.addInboundRtpPad(
+                                sfuInboundRtpPad.padId,
+                                sfuInboundRtpPad.ssrc,
+                                sfuInboundRtpPad.streamId,
+                                timestamp,
+                                marker
+                        );
+                        sfuInboundRtpPads.put(sfuInboundRtpPadObject.getRtpPadId(), sfuInboundRtpPadObject);
+                        newSfuInboundRtpPadModels.add(sfuInboundRtpPadObject.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("sfuInboundRtpPadObject for padId {}, ssrc {}, streamId: {}, (service: {}, mediaUnit: {}) is already created",
+                                sfuInboundRtpPad.padId,
+                                sfuInboundRtpPad.ssrc,
+                                sfuInboundRtpPad.streamId,
+                                observedSfuSample.getServiceId(),
+                                observedSfuSample.getMediaUnitId()
+                        );
+                    }
                 } else {
                     var lastTouch = sfuInboundRtpPadObject.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -169,16 +198,27 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 var sfuTransport = getOrCreateTransport.apply(sfuOutboundRtpPad.transportId, Boolean.TRUE.equals(sfuOutboundRtpPad.internal));
                 var sfuOutboundRtpPadObject = sfuOutboundRtpPads.get(sfuOutboundRtpPad.padId);
                 if (sfuOutboundRtpPadObject == null) {
-                    sfuOutboundRtpPadObject = sfuTransport.addOutboundRtpPad(
-                            sfuOutboundRtpPad.padId,
-                            sfuOutboundRtpPad.ssrc,
-                            sfuOutboundRtpPad.streamId,
-                            sfuOutboundRtpPad.sinkId,
-                            timestamp,
-                            marker
-                    );
-                    sfuOutboundRtpPads.put(sfuOutboundRtpPadObject.getRtpPadId(), sfuOutboundRtpPadObject);
-                    newSfuOutboundRtpPadModels.add(sfuOutboundRtpPadObject.getModel());
+                    try {
+                        sfuOutboundRtpPadObject = sfuTransport.addOutboundRtpPad(
+                                sfuOutboundRtpPad.padId,
+                                sfuOutboundRtpPad.ssrc,
+                                sfuOutboundRtpPad.streamId,
+                                sfuOutboundRtpPad.sinkId,
+                                timestamp,
+                                marker
+                        );
+                        sfuOutboundRtpPads.put(sfuOutboundRtpPadObject.getRtpPadId(), sfuOutboundRtpPadObject);
+                        newSfuOutboundRtpPadModels.add(sfuOutboundRtpPadObject.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("sfuOutboundRtpPadObject for padId {}, ssrc {}, streamId: {}, sinkId: {}, (service: {}, mediaUnit: {}) is already created",
+                                sfuOutboundRtpPad.padId,
+                                sfuOutboundRtpPad.ssrc,
+                                sfuOutboundRtpPad.streamId,
+                                sfuOutboundRtpPad.sinkId,
+                                observedSfuSample.getServiceId(),
+                                observedSfuSample.getMediaUnitId()
+                        );
+                    }
                 } else {
                     var lastTouch = sfuOutboundRtpPadObject.getTouched();
                     if (lastTouch == null || lastTouch < timestamp) {
@@ -249,6 +289,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     private Map<String, SfuInboundRtpPad> fetchExistingInboundRtpPads(ObservedSfuSamples samples) {
         var result = new HashMap<String, SfuInboundRtpPad>();
         var existing = this.sfuInboundRtpPadsRepository.getAll(samples.getInboundRtpPadIds());
+//        logger.info("Fetching inbound rtp pads for {}", JsonUtils.objectToString(samples.getInboundRtpPadIds()));
         if (existing != null && 0 < existing.size()) {
             result.putAll(existing);
         }

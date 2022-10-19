@@ -6,7 +6,8 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.common.Try;
+import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
@@ -19,10 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -418,14 +416,26 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         }
 
         if (0 < toRemove.size()) {
-            this.callsRepository.removeAll(toRemove.keySet());
-            this.callsRepository.save();
-            this.callEndedReports.accept(toRemove.values());
+            var executed = Try.create(() -> {
+                this.callsRepository.removeAll(toRemove.keySet());
+                this.callsRepository.save();
+            }).onException(ex -> {
+                logger.error("Cannot remove calls {} due to exception occurred", JsonUtils.objectToString(toRemove), ex);
+            }).run();
+            if (executed) {
+                this.callEndedReports.accept(toRemove.values());
+            }
             toRemove.clear();
         }
 
-        var alreadyInserted = this.callsRepository.insertAll(missingCalls);
-        var newExistingCalls = this.callsRepository.fetchRecursively(serviceRoomIds);
+        var alreadyInserted = Try.<Map<ServiceRoomId, Call>>wrap(() ->
+                this.callsRepository.insertAll(missingCalls),
+                Collections.emptyMap()
+        );
+        var newExistingCalls = Try.<Map<ServiceRoomId, Call>>wrap(() ->
+                this.callsRepository.fetchRecursively(serviceRoomIds),
+                Collections.emptyMap()
+        );
         result.putAll(newExistingCalls);
         var newModels = new LinkedList<Models.Call>();
         for (var callInfo : missingCalls) {

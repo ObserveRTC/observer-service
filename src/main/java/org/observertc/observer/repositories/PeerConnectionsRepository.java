@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -151,11 +152,11 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
             if (0 < outboundTrackIds.size()) {
                 this.outboundTracksRepository.deleteAll(outboundTrackIds);
             }
-            this.storage.deleteAll(this.deleted);
+            Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.inboundTracksRepository.save();
@@ -164,7 +165,7 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
     }
 
     public Map<String, PeerConnection> fetchRecursively(Collection<String> peerConnectionIds) {
-        var result = this.getAll(peerConnectionIds);
+        var result = Try.<Map<String, PeerConnection>>wrap(() -> this.getAll(peerConnectionIds), Collections.emptyMap());
         var inboundTrackIds = result.values().stream()
                 .map(PeerConnection::getInboundTrackIds)
                 .flatMap(s -> s.stream())
@@ -201,7 +202,7 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
     }
 
     private PeerConnection fetchOne(String peerConnectionId) {
-        var model = this.storage.get(peerConnectionId);
+        var model = Try.wrap(() -> this.storage.get(peerConnectionId), null);
         if (model == null) {
             return null;
         }
@@ -209,7 +210,7 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
     }
 
     private Map<String, PeerConnection> fetchAll(Set<String> peerConnectionIds) {
-        var models = this.storage.getAll(peerConnectionIds);
+        var models = Try.wrap(() -> this.storage.getAll(peerConnectionIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();

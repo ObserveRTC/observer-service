@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -98,11 +99,11 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
 
     public void save() {
         if (0 < this.deleted.size()) {
-            this.storage.deleteAll(this.deleted);
+            Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.fetched.clear();
@@ -145,7 +146,7 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
 
 
     private SfuInboundRtpPad fetchOne(String rtpPadId) {
-        var model = this.storage.get(rtpPadId);
+        var model = Try.wrap(() -> this.storage.get(rtpPadId), null);
         if (model == null) {
             return null;
         }
@@ -153,7 +154,7 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
     }
 
     private Map<String, SfuInboundRtpPad> fetchAll(Set<String> rtpPadIds) {
-        var models = this.storage.getAll(rtpPadIds);
+        var models = Try.wrap(() -> this.storage.getAll(rtpPadIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();

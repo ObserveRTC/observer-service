@@ -1,7 +1,7 @@
 package org.observertc.observer.utils;
 
 import io.micronaut.context.annotation.Prototype;
-import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.configs.MediaKind;
 import org.observertc.schemas.dtos.Models;
 
 import java.util.UUID;

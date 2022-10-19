@@ -68,6 +68,9 @@ public class HamokService  implements InfoSource {
                     logger.info("Endpoint {} detached from StorageGrid", endpointId);
                     remotePeers.remove(endpointId);
                 });
+        this.storageGrid.errors().subscribe(err -> {
+            logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
+        });
     }
 
     @PreDestroy

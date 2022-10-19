@@ -63,15 +63,24 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                 if (localOutboundTracks == null || localOutboundTracks.size() < 1) {
                     return;
                 }
-                var clientIds = localOutboundTracks.values().stream().map(t -> t.getClientId()).collect(Collectors.toSet());
-                var peerConnections = this.clientsRepository.fetchRecursively(clientIds).values().stream()
-                        .flatMap(c -> c.getPeerConnections().entrySet().stream()).collect(Collectors.toMap(
+                var serviceRoomIds = localOutboundTracks.values().stream().map(t -> t.getServiceRoomId()).collect(Collectors.toSet());
+                var calls = this.callsRepository.fetchRecursively(serviceRoomIds);
+                var clients = calls.values().stream().flatMap(call -> call.getClients().entrySet().stream())
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (oldV, newV) -> newV
+                        ));
+                var peerConnections = clients.values().stream()
+                        .flatMap(c -> c.getPeerConnections().entrySet().stream())
+                        .collect(Collectors.toMap(
                                 Map.Entry::getKey,
                                 Map.Entry::getValue,
                                 (oldV, newV) -> newV
                         ));
                 var outboundTracks = peerConnections.values().stream()
-                        .flatMap(p -> p.getOutboundTracks().entrySet().stream()).collect(Collectors.toMap(
+                        .flatMap(p -> p.getOutboundTracks().entrySet().stream())
+                        .collect(Collectors.toMap(
                                 Map.Entry::getKey,
                                 Map.Entry::getValue,
                                 (oldV, newV) -> newV

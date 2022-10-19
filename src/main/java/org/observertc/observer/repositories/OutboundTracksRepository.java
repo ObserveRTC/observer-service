@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -131,11 +132,11 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
-            this.storage.deleteAll(this.deleted);
+            Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.fetched.clear();

@@ -2,6 +2,7 @@ package org.observertc.observer.sinks.firehose;
 
 // https://docs.aws.amazon.com/code-samples/latest/catalog/javav2-firehose-src-main-java-com-example-firehose-PutBatchRecords.java.html
 
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.FormatEncoder;
 import org.observertc.observer.sinks.Sink;
@@ -11,6 +12,7 @@ import software.amazon.awssdk.services.firehose.FirehoseClient;
 import software.amazon.awssdk.services.firehose.model.Record;
 import software.amazon.awssdk.services.firehose.model.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -49,7 +51,10 @@ public class FirehoseSink extends Sink {
                             .build();
 
                     PutRecordBatchResponse recordResponse = this.client.putRecordBatch(recordBatchRequest);
-                    logger.info("{} records are forwarded to stream {}", recordResponse.requestResponses().size(), deliveryStreamId);
+                    logger.info("{} batch ({} records) are forwarded to stream {}",
+                            recordResponse.requestResponses().size(),
+                            Utils.firstNotNull(deliveryRecords, Collections.EMPTY_LIST).size(),
+                            deliveryStreamId);
 
                     List<PutRecordBatchResponseEntry> results = recordResponse.requestResponses();
                     for (PutRecordBatchResponseEntry result: results) {

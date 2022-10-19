@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -127,11 +128,11 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
             if (0 < sfuSctpStreamIds.size()) {
                 this.sfuSctpStreamsRepository.deleteAll(sfuSctpStreamIds);
             }
-            this.storage.deleteAll(this.deleted);
+            Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.sfuInboundRtpPadsRepository.save();
@@ -175,7 +176,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     }
 
     private SfuTransport fetchOne(String sfuTransportId) {
-        var model = this.storage.get(sfuTransportId);
+        var model = Try.wrap(() -> this.storage.get(sfuTransportId), null);
         if (model == null) {
             return null;
         }
@@ -183,7 +184,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     }
 
     private Map<String, SfuTransport> fetchAll(Set<String> sfuTransportIds) {
-        var models = this.storage.getAll(sfuTransportIds);
+        var models = Try.wrap(() -> this.storage.getAll(sfuTransportIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();

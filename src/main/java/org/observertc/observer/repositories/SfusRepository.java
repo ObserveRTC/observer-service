@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -101,17 +102,17 @@ public class SfusRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
-            var sfus = this.getAll(this.deleted);
+            var sfus = Try.<Map<String, Sfu>>wrap(() -> this.getAll(this.deleted), Collections.emptyMap());
             var sfuTransportIds = sfus.values().stream()
                     .map(Sfu::getSfuTransportIds)
                     .flatMap(s -> s.stream())
                     .collect(Collectors.toSet());
-            this.sfuTransportsRepository.deleteAll(sfuTransportIds);
+            Try.wrap(() -> this.sfuTransportsRepository.deleteAll(sfuTransportIds));
             this.storage.deleteAll(this.deleted);
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.sfuTransportsRepository.save();
@@ -179,7 +180,7 @@ public class SfusRepository implements RepositoryStorageMetrics {
     }
 
     private Sfu fetchOne(String sfuId) {
-        var model = this.storage.get(sfuId);
+        var model = Try.wrap(() -> this.storage.get(sfuId), null);
         if (model == null) {
             return null;
         }
@@ -187,7 +188,7 @@ public class SfusRepository implements RepositoryStorageMetrics {
     }
 
     private Map<String, Sfu> fetchAll(Set<String> sfuIds) {
-        var models = this.storage.getAll(sfuIds);
+        var models = Try.wrap(() -> this.storage.getAll(sfuIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();

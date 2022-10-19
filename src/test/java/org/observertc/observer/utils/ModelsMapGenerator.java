@@ -1,6 +1,6 @@
 package org.observertc.observer.utils;
 
-import org.observertc.observer.common.MediaKind;
+import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.repositories.CallsRepository;
 import org.observertc.observer.repositories.HamokStorages;
 import org.observertc.observer.samples.ServiceRoomId;

@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -99,11 +100,11 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
 
     public void save() {
         if (0 < this.deleted.size()) {
-            this.storage.deleteAll(this.deleted);
+            Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.fetched.clear();
@@ -154,7 +155,7 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
     }
 
     private SfuSctpStream fetchOne(String sfuSctpStreamId) {
-        var model = this.storage.get(sfuSctpStreamId);
+        var model = Try.wrap(() -> this.storage.get(sfuSctpStreamId), null);
         if (model == null) {
             return null;
         }
@@ -162,7 +163,7 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
     }
 
     private Map<String, SfuSctpStream> fetchAll(Set<String> sfuSctpStreamIds) {
-        var models = this.storage.getAll(sfuSctpStreamIds);
+        var models = Try.wrap(() -> this.storage.getAll(sfuSctpStreamIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();

@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.observer.mappings.SerDeUtils;
@@ -127,11 +128,11 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
             if (0 < peerConnectionIds.size()) {
                 this.peerConnectionsRepositoryRepo.deleteAll(peerConnectionIds);
             }
-            this.storage.deleteAll(this.deleted);
+            Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
         if (0 < this.updated.size()) {
-            this.storage.setAll(this.updated);
+            Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
         this.peerConnectionsRepositoryRepo.save();
@@ -151,7 +152,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
     }
 
     public Map<String, Client> fetchRecursively(Collection<String> clientIds) {
-        var clients = this.getAll(clientIds);
+        var clients = Try.<Map<String, Client>>wrap(() -> this.getAll(clientIds), Collections.emptyMap());
         var peerConnectionIds = clients.values().stream()
                 .map(Client::getPeerConnectionIds)
                 .flatMap(s -> s.stream())
@@ -175,7 +176,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
     }
 
     private Client fetchOne(String clientId) {
-        var model = this.storage.get(clientId);
+        var model = Try.wrap(() -> this.storage.get(clientId), null);
         if (model == null) {
             return null;
         }
@@ -183,7 +184,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
     }
 
     private Map<String, Client> fetchAll(Set<String> clientIds) {
-        var models = this.storage.getAll(clientIds);
+        var models = Try.wrap(() -> this.storage.getAll(clientIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();
